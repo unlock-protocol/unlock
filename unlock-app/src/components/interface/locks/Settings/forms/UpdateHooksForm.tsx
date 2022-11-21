@@ -2,7 +2,6 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { getNameOrAddressForAddress } from '~/hooks/useEns'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -44,7 +43,7 @@ export const UpdateHooksForm = ({
 
   const onSubmit = (fields: FormProps) => {
     if (isValid) {
-      console.log(fields)
+      console.log(lockAddress, network, fields)
     } else {
       ToastHelper.error('Form is not valid')
     }
