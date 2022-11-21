@@ -44,6 +44,7 @@ export const optimism: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   },
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
