@@ -48,7 +48,7 @@ Here’s an incredibly important thing to remember: the membership connections y
 
 Creating a membership program and sharing it with your Twitter followers takes only a few moments. You’ll start by going to [https://flocker.app](https://flocker.app) and walking through the wizard.
 
-![Screen Shot 2022-11-21 at 10.32.12 AM.png](Blog%20Post%20Twitter%20Rescue%20Kit%20for%20Brands%20and%20Creato%20c956bb799c044096ba7c808d011dfd23/Screen_Shot_2022-11-21_at_10.32.12_AM.png)
+![flocker landing page](/images/blog/flocker-announce/flocker-landing.png)
 
 Here’s a detailed video showing the whole flow.
 
