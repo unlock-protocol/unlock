@@ -1,5 +1,5 @@
 ---
-title: Introducing Flocker.app: A Twitter Rescue Kit for Brands and Creators
+title: Introducing Flocker.app — A Twitter Rescue Kit for Brands and Creators
 subTitle: How to back up your Twitter followers and create portable memberships for fans and followers that will work almost anywhere
 authorName: Christopher Carfi
 publishDate: November 21, 2022
