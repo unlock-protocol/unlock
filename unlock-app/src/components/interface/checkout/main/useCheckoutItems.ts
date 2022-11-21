@@ -4,7 +4,8 @@ import { CheckoutService } from './checkoutMachine'
 
 export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const [state] = useActor(service)
-  const { paywallConfig, skipQuantity, payment, lock } = state.context
+  const { paywallConfig, skipQuantity, payment, lock, skipRecipient } =
+    state.context
 
   const lockAddress = lock?.address || ''
 
@@ -29,6 +30,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
       id: 3,
       name: 'Add recipients',
       to: 'METADATA',
+      skip: skipRecipient,
     },
     {
       id: 4,
