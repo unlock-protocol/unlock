@@ -99,11 +99,13 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   }, [lock, paywallConfig])
 
   const skipRecipient = useMemo(() => {
-    const skipRecipient = lock?.skipRecipient || paywallConfig.skipRecipient
+    const skip = lock?.skipRecipient || paywallConfig.skipRecipient
     const collectsMetadadata =
-      lock?.metadataInputs || paywallConfig.metadataInputs
-
-    return skipRecipient && !collectsMetadadata
+      lock?.metadataInputs ||
+      paywallConfig.metadataInputs ||
+      paywallConfig.emailRequired ||
+      lock?.emailRequired
+    return skip && !collectsMetadadata
   }, [lock, paywallConfig])
 
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
@@ -381,6 +383,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     expiredMember: isUnlockAccount
                       ? false
                       : !!membership?.expired,
+                    recipients: account ? [account] : [],
                   })
                 }}
               >

@@ -40,6 +40,7 @@ export interface SelectLockEvent {
   expiredMember: boolean
   skipQuantity?: boolean
   skipRecipient?: boolean
+  recipients?: string[]
 }
 
 export interface SignMessageEvent {
@@ -162,6 +163,7 @@ interface CheckoutMachineContext {
   mint?: Transaction
   renewed?: Transaction
   skipQuantity: boolean
+  skipRecipient: boolean
   password?: string[]
   data?: string[]
   renew: boolean
@@ -178,6 +180,7 @@ export const checkoutMachine = createMachine(
     },
     context: {
       paywallConfig: {} as PaywallConfig,
+      skipRecipient: true,
       lock: undefined,
       messageToSign: undefined,
       mint: undefined,
@@ -244,6 +247,13 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'RETURNING',
               cond: (_, event) => event.existingMember,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'PAYMENT',
+              cond: (_, event) => {
+                return !event.skipRecipient
+              },
             },
             {
               actions: ['selectLock'],
@@ -328,7 +338,15 @@ export const checkoutMachine = createMachine(
               target: 'CONFIRM',
             },
           ],
-          BACK: 'METADATA',
+          BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.skipRecipient,
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -504,6 +522,12 @@ export const checkoutMachine = createMachine(
         on: {
           MAKE_ANOTHER_PURCHASE: [
             {
+              target: 'PAYMENT',
+              cond: (ctx) => {
+                return ctx.skipQuantity && ctx.skipRecipient
+              },
+            },
+            {
               target: 'METADATA',
               cond: (ctx) => {
                 return ctx.skipQuantity
@@ -554,6 +578,7 @@ export const checkoutMachine = createMachine(
           renewed: undefined,
           skipQuantity: false,
           renew: false,
+          skipRecipient: true,
         } as CheckoutMachineContext
       }),
       selectLock: assign((context, event) => {
@@ -563,6 +588,7 @@ export const checkoutMachine = createMachine(
           renew: event.expiredMember,
           skipQuantity: event.skipQuantity,
           skipRecipient: event.skipRecipient,
+          recipients: event.recipients,
         }
       }),
       selectQuantity: assign({
@@ -627,6 +653,7 @@ export const checkoutMachine = createMachine(
           renewed: undefined,
           skipQuantity: false,
           renew: false,
+          skipRecipient: true,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
