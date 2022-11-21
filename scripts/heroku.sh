@@ -50,4 +50,4 @@ heroku container:login
 heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE
 
 # migrate the database
-heroku run --app $HEROKU_APP_NAME --type $HEROKU_CONTAINER_TYPE --env BUILD_DIR="$BUILD_DIRECTORY" yarn db:migrate 
+heroku run --app $HEROKU_APP_NAME --type $HEROKU_CONTAINER_TYPE --env BUILD_DIR="$BUILD_DIRECTORY" yarn db:migrate

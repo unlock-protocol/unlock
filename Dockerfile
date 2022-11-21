@@ -78,13 +78,12 @@ RUN yarn build
 FROM dev as prod
 
 # default values
-ENV PORT=3000
 ENV BUILD_DIR='locksmith'
 ENV COMMAND='yarn prod'
 
 WORKDIR /home/unlock/${BUILD_DIR}
 
 # start command
-EXPOSE $PORT
+EXPOSE 3000
 
 CMD $COMMAND
