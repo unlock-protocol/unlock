@@ -52,7 +52,10 @@ Creating a membership program and sharing it with your Twitter followers takes o
 
 Here’s a detailed video showing the whole flow.
 
-[https://www.youtube.com/watch?v=XFBc1U4wtKg](https://www.youtube.com/watch?v=XFBc1U4wtKg)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="[https://www.youtube.com/embed/X5DKS48rDBE](https://www.youtube.com/embed/XFBc1U4wtKg](https://www.youtube.com/embed/XFBc1U4wtKg](https://www.youtube.com/embed/XFBc1U4wtKg)))" title="Unlock Protocol and Guild.xyz Integration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
+
+[https://www.youtube.com/watch?v=XFBc1U4wtKg](https://www.youtube.com/embed/XFBc1U4wtKg)
 
 And here is a sample Tweet you can use in order to ask your followers on Twitter to connect directly with you after you’ve created your membership.
 
