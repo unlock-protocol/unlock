@@ -418,7 +418,7 @@ export const LocksForm = ({
                       value={recurring}
                       disabled={recurringUnlimited}
                     />
-                    <span className="text-xs text-gray-600 mb-4">
+                    <span className="mb-4 text-xs text-gray-600">
                       This only applies to locks which have been enable for
                       recurring payments.{' '}
                       <a

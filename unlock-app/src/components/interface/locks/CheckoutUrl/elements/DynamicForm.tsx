@@ -30,6 +30,7 @@ export const LabelMapping: Record<string, string> = {
   default: 'Default',
   dataBuilder: 'Data builder',
   redirectUri: 'Redirect URL',
+  skipRecipient: 'Skip Recipient',
 }
 
 interface DynamicFormProps {

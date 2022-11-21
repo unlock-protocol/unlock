@@ -25,6 +25,7 @@ export const CheckoutUrlPage = () => {
   const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
     locks: {},
     pessimistic: true,
+    skipRecipient: true,
   })
 
   const onAddLocks = (locks: any) => {
@@ -60,6 +61,7 @@ export const CheckoutUrlPage = () => {
     onAddLocks({
       [lockAddress as string]: {
         network: parseInt(`${network!}`),
+        skipRecipient: true,
       },
     })
   }
