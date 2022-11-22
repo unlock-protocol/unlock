@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - dockerfile-fix
 
 jobs:
   run-all-tests:
