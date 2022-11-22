@@ -36,6 +36,7 @@ import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
+import './interfaces/bridge/IUnlockBridgeSender.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -100,8 +101,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
-  // The connext contract on the origin domain
-  address connextAddress;
+  // address of the Unlock bridge
+  address bridgeAddress;
 
   // Events
   event NewLock(
@@ -350,73 +351,35 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return lockAddress;
   }
 
-  function setConnext(address _connextAddress) public {
-    connextAddress = _connextAddress;
+  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
+    IPublicLock lock = IPublicLock(lockAddress);
+    return lock.isLockManager(_sender);
   }
 
-  function getDomain(uint chainId) public returns (uint32 domain){
-    // parse domain
-    return domain;
+  function setBridgeSenderAddress (address _bridgeAddress) public onlyOwner {
+    bridgeAddress = _bridgeAddress;
   }
 
-  /**
-   * @notice Purchase a key on another chain
-   * Purchase a key from a lock on another chain
-   * @param destChainId: the chain id on which the lock is located
-   * @param lock: address of the lock that the user is attempting to purchase a key from
-   * @param currency : address of the token to be swapped into the lock’s currency
-   * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
-   * @param callData: blob of data passed to the lock that includes the following:
-   * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
-   * @dev to construct the callData you need the following parameter
-      - `recipients`: address of the recipients of the membership
-      - `referrers`: address of the referrers
-      - `keyManagers`: address of the key managers
-      - `callData`: bytes passed to the purchase function function of the lock
-   */
-  function crossChainPurchase(
+  function sendBridgedLockCall(
     uint destChainId, 
     address lock, 
     address currency, 
     uint amount, 
     bytes calldata callData,
-    uint relayerFee 
-  ) public {
+    uint relayerFee
+  ) public payable {
+    // value to forward to the bridge
+    uint value = msg.value + relayerFee;
 
-    // prepare ERC20 if needed
-    if (currency != address(0)) {
-      IERC20 token = IERC20(currency);
-      require(
-        token.allowance(msg.sender, address(this)) >= amount,
-        "User must approve amount"
-      );
-
-      // User sends funds to this contract
-      token.transferFrom(msg.sender, address(this), amount);
-
-      // This contract approves transfer to Connext
-      token.approve(connextAddress, amount);
-    }
-
-    // get the domain
-    uint32 destinationDomain = getDomain(destChainId);
-
-    // send the call over the chain
-    IConnext(connextAddress).xcall{value: relayerFee}(
-      destinationDomain, // _destination: Domain ID of the destination chain
-      lock,            // _to: address of the target contract
-      currency,    // _asset: address of the token contract
-      msg.sender,        // _delegate: address that can revert or forceLocal on destination
-      amount,              // _amount: amount of tokens to transfer
-      30,                // _slippage: the maximum amount of slippage the user will accept in BPS, in this case 0.3%
-      callData           // _callData: the encoded calldata to send
+    // call the bridge
+    IUnlockBridgeSender(bridgeAddress).callLock{ value: value }(
+      destChainId, 
+      lock, 
+      currency, 
+      amount, 
+      callData,
+      relayerFee
     );
-
-  }
-
-  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
-    IPublicLock lock = IPublicLock(lockAddress);
-    return lock.isLockManager(_sender);
   }
 
   /**
