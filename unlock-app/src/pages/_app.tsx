@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from '~/config/app'
 import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
+import { ErrorBoundary } from '@sentry/nextjs'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +29,9 @@ const UnlockApp = ({ Component }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalWrapper>
-        <Component />
+        <ErrorBoundary>
+          <Component />
+        </ErrorBoundary>
         <Toaster />
       </GlobalWrapper>
     </QueryClientProvider>
