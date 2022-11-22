@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 
 export const LearnMoreAboutOpenseaMetadataLink = () => {
