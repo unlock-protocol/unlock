@@ -40,6 +40,12 @@ describe('Describe UnlockDailyData Events', () => {
     assert.fieldEquals(
       'UnlockDailyData',
       lockDayID.toString(),
+      'keysSoldAmount',
+      '0'
+    )
+    assert.fieldEquals(
+      'UnlockDailyData',
+      lockDayID.toString(),
       'activeLocks',
       `[]`
     )

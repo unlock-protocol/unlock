@@ -14,7 +14,6 @@ type Lock @entity {
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
   lastKeyMintedAt: BigInt
-  dayId: BigInt
 }
 
 type Key @entity {
@@ -33,6 +32,7 @@ type UnlockDailyData @entity {
   id: ID!
   lockDeployed: BigInt!
   keysSold: BigInt!
+  keysSoldAmount: BigInt!
   activeLocks: [Bytes!]
 }
 

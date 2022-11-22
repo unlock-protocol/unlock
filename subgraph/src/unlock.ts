@@ -39,6 +39,7 @@ export function handleNewLock(event: NewLock): void {
     unlockDailyData = new UnlockDailyData(dayID.toString())
     unlockDailyData.lockDeployed = BigInt.fromI32(1)
     unlockDailyData.keysSold = BigInt.fromI32(0)
+    unlockDailyData.keysSoldAmount = BigInt.fromI32(0)
     unlockDailyData.activeLocks = []
     unlockDailyData.save()
   } else {
@@ -62,7 +63,6 @@ export function handleNewLock(event: NewLock): void {
   // store lock info from contract
   lock.tokenAddress = lockContract.tokenAddress()
   lock.price = lockContract.keyPrice()
-  lock.dayId = BigInt.fromI32(dayID)
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
