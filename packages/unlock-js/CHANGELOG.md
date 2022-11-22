@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.6
+
+- increased robustness by checking address format on events
+
 # 0.32.5
 
 - add `updateRefundPenalty` in walletService
