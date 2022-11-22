@@ -19,6 +19,7 @@ jobs:
           cache: 'yarn'
           registry-url: 'https://registry.npmjs.org'
 
+      - run: sudo apt-get update -y
       - run: sudo apt-get install -y default-jdk
       - run: yarn install
       - run: yarn release
