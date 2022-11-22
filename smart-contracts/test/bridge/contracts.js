@@ -19,7 +19,6 @@ contract('Unlock / bridge', () => {
     lock = await deployLock({ unlock })
     keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
     await addSomeETH(lock.address) // fund the lock
-    await addSomeETH(lock.address) // fund the lock
 
     // receiver
     const BridgeReceiver = await ethers.getContractFactory(
@@ -43,6 +42,9 @@ contract('Unlock / bridge', () => {
       destChainId,
       bridgeReceiver.address
     )
+
+    await addSomeETH(bridgeReceiver.address) // fund the bridge
+    await addSomeETH(bridgerSender.address) // fund the bridge
   })
 
   describe('Unlock.setBridgeSenderAddress', () => {
@@ -95,10 +97,9 @@ contract('Unlock / bridge', () => {
         keyOwners.map(() => []),
       ]
 
-      const calldata = lock.interface.encodeFunctionData(
-        'purchase',
-        purchaseArgs
-      )
+      const interface = new ethers.utils.Interface(lock.abi)
+      const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
+
       await unlock.sendBridgedLockCall(
         destChainId,
         lock.address,
@@ -108,7 +109,7 @@ contract('Unlock / bridge', () => {
         ethers.BigNumber.from(1000)
       )
 
-      assert.equal(lock.balanceOf(signers[3]), 1)
+      assert.equal(await lock.balanceOf(signers[3].address), 1)
     })
   })
 })
