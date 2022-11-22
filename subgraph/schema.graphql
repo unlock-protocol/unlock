@@ -14,6 +14,7 @@ type Lock @entity {
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
   lastKeyMintedAt: BigInt
+  dayId: BigInt
 }
 
 type Key @entity {

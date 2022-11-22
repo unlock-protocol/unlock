@@ -62,6 +62,7 @@ export function handleNewLock(event: NewLock): void {
   // store lock info from contract
   lock.tokenAddress = lockContract.tokenAddress()
   lock.price = lockContract.keyPrice()
+  lock.dayId = BigInt.fromI32(dayID)
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
