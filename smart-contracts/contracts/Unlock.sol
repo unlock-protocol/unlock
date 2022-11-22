@@ -380,7 +380,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint amount, 
     bytes calldata callData,
     uint relayerFee
-  ) public payable {
+  ) public payable returns (bytes32 transferID){
     // value to forward to the bridge
     uint value = msg.value + relayerFee;
 
