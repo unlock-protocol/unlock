@@ -37,7 +37,7 @@ then
 fi
 
 # build image
-docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE .
+docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE --build-arg COMMAND="$COMMAND" .
 
 # push image to Heroku registry
 docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
