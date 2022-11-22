@@ -78,8 +78,9 @@ RUN yarn build
 FROM dev as prod
 
 # default values
+ARG COMMAND="yarn prod"
 ENV BUILD_DIR='locksmith'
-ENV COMMAND='yarn prod'
+ENV COMMAND=${COMMAND}
 
 WORKDIR /home/unlock/${BUILD_DIR}
 
