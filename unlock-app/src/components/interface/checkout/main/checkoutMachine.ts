@@ -402,7 +402,7 @@ export const checkoutMachine = createMachine(
               actions: ['signMessage'],
             },
           ],
-          BACK: 'METADATA',
+          BACK: 'PAYMENT',
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],

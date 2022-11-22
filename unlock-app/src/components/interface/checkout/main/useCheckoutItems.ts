@@ -30,7 +30,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
       id: 3,
       name: 'Add recipients',
       to: 'METADATA',
-      skip: skipRecipient,
+      skip: skipRecipient && skipQuantity,
     },
     {
       id: 4,
