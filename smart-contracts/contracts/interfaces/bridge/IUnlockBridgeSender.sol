@@ -8,6 +8,7 @@ interface IUnlockBridgeSender {
    * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
    * @param callData: blob of data passed to the lock that includes the following:
    * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
+   * @return transferId id returned by connext.xcall 
    * @dev to construct the callData you need the following parameter
       - `recipients`: address of the recipients of the membership
       - `referrers`: address of the referrers
@@ -21,6 +22,6 @@ interface IUnlockBridgeSender {
     uint amount, 
     bytes calldata callData,
     uint relayerFee
-  ) external payable;
+  ) external payable returns (bytes32 transferId);
 
 }

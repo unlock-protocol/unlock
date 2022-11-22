@@ -8,16 +8,16 @@ import "hardhat/console.sol";
 contract UnlockBridgeSender is Ownable {
 
   // main Unlock contract
-  address unlockAddress;
+  address public unlockAddress;
 
   // The connext contract on the origin domain
-  address connextAddress;
+  address public connextAddress;
 
   // in BPS, in this case 0.3%
   uint constant MAX_SLIPPAGE = 30;
 
   // the chain id => address of bridge receiver on the destination chain
-  mapping (uint => address) receiverAddresses;
+  mapping (uint => address) public receiverAddresses;
 
   modifier onlyUnlock() {
     require(
@@ -42,6 +42,9 @@ contract UnlockBridgeSender is Ownable {
   
   function setUnlockAddress(address _unlockAddress) public onlyOwner {
     unlockAddress = _unlockAddress;
+  }
+  function setReceiverAddresses(uint _chainId, address _receiverAddress) public onlyOwner {
+    receiverAddresses[_chainId] = _receiverAddress;
   }
 
   function getDomain(uint chainId) public returns (uint32 domain){
@@ -71,12 +74,23 @@ contract UnlockBridgeSender is Ownable {
     uint amount, 
     bytes calldata callData, 
     uint relayerFee
-  ) public payable onlyUnlock() {
+  ) public payable onlyUnlock() returns (bytes32 transferID) {
+
+    console.log('---- arrived in bridge sender');
+    console.log(destChainId);
+    console.log(lock);
+    console.log(currency);
+    console.log(amount);
+    console.logBytes(callData);
+    console.log(relayerFee);
 
     // get the correct receiver contract on dest chain
+    console.log(destChainId);
     address receiverAddress = receiverAddresses[destChainId];
+    console.log(receiverAddress);
+    require(receiverAddress != address(0), 'missing receiverAddress on dest chain');
 
-    // prepare ERC20 if needed
+    // TODO: ERC20 should be sent using transfer (no approval)
     if (currency != address(0)) {
       IERC20 token = IERC20(currency);
       require(
@@ -91,9 +105,6 @@ contract UnlockBridgeSender is Ownable {
       token.approve(connextAddress, amount);
     }
 
-    console.log('address');
-    console.log(lock);
-
     // get the domain
     uint32 destinationDomain = getDomain(destChainId);
     console.logBytes(callData);
@@ -104,10 +115,9 @@ contract UnlockBridgeSender is Ownable {
       callData
     );            
     console.logBytes(data);
-
     
     // send the call over the chain
-    IConnext(connextAddress).xcall{value: relayerFee}(
+    transferID = IConnext(connextAddress).xcall(
       destinationDomain,    // _destination: Domain ID of the destination chain
       receiverAddress,      // _to: address of the target contract
       currency,           // _asset: address of the token contract
@@ -116,6 +126,9 @@ contract UnlockBridgeSender is Ownable {
       MAX_SLIPPAGE,        // _slippage: the maximum amount of slippage the user will accept
       data
     );
+
+    console.logBytes32(transferID);
+    console.log(uint(transferID));
 
   }
 }

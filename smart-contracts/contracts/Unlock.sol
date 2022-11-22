@@ -37,6 +37,7 @@ import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
 import './interfaces/bridge/IUnlockBridgeSender.sol';
+import 'hardhat/console.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -102,7 +103,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   uint16 public publicLockLatestVersion;
 
   // address of the Unlock bridge
-  address bridgeAddress;
+  address public bridgeAddress;
 
   // Events
   event NewLock(
@@ -367,19 +368,20 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint amount, 
     bytes calldata callData,
     uint relayerFee
-  ) public payable {
+  ) public payable returns (bytes32 transferID){
     // value to forward to the bridge
     uint value = msg.value + relayerFee;
 
     // call the bridge
-    IUnlockBridgeSender(bridgeAddress).callLock{ value: value }(
+    // transferID = IUnlockBridgeSender(bridgeAddress).callLock{ value: value }(
+    transferID = IUnlockBridgeSender(bridgeAddress).callLock(
       destChainId, 
       lock, 
       currency, 
       amount, 
       callData,
       relayerFee
-    );
+    );    
   }
 
   /**
