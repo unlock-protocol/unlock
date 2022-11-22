@@ -30,6 +30,7 @@ contract UnlockBridgeReceiver is IXReceiver {
     console.logBytes(lockCalldata);
     (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
 
-    lockAddress.call{value: amount}(lockCalldata);
+    (bool success,) = lockAddress.call{value: amount}(lockCalldata);
+    revert(success, 'lock call failed');
   }
 }
