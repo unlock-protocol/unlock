@@ -127,7 +127,6 @@ export const useProvider = (config: any) => {
         })
 
         provider.on('chainChanged', async () => {
-          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
