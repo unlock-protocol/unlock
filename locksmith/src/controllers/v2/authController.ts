@@ -16,6 +16,7 @@ export class AuthController {
         response.status(422).json({
           message: 'Expected message object as body.',
         })
+        return
       }
       const message = new SiweMessage(request.body.message)
       const fields = await message.validate(request.body.signature)
@@ -26,11 +27,13 @@ export class AuthController {
           nonce: fields.nonce,
         },
       })
+
       if (isNonceLoggedIn) {
         logger.info(`${fields.nonce} was already used for login.`)
         response.status(422).json({
           message: 'Invalid nonce',
         })
+        return
       }
 
       const accessToken = createAccessToken({
