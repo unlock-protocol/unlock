@@ -6,6 +6,7 @@ import {
   SiDiscord as DiscordIcon,
   SiGithub as GithubIcon,
 } from 'react-icons/si'
+import { config } from '~/config/app'
 
 interface Props {
   error: Error
@@ -52,8 +53,12 @@ export function ErrorFallback({ error, componentStack, eventId }: Props) {
         </div>
       </main>
       <div className="flex flex-col gap-6 md:flex-row">
-        <Button size="small">
-          <Link href="/locks">Go Back</Link>
+        <Button
+          as="a"
+          href={new URL('/locks', window.location.href).toString()}
+          size="small"
+        >
+          Go Back
         </Button>
         <Button
           size="small"
