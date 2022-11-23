@@ -11,7 +11,6 @@ jobs:
     uses: ./.github/workflows/_tests.yml
 
   deploy-all-subgraphs:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     uses: ./.github/workflows/_subgraph.yml
     secrets:
