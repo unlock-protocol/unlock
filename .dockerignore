@@ -1,8 +1,16 @@
+**/node_modules
+**/build/**
+
+**/src/.next
+**/src/out
+
+node_modules/
+
+.vscode
+.git
+
 # docker itself (prevent rebuilds when editing)
 Dockerfile
-
-# root level 
-node_modules
 
 # Artifacts
 unlock-app/src/artifacts/
@@ -10,34 +18,9 @@ smart-contracts/build/
 smart-contracts/cache
 smart-contracts/artifacts
 builds/
-.eslintcache
 
-# for all workspaces 
-**/node_modules
-**/build
-**/dist
-**/coverage
-**/artifacts
-**/cache
-**/.next
-**/out
-**/deprec
+shared/node_modules/
 
-# git 
-.git
-
-# Log files
-logs
-*.log
-
-# Temp files
-tmp
-*.tmp
-.DS_Store
-**/.DS_Store
-
-# IDE related
-.idea
 .vscode
 
 # yarn
@@ -45,7 +28,3 @@ tmp
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-
-# check in unlock-assets -- see #9697
-!./packages/unlock-assets/build
-!./packages/unlock-assets/dist
