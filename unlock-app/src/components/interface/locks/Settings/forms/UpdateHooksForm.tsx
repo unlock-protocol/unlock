@@ -65,10 +65,17 @@ export const UpdateHooksForm = ({
     })
   }
 
+  const setEventsHooksMutation = useMutation(setEventsHooks)
+
   const res = useQueries({
     queries: [
       {
-        queryKey: ['onKeyPurchaseHook', lockAddress, network],
+        queryKey: [
+          'onKeyPurchaseHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onKeyPurchaseHook({
             lockAddress,
@@ -77,10 +84,19 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 7 ?? false,
         onSuccess: (value: string) => {
           setValue('keyPurchase', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            keyPurchase: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
       {
-        queryKey: ['onKeyCancelHook', lockAddress, network],
+        queryKey: [
+          'onKeyCancelHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onKeyCancelHook({
             lockAddress,
@@ -89,10 +105,19 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 7 ?? false,
         onSuccess: (value: string) => {
           setValue('keyCancel', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            keyCancel: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
       {
-        queryKey: ['onValidKeyHook', lockAddress, network],
+        queryKey: [
+          'onValidKeyHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onValidKeyHook({
             lockAddress,
@@ -101,10 +126,19 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 9 ?? false,
         onSuccess: (value: string) => {
           setValue('validKey', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            validKey: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
       {
-        queryKey: ['onTokenURIHook', lockAddress, network],
+        queryKey: [
+          'onTokenURIHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onTokenURIHook({
             lockAddress,
@@ -113,10 +147,19 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 9 ?? false,
         onSuccess: (value: string) => {
           setValue('tokenURI', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            tokenURI: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
       {
-        queryKey: ['onKeyTransferHook', lockAddress, network],
+        queryKey: [
+          'onKeyTransferHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onKeyTransferHook({
             lockAddress,
@@ -125,10 +168,19 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 11 ?? false,
         onSuccess: (value: string) => {
           setValue('keyTransfer', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            keyTransfer: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
       {
-        queryKey: ['onKeyExtendHook', lockAddress, network],
+        queryKey: [
+          'onKeyExtendHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onKeyExtendHook({
             lockAddress,
@@ -137,10 +189,19 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 12 ?? false,
         onSuccess: (value: string) => {
           setValue('keyExtend', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            keyExtend: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
       {
-        queryKey: ['onKeyGrantHook', lockAddress, network],
+        queryKey: [
+          'onKeyGrantHook',
+          lockAddress,
+          network,
+          setEventsHooksMutation.isSuccess,
+        ],
         queryFn: async () =>
           await web3Service.onKeyGrantHook({
             lockAddress,
@@ -149,14 +210,16 @@ export const UpdateHooksForm = ({
         enabled: (version ?? 0) >= 12 ?? false,
         onSuccess: (value: string) => {
           setValue('keyGrant', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+          setEnabledFields({
+            ...enabledFields,
+            keyGrant: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
+          })
         },
       },
     ],
   })
 
   const isLoading = res?.some(({ isLoading }) => isLoading)
-
-  const setEventsHooksMutation = useMutation(setEventsHooks)
 
   const onSubmit = async (fields: FormProps) => {
     if (isValid) {
