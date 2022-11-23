@@ -158,6 +158,9 @@ WORKDIR /app
 # copy package info
 COPY --from=build --chown=node /home/node/app .
 
+# build the app
+RUN yarn build
+
 # start command
 EXPOSE $PORT
 
