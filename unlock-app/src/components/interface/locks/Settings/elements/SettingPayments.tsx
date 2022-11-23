@@ -29,7 +29,7 @@ export const SettingPayments = ({
         <UpdatePriceForm
           lockAddress={lockAddress}
           network={network}
-          price={parseInt(lock!.keyPrice, 10) ?? 0}
+          price={parseInt(lock?.keyPrice ?? '0', 10) ?? 0}
           isManager={isManager}
           disabled={!isManager}
         />
