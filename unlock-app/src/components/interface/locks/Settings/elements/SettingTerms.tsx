@@ -1,10 +1,7 @@
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
 import { CancellationForm } from '../forms/CancellationForm'
-import { CreditCardForm } from '../forms/CreditCardForm'
-import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
-import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { SettingCard } from './SettingCard'
 
