@@ -59,7 +59,7 @@ FROM deps as dev
 # enforce perms
 USER root
 WORKDIR /home/unlock
-RUN chown -R node:node /home/unlock/.yarn/install-state.gz
+RUN chown -R node:node /home/unlock
 
 # default user
 USER node
