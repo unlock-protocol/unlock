@@ -58,7 +58,7 @@ export class AuthController {
           refreshToken,
         })
     } catch (error) {
-      // logger.error(error.message)
+      logger.error(error.message)
       switch (error) {
         case ErrorTypes.EXPIRED_MESSAGE: {
           response.status(440).json({ message: error.message })
