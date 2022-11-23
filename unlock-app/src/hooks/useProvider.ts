@@ -231,6 +231,10 @@ export const useProvider = (config: any) => {
     })
   }
 
+  const sendProvider = async (method, params) => {
+    await provider.send(method, params)
+  }
+
   const signMessage = async (messageToSign: string) => {
     return ToastHelper.promise(
       walletService.signMessage(messageToSign, 'personal_sign'),
@@ -247,6 +251,7 @@ export const useProvider = (config: any) => {
     network,
     account,
     signMessage,
+    sendProvider,
     email,
     isUnlockAccount,
     encryptedPrivateKey,

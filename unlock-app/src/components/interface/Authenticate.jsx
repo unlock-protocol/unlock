@@ -80,6 +80,7 @@ export const Authenticate = ({
     loading,
     network,
     signMessage,
+    sendProvider,
     account,
     email,
     encryptedPrivateKey,
@@ -108,6 +109,7 @@ export const Authenticate = ({
     <AuthenticationContext.Provider
       value={{
         signMessage,
+        sendProvider,
         account,
         network,
         email,
@@ -153,7 +155,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => {},
+  onAuthenticated: () => { },
   providerAdapter: null,
 }
 
