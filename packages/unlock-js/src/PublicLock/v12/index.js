@@ -8,6 +8,7 @@ import updateLockName from './updateLockName'
 import updateLockSymbol from './updateLockSymbol'
 import approveBeneficiary from './approveBeneficiary'
 import withdrawFromLock from './withdrawFromLock'
+import setEventHooks from './setEventHooks'
 
 export default {
   ...v11,
@@ -19,6 +20,7 @@ export default {
   updateLockName,
   updateLockSymbol,
   withdrawFromLock,
+  setEventHooks,
   version: 'v12',
   PublicLock: abis.PublicLock.v12,
 }
