@@ -1,10 +1,12 @@
+import { ZERO } from '../../constants'
+
 export default async function (
   {
     lockAddress,
-    keyPurchase = '',
-    keyCancel = '',
-    validKey = '',
-    tokenURI = '',
+    keyPurchase = ZERO,
+    keyCancel = ZERO,
+    validKey = ZERO,
+    tokenURI = ZERO,
   },
   transactionOptions = {},
   callback
