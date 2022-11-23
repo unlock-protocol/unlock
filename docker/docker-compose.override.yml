@@ -25,8 +25,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: locksmith
       cache_from:
         - locksmith
         - unlockprotocol/locksmith:master
@@ -56,8 +54,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: locksmith
       cache_from:
         - locksmith
         - unlockprotocol/locksmith:master
@@ -83,8 +79,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: subgraph
     env_file: development.env
     command:
       [
@@ -107,8 +101,6 @@ services:
     build:
       target: dev
       context: ../
-      args:
-        BUILD_DIR: wedlocks
     command:
       [
         "yarn",
