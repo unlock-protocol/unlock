@@ -43,9 +43,9 @@ COPY .yarn/releases $DEST_FOLDER/.yarn/releases
 RUN chown -R node:node $DEST_FOLDER
 
 # specify yarn cache folder location (to be used by docker buildkit)
+USER node
 RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> $DEST_FOLDER/.yarnrc.yml
 RUN mkdir $DEST_FOLDER/yarn-cache
-RUN chown -R node:node $DEST_FOLDER/yarn-cache
 
 # install deps
 WORKDIR ${DEST_FOLDER}
@@ -57,9 +57,7 @@ RUN yarn
 FROM deps as dev
 
 # enforce perms
-USER root
 WORKDIR /home/unlock
-RUN chown -R node:node /home/unlock/.yarn/install-state.gz
 
 # default user
 USER node
@@ -72,7 +70,7 @@ RUN javac -version
 # build all packages in packages/**
 RUN yarn build
 
-##
+#
 ## 3. export image for prod app
 ##
 FROM dev as prod
