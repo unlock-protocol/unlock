@@ -50,7 +50,7 @@ export function ErrorFallback({ error, componentStack, eventId }: Props) {
           </div>
         </div>
       </main>
-      <div className="flex flex-col gap-6 md:flex-row">
+      <div className="flex flex-col gap-2 md:flex-row">
         <Button
           as="a"
           href={new URL('/locks', window.location.href).toString()}
