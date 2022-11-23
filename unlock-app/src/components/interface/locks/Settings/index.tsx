@@ -111,7 +111,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       ),
       sidebar: (
         <SidebarCard
-          src="/images/illustrations/img-terms.svg"
+          src="/images/illustrations/img-payment.svg"
           description="Payments lorem ipsum"
         />
       ),
