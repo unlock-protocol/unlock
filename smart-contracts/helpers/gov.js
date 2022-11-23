@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const { getDeployment } = require('./deployments')
 
 const encodeProposalFunc = ({ interface, functionName, functionArgs }) => {
   const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
@@ -26,15 +25,16 @@ const getProposalId = async (proposal) => {
   return proposalId
 }
 
-const getProposalIdFromContract = async (proposal) => {
+const getProposalIdFromContract = async (proposal, govAddress) => {
   const { proposerAddress } = proposal
   const [to, value, calldata, description] = await parseProposal(proposal)
 
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-
   const proposerWallet = await ethers.getSigner(proposerAddress)
-  const gov = new ethers.Contract(address, abi, proposerWallet)
+  const gov = await ethers.getContractAt(
+    'UnlockProtocolGovernor',
+    govAddress,
+    proposerWallet
+  )
 
   const descriptionHash = ethers.utils.keccak256(
     ethers.utils.toUtf8Bytes(description)
@@ -57,15 +57,12 @@ const parseProposal = async ({
   functionArgs,
   proposalName,
   value = 0,
+  govAddress,
 }) => {
   if (!calldata && !functionArgs) {
     // eslint-disable-next-line no-console
     throw new Error('Missing calldata or function args.')
   }
-
-  // get contract instance
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address } = await getDeployment(chainId, contractName)
 
   // if no call data, then parse it
   if (!calldata) {
@@ -76,7 +73,7 @@ const parseProposal = async ({
     })
   }
   return [
-    [address], // contract to send the proposal to
+    [govAddress], // contract to send the proposal to
     [value], // value in ETH, default to 0
     [calldata], // encoded func call
     proposalName,
@@ -88,30 +85,18 @@ const encodeProposalArgs = async ({
   functionName,
   functionArgs,
 }) => {
-  // get contract instance
-  const { chainId } = await ethers.provider.getNetwork()
-  const { abi, address } = await getDeployment(chainId, contractName)
-  const { interface } = new ethers.Contract(address, abi)
-
-  // parse function data
+  const { interface } = new ethers.getContractFactory(contractName)
   const calldata = encodeProposalFunc({ interface, functionName, functionArgs })
-
   return calldata
 }
 
 const decodeProposalArgs = async ({ contractName, functionName, calldata }) => {
-  // get contract instance
-  const { chainId } = await ethers.provider.getNetwork()
-  const { abi, address } = await getDeployment(chainId, contractName)
-  const { interface } = new ethers.Contract(address, abi)
-
-  // parse function data
+  const { interface } = new ethers.getContractFactory(contractName)
   const decoded = interface.decodeFunctionData(functionName, calldata)
-
   return decoded
 }
 
-const queueProposal = async ({ proposal }) => {
+const queueProposal = async ({ proposal, govAddress }) => {
   const { proposerAddress } = proposal
   const [targets, values, calldatas, description] = await parseProposal(
     proposal
@@ -119,14 +104,14 @@ const queueProposal = async ({ proposal }) => {
   const descriptionHash = web3.utils.keccak256(description)
   const voterWallet = await ethers.getSigner(proposerAddress)
 
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
-  const gov = await new ethers.Contract(address, abi, voterWallet)
-  return await gov.queue(targets, values, calldatas, descriptionHash)
+  return await gov
+    .connect(voterWallet)
+    .queue(targets, values, calldatas, descriptionHash)
 }
 
-const executeProposal = async ({ proposal }) => {
+const executeProposal = async ({ proposal, govAddress }) => {
   const { proposerAddress } = proposal
   const [targets, values, calldatas, description] = await parseProposal(
     proposal
@@ -134,43 +119,35 @@ const executeProposal = async ({ proposal }) => {
   const descriptionHash = web3.utils.keccak256(description)
   const voterWallet = await ethers.getSigner(proposerAddress)
 
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-
-  const gov = await new ethers.Contract(address, abi, voterWallet)
-  return await gov.execute(targets, values, calldatas, descriptionHash)
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  return await gov
+    .connect(voterWallet)
+    .execute(targets, values, calldatas, descriptionHash)
 }
 
 /**
  * Submits a proposal
  */
-const submitProposal = async ({ proposerAddress, proposal }) => {
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
   const proposerWallet = await ethers.getSigner(proposerAddress)
-
-  const gov = new ethers.Contract(address, abi, proposerWallet)
-  return await gov.propose(...proposal)
+  return await gov.connect(proposerWallet).propose(...proposal)
 }
 
-const getProposalVotes = async (proposalId) => {
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-  const gov = await ethers.getContractAt(abi, address)
+const getProposalVotes = async (proposalId, govAddress) => {
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
   const votes = await gov.proposalVotes(proposalId)
   return votes
 }
 
-const getQuorum = async () => {
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-  const gov = await ethers.getContractAt(abi, address)
+const getQuorum = async (govAddress) => {
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
   const currentBlock = await ethers.provider.getBlockNumber()
   return await gov.quorum(currentBlock - 1)
 }
 
-const getProposalState = async (proposalId) => {
+const getProposalState = async (proposalId, govAddress) => {
   const states = [
     'Pending',
     'Active',
@@ -182,9 +159,7 @@ const getProposalState = async (proposalId) => {
     'Executed',
   ]
 
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-  const gov = await ethers.getContractAt(abi, address)
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
   const state = await gov.state(proposalId)
   return states[state]
 }
