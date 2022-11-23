@@ -84,6 +84,9 @@ ENV COMMAND=${COMMAND}
 
 WORKDIR /home/unlock/${BUILD_DIR}
 
+# build the app
+RUN yarn build
+
 # start command
 EXPOSE 3000
 
