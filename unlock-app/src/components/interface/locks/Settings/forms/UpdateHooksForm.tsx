@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -21,6 +22,8 @@ interface FormProps {
   keyGrant?: string
 }
 
+type FormPropsKeys = keyof FormProps
+
 export const UpdateHooksForm = ({
   lockAddress,
   isManager,
@@ -28,9 +31,19 @@ export const UpdateHooksForm = ({
   version,
 }: UpdateHooksFormProps) => {
   const walletService = useWalletService()
+  const [enabledFields, setEnabledFields] = useState<Record<string, boolean>>({
+    keyPurchase: false,
+    keyCancel: false,
+    validKey: false,
+    tokenURI: false,
+    keyTransfer: false,
+    keyExtend: false,
+    keyGrant: false,
+  })
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { isValid, errors },
   } = useForm<FormProps>({
     defaultValues: {},
@@ -62,88 +75,149 @@ export const UpdateHooksForm = ({
     }
   }
 
+  const toggleField = (field: FormPropsKeys) => {
+    const fieldStatus = enabledFields[field]
+    setEnabledFields({
+      ...enabledFields,
+      [field]: !fieldStatus,
+    })
+
+    if (fieldStatus) {
+      resetField(field)
+    }
+  }
+
   const disabledInput = disabled || setEventsHooksMutation.isLoading
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
       {version && version >= 7 && (
         <>
-          <Input
-            {...register('keyPurchase', {
-              validate: isValidAddress,
-            })}
-            label="Key purchase hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.keyPurchase && 'Enter a valid address'}
-          />
+          <div>
+            <ToggleSwitch
+              title="Key purchase hook"
+              enabled={enabledFields?.keyPurchase}
+              setEnabled={() => toggleField('keyPurchase')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('keyPurchase', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.keyPurchase}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.keyPurchase && 'Enter a valid address'}
+            />
+          </div>
 
-          <Input
-            {...register('keyCancel', {
-              validate: isValidAddress,
-            })}
-            label="Key cancel hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.keyCancel && 'Enter a valid address'}
-          />
+          <div>
+            <ToggleSwitch
+              title="Key cancel hook"
+              enabled={enabledFields?.keyCancel}
+              setEnabled={() => toggleField('keyCancel')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('keyCancel', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.keyCancel}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.keyCancel && 'Enter a valid address'}
+            />
+          </div>
         </>
       )}
       {version && version >= 9 && (
         <>
-          <Input
-            {...register('validKey', {
-              validate: isValidAddress,
-            })}
-            label="Valid key hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.validKey && 'Enter a valid address'}
-          />
-          <Input
-            {...register('tokenURI', {
-              validate: isValidAddress,
-            })}
-            label="Token URI hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.tokenURI && 'Enter a valid address'}
-          />
+          <div>
+            <ToggleSwitch
+              title="Valid key hook"
+              enabled={enabledFields?.validKey}
+              setEnabled={() => toggleField('validKey')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('validKey', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.validKey}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.validKey && 'Enter a valid address'}
+            />
+          </div>
+          <div>
+            <ToggleSwitch
+              title="Token URI hook"
+              enabled={enabledFields?.tokenURI}
+              setEnabled={() => toggleField('tokenURI')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('tokenURI', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.tokenURI}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.tokenURI && 'Enter a valid address'}
+            />
+          </div>
         </>
       )}
       {version && version >= 11 && (
         <>
-          <Input
-            {...register('keyTransfer', {
-              validate: isValidAddress,
-            })}
-            label="Key transfer hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.keyTransfer && 'Enter a valid address'}
-          />
+          <div>
+            <ToggleSwitch
+              title="Key transfer hook"
+              enabled={enabledFields?.keyTransfer}
+              setEnabled={() => toggleField('keyTransfer')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('keyTransfer', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.keyTransfer}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.keyTransfer && 'Enter a valid address'}
+            />
+          </div>
         </>
       )}
       {version && version >= 12 && (
         <>
-          <Input
-            {...register('keyExtend', {
-              validate: isValidAddress,
-            })}
-            label="Key extend hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.keyExtend && 'Enter a valid address'}
-          />
-          <Input
-            {...register('keyGrant', {
-              validate: isValidAddress,
-            })}
-            label="Key grant hook"
-            disabled={disabledInput}
-            placeholder="Contract address, for ex: 0x00000000000000000"
-            error={errors?.keyGrant && 'Enter a valid address'}
-          />
+          <div>
+            <ToggleSwitch
+              title="Key extend hook"
+              enabled={enabledFields?.keyExtend}
+              setEnabled={() => toggleField('keyExtend')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('keyExtend', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.keyExtend}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.keyExtend && 'Enter a valid address'}
+            />
+          </div>
+          <div>
+            <ToggleSwitch
+              title="Key grant hook"
+              enabled={enabledFields?.keyGrant}
+              setEnabled={() => toggleField('keyGrant')}
+              disabled={disabledInput}
+            />
+            <Input
+              {...register('keyGrant', {
+                validate: isValidAddress,
+              })}
+              disabled={disabledInput || !enabledFields?.keyGrant}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={errors?.keyGrant && 'Enter a valid address'}
+            />
+          </div>
         </>
       )}
       {isManager && (
