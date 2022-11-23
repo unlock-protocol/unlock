@@ -1,8 +1,12 @@
 # Changes
 
-# 0.32.6
+# 0.32.7
 
 - add `setEventHooks` in walletService
+
+# 0.32.6
+
+- increased robustness by checking address format on events
 
 # 0.32.5
 

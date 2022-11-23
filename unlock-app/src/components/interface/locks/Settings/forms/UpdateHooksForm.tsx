@@ -41,7 +41,7 @@ export const UpdateHooksForm = ({
   }
 
   const setEventsHooks = async (fields: FormProps) => {
-    await walletService.setEventHooks({
+    return await walletService.setEventHooks({
       lockAddress,
       ...fields,
     })
