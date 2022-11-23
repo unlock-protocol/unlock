@@ -11,6 +11,7 @@ const time = require('./time')
 const interface = require('./interface')
 const uniswapV2 = require('./uniswapV2')
 const uniswapV3 = require('./uniswapV3')
+const math = require('./math')
 
 module.exports = {
   getBalance,
@@ -26,4 +27,5 @@ module.exports = {
   ...interface,
   ...uniswapV2,
   ...uniswapV3,
+  ...math,
 }

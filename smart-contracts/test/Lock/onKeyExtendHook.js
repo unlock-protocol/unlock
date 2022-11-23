@@ -6,6 +6,7 @@ const {
   ADDRESS_ZERO,
   purchaseKey,
   reverts,
+  almostEqual,
 } = require('../helpers')
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
@@ -106,10 +107,7 @@ contract('Lock / onKeyExtendHook', (accounts) => {
       assert.equal(args.msgSender, lock.address)
       assert.equal(args.tokenId.toString(), tokenId.toString())
       assert.equal(args.from, lockOwner.address)
-      assert.equal(
-        tsBefore.add(expirationDuration).toString(),
-        args.newTimestamp.toString()
-      )
+      assert(almostEqual(tsBefore.add(expirationDuration), args.newTimestamp))
       assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
     })
   })
