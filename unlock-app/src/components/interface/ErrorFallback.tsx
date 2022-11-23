@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Button } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import { FiCopy as CopyIcon } from 'react-icons/fi'
@@ -6,7 +5,6 @@ import {
   SiDiscord as DiscordIcon,
   SiGithub as GithubIcon,
 } from 'react-icons/si'
-import { config } from '~/config/app'
 
 interface Props {
   error: Error
