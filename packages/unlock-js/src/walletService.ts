@@ -844,8 +844,8 @@ export default class WalletService extends UnlockService {
   async setEventHooks(
     params: {
       lockAddress: string
-      keyPurchase: string
-      keyCancel: string
+      keyPurchase?: string
+      keyCancel?: string
       validKey?: string
       tokenURI?: string
       keyTransfer?: string
