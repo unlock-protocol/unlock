@@ -1,5 +1,6 @@
 const dotenv = require('dotenv')
 const path = require('path')
+const { withSentryConfig } = require('@sentry/nextjs')
 
 const unlockEnv = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
@@ -24,4 +25,12 @@ for (const [key, value] of Object.entries(requiredEnvs)) {
   }
 }
 
-module.exports = {}
+const config = {
+  sentry: {
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+    hideSourceMaps: true,
+  },
+}
+
+module.exports = withSentryConfig(config)

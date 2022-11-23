@@ -1,5 +1,5 @@
 import 'setimmediate'
-import Sentry from 'winston-sentry-log'
+import Sentry from 'winston-transport-sentry-node'
 import winston from 'winston'
 
 const { combine, timestamp, json, simple } = winston.format
@@ -18,14 +18,17 @@ logger.add(
   })
 )
 
-if (process.env?.NODE_ENV === 'production') {
-  const options = {
-    config: {
-      dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
-    },
-    level: 'info',
-  }
-  logger.add(new Sentry(options))
+if (process.env.NODE_ENV === 'production') {
+  logger.add(
+    new Sentry({
+      sentry: {
+        dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+      },
+      level: 'error',
+      handleRejections: true,
+      handleExceptions: true,
+    })
+  )
 }
 
 export default logger

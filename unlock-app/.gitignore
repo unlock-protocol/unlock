@@ -28,3 +28,6 @@ yarn-error.log*
 next-env.d.ts
 scripts/paywallURL.ts
 scripts/index.html
+
+# Sentry
+.sentryclirc
