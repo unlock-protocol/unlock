@@ -1,13 +1,16 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useWalletService } from '~/utils/withWalletService'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface UpdateHooksFormProps {
   lockAddress: string
+  network: number
   isManager: boolean
   disabled: boolean
   version?: number
@@ -26,11 +29,13 @@ type FormPropsKeys = keyof FormProps
 
 export const UpdateHooksForm = ({
   lockAddress,
+  network,
   isManager,
   disabled,
   version,
 }: UpdateHooksFormProps) => {
   const walletService = useWalletService()
+  const web3Service = useWeb3Service()
   const [enabledFields, setEnabledFields] = useState<Record<string, boolean>>({
     keyPurchase: false,
     keyCancel: false,
@@ -43,7 +48,7 @@ export const UpdateHooksForm = ({
   const {
     register,
     handleSubmit,
-    resetField,
+    setValue,
     formState: { isValid, errors },
   } = useForm<FormProps>({
     defaultValues: {},
@@ -59,6 +64,97 @@ export const UpdateHooksForm = ({
       ...fields,
     })
   }
+
+  const res = useQueries({
+    queries: [
+      {
+        queryKey: ['onKeyPurchaseHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onKeyPurchaseHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 7 ?? false,
+        onSuccess: (value: string) => {
+          setValue('keyPurchase', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+      {
+        queryKey: ['onKeyCancelHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onKeyCancelHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 7 ?? false,
+        onSuccess: (value: string) => {
+          setValue('keyCancel', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+      {
+        queryKey: ['onValidKeyHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onValidKeyHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 9 ?? false,
+        onSuccess: (value: string) => {
+          setValue('validKey', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+      {
+        queryKey: ['onTokenURIHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onTokenURIHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 9 ?? false,
+        onSuccess: (value: string) => {
+          setValue('tokenURI', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+      {
+        queryKey: ['onKeyTransferHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onKeyTransferHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 11 ?? false,
+        onSuccess: (value: string) => {
+          setValue('keyTransfer', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+      {
+        queryKey: ['onKeyExtendHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onKeyExtendHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 12 ?? false,
+        onSuccess: (value: string) => {
+          setValue('keyExtend', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+      {
+        queryKey: ['onKeyGrantHook', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.onKeyGrantHook({
+            lockAddress,
+            network,
+          }),
+        enabled: (version ?? 0) >= 12 ?? false,
+        onSuccess: (value: string) => {
+          setValue('keyGrant', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
+        },
+      },
+    ],
+  })
+
+  const isLoading = res?.some(({ isLoading }) => isLoading)
 
   const setEventsHooksMutation = useMutation(setEventsHooks)
 
@@ -83,11 +179,12 @@ export const UpdateHooksForm = ({
     })
 
     if (fieldStatus) {
-      resetField(field)
+      setValue(field, DEFAULT_USER_ACCOUNT_ADDRESS)
     }
   }
 
-  const disabledInput = disabled || setEventsHooksMutation.isLoading
+  const disabledInput =
+    disabled || setEventsHooksMutation.isLoading || isLoading
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>

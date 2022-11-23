@@ -40,6 +40,7 @@ export const SettingMisc = ({
       >
         <UpdateHooksForm
           lockAddress={lockAddress}
+          network={network}
           isManager={isManager}
           disabled={!isManager}
           version={lock?.publicLockVersion}
