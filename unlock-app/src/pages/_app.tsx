@@ -8,6 +8,7 @@ import { config } from '~/config/app'
 import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
 import { ErrorBoundary } from '@sentry/nextjs'
+import { ErrorFallback } from '~/components/interface/ErrorFallback'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,7 +30,7 @@ const UnlockApp = ({ Component }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalWrapper>
-        <ErrorBoundary>
+        <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
           <Component />
         </ErrorBoundary>
         <Toaster />

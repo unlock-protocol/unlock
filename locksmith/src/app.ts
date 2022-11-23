@@ -35,7 +35,7 @@ app.use(cookieParser())
 // Request logging
 app.use(
   expressWinston.logger({
-    transports: [new winston.transports.Console({})],
+    transports: [new winston.transports.Console()],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()
