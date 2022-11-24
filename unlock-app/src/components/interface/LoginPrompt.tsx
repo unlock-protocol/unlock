@@ -16,7 +16,6 @@ interface LoginPromptProps {
   backgroundColor?: string
   activeColor?: string
   injectedProvider?: any
-  defaultWalletToShow?: string
 }
 
 export interface EthereumWindow extends Window {
@@ -31,9 +30,8 @@ const LoginPrompt = ({
   unlockUserAccount = false,
   embedded = false,
   showTitle = true,
-  defaultWalletToShow = '',
 }: LoginPromptProps) => {
-  const [walletToShow, setWalletToShow] = useState(defaultWalletToShow)
+  const [walletToShow, setWalletToShow] = useState('')
   const [isDownloadWallet, setIsDownloadWallet] = useState(false)
 
   const { authenticateWithProvider } = useAuthenticate({

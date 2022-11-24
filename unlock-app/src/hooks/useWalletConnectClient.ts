@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import WalletConnectClient from '@walletconnect/client'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
-interface PeerMeta {
+interface DappDetails {
   description?: string
   url?: string
   name?: string
@@ -12,7 +12,7 @@ interface PeerMeta {
 const useWalletConnectClient = () => {
   const { account, network: chainId, providerSend } = useAuth()
   const [client, setClient] = useState<WalletConnectClient>()
-  const [dapp, setDapp] = useState<PeerMeta>()
+  const [dapp, setDapp] = useState<DappDetails>()
   const [connected, setConnected] = useState<boolean>(false)
 
   useEffect(() => {
