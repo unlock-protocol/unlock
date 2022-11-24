@@ -1,6 +1,6 @@
 export * from './localhost'
 export * from './mainnet'
-export * from './xdai'
+export * from './gnosis'
 export * from './polygon'
 export * from './bsc'
 export * from './optimism'

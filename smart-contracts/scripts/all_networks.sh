@@ -11,7 +11,7 @@ all_networks=(
    "goerli" 
    "mumbai" 
    "polygon"
-   "xdai" 
+   "gnosis" 
    "bsc" 
    "optimism"
    "celo"

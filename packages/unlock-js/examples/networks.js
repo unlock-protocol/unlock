@@ -9,17 +9,15 @@
  *
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { xdai, polygon } = require('@unlock-protocol/networks')
+const { gnosis, polygon } = require('@unlock-protocol/networks')
 
 module.exports = {
   100: {
-    unlockAddress: xdai.unlockAddress,
-    provider: xdai.provider,
+    unlockAddress: gnosis.unlockAddress,
+    provider: gnosis.provider,
   },
   137: {
     unlockAddress: polygon.unlockAddress,
     provider: polygon.publicProvider,
   },
-
 }
