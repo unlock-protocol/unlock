@@ -14,7 +14,7 @@ interface UpdateTransferFeeProps {
 }
 
 interface FormProps {
-  transferFee: number
+  transferFeePercentage: number
 }
 
 export const UpdateTransferFee = ({
@@ -34,7 +34,7 @@ export const UpdateTransferFee = ({
     formState: { isValid },
   } = useForm<FormProps>({
     defaultValues: {
-      transferFee: 0,
+      transferFeePercentage: 0,
     },
   })
 
@@ -45,7 +45,7 @@ export const UpdateTransferFee = ({
   const updateTransferFee = async (fields: FormProps) => {
     await walletService.updateTransferFee({
       lockAddress,
-      transferFeeBasisPoints: fields?.transferFee * 100,
+      transferFeeBasisPoints: fields?.transferFeePercentage * 100,
     })
   }
 
@@ -71,7 +71,7 @@ export const UpdateTransferFee = ({
     async () => getTransferFeeBasisPoints(),
     {
       onSuccess: (transferFeeBasisPoints: number) => {
-        setValue('transferFee', transferFeeBasisPoints / 100)
+        setValue('transferFeePercentage', transferFeeBasisPoints / 100)
         setAllowTransfer(transferFeeBasisPoints > 0)
       },
     }
@@ -86,7 +86,7 @@ export const UpdateTransferFee = ({
         setEnabled={(enabled) => {
           setAllowTransfer(enabled)
           setValue(
-            'transferFee',
+            'transferFeePercentage',
             enabled ? (transferFeeBasisPoints ?? 0) / 100 : 100
           )
         }}
@@ -99,7 +99,7 @@ export const UpdateTransferFee = ({
         type="numeric"
         description="You can set up a fee when member transfer their Key to another account/wallet."
         disabled={disabledInput || !allowTransfer}
-        {...register('transferFee', {
+        {...register('transferFeePercentage', {
           min: 0,
           max: 100,
         })}
