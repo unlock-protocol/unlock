@@ -1,5 +1,20 @@
 # Changes
 
+# 0.32.8
+
+- fix `updateRefundPenalty` and `renounceLockManager` in walletService
+
+# 0.32.7
+
+- add `setEventHooks` in walletService
+- add `onKeyCancelHook` in web3Service
+- add `onKeyPurchaseHook` in web3Service
+- add `onKeyTransferHook` in web3Service
+- add `onKeyTokenURIHook` in web3Service
+- add `onValidKeyHook` in web3Service
+- add `onKeyExtendHook` in web3Service
+- add `onKeyGrantHook` in web3Service
+
 # 0.32.6
 
 - increased robustness by checking address format on events

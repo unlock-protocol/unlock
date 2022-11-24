@@ -800,7 +800,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.renounceLockManager) {
       throw new Error('Lock version not supported')
     }
     return version.renounceLockManager.bind(this)(
@@ -826,10 +826,41 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.updateRefundPenalty) {
       throw new Error('Lock version not supported')
     }
     return version.updateRefundPenalty.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Allows a Lock manager to update or remove an event hook
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setEventHooks(
+    params: {
+      lockAddress: string
+      keyPurchase?: string
+      keyCancel?: string
+      validKey?: string
+      tokenURI?: string
+      keyTransfer?: string
+      keyExtend?: string
+      keyGrant?: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setEventHooks) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setEventHooks.bind(this)(
       params,
       transactionOptions,
       callback
