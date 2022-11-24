@@ -891,4 +891,18 @@ export default class Web3Service extends UnlockService {
     const address = await lockContract.onKeyGrantHook()
     return address
   }
+
+  /**
+   * Returns last lock version
+   * @param {Number} network
+   */
+  async publicLockLatestVersion(network: number) {
+    const provider = this.providerForNetwork(network)
+    const { unlockAddress } = this.networks[network] ?? {}
+    if (!unlockAddress) {
+      throw new Error('unlockAddress is not defined for the provided network. ')
+    }
+    const unlockContract = await this.getUnlockContract(unlockAddress, provider)
+    return await unlockContract.publicLockLatestVersion()
+  }
 }
