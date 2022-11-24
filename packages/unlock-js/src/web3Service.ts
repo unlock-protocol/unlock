@@ -765,4 +765,130 @@ export default class Web3Service extends UnlockService {
       await lockContract.refundPenaltyBasisPoints()
     return ethers.BigNumber.from(refundPenaltyBasisPoints).toNumber()
   }
+
+  /**
+   * Returns onKeyCancelHook value
+   */
+  async onKeyCancelHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyCancelHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyPurchaseHook value
+   */
+  async onKeyPurchaseHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyPurchaseHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyTransferHook value
+   */
+  async onKeyTransferHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyTransferHook()
+    return address
+  }
+
+  /**
+   * Returns onTokenURIHook value
+   */
+  async onTokenURIHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onTokenURIHook()
+    return address
+  }
+
+  /**
+   * Returns onValidKeyHook value
+   */
+  async onValidKeyHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onValidKeyHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyExtendHook value
+   */
+  async onKeyExtendHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyExtendHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyGrantHook value
+   */
+  async onKeyGrantHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyGrantHook()
+    return address
+  }
 }
