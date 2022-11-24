@@ -83,7 +83,7 @@ task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
 
 task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
   .addParam('contract', 'The contract path')
-  .addParam('proxy-address', 'The proxy contract address')
+  .addParam('proxyAddress', 'The proxy contract address')
   .addParam('implementation', 'The implementation contract path')
   .setAction(async ({ proxyAddress, implementation }, { network }) => {
     const proxyAdminAddress = await getProxyAdminAddress({ network })
