@@ -1,92 +1,93 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import LegacySignClient from '@walletconnect/client'
 
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useRouter } from 'next/router'
-
-/**
- * We need to show the Unlock account login form
- * and then load based on the what is in the query string!
- *
- * @returns
- */
+import { Input } from '@unlock-protocol/ui'
+import useWalletConnectClient from '~/hooks/useWalletConnectClient'
 
 const Wc: NextPage = () => {
-  const { account, ...rest } = useAuth()
+  const { account, network, ...rest } = useAuth()
   const { query } = useRouter()
-  const [uri, setUri] = useState('')
-
-  const connect = () => {
-    console.log('connecting to ', uri, account)
-    if (uri) {
-      const legacySignClient = new LegacySignClient({ uri })
-
-      legacySignClient.on('session_request', (error, payload) => {
-        console.log('session_request', { payload })
-        // yay! Connect the user now!
-        legacySignClient.approveSession({
-          accounts: ['0xF5C28ce24Acf47849988f147d5C75787c0103534'],
-          chainId: 1,
-        })
-      })
-
-      legacySignClient.on('connect', () => {
-        console.log('legacySignClient > connect')
-      })
-
-      legacySignClient.on('error', (error) => {
-        throw new Error(`legacySignClient > on error: ${error}`)
-      })
-
-      legacySignClient.on('call_request', (error, payload) => {
-        if (error) {
-          throw new Error(`legacySignClient > call_request failed: ${error}`)
-        }
-        console.log('call_request', { payload })
-        console.log(legacySignClient)
-        if (payload.method === 'wallet_switchEthereumChain') {
-          console.log('good!')
-
-          return legacySignClient.approveRequest({
-            id: payload.id,
-            jsonrpc: '2.0',
-            result: null,
-          })
-        }
-        console.log(payload)
-        // {
-        //   "id":1,
-        //   "jsonrpc": "2.0",
-        //   "result": "0x0234c8a3397aab58" // 158972490234375000
-        // }
-      })
-
-      legacySignClient.on('disconnect', async () => {
-        console.log('legacySignClient > disconnect')
-      })
-    }
-  }
+  const [formUri, setFormUri] = useState('')
+  const uri = (formUri || query.uri)?.toString()
+  const { connect, peerMeta, accept, connected } = useWalletConnectClient(
+    account,
+    network
+  )
 
   return (
     <BrowserOnly>
       <AppLayout authRequired={false} showHeader={true}>
-        {account}
-        <input
-          className="ml-2 align-middle"
-          type="text"
-          onChange={(evt) => {
-            setUri(evt.target.value)
-          }}
-        ></input>
-        <button
-          className="font-medium text-gray-600 hover:text-black"
-          onClick={connect}
-        >
-          Connect
-        </button>
+        {!peerMeta && (
+          <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
+            <Input
+              value={uri}
+              name="uri"
+              label="WalletConnect URI"
+              type="text"
+              placeholder="Enter WalletConnect URI"
+              onChange={(evt) => {
+                setFormUri(evt.target.value)
+              }}
+            />
+
+            <button
+              onClick={() => connect(`${uri}`)}
+              className="rounded-full flex justify-center cursor-pointer font-semibold items-center gap-2 disabled:bg-opacity-75 disabled:cursor-not-allowed px-6 py-2.5 text-base bg-brand-ui-primary transition ease-in-out duration-300 hover:bg-brand-dark text-white disabled:hover:bg-brand-ui-primary disabled:hover:bg-opacity-75"
+            >
+              Connect
+            </button>
+          </div>
+        )}
+        {peerMeta && !connected && (
+          <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
+            <p>
+              {peerMeta && peerMeta.icons && peerMeta.icons[0] && (
+                <img alt={peerMeta.name} src={peerMeta.icons[0]} />
+              )}
+              <a
+                href={peerMeta.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                <span>{peerMeta.name}</span>{' '}
+                <ExternalLinkIcon className="inline" />
+              </a>
+              wants to know your wallet address.
+            </p>
+            <button
+              onClick={() => accept()}
+              className="rounded-full flex justify-center cursor-pointer font-semibold items-center gap-2 disabled:bg-opacity-75 disabled:cursor-not-allowed px-6 py-2.5 text-base bg-brand-ui-primary transition ease-in-out duration-300 hover:bg-brand-dark text-white disabled:hover:bg-brand-ui-primary disabled:hover:bg-opacity-75"
+            >
+              Connect
+            </button>
+          </div>
+        )}
+        {peerMeta && connected && (
+          <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
+            <p>
+              {peerMeta && peerMeta.icons && peerMeta.icons[0] && (
+                <img alt={peerMeta.name} src={peerMeta.icons[0]} />
+              )}
+              You are now connected to{' '}
+              <a
+                href={peerMeta.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                <span>{peerMeta.name}</span>{' '}
+                <ExternalLinkIcon className="inline" />
+              </a>
+              .
+            </p>
+          </div>
+        )}
       </AppLayout>
     </BrowserOnly>
   )

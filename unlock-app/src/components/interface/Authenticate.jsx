@@ -80,7 +80,6 @@ export const Authenticate = ({
     loading,
     network,
     signMessage,
-    sendProvider,
     account,
     email,
     encryptedPrivateKey,
@@ -109,7 +108,6 @@ export const Authenticate = ({
     <AuthenticationContext.Provider
       value={{
         signMessage,
-        sendProvider,
         account,
         network,
         email,
