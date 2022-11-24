@@ -800,7 +800,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.renounceLockManager) {
       throw new Error('Lock version not supported')
     }
     return version.renounceLockManager.bind(this)(
@@ -826,7 +826,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.updateRefundPenalty) {
       throw new Error('Lock version not supported')
     }
     return version.updateRefundPenalty.bind(this)(

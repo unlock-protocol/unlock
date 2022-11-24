@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.8
+
+- fix `updateRefundPenalty` and `renounceLockManager` in walletService
+
 # 0.32.7
 
 - add `setEventHooks` in walletService
