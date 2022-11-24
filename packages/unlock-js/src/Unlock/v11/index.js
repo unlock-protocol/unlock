@@ -1,6 +1,9 @@
 import abis from '../../abis'
 import createLock from './createLock'
-import upgradeLock from './upgradeLock'
+
+import v10 from '../v10'
+
+const { upgradeLock } = v10
 
 export default {
   createLock,
