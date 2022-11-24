@@ -1,10 +1,7 @@
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
 import { CancellationForm } from '../forms/CancellationForm'
-import { CreditCardForm } from '../forms/CreditCardForm'
-import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
-import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { SettingCard } from './SettingCard'
 
@@ -51,46 +48,6 @@ export const SettingTerms = ({
         <UpdateQuantityForm
           lockAddress={lockAddress}
           maxNumberOfKeys={lock?.maxNumberOfKeys ?? 0}
-          isManager={isManager}
-          disabled={!isManager}
-        />
-      ),
-    },
-    {
-      label: 'Price',
-      description:
-        'The price that the membership contract is charging for one membership.',
-      children: (
-        <UpdatePriceForm
-          lockAddress={lockAddress}
-          network={network}
-          price={parseInt(lock?.keyPrice, 10) ?? 0}
-          isManager={isManager}
-          disabled={!isManager}
-        />
-      ),
-    },
-    {
-      label: 'Subscription',
-      description: 'Automatically renew memberships when they expire.',
-      children: (
-        <SubscriptionForm
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
-          lock={lock}
-        />
-      ),
-    },
-    {
-      label: 'Credit Card Payment',
-      description:
-        'Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member.',
-      children: (
-        <CreditCardForm
-          lockAddress={lockAddress}
-          network={network}
           isManager={isManager}
           disabled={!isManager}
         />
