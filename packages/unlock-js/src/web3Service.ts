@@ -898,7 +898,9 @@ export default class Web3Service extends UnlockService {
    */
   async publicLockLatestVersion(network: number) {
     const provider = this.providerForNetwork(network)
-    const { unlockAddress } = this.networks[network] ?? {}
+    const networkConfig = this.networks[network]
+    const unlockAddress = networkConfig.unlockAddress
+
     if (!unlockAddress) {
       throw new Error('unlockAddress is not defined for the provided network. ')
     }
