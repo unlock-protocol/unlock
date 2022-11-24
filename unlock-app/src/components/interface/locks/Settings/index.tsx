@@ -10,6 +10,8 @@ import { SettingHeader } from './elements/SettingHeader'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingGeneral } from './elements/SettingGeneral'
+import { SettingMisc } from './elements/SettingMisc'
+import { SettingPayments } from './elements/SettingPayments'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -97,6 +99,24 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       ),
     },
     {
+      label: 'Payments',
+      children: (
+        <SettingPayments
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          lock={lock}
+          isLoading={isLoading}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-payment.svg"
+          description="Payments lorem ipsum"
+        />
+      ),
+    },
+    {
       label: 'Roles',
       children: (
         <SettingRoles
@@ -133,7 +153,15 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     },
     {
       label: 'Misc.',
-      children: <span></span>,
+      children: (
+        <SettingMisc
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+          lock={lock}
+        />
+      ),
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-misc.svg"
