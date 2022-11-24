@@ -8,6 +8,7 @@ interface DisclosureProps {
   children?: ReactNode
   isLoading?: boolean
   disabled?: boolean
+  defaultOpen?: boolean
 }
 
 export const DisclosurePlaceholder = () => {
@@ -22,15 +23,16 @@ export const Disclosure = ({
   children,
   isLoading,
   disabled,
+  defaultOpen,
 }: DisclosureProps) => {
   if (isLoading) {
     return <DisclosurePlaceholder />
   }
 
   return (
-    <DisclosureComponent>
+    <DisclosureComponent defaultOpen={defaultOpen}>
       {({ open }) => (
-        <div className="w-full p-6 bg-white border border-gray-100 rounded-2xl">
+        <div className="w-full p-6 bg-white border border-gray-100 shadow border-xs rounded-2xl">
           <DisclosureComponent.Button
             className="flex flex-col w-full gap-2 outline-none"
             disabled={disabled}

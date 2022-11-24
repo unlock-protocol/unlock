@@ -30,6 +30,7 @@ interface VerifierCardProps {
   verifier: VerifierProps
   onDeleteVerifier: (address: string) => Promise<any>
   isLoading?: boolean
+  disabled: boolean
 }
 
 interface VerifierFormDataProps {
@@ -48,6 +49,7 @@ const VerifierCard = ({
   verifier,
   onDeleteVerifier,
   isLoading,
+  disabled,
 }: VerifierCardProps) => {
   const { account } = useAuth()
 
@@ -72,7 +74,7 @@ const VerifierCard = ({
         size="small"
         variant="outlined-primary"
         onClick={() => onDeleteVerifier(address)}
-        disabled={isLoading}
+        disabled={isLoading || disabled}
       >
         Remove
       </Button>
@@ -220,7 +222,11 @@ export const VerifierForm = ({
     <div className="relative">
       <div className="flex flex-col gap-4">
         {noVerifiers && !isLoading && (
-          <span>This lock does not have any verifier.</span>
+          <span>
+            {isManager
+              ? 'This lock does not have any verifier.'
+              : 'Only lock manager can access verifiers list.'}
+          </span>
         )}
         {(verifiers ?? [])?.map((verifier: VerifierProps) => (
           <VerifierCard
@@ -228,6 +234,7 @@ export const VerifierForm = ({
             key={verifier.id}
             onDeleteVerifier={onDeleteVerifier}
             isLoading={deleteVerifierMutation.isLoading}
+            disabled={disabled}
           />
         ))}
         {(isLoadingItems || addVerifierMutation.isLoading) &&
