@@ -5,6 +5,8 @@ import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
 import { ComponentProps } from 'react'
 import { Attribute, MetadataFormData } from '../utils'
 import { LearnMoreAboutOpenseaMetadataLink } from './Item'
+import { getURL } from '~/utils/url'
+import { FiExternalLink } from 'react-icons/fi'
 
 export function AddPropertyModal({
   isOpen,
@@ -92,10 +94,19 @@ export function AddPropertyModal({
 }
 
 export function Property({ trait_type, value }: Attribute) {
+  const link = getURL(value?.toString())
   return (
-    <div className="flex flex-col items-center justify-center w-40 h-20 border bg-ui-main-50 rounded-xl aspect-1 border-ui-main-300">
+    <div className="flex flex-col items-center justify-center w-40 h-20 text-center border bg-ui-main-50 rounded-xl aspect-1 border-ui-main-300">
       <h4 className="text-sm"> {trait_type}</h4>
-      <p className="text-lg font-bold">{value}</p>
+      <div className="overflow-hidden font-semibold line-clamp-1 w-36 overflow-ellipsis">
+        {link ? (
+          <a className="inline-flex items-center gap-2" href={link.toString()}>
+            link <FiExternalLink />
+          </a>
+        ) : (
+          value
+        )}
+      </div>
     </div>
   )
 }

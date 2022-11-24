@@ -20,3 +20,11 @@ export const rewriteIpfsUrl = (stringUrl: string) => {
     return stringUrl
   }
 }
+
+export const getURL = (url: string) => {
+  try {
+    return new URL(url)
+  } catch {
+    return
+  }
+}
