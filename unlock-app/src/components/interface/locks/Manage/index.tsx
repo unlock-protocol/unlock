@@ -1,19 +1,16 @@
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
-import { FiKey as KeyIcon } from 'react-icons/fi'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { BiLink as LinkIcon } from 'react-icons/bi'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Container } from '../../Container'
-import { RiPagesLine as PageIcon } from 'react-icons/ri'
 import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
@@ -24,6 +21,9 @@ import { useWalletService } from '~/utils/withWalletService'
 import { useLockManager } from '~/hooks/useLockManager'
 import { addressMinify } from '~/utils/strings'
 import Link from 'next/link'
+import { Popover, Transition } from '@headlessui/react'
+import { UpdateMetadataDrawer } from '../metadata/MetadataUpdate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface ActionBarProps {
   lockAddress: string
@@ -46,12 +46,7 @@ export function downloadAsCSV(cols: string[], metadata: any[]) {
   FileSaver.saveAs(blob, 'members.csv')
 }
 
-const ActionBar = ({
-  lockAddress,
-  network,
-  setIsOpen,
-  isOpen,
-}: ActionBarProps) => {
+const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const { account } = useAuth()
   const storageService = useStorageService()
   const walletService = useWalletService()
@@ -104,12 +99,6 @@ const ActionBar = ({
 
   return (
     <>
-      <AirdropKeysDrawer
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        lockAddress={lockAddress}
-        network={network!}
-      />
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-brand-ui-primary">Members</span>
         {isManager && (
@@ -132,16 +121,6 @@ const ActionBar = ({
                 <span className="text-brand-ui-primary">CSV</span>
               </div>
             </Button>
-            <Button
-              variant="outlined-primary"
-              size="small"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              <div className="flex items-center gap-2">
-                <KeyIcon className="text-brand-ui-primary" size={16} />
-                <span className="text-brand-ui-primary">Airdrop Keys</span>
-              </div>
-            </Button>
           </div>
         )}
       </div>
@@ -149,12 +128,135 @@ const ActionBar = ({
   )
 }
 
+const PopoverItemPlaceholder = () => {
+  return (
+    <div className="flex w-full gap-2">
+      <div className="w-6 h-6 bg-slate-200 animate-pulse"></div>
+      <div className="flex flex-col w-full gap-2">
+        <div className="w-1/2 h-3 bg-slate-200 animate-pulse"></div>
+        <div className="w-full h-3 bg-slate-200 animate-pulse"></div>
+        <div className="w-1/3 h-3 bg-slate-200 animate-pulse"></div>
+      </div>
+    </div>
+  )
+}
+
+const PopoverItem = ({ label, description, isLoading, ...props }: any) => {
+  if (isLoading) return <PopoverItemPlaceholder />
+  return (
+    <>
+      <div className="cursor-pointer" {...props}>
+        <div className="flex flex-col text-left">
+          <span className="text-base font-bold text-brand-ui-primary">
+            {label}
+          </span>
+          <span className="text-xs text-brand-dark">{description}</span>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
+  const web3Service = useWeb3Service()
+  const [airdropKeys, setAirdropKeys] = useState(false)
+  const [updateMetadata, setUpdateMetadata] = useState(false)
+  const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
+  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
+  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+
+  const getLock = async () => {
+    return web3Service.getLock(lockAddress, network)
+  }
+
+  const { isLoading, data: lock } = useQuery(
+    ['getLock', lockAddress, network],
+    async () => getLock()
+  )
+
+  const isManager = true
+  return (
+    <>
+      <AirdropKeysDrawer
+        isOpen={airdropKeys}
+        setIsOpen={setAirdropKeys}
+        lockAddress={lockAddress}
+        network={network!}
+      />
+
+      <UpdateMetadataDrawer
+        lock={lock}
+        isOpen={updateMetadata}
+        setIsOpen={setUpdateMetadata}
+      />
+      <div className="">
+        <Popover className="relative">
+          <>
+            <Popover.Button className="outline-none ring-0">
+              <Button>Tools</Button>
+            </Popover.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <Popover.Panel className="absolute right-0 z-10 max-w-sm px-4 mt-3 transform w-80">
+                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                  <div className="relative grid gap-8 bg-white p-7">
+                    <a href={DEMO_URL} target="_blank" rel="noreferrer">
+                      <PopoverItem
+                        label="Preview"
+                        description="Preview the checkout experience"
+                        isLoading={isLoading}
+                      />
+                    </a>
+                    <Link href={checkoutLink} className="text-left">
+                      <PopoverItem
+                        label="Create Checkout URL"
+                        description="Customize your member's purchase journey"
+                        isLoading={isLoading}
+                      />
+                    </Link>
+                    <PopoverItem
+                      label="Airdrop Keys"
+                      description="Send memberships to your members"
+                      onClick={() => setAirdropKeys(!airdropKeys)}
+                      isLoading={isLoading}
+                    />
+                    {isManager && (
+                      <>
+                        <PopoverItem
+                          label="Edit NFT Properties"
+                          description="Edit & update NFT metadata that will display in platforms such as Opensea"
+                          onClick={() => setUpdateMetadata(!updateMetadata)}
+                          isLoading={isLoading}
+                        />
+                        <Link href={settingsPageUrl}>
+                          <PopoverItem
+                            label="Update Lock Settings"
+                            description="Update membership smart contract settings including price and duration"
+                            isLoading={isLoading}
+                          />
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </Popover.Panel>
+            </Transition>
+          </>
+        </Popover>
+      </div>
+    </>
+  )
+}
+
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
-
-  const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
-
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
 
   return (
     <>
@@ -167,22 +269,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
           />
         </Button>
         <div className="flex gap-3">
-          <Button variant="outlined-primary">
-            <a href={DEMO_URL} target="_blank" rel="noreferrer">
-              <div className="flex items-center gap-2 text-brand-ui-primary">
-                <PageIcon size={15} />
-                <span className="hidden md:block">View demo</span>
-              </div>
-            </a>
-          </Button>
-          <Link href={checkoutLink}>
-            <Button className="p-3 md:px-6">
-              <div className="flex items-center gap-2">
-                <LinkIcon size={15} />
-                <span className="hidden md:block">Generate URL</span>
-              </div>
-            </Button>
-          </Link>
+          <ToolsMenu lockAddress={lockAddress} network={network} />
         </div>
       </div>
     </>
