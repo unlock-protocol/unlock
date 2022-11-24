@@ -10,6 +10,13 @@ jobs:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     uses: ./.github/workflows/_tests.yml
 
+  deploy-all-subgraphs:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    needs: run-all-tests
+    uses: ./.github/workflows/_subgraph.yml
+    secrets:
+      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
+
   # check which folder changed in the repo
   check-changes:
     # name: "Check for changes in monorepo"

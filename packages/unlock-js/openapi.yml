@@ -399,7 +399,7 @@ paths:
       description: Refresh access token.
       parameters:
         - in: header
-          name: refreshToken
+          name: refresh-token
           schema:
             type: string
             nullable: true
