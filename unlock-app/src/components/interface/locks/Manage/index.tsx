@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -24,6 +24,13 @@ import Link from 'next/link'
 import { Popover, Transition } from '@headlessui/react'
 import { UpdateMetadataDrawer } from '../metadata/MetadataUpdate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { TbTools as ToolsIcon } from 'react-icons/tb'
+import { CgWebsite as WebsiteIcon } from 'react-icons/cg'
+import { FaRegEdit as EditIcon } from 'react-icons/fa'
+import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
+import { TbPlant as PlantIcon } from 'react-icons/tb'
+import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
+import { IconType } from 'react-icons'
 
 interface ActionBarProps {
   lockAddress: string
@@ -141,16 +148,37 @@ const PopoverItemPlaceholder = () => {
   )
 }
 
-const PopoverItem = ({ label, description, isLoading, ...props }: any) => {
+interface PopoverItemProps {
+  label: string
+  description?: string
+  icon?: IconType
+  isLoading?: boolean
+  onClick?: any
+}
+
+const PopoverItem = ({
+  label,
+  description,
+  isLoading,
+  icon,
+  ...props
+}: PopoverItemProps) => {
   if (isLoading) return <PopoverItemPlaceholder />
   return (
     <>
-      <div className="cursor-pointer" {...props}>
+      <div className="flex gap-3 cursor-pointer" {...props}>
+        {icon && (
+          <div className="w-4">
+            <Icon className="text-brand-ui-primary" icon={icon} size={20} />
+          </div>
+        )}
         <div className="flex flex-col text-left">
           <span className="text-base font-bold text-brand-ui-primary">
             {label}
           </span>
-          <span className="text-xs text-brand-dark">{description}</span>
+          {description && (
+            <span className="text-xs text-brand-dark">{description}</span>
+          )}
         </div>
       </div>
     </>
@@ -193,7 +221,12 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
         <Popover className="relative">
           <>
             <Popover.Button className="outline-none ring-0">
-              <Button>Tools</Button>
+              <Button>
+                <div className="flex items-center gap-2">
+                  <Icon icon={ToolsIcon} size={20} />
+                  <span>Tools</span>
+                </div>
+              </Button>
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -212,6 +245,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         label="Preview"
                         description="Preview the checkout experience"
                         isLoading={isLoading}
+                        icon={WebsiteIcon}
                       />
                     </a>
                     <Link href={checkoutLink} className="text-left">
@@ -219,6 +253,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         label="Create Checkout URL"
                         description="Customize your member's purchase journey"
                         isLoading={isLoading}
+                        icon={RightArrowIcon}
                       />
                     </Link>
                     <PopoverItem
@@ -226,6 +261,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                       description="Send memberships to your members"
                       onClick={() => setAirdropKeys(!airdropKeys)}
                       isLoading={isLoading}
+                      icon={PlantIcon}
                     />
                     {isManager && (
                       <>
@@ -234,12 +270,14 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                           description="Edit & update NFT metadata that will display in platforms such as Opensea"
                           onClick={() => setUpdateMetadata(!updateMetadata)}
                           isLoading={isLoading}
+                          icon={EditIcon}
                         />
                         <Link href={settingsPageUrl}>
                           <PopoverItem
                             label="Update Lock Settings"
                             description="Update membership smart contract settings including price and duration"
                             isLoading={isLoading}
+                            icon={SettingIcon}
                           />
                         </Link>
                       </>
