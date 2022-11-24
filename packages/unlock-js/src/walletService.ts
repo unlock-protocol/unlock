@@ -866,4 +866,29 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Allow a Lock manager to change the transfer fee.
+   * @param {*} params
+   * @param {*} callback
+   */
+  async updateTransferFee(
+    params: {
+      lockAddress: string
+      transferFeeBasisPoints: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.updateTransferFee) {
+      throw new Error('Lock version not supported')
+    }
+    return version.updateTransferFee.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }

@@ -1,8 +1,8 @@
 # Changes
 
-# 0.32.8
+# 0.32.9
 
-- fix `updateRefundPenalty` and `renounceLockManager` in walletService
+- add `updateTransferFee` in walletService
 
 # 0.32.7
 
