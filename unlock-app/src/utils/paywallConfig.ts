@@ -14,6 +14,8 @@ export function getPaywallConfigFromQuery(
       parsedConfig = JSON.parse(decodedConfig)
       parsedConfig.minRecipients = parsedConfig?.minRecipients || 1
       parsedConfig.maxRecipients = parsedConfig?.maxRecipients || 1
+      // by default, set to true
+      parsedConfig.skipRecipient = true
     } catch (e) {
       console.error(
         'paywall config in URL not valid JSON, continuing with undefined'
