@@ -9,7 +9,7 @@ export const gnosis: NetworkConfig = {
   id: 100,
   name: 'Gnosis Chain',
   blockTime: 5000,
-  chain: 'gnosis',
+  chain: 'xdai', // This is used in llama pricing API so can't rename.
   requiredConfirmations: 12,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
