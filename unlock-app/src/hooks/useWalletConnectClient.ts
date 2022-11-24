@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import WalletConnectClient from '@walletconnect/client'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface PeerMeta {
   description?: string
@@ -8,9 +9,10 @@ interface PeerMeta {
   icons?: string[]
 }
 
-const useWalletConnectClient = (account: string, chainId: number) => {
+const useWalletConnectClient = () => {
+  const { account, network: chainId, providerSend } = useAuth()
   const [client, setClient] = useState<WalletConnectClient>()
-  const [peerMeta, setPeerMeta] = useState<PeerMeta>()
+  const [dapp, setDapp] = useState<PeerMeta>()
   const [connected, setConnected] = useState<boolean>(false)
 
   useEffect(() => {
@@ -18,67 +20,55 @@ const useWalletConnectClient = (account: string, chainId: number) => {
   }, [account])
 
   const accept = () => {
-    if (client) {
-      console.log('READY TO APPROVE!')
+    if (client && account && chainId) {
       client.approveSession({
         accounts: [account],
         chainId,
       })
     }
-    // else error>
   }
 
   const connect = (uri: string) => {
     window.localStorage.removeItem('walletconnect')
     const walletConnect = new WalletConnectClient({ uri })
-    console.log(walletConnect)
-
     walletConnect.on('session_request', (error, payload) => {
-      console.log('session_request', { payload })
-      setPeerMeta(payload.params[0].peerMeta)
+      if (error) {
+        // Handle Error
+        console.log('was there an error?')
+      }
+      setDapp(payload.params[0].peerMeta)
     })
 
     walletConnect.on('connect', () => {
-      console.log('walletConnect > connect')
       setConnected(true)
     })
 
-    walletConnect.on('error', (error) => {
-      console.log('walletConnect> error', error)
-    })
-
-    walletConnect.on('call_request', (error, payload) => {
-      console.log('call_request', { payload })
+    walletConnect.on('call_request', async (error, payload) => {
       const { id, method, params } = payload
-      console.log({ id, method, params })
-      // if (method === '') {
-      // }
-      // console.log(walletConnect)
-      // if (payload.method === 'wallet_switchEthereumChain') {
-      //   console.log('good!')
-
-      //   return walletConnect.approveRequest({
-      //     id: payload.id,
-      //     jsonrpc: '2.0',
-      //     result: null,
-      //   })
-      // }
-      // console.log(payload)
-      // {
-      //   "id":1,
-      //   "jsonrpc": "2.0",
-      //   "result": "0x0234c8a3397aab58" // 158972490234375000
-      // }
+      if (method === 'personal_sign') {
+        const result = await providerSend('personal_sign', params)
+        walletConnect.approveRequest({
+          id,
+          result,
+        })
+      }
+      if (payload.method === 'wallet_switchEthereumChain') {
+        return walletConnect.approveRequest({
+          id: payload.id,
+          jsonrpc: '2.0',
+          result: null,
+        })
+      }
+      // Ignore other types
     })
 
     walletConnect.on('disconnect', async () => {
-      console.log('walletConnect > disconnect')
       setConnected(false)
     })
     setClient(walletConnect)
   }
 
-  return { connect, peerMeta, accept, connected }
+  return { connect, dapp, accept, connected }
 }
 
 export default useWalletConnectClient

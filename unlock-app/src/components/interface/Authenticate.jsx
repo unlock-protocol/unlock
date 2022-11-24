@@ -89,6 +89,7 @@ export const Authenticate = ({
     isUnlockAccount,
     changeNetwork,
     watchAsset,
+    providerSend,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -107,6 +108,7 @@ export const Authenticate = ({
   return (
     <AuthenticationContext.Provider
       value={{
+        providerSend,
         signMessage,
         account,
         network,

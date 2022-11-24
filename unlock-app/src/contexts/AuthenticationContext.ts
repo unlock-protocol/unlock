@@ -11,6 +11,7 @@ interface AuthenticationContextType {
   email?: string
   encryptedPrivateKey?: any
   isUnlockAccount?: boolean
+  providerSend: (method: string, params: string[]) => void
 }
 
 export const defaultValues = {

@@ -1,31 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useRouter } from 'next/router'
 import { Input } from '@unlock-protocol/ui'
 import useWalletConnectClient from '~/hooks/useWalletConnectClient'
+import Loading from '~/components/interface/Loading'
 
 const Wc: NextPage = () => {
-  const { account, network, ...rest } = useAuth()
   const { query } = useRouter()
   const [formUri, setFormUri] = useState('')
-  const uri = (formUri || query.uri)?.toString()
-  const { connect, peerMeta, accept, connected } = useWalletConnectClient(
-    account,
-    network
-  )
+  const { connect, dapp, accept, connected } = useWalletConnectClient()
+
+  useEffect(() => {
+    if (query.uri) {
+      connect(`${query.uri}`)
+    }
+  }, [query.uri])
 
   return (
     <BrowserOnly>
-      <AppLayout authRequired={false} showHeader={true}>
-        {!peerMeta && (
+      <AppLayout authRequired={true} showHeader={true}>
+        {!dapp && !query.uri && (
           <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
             <Input
-              value={uri}
+              value={formUri}
               name="uri"
               label="WalletConnect URI"
               type="text"
@@ -43,21 +44,21 @@ const Wc: NextPage = () => {
             </button>
           </div>
         )}
-        {peerMeta && !connected && (
+        {!dapp && query.uri && <Loading />}
+        {dapp && !connected && (
           <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
             <p>
-              {peerMeta && peerMeta.icons && peerMeta.icons[0] && (
-                <img alt={peerMeta.name} src={peerMeta.icons[0]} />
+              {dapp && dapp.icons && dapp.icons[0] && (
+                <img alt={dapp.name} src={dapp.icons[0]} />
               )}
               <a
-                href={peerMeta.url}
+                href={dapp.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline"
+                className="underline mr-1"
               >
-                <span>{peerMeta.name}</span>{' '}
-                <ExternalLinkIcon className="inline" />
-              </a>
+                <span>{dapp.name}</span> <ExternalLinkIcon className="inline" />
+              </a>{' '}
               wants to know your wallet address.
             </p>
             <button
@@ -68,21 +69,20 @@ const Wc: NextPage = () => {
             </button>
           </div>
         )}
-        {peerMeta && connected && (
+        {dapp && connected && (
           <div className="flex flex-col w-9/12 mx-auto gap-4 mt-5">
             <p>
-              {peerMeta && peerMeta.icons && peerMeta.icons[0] && (
-                <img alt={peerMeta.name} src={peerMeta.icons[0]} />
+              {dapp && dapp.icons && dapp.icons[0] && (
+                <img alt={dapp.name} src={dapp.icons[0]} />
               )}
               You are now connected to{' '}
               <a
-                href={peerMeta.url}
+                href={dapp.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline"
               >
-                <span>{peerMeta.name}</span>{' '}
-                <ExternalLinkIcon className="inline" />
+                <span>{dapp.name}</span> <ExternalLinkIcon className="inline" />
               </a>
               .
             </p>
