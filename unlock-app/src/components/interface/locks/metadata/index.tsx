@@ -93,7 +93,6 @@ export function UpdateLockMetadata({ lock }: Props) {
     const metadata: Metadata & { attributes: Attribute[] } = {
       name,
       image: `${config.locksmithHost}/lock/${lockAddress}/icon`,
-      description,
       attributes: [] as Attribute[],
     }
 
@@ -127,16 +126,6 @@ export function UpdateLockMetadata({ lock }: Props) {
       })
     }
 
-    for (const [key, value] of Object.entries(ticket || {})) {
-      if (!value) {
-        continue
-      }
-      metadata.attributes.push({
-        trait_type: key,
-        value,
-      })
-    }
-
     const propertyAttributes = properties?.filter(
       (item) => item.trait_type && item.value
     )
@@ -161,8 +150,12 @@ export function UpdateLockMetadata({ lock }: Props) {
     }
 
     // Opensea does not handle # in the color. We remove it if it's included in the color.
-    if (background_color) {
+    if (background_color && background_color.length === 7) {
       metadata.background_color = background_color?.trim()?.replace('#', '')
+    }
+
+    if (description) {
+      metadata.description = description
     }
 
     if (youtube_url) {
