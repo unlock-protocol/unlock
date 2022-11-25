@@ -1,4 +1,5 @@
 import { UpdateHooksForm } from '../forms/UpdateHooksForm'
+import { UpdateReferralFee } from '../forms/UpdateReferralFee'
 import { UpdateVersionForm } from '../forms/UpdateVersionForm'
 import { SettingCard } from './SettingCard'
 
@@ -46,6 +47,19 @@ export const SettingMisc = ({
 
   return (
     <div className="grid grid-cols-1 gap-6">
+      <SettingCard
+        label="Referral fee"
+        description="Set up a percentage of the membership price to be sent to the referrer. This is great use cases to reward your members to promote your membership."
+        isLoading={isLoading}
+      >
+        <UpdateReferralFee
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+
       <SettingCard
         label="Hooks"
         description={
