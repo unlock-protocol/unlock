@@ -119,7 +119,7 @@ export function LockTicketForm({ disabled, lockAddress, network }: Props) {
                 disabled={disabled}
                 label="Meeting link (if any)"
                 placeholder="https://"
-                {...register('ticket.event_meeting_url')}
+                {...register('ticket.event_url')}
                 type="url"
                 error={errors.ticket?.event_url?.message}
               />

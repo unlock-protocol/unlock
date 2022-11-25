@@ -39,7 +39,7 @@ export function LockDetailForm({ disabled }: Props) {
     </p>
   )
   return (
-    <Disclosure label="Basic" defaultOpen>
+    <Disclosure label="Basic">
       <div className="grid gap-6">
         <Input
           {...register('name', {
