@@ -71,7 +71,8 @@
   "scripts": {
     "test": "hardhat test",
     "clean": "rm -rf artifacts",
-    "lint:contracts": "prettier --write 'contracts/**/*.sol'",
+    "lint:contracts:prettier": "prettier --write 'contracts/**/*.sol'",
+    "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code",
     "lintFix": "yarn lint:contracts --fix && yarn lint:code --fix",
