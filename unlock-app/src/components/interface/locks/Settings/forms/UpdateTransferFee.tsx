@@ -58,7 +58,7 @@ export const UpdateTransferFee = ({
 
       await ToastHelper.promise(updateTransferFeePromise, {
         loading: 'Updating transfer fee',
-        error: 'Impossible to update transfer fee.',
+        error: 'Impossible to update the values, please try again.',
         success: 'Transfer fee updated.',
       })
     } else {
