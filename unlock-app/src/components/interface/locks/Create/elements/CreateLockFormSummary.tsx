@@ -87,9 +87,10 @@ export const CreateLockFormSummary = ({
   showStatus = false,
   transactionHash,
 }: CreateLockFormSummaryProps) => {
+  const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
   const router = useRouter()
   const web3Service = useWeb3Service()
-  const { networks, requiredConfirmations } = useConfig()
+  const { networks } = useConfig()
   const {
     unlimitedDuration = false,
     unlimitedQuantity = false,
@@ -114,7 +115,7 @@ export const CreateLockFormSummary = ({
   }
 
   const { data, isError } = useQuery(
-    ['getTransactionDetails'],
+    ['getTransactionDetails', transactionHash, network],
     () => {
       return getTransactionDetails(transactionHash!)
     },
@@ -125,7 +126,7 @@ export const CreateLockFormSummary = ({
 
   const hasError = isError && data
   const isDeployed =
-    (data?.confirmations || 0) >= requiredConfirmations && !isError
+    (data?.confirmations || 0) > requiredConfirmations && !isError
 
   const currentStatus: DeployStatus = hasError
     ? 'txError'
