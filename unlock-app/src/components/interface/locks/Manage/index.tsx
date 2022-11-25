@@ -98,9 +98,7 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       ToastHelper.success('CSV downloaded')
     },
     onError: () => {
-      ToastHelper.success(
-        `Unexpected issue on CSV download, please try it again`
-      )
+      ToastHelper.error(`Unexpected issue on CSV download, please try it again`)
     },
   })
 
