@@ -4,14 +4,18 @@ pragma solidity ^0.8.0;
 // This contract mostly follows the pattern established by openzeppelin in
 // openzeppelin/contracts-ethereum-package/contracts/access/roles
 
-import '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
-import './MixinErrors.sol';
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "./MixinErrors.sol";
 
-contract MixinRoles is AccessControlUpgradeable, MixinErrors {
-
+contract MixinRoles is
+  AccessControlUpgradeable,
+  MixinErrors
+{
   // roles
-  bytes32 public constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
-  bytes32 public constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
+  bytes32 public constant LOCK_MANAGER_ROLE =
+    keccak256("LOCK_MANAGER");
+  bytes32 public constant KEY_GRANTER_ROLE =
+    keccak256("KEY_GRANTER");
 
   // events
   event LockManagerAdded(address indexed account);
@@ -21,7 +25,6 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
 
   // initializer
   function _initializeMixinRoles(address sender) internal {
-
     // for admin mamangers to add other lock admins
     _setRoleAdmin(LOCK_MANAGER_ROLE, LOCK_MANAGER_ROLE);
 
@@ -29,26 +32,24 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     _setRoleAdmin(KEY_GRANTER_ROLE, LOCK_MANAGER_ROLE);
 
     if (!isLockManager(sender)) {
-      _setupRole(LOCK_MANAGER_ROLE, sender);  
+      _setupRole(LOCK_MANAGER_ROLE, sender);
     }
     if (!isKeyGranter(sender)) {
       _setupRole(KEY_GRANTER_ROLE, sender);
     }
-
   }
 
   // modifiers
-  function _onlyLockManager() 
-  internal 
-  view
-  {
-    if(!hasRole(LOCK_MANAGER_ROLE, msg.sender)) {
+  function _onlyLockManager() internal view {
+    if (!hasRole(LOCK_MANAGER_ROLE, msg.sender)) {
       revert ONLY_LOCK_MANAGER();
     }
   }
 
   // lock manager functions
-  function isLockManager(address account) public view returns (bool) {
+  function isLockManager(
+    address account
+  ) public view returns (bool) {
     return hasRole(LOCK_MANAGER_ROLE, account);
   }
 
@@ -63,9 +64,10 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     emit LockManagerRemoved(msg.sender);
   }
 
-
   // key granter functions
-  function isKeyGranter(address account) public view returns (bool) {
+  function isKeyGranter(
+    address account
+  ) public view returns (bool) {
     return hasRole(KEY_GRANTER_ROLE, account);
   }
 
