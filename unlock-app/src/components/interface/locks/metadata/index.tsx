@@ -100,7 +100,6 @@ export function UpdateLockMetadata({ lock }: Props) {
       metadata.attributes.push({
         trait_type: 'event_start_date',
         value: ticket.event_start_date,
-        display_type: 'date',
       })
     }
 
@@ -108,7 +107,6 @@ export function UpdateLockMetadata({ lock }: Props) {
       metadata.attributes.push({
         trait_type: 'event_start_time',
         value: ticket.event_start_time,
-        display_type: 'date',
       })
     }
 
