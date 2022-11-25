@@ -891,4 +891,28 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /* Upgrade a lock to a specific version
+   * @param {*} params
+   * @param {*} callback
+   */
+  async upgradeLock(
+    params: {
+      lockAddress: string
+      lockVersion: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ): Promise<string> {
+    const version = await this.unlockContractAbiVersion()
+    if (version <= 10) {
+      throw new Error('Upgrade lock only available for lock v10+')
+    }
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    return version.upgradeLock.bind(this)(
+      params.lockAddress,
+      params.lockVersion,
+      callback
+    )
+  }
 }

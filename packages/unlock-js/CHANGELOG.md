@@ -1,8 +1,13 @@
 # Changes
 
-# 0.32.9
+# 0.32.10
 
 - add `updateTransferFee` in walletService
+
+# 0.32.9
+
+- add `publicLockLatestVersion` in web3Service
+- add `upgradeLock` in walletService
 
 # 0.32.8
 
