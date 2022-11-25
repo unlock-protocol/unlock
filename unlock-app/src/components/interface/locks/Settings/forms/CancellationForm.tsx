@@ -76,9 +76,7 @@ export const CancellationForm = ({
     })
   }
 
-  const updateRefundPenaltyMutation = useMutation(updateRefundPenalty, {
-    onSuccess: () => {},
-  })
+  const updateRefundPenaltyMutation = useMutation(updateRefundPenalty)
 
   const onUpdateRefundPenalty = async (fields: FormProps) => {
     if (isValid) {
