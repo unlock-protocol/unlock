@@ -3,7 +3,7 @@
 #
 # 1. install only deps (to be cached)
 #
-FROM node:16-bullseye-slim as deps
+FROM node:16 as deps
 LABEL Unlock <ops@unlock-protocol.com>
 
 # Setting user as root to handle apt install
