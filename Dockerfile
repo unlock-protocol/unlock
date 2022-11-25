@@ -50,7 +50,7 @@ RUN mkdir $DEST_FOLDER/yarn-cache
 
 # install deps
 WORKDIR ${DEST_FOLDER}
-RUN yarn
+RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn
 
 #
 # 2. build packages and prepare image for testing/dev
