@@ -28,6 +28,7 @@ export const UpdateSymbolForm = ({
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { isValid, errors },
   } = useForm<FormProps>({
     defaultValues: {
@@ -72,6 +73,7 @@ export const UpdateSymbolForm = ({
       })
     } else {
       ToastHelper.error('Form is not valid.')
+      reset()
     }
   }
 
@@ -90,12 +92,10 @@ export const UpdateSymbolForm = ({
           })}
           autoComplete="off"
           disabled={disabledInput}
+          error={
+            errors?.symbol && 'Lock symbol should have at least 1 character.'
+          }
         />
-        {errors?.symbol && (
-          <span className="absolute text-xs text-red-700">
-            Lock symbol should have at least 1 character.
-          </span>
-        )}
       </div>
 
       {isManager && (

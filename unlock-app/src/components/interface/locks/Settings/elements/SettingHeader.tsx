@@ -73,7 +73,7 @@ export const SettingHeader = ({
         <SettingHeaderPlaceholder />
       ) : (
         <div className="flex gap-4">
-          <div className="w-16 h-16 overflow-hidden bg-cover rounded-2xl bg-slate-200">
+          <div className="w-16 h-16 overflow-hidden bg-cover rounded-2xl">
             <img src={imageUrl} alt="" />
           </div>
           <div className="flex flex-col">
