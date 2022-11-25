@@ -12,7 +12,7 @@ USER root
 # install all deps required to build modules
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
-    apt-get install --no-install-recommends --assume-yes \
+    apt-get install --assume-yes \
     bash \
     git \
     python3 \
