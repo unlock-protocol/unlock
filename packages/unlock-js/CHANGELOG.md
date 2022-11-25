@@ -1,5 +1,10 @@
 # Changes
 
+# 0.32.9
+
+- add `publicLockLatestVersion` in web3Service
+- add `upgradeLock` in walletService
+
 # 0.32.8
 
 - fix `updateRefundPenalty` and `renounceLockManager` in walletService

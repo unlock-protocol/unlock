@@ -240,21 +240,21 @@ export const VerifierForm = ({
         {(isLoadingItems || addVerifierMutation.isLoading) &&
           !deleteVerifierMutation.isLoading && <VerifierCardPlaceholder />}
       </div>
-      <form
-        className="flex flex-col gap-6 mt-8"
-        onSubmit={handleSubmit(onAddVerifier)}
-      >
-        <div className="flex flex-col gap-2">
-          <span className="text-base text-brand-dark">
-            Add verifier, please enter the wallet address of theirs.
-          </span>
-          <Input
-            disabled={disabled}
-            {...register('verifier')}
-            autoComplete="off"
-          />
-        </div>
-        {isManager && (
+      {isManager && (
+        <form
+          className="flex flex-col gap-6 mt-8"
+          onSubmit={handleSubmit(onAddVerifier)}
+        >
+          <div className="flex flex-col gap-2">
+            <span className="text-base text-brand-dark">
+              Add verifier, please enter the wallet address of theirs.
+            </span>
+            <Input
+              disabled={disabled}
+              {...register('verifier')}
+              autoComplete="off"
+            />
+          </div>
           <Button
             type="submit"
             className="w-full md:w-1/2"
@@ -263,8 +263,8 @@ export const VerifierForm = ({
           >
             Add
           </Button>
-        )}
-      </form>
+        </form>
+      )}
     </div>
   )
 }
