@@ -87,6 +87,7 @@ export const CreateLockFormSummary = ({
   showStatus = false,
   transactionHash,
 }: CreateLockFormSummaryProps) => {
+  const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
   const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
@@ -124,7 +125,8 @@ export const CreateLockFormSummary = ({
   )
 
   const hasError = isError && data
-  const isDeployed = (data?.confirmations || 0) > 1 && !isError
+  const isDeployed =
+    (data?.confirmations || 0) > requiredConfirmations && !isError
 
   const currentStatus: DeployStatus = hasError
     ? 'txError'
