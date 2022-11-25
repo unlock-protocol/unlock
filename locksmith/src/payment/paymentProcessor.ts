@@ -285,6 +285,8 @@ export class PaymentProcessor {
     return {
       clientSecret: intent.client_secret,
       stripeAccount,
+      totalPriceInCents,
+      pricing,
     }
   }
 

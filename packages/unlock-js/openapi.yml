@@ -371,6 +371,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 message:
                   type: string
@@ -466,7 +467,7 @@ paths:
               type: object
               nullable: true
               properties:
-                refresh-token:
+                refreshToken:
                   type: string
                   nullable: false
       responses:
@@ -1287,3 +1288,63 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/purchase/intent/{network}/locks/{lockAdddress}:
+    post:
+      operationId: purchase
+      security:
+        - User: []
+      description: Create purchase intent for stripe.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                stripeTokenId:
+                  type: string
+                pricing:
+                  type: number
+                recurring:
+                  type: number
+                  nullable: true
+
+      responses:
+        200:
+          description: Created payment intent client secret, account, and other details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientSecret:
+                    type: string
+                  stripeAccount:
+                    type: string
+                  totalPriceInDents:
+                    type: number
+                  pricing:
+                    nullable: true
+                    type: object
+                    properties:
+                      keyPrice:
+                        type: number
+                        nullable: true
+                      unlockServiceFee:
+                        type: number
+                        nullable: true
+                      creditCardProcessing:
+                        type: number
+                        nullable: true
+        400:
+          $ref: '#/components/responses/400.Invalid'
