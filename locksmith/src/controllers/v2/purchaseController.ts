@@ -122,7 +122,7 @@ export class PurchaseController {
         `Purchaser does not have enough to pay for gas on ${network}`
       )
     }
-    const processor = new PaymentProcessor(config.stripeSecret)
+    const processor = new PaymentProcessor(config.stripeSecret!)
     const paymentIntentDetails = await processor.createPaymentIntent(
       userAddress,
       recipients,
