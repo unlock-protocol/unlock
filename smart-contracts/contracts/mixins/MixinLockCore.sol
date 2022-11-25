@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import './MixinDisable.sol';
-import './MixinRoles.sol';
-import './MixinErrors.sol';
-import '../interfaces/IUnlock.sol';
-import './MixinFunds.sol';
-import '../interfaces/hooks/ILockKeyCancelHook.sol';
-import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
-import '../interfaces/hooks/ILockValidKeyHook.sol';
-import '../interfaces/hooks/ILockKeyGrantHook.sol';
-import '../interfaces/hooks/ILockTokenURIHook.sol';
-import '../interfaces/hooks/ILockKeyTransferHook.sol';
-import '../interfaces/hooks/ILockKeyExtendHook.sol';
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "./MixinDisable.sol";
+import "./MixinRoles.sol";
+import "./MixinErrors.sol";
+import "../interfaces/IUnlock.sol";
+import "./MixinFunds.sol";
+import "../interfaces/hooks/ILockKeyCancelHook.sol";
+import "../interfaces/hooks/ILockKeyPurchaseHook.sol";
+import "../interfaces/hooks/ILockValidKeyHook.sol";
+import "../interfaces/hooks/ILockKeyGrantHook.sol";
+import "../interfaces/hooks/ILockTokenURIHook.sol";
+import "../interfaces/hooks/ILockKeyTransferHook.sol";
+import "../interfaces/hooks/ILockKeyExtendHook.sol";
 
 /**
  * @title Mixin for core lock data and functions.
@@ -41,20 +41,32 @@ contract MixinLockCore is
     address tokenAddress
   );
 
-   /**
-    * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
-    */
-  event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+  /**
+   * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
+   */
+  event Transfer(
+    address indexed from,
+    address indexed to,
+    uint256 indexed tokenId
+  );
 
   /**
-    * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
-    */
-  event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+   * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
+   */
+  event Approval(
+    address indexed owner,
+    address indexed approved,
+    uint256 indexed tokenId
+  );
 
   /**
-    * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
-    */
-  event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+   * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
+   */
+  event ApprovalForAll(
+    address indexed owner,
+    address indexed operator,
+    bool approved
+  );
 
   // Unlock Protocol address
   IUnlock public unlockProtocol;
@@ -99,18 +111,17 @@ contract MixinLockCore is
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
-    if(schemaVersion != publicLockVersion()) {
+    if (schemaVersion != publicLockVersion()) {
       revert MIGRATION_REQUIRED();
     }
   }
-  
+
   function _initializeMixinLockCore(
     address payable,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
-  ) internal
-  {
+  ) internal {
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
@@ -124,8 +135,9 @@ contract MixinLockCore is
   }
 
   // The version number of the current implementation on this network
-  function publicLockVersion(
-  ) public pure
+  function publicLockVersion()
+    public
+    pure
     returns (uint16)
   {
     return 12;
@@ -141,32 +153,35 @@ contract MixinLockCore is
     address _tokenAddress,
     address payable _recipient,
     uint _amount
-  ) external
-  {
+  ) external {
     _onlyLockManager();
 
     // get balance
     uint balance;
-    if(_tokenAddress == address(0)) {
+    if (_tokenAddress == address(0)) {
       balance = address(this).balance;
     } else {
-      balance = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
+      balance = IERC20Upgradeable(_tokenAddress).balanceOf(
+        address(this)
+      );
     }
 
     uint amount;
-    if(_amount == 0 || _amount > balance)
-    {
-      if(balance <= 0) {
+    if (_amount == 0 || _amount > balance) {
+      if (balance <= 0) {
         revert NOT_ENOUGH_FUNDS();
       }
       amount = balance;
-    }
-    else
-    {
+    } else {
       amount = _amount;
     }
 
-    emit Withdrawal(msg.sender, _tokenAddress, _recipient, amount);
+    emit Withdrawal(
+      msg.sender,
+      _tokenAddress,
+      _recipient,
+      amount
+    );
     // Security: re-entrancy not a risk as this is the last line of an external function
     _transfer(_tokenAddress, _recipient, amount);
   }
@@ -179,16 +194,19 @@ contract MixinLockCore is
   function updateKeyPricing(
     uint _keyPrice,
     address _tokenAddress
-  )
-    external
-  {
+  ) external {
     _onlyLockManager();
     _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
     keyPrice = _keyPrice;
     tokenAddress = _tokenAddress;
-    emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
+    emit PricingChanged(
+      oldKeyPrice,
+      keyPrice,
+      oldTokenAddress,
+      tokenAddress
+    );
   }
 
   /**
@@ -202,35 +220,70 @@ contract MixinLockCore is
     address _onKeyTransferHook,
     address _onKeyExtendHook,
     address _onKeyGrantHook
-  ) external
-  {
+  ) external {
     _onlyLockManager();
 
-    if(_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract()) { revert INVALID_HOOK(0); }
-    if(_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) { revert INVALID_HOOK(1); }
-    if(_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) { revert INVALID_HOOK(2); }
-    if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
-    if(_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) { revert INVALID_HOOK(4); }
-    if(_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) { revert INVALID_HOOK(5); }
-    if(_onKeyGrantHook != address(0) && !_onKeyGrantHook.isContract()) { revert INVALID_HOOK(6); }
-    
-    onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
+    if (
+      _onKeyPurchaseHook != address(0) &&
+      !_onKeyPurchaseHook.isContract()
+    ) {
+      revert INVALID_HOOK(0);
+    }
+    if (
+      _onKeyCancelHook != address(0) &&
+      !_onKeyCancelHook.isContract()
+    ) {
+      revert INVALID_HOOK(1);
+    }
+    if (
+      _onValidKeyHook != address(0) &&
+      !_onValidKeyHook.isContract()
+    ) {
+      revert INVALID_HOOK(2);
+    }
+    if (
+      _onTokenURIHook != address(0) &&
+      !_onTokenURIHook.isContract()
+    ) {
+      revert INVALID_HOOK(3);
+    }
+    if (
+      _onKeyTransferHook != address(0) &&
+      !_onKeyTransferHook.isContract()
+    ) {
+      revert INVALID_HOOK(4);
+    }
+    if (
+      _onKeyExtendHook != address(0) &&
+      !_onKeyExtendHook.isContract()
+    ) {
+      revert INVALID_HOOK(5);
+    }
+    if (
+      _onKeyGrantHook != address(0) &&
+      !_onKeyGrantHook.isContract()
+    ) {
+      revert INVALID_HOOK(6);
+    }
+
+    onKeyPurchaseHook = ILockKeyPurchaseHook(
+      _onKeyPurchaseHook
+    );
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
-    onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
+    onKeyTransferHook = ILockKeyTransferHook(
+      _onKeyTransferHook
+    );
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
     onKeyGrantHook = ILockKeyGrantHook(_onKeyGrantHook);
   }
 
-  function totalSupply()
-    public
-    view returns(uint256)
-  {
+  function totalSupply() public view returns (uint256) {
     return _totalSupply;
   }
 
-  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
+  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
   // decreased from 997 to 996 when adding `onKeyExtendHook` in v12
   // decreased from 996 to 995 when adding `onKeyGrantHook` in v12

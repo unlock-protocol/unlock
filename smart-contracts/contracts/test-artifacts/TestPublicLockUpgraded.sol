@@ -8,16 +8,15 @@ import "../mixins/MixinLockMetadata.sol";
 import "../mixins/MixinERC721Enumerable.sol";
 import "../mixins/MixinRoles.sol";
 import "../interfaces/IPublicLock.sol";
-import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 
-contract TestPublicLockUpgraded is 
+contract TestPublicLockUpgraded is
   ERC165StorageUpgradeable,
-  MixinLockCore, 
-  MixinKeys, 
+  MixinLockCore,
+  MixinKeys,
   MixinLockMetadata,
   MixinERC721Enumerable
 {
-
   function initialize(
     address payable _lockCreator,
     uint _expirationDuration,
@@ -25,12 +24,17 @@ contract TestPublicLockUpgraded is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string calldata _lockName
-  ) public
-    initializer()
-  {
+  ) public initializer {
     MixinFunds._initializeMixinFunds(_tokenAddress);
-    MixinLockCore._initializeMixinLockCore(_lockCreator, _expirationDuration, _keyPrice, _maxNumberOfKeys);
-    MixinLockMetadata._initializeMixinLockMetadata(_lockName);
+    MixinLockCore._initializeMixinLockCore(
+      _lockCreator,
+      _expirationDuration,
+      _keyPrice,
+      _maxNumberOfKeys
+    );
+    MixinLockMetadata._initializeMixinLockMetadata(
+      _lockName
+    );
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRoles._initializeMixinRoles(_lockCreator);
 
@@ -38,29 +42,35 @@ contract TestPublicLockUpgraded is
   }
 
   // add a function to try
-  function sayHello() external pure returns (string memory) {
-    return 'hello world';
+  function sayHello()
+    external
+    pure
+    returns (string memory)
+  {
+    return "hello world";
   }
 
   function migrate(bytes calldata) public override {
     schemaVersion = super.publicLockVersion() + 1;
   }
 
-   /**
+  /**
    Overrides
   */
-  function supportsInterface(bytes4 interfaceId) 
-    public 
-    view 
-    virtual 
+  function supportsInterface(
+    bytes4 interfaceId
+  )
+    public
+    view
+    virtual
     override(
       MixinERC721Enumerable,
       MixinLockMetadata,
-      AccessControlUpgradeable, 
+      AccessControlUpgradeable,
       ERC165StorageUpgradeable
-    ) 
-    returns (bool) 
-    {
+    )
+    returns (bool)
+  {
     return super.supportsInterface(interfaceId);
   }
 }

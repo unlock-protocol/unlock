@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 // import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
-import '../UnlockUtils.sol';
-import './MixinKeys.sol';
-import './MixinLockCore.sol';
-import './MixinRoles.sol';
+import "../UnlockUtils.sol";
+import "./MixinKeys.sol";
+import "./MixinLockCore.sol";
+import "./MixinRoles.sol";
 
 /**
  * @title Mixin for metadata about the Lock.
@@ -33,15 +33,14 @@ contract MixinLockMetadata is
   string private baseTokenURI;
 
   event LockMetadata(
-    string name, 
-    string symbol, 
+    string name,
+    string symbol,
     string baseTokenURI
   );
 
   function _initializeMixinLockMetadata(
     string calldata _lockName
-  ) internal
-  {
+  ) internal {
     ERC165StorageUpgradeable.__ERC165Storage_init();
     name = _lockName;
     // registering the optional erc721 metadata interface with ERC165.sol using
@@ -50,7 +49,7 @@ contract MixinLockMetadata is
   }
 
   /**
-   * Allows the Lock owner to assign 
+   * Allows the Lock owner to assign
    * @param _lockName a descriptive name for this Lock.
    * @param _lockSymbol a Symbol for this Lock (default to KEY).
    * @param _baseTokenURI the baseTokenURI for this Lock
@@ -70,14 +69,11 @@ contract MixinLockMetadata is
   }
 
   /**
-    * @dev Gets the token symbol
-    * @return string representing the token name
-    */
-  function symbol()
-    external view
-    returns(string memory)
-  {
-    if(bytes(lockSymbol).length == 0) {
+   * @dev Gets the token symbol
+   * @return string representing the token name
+   */
+  function symbol() external view returns (string memory) {
+    if (bytes(lockSymbol).length == 0) {
       return unlockProtocol.globalTokenSymbol();
     } else {
       return lockSymbol;
@@ -95,59 +91,56 @@ contract MixinLockMetadata is
    */
   function tokenURI(
     uint256 _tokenId
-  ) external
-    view
-    returns(string memory)
-  {
+  ) external view returns (string memory) {
     string memory URI;
     string memory tokenId;
     string memory lockAddress = address(this).address2Str();
     string memory seperator;
 
-    if(_tokenId != 0) {
+    if (_tokenId != 0) {
       tokenId = _tokenId.uint2Str();
     } else {
-      tokenId = '';
+      tokenId = "";
     }
 
-    if(address(onTokenURIHook) != address(0))
-    {
-      uint expirationTimestamp = keyExpirationTimestampFor(_tokenId);
-      return onTokenURIHook.tokenURI(
-        address(this),
-        msg.sender,
-        ownerOf(_tokenId),
-        _tokenId,
-        expirationTimestamp
+    if (address(onTokenURIHook) != address(0)) {
+      uint expirationTimestamp = keyExpirationTimestampFor(
+        _tokenId
+      );
+      return
+        onTokenURIHook.tokenURI(
+          address(this),
+          msg.sender,
+          ownerOf(_tokenId),
+          _tokenId,
+          expirationTimestamp
         );
     }
 
-    if(bytes(baseTokenURI).length == 0) {
+    if (bytes(baseTokenURI).length == 0) {
       URI = unlockProtocol.globalBaseTokenURI();
-      seperator = '/';
+      seperator = "/";
     } else {
       URI = baseTokenURI;
-      seperator = '';
-      lockAddress = '';
+      seperator = "";
+      lockAddress = "";
     }
 
-    return URI.strConcat(
-        lockAddress,
-        seperator,
-        tokenId
-      );
+    return URI.strConcat(lockAddress, seperator, tokenId);
   }
 
-  function supportsInterface(bytes4 interfaceId) 
-    public 
-    view 
-    virtual 
+  function supportsInterface(
+    bytes4 interfaceId
+  )
+    public
+    view
+    virtual
     override(
       AccessControlUpgradeable,
       ERC165StorageUpgradeable
-    ) 
-    returns (bool) 
-    {
+    )
+    returns (bool)
+  {
     return super.supportsInterface(interfaceId);
   }
 

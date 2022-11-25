@@ -14,19 +14,35 @@ import "./UnlockInitializable.sol";
  *
  * This contract is only required for intermediate, library-like contracts.
  */
-abstract contract UnlockContextUpgradeable is UnlockInitializable {
-    function __Context_init() internal onlyInitializing {
-        __Context_init_unchained();
-    }
+abstract contract UnlockContextUpgradeable is
+  UnlockInitializable
+{
+  function __Context_init() internal onlyInitializing {
+    __Context_init_unchained();
+  }
 
-    function __Context_init_unchained() internal onlyInitializing {
-    }
-    function _msgSender() internal view virtual returns (address) {
-        return msg.sender;
-    }
+  function __Context_init_unchained()
+    internal
+    onlyInitializing
+  {}
 
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
-    }
-    uint256[50] private ______gap;
+  function _msgSender()
+    internal
+    view
+    virtual
+    returns (address)
+  {
+    return msg.sender;
+  }
+
+  function _msgData()
+    internal
+    view
+    virtual
+    returns (bytes calldata)
+  {
+    return msg.data;
+  }
+
+  uint256[50] private ______gap;
 }

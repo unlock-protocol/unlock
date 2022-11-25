@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
 /**
  * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed
@@ -33,48 +33,51 @@ import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
  * ====
  */
 abstract contract UnlockInitializable {
-    /**
-     * @dev Indicates that the contract has been initialized.
-     */
-    bool private initialized;
+  /**
+   * @dev Indicates that the contract has been initialized.
+   */
+  bool private initialized;
 
-    /**
-     * @dev Indicates that the contract is in the process of being initialized.
-     */
-    bool private initializing;
+  /**
+   * @dev Indicates that the contract is in the process of being initialized.
+   */
+  bool private initializing;
 
-    /**
-     * @dev Modifier to protect an initializer function from being invoked twice.
-     */
-    modifier initializer() {
-        // If the contract is initializing we ignore whether initialized is set in order to support multiple
-        // inheritance patterns, but we only do this in the context of a constructor, because in other contexts the
-        // contract may have been reentered.
-        require(initializing ? _isConstructor() : !initialized, "ALREADY_INITIALIZED");
+  /**
+   * @dev Modifier to protect an initializer function from being invoked twice.
+   */
+  modifier initializer() {
+    // If the contract is initializing we ignore whether initialized is set in order to support multiple
+    // inheritance patterns, but we only do this in the context of a constructor, because in other contexts the
+    // contract may have been reentered.
+    require(
+      initializing ? _isConstructor() : !initialized,
+      "ALREADY_INITIALIZED"
+    );
 
-        bool isTopLevelCall = !initializing;
-        if (isTopLevelCall) {
-            initializing = true;
-            initialized = true;
-        }
-
-        _;
-
-        if (isTopLevelCall) {
-            initializing = false;
-        }
+    bool isTopLevelCall = !initializing;
+    if (isTopLevelCall) {
+      initializing = true;
+      initialized = true;
     }
 
-    /**
-     * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the
-     * {initializer} modifier, directly or indirectly.
-     */
-    modifier onlyInitializing() {
-        require(initializing, "NOT_INITIALIZING");
-        _;
-    }
+    _;
 
-    function _isConstructor() private view returns (bool) {
-        return !AddressUpgradeable.isContract(address(this));
+    if (isTopLevelCall) {
+      initializing = false;
     }
+  }
+
+  /**
+   * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the
+   * {initializer} modifier, directly or indirectly.
+   */
+  modifier onlyInitializing() {
+    require(initializing, "NOT_INITIALIZING");
+    _;
+  }
+
+  function _isConstructor() private view returns (bool) {
+    return !AddressUpgradeable.isContract(address(this));
+  }
 }
