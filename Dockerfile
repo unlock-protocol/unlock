@@ -11,7 +11,7 @@ USER root
 
 # install all deps required to build modules
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive \
+    && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
@@ -19,7 +19,8 @@ RUN apt-get update \
     postgresql \
     default-jdk \
     openjdk-11-jre \
-    build-essential
+    build-essential \
+    ca-certificates
 
 # switch to user
 ENV DEST_FOLDER=/home/unlock
