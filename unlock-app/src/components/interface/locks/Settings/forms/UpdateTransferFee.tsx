@@ -58,7 +58,7 @@ export const UpdateTransferFee = ({
 
       await ToastHelper.promise(updateTransferFeePromise, {
         loading: 'Updating transfer fee',
-        error: 'Impossible to update the values, please try again.',
+        error: 'Failed to update the values, please try again.',
         success: 'Transfer fee updated.',
       })
     } else {
@@ -67,7 +67,12 @@ export const UpdateTransferFee = ({
   }
 
   const { isLoading, data: transferFeeBasisPoints } = useQuery(
-    ['get', lockAddress, network, updateTransferFeeMutation.isSuccess],
+    [
+      'getTransferFeeBasisPoints',
+      lockAddress,
+      network,
+      updateTransferFeeMutation.isSuccess,
+    ],
     async () => getTransferFeeBasisPoints(),
     {
       onSuccess: (transferFeeBasisPoints: number) => {
