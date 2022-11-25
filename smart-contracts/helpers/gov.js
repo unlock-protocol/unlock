@@ -5,8 +5,11 @@ const encodeProposalFunc = ({ interface, functionName, functionArgs }) => {
   return calldata
 }
 
-const getProposalId = async (proposal) => {
-  const [targets, values, calldata, description] = await parseProposal(proposal)
+const getProposalId = async (proposal, govAddress) => {
+  const [targets, values, calldata, description] = await parseProposal({
+    ...proposal,
+    address: govAddress,
+  })
 
   const descriptionHash = ethers.utils.keccak256(
     ethers.utils.toUtf8Bytes(description)
@@ -27,7 +30,10 @@ const getProposalId = async (proposal) => {
 
 const getProposalIdFromContract = async (proposal, govAddress) => {
   const { proposerAddress } = proposal
-  const [to, value, calldata, description] = await parseProposal(proposal)
+  const [to, value, calldata, description] = await parseProposal({
+    ...proposal,
+    address: govAddress,
+  })
 
   const proposerWallet = await ethers.getSigner(proposerAddress)
   const gov = await ethers.getContractAt(
@@ -57,7 +63,7 @@ const parseProposal = async ({
   functionArgs,
   proposalName,
   value = 0,
-  govAddress,
+  address,
 }) => {
   if (!calldata && !functionArgs) {
     // eslint-disable-next-line no-console
@@ -73,7 +79,7 @@ const parseProposal = async ({
     })
   }
   return [
-    [govAddress], // contract to send the proposal to
+    [address], // contract to send the proposal to
     [value], // value in ETH, default to 0
     [calldata], // encoded func call
     proposalName,
@@ -85,22 +91,23 @@ const encodeProposalArgs = async ({
   functionName,
   functionArgs,
 }) => {
-  const { interface } = new ethers.getContractFactory(contractName)
+  const { interface } = await ethers.getContractFactory(contractName)
   const calldata = encodeProposalFunc({ interface, functionName, functionArgs })
   return calldata
 }
 
 const decodeProposalArgs = async ({ contractName, functionName, calldata }) => {
-  const { interface } = new ethers.getContractFactory(contractName)
+  const { interface } = await ethers.getContractFactory(contractName)
   const decoded = interface.decodeFunctionData(functionName, calldata)
   return decoded
 }
 
 const queueProposal = async ({ proposal, govAddress }) => {
   const { proposerAddress } = proposal
-  const [targets, values, calldatas, description] = await parseProposal(
-    proposal
-  )
+  const [targets, values, calldatas, description] = await parseProposal({
+    ...proposal,
+    address: govAddress,
+  })
   const descriptionHash = web3.utils.keccak256(description)
   const voterWallet = await ethers.getSigner(proposerAddress)
 
@@ -113,9 +120,10 @@ const queueProposal = async ({ proposal, govAddress }) => {
 
 const executeProposal = async ({ proposal, govAddress }) => {
   const { proposerAddress } = proposal
-  const [targets, values, calldatas, description] = await parseProposal(
-    proposal
-  )
+  const [targets, values, calldatas, description] = await parseProposal({
+    ...proposal,
+    address: govAddress,
+  })
   const descriptionHash = web3.utils.keccak256(description)
   const voterWallet = await ethers.getSigner(proposerAddress)
 

@@ -41,16 +41,10 @@ module.exports = async () => {
   })
   await udt.deployed()
 
-  // 5. deploy Gov
-  const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
-  const gov = await Governor.deploy()
-  await gov.deployed()
-
   return {
     unlock: await UnlockTruffle.at(unlock.address),
     unlockEthers: unlock,
     publicLock,
     udt,
-    gov,
   }
 }
