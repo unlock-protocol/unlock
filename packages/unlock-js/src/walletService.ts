@@ -891,4 +891,30 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Update referrer fee
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setReferrerFee(
+    params: {
+      lockAddress: string
+      address: string
+      feeBasisPoint: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setReferrerFee) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setReferrerFee.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }

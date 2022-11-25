@@ -1,5 +1,10 @@
 # Changes
 
+# 0.32.10
+
+- add `referrerFees` in web3Service
+- add `setReferrerFee` in walletService
+
 # 0.32.9
 
 - add `publicLockLatestVersion` in web3Service
