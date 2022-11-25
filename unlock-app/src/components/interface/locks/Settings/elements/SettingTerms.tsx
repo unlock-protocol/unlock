@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { CancellationForm } from '../forms/CancellationForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
+import { UpdateTransferFee } from '../forms/UpdateTransferFee'
 import { SettingCard } from './SettingCard'
 
 interface SettingTermsProps {
@@ -56,7 +57,14 @@ export const SettingTerms = ({
     {
       label: 'Transfer',
       description: 'Allow members to transfer membership from one to others.',
-      children: null,
+      children: (
+        <UpdateTransferFee
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      ),
     },
     {
       label: 'Cancellation',
