@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.11
+
+- add `updateTransferFee` in walletService
+
 # 0.32.10
 
 - add `referrerFees` in web3Service
