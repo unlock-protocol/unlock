@@ -1,6 +1,5 @@
 const { ethers, upgrades, artifacts } = require('hardhat')
 const { copySync } = require('fs-extra')
-const { addDeployment } = require('../../helpers/deployments')
 
 const UnlockTruffle = artifacts.require('Unlock')
 
@@ -42,20 +41,10 @@ module.exports = async () => {
   })
   await udt.deployed()
 
-  await addDeployment('UnlockDiscountTokenV3', udt, true)
-
-  // 5. deploy Gov
-  const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
-  const gov = await Governor.deploy()
-  await gov.deployed()
-
-  await addDeployment('UnlockProtocolGovernor', gov, true)
-
   return {
     unlock: await UnlockTruffle.at(unlock.address),
     unlockEthers: unlock,
     publicLock,
     udt,
-    gov,
   }
 }

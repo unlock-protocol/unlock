@@ -1,10 +1,9 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const { getDeployment } = require('../../helpers/deployments')
 const { getProposalState } = require('../../helpers/gov')
 const { impersonate, getDictator } = require('../../test/helpers/mainnet')
 
-async function main({ voter, proposalId }) {
+async function main({ voter, proposalId, govAddress }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
@@ -44,8 +43,7 @@ async function main({ voter, proposalId }) {
   }
 
   const voterWallet = await ethers.getSigner(voter)
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-  const gov = await ethers.getContractAt(abi, address)
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
   const currentBlock = await ethers.provider.getBlockNumber()
   // eslint-disable-next-line no-console
