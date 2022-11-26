@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -25,6 +26,7 @@ export const UpdateReferralFee = ({
   isManager,
   disabled,
 }: UpdateReferralFeeProps) => {
+  const [referralFee, setReferralFee] = useState(false)
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
 
@@ -63,12 +65,13 @@ export const UpdateReferralFee = ({
     })
   }
 
-  const { isLoading } = useQuery(
+  const { isLoading, data: referralFeePercentage } = useQuery(
     ['getReferrerFees', lockAddress, network, setReferrerFeeMutation.isSuccess],
     async () => getReferrerFees(),
     {
       onSuccess: (value: number) => {
         setValue('referralFeePercentage', value / 100)
+        setReferralFee(value > 0)
       },
     }
   )
@@ -78,19 +81,32 @@ export const UpdateReferralFee = ({
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        label="Referrer fee %"
-        type="numeric"
-        {...register('referralFeePercentage', {
-          min: 0,
-          max: 100,
-        })}
-        error={
-          errors?.referralFeePercentage &&
-          'This field accept percentage value between 0 and 100.'
-        }
-        disabled={disabledInput}
-      />
+      <div className="grid gap-2">
+        <ToggleSwitch
+          title="Referrer fee %"
+          enabled={referralFee}
+          disabled={disabledInput}
+          setEnabled={(enabled) => {
+            setReferralFee(enabled)
+            setValue(
+              'referralFeePercentage',
+              enabled ? (referralFeePercentage ?? 0) / 100 : 0
+            )
+          }}
+        />
+        <Input
+          type="numeric"
+          {...register('referralFeePercentage', {
+            min: 0,
+            max: 100,
+          })}
+          error={
+            errors?.referralFeePercentage &&
+            'This field accept percentage value between 0 and 100.'
+          }
+          disabled={disabledInput || !referralFee}
+        />
+      </div>
       {isManager && (
         <Button
           className="w-full md:w-1/3"
