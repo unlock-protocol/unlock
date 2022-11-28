@@ -249,7 +249,6 @@ export const UpdateHooksForm = ({
   }, [keyGrant])
 
   const onSubmit = async (fields: FormProps) => {
-    console.log(fields)
     if (isValid) {
       const setEventsHooksPromise = setEventsHooksMutation.mutateAsync(fields)
       await ToastHelper.promise(setEventsHooksPromise, {
