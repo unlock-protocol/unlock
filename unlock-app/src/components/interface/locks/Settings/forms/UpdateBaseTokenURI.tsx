@@ -49,8 +49,8 @@ export const UpdateBaseTokenURI = ({
     const setBaseTokenURIPromise = setBaseTokenURIMutation.mutateAsync(fields)
     await ToastHelper.promise(setBaseTokenURIPromise, {
       error: 'Failed to update base token URI.',
-      success: 'URI successfully updated.',
-      loading: 'Updating URI.',
+      success: 'Base token URI successfully updated.',
+      loading: 'Updating Base token URI.',
     })
   }
 
