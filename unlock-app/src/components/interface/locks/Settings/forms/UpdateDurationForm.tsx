@@ -80,6 +80,8 @@ export const UpdateDurationForm = ({
       reset()
     }
   }
+
+  const disabledInput = updateDurationMutation.isLoading || disabled
   return (
     <form
       className="flex flex-col gap-6 text-left"
@@ -94,7 +96,7 @@ export const UpdateDurationForm = ({
             title="Unlimited"
             enabled={unlimitedDuration}
             setEnabled={setUnlimitedDuration}
-            disabled={disabled}
+            disabled={disabledInput}
             onChange={(enabled: boolean) => {
               setValue('unlimitedDuration', enabled)
               setValue(
@@ -110,27 +112,24 @@ export const UpdateDurationForm = ({
             tabIndex={0}
             autoComplete="off"
             step={0.01}
-            disabled={unlimitedDuration || disabled}
+            disabled={unlimitedDuration || disabledInput}
             {...register('expirationDuration', {
               required: !unlimitedDuration,
               min: 0,
             })}
             placeholder="Enter duration"
             type="number"
+            error={errors?.expirationDuration && 'Please enter amount of days.'}
           />
-          {errors?.expirationDuration && (
-            <span className="absolute mt-0.5 text-xs text-red-700">
-              Please enter amount of days.
-            </span>
-          )}
         </div>
       </div>
 
       {isManager && (
         <Button
           type="submit"
-          className="w-full md:w-1/2"
-          disabled={updateDurationMutation.isLoading}
+          className="w-full md:w-1/3"
+          disabled={disabledInput}
+          loading={updateDurationMutation.isLoading}
         >
           Update
         </Button>

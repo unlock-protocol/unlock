@@ -7,10 +7,11 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { SettingHeader } from './elements/SettingHeader'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
+import { SettingPayments } from './elements/SettingPayments'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -76,6 +77,22 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     }
   )
 
+  const [{ data: publicLockLatestVersion }, { data: publicLockVersion }] =
+    useQueries({
+      queries: [
+        {
+          queryKey: ['publicLockLatestVersion', network],
+          queryFn: async () =>
+            await web3Service.publicLockLatestVersion(network),
+        },
+        {
+          queryKey: ['publicLockVersion', lockAddress, network],
+          queryFn: async () =>
+            await web3Service.publicLockVersion(lockAddress, network),
+        },
+      ],
+    })
+
   const isLoading = isLoadingLock || isLoadingManager
 
   const tabs: { label: string; children: ReactNode; sidebar?: ReactNode }[] = [
@@ -94,6 +111,24 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
         <SidebarCard
           src="/images/illustrations/img-terms.svg"
           description="Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees."
+        />
+      ),
+    },
+    {
+      label: 'Payments',
+      children: (
+        <SettingPayments
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          lock={lock}
+          isLoading={isLoading}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-payment.svg"
+          description="Payments lorem ipsum"
         />
       ),
     },
@@ -140,7 +175,8 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
           network={network}
           isManager={isManager}
           isLoading={isLoading}
-          lock={lock}
+          publicLockLatestVersion={publicLockLatestVersion}
+          publicLockVersion={publicLockVersion}
         />
       ),
       sidebar: (

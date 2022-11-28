@@ -800,7 +800,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.renounceLockManager) {
       throw new Error('Lock version not supported')
     }
     return version.renounceLockManager.bind(this)(
@@ -826,7 +826,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.updateRefundPenalty) {
       throw new Error('Lock version not supported')
     }
     return version.updateRefundPenalty.bind(this)(
@@ -861,6 +861,81 @@ export default class WalletService extends UnlockService {
       throw new Error('Lock version not supported')
     }
     return version.setEventHooks.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Allow a Lock manager to change the transfer fee.
+   * @param {*} params
+   * @param {*} callback
+   */
+  async updateTransferFee(
+    params: {
+      lockAddress: string
+      transferFeeBasisPoints: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.updateTransferFee) {
+      throw new Error('Lock version not supported')
+    }
+    return version.updateTransferFee.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /* Upgrade a lock to a specific version
+   * @param {*} params
+   * @param {*} callback
+   */
+  async upgradeLock(
+    params: {
+      lockAddress: string
+      lockVersion: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ): Promise<string> {
+    const version = await this.unlockContractAbiVersion()
+    if (version <= 10) {
+      throw new Error('Upgrade lock only available for lock v10+')
+    }
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    return version.upgradeLock.bind(this)(
+      params.lockAddress,
+      params.lockVersion,
+      callback
+    )
+  }
+
+  /**
+   * Update referrer fee
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setReferrerFee(
+    params: {
+      lockAddress: string
+      address: string
+      feeBasisPoint: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setReferrerFee) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setReferrerFee.bind(this)(
       params,
       transactionOptions,
       callback
