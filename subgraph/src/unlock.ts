@@ -39,7 +39,7 @@ export function handleNewLock(event: NewLock): void {
     unlockDailyData = new UnlockDailyData(dayID.toString())
     unlockDailyData.lockDeployed = BigInt.fromI32(1)
     unlockDailyData.keysSold = BigInt.fromI32(0)
-    unlockDailyData.gnpValue = BigInt.fromI32(0)
+    unlockDailyData.grossNetworkProduct = BigInt.fromI32(0)
     unlockDailyData.activeLocks = []
     unlockDailyData.save()
   } else {
@@ -125,7 +125,7 @@ export function handleGNPChanged(event: GNPChanged): void {
   let dayID = timestamp / 86400
   let unlockDailyData = UnlockDailyData.load(dayID.toString())
   if (unlockDailyData) {
-    unlockDailyData.gnpValue = event.params.grossNetworkProduct
+    unlockDailyData.grossNetworkProduct = event.params.grossNetworkProduct
     unlockDailyData.save()
   }
 }

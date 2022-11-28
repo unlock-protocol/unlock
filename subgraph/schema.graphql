@@ -33,7 +33,7 @@ type UnlockDailyData @entity {
   lockDeployed: BigInt!
   keysSold: BigInt!
   activeLocks: [Bytes!]
-  gnpValue: BigInt!
+  grossNetworkProduct: BigInt!
 }
 
 type LockStats @entity {
