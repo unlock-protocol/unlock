@@ -54,7 +54,7 @@ export const UpdateBaseTokenURI = ({
     })
   }
 
-  const { isLoading: isLoadingTokenURI, data: tokenURI } = useQuery(
+  const { isLoading: isLoadingTokenURI } = useQuery(
     ['getTokenURI', lockAddress, network, setBaseTokenURIMutation.isSuccess],
     async () => getTokenURI(),
     {
@@ -67,8 +67,6 @@ export const UpdateBaseTokenURI = ({
   const disabledInput =
     disabled || setBaseTokenURIMutation.isLoading || isLoadingTokenURI
   const isLoading = setBaseTokenURIMutation.isLoading || disabledInput
-
-  console.log(tokenURI)
 
   return (
     <form
