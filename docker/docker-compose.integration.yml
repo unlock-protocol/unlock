@@ -34,7 +34,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: subgraph
     env_file: development.env
@@ -60,7 +60,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: tests
     env_file: test.env

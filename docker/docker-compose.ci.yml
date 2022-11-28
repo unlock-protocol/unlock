@@ -14,7 +14,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: smart-contracts
   
@@ -26,7 +26,7 @@ services:
       target: subgraph
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: subgraph
 
@@ -39,7 +39,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: unlock-app
     ports:
@@ -55,7 +55,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: unlock-protocol-com
     ports:
@@ -70,7 +70,7 @@ services:
       target: dev
 
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: paywall-app
     ports:
@@ -84,7 +84,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/paywall
     ports:
@@ -96,7 +96,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
@@ -108,7 +108,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/hardhat-plugin
     env_file:
@@ -120,7 +120,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/contracts
     env_file:
@@ -132,7 +132,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: wedlocks
     env_file:
@@ -144,7 +144,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: integration-tests
     env_file:
@@ -163,7 +163,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: locksmith
     env_file:
@@ -181,7 +181,7 @@ services:
       context: ../
       target: dev
       cache_from: 
-        - unlocktravis/unlock-dev
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: locksmith
     env_file:
