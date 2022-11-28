@@ -285,7 +285,7 @@ components:
 
     KeyId:
       in: path
-      name: KeyId
+      name: keyId
       required: true
       description: Key Id.
       schema:
@@ -1287,3 +1287,70 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}:
+    delete:
+      operationId: cancelSubscription
+      security:
+        - User: []
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        204:
+          description: Successfully deleted the subscription.
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    get:
+      operationId: getSubscription
+      security:
+        - User: []
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Key subscription object.
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                properties:
+                  id:
+                    type: number
+
+                  keyId:
+                    type: number
+
+                  lockAddress:
+                    type: string
+
+                  network:
+                    type: number
+
+                  userAddress:
+                    type: string
+
+                  amount:
+                    type: number
+
+                  unlockServiceFee:
+                    type: number
+
+                  stripeCustomerId:
+                    type: number
+
+                  connectedCustomer:
+                    type: number
+
+                  recurring:
+                    type: number
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
