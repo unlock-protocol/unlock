@@ -272,7 +272,7 @@ export const LockDetailCard = ({
                   Click here
                 </span>
               </Link>{' '}
-              to access all the settings or via Tools.
+              to update your contract&apos;s settings.
             </span>
           </div>
         </div>
