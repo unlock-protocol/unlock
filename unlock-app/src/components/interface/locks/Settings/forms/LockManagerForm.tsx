@@ -264,7 +264,10 @@ export const LockManagerForm = ({
       network,
       addLockManagerMutation.isSuccess,
     ],
-    async () => getLock()
+    async () => getLock(),
+    {
+      refetchInterval: 2000,
+    }
   )
 
   const onAddLockManager = async ({ manager }: FormProps) => {
