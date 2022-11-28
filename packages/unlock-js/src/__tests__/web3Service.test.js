@@ -115,18 +115,6 @@ describe('Web3Service', () => {
       const diff = Math.ceil((uniswap / coinbase) * 100)
       expect(diff).toBeGreaterThan(95)
     })
-    it('Return WBTC price to USDC', async () => {
-      expect.assertions(1)
-      const uniswap = await web3Service.consultUniswap({
-        // WBTC
-        tokenInAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-        amount: '1',
-      })
-
-      const coinbase = await getCoinbasePricing('BTC', 1)
-      const diff = Math.ceil((uniswap / coinbase) * 100)
-      expect(diff).toBeGreaterThan(95)
-    })
     it('Return LINK price to USDC', async () => {
       expect.assertions(1)
       const uniswap = await web3Service.consultUniswap({
