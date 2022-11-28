@@ -27,6 +27,8 @@ dataSources:
           handler: handleNewLock
         - event: LockUpgraded(address,uint16)
           handler: handleLockUpgraded
+        - event: GNPChanged(uint256,uint256,address,uint256,address)
+          handler: handleGNPChanged
       file: ./src/unlock.ts
 templates:
   - kind: ethereum
