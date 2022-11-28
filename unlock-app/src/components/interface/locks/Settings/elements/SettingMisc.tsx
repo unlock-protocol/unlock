@@ -1,5 +1,6 @@
-import { Lock } from '~/unlockTypes'
 import { UpdateHooksForm } from '../forms/UpdateHooksForm'
+import { UpdateReferralFee } from '../forms/UpdateReferralFee'
+import { UpdateVersionForm } from '../forms/UpdateVersionForm'
 import { SettingCard } from './SettingCard'
 
 interface SettingMiscProps {
@@ -7,7 +8,28 @@ interface SettingMiscProps {
   network: number
   isManager: boolean
   isLoading: boolean
-  lock?: Lock
+  publicLockVersion?: number
+  publicLockLatestVersion?: number
+}
+
+const UpgradeCard = ({ isLastVersion }: { isLastVersion: boolean }) => {
+  if (isLastVersion) {
+    return (
+      <span className="text-base">You are running the latest version.</span>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-1 p-4 bg-gray-100 rounded-lg ">
+      <span className="text-base font-bold text-brand-ui-primary">
+        Upgrade Available 🔆
+      </span>
+      <span className="text-base text-brand-dark">
+        This lock is deployed on an earlier version of the smart contract. An
+        upgrade is available to the latest features.
+      </span>
+    </div>
+  )
 }
 
 export const SettingMisc = ({
@@ -15,10 +37,29 @@ export const SettingMisc = ({
   lockAddress,
   network,
   isLoading,
-  lock,
+  publicLockVersion,
+  publicLockLatestVersion,
 }: SettingMiscProps) => {
+  const isLastVersion =
+    publicLockVersion !== undefined &&
+    publicLockLatestVersion !== undefined &&
+    publicLockVersion === publicLockLatestVersion
+
   return (
     <div className="grid grid-cols-1 gap-6">
+      <SettingCard
+        label="Referral fee"
+        description="Set up a percentage of the membership price to be sent to the referrer. This is great use cases to reward your members to promote your membership."
+        isLoading={isLoading}
+      >
+        <UpdateReferralFee
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+
       <SettingCard
         label="Hooks"
         description={
@@ -43,9 +84,27 @@ export const SettingMisc = ({
           network={network}
           isManager={isManager}
           disabled={!isManager}
-          version={lock?.publicLockVersion}
+          version={publicLockVersion!}
         />
       </SettingCard>
+
+      {(publicLockVersion ?? 0) >= 10 && (
+        <SettingCard
+          label="Versioning"
+          description={<UpgradeCard isLastVersion={isLastVersion} />}
+          isLoading={isLoading}
+          disabled={isLastVersion}
+        >
+          <UpdateVersionForm
+            lockAddress={lockAddress}
+            network={network}
+            isManager={isManager}
+            disabled={!isManager}
+            version={publicLockVersion ?? 0}
+            isLastVersion={isLastVersion}
+          />
+        </SettingCard>
+      )}
     </div>
   )
 }

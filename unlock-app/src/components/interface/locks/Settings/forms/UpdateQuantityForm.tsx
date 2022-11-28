@@ -75,6 +75,7 @@ export const UpdateQuantityForm = ({
   const defaultMaxNumberOfKeys =
     maxNumberOfKeys == UNLIMITED_KEYS_COUNT ? '' : maxNumberOfKeys
 
+  const disabledInput = disabled || updateQuantityMutation.isLoading
   return (
     <form
       className="flex flex-col gap-6 text-left"
@@ -89,7 +90,7 @@ export const UpdateQuantityForm = ({
             title="Unlimited"
             enabled={unlimitedQuantity}
             setEnabled={setUnlimitedQuantity}
-            disabled={disabled}
+            disabled={disabledInput}
             onChange={(enabled: boolean) => {
               setValue('unlimitedQuantity', enabled)
               setUnlimitedQuantity(enabled)
@@ -106,28 +107,28 @@ export const UpdateQuantityForm = ({
         <div className="relative">
           <Input
             placeholder="Enter quantity"
-            type="numeric"
+            type="number"
             autoComplete="off"
             step={1}
-            disabled={unlimitedQuantity || disabled}
+            disabled={unlimitedQuantity || disabledInput}
+            error={
+              errors?.maxNumberOfKeys &&
+              'Please choose a number of memberships for sale for your lock.'
+            }
             {...register('maxNumberOfKeys', {
               min: 0,
               required: !unlimitedQuantity,
             })}
           />
-          {errors?.maxNumberOfKeys && (
-            <span className="absolute -mt-1 text-xs text-red-700">
-              Please choose a number of memberships for sale for your lock.
-            </span>
-          )}
         </div>
       </div>
 
       {isManager && (
         <Button
           type="submit"
-          className="w-full md:w-1/2"
-          disabled={updateQuantityMutation.isLoading}
+          className="w-full md:w-1/3"
+          disabled={disabledInput}
+          loading={updateQuantityMutation.isLoading}
         >
           Update
         </Button>

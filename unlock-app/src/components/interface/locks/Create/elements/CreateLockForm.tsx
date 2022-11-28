@@ -242,7 +242,7 @@ export const CreateLockForm = ({
               <div className="relative">
                 <Input
                   placeholder="Enter quantity"
-                  type="numeric"
+                  type="number"
                   autoComplete="off"
                   step={1}
                   disabled={unlimitedQuantity}
@@ -289,7 +289,7 @@ export const CreateLockForm = ({
                   </div>
 
                   <Input
-                    type="numeric"
+                    type="number"
                     autoComplete="off"
                     placeholder="0.00"
                     step={0.01}

@@ -113,6 +113,9 @@ export const UpdatePriceForm = ({
   )?.toLowerCase()
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
+
+  const disabledInput = disabled || updatePriceMutation.isLoading
+
   return (
     <>
       <SelectCurrencyModal
@@ -136,7 +139,7 @@ export const UpdatePriceForm = ({
               title="Free"
               enabled={isFree}
               setEnabled={setIsFree}
-              disabled={disabled}
+              disabled={disabledInput}
               onChange={(enabled: boolean) => {
                 setValue('isFree', enabled)
                 setValue('keyPrice', enabled ? '0' : keyPrice.toString(), {
@@ -165,21 +168,17 @@ export const UpdatePriceForm = ({
 
             <div className="relative">
               <Input
-                type="numeric"
+                type="number"
                 autoComplete="off"
                 placeholder="0.00"
                 step={0.01}
-                disabled={isFree || disabled}
+                disabled={isFree || disabledInput}
                 {...register('keyPrice', {
                   required: !isFree,
                   min: 0,
                 })}
+                error={errors?.keyPrice && 'Please enter a positive number'}
               />
-              {errors?.keyPrice && (
-                <span className="absolute -mt-1 text-xs text-red-700">
-                  Please enter a positive number
-                </span>
-              )}
             </div>
           </div>
         </div>
@@ -194,9 +193,10 @@ export const UpdatePriceForm = ({
 
         {isManager && (
           <Button
-            className="w-full md:w-1/2"
+            className="w-full md:w-1/3"
             type="submit"
-            disabled={updatePriceMutation.isLoading}
+            loading={updatePriceMutation.isLoading}
+            disabled={disabledInput}
           >
             Update
           </Button>

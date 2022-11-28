@@ -51,9 +51,9 @@ export const UpdateNameForm = ({
         success: 'Lock name updated.',
         error: 'There is an issue updating the lock name.',
       })
-      reset()
     } else {
       ToastHelper.error('Form is not valid.')
+      reset()
     }
   }
 
@@ -67,14 +67,10 @@ export const UpdateNameForm = ({
             minLength: 3,
             required: true,
           })}
+          error={errors?.name && 'Lock name should have at least 3 characters.'}
           autoComplete="off"
           disabled={disabledInput}
         />
-        {errors?.name && (
-          <span className="absolute text-xs text-red-700">
-            Lock name should have at least 3 characters.
-          </span>
-        )}
       </div>
 
       {isManager && (
