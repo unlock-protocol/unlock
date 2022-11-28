@@ -189,7 +189,7 @@ export const CancellationForm = ({
           </div>
 
           <Input
-            type="inputmode"
+            type="number"
             disabled={disabledInput || !allowTrial}
             step={1}
             error={errors?.freeTrialLength && 'This field is required'}
@@ -215,7 +215,7 @@ export const CancellationForm = ({
             />
           </div>
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !cancelPenalty}
             step={0.01}
             error={
