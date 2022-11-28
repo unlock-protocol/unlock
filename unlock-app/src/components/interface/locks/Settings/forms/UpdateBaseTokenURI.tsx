@@ -33,7 +33,11 @@ export const UpdateBaseTokenURI = ({
   } = useForm<FormProps>()
 
   const getTokenURI = async () => {
-    return await web3Service.tokenURI(lockAddress, '1', network)
+    return await web3Service.tokenURI(
+      lockAddress,
+      '0' /* get base tokenURI without extra parameters o token ID*/,
+      network
+    )
   }
 
   const setBaseTokenURI = async (fields: FormProps) => {
