@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Input, Button } from '@unlock-protocol/ui'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -58,15 +59,14 @@ export const UpdateBaseTokenURI = ({
     })
   }
 
-  const { isLoading: isLoadingTokenURI } = useQuery(
+  const { isLoading: isLoadingTokenURI, data: baseTokenURI } = useQuery(
     ['getTokenURI', lockAddress, network, setBaseTokenURIMutation.isSuccess],
-    async () => getTokenURI(),
-    {
-      onSuccess: (value: string) => {
-        setValue('baseTokenURI', value)
-      },
-    }
+    async () => getTokenURI()
   )
+
+  useEffect(() => {
+    setValue('baseTokenURI', baseTokenURI)
+  }, [])
 
   const disabledInput =
     disabled || setBaseTokenURIMutation.isLoading || isLoadingTokenURI
