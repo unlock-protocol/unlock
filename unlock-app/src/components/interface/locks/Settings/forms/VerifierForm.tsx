@@ -224,7 +224,7 @@ export const VerifierForm = ({
         {noVerifiers && !isLoading && (
           <span>
             {isManager
-              ? 'This lock does not have any verifier.'
+              ? 'This lock currently does not have any verifier.'
               : 'Only lock manager can access verifiers list.'}
           </span>
         )}
