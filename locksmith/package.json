@@ -19,7 +19,7 @@
     "db:migrate": "yarn sequelize db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",
     "ci": "yarn lint && yarn test",
-    "build": "tsc",
+    "build": "tsc -p .",
     "tsc": "tsc",
     "clean": "rm -rf build",
     "dist": "yarn build && sh ./scripts/dist.sh",
