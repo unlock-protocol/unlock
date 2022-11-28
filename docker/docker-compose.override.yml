@@ -55,8 +55,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: locksmith
       cache_from:
         - unlocktravis/unlock-dev
     command:
@@ -110,8 +108,6 @@ services:
       cache_from:
         - unlocktravis/unlock-dev
       context: ../
-      args:
-        BUILD_DIR: wedlocks
     command:
       [
         "yarn",

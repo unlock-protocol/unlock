@@ -1,6 +1,6 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
-export const xdai: NetworkConfig = {
+export const gnosis: NetworkConfig = {
   publicProvider: 'https://rpc.gnosischain.com',
   provider: 'https://rpc.unlock-protocol.com/100',
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
@@ -9,7 +9,7 @@ export const xdai: NetworkConfig = {
   id: 100,
   name: 'Gnosis Chain',
   blockTime: 5000,
-  chain: 'xdai',
+  chain: 'xdai', // This is used in llama pricing API so can't rename.
   requiredConfirmations: 12,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
@@ -20,10 +20,10 @@ export const xdai: NetworkConfig = {
     name: 'Blockscout',
     urls: {
       address: (address) =>
-        `https://blockscout.com/poa/xdai/address/${address}/transactions`,
-      transaction: (hash) => `https://blockscout.com/poa/xdai/tx/${hash}`,
+        `https://gnosisscan.io/address/${address}/transactions`,
+      transaction: (hash) => `https://gnosisscan.io/tx/${hash}`,
       token: (address, _holder) =>
-        `https://blockscout.com/xdai/mainnet/token/${address}/token-holders#holders`,
+        `https://gnosisscan.io/token/${address}/token-holders#holders`,
     },
   },
   opensea: {
@@ -64,4 +64,4 @@ export const xdai: NetworkConfig = {
     },
   ],
 }
-export default xdai
+export default gnosis

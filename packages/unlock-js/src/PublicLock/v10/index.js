@@ -34,6 +34,8 @@ const {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 } = v9
 
 export default {
@@ -71,4 +73,6 @@ export default {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 }

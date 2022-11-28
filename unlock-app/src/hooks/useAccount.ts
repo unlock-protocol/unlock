@@ -133,7 +133,7 @@ export const useAccount = (address: string, network: number) => {
           password,
           result.recoveryPhrase
         )
-        ToastHelper.success('Account succesfully created')
+        ToastHelper.success('Account successfully created')
       }
     } catch (error: any) {
       console.error(error)
