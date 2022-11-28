@@ -1,12 +1,14 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+
+const ZERO = ethers.constants.AddressZero
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -82,13 +84,6 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 7 ?? false,
-        onSuccess: (value: string) => {
-          setValue('keyPurchase', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            keyPurchase: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
       {
         queryKey: [
@@ -103,13 +98,6 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 7 ?? false,
-        onSuccess: (value: string) => {
-          setValue('keyCancel', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            keyCancel: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
       {
         queryKey: [
@@ -124,13 +112,6 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 9 ?? false,
-        onSuccess: (value: string) => {
-          setValue('validKey', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            validKey: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
       {
         queryKey: [
@@ -145,13 +126,6 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 9 ?? false,
-        onSuccess: (value: string) => {
-          setValue('tokenURI', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            tokenURI: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
       {
         queryKey: [
@@ -166,13 +140,6 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 11 ?? false,
-        onSuccess: (value: string) => {
-          setValue('keyTransfer', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            keyTransfer: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
       {
         queryKey: [
@@ -187,13 +154,6 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 12 ?? false,
-        onSuccess: (value: string) => {
-          setValue('keyExtend', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            keyExtend: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
       {
         queryKey: [
@@ -208,20 +168,88 @@ export const UpdateHooksForm = ({
             network,
           }),
         enabled: (version ?? 0) >= 12 ?? false,
-        onSuccess: (value: string) => {
-          setValue('keyGrant', value ?? DEFAULT_USER_ACCOUNT_ADDRESS)
-          setEnabledFields({
-            ...enabledFields,
-            keyGrant: value !== DEFAULT_USER_ACCOUNT_ADDRESS,
-          })
-        },
       },
     ],
   })
 
+  const [
+    { data: keyPurchase },
+    { data: keyCancel },
+    { data: validKey },
+    { data: tokenURI },
+    { data: keyTransfer },
+    { data: keyExtend },
+    { data: keyGrant },
+  ] = res ?? []
+
   const isLoading = res?.some(({ isLoading }) => isLoading)
+  const isSuccess = res?.some(({ isSuccess }) => isSuccess)
+
+  useEffect(() => {
+    if (!keyPurchase) return
+    setValue('keyPurchase', keyPurchase ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      keyPurchase: keyPurchase !== ZERO,
+    })
+  }, [keyPurchase, isSuccess])
+
+  useEffect(() => {
+    if (!keyCancel) return
+    setValue('keyCancel', keyCancel ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      keyCancel: keyCancel !== ZERO,
+    })
+  }, [keyCancel, isSuccess])
+
+  useEffect(() => {
+    if (!validKey) return
+    setValue('validKey', validKey ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      validKey: validKey !== ZERO,
+    })
+  }, [validKey, isSuccess])
+
+  useEffect(() => {
+    if (!tokenURI) return
+    setValue('tokenURI', tokenURI ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      tokenURI: tokenURI !== ZERO,
+    })
+  }, [tokenURI, isSuccess])
+
+  useEffect(() => {
+    if (!keyTransfer) return
+    setValue('keyTransfer', keyTransfer ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      keyTransfer: keyTransfer !== ZERO,
+    })
+  }, [keyTransfer, isSuccess])
+
+  useEffect(() => {
+    if (!keyExtend) return
+    setValue('keyExtend', keyExtend ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      keyExtend: keyExtend !== ZERO,
+    })
+  }, [keyExtend, isSuccess])
+
+  useEffect(() => {
+    if (!keyGrant) return
+    setValue('keyGrant', keyGrant ?? ZERO)
+    setEnabledFields({
+      ...enabledFields,
+      keyGrant: keyGrant !== ZERO,
+    })
+  }, [keyGrant])
 
   const onSubmit = async (fields: FormProps) => {
+    console.log(fields)
     if (isValid) {
       const setEventsHooksPromise = setEventsHooksMutation.mutateAsync(fields)
       await ToastHelper.promise(setEventsHooksPromise, {
