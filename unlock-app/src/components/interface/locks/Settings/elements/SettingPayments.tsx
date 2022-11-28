@@ -23,7 +23,7 @@ export const SettingPayments = ({
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Price"
-        description="The price that the membership contract is charging for one membership."
+        description="The price that the lock contract is charging for one membership, whether it is a new one or a renewal."
         isLoading={isLoading}
       >
         <UpdatePriceForm
@@ -50,7 +50,7 @@ export const SettingPayments = ({
 
       <SettingCard
         label="Renewals"
-        description="Automatically renew memberships when they expire."
+        description="Automatically renew memberships when they expire. Users will need to have the previously approved the renewals, as well as have a sufficient amount of tokens in their wallets."
         isLoading={isLoading}
       >
         <SubscriptionForm

@@ -168,7 +168,7 @@ export const UpdatePriceForm = ({
 
             <div className="relative">
               <Input
-                type="numeric"
+                type="number"
                 autoComplete="off"
                 placeholder="0.00"
                 step={0.01}

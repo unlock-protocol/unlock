@@ -111,7 +111,8 @@ export const UpdateDurationForm = ({
           <Input
             tabIndex={0}
             autoComplete="off"
-            step={0.01}
+            min="1"
+            step={1}
             disabled={unlimitedDuration || disabledInput}
             {...register('expirationDuration', {
               required: !unlimitedDuration,

@@ -100,9 +100,9 @@ export const UpdateTransferFee = ({
         disabled={disabledInput}
       />
       <Input
-        label="Transfer fee %"
-        type="numeric"
-        description="You can set up a fee when member transfer their Key to another account/wallet."
+        label="Transfer fee (in % of time left on the membership)"
+        type="number"
+        description="You can set up a fee when member transfer their key to another account or wallet. The fee is taken in time. Setting 100% will disable transfers."
         disabled={disabledInput || !allowTransfer}
         {...register('transferFeePercentage', {
           min: 0,

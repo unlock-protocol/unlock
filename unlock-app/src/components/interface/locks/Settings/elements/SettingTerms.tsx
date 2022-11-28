@@ -30,7 +30,7 @@ export const SettingTerms = ({
   const settings: SettingProps[] = [
     {
       label: 'Duration',
-      description: 'Set up how long each membership lasts.',
+      description: 'Set up how long each membership lasts. ',
       children: (
         <UpdateDurationForm
           lockAddress={lockAddress}
@@ -44,7 +44,7 @@ export const SettingTerms = ({
     {
       label: 'Quantity',
       description:
-        'The maximum number of memberships that can be sold. Note: There is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
+        'The maximum number of memberships that can be sold from your contract. Note: there is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
       children: (
         <UpdateQuantityForm
           lockAddress={lockAddress}
@@ -56,7 +56,7 @@ export const SettingTerms = ({
     },
     {
       label: 'Transfer',
-      description: 'Allow members to transfer membership from one to others.',
+      description: 'Allow members to transfer memberships.',
       children: (
         <UpdateTransferFee
           lockAddress={lockAddress}
