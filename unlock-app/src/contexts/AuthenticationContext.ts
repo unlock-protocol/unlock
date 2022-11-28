@@ -20,6 +20,7 @@ export const defaultValues = {
   authenticate: () => {},
   deAuthenticate: () => {},
   watchAsset: () => {},
+  providerSend: (_method: string, _params: string[]) => {},
 }
 
 export const AuthenticationContext =
