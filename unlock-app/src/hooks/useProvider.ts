@@ -231,6 +231,11 @@ export const useProvider = (config: any) => {
     })
   }
 
+  const providerSend = async (method: string, params: any) => {
+    return await provider.send(method, params)
+  }
+
+  // TODO: cleanup. Do we still use this? We should not,
   const signMessage = async (messageToSign: string) => {
     return ToastHelper.promise(
       walletService.signMessage(messageToSign, 'personal_sign'),
@@ -255,5 +260,6 @@ export const useProvider = (config: any) => {
     disconnectProvider,
     watchAsset,
     changeNetwork,
+    providerSend,
   }
 }
