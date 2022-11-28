@@ -37,7 +37,7 @@ const Wc: NextPage = () => {
             />
 
             <button
-              onClick={() => connect(`${uri}`)}
+              onClick={() => connect(formUri)}
               className="rounded-full flex justify-center cursor-pointer font-semibold items-center gap-2 disabled:bg-opacity-75 disabled:cursor-not-allowed px-6 py-2.5 text-base bg-brand-ui-primary transition ease-in-out duration-300 hover:bg-brand-dark text-white disabled:hover:bg-brand-ui-primary disabled:hover:bg-opacity-75"
             >
               Connect

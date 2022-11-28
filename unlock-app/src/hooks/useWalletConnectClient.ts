@@ -44,6 +44,10 @@ const useWalletConnectClient = () => {
     })
 
     walletConnect.on('call_request', async (error, payload) => {
+      if (error) {
+        console.error(error)
+        return
+      }
       const { id, method, params } = payload
       if (method === 'personal_sign') {
         const result = await providerSend('personal_sign', params)
