@@ -7,7 +7,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { SettingHeader } from './elements/SettingHeader'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
@@ -77,9 +77,43 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     }
   )
 
+  const [{ data: publicLockLatestVersion }, { data: publicLockVersion }] =
+    useQueries({
+      queries: [
+        {
+          queryKey: ['publicLockLatestVersion', network],
+          queryFn: async () =>
+            await web3Service.publicLockLatestVersion(network),
+        },
+        {
+          queryKey: ['publicLockVersion', lockAddress, network],
+          queryFn: async () =>
+            await web3Service.publicLockVersion(lockAddress, network),
+        },
+      ],
+    })
+
   const isLoading = isLoadingLock || isLoadingManager
 
   const tabs: { label: string; children: ReactNode; sidebar?: ReactNode }[] = [
+    {
+      label: 'General',
+      children: (
+        <SettingGeneral
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+          lock={lock}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-general.svg"
+          description="Change the name and ticker for your membership contract."
+        />
+      ),
+    },
     {
       label: 'Membership Terms',
       children: (
@@ -112,7 +146,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-payment.svg"
-          description="Payments lorem ipsum"
+          description="Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments."
         />
       ),
     },
@@ -129,43 +163,26 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-roles.svg"
-          description={`Roles ipsum dolor sit amet consectetur. Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`}
+          description={`Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`}
         />
       ),
     },
     {
-      label: 'General',
-      children: (
-        <SettingGeneral
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-          lock={lock}
-        />
-      ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-general.svg"
-          description="Change the name and ticker for your membership contract."
-        />
-      ),
-    },
-    {
-      label: 'Misc.',
+      label: 'Advanced',
       children: (
         <SettingMisc
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
           isLoading={isLoading}
-          lock={lock}
+          publicLockLatestVersion={publicLockLatestVersion}
+          publicLockVersion={publicLockVersion}
         />
       ),
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-misc.svg"
-          description="Misc ipsum dolor sit amet consectetur. Magna neque facilisis eu feugiat consectetur congue."
+          description="This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol."
         />
       ),
     },

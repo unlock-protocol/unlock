@@ -13,17 +13,13 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: smart-contracts
   
   subgraph: # Subgraph unit testing
     image: subgraph
     platform: linux/amd64
     build:
       context: ../
-      target: subgraph
-      args:
-        BUILD_DIR: subgraph
+      target: dev
 
   unlock-app: # Container for the dashboard
     env_file:
@@ -32,8 +28,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: unlock-app
     ports:
       - 3000:3000
     expose:
@@ -46,8 +40,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: unlock-protocol-com
     ports:
       - 3002:3002
 
@@ -58,8 +50,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: paywall-app
     ports:
       - 3001:3001
 
@@ -70,8 +60,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: packages/paywall
     ports:
       - 3001:3001
 
@@ -80,8 +68,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: packages/unlock-js
     env_file:
       - ./${UNLOCK_ENV}.env
 
@@ -90,8 +76,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: packages/hardhat-plugin
     env_file:
       - ./${UNLOCK_ENV}.env
   contracts: # Container for @unlock-protocol/contracts
@@ -99,8 +83,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: packages/contracts
     env_file:
       - ./${UNLOCK_ENV}.env
 
@@ -109,8 +91,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: wedlocks
     env_file:
       - ./${UNLOCK_ENV}.env
 
@@ -119,8 +99,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: integration-tests
 
     env_file:
       - ./${UNLOCK_ENV}.env
@@ -137,8 +115,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: locksmith
     env_file:
       - ././${UNLOCK_ENV}.env
       - ./integration-locksmith.env
@@ -153,8 +129,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: locksmith
     env_file:
       - ././${UNLOCK_ENV}.env
       - ./integration-locksmith.env

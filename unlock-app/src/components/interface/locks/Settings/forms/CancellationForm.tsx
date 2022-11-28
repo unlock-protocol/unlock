@@ -1,6 +1,6 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -61,7 +61,7 @@ export const CancellationForm = ({
     register,
     handleSubmit,
     setValue,
-    formState: { isValid, errors, isDirty },
+    formState: { isValid, errors },
   } = useForm<FormProps>()
 
   const updateRefundPenalty = async ({
@@ -108,81 +108,63 @@ export const CancellationForm = ({
     })
   }
 
-  const [
-    { isLoading: isLoadingFreeTrial, data: freeTrialLength },
-    { isLoading: isLoadingPenalty, data: refundPenaltyBasisPoints },
-  ] = useQueries({
-    queries: [
-      {
-        queryFn: async () => getFreeTrialLength(),
-        onSuccess: (value = 0) => {
-          setAllowTrial(value > 0)
+  const [{ isLoading: isLoadingFreeTrial }, { isLoading: isLoadingPenalty }] =
+    useQueries({
+      queries: [
+        {
+          queryFn: async () => getFreeTrialLength(),
+          onSuccess: (freeTrialLength = 0) => {
+            const allowTrial = freeTrialLength > 0
+
+            setAllowTrial(freeTrialLength > 0)
+            setValue('freeTrialLength', allowTrial ? freeTrialLength ?? 0 : 0, {
+              shouldValidate: true,
+            })
+          },
+          onError: () => {
+            ToastHelper.error('Impossible to retrieve freeTrialLength value.')
+          },
+          queryKey: [
+            'getFreeTrialLength',
+            lockAddress,
+            network,
+            updateRefundPenaltyMutation.isSuccess,
+          ],
         },
-        onError: () => {
-          ToastHelper.error('Impossible to retrieve freeTrialLength value.')
+        {
+          queryFn: async () => getRefundPenaltyBasisPoints(),
+          onSuccess: (refundPenaltyBasisPoints = 0) => {
+            const cancelPenalty = refundPenaltyBasisPoints > 0
+            const refundPenaltyPercentage =
+              (refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
+            setCancelPenalty(cancelPenalty)
+
+            setValue(
+              'refundPenaltyPercentage',
+              cancelPenalty ? refundPenaltyPercentage : 0,
+              {
+                shouldValidate: true,
+              }
+            )
+          },
+          onError: () => {
+            ToastHelper.error(
+              'Impossible to retrieve refundPenaltyBasisPoints value.'
+            )
+          },
+          queryKey: [
+            'refundPenaltyBasisPoints',
+            lockAddress,
+            network,
+            updateRefundPenaltyMutation.isSuccess,
+          ],
         },
-        queryKey: [
-          'getFreeTrialLength',
-          lockAddress,
-          network,
-          updateRefundPenaltyMutation.isSuccess,
-        ],
-      },
-      {
-        queryFn: async () => getRefundPenaltyBasisPoints(),
-        onSuccess: (value = 0) => {
-          setCancelPenalty(value > 0)
-        },
-        onError: () => {
-          ToastHelper.error(
-            'Impossible to retrieve refundPenaltyBasisPoints value.'
-          )
-        },
-        queryKey: [
-          'refundPenaltyBasisPoints',
-          lockAddress,
-          network,
-          updateRefundPenaltyMutation.isSuccess,
-        ],
-      },
-    ],
-  })
+      ],
+    })
 
   const isLoading = isLoadingPenalty || isLoadingFreeTrial
 
   const disabledInput = updateRefundPenaltyMutation.isLoading || disabled
-
-  useEffect(() => {
-    setValue('freeTrialLength', allowTrial ? freeTrialLength ?? 0 : 0, {
-      shouldValidate: true,
-    })
-  }, [
-    allowTrial,
-    freeTrialLength,
-    setValue,
-    updateRefundPenaltyMutation.isLoading,
-    updateRefundPenaltyMutation.isSuccess,
-  ])
-
-  useEffect(() => {
-    if (updateRefundPenaltyMutation.isLoading) return
-
-    const refundPenaltyPercentage = (refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
-
-    setValue(
-      'refundPenaltyPercentage',
-      cancelPenalty ? refundPenaltyPercentage : 0,
-      {
-        shouldValidate: true,
-      }
-    )
-  }, [
-    cancelPenalty,
-    refundPenaltyBasisPoints,
-    setValue,
-    updateRefundPenaltyMutation.isLoading,
-    updateRefundPenaltyMutation.isSuccess,
-  ])
 
   if (isLoading) return <CancellationFormPlaceholder />
 
@@ -207,19 +189,15 @@ export const CancellationForm = ({
           </div>
 
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !allowTrial}
             step={1}
+            error={errors?.freeTrialLength && 'This field is required'}
             {...register('freeTrialLength', {
               required: true,
               min: 0,
             })}
           />
-          {errors?.freeTrialLength && (
-            <span className="absolute text-xs text-red-700">
-              This field is required
-            </span>
-          )}
         </div>
       </div>
       <div className="flex flex-col gap-6">
@@ -237,20 +215,19 @@ export const CancellationForm = ({
             />
           </div>
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !cancelPenalty}
             step={0.01}
+            error={
+              errors?.refundPenaltyPercentage &&
+              'This field accept percentage value between 0 and 100.'
+            }
             {...register('refundPenaltyPercentage', {
               required: true,
               min: 0,
               max: 100,
             })}
           />
-          {errors?.refundPenaltyPercentage && (
-            <span className="absolute text-xs text-red-700">
-              This field accept percentage value between 0 and 100.
-            </span>
-          )}
         </div>
       </div>
       {isManager && (
@@ -258,7 +235,7 @@ export const CancellationForm = ({
           className="w-full md:w-1/3"
           type="submit"
           loading={updateRefundPenaltyMutation.isLoading}
-          disabled={disabledInput || !isDirty}
+          disabled={disabledInput}
         >
           Apply
         </Button>

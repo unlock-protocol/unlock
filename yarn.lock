@@ -12787,6 +12787,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@solidity-parser/parser@npm:^0.14.5":
+  version: 0.14.5
+  resolution: "@solidity-parser/parser@npm:0.14.5"
+  dependencies:
+    antlr4ts: ^0.5.0-alpha.4
+  checksum: 9e85a0d4f8a05a11db6022444b70b2f353e2358467b1cce44cdda703ae1e3c7337e1b8cbc2eec8e14a8f34f9c60b42f325e5fe9b3c934cc980e35091e292d7ee
+  languageName: node
+  linkType: hard
+
 "@solidity-parser/parser@npm:^0.8.0":
   version: 0.8.2
   resolution: "@solidity-parser/parser@npm:0.8.2"
@@ -18515,7 +18524,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@0.0.12, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@npm:0.0.12":
+  version: 0.0.12
+  resolution: "@unlock-protocol/contracts@npm:0.0.12"
+  checksum: 827acc0bd291beafba84732363150fa366d307d916a0620d63f83bc7a4e3c51201e3acde7706a8bd81412f1c96cea12e99b27a78255f946958400bd61212bced
+  languageName: node
+  linkType: hard
+
+"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -18824,6 +18840,7 @@ __metadata:
     lint-staged: 13.0.3
     node-fetch: 2.6.7
     prettier: 2.5.1
+    prettier-plugin-solidity: ^1.0.0
     prompt: 1.2.2
     solhint: 3.3.7
     solidity-coverage: 0.7.21
@@ -19001,6 +19018,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@walletconnect/client": 1.8.0
     "@walletconnect/web3-provider": 1.8.0
     "@xstate/react": 3.0.1
     autoprefixer: 10.4.13
@@ -19320,7 +19338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/client@npm:^1.8.0":
+"@walletconnect/client@npm:1.8.0, @walletconnect/client@npm:^1.8.0":
   version: 1.8.0
   resolution: "@walletconnect/client@npm:1.8.0"
   dependencies:
@@ -29017,6 +29035,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"emoji-regex@npm:^10.2.1":
+  version: 10.2.1
+  resolution: "emoji-regex@npm:10.2.1"
+  checksum: 1aa2d16881c56531fdfc03d0b36f5c2b6221cc4097499a5665b88b711dc3fb4d5b8804f0ca6f00c56e5dcf89bac75f0487eee85da1da77df3a33accc6ecbe426
+  languageName: node
+  linkType: hard
+
 "emoji-regex@npm:^7.0.1":
   version: 7.0.3
   resolution: "emoji-regex@npm:7.0.3"
@@ -35018,7 +35043,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
+  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
   languageName: node
   linkType: hard
 
@@ -49162,6 +49187,22 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"prettier-plugin-solidity@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "prettier-plugin-solidity@npm:1.0.0"
+  dependencies:
+    "@solidity-parser/parser": ^0.14.5
+    emoji-regex: ^10.2.1
+    escape-string-regexp: ^4.0.0
+    semver: ^7.3.8
+    solidity-comments-extractor: ^0.0.7
+    string-width: ^4.2.3
+  peerDependencies:
+    prettier: ^2.3.0
+  checksum: 2ca347d66f12dcb397ce3fcf441563c0413f17c8835bea6422625fb190458a6edbdb7c5775ccc8347f049f55f15443361b8fd3ea546a426b4f521c59a16aaf84
+  languageName: node
+  linkType: hard
+
 "prettier@npm:1.19.1, prettier@npm:^1.14.3":
   version: 1.19.1
   resolution: "prettier@npm:1.19.1"
@@ -53925,6 +53966,13 @@ resolve@^2.0.0-next.3:
   version: 0.4.26
   resolution: "solidity-ast@npm:0.4.26"
   checksum: bfd07ea806fa3989a91f496457969afb292b840a74b0c4015ea16d9ff861091454e1ce3931e667bcbf8aa5c64f10b932fbe8ce50a4b594a031072ebd1938f948
+  languageName: node
+  linkType: hard
+
+"solidity-comments-extractor@npm:^0.0.7":
+  version: 0.0.7
+  resolution: "solidity-comments-extractor@npm:0.0.7"
+  checksum: a5cedf2310709969bc1783a6c336171478536f2f0ea96ad88437e0ef1e8844c0b37dd75591b0a824ec9c30640ea7e31b5f03128e871e6235bef3426617ce96c4
   languageName: node
   linkType: hard
 

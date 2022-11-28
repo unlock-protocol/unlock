@@ -27,6 +27,7 @@
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
+    "@walletconnect/client": "1.8.0",
     "@walletconnect/web3-provider": "1.8.0",
     "@xstate/react": "3.0.1",
     "babel-eslint": "10.1.0",
@@ -95,7 +96,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --no-lint",
     "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
