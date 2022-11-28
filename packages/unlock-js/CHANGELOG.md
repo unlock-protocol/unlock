@@ -1,5 +1,69 @@
 # Changes
 
+# 0.32.11
+
+- add `updateTransferFee` in walletService
+
+# 0.32.10
+
+- add `referrerFees` in web3Service
+- add `setReferrerFee` in walletService
+
+# 0.32.9
+
+- add `publicLockLatestVersion` in web3Service
+- add `upgradeLock` in walletService
+
+# 0.32.8
+
+- fix `updateRefundPenalty` and `renounceLockManager` in walletService
+
+# 0.32.7
+
+- add `setEventHooks` in walletService
+- add `onKeyCancelHook` in web3Service
+- add `onKeyPurchaseHook` in web3Service
+- add `onKeyTransferHook` in web3Service
+- add `onKeyTokenURIHook` in web3Service
+- add `onValidKeyHook` in web3Service
+- add `onKeyExtendHook` in web3Service
+- add `onKeyGrantHook` in web3Service
+
+# 0.32.6
+
+- increased robustness by checking address format on events
+
+# 0.32.5
+
+- add `updateRefundPenalty` in walletService
+- add `freeTrialLength` in web3Service
+- add `refundPenaltyBasisPoints` in web3Service
+
+# 0.32.4
+
+- Using `transactionOptions` for `createLock`
+
+# 0.32.3
+
+- Pass network property on locks and keys returned from subgraph.
+
+# 0.32.1
+
+- Change parameter name for `updateLockSymbol`
+
+# 0.32.0
+
+Allow passing creator in the createLock method and improve typing.
+
+# 0.31.6
+
+- add `addLockManager` in walletService
+- add `renounceLockManager` in walletService
+
+# 0.31.5
+
+- Added suppport for `runEstimate`
+
 # 0.31.4
 
 - Add check to ensure lock is deployed from unlock factory contract in getLock method

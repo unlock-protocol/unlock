@@ -53,6 +53,7 @@
     "lint-staged": "13.0.3",
     "node-fetch": "2.6.7",
     "prettier": "2.5.1",
+    "prettier-plugin-solidity": "^1.0.0",
     "prompt": "1.2.2",
     "solhint": "3.3.7",
     "solidity-coverage": "0.7.21",
@@ -70,6 +71,7 @@
   "scripts": {
     "test": "hardhat test",
     "clean": "rm -rf artifacts",
+    "lint:contracts:prettier": "prettier --write 'contracts/**/*.sol'",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code",

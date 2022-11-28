@@ -84,7 +84,7 @@ export default async function (
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer.address
+      this.signer.getAddress()
     )
 
     let totalAmountToApprove = totalApproval
@@ -162,7 +162,8 @@ export default async function (
       delete transactionOptions.gasPrice
     }
   }
-  const transactionPromise = lockContract.purchase(
+
+  const transactionRequest = await lockContract.populateTransaction.purchase(
     keyPrices,
     owners,
     referrers,
@@ -170,6 +171,17 @@ export default async function (
     data,
     transactionOptions
   )
+
+  if (transactionOptions.runEstimate) {
+    const estimate = lockContract.signer.estimateGas(transactionRequest)
+    return {
+      transactionRequest,
+      estimate,
+    }
+  }
+
+  const transactionPromise =
+    lockContract.signer.sendTransaction(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
@@ -187,7 +199,7 @@ export default async function (
   const parser = lockContract.interface
   const transferEvents = receipt.logs
     .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {

@@ -111,26 +111,55 @@ export default class Web3Service extends UnlockService {
     }
 
     const provider = this.providerForNetwork(network)
+
+    const version = await this.lockContractAbiVersion(
+      address,
+      this.providerForNetwork(network)
+    )
+
+    const lock = await version.getLock.bind(this)(
+      address,
+      this.providerForNetwork(network)
+    )
+    // Add the lock address
+    lock.address = address
+
+    lock.unlockContractAddress = ethers.utils.getAddress(
+      lock.unlockContractAddress
+    )
+
+    const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
+      (d) => ethers.utils.getAddress(d.unlockAddress)
+    )
+    const isPreviousUnlockContract = previousDeployAddresses.includes(
+      lock.unlockContractAddress
+    )
+
+    const isUnlockContract =
+      ethers.utils.getAddress(networkConfig.unlockAddress) ===
+      lock.unlockContractAddress
+
+    // Check that the Unlock address matches one of the configured ones
+    if (!isUnlockContract && !isPreviousUnlockContract) {
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
+      )
+    }
+
+    // Check that the Unlock contract has indeed deployed this lock
     const unlockContract = await this.getUnlockContract(
-      networkConfig.unlockAddress,
+      lock.unlockContractAddress,
       provider
     )
 
     const response = await unlockContract.locks(address)
 
     if (!response.deployed) {
-      throw new Error('Lock is not deployed from unlock factory contract.')
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
+      )
     }
 
-    const version = await this.lockContractAbiVersion(
-      address,
-      this.providerForNetwork(network)
-    )
-    const lock = await version.getLock.bind(this)(
-      address,
-      this.providerForNetwork(network)
-    )
-    lock.address = address
     return lock
   }
 
@@ -698,5 +727,216 @@ export default class Web3Service extends UnlockService {
       amount,
     })
     return price
+  }
+
+  /**
+   * Returns freeTrialLength value
+   */
+  async freeTrialLength({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const freeTrialLength = await lockContract.freeTrialLength()
+    return ethers.BigNumber.from(freeTrialLength).toNumber()
+  }
+
+  /**
+   * Returns refundPenaltyBasisPoints value
+   */
+  async refundPenaltyBasisPoints({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const refundPenaltyBasisPoints =
+      await lockContract.refundPenaltyBasisPoints()
+    return ethers.BigNumber.from(refundPenaltyBasisPoints).toNumber()
+  }
+
+  /**
+   * Returns onKeyCancelHook value
+   */
+  async onKeyCancelHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyCancelHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyPurchaseHook value
+   */
+  async onKeyPurchaseHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyPurchaseHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyTransferHook value
+   */
+  async onKeyTransferHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyTransferHook()
+    return address
+  }
+
+  /**
+   * Returns onTokenURIHook value
+   */
+  async onTokenURIHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onTokenURIHook()
+    return address
+  }
+
+  /**
+   * Returns onValidKeyHook value
+   */
+  async onValidKeyHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onValidKeyHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyExtendHook value
+   */
+  async onKeyExtendHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyExtendHook()
+    return address
+  }
+
+  /**
+   * Returns onKeyGrantHook value
+   */
+  async onKeyGrantHook({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onKeyGrantHook()
+    return address
+  }
+
+  /**
+   * Returns last lock version
+   * @param {Number} network
+   */
+  async publicLockLatestVersion(network: number) {
+    const provider = this.providerForNetwork(network)
+    const networkConfig = this.networks[network]
+    const unlockAddress = networkConfig.unlockAddress
+
+    if (!unlockAddress) {
+      throw new Error('unlockAddress is not defined for the provided network. ')
+    }
+    const unlockContract = await this.getUnlockContract(unlockAddress, provider)
+    return await unlockContract.publicLockLatestVersion()
+  }
+
+  /**
+   * Returns referrer fees
+   */
+  async referrerFees({
+    lockAddress,
+    network,
+    address,
+  }: {
+    lockAddress: string
+    network: number
+    address: string
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const referrerFees = await lockContract.referrerFees(address)
+    return ethers.BigNumber.from(referrerFees).toNumber()
+  }
+
+  async getGlobalBaseTokenURI(network: number) {
+    const provider = this.providerForNetwork(network)
+    const networkConfig = this.networks[network]
+    const unlockAddress = networkConfig.unlockAddress
+
+    if (!unlockAddress) {
+      throw new Error('unlockAddress is not defined for the provided network. ')
+    }
+    const unlockContract = await this.getUnlockContract(unlockAddress, provider)
+    return await unlockContract.publicLockLatestVersion()
   }
 }
