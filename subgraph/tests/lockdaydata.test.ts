@@ -43,5 +43,6 @@ describe('Describe UnlockDailyData Events', () => {
       'activeLocks',
       `[]`
     )
+    assert.fieldEquals('UnlockDailyData', lockDayID.toString(), 'gnpValue', '0')
   })
 })

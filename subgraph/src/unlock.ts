@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 import { log, BigInt, ethereum } from '@graphprotocol/graph-ts'
-import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
+import { NewLock, LockUpgraded, GNPChanged } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
 import { Lock, LockStats, UnlockDailyData } from '../generated/schema'
@@ -39,6 +39,7 @@ export function handleNewLock(event: NewLock): void {
     unlockDailyData = new UnlockDailyData(dayID.toString())
     unlockDailyData.lockDeployed = BigInt.fromI32(1)
     unlockDailyData.keysSold = BigInt.fromI32(0)
+    unlockDailyData.gnpValue = BigInt.fromI32(0)
     unlockDailyData.activeLocks = []
     unlockDailyData.save()
   } else {
@@ -116,5 +117,15 @@ export function handleLockUpgraded(event: LockUpgraded): void {
   if (lock) {
     lock.version = BigInt.fromI32(event.params.version)
     lock.save()
+  }
+}
+
+export function handleGNPChanged(event: GNPChanged): void {
+  let timestamp = event.block.timestamp.toI32()
+  let dayID = timestamp / 86400
+  let unlockDailyData = UnlockDailyData.load(dayID.toString())
+  if (unlockDailyData) {
+    unlockDailyData.gnpValue = event.params.grossNetworkProduct
+    unlockDailyData.save()
   }
 }
