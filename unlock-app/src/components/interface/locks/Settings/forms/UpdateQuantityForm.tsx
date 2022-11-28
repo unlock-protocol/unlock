@@ -107,7 +107,7 @@ export const UpdateQuantityForm = ({
         <div className="relative">
           <Input
             placeholder="Enter quantity"
-            type="numeric"
+            type="number"
             autoComplete="off"
             step={1}
             disabled={unlimitedQuantity || disabledInput}
