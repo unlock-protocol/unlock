@@ -1291,6 +1291,7 @@ paths:
   /v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}:
     delete:
       operationId: cancelSubscription
+      description: Cancel a fiat subscription.
       security:
         - User: []
       parameters:
@@ -1307,6 +1308,7 @@ paths:
 
     get:
       operationId: getSubscription
+      description: Get an active subscription associated with the key. It can be fiat or crypto.
       security:
         - User: []
       parameters:
@@ -1316,41 +1318,34 @@ paths:
 
       responses:
         200:
-          description: Key subscription object.
+          description: Any active subscription.
           content:
             application/json:
               schema:
                 type: object
                 nullable: true
                 properties:
-                  id:
+                  next:
                     type: number
 
-                  keyId:
-                    type: number
-
-                  lockAddress:
+                  balance:
                     type: string
 
-                  network:
-                    type: number
-
-                  userAddress:
+                  price:
                     type: string
 
-                  amount:
-                    type: number
+                  approvedRenewals:
+                    type: string
 
-                  unlockServiceFee:
-                    type: number
+                  possibleRenewals:
+                    type: string
+                    description: Possible number of renewals based on the user account balance.
 
-                  stripeCustomerId:
-                    type: number
+                  type:
+                    enum:
+                      - crypto
+                      - fiat
 
-                  connectedCustomer:
-                    type: number
-
-                  recurring:
-                    type: number
+                    description: The type of payment method used for the subscription.
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
