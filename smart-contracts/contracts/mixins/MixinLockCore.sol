@@ -283,7 +283,41 @@ contract MixinLockCore is
     return _totalSupply;
   }
 
-  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10
+  /*
+  function _onlyUnlockBridge(address _originSender, uint32 _origin) internal {
+    require(
+      _origin == <ORIGIN_DOMAIN> &&
+        _originSender == <SOURCE_CONTRACT_ADDRESS> &&
+        msg.sender == <CONNEXT_CONTRACT_ADDRESS>,
+      "Expected source contract on origin domain called by Connext"
+    );
+    _;
+  }
+  
+  function xReceive(
+    bytes32 transferId,
+    uint256 amount,
+    address asset,
+    address originSender,
+    uint32 origin,
+    bytes memory callData
+  ) external returns (bytes memory) {
+    // only unlock can send this sort of call
+    // _onlyUnlockBridge(originSender, origin);
+    (bool success, ) = address(this).call{value: amount}(callData);
+    // catch revert reason
+    if (success == false) {
+      assembly {
+          let ptr := mload(0x40)
+          let size := returndatasize()
+          returndatacopy(ptr, 0, size)
+          revert(ptr, size)
+      }
+    }
+  }
+  */
+
+  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
   // decreased from 997 to 996 when adding `onKeyExtendHook` in v12
   // decreased from 996 to 995 when adding `onKeyGrantHook` in v12

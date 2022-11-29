@@ -5,14 +5,10 @@ import 'hardhat/console.sol';
 
 contract TestConnext  {
 
-  address public receiver;
-
-  constructor(
-    address _receiver
-  ) {
-    receiver = _receiver;
-  }
-
+  /**
+   * Mock Connext with a basic function that receives xcall
+   * and send it to a IXReceiver contract 
+   */
   function xcall(
     uint32 _destination, 
     address _to, 
@@ -23,18 +19,15 @@ contract TestConnext  {
     bytes calldata _callData
   ) external payable returns (bytes32 transferId) {
 
-    console.log('---- arrived in xcall');
-    console.log(_destination);
-    console.log(_to);
-    console.log(_asset);
-    console.log(_delegate);
-    console.log(_amount);
-    console.log(_slippage);
-    console.logBytes(_callData);
-    
+    console.log('---- arrived in bridge');
+    uint valueToSend = _amount;
     uint32 origin = uint32(31337);
     transferId = bytes32(block.timestamp);
-    IXReceiver(receiver).xReceive(
+
+    console.log('---- crossed the bridge with id:');
+    console.log(uint(transferId));
+
+    IXReceiver(_to).xReceive(
       transferId,
       _amount, // amount of token in wei
       _asset, // the ERC20 token
