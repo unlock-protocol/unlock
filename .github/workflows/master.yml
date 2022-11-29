@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - docker-build
+      - dockerfile-heroku-fix
 
 jobs:
   run-all-tests:
