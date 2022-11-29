@@ -33,8 +33,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: subgraph
     env_file: development.env
     command:
       [
@@ -57,8 +55,6 @@ services:
     build:
       context: ../
       target: dev
-      args:
-        BUILD_DIR: tests
     env_file: test.env
     volumes:
       - ./development/subgraph/networks.json:/home/unlock/networks.json
