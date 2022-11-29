@@ -405,26 +405,28 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes calldata callData,
     uint relayerFee
   ) public payable returns (bytes32 transferID){
-    console.log('---- calling bridge from unlock');
-    
     // get the correct receiver contract on dest chain
     address receiverAddress = receiverAddresses[destChainId];
     require(receiverAddress != address(0), 'missing receiverAddress on dest chain');
-    require(currency != address(0));
-    require(relayerFee <= address(this).balance, 'INSUFFICIENT_BALANCE');
 
-    IERC20 token = IERC20(currency);
-    // TODO: send using transfer (no approval)
-    require(
-      token.allowance(msg.sender, address(this)) >= amount,
-      "User must approve amount"
-    );
+    uint valueToSend = relayerFee;
+    
+    if(currency != address(0)) {
+      IERC20 token = IERC20(currency);
+      // TODO: send using transfer (no approval)
+      require(
+        token.allowance(msg.sender, address(this)) >= amount,
+        "User must approve amount"
+      );
 
-    // User sends funds to this contract
-    token.transferFrom(msg.sender, address(this), amount);
+      // User sends funds to this contract
+      token.transferFrom(msg.sender, address(this), amount);
 
-    // This contract approves transfer to Connext
-    token.approve(bridgeAddress, amount);
+      // This contract approves transfer to Connext
+      token.approve(bridgeAddress, amount);
+    } else {
+      valueToSend = valueToSend + amount;
+    }
 
     // get the domain
     uint32 destinationDomain = getDomain(destChainId);
@@ -436,8 +438,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       callData
     );            
 
+    // make sure we have enough balance
+    require(valueToSend <= address(this).balance, 'INSUFFICIENT_BALANCE');
+
     // send the call over the chain
-    transferID = IConnext(bridgeAddress).xcall{value: relayerFee}(
+    transferID = IConnext(bridgeAddress).xcall{value: valueToSend}(
       destinationDomain,    // _destination: Domain ID of the destination chain
       receiverAddress,      // _to: address of the target contract
       currency,           // _asset: address of the token contract
