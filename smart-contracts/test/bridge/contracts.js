@@ -35,7 +35,7 @@ contract('Unlock / bridge', () => {
     weth = await deployWETH(unlockOwner)
 
     // connext
-    const MockConnext = await ethers.getContractFactory('TestConnext')
+    const MockConnext = await ethers.getContractFactory('TestBridge')
     connext = await MockConnext.deploy(weth.address)
 
     // fund the bridge
