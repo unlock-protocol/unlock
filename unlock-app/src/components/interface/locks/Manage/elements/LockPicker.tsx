@@ -47,8 +47,6 @@ export const LockPicker = ({
   const { network: connectedNetwork } = useAuth()
   const [lockAddress, setLockAddress] = useState<any>(undefined)
   const [network, setNetwork] = useState<any>(connectedNetwork!)
-  const [showCustomLockAddress, setShowCustomLockAddress] = useState(false)
-  const [customLockAddress, setCustomLockAddress] = useState('')
 
   const getLocksByNetwork = async () => {
     if (!network) return null
@@ -115,55 +113,30 @@ export const LockPicker = ({
         <SelectPlaceholder />
       ) : (
         <>
-          {showCustomLockAddress ? (
-            <Input
-              label="Custom address"
-              size="small"
-              onChange={(e) => setCustomLockAddress(e?.target?.value ?? '')}
-            />
-          ) : (
-            <>
-              {networkHasLocks ? (
-                <Select
-                  label="Lock"
-                  options={locksOptions}
-                  size="small"
-                  onChange={setLockAddress}
-                  defaultValue={defaultValues?.lockAddress}
-                />
-              ) : (
-                network && (
-                  <span className="text-base">
-                    You have not deployed locks on this network yet.{' '}
-                    <Link className="underline" href="/locks/create">
-                      Deploy one now
-                    </Link>
-                    .
-                  </span>
-                )
-              )}
-            </>
-          )}
+          <>
+            {networkHasLocks ? (
+              <Select
+                label="Lock"
+                options={locksOptions}
+                size="small"
+                onChange={setLockAddress}
+                defaultValue={defaultValues?.lockAddress}
+                customOption={true}
+              />
+            ) : (
+              network && (
+                <span className="text-base">
+                  You have not deployed locks on this network yet.{' '}
+                  <Link className="underline" href="/locks/create">
+                    Deploy one now
+                  </Link>
+                  .
+                </span>
+              )
+            )}
+          </>
         </>
       )}
-      <div className="flex justify-end gap-3">
-        <Button
-          onClick={() => setShowCustomLockAddress(!showCustomLockAddress)}
-          variant="outlined-primary"
-          size="tiny"
-        >
-          {showCustomLockAddress ? 'Select from list' : 'Add custom address'}
-        </Button>
-        {showCustomLockAddress && (
-          <Button
-            onClick={() => setLockAddress(customLockAddress)}
-            size="tiny"
-            disabled={customLockAddress?.length === 0}
-          >
-            Confirm
-          </Button>
-        )}
-      </div>
     </div>
   )
 }

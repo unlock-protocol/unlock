@@ -31,6 +31,7 @@ import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
+import { LockPicker } from './elements/LockPicker'
 
 interface ActionBarProps {
   lockAddress: string
