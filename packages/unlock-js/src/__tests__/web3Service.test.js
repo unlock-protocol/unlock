@@ -127,6 +127,7 @@ describe('Web3Service', () => {
       const diff = Math.ceil((uniswap / coinbase) * 100)
       expect(diff).toBeGreaterThan(95)
     })
+
     it('Return LINK price to USDC', async () => {
       expect.assertions(1)
       const uniswap = await web3Service.consultUniswap({
