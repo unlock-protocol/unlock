@@ -106,4 +106,4 @@ Unlock should be a very small part of any application because it is just about _
 - A [chat room application](https://ethcc-chat.glitch.me/) where only members can participate! I built this application for [EthCC](https://ethcc.io/) to show how easy to re-use a locks used to sell tickets in a different context!
 - A [locked Typeform](https://locked-typeform.glitch.me/). Typeform is an application which lets you build surveys and forms. This example shows how you can build a way to collect information only from your members!
 
-What would you build? Please let us know in the comments!
+What would you build?
