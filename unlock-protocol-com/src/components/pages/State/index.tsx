@@ -9,6 +9,7 @@ import { networks } from '@unlock-protocol/networks'
 import { getGNPs } from '../../../utils/apiRequest'
 import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
 import { IconBaseProps } from 'react-icons'
+import { utils } from 'ethers'
 
 const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -48,6 +49,11 @@ type INetworkSubgraph = {
 
 type IXaxis = {
   categories: string[]
+}
+
+type IGNPSum = {
+  name: string
+  gnpSum: number
 }
 
 const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
@@ -142,12 +148,46 @@ function DateFilter({
   )
 }
 
+function CalcActiveLocksCount(graphData: any[]) {
+  const currentDay = Math.round(new Date().getTime() / 86400000)
+  let activeLockList = []
+  const _2DArr = graphData.map((item) =>
+    item.data.unlockDailyDatas
+      .filter((data) => data.id >= currentDay - 30 && data.id <= currentDay)
+      .map((dailyItem) => dailyItem.activeLocks)
+  )
+  for (const activeLock in _2DArr) {
+    if (Array.isArray(_2DArr[activeLock])) {
+      _2DArr[activeLock].forEach((lockAddr) => {
+        activeLockList = activeLockList.concat(lockAddr)
+      })
+    } else {
+      activeLockList = activeLockList.concat(_2DArr[activeLock])
+    }
+  }
+  return [...new Set(activeLockList)].length
+}
+
 function CalcRenderData(
   graphData: INetworkSubgraph,
   timestampArray: number[],
   flag: 0 | 1 | 2,
   filter: string
 ) {
+  if (flag === 1) {
+    const activeLockList = timestampArray.map((timestamp) =>
+      graphData.unlockDailyDatas
+        .filter((data) => data.id >= timestamp - 30 && data.id <= timestamp)
+        .map(({ activeLocks }) => activeLocks)
+    )
+    activeLockList.map((activeLock) => {
+      let _1Dlock = []
+      for (const key in activeLock) {
+        _1Dlock = _1Dlock.concat(activeLock[key])
+      }
+      return [...new Set(_1Dlock)].length
+    })
+  }
   return timestampArray
     .map((timestamp) =>
       graphData.unlockDailyDatas.filter(
@@ -186,8 +226,11 @@ export function State() {
   const [selectedNetworkSubgraphData, setSelectedNetworkSubgraphData] =
     useState<INetworkSubgraph | undefined>(undefined)
   const [series, setSeries] = useState<ISeries[]>([])
-
   const [xaxis, setXaxis] = useState<IXaxis | undefined>(undefined)
+  const [gnpTotalValueByNetwork, setGnpTotalValueByNetwork] = useState<
+    IGNPSum[]
+  >([])
+  const [gnpPByNetworks, setGNPPByNetworks] = useState<any[]>([])
 
   useEffect(() => {
     if (selectedNetworkSubgraphData) {
@@ -255,7 +298,7 @@ export function State() {
             const cur = new Date()
             return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
               'default',
-              { dateStyle: 'short' }
+              { month: 'short', year: '2-digit' }
             )
           })
           timestampArray = [...Array(36).keys()].reverse().map((key) => {
@@ -321,19 +364,49 @@ export function State() {
         networks[selectedNetwork].subgraph.endpointV2,
         currentDay -
           (filter === '1D'
-            ? 2
+            ? 32
             : filter === '7D'
-            ? 8
+            ? 38
             : filter === '1M'
-            ? 31
+            ? 61
             : filter === '1Y'
-            ? 366
-            : 1000)
+            ? 396
+            : 1030)
       )
       setSelectedNetworkSubgraphData(data)
     }
     run()
-  }, [selectedNetwork, filter])
+
+    const gnpPercentageByNetworks = subgraphData.map((networkData) => ({
+      name: networkData.name,
+      gnpPercentage:
+        parseFloat(
+          utils.formatUnits(
+            BigInt(
+              networkData.data.unlockDailyDatas
+                .filter(
+                  (item) =>
+                    item.id >=
+                      currentDay -
+                        (filter === '1D'
+                          ? 2
+                          : filter === '7D'
+                          ? 8
+                          : filter === '1M'
+                          ? 31
+                          : 366) && item.id <= currentDay
+                )
+                .reduce((pv, b) => pv + parseInt(b.grossNetworkProduct), 0)
+            ),
+            '18'
+          )
+        ) /
+        gnpTotalValueByNetwork.filter(
+          (item) => item.name === networkData.name
+        )[0]?.gnpSum,
+    }))
+    setGNPPByNetworks(gnpPercentageByNetworks)
+  }, [selectedNetwork, filter, subgraphData])
 
   useEffect(() => {
     const run = async () => {
@@ -342,7 +415,7 @@ export function State() {
           if (!networks[key].isTestNetwork) {
             const { data } = await getSubgraph4GNP(
               networks[key].subgraph.endpointV2,
-              currentDay - 30
+              currentDay - 1030
             )
             return { name: networks[key].name, data }
           }
@@ -375,26 +448,28 @@ export function State() {
           Icon: Key,
         },
         {
-          value: [
-            ...new Set(
-              subgraphData.map((item) => {
-                const _2DArr = item.data.unlockDailyDatas.map(
-                  ({ activeLocks }) => activeLocks
-                )
-                let activeLocks = []
-                for (let i = 0; i < _2DArr.length; i++) {
-                  activeLocks = activeLocks.concat(_2DArr[i])
-                }
-                return activeLocks
-              })
-            ),
-          ].length,
+          value: CalcActiveLocksCount(subgraphData),
           title: 'Active Locks',
           description: 'Minted at least 1 membership in the last 30 days',
           Icon: ActiveLock,
         },
       ]
+      const gnpDataByNetworks = subgraphData.map((networkData) => ({
+        name: networkData.name,
+        gnpSum: parseFloat(
+          utils.formatUnits(
+            BigInt(
+              networkData.data.unlockDailyDatas.reduce(
+                (pv, b) => pv + parseInt(b.grossNetworkProduct),
+                0
+              )
+            ),
+            '18'
+          )
+        ),
+      }))
       setOverViewData(overview_contents)
+      setGnpTotalValueByNetwork(gnpDataByNetworks)
     }
   }, [subgraphData])
 
@@ -464,31 +539,38 @@ export function State() {
               </p>
               {!isLoading && (
                 <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-4 md:grid-cols-2 grid-cols-1">
-                  {gnpValues.map(({ total, network }, index) => (
-                    <div
-                      key={index}
-                      className="p-6 border border-gray-300 rounded-md"
-                    >
-                      <div className="flex justify-start pb-4 border-b border-gray-300">
-                        <CryptoIcon
-                          symbol={network.baseCurrencySymbol}
-                          size={40}
-                        />
-                        <p className="heading-small pr-2 self-center">
-                          {numeral(total).format('0,0.000')}{' '}
-                        </p>
-                        <p className="heading-small pr-2 self-center">
-                          {network.baseCurrencySymbol.toUpperCase()}
-                        </p>
+                  {gnpValues
+                    .filter((item) => !item.network.isTestNetwork)
+                    .map(({ total, network }, index) => (
+                      <div
+                        key={index}
+                        className="p-6 border border-gray-300 rounded-md"
+                      >
+                        <div className="flex justify-start pb-4 border-b border-gray-300">
+                          <CryptoIcon
+                            symbol={network.baseCurrencySymbol}
+                            size={40}
+                          />
+                          <p className="heading-small pr-2 self-center">
+                            {numeral(total).format('0,0.000')}{' '}
+                          </p>
+                          <p className="heading-small pr-2 self-center">
+                            {network.baseCurrencySymbol.toUpperCase()}
+                          </p>
+                        </div>
+                        <div className="flex justify-between pt-4">
+                          <p className="font-bold text-xl">{network.name}</p>
+                          <p className="font-bold text-xl">
+                            +
+                            {numeral(
+                              gnpPByNetworks.filter(
+                                (item) => item.name === network.name
+                              )[0]?.gnpPercentage
+                            ).format('0.0%')}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex justify-between pt-4">
-                        <p className="font-bold text-xl">{network.name}</p>
-                        <p className="font-bold text-xl">
-                          +{numeral(0).format('0,0.0')}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </div>

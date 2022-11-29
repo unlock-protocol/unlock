@@ -2,7 +2,6 @@ import { useQuery } from 'react-query'
 import axios from 'axios'
 
 const subgraphApi = axios.create({
-  baseURL: 'https://api.studio.thegraph.com/query/37457/test-unlock/v0.0.8/',
   responseType: 'json',
 })
 
@@ -18,6 +17,7 @@ const subgraphConfig = (upToDate: number) => `{
     lockDeployed
     keysSold
     activeLocks
+    grossNetworkProduct
   }
 }`
 
