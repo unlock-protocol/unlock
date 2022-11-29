@@ -38,16 +38,16 @@ const NotManagerBanner = () => {
 
 const SidebarCard = ({ src, alt, description }: SidebarCardProps) => {
   return (
-    <div className="relative w-full bg-slate-200 rounded-2xl">
+    <div className="relative flex w-full bg-slate-200 rounded-2xl min-h-80">
       <div className="overflow-hidden rounded-2xl">
         <img
-          className="object-cover w-full bg-center h-80 md:h-80"
+          className="object-cover w-full min-h-full bg-center"
           src={src}
           alt={alt ?? 'Sidebar image'}
         />
       </div>
       {description && (
-        <span className="absolute px-4 mt-4 text-lg text-gray-800 top-5">
+        <span className="absolute block px-4 mt-4 text-lg text-gray-800 top-5">
           {description}
         </span>
       )}
@@ -97,6 +97,24 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
 
   const tabs: { label: string; children: ReactNode; sidebar?: ReactNode }[] = [
     {
+      label: 'General',
+      children: (
+        <SettingGeneral
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+          lock={lock}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-general.svg"
+          description="Change the name and ticker for your membership contract."
+        />
+      ),
+    },
+    {
       label: 'Membership Terms',
       children: (
         <SettingTerms
@@ -128,7 +146,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-payment.svg"
-          description="Payments lorem ipsum"
+          description="Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments."
         />
       ),
     },
@@ -145,30 +163,12 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-roles.svg"
-          description={`Roles ipsum dolor sit amet consectetur. Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`}
+          description={`Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`}
         />
       ),
     },
     {
-      label: 'General',
-      children: (
-        <SettingGeneral
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-          lock={lock}
-        />
-      ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-general.svg"
-          description="Change the name and ticker for your membership contract."
-        />
-      ),
-    },
-    {
-      label: 'Misc.',
+      label: 'Advanced',
       children: (
         <SettingMisc
           lockAddress={lockAddress}
@@ -182,7 +182,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-misc.svg"
-          description="Misc ipsum dolor sit amet consectetur. Magna neque facilisis eu feugiat consectetur congue."
+          description="This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol."
         />
       ),
     },

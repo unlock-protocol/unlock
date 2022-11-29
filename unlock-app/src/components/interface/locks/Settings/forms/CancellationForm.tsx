@@ -1,6 +1,6 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -108,59 +108,62 @@ export const CancellationForm = ({
     })
   }
 
-  const [{ isLoading: isLoadingFreeTrial }, { isLoading: isLoadingPenalty }] =
-    useQueries({
-      queries: [
-        {
-          queryFn: async () => getFreeTrialLength(),
-          onSuccess: (freeTrialLength = 0) => {
-            const allowTrial = freeTrialLength > 0
-
-            setAllowTrial(freeTrialLength > 0)
-            setValue('freeTrialLength', allowTrial ? freeTrialLength ?? 0 : 0, {
-              shouldValidate: true,
-            })
-          },
-          onError: () => {
-            ToastHelper.error('Impossible to retrieve freeTrialLength value.')
-          },
-          queryKey: [
-            'getFreeTrialLength',
-            lockAddress,
-            network,
-            updateRefundPenaltyMutation.isSuccess,
-          ],
+  const [
+    { isLoading: isLoadingFreeTrial, data: freeTrialLength = 0 },
+    { isLoading: isLoadingPenalty, data: refundPenaltyBasisPoints = 0 },
+  ] = useQueries({
+    queries: [
+      {
+        queryFn: async () => getFreeTrialLength(),
+        onError: () => {
+          ToastHelper.error('Impossible to retrieve freeTrialLength value.')
         },
-        {
-          queryFn: async () => getRefundPenaltyBasisPoints(),
-          onSuccess: (refundPenaltyBasisPoints = 0) => {
-            const cancelPenalty = refundPenaltyBasisPoints > 0
-            const refundPenaltyPercentage =
-              (refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
-            setCancelPenalty(cancelPenalty)
-
-            setValue(
-              'refundPenaltyPercentage',
-              cancelPenalty ? refundPenaltyPercentage : 0,
-              {
-                shouldValidate: true,
-              }
-            )
-          },
-          onError: () => {
-            ToastHelper.error(
-              'Impossible to retrieve refundPenaltyBasisPoints value.'
-            )
-          },
-          queryKey: [
-            'refundPenaltyBasisPoints',
-            lockAddress,
-            network,
-            updateRefundPenaltyMutation.isSuccess,
-          ],
+        queryKey: [
+          'getFreeTrialLength',
+          lockAddress,
+          network,
+          updateRefundPenaltyMutation.isSuccess,
+        ],
+      },
+      {
+        queryFn: async () => getRefundPenaltyBasisPoints(),
+        onError: () => {
+          ToastHelper.error(
+            'Impossible to retrieve refundPenaltyBasisPoints value.'
+          )
         },
-      ],
+        queryKey: [
+          'refundPenaltyBasisPoints',
+          lockAddress,
+          network,
+          updateRefundPenaltyMutation.isSuccess,
+        ],
+      },
+    ],
+  })
+
+  useEffect(() => {
+    const allowTrial = freeTrialLength > 0
+
+    setAllowTrial(freeTrialLength > 0)
+    setValue('freeTrialLength', allowTrial ? freeTrialLength ?? 0 : 0, {
+      shouldValidate: true,
     })
+  }, [freeTrialLength])
+
+  useEffect(() => {
+    const cancelPenalty = refundPenaltyBasisPoints > 0
+    const refundPenaltyPercentage = (refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
+    setCancelPenalty(cancelPenalty)
+
+    setValue(
+      'refundPenaltyPercentage',
+      cancelPenalty ? refundPenaltyPercentage : 0,
+      {
+        shouldValidate: true,
+      }
+    )
+  }, [refundPenaltyBasisPoints])
 
   const isLoading = isLoadingPenalty || isLoadingFreeTrial
 
@@ -189,7 +192,7 @@ export const CancellationForm = ({
           </div>
 
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !allowTrial}
             step={1}
             error={errors?.freeTrialLength && 'This field is required'}
@@ -215,7 +218,7 @@ export const CancellationForm = ({
             />
           </div>
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !cancelPenalty}
             step={0.01}
             error={

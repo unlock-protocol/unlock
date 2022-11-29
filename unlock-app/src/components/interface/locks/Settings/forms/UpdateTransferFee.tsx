@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -73,16 +73,16 @@ export const UpdateTransferFee = ({
       network,
       updateTransferFeeMutation.isSuccess,
     ],
-    async () => getTransferFeeBasisPoints(),
-    {
-      onSuccess: (transferFeeBasisPoints: number) => {
-        setValue('transferFeePercentage', transferFeeBasisPoints / 100)
-        setAllowTransfer(transferFeeBasisPoints > 0)
-      },
-    }
+    async () => getTransferFeeBasisPoints()
   )
 
-  const disabledInput = disabled || isLoading
+  useEffect(() => {
+    setValue('transferFeePercentage', (transferFeeBasisPoints ?? 0) / 100)
+    setAllowTransfer((transferFeeBasisPoints ?? 0) > 0)
+  }, [transferFeeBasisPoints])
+
+  const disabledInput =
+    disabled || isLoading || updateTransferFeeMutation.isLoading
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
@@ -100,9 +100,9 @@ export const UpdateTransferFee = ({
         disabled={disabledInput}
       />
       <Input
-        label="Transfer fee %"
-        type="numeric"
-        description="You can set up a fee when member transfer their Key to another account/wallet."
+        label="Transfer fee (in % of time left on the membership)"
+        type="number"
+        description="You can set up a fee when member transfer their key to another account or wallet. The fee is taken in time. Setting 100% will disable transfers."
         disabled={disabledInput || !allowTransfer}
         {...register('transferFeePercentage', {
           min: 0,
@@ -110,7 +110,11 @@ export const UpdateTransferFee = ({
         })}
       />
       {isManager && (
-        <Button type="submit" className="w-full md:w-1/3">
+        <Button
+          type="submit"
+          className="w-full md:w-1/3"
+          disabled={disabledInput}
+        >
           Apply
         </Button>
       )}
