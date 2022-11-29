@@ -25,7 +25,7 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
 
   if (!config.providers[100]) {
     // eslint-disable-next-line no-param-reassign
-    config.providers[100] = 'https://rpc.xdaichain.com/'
+    config.providers[100] = 'https://rpc.gnosischain.com/'
   }
 
   if (!config.providers[137]) {

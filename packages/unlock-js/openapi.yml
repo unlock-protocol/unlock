@@ -171,6 +171,36 @@ components:
         metadata:
           $ref: '#/components/schemas/UserMetadataInput'
 
+    LockContractOptions:
+      type: object
+      nullable: false
+      properties:
+        name:
+          type: string
+
+        expirationDuration:
+          type: string
+          nullable: true
+
+        maxNumberOfKeys:
+          type: string
+          nullable: true
+
+        keyPrice:
+          type: string
+
+        creator:
+          type: string
+          nullable: true
+
+        currencyContractAddress:
+          type: string
+          nullable: true
+
+        publicLockVersion:
+          type: number
+          nullable: true
+
     NotAuthenticated:
       type: object
       nullable: false
@@ -446,7 +476,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/user:
+  /v2/auth/user:
     get:
       operationId: user
       description: Get user details.
@@ -494,6 +524,7 @@ paths:
         - User: []
       description: Create application associated with user wallet.
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1057,6 +1088,8 @@ paths:
       operationId: updateKeyMetadata
       security:
         - User: ['lockManager']
+        - Application: ['lockManager']
+
       requestBody:
         required: true
         content:
@@ -1094,11 +1127,13 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/network}/locks/{lockAddress}/keys:
+  /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       operationId: keys
       security:
         - User: []
+        - Application: []
+
       description: List of lock keys by network with additional metadata if the caller is the lockManager
       parameters:
         - $ref: '#/components/parameters/Network'
@@ -1165,5 +1200,90 @@ paths:
 
                     balance:
                       type: string
+        500:
+          $ref: '#/components/responses/500.InternalError'
+  /v2/api/{network}/price:
+    get:
+      operationId: price
+      parameters:
+        - $ref: '#/components/parameters/Network'
+
+        - in: query
+          name: amount
+          required: false
+          description: Amount of tokens you want to get the price for in USD.
+          schema:
+            type: number
+
+        - in: query
+          name: address
+          required: false
+          description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Get price for the native token or any erc20 on the network.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      decimals:
+                        type: number
+                        nullable: true
+                      price:
+                        type: number
+                      timestamp:
+                        type: number
+                      symbol:
+                        type: string
+                      confidence:
+                        type: number
+                      priceInAmount:
+                        type: number
+                        nullable: true
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/contracts/{network}/lock:
+    post:
+      operationId: createLockContract
+      security:
+        - User: []
+        - Application: []
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockContractOptions'
+
+      responses:
+        201:
+          description: Transaction hash of the lock creation transaction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
         500:
           $ref: '#/components/responses/500.InternalError'

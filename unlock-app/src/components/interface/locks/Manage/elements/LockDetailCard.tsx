@@ -12,15 +12,9 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { CardPayment } from './CardPayment'
-import { UpdateDurationModal } from '../modals/UpdateDurationModal'
-import { UpdatePriceModal } from '../modals/UpdatePriceModal'
-import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
-import { EnableRecurring } from './EnableRecurring'
-import { useLockManager } from '~/hooks/useLockManager'
-import { RiEditLine as EditIcon } from 'react-icons/ri'
-import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
 import { useStorageService } from '~/utils/withStorageService'
+import useLock from '~/hooks/useLock'
+import Link from 'next/link'
 
 interface LockDetailCardProps {
   network: number
@@ -41,10 +35,6 @@ interface LockInfoCardProps {
   network: number
   loading?: boolean
   version?: string
-}
-
-interface EditButtonProps {
-  onClick: () => void
 }
 
 const LockInfoCardPlaceholder = () => {
@@ -120,12 +110,7 @@ const LockInfoCard = ({
         </div>
 
         <span className="text-base">{addressMinify(lockAddress)}</span>
-        <Button
-          variant="transparent"
-          className="p-0 m-0"
-          onClick={setCopied}
-          aria-label="copy"
-        >
+        <Button variant="borderless" onClick={setCopied} aria-label="copy">
           <CopyIcon size={20} />
         </Button>
         <a href={explorerUrl} target="_blank" rel="noreferrer">
@@ -146,26 +131,42 @@ export const LockDetailCard = ({
   lockAddress,
   network,
 }: LockDetailCardProps) => {
-  const [update, setUpdate] = useState(0)
-  const [editQuantity, setEditQuantity] = useState(false)
-  const [editDuration, setEditDuration] = useState(false)
-  const [editPrice, setEditPrice] = useState(false)
-  const [updateMetadata, setUpdateMetadata] = useState(false)
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
-  const { isManager } = useLockManager({
-    lockAddress,
-    network,
-  })
+
+  const [isRecurring, setIsRecurring] = useState(false)
+
+  const { isStripeConnected } = useLock({ address: lockAddress }, network)
+
   const getLock = async () => {
     return web3Service.getLock(lockAddress, network)
   }
 
   const { isLoading, data: lock } = useQuery(
-    ['getLock', lockAddress, network, update],
+    ['getLock', lockAddress, network],
     async () => getLock()
   )
+
+  const { isLoading: isLoadingStripe, data: isConnected = 0 } = useQuery(
+    [],
+    async () => {
+      return isStripeConnected()
+    }
+  )
+
+  const recurringPossible =
+    lock?.expirationDuration != -1 &&
+    lock?.publicLockVersion >= 10 &&
+    lock?.currencyContractAddress?.length > 0
+
+  useEffect(() => {
+    if (lock?.publicLockVersion >= 11) {
+      setIsRecurring(recurringPossible)
+    } else {
+      setIsRecurring(recurringPossible && lock?.selfAllowance !== '0')
+    }
+  }, [lock?.publicLockVersion, lock?.selfAllowance, recurringPossible])
 
   const { keyPrice, maxNumberOfKeys, expirationDuration } = lock ?? {}
 
@@ -179,19 +180,7 @@ export const LockDetailCard = ({
       <Duration seconds={expirationDuration} />
     )
 
-  const loading = isLoading
-
-  const EditButton = ({ onClick }: EditButtonProps) => {
-    return (
-      <button className="p-1" onClick={onClick} aria-label="edit">
-        <EditIcon size={16} />
-      </button>
-    )
-  }
-
-  const onUpdate = () => {
-    setUpdate(update + 1)
-  }
+  const loading = isLoading || isLoadingStripe
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
   const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice
@@ -215,39 +204,10 @@ export const LockDetailCard = ({
       }
     )
 
+  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
+
   return (
     <>
-      <UpdateDurationModal
-        lockAddress={lockAddress}
-        isOpen={editDuration}
-        setIsOpen={setEditDuration}
-        onUpdate={onUpdate}
-        duration={lock?.expirationDuration}
-      />
-
-      <UpdatePriceModal
-        lockAddress={lockAddress}
-        network={network}
-        onUpdate={onUpdate}
-        isOpen={editPrice}
-        setIsOpen={setEditPrice}
-        price={lock?.keyPrice}
-      />
-
-      <UpdateQuantityModal
-        lockAddress={lockAddress}
-        onUpdate={onUpdate}
-        isOpen={editQuantity}
-        setIsOpen={setEditQuantity}
-        maxNumberOfKeys={lock?.maxNumberOfKeys}
-      />
-
-      <UpdateMetadataDrawer
-        lock={lock}
-        isOpen={updateMetadata}
-        setIsOpen={setUpdateMetadata}
-      />
-
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
           <LockIcon
@@ -262,20 +222,6 @@ export const LockDetailCard = ({
             loading={loading}
             version={lock?.publicLockVersion}
           />
-          {isManager && (
-            <div className="grid py-6">
-              <Button
-                variant="primary"
-                size="small"
-                onClick={() => {
-                  setUpdateMetadata(true)
-                }}
-                iconRight={<EditIcon key="edit" />}
-              >
-                Edit NFT Properties
-              </Button>
-            </div>
-          )}
           {!isLockMetadataLoading && (
             <div className="flex flex-col gap-2 overflow-y-auto max-h-24">
               {lockMetadata?.external_url && (
@@ -295,46 +241,40 @@ export const LockDetailCard = ({
           )}
           <div className="flex flex-col mt-6">
             <Detail label="Network" value={networkName} loading={loading} />
-            <Detail
-              label="Key Duration"
-              value={duration}
-              loading={loading}
-              append={
-                isManager && (
-                  <EditButton onClick={() => setEditDuration(true)} />
-                )
-              }
-            />
+            <Detail label="Key Duration" value={duration} loading={loading} />
             <Detail
               label="Key Quantity"
               value={numbersOfKeys}
               loading={loading}
-              append={
-                isManager && (
-                  <EditButton onClick={() => setEditQuantity(true)} />
-                )
-              }
             />
             <Detail
               label="Price"
               value={priceLabel}
               prepend={<CryptoIcon symbol={symbol} size={22} />}
               loading={loading}
-              append={
-                isManager && <EditButton onClick={() => setEditPrice(true)} />
-              }
+            />
+            <Detail
+              label="Recurring"
+              value={isRecurring ? 'YES' : 'NO'}
+              loading={loading}
+            />
+            <Detail
+              label="Credit Card Payment"
+              value={isConnected === 1 ? 'YES' : 'NO'}
+              loading={loading}
             />
           </div>
-          {isManager && (
-            <>
-              <div className="mt-6">
-                <EnableRecurring lockAddress={lockAddress} network={network} />
-              </div>
-              <div className="mt-6">
-                <CardPayment lockAddress={lockAddress} network={network} />
-              </div>
-            </>
-          )}
+          <div className="mt-8">
+            <span className="text-sm leading-tight text-gray-500">
+              Need to update terms?{' '}
+              <Link href={settingsPageUrl}>
+                <span className="font-semibold cursor-pointer text-brand-ui-primary">
+                  Click here
+                </span>
+              </Link>{' '}
+              to update your contract&apos;s settings.
+            </span>
+          </div>
         </div>
       </div>
     </>

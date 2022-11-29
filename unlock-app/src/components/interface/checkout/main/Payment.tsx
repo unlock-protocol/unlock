@@ -1,4 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -18,8 +19,6 @@ import {
 import useAccount from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { ethers } from 'ethers'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -47,7 +46,6 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const { account, network, isUnlockAccount } = useAuth()
@@ -55,7 +53,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-  const web3Service = useWeb3Service()
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
     async () => {
@@ -82,14 +79,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
     ['balance', account, lock.address],
     async () => {
-      const [balance, networkBalance, gasPrice] = await Promise.all([
+      const [balance, networkBalance] = await Promise.all([
         getTokenBalance(lock.currencyContractAddress),
         getTokenBalance(null),
-        web3Service.providerForNetwork(lock.network).getGasPrice(),
       ])
 
-      const gas = parseFloat(ethers.utils.formatUnits(gasPrice || 200, 'gwei'))
-      const isGasPayable = parseFloat(networkBalance) > gas
+      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
       const isPayable =
         userCanAffordKey(lock, balance, recipients.length) && isGasPayable
@@ -111,7 +106,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const lockConfig = paywallConfig.locks[lock!.address]
 
   const isReceiverAccountOnly =
-    recipients.length <= 1 && recipients[0] === account
+    recipients.length <= 1 &&
+    recipients[0]?.toLowerCase() === account?.toLowerCase()
 
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
@@ -124,7 +120,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !enableCrypto
+    !walletInfo?.isPayable
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -202,7 +198,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    use cards, google pay, and apple pay.
+                    Use cards, Google Pay, or Apple Pay. <br />
+                    <span className="text-xs">Additional fees may apply</span>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -275,12 +272,28 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
             {allDisabled && (
-              <div>
-                <p className="text-sm">
-                  No payment option is available to pay for the lock. You need
-                  to connect a crypto wallet with balance or ask creator to
-                  enable credit card payments.
+              <div className="text-sm">
+                <p className="mb-4">
+                  Credit card payments have not been enabled for this
+                  membership.
                 </p>
+                {isUnlockAccount && (
+                  <>
+                    <p className="mb-4">
+                      Ready to get your own wallet to purchase this membership
+                      with cryptocurrency?{' '}
+                      <a
+                        href="https://ethereum.org/en/wallets/find-wallet/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-gray-500 underline"
+                      >
+                        <span>Click here</span>
+                        <ExternalLinkIcon />
+                      </a>
+                    </p>
+                  </>
+                )}
               </div>
             )}
           </div>

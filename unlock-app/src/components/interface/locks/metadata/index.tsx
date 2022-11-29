@@ -90,14 +90,9 @@ export function UpdateLockMetadata({ lock }: Props) {
     levels,
     stats,
   }: MetadataFormData) => {
-    const metadata = {
+    const metadata: Metadata & { attributes: Attribute[] } = {
       name,
       image: `${config.locksmithHost}/lock/${lockAddress}/icon`,
-      description,
-      animation_url,
-      youtube_url,
-      external_url,
-      background_color,
       attributes: [] as Attribute[],
     }
 
@@ -105,7 +100,6 @@ export function UpdateLockMetadata({ lock }: Props) {
       metadata.attributes.push({
         trait_type: 'event_start_date',
         value: ticket.event_start_date,
-        display_type: 'date',
       })
     }
 
@@ -113,7 +107,6 @@ export function UpdateLockMetadata({ lock }: Props) {
       metadata.attributes.push({
         trait_type: 'event_start_time',
         value: ticket.event_start_time,
-        display_type: 'date',
       })
     }
 
@@ -128,16 +121,6 @@ export function UpdateLockMetadata({ lock }: Props) {
       metadata.attributes.push({
         trait_type: 'event_url',
         value: ticket.event_url,
-      })
-    }
-
-    for (const [key, value] of Object.entries(ticket || {})) {
-      if (!value) {
-        continue
-      }
-      metadata.attributes.push({
-        trait_type: key,
-        value,
       })
     }
 
@@ -162,6 +145,27 @@ export function UpdateLockMetadata({ lock }: Props) {
 
     if (statsAttributes?.length) {
       metadata.attributes.push(...statsAttributes)
+    }
+
+    // Opensea does not handle # in the color. We remove it if it's included in the color.
+    if (background_color && background_color.length === 7) {
+      metadata.background_color = background_color?.trim()?.replace('#', '')
+    }
+
+    if (description) {
+      metadata.description = description
+    }
+
+    if (youtube_url) {
+      metadata.youtube_url = youtube_url
+    }
+
+    if (animation_url) {
+      metadata.animation_url = animation_url
+    }
+
+    if (external_url) {
+      metadata.external_url = external_url
     }
 
     await lockMetadata.mutateAsync(metadata)

@@ -7,6 +7,7 @@ export const mainnet: NetworkConfig = {
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   name: 'Ethereum',
+  chain: 'ethereum',
   blockTime: 8000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
@@ -37,15 +38,20 @@ export const mainnet: NetworkConfig = {
     name: 'Ether',
     symbol: 'Eth',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   startBlock: 7120795,
   description: 'The most popular network',
   isTestNetwork: false,
   teamMultisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
+  uniswapV2: {
+    oracle: '0xE118d797E1c44F2e2A2823191a51D8b46a4A1D51',
+  },
   uniswapV3: {
     subgraph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931'
   },
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',

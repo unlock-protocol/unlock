@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const proxyABI = require('./ABIs/proxy.json')
 
-const { confirmMultisigTx, impersonate } = require('../../test/helpers')
+const { confirmMultisigTx, impersonate } = require('../../../test/helpers')
 
 const { submitTx, getOwners } = require('../multisig')
 

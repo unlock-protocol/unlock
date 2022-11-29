@@ -1,13 +1,9 @@
-import { Button, Input, Ticket } from '@unlock-protocol/ui'
+import { Button, Input, Ticket, Disclosure } from '@unlock-protocol/ui'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { Disclosure, Dialog, Transition } from '@headlessui/react'
-import {
-  RiArrowDropUpLine as UpIcon,
-  RiArrowDropDownLine as DownIcon,
-} from 'react-icons/ri'
 import { MetadataFormData } from './utils'
 import { Fragment, useState } from 'react'
 import { config } from '~/config/app'
+import { Dialog, Transition } from '@headlessui/react'
 
 interface Props {
   disabled?: boolean
@@ -75,80 +71,62 @@ export function LockTicketForm({ disabled, lockAddress, network }: Props) {
           </div>
         </Dialog>
       </Transition.Root>
-      <div className="p-6 bg-white shadow border-xs rounded-xl">
-        <Disclosure>
-          {({ open }) => (
-            <div>
-              <Disclosure.Button className="flex items-center justify-between w-full mb-2">
-                <h3 className="text-lg font-bold text-brand-ui-primary">
-                  Event ticketing
-                </h3>
-                <div>
-                  {open ? (
-                    <UpIcon className="fill-brand-ui-primary" size={24} />
-                  ) : (
-                    <DownIcon className="fill-brand-ui-primary" size={24} />
-                  )}
-                </div>
-              </Disclosure.Button>
-              <Disclosure.Panel>
-                <p>
-                  Add NFT properties for event. These will be displayed on NFT
-                  marketplaces and wallets that support them.
-                </p>
-                <div className="grid items-center gap-12 mt-2 sm:grid-cols-2">
-                  <div className="flex flex-col justify-center gap-6">
-                    <img src="/images/map.png" alt="map" />
-                    <Button
-                      disabled={disabled}
-                      size="small"
-                      variant="outlined-primary"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setPreviewTicket(true)
-                      }}
-                    >
-                      Preview Ticket
-                    </Button>
-                  </div>
-                  <div className="grid gap-y-6">
-                    <Input
-                      {...register('ticket.event_start_date')}
-                      disabled={disabled}
-                      type="date"
-                      label="Date"
-                      error={errors.ticket?.event_start_date?.message}
-                    />
-                    <Input
-                      {...register('ticket.event_start_time')}
-                      disabled={disabled}
-                      type="time"
-                      label="Time"
-                      error={errors.ticket?.event_start_time?.message}
-                    />
-                    <Input
-                      {...register('ticket.event_address')}
-                      disabled={disabled}
-                      type="text"
-                      placeholder="123 1st street, 11217 Springfield, US"
-                      label="Address for in person event"
-                      error={errors.ticket?.event_address?.message}
-                    />
-                    <Input
-                      disabled={disabled}
-                      label="Meeting link (if any)"
-                      placeholder="https://"
-                      {...register('ticket.event_meeting_url')}
-                      type="url"
-                      error={errors.ticket?.event_url?.message}
-                    />
-                  </div>
-                </div>
-              </Disclosure.Panel>
+      <Disclosure label="Event ticketing">
+        <>
+          <p>
+            Add NFT properties for event. These will be displayed on NFT
+            marketplaces and wallets that support them.
+          </p>
+          <div className="grid items-center gap-12 mt-2 sm:grid-cols-2">
+            <div className="flex flex-col justify-center gap-6">
+              <img src="/images/map.png" alt="map" />
+              <Button
+                disabled={disabled}
+                size="small"
+                variant="outlined-primary"
+                onClick={(event: any) => {
+                  event.preventDefault()
+                  setPreviewTicket(true)
+                }}
+              >
+                Preview Ticket
+              </Button>
             </div>
-          )}
-        </Disclosure>
-      </div>
+            <div className="grid gap-y-6">
+              <Input
+                {...register('ticket.event_start_date')}
+                disabled={disabled}
+                type="date"
+                label="Date"
+                error={errors.ticket?.event_start_date?.message}
+              />
+              <Input
+                {...register('ticket.event_start_time')}
+                disabled={disabled}
+                type="time"
+                label="Time"
+                error={errors.ticket?.event_start_time?.message}
+              />
+              <Input
+                {...register('ticket.event_address')}
+                disabled={disabled}
+                type="text"
+                placeholder="123 1st street, 11217 Springfield, US"
+                label="Address for in person event"
+                error={errors.ticket?.event_address?.message}
+              />
+              <Input
+                disabled={disabled}
+                label="Meeting link (if any)"
+                placeholder="https://"
+                {...register('ticket.event_url')}
+                type="url"
+                error={errors.ticket?.event_url?.message}
+              />
+            </div>
+          </div>
+        </>
+      </Disclosure>
     </div>
   )
 }

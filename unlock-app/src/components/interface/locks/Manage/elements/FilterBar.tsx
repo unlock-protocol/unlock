@@ -128,8 +128,7 @@ export const FilterBar = ({
       <div className="flex items-center md:h-12 md:justify-between">
         <div className="flex flex-col items-start gap-8 md:items-center md:flex-center md:flex-row">
           <Button
-            className="p-0"
-            variant="transparent"
+            variant="borderless"
             onClick={() => setExpandFilter(!expandFilter)}
           >
             <div className="flex items-center gap-2">
@@ -169,9 +168,9 @@ export const FilterBar = ({
             </div>
           ) : (
             <Button
+              variant="borderless"
               onClick={() => setOpenSearch(true)}
               className="p-0"
-              variant="transparent"
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm">Search</span>

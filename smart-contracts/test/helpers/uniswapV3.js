@@ -3,7 +3,6 @@ const { ethers } = require('hardhat')
 const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk/')
 const { Token } = require('@uniswap/sdk-core')
 
-const UniswapOracle = require('./ABIs/UniswapV3Oracle.json')
 const { abi: WethABI } = require('./ABIs/weth.json')
 const { WETH, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
@@ -316,8 +315,7 @@ const createPool = async function ({
 }
 
 const deployUniswapV3Oracle = async function () {
-  const { abi, bytecode } = UniswapOracle
-  const Oracle = await ethers.getContractFactory(abi, bytecode)
+  const Oracle = await ethers.getContractFactory('UniswapV3Oracle')
   const oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
   return oracle
 }
