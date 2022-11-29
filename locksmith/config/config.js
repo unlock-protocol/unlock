@@ -19,6 +19,8 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
 
+console.log(process.env.ON_HEROKU)
+
 if (process.env.ON_HEROKU) {
   // Heroku needs this:
   config.database.ssl = true

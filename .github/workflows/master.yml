@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - test-branch
 
 jobs:
   run-all-tests:
@@ -11,7 +12,6 @@ jobs:
 
   deploy-locksmith-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
