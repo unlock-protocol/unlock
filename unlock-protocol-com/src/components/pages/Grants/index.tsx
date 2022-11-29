@@ -8,10 +8,10 @@ import { AiOutlineLink as LinkIcon } from 'react-icons/ai'
 import { UnlockIcon } from '../../icons/Unlock'
 
 const UNLOCK_GRANT_APPLICATION_LINK =
-  'https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22'
+  'https://docs.unlock-protocol.com/governance/grants-bounties/udt-grantee-handbook'
 
 const UNLOCK_GRANT_PROGRAM_LINK =
-  'https://docs.unlock-protocol.com/governance/grants-bounties-and-matchings'
+  'https://docs.unlock-protocol.com/governance/grants-bounties/udt-grants'
 
 const UNLOCK_GRANT_HELP = [
   {
@@ -38,16 +38,16 @@ const UNLOCK_GRANT_HELP = [
 
 const UNLOCK_GRANT_COMMITTEE = [
   {
-    name: 'Amber Case',
-    socialURL: 'https://twitter.com/caseorganic',
-    text: 'Advisor Unlock Protocol',
-    avatarURL: '/images/marketing/grants/amber-case.png',
+    name: 'Crystal Street',
+    socialURL: 'https://twitter.com/crystaldstreet',
+    text: 'Founding Member JournoDAO',
+    avatarURL: '/images/marketing/grants/crystal-street.png',
   },
   {
-    name: 'Denise Xifara',
-    text: 'Advisor GMG Ventures',
-    socialURL: 'https://twitter.com/dkxifara',
-    avatarURL: '/images/marketing/grants/denise-xifara.png',
+    name: 'White Hat',
+    text: 'Founder of White Hat DAO',
+    socialURL: 'https://twitter.com/White_Hat_DAO',
+    avatarURL: '/images/marketing/grants/white-hat.png',
   },
   {
     name: 'Henry Hoffman',
@@ -55,30 +55,20 @@ const UNLOCK_GRANT_COMMITTEE = [
     socialURL: 'https://twitter.com/HenryHoffman',
     avatarURL: '/images/marketing/grants/henry-hoffman.png',
   },
-  {
-    name: 'Patrick Mayr',
-    text: 'Advisor Cherry Ventures',
-    socialURL: 'https://twitter.com/pat_mayr',
-    avatarURL: '/images/marketing/grants/patrick-mayr.png',
-  },
 ]
 
 const UNLOCK_GRANT_CRITERIA = [
   {
-    title: 'Impact',
-    text: 'Can the project benefit to a large population of users?',
+    title: 'Visibility',
+    text: 'How many people will see that Unlock is being used?',
   },
   {
-    title: 'Feasibility',
-    text: 'Is the solution easy to use and a reasonable implementation?',
+    title: 'Credibility',
+    text: 'How much credibility will Unlock gain from the project?',
   },
   {
-    title: 'Team',
-    text: 'Does the team have the skills to deliver?',
-  },
-  {
-    title: 'Maturity',
-    text: 'Is this a new startup or a launched system with revenue?',
+    title: 'Gross Network Product',
+    text: 'How much revenue will this incur for the network?',
   },
 ]
 
@@ -221,30 +211,31 @@ export function Grants() {
                 <div className="max-w-fit">
                   <div className="pb-4">
                     <h3 className="text-xl font-semibold sm:text-2xl">
-                      MintGate
+                      Web3 Academy Pro
                     </h3>
-                    <p className="font-medium"> by Jennifer Tran </p>
+                    <p className="font-medium"> by Kyle Reidhead </p>
                   </div>
                   <div className="space-y-2 leading-relaxed">
                     <p>
-                      A no-code platform for token gated content uses Unlock to
-                      enable creators to offer time-based, subcription-like
-                      NFTs.
+                      A place for entrepreneurs, creators and business
+                      professionals to learn, network and stay on the forefront
+                      of Web3 Innovation. Using Unlock for their subscription
+                      services.
                     </p>
                     <Link
                       className="inline-flex items-center gap-2 px-2 2 py-0.5 bg-gray-200 rounded text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                      href="https://mintgate.io"
+                      href="https://w3academy.io/"
                     >
-                      mintgate.io
+                      w3academy.io
                       <LinkIcon />
                     </Link>
                   </div>
                 </div>
-                <Link href="https://mintgate.io">
+                <Link href="https://w3academy.io/">
                   <img
                     className="rounded"
-                    alt="Mintgate"
-                    src="/images/marketing/grants/mintgate.png"
+                    alt="Web3 Academy"
+                    src="/images/marketing/grants/web3-academy.png"
                   />
                 </Link>
               </div>
@@ -321,7 +312,7 @@ export function Grants() {
                 projects to help.
               </p>
             </header>
-            <div className="grid gap-4 pt-8 sm:grid-cols-2 md:grid-cols-4">
+            <div className="grid gap-4 pt-8 sm:grid-cols-2 md:grid-cols-3">
               {UNLOCK_GRANT_CRITERIA.map(({ title, text }, index) => (
                 <div
                   key={index}
