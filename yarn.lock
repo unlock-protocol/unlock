@@ -3123,11 +3123,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connext/nxtp-contracts@npm:^0.2.1-beta.5":
-  version: 0.2.1-beta.5
-  resolution: "@connext/nxtp-contracts@npm:0.2.1-beta.5"
+"@connext/nxtp-contracts@npm:^0.2.1-beta.11":
+  version: 0.2.1-beta.11
+  resolution: "@connext/nxtp-contracts@npm:0.2.1-beta.11"
   dependencies:
-    "@connext/nxtp-utils": 0.2.1-beta.5
+    "@connext/nxtp-utils": 0.2.1-beta.11
     "@gelatonetwork/relay-context": ^1.0.0
     "@openzeppelin/hardhat-upgrades": 1.17.0
     "@typescript-eslint/eslint-plugin": 5.42.0
@@ -3139,13 +3139,13 @@ __metadata:
     hardhat-diamond-abi: 3.0.1
     hardhat-gas-reporter: 1.0.9
     typechain: 8.1.0
-  checksum: 884530a091dd1231d2f41b921c0b4cb16b76947112c2b87d9ae943d09957dfbf274ed61162afcb171a57d03ea330b8fc5ad8d1f280499b54acc8cc935e5f85ae
+  checksum: f407339f3bc32ca6f57c1ac1b2c1c03786e2c20aaea4b352ee7f8c6365bac2477e9b5c51debec3c6d9943e12cbbb998275b8aedf3ab75fd52b67ccc3761933b4
   languageName: node
   linkType: hard
 
-"@connext/nxtp-utils@npm:0.2.1-beta.5":
-  version: 0.2.1-beta.5
-  resolution: "@connext/nxtp-utils@npm:0.2.1-beta.5"
+"@connext/nxtp-utils@npm:0.2.1-beta.11":
+  version: 0.2.1-beta.11
+  resolution: "@connext/nxtp-utils@npm:0.2.1-beta.11"
   dependencies:
     "@gelatonetwork/relay-sdk": 2.1.0
     "@maticnetwork/maticjs": 3.5.0
@@ -3170,7 +3170,7 @@ __metadata:
     secp256k1: 4.0.3
     sinon-chai: 3.7.0
     ts-natsutil: 1.1.1
-  checksum: 03cc7a192fc5832860f771ecdae347988a3bcb6871cd838d5521d01d706b9e5f682a6d2c7eb91401b934fd75983f475cad9da44096c22084d78a4aca3ec2a6bc
+  checksum: 78008b4cec31a08e144e97ed941918e7195cd79425195be519701dff45bc1df9018c57e9e46f187fdaa5799189f025520e48839e914d1ac74ace993e01e6774a
   languageName: node
   linkType: hard
 
@@ -14458,7 +14458,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
-    "@connext/nxtp-contracts": ^0.2.1-beta.5
+    "@connext/nxtp-contracts": ^0.2.1-beta.11
     "@gnosis.pm/safe-core-sdk": 3.1.1
     "@gnosis.pm/safe-ethers-lib": 1.6.1
     "@gnosis.pm/safe-service-client": 1.3.1
