@@ -8,11 +8,23 @@ const {
   ADDRESS_ZERO,
   addSomeETH,
   deployERC20,
+  deployWETH,
 } = require('../helpers')
 
-let unlock, lock, connext, receiver, keyPrice, erc20, unlockOwner, keyOwner
+let unlock,
+  lock,
+  connext,
+  receiver,
+  keyPrice,
+  erc20,
+  tokenAddress,
+  unlockOwner,
+  keyOwner,
+  weth
 
-const destChainId = 31337
+// test for ERC20 and ETH
+const scenarios = [true, false]
+const destChainId = 4
 
 contract('Unlock / bridge', () => {
   before(async () => {
@@ -20,12 +32,11 @@ contract('Unlock / bridge', () => {
     ;({ unlockEthers: unlock } = await deployContracts())
 
     erc20 = await deployERC20(unlockOwner, true)
-    lock = await deployLock({ unlock, tokenAddress: erc20.address })
-    keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
+    weth = await deployWETH(unlockOwner)
 
     // connext
     const MockConnext = await ethers.getContractFactory('TestConnext')
-    connext = await MockConnext.deploy()
+    connext = await MockConnext.deploy(weth.address)
 
     // fund the bridge
     await addSomeETH(connext.address)
@@ -37,7 +48,7 @@ contract('Unlock / bridge', () => {
     const BridgeReceiver = await ethers.getContractFactory(
       'UnlockBridgeReceiver'
     )
-    receiver = await BridgeReceiver.deploy()
+    receiver = await BridgeReceiver.deploy(weth.address)
 
     // setup receiver
     await unlock.setReceiverAddresses(destChainId, receiver.address)
@@ -67,46 +78,67 @@ contract('Unlock / bridge', () => {
     })
   })
 
-  describe('unlock.sendBridgedLockCall', () => {
-    it('purchase a key correctly', async () => {
-      const keyOwners = [keyOwner]
+  scenarios.forEach((isErc20) => {
+    describe(`unlock.sendBridgedLockCall to lock priced in ${
+      isErc20 ? 'ERC20' : 'ETH'
+    }`, () => {
+      beforeEach(async () => {
+        tokenAddress = isErc20 ? erc20.address : ADDRESS_ZERO
+        lock = await deployLock({ unlock, tokenAddress })
+        keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
+      })
 
-      // parse purchase calldata
-      const purchaseArgs = [
-        keyOwners.map(() => keyPrice),
-        keyOwners.map(({ address }) => address),
-        keyOwners.map(() => ADDRESS_ZERO),
-        keyOwners.map(() => ADDRESS_ZERO),
-        keyOwners.map(() => []),
-      ]
+      it('purchase a key properly', async () => {
+        // parse purchase calldata
+        const purchaseArgs = [
+          isErc20 ? [keyPrice] : [],
+          [keyOwner.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
+        ]
 
-      const interface = new ethers.utils.Interface(lock.abi)
-      const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
+        const interface = new ethers.utils.Interface(lock.abi)
+        const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
 
-      // fee for the brdige
-      const relayerFee = ethers.utils.parseEther('.005')
+        // fee for the brdige
+        const relayerFee = ethers.utils.parseEther('.005')
+        const value = isErc20 ? relayerFee : relayerFee.add(keyPrice)
 
-      // approve unlock
-      await erc20.mint(keyOwner.address, keyPrice)
-      await erc20.connect(keyOwner).approve(unlock.address, keyPrice)
+        // approve unlock
+        await erc20.mint(keyOwner.address, keyPrice)
+        await erc20.connect(keyOwner).approve(unlock.address, keyPrice)
 
-      // fund lock for some gas
-      await unlock
-        .connect(keyOwner)
-        .sendBridgedLockCall(
-          destChainId,
-          lock.address,
-          erc20.address,
-          keyPrice,
-          calldata,
-          relayerFee,
-          {
-            value: relayerFee,
-          }
+        // set weth in unlock
+        await unlock.configUnlock(
+          ADDRESS_ZERO, // da
+          weth.address, // wrappedEth
+          16000,
+          'BRIDGED_KEY',
+          `http://localhost:3000/api/key/`,
+          31337
         )
 
-      // make sure key owner now has a valid key
-      assert.equal(await lock.balanceOf(keyOwner.address), 1)
+        assert.equal(await lock.balanceOf(keyOwner.address), 0)
+
+        // fund lock for some gas
+        await unlock
+          .connect(keyOwner)
+          .sendBridgedLockCall(
+            destChainId,
+            lock.address,
+            tokenAddress,
+            keyPrice,
+            calldata,
+            relayerFee,
+            {
+              value,
+            }
+          )
+
+        // make sure key owner now has a valid key
+        assert.equal(await lock.balanceOf(keyOwner.address), 1)
+      })
     })
   })
 })

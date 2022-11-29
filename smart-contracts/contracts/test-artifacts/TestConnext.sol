@@ -2,9 +2,16 @@
 pragma solidity ^0.8.7;
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
 import 'hardhat/console.sol';
+import '../interfaces/bridge/IWETH.sol';
 
 contract TestConnext  {
 
+  IWETH weth;
+  constructor(address _weth) {
+    console.log(_weth);
+    weth = IWETH(_weth);
+  }
+  
   /**
    * Mock Connext with a basic function that receives xcall
    * and send it to a IXReceiver contract 
@@ -23,6 +30,14 @@ contract TestConnext  {
     uint valueToSend = _amount;
     uint32 origin = uint32(31337);
     transferId = bytes32(block.timestamp);
+
+    // wrap native assets
+    if(_asset == address(0)) {
+      weth.deposit{ value: _amount }();
+      console.log(weth.balanceOf(address(this)));
+      bool success = weth.transfer(_to, _amount);
+      require(success, 'wrapping token failed');
+    }
 
     console.log('---- crossed the bridge with id:');
     console.log(uint(transferId));

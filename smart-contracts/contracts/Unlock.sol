@@ -417,17 +417,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes calldata callData,
     uint relayerFee
   ) public payable returns (bytes32 transferID){
-    console.log('---- calling bridge from unlock');
-    
     // get the correct receiver contract on dest chain
     address receiverAddress = receiverAddresses[destChainId];
     require(receiverAddress != address(0), 'missing receiverAddress on dest chain');
-    require(currency != address(0));
-    require(relayerFee <= address(this).balance, 'INSUFFICIENT_BALANCE');
 
-    // prepare ERC20 if needed
-    if (currency != address(0)) {
+    uint valueToSend = relayerFee;
+    
+    if(currency != address(0)) {
       IERC20 token = IERC20(currency);
+      // TODO: send using transfer (no approval)
       require(
         token.allowance(msg.sender, address(this)) >= amount,
         "User must approve amount"
@@ -437,21 +435,33 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       token.transferFrom(msg.sender, address(this), amount);
 
       // This contract approves transfer to Connext
-      token.approve(connextAddress, amount);
+      token.approve(bridgeAddress, amount);
+    } else {
+      valueToSend = valueToSend + amount;
     }
 
     // get the domain
     uint32 destinationDomain = getDomain(destChainId);
 
+    // TODO: remove this when public lock is ready
+    // pass the lock address in calldata
+    bytes memory data = abi.encode(
+      lock,
+      callData
+    );            
+
+    // make sure we have enough balance
+    require(valueToSend <= address(this).balance, 'INSUFFICIENT_BALANCE');
+
     // send the call over the chain
-    IConnext(connextAddress).xcall{value: relayerFee}(
-      destinationDomain, // _destination: Domain ID of the destination chain
-      lock,            // _to: address of the target contract
-      currency,    // _asset: address of the token contract
-      msg.sender,        // _delegate: address that can revert or forceLocal on destination
-      amount,              // _amount: amount of tokens to transfer
-      30,                // _slippage: the maximum amount of slippage the user will accept in BPS, in this case 0.3%
-      callData           // _callData: the encoded calldata to send
+    transferID = IConnext(bridgeAddress).xcall{value: valueToSend}(
+      destinationDomain,    // _destination: Domain ID of the destination chain
+      receiverAddress,      // _to: address of the target contract
+      currency,           // _asset: address of the token contract
+      msg.sender,           // _delegate: TODO address that can revert or forceLocal on destination
+      amount,             // _amount: amount of tokens to transfer
+      MAX_SLIPPAGE,        // _slippage: the maximum amount of slippage the user will accept
+      data
     );
 
   }
