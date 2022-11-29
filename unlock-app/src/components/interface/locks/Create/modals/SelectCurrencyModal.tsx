@@ -9,7 +9,6 @@ import { CryptoIcon } from '../../elements/KeyPrice'
 import { addressMinify } from '~/utils/strings'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 interface SelectCurrencyModalProps {
   isOpen: boolean
@@ -170,13 +169,9 @@ export const SelectCurrencyModal = ({
                         size="small"
                         onClick={onImport}
                         disabled={isLoadingContractToken}
+                        loading={isLoadingContractToken}
                       >
-                        <div className="flex items-center gap-2">
-                          {isLoadingContractToken && (
-                            <Spinner className="mr-1 animate-spin" />
-                          )}
-                          <span>Import</span>
-                        </div>
+                        Import
                       </Button>
                     </div>
                   )}

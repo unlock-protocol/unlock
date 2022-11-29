@@ -6,7 +6,6 @@ import { useMutation } from '@tanstack/react-query'
 import { addressMinify } from '~/utils/strings'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import useEns from '~/hooks/useEns'
 import { useForm } from 'react-hook-form'
 import { MAX_UINT } from '~/constants'
@@ -162,17 +161,14 @@ const ExtendKeyDurationForm = ({
           />
         </label>
       </div>
-      <Button disabled={!isDirty || loading} type="submit">
-        <div className="flex items-center gap-2">
-          {extendKeyMutation.isLoading && (
-            <Spinner className="mr-1 animate-spin" />
-          )}
-          <span>
-            {!extendKeyMutation.isLoading
-              ? 'Extend key duration'
-              : 'Extend key duration...'}
-          </span>
-        </div>
+      <Button
+        disabled={!isDirty || loading}
+        type="submit"
+        loading={extendKeyMutation.isLoading}
+      >
+        {!extendKeyMutation.isLoading
+          ? 'Extend key duration'
+          : 'Extend key duration...'}
       </Button>
     </form>
   )

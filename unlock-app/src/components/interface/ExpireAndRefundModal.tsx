@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
-import Loading from './Loading'
 import { ToastHelper } from '../helpers/toast.helper'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
 
@@ -73,12 +72,13 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
           min={0}
           disabled={loading}
         />
-        <Button type="button" onClick={onExpireAndRefund} disabled={loading}>
-          {loading ? (
-            <Loading size={20} />
-          ) : (
-            <span className="ml-2">Expire and Refund</span>
-          )}
+        <Button
+          type="button"
+          onClick={onExpireAndRefund}
+          disabled={loading}
+          loading={loading}
+        >
+          Expire and Refund
         </Button>
       </div>
     </Modal>
