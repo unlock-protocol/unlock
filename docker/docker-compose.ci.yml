@@ -30,7 +30,6 @@ services:
       args:
         BUILD_DIR: subgraph
 
-
   unlock-app: # Container for the dashboard
     env_file:
       - ./${UNLOCK_ENV}.env
@@ -68,7 +67,6 @@ services:
     build:
       context: ../
       target: dev
-
       cache_from: 
         - unlockprotocol/unlock-dev
       args:

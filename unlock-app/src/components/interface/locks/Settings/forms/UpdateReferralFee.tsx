@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -67,14 +67,13 @@ export const UpdateReferralFee = ({
 
   const { isLoading, data: referralFeePercentage } = useQuery(
     ['getReferrerFees', lockAddress, network, setReferrerFeeMutation.isSuccess],
-    async () => getReferrerFees(),
-    {
-      onSuccess: (value: number) => {
-        setValue('referralFeePercentage', value / 100)
-        setReferralFee(value > 0)
-      },
-    }
+    async () => getReferrerFees()
   )
+
+  useEffect(() => {
+    setValue('referralFeePercentage', (referralFeePercentage ?? 0) / 100)
+    setReferralFee((referralFeePercentage ?? 0) > 0)
+  }, [referralFeePercentage])
 
   const disabledInput =
     disabled || setReferrerFeeMutation.isLoading || isLoading
