@@ -18,7 +18,7 @@ router.delete(
   '/:network/locks/:lockAddress/keys/:keyId',
   authMiddleware,
   (req, res) => {
-    subscriptionController.cancelSubscription(req, res)
+    subscriptionController.cancelStripeSubscription(req, res)
   }
 )
 

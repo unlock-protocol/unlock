@@ -13,6 +13,9 @@ import { ethers } from 'ethers'
 import { Op } from 'sequelize'
 
 export class SubscriptionController {
+  /**
+   * Get an active crypto or fiat subscription associated with the key. This will return next renewal date, possible number of renewals, approved number of renewals, and other details.
+   */
   async getSubscription(request: Request, response: Response) {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
@@ -106,7 +109,10 @@ export class SubscriptionController {
     return response.status(200).send(result)
   }
 
-  async cancelSubscription(request: Request, response: Response) {
+  /**
+   * Cancel stripe subscription associated with key.
+   */
+  async cancelStripeSubscription(request: Request, response: Response) {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const keyId = Number(request.params.keyId)
