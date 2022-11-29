@@ -71,6 +71,9 @@ RUN javac -version
 # build all packages in packages/**
 RUN yarn build
 
+# Build locksmith and other apps separately to reduce startup time on heroku
+RUN yarn apps:build
+
 #
 ## 3. export image for prod app
 ##
@@ -82,9 +85,6 @@ ENV BUILD_DIR='locksmith'
 ENV COMMAND=${COMMAND}
 
 WORKDIR /home/unlock/${BUILD_DIR}
-
-# build the app
-RUN yarn build
 
 # start command
 EXPOSE 3000
