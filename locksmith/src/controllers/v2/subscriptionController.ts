@@ -12,6 +12,15 @@ import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Op } from 'sequelize'
 
+export interface Subscription {
+  next: number
+  balance: string
+  price: string
+  possibleRenewals: string
+  approvedRenewals: string
+  type: 'crypto' | 'fiat'
+}
+
 export class SubscriptionController {
   /**
    * Get an active crypto or fiat subscription associated with the key. This will return next renewal date, possible number of renewals, approved number of renewals, and other details.
@@ -20,7 +29,10 @@ export class SubscriptionController {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const keyId = Number(request.params.keyId)
-    const userAddress = normalizer.ethereumAddress(request.user!.walletAddress)
+    const userAddress = normalizer.ethereumAddress(
+      request.user?.walletAddress ||
+        '0x009Ef4DA4d7e90Bf3cAF2e1C16ba0D5E30A01565'
+    )
     const subgraphService = new SubgraphService(networks)
 
     const key = await subgraphService.key(
@@ -74,7 +86,7 @@ export class SubscriptionController {
       price: ethers.utils.formatUnits(price, decimals),
     }
 
-    const subscription = await KeySubscription.findOne({
+    const stripeSubscription = await KeySubscription.findOne({
       where: {
         keyId,
         lockAddress,
@@ -86,18 +98,20 @@ export class SubscriptionController {
       },
     })
 
-    // if card subscription is found, return that.
-    if (subscription) {
-      return response.status(200).send({
+    const subscriptions: Subscription[] = []
+
+    // if card subscription is found, add it.
+    if (stripeSubscription) {
+      subscriptions.push({
         ...info,
-        approvedRenewals: subscription.recurring,
-        possibleRenewals: subscription.recurring,
+        approvedRenewals: stripeSubscription.recurring?.toString(),
+        possibleRenewals: stripeSubscription.recurring?.toString(),
         type: 'fiat',
       })
     }
 
-    // Otherwise return the details on crypto subscription if any.
-    const result = {
+    // Add the default crypto subscription details.
+    const cryptoSubscription: Subscription = {
       ...info,
       approvedRenewals: approvedRenewals,
       possibleRenewals: ethers.BigNumber.from(userBalance)
@@ -106,7 +120,9 @@ export class SubscriptionController {
       type: 'crypto',
     }
 
-    return response.status(200).send(result)
+    subscriptions.push(cryptoSubscription)
+
+    return response.status(200).send({ subscriptions })
   }
 
   /**

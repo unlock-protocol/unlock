@@ -1323,29 +1323,33 @@ paths:
             application/json:
               schema:
                 type: object
-                nullable: true
                 properties:
-                  next:
-                    type: number
+                  subscriptions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        next:
+                          type: number
 
-                  balance:
-                    type: string
+                        balance:
+                          type: string
 
-                  price:
-                    type: string
+                        price:
+                          type: string
 
-                  approvedRenewals:
-                    type: string
+                        approvedRenewals:
+                          type: string
+                          description: Approved number of renewals by user.
 
-                  possibleRenewals:
-                    type: string
-                    description: Possible number of renewals based on the user account balance.
+                        possibleRenewals:
+                          type: string
+                          description: Possible number of renewals based on the user account balance.
 
-                  type:
-                    enum:
-                      - crypto
-                      - fiat
-
-                    description: The type of payment method used for the subscription.
+                        type:
+                          enum:
+                            - crypto
+                            - fiat
+                          description: The type of payment method used for the subscription.
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
