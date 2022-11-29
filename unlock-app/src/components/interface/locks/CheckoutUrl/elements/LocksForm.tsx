@@ -485,12 +485,12 @@ export const LocksForm = ({
                         })}
                         onChange={() => void 0}
                         onSubmit={onAddMetadata}
-                        submitLabel={'Save'}
+                        submitLabel={'Add'}
                         showSubmit={true}
                       />
                     </div>
                   )}
-                  <Button onClick={() => reset()}>Save</Button>
+                  <Button onClick={() => reset()}>Next</Button>
                 </>
               )}
             </>
