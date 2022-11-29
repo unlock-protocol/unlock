@@ -33,7 +33,6 @@ contract TestBridge {
     // wrap native assets
     if (_asset == address(0)) {
       weth.deposit{value: _amount}();
-      console.log(weth.balanceOf(address(this)));
       bool success = weth.transfer(_to, _amount);
       require(success, "wrapping token failed");
     }
