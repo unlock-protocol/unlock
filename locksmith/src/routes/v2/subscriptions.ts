@@ -8,7 +8,7 @@ const subscriptionController = new SubscriptionController()
 
 router.get(
   '/:network/locks/:lockAddress/keys/:keyId',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => {
     subscriptionController.getSubscription(req, res)
   }
