@@ -12,6 +12,14 @@ import {
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Op } from 'sequelize'
+import dayjs from 'dayjs'
+import BigInt from 'dayjs/plugin/bigIntSupport'
+import relative from 'dayjs/plugin/relativeTime'
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(BigInt)
+dayjs.extend(relative)
+dayjs.extend(duration)
 
 interface Amount {
   amount: string
@@ -22,6 +30,7 @@ export interface Subscription {
   next: number
   balance: Amount
   price: Amount
+  approvedTime: string
   possibleRenewals: string
   approvedRenewals: string
   type: 'crypto' | 'fiat'
@@ -57,7 +66,9 @@ export class SubscriptionController {
       key.lock.tokenAddress === ethers.constants.AddressZero ||
       parseInt(key.lock.version) < 11
     ) {
-      return response.status(200).send({})
+      return response.status(200).send({
+        subscriptions: [],
+      })
     }
 
     const web3Service = new Web3Service(networks)
@@ -80,12 +91,31 @@ export class SubscriptionController {
     const next = parseInt(key.expiration)
 
     // Approved renewals
-    const approvedRenewals = userAllowance.eq(ethers.constants.MaxUint256)
-      ? userAllowance.toString()
-      : userAllowance.div(price).toString()
+    const approvedRenewalsAmount = userAllowance.div(price)
+
+    const approvedRenewals = approvedRenewalsAmount.toString()
+
+    const approvedTimeInSeconds = approvedRenewalsAmount.mul(
+      key.lock.expirationDuration
+    )
+
+    const approvedTimeInYears = approvedTimeInSeconds
+      .div(60)
+      .div(60)
+      .div(24)
+      .div(365)
+
+    const approvedSeconds = approvedTimeInSeconds.toNumber()
+
+    const approvedTime = approvedTimeInYears.gt(100)
+      ? 'Forever'
+      : approvedSeconds <= 0
+      ? 'No time approved'
+      : dayjs.duration(approvedSeconds).humanize()
 
     const info = {
       next,
+      approvedTime,
       balance: {
         amount: balance,
         decimals,

@@ -1360,6 +1360,10 @@ paths:
                           type: string
                           description: Approved number of renewals by user.
 
+                        approvedTime:
+                          type: string
+                          description: Approved time in human readable form.
+
                         possibleRenewals:
                           type: string
                           description: Possible number of renewals based on the user account balance.

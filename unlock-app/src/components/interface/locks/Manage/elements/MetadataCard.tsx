@@ -279,14 +279,10 @@ export const MetadataCard = ({
                   />
                 )}
 
-                {subscription.approvedRenewals && (
+                {subscription.approvedTime && (
                   <MetadataDetail
-                    title="Approved Renewals"
-                    value={
-                      subscription.approvedRenewals?.length > 8
-                        ? 'Almost unlimited'
-                        : subscription.approvedRenewals
-                    }
+                    title="Approved Time"
+                    value={subscription.approvedTime}
                   />
                 )}
                 {subscription.next && (
