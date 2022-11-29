@@ -148,7 +148,7 @@ services:
     env_file:
       - ./${UNLOCK_ENV}.env
     depends_on:
-      # - eth-node
+      - eth-node
       - unlock-app
       - paywall
       - locksmith
