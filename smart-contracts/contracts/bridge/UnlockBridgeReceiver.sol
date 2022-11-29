@@ -7,15 +7,7 @@ import "hardhat/console.sol";
 
 contract UnlockBridgeReceiver is IXReceiver {
 
-  // modifier onlyUnlockBridge(address _originSender, uint32 _origin) {
-  //   require(
-  //     _origin == <ORIGIN_DOMAIN> &&
-  //       _originSender == <SOURCE_CONTRACT_ADDRESS> &&
-  //       msg.sender == <CONNEXT_CONTRACT_ADDRESS>,
-  //     "Expected source contract on origin domain called by Connext"
-  //   );
-  //   _;
-  // }
+
 
   /** @notice The receiver function as required by the IXReceiver interface.
    * @dev The Connext bridge contract will call this function.
@@ -23,23 +15,25 @@ contract UnlockBridgeReceiver is IXReceiver {
   function xReceive(
     bytes32 transferId,
     uint256 amount,
-    address asset,
+    address currency,
     address originSender,
     uint32 origin,
     bytes memory callData
   ) external returns (bytes memory) {
     console.log("--- arrived in the other side of the bridge");
 
+    // TODO: remove that 
     // unpack lock address and calldata
-    console.logBytes(callData);
-    
     address payable lockAddress;
     bytes memory lockCalldata;
     (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
-    console.log(lockAddress);
-    console.logBytes(lockCalldata);
 
-    (bool success, bytes memory result) = lockAddress.call{value: amount}(lockCalldata);
+    // approve spent tokens
+    IERC20 token = IERC20(currency);
+    require(token.balanceOf(address(this)) >= amount, 'not enough');
+    token.approve(lockAddress, amount);
+
+    (bool success, ) = lockAddress.call(lockCalldata);
     // catch revert reason
     if (success == false) {
       assembly {

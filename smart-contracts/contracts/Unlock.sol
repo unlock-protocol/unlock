@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.15;
 
 /**
  * @title The Unlock contract
@@ -26,6 +26,9 @@ pragma solidity ^0.8.7;
  *  a. Keeping track of deployed locks
  *  b. Keeping track of GNP
  */
+import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
+import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
@@ -103,6 +106,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // required by Uniswap Universal Router
   address public permit2;
+
+  // in BPS, in this case 0.3%
+  uint constant MAX_SLIPPAGE = 30;
+
+  // the chain id => address of bridge receiver on the destination chain
+  mapping (uint => address) public receiverAddresses;
 
   // Events
   event NewLock(
@@ -369,10 +378,37 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return lock.isLockManager(_sender);
   }
 
-  function setBridgeSenderAddress (address _bridgeAddress) public onlyOwner {
+  /**
+   * Bridge domains
+   */
+  function getDomain(uint chainId) public returns (uint32 domain){
+    // parse domain
+    return domain;
+  }
+
+  function setBridgeAddress (address _bridgeAddress) public onlyOwner {
     bridgeAddress = _bridgeAddress;
   }
 
+  function setReceiverAddresses(uint _chainId, address _receiverAddress) public onlyOwner {
+    receiverAddresses[_chainId] = _receiverAddress;
+  }
+
+  /**
+   * @notice Purchase a key on another chain
+   * Purchase a key from a lock on another chain
+   * @param destChainId: the chain id on which the lock is located
+   * @param lock: address of the lock that the user is attempting to purchase a key from
+   * @param currency : address of the token to be swapped into the lock’s currency
+   * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
+   * @param callData: blob of data passed to the lock that includes the following:
+   * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
+   * @dev to construct the callData you need the following parameter
+      - `recipients`: address of the recipients of the membership
+      - `referrers`: address of the referrers
+      - `keyManagers`: address of the key managers
+      - `callData`: bytes passed to the purchase function function of the lock
+   */
   function sendBridgedLockCall(
     uint destChainId, 
     address lock, 
@@ -381,8 +417,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes calldata callData,
     uint relayerFee
   ) public payable returns (bytes32 transferID){
-    // value to forward to the bridge
-    uint value = msg.value + relayerFee;
+    console.log('---- calling bridge from unlock');
+    
+    // get the correct receiver contract on dest chain
+    address receiverAddress = receiverAddresses[destChainId];
+    require(receiverAddress != address(0), 'missing receiverAddress on dest chain');
+    require(currency != address(0));
+    require(relayerFee <= address(this).balance, 'INSUFFICIENT_BALANCE');
 
     // prepare ERC20 if needed
     if (currency != address(0)) {

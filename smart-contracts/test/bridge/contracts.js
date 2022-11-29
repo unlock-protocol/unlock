@@ -7,90 +7,73 @@ const {
   reverts,
   ADDRESS_ZERO,
   addSomeETH,
+  deployERC20,
 } = require('../helpers')
 
-let unlock, lock, connext, bridgerSender, bridgeReceiver, keyPrice
+let unlock, lock, connext, receiver, keyPrice, erc20, unlockOwner, keyOwner
 
-const destChainId = 4
+const destChainId = 31337
 
 contract('Unlock / bridge', () => {
   before(async () => {
+    ;[unlockOwner, keyOwner] = await ethers.getSigners()
     ;({ unlockEthers: unlock } = await deployContracts())
-    lock = await deployLock({ unlock })
-    keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
-    await addSomeETH(lock.address) // fund the lock
 
-    // receiver
-    const BridgeReceiver = await ethers.getContractFactory(
-      'UnlockBridgeReceiver'
-    )
-    bridgeReceiver = await BridgeReceiver.deploy()
+    erc20 = await deployERC20(unlockOwner, true)
+    lock = await deployLock({ unlock, tokenAddress: erc20.address })
+    keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
 
     // connext
     const MockConnext = await ethers.getContractFactory('TestConnext')
-    connext = await MockConnext.deploy(bridgeReceiver.address)
+    connext = await MockConnext.deploy()
 
-    // sender
-    const BridgeSender = await ethers.getContractFactory('UnlockBridgeSender')
-    bridgerSender = await BridgeSender.deploy(
-      unlock.address,
-      connext.address // set directly bridge receiver for testing purposes
+    // fund the bridge
+    await addSomeETH(connext.address)
+    await erc20.mint(connext.address, ethers.utils.parseEther('100'))
+
+    // TODO: delete receiver
+    // we use a receiver for debugging purposes
+    // just to fwd call to the lock
+    const BridgeReceiver = await ethers.getContractFactory(
+      'UnlockBridgeReceiver'
     )
+    receiver = await BridgeReceiver.deploy()
 
     // setup receiver
-    await bridgerSender.setReceiverAddresses(
-      destChainId,
-      bridgeReceiver.address
-    )
-
-    await addSomeETH(bridgeReceiver.address) // fund the bridge
-    await addSomeETH(bridgerSender.address) // fund the bridge
+    await unlock.setReceiverAddresses(destChainId, receiver.address)
+    await erc20.mint(receiver.address, ethers.utils.parseEther('100'))
   })
 
-  describe('Unlock.setBridgeSenderAddress', () => {
-    it('default ot zero address', async () => {
+  describe('unlock.setBridgeAddress', () => {
+    it('default to zero address', async () => {
       assert.equal(await unlock.bridgeAddress(), ADDRESS_ZERO)
     })
     it('stores bridger sender', async () => {
-      await unlock.setBridgeSenderAddress(bridgerSender.address)
-      assert.equal(bridgerSender.address, await unlock.bridgeAddress())
+      await unlock.setBridgeAddress(connext.address)
+      assert.equal(connext.address, await unlock.bridgeAddress())
     })
     it('only contract owner can update', async () => {
-      const [, signer] = await ethers.getSigners()
-      await reverts(unlock.connect(signer).setBridgeSenderAddress(ADDRESS_ZERO))
+      const [, , signer] = await ethers.getSigners()
+      await reverts(unlock.connect(signer).setBridgeAddress(ADDRESS_ZERO))
     })
   })
 
-  describe('UnlockBridgeSender', () => {
+  describe('UnlockBridgeReceiver', () => {
     it('set the bridge sender properly', async () => {
       assert.equal(
-        await bridgerSender.receiverAddresses(destChainId),
-        bridgeReceiver.address
+        await unlock.receiverAddresses(destChainId),
+        receiver.address
       )
-    })
-    it('unlock address is set properly', async () => {
-      assert.equal(await bridgerSender.unlockAddress(), unlock.address)
-    })
-    it('connextAddress address is set properly', async () => {
-      assert.equal(await bridgerSender.connextAddress(), connext.address)
     })
   })
 
   describe('unlock.sendBridgedLockCall', () => {
-    before(async () => {
-      await bridgerSender.setReceiverAddresses(
-        destChainId,
-        bridgeReceiver.address
-      )
-    })
     it('purchase a key correctly', async () => {
-      const isErc20 = false
-      const signers = await ethers.getSigners()
-      const keyOwners = [signers[3]]
+      const keyOwners = [keyOwner]
 
       // parse purchase calldata
       const purchaseArgs = [
-        isErc20 ? keyOwners.map(() => keyPrice) : [],
+        keyOwners.map(() => keyPrice),
         keyOwners.map(({ address }) => address),
         keyOwners.map(() => ADDRESS_ZERO),
         keyOwners.map(() => ADDRESS_ZERO),
@@ -100,16 +83,30 @@ contract('Unlock / bridge', () => {
       const interface = new ethers.utils.Interface(lock.abi)
       const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
 
-      await unlock.sendBridgedLockCall(
-        destChainId,
-        lock.address,
-        ADDRESS_ZERO,
-        keyPrice,
-        calldata,
-        ethers.BigNumber.from(1000)
-      )
+      // fee for the brdige
+      const relayerFee = ethers.utils.parseEther('.005')
 
-      assert.equal(await lock.balanceOf(signers[3].address), 1)
+      // approve unlock
+      await erc20.mint(keyOwner.address, keyPrice)
+      await erc20.connect(keyOwner).approve(unlock.address, keyPrice)
+
+      // fund lock for some gas
+      await unlock
+        .connect(keyOwner)
+        .sendBridgedLockCall(
+          destChainId,
+          lock.address,
+          erc20.address,
+          keyPrice,
+          calldata,
+          relayerFee,
+          {
+            value: relayerFee,
+          }
+        )
+
+      // make sure key owner now has a valid key
+      assert.equal(await lock.balanceOf(keyOwner.address), 1)
     })
   })
 })
