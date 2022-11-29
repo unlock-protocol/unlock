@@ -1333,10 +1333,28 @@ paths:
                           type: number
 
                         balance:
-                          type: string
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
 
                         price:
-                          type: string
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
 
                         approvedRenewals:
                           type: string

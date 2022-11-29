@@ -2,14 +2,15 @@ import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-
+import dayjs from 'dayjs'
+import { LoadingIcon } from '../../../Loading'
 interface DetailProps {
   title: string
   value: React.ReactNode
@@ -78,6 +79,23 @@ export const MetadataCard = ({
     if (!checkInTimeValue) return null
     return new Date(checkInTimeValue as number).toLocaleString()
   }
+
+  const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
+    ['subscription', lockAddress, tokenId, network],
+    async () => {
+      const response = await storageService.getSubscription({
+        lockAddress,
+        network,
+        keyId: tokenId,
+      })
+      return response.subscriptions?.[0] ?? null
+    },
+    {
+      onError(error) {
+        console.error(error)
+      },
+    }
+  )
 
   const sendEmail = async () => {
     return storageService.sendKeyQrCodeViaEmail({
@@ -220,6 +238,7 @@ export const MetadataCard = ({
             {isCheckedIn && (
               <MetadataDetail title="Checked-in at" value={getCheckInTime()!} />
             )}
+
             {items?.map(([key, value], index) => {
               return (
                 <MetadataDetail
@@ -250,6 +269,36 @@ export const MetadataCard = ({
                 </>
               }
             />
+            {isSubscriptionLoading && <LoadingIcon />}
+            {!isSubscriptionLoading && subscription && (
+              <>
+                {subscription.balance && (
+                  <MetadataDetail
+                    title="User Balance"
+                    value={`${subscription.balance.amount} ${subscription.balance.symbol}`}
+                  />
+                )}
+
+                {subscription.approvedRenewals && (
+                  <MetadataDetail
+                    title="Approved Renewals"
+                    value={
+                      subscription.approvedRenewals?.length > 8
+                        ? 'Almost unlimited'
+                        : subscription.approvedRenewals
+                    }
+                  />
+                )}
+                {subscription.next && (
+                  <MetadataDetail
+                    title="Next Renewal"
+                    value={dayjs
+                      .unix(subscription.next)
+                      .format(' h:mm A : D MMM YYYY')}
+                  />
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

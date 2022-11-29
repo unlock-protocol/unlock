@@ -7,15 +7,21 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
   getAllowance,
+  getErc20TokenSymbol,
 } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Op } from 'sequelize'
 
+interface Amount {
+  amount: string
+  decimals: number
+  symbol: string
+}
 export interface Subscription {
   next: number
-  balance: string
-  price: string
+  balance: Amount
+  price: Amount
   possibleRenewals: string
   approvedRenewals: string
   type: 'crypto' | 'fiat'
@@ -29,10 +35,7 @@ export class SubscriptionController {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const keyId = Number(request.params.keyId)
-    const userAddress = normalizer.ethereumAddress(
-      request.user?.walletAddress ||
-        '0x009Ef4DA4d7e90Bf3cAF2e1C16ba0D5E30A01565'
-    )
+    const userAddress = normalizer.ethereumAddress(request.user!.walletAddress)
     const subgraphService = new SubgraphService(networks)
 
     const key = await subgraphService.key(
@@ -59,7 +62,7 @@ export class SubscriptionController {
 
     const web3Service = new Web3Service(networks)
     const provider = web3Service.providerForNetwork(network)
-    const [userBalance, decimals, userAllowance] = await Promise.all([
+    const [userBalance, decimals, userAllowance, symbol] = await Promise.all([
       getErc20BalanceForAddress(key.lock.tokenAddress, userAddress, provider),
       getErc20Decimals(key.lock.tokenAddress, provider),
       getAllowance(
@@ -68,6 +71,7 @@ export class SubscriptionController {
         provider,
         userAddress
       ),
+      getErc20TokenSymbol(key.lock.tokenAddress, provider),
     ])
 
     const balance = ethers.utils.formatUnits(userBalance, decimals)
@@ -82,8 +86,16 @@ export class SubscriptionController {
 
     const info = {
       next,
-      balance,
-      price: ethers.utils.formatUnits(price, decimals),
+      balance: {
+        amount: balance,
+        decimals,
+        symbol,
+      },
+      price: {
+        amount: ethers.utils.formatUnits(price, decimals),
+        decimals,
+        symbol,
+      },
     }
 
     const stripeSubscription = await KeySubscription.findOne({
