@@ -281,7 +281,7 @@ export const MetadataCard = ({
 
                 {subscription.approvedTime && (
                   <MetadataDetail
-                    title="Approved Time"
+                    title="Renew for"
                     value={subscription.approvedTime}
                   />
                 )}

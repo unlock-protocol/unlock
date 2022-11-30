@@ -110,7 +110,7 @@ export class SubscriptionController {
     const approvedTime = approvedTimeInYears.gt(100)
       ? 'Forever'
       : approvedSeconds <= 0
-      ? 'No time approved'
+      ? 'No period'
       : dayjs.duration(approvedSeconds, 'seconds').humanize()
 
     const info = {
