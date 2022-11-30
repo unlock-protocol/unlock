@@ -48,7 +48,9 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
 
   return (
     <StorageServiceProvider value={storageService}>
-      <Web3ServiceProvider value={web3Service}>{children}</Web3ServiceProvider>
+      <Web3ServiceProvider value={web3Service}>
+        {web3Service && <>{children}</>}
+      </Web3ServiceProvider>
     </StorageServiceProvider>
   )
 }
