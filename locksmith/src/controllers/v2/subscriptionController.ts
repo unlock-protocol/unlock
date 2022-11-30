@@ -33,7 +33,7 @@ export interface Subscription {
   approvedTime: string
   possibleRenewals: string
   approvedRenewals: string
-  type: 'crypto' | 'fiat'
+  type: 'Crypto' | 'Stripe'
 }
 
 export const getApprovedTime = (
@@ -54,7 +54,7 @@ export const getApprovedTime = (
   const approvedTime = approvedTimeInYears.gt(100)
     ? 'Forever'
     : approvedSeconds <= 0
-    ? 'No period'
+    ? 'No renewal available'
     : dayjs.duration(approvedSeconds, 'seconds').humanize()
 
   return approvedTime
@@ -159,7 +159,7 @@ export class SubscriptionController {
         approvedTime,
         approvedRenewals,
         possibleRenewals: approvedRenewals,
-        type: 'fiat',
+        type: 'Stripe',
       })
     }
 
@@ -176,7 +176,7 @@ export class SubscriptionController {
       possibleRenewals: ethers.BigNumber.from(userBalance)
         .div(price)
         .toString(),
-      type: 'crypto',
+      type: 'Crypto',
     }
 
     subscriptions.push(cryptoSubscription)

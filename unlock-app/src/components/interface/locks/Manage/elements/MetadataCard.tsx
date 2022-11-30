@@ -293,6 +293,12 @@ export const MetadataCard = ({
                       .format(' h:mm A : D MMM YYYY')}
                   />
                 )}
+                {subscription.type && (
+                  <MetadataDetail
+                    title="Payment type"
+                    value={subscription.type}
+                  />
+                )}
               </>
             )}
           </div>
