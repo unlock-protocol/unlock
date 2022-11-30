@@ -214,7 +214,6 @@ export const LocksForm = ({
     name = '',
     fields: any = null
   ) => {
-    onRemoveFromList(lockAddress)
     const defaultLockName = locksByNetwork?.find(
       (lock) => lock.address?.toLowerCase() === lockAddress?.toLowerCase()
     )?.name
@@ -314,6 +313,7 @@ export const LocksForm = ({
     if (!lockAddress || !network) return
     setNetwork(network)
     setLockAddress(lockAddress)
+    onRemoveFromList(lockAddress)
     onAddLock(lockAddress, network!, name)
   }
 
