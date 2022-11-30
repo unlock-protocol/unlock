@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - ci-docker-cache
 
 jobs:
   run-all-tests:
