@@ -35,7 +35,11 @@ app.use(cookieParser())
 // Request logging
 app.use(
   expressWinston.logger({
-    transports: [new winston.transports.Console()],
+    transports: [
+      new winston.transports.Console({
+        silent: process.env.UNLOCK_ENV === 'test',
+      }),
+    ],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()
@@ -64,7 +68,11 @@ app.use(Sentry.Handlers.errorHandler())
 // Error logging
 app.use(
   expressWinston.errorLogger({
-    transports: [new winston.transports.Console()],
+    transports: [
+      new winston.transports.Console({
+        silent: process.env.UNLOCK_ENV === 'test',
+      }),
+    ],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()
