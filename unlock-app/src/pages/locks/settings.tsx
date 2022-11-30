@@ -4,7 +4,6 @@ import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LockSettingsPage from '~/components/interface/locks/Settings'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useRouter } from 'next/router'
-import { Button } from '@unlock-protocol/ui'
 import { LockPicker } from '~/components/interface/locks/Manage/elements/LockPicker'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
@@ -29,18 +28,9 @@ const Create: NextPage = () => {
   }
 
   const LockSelection = () => {
-    const resetLockSelection = () => {
-      setLockAddress('')
-      setNetwork('')
-    }
-
-    const hasQuery =
-      (query?.address as string)?.length > 0 &&
-      (query?.network as string)?.length > 0
-
     return (
       <div>
-        {withoutParams ? (
+        {withoutParams && (
           <>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
               Select a lock to start manage it
@@ -49,16 +39,6 @@ const Create: NextPage = () => {
               <LockPicker owner={owner!} onChange={onLockPick} />
             </div>
           </>
-        ) : (
-          !hasQuery && (
-            <Button
-              className="mb-2"
-              onClick={resetLockSelection}
-              variant="outlined-primary"
-            >
-              Change lock
-            </Button>
-          )
         )}
       </div>
     )
