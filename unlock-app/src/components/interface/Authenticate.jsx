@@ -38,18 +38,17 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
     return new Web3Service(networkConfig)
   }, [networkConfig])
 
-  const { tryAutoLogin, isLoading } = useAutoLogin({
+  const { tryAutoLogin } = useAutoLogin({
     authenticate,
   })
 
   useEffect(() => {
     tryAutoLogin()
   }, [])
+
   return (
     <StorageServiceProvider value={storageService}>
-      <Web3ServiceProvider value={web3Service}>
-        {isLoading ? <Loading /> : children}
-      </Web3ServiceProvider>
+      <Web3ServiceProvider value={web3Service}>{children}</Web3ServiceProvider>
     </StorageServiceProvider>
   )
 }
@@ -155,7 +154,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => { },
+  onAuthenticated: () => {},
   providerAdapter: null,
 }
 
