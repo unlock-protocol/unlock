@@ -13,11 +13,9 @@ import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Op } from 'sequelize'
 import dayjs from 'dayjs'
-import BigInt from 'dayjs/plugin/bigIntSupport'
 import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 
-dayjs.extend(BigInt)
 dayjs.extend(relative)
 dayjs.extend(duration)
 
