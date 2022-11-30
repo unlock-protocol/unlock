@@ -1,10 +1,7 @@
 import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import {
-  FaCheckCircle as CheckIcon,
-  FaSpinner as Spinner,
-} from 'react-icons/fa'
+import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -168,13 +165,9 @@ export const MetadataCard = ({
             size="small"
             onClick={() => markAsCheckInMutation.mutate()}
             disabled={markAsCheckInMutation.isLoading}
+            loading={markAsCheckInMutation.isLoading}
           >
-            <div className="flex">
-              {markAsCheckInMutation.isLoading && (
-                <Spinner className="mr-1 animate-spin" />
-              )}
-              <span>Mark as Checked-in</span>
-            </div>
+            Mark as Checked-in
           </Button>
         )}
         {hasEmail ? (
