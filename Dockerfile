@@ -68,6 +68,9 @@ COPY --chown=node . .
 RUN java -version
 RUN javac -version
 
+# Run yarn to install missing dependencies from cached image
+RUN yarn
+
 # build all packages in packages/**
 RUN yarn build
 
