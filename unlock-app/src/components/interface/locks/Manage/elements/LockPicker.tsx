@@ -10,7 +10,11 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface LockPickerProps {
   owner: string
-  onChange: (lockAddress?: string, network?: number | string) => void
+  onChange: (
+    lockAddress?: string,
+    network?: number | string,
+    name?: string
+  ) => void
   defaultValues?: Record<string, any>
 }
 
@@ -47,6 +51,7 @@ export const LockPicker = ({
   const { network: connectedNetwork } = useAuth()
   const [lockAddress, setLockAddress] = useState<any>(undefined)
   const [network, setNetwork] = useState<any>(connectedNetwork!)
+  const [name, setName] = useState<string>('')
 
   const getLocksByNetwork = async () => {
     if (!network) return null
@@ -94,11 +99,20 @@ export const LockPicker = ({
     }
   })
 
+  const onChangeLock = (lockAddress: any) => {
+    const name = locksByNetwork?.find(
+      (lock) => lock?.address?.toLowerCase() === lockAddress?.toLowerCase()
+    )?.name
+
+    setLockAddress(lockAddress)
+    setName(name ?? 'default')
+  }
+
   useEffect(() => {
     if (typeof onChange === 'function') {
-      onChange(lockAddress, network)
+      onChange(lockAddress, network, name)
     }
-  }, [lockAddress, network, onChange])
+  }, [lockAddress, name, network, onChange])
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -119,7 +133,7 @@ export const LockPicker = ({
                 label="Lock"
                 options={locksOptions}
                 size="small"
-                onChange={setLockAddress}
+                onChange={(address?: string | number) => onChangeLock(address!)}
                 defaultValue={defaultValues?.lockAddress}
                 customOption={true}
               />
