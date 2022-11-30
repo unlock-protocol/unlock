@@ -34,10 +34,7 @@ export interface Subscription {
   type: 'Crypto' | 'Stripe'
 }
 
-export const getApprovedTime = (
-  renewals: string,
-  durationInSeconds: string
-) => {
+const getApprovedTime = (renewals: string, durationInSeconds: string) => {
   const approvedTimeInSeconds =
     ethers.BigNumber.from(renewals).mul(durationInSeconds)
 
