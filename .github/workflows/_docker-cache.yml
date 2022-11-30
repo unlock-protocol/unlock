@@ -2,6 +2,12 @@ name: Cache docker deps layers
 
 on:
   workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
 
 jobs:
   cache_docker_deps_layer:
