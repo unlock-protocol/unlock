@@ -11,7 +11,7 @@ interface SettingCardProps {
 
 interface SettingCardDetailProps {
   title: string
-  description: string
+  description: ReactNode
 }
 
 export const SettingCardPlaceholder = () => {
@@ -27,7 +27,7 @@ export const SettingCardDetail = ({
   return (
     <div className="flex flex-col">
       <span className="text-base font-bold text-gray-700">{title}</span>
-      <span className="text-sm text-gray-700">{description}</span>
+      <div className="text-sm text-gray-700">{description}</div>
     </div>
   )
 }
