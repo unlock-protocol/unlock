@@ -36,6 +36,30 @@ export interface Subscription {
   type: 'crypto' | 'fiat'
 }
 
+export const getApprovedTime = (
+  renewals: string,
+  durationInSeconds: string
+) => {
+  const approvedTimeInSeconds =
+    ethers.BigNumber.from(renewals).mul(durationInSeconds)
+
+  const approvedTimeInYears = approvedTimeInSeconds
+    .div(60)
+    .div(60)
+    .div(24)
+    .div(365)
+
+  const approvedSeconds = approvedTimeInSeconds.toNumber()
+
+  const approvedTime = approvedTimeInYears.gt(100)
+    ? 'Forever'
+    : approvedSeconds <= 0
+    ? 'No period'
+    : dayjs.duration(approvedSeconds, 'seconds').humanize()
+
+  return approvedTime
+}
+
 export class SubscriptionController {
   /**
    * Get an active crypto or fiat subscription associated with the key. This will return next renewal date, possible number of renewals, approved number of renewals, and other details.
@@ -95,27 +119,8 @@ export class SubscriptionController {
 
     const approvedRenewals = approvedRenewalsAmount.toString()
 
-    const approvedTimeInSeconds = approvedRenewalsAmount.mul(
-      key.lock.expirationDuration
-    )
-
-    const approvedTimeInYears = approvedTimeInSeconds
-      .div(60)
-      .div(60)
-      .div(24)
-      .div(365)
-
-    const approvedSeconds = approvedTimeInSeconds.toNumber()
-
-    const approvedTime = approvedTimeInYears.gt(100)
-      ? 'Forever'
-      : approvedSeconds <= 0
-      ? 'No period'
-      : dayjs.duration(approvedSeconds, 'seconds').humanize()
-
     const info = {
       next,
-      approvedTime,
       balance: {
         amount: balance,
         decimals,
@@ -144,17 +149,29 @@ export class SubscriptionController {
 
     // if card subscription is found, add it.
     if (stripeSubscription) {
+      const approvedRenewals = stripeSubscription.recurring?.toString()
+      const approvedTime = getApprovedTime(
+        approvedRenewals,
+        key.lock.expirationDuration
+      )
       subscriptions.push({
         ...info,
-        approvedRenewals: stripeSubscription.recurring?.toString(),
-        possibleRenewals: stripeSubscription.recurring?.toString(),
+        approvedTime,
+        approvedRenewals,
+        possibleRenewals: approvedRenewals,
         type: 'fiat',
       })
     }
 
+    const approvedTime = getApprovedTime(
+      approvedRenewals,
+      key.lock.expirationDuration
+    )
+
     // Add the default crypto subscription details.
     const cryptoSubscription: Subscription = {
       ...info,
+      approvedTime,
       approvedRenewals: approvedRenewals,
       possibleRenewals: ethers.BigNumber.from(userBalance)
         .div(price)
