@@ -111,7 +111,7 @@ export class SubscriptionController {
       ? 'Forever'
       : approvedSeconds <= 0
       ? 'No time approved'
-      : dayjs.duration(approvedSeconds).humanize()
+      : dayjs.duration(approvedSeconds, 'seconds').humanize()
 
     const info = {
       next,
