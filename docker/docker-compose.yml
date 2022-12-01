@@ -13,4 +13,4 @@ services:
       - '5001:5001'
 
   postgres:
-    image: postgres:15.0
+    image: postgres:15.1
