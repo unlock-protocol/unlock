@@ -470,7 +470,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       destChainId,
       unlockAddress,
       lock, 
-      transferID
+      uint(transferID)
     );
   }
 
@@ -544,7 +544,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     emit BridgeCallReceived(
       chainIds[origin],
       lockAddress, 
-      transferId
+      uint(transferId)
     );
   }
 

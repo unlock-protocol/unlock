@@ -55,7 +55,7 @@ contract TestBridge {
 
       // make sure we got the $$
       require(
-        IERC20(srcToken).balanceOf(address(this)) == _amount,
+        IERC20(srcToken).balanceOf(address(this)) >= _amount,
         'not enough token'
       );
 
@@ -67,7 +67,7 @@ contract TestBridge {
     IXReceiver(_to).xReceive(
       transferId,
       _amount, // amount of token in wei
-      address(destToken), // the bridged ERC20 token
+      _asset == address(0) ? address(0) : address(destToken), // native or bridged ERC20 token
       msg.sender, // sender on the origin chain
       srcDomainId, // domain ID of the origin chain
       _callData

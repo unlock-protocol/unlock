@@ -23,8 +23,7 @@ let unlockSrc,
   weth
 
 // test for ERC20 and ETH
-// const scenarios = [true, false]
-const scenarios = [true]
+const scenarios = [true, false]
 
 const srcChainId = 31337
 const destChainId = 4
@@ -125,6 +124,7 @@ contract('Unlock / bridge', () => {
         srcChainId
       )
     })
+
     it('only unlock owner can call', async () => {
       reverts(
         unlockSrc.connect(keyOwner).setUnlockAddresses(destChainId, destDomainId, unlockDest.address),
@@ -137,6 +137,7 @@ contract('Unlock / bridge', () => {
     describe(`sendBridgedLockCall to lock priced in ${
       isErc20 ? 'ERC20' : 'ETH'
     }`, () => {
+      let tx 
       beforeEach(async () => {
         // deploy a lock priced on destination chain
         const tokenAddress = isErc20 ? erc20Dest.address : ADDRESS_ZERO
@@ -144,52 +145,79 @@ contract('Unlock / bridge', () => {
         keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
       })
 
-      it('purchase a key properly', async () => {
-        // parse purchase calldata
-        const purchaseArgs = [
-          isErc20 ? [keyPrice] : [],
-          [keyOwner.address],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-        ]
-        const interface = new ethers.utils.Interface(lock.abi)
-        const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
+      describe('purchase', () => {
+        beforeEach(async () => {
+          // parse purchase calldata
+          const purchaseArgs = [
+            isErc20 ? [keyPrice] : [],
+            [keyOwner.address],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
+          ]
+          const interface = new ethers.utils.Interface(lock.abi)
+          const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
 
-        // calculate fee for the brdige
-        const relayerFee = ethers.utils.parseEther('.005')
-        const value = isErc20 ? relayerFee : relayerFee.add(keyPrice)
+          // calculate fee for the brdige
+          const relayerFee = ethers.utils.parseEther('.005')
+          const value = isErc20 ? relayerFee : relayerFee.add(keyPrice)
 
-        if (isErc20) {
-          // give user some tokens on origin chain
-          await erc20Src.mint(keyOwner.address, keyPrice)
-          // allow unlock on src chain to get his tokens (to send to bridge)
-          await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
-        }
+          if (isErc20) {
+            // give user some tokens on origin chain
+            await erc20Src.mint(keyOwner.address, keyPrice)
+            // allow unlock on src chain to get his tokens (to send to bridge)
+            await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+          }
 
-        assert.equal(await lock.balanceOf(keyOwner.address), 0)
+          assert.equal(await lock.balanceOf(keyOwner.address), 0)
 
-        // send call from src > dest
-        await unlockSrc
-          .connect(keyOwner)
-          .sendBridgedLockCall(
-            destChainId,
-            lock.address,
-            isErc20 ? erc20Src.address : ADDRESS_ZERO, // erc20 from src chain
-            keyPrice,
-            calldata,
-            relayerFee,
-            {
-              value,
-            }
-          )
+          // send call from src > dest
+          tx = await unlockSrc
+            .connect(keyOwner)
+            .sendBridgedLockCall(
+              destChainId,
+              lock.address,
+              isErc20 ? erc20Src.address : ADDRESS_ZERO, // erc20 from src chain
+              keyPrice,
+              calldata,
+              relayerFee,
+              {
+                value,
+              }
+            )
+        })
 
-        // make sure key owner now has a valid key
-        assert.equal(await lock.balanceOf(keyOwner.address), 1)
+        it('purchase a key properly', async () => {
+          // make sure key owner now has a valid key
+          assert.equal(await lock.balanceOf(keyOwner.address), 1)
+        })
+  
+        // TODO: test events
+        it('emits an event when sending to bridge', async () => {
+          const { events, blockNumber } = await tx.wait()
+          const { timestamp } = await ethers.provider.getBlock(blockNumber)
+  
+          const { args: argsEmitted } = events.find(({event}) => event === 'BridgeCallEmitted')
+          assert.equal(argsEmitted.destChainId.toNumber(), destChainId)
+          assert.equal(argsEmitted.unlockAddress, unlockDest.address)
+          assert.equal(argsEmitted.lockAddress,  lock.address)
+          assert.equal(argsEmitted.transferID, timestamp)
+          
+          const { args: argsReceived } = events.find(({event}) => event === 'BridgeCallReceived')
+          assert.equal(argsReceived.originChainId.toNumber(), srcChainId)
+          assert.equal(argsReceived.lockAddress,  lock.address)
+          assert.equal(argsReceived.transferID, timestamp)
+        })
       })
 
-      // TODO: test events
+      
+
+      // it('emits an event when receiving from bridge', async () => {
+      //   unlockDest.find
+      // })
+
       // TODO: test bridge source modifiers
+      // TODO: test extend
     })
   })
 })
