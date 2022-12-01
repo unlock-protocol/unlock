@@ -1,5 +1,4 @@
 import forge from 'node-forge'
-import { Base64 } from 'js-base64'
 
 import { verifyEmailSignature } from '../../utils/wedlocks'
 
@@ -18,7 +17,7 @@ describe('verifyEmailSignature', () => {
       }
       const privateKeyPem = forge.pki.privateKeyToPem(keypair.privateKey)
       const publicKey = forge.pki.publicKeyToPem(keypair.publicKey)
-      base64PublicKey = Base64.encode(publicKey)
+      base64PublicKey = Buffer.from(publicKey).toString('base64')
       // First, let's create a signature!
       const md = forge.md.sha1.create()
       md.update(emailAddressToSign, 'utf8')
