@@ -10,9 +10,9 @@ import { useConfig } from '~/utils/withConfig'
 import { useQuery } from '@tanstack/react-query'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
-import { Card } from '../interface/checkout/alpha/Card'
+import { Card } from '../interface/checkout/Card'
 import { deleteCardForAddress } from '~/hooks/useCards'
-import { SetupForm } from '../interface/checkout/alpha/Checkout/CardPayment'
+import { SetupForm } from '../interface/checkout/main/CardPayment'
 import { Button } from '@unlock-protocol/ui'
 import { AppLayout } from '../interface/layouts/AppLayout'
 
@@ -25,7 +25,7 @@ export const PaymentSettings = () => {
   const [isSaving, setIsSaving] = useState(false)
   const {
     data: methods,
-    isLoading: isMethodLoading,
+    isInitialLoading: isMethodLoading,
     refetch,
   } = useQuery(
     ['list-cards', account],

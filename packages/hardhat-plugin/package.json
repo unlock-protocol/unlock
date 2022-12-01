@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/hardhat-plugin",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "description": "Hardhat Plugin for Unlock Protocol",
   "author": "Unlock Protocol",
   "license": "MIT",
@@ -33,31 +33,31 @@
   "devDependencies": {
     "@types/chai": "4.3.0",
     "@types/fs-extra": "9.0.13",
-    "@types/mocha": "10.0.0",
-    "@types/node": "8.10.66",
+    "@types/mocha": "10.0.1",
+    "@types/node": "18.11.9",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "4.3.4",
-    "eslint": "8.18.0",
-    "hardhat": "2.9.9",
-    "mocha": "10.0.0",
+    "eslint": "8.26.0",
+    "hardhat": "2.12.3",
+    "mocha": "10.1.0",
     "prettier": "2.7.1",
     "ts-mocha": "10.0.0",
-    "ts-node": "10.8.0",
+    "ts-node": "10.9.1",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.3.0",
-    "typescript": "4.7.4"
+    "typescript": "4.8.4"
   },
   "peerDependencies": {
-    "ethers": "5.7.1",
-    "hardhat": "2.9.9"
+    "ethers": "5.7.2",
+    "hardhat": "2.12.3"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "2.1.1",
+    "@nomiclabs/hardhat-ethers": "2.2.1",
     "@unlock-protocol/contracts": "0.0.12",
-    "eslint-plugin-jest": "27.0.4",
+    "eslint-plugin-jest": "27.1.6",
     "eslint-plugin-mocha": "10.1.0"
   }
 }

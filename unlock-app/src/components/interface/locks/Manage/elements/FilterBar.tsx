@@ -124,12 +124,11 @@ export const FilterBar = ({
   const disableSearch = filterKey === 'checkedInAt'
 
   return (
-    <div className="flex flex-col gap-4 px-8 py-4 rounded-lg bg-ui-secondary-400">
-      <div className="flex items-center justify-between h-12">
-        <div className="flex items-center gap-8">
+    <div className="flex flex-col gap-4 px-2 py-4 rounded-lg md:px-8 bg-ui-secondary-400">
+      <div className="flex items-center md:h-12 md:justify-between">
+        <div className="flex flex-col items-start gap-8 md:items-center md:flex-center md:flex-row">
           <Button
-            className="p-0"
-            variant="transparent"
+            variant="borderless"
             onClick={() => setExpandFilter(!expandFilter)}
           >
             <div className="flex items-center gap-2">
@@ -138,22 +137,24 @@ export const FilterBar = ({
             </div>
           </Button>
           {openSearch ? (
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 md:flex-row">
               <div className="flex flex-col gap-4">
-                <div className="w-40">
-                  <Select
-                    size="small"
-                    label="Filter by"
-                    options={filters}
-                    defaultValue={filterKey}
-                    onChange={(filter: any) => {
-                      setFilterKey(filter)
-                      setRawQueryValue('')
-                    }}
-                  />
+                <div className="flex flex-col items-start gap-2 md:items-center md:flex-row">
+                  <span className="mb-1">Filter by</span>
+                  <div className="w-full md:w-40">
+                    <Select
+                      size="small"
+                      options={filters}
+                      defaultValue={filterKey}
+                      onChange={(filter: any) => {
+                        setFilterKey(filter)
+                        setRawQueryValue('')
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="mt-auto -mb-1.5">
+              <div className="mt-auto w-80">
                 <Input
                   size="small"
                   onChange={(e: any) => {
@@ -167,9 +168,9 @@ export const FilterBar = ({
             </div>
           ) : (
             <Button
+              variant="borderless"
               onClick={() => setOpenSearch(true)}
               className="p-0"
-              variant="transparent"
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm">Search</span>

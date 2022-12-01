@@ -41,7 +41,6 @@ describe('Unlock', function () {
       expect(lockInGraph.tokenAddress).to.equals(
         lockParams.currencyContractAddress
       )
-      expect(lockInGraph.lockManagers).to.deep.equals([signer.address])
       expect(parseInt(lockInGraph.version)).to.equals(
         await lock.publicLockVersion()
       )
@@ -52,6 +51,12 @@ describe('Unlock', function () {
       expect(lockInGraph.name).to.equals(lockParams.name)
       // to be implemented in the graph yet...
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
+
+      // wait for a bit so events from the new lock are processed
+      await awaitTimeout(2000)
+      const lockInGraphAgain = await subgraph.getLock(lockAddress)
+
+      expect(lockInGraphAgain.lockManagers).to.deep.equals([signer.address])
     })
   })
 })
@@ -125,6 +130,39 @@ describe('Upgrade a lock', function () {
     // make sure we upgraded version
     const lockInGraphAfterUpgrade = await subgraph.getLock(lockAddress)
     expect(parseInt(lockInGraphAfterUpgrade.version)).to.equals(latestVersion)
+  })
+})
+
+describe.only('(v11) key cancellation bug', function () {
+  let lock: Contract
+  let lockAddress: string
+  let tokenIds: any
+  let keyOwners: any
+
+  before(async () => {
+    await unlock.deployAndSetTemplate(11, 1)
+    ;({ lock } = await unlock.createLock({ ...lockParams, version: 11 }))
+    lockAddress = lock.address.toLowerCase()
+    ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
+  })
+
+  it('deletes item correctly from subgraph', async () => {
+    await awaitTimeout(2000)
+    const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[1])
+    expect(keyInGraph).to.not.be.null
+    expect(keyInGraph.cancelled).to.be.null
+
+    // cancel the 2nd one
+    const keyOwner = await ethers.getSigner(keyOwners[1])
+    await lock.connect(keyOwner).cancelAndRefund(tokenIds[1])
+    expect(await lock.isValidKey(tokenIds[1])).to.be.false
+
+    await awaitTimeout(2000)
+    const keyInGraphAfterCancellation = await subgraph.getKey(
+      lockAddress,
+      tokenIds[1]
+    )
+    expect(keyInGraphAfterCancellation).to.be.null
   })
 })
 

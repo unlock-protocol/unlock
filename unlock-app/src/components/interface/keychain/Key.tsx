@@ -26,10 +26,11 @@ import { MAX_UINT } from '../../../constants'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
-import { KeyMetadataModal } from './KeyMetadataModal'
+import { KeyMetadataDrawer } from './KeyMetadataDrawer'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface KeyBoxProps {
   lock: any
@@ -156,7 +157,7 @@ export interface Props {
   network: number
 }
 
-const Key = ({ ownedKey, account, network }: Props) => {
+function Key({ ownedKey, account, network }: Props) {
   const { lock, expiration, tokenId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
@@ -212,23 +213,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
-  // TODO: use the networks' OpenSea config!
   const viewOnOpenSea = async () => {
-    if (network === 137) {
-      window.open(
-        `https://opensea.io/assets/matic/${lock.address}/${tokenId}`,
-        '_blank'
-      )
-    } else if (network === 1) {
-      window.open(
-        `https://opensea.io/assets/${lock.address}/${tokenId}`,
-        '_blank'
-      )
-    } else if (network === 4) {
-      window.open(
-        `https://testnets.opensea.io/assets/${lock.address}/${tokenId}`,
-        '_blank'
-      )
+    const { opensea, name } = networks[network]
+
+    const url = opensea?.tokenUrl(lock.address, tokenId) ?? null
+
+    if (url) {
+      window.open(url, '_blank')
+    } else {
+      ToastHelper.error(`OpenSea URL not unavailable yet for ${name}`)
     }
   }
 
@@ -251,7 +244,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
     }
   }
 
-  const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
+  const isAvailableOnOpenSea =
+    networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+
   const baseSymbol = walletService.networks[network].baseCurrencySymbol!
   const symbol =
     isLockDataLoading || !lockData
@@ -264,16 +259,18 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
-      <KeyMetadataModal
-        isOpen={showMetadata}
-        setIsOpen={setShowMetadata}
-        account={account}
-        lock={lock}
-        tokenId={tokenId}
-        network={network}
-      />
+      {showMetadata && (
+        <KeyMetadataDrawer
+          isOpen={showMetadata}
+          setIsOpen={setShowMetadata}
+          account={account}
+          lock={lock}
+          tokenId={tokenId}
+          network={network}
+        />
+      )}
 
-      {!isKeyExpired && (
+      {!isKeyExpired && showCancelModal && (
         <CancelAndRefundModal
           isOpen={showCancelModal}
           setIsOpen={setShowCancelModal}
@@ -286,7 +283,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         />
       )}
 
-      {signature && (
+      {signature && showingQR && (
         <QRModal
           lock={lock}
           isOpen={showingQR}

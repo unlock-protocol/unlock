@@ -1,6 +1,6 @@
 {
     "name": "@unlock-protocol/networks",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Unlock Protocol's contract addressess for various networks",
@@ -17,8 +17,8 @@
     "devDependencies": {
         "@unlock-protocol/tsconfig": "workspace:^",
         "@unlock-protocol/types": "workspace:^",
-        "eslint": "8.24.0",
-        "typescript": "4.8.4"
+        "eslint": "8.28.0",
+        "typescript": "4.9.3"
     },
     "files": [
         "dist"

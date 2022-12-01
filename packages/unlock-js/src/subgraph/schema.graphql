@@ -1,5 +1,5 @@
 query allLocks(
-  $first: Int!
+  $first: Int = 1
   $skip: Int
   $where: Lock_filter
   $orderBy: Lock_orderBy
@@ -21,11 +21,12 @@ query allLocks(
     lockManagers
     version
     createdAtBlock
+    totalKeys
   }
 }
 
 query AllKeys(
-  $first: Int!
+  $first: Int = 1
   $skip: Int
   $where: Key_filter
   $orderBy: Key_orderBy
@@ -49,6 +50,7 @@ query AllKeys(
       lockManagers
       version
       createdAtBlock
+      totalKeys
     }
     tokenId
     owner

@@ -42,6 +42,8 @@ import maxKeysPerAddress from './lock/maxKeysPerAddress'
 import extendKey from './lock/extendKey'
 import updateLockName from './lock/updateLockName'
 import updateLockSymbol from './lock/updateLockSymbol'
+import setBaseTokenURI from './lock/setBaseTokenURI'
+import setEventHooks from './lock/setEventHooks'
 
 // Increasing timeouts
 jest.setTimeout(3000000)
@@ -161,6 +163,9 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       describe('updateKeyPrice', updateKeyPrice(testSetupArgs))
       describe('updateLockName', updateLockName(testSetupArgs))
       describe('updateLockSymbol', updateLockSymbol(testSetupArgs))
+      describe('setBaseTokenURI', setBaseTokenURI(testSetupArgs))
+
+      describe('setEventHooks', setEventHooks(testSetupArgs))
     })
   })
 })

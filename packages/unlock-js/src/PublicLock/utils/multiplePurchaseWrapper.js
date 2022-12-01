@@ -40,25 +40,31 @@ export default async function (
     erc20Address = await lockContract.tokenAddress()
     // if ERC20 is set we approve the entire amount
     if (erc20Address !== ZERO) {
+      // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+      const getPrice = async (price) =>
+        !price
+          ? await lockContract.keyPrice()
+          : await formatKeyPrice(price, erc20Address, decimals, this.provider)
+
       const prices = await Promise.all(
-        (keyPrices || Array(owners.length).fill(null)).map(async (kp) =>
-          kp
-            ? // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-              lockContract.keyPrice()
-            : formatKeyPrice(kp, erc20Address, decimals, this.provider)
-        )
+        (keyPrices.length === owners.length
+          ? keyPrices
+          : Array(owners.length).fill(null)
+        ).map((kp) => getPrice(kp))
       )
+
       // calculate total price for all keys
       const totalPrice = prices.reduce(
         (total, kp) => total.add(kp),
         utils.bigNumberify(0)
       )
+
       // check what is already approve
       const approvedAmount = await getAllowance(
         erc20Address,
         lockAddress,
         this.provider,
-        this.signer.address
+        this.signer.getAddress()
       )
       // approve entire price
       if (!approvedAmount || approvedAmount.lt(totalPrice)) {

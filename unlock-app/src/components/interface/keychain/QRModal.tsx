@@ -47,7 +47,7 @@ export const QRModal = ({
         dismiss()
       }}
     >
-      <div className="flex flex-col gap-3 px-8 py-4">
+      <div className="flex flex-col gap-3">
         <div className="mx-auto">
           <QRCode value={QRUrl()} size={256} includeMargin />
         </div>

@@ -17,6 +17,7 @@ interface DashboardLayoutProps {
   children: React.ReactNode
   authRequired?: boolean
   showLinks?: boolean
+  showHeader?: boolean
 }
 
 const WalletNotConnected = () => {
@@ -50,6 +51,7 @@ export const AppLayout = ({
   children,
   authRequired = true,
   showLinks = true,
+  showHeader = true,
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -69,7 +71,7 @@ export const AppLayout = ({
           saveTermsAccepted()
         }}
       >
-        <div className="flex flex-col justify-center gap-4 p-8 bg-white">
+        <div className="flex flex-col justify-center gap-4 bg-white">
           <span className="text-base">
             No account required{' '}
             <span role="img" aria-label="stars">
@@ -96,7 +98,7 @@ export const AppLayout = ({
       </Modal>
 
       <div className="w-full">
-        <AppHeader showLinks={showLinks} />
+        {showHeader && <AppHeader showLinks={showLinks} />}
         <div className="min-w-full min-h-screen">
           <div className="pt-8">
             <Container>
@@ -104,7 +106,11 @@ export const AppLayout = ({
                 {(title || description) && (
                   <div className="flex flex-col gap-4">
                     {title && <h1 className="text-4xl font-bold">{title}</h1>}
-                    {description && <div>{description}</div>}
+                    {description && (
+                      <p className="w-full text-base text-gray-700">
+                        {description}
+                      </p>
+                    )}
                   </div>
                 )}
                 {showLogin ? (

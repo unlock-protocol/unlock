@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -6,6 +6,7 @@ import {
   ExpirationChanged1 as ExpirationChangedEvent,
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
+  RoleGranted as RoleGrantedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
@@ -17,9 +18,9 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock } from '../generated/schema'
+import { Key, Lock, UnlockDailyData, LockStats } from '../generated/schema'
 
-import { genKeyID, getKeyExpirationTimestampFor } from './helpers'
+import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -46,6 +47,26 @@ function newKey(event: TransferEvent): void {
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
     lock.save()
+  }
+
+  // update lockDayData
+  const dayID = event.block.timestamp.toI32() / 86400
+  const unlockDailyData = UnlockDailyData.load(dayID.toString())
+  if (unlockDailyData) {
+    const activeLocks = unlockDailyData.activeLocks
+    unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
+    if (activeLocks && !activeLocks.includes(event.address)) {
+      activeLocks.push(event.address)
+      unlockDailyData.activeLocks = activeLocks
+    }
+    unlockDailyData.save()
+  }
+
+  // update lockStats
+  const lockStats = LockStats.load('Unlock')
+  if (lockStats) {
+    lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
+    lockStats.save()
   }
 }
 
@@ -141,8 +162,14 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    key.cancelled = true
-    key.save()
+    // remove cancelled keys for v11
+    const lock = Lock.load(key.lock)
+    if (lock && lock.version == BigInt.fromI32(11)) {
+      store.remove('Key', keyID)
+    } else {
+      key.cancelled = true
+      key.save()
+    }
   }
 }
 
@@ -171,11 +198,35 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// lock functions
+// NB: Up to PublicLock v8, we handle the addition of a new lock managers
+// with our custom event `LockManagerAdded`. Starting from v9,
+// we use OpenZeppelin native `RoleGranted` event.
+export function handleRoleGranted(event: RoleGrantedEvent): void {
+  if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(LOCK_MANAGER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      const lockManagers = lock.lockManagers
+      if (lockManagers && lockManagers.length) {
+        if (!lockManagers.includes(event.params.account)) {
+          lockManagers.push(event.params.account)
+          lock.lockManagers = lockManagers
+        }
+      } else {
+        lock.lockManagers = [event.params.account]
+      }
+      lock.save()
+    }
+  }
+}
+
+// `LockManagerAdded` event is used only until v8
 export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
   const lock = Lock.load(event.address.toHexString())
 
-  if (lock && lock.lockManagers) {
+  if (lock && lock.lockManagers && lock.version.le(BigInt.fromI32(8))) {
     const lockManagers = lock.lockManagers
     lockManagers.push(event.params.account)
     lock.lockManagers = lockManagers
@@ -190,10 +241,14 @@ export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    const i = lockManagers.indexOf(event.params.account)
-    lockManagers.splice(i)
-    lock.lockManagers = lockManagers
+    const newManagers: Bytes[] = []
+    for (let i = 0; i < lock.lockManagers.length; i++) {
+      const managerAddress = lock.lockManagers[i]
+      if (managerAddress != event.params.account) {
+        newManagers.push(managerAddress)
+      }
+    }
+    lock.lockManagers = newManagers
     lock.save()
   }
 }

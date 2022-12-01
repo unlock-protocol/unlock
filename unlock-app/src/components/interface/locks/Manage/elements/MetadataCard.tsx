@@ -1,18 +1,16 @@
 import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import {
-  FaCheckCircle as CheckIcon,
-  FaSpinner as Spinner,
-} from 'react-icons/fa'
-import { useMutation } from '@tanstack/react-query'
+import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-
+import dayjs from 'dayjs'
+import { LoadingIcon } from '../../../Loading'
 interface DetailProps {
   title: string
   value: React.ReactNode
@@ -82,6 +80,23 @@ export const MetadataCard = ({
     return new Date(checkInTimeValue as number).toLocaleString()
   }
 
+  const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
+    ['subscription', lockAddress, tokenId, network],
+    async () => {
+      const response = await storageService.getSubscription({
+        lockAddress,
+        network,
+        keyId: tokenId,
+      })
+      return response.subscriptions?.[0] ?? null
+    },
+    {
+      onError(error) {
+        console.error(error)
+      },
+    }
+  )
+
   const sendEmail = async () => {
     return storageService.sendKeyQrCodeViaEmail({
       lockAddress,
@@ -106,7 +121,7 @@ export const MetadataCard = ({
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'QR-code sent by email',
       loading: 'Sending QR-code by email',
-      error: 'There is some unexpected issue, please try again',
+      error: 'We could not send the QR-code.',
     })
   }
 
@@ -168,13 +183,9 @@ export const MetadataCard = ({
             size="small"
             onClick={() => markAsCheckInMutation.mutate()}
             disabled={markAsCheckInMutation.isLoading}
+            loading={markAsCheckInMutation.isLoading}
           >
-            <div className="flex">
-              {markAsCheckInMutation.isLoading && (
-                <Spinner className="mr-1 animate-spin" />
-              )}
-              <span>Mark as Checked-in</span>
-            </div>
+            Mark as Checked-in
           </Button>
         )}
         {hasEmail ? (
@@ -209,9 +220,7 @@ export const MetadataCard = ({
           </Button>
         )}
       </div>
-      <div className="mt-5 md:mt-8">
-        <span className="text-base">Metadata</span>
-
+      <div className="pt-6">
         <div className="mt-6">
           {isCheckedIn && (
             <Badge
@@ -227,6 +236,7 @@ export const MetadataCard = ({
             {isCheckedIn && (
               <MetadataDetail title="Checked-in at" value={getCheckInTime()!} />
             )}
+
             {items?.map(([key, value], index) => {
               return (
                 <MetadataDetail
@@ -257,6 +267,38 @@ export const MetadataCard = ({
                 </>
               }
             />
+            {isSubscriptionLoading && <LoadingIcon />}
+            {!isSubscriptionLoading && subscription && (
+              <>
+                {subscription.balance && (
+                  <MetadataDetail
+                    title="User Balance"
+                    value={`${subscription.balance.amount} ${subscription.balance.symbol}`}
+                  />
+                )}
+
+                {subscription.approvedTime && (
+                  <MetadataDetail
+                    title="Renew cycle"
+                    value={subscription.approvedTime}
+                  />
+                )}
+                {subscription.next && (
+                  <MetadataDetail
+                    title="Next Renewal"
+                    value={dayjs
+                      .unix(subscription.next)
+                      .format('D MMM YYYY, h:mm A')}
+                  />
+                )}
+                {subscription.type && (
+                  <MetadataDetail
+                    title="Payment type"
+                    value={subscription.type}
+                  />
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -310,14 +352,16 @@ const UpdateEmailModal = ({
       const createMetadataPromise = storage.createtMetadata(params)
       await ToastHelper.promise(createMetadataPromise, {
         loading: 'Saving email address',
-        success: 'Email succesfully added to member',
-        error: 'There is some unexpected issue, please try again',
+        success: 'Email successfully added to member',
+        error: 'We could not save the email address.',
       })
       if (typeof callback === 'function') {
         callback()
       }
     } catch (err: any) {
-      ToastHelper.error(err?.message || 'There is some unexpected issue')
+      ToastHelper.error(
+        err?.message || `Can't update metadata, please try again.`
+      )
     }
   }
 
@@ -325,8 +369,8 @@ const UpdateEmailModal = ({
     const updateMetadataPromise = storage.updatetMetadata(params)
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
-      success: 'Email succesfully added to member',
-      error: 'There is some unexpected issue, please try again',
+      success: 'Email successfully added to member',
+      error: `Can't update the email address.`,
     })
     if (typeof callback === 'function') {
       callback()
@@ -378,7 +422,7 @@ const UpdateEmailModal = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-3">
         <span className="mr-0 font-semibold text-md">
           {hasEmail ? 'Update email address' : 'Add email address to metadata'}
         </span>

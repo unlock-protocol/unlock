@@ -3,7 +3,6 @@ import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import { useKeychain } from '~/hooks/useKeychain'
 
 export interface CancelAndRefundProps {
@@ -46,7 +45,7 @@ export const CancelAndRefundModal = ({
 
   const { getAmounts } = useKeychain({
     lockAddress,
-    network,
+    network: parseInt(`${network}`),
     owner,
     keyId: tokenId,
     tokenAddress,
@@ -56,9 +55,13 @@ export const CancelAndRefundModal = ({
     ['getAmounts', lockAddress],
     getAmounts,
     {
+      enabled: isOpen, // execute query only when the modal is open
       refetchInterval: false,
       onError: () => {
-        ToastHelper.error('There is some unexpected error, please try again')
+        isOpen &&
+          ToastHelper.error(
+            'We could not retrieve the refund amount for this membership.'
+          )
       },
     }
   )
@@ -110,7 +113,7 @@ export const CancelAndRefundModal = ({
         <CancelAndRefundModalPlaceHolder />
       ) : (
         isOpen && (
-          <div className="flex flex-col w-full gap-5 p-4">
+          <div className="flex flex-col w-full gap-5">
             <div className="text-left">
               <h3 className="text-xl font-semibold text-left text-black-500">
                 Cancel and Refund
@@ -137,15 +140,9 @@ export const CancelAndRefundModal = ({
               type="button"
               onClick={() => cancelRefundMutation.mutate()}
               disabled={buttonDisabled}
+              loading={cancelRefundMutation.isLoading}
             >
-              <div className="flex items-center">
-                {cancelRefundMutation.isLoading && (
-                  <Spinner className="animate-spin" />
-                )}
-                <span className="ml-2">
-                  {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
-                </span>
-              </div>
+              {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
             </Button>
           </div>
         )

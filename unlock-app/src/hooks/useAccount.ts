@@ -27,7 +27,7 @@ interface ApiResponse {
 export const getAccountTokenBalance = async (
   web3Service: any,
   accountAddress: string,
-  contractAddress: string,
+  contractAddress: string | null,
   network: number
 ) => {
   if (contractAddress) {
@@ -46,7 +46,7 @@ export const useAccount = (address: string, network: number) => {
   const walletService = useWalletService()
   const wedlockService = useWedlockService()
 
-  const getTokenBalance = (tokenAddress: string) => {
+  const getTokenBalance = (tokenAddress: string | null) => {
     return getAccountTokenBalance(web3Service, address, tokenAddress, network)
   }
 
@@ -133,7 +133,7 @@ export const useAccount = (address: string, network: number) => {
           password,
           result.recoveryPhrase
         )
-        ToastHelper.success('Account succesfully created')
+        ToastHelper.success('Account successfully created')
       }
     } catch (error: any) {
       console.error(error)

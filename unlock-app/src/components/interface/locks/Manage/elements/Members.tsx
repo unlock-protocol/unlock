@@ -10,6 +10,7 @@ import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
 import { ExpirationStatus } from './FilterBar'
+import Link from 'next/link'
 
 interface MembersProps {
   lockAddress: string
@@ -18,6 +19,7 @@ interface MembersProps {
   setPage: (page: number) => void
   page: number
   filters?: FilterProps
+  onAirdropKeys?: () => void
 }
 
 const MembersPlaceholder = () => {
@@ -48,6 +50,7 @@ export const Members = ({
   loading: loadingFilters,
   setPage,
   page,
+  onAirdropKeys,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -86,14 +89,14 @@ export const Members = ({
         queryFn: getMembers,
         queryKey: ['getMembers', lockAddress, network, filters],
         onError: () => {
-          ToastHelper.error('There is some unexpected issue, please try again')
+          ToastHelper.error(`Can't load members, please try again`)
         },
       },
       {
         queryFn: getLockVersion,
         queryKey: ['getLockVersion', lockAddress, network],
         onError: () => {
-          ToastHelper.error('There is some unexpected issue, please try again')
+          ToastHelper.error('Cant get lock version, please try again')
         },
       },
     ],
@@ -103,24 +106,44 @@ export const Members = ({
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
-    filters?.expiration !== 'active' || filters?.filterKey !== 'owner'
-  const hasSearch = filters?.query?.length > 0
+    filters?.expiration !== 'all' ||
+    filters?.filterKey !== 'owner' ||
+    filters?.query?.length > 0
+
+  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
 
   if (loading) {
     return <MembersPlaceholder />
   }
 
-  if (noItems && !hasSearch && !hasActiveFilter) {
+  if (noItems && !hasActiveFilter) {
     return (
       <ImageBar
         src="/images/illustrations/no-member.svg"
         alt="No members"
-        description="There are no members yet, but keep it up."
+        description={
+          <span>
+            Lock is deployed. You can{' '}
+            <button
+              onClick={onAirdropKeys}
+              className="outline-none cursor-pointer text-brand-ui-primary"
+            >
+              Airdrop Keys
+            </button>{' '}
+            or{' '}
+            <Link href={checkoutLink}>
+              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                Share a purchase link
+              </span>
+            </Link>{' '}
+            to your community.
+          </span>
+        }
       />
     )
   }
 
-  if (noItems && (hasSearch || hasActiveFilter)) {
+  if (noItems && hasActiveFilter) {
     return (
       <ImageBar
         src="/images/illustrations/no-member.svg"

@@ -31,6 +31,11 @@ const {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 } = v9
 
 export default {
@@ -65,4 +70,9 @@ export default {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 }

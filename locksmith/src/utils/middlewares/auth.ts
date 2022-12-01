@@ -16,6 +16,7 @@ export type User =
     }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: User
@@ -102,7 +103,7 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
 
 export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
   if (!req.user) {
-    return res.status(403).send({
+    return res.status(401).send({
       message: 'You are not authenticated.',
     })
   }

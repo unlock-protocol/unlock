@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
-import Loading from './Loading'
 import { ToastHelper } from '../helpers/toast.helper'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
 
@@ -62,7 +61,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={onCloseCallback}>
-      <div className="flex flex-col gap-3 px-10 py-5">
+      <div className="flex flex-col gap-3">
         <p className="text-sm">Set the amount you want to refund</p>
         <Input
           className="my-2 text-right"
@@ -73,12 +72,13 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
           min={0}
           disabled={loading}
         />
-        <Button type="button" onClick={onExpireAndRefund} disabled={loading}>
-          {loading ? (
-            <Loading size={20} />
-          ) : (
-            <span className="ml-2">Expire and Refund</span>
-          )}
+        <Button
+          type="button"
+          onClick={onExpireAndRefund}
+          disabled={loading}
+          loading={loading}
+        >
+          Expire and Refund
         </Button>
       </div>
     </Modal>

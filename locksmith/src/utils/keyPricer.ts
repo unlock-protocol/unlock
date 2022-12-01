@@ -27,6 +27,10 @@ export default class KeyPricer {
     const gasPrice = new GasPrice()
     const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
     switch (network) {
+      case 5:
+        // It does not really matter
+        return gasCost < 100
+
       case 100:
         // we max at $1
         return gasCost < 100
@@ -104,7 +108,14 @@ export default class KeyPricer {
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
     const usdKeyPricing = usdKeyPrice * quantity
     const gasFee = await this.gasFee(network)
-    const unlockServiceFee = this.unlockServiceFee(usdKeyPricing) + gasFee
+    let unlockServiceFee = gasFee
+
+    //  Temporary : for some locks, Unlock labs does not take credit card fees (only gas)
+    if (
+      ['0x339D848115981125eEfBA2F654E1F9644363c7DB'].indexOf(lockAddress) === -1
+    ) {
+      unlockServiceFee += this.unlockServiceFee(usdKeyPricing)
+    }
 
     return {
       keyPrice: usdKeyPricing, // shows price for all of the keys
