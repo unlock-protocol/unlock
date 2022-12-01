@@ -19029,7 +19029,7 @@ __metadata:
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
-    csv: 6.2.1
+    csv: 6.2.5
     dayjs: 1.11.6
     deep-object-diff: 1.1.9
     dotenv: 16.0.3
@@ -19109,7 +19109,7 @@ __metadata:
     npm-run-all: 4.1.5
     prettier: 2.7.1
     react: 17.0.2
-    react-dom: 18.2.0
+    react-dom: 17.0.2
     react-scripts: 5.0.1
     styled-components: 5.3.6
     tsup: 6.4.0
@@ -27357,36 +27357,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-generate@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "csv-generate@npm:4.2.0"
-  checksum: 833984bfea37fd4da6747031e8a290a650a618d119673208701be7678e8b6e330ef9f333f67d433e5ba956292a289293a423449850003dfd7a25536a8b2aaed7
+"csv-generate@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "csv-generate@npm:4.2.1"
+  checksum: 896a25c7cb181b0cd50aa1b97bf42b8a00f97892227fd21a0fce619fba5b38f6ce3bcd09e271659faad6cad43c9b210dcfb64cafad4369e10da8235a95335362
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.3.1":
-  version: 5.3.1
-  resolution: "csv-parse@npm:5.3.1"
-  checksum: 18acfe5295d13632ab4bcebf285b9cb4e1450d8843946882b42f313d8ae3b606e508594d29bb17a1ca4864ff7da7d1b8ad060caa0495266c433bace1c663b745
+"csv-parse@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "csv-parse@npm:5.3.3"
+  checksum: 9f16e2003ef47c901aab31d202e1c9edb70c00faa7777e17a50087314c9da6561233bc60542c15d71f7973c7a0e947c35515ea2689929881c9430a8af374089e
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "csv-stringify@npm:6.2.0"
-  checksum: c2fa074fbf2bcb8cea966c1bdf89d377f1f79bbd33e13092131cac511363479a4e7a923f26fe741e2ef5bad479a400c72e18ceb4b7c33e1f0a60cf33f5c31f1c
+"csv-stringify@npm:^6.2.3":
+  version: 6.2.3
+  resolution: "csv-stringify@npm:6.2.3"
+  checksum: 448521731117fdf9703d2e16f10ee12ad3dcb096d3d6b8373a7535171af18c304ca6b835a4c0fe7f8fcbfef870e8f049553cd437c8177712294154b29e89d9f1
   languageName: node
   linkType: hard
 
-"csv@npm:6.2.1":
-  version: 6.2.1
-  resolution: "csv@npm:6.2.1"
+"csv@npm:6.2.5":
+  version: 6.2.5
+  resolution: "csv@npm:6.2.5"
   dependencies:
-    csv-generate: ^4.2.0
-    csv-parse: ^5.3.1
-    csv-stringify: ^6.2.0
-    stream-transform: ^3.2.0
-  checksum: 14b8c51a64be52fc47a2f43684de8291a469c287078ad75612c8c91daccc6ceaa6b472a772ac62a53682e9d12f5ecdfc80bd23df5afb7bdd3f5275240101b0b1
+    csv-generate: ^4.2.1
+    csv-parse: ^5.3.3
+    csv-stringify: ^6.2.3
+    stream-transform: ^3.2.1
+  checksum: cc93984e3cfc6d2e309c8fec5230b5a3db687a38bdcc18a0efa583f2f9a8a8321b456a0ce8052112d7976274b3a45d6dfe798cae7198bf8d8fa851ffd55021c4
   languageName: node
   linkType: hard
 
@@ -50354,18 +50354,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0":
-  version: 18.2.0
-  resolution: "react-dom@npm:18.2.0"
-  dependencies:
-    loose-envify: ^1.1.0
-    scheduler: ^0.23.0
-  peerDependencies:
-    react: ^18.2.0
-  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
-  languageName: node
-  linkType: hard
-
 "react-draggable@npm:^4.4.3":
   version: 4.4.4
   resolution: "react-draggable@npm:4.4.4"
@@ -52859,15 +52847,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "scheduler@npm:0.23.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
-  languageName: node
-  linkType: hard
-
 "schema-utils@npm:2.7.0":
   version: 2.7.0
   resolution: "schema-utils@npm:2.7.0"
@@ -54646,10 +54625,10 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"stream-transform@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "stream-transform@npm:3.2.0"
-  checksum: a3c726d9b6938ffc93dcd5aa0fc9da9365280b0f919950829a81446229f4b3e432f63fb0e5d7d047134c072d84e8d9572235a5aaee0c941772e6b0969242902d
+"stream-transform@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "stream-transform@npm:3.2.1"
+  checksum: 97e46cb469654dbd6e737ce325d3284d9e9aab73e77b570dc1334da5da9272ecf39a1cddc5d9da7c0710f85a049979686ea9d0b49b6cc75cf11822630f13d132
   languageName: node
   linkType: hard
 
