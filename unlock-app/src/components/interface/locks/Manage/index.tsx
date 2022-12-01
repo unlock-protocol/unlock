@@ -31,6 +31,7 @@ import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
+import { LockPicker } from './elements/LockPicker'
 
 interface ActionBarProps {
   lockAddress: string
@@ -325,23 +326,30 @@ const NotManagerBanner = () => {
 }
 
 export const ManageLockPage = () => {
-  const { network: walletNetwork, changeNetwork } = useAuth()
+  const { network: walletNetwork, changeNetwork, account: owner } = useAuth()
   const { query } = useRouter()
   const [loading, setLoading] = useState(false)
-  const { address, network } = query ?? {}
+  const [network, setNetwork] = useState<string>(
+    (query?.network as string) ?? ''
+  )
+  const [lockAddress, setLockAddress] = useState<string>(
+    (query?.address as string) ?? ''
+  )
   const [airdropKeys, setAirdropKeys] = useState(false)
 
-  const lockNetwork = parseInt(network as string)
-  const lockAddress = address as string
+  const lockNetwork = network ? parseInt(network as string) : undefined
 
   // let's force to switch network based on the lockAddress
   const switchToCurrentNetwork = async () => {
-    const differentNetwork = walletNetwork != network
+    if (!lockNetwork) return
+    const differentNetwork = walletNetwork != parseInt(`${lockNetwork}`)
 
     if (differentNetwork) {
       await changeNetwork(parseInt(`${network}`))
     }
   }
+
+  const withoutParams = !lockAddress && !lockNetwork
 
   const { isManager, isLoading: isLoadingLockManager } = useLockManager({
     lockAddress,
@@ -369,45 +377,89 @@ export const ManageLockPage = () => {
     setAirdropKeys(!airdropKeys)
   }
 
+  const onLockPick = (lockAddress?: string, network?: string | number) => {
+    if (lockAddress && network) {
+      setLockAddress(lockAddress)
+      setNetwork(`${network}`)
+    }
+  }
+
+  const LockSelection = () => {
+    const resetLockSelection = () => {
+      setLockAddress('')
+      setNetwork('')
+    }
+
+    const hasQuery =
+      (query?.address as string)?.length > 0 &&
+      (query?.network as string)?.length > 0
+
+    return (
+      <div>
+        {withoutParams ? (
+          <>
+            <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+              Select a lock to start manage it
+            </h2>
+            <div className="w-1/2">
+              <LockPicker owner={owner!} onChange={onLockPick} />
+            </div>
+          </>
+        ) : (
+          !hasQuery && (
+            <Button onClick={resetLockSelection} variant="outlined-primary">
+              Change lock
+            </Button>
+          )
+        )}
+      </div>
+    )
+  }
   return (
     <div className="min-h-screen bg-ui-secondary-200 pb-60">
       <Container>
-        <div className="pt-9">
-          <div className="flex flex-col gap-3 mb-7">
-            <TopActionBar lockAddress={lockAddress} network={lockNetwork} />
-            {showNotManagerBanner && <NotManagerBanner />}
-          </div>
-          <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
-            <div className="lg:col-span-3">
-              <LockDetailCard lockAddress={lockAddress} network={lockNetwork} />
+        <LockSelection />
+        {!withoutParams && (
+          <div className="pt-9">
+            <div className="flex flex-col gap-3 mb-7">
+              <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
+              {showNotManagerBanner && <NotManagerBanner />}
             </div>
-            <div className="flex flex-col gap-6 lg:col-span-9">
-              <TotalBar lockAddress={lockAddress} network={lockNetwork} />
-              <ActionBar
-                lockAddress={lockAddress}
-                network={lockNetwork}
-                isOpen={airdropKeys}
-                setIsOpen={setAirdropKeys}
-              />
-              <FilterBar
-                filters={filters}
-                setFilters={setFilters}
-                setLoading={setLoading}
-                setPage={setPage}
-                page={page}
-              />
-              <Members
-                lockAddress={lockAddress}
-                network={lockNetwork}
-                filters={filters}
-                loading={loading}
-                setPage={setPage}
-                page={page}
-                onAirdropKeys={toggleAirdropKeys}
-              />
+            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
+              <div className="lg:col-span-3">
+                <LockDetailCard
+                  lockAddress={lockAddress}
+                  network={lockNetwork!}
+                />
+              </div>
+              <div className="flex flex-col gap-6 lg:col-span-9">
+                <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                <ActionBar
+                  lockAddress={lockAddress}
+                  network={lockNetwork!}
+                  isOpen={airdropKeys}
+                  setIsOpen={setAirdropKeys}
+                />
+                <FilterBar
+                  filters={filters}
+                  setFilters={setFilters}
+                  setLoading={setLoading}
+                  setPage={setPage}
+                  page={page}
+                />
+                <Members
+                  lockAddress={lockAddress}
+                  network={lockNetwork!}
+                  filters={filters}
+                  loading={loading}
+                  setPage={setPage}
+                  page={page}
+                  onAirdropKeys={toggleAirdropKeys}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </Container>
     </div>
   )
