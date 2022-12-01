@@ -61,7 +61,7 @@ export const KeysByNetwork = ({
           {networkName}
         </h2>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {keys?.map((key: any) => (
           <Key
             key={key.id}
@@ -77,7 +77,6 @@ export const KeysByNetwork = ({
 
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
-
   const networkItems: any[] =
     Object.entries(networks ?? {})
       .map(([network, value]) => [parseInt(network, 10), value])

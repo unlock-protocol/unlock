@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import QRCode from 'qrcode.react'
 import { Button, Input, Icon, Modal } from '@unlock-protocol/ui'
 import { FaEnvelope } from 'react-icons/fa'
@@ -27,17 +27,19 @@ export const QRModal = ({
     setIsValid(evt.currentTarget.validity.valid)
   }
 
-  const QRUrl = () => {
+  const QRUrl = useMemo(() => {
+    if (!signature) {
+      return
+    }
     const url = new URL(`${window.location.origin}/verification`)
     const data = encodeURIComponent(signature.payload)
     const sig = encodeURIComponent(signature.signature)
     url.searchParams.append('data', data)
     url.searchParams.append('sig', sig)
-
     // eslint-disable-next-line no-console
     console.log(url.toString()) // debugging
     return url.toString()
-  }
+  }, [signature])
 
   return (
     <Modal
@@ -49,7 +51,7 @@ export const QRModal = ({
     >
       <div className="flex flex-col gap-3">
         <div className="mx-auto">
-          <QRCode value={QRUrl()} size={256} includeMargin />
+          {QRUrl && <QRCode value={QRUrl} size={256} includeMargin />}
         </div>
         <Input
           className="my-4 w-90"
