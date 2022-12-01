@@ -52,7 +52,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "babel-jest": "28.1.3",
     "eslint": "8.26.0",
-    "hardhat": "2.12.2",
+    "hardhat": "2.12.3",
     "jest": "27.5.1",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
