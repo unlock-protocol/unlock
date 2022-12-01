@@ -8,12 +8,11 @@ import {
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
 import {
   FaWallet as WalletIcon,
-  FaQrcode as QrCodeIcon,
   FaCheckCircle as CheckIcon,
   FaInfoCircle as InfoIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
-import { Badge, Button } from '@unlock-protocol/ui'
+import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import QRModal from './QRModal'
@@ -34,7 +33,16 @@ import { classed as tw } from '@tw-classed/react'
 import { TbTools as ToolsIcon } from 'react-icons/tb'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { FaPlus as ExtendIcon } from 'react-icons/fa'
-import { RiNavigationFill as ExploreIcon } from 'react-icons/ri'
+import {
+  RiNavigationFill as ExploreIcon,
+  RiQrCodeLine as QrCodeIcon,
+} from 'react-icons/ri'
+import {
+  RiFileCopyLine as CopyLineIcon,
+  RiExternalLinkFill as ExternalIcon,
+} from 'react-icons/ri'
+import { useStorageService } from '~/utils/withStorageService'
+import dayjs from 'dayjs'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-medium items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -52,8 +60,16 @@ interface KeyBoxProps {
   expiration: string
   tokenId: string
   network: number
-  isKeyExpired: boolean
   expirationStatus: string
+}
+
+const KeyBoxItem = ({ label, value }: Record<'label' | 'value', string>) => {
+  return (
+    <div className="flex items-center justify-between gap-2 py-1 text-sm">
+      <span className="text-gray-500">{label}</span>
+      <span className="font-bold">{value}</span>
+    </div>
+  )
 }
 
 const KeyBox = ({
@@ -61,43 +77,35 @@ const KeyBox = ({
   expiration,
   tokenId,
   network,
-  isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
   const metadata = useMetadata(lock.address, tokenId, network)
-
-  const [isCopied, setCopied] = useClipboard(lock.address, {
+  const config = useConfig()
+  const [_, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
   })
+  const storage = useStorageService()
+  const { data: subscriptionInfo, isLoading } = useQuery(
+    ['subscriptions', lock.address, tokenId, network],
+    async () => {
+      const response = await storage.locksmith.getSubscription(
+        network,
+        lock.address,
+        tokenId
+      )
+      return response.data.subscriptions?.[0] ?? {}
+    },
+    {
+      retry: 2,
+      onError(error) {
+        console.error(error)
+      },
+    }
+  )
+  console.log(subscriptionInfo, isLoading)
 
-  // Replace with actual call to backend
-  const nextRenewal = '9 PM : 12 March 2022'
-  const userBalance = '12 LINK'
-  const approvedTime = '12 days'
-  const type = 'crypto'
   return (
-    <div className="grid gap-6">
-      <div className="flex items-center justify-end">
-        <div>
-          {isKeyExpired ? (
-            <Badge
-              size="small"
-              variant="red"
-              iconRight={<DangerIcon size={12} key="expired" />}
-            >
-              Expired
-            </Badge>
-          ) : (
-            <Badge
-              size="small"
-              variant="green"
-              iconRight={<CheckIcon size={12} key="valid" />}
-            >
-              Valid
-            </Badge>
-          )}
-        </div>
-      </div>
+    <div className="grid gap-2">
       <div>
         <Avatar className="flex items-center justify-center ">
           <AvatarImage
@@ -112,60 +120,55 @@ const KeyBox = ({
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className="grid gap-2">
-        <h3 className="text-lg font-bold line-clamp-1">{lock.name}</h3>
-        <p className="flex items-center justify-between gap-2 text-sm">
-          <span className="text-gray-500">Token ID</span>
-          <span className="font-medium">{tokenId}</span>
-        </p>
-        <div className="flex items-center justify-between gap-2 text-sm">
-          <span className="text-gray-500">Lock Address</span>
-          <div className="flex w-36 justify-between items-center gap-2 pl-2 p-0.5 border rounded">
-            <span className="w-12 overflow-hidden font-medium text-ellipsis">
-              {lock.address}
-            </span>
-            <button
-              onClick={setCopied}
-              type="button"
-              className="flex items-center px-4 text-gray-600 border rounded hover:text-black hover:border-gray-300 bg-gray-50"
-            >
-              {isCopied ? 'Copied' : 'Copy'}
-            </button>
-          </div>
+      <div className="flex items-center justify-between">
+        <div className="inline-flex items-center gap-2">
+          {minifyAddress(lock.address)}
+          <button
+            onClick={(event) => {
+              event.preventDefault()
+              setCopied()
+              ToastHelper.success('Copied!')
+            }}
+          >
+            <CopyLineIcon size={18} />
+          </button>
         </div>
-        <p className="flex items-center justify-between gap-2 text-sm">
-          <span className="text-gray-500">Network</span>
-          <span className="font-medium">{networks[network].name}</span>
-        </p>
+        <a
+          href={config.networks?.[network]?.explorer?.urls.address(
+            lock.address
+          )}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 text-ui-main-500"
+        >
+          View <ExternalIcon size={18} />
+        </a>
+      </div>
+      <div className="divide-y divide-y-reverse divide-brand-dark">
+        <h3 className="text-lg font-bold line-clamp-1">{lock.name}</h3>
+        <KeyBoxItem label="Token ID" value={tokenId} />
         {expiration !== MAX_UINT && (
-          <p className="flex items-center justify-between gap-2 text-sm">
-            <span className="text-gray-500">Valid</span>
-            <span className="font-medium">{expirationStatus}</span>
-          </p>
+          <KeyBoxItem label="Valid" value={expirationStatus} />
         )}
-        {nextRenewal && (
-          <p className="flex items-center justify-between gap-2 text-sm">
-            <span className="text-gray-500">Renew on</span>
-            <span className="font-medium">{nextRenewal}</span>
-          </p>
+        {subscriptionInfo?.next && (
+          <KeyBoxItem
+            label="Renew On"
+            value={dayjs
+              .unix(subscriptionInfo.next)
+              .format('D MMM YYYY, h:mm A')}
+          />
         )}
-        {approvedTime && (
-          <p className="flex items-center justify-between gap-2 text-sm">
-            <span className="text-gray-500">Renew for</span>
-            <span className="font-medium">{approvedTime}</span>
-          </p>
+        {subscriptionInfo?.approvedTime && (
+          <KeyBoxItem
+            label="Renew Cycle"
+            value={subscriptionInfo.approvedTime}
+          />
         )}
-        {userBalance && (
-          <p className="flex items-center justify-between gap-2 text-sm">
-            <span className="text-gray-500">User balance</span>
-            <span className="font-medium">{userBalance}</span>
-          </p>
+        {subscriptionInfo?.balance && (
+          <KeyBoxItem label="User Balance" value={subscriptionInfo.balance} />
         )}
-        {type && (
-          <p className="flex items-center justify-between gap-2 text-sm">
-            <span className="text-gray-500">Payment type</span>
-            <span className="font-medium">{type}</span>
-          </p>
+        {subscriptionInfo?.type && (
+          <KeyBoxItem label="Payment Type" value={subscriptionInfo.type} />
         )}
       </div>
     </div>
@@ -315,7 +318,7 @@ function Key({ ownedKey, account, network }: Props) {
   const wrongNetwork = network !== accountNetwork
 
   return (
-    <div className="grid gap-6 p-6 bg-white border border-gray-100 shadow-xl rounded-xl">
+    <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
       <KeyMetadataDrawer
         isOpen={showMetadata}
         setIsOpen={setShowMetadata}
@@ -342,132 +345,155 @@ function Key({ ownedKey, account, network }: Props) {
         sendEmail={sendEmail}
         signature={signature}
       />
+      <div className="flex items-center justify-between">
+        <div>
+          {isKeyExpired ? (
+            <Badge
+              size="small"
+              variant="red"
+              iconRight={<DangerIcon size={12} key="expired" />}
+            >
+              Expired
+            </Badge>
+          ) : (
+            <Badge
+              size="small"
+              variant="green"
+              iconRight={<CheckIcon size={12} key="valid" />}
+            >
+              Valid
+            </Badge>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            aria-label="QR Code"
+            className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
+            type="button"
+            onClick={handleSignature}
+          >
+            <QrCodeIcon size={18} />
+          </button>
+          <Menu as="div" className="relative inline-block text-left">
+            <Menu.Button as={Fragment}>
+              <Button
+                size="small"
+                variant="outlined-primary"
+                iconLeft={<ToolsIcon key="options" />}
+              >
+                Options
+              </Button>
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-72 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="p-1">
+                  <Menu.Item>
+                    {({ disabled, active }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={onExploreLock}
+                      >
+                        <ExploreIcon size={16} />
+                        Explore lock
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item disabled={!isAvailableOnOpenSea}>
+                    {({ disabled, active }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={onOpenSea}
+                      >
+                        <OpenSeaIcon size={16} />
+                        Open on Opensea
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                </div>
+                <div className="p-1">
+                  <Menu.Item>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={addToWallet}
+                      >
+                        <WalletIcon />
+                        Add to wallet
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item disabled={!isRefundable || wrongNetwork}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowCancelModal(!showCancelModal)
+                        }}
+                      >
+                        <CancelIcon />
+                        {wrongNetwork
+                          ? `Switch to ${networks[network].name} to cancel`
+                          : 'Cancel and refund'}
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          onExtend()
+                        }}
+                      >
+                        <ExtendIcon />
+                        Extend membership
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowMetadata(true)
+                        }}
+                      >
+                        <InfoIcon />
+                        View metadata
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        </div>
+      </div>
       <KeyBox
         network={network}
         lock={lock}
         expiration={expiration}
         tokenId={tokenId}
-        isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
       {error && <span className="text-sm text-red-500">{error}</span>}
-      <div className="flex items-center justify-between">
-        <button
-          aria-label="QR Code"
-          className="inline-flex items-center gap-2 p-2 border rounded-lg hover:bg-gray-50"
-          type="button"
-          onClick={handleSignature}
-        >
-          <QrCodeIcon />
-        </button>
-        <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button as={Fragment}>
-            <Button size="small" iconLeft={<ToolsIcon key="options" />}>
-              Options
-            </Button>
-          </Menu.Button>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-72 ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <div className="p-1">
-                <Menu.Item>
-                  {({ disabled, active }) => (
-                    <MenuButton
-                      disabled={disabled}
-                      active={active}
-                      onClick={onExploreLock}
-                    >
-                      <ExploreIcon size={16} />
-                      Explore lock
-                    </MenuButton>
-                  )}
-                </Menu.Item>
-
-                <Menu.Item disabled={!isAvailableOnOpenSea}>
-                  {({ disabled, active }) => (
-                    <MenuButton
-                      disabled={disabled}
-                      active={active}
-                      onClick={onOpenSea}
-                    >
-                      <OpenSeaIcon size={16} />
-                      Open on Opensea
-                    </MenuButton>
-                  )}
-                </Menu.Item>
-              </div>
-              <div className="p-1">
-                <Menu.Item>
-                  {({ active, disabled }) => (
-                    <MenuButton
-                      disabled={disabled}
-                      active={active}
-                      onClick={addToWallet}
-                    >
-                      <WalletIcon />
-                      Add to wallet
-                    </MenuButton>
-                  )}
-                </Menu.Item>
-                <Menu.Item disabled={!isRefundable && wrongNetwork}>
-                  {({ active, disabled }) => (
-                    <MenuButton
-                      disabled={disabled}
-                      active={active}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setShowCancelModal(!showCancelModal)
-                      }}
-                    >
-                      <CancelIcon />
-                      {wrongNetwork
-                        ? `Switch to ${networks[network].name} to cancel`
-                        : 'Cancel and refund'}
-                    </MenuButton>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active, disabled }) => (
-                    <MenuButton
-                      disabled={disabled}
-                      active={active}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        onExtend()
-                      }}
-                    >
-                      <ExtendIcon />
-                      Extend membership
-                    </MenuButton>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active, disabled }) => (
-                    <MenuButton
-                      disabled={disabled}
-                      active={active}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setShowMetadata(true)
-                      }}
-                    >
-                      <InfoIcon />
-                      View metadata
-                    </MenuButton>
-                  )}
-                </Menu.Item>
-              </div>
-            </Menu.Items>
-          </Transition>
-        </Menu>
-      </div>
     </div>
   )
 }
