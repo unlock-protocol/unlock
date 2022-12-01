@@ -78,7 +78,7 @@
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
-    "sequelize": "5.22.5",
+    "sequelize": "6.26.0",
     "sequelize-cli": "6.5.2",
     "sequelize-typescript": "1.1.0",
     "setimmediate": "1.0.5",
