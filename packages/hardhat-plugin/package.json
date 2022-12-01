@@ -40,7 +40,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "4.3.4",
     "eslint": "8.26.0",
-    "hardhat": "2.12.2",
+    "hardhat": "2.12.3",
     "mocha": "10.1.0",
     "prettier": "2.7.1",
     "ts-mocha": "10.0.0",
@@ -52,7 +52,7 @@
   },
   "peerDependencies": {
     "ethers": "5.7.2",
-    "hardhat": "2.12.2"
+    "hardhat": "2.12.3"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.1",
