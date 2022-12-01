@@ -13,6 +13,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: smart-contracts
   
@@ -21,7 +23,9 @@ services:
     platform: linux/amd64
     build:
       context: ../
-      target: subgraph
+      target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: subgraph
 
@@ -32,6 +36,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: unlock-app
     ports:
@@ -46,6 +52,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: unlock-protocol-com
     ports:
@@ -58,6 +66,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: paywall-app
     ports:
@@ -70,6 +80,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/paywall
     ports:
@@ -80,6 +92,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
@@ -90,15 +104,20 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/hardhat-plugin
     env_file:
       - ./${UNLOCK_ENV}.env
+
   contracts: # Container for @unlock-protocol/contracts
     image: contracts
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/contracts
     env_file:
@@ -109,6 +128,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: wedlocks
     env_file:
@@ -119,13 +140,14 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: integration-tests
-
     env_file:
       - ./${UNLOCK_ENV}.env
     depends_on:
-      # - eth-node
+      - eth-node
       - unlock-app
       - paywall
       - locksmith
@@ -137,6 +159,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: locksmith
     env_file:
@@ -153,6 +177,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: locksmith
     env_file:
