@@ -386,7 +386,7 @@ export class PaymentProcessor {
       totalPriceInCents: paymentIntent.amount,
       unlockServiceFee: paymentIntent.application_fee_amount,
       stripeCharge: paymentIntent.id,
-      recurring: paymentIntent.metadata.recurring,
+      recurring: parseInt(paymentIntent.metadata.recurring),
       chain: network,
     })
 

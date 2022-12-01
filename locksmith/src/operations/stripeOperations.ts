@@ -73,7 +73,6 @@ export const deletePaymentDetailsForAddress = async (
 
   // First, let's delete the StripeCustomer
   const deletedStripeCustomer = await StripeCustomer.destroy({
-    // @ts-expect-error - typescript typing issue
     where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
   })
 
@@ -84,7 +83,6 @@ export const deletePaymentDetailsForAddress = async (
       stripe_customer_id: null,
     },
     {
-      // @ts-expect-error - typescript typing issue
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
     }
   )

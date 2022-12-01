@@ -11,6 +11,7 @@ interface ChargeAttributes {
   totalPriceInCents: number
   unlockServiceFee: number | null
   transactionHash?: string
+  recurring?: number
 }
 
 @Table({ tableName: 'Charges', timestamps: true })
