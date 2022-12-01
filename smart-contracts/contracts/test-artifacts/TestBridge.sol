@@ -2,14 +2,16 @@
 pragma solidity ^0.8.7;
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
 import "hardhat/console.sol";
-import "../interfaces/bridge/IWETH.sol";
+import "../interfaces/IWETH.sol";
 
 contract TestBridge {
   IWETH weth;
+  uint32 srcDomainId; // used to know here does the call come from
 
-  constructor(address _weth) {
+  constructor(address _weth, uint32 _srcDomainId) {
     console.log(_weth);
     weth = IWETH(_weth);
+    srcDomainId = _srcDomainId;
   }
 
   /**
@@ -17,7 +19,7 @@ contract TestBridge {
    * and send it to a IXReceiver contract
    */
   function xcall(
-    uint32 _destination,
+    uint32 _destination, // domainID
     address _to,
     address _asset,
     address _delegate,
@@ -27,7 +29,6 @@ contract TestBridge {
   ) external payable returns (bytes32 transferId) {
     console.log("---- arrived in bridge");
     uint valueToSend = _amount;
-    uint32 origin = uint32(31337);
     transferId = bytes32(block.timestamp);
 
     // wrap native assets
@@ -37,15 +38,14 @@ contract TestBridge {
       require(success, "wrapping token failed");
     }
 
-    console.log("---- crossed the bridge with id:");
-    console.log(uint(transferId));
+    console.log("---- crossed the bridge with id:", uint(transferId));
 
     IXReceiver(_to).xReceive(
       transferId,
       _amount, // amount of token in wei
       _asset, // the ERC20 token
-      address(0), // _originSender
-      origin, // domain ID of the origin chain
+      msg.sender, // sender on the origin chain
+      srcDomainId, // domain ID of the origin chain
       _callData
     );
   }
