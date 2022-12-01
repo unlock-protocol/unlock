@@ -19,7 +19,7 @@
     "publish:npm": "yarn prepublish && npm publish"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-etherscan": "3.1.2",
+    "@nomiclabs/hardhat-etherscan": "3.1.3",
     "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
