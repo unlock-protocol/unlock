@@ -35,7 +35,6 @@ import { Menu, Transition } from '@headlessui/react'
 import { classed as tw } from '@tw-classed/react'
 import { TbTools as ToolsIcon } from 'react-icons/tb'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { FaPlus as ExtendIcon } from 'react-icons/fa'
 import {
   RiNavigationFill as ExploreIcon,
   RiQrCodeLine as QrCodeIcon,

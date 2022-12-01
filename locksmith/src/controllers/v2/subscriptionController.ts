@@ -35,6 +35,9 @@ export interface Subscription {
 }
 
 const getApprovedTime = (renewals: string, durationInSeconds: string) => {
+  if (durationInSeconds === ethers.constants.MaxUint256.toString()) {
+    return 'No renewal required'
+  }
   const approvedTimeInSeconds =
     ethers.BigNumber.from(renewals).mul(durationInSeconds)
 
@@ -47,7 +50,7 @@ const getApprovedTime = (renewals: string, durationInSeconds: string) => {
   const approvedSeconds = approvedTimeInSeconds.toNumber()
 
   const approvedTime = approvedTimeInYears.gt(100)
-    ? 'Forever'
+    ? 'No renewal required'
     : approvedSeconds <= 0
     ? 'No renewal available'
     : dayjs.duration(approvedSeconds, 'seconds').humanize()
