@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/locksmith",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "an unlock storage service",
   "main": "server.js",
   "scripts": {
@@ -14,12 +14,12 @@
     "test:db:create": "NODE_ENV=test yarn sequelize db:create",
     "test:db:migrate": "NODE_ENV=test yarn sequelize db:migrate",
     "test:db:drop": "NODE_ENV=test yarn sequelize db:drop",
-    "test:run": "NODE_ENV=test jest --forceExit --runInBand",
+    "test:run": "NODE_ENV=test jest --forceExit --runInBand __tests__/",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ __tests__/",
     "db:migrate": "yarn sequelize db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",
     "ci": "yarn lint && yarn test",
-    "build": "tsc",
+    "build": "tsc -p .",
     "tsc": "tsc",
     "clean": "rm -rf build",
     "dist": "yarn build && sh ./scripts/dist.sh",
