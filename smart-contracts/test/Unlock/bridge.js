@@ -4,6 +4,7 @@ const { ethers } = require('hardhat')
 const {
   deployContracts,
   deployLock,
+  purchaseKey,
   reverts,
   ADDRESS_ZERO,
   addSomeETH,
@@ -262,14 +263,64 @@ contract('Unlock / bridge', () => {
         })
       })
 
-      
+      describe('extend', () => {
+        let tokenId
+        beforeEach(async () => {
+          // purchase the key
+          if (isErc20) {
+            await erc20Dest.mint(keyOwner.address, keyPrice)
+            await erc20Dest.connect(keyOwner).approve(lock.address, keyPrice)
+          }
+          ;({tokenId} = await purchaseKey(lock, keyOwner.address, isErc20))
+          assert.equal(await lock.balanceOf(keyOwner.address), 1)
 
-      // it('emits an event when receiving from bridge', async () => {
-      //   unlockDest.find
-      // })
+          // expire the key
+          assert.equal(await lock.isValidKey(tokenId), true)
+          await lock.expireAndRefundFor(tokenId, 0)
+          assert.equal(await lock.isValidKey(tokenId), false)
 
-      // TODO: test bridge source modifiers
-      // TODO: test extend
+          // parse extend calldata
+          const extendArgs = [
+            isErc20 ? keyPrice : 0,
+            tokenId,
+            ADDRESS_ZERO,
+            [],
+          ]
+          const interface = new ethers.utils.Interface(lock.abi)
+          const calldata = interface.encodeFunctionData('extend', extendArgs)
+
+          // calculate fee for the brdige
+          const relayerFee = ethers.utils.parseEther('.005')
+          const value = isErc20 ? relayerFee : relayerFee.add(keyPrice)
+
+          if (isErc20) {
+            // give user some tokens on origin chain
+            await erc20Src.mint(keyOwner.address, keyPrice)
+            // allow unlock on src chain to get his tokens (to send to bridge)
+            await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+          }
+
+          // send call from src > dest
+          tx = await unlockSrc
+            .connect(keyOwner)
+            .sendBridgedLockCall(
+              destChainId,
+              lock.address,
+              isErc20 ? erc20Src.address : ADDRESS_ZERO, // erc20 from src chain
+              keyPrice,
+              calldata,
+              relayerFee,
+              {
+                value,
+              }
+            )
+        })
+
+        it('key is now valid', async () => {
+          assert.equal(await lock.balanceOf(keyOwner.address), 1)
+          assert.equal(await lock.isValidKey(tokenId), true)
+        })
+      })
     })
   })
 })
