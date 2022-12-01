@@ -75,7 +75,7 @@
     "yargs": "17.6.0"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.3.0",
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
