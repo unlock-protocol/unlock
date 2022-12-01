@@ -21,7 +21,7 @@ import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 interface Props {
-  injectedProvider: unknown
+  injectedProvider: any
   paywallConfig: PaywallConfig
   communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
@@ -39,7 +39,7 @@ export function Checkout({
     },
   })
   const [state] = useActor(checkoutService)
-  const { account, network: connectedNetwork } = useAuth()
+  const { account } = useAuth()
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
   const paywallConfigChanged = !isEqual(
@@ -245,12 +245,18 @@ export function Checkout({
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
 
+  const chainChangedHandler = () => {
+    if (injectedProvider && injectedProvider.on) {
+      injectedProvider.on('chainChanged', () => {
+        checkoutService.send('SELECT')
+      })
+    }
+  }
+
   useEffect(() => {
     // back to default step when network changes
-    if (!connectedNetwork) return
-
-    checkoutService.send('SELECT')
-  }, [checkoutService, connectedNetwork])
+    chainChangedHandler()
+  }, [])
 
   return (
     <CheckoutTransition>
