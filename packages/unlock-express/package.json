@@ -14,7 +14,7 @@
     "passport-custom": "1.1.1"
   },
   "peerDependencies": {
-    "passport": "0.6.0"
+    "passport": "^0.6.0"
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
