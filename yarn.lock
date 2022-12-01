@@ -19283,7 +19283,7 @@ __metadata:
     cal-parser: 1.0.2
     dayjs: 1.11.6
     dotenv: 16.0.3
-    embla-carousel-autoplay: 7.0.4
+    embla-carousel-autoplay: 7.0.5
     embla-carousel-react: 7.0.4
     eslint: 8.27.0
     eslint-config-next: 12.2.3
@@ -29084,12 +29084,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"embla-carousel-autoplay@npm:7.0.4":
-  version: 7.0.4
-  resolution: "embla-carousel-autoplay@npm:7.0.4"
+"embla-carousel-autoplay@npm:7.0.5":
+  version: 7.0.5
+  resolution: "embla-carousel-autoplay@npm:7.0.5"
   peerDependencies:
-    embla-carousel: 7.0.4
-  checksum: 7b29d5be953605681a76c2fd7fa5455b57d3bfe3478a097f2b47433f04106111f9809bf0052b0947772718b866303381db6ba22925b51cbba62a2b3e31aea4b1
+    embla-carousel: 7.0.5
+  checksum: 4a5c958b4dc4c5e7d01d6a24692c1591ce7d78d9b0c5e563f6c113b6e20b746ca85cf30f29afde51ea5947da644df56071c6f2dc6c81629aa066c3502ee52855
   languageName: node
   linkType: hard
 
