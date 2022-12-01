@@ -281,7 +281,7 @@ export const MetadataCard = ({
 
                 {subscription.approvedTime && (
                   <MetadataDetail
-                    title="Renew for"
+                    title="Renew cycle"
                     value={subscription.approvedTime}
                   />
                 )}
@@ -290,7 +290,7 @@ export const MetadataCard = ({
                     title="Next Renewal"
                     value={dayjs
                       .unix(subscription.next)
-                      .format(' h:mm A : D MMM YYYY')}
+                      .format('D MMM YYYY, h:mm A')}
                   />
                 )}
                 {subscription.type && (
