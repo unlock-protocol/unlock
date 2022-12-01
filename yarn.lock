@@ -19193,7 +19193,7 @@ __metadata:
     react-use-clipboard: 1.0.9
     storybook-builder-vite: 0.1.23
     tailwind-merge: 1.8.0
-    tailwindcss: 3.2.2
+    tailwindcss: 3.2.4
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.4.0
     typescript: 4.8.4
@@ -19350,7 +19350,7 @@ __metadata:
     siwe: 1.1.6
     styled-components: 5.3.6
     tailwind-merge: 1.8.0
-    tailwindcss: 3.2.2
+    tailwindcss: 3.2.4
     ts-jest: 27.1.5
     typescript: 4.8.4
     validator: 13.7.0
@@ -19508,7 +19508,7 @@ __metadata:
     showdown-highlight: 3.1.0
     styled-components: 5.3.6
     tailwind-merge: 1.8.0
-    tailwindcss: 3.2.2
+    tailwindcss: 3.2.4
     ts-jest: 27.1.5
     typescript: 4.8.4
     use-local-storage: 2.3.6
@@ -56137,9 +56137,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.2.2":
-  version: 3.2.2
-  resolution: "tailwindcss@npm:3.2.2"
+"tailwindcss@npm:3.2.4":
+  version: 3.2.4
+  resolution: "tailwindcss@npm:3.2.4"
   dependencies:
     arg: ^5.0.2
     chokidar: ^3.5.3
@@ -56169,7 +56169,7 @@ resolve@^2.0.0-next.3:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 4f29f9d7bed74f70cd90281c4068e20903cbe79949987aae7c6cf197df9c852caa0d9884c19547f55eac09c2468dfe30c25bc8e75482e2654e24ee40d74078f9
+  checksum: ec187d180c722ec4f57537f2216c7b21269b525f12aaf353cea464d939c3e6286a1221eb3e1206e45d1f015f296171309ad4d9952899b0245cd07d9500a9401f
   languageName: node
   linkType: hard
 
@@ -58014,11 +58014,11 @@ typescript@^3.8.3:
 
 "typescript@patch:typescript@4.9.3#~builtin<compat/typescript>":
   version: 4.9.3
-  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=701156"
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ef65c22622d864497d0a0c5db693523329b3284c15fe632e93ad9aa059e8dc38ef3bd767d6f26b1e5ecf9446f49bd0f6c4e5714a2eeaf352805dc002479843d1
+  checksum: 67ca21a387c0572f1c04936e638dde7782c5aa520c3754aadc7cc9b7c915da9ebc3e27c601bfff4ccb7d7264e82dce6d277ada82ec09dc75024349e0ef64926d
   languageName: node
   linkType: hard
 
