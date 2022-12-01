@@ -11,7 +11,7 @@
     "@types/jest": "27.5.2",
     "@types/next": "8.0.7",
     "@types/node": "18.11.9",
-    "@types/react": "17.0.44",
+    "@types/react": "17.0.52",
     "@types/styled-components": "5.1.26",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:",
