@@ -19136,7 +19136,7 @@ __metadata:
     postmate: 1.5.2
     prettier: 2.7.1
     prop-types: 15.8.1
-    qr-scanner: 1.4.1
+    qr-scanner: 1.4.2
     qrcode.react: 3.1.0
     react: 17.0.2
     react-crypto-icons: 1.0.5
@@ -50078,12 +50078,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"qr-scanner@npm:1.4.1":
-  version: 1.4.1
-  resolution: "qr-scanner@npm:1.4.1"
+"qr-scanner@npm:1.4.2":
+  version: 1.4.2
+  resolution: "qr-scanner@npm:1.4.2"
   dependencies:
     "@types/offscreencanvas": ^2019.6.4
-  checksum: c3bab2a35153d2c64363b669dcf5cf3009c109b930d0c719da0e90efa6e62cf432b460478a264e71b6add35f53c0c9dc1e9a8fb09f75e133c0b7f03be5256bb0
+  checksum: 554855c1d61cc9f502162d43d76d0cd03d6df77b0ecbfcae2c0f936c31cbd1ac45e673857b91628dde1d3f5156eca6651c4973187fa061ae9ec7ec07a95f7738
   languageName: node
   linkType: hard
 
