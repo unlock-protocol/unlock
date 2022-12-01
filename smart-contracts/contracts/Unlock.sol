@@ -155,13 +155,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event BridgeCallReceived(
     uint originChainId,
     address indexed lockAddress, 
-    bytes32 transferId
+    uint transferID
   );
+
   event BridgeCallEmitted(
     uint destChainId,
     address indexed unlockAddress, 
     address indexed lockAddress, 
-    bytes32 transferID
+    uint transferID
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
@@ -468,7 +469,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       destChainId,
       unlockAddress,
       lock, 
-      transferID
+      uint(transferID)
     );
   }
 
@@ -542,7 +543,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     emit BridgeCallReceived(
       chainIds[origin],
       lockAddress, 
-      transferId
+      uint(transferId)
     );
   }
 
