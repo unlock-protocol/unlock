@@ -1,4 +1,4 @@
-const { reverts, deployContracts } = require('../helpers')
+const { reverts, deployContracts, ADDRESS_ZERO } = require('../helpers')
 
 let unlock
 let unlockOwner
@@ -18,6 +18,7 @@ contract('Lock / configUnlock', (accounts) => {
         '',
         '',
         1, // mainnet
+        ADDRESS_ZERO,
         {
           from: unlockOwner,
         }
@@ -33,6 +34,7 @@ contract('Lock / configUnlock', (accounts) => {
           '',
           '',
           1, // mainnet
+          ADDRESS_ZERO,
           {
             from: accounts[7],
           }
