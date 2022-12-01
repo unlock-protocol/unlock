@@ -16527,21 +16527,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/core@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@tw-classed/core@npm:1.2.3"
-  checksum: 10aeb0980a67b2da76769405b757ebaec2caeb89fa74faf3c32f1b9880f8a6ea6b112872154ac8cdab81fba3872d5d32e76a2d2f351d02a2a35bee6cc508390d
+"@tw-classed/core@npm:1.2.4":
+  version: 1.2.4
+  resolution: "@tw-classed/core@npm:1.2.4"
+  checksum: e6c09f86290217692b6bf54eee34a5a12730a47b9b28fabe2ea27a3dac8a674f636f331a97f4579dafa9331d9fc388bb3d3878cb3e07d82534e6a2cd10e07a16
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@tw-classed/react@npm:1.2.3"
+"@tw-classed/react@npm:1.2.4":
+  version: 1.2.4
+  resolution: "@tw-classed/react@npm:1.2.4"
   dependencies:
-    "@tw-classed/core": 1.2.3
+    "@tw-classed/core": 1.2.4
   peerDependencies:
     react: ">=16.8.0"
-  checksum: da48c18bf5e16e04c3d3dbd89f44fec53b60b12078f0dd2c8d528d2df2387065aa34f20fc96f378e31e38c24af0a8cf642ce49f5a4121593ff09f3ae547f7dc8
+  checksum: 232da1e8fd3881774c95c5e18d31bda214fa9017162cdee4aad2e8bb3c6a92be2fcb6dd2b7b6bf101a57da1c4c7d849bf31bc683ddfff71dfc9db042f147cdfc
   languageName: node
   linkType: hard
 
@@ -18124,29 +18124,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:5.42.0":
-  version: 5.42.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:5.42.0"
-  dependencies:
-    "@typescript-eslint/scope-manager": 5.42.0
-    "@typescript-eslint/type-utils": 5.42.0
-    "@typescript-eslint/utils": 5.42.0
-    debug: ^4.3.4
-    ignore: ^5.2.0
-    natural-compare-lite: ^1.4.0
-    regexpp: ^3.2.0
-    semver: ^7.3.7
-    tsutils: ^3.21.0
-  peerDependencies:
-    "@typescript-eslint/parser": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 8dd13c77f5b83a8ba7e37196769b9c8a296c4417ffe7e33cb4d172495e1596ea0a9140dae0f1bbe1317a0cd5d5d92bf76a1799e7b9f8b3a577433b9569f1436d
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:5.45.0":
   version: 5.45.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.45.0"
@@ -18352,23 +18329,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@npm:5.42.0":
-  version: 5.42.0
-  resolution: "@typescript-eslint/type-utils@npm:5.42.0"
-  dependencies:
-    "@typescript-eslint/typescript-estree": 5.42.0
-    "@typescript-eslint/utils": 5.42.0
-    debug: ^4.3.4
-    tsutils: ^3.21.0
-  peerDependencies:
-    eslint: "*"
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 5c98bdff38d8ace74f77b792d97572c41e3d0d01506529a32bc1244791a9e933d06dcc516eaad5bf1fc85b2cf1a95642f519f9c4ce4d6a974481e1a3680ed8dd
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/type-utils@npm:5.45.0":
   version: 5.45.0
   resolution: "@typescript-eslint/type-utils@npm:5.45.0"
@@ -18558,24 +18518,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 86143dd9dd33ce65a20badbce5509ae4e77e9dfe202a6966dd416a8ce8147e5b05d12ce0b8f593ed7924797f6420d0bcd558c773042466e24386cdda24f24eb8
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/utils@npm:5.42.0":
-  version: 5.42.0
-  resolution: "@typescript-eslint/utils@npm:5.42.0"
-  dependencies:
-    "@types/json-schema": ^7.0.9
-    "@types/semver": ^7.3.12
-    "@typescript-eslint/scope-manager": 5.42.0
-    "@typescript-eslint/types": 5.42.0
-    "@typescript-eslint/typescript-estree": 5.42.0
-    eslint-scope: ^5.1.1
-    eslint-utils: ^3.0.0
-    semver: ^7.3.7
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  checksum: cc57ba8bdf1cf18de5c6c264b71be80dc8c4a7630c0d6a34f73ed991cd3684c97a06605f414a8fd439ce2201f7724249b2fc29eac1e54a770ee4e8303cabef52
   languageName: node
   linkType: hard
 
@@ -19310,7 +19252,7 @@ __metadata:
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.1
-    "@tw-classed/react": 1.2.3
+    "@tw-classed/react": 1.2.4
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
