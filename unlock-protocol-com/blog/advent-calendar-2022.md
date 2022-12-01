@@ -3,7 +3,7 @@ title: Advent Calendar
 authorName: Julien Genestoux
 publishDate: December 1, 2022
 description: One NFT a day, fun gifts, and some year-in-review highlights — just for you!
-image:
+image: /images/blog/advent-calendar-2022.png
 ---
 
 This year, at Unlock, we wanted to celebrate the end-of-year holidays a bit differently, so we built an [Advent Calendar](https://advent.unlock-protocol.com/).
