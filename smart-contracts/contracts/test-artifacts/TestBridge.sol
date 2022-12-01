@@ -1,17 +1,32 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "hardhat/console.sol";
 import "../interfaces/IWETH.sol";
 
-contract TestBridge {
-  IWETH weth;
-  uint32 srcDomainId; // used to know here does the call come from
 
-  constructor(address _weth, uint32 _srcDomainId) {
-    console.log(_weth);
+contract TestBridge {
+  
+  IWETH weth;
+  
+  // used to know here does the call come from
+  uint32 srcDomainId; 
+
+  // used for swap
+  address srcToken;
+  address destToken;
+
+  constructor(
+    address _weth, 
+    uint32 _srcDomainId,
+    address _srcToken,
+    address _destToken
+  ) {
     weth = IWETH(_weth);
     srcDomainId = _srcDomainId;
+    srcToken = _srcToken;
+    destToken = _destToken;
   }
 
   /**
@@ -27,8 +42,6 @@ contract TestBridge {
     uint256 _slippage,
     bytes calldata _callData
   ) external payable returns (bytes32 transferId) {
-    console.log("---- arrived in bridge");
-    uint valueToSend = _amount;
     transferId = bytes32(block.timestamp);
 
     // wrap native assets
@@ -36,14 +49,25 @@ contract TestBridge {
       weth.deposit{value: _amount}();
       bool success = weth.transfer(_to, _amount);
       require(success, "wrapping token failed");
+    } else {
+      // get asset from the src lock
+      IERC20(srcToken).transferFrom(msg.sender, address(this), _amount);
+
+      // make sure we got the $$
+      require(
+        IERC20(srcToken).balanceOf(address(this)) == _amount,
+        'not enough token'
+      );
+
+      // SWAP using a (fake) bridged token
+      IERC20(destToken).approve(_to, _amount);
     }
 
-    console.log("---- crossed the bridge with id:", uint(transferId));
-
+    // cross the bridge
     IXReceiver(_to).xReceive(
       transferId,
       _amount, // amount of token in wei
-      _asset, // the ERC20 token
+      address(destToken), // the bridged ERC20 token
       msg.sender, // sender on the origin chain
       srcDomainId, // domain ID of the origin chain
       _callData
