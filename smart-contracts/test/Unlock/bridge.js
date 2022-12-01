@@ -16,14 +16,15 @@ let unlockSrc,
   lock,
   connext,
   keyPrice,
-  erc20,
-  tokenAddress,
+  erc20Src,
+  erc20Dest,
   unlockOwner,
   keyOwner,
   weth
 
 // test for ERC20 and ETH
-const scenarios = [true, false]
+// const scenarios = [true, false]
+const scenarios = [true]
 
 const srcChainId = 31337
 const destChainId = 4
@@ -39,15 +40,24 @@ contract('Unlock / bridge', () => {
 
     // deploy weth & a token
     weth = await deployWETH(unlockOwner)
-    erc20 = await deployERC20(unlockOwner, true)
+
+    // ERC20s on each chain
+    erc20Src = await deployERC20(unlockOwner, true)
+    erc20Dest = await deployERC20(unlockOwner, true)
     
     // connext
     const MockConnext = await ethers.getContractFactory('TestBridge')
-    connext = await MockConnext.deploy(weth.address, srcDomainId)
+    connext = await MockConnext.deploy(
+      weth.address, 
+      srcDomainId,
+      // both token mentioned for the swap
+      erc20Src.address, 
+      erc20Dest.address
+    )
 
     // fund the bridge
     await addSomeETH(connext.address)
-    await erc20.mint(connext.address, ethers.utils.parseEther('100'))
+    await erc20Dest.mint(connext.address, ethers.utils.parseEther('100'))
 
     // source chain
     ;({ unlockEthers: unlockSrc } = await deployContracts())
@@ -128,8 +138,8 @@ contract('Unlock / bridge', () => {
       isErc20 ? 'ERC20' : 'ETH'
     }`, () => {
       beforeEach(async () => {
-        // deploy a lock on destination chain
-        tokenAddress = isErc20 ? erc20.address : ADDRESS_ZERO
+        // deploy a lock priced on destination chain
+        const tokenAddress = isErc20 ? erc20Dest.address : ADDRESS_ZERO
         lock = await deployLock({ unlockDest, tokenAddress })
         keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
       })
@@ -143,17 +153,19 @@ contract('Unlock / bridge', () => {
           [ADDRESS_ZERO],
           [[]],
         ]
-
         const interface = new ethers.utils.Interface(lock.abi)
         const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
 
-        // fee for the brdige
+        // calculate fee for the brdige
         const relayerFee = ethers.utils.parseEther('.005')
         const value = isErc20 ? relayerFee : relayerFee.add(keyPrice)
 
-        // approve unlock
-        await erc20.mint(keyOwner.address, keyPrice)
-        await erc20.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+        if (isErc20) {
+          // give user some tokens on origin chain
+          await erc20Src.mint(keyOwner.address, keyPrice)
+          // allow unlock on src chain to get his tokens (to send to bridge)
+          await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+        }
 
         assert.equal(await lock.balanceOf(keyOwner.address), 0)
 
@@ -163,7 +175,7 @@ contract('Unlock / bridge', () => {
           .sendBridgedLockCall(
             destChainId,
             lock.address,
-            tokenAddress,
+            isErc20 ? erc20Src.address : ADDRESS_ZERO, // erc20 from src chain
             keyPrice,
             calldata,
             relayerFee,
@@ -175,6 +187,9 @@ contract('Unlock / bridge', () => {
         // make sure key owner now has a valid key
         assert.equal(await lock.balanceOf(keyOwner.address), 1)
       })
+
+      // TODO: test events
+      // TODO: test bridge source modifiers
     })
   })
 })

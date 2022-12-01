@@ -464,8 +464,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       data
     );
 
-    console.log('transferID');
-    console.log(uint(transferID));
     emit BridgeCallEmitted(
       destChainId,
       unlockAddress,
@@ -512,11 +510,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address payable lockAddress;
     bytes memory lockCalldata;
     (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
-
     if (currency != address(0)) {
-      // approve tokens to spend
       IERC20 token = IERC20(currency);
+      // get tokens from bridge
+      token.transferFrom(msg.sender, address(this), amount);
       require(token.balanceOf(address(this)) >= amount, "not enough");
+      // approve the lock to get the tokens 
       token.approve(lockAddress, amount);
     } else {
       // unwrap native tokens
