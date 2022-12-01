@@ -21,7 +21,7 @@ import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 interface Props {
-  injectedProvider: unknown
+  injectedProvider: any
   paywallConfig: PaywallConfig
   communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
@@ -244,6 +244,19 @@ export function Checkout({
       }
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
+
+  const chainChangedHandler = () => {
+    if (injectedProvider && injectedProvider.on) {
+      injectedProvider.on('chainChanged', () => {
+        checkoutService.send('SELECT')
+      })
+    }
+  }
+
+  useEffect(() => {
+    // back to default step when network changes
+    chainChangedHandler()
+  }, [])
 
   return (
     <CheckoutTransition>
