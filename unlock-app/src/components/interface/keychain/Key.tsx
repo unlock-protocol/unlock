@@ -11,7 +11,10 @@ import {
   FaCheckCircle as CheckIcon,
   FaInfoCircle as InfoIcon,
 } from 'react-icons/fa'
-import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
+import {
+  RiErrorWarningFill as DangerIcon,
+  RiArrowGoForwardFill as ExtendMembershipIcon,
+} from 'react-icons/ri'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
@@ -45,7 +48,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import dayjs from 'dayjs'
 
 export const MenuButton = tw.button(
-  'group flex gap-2 w-full font-medium items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
+  'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
   {
     variants: {
       active: {
@@ -171,14 +174,14 @@ const KeyBox = ({
             value={subscriptionInfo.approvedTime}
           />
         )}
+        {subscriptionInfo?.type && (
+          <KeyBoxItem label="Payment Type" value={subscriptionInfo.type} />
+        )}
         {subscriptionInfo?.balance && (
           <KeyBoxItem
             label="User Balance"
             value={`${subscriptionInfo.balance.amount} ${subscriptionInfo.balance.symbol}`}
           />
-        )}
-        {subscriptionInfo?.type && (
-          <KeyBoxItem label="Payment Type" value={subscriptionInfo.type} />
         )}
       </div>
     </div>
@@ -264,12 +267,14 @@ function Key({ ownedKey, account, network }: Props) {
     })
   }
 
+  const isExtendable = lock?.version >= 11
+
   const onExploreLock = () => {
     const url = networks[network].explorer?.urls.address(lock.address)
     if (!url) {
       return
     }
-    window.open(url)
+    window.open(url, '_')
   }
 
   const onOpenSea = () => {
@@ -278,7 +283,7 @@ function Key({ ownedKey, account, network }: Props) {
     if (!url) {
       return
     }
-    window.open(url)
+    window.open(url, '_')
   }
 
   const sendEmail = async (recipient: string, qrImage: string) => {
@@ -300,11 +305,11 @@ function Key({ ownedKey, account, network }: Props) {
   const onExtend = async () => {
     try {
       const promise = walletService.extendKey({
-        lockAddress: lock.address,
+        lockAddress: lock?.address,
         tokenId,
         referrer: account,
       })
-      ToastHelper.promise(promise, {
+      await ToastHelper.promise(promise, {
         success: 'successfully extended the membership.',
         error: 'Unable to extend the membership',
         loading: 'Extending membership.',
@@ -405,18 +410,6 @@ function Key({ ownedKey, account, network }: Props) {
             >
               <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-72 ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="p-1">
-                  <Menu.Item>
-                    {({ disabled, active }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={onExploreLock}
-                      >
-                        <ExploreIcon size={16} />
-                        Explore lock
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
                   <Menu.Item disabled={!isAvailableOnOpenSea}>
                     {({ disabled, active }) => (
                       <MenuButton
@@ -425,12 +418,22 @@ function Key({ ownedKey, account, network }: Props) {
                         onClick={onOpenSea}
                       >
                         <OpenSeaIcon size={16} />
-                        Open on Opensea
+                        View on Opensea
                       </MenuButton>
                     )}
                   </Menu.Item>
-                </div>
-                <div className="p-1">
+                  <Menu.Item>
+                    {({ disabled, active }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={onExploreLock}
+                      >
+                        <ExploreIcon size={16} />
+                        Block explorer
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton
@@ -439,39 +442,7 @@ function Key({ ownedKey, account, network }: Props) {
                         onClick={addToWallet}
                       >
                         <WalletIcon />
-                        Add to wallet
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item disabled={!isRefundable || wrongNetwork}>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setShowCancelModal(!showCancelModal)
-                        }}
-                      >
-                        <CancelIcon />
-                        {wrongNetwork
-                          ? `Switch to ${networks[network].name} to cancel`
-                          : 'Cancel and refund'}
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          onExtend()
-                        }}
-                      >
-                        <ExtendIcon />
-                        Extend membership
+                        Add to my wallet
                       </MenuButton>
                     )}
                   </Menu.Item>
@@ -487,6 +458,42 @@ function Key({ ownedKey, account, network }: Props) {
                       >
                         <InfoIcon />
                         View metadata
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item disabled={!isExtendable || wrongNetwork}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          onExtend()
+                        }}
+                      >
+                        <ExtendMembershipIcon />
+                        {wrongNetwork
+                          ? `Switch to ${networks[network].name} to extend`
+                          : 'Extend membership'}
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                </div>
+                <div className="p-1">
+                  <Menu.Item disabled={!isRefundable || wrongNetwork}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowCancelModal(!showCancelModal)
+                        }}
+                      >
+                        <CancelIcon />
+                        {wrongNetwork
+                          ? `Switch to ${networks[network].name} to cancel`
+                          : 'Cancel and refund'}
                       </MenuButton>
                     )}
                   </Menu.Item>
