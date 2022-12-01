@@ -19127,7 +19127,6 @@ __metadata:
     jest-fetch-mock: 3.0.3
     jest-mock-axios: 4.6.2
     jest-styled-components: 7.1.1
-    js-base64: 3.7.2
     lottie-react: 2.3.1
     next: 12.3.2
     node-fetch: 2.6.7
@@ -40283,13 +40282,6 @@ fsevents@~2.1.1:
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
   checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
-  languageName: node
-  linkType: hard
-
-"js-base64@npm:3.7.2":
-  version: 3.7.2
-  resolution: "js-base64@npm:3.7.2"
-  checksum: 573f28e9a27c3df60096d4d3f551bcb4fcb6d49161cf83396e9bad9b76f94736a70bb70b8808fe834dff2a388f76604ba09d6e153bbf181646e407720139fa5b
   languageName: node
   linkType: hard
 

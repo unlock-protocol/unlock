@@ -1,5 +1,4 @@
 import forge from 'node-forge'
-import { Base64 } from 'js-base64'
 import configure from '../config'
 
 /**
@@ -15,10 +14,13 @@ export const verifyEmailSignature = (
     base64WedlocksPublicKey = config.base64WedlocksPublicKey
   }
   try {
-    const signature = Base64.decode(signed)
+    const signature = Buffer.from(signed, 'base64').toString()
     const md = forge.md.sha1.create()
     md.update(email, 'utf8')
-    const publicKeyPem = Base64.decode(base64WedlocksPublicKey)
+    const publicKeyPem = Buffer.from(
+      base64WedlocksPublicKey,
+      'base64'
+    ).toString()
     const publicKey = forge.pki.publicKeyFromPem(publicKeyPem)
     return publicKey.verify(md.digest().bytes(), signature)
   } catch (e) {
