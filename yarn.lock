@@ -18545,7 +18545,7 @@ __metadata:
     copyfiles: 2.4.1
     eslint: 8.26.0
     fs-extra: 10.1.0
-    hardhat: 2.12.2
+    hardhat: 2.12.3
     typescript: 4.8.4
   languageName: unknown
   linkType: soft
@@ -18574,7 +18574,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    hardhat: 2.12.2
+    hardhat: 2.12.3
   languageName: unknown
   linkType: soft
 
@@ -18595,7 +18595,7 @@ __metadata:
     eslint: 8.26.0
     eslint-plugin-jest: 27.1.4
     eslint-plugin-mocha: 10.1.0
-    hardhat: 2.12.2
+    hardhat: 2.12.3
     mocha: 10.1.0
     prettier: 2.7.1
     ts-mocha: 10.0.0
@@ -18606,7 +18606,7 @@ __metadata:
     typescript: 4.8.4
   peerDependencies:
     ethers: 5.7.2
-    hardhat: 2.12.2
+    hardhat: 2.12.3
   languageName: unknown
   linkType: soft
 
@@ -19109,7 +19109,7 @@ __metadata:
     npm-run-all: 4.1.5
     prettier: 2.7.1
     react: 17.0.2
-    react-dom: 18.2.0
+    react-dom: 17.0.2
     react-scripts: 5.0.1
     styled-components: 5.3.6
     tsup: 6.4.0
@@ -19157,7 +19157,7 @@ __metadata:
     eslint: 8.26.0
     graphql: 16.6.0
     graphql-request: 5.0.0
-    hardhat: 2.12.2
+    hardhat: 2.12.3
     jest: 27.5.1
     lint-staged: 13.0.3
     prettier: 2.7.1
@@ -35527,9 +35527,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.12.2":
-  version: 2.12.2
-  resolution: "hardhat@npm:2.12.2"
+"hardhat@npm:2.12.3":
+  version: 2.12.3
+  resolution: "hardhat@npm:2.12.3"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -35591,7 +35591,7 @@ fsevents@~2.1.1:
       optional: true
   bin:
     hardhat: internal/cli/cli.js
-  checksum: cd45bf9d4f15d967bd2d8154cc5bc60e7d0d4bab80caea909d36e3660437fc9f6b4faf41736ed3b75b11ff15ac9a9b68828eebb1026ed9fa8d9eb87242f061d2
+  checksum: 38cf169787aa640ecb7c0d50170ba7064ae8ccd8adc07f6b97294c1c76bda8df96e79deb1e2608cdf7adde4f73b7c555068ab705fd271cc875a771be449848f2
   languageName: node
   linkType: hard
 
@@ -50354,18 +50354,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0":
-  version: 18.2.0
-  resolution: "react-dom@npm:18.2.0"
-  dependencies:
-    loose-envify: ^1.1.0
-    scheduler: ^0.23.0
-  peerDependencies:
-    react: ^18.2.0
-  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
-  languageName: node
-  linkType: hard
-
 "react-draggable@npm:^4.4.3":
   version: 4.4.4
   resolution: "react-draggable@npm:4.4.4"
@@ -52856,15 +52844,6 @@ resolve@^2.0.0-next.3:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "scheduler@npm:0.23.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
   languageName: node
   linkType: hard
 
