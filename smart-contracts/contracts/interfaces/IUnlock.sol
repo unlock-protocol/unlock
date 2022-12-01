@@ -166,7 +166,8 @@ interface IUnlock {
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
-    uint _chainId
+    uint _chainId,
+    address _connextBridge
   ) external;
 
   /**
@@ -311,4 +312,20 @@ interface IUnlock {
    * Can only be called by the current owner.
    */
   function transferOwnership(address newOwner) external;
+
+
+  /**
+   * TODO: document functions related to Connext bridge 
+   */
+  function xReceive(bytes32,uint256,address,address,uint32,bytes memory) external returns (bytes memory);
+  function sendBridgedLockCall(uint256,address,address,uint256,bytes memory,uint256) external payable returns (bytes32);
+
+  // getters
+  function bridgeAddress() external view returns (address);
+  function chainIds(uint32) external view returns (uint256);
+  function domains(uint256) external view returns (uint32);
+  function unlockAddresses(uint256) external view returns (address);
+
+  // setters
+  function setUnlockAddresses(uint256,uint32,address) external;
 }
