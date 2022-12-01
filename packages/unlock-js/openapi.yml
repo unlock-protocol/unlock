@@ -1331,16 +1331,39 @@ paths:
                       properties:
                         next:
                           type: number
+                          nullable: true
 
                         balance:
-                          type: string
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
 
                         price:
-                          type: string
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
 
                         approvedRenewals:
                           type: string
                           description: Approved number of renewals by user.
+
+                        approvedTime:
+                          type: string
+                          description: Approved time in human readable form.
 
                         possibleRenewals:
                           type: string
