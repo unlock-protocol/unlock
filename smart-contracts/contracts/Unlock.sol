@@ -29,17 +29,14 @@ pragma solidity ^0.8.15;
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
 import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
 import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
-import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
-import './interfaces/bridge/IUnlockBridgeSender.sol';
+import "./interfaces/IWETH.sol";
 import 'hardhat/console.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
@@ -111,8 +108,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // in BPS, in this case 0.3%
   uint constant MAX_SLIPPAGE = 30;
 
-  // the chain id => address of bridge receiver on the destination chain
-  mapping (uint => address) public receiverAddresses;
+  // the chain id => address of Unlock receiver on the destination chain
+  mapping (uint => address) public unlockAddresses;
+
+  // the mapping 
+  mapping(uint => uint32) public domains; 
+  mapping(uint32 => uint) public chainIds; 
 
   // Events
   event NewLock(
@@ -149,6 +150,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event UnlockTemplateAdded(
     address indexed impl,
     uint16 indexed version
+  );
+
+  event BridgeCallReceived(
+    uint originChainId,
+    address indexed lockAddress, 
+    bytes32 transferId
+  );
+  event BridgeCallEmitted(
+    uint destChainId,
+    address indexed unlockAddress, 
+    address indexed lockAddress, 
+    bytes32 transferID
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
@@ -367,19 +380,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * Bridge domains
+   * @param _chainId ID of the chain where the Unlock contract is deployed
+   * @param _domain Domain IDs used by the Connext Bridge https://docs.connext.network/resources/supported-chains
+   * @param _unlockAddress address of the Unlock contract on the chain
    */
-  function getDomain(uint chainId) public returns (uint32 domain){
-    // parse domain
-    return domain;
-  }
-
-  function setBridgeAddress (address _bridgeAddress) public onlyOwner {
-    bridgeAddress = _bridgeAddress;
-  }
-
-  function setReceiverAddresses(uint _chainId, address _receiverAddress) public onlyOwner {
-    receiverAddresses[_chainId] = _receiverAddress;
+  function setUnlockAddresses(
+    uint _chainId, 
+    uint32 _domain,
+    address _unlockAddress
+  ) public onlyOwner {
+    domains[_chainId] = _domain;
+    chainIds[_domain] = _chainId;
+    unlockAddresses[_chainId] = _unlockAddress;
   }
 
   /**
@@ -405,9 +417,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes calldata callData,
     uint relayerFee
   ) public payable returns (bytes32 transferID){
+    // get the domain ID for Connext
+    uint32 destinationDomain = domains[destChainId];
+    require(destinationDomain != 0, 'dest chain not set');
+
     // get the correct receiver contract on dest chain
-    address receiverAddress = receiverAddresses[destChainId];
-    require(receiverAddress != address(0), 'missing receiverAddress on dest chain');
+    address unlockAddress = unlockAddresses[destChainId];
+    require(unlockAddress != address(0), 'missing unlock on dest chain');
 
     uint valueToSend = relayerFee;
     
@@ -428,10 +444,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       valueToSend = valueToSend + amount;
     }
 
-    // get the domain
-    uint32 destinationDomain = getDomain(destChainId);
-
-    // TODO: remove this when public lock is ready
     // pass the lock address in calldata
     bytes memory data = abi.encode(
       lock,
@@ -444,17 +456,97 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // send the call over the chain
     transferID = IConnext(bridgeAddress).xcall{value: valueToSend}(
       destinationDomain,    // _destination: Domain ID of the destination chain
-      receiverAddress,      // _to: address of the target contract
+      unlockAddress,        // _to: address of the target contract
       currency,           // _asset: address of the token contract
       msg.sender,           // _delegate: TODO address that can revert or forceLocal on destination
       amount,             // _amount: amount of tokens to transfer
-      MAX_SLIPPAGE,        // _slippage: the maximum amount of slippage the user will accept
+      MAX_SLIPPAGE,         // _slippage: the maximum amount of slippage the user will accept
       data
     );
 
     console.log('transferID');
     console.log(uint(transferID));
+    emit BridgeCallEmitted(
+      destChainId,
+      unlockAddress,
+      lock, 
+      transferID
+    );
   }
+
+
+  /** 
+   * Make sure all calls comes from Unlock contracts on other chains
+   */ 
+  function _onlyUnlockBridge(
+    address _originSender,
+    uint32 _originDomain
+  ) internal view returns (bool) {
+    require(
+        chainIds[_originDomain] != 0 && // domain is set
+        _originSender == unlockAddresses[chainIds[_originDomain]] &&
+        msg.sender == bridgeAddress,
+      "Expected source contract on origin domain called by Connext"
+    );
+    return true;
+  }
+
+  /** 
+   * @notice The receiver function as required by the IXReceiver interface.
+   * @dev The Connext bridge contract will call this function.
+   */
+  function xReceive(
+    bytes32 transferId,
+    uint256 amount,
+    address currency,
+    address originSender, // address of the contract on the origin chain
+    uint32 origin, // 	Domain ID of the origin chain
+    bytes memory callData
+  ) external returns (bytes memory) {
+    _onlyUnlockBridge(originSender, origin);
+
+    // 0 if is erc20
+    uint valueToSend;
+
+    // unpack lock address and calldata
+    address payable lockAddress;
+    bytes memory lockCalldata;
+    (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
+
+    if (currency != address(0)) {
+      // approve tokens to spend
+      IERC20 token = IERC20(currency);
+      require(token.balanceOf(address(this)) >= amount, "not enough");
+      token.approve(lockAddress, amount);
+    } else {
+      // unwrap native tokens
+      valueToSend = amount;
+      require(
+        valueToSend <= IWETH(weth).balanceOf(address(this)),
+        "INSUFFICIENT_BALANCE"
+      );
+      IWETH(weth).withdraw(valueToSend);
+      require(valueToSend <= address(this).balance, "INSUFFICIENT_BALANCE");
+    }
+
+    (bool success, ) = lockAddress.call{value: valueToSend}(lockCalldata);
+    // catch revert reason
+    if (success == false) {
+      assembly {
+        let ptr := mload(0x40)
+        let size := returndatasize()
+        returndatacopy(ptr, 0, size)
+        revert(ptr, size)
+      }
+    }
+
+    emit BridgeCallReceived(
+      chainIds[origin],
+      lockAddress, 
+      transferId
+    );
+  }
+
 
   /**
    * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
@@ -659,7 +751,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
-    uint _chainId
+    uint _chainId,
+    address _bridgeAddress
   ) external onlyOwner {
     udt = _udt;
     weth = _weth;
@@ -669,7 +762,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     globalBaseTokenURI = _URI;
 
     chainId = _chainId;
+    bridgeAddress = _bridgeAddress;
 
+    // TODO: should we emit the bridgeAddress in that event?
     emit ConfigUnlock(
       _udt,
       _weth,
@@ -759,4 +854,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   {
     return globalTokenSymbol;
   }
+
+
+  // required as WETH withdraw will unwrap and send tokens here
+  receive() external payable {}
 }
