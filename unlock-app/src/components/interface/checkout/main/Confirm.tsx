@@ -471,6 +471,25 @@ export function Confirm({
         )
       }
       case 'crypto': {
+        let buttonLabel = ''
+        const isFree = pricingData?.prices.reduce((previousTotal, item) => {
+          return previousTotal && parseFloat(item.amount) === 0
+        }, true)
+
+        if (isFree) {
+          if (isConfirming) {
+            buttonLabel = 'Claiming'
+          } else {
+            buttonLabel = 'Claim'
+          }
+        } else {
+          if (isConfirming) {
+            buttonLabel = 'Paying using crypto'
+          } else {
+            buttonLabel = 'Pay using crypto'
+          }
+        }
+
         return (
           <div className="grid">
             <Button
@@ -481,7 +500,7 @@ export function Confirm({
                 onConfirmCrypto()
               }}
             >
-              {isConfirming ? 'Paying using crypto' : 'Pay using crypto'}
+              {buttonLabel}
             </Button>
           </div>
         )
