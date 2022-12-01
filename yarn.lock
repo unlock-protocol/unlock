@@ -16527,6 +16527,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tw-classed/core@npm:1.2.3":
+  version: 1.2.3
+  resolution: "@tw-classed/core@npm:1.2.3"
+  checksum: 10aeb0980a67b2da76769405b757ebaec2caeb89fa74faf3c32f1b9880f8a6ea6b112872154ac8cdab81fba3872d5d32e76a2d2f351d02a2a35bee6cc508390d
+  languageName: node
+  linkType: hard
+
+"@tw-classed/react@npm:1.2.3":
+  version: 1.2.3
+  resolution: "@tw-classed/react@npm:1.2.3"
+  dependencies:
+    "@tw-classed/core": 1.2.3
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: da48c18bf5e16e04c3d3dbd89f44fec53b60b12078f0dd2c8d528d2df2387065aa34f20fc96f378e31e38c24af0a8cf642ce49f5a4121593ff09f3ae547f7dc8
+  languageName: node
+  linkType: hard
+
 "@typechain/ethers-v5@npm:^10.1.0":
   version: 10.1.0
   resolution: "@typechain/ethers-v5@npm:10.1.0"
@@ -19292,6 +19310,7 @@ __metadata:
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.1
+    "@tw-classed/react": 1.2.3
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
