@@ -39,7 +39,7 @@ export function Checkout({
     },
   })
   const [state] = useActor(checkoutService)
-  const { account } = useAuth()
+  const { account, network: connectedNetwork } = useAuth()
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
   const paywallConfigChanged = !isEqual(
@@ -244,6 +244,13 @@ export function Checkout({
       }
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
+
+  useEffect(() => {
+    // back to default step when network changes
+    if (!connectedNetwork) return
+
+    checkoutService.send('SELECT')
+  }, [checkoutService, connectedNetwork])
 
   return (
     <CheckoutTransition>
