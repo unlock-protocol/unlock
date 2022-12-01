@@ -32,6 +32,7 @@ const destDomainId = 1734439522
 
 const gasEstimate = 16000
 const url = `http://locksmith:8080/api/key/`
+const defaultCalldata = '0x3381899700000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
 
 contract('Unlock / bridge', () => {
   before(async () => {
@@ -133,6 +134,58 @@ contract('Unlock / bridge', () => {
     })
   })
 
+  describe('sendBridgedLockCall', () => {
+    it('reverts if dest is not an unlocck contract', async () => {
+      const lock = await deployLock({ unlockDest })
+      keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
+      await reverts (
+        unlockSrc
+            .connect(keyOwner)
+            .sendBridgedLockCall(
+              1, // chain id
+              lock.address,
+              ADDRESS_ZERO, // currency
+              keyPrice, // keyPrice
+              defaultCalldata, // calldata
+              ethers.utils.parseEther('.005'), // relayer fee
+              {
+                value: keyPrice,
+              }
+        ),
+        'ChainNotSet'
+      )
+    })
+  })
+
+  describe('xReceive', () => {
+    it('reverts if sender is not the bridge', async () => {
+      await reverts(
+        unlockDest.xReceive(
+          ethers.utils.formatBytes32String('123'), // transferId,
+          ethers.utils.parseEther('0.01'), // amount of token in wei
+          erc20Dest.address, // native or bridged ERC20 token
+          unlockSrc.address, // sender on the origin chain
+          srcChainId, // domain ID of the origin chain
+          defaultCalldata
+        ),
+        'OnlyUnlock'
+      )
+    })
+    it('reverts if the chain id / unlock is not set', async () => {
+      await reverts(
+        unlockDest.xReceive(
+          ethers.utils.formatBytes32String('123'), // transferId,
+          ethers.utils.parseEther('0.01'), // amount of token in wei
+          erc20Dest.address, // native or bridged ERC20 token
+          unlockSrc.address, // sender on the origin chain
+          1, // domain ID of the origin chain
+          defaultCalldata
+        ),
+        'OnlyUnlock'
+      )
+    })
+  })
+
   scenarios.forEach((isErc20) => {
     describe(`sendBridgedLockCall to lock priced in ${
       isErc20 ? 'ERC20' : 'ETH'
@@ -192,8 +245,7 @@ contract('Unlock / bridge', () => {
           assert.equal(await lock.balanceOf(keyOwner.address), 1)
         })
   
-        // TODO: test events
-        it('emits an event when sending to bridge', async () => {
+        it('emits an event when sending to / receving from the bridge', async () => {
           const { events, blockNumber } = await tx.wait()
           const { timestamp } = await ethers.provider.getBlock(blockNumber)
   

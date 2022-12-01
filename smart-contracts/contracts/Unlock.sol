@@ -116,6 +116,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint => uint32) public domains; 
   mapping(uint32 => uint) public chainIds; 
 
+  // Errors
+  error OnlyUnlock();
+  error ChainNotSet();
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -421,14 +425,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   ) public payable returns (bytes32 transferID){
     // get the domain ID for Connext
     uint32 destinationDomain = domains[destChainId];
-    require(destinationDomain != 0, 'dest chain not set');
-
+    
     // get the correct receiver contract on dest chain
     address unlockAddress = unlockAddresses[destChainId];
-    require(unlockAddress != address(0), 'missing unlock on dest chain');
 
-    uint valueToSend = relayerFee;
-    
+    // make sure this is correct
+    if(destinationDomain == 0 || unlockAddress == address(0)) {
+      revert ChainNotSet();
+    }
+
+    uint valueToSend = relayerFee;    
     if(currency != address(0)) {
       IERC20 token = IERC20(currency);
       // TODO: send using transfer (no approval)
@@ -482,13 +488,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address _originSender,
     uint32 _originDomain
   ) internal view returns (bool) {
-    require(
-        chainIds[_originDomain] != 0 && // domain is set
-        _originSender == unlockAddresses[chainIds[_originDomain]] &&
-        msg.sender == bridgeAddress,
-      "Expected source contract on origin domain called by Connext"
-    );
-    return true;
+    if(
+        chainIds[_originDomain] == 0 || // domain is set
+        _originSender != unlockAddresses[chainIds[_originDomain]] ||
+        msg.sender != bridgeAddress
+    ) {
+      revert OnlyUnlock();
+    }
   }
 
   /** 
