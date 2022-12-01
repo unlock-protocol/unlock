@@ -19504,7 +19504,7 @@ __metadata:
     next-seo: 5.14.1
     path-match: 1.2.4
     postcss: 8.4.19
-    prettier: 2.7.1
+    prettier: 2.8.0
     raw-loader: 4.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -58721,7 +58721,7 @@ typescript@^3.8.3:
     husky: 8.0.2
     lint-staged: 13.0.3
     node-fetch: 2.6.7
-    prettier: 2.7.1
+    prettier: 2.8.0
     typescript: 4.8.4
   languageName: unknown
   linkType: soft
