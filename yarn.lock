@@ -9529,9 +9529,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@morpho-labs/ethers-multicall@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@morpho-labs/ethers-multicall@npm:3.0.0"
+"@morpho-labs/ethers-multicall@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@morpho-labs/ethers-multicall@npm:3.0.1"
   dependencies:
     dataloader: ^2.1.0
     ethers: ^5.0.0
@@ -9540,7 +9540,7 @@ __metadata:
     "@ethersproject/abi": ^5.0.0
     "@ethersproject/providers": ^5.0.0
     ethers: ^5.0.0
-  checksum: eafbe1916c164fdaf7f21686da7ee03848db6c92b0a9f1d42d27874df7b9c411e1fd2896a433c73adade16265b83636ae9352e35e3a79236c7c23115c2654ee1
+  checksum: 295539d0e46bfecd38eb5610e084fd8ba53ebecc9056e823f2278fdf3ad615f5ac664af4e965b61b63c53ff281e9b7e60772322bcec9cb52ad3ee505042817f9
   languageName: node
   linkType: hard
 
@@ -19226,7 +19226,7 @@ __metadata:
     "@graphql-codegen/typescript": 2.8.1
     "@graphql-codegen/typescript-graphql-request": 4.5.8
     "@graphql-codegen/typescript-operations": 2.5.6
-    "@morpho-labs/ethers-multicall": 3.0.0
+    "@morpho-labs/ethers-multicall": 3.0.1
     "@nomiclabs/hardhat-ethers": 2.2.1
     "@openapitools/openapi-generator-cli": 2.5.2
     "@uniswap/v3-periphery": 1.4.3
