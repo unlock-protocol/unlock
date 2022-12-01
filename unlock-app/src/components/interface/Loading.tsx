@@ -1,14 +1,14 @@
 import React from 'react'
-import { AiOutlineLoading3Quarters as LoadingIcon } from 'react-icons/ai'
+import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 
 interface Props {
   size?: number
 }
 
-const Loading = ({ size = 40 }: Props) => {
+export const LoadingIcon = ({ size = 40 }: Props) => {
   return (
     <div className="flex justify-center">
-      <LoadingIcon
+      <SpinnerIcon
         size={size}
         title="loading"
         className="text-gray-400 animate-spin"
@@ -17,4 +17,4 @@ const Loading = ({ size = 40 }: Props) => {
   )
 }
 
-export default Loading
+export default LoadingIcon
