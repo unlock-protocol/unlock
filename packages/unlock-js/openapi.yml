@@ -1331,6 +1331,7 @@ paths:
                       properties:
                         next:
                           type: number
+                          nullable: true
 
                         balance:
                           type: object

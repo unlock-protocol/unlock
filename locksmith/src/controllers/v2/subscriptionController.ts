@@ -25,7 +25,7 @@ interface Amount {
   symbol: string
 }
 export interface Subscription {
-  next: number
+  next: number | null
   balance: Amount
   price: Amount
   approvedTime: string
@@ -107,7 +107,9 @@ export class SubscriptionController {
     const balance = ethers.utils.formatUnits(userBalance, decimals)
 
     const price = key.lock.price
-    const next = parseInt(key.expiration)
+    const next = dayjs.unix(key.expiration).isBefore(dayjs())
+      ? null
+      : parseInt(key.expiration)
 
     // Approved renewals
     const approvedRenewalsAmount = userAllowance.div(price)
