@@ -18559,7 +18559,7 @@ __metadata:
     eslint: 8.27.0
     eslint-config-next: 12.3.2
     eslint-config-prettier: 8.5.0
-    eslint-plugin-jest: 27.1.4
+    eslint-plugin-jest: 27.1.6
     eslint-plugin-mocha: 10.1.0
     eslint-plugin-prettier: 4.2.1
     jest: 27.5.1
@@ -18593,7 +18593,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.4
     eslint: 8.26.0
-    eslint-plugin-jest: 27.1.4
+    eslint-plugin-jest: 27.1.6
     eslint-plugin-mocha: 10.1.0
     hardhat: 2.12.2
     mocha: 10.1.0
@@ -19034,7 +19034,7 @@ __metadata:
     deep-object-diff: 1.1.9
     dotenv: 16.0.3
     eslint: 8.27.0
-    eslint-plugin-jest: 27.1.4
+    eslint-plugin-jest: 27.1.6
     eslint-plugin-mocha: 10.1.0
     ethers: 5.7.2
     file-saver: 2.0.5
@@ -19109,7 +19109,7 @@ __metadata:
     npm-run-all: 4.1.5
     prettier: 2.7.1
     react: 17.0.2
-    react-dom: 18.2.0
+    react-dom: 17.0.2
     react-scripts: 5.0.1
     styled-components: 5.3.6
     tsup: 6.4.0
@@ -19204,7 +19204,7 @@ __metadata:
     embla-carousel-react: 7.0.4
     eslint: 8.27.0
     eslint-config-next: 12.2.3
-    eslint-plugin-jest: 27.1.3
+    eslint-plugin-jest: 27.1.6
     eslint-plugin-mocha: 10.1.0
     feed: 4.2.2
     gray-matter: 4.0.3
@@ -30606,9 +30606,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:27.1.3":
-  version: 27.1.3
-  resolution: "eslint-plugin-jest@npm:27.1.3"
+"eslint-plugin-jest@npm:27.1.6":
+  version: 27.1.6
+  resolution: "eslint-plugin-jest@npm:27.1.6"
   dependencies:
     "@typescript-eslint/utils": ^5.10.0
   peerDependencies:
@@ -30619,24 +30619,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: 427f39ad4bb50b4e50a1f6aba04962ee3686e25b716d3e4dff47a304c2a352a35b032fec7350b84dc6362838525d93a70f7ae0f961b182c79bf602e90ebb1a55
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-jest@npm:27.1.4":
-  version: 27.1.4
-  resolution: "eslint-plugin-jest@npm:27.1.4"
-  dependencies:
-    "@typescript-eslint/utils": ^5.10.0
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-    jest:
-      optional: true
-  checksum: b7e3bf0dc092d9936ac1c10a0aceda411935c411c9323def109c2429ccf8486b3faead80fb769119add578c200352729ff96523bffec083f421e1b151404f642
+  checksum: 5b1640b5d575f0d5e27da8ef8cb3110a29f94ebd50ae51edc5ea34c1054f5dcf305416865b2919ac424bc02c4569848bbe7fd2c86e7e1aff23e77f1ff9ef7dfd
   languageName: node
   linkType: hard
 
@@ -50354,18 +50337,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0":
-  version: 18.2.0
-  resolution: "react-dom@npm:18.2.0"
-  dependencies:
-    loose-envify: ^1.1.0
-    scheduler: ^0.23.0
-  peerDependencies:
-    react: ^18.2.0
-  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
-  languageName: node
-  linkType: hard
-
 "react-draggable@npm:^4.4.3":
   version: 4.4.4
   resolution: "react-draggable@npm:4.4.4"
@@ -52856,15 +52827,6 @@ resolve@^2.0.0-next.3:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "scheduler@npm:0.23.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
   languageName: node
   linkType: hard
 
