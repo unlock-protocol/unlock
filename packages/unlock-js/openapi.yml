@@ -285,7 +285,7 @@ components:
 
     KeyId:
       in: path
-      name: KeyId
+      name: keyId
       required: true
       description: Key Id.
       schema:
@@ -1287,3 +1287,92 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}:
+    delete:
+      operationId: cancelSubscription
+      description: Cancel a fiat subscription.
+      security:
+        - User: []
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        204:
+          description: Successfully deleted the subscription.
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    get:
+      operationId: getSubscription
+      description: Get an active subscription associated with the key. It can be fiat or crypto.
+      security:
+        - User: []
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Any active subscription.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        next:
+                          type: number
+                          nullable: true
+
+                        balance:
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
+
+                        price:
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
+
+                        approvedRenewals:
+                          type: string
+                          description: Approved number of renewals by user.
+
+                        approvedTime:
+                          type: string
+                          description: Approved time in human readable form.
+
+                        possibleRenewals:
+                          type: string
+                          description: Possible number of renewals based on the user account balance.
+
+                        type:
+                          enum:
+                            - crypto
+                            - fiat
+                          description: The type of payment method used for the subscription.
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'

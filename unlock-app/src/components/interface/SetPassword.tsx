@@ -1,6 +1,5 @@
 import { Button, Input } from '@unlock-protocol/ui'
 import React, { useReducer } from 'react'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 interface Props {
   buttonLabel: string
   loading: boolean
@@ -101,13 +100,8 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
     const isValid = errors.length === 0
 
     return (
-      <Button type="submit" disabled={!isValid || loading}>
-        <div className="flex items-center">
-          {loading && <Spinner className="mr-1 animate-spin" />}
-          <span>
-            {loading ? buttonLabel || 'Creating Account...' : 'Submit'}
-          </span>
-        </div>
+      <Button type="submit" disabled={!isValid || loading} loading={loading}>
+        {loading ? buttonLabel || 'Creating Account...' : 'Submit'}
       </Button>
     )
   }

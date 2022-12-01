@@ -17,6 +17,10 @@ interface FormProps {
   baseTokenURI: string
 }
 
+const validate = (val: string) => {
+  return val.endsWith('/')
+}
+
 export const UpdateBaseTokenURI = ({
   lockAddress,
   network,
@@ -80,16 +84,17 @@ export const UpdateBaseTokenURI = ({
       <div className="relative">
         <Input
           type="url"
-          label="Base token URI"
+          label="Base token URI:"
           {...register('baseTokenURI', {
             minLength: 1,
             required: true,
+            validate,
           })}
           autoComplete="off"
           disabled={disabledInput}
           error={
             errors?.baseTokenURI &&
-            'Base token URI should have at least 1 character.'
+            'The base token URI must be a valid URL that ends with a final /'
           }
         />
       </div>

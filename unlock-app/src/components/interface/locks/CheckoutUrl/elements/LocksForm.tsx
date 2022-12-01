@@ -8,18 +8,12 @@ import {
 } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
-import {
-  Button,
-  Input,
-  Select,
-  ToggleSwitch,
-  Tooltip,
-} from '@unlock-protocol/ui'
+import { Button, Input, ToggleSwitch, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
+import { LockPicker } from '../../Manage/elements/LockPicker'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -82,7 +76,6 @@ export const LocksForm = ({
   onChange,
   locks: locksDefault = {},
 }: LocksFormProps) => {
-  const { networks } = useConfig()
   const { account } = useAuth()
   const [network, setNetwork] = useState<string | number>()
   const [lockAddress, setLockAddress] = useState<string>('')
@@ -120,13 +113,6 @@ export const LocksForm = ({
   const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
     useQuery([network, account], async () => getLocksByNetwork())
 
-  const networksOptions = Object.entries(networks).map(
-    ([id, { name: label }]: [string, any]) => ({
-      label,
-      value: id,
-    })
-  )
-
   const onRemoveFromList = (lockAddress: string) => {
     if (!lockAddress) {
       return
@@ -146,20 +132,6 @@ export const LocksForm = ({
     setLocks(newObj)
     onChange(newObj)
   }
-
-  const locksOptions: any = locksByNetwork?.map(({ address, name }: any) => {
-    const disabled = Object.keys(locks)?.find(
-      (lockAddress: string) =>
-        lockAddress?.toLowerCase() === address?.toLowerCase()
-    )
-    return {
-      prepend: <LockImage lockAddress={address} />,
-      label: `${name}`,
-      value: address,
-      append: addressMinify(address),
-      disabled,
-    }
-  })
 
   const hasMinValue = network && lockAddress && lockAddress?.length > 0
 
@@ -239,6 +211,7 @@ export const LocksForm = ({
   const onAddLock = (
     lockAddress: string,
     network?: number | string,
+    name = '',
     fields: any = null
   ) => {
     const defaultLockName = locksByNetwork?.find(
@@ -249,7 +222,7 @@ export const LocksForm = ({
     if (!fields && !fields?.name) {
       fields = {
         ...fields,
-        name: defaultLockName,
+        name: defaultLockName ?? name ?? 'default',
       }
     }
 
@@ -321,7 +294,7 @@ export const LocksForm = ({
   }
 
   const onRecurringChange = ({ recurringPayments }: any) => {
-    onAddLock(lockAddress, network, {
+    onAddLock(lockAddress, network, undefined, {
       recurringPayments,
     })
   }
@@ -331,7 +304,18 @@ export const LocksForm = ({
   const showForm = !hasLocks || addLock
 
   const [addMetadata, setAddMetadata] = useState(false)
-  const networkHasLocks = (locksByNetwork ?? [])?.length > 0
+
+  const onChangeLock = (
+    lockAddress?: string,
+    network?: string | number,
+    name?: string
+  ) => {
+    if (!lockAddress || !network) return
+    setNetwork(network)
+    setLockAddress(lockAddress)
+    onRemoveFromList(lockAddress)
+    onAddLock(lockAddress, network!, name)
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -343,44 +327,17 @@ export const LocksForm = ({
               Select a lock
             </h2>
             <div className="flex flex-col w-full gap-4">
-              <Select
-                label="Network"
-                options={networksOptions}
-                size="small"
-                defaultValue={network}
-                onChange={(network) => {
-                  setNetwork(network)
-                  onRemoveFromList(lockAddress)
-                  setLockAddress('')
-                }}
-              />
               {isLoadingLocksByNetwork ? (
                 <SelectPlaceholder />
               ) : (
-                <>
-                  {networkHasLocks ? (
-                    <Select
-                      label="Lock"
-                      options={locksOptions}
-                      size="small"
-                      defaultValue={lockAddress}
-                      onChange={(lockAddress: any) => {
-                        setLockAddress(`${lockAddress}`)
-                        onAddLock(lockAddress, network!)
-                      }}
-                    />
-                  ) : (
-                    network && (
-                      <span className="text-base">
-                        You have not deployed locks on this network yet.{' '}
-                        <Link className="underline" href="/locks/create">
-                          Deploy one now
-                        </Link>
-                        .
-                      </span>
-                    )
-                  )}
-                </>
+                <LockPicker
+                  owner={account!}
+                  onChange={onChangeLock}
+                  defaultValues={{
+                    lockAddress,
+                    network,
+                  }}
+                />
               )}
             </div>
           </div>
@@ -443,7 +400,7 @@ export const LocksForm = ({
                       recurringPayments: true, // Managed separately to get Unlimited recurring
                     })}
                     onChange={(fields: any) =>
-                      onAddLock(lockAddress, network, fields)
+                      onAddLock(lockAddress, network, undefined, fields)
                     }
                   />
                 </div>
@@ -485,12 +442,12 @@ export const LocksForm = ({
                         })}
                         onChange={() => void 0}
                         onSubmit={onAddMetadata}
-                        submitLabel={'Save'}
+                        submitLabel={'Add'}
                         showSubmit={true}
                       />
                     </div>
                   )}
-                  <Button onClick={() => reset()}>Save</Button>
+                  <Button onClick={() => reset()}>Next</Button>
                 </>
               )}
             </>
