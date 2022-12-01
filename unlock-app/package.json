@@ -52,7 +52,7 @@
     "jest-fetch-mock": "3.0.3",
     "jest-mock-axios": "4.6.1",
     "jest-styled-components": "7.1.1",
-    "js-base64": "3.7.2",
+    "js-base64": "3.7.3",
     "lottie-react": "2.3.1",
     "next": "12.3.2",
     "node-fetch": "2.6.7",
