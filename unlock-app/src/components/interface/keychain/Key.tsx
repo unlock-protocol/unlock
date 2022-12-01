@@ -159,29 +159,30 @@ const KeyBox = ({
         {expiration !== MAX_UINT && (
           <KeyBoxItem label="Valid" value={expirationStatus} />
         )}
-        {subscriptionInfo?.next && (
-          <KeyBoxItem
-            label="Renew On"
-            value={dayjs
-              .unix(subscriptionInfo.next)
-              .format('D MMM YYYY, h:mm A')}
-          />
-        )}
-        {subscriptionInfo?.approvedTime && (
-          <KeyBoxItem
-            label="Renew Cycle"
-            value={subscriptionInfo.approvedTime}
-          />
-        )}
-        {subscriptionInfo?.type && (
-          <KeyBoxItem label="Payment Type" value={subscriptionInfo.type} />
-        )}
-        {subscriptionInfo?.balance && (
-          <KeyBoxItem
-            label="User Balance"
-            value={`${subscriptionInfo.balance.amount} ${subscriptionInfo.balance.symbol}`}
-          />
-        )}
+        <KeyBoxItem
+          label="Renews On"
+          value={
+            subscriptionInfo?.next
+              ? dayjs.unix(subscriptionInfo.next).format('D MMM YYYY, h:mm A')
+              : '-'
+          }
+        />
+        <KeyBoxItem
+          label="Renew Cycle"
+          value={subscriptionInfo?.approvedTime || '-'}
+        />
+        <KeyBoxItem
+          label="Payment Type"
+          value={subscriptionInfo?.type || '-'}
+        />
+        <KeyBoxItem
+          label="User Balance"
+          value={
+            subscriptionInfo?.balance
+              ? `${subscriptionInfo.balance.amount} ${subscriptionInfo.balance.symbol}`
+              : '-'
+          }
+        />
       </div>
     </div>
   )
