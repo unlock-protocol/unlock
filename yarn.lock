@@ -19109,7 +19109,7 @@ __metadata:
     npm-run-all: 4.1.5
     prettier: 2.7.1
     react: 17.0.2
-    react-dom: 18.2.0
+    react-dom: 17.0.2
     react-scripts: 5.0.1
     styled-components: 5.3.6
     tsup: 6.4.0
@@ -19200,7 +19200,7 @@ __metadata:
     cal-parser: 1.0.2
     dayjs: 1.11.6
     dotenv: 16.0.3
-    embla-carousel-autoplay: 7.0.4
+    embla-carousel-autoplay: 7.0.5
     embla-carousel-react: 7.0.4
     eslint: 8.27.0
     eslint-config-next: 12.2.3
@@ -29001,12 +29001,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"embla-carousel-autoplay@npm:7.0.4":
-  version: 7.0.4
-  resolution: "embla-carousel-autoplay@npm:7.0.4"
+"embla-carousel-autoplay@npm:7.0.5":
+  version: 7.0.5
+  resolution: "embla-carousel-autoplay@npm:7.0.5"
   peerDependencies:
-    embla-carousel: 7.0.4
-  checksum: 7b29d5be953605681a76c2fd7fa5455b57d3bfe3478a097f2b47433f04106111f9809bf0052b0947772718b866303381db6ba22925b51cbba62a2b3e31aea4b1
+    embla-carousel: 7.0.5
+  checksum: 4a5c958b4dc4c5e7d01d6a24692c1591ce7d78d9b0c5e563f6c113b6e20b746ca85cf30f29afde51ea5947da644df56071c6f2dc6c81629aa066c3502ee52855
   languageName: node
   linkType: hard
 
@@ -50354,18 +50354,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0":
-  version: 18.2.0
-  resolution: "react-dom@npm:18.2.0"
-  dependencies:
-    loose-envify: ^1.1.0
-    scheduler: ^0.23.0
-  peerDependencies:
-    react: ^18.2.0
-  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
-  languageName: node
-  linkType: hard
-
 "react-draggable@npm:^4.4.3":
   version: 4.4.4
   resolution: "react-draggable@npm:4.4.4"
@@ -52856,15 +52844,6 @@ resolve@^2.0.0-next.3:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "scheduler@npm:0.23.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
   languageName: node
   linkType: hard
 
