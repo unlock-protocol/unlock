@@ -5,10 +5,12 @@ import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { QueriesOptions, useQueries } from '@tanstack/react-query'
+import { QueriesOptions, useQueries, useQuery } from '@tanstack/react-query'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useConfig } from '~/utils/withConfig'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useWalletService } from '~/utils/withWalletService'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface KeysByNetworkProps {
   account: string
@@ -77,7 +79,6 @@ export const KeysByNetwork = ({
 
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
-
   const networkItems: any[] =
     Object.entries(networks ?? {})
       .map(([network, value]) => [parseInt(network, 10), value])

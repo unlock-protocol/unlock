@@ -85,24 +85,31 @@ const KeyBox = ({
     successDuration: 2000,
   })
   const storage = useStorageService()
-  const { data: subscriptionInfo, isLoading } = useQuery(
+  const walletService = useWalletService()
+  const { account } = useAuth()
+  const { data: subscriptionInfo } = useQuery(
     ['subscriptions', lock.address, tokenId, network],
     async () => {
-      const response = await storage.locksmith.getSubscription(
-        network,
-        lock.address,
-        tokenId
-      )
-      return response.data.subscriptions?.[0] ?? {}
+      storage.loginPrompt({
+        walletService,
+        address: account!,
+        chainId: 1,
+      })
+      const response = await storage.getSubscription({
+        network: network,
+        lockAddress: lock.address,
+        keyId: tokenId,
+      })
+      return response.subscriptions?.[0] ?? {}
     },
     {
       retry: 2,
+      enabled: !!(lock?.address && account),
       onError(error) {
         console.error(error)
       },
     }
   )
-  console.log(subscriptionInfo, isLoading)
 
   return (
     <div className="grid gap-2">
@@ -165,7 +172,10 @@ const KeyBox = ({
           />
         )}
         {subscriptionInfo?.balance && (
-          <KeyBoxItem label="User Balance" value={subscriptionInfo.balance} />
+          <KeyBoxItem
+            label="User Balance"
+            value={`${subscriptionInfo.balance.amount} ${subscriptionInfo.balance.symbol}`}
+          />
         )}
         {subscriptionInfo?.type && (
           <KeyBoxItem label="Payment Type" value={subscriptionInfo.type} />

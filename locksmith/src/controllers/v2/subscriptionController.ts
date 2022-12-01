@@ -107,9 +107,12 @@ export class SubscriptionController {
     const balance = ethers.utils.formatUnits(userBalance, decimals)
 
     const price = key.lock.price
-    const next = dayjs.unix(key.expiration).isBefore(dayjs())
-      ? null
-      : parseInt(key.expiration)
+    const next =
+      key.expiration === ethers.constants.MaxUint256.toString()
+        ? null
+        : dayjs.unix(key.expiration).isBefore(dayjs())
+        ? null
+        : parseInt(key.expiration)
 
     // Approved renewals
     const approvedRenewalsAmount = userAllowance.div(price)
