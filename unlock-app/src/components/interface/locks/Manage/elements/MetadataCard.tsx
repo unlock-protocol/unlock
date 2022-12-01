@@ -220,9 +220,7 @@ export const MetadataCard = ({
           </Button>
         )}
       </div>
-      <div className="mt-5 md:mt-8">
-        <span className="text-base">Metadata</span>
-
+      <div className="pt-6">
         <div className="mt-6">
           {isCheckedIn && (
             <Badge
