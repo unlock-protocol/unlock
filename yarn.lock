@@ -6305,10 +6305,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:3.18.0":
-  version: 3.18.0
-  resolution: "@cloudflare/workers-types@npm:3.18.0"
-  checksum: 9a54a4fbd12eed19495cf6774cd48b0e97aaee093d40d2ae8e7a11c58937b8ad5173588efca5e138c373c6d6730faf96f2385eee203dab3fdb91565885efb0cd
+"@cloudflare/workers-types@npm:4.20221111.1":
+  version: 4.20221111.1
+  resolution: "@cloudflare/workers-types@npm:4.20221111.1"
+  checksum: 6ee1ba28ee3c59926f0f49da7023a887846bb637d43da0d8787ed87b2ed624bd83471feba9519a404a58cecad73f3a74a67bc3f52ccfda916947d297cfaa988c
   languageName: node
   linkType: hard
 
@@ -49666,7 +49666,7 @@ fsevents@~2.1.1:
   version: 0.0.0-use.local
   resolution: "provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": 3.18.0
+    "@cloudflare/workers-types": 4.20221111.1
     "@types/node": 18.11.9
     typescript: 4.8.4
   languageName: unknown

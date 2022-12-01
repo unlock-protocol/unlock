@@ -7,18 +7,52 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
   getAllowance,
+  getErc20TokenSymbol,
 } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import { Op } from 'sequelize'
+import dayjs from 'dayjs'
+import relative from 'dayjs/plugin/relativeTime'
+import duration from 'dayjs/plugin/duration'
 
+dayjs.extend(relative)
+dayjs.extend(duration)
+
+interface Amount {
+  amount: string
+  decimals: number
+  symbol: string
+}
 export interface Subscription {
-  next: number
-  balance: string
-  price: string
+  next: number | null
+  balance: Amount
+  price: Amount
+  approvedTime: string
   possibleRenewals: string
   approvedRenewals: string
-  type: 'crypto' | 'fiat'
+  type: 'Crypto' | 'Stripe'
+}
+
+const getApprovedTime = (renewals: string, durationInSeconds: string) => {
+  const approvedTimeInSeconds =
+    ethers.BigNumber.from(renewals).mul(durationInSeconds)
+
+  const approvedTimeInYears = approvedTimeInSeconds
+    .div(60)
+    .div(60)
+    .div(24)
+    .div(365)
+
+  const approvedSeconds = approvedTimeInSeconds.toNumber()
+
+  const approvedTime = approvedTimeInYears.gt(100)
+    ? 'Forever'
+    : approvedSeconds <= 0
+    ? 'No renewal available'
+    : dayjs.duration(approvedSeconds, 'seconds').humanize()
+
+  return approvedTime
 }
 
 export class SubscriptionController {
@@ -29,10 +63,7 @@ export class SubscriptionController {
     const network = Number(request.params.network)
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const keyId = Number(request.params.keyId)
-    const userAddress = normalizer.ethereumAddress(
-      request.user?.walletAddress ||
-        '0x009Ef4DA4d7e90Bf3cAF2e1C16ba0D5E30A01565'
-    )
+    const userAddress = normalizer.ethereumAddress(request.user!.walletAddress)
     const subgraphService = new SubgraphService(networks)
 
     const key = await subgraphService.key(
@@ -54,12 +85,14 @@ export class SubscriptionController {
       key.lock.tokenAddress === ethers.constants.AddressZero ||
       parseInt(key.lock.version) < 11
     ) {
-      return response.status(200).send({})
+      return response.status(200).send({
+        subscriptions: [],
+      })
     }
 
     const web3Service = new Web3Service(networks)
     const provider = web3Service.providerForNetwork(network)
-    const [userBalance, decimals, userAllowance] = await Promise.all([
+    const [userBalance, decimals, userAllowance, symbol] = await Promise.all([
       getErc20BalanceForAddress(key.lock.tokenAddress, userAddress, provider),
       getErc20Decimals(key.lock.tokenAddress, provider),
       getAllowance(
@@ -68,22 +101,33 @@ export class SubscriptionController {
         provider,
         userAddress
       ),
+      getErc20TokenSymbol(key.lock.tokenAddress, provider),
     ])
 
     const balance = ethers.utils.formatUnits(userBalance, decimals)
 
     const price = key.lock.price
-    const next = parseInt(key.expiration)
+    const next = dayjs.unix(key.expiration).isBefore(dayjs())
+      ? null
+      : parseInt(key.expiration)
 
     // Approved renewals
-    const approvedRenewals = userAllowance.eq(ethers.constants.MaxUint256)
-      ? userAllowance.toString()
-      : userAllowance.div(price).toString()
+    const approvedRenewalsAmount = userAllowance.div(price)
+
+    const approvedRenewals = approvedRenewalsAmount.toString()
 
     const info = {
       next,
-      balance,
-      price: ethers.utils.formatUnits(price, decimals),
+      balance: {
+        amount: balance,
+        decimals,
+        symbol,
+      },
+      price: {
+        amount: ethers.utils.formatUnits(price, decimals),
+        decimals,
+        symbol,
+      },
     }
 
     const stripeSubscription = await KeySubscription.findOne({
@@ -102,22 +146,34 @@ export class SubscriptionController {
 
     // if card subscription is found, add it.
     if (stripeSubscription) {
+      const approvedRenewals = stripeSubscription.recurring?.toString()
+      const approvedTime = getApprovedTime(
+        approvedRenewals,
+        key.lock.expirationDuration
+      )
       subscriptions.push({
         ...info,
-        approvedRenewals: stripeSubscription.recurring?.toString(),
-        possibleRenewals: stripeSubscription.recurring?.toString(),
-        type: 'fiat',
+        approvedTime,
+        approvedRenewals,
+        possibleRenewals: approvedRenewals,
+        type: 'Stripe',
       })
     }
+
+    const approvedTime = getApprovedTime(
+      approvedRenewals,
+      key.lock.expirationDuration
+    )
 
     // Add the default crypto subscription details.
     const cryptoSubscription: Subscription = {
       ...info,
+      approvedTime,
       approvedRenewals: approvedRenewals,
       possibleRenewals: ethers.BigNumber.from(userBalance)
         .div(price)
         .toString(),
-      type: 'crypto',
+      type: 'Crypto',
     }
 
     subscriptions.push(cryptoSubscription)

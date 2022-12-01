@@ -939,4 +939,27 @@ export class StorageService extends EventEmitter {
     )
     return response.clientSecret
   }
+
+  async getSubscription({
+    network,
+    lockAddress,
+    keyId,
+  }: {
+    network: number
+    lockAddress: string
+    keyId: string
+  }) {
+    const endpoint = `/v2/subscriptions/${network}/locks/${lockAddress}/keys/${keyId}`
+    const response = await this.getEndpoint(
+      endpoint,
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response
+  }
 }
