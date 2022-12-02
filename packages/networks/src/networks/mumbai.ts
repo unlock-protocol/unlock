@@ -17,6 +17,7 @@ export const mumbai: NetworkConfig = {
   explorer: {
     name: 'PolygonScan (Mumbai)',
     urls: {
+      base: `https://mumbai.polygonscan.com/`,
       address: (address) => `https://mumbai.polygonscan.com/address/${address}`,
       transaction: (hash) => `https://mumbai.polygonscan.com/tx/${hash}`,
       token: (address, holder) =>
