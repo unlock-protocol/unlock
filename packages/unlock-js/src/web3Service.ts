@@ -907,4 +907,36 @@ export default class Web3Service extends UnlockService {
     const unlockContract = await this.getUnlockContract(unlockAddress, provider)
     return await unlockContract.publicLockLatestVersion()
   }
+
+  /**
+   * Returns referrer fees
+   */
+  async referrerFees({
+    lockAddress,
+    network,
+    address,
+  }: {
+    lockAddress: string
+    network: number
+    address: string
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const referrerFees = await lockContract.referrerFees(address)
+    return ethers.BigNumber.from(referrerFees).toNumber()
+  }
+
+  async getGlobalBaseTokenURI(network: number) {
+    const provider = this.providerForNetwork(network)
+    const networkConfig = this.networks[network]
+    const unlockAddress = networkConfig.unlockAddress
+
+    if (!unlockAddress) {
+      throw new Error('unlockAddress is not defined for the provided network. ')
+    }
+    const unlockContract = await this.getUnlockContract(unlockAddress, provider)
+    return await unlockContract.publicLockLatestVersion()
+  }
 }

@@ -1362,10 +1362,10 @@ __metadata:
     cross-fetch: 3.1.5
     eslint: 8.27.0
     ethers: 5.7.2
-    hardhat: 2.12.2
+    hardhat: 2.12.3
     hardhat-erc1820: 0.1.0
     ts-node: 10.9.1
-    typescript: 4.8.4
+    typescript: 4.9.3
   languageName: unknown
   linkType: soft
 
@@ -2766,10 +2766,9 @@ __metadata:
 
 "fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: latest
-  checksum: edbd0fd80be379c14409605f77e52fdc78a119e17f875e8b90a220c3e5b29e54a1477c21d91fd30b957ea4866406dc3ff87b61432d2840ff8866b309e5866140
   conditions: os=darwin
   languageName: node
   linkType: hard
@@ -2924,9 +2923,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.12.2":
-  version: 2.12.2
-  resolution: "hardhat@npm:2.12.2"
+"hardhat@npm:2.12.3":
+  version: 2.12.3
+  resolution: "hardhat@npm:2.12.3"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -2988,7 +2987,7 @@ fsevents@~2.3.2:
       optional: true
   bin:
     hardhat: internal/cli/cli.js
-  checksum: cd45bf9d4f15d967bd2d8154cc5bc60e7d0d4bab80caea909d36e3660437fc9f6b4faf41736ed3b75b11ff15ac9a9b68828eebb1026ed9fa8d9eb87242f061d2
+  checksum: 38cf169787aa640ecb7c0d50170ba7064ae8ccd8adc07f6b97294c1c76bda8df96e79deb1e2608cdf7adde4f73b7c555068ab705fd271cc875a771be449848f2
   languageName: node
   linkType: hard
 
@@ -4279,7 +4278,7 @@ resolve@1.17.0:
 
 "resolve@patch:resolve@1.17.0#~builtin<compat/resolve>":
   version: 1.17.0
-  resolution: "resolve@patch:resolve@npm%3A1.17.0#~builtin<compat/resolve>::version=1.17.0&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.17.0#~builtin<compat/resolve>::version=1.17.0&hash=c3c19d"
   dependencies:
     path-parse: ^1.0.6
   checksum: 6fd799f282ddf078c4bc20ce863e3af01fa8cb218f0658d9162c57161a2dbafe092b13015b9a4c58d0e1e801cf7aa7a4f13115fea9db98c3f9a0c43e429bad6f
@@ -4900,23 +4899,23 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-typescript@4.8.4:
-  version: 4.8.4
-  resolution: "typescript@npm:4.8.4"
+"typescript@npm:4.9.3":
+  version: 4.9.3
+  resolution: "typescript@npm:4.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3e4f061658e0c8f36c820802fa809e0fd812b85687a9a2f5430bc3d0368e37d1c9605c3ce9b39df9a05af2ece67b1d844f9f6ea8ff42819f13bcb80f85629af0
+  checksum: 17b8f816050b412403e38d48eef0e893deb6be522d6dc7caf105e54a72e34daf6835c447735fd2b28b66784e72bfbf87f627abb4818a8e43d1fa8106396128dc
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.8.4#~builtin<compat/typescript>":
-  version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"
+"typescript@patch:typescript@4.9.3#~builtin<compat/typescript>":
+  version: 4.9.3
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 301459fc3eb3b1a38fe91bf96d98eb55da88a9cb17b4ef80b4d105d620f4d547ba776cc27b44cc2ef58b66eda23fe0a74142feb5e79a6fb99f54fc018a696afa
+  checksum: 67ca21a387c0572f1c04936e638dde7782c5aa520c3754aadc7cc9b7c915da9ebc3e27c601bfff4ccb7d7264e82dce6d277ada82ec09dc75024349e0ef64926d
   languageName: node
   linkType: hard
 

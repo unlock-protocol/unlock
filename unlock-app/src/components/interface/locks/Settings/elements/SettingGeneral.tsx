@@ -1,4 +1,5 @@
 import { Lock } from '@unlock-protocol/types'
+import { UpdateBaseTokenURI } from '../forms/UpdateBaseTokenURI'
 import { UpdateNameForm } from '../forms/UpdateNameForm'
 import { UpdateSymbolForm } from '../forms/UpdateSymbolForm'
 import { SettingCard } from './SettingCard'
@@ -39,6 +40,19 @@ export const SettingGeneral = ({
         isLoading={isLoading}
       >
         <UpdateSymbolForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+
+      <SettingCard
+        label="Base token URI"
+        description="Update the base token URI of the lock that is used to create the individual token's URIs."
+        isLoading={isLoading}
+      >
+        <UpdateBaseTokenURI
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}

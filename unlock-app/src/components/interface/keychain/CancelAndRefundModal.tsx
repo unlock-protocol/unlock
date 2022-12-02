@@ -3,7 +3,6 @@ import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import { useKeychain } from '~/hooks/useKeychain'
 
 export interface CancelAndRefundProps {
@@ -141,15 +140,9 @@ export const CancelAndRefundModal = ({
               type="button"
               onClick={() => cancelRefundMutation.mutate()}
               disabled={buttonDisabled}
+              loading={cancelRefundMutation.isLoading}
             >
-              <div className="flex items-center">
-                {cancelRefundMutation.isLoading && (
-                  <Spinner className="animate-spin" />
-                )}
-                <span className="ml-2">
-                  {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
-                </span>
-              </div>
+              {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
             </Button>
           </div>
         )

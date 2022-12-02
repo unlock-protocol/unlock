@@ -272,7 +272,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.cancelAndRefund) {
+    if (!version.extendKey) {
       throw new Error('Lock version not supported')
     }
     return version.extendKey.bind(this)(params, transactionOptions, callback)
@@ -868,7 +868,31 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Upgrade a lock to a specific version
+   * Allow a Lock manager to change the transfer fee.
+   * @param {*} params
+   * @param {*} callback
+   */
+  async updateTransferFee(
+    params: {
+      lockAddress: string
+      transferFeeBasisPoints: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.updateTransferFee) {
+      throw new Error('Lock version not supported')
+    }
+    return version.updateTransferFee.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /* Upgrade a lock to a specific version
    * @param {*} params
    * @param {*} callback
    */
@@ -888,6 +912,32 @@ export default class WalletService extends UnlockService {
     return version.upgradeLock.bind(this)(
       params.lockAddress,
       params.lockVersion,
+      callback
+    )
+  }
+
+  /**
+   * Update referrer fee
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setReferrerFee(
+    params: {
+      lockAddress: string
+      address: string
+      feeBasisPoint: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setReferrerFee) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setReferrerFee.bind(this)(
+      params,
+      transactionOptions,
       callback
     )
   }
