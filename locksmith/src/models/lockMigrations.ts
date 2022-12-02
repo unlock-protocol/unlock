@@ -1,7 +1,17 @@
 import { Table, Model, Column, DataType } from 'sequelize-typescript'
 
+interface LockMigrationsAttributes {
+  lockAddress: string
+  newLockAddress: string
+  initiatedBy: string
+  logs: string
+  migrated: boolean
+  chain: number
+  newChain: number
+}
+
 @Table({ tableName: 'LockMigrations', timestamps: true })
-export class LockMigrations extends Model<LockMigrations> {
+export class LockMigrations extends Model<LockMigrationsAttributes> {
   @Column
   lockAddress!: string
 

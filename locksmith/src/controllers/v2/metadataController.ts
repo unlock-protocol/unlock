@@ -127,7 +127,7 @@ export class MetadataController {
           message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
         })
       }
-      const [updatedLockMetadata, created] = await LockMetadata.upsert(
+      const [updatedLockMetadata] = await LockMetadata.upsert(
         {
           address: lockAddress,
           chain: network,
@@ -139,8 +139,7 @@ export class MetadataController {
           returning: true,
         }
       )
-      const statusCode = created ? 201 : 204
-      return response.status(statusCode).send(updatedLockMetadata.data)
+      return response.status(200).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -171,14 +170,19 @@ export class MetadataController {
         })
       }
 
-      const created = await KeyMetadata.upsert({
-        chain: network,
-        address: lockAddress,
-        id: keyId,
-        data: {
-          ...metadata,
+      await KeyMetadata.upsert(
+        {
+          chain: network,
+          address: lockAddress,
+          id: keyId,
+          data: {
+            ...metadata,
+          },
         },
-      })
+        {
+          conflictFields: ['address', 'id'],
+        }
+      )
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
@@ -187,8 +191,8 @@ export class MetadataController {
         host,
         network
       )
-      const statusCode = created ? 201 : 204
-      return response.status(statusCode).send(keyData)
+
+      return response.status(200).send(keyData)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -228,6 +232,7 @@ export class MetadataController {
           },
           {
             returning: true,
+            conflictFields: ['userAddress', 'tokenAddress'],
           }
         )
         return response.status(201).send(createdUser.data)
@@ -389,6 +394,7 @@ export class MetadataController {
         newUsersData.map(async (item) => {
           const [createdUser] = await UserTokenMetadata.upsert(item, {
             returning: true,
+            conflictFields: ['tokenAddress', 'userAddress'],
           })
           return createdUser.toJSON()
         })

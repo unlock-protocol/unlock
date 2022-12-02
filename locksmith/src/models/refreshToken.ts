@@ -1,10 +1,18 @@
 import { Table, Column, Model } from 'sequelize-typescript'
 
+interface RefreshTokenAttributes {
+  id: number
+  token: string
+  nonce: string
+  revoked: boolean | null
+  walletAddress: string
+}
+
 @Table({
   tableName: 'RefreshTokens',
   timestamps: true,
 })
-export class RefreshToken extends Model<RefreshToken> {
+export class RefreshToken extends Model<RefreshTokenAttributes> {
   @Column({ primaryKey: true, autoIncrement: true })
   id!: number
 

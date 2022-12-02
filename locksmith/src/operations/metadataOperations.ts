@@ -20,7 +20,10 @@ interface IsKeyOrLockOwnerOptions {
 
 export const updateKeyMetadata = async (data: any) => {
   try {
-    await KeyMetadata.upsert(data, { returning: true })
+    await KeyMetadata.upsert(data, {
+      returning: true,
+      conflictFields: ['id', 'address'],
+    })
     return true
   } catch (e) {
     return false

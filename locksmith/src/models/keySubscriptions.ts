@@ -1,7 +1,7 @@
 import { Table, Column, Model } from 'sequelize-typescript'
 
 @Table({ tableName: 'KeySubscriptions', timestamps: true })
-export class KeySubscription extends Model<KeySubscription> {
+export class KeySubscription extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id!: number
 

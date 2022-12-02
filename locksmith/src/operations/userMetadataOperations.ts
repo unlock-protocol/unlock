@@ -21,6 +21,7 @@ export async function addMetadata(metadata: UserTokenMetadataInput) {
     {
       fields: ['data'],
       returning: true,
+      conflictFields: ['tokenAddress', 'userAddress'],
     }
   )
 }

@@ -80,7 +80,7 @@ describe('PaymentProcessor', () => {
             '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
           ),
           recoveryPhrase: 'a recovery phrase',
-          passwordEncryptedPrivateKey: "{ a: 'blob' }",
+          passwordEncryptedPrivateKey: { a: 'blob' },
         },
       },
       {
