@@ -184,37 +184,31 @@ export const useProvider = (config: any) => {
       const newProvider = UnlockProvider.reconnect(provider, networkConfig)
       resetProvider(newProvider)
     } else {
-      try {
-        const changeNetworkRequest = provider
-          .send(
-            'wallet_switchEthereumChain',
-            [
-              {
-                chainId: `0x${id.toString(16)}`,
-              },
-            ],
-            account
-          )
-          .catch((switchError: any) => {
-            if (switchError.code === 4902 || switchError.code === -32603) {
-              return addNetworkToWallet(id)
-            } else {
-              throw switchError
-            }
-          })
-        try {
-          await ToastHelper.promise(changeNetworkRequest, {
-            loading: `Changing network to ${name}. Please approve in your wallet.`,
-            error: `We could not switch to ${name}. Try adding it manually in your wallet.`,
-            success: `Successfully changed network to ${name}.`,
-          })
+      const changeNetworkRequest = provider
+        .send(
+          'wallet_switchEthereumChain',
+          [
+            {
+              chainId: `0x${id.toString(16)}`,
+            },
+          ],
+          account
+        )
+        .catch((switchError: any) => {
+          if (switchError.code === 4902 || switchError.code === -32603) {
+            return addNetworkToWallet(id)
+          } else {
+            throw switchError
+          }
+        })
+        .then(() => {
           setNetwork(id)
-        } catch (error) {
-          console.error(error)
-        }
-      } catch (switchError: any) {
-        // This error code indicates that the chain has not been added to the provider yet.
-      }
+        })
+      ToastHelper.promise(changeNetworkRequest, {
+        loading: `Changing network to ${name}. Please approve in your wallet.`,
+        error: `We could not switch to ${name}. Try adding it manually in your wallet.`,
+        success: `Successfully changed network to ${name}.`,
+      })
     }
   }
 
