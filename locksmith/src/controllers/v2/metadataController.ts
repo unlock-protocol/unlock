@@ -139,7 +139,7 @@ export class MetadataController {
           returning: true,
         }
       )
-      return response.status(201).send(updatedLockMetadata.data)
+      return response.status(200).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
