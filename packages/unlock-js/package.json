@@ -54,7 +54,7 @@
     "eslint": "8.26.0",
     "hardhat": "2.12.3",
     "jest": "27.5.1",
-    "lint-staged": "13.0.3",
+    "lint-staged": "13.0.4",
     "prettier": "2.7.1",
     "ts-jest": "27.1.5",
     "tsup": "6.4.0",
