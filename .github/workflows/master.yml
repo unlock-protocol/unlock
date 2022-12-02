@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - buildx-cache-manifest
 
 jobs:
   run-all-tests:
