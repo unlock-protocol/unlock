@@ -2,7 +2,7 @@ import { Table, Column, Model } from 'sequelize-typescript'
 
 interface LockIconsAttributes {
   lock: string
-  chain: string
+  chain: number
   icon: string
 }
 
