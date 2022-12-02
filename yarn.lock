@@ -310,29 +310,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.20.2":
-  version: 7.20.2
-  resolution: "@babel/core@npm:7.20.2"
-  dependencies:
-    "@ampproject/remapping": ^2.1.0
-    "@babel/code-frame": ^7.18.6
-    "@babel/generator": ^7.20.2
-    "@babel/helper-compilation-targets": ^7.20.0
-    "@babel/helper-module-transforms": ^7.20.2
-    "@babel/helpers": ^7.20.1
-    "@babel/parser": ^7.20.2
-    "@babel/template": ^7.18.10
-    "@babel/traverse": ^7.20.1
-    "@babel/types": ^7.20.2
-    convert-source-map: ^1.7.0
-    debug: ^4.1.0
-    gensync: ^1.0.0-beta.2
-    json5: ^2.2.1
-    semver: ^6.3.0
-  checksum: 98faaaef26103a276a30a141b951a93bc8418d100d1f668bf7a69d12f3e25df57958e8b6b9100d95663f720db62da85ade736f6629a5ebb1e640251a1b43c0e4
-  languageName: node
-  linkType: hard
-
 "@babel/core@npm:7.20.5":
   version: 7.20.5
   resolution: "@babel/core@npm:7.20.5"
@@ -694,17 +671,6 @@ __metadata:
     "@jridgewell/gen-mapping": ^0.3.2
     jsesc: ^2.5.1
   checksum: e6846d88c59a5dae4c86f3cc84f84972cf9cc5fa0f4944606303a9df3ba1be388e0cb08a625c86f7282ab03faf54acd72efba34f019b6762f4739a175173783e
-  languageName: node
-  linkType: hard
-
-"@babel/generator@npm:^7.20.2":
-  version: 7.20.2
-  resolution: "@babel/generator@npm:7.20.2"
-  dependencies:
-    "@babel/types": ^7.20.2
-    "@jridgewell/gen-mapping": ^0.3.2
-    jsesc: ^2.5.1
-  checksum: 56b780b8490e007ceeea0c1fc9cea230210488efbcd62b139876ae01958aacab3dd5931fa02ff3a991850af05c01d658baf85f11d4a5cb9c3b899db544214bb9
   languageName: node
   linkType: hard
 
@@ -2178,7 +2144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helpers@npm:^7.19.4, @babel/helpers@npm:^7.20.1":
+"@babel/helpers@npm:^7.19.4":
   version: 7.20.1
   resolution: "@babel/helpers@npm:7.20.1"
   dependencies:
@@ -2299,21 +2265,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/node@npm:7.20.2":
-  version: 7.20.2
-  resolution: "@babel/node@npm:7.20.2"
+"@babel/node@npm:7.20.5":
+  version: 7.20.5
+  resolution: "@babel/node@npm:7.20.5"
   dependencies:
     "@babel/register": ^7.18.9
     commander: ^4.0.1
-    core-js: ^3.25.1
+    core-js: ^3.26.0
     node-environment-flags: ^1.0.5
-    regenerator-runtime: ^0.13.10
+    regenerator-runtime: ^0.13.11
     v8flags: ^3.1.1
   peerDependencies:
     "@babel/core": ^7.0.0-0
   bin:
     babel-node: ./bin/babel-node.js
-  checksum: 7c74b03f17e12feb266b5b8dc4d8fb3e31fd1f7bed458ce1bbed802bae22d737d373c3b50bd64a6e8956f6edecb3e4775b843b2c099f4a9549b4a4c536a774f6
+  checksum: 214bbd6a79536ac756c207ddafdd5c6aff50f7efcab01a72638458d72cb835a125c3dec5ab950ce0135b186793652684af95adefc28d29a7030cadd1cd4bd431
   languageName: node
   linkType: hard
 
@@ -2440,15 +2406,6 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 2db7ba692b8b3054df129876b115ed8b265d5c138dee5e1db56a999209df3dd3d508e0985bf3cc44fc432498da094c164906b531d049608e55e208dae0678d42
-  languageName: node
-  linkType: hard
-
-"@babel/parser@npm:^7.20.2":
-  version: 7.20.2
-  resolution: "@babel/parser@npm:7.20.2"
-  bin:
-    parser: ./bin/babel-parser.js
-  checksum: 441d0550144f338e1a41de785b914f5942c493dfafdf07cccdc19c3ecf94aa5ea58741566e199e385ba7a09e3e51522df87f7405cdf14ec88da0ff11db8030f1
   languageName: node
   linkType: hard
 
@@ -17435,7 +17392,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@babel/core": 7.20.2
+    "@babel/core": 7.20.5
     "@headlessui/react": 1.7.4
     "@mdx-js/preact": 2.1.5
     "@mdx-js/react": 2.1.5
@@ -17541,7 +17498,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
-    "@babel/core": 7.20.2
+    "@babel/core": 7.20.5
     "@babel/plugin-proposal-optional-chaining": 7.18.9
     "@headlessui/react": 1.7.4
     "@radix-ui/react-avatar": 1.0.1
@@ -17686,7 +17643,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-js@workspace:packages/unlock-js"
   dependencies:
     "@babel/cli": 7.19.3
-    "@babel/core": 7.20.2
+    "@babel/core": 7.20.5
     "@babel/preset-env": 7.20.2
     "@graphql-codegen/cli": 2.13.11
     "@graphql-codegen/typescript": 2.8.3
@@ -17723,7 +17680,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
-    "@babel/core": 7.20.2
+    "@babel/core": 7.20.5
     "@headlessui/react": 1.7.4
     "@radix-ui/react-avatar": 1.0.1
     "@testing-library/jest-dom": 5.16.5
@@ -17793,8 +17750,8 @@ __metadata:
   resolution: "@unlock-protocol/wedlocks@workspace:wedlocks"
   dependencies:
     "@babel/cli": 7.19.3
-    "@babel/core": 7.20.2
-    "@babel/node": 7.20.2
+    "@babel/core": 7.20.5
+    "@babel/node": 7.20.5
     "@babel/plugin-transform-runtime": 7.19.6
     "@babel/preset-env": 7.20.2
     "@testing-library/jest-dom": 5.16.5
@@ -25041,10 +24998,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.25.1":
-  version: 3.26.0
-  resolution: "core-js@npm:3.26.0"
-  checksum: 0149eb9d3909fde9c17626af3a6e625c326e8598d0bb5e6c5b48a18e5fcd4eaf48d4964d873667d8148542ff590fb98eb3f93618da114ca54999d6bc0349734b
+"core-js@npm:^3.26.0":
+  version: 3.26.1
+  resolution: "core-js@npm:3.26.1"
+  checksum: 0a01149f51ff1e9f41d1ea49cc4c9222047949ea597189ede7c4cf8cde3b097766b9c7615acc77c86fe65b4002f20b638a133dfba7b41dba830d707aeeed45ad
   languageName: node
   linkType: hard
 
@@ -49325,7 +49282,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:0.13.11":
+"regenerator-runtime@npm:0.13.11, regenerator-runtime@npm:^0.13.11":
   version: 0.13.11
   resolution: "regenerator-runtime@npm:0.13.11"
   checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
@@ -49343,13 +49300,6 @@ fsevents@~2.1.1:
   version: 0.11.1
   resolution: "regenerator-runtime@npm:0.11.1"
   checksum: 3c97bd2c7b2b3247e6f8e2147a002eb78c995323732dad5dc70fac8d8d0b758d0295e7015b90d3d444446ae77cbd24b9f9123ec3a77018e81d8999818301b4f4
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.10":
-  version: 0.13.10
-  resolution: "regenerator-runtime@npm:0.13.10"
-  checksum: 09893f5a9e82932642d9a999716b6c626dc53ef2a01307c952ebbf8e011802360163a37c304c18a6c358548be5a72b448e37209954a18696f21e438c81cbb4b9
   languageName: node
   linkType: hard
 
@@ -56433,7 +56383,7 @@ typescript@^3.8.3:
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
   dependencies:
-    "@babel/core": 7.20.2
+    "@babel/core": 7.20.5
     "@superfluid-finance/sdk-core": 0.5.6
     "@typescript-eslint/eslint-plugin": 5.45.0
     "@typescript-eslint/parser": 5.45.0
