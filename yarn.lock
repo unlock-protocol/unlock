@@ -17996,16 +17996,16 @@ __metadata:
     ethers: 5.7.2
     postcss: 8.4.19
     prism-react-renderer: 1.3.5
-    react-icons: 4.6.0
+    react-icons: 4.7.1
     react-use-clipboard: 1.0.9
     storybook-builder-vite: 0.1.23
     tailwind-merge: 1.8.0
     tailwindcss: 3.2.4
     tsconfig-paths-webpack-plugin: 4.0.0
-    tsup: 6.4.0
-    typescript: 4.8.4
+    tsup: 6.5.0
+    typescript: 4.9.3
     vite: 3.2.4
-    vite-tsconfig-paths: 3.5.2
+    vite-tsconfig-paths: 3.6.0
   peerDependencies:
     "@headlessui/react": 1.7.4
     react: 17.0.2
@@ -57975,9 +57975,9 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:3.5.2":
-  version: 3.5.2
-  resolution: "vite-tsconfig-paths@npm:3.5.2"
+"vite-tsconfig-paths@npm:3.6.0":
+  version: 3.6.0
+  resolution: "vite-tsconfig-paths@npm:3.6.0"
   dependencies:
     debug: ^4.1.1
     globrex: ^0.1.2
@@ -57985,7 +57985,7 @@ typescript@^3.8.3:
     tsconfig-paths: ^4.0.0
   peerDependencies:
     vite: ">2.0.0-0"
-  checksum: f3159d05fe2033563ccb7b15d9c1c37b1ed71016c7d0106147e898b68309978f7b2c76df841d563dfdff3be631ad22a5271bc869955b37a4ec1ed4ad6bb21655
+  checksum: 3b079d7fd49e49392d2739bff5144a12f1b4b535468cea803a13265a85472044f4072db0f92830b1f38fcc4d0cdf6aeecf2a32413d669ca13de73c10c88d6ee9
   languageName: node
   linkType: hard
 
