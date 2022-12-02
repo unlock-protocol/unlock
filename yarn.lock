@@ -17690,8 +17690,8 @@ __metadata:
     tslint-plugin-prettier: 2.3.0
     typescript: 4.9.3
   peerDependencies:
-    ethers: ^5.7.2
-    hardhat: ^2.12.3
+    ethers: ^5.7
+    hardhat: ^2.12
   languageName: unknown
   linkType: soft
 
@@ -17702,7 +17702,7 @@ __metadata:
     glob: 8.0.3
     ts-jest: 27.1.5
   peerDependencies:
-    jest: ^27.5.1
+    jest: ^27.5
   languageName: unknown
   linkType: soft
 
@@ -18007,8 +18007,8 @@ __metadata:
     vite: 3.2.4
     vite-tsconfig-paths: 3.5.2
   peerDependencies:
-    ^react: 17.0.2
-    ^react-dom: 17.0.2
+    react: ^17
+    react-dom: ^17
   languageName: unknown
   linkType: soft
 
@@ -18198,7 +18198,7 @@ __metadata:
     styled-components: 5.3.6
     tsup: 6.5.0
   peerDependencies:
-    react: ^17.0.2
+    react: ^17
   languageName: unknown
   linkType: soft
 
@@ -18212,7 +18212,7 @@ __metadata:
     passport-custom: 1.1.1
     prettier: 2.8.0
   peerDependencies:
-    passport: ^0.6.0
+    passport: ^0.6
   languageName: unknown
   linkType: soft
 
@@ -18250,7 +18250,7 @@ __metadata:
     tsup: 6.4.0
     typescript: 4.8.4
   peerDependencies:
-    ethers: ^5.7.2
+    ethers: ^5.7
   languageName: unknown
   linkType: soft
 
