@@ -18,10 +18,12 @@ export class KeyMetadata extends Model<
   @Column(DataType.JSONB)
   data!: JSON
 
-  @Column({ primaryKey: true })
+  @Column({ primaryKey: true, unique: 'id_unique' })
   id!: string
 
-  @Column
+  @Column({
+    unique: 'id_unique',
+  })
   address!: string
 
   @Column

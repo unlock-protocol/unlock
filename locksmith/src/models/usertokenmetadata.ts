@@ -9,10 +9,14 @@ interface UserTokenMetadataAttributes {
 
 @Table({ tableName: 'UserTokenMetadata', timestamps: true })
 export class UserTokenMetadata extends Model<UserTokenMetadataAttributes> {
-  @Column
+  @Column({
+    unique: 'token_user_address_unique_constraint',
+  })
   tokenAddress!: string
 
-  @Column
+  @Column({
+    unique: 'token_user_address_unique_constraint',
+  })
   userAddress!: string
 
   @Column(DataType.JSONB)

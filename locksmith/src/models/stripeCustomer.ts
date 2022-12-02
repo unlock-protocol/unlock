@@ -8,12 +8,16 @@ interface StripeCustomerAttributes {
 
 @Table({ tableName: 'StripeCustomers', timestamps: true })
 export class StripeCustomer extends Model<StripeCustomerAttributes> {
-  @Column
+  @Column({
+    unique: 'stripe_customers_pkey',
+  })
   publicKey!: string
 
   @Column
   StripeCustomerId!: string
 
-  @Column
+  @Column({
+    unique: 'stripe_customers_pkey',
+  })
   stripeConnectedAccountId!: string
 }
