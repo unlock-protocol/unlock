@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.20.2",
+    "@babel/core": "7.20.5",
     "@headlessui/react": "1.7.4",
     "@radix-ui/react-avatar": "1.0.1",
     "@testing-library/jest-dom": "5.16.5",
