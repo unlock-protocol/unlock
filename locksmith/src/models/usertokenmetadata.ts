@@ -9,6 +9,9 @@ interface UserTokenMetadataAttributes {
 
 @Table({ tableName: 'UserTokenMetadata', timestamps: true })
 export class UserTokenMetadata extends Model<UserTokenMetadataAttributes> {
+  @Column({ primaryKey: true, autoIncrement: true })
+  id!: string
+
   @Column({
     unique: 'token_user_address_unique_constraint',
   })

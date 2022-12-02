@@ -170,14 +170,19 @@ export class MetadataController {
         })
       }
 
-      await KeyMetadata.upsert({
-        chain: network,
-        address: lockAddress,
-        id: keyId,
-        data: {
-          ...metadata,
+      await KeyMetadata.upsert(
+        {
+          chain: network,
+          address: lockAddress,
+          id: keyId,
+          data: {
+            ...metadata,
+          },
         },
-      })
+        {
+          conflictFields: ['address', 'id'],
+        }
+      )
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
@@ -227,6 +232,7 @@ export class MetadataController {
           },
           {
             returning: true,
+            conflictFields: ['userAddress', 'tokenAddress'],
           }
         )
         return response.status(201).send(createdUser.data)
@@ -388,6 +394,7 @@ export class MetadataController {
         newUsersData.map(async (item) => {
           const [createdUser] = await UserTokenMetadata.upsert(item, {
             returning: true,
+            conflictFields: ['tokenAddress', 'userAddress'],
           })
           return createdUser.toJSON()
         })
