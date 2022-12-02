@@ -15,7 +15,7 @@
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.3.3",
     "node-fetch": "2.6.7",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   },
   "devDependencies": {
     "eslint": "8.27.0",
@@ -72,7 +72,7 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "resolutions": {
-    "yargs": "17.6.0"
+    "yargs": "17.6.2"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.3.0",
