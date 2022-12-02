@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
