@@ -49506,15 +49506,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-icons@npm:4.6.0":
-  version: 4.6.0
-  resolution: "react-icons@npm:4.6.0"
-  peerDependencies:
-    react: "*"
-  checksum: a08375d4563e381e156d826a8d551dd26c1bf7c424a79139173bf4c8df71e884badd7d4f5fe9faa0d73d18ace265bcc89891b65fd8f808812b1011b612ebbc53
-  languageName: node
-  linkType: hard
-
 "react-icons@npm:4.7.1":
   version: 4.7.1
   resolution: "react-icons@npm:4.7.1"

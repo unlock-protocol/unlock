@@ -26,6 +26,7 @@ export const useAddToNetwork = (account?: string) => {
       name: chainName,
       publicProvider,
       nativeCurrency,
+      explorer,
     } = getCurrentNetwork(networkId) as any
 
     const params = {
@@ -33,14 +34,10 @@ export const useAddToNetwork = (account?: string) => {
       rpcUrls: [publicProvider],
       chainName,
       nativeCurrency,
+      blockExplorerUrls: [explorer.urls.base],
     }
 
-    const promise = provider.send('wallet_addEthereumChain', [params], account)
-    await ToastHelper.promise(promise, {
-      loading: `Changing network to ${chainName}. Please Approve on your wallet.`,
-      error: `Error in changing network to ${chainName}`,
-      success: `Successfully changed network to ${chainName}`,
-    })
+    return provider.send('wallet_addEthereumChain', [params], account)
   }
 
   return {

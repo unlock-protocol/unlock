@@ -18,6 +18,7 @@ export const avalanche: NetworkConfig = {
   explorer: {
     name: 'Snowtrace (Avalanche)',
     urls: {
+      base: `https://snowtrace.io/`,
       address: (address) => `https://snowtrace.io/address/${address}`,
       transaction: (hash) => `https://snowtrace.io/tx/${hash}`,
       token: (address, holder) =>
