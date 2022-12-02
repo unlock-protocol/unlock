@@ -17918,7 +17918,7 @@ __metadata:
     hardhat-contract-sizer: 2.5.1
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
-    hardhat-storage-layout: 0.1.6
+    hardhat-storage-layout: 0.1.7
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
@@ -34559,14 +34559,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat-storage-layout@npm:0.1.6":
-  version: 0.1.6
-  resolution: "hardhat-storage-layout@npm:0.1.6"
+"hardhat-storage-layout@npm:0.1.7":
+  version: 0.1.7
+  resolution: "hardhat-storage-layout@npm:0.1.7"
   dependencies:
     console-table-printer: ^2.9.0
   peerDependencies:
     hardhat: ^2.0.3
-  checksum: 041041582ca32ccce90a71a8c243c8cbf0cb09d908fcf69e3994b2805b84f37310cc825ad63ad47ccb803260a6c94237881b2ed9098ac4704e022c19045cd075
+  checksum: 8d27d6b16c1ebdffa032ba6b99c61996df4601dcbaf7d770c474806b492a56de9d21b4190086ab40f50a3a1f2e9851cc81034a9cfd2e21368941977324f96fd4
   languageName: node
   linkType: hard
 
