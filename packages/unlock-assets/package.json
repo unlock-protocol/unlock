@@ -32,7 +32,7 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "react": "^17"
+    "react": "^17.x.x"
   },
   "devDependencies": {
     "@babel/core": "7.20.5",

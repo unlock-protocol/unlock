@@ -51,8 +51,8 @@
     "typescript": "4.9.3"
   },
   "peerDependencies": {
-    "ethers": "^5.7",
-    "hardhat": "^2.12"
+    "ethers": "^5.7.x",
+    "hardhat": "^2.12.x"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.1",

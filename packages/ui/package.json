@@ -44,8 +44,8 @@
     "tailwindcss": "3.2.4"
   },
   "peerDependencies": {
-    "react": "^17",
-    "react-dom": "^17"
+    "react": "^17.x.x",
+    "react-dom": "^17.x.x"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",
