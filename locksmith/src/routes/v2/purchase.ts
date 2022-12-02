@@ -16,4 +16,8 @@ router.get('/list', authenticatedMiddleware, userOnlyMiddleware, (req, res) =>
   purchaseController.list(req, res)
 )
 
+router.post('/intent/:network/locks/:lockAddress', (req, res) => {
+  purchaseController.createPaymentIntent(req, res)
+})
+
 module.exports = router
