@@ -17,6 +17,7 @@ export const mainnet: NetworkConfig = {
   explorer: {
     name: 'Etherscan',
     urls: {
+      base: 'https://etherscan.io/',
       address: (address) => `https://etherscan.io/address/${address}`,
       transaction: (hash) => `https://etherscan.io/tx/${hash}`,
       token: (address, holder) =>
@@ -51,7 +52,7 @@ export const mainnet: NetworkConfig = {
     subgraph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
-    oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931'
+    oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
   },
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',

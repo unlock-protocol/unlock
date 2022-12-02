@@ -18,6 +18,7 @@ export const optimism: NetworkConfig = {
   explorer: {
     name: 'Etherscan',
     urls: {
+      base: `https://optimistic.etherscan.io/`,
       address: (address) =>
         `https://optimistic.etherscan.io/address/${address}`,
       transaction: (hash) => `https://optimistic.etherscan.io/tx/${hash}`,

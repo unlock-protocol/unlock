@@ -19,6 +19,7 @@ export const celo: NetworkConfig = {
   explorer: {
     name: 'Celoscan',
     urls: {
+      base: `https://celoscan.io/`,
       address: (address) => `https://celoscan.io/address/${address}`,
       transaction: (hash) => `https://celoscan.io/tx/${hash}`,
       token: (address, holder) =>

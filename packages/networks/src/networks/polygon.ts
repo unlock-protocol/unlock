@@ -19,6 +19,7 @@ export const polygon: NetworkConfig = {
   explorer: {
     name: 'Polygonscan',
     urls: {
+      base: `https://polygonscan.com/`,
       address: (address) => `https://polygonscan.com/address/${address}`,
       transaction: (hash) => `https://polygonscan.com/tx/${hash}`,
       token: (address, holder) =>

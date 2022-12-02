@@ -19,6 +19,7 @@ export const arbitrum: NetworkConfig = {
   explorer: {
     name: 'Arbitrum',
     urls: {
+      base: `https://arbiscan.io/`,
       address: (address) => `https://arbiscan.io/address/${address}`,
       transaction: (hash) => `https://arbiscan.io/tx/${hash}`,
       token: (address, holder) =>

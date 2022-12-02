@@ -17,6 +17,7 @@ export const bsc: NetworkConfig = {
   explorer: {
     name: 'BscScan',
     urls: {
+      base: `https://bscscan.com/`,
       address: (address) => `https://bscscan.com/address/${address}`,
       transaction: (hash) => `https://bscscan.com/tx/${hash}`,
       token: (address, holder) =>

@@ -184,8 +184,8 @@ export const useProvider = (config: any) => {
       const newProvider = UnlockProvider.reconnect(provider, networkConfig)
       resetProvider(newProvider)
     } else {
-      try {
-        const changeNetworkRequest = provider.send(
+      const changeNetworkRequest = provider
+        .send(
           'wallet_switchEthereumChain',
           [
             {
@@ -194,24 +194,21 @@ export const useProvider = (config: any) => {
           ],
           account
         )
-        await ToastHelper.promise(changeNetworkRequest, {
-          loading: `Changing network to ${name}. Please Approve on your wallet.`,
-          error: `Error in changing network to ${name}`,
-          success: `Successfully changed network to ${name}`,
-        })
-        setNetwork(id)
-      } catch (switchError: any) {
-        // This error code indicates that the chain has not been added to the provider yet.
-        if (switchError.code === 4902) {
-          try {
-            await addNetworkToWallet(id)
-          } catch (addError) {
-            ToastHelper.error(
-              'Network could not be added. Please try manually adding it to your wallet'
-            )
+        .catch((switchError: any) => {
+          if (switchError.code === 4902 || switchError.code === -32603) {
+            return addNetworkToWallet(id)
+          } else {
+            throw switchError
           }
-        }
-      }
+        })
+        .then(() => {
+          setNetwork(id)
+        })
+      ToastHelper.promise(changeNetworkRequest, {
+        loading: `Changing network to ${name}. Please approve in your wallet.`,
+        error: `We could not switch to ${name}. Try adding it manually in your wallet.`,
+        success: `Successfully changed network to ${name}.`,
+      })
     }
   }
 

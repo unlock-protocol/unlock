@@ -19,6 +19,7 @@ export const gnosis: NetworkConfig = {
   explorer: {
     name: 'Blockscout',
     urls: {
+      base: `https://gnosisscan.io/`,
       address: (address) =>
         `https://gnosisscan.io/address/${address}/transactions`,
       transaction: (hash) => `https://gnosisscan.io/tx/${hash}`,
