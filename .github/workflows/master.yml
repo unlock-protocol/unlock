@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-      - buildx-cache-manifest
-
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
