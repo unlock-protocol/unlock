@@ -66,6 +66,7 @@ export interface NetworkConfig {
   explorer?: {
     name: string
     urls: {
+      base: string
       address(address: string): string
       transaction(hash: string): string
       token(address: string, owner: string): string
