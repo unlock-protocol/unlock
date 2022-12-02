@@ -14816,21 +14816,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/core@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@tw-classed/core@npm:1.2.3"
-  checksum: 10aeb0980a67b2da76769405b757ebaec2caeb89fa74faf3c32f1b9880f8a6ea6b112872154ac8cdab81fba3872d5d32e76a2d2f351d02a2a35bee6cc508390d
+"@tw-classed/core@npm:1.2.4":
+  version: 1.2.4
+  resolution: "@tw-classed/core@npm:1.2.4"
+  checksum: e6c09f86290217692b6bf54eee34a5a12730a47b9b28fabe2ea27a3dac8a674f636f331a97f4579dafa9331d9fc388bb3d3878cb3e07d82534e6a2cd10e07a16
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@tw-classed/react@npm:1.2.3"
+"@tw-classed/react@npm:1.2.4":
+  version: 1.2.4
+  resolution: "@tw-classed/react@npm:1.2.4"
   dependencies:
-    "@tw-classed/core": 1.2.3
+    "@tw-classed/core": 1.2.4
   peerDependencies:
     react: ">=16.8.0"
-  checksum: da48c18bf5e16e04c3d3dbd89f44fec53b60b12078f0dd2c8d528d2df2387065aa34f20fc96f378e31e38c24af0a8cf642ce49f5a4121593ff09f3ae547f7dc8
+  checksum: 232da1e8fd3881774c95c5e18d31bda214fa9017162cdee4aad2e8bb3c6a92be2fcb6dd2b7b6bf101a57da1c4c7d849bf31bc683ddfff71dfc9db042f147cdfc
   languageName: node
   linkType: hard
 
@@ -17111,8 +17111,8 @@ __metadata:
     tslint-plugin-prettier: 2.3.0
     typescript: 4.9.3
   peerDependencies:
-    ethers: 5.7.2
-    hardhat: 2.12.3
+    ethers: ^5.7
+    hardhat: ^2.12
   languageName: unknown
   linkType: soft
 
@@ -17123,7 +17123,7 @@ __metadata:
     glob: 8.0.3
     ts-jest: 27.1.5
   peerDependencies:
-    jest: 27.5.1
+    jest: ^27.5
   languageName: unknown
   linkType: soft
 
@@ -17428,9 +17428,8 @@ __metadata:
     vite: 3.2.4
     vite-tsconfig-paths: 3.6.0
   peerDependencies:
-    "@headlessui/react": 1.7.4
-    react: 17.0.2
-    react-dom: 17.0.2
+    react: ^17
+    react-dom: ^17
   languageName: unknown
   linkType: soft
 
@@ -17509,7 +17508,7 @@ __metadata:
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.1
-    "@tw-classed/react": 1.2.3
+    "@tw-classed/react": 1.2.4
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
@@ -17620,7 +17619,7 @@ __metadata:
     styled-components: 5.3.6
     tsup: 6.5.0
   peerDependencies:
-    react: 17.0.2
+    react: ^17
   languageName: unknown
   linkType: soft
 
@@ -17634,7 +17633,7 @@ __metadata:
     passport-custom: 1.1.1
     prettier: 2.8.0
   peerDependencies:
-    passport: 0.6.0
+    passport: ^0.6
   languageName: unknown
   linkType: soft
 
@@ -17672,7 +17671,7 @@ __metadata:
     tsup: 6.4.0
     typescript: 4.8.4
   peerDependencies:
-    ethers: 5.7.2
+    ethers: ^5.7
   languageName: unknown
   linkType: soft
 

@@ -13,7 +13,7 @@
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.1",
-    "@tw-classed/react": "1.2.3",
+    "@tw-classed/react": "1.2.4",
     "@types/file-saver": "2.0.5",
     "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
