@@ -1,4 +1,5 @@
 'use strict'
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable(
@@ -27,7 +28,7 @@ module.exports = {
       {
         uniqueKeys: {
           id_unique: {
-            fields: ['id'],
+            fields: ['id', 'address'],
           },
         },
       }

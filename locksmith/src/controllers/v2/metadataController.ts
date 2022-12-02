@@ -127,7 +127,7 @@ export class MetadataController {
           message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
         })
       }
-      const [updatedLockMetadata, created] = await LockMetadata.upsert(
+      const [updatedLockMetadata] = await LockMetadata.upsert(
         {
           address: lockAddress,
           chain: network,
@@ -139,8 +139,7 @@ export class MetadataController {
           returning: true,
         }
       )
-      const statusCode = created ? 201 : 204
-      return response.status(statusCode).send(updatedLockMetadata.data)
+      return response.status(201).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -171,7 +170,7 @@ export class MetadataController {
         })
       }
 
-      const created = await KeyMetadata.upsert({
+      await KeyMetadata.upsert({
         chain: network,
         address: lockAddress,
         id: keyId,
@@ -187,8 +186,8 @@ export class MetadataController {
         host,
         network
       )
-      const statusCode = created ? 201 : 204
-      return response.status(statusCode).send(keyData)
+
+      return response.status(200).send(keyData)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
