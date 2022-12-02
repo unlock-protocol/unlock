@@ -35,15 +35,6 @@ jobs:
         # Issue: https://github.com/docker/build-push-action/issues/286
         uses: docker/setup-buildx-action@master
 
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          # Key is named differently to avoid collision
-          key: ${{ runner.os }}-docker-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-docker
-
       - name: Build image
         uses: docker/build-push-action@v3
         with:
@@ -52,15 +43,4 @@ jobs:
           # Build only desired target
           target: deps
           push: true 
-          build-args: BUILDKIT_INLINE_CACHE=1
           tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          # Note the mode=max here
-          # More: https://github.com/moby/buildkit#--export-cache-options
-          # And: https://github.com/docker/buildx#--cache-tonametypetypekeyvalue
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
-
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
