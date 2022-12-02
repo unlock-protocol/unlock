@@ -4,7 +4,7 @@ import { Table, Model, Column } from 'sequelize-typescript'
 interface KeyRenewalAttributes {
   id: number
   lockAddress: string
-  keyId: number
+  keyId: string
   initiatedBy?: string
   tx: string
   network: number

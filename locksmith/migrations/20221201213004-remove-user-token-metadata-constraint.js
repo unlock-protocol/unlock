@@ -5,7 +5,7 @@ const table = 'UserTokenMetadata'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.removeContraint(
+    return queryInterface.removeConstraint(
       table,
       'token_user_address_unique_constraint'
     )
