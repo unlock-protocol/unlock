@@ -72,7 +72,7 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "resolutions": {
-    "yargs": "17.6.0"
+    "yargs": "17.6.2"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.3.0",
