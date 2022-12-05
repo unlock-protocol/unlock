@@ -6,9 +6,9 @@ import {
   UpcomingEvents,
   UpcomingEventsProps,
 } from '../components/pages/UpcomingEvents'
-import { icalEventsToJson } from '../utils/calendar'
+import { getEvents } from '../utils/calendar'
 
-const MembershipPage: NextPage = (props) => {
+const MembershipPage: NextPage = (props: any) => {
   return (
     <Layout>
       <NextSeo
@@ -22,16 +22,10 @@ const MembershipPage: NextPage = (props) => {
 }
 
 export const getStaticProps: GetStaticProps<UpcomingEventsProps> = async () => {
-  const CALENDAR_URL =
-    'https://calendar.google.com/calendar/ical/c_dm3gud9ph6jqk7epq6jtij8u00%40group.calendar.google.com/public/basic.ics'
-
-  const [rawUpcomingEvents, rawPastEvents] = await Promise.all([
-    icalEventsToJson(CALENDAR_URL, 'future'),
-    icalEventsToJson(CALENDAR_URL, 'past', 'desc'),
+  const [upcomingEvents, pastEvents] = await Promise.all([
+    getEvents('future'),
+    getEvents('past'),
   ])
-
-  const upcomingEvents = JSON.parse(JSON.stringify(rawUpcomingEvents)) ?? []
-  const pastEvents = JSON.parse(JSON.stringify(rawPastEvents)) ?? []
 
   return {
     props: {

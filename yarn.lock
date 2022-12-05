@@ -17076,8 +17076,8 @@ __metadata:
     tslint-plugin-prettier: 2.3.0
     typescript: 4.9.3
   peerDependencies:
-    ethers: ^5.7
-    hardhat: ^2.12
+    ethers: ^5.7.x
+    hardhat: ^2.12.x
   languageName: unknown
   linkType: soft
 
@@ -17088,7 +17088,7 @@ __metadata:
     glob: 8.0.3
     ts-jest: 27.1.5
   peerDependencies:
-    jest: ^27.5
+    jest: ^27.5.x
   languageName: unknown
   linkType: soft
 
@@ -17392,8 +17392,8 @@ __metadata:
     vite: 3.2.4
     vite-tsconfig-paths: 3.6.0
   peerDependencies:
-    react: ^17
-    react-dom: ^17
+    react: ^17.x.x
+    react-dom: ^17.x.x
   languageName: unknown
   linkType: soft
 
@@ -17583,7 +17583,7 @@ __metadata:
     styled-components: 5.3.6
     tsup: 6.5.0
   peerDependencies:
-    react: ^17
+    react: ^17.x.x
   languageName: unknown
   linkType: soft
 
@@ -17597,7 +17597,7 @@ __metadata:
     passport-custom: 1.1.1
     prettier: 2.8.0
   peerDependencies:
-    passport: ^0.6
+    passport: ^0.6.x
   languageName: unknown
   linkType: soft
 
@@ -17635,7 +17635,7 @@ __metadata:
     tsup: 6.4.0
     typescript: 4.8.4
   peerDependencies:
-    ethers: ^5.7
+    ethers: ^5.7.x
   languageName: unknown
   linkType: soft
 
@@ -17666,7 +17666,6 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
-    cal-parser: 1.0.2
     dayjs: 1.11.6
     dotenv: 16.0.3
     embla-carousel-autoplay: 7.0.5
@@ -22928,16 +22927,6 @@ __metadata:
     abstract-leveldown: ^2.4.1
     lru-cache: ^3.2.0
   checksum: ffd229839ca7efbfa14e35321fb8df444421e192bdf7be16048a303d2a24f3ed86cbe6c7a8cca91761423e4c53c3ed1098d337bbb9d3448801d4792172b4ab3e
-  languageName: node
-  linkType: hard
-
-"cal-parser@npm:1.0.2":
-  version: 1.0.2
-  resolution: "cal-parser@npm:1.0.2"
-  dependencies:
-    ical-date-parser: ^4.0.0
-    rrule: ^2.6.8
-  checksum: facb0239a05f576751673a33c916c54d86f30e19032ddab06587945fb9ac0ed00383bff4aa4c46a85dd86c2b5ac471ad09e386fa8cacaf98054b8c8f79205756
   languageName: node
   linkType: hard
 
@@ -35053,13 +35042,6 @@ fsevents@~2.1.1:
   version: 1.0.4
   resolution: "hyphenate-style-name@npm:1.0.4"
   checksum: 4f5bf4b055089754924babebaa23c17845937bcca6aee95d5d015f8fa1e6814279002bd6a9e541e3fac2cd02519fc76305396727066c57c8e21a7e73e7a12137
-  languageName: node
-  linkType: hard
-
-"ical-date-parser@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "ical-date-parser@npm:4.0.0"
-  checksum: 184dc24dcacea29d1bc4dbf4ec40afbce5f397caefa3301bf86f5886548636c5c92ab58202190101a5d621f9415aa847d611533fd053bcecee8af03cc5418fd8
   languageName: node
   linkType: hard
 
@@ -50515,15 +50497,6 @@ resolve@^2.0.0-next.3:
   bin:
     rollup: dist/bin/rollup
   checksum: 1779b778fe4b14f80a995a641d3a89a76e3651170536192022dce1821f1241ee49496353655aa812dc8f8334c89a302ad957b757d4370cf57e41ca270bb394fd
-  languageName: node
-  linkType: hard
-
-"rrule@npm:^2.6.8":
-  version: 2.7.1
-  resolution: "rrule@npm:2.7.1"
-  dependencies:
-    tslib: ^2.4.0
-  checksum: 80b81c5b1c1d12539a2af6de6fc8ebff8d763d8006cd9a418a1de7adbd634ae84ea853f1590d73ea72737422b8775cd53ca64c59e7c4625eda09a2746596f1d9
   languageName: node
   linkType: hard
 
