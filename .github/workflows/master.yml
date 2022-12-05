@@ -93,10 +93,9 @@ jobs:
       NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
 
-  cache_deps:
-    uses: ./.github/workflows/_docker-cache.yml
+  cache-deps:
     needs: run-all-tests
-    secrets:  
+    uses: ./.github/workflows/_docker-cache.yml
+    secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        
