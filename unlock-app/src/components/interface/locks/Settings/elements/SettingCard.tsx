@@ -1,6 +1,5 @@
-import { Disclosure } from '@headlessui/react'
+import { Disclosure } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
-import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
 
 interface SettingCardProps {
   label: string
@@ -12,7 +11,7 @@ interface SettingCardProps {
 
 interface SettingCardDetailProps {
   title: string
-  description: string
+  description: ReactNode
 }
 
 export const SettingCardPlaceholder = () => {
@@ -28,7 +27,7 @@ export const SettingCardDetail = ({
   return (
     <div className="flex flex-col">
       <span className="text-base font-bold text-gray-700">{title}</span>
-      <span className="text-sm text-gray-700">{description}</span>
+      <div className="text-sm text-gray-700">{description}</div>
     </div>
   )
 }
@@ -44,36 +43,14 @@ export const SettingCard = ({
     return <SettingCardPlaceholder />
   }
 
-  // TODO: add component and replace also for metadata
   return (
-    <Disclosure>
-      {({ open }) => (
-        <div className="w-full p-6 bg-white border border-gray-100 rounded-2xl">
-          <Disclosure.Button
-            className="flex flex-col w-full gap-2 outline-none"
-            disabled={disabled}
-          >
-            <div className="flex justify-between w-full">
-              <span className="text-xl font-bold text-brand-ui-primary">
-                {label}
-              </span>
-              <ArrowUpIcon
-                className={`transition duration-200 ease-in-out text-brand-ui-primary ${
-                  open ? 'rotate-180' : ''
-                }`}
-              />
-            </div>
-            {description && (
-              <div className="w-full text-left">
-                <span className="text-base text-brand-dark">{description}</span>
-              </div>
-            )}
-          </Disclosure.Button>
-          {children && (
-            <Disclosure.Panel className="pt-10">{children}</Disclosure.Panel>
-          )}
-        </div>
-      )}
+    <Disclosure
+      label={label}
+      description={description}
+      disabled={disabled}
+      isLoading={isLoading}
+    >
+      {children}
     </Disclosure>
   )
 }

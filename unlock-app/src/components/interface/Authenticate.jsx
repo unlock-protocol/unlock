@@ -38,17 +38,18 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
     return new Web3Service(networkConfig)
   }, [networkConfig])
 
-  const { tryAutoLogin, isLoading } = useAutoLogin({
+  const { tryAutoLogin } = useAutoLogin({
     authenticate,
   })
 
   useEffect(() => {
     tryAutoLogin()
   }, [])
+
   return (
     <StorageServiceProvider value={storageService}>
       <Web3ServiceProvider value={web3Service}>
-        {isLoading ? <Loading /> : children}
+        {web3Service && <>{children}</>}
       </Web3ServiceProvider>
     </StorageServiceProvider>
   )
@@ -89,6 +90,7 @@ export const Authenticate = ({
     isUnlockAccount,
     changeNetwork,
     watchAsset,
+    providerSend,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -107,6 +109,7 @@ export const Authenticate = ({
   return (
     <AuthenticationContext.Provider
       value={{
+        providerSend,
         signMessage,
         account,
         network,

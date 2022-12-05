@@ -30,6 +30,7 @@ interface VerifierCardProps {
   verifier: VerifierProps
   onDeleteVerifier: (address: string) => Promise<any>
   isLoading?: boolean
+  disabled: boolean
 }
 
 interface VerifierFormDataProps {
@@ -48,6 +49,7 @@ const VerifierCard = ({
   verifier,
   onDeleteVerifier,
   isLoading,
+  disabled,
 }: VerifierCardProps) => {
   const { account } = useAuth()
 
@@ -72,7 +74,7 @@ const VerifierCard = ({
         size="small"
         variant="outlined-primary"
         onClick={() => onDeleteVerifier(address)}
-        disabled={isLoading}
+        disabled={isLoading || disabled}
       >
         Remove
       </Button>
@@ -220,7 +222,11 @@ export const VerifierForm = ({
     <div className="relative">
       <div className="flex flex-col gap-4">
         {noVerifiers && !isLoading && (
-          <span>This lock does not have any verifier.</span>
+          <span>
+            {isManager
+              ? 'This lock currently does not have any verifier.'
+              : 'Only lock manager can access verifiers list.'}
+          </span>
         )}
         {(verifiers ?? [])?.map((verifier: VerifierProps) => (
           <VerifierCard
@@ -228,26 +234,27 @@ export const VerifierForm = ({
             key={verifier.id}
             onDeleteVerifier={onDeleteVerifier}
             isLoading={deleteVerifierMutation.isLoading}
+            disabled={disabled}
           />
         ))}
         {(isLoadingItems || addVerifierMutation.isLoading) &&
           !deleteVerifierMutation.isLoading && <VerifierCardPlaceholder />}
       </div>
-      <form
-        className="flex flex-col gap-6 mt-8"
-        onSubmit={handleSubmit(onAddVerifier)}
-      >
-        <div className="flex flex-col gap-2">
-          <span className="text-base text-brand-dark">
-            Add verifier, please enter the wallet address of theirs.
-          </span>
-          <Input
-            disabled={disabled}
-            {...register('verifier')}
-            autoComplete="off"
-          />
-        </div>
-        {isManager && (
+      {isManager && (
+        <form
+          className="flex flex-col gap-6 mt-8"
+          onSubmit={handleSubmit(onAddVerifier)}
+        >
+          <div className="flex flex-col gap-2">
+            <span className="text-base text-brand-dark">
+              Add verifier, please enter the wallet address of theirs.
+            </span>
+            <Input
+              disabled={disabled}
+              {...register('verifier')}
+              autoComplete="off"
+            />
+          </div>
           <Button
             type="submit"
             className="w-full md:w-1/2"
@@ -256,8 +263,8 @@ export const VerifierForm = ({
           >
             Add
           </Button>
-        )}
-      </form>
+        </form>
+      )}
     </div>
   )
 }

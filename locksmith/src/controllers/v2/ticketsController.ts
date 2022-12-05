@@ -79,6 +79,7 @@ export class TicketsController {
         },
         {
           returning: true,
+          conflictFields: ['id', 'address'],
         }
       )
       return response.status(202).send({

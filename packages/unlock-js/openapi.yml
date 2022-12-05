@@ -285,7 +285,7 @@ components:
 
     KeyId:
       in: path
-      name: KeyId
+      name: keyId
       required: true
       description: Key Id.
       schema:
@@ -371,6 +371,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 message:
                   type: string
@@ -399,7 +400,7 @@ paths:
       description: Refresh access token.
       parameters:
         - in: header
-          name: refreshToken
+          name: refresh-token
           schema:
             type: string
             nullable: true
@@ -466,7 +467,7 @@ paths:
               type: object
               nullable: true
               properties:
-                refresh-token:
+                refreshToken:
                   type: string
                   nullable: false
       responses:
@@ -1287,3 +1288,153 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/purchase/intent/{network}/locks/{lockAdddress}:
+    post:
+      operationId: purchase
+      security:
+        - User: []
+      description: Create purchase intent for stripe.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                stripeTokenId:
+                  type: string
+                pricing:
+                  type: number
+                recurring:
+                  type: number
+                  nullable: true
+
+      responses:
+        200:
+          description: Created payment intent client secret, account, and other details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientSecret:
+                    type: string
+                  stripeAccount:
+                    type: string
+                  totalPriceInDents:
+                    type: number
+                  pricing:
+                    nullable: true
+                    type: object
+                    properties:
+                      keyPrice:
+                        type: number
+                        nullable: true
+                      unlockServiceFee:
+                        type: number
+                        nullable: true
+                      creditCardProcessing:
+                        type: number
+                        nullable: true
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+  /v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}:
+    delete:
+      operationId: cancelSubscription
+      description: Cancel a fiat subscription.
+      security:
+        - User: []
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        204:
+          description: Successfully deleted the subscription.
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    get:
+      operationId: getSubscription
+      description: Get an active subscription associated with the key. It can be fiat or crypto.
+      security:
+        - User: []
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Any active subscription.
+
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        next:
+                          type: number
+                          nullable: true
+
+                        balance:
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
+
+                        price:
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+
+                            amount:
+                              type: string
+
+                            decimals:
+                              type: number
+
+                        approvedRenewals:
+                          type: string
+                          description: Approved number of renewals by user.
+
+                        approvedTime:
+                          type: string
+                          description: Approved time in human readable form.
+
+                        possibleRenewals:
+                          type: string
+                          description: Possible number of renewals based on the user account balance.
+
+                        type:
+                          enum:
+                            - crypto
+                            - fiat
+                          description: The type of payment method used for the subscription.
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'

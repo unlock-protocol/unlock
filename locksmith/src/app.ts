@@ -21,7 +21,7 @@ Sentry.init({
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.5,
 })
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
@@ -35,11 +35,7 @@ app.use(cookieParser())
 // Request logging
 app.use(
   expressWinston.logger({
-    transports: [
-      new winston.transports.Console({
-        silent: process.env?.NODE_ENV === 'test',
-      }),
-    ],
+    transports: [new winston.transports.Console()],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()
@@ -68,11 +64,7 @@ app.use(Sentry.Handlers.errorHandler())
 // Error logging
 app.use(
   expressWinston.errorLogger({
-    transports: [
-      new winston.transports.Console({
-        silent: process.env?.NODE_ENV === 'test',
-      }),
-    ],
+    transports: [new winston.transports.Console()],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()

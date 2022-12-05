@@ -264,7 +264,10 @@ export const LockManagerForm = ({
       network,
       addLockManagerMutation.isSuccess,
     ],
-    async () => getLock()
+    async () => getLock(),
+    {
+      refetchInterval: 2000,
+    }
   )
 
   const onAddLockManager = async ({ manager }: FormProps) => {
@@ -297,17 +300,17 @@ export const LockManagerForm = ({
           <LockManagerCardPlaceholder />
         )}
       </div>
-      <form
-        className="flex flex-col gap-6 mt-8"
-        onSubmit={handleSubmit(onAddLockManager)}
-      >
-        <div className="flex flex-col gap-2">
-          <span className="text-base text-brand-dark">
-            Add manager, please enter the wallet address of theirs.
-          </span>
-          <Input disabled={disableInput} {...register('manager')} />
-        </div>
-        {isManager && (
+      {isManager && (
+        <form
+          className="flex flex-col gap-6 mt-8"
+          onSubmit={handleSubmit(onAddLockManager)}
+        >
+          <div className="flex flex-col gap-2">
+            <span className="text-base text-brand-dark">
+              Add manager, please enter the wallet address of theirs.
+            </span>
+            <Input disabled={disableInput} {...register('manager')} />
+          </div>
           <Button
             className="w-full md:w-1/2"
             type="submit"
@@ -316,8 +319,8 @@ export const LockManagerForm = ({
           >
             Add
           </Button>
-        )}
-      </form>
+        </form>
+      )}
     </div>
   )
 }

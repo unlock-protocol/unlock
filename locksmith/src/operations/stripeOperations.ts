@@ -73,7 +73,6 @@ export const deletePaymentDetailsForAddress = async (
 
   // First, let's delete the StripeCustomer
   const deletedStripeCustomer = await StripeCustomer.destroy({
-    // @ts-expect-error - typescript typing issue
     where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
   })
 
@@ -84,7 +83,6 @@ export const deletePaymentDetailsForAddress = async (
       stripe_customer_id: null,
     },
     {
-      // @ts-expect-error - typescript typing issue
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
     }
   )
@@ -178,8 +176,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0`,
+    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1`,
     type: 'account_onboarding',
   })
 }

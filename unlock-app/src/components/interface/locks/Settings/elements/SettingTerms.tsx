@@ -1,11 +1,9 @@
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
 import { CancellationForm } from '../forms/CancellationForm'
-import { CreditCardForm } from '../forms/CreditCardForm'
-import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
-import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
+import { UpdateTransferFee } from '../forms/UpdateTransferFee'
 import { SettingCard } from './SettingCard'
 
 interface SettingTermsProps {
@@ -32,7 +30,7 @@ export const SettingTerms = ({
   const settings: SettingProps[] = [
     {
       label: 'Duration',
-      description: 'Set up how long each membership lasts.',
+      description: 'Set up how long each membership lasts. ',
       children: (
         <UpdateDurationForm
           lockAddress={lockAddress}
@@ -46,7 +44,7 @@ export const SettingTerms = ({
     {
       label: 'Quantity',
       description:
-        'The maximum number of memberships that can be sold. Note: There is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
+        'The maximum number of memberships that can be sold from your contract. Note: there is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
       children: (
         <UpdateQuantityForm
           lockAddress={lockAddress}
@@ -57,49 +55,16 @@ export const SettingTerms = ({
       ),
     },
     {
-      label: 'Price',
-      description:
-        'The price that the membership contract is charging for one membership.',
-      children: (
-        <UpdatePriceForm
-          lockAddress={lockAddress}
-          network={network}
-          price={parseInt(lock?.keyPrice, 10) ?? 0}
-          isManager={isManager}
-          disabled={!isManager}
-        />
-      ),
-    },
-    {
-      label: 'Subscription',
-      description: 'Automatically renew memberships when they expire.',
-      children: (
-        <SubscriptionForm
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
-          lock={lock}
-        />
-      ),
-    },
-    {
-      label: 'Credit Card Payment',
-      description:
-        'Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member.',
-      children: (
-        <CreditCardForm
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
-        />
-      ),
-    },
-    {
       label: 'Transfer',
-      description: 'Allow members to transfer membership from one to others.',
-      children: null,
+      description: 'Allow members to transfer memberships.',
+      children: (
+        <UpdateTransferFee
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      ),
     },
     {
       label: 'Cancellation',

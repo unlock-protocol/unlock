@@ -3,6 +3,7 @@ import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
 import setMaxNumberOfKeys from './setMaxNumberOfKeys'
 import setExpirationDuration from './setExpirationDuration'
+import setEventHooks from './setEventHooks'
 
 import v8 from '../v8'
 
@@ -31,6 +32,7 @@ const {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  updateTransferFee,
 } = v8
 
 export default {
@@ -65,4 +67,6 @@ export default {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 }

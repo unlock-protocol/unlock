@@ -61,7 +61,7 @@ export const CancellationForm = ({
     register,
     handleSubmit,
     setValue,
-    formState: { isValid, errors, isDirty },
+    formState: { isValid, errors },
   } = useForm<FormProps>()
 
   const updateRefundPenalty = async ({
@@ -109,15 +109,12 @@ export const CancellationForm = ({
   }
 
   const [
-    { isLoading: isLoadingFreeTrial, data: freeTrialLength },
-    { isLoading: isLoadingPenalty, data: refundPenaltyBasisPoints },
+    { isLoading: isLoadingFreeTrial, data: freeTrialLength = 0 },
+    { isLoading: isLoadingPenalty, data: refundPenaltyBasisPoints = 0 },
   ] = useQueries({
     queries: [
       {
         queryFn: async () => getFreeTrialLength(),
-        onSuccess: (value = 0) => {
-          setAllowTrial(value > 0)
-        },
         onError: () => {
           ToastHelper.error('Impossible to retrieve freeTrialLength value.')
         },
@@ -130,9 +127,6 @@ export const CancellationForm = ({
       },
       {
         queryFn: async () => getRefundPenaltyBasisPoints(),
-        onSuccess: (value = 0) => {
-          setCancelPenalty(value > 0)
-        },
         onError: () => {
           ToastHelper.error(
             'Impossible to retrieve refundPenaltyBasisPoints value.'
@@ -148,26 +142,19 @@ export const CancellationForm = ({
     ],
   })
 
-  const isLoading = isLoadingPenalty || isLoadingFreeTrial
-
-  const disabledInput = updateRefundPenaltyMutation.isLoading || disabled
-
   useEffect(() => {
+    const allowTrial = freeTrialLength > 0
+
+    setAllowTrial(freeTrialLength > 0)
     setValue('freeTrialLength', allowTrial ? freeTrialLength ?? 0 : 0, {
       shouldValidate: true,
     })
-  }, [
-    allowTrial,
-    freeTrialLength,
-    setValue,
-    updateRefundPenaltyMutation.isLoading,
-    updateRefundPenaltyMutation.isSuccess,
-  ])
+  }, [freeTrialLength])
 
   useEffect(() => {
-    if (updateRefundPenaltyMutation.isLoading) return
-
+    const cancelPenalty = refundPenaltyBasisPoints > 0
     const refundPenaltyPercentage = (refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
+    setCancelPenalty(cancelPenalty)
 
     setValue(
       'refundPenaltyPercentage',
@@ -176,13 +163,11 @@ export const CancellationForm = ({
         shouldValidate: true,
       }
     )
-  }, [
-    cancelPenalty,
-    refundPenaltyBasisPoints,
-    setValue,
-    updateRefundPenaltyMutation.isLoading,
-    updateRefundPenaltyMutation.isSuccess,
-  ])
+  }, [refundPenaltyBasisPoints])
+
+  const isLoading = isLoadingPenalty || isLoadingFreeTrial
+
+  const disabledInput = updateRefundPenaltyMutation.isLoading || disabled
 
   if (isLoading) return <CancellationFormPlaceholder />
 
@@ -207,19 +192,15 @@ export const CancellationForm = ({
           </div>
 
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !allowTrial}
             step={1}
+            error={errors?.freeTrialLength && 'This field is required'}
             {...register('freeTrialLength', {
               required: true,
               min: 0,
             })}
           />
-          {errors?.freeTrialLength && (
-            <span className="absolute text-xs text-red-700">
-              This field is required
-            </span>
-          )}
         </div>
       </div>
       <div className="flex flex-col gap-6">
@@ -237,20 +218,19 @@ export const CancellationForm = ({
             />
           </div>
           <Input
-            type="numeric"
+            type="number"
             disabled={disabledInput || !cancelPenalty}
             step={0.01}
+            error={
+              errors?.refundPenaltyPercentage &&
+              'This field accept percentage value between 0 and 100.'
+            }
             {...register('refundPenaltyPercentage', {
               required: true,
               min: 0,
               max: 100,
             })}
           />
-          {errors?.refundPenaltyPercentage && (
-            <span className="absolute text-xs text-red-700">
-              This field accept percentage value between 0 and 100.
-            </span>
-          )}
         </div>
       </div>
       {isManager && (
@@ -258,7 +238,7 @@ export const CancellationForm = ({
           className="w-full md:w-1/3"
           type="submit"
           loading={updateRefundPenaltyMutation.isLoading}
-          disabled={disabledInput || !isDirty}
+          disabled={disabledInput}
         >
           Apply
         </Button>
