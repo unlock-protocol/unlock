@@ -7,7 +7,6 @@ import { AuthorizedLock } from './authorizedLock'
 import { LockMetadata } from './lockMetadata'
 import { KeyMetadata } from './keyMetadata'
 import { KeyRenewal } from './keyRenewal'
-import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
 import { UserTokenMetadata } from './usertokenmetadata'
 import { StripeCustomer } from './stripeCustomer'
 import { PaymentIntent } from './paymentIntent'
@@ -41,7 +40,6 @@ sequelize.addModels([
   LockIcons,
   LockMetadata,
   LockMigrations,
-  ParsedBlockForLockCreation,
   PaymentIntent,
   ProcessedHookItem,
   RefreshToken,
