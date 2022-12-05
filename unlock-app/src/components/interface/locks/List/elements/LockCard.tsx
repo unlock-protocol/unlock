@@ -70,7 +70,11 @@ const Detail = ({
   )
 }
 
-export const LocksByNetworkPlaceholder = () => {
+export const LocksByNetworkPlaceholder = ({
+  networkName,
+}: {
+  networkName: string
+}) => {
   const DetailPlaceholder = () => {
     return (
       <div className="flex flex-col gap-1">
@@ -112,13 +116,9 @@ export const LocksByNetworkPlaceholder = () => {
     )
   }
 
-  const NetworkNamePlaceholder = () => {
-    return <div className="w-56 h-6 animate-pulse bg-slate-200"></div>
-  }
-
   return (
     <div className="flex flex-col gap-4">
-      <NetworkNamePlaceholder />
+      <h2 className="text-lg font-bold text-brand-ui-primary">{networkName}</h2>
       <div className="flex flex-col gap-6">
         <LockCardPlaceHolder />
         <LockCardPlaceHolder />
