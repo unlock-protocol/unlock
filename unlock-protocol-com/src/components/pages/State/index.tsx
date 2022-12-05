@@ -174,43 +174,24 @@ function CalcRenderData(
   flag: 0 | 1 | 2,
   filter: string
 ) {
-  if (flag === 1) {
-    const activeLockList = timestampArray.map((timestamp) =>
-      graphData.unlockDailyDatas
-        .filter((data) => data.id >= timestamp - 30 && data.id <= timestamp)
-        .map(({ activeLocks }) => activeLocks)
+  return timestampArray.map((dayId) => {
+    const interval = ['1D', '7D', '1M'].includes(filter) ? 1 : 30
+    const dayDatas = graphData.unlockDailyDatas.filter(
+      (item) => item.id >= dayId - interval && item.id < dayId
     )
-    activeLockList.map((activeLock) => {
-      let _1Dlock = []
-      for (const key in activeLock) {
-        _1Dlock = _1Dlock.concat(activeLock[key])
-      }
-      return [...new Set(_1Dlock)].length
-    })
-  }
-  return timestampArray
-    .map((timestamp) =>
-      graphData.unlockDailyDatas.filter(
-        (data) =>
-          data.id >=
-            timestamp -
-              (filter === '1D' || filter === '7D' || filter === '1M'
-                ? 1
-                : 30) && data.id <= timestamp
-      )
-    )
-    .map((item) =>
-      item.reduce(
-        (a, b) =>
-          a +
-          (flag === 0
-            ? parseInt(b.keysSold)
-            : flag === 1
-            ? b.activeLocks.length
-            : parseInt(b.lockDeployed)),
-        0
-      )
-    )
+
+    if (flag === 0) return dayDatas.reduce((x, y) => x + Number(y.keysSold), 0)
+    if (flag === 1)
+      return dayDatas.reduce((x, y) => {
+        const lastMonthActiveLocks = graphData.unlockDailyDatas
+          .filter((item) => item.id > y.id - 30 && item.id <= y.id)
+          .map((item) => item.activeLocks)
+          .flatMap((lock) => lock)
+        return x + [...new Set(lastMonthActiveLocks)].length
+      }, 0)
+    if (flag === 2)
+      return dayDatas.reduce((x, y) => x + Number(y.lockDeployed), 0)
+  })
 }
 
 export function State() {
