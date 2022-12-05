@@ -24,7 +24,7 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
   const { networks } = useConfig()
   const { name: networkName } = networks[network]
 
-  if (isLoading) return <LocksByNetworkPlaceholder />
+  if (isLoading) return <LocksByNetworkPlaceholder networkName={networkName} />
   if (locks?.length === 0) return null
 
   return (
