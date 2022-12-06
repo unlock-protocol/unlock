@@ -29,7 +29,7 @@ import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 import { KeyMetadataDrawer } from './KeyMetadataDrawer'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { useQuery } from '@tanstack/react-query'
+import { isError, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Menu, Transition } from '@headlessui/react'
 import { classed as tw } from '@tw-classed/react'
@@ -45,7 +45,7 @@ import {
 } from 'react-icons/ri'
 import { useStorageService } from '~/utils/withStorageService'
 import dayjs from 'dayjs'
-import { IncreaseApprovalModal } from './Approval'
+import { ExtendMembershipModal } from './Extend'
 import { MdOutlineAdd as IncreaseIcon } from 'react-icons/md'
 import { ethers } from 'ethers'
 
@@ -234,9 +234,12 @@ function Key({ ownedKey, account, network }: Props) {
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
-  const [increaseAllownace, setIncreaseAllowance] = useState(false)
+  const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
   const isKeyExpired =
-    expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
+    ownedKey.expiration !== MAX_UINT
+      ? dayjs.unix(parseInt(ownedKey.expiration)).isBefore(dayjs())
+      : false
+
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
     () => {
@@ -271,13 +274,6 @@ function Key({ ownedKey, account, network }: Props) {
     })
   }
 
-  const isExtendable = lock?.version >= 11
-
-  const isIncreaseAllowance =
-    lock?.version >= 11 &&
-    lock?.tokenAddress &&
-    lock.tokenAddress !== ethers.constants.AddressZero.toString()
-
   const onExploreLock = () => {
     const url = networks[network].explorer?.urls.address(lock.address)
     if (!url) {
@@ -311,23 +307,6 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
-  const onExtend = async () => {
-    try {
-      const promise = walletService.extendKey({
-        lockAddress: lock?.address,
-        tokenId,
-        referrer: account,
-      })
-      await ToastHelper.promise(promise, {
-        success: 'successfully extended the membership.',
-        error: 'Unable to extend the membership',
-        loading: 'Extending membership.',
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const isAvailableOnOpenSea =
     networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
@@ -340,6 +319,21 @@ function Key({ ownedKey, account, network }: Props) {
   const isRefundable = !isLockDataLoading && !isKeyExpired
 
   const wrongNetwork = network !== accountNetwork
+
+  const isERC20 =
+    ownedKey.lock.tokenAddress &&
+    ownedKey.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+
+  const isExtendable =
+    ownedKey.lock.version >= 11 &&
+    ownedKey.expiration !== MAX_UINT &&
+    isKeyExpired
+
+  const isRenewable =
+    ownedKey.lock.version >= 11 &&
+    ownedKey.expiration !== MAX_UINT &&
+    isERC20 &&
+    !isKeyExpired
 
   return (
     <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
@@ -369,14 +363,15 @@ function Key({ ownedKey, account, network }: Props) {
         sendEmail={sendEmail}
         signature={signature}
       />
-      <IncreaseApprovalModal
-        isOpen={increaseAllownace}
-        setIsOpen={setIncreaseAllowance}
+      <ExtendMembershipModal
+        isOpen={showExtendMembershipModal}
+        setIsOpen={setShowExtendMembership}
         lock={lock}
         tokenId={tokenId}
         account={account}
         currency={symbol}
         network={network}
+        ownedKey={ownedKey}
       />
       <div className="flex items-center justify-between">
         <div>
@@ -426,7 +421,7 @@ function Key({ ownedKey, account, network }: Props) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-72 ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-80 ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="p-1">
                   <Menu.Item disabled={!isAvailableOnOpenSea}>
                     {({ disabled, active }) => (
@@ -486,30 +481,15 @@ function Key({ ownedKey, account, network }: Props) {
                         active={active}
                         onClick={(event) => {
                           event.preventDefault()
-                          onExtend()
+                          setShowExtendMembership(true)
                         }}
                       >
                         <ExtendMembershipIcon />
                         {wrongNetwork
                           ? `Switch to ${networks[network].name} to extend`
+                          : isRenewable
+                          ? 'Renew membership'
                           : 'Extend membership'}
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item disabled={!isIncreaseAllowance || wrongNetwork}>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setIncreaseAllowance(true)
-                        }}
-                      >
-                        <IncreaseIcon />
-                        {wrongNetwork
-                          ? `Switch to ${networks[network].name} to increase allowance`
-                          : 'Increase allowance'}
                       </MenuButton>
                     )}
                   </Menu.Item>

@@ -8,10 +8,15 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
   getErc20TokenSymbol,
+  getAllowance,
 } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
+import type { KeyProps } from './Key'
+import dayjs from 'dayjs'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { MAX_UINT } from '~/constants'
 
-const IncreaseApprovalModalHolder = () => {
+const ExtendMembershipPlaceholder = () => {
   return (
     <div data-testid="placeholder" className="flex flex-col w-full gap-5 p-4">
       <div className="flex flex-col gap-2">
@@ -31,19 +36,23 @@ export interface Props {
   currency: string
   tokenId: string
   network: number
+  ownedKey: KeyProps
 }
 
-export const IncreaseApprovalModal = ({
+export const ExtendMembershipModal = ({
   isOpen,
   lock,
   setIsOpen,
   account: owner,
   network,
+  ownedKey,
 }: Props) => {
   const walletService = useWalletService()
   const provider = walletService.providerForNetwork(network)
+  const { account } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
   const [allowanceAmount, setAllowanceAmount] = useState<string>()
+
   const { isLoading: isApprovalCurrencyLoading, data: approvalCurrency } =
     useQuery(
       ['approval', lockAddress, network],
@@ -52,6 +61,7 @@ export const IncreaseApprovalModal = ({
           getErc20TokenSymbol(tokenAddress, provider),
           getErc20Decimals(tokenAddress, provider),
           getErc20BalanceForAddress(tokenAddress, owner, provider),
+          getAllowance(tokenAddress, lockAddress, provider, owner),
         ])
         return {
           symbol,
@@ -64,7 +74,24 @@ export const IncreaseApprovalModal = ({
       }
     )
 
-  const increaseAllowance = async (value: string) => {
+  const isKeyExpired =
+    ownedKey.expiration !== MAX_UINT
+      ? dayjs.unix(parseInt(ownedKey.expiration)).isBefore(dayjs())
+      : false
+
+  const isERC20 =
+    ownedKey.lock.tokenAddress &&
+    ownedKey.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+
+  const isExtendable =
+    ownedKey.lock.version >= 11 &&
+    ownedKey.expiration !== MAX_UINT &&
+    isKeyExpired
+
+  const isRenewable =
+    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
+
+  const extendMembership = async (value: string) => {
     await approveTransfer(
       tokenAddress,
       lockAddress,
@@ -72,31 +99,36 @@ export const IncreaseApprovalModal = ({
       provider,
       walletService.signer
     )
+
+    if (isKeyExpired) {
+      await walletService.extendKey({
+        lockAddress: lock?.address,
+        tokenId: ownedKey.tokenId,
+        referrer: account,
+      })
+    }
   }
 
-  const increaseAllownace = useMutation(increaseAllowance, {
+  const extend = useMutation(extendMembership, {
     onSuccess: () => {
       ToastHelper.success('Successfully increased the allowance.')
       setIsOpen(false)
     },
     onError: (err: any) => {
-      ToastHelper.error(
-        err?.error?.message ??
-          err?.message ??
-          'There was an error in increasing the allowance. Try again.'
-      )
+      console.error(err)
+      ToastHelper.error("Something went wrong. Couldn't extend the membership")
     },
   })
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {isApprovalCurrencyLoading ? (
-        <IncreaseApprovalModalHolder />
+        <ExtendMembershipPlaceholder />
       ) : (
         isOpen && (
           <div className="flex flex-col w-full gap-4">
             <div>
-              <h3 className="text-xl font-bold"> Allowance </h3>
+              <h3 className="text-xl font-bold"> Extend Membership </h3>
               <p className="text-gray-600">
                 Set the amount in erc20 to be used for renewing this
                 subscription.
@@ -116,7 +148,7 @@ export const IncreaseApprovalModal = ({
               disabled={!allowanceAmount}
               onClick={(event) => {
                 event.preventDefault()
-                increaseAllownace.mutate(
+                extend.mutate(
                   ethers.utils
                     .parseUnits(
                       allowanceAmount!,
@@ -125,11 +157,9 @@ export const IncreaseApprovalModal = ({
                     .toString()
                 )
               }}
-              loading={increaseAllownace.isLoading}
+              loading={extend.isLoading}
             >
-              {increaseAllownace.isLoading
-                ? 'Increasing allowance...'
-                : 'Confirm'}
+              {extend.isLoading ? 'Increasing allowance...' : 'Confirm'}
             </Button>
           </div>
         )
