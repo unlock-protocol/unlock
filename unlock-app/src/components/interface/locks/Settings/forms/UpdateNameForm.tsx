@@ -88,7 +88,8 @@ export const UpdateNameForm = ({
               <span>
                 <span className="flex gap-1">
                   <span>
-                    This value will be set on the contract but the NFT metadata will remain unchanged if you have set a value there. 
+                    This value will be set on the contract but the NFT metadata
+                    will remain unchanged if you have set a value there.
                   </span>
                   <Button
                     onClick={() => setUpdateMetadata(!updateMetadata)}
