@@ -12,15 +12,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.42.0",
-    "@typescript-eslint/parser": "5.42.0",
-    "eslint": "8.27.0",
-    "eslint-config-next": "12.3.2",
+    "@typescript-eslint/eslint-plugin": "5.45.0",
+    "@typescript-eslint/parser": "5.45.0",
+    "eslint": "8.28.0",
+    "eslint-config-next": "12.3.4",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-jest": "27.1.6",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-prettier": "4.2.1",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   },
   "devDependencies": {
     "jest": "27.5.1"

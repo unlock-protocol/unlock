@@ -3,7 +3,7 @@ import { Request } from 'express-serve-static-core'
 export interface UserCreationInput {
   emailAddress: string
   publicKey: string
-  passwordEncryptedPrivateKey: string
+  passwordEncryptedPrivateKey: any
 }
 
 export interface Lock {

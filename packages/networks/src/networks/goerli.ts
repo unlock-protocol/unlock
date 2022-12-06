@@ -18,6 +18,7 @@ export const goerli: NetworkConfig = {
   explorer: {
     name: 'Goerli (Testnet)',
     urls: {
+      base: `https://goerli.etherscan.io/`,
       address: (address) => `https://goerli.etherscan.io/address/${address}`,
       transaction: (hash) => `https://goerli.etherscan.io/tx/${hash}`,
       token: (address, holder) =>
