@@ -1,25 +1,25 @@
 type Lock @entity {
-  "Transaction hash"
+  "Unique ID for the Lock object (uses the lock address)"
   id: ID!
   "Address of the lock"
   address: Bytes!
   "A descriptive name for a collection of NFTs in this contract"
   name: String
-  "Gets the token symbol" 
+  "Token symbol" 
   symbol: String
   "Duration is set the on the lock when you deploy and the expiration which is set on each key when they are minted"
   expirationDuration: BigInt
-  "Unique adddress for each token"
+  "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
   tokenAddress: Bytes!
-  "Price of the lock" 
+  "Price of the keys sold by the lock" 
   price: BigInt!
   "An assigned role set on a Lock contract which gives the highest level of permissions to the wallet address set to that role"
   lockManagers: [Bytes!]!
   "Unlock Protocol version of a minting contract"  
   version: BigInt!
-  "Number of keys owned by keyOwner (expired or not)"
+  "Number of keys minted (expired or not)"
   totalKeys: BigInt!
-  "Setting for the max number of keys" 
+  "Maximum number of keys for sale" 
   maxNumberOfKeys: BigInt
  "The maximum number of key allowed for a single address"
   maxKeysPerAddress: BigInt
@@ -27,16 +27,16 @@ type Lock @entity {
   keys: [Key!] @derivedFrom(field: "lock")
   "Which block the lock was created"
   createdAtBlock: BigInt
-  "The block the last key was minted"
+  "The timestamp of the block in which the last key was minted"
   lastKeyMintedAt: BigInt
 }
 
 type Key @entity {
-  "Transaction hash" 
+  "Unique identifier for a key (combination of lock address and token id)" 
   id: ID!
   "In the Unlock ecosystem, a “Lock” is a smart contract that creates (or “mints”) NFTs"
   lock: Lock!
-  "TokenId for a given user" 
+  "TokenId for a given key" 
   tokenId: BigInt!
  "The address of the key owner"
   owner: Bytes!
@@ -53,9 +53,9 @@ type Key @entity {
 }
 
 type UnlockDailyData @entity {
-  "Transaction hash" 
+  "Day identifier" 
   id: ID!
-  "Create lock This deploys a lock for a creator. It also keeps track of the deployed lock"
+  "Number of locks deployed on that day"
   lockDeployed: BigInt!
   "Daily number of keys sold" 
   keysSold: BigInt!
