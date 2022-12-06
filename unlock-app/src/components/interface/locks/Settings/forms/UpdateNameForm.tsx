@@ -70,6 +70,7 @@ export const UpdateNameForm = ({
           error={errors?.name && 'Lock name should have at least 3 characters.'}
           autoComplete="off"
           disabled={disabledInput}
+          description={`This value will not appear when NFT metadata name is changed.`}
         />
       </div>
 
