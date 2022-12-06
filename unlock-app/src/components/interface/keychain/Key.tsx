@@ -45,6 +45,9 @@ import {
 } from 'react-icons/ri'
 import { useStorageService } from '~/utils/withStorageService'
 import dayjs from 'dayjs'
+import { IncreaseApprovalModal } from './Approval'
+import { MdOutlineAdd as IncreaseIcon } from 'react-icons/md'
+import { ethers } from 'ethers'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -231,6 +234,7 @@ function Key({ ownedKey, account, network }: Props) {
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const [increaseAllownace, setIncreaseAllowance] = useState(false)
   const isKeyExpired =
     expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
@@ -268,6 +272,11 @@ function Key({ ownedKey, account, network }: Props) {
   }
 
   const isExtendable = lock?.version >= 11
+
+  const isIncreaseAllowance =
+    lock?.version >= 11 &&
+    lock?.tokenAddress &&
+    lock.tokenAddress !== ethers.constants.AddressZero.toString()
 
   const onExploreLock = () => {
     const url = networks[network].explorer?.urls.address(lock.address)
@@ -359,6 +368,15 @@ function Key({ ownedKey, account, network }: Props) {
         dismiss={() => setSignature(null)}
         sendEmail={sendEmail}
         signature={signature}
+      />
+      <IncreaseApprovalModal
+        isOpen={increaseAllownace}
+        setIsOpen={setIncreaseAllowance}
+        lock={lock}
+        tokenId={tokenId}
+        account={account}
+        currency={symbol}
+        network={network}
       />
       <div className="flex items-center justify-between">
         <div>
@@ -475,6 +493,23 @@ function Key({ ownedKey, account, network }: Props) {
                         {wrongNetwork
                           ? `Switch to ${networks[network].name} to extend`
                           : 'Extend membership'}
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item disabled={!isIncreaseAllowance || wrongNetwork}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setIncreaseAllowance(true)
+                        }}
+                      >
+                        <IncreaseIcon />
+                        {wrongNetwork
+                          ? `Switch to ${networks[network].name} to increase allowance`
+                          : 'Increase allowance'}
                       </MenuButton>
                     )}
                   </Menu.Item>
