@@ -1,43 +1,75 @@
 type Lock @entity {
+  "Transaction hash"
   id: ID!
+  "Address of the lock"
   address: Bytes!
+  "A descriptive name for a collection of NFTs in this contract"
   name: String
+  "Gets the token symbol" 
   symbol: String
+  "Duration is set the on the lock when you deploy and the expiration which is set on each key when they are minted"
   expirationDuration: BigInt
+  "Unique adddress for each token"
   tokenAddress: Bytes!
+  "Price of the lock" 
   price: BigInt!
+  "An assigned role set on a Lock contract which gives the highest level of permissions to the wallet address set to that role"
   lockManagers: [Bytes!]!
+  "Unlock Protocol version of a minting contract"  
   version: BigInt!
+  "Number of keys owned by keyOwner (expired or not)"
   totalKeys: BigInt!
+  "Setting for the max number of keys" 
   maxNumberOfKeys: BigInt
+ "The maximum number of key allowed for a single address"
   maxKeysPerAddress: BigInt
+  "Refer to key entity"
   keys: [Key!] @derivedFrom(field: "lock")
+  "Which block the lock was created"
   createdAtBlock: BigInt
+  "The block the last key was minted"
   lastKeyMintedAt: BigInt
 }
 
 type Key @entity {
+  "Transaction hash" 
   id: ID!
+  "In the Unlock ecosystem, a “Lock” is a smart contract that creates (or “mints”) NFTs"
   lock: Lock!
+  "TokenId for a given user" 
   tokenId: BigInt!
+ "The address of the key owner"
   owner: Bytes!
+  "An assigned title set on an Unlock key which gives a specific wallet address authorization to transfer, share or cancel"
   manager: Bytes
+  "Time the key expires"  
   expiration: BigInt!
+  "The tokenURI on an NFT is a unique identifier"
   tokenURI: String
+  "Block key was created"
   createdAtBlock: BigInt!
+  "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the keyThrows"
   cancelled: Boolean
 }
 
 type UnlockDailyData @entity {
+  "Transaction hash" 
   id: ID!
+  "Create lock This deploys a lock for a creator. It also keeps track of the deployed lock"
   lockDeployed: BigInt!
+  "Daily number of keys sold" 
   keysSold: BigInt!
+  "Daily number of active locks" 
   activeLocks: [Bytes!]
+  "Total value exchanged in the network" 
   grossNetworkProduct: BigInt!
 }
 
 type LockStats @entity {
+  "Transaction Hash"
   id: ID!
+  "Total locks deployed"
   totalLocksDeployed: BigInt!
+  "Total keys sold"
   totalKeysSold: BigInt!
 }
