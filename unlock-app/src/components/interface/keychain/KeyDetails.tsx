@@ -17,10 +17,10 @@ interface KeysByNetworkProps {
   keys?: any[]
 }
 
-const KeysByNetworkPlaceholder = () => {
+const KeysByNetworkPlaceholder = ({ name }: { name: string }) => {
   return (
     <div className="flex flex-col mb-3">
-      <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
+      <h2 className="text-lg font-bold text-brand-ui-primary">{name}</h2>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {Array(9)
           .fill(null)
@@ -49,7 +49,7 @@ export const KeysByNetwork = ({
   const noKeys = keys?.length == 0
 
   if (isLoading) {
-    return <KeysByNetworkPlaceholder />
+    return <KeysByNetworkPlaceholder name={networkName} />
   }
 
   if (noKeys) return null
@@ -113,7 +113,7 @@ export const KeyDetails = () => {
     queries,
   })
 
-  const isLoading = results?.some(({ isLoading }) => isLoading)
+  const loadingResults = results?.some(({ isLoading }) => isLoading)
   const hasKeys = results?.some(
     ({ data = [] }: any) => (data ?? [])?.length > 0
   )
@@ -122,7 +122,7 @@ export const KeyDetails = () => {
     return <LoginPrompt />
   }
 
-  if (!hasKeys && !isLoading) {
+  if (!hasKeys && !loadingResults) {
     return (
       <ImageBar
         description="You don't have any keys yet"
@@ -135,6 +135,8 @@ export const KeyDetails = () => {
     <div className="flex flex-col gap-5">
       {networkItems.map(([network], index) => {
         const keys: any = results?.[index]?.data || []
+        const isLoading: any = results?.[index]?.isLoading || false
+
         return (
           <KeysByNetwork
             key={network}
