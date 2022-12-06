@@ -18,9 +18,9 @@ Integrating Unlock with Known means allowing these indieweb users to sell member
 
 Here's what I wanted to achieve:
 
-* I want to restrict access to long-form content
-* I want to restrict access to commenting
-* I don't want Known users to have to write a single line of code
+- I want to restrict access to long-form content
+- I want to restrict access to commenting
+- I don't want Known users to have to write a single line of code
 
 In other words, I want to add a paywall to my long-form posts (but just my long-form posts), and I want comments on _all_ posts to be limited to people who have bought access with Unlock.
 

@@ -8,21 +8,21 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.20.2",
+    "@babel/core": "7.20.5",
     "@superfluid-finance/sdk-core": "0.5.6",
-    "@typescript-eslint/eslint-plugin": "5.42.0",
-    "@typescript-eslint/parser": "5.42.0",
+    "@typescript-eslint/eslint-plugin": "5.45.0",
+    "@typescript-eslint/parser": "5.45.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.3.3",
     "node-fetch": "2.6.7",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   },
   "devDependencies": {
     "eslint": "8.27.0",
     "eslint-plugin-prettier": "latest",
-    "husky": "8.0.1",
-    "lint-staged": "13.0.3",
-    "prettier": "2.7.1"
+    "husky": "8.0.2",
+    "lint-staged": "13.0.4",
+    "prettier": "2.8.0"
   },
   "workspaces": [
     "packages/**",
@@ -44,6 +44,7 @@
     "packages:clean": "yarn packages --parallel run clean",
     "packages:build": "yarn packages --topological-dev run build",
     "packages:publish": "yarn packages --parallel --verbose npm publish --tolerate-republish",
+    "apps:build": "yarn workspace @unlock-protocol/locksmith run build",
     "build": "yarn packages:clean && yarn packages:build",
     "packages:version": "yarn packages version --deferred",
     "version:apply": "yarn version apply --all",
@@ -71,10 +72,10 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "resolutions": {
-    "yargs": "17.6.0"
+    "yargs": "17.6.2"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.3.0",
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
