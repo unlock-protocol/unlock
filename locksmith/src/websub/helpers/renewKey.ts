@@ -105,9 +105,10 @@ export const isWorthRenewing = async (
       gasRefund: gasRefund.toNumber(),
     }
   } catch (error) {
+    console.error(error)
     return {
       shouldRenew: false,
-      error,
+      error: error.message,
     }
   }
 }

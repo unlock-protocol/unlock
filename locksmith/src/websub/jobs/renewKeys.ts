@@ -45,7 +45,7 @@ async function renewKeys(network: number) {
           network,
         })
         if (renewal.error) {
-          logger.info('Key renewal failed', {
+          logger.info('Key renewal failed with error', {
             renewal,
           })
         } else {
@@ -54,7 +54,8 @@ async function renewKeys(network: number) {
           })
         }
       } catch (error) {
-        logger.error('Renewing key failed', {
+        console.error(error)
+        logger.error('Renewing key failed threw error', {
           error,
         })
       }
