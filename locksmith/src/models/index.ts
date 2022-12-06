@@ -2,11 +2,9 @@ import { Sequelize } from 'sequelize-typescript'
 import { Verifier } from './verifier'
 import { User } from './user'
 import { UserReference } from './userReference'
-import { AuthorizedLock } from './authorizedLock'
 import { LockMetadata } from './lockMetadata'
 import { KeyMetadata } from './keyMetadata'
 import { KeyRenewal } from './keyRenewal'
-import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
 import { UserTokenMetadata } from './usertokenmetadata'
 import { StripeCustomer } from './stripeCustomer'
 import { PaymentIntent } from './paymentIntent'
@@ -30,7 +28,6 @@ logger.info(`Connecting to database, ${JSON.stringify(config)}`)
 export const sequelize = new Sequelize(config)
 
 sequelize.addModels([
-  AuthorizedLock,
   Charge,
   Hook,
   HookEvent,
@@ -39,7 +36,6 @@ sequelize.addModels([
   LockIcons,
   LockMetadata,
   LockMigrations,
-  ParsedBlockForLockCreation,
   PaymentIntent,
   ProcessedHookItem,
   RefreshToken,
@@ -59,7 +55,6 @@ StripeCustomer.removeAttribute('id')
 
 export * from './user'
 export * from './userReference'
-export * from './authorizedLock'
 export * from './usertokenmetadata'
 export * from './stripeCustomer'
 export * from './stripeConnectLock'
