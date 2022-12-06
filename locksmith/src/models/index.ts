@@ -2,7 +2,6 @@ import { Sequelize } from 'sequelize-typescript'
 import { Verifier } from './verifier'
 import { User } from './user'
 import { UserReference } from './userReference'
-import { Lock } from './lock'
 import { LockMetadata } from './lockMetadata'
 import { KeyMetadata } from './keyMetadata'
 import { KeyRenewal } from './keyRenewal'
@@ -34,7 +33,6 @@ sequelize.addModels([
   HookEvent,
   KeyMetadata,
   KeyRenewal,
-  Lock,
   LockIcons,
   LockMetadata,
   LockMigrations,
@@ -52,13 +50,11 @@ sequelize.addModels([
 ])
 
 User.removeAttribute('id')
-Lock.removeAttribute('id')
 LockMetadata.removeAttribute('id')
 StripeCustomer.removeAttribute('id')
 
 export * from './user'
 export * from './userReference'
-export * from './lock'
 export * from './usertokenmetadata'
 export * from './stripeCustomer'
 export * from './stripeConnectLock'
