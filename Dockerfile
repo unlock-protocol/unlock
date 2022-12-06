@@ -71,15 +71,6 @@ COPY --chown=node . .
 RUN java -version
 RUN javac -version
 
-# copy all package.json again
-RUN --mount=type=bind,target=/docker-context \
-    rsync -amv --delete \
-          --exclude='node_modules' \
-          --exclude='*/node_modules' \
-          --include='package.json' \
-          --include='*/' --exclude='*' \
-          /docker-context/ $DEST_FOLDER;
-
 # Run yarn to install missing dependencies from cached image
 RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
