@@ -10,7 +10,6 @@ import { StripeCustomer } from './stripeCustomer'
 import { PaymentIntent } from './paymentIntent'
 import { StripeConnectLock } from './stripeConnectLock'
 import { LockIcons } from './lockIcons'
-import { LockMigrations } from './lockMigrations'
 import { Charge } from './charge'
 import logger from '../logger'
 import { Hook } from './hook'
@@ -35,7 +34,6 @@ sequelize.addModels([
   KeyRenewal,
   LockIcons,
   LockMetadata,
-  LockMigrations,
   PaymentIntent,
   ProcessedHookItem,
   RefreshToken,
@@ -60,7 +58,6 @@ export * from './stripeCustomer'
 export * from './stripeConnectLock'
 export * from './charge'
 export * from './lockIcons'
-export * from './lockMigrations'
 export * from './hook'
 export * from './hookEvent'
 export * from './processedHookItem'
