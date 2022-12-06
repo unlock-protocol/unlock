@@ -49,7 +49,7 @@ export const SettingGeneral = ({
 
       <SettingCard
         label="Base token URI"
-        description="Update the base token URI of the lock"
+        description="Update the base token URI of the lock that is used to create the individual token's URIs."
         isLoading={isLoading}
       >
         <UpdateBaseTokenURI

@@ -33,7 +33,7 @@ const VARIANT_STYLES: Record<Variant, string> = {
   orange: 'bg-orange-100 text-orange-800',
   blue: 'bg-blue-100 text-blue-800',
   dark: 'bg-gray-100 text-gray-800',
-  red: 'bg-[#B23E45] text-brand-secondary',
+  red: 'bg-[#B23E45] text-white',
   primary: 'bg-brand-ui-primary text-white',
 }
 

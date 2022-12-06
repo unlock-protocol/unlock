@@ -3,7 +3,7 @@
     "config:base",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
-    ":pinVersions",
+    ":pinAllExceptPeerDependencies",
     ":doNotPinPackage(node)"
   ],
   "timezone": "America/Los_Angeles",
