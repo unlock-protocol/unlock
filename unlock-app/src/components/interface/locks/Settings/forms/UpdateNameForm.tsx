@@ -1,8 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
+import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
 
 interface UpdateNameFormProps {
   disabled: boolean
@@ -21,6 +23,7 @@ export const UpdateNameForm = ({
   lockAddress,
   lockName,
 }: UpdateNameFormProps) => {
+  const [updateMetadata, setUpdateMetadata] = useState(false)
   const walletService = useWalletService()
   const {
     register,
@@ -60,30 +63,58 @@ export const UpdateNameForm = ({
   const disabledInput = disabled || changeNameMutation.isLoading
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onChangeName)}>
-      <div className="relative">
-        <Input
-          {...register('name', {
-            minLength: 3,
-            required: true,
-          })}
-          error={errors?.name && 'Lock name should have at least 3 characters.'}
-          autoComplete="off"
-          disabled={disabledInput}
-          description={`This value will not appear when NFT metadata name is changed.`}
-        />
-      </div>
+    <>
+      <UpdateMetadataDrawer
+        isOpen={updateMetadata}
+        setIsOpen={setUpdateMetadata}
+      />
 
-      {isManager && (
-        <Button
-          type="submit"
-          className="w-full md:w-1/3"
-          disabled={disabledInput}
-          loading={changeNameMutation.isLoading}
-        >
-          Update
-        </Button>
-      )}
-    </form>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={handleSubmit(onChangeName)}
+      >
+        <div className="relative">
+          <Input
+            {...register('name', {
+              minLength: 3,
+              required: true,
+            })}
+            error={
+              errors?.name && 'Lock name should have at least 3 characters.'
+            }
+            autoComplete="off"
+            disabled={disabledInput}
+            description={
+              <span>
+                <span className="flex gap-1">
+                  <span>
+                    This value will not appear when NFT metadata name is set.
+                  </span>
+                  <Button
+                    onClick={() => setUpdateMetadata(!updateMetadata)}
+                    className="font-bold cursor-pointer text-brand-ui-primary"
+                    variant="borderless"
+                    size="small"
+                  >
+                    Edit NFT properties
+                  </Button>
+                </span>
+              </span>
+            }
+          />
+        </div>
+
+        {isManager && (
+          <Button
+            type="submit"
+            className="w-full md:w-1/3"
+            disabled={disabledInput}
+            loading={changeNameMutation.isLoading}
+          >
+            Update
+          </Button>
+        )}
+      </form>
+    </>
   )
 }
