@@ -41,6 +41,7 @@ export const optimism: NetworkConfig = {
   },
   description: 'Layer 2 network. Cheaper transaction cost.',
   isTestNetwork: false,
+  freeClaim: 10,
   teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',

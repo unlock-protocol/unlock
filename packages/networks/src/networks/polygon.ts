@@ -49,6 +49,7 @@ export const polygon: NetworkConfig = {
   ],
   description: 'Popular side chain network. Cheaper transaction cost.',
   isTestNetwork: false,
+  freeClaim: 100,
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   uniswapV2: {
     oracle: '0xE20ef269CE3ac2Af8107E706FC2Ec6E1831e3125',
