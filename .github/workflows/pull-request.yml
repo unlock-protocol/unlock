@@ -1,9 +1,6 @@
 name: Pull Request
 
 on:
-  push:
-    branches:
-      - fix-run-all-tests
   pull_request:
 
 jobs:
