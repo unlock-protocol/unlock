@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
 import { ToggleSwitch, Input, Button } from '@unlock-protocol/ui'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -118,12 +117,12 @@ export const UpdateMaxKeysPerAddress = ({
               !canUpdateMaxKeysPerAddress && (
                 <>
                   Update not supported with the current lock version.{' '}
-                  <Link
+                  <a
                     href={updateVersionUrl}
                     className="font-bold cursor-pointer text-brand-ui-primary"
                   >
                     Upgrade your lock to the latest version{' '}
-                  </Link>
+                  </a>
                 </>
               )
             }
