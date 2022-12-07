@@ -59,7 +59,7 @@ export const SettingTerms = ({
     },
     {
       label: 'Maximum number of keys per address',
-      description: 'The maximum number of keys a specific address can use.',
+      description: 'The maximum number of keys a specific address can own. By default, a given address can only own ',
       children: (
         <UpdateMaxKeysPerAddress
           isManager={isManager}
