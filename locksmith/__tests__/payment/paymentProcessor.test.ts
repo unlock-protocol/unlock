@@ -82,12 +82,7 @@ describe('PaymentProcessor', () => {
         },
       },
       {
-        include: [
-          {
-            model: User,
-            as: 'User',
-          },
-        ],
+        include: [User],
       }
     )
 
@@ -107,12 +102,7 @@ describe('PaymentProcessor', () => {
         },
       },
       {
-        include: [
-          {
-            model: User,
-            as: 'User',
-          },
-        ],
+        include: [User],
       }
     )
 
@@ -131,12 +121,7 @@ describe('PaymentProcessor', () => {
         },
       },
       {
-        include: [
-          {
-            model: User,
-            as: 'User',
-          },
-        ],
+        include: [User],
       }
     )
 

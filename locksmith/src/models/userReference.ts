@@ -61,5 +61,4 @@ UserReference.init(
 UserReference.belongsTo(User, {
   foreignKey: 'publicKey',
   targetKey: 'publicKey',
-  as: 'User',
 })
