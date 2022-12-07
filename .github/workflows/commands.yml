@@ -31,13 +31,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   run-all-tests:
-    name: Run All Tests
+    name: Run All Tests (from PR comment)
     runs-on: ubuntu-latest
-    if: >-
-      github.event.issue.pull_request != '' && 
-      (
-        contains(github.event.comment.body, '/comment')
-      )
+    # if: >-
+    #   github.event.issue.pull_request != '' && 
+    #   (
+    #     contains(github.event.comment.body, '/comment')
+    #   )
     steps:
       # - name: "Run all tests (from command)"
       #   uses: ./.github/workflows/_tests.yml
