@@ -8,8 +8,8 @@ const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
  */
 
 // unlock deployments
-const unlockMumbai = '0x058b58dbd676063b90618a1eb0c02bb2d0f27adc'
 const unlockGoerli = '0xC6aa161C432b8c4454954E12eC8893DE2D38e216'
+const unlockMumbai = '0x058b58dbd676063b90618a1eb0c02bb2d0f27adc'
 
 // WETH
 // const WETHGoerli = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
@@ -75,6 +75,12 @@ async function main() {
     lockAddress = lockAddressMumbai 
     tokenAddress = ZERO_ADDRESS
   }
+  console.log({
+    unlockAddress,
+    destChainId,
+    lockAddress,
+    tokenAddress
+  })
 
   const unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
@@ -86,8 +92,10 @@ async function main() {
   }
 
   const keyPrice = ethers.BigNumber.from('10000000000000000')
-  const relayerFee = ethers.utils.parseEther('.005')
-  const value = tokenAddress == ZERO_ADDRESS ? relayerFee : relayerFee.add(keyPrice)
+  // fee should be zero for testnet
+  const relayerFee = 0
+  const value = tokenAddress == ZERO_ADDRESS ? relayerFee.add(keyPrice) : relayerFee
+  const slippage = 300 // in BPS
 
   // parse call data   
   const PublicLock = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
@@ -101,7 +109,6 @@ async function main() {
   const { interface } = PublicLock
   const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
   
-  
   // send bridged call
   const args = [
     destChainId, // destChainId,
@@ -110,6 +117,7 @@ async function main() {
     keyPrice,
     calldata,
     relayerFee,
+    slippage
   ]
   console.log(args, { value })
   const tx = await unlock.sendBridgedLockCall(
