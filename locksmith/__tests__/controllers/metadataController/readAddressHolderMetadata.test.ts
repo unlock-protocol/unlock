@@ -2,9 +2,8 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
+const app = require('../../../src/app')
+import * as Base64 from '../../../src/utils/base64'
 
 const chain = 31337
 

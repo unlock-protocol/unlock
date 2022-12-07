@@ -1,6 +1,7 @@
 import { User } from '../../../src/models/user'
 import { UserReference } from '../../../src/models/userReference'
-import * as app from '../../../src/app'
+const app = require('../../../src/app')
+
 import UserOperations from '../../../src/operations/userOperations'
 // These tests are slow because we generate private keys
 jest.setTimeout(15000)
