@@ -29,12 +29,14 @@ jobs:
           autosquash: ${{ contains(github.event.comment.body, '/autosquash') || contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   run-all-tests:
     name: Run All Tests
+    runs-on: ubuntu-latest
     if: >-
       github.event.issue.pull_request != '' && 
       (
-        contains(github.event.comment.body, '/run-all-tests')
+        contains(github.event.comment.body, '/comment')
       )
     steps:
       # - name: "Run all tests (from command)"
