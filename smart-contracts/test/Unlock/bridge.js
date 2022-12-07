@@ -201,6 +201,57 @@ contract('Unlock / bridge', () => {
         keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
       })
 
+      if(isErc20){
+        describe('erc20 allowances', () => {
+          let calldata 
+          beforeEach(async () => {
+            // parse purchase calldata
+            const purchaseArgs = [
+              isErc20 ? [keyPrice] : [],
+              [keyOwner.address],
+              [ADDRESS_ZERO],
+              [ADDRESS_ZERO],
+              [[]],
+            ]
+            const interface = new ethers.utils.Interface(lock.abi)
+            calldata = interface.encodeFunctionData('purchase', purchaseArgs)
+          })
+          it('reverts if unlock allowance too low', async () => {
+            // calculate fee for the brdige
+            const relayerFee = ethers.utils.parseEther('.005')
+            const value = isErc20 ? relayerFee : relayerFee.add(keyPrice)
+
+            if (isErc20) {
+              // give user some tokens on origin chain
+              await erc20Src.mint(keyOwner.address, keyPrice)
+              // allow unlock on src chain to get his tokens (to send to bridge)
+              // await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+            }
+
+            assert.equal(await lock.balanceOf(keyOwner.address), 0)
+
+            // send call from src > dest
+            await reverts(
+              unlockSrc
+                .connect(keyOwner)
+                .sendBridgedLockCall(
+                  destChainId,
+                  lock.address,
+                  isErc20 ? erc20Src.address : ADDRESS_ZERO, // erc20 from src chain
+                  keyPrice,
+                  calldata,
+                  relayerFee,
+                  slippage,
+                  {
+                    value,
+                  }
+                ),
+                `InsufficientApproval(${keyPrice.toString()})`
+            )
+          })
+        })
+      }
+
       describe('purchase', () => {
         beforeEach(async () => {
           // parse purchase calldata
