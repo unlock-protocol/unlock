@@ -358,34 +358,38 @@ export function State() {
     }
     run()
 
-    const gnpPercentageByNetworks = subgraphData.map((networkData) => ({
-      name: networkData.name,
-      gnpPercentage:
-        parseFloat(
-          utils.formatUnits(
-            BigInt(
-              networkData.data.unlockDailyDatas
-                .filter(
-                  (item) =>
-                    item.id >=
-                      currentDay -
-                        (filter === '1D'
-                          ? 2
-                          : filter === '7D'
-                          ? 8
-                          : filter === '1M'
-                          ? 31
-                          : 366) && item.id <= currentDay
-                )
-                .reduce((pv, b) => pv + parseInt(b.grossNetworkProduct), 0)
-            ),
-            '18'
-          )
-        ) /
-        gnpTotalValueByNetwork.filter(
-          (item) => item.name === networkData.name
-        )[0]?.gnpSum,
-    }))
+    const gnpPercentageByNetworks = subgraphData.map((networkData) => {
+      const sumOfGNP = parseFloat(
+        utils.formatUnits(
+          BigInt(
+            networkData.data.unlockDailyDatas
+              .filter(
+                (item) =>
+                  item.id >=
+                    currentDay -
+                      (filter === '1D'
+                        ? 2
+                        : filter === '7D'
+                        ? 8
+                        : filter === '1M'
+                        ? 31
+                        : filter === '1Y'
+                        ? 200
+                        : 10000) && item.id <= currentDay
+              )
+              .reduce((pv, b) => pv + parseInt(b.grossNetworkProduct), 0)
+          ),
+          '18'
+        )
+      )
+      return {
+        name: networkData.name,
+        gnpPercentage:
+          sumOfGNP /
+          gnpTotalValueByNetwork.find((item) => item.name === networkData.name)
+            ?.gnpSum,
+      }
+    })
     setGNPPByNetworks(gnpPercentageByNetworks)
   }, [selectedNetwork, filter, subgraphData])
 
