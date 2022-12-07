@@ -41,8 +41,6 @@ jobs:
     #     contains(github.event.comment.body, '/comment')
     #   )
     steps:
-      # - name: "Run all tests (from command)"
-      #   uses: ./.github/workflows/_tests.yml
       - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -53,5 +51,7 @@ jobs:
               repo: context.repo.repo,
               body: '👋 Running all tests https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}'
             })
+      - name: "Run all tests (from command)"
+        uses: ./.github/workflows/_tests.yml
       
 
