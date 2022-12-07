@@ -21,7 +21,7 @@ type Lock @entity {
   totalKeys: BigInt!
   "Maximum number of keys for sale" 
   maxNumberOfKeys: BigInt
- "The maximum number of key allowed for a single address"
+ "The maximum number of keys allowed for a single address"
   maxKeysPerAddress: BigInt
   "Refer to key entity"
   keys: [Key!] @derivedFrom(field: "lock")
