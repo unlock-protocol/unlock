@@ -80,9 +80,6 @@ RUN yarn build
 # Build locksmith and other apps separately to reduce startup time on heroku
 RUN yarn apps:build
 
-# copy all files at the end
-COPY . .
-
 
 ###################################################################
 # Stage 3. export minimal image for prod app
