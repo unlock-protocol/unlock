@@ -46,6 +46,21 @@ export function toFormData({
   youtube_url,
   background_color,
 }: Metadata) {
+  const categorizedAttrs = categorizeAttributes(attributes)
+  return {
+    name,
+    description,
+    background_color: !background_color?.startsWith('#')
+      ? `#${background_color}`
+      : background_color,
+    animation_url,
+    external_url,
+    youtube_url,
+    ...categorizedAttrs,
+  } as MetadataFormData
+}
+
+export const categorizeAttributes = (attributes: Attribute[] | undefined) => {
   const ticket = attributes
     ?.filter((item) => item.trait_type.startsWith('event_'))
     .reduce((item, { trait_type, value }) => {
@@ -65,18 +80,11 @@ export function toFormData({
       !item.max_value &&
       !item.trait_type.startsWith('event_')
   )
+
   return {
-    name,
-    description,
-    background_color: !background_color?.startsWith('#')
-      ? `#${background_color}`
-      : background_color,
-    animation_url,
-    external_url,
-    youtube_url,
     ticket,
     levels,
     properties,
     stats,
-  } as MetadataFormData
+  }
 }
