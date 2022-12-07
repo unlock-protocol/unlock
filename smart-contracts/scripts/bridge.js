@@ -12,7 +12,7 @@ const unlockGoerli = '0xC6aa161C432b8c4454954E12eC8893DE2D38e216'
 const unlockMumbai = '0x058b58dbd676063b90618a1eb0c02bb2d0f27adc'
 
 // WETH
-// const WETHGoerli = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
+const WETHGoerli = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
 const WETHMumbai = '0xfd2ab41e083c75085807c4a65c0a14fdd93d55a9'
 
 // free lock mumbai native currency MATIC
@@ -73,7 +73,9 @@ async function main() {
   
     destChainId = 80001
     lockAddress = lockAddressMumbai 
-    tokenAddress = ZERO_ADDRESS
+    // NB: ZERO_ADDRESS will fail
+    // tokenAddress = ZERO_ADDRESS
+    tokenAddress = WETHGoerli
   }
   console.log({
     unlockAddress,
