@@ -50,6 +50,7 @@ export const UpdateMaxKeysPerAddress = ({
   }, [maxKeysPerAddressValue])
 
   const updateMaxKeysPerAddress = async (): Promise<any> => {
+    if (!isManager) return
     const { maxKeysPerAddress = 1 } = getValues()
 
     return await walletService.setMaxKeysPerAddress({
