@@ -1,11 +1,6 @@
 name: "Pull requests comments"
 
 on:
-  push:
-    branches:
-      - fix-run-all-tests
-  pull_request: 
-      types: [ opened, reopened, edited ]
   issue_comment:
     types: [created]
 
@@ -31,27 +26,5 @@ jobs:
           autosquash: ${{ contains(github.event.comment.body, '/autosquash') || contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  run-all-tests:
-    name: Run All Tests (from PR comment)
-    runs-on: ubuntu-latest
-    # if: >-
-    #   github.event.issue.pull_request != '' && 
-    #   (
-    #     contains(github.event.comment.body, '/comment')
-    #   )
-    steps:
-      - uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Running all tests https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}'
-            })
-      - name: "Run all tests (from command)"
-        uses: ./.github/workflows/_tests.yml
       
 
