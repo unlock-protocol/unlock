@@ -147,6 +147,7 @@ const LockSettingsPage = ({
           isManager={isManager}
           lock={lock}
           isLoading={isLoading}
+          publicLockVersion={publicLockVersion}
         />
       ),
       sidebar: (

@@ -1,7 +1,8 @@
-import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
+import { Lock } from '~/unlockTypes'
 import { CancellationForm } from '../forms/CancellationForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
+import { UpdateMaxKeysPerAddress } from '../forms/UpdateMaxKeysPerAddress'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { UpdateTransferFee } from '../forms/UpdateTransferFee'
 import { SettingCard } from './SettingCard'
@@ -12,6 +13,7 @@ interface SettingTermsProps {
   isManager: boolean
   lock: Lock
   isLoading: boolean
+  publicLockVersion?: number
 }
 
 interface SettingProps {
@@ -26,6 +28,7 @@ export const SettingTerms = ({
   isManager,
   lock,
   isLoading,
+  publicLockVersion,
 }: SettingTermsProps) => {
   const settings: SettingProps[] = [
     {
@@ -51,6 +54,21 @@ export const SettingTerms = ({
           maxNumberOfKeys={lock?.maxNumberOfKeys ?? 0}
           isManager={isManager}
           disabled={!isManager}
+        />
+      ),
+    },
+    {
+      label: 'Maximum number of keys per address',
+      description:
+        'The maximum number of keys a specific address can own. By default, a given address can only own ',
+      children: (
+        <UpdateMaxKeysPerAddress
+          isManager={isManager}
+          disabled={!isManager}
+          maxKeysPerAddress={lock?.maxKeysPerAddress ?? 1}
+          lockAddress={lockAddress}
+          network={network}
+          publicLockVersion={publicLockVersion}
         />
       ),
     },
