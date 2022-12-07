@@ -179,22 +179,41 @@ export const CreditCardForm = ({
   const ConnectStripe = () => {
     return (
       <div className="flex flex-col gap-4">
-        <SettingCardDetail
-          title="Connect Stripe to Your Account"
-          description="In order to enable the credit card payment, please connect Stripe
-          via your account."
-        />
+        {isGranted ? (
+          <SettingCardDetail
+            title="Connect Stripe to Your Account"
+            description="In order to enable the credit card payment, please connect Stripe via your account."
+          />
+        ) : (
+          <SettingCardDetail
+            title="Enable Contract to Accept Credit Card"
+            description="Please accept Unlock Protocol will be processing this for you. Service & credit card processing fee will apply on your member’s purchase."
+          />
+        )}
+
         {isManager && (
           <div className="flex flex-col gap-3">
-            <Button
-              variant="outlined-primary"
-              size="small"
-              className="w-full md:w-1/3"
-              onClick={() => connectStripeMutation.mutate()}
-              disabled={disabled}
-            >
-              Connect
-            </Button>
+            {isGranted ? (
+              <Button
+                variant="outlined-primary"
+                size="small"
+                className="w-full md:w-1/3"
+                onClick={() => connectStripeMutation.mutate()}
+                disabled={disabled}
+              >
+                Connect
+              </Button>
+            ) : (
+              <Button
+                size="small"
+                variant="outlined-primary"
+                className="w-full md:w-1/3"
+                onClick={onGrantKeyRole}
+                disabled={grantKeyGrantorRoleMutation.isLoading || disabled}
+              >
+                Accept
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -205,37 +224,18 @@ export const CreditCardForm = ({
     return (
       <div className="flex flex-col gap-4">
         <span className="text-xs">
-          {isGranted ? (
-            <SettingCardDetail
-              title="Credit card payment ready"
-              description="Member of this Lock can now pay with credit card or crypto as they wish. "
-            />
-          ) : (
-            <SettingCardDetail
-              title="Enable Contract to Accept Credit Card"
-              description="Please accept Unlock Protocol will be processing this for you. Service & credit card processing fee will apply on your member’s purchase."
-            />
-          )}
+          <SettingCardDetail
+            title="Credit card payment ready"
+            description="Member of this Lock can now pay with credit card or crypto as they wish. "
+          />
         </span>
         <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
-          {isGranted ? (
-            <Badge variant="green" className="justify-center w-full md:w-1/3">
-              <div className="flex items-center gap-2">
-                <span>Payment method enabled</span>
-                <CheckCircleIcon />
-              </div>
-            </Badge>
-          ) : (
-            <Button
-              size="small"
-              variant="outlined-primary"
-              className="w-full md:w-1/3"
-              onClick={onGrantKeyRole}
-              disabled={grantKeyGrantorRoleMutation.isLoading || disabled}
-            >
-              Accept
-            </Button>
-          )}
+          <Badge variant="green" className="justify-center w-full md:w-1/3">
+            <div className="flex items-center gap-2">
+              <span>Payment method enabled</span>
+              <CheckCircleIcon />
+            </div>
+          </Badge>
           {isManager && (
             <Button
               size="small"
