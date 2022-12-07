@@ -5,3 +5,7 @@ node_modules/
 tests/.latest.json
 tests/.bin
 *.wasm
+
+# generated files
+abis
+networks.json
