@@ -51,7 +51,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Running all tests ${{context.repo.repo}}/actions/runs/${{github.run_id}}'
+              body: '👋 Running all tests https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}'
             })
       
 
