@@ -239,7 +239,7 @@ export function Confirm({
 
   const SwitchNetwork = () => (
     <Button
-      disabled={isSwitchingNetwork}
+      disabled={isSwitchingNetwork || isLoading}
       loading={isSwitchingNetwork}
       onClick={async (event) => {
         setIsSwitchingNetwork(true)
@@ -477,7 +477,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming}
+              disabled={isConfirming || isLoading}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmCard()
@@ -516,7 +516,7 @@ export function Confirm({
             {!isNetworkSwitchRequired && (
               <Button
                 loading={isConfirming}
-                disabled={isConfirming}
+                disabled={isConfirming || isLoading}
                 onClick={async (event) => {
                   event.preventDefault()
                   if (isUnlockAccount) {
@@ -536,7 +536,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming}
+              disabled={isConfirming || isLoading}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmClaim()
@@ -556,7 +556,7 @@ export function Confirm({
             {!isNetworkSwitchRequired && (
               <Button
                 loading={isConfirming}
-                disabled={isConfirming}
+                disabled={isConfirming || isLoading}
                 onClick={async (event) => {
                   event.preventDefault()
                   if (isUnlockAccount) {
