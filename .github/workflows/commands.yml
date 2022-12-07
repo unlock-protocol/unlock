@@ -1,6 +1,9 @@
 name: "Pull requests comments"
 
 on:
+  push:
+    branches:
+      - fix-run-all-tests
   issue_comment:
     types: [created]
 
