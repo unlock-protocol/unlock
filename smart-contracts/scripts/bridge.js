@@ -93,7 +93,7 @@ async function main() {
 
   const keyPrice = ethers.BigNumber.from('10000000000000000')
   // fee should be zero for testnet
-  const relayerFee = 0
+  const relayerFee = ethers.BigNumber.from('0')
   const value = tokenAddress == ZERO_ADDRESS ? relayerFee.add(keyPrice) : relayerFee
   const slippage = 300 // in BPS
 
