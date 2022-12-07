@@ -123,6 +123,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
           isManager={isManager}
           lock={lock}
           isLoading={isLoading}
+          publicLockVersion={publicLockVersion}
         />
       ),
       sidebar: (
