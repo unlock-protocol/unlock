@@ -45,16 +45,15 @@ jobs:
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
       - name: 'Check which folders have changed'
         run: |
-          echo "${BYPASS}"
           if [ "${GIT_BRANCH}" == "production" ]; then
             echo 'Deploy all'
-            echo ::set-output name=changed::$TARGETS
-          elif [ "${BYPASS}" != "true" ]; then
+            echo "changed=$TARGETS" >> $GITHUB_OUTPUT
+          elif [ "${BYPASS}" == true ]; then
             echo 'Run all tests'
-            echo ::set-output name=changed::$TARGETS
+            echo "changed=$TARGETS" >> $GITHUB_OUTPUT
           else 
             changed=$(.github/actions/monorepo/check-changes.sh ${{ github.ref_name }})
-            echo ::set-output name=changed::$changed
+            echo "changed=$changed" >> $GITHUB_OUTPUT
           fi
           printf 'changed:%s\n' "${changed[@]}"
         shell: bash
