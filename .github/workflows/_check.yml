@@ -7,6 +7,9 @@ on:
         description: "The list of services/sub-repositories concerned (as a stringified array)"
         type: string
         required: true
+      bypass: 
+        description: "The check will always return true"
+        type: boolean
     outputs:
       changed:
         description: "The list of services that have changed"
@@ -28,6 +31,7 @@ jobs:
       is_forked: ${{ steps.is_forked.outputs.is_forked }}
     env:
       TARGETS: ${{ inputs.targets }}
+      BYPASS: ${{ inputs.bypass }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -41,8 +45,12 @@ jobs:
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
       - name: 'Check which folders have changed'
         run: |
+          echo "${BYPASS}"
           if [ "${GIT_BRANCH}" == "production" ]; then
             echo 'Deploy all'
+            echo ::set-output name=changed::$TARGETS
+          elif [ "${BYPASS}" != "true" ]; then
+            echo 'Run all tests'
             echo ::set-output name=changed::$TARGETS
           else 
             changed=$(.github/actions/monorepo/check-changes.sh ${{ github.ref_name }})
