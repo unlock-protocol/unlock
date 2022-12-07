@@ -78,7 +78,7 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network } = useAuth()
+  const { account, network, isUnlockAccount, changeNetwork } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
   const web3Service = useWeb3Service()
@@ -90,6 +90,7 @@ export function Confirm({
   } = useAccount(account!, network!)
 
   const [isConfirming, setIsConfirming] = useState(false)
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
 
   const {
     lock,
@@ -108,6 +109,10 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
+
+  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
+
+  const networkConfig = config.networks[lockNetwork]
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -230,6 +235,21 @@ export function Confirm({
     baseCurrencySymbol,
     lockName,
     quantity
+  )
+
+  const SwitchNetwork = () => (
+    <Button
+      disabled={isSwitchingNetwork}
+      loading={isSwitchingNetwork}
+      onClick={async (event) => {
+        setIsSwitchingNetwork(true)
+        event.preventDefault()
+        await changeNetwork(lockNetwork)
+        setIsSwitchingNetwork(false)
+      }}
+    >
+      Switch to {networkConfig.name}
+    </Button>
   )
 
   const onConfirmCard = async () => {
@@ -492,16 +512,22 @@ export function Confirm({
 
         return (
           <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming}
-              onClick={(event) => {
-                event.preventDefault()
-                onConfirmCrypto()
-              }}
-            >
-              {buttonLabel}
-            </Button>
+            {isNetworkSwitchRequired && <SwitchNetwork />}
+            {!isNetworkSwitchRequired && (
+              <Button
+                loading={isConfirming}
+                disabled={isConfirming}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  onConfirmCrypto()
+                }}
+              >
+                {buttonLabel}
+              </Button>
+            )}
           </div>
         )
       }
@@ -526,18 +552,24 @@ export function Confirm({
       case 'superfluid': {
         return (
           <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming}
-              onClick={(event) => {
-                event.preventDefault()
-                onConfirmSuperfluid()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using superfluid'
-                : 'Pay using superfluid'}
-            </Button>
+            {isNetworkSwitchRequired && <SwitchNetwork />}
+            {!isNetworkSwitchRequired && (
+              <Button
+                loading={isConfirming}
+                disabled={isConfirming}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  onConfirmSuperfluid()
+                }}
+              >
+                {isConfirming
+                  ? 'Paying using superfluid'
+                  : 'Pay using superfluid'}
+              </Button>
+            )}
           </div>
         )
       }
