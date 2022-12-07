@@ -204,7 +204,7 @@ export const LockDetailCard = ({
       }
     )
 
-  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
+  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=payments`
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LockSettingsPage from '~/components/interface/locks/Settings'
@@ -7,18 +7,23 @@ import { useRouter } from 'next/router'
 import { LockPicker } from '~/components/interface/locks/Manage/elements/LockPicker'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
-const Create: NextPage = () => {
+export type SettingTab = 'general' | 'terms' | 'payments' | 'roles' | 'advanced'
+
+const Settings: NextPage = () => {
   const { query } = useRouter()
   const { account: owner } = useAuth()
 
-  const [network, setNetwork] = useState<string>(
-    (query?.network as string) ?? ''
-  )
-  const [lockAddress, setLockAddress] = useState<string>(
-    (query?.address as string) ?? ''
-  )
+  const [network, setNetwork] = useState<string>()
+  const [lockAddress, setLockAddress] = useState<string>()
+  const [defaultTab, setDefaultTab] = useState<SettingTab>('general')
 
-  const withoutParams = !lockAddress && !network
+  useEffect(() => {
+    setNetwork(query?.network as string)
+    setLockAddress(query?.address as string)
+    setDefaultTab((query?.defaultTab as SettingTab) ?? 'general')
+  }, [query?.network, query?.address])
+
+  const withoutParams = query?.address?.length === 0 && !query.network
 
   const onLockPick = (lockAddress?: string, network?: string | number) => {
     if (lockAddress && network) {
@@ -52,6 +57,7 @@ const Create: NextPage = () => {
           <LockSettingsPage
             lockAddress={lockAddress! as string}
             network={parseInt((network as string)!, 10)}
+            defaultTab={defaultTab}
           />
         )}
       </AppLayout>
@@ -59,4 +65,4 @@ const Create: NextPage = () => {
   )
 }
 
-export default Create
+export default Settings
