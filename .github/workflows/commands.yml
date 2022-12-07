@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - fix-run-all-tests
+  pull_request: 
+      types: [ opened, reopened, edited ]
   issue_comment:
     types: [created]
 
