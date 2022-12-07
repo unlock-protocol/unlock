@@ -75,7 +75,7 @@ export function handleLockConfig(event: LockConfigEvent): void {
   if (lock) {
     lock.expirationDuration = event.params.expirationDuration
     lock.maxNumberOfKeys = event.params.maxNumberOfKeys
-    lock.maxKeysPerAddress = event.params.maxKeysPerAddress
+    lock.maxKeysPerAddress = event.params.maxKeysPerAcccount
     lock.save()
   }
 }
