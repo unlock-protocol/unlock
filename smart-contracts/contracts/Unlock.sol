@@ -119,6 +119,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // Errors
   error OnlyUnlock();
   error ChainNotSet();
+  error InsufficientApproval(uint requiredAmount);
+  error InsufficientBalance();
 
   // Events
   event NewLock(
@@ -400,6 +402,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     unlockAddresses[_chainId] = _unlockAddress;
   }
 
+  // make sure receiver contract exists on dest chain
+  function _chainIsSet(uint _chainId) internal view {
+    if(domains[_chainId] == 0 || unlockAddresses[_chainId] == address(0)) {
+      revert ChainNotSet();
+    }
+  }
+
   /**
    * @notice Purchase a key on another chain
    * Purchase a key from a lock on another chain
@@ -421,60 +430,48 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address currency, 
     uint amount, 
     bytes calldata callData,
-    uint relayerFee
+    uint relayerFee,
+    uint slippage
   ) public payable returns (bytes32 transferID){
-    // get the domain ID for Connext
-    uint32 destinationDomain = domains[destChainId];
     
-    // get the correct receiver contract on dest chain
-    address unlockAddress = unlockAddresses[destChainId];
+    // make sure receiver contract exists on dest chain
+    _chainIsSet(destChainId);
 
-    // make sure this is correct
-    if(destinationDomain == 0 || unlockAddress == address(0)) {
-      revert ChainNotSet();
-    }
-
-    uint valueToSend = relayerFee;    
     if(currency != address(0)) {
-      IERC20 token = IERC20(currency);
       // TODO: send using transfer (no approval)
-      require(
-        token.allowance(msg.sender, address(this)) >= amount,
-        "User must approve amount"
-      );
+      if(IERC20(currency).allowance(msg.sender, address(this)) < amount) {
+        revert InsufficientApproval(amount);
+      }
 
       // User sends funds to this contract
-      token.transferFrom(msg.sender, address(this), amount);
+      IERC20(currency).transferFrom(msg.sender, address(this), amount);
 
       // This contract approves transfer to Connext
-      token.approve(bridgeAddress, amount);
-    } else {
-      valueToSend = valueToSend + amount;
-    }
-
-    // pass the lock address in calldata
-    bytes memory data = abi.encode(
-      lock,
-      callData
-    );            
+      IERC20(currency).approve(bridgeAddress, amount);
+    } 
 
     // make sure we have enough balance
-    require(valueToSend <= address(this).balance, 'INSUFFICIENT_BALANCE');
+    // NB: using a ternary to avoid variable and Stack Too Deep error
+    if((currency == address(0) ? amount + relayerFee : relayerFee) > address(this).balance) {
+      revert InsufficientBalance();
+    }
+
+    bytes memory cd = abi.encode(lock, callData); 
 
     // send the call over the chain
-    transferID = IConnext(bridgeAddress).xcall{value: valueToSend}(
-      destinationDomain,    // _destination: Domain ID of the destination chain
-      unlockAddress,        // _to: address of the target contract
+    transferID = IConnext(bridgeAddress).xcall{value: currency == address(0) ? amount + relayerFee : relayerFee}(
+      domains[destChainId],    // _destination: Domain ID of the destination chain
+      unlockAddresses[destChainId], // _to: address of the target contract
       currency,           // _asset: address of the token contract
       msg.sender,           // _delegate: TODO address that can revert or forceLocal on destination
       amount,             // _amount: amount of tokens to transfer
-      MAX_SLIPPAGE,         // _slippage: the maximum amount of slippage the user will accept
-      data
+      slippage,         // _slippage: the maximum amount of slippage the user will accept
+      cd // pass the lock address in calldata
     );
 
     emit BridgeCallEmitted(
       destChainId,
-      unlockAddress,
+      unlockAddresses[destChainId],
       lock, 
       uint(transferID)
     );
