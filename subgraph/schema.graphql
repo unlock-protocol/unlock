@@ -48,7 +48,7 @@ type Key @entity {
   tokenURI: String
   "Block key was created"
   createdAtBlock: BigInt!
-  "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the keyThrows"
+  "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key"
   cancelled: Boolean
 }
 
@@ -61,7 +61,7 @@ type UnlockDailyData @entity {
   keysSold: BigInt!
   "Daily number of active locks" 
   activeLocks: [Bytes!]
-  "Total value exchanged in the network" 
+  "Total value exchanged on the network" 
   grossNetworkProduct: BigInt!
 }
 
