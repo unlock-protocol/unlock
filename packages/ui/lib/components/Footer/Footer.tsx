@@ -6,6 +6,7 @@ import {
   BsTwitter as TwitterIcon,
 } from 'react-icons/bs'
 import { Icon } from '../Icon/Icon'
+import { Link } from '../Link/Link'
 import { EmailSubscriptionForm } from './EmailSubscriptionForm'
 
 interface FooterItem {
@@ -45,20 +46,28 @@ const SOCIAL_LINKS: SocialLinkProps[] = [
   },
 ]
 
+const Logo = (props: any) => {
+  return (
+    <div {...props}>
+      <img className="self-start h-10" src="/images/unlock-footer-logo.svg" />
+    </div>
+  )
+}
+
 const FooterLink = ({ label, url, target }: FooterItem) => {
   return (
-    <a href={url} target={target}>
+    <Link href={url} target={target}>
       <span className="text-base text-brand-dark">{label}</span>
-    </a>
+    </Link>
   )
 }
 
 const FooterAppLink = ({ label, url }: FooterItem) => {
   return (
-    <a href={url} className="flex flex-col gap-2 cursor-pointer md:gap-4">
+    <Link href={url} className="flex flex-col gap-2 cursor-pointer md:gap-4">
       <span className="text-xl font-bold text-brand-dark">{label}</span>
       <span className="w-full h-[2px] bg-black"></span>
-    </a>
+    </Link>
   )
 }
 
@@ -88,10 +97,7 @@ const Footer = ({ privacyUrl, termsUrl, menuItems }: FooterProps) => {
       <NewsletterBox />
       <div className="flex flex-col gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
         <div className="flex flex-col gap-10">
-          <img
-            className="self-start h-10"
-            src="/images/unlock-footer-logo.svg"
-          />
+          <Logo className="self-start h-10" />
           <div className="flex flex-col gap-9">
             <FooterAppLink label="Launch App" />
             <FooterAppLink label="Get Unlock Membership" />
@@ -129,24 +135,24 @@ const Footer = ({ privacyUrl, termsUrl, menuItems }: FooterProps) => {
         </span>
         <div className="flex gap-8">
           {privacyUrl && (
-            <a
+            <Link
               href={privacyUrl}
               className="text-xs text-brand-dark"
               target="_blank"
               rel="noopener noreferrer"
             >
               Privacy Policy
-            </a>
+            </Link>
           )}
           {termsUrl && (
-            <a
+            <Link
               href={termsUrl}
               className="text-xs text-brand-dark"
               target="_blank"
               rel="noopener noreferrer"
             >
               Term of Service
-            </a>
+            </Link>
           )}
         </div>
       </div>
