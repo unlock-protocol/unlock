@@ -32,6 +32,7 @@ import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
 import { LockPicker } from './elements/LockPicker'
+import { BiQrScan as ScanIcon } from 'react-icons/bi'
 
 interface ActionBarProps {
   lockAddress: string
@@ -167,7 +168,7 @@ const PopoverItem = ({
     <>
       <div className="flex gap-3 cursor-pointer" {...props}>
         {icon && (
-          <div className="w-4">
+          <div className="w-4 pt-1">
             <Icon className="text-brand-ui-primary" icon={icon} size={20} />
           </div>
         )}
@@ -191,6 +192,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+  const verificationLink = `/verification`
 
   const getLock = async () => {
     return web3Service.getLock(lockAddress, network)
@@ -281,6 +283,14 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         </Link>
                       </>
                     )}
+                    <Link href={verificationLink} className="text-left">
+                      <PopoverItem
+                        label="Verification"
+                        description="Scan and verify the authentication of tickets for your events"
+                        isLoading={isLoading}
+                        icon={ScanIcon}
+                      />
+                    </Link>
                   </div>
                 </div>
               </Popover.Panel>

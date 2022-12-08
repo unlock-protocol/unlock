@@ -41,7 +41,8 @@ if (args.routes) {
   listEndpoints(app).forEach((endpoint) => {
     endpoint.methods.forEach((method) => {
       console.log(
-        `${method.padStart(6)} ${endpoint.path.padEnd(56)} => ${endpoint.middleware
+        `${method.padStart(6)} ${endpoint.path.padEnd(56)} => ${
+          endpoint.middleware
         }`
       )
     })

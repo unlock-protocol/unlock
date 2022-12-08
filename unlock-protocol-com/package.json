@@ -30,7 +30,7 @@
     "dotenv": "16.0.3",
     "embla-carousel-autoplay": "7.0.5",
     "embla-carousel-react": "7.0.5",
-    "eslint": "8.27.0",
+    "eslint": "8.29.0",
     "eslint-plugin-jest": "27.1.6",
     "eslint-plugin-mocha": "10.1.0",
     "ethers": "^5.7.2",
