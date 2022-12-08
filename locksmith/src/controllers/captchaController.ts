@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core'
+import { Response } from 'express'
 import { ethers } from 'ethers'
 import { SignedRequest } from '../types'
 import config from '../../config/config'
