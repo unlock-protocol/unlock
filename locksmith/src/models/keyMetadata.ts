@@ -1,31 +1,50 @@
-import { Optional } from 'sequelize'
-import { Table, Model, Column, DataType } from 'sequelize-typescript'
+import type { InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface KeyMetadataAttributes {
-  id: string
-  data: any
-  address: string
-  chain: number
-}
-
-type KeyMetadataCreationAttributes = Optional<KeyMetadataAttributes, 'id'>
-
-@Table({ tableName: 'KeyMetadata', timestamps: true })
 export class KeyMetadata extends Model<
-  KeyMetadataAttributes,
-  KeyMetadataCreationAttributes
+  InferAttributes<KeyMetadata>,
+  InferCreationAttributes<KeyMetadata>
 > {
-  @Column(DataType.JSONB)
-  data!: JSON
-
-  @Column({ primaryKey: true, unique: 'id_unique' })
-  id!: string
-
-  @Column({
-    unique: 'id_unique',
-  })
-  address!: string
-
-  @Column
-  chain!: number
+  declare id: string
+  declare data: any
+  declare address: string
+  declare chain: number
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
+
+KeyMetadata.init(
+  {
+    id: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: 'id_unique',
+      primaryKey: true,
+    },
+    address: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: 'id_unique',
+    },
+    data: {
+      type: DataTypes.JSON,
+    },
+    chain: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'KeyMetadata',
+  }
+)

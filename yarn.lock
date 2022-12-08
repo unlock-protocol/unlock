@@ -17156,13 +17156,11 @@ __metadata:
     path-to-regexp: 6.2.1
     pg: 8.8.0
     random-words: 1.2.0
-    reflect-metadata: 0.1.13
     request: 2.88.2
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
     sequelize: 6.26.0
     sequelize-cli: 6.5.2
-    sequelize-typescript: 2.1.5
     setimmediate: 1.0.5
     siwe: 1.1.6
     stripe: 8.222.0
@@ -51222,20 +51220,6 @@ resolve@^2.0.0-next.3:
   version: 7.1.0
   resolution: "sequelize-pool@npm:7.1.0"
   checksum: b11d06d02de9e8fc428ba3020b86f05fe7adad764e57f23c5901f924e31867901a5e7a090180337dc3b90de3934b64f34ae552fde37b0f3d37b09c0c8ecbddc7
-  languageName: node
-  linkType: hard
-
-"sequelize-typescript@npm:2.1.5":
-  version: 2.1.5
-  resolution: "sequelize-typescript@npm:2.1.5"
-  dependencies:
-    glob: 7.2.0
-  peerDependencies:
-    "@types/node": "*"
-    "@types/validator": "*"
-    reflect-metadata: "*"
-    sequelize: ">=6.20.1"
-  checksum: 017abffa552014b14a3b2dfac4f6a4239689c5668720fc4a78a793a1f245f9bd2fd4745361e8725ad37d200af93a9e9c8b96dd07a1fb0cd833c00ace2269a35a
   languageName: node
   linkType: hard
 

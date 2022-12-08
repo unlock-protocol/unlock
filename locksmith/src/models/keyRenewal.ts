@@ -1,37 +1,59 @@
-import { Optional } from 'sequelize'
-import { Table, Model, Column } from 'sequelize-typescript'
+import type { InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface KeyRenewalAttributes {
-  id: number
-  lockAddress: string
-  keyId: string
-  initiatedBy?: string
-  tx: string
-  network: number
-}
-
-type KeyRenewalCreationAttributes = Optional<KeyRenewalAttributes, 'id'>
-
-@Table({ tableName: 'KeyRenewals', timestamps: true })
 export class KeyRenewal extends Model<
-  KeyRenewalAttributes,
-  KeyRenewalCreationAttributes
+  InferAttributes<KeyRenewal>,
+  InferCreationAttributes<KeyRenewal>
 > {
-  @Column({ primaryKey: true, autoIncrement: true })
-  id!: number
-
-  @Column
-  lockAddress!: string
-
-  @Column
-  keyId!: string
-
-  @Column
-  initiatedBy!: string
-
-  @Column
-  tx!: string
-
-  @Column
-  network!: number
+  declare id: CreationOptional<number>
+  declare lockAddress: string
+  declare keyId: string
+  declare initiatedBy?: string
+  declare tx: string
+  declare network: number
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
+
+KeyRenewal.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    network: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    lockAddress: {
+      type: DataTypes.STRING,
+    },
+    keyId: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    initiatedBy: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    tx: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    modelName: 'KeyRenewals',
+    sequelize,
+  }
+)

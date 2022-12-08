@@ -87,12 +87,11 @@ export class AuthController {
           message: 'No refresh token provided in the header or body.',
         })
       }
-
       const refreshTokenData = await RefreshToken.findOne({
         where: {
           token: refreshToken,
           revoked: {
-            [Op.or]: [null, false],
+            [Op.or]: [false, null],
           },
         },
       })

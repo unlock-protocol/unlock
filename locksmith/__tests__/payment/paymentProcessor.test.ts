@@ -5,13 +5,10 @@ import { UserReference } from '../../src/models/userReference'
 
 const nock = require('nock')
 const nockBack = require('nock').back
-const models = require('../../src/models')
-
+import { User } from '../../src/models/user'
 const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
 const stripeToken = 'sk_test_token'
 const mockVisaToken = 'tok_visa'
-
-const { User } = models
 
 const mockCreateSource = jest.fn()
 
@@ -75,6 +72,7 @@ describe('PaymentProcessor', () => {
       {
         emailAddress: Normalizer.emailAddress('foo2@example.com'),
         stripe_customer_id: 'a valid customer id',
+        // @ts-expect-error - Sequelize type does not support creating a relationship item in the create yet. This is a bug in Sequelize types.
         User: {
           publicKey: Normalizer.ethereumAddress(
             '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
@@ -84,7 +82,7 @@ describe('PaymentProcessor', () => {
         },
       },
       {
-        include: User,
+        include: [User],
       }
     )
 
@@ -94,6 +92,7 @@ describe('PaymentProcessor', () => {
           'connected_account_user@example.com'
         ),
         stripe_customer_id: 'cus_H669IyGrYp85kA',
+        // @ts-expect-error - Sequelize type does not support creating a relationship item in the create yet. This is a bug in Sequelize types.
         User: {
           publicKey: Normalizer.ethereumAddress(
             '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
@@ -103,7 +102,7 @@ describe('PaymentProcessor', () => {
         },
       },
       {
-        include: User,
+        include: [User],
       }
     )
 
@@ -112,6 +111,7 @@ describe('PaymentProcessor', () => {
         emailAddress: Normalizer.emailAddress(
           'user_without_payment_details@example.com'
         ),
+        // @ts-expect-error - Sequelize type does not support creating a relationship item in the create yet. This is a bug in Sequelize types.
         User: {
           publicKey: Normalizer.ethereumAddress(
             '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208'
@@ -121,7 +121,7 @@ describe('PaymentProcessor', () => {
         },
       },
       {
-        include: User,
+        include: [User],
       }
     )
 

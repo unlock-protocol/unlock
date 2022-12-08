@@ -1,14 +1,12 @@
-import models = require('../../../src/models')
-import app = require('../../../src/app')
-import UserOperations = require('../../../src/operations/userOperations')
+import { User } from '../../../src/models/user'
+import { UserReference } from '../../../src/models/userReference'
+const app = require('../../../src/app')
 
+import UserOperations from '../../../src/operations/userOperations'
 // These tests are slow because we generate private keys
 jest.setTimeout(15000)
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     UserReference.truncate({ cascade: true }),
     User.truncate({ cascade: true }),

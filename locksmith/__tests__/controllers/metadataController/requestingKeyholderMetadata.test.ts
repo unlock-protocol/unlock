@@ -2,9 +2,8 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { LockMetadata } from '../../../src/models/lockMetadata'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
+import * as Base64 from '../../../src/utils/base64'
+const app = require('../../../src/app')
 
 const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'

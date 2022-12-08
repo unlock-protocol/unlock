@@ -32,7 +32,7 @@ export class PaymentProcessor {
 
     return UserReference.findOne({
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
-      include: [{ model: User, attributes: ['publicKey'] }],
+      include: [{ model: User, attributes: ['publicKey'], as: 'User' }],
     })
   }
 
