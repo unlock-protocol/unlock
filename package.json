@@ -22,7 +22,8 @@
     "eslint-plugin-prettier": "latest",
     "husky": "8.0.2",
     "lint-staged": "13.0.4",
-    "prettier": "2.8.0"
+    "prettier": "2.8.0",
+    "turbo": "^1.6.3"
   },
   "workspaces": [
     "packages/**",
@@ -54,7 +55,8 @@
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn workspaces foreach -p lint",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "turbo": "turbo run build"
   },
   "repository": {
     "type": "git",
