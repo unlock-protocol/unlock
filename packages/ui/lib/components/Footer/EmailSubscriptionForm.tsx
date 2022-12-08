@@ -8,10 +8,12 @@ const SVG_DATA_IMAGE = {
 
 export interface EmailSubscriptionFormProps {
   onSubmit: (email: string) => void
+  description?: string
 }
 
 export function EmailSubscriptionForm({
   onSubmit,
+  description = 'Sign up for updates & fresh news about Unlock.',
 }: EmailSubscriptionFormProps) {
   const [email, setEmail] = useState('')
   const [confirm, setConfirm] = useState(false)
@@ -43,7 +45,7 @@ export function EmailSubscriptionForm({
 
   return (
     <div
-      className="relative flex overflow-hidden bg-red-400 bg-cover rounded-3xl"
+      className="relative flex overflow-hidden bg-red-400 bg-cover shadow-md rounded-3xl"
       style={{
         backgroundImage: SVG_DATA_IMAGE.imgSignUpFull,
         backgroundSize: 'cover',
@@ -66,16 +68,16 @@ export function EmailSubscriptionForm({
         </div>
       </div>
 
-      <div className="z-10 grid gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
+      <div className="z-10 grid w-full gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
         <span className="text-2xl font-semibold tracking-wider md:col-span-1">
-          Sign up for updates & fresh news about Unlock.
+          {description}
         </span>
         <div className="w-full md:col-span-1">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col w-full gap-2 md:flex-row md:gap-0"
+            className="flex flex-col gap-2 md:flex-row md:gap-0"
           >
-            <div className="relative flex w-full sm:w-[400px] items-center p-1.5 rounded-3xl bg-white">
+            <div className="relative flex w-full items-center p-1.5 rounded-3xl bg-white">
               <input
                 type="email"
                 placeholder="Type your email here"
