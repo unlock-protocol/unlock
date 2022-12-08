@@ -132,8 +132,10 @@ export const KeyInfo = ({
     Object.keys(keyMetadata?.userMetadata?.protected || {}).length === 0 &&
     Object.keys(keyMetadata?.userMetadata?.public || {}).length === 0
 
+  const isTicketInfoNotAvailable = Object.keys(ticket || {}).length === 0
+
   return (
-    <div>
+    <div className="grid gap-6">
       <header className="flex flex-col items-center w-full gap-6">
         <Avatar className="flex items-center justify-center">
           <AvatarImage
@@ -152,7 +154,7 @@ export const KeyInfo = ({
         </Avatar>
         <h1 className="text-xl font-bold">{name}</h1>
       </header>
-      <div className="mt-6 divide-y">
+      <div className="divide-y">
         <KeyItem label="Token ID">{tokenId}</KeyItem>
         <KeyItem label="Network">{network}</KeyItem>
         {expiration !== ethers.constants.MaxUint256.toString() &&
@@ -166,36 +168,44 @@ export const KeyInfo = ({
             {`${keyPrice.amount} ${keyPrice.symbol}`}
           </KeyItem>
         )}
-        {ticket?.event_start_time && (
-          <KeyItem label="Event Time">
-            {dayjs(`1/1/1 ${ticket.event_start_time}`).format('h:mm A')}
-          </KeyItem>
-        )}
-        {ticket?.event_start_date && (
-          <KeyItem label="Event Date">
-            {dayjs(ticket.event_start_date).format('MMMM D, YYYY')}
-          </KeyItem>
-        )}
-        {ticket?.event_address && (
-          <KeyItem label="Event Address">{ticket.event_address}</KeyItem>
-        )}
-        {eventURL && (
-          <KeyItem label="Event Link">
-            <a
-              target="_blank"
-              className="inline-flex items-center gap-2"
-              rel="noreferrer"
-              href={eventURL.toString()}
-            >
-              {eventURL.hostname}
-              <ExternalIcon size={18} />
-            </a>
-          </KeyItem>
-        )}
       </div>
+      {!isTicketInfoNotAvailable && (
+        <div>
+          <h3 className="text-lg font-bold"> Event Information </h3>
+          <div className="divide-y divide-brand-dark">
+            {ticket?.event_start_time && (
+              <KeyItem label="Event Time">
+                {dayjs(`1/1/1 ${ticket.event_start_time}`).format('h:mm A')}
+              </KeyItem>
+            )}
+            {ticket?.event_start_date && (
+              <KeyItem label="Event Date">
+                {dayjs(ticket.event_start_date).format('MMMM D, YYYY')}
+              </KeyItem>
+            )}
+            {ticket?.event_address && (
+              <KeyItem label="Event Address">{ticket.event_address}</KeyItem>
+            )}
+            {eventURL && (
+              <KeyItem label="Event Link">
+                <a
+                  target="_blank"
+                  className="inline-flex items-center gap-2"
+                  rel="noreferrer"
+                  href={eventURL.toString()}
+                >
+                  {eventURL.hostname}
+                  <ExternalIcon size={18} />
+                </a>
+              </KeyItem>
+            )}
+          </div>
+        </div>
+      )}
+
       {!isUserInfoNotAvailable && (
-        <div className="pt-6">
-          <h3 className="font-medium"> User </h3>
+        <div>
+          <h3 className="text-lg font-bold"> User information </h3>
           <div className="divide-y divide-brand-dark">
             {Object.entries(keyMetadata?.userMetadata?.public || {}).map(
               ([key, value]) => (
@@ -214,7 +224,7 @@ export const KeyInfo = ({
           </div>
         </div>
       )}
-      <div className="grid gap-6 pt-6">
+      <div className="grid gap-6">
         {!!properties?.length && (
           <Disclosure label="Properties">
             <div className="flex flex-wrap items-center gap-2">
