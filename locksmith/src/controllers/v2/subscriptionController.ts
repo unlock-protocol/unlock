@@ -1,4 +1,4 @@
-import { Response, Request } from 'express-serve-static-core'
+import { Response, Request } from 'express'
 import { KeySubscription } from '../../models'
 import normalizer from '../../utils/normalizer'
 import {

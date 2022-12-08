@@ -63,7 +63,7 @@ describe('Auth login endpoints for locksmith', () => {
     })
 
     // Wait a bit otherwise access token will be same due to expiration
-    await sleep(2000)
+    await sleep(100)
 
     const tokenResponse = await request(app)
       .post('/v2/auth/token')
