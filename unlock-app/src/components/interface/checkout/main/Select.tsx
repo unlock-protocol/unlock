@@ -108,9 +108,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     return skip && !collectsMetadadata
   }, [lock, paywallConfig])
 
-  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
-  const { account, network, changeNetwork, isUnlockAccount } = useAuth()
+  const { account, changeNetwork, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
 
   const { isInitialLoading: isMembershipsLoading, data: memberships } =
@@ -144,8 +143,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     )
 
   const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
-  const isNetworkSwitchRequired =
-    lockNetwork && lock?.network !== network && !isUnlockAccount
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
 
@@ -345,51 +342,35 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           injectedProvider={injectedProvider}
         >
           <div className="grid">
-            {isNetworkSwitchRequired && (
-              <Button
-                disabled={isDisabled || isSwitchingNetwork}
-                loading={isSwitchingNetwork}
-                onClick={async (event) => {
-                  setIsSwitchingNetwork(true)
-                  event.preventDefault()
+            <Button
+              disabled={isDisabled}
+              onClick={async (event) => {
+                event.preventDefault()
+                // Silently change network to the correct one in the background
+                if (isUnlockAccount) {
                   await changeNetwork(lockNetwork)
-                  setIsSwitchingNetwork(false)
-                }}
-              >
-                Switch to {lockNetwork?.name}
-              </Button>
-            )}
-            {!isNetworkSwitchRequired && (
-              <Button
-                disabled={isDisabled}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  // Silently change network to the correct one in the background
-                  if (isUnlockAccount) {
-                    await changeNetwork(lockNetwork)
-                  }
+                }
 
-                  if (!lock) {
-                    return
-                  }
+                if (!lock) {
+                  return
+                }
 
-                  send({
-                    type: 'SELECT_LOCK',
-                    lock,
-                    existingMember: !!membership?.member,
-                    skipQuantity,
-                    skipRecipient,
-                    // unlock account are unable to renew : wut?
-                    expiredMember: isUnlockAccount
-                      ? false
-                      : !!membership?.expired,
-                    recipients: account ? [account] : [],
-                  })
-                }}
-              >
-                Next
-              </Button>
-            )}
+                send({
+                  type: 'SELECT_LOCK',
+                  lock,
+                  existingMember: !!membership?.member,
+                  skipQuantity,
+                  skipRecipient,
+                  // unlock account are unable to renew : wut?
+                  expiredMember: isUnlockAccount
+                    ? false
+                    : !!membership?.expired,
+                  recipients: account ? [account] : [],
+                })
+              }}
+            >
+              Next
+            </Button>
           </div>
         </Connected>
         <PoweredByUnlock />
