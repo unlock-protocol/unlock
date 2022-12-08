@@ -7,7 +7,10 @@ import {
 } from 'react-icons/bs'
 import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
-import { EmailSubscriptionForm } from './EmailSubscriptionForm'
+import {
+  EmailSubscriptionForm,
+  EmailSubscriptionFormProps,
+} from './EmailSubscriptionForm'
 
 interface FooterItem {
   label: ReactNode
@@ -29,10 +32,7 @@ interface FooterProps {
   privacyUrl?: string
   termsUrl?: string
   menuSections: MenuItemsProps[]
-  subscriptionForm?: {
-    portalId: string
-    formGuid: string
-  }
+  subscriptionForm?: EmailSubscriptionFormProps
 }
 
 const SOCIAL_LINKS: SocialLinkProps[] = [
@@ -75,7 +75,7 @@ const FooterAppLink = ({ label, url }: FooterItem) => {
   )
 }
 
-const NewsletterBox = () => {
+const NewsletterBox = (formProps: EmailSubscriptionFormProps) => {
   return (
     <div className="flex overflow-hidden bg-red-400 bg-cover rounded-3xl">
       <div className="grid gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
@@ -83,7 +83,7 @@ const NewsletterBox = () => {
           Sign up for updates & fresh news about Unlock.
         </span>
         <div className="w-full md:col-span-1">
-          <EmailSubscriptionForm formGuid="ss" portalId="ss" />
+          <EmailSubscriptionForm {...formProps} />
         </div>
       </div>
     </div>
@@ -96,14 +96,9 @@ const Footer = ({
   menuSections,
   subscriptionForm,
 }: FooterProps) => {
-  const showNewsletterBox =
-    ((subscriptionForm?.formGuid ?? '')?.length > 0 &&
-      (subscriptionForm?.portalId ?? '')?.length > 0) ||
-    true
-
   return (
     <footer className="flex flex-col w-full gap-24">
-      {showNewsletterBox && <NewsletterBox />}
+      {subscriptionForm && <NewsletterBox {...subscriptionForm} />}
       <div className="flex flex-col w-full gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
         <div className="flex flex-col w-full gap-10">
           <Logo className="self-start h-10" />
