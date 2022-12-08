@@ -245,19 +245,6 @@ export function Checkout({
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
 
-  const chainChangedHandler = () => {
-    if (injectedProvider && injectedProvider.on) {
-      injectedProvider.on('chainChanged', () => {
-        checkoutService.send('SELECT')
-      })
-    }
-  }
-
-  useEffect(() => {
-    // back to default step when network changes
-    chainChangedHandler()
-  }, [])
-
   return (
     <CheckoutTransition>
       <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

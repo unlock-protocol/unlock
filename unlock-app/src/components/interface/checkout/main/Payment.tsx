@@ -16,9 +16,10 @@ import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
-import useAccount from '~/hooks/useAccount'
+import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -48,11 +49,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const config = useConfig()
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
-  const { account, network, isUnlockAccount } = useAuth()
-  const { getTokenBalance } = useAccount(account!, network!)
+  const { account, isUnlockAccount } = useAuth()
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+  const web3Service = useWeb3Service()
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
     async () => {
@@ -80,8 +81,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     ['balance', account, lock.address],
     async () => {
       const [balance, networkBalance] = await Promise.all([
-        getTokenBalance(lock.currencyContractAddress),
-        getTokenBalance(null),
+        getAccountTokenBalance(
+          web3Service,
+          account!,
+          lock.currencyContractAddress,
+          lock.network
+        ),
+        getAccountTokenBalance(web3Service, account!, null, lock.network),
       ])
 
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
