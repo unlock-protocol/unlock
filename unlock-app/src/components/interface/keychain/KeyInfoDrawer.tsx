@@ -42,6 +42,7 @@ interface KeyInfoProps {
   lock: any
   account: string
   expiration: string
+  imageURL?: string
 }
 
 export const KeyInfo = ({
@@ -50,6 +51,7 @@ export const KeyInfo = ({
   network,
   account,
   expiration,
+  imageURL,
 }: KeyInfoProps) => {
   const storageService = useStorageService()
   const walletService = useWalletService()
@@ -123,7 +125,7 @@ export const KeyInfo = ({
     keyMetadata?.attributes
   )
 
-  const name: string = keyMetadata?.name || lock?.name
+  const name = lock?.name
   const eventURL = getURL(ticket?.event_url)
 
   const isUserInfoNotAvailable =
@@ -137,7 +139,7 @@ export const KeyInfo = ({
           <AvatarImage
             className="w-full h-full max-w-80 max-h-80 aspect-1 rounded-xl"
             alt={name}
-            src={keyMetadata?.image}
+            src={imageURL || keyMetadata?.image}
             width={250}
             height={250}
           />
@@ -150,8 +152,9 @@ export const KeyInfo = ({
         </Avatar>
         <h1 className="text-xl font-bold">{name}</h1>
       </header>
-      <div className="divide-y divide-brand-dark">
+      <div className="mt-6 divide-y">
         <KeyItem label="Token ID">{tokenId}</KeyItem>
+        <KeyItem label="Network">{network}</KeyItem>
         {expiration !== ethers.constants.MaxUint256.toString() &&
           dayjs.unix(parseInt(expiration)).isAfter(dayjs()) && (
             <KeyItem label="Expire on">
@@ -252,6 +255,7 @@ interface KeyInfoDrawerProps {
   lock: any
   account: string
   expiration: string
+  imageURL?: string
 }
 
 export const KeyInfoDrawer = ({
@@ -262,6 +266,7 @@ export const KeyInfoDrawer = ({
   network,
   account,
   expiration,
+  imageURL,
 }: KeyInfoDrawerProps) => {
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -271,6 +276,7 @@ export const KeyInfoDrawer = ({
         tokenId={tokenId}
         network={network}
         expiration={expiration}
+        imageURL={imageURL}
       />
     </Drawer>
   )

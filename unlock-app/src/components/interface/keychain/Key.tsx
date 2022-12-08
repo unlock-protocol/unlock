@@ -212,6 +212,7 @@ function Key({ ownedKey, account, network }: Props) {
         tokenId={tokenId}
         network={network}
         expiration={expiration}
+        imageURL={metadata.image}
       />
       <CancelAndRefundModal
         isOpen={showCancelModal}
@@ -390,7 +391,7 @@ function Key({ ownedKey, account, network }: Props) {
             height={250}
           />
           <AvatarFallback
-            className="w-full h-full uppercase rounded-xl aspect-1 max-h-72 max-w-72"
+            className="flex flex-col items-center justify-center text-3xl font-bold uppercase rounded-xl aspect-1 h-72 w-72"
             delayMs={100}
           >
             {lock?.name?.slice(0, 2)}
