@@ -118,6 +118,7 @@ module.exports = {
   },
   mocha: {
     timeout: 2000000,
+    parallel: true,
   },
   contractSizer: {
     alphaSort: true,
