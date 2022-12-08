@@ -156,7 +156,7 @@ export const KeyInfo = ({
       </header>
       <div className="divide-y">
         <KeyItem label="Token ID">{tokenId}</KeyItem>
-        <KeyItem label="Network">{network}</KeyItem>
+        <KeyItem label="Network">{config.networks[network].name}</KeyItem>
         {expiration !== ethers.constants.MaxUint256.toString() &&
           dayjs.unix(parseInt(expiration)).isAfter(dayjs()) && (
             <KeyItem label="Expire on">
