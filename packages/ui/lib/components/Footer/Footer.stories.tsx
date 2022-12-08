@@ -11,9 +11,13 @@ const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />
 export const Normal = Template.bind({})
 
 Normal.args = {
+  subscriptionForm: {
+    portalId: '19942922',
+    formGuid: '868101be-ae3e-422e-bc86-356c96939187',
+  },
   termsUrl: 'https://example.it',
   privacyUrl: 'https://example.it',
-  menuItems: [
+  menuSections: [
     {
       title: 'About',
       options: [

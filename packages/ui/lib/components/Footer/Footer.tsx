@@ -28,20 +28,24 @@ interface MenuItemsProps {
 interface FooterProps {
   privacyUrl?: string
   termsUrl?: string
-  menuItems: MenuItemsProps[]
+  menuSections: MenuItemsProps[]
+  subscriptionForm?: {
+    portalId: string
+    formGuid: string
+  }
 }
 
 const SOCIAL_LINKS: SocialLinkProps[] = [
   {
-    url: '',
+    url: 'https://github.com/unlock-protocol',
     icon: GithubIcon,
   },
   {
-    url: '',
+    url: 'https://discord.com/invite/Ah6ZEJyTDp',
     icon: DiscordIcon,
   },
   {
-    url: '',
+    url: 'https://twitter.com/UnlockProtocol',
     icon: TwitterIcon,
   },
 ]
@@ -73,55 +77,60 @@ const FooterAppLink = ({ label, url }: FooterItem) => {
 
 const NewsletterBox = () => {
   return (
-    <div
-      className="flex overflow-hidden bg-cover rounded-3xl"
-      style={{
-        background: "url('/images/img-signup-lg.svg')",
-      }}
-    >
-      <div className="px-8 py-20 ">
-        <span className="text-2xl font-semibold tracking-wider">
+    <div className="flex overflow-hidden bg-red-400 bg-cover rounded-3xl">
+      <div className="grid gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
+        <span className="text-2xl font-semibold tracking-wider md:col-span-1">
           Sign up for updates & fresh news about Unlock.
         </span>
-        <div className="w-full">
-          <EmailSubscriptionForm />
+        <div className="w-full md:col-span-1">
+          <EmailSubscriptionForm formGuid="ss" portalId="ss" />
         </div>
       </div>
     </div>
   )
 }
 
-const Footer = ({ privacyUrl, termsUrl, menuItems }: FooterProps) => {
+const Footer = ({
+  privacyUrl,
+  termsUrl,
+  menuSections,
+  subscriptionForm,
+}: FooterProps) => {
+  const showNewsletterBox =
+    ((subscriptionForm?.formGuid ?? '')?.length > 0 &&
+      (subscriptionForm?.portalId ?? '')?.length > 0) ||
+    true
+
   return (
-    <footer className="flex flex-col gap-24">
-      <NewsletterBox />
-      <div className="flex flex-col gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
-        <div className="flex flex-col gap-10">
+    <footer className="flex flex-col w-full gap-24">
+      {showNewsletterBox && <NewsletterBox />}
+      <div className="flex flex-col w-full gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
+        <div className="flex flex-col w-full gap-10">
           <Logo className="self-start h-10" />
           <div className="flex flex-col gap-9">
             <FooterAppLink label="Launch App" />
             <FooterAppLink label="Get Unlock Membership" />
           </div>
           <div className="flex gap-5">
-            {SOCIAL_LINKS?.map(({ url, icon }) => (
-              <a href={url}>
+            {SOCIAL_LINKS?.map(({ url, icon }, index) => (
+              <Link key={index} href={url}>
                 <Icon size={25} icon={icon} />
-              </a>
+              </Link>
             ))}
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="w-full col-span-2">
           <ul className="grid justify-between grid-cols-2 gap-10 md:gap-0 md:flex md:flex-row">
-            {menuItems?.map(({ title, options }, index) => {
+            {menuSections?.map(({ title, options }, index) => {
               return (
                 <div className="flex flex-col gap-4" key={index}>
                   <div className="text-base font-bold text-brand-dark">
                     {title}
                   </div>
                   <div className="flex flex-col gap-4 md:gap-6">
-                    {options?.map(({ label, url }, index) => {
-                      return <FooterLink key={index} label={label} url={url} />
-                    })}
+                    {options?.map(({ label, url }, index) => (
+                      <FooterLink key={index} label={label} url={url} />
+                    ))}
                   </div>
                 </div>
               )
@@ -129,7 +138,7 @@ const Footer = ({ privacyUrl, termsUrl, menuItems }: FooterProps) => {
           </ul>
         </div>
       </div>
-      <div className="flex flex-col gap-6 py-4 border-t border-gray-400 md:gap-0 md:items-center md:justify-between md:flex-row">
+      <div className="flex flex-col w-full gap-6 py-4 border-t border-gray-400 md:gap-0 md:items-center md:justify-between md:flex-row">
         <span className="text-xs text-brand-dark">
           &copy; Unlock Lab, {new Date().getFullYear()}
         </span>

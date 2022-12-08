@@ -1,9 +1,7 @@
 <svg width="371" height="368" viewBox="0 0 371 368" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_8422_11398)">
-<g clip-path="url(#clip0_8422_11398)">
-<rect x="30" y="22" width="311" height="308" rx="32" fill="#BFB1F7"/>
+<g clip-path="url(#clip0_8422_11398)" filter="url(#filter0_d_8422_11398)">
+<rect width="311" height="308" transform="translate(30 22)" fill="#BFB1F7"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M-17.9538 265.873C-16.4252 261.306 -13.685 255.435 -13.1176 254.03C-11.4088 249.789 -9.83016 245.494 -7.98918 241.308C-5.89904 236.555 -3.52644 231.929 -1.32994 227.223C6.0099 211.483 14.8909 197.018 22.4691 181.559C42.9188 139.844 86.9639 79.9278 129.901 57.279C158.878 41.9944 211.985 59.919 220.813 93.071C226.254 113.506 209.553 131.633 195.213 144.414C190.114 148.959 185.016 153.502 179.917 158.047C178.898 158.956 176.858 160.774 176.858 160.774C176.858 160.774 186.084 152.551 190.701 148.435C198.04 141.894 205.598 136.182 214.588 132.891C236.479 124.874 266.004 145.028 272.631 165.066C283.85 198.993 261.551 223.843 237.268 245.487C190.779 286.922 117.066 317.761 55.3885 324.733C23.8936 328.293 -0.0190305 322.618 -20.9946 299.084C-27.3145 291.993 -19.8737 271.606 -17.9538 265.873Z" fill="#D8F177"/>
-</g>
 </g>
 <defs>
 <filter id="filter0_d_8422_11398" x="0" y="0" width="371" height="368" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -17,7 +15,7 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_8422_11398" result="shape"/>
 </filter>
 <clipPath id="clip0_8422_11398">
-<rect x="30" y="22" width="311" height="308" rx="32" fill="white"/>
+<rect width="311" height="308" fill="white" transform="translate(30 22)"/>
 </clipPath>
 </defs>
 </svg>
