@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core'
+import { Response } from 'express'
 import { ethers, utils } from 'ethers'
 import { SiweMessage, ErrorTypes } from 'siwe'
 import { SignedRequest } from '../types'

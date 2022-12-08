@@ -3,7 +3,7 @@
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-import { Response } from 'express-serve-static-core'
+import { Response } from 'express'
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'

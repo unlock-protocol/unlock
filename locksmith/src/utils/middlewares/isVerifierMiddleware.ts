@@ -1,6 +1,6 @@
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { RequestHandler } from 'express-serve-static-core'
+import { RequestHandler } from 'express'
 import Normalizer from '../normalizer'
 import { logger } from '@sentry/utils'
 import { Verifier } from '../../models/verifier'
