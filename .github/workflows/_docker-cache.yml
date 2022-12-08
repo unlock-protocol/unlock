@@ -40,6 +40,7 @@ jobs:
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
+          build-args: BUILDKIT_INLINE_CACHE=1
           # Build only desired target
           target: deps
           push: true 
