@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import Head from 'next/head'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import withConfig from '../../utils/withConfig'
 import Loading from '../interface/Loading'
 import UnlockPropTypes from '../../propTypes'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const HomeContent = ({ config }) => {
   useEffect(() => {
@@ -15,20 +15,20 @@ export const HomeContent = ({ config }) => {
       ['localhost', '127.0.0.1', '0.0,0,0'].indexOf(window.location.hostname) >
       -1
     ) {
-      window.location.assign('/dashboard')
+      window.location.assign('/locks')
     } else {
       window.location.assign(config.unlockStaticUrl)
     }
   })
   return (
-    <Layout forContent>
+    <AppLayout forContent authRequired={false} showLinks={false}>
       <Head>
         <title>{pageTitle()}</title>
         <TwitterTags />
         <OpenGraphTags />
       </Head>
       <Loading />
-    </Layout>
+    </AppLayout>
   )
 }
 

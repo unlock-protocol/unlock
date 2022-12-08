@@ -13,6 +13,7 @@ import {
   handleCancelKey,
   handleExpireKey,
   handleExpirationChanged,
+  handleExpirationChangedUntilV11,
   handleKeyExtended,
   handleKeyManagerChanged,
   handleRenewKeyPurchase,
@@ -21,6 +22,7 @@ import {
   createTransferEvent,
   createCancelKeyEvent,
   createExpirationChangedEvent,
+  createExpirationChangedEventUntilV11,
   createExpireKeyEvent,
   createKeyExtendedEvent,
   createKeyManagerChangedEvent,
@@ -43,7 +45,6 @@ import {
 
 // mock contract functions
 import './mocks'
-import { Key } from '../generated/schema'
 
 const keyID = `${lockAddress}-${tokenId}`
 const keyIDV8 = `${lockAddressV8}-${tokenId}`
@@ -98,6 +99,15 @@ describe('Key transfers', () => {
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
   })
 
+  test('Burn of a key', () => {
+    const burnEvent = createTransferEvent(
+      Address.fromString(keyOwnerAddress),
+      Address.fromString(nullAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(burnEvent)
+  })
+
   test('Transfer of an existing key', () => {
     const newOwnerAddress = '0x0000000000000000000000000000000000000132'
     const newTransferEvent = createTransferEvent(
@@ -111,7 +121,7 @@ describe('Key transfers', () => {
 })
 
 describe('Change in expiration timestamp', () => {
-  test('should increase key timestamp', () => {
+  test('should increase key timestamp (starting v12)', () => {
     mockDataSourceV11()
     // create a key
     const newTransferEvent = createTransferEvent(
@@ -126,10 +136,33 @@ describe('Change in expiration timestamp', () => {
     const newExpirationEvent = createExpirationChangedEvent(
       BigInt.fromU32(tokenId),
       BigInt.fromU32(1000),
+      BigInt.fromU64(expiration + 1000),
       true
     )
 
     handleExpirationChanged(newExpirationEvent)
+    assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
+    dataSourceMock.resetValues()
+  })
+  test('should increase key timestamp (until v11)', () => {
+    mockDataSourceV11()
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    // mock and test
+    updateExpiration(BigInt.fromU64(expiration + 1000))
+    const newExpirationEventUtilV11 = createExpirationChangedEventUntilV11(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(1000),
+      true
+    )
+
+    handleExpirationChangedUntilV11(newExpirationEventUtilV11)
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
     dataSourceMock.resetValues()
   })
@@ -146,13 +179,13 @@ describe('Change in expiration timestamp', () => {
 
     // mock and test
     updateExpirationV8(BigInt.fromU64(expiration + 1000))
-    const newExpirationEvent = createExpirationChangedEvent(
+    const newExpirationEvent = createExpirationChangedEventUntilV11(
       BigInt.fromU32(tokenId),
       BigInt.fromU32(1000),
       true
     )
 
-    handleExpirationChanged(newExpirationEvent)
+    handleExpirationChangedUntilV11(newExpirationEvent)
     assert.fieldEquals('Key', keyIDV8, 'expiration', `${expiration + 1000}`)
     dataSourceMock.resetValues()
   })

@@ -6,7 +6,7 @@ import {
 } from 'react-icons/fi'
 import { Link } from '../../helpers/Link'
 import dayjs from 'dayjs'
-import { CalendarEvent } from '../../../utils/calendar'
+import { CalendarItem } from '../../../utils/calendar'
 
 const weekday = [
   'Sunday',
@@ -19,7 +19,7 @@ const weekday = [
 ]
 
 interface UpcomingEventBoxProps {
-  event: CalendarEvent
+  event: CalendarItem
   disabled?: boolean
 }
 
@@ -27,9 +27,9 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   event,
   disabled,
 }) => {
-  const location = event.location?.value ?? ''
-  const startDate = dayjs(event?.dtstart.value)
-  const endDate = dayjs(event?.dtend.value)
+  const location = event?.location ?? ''
+  const startDate = dayjs(event?.start?.date || event?.start?.dateTime)
+  const endDate = dayjs(event?.end?.date || event?.end?.dateTime)
 
   const locationIsUrl = location?.toLowerCase().startsWith('http') ?? false
 
@@ -49,7 +49,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
   return (
     <div className="flex flex-col h-full gap-4 p-7 glass-pane rounded-xl">
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <CalendarIcon className="stroke-brand-ui-primary" />
         <span
           className={[
@@ -76,7 +76,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
           extraClassDisabled,
         ].join(' ')}
       >
-        {event.summary.value}
+        {event.summary}
       </h3>
       <p
         className={[
@@ -84,13 +84,12 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
           extraClassDisabled,
         ].join(' ')}
         dangerouslySetInnerHTML={{
-          __html: event.description?.value,
+          __html: event.description,
         }}
       ></p>
-
-      <div className="flex flex-col mt-auto gap-4">
+      <div className="flex flex-col gap-4 mt-auto">
         {location && (
-          <div className="flex gap-2 items-center mt-auto">
+          <div className="flex items-center gap-2 mt-auto">
             <div className="w-4">
               <MapPinIcon />
             </div>

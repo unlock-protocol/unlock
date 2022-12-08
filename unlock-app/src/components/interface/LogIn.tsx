@@ -2,7 +2,6 @@ import { Input, Button } from '@unlock-protocol/ui'
 import React, { FormEvent, useState, useReducer, useEffect } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAccount } from '../../hooks/useAccount'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 
 interface LogInProps {
   onCancel?: () => void
@@ -113,23 +112,20 @@ const LogIn = ({
             )}
           </>
         )}
-        <Button type="submit" value="Submit">
-          <div className="flex">
-            {submitted && <Spinner className="mr-1 animate-spin" />}
-            <span>{!submitted ? 'Login' : 'Logging In...'}</span>
-          </div>
+        <Button type="submit" value="Submit" loading={submitted}>
+          {!submitted ? 'Login' : 'Logging In...'}
         </Button>
         {error && <span className="text-red-500 font-sm">{error}</span>}
       </form>
       <p className="mt-2">
         {onCancel && (
-          <a className="underline" onClick={onCancel}>
+          <a className="underline cursor-pointer" onClick={onCancel}>
             Cancel
           </a>
         )}
         {useWallet && (
           <p>
-            <a className="underline" onClick={useWallet}>
+            <a className="underline cursor-pointer" onClick={useWallet}>
               Use crypto wallet
             </a>
           </p>

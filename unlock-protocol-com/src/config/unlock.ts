@@ -1,4 +1,7 @@
-type Config = Record<'gaId' | 'gaTmId' | 'baseURL' | 'appURL', string>
+type Config = Record<
+  'gaId' | 'gaTmId' | 'baseURL' | 'appURL' | 'gApiKey',
+  string
+>
 
 const devConfig: Config = {
   gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID ?? '0',
@@ -7,21 +10,24 @@ const devConfig: Config = {
     process.env.NEXT_PUBLIC_URL_BASE ?? 'https://staging.unlock-protocol.com',
   appURL:
     process.env.NEXT_PUBLIC_UNLOCK_APP_URL ??
-    'https://staging-app.unlock-protocol.com/dashboard',
+    'https://staging-app.unlock-protocol.com',
+  gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
 
 const stagingConfig: Config = {
   gaId: '0',
   gaTmId: '0',
   baseURL: 'https://staging.unlock-protocol.com',
-  appURL: 'https://staging-app.unlock-protocol.com/dashboard',
+  appURL: 'https://staging-app.unlock-protocol.com',
+  gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
 
 const productionConfig: Config = {
   gaId: 'UA-142114767-1',
   gaTmId: 'GTM-ND2KDWB',
   baseURL: 'https://unlock-protocol.com',
-  appURL: 'https://app.unlock-protocol.com/dashboard',
+  appURL: 'https://app.unlock-protocol.com',
+  gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
 
 function getUnlockConfig(environment?: string) {

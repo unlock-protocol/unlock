@@ -8,7 +8,7 @@ const {
   ADDRESS_ZERO,
   deployContracts,
   deployLock,
-  createExchange,
+  createUniswapV2Exchange,
 } = require('../helpers')
 
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
@@ -40,7 +40,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     await udt.addMinter(unlock.address, { from: minter })
 
     // deploy uniswap exchange
-    const { oracle, weth } = await createExchange({
+    const { oracle, weth } = await createUniswapV2Exchange({
       protocolOwner: await ethers.getSigner(protocolOwner),
       minter: await ethers.getSigner(minter),
       udtAddress: udt.address,
@@ -69,9 +69,6 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       from: referrer,
       value: await lock.keyPrice(),
     })
-
-    // allow multiiple keys per owner
-    await lock.setMaxKeysPerAddress(10)
 
     rate = await oracle.consult(
       udt.address,

@@ -8,7 +8,6 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
   let lock
   before(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
   })
 
   it('should fail if the user address is 0', async () => {

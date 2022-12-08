@@ -3,7 +3,7 @@
     "config:base",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
-    ":pinVersions",
+    ":pinAllExceptPeerDependencies",
     ":doNotPinPackage(node)"
   ],
   "timezone": "America/Los_Angeles",
@@ -104,12 +104,6 @@
         "groupName": "smart-contracts"
       },
       "matchPaths": ["smart-contracts/**"]
-    },
-    {
-      "minor": {
-        "groupName": "smart-contracts-extensions"
-      },
-      "matchPaths": ["smart-contract-extensions/**"]
     },
     {
       "minor": {

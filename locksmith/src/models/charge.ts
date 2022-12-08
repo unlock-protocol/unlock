@@ -1,7 +1,21 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
+interface ChargeAttributes {
+  lock: string
+  chain: number
+  userAddress: string
+  recipients: string[]
+  stripeCharge: string
+  stripeCustomerId?: string
+  connectedCustomer?: string
+  totalPriceInCents: number
+  unlockServiceFee: number | null
+  transactionHash?: string
+  recurring?: number
+}
+
 @Table({ tableName: 'Charges', timestamps: true })
-export class Charge extends Model<Charge> {
+export class Charge extends Model<ChargeAttributes> {
   @Column
   lock!: string
 
@@ -11,7 +25,7 @@ export class Charge extends Model<Charge> {
   @Column
   userAddress!: string
 
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   recipients?: string[]
 
   @Column
@@ -31,4 +45,7 @@ export class Charge extends Model<Charge> {
 
   @Column
   transactionHash!: string
+
+  @Column
+  recurring!: number
 }

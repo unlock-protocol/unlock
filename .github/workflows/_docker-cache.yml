@@ -1,0 +1,46 @@
+name: Cache docker deps layers
+
+on:
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
+
+jobs:
+  cache_docker_deps_layer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare
+        id: prep
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          IMAGE="unlockprotocol/unlock-dev"
+          echo ::set-output name=tagged_image::${IMAGE}:${TAG}
+          echo ::set-output name=tag::${TAG}
+          echo ::set-output name=latest::${IMAGE}:latest
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        # Use the action from the master, as we've seen some inconsistencies with @v1
+        # Issue: https://github.com/docker/build-push-action/issues/286
+        uses: docker/setup-buildx-action@master
+
+      - name: Build image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          # Build only desired target
+          target: deps
+          push: true 
+          tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest }}

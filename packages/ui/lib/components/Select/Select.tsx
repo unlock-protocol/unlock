@@ -1,21 +1,29 @@
 import { Listbox } from '@headlessui/react'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { BsCheck as CheckIcon } from 'react-icons/bs'
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 import { Size, SizeStyleProp } from '~/types'
+import { Button } from '../Button/Button'
+import { FieldLayout, Input } from '../Form'
 
 export interface Option {
   label: string
   value: string | number
+  append?: React.ReactNode // element to add at the end of the select
+  prepend?: React.ReactNode // element to add before the label
+  disabled?: boolean
 }
 
 interface SelectProps<T> {
   label?: string
+  description?: ReactNode
   options: Option[]
   size?: Size
   onChange?: (value: string | number) => void
   defaultValue?: T
+  customOption?: boolean // show custom option that will show a custom input
+  disabled?: boolean
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -25,30 +33,97 @@ const SIZE_STYLES: SizeStyleProp = {
   large: 'px-4 py-2.5',
 }
 
+const CUSTOM_VALUE = 'custom'
+
+interface SelectOptionProps {
+  selected?: boolean
+  disabled?: boolean
+  size?: Size
+  option: Option
+  hasAnyAppend?: boolean
+  hasAnyPrepend?: boolean
+}
+
+const SelectOption = ({
+  selected,
+  disabled,
+  size = 'medium',
+  option,
+  hasAnyAppend,
+  hasAnyPrepend,
+}: SelectOptionProps) => {
+  const { append = null, prepend = null } = option ?? {}
+
+  const inputSizeStyle = SIZE_STYLES[size]
+
+  const optionClass = twMerge(
+    `${selected ? 'bg-gray-100' : ''} ${
+      disabled ? 'opacity-40' : 'hover:bg-gray-100'
+    } flex items-center justify-between p-3`,
+    inputSizeStyle
+  )
+
+  return (
+    <div className={optionClass}>
+      <div
+        className={
+          hasAnyPrepend ? 'grid items-center grid-cols-[auto_1fr] gap-2' : ''
+        }
+      >
+        {prepend && <div>{prepend}</div>}
+        <span className={selected ? 'font-bold' : ''}>{option.label}</span>
+      </div>
+      <div
+        className={
+          hasAnyAppend ? 'grid items-center grid-cols-[1fr_14px] gap-2' : ''
+        }
+      >
+        {append && <div>{append}</div>}
+        {selected && <CheckIcon size={20} />}
+      </div>
+    </div>
+  )
+}
+
 export const Select = <T extends unknown>({
   options,
   onChange,
-  label = 'Select',
+  label = '',
+  description = '',
   size = 'medium',
   defaultValue,
+  customOption = false,
+  disabled: fieldDisabled = false,
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
+  const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
+  const [customValue, setCustomValue] = useState('')
+  const [enableCustomConfirm, setEnableCustomConfirm] = useState(false)
 
   const onChangeOption = (value: Option['value']) => {
-    const currentItem = options?.find((option) => option.value == value)
-    setSelected(currentItem || null)
-    if (currentItem && typeof onChange === 'function') {
-      onChange(currentItem?.value)
+    if (CUSTOM_VALUE !== value) {
+      const currentItem = options?.find((option) => option.value == value)
+      setSelected(currentItem || null)
+      if (currentItem && typeof onChange === 'function') {
+        onChange(currentItem?.value)
+      }
+    } else {
+      setCustom(true)
     }
   }
 
-  // Set default value if present
-  useEffect(() => {
-    if (!defaultValue) return
-    const defaultSelection =
-      options?.find((option) => option.value == `${defaultValue}`) || null
-    setSelected(defaultSelection)
-  }, [])
+  const onChangeCustomValue = () => {
+    setCustomValue(customValue)
+    if (customValue && typeof onChange === 'function') {
+      onChange(customValue)
+      setEnableCustomConfirm(false)
+    }
+  }
+
+  const onCustomInputChange = (e: any) => {
+    setCustomValue(e?.target?.value ?? '')
+    setEnableCustomConfirm(true)
+  }
 
   const inputSizeStyle = SIZE_STYLES[size]
 
@@ -57,49 +132,115 @@ export const Select = <T extends unknown>({
     inputSizeStyle
   )
 
+  // Set default value if present
+  useEffect(() => {
+    const defaultSelection =
+      options?.find((option) => option.value == `${defaultValue}`) || null
+    setSelected(defaultSelection)
+  }, [defaultValue])
+
+  const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
+
   return (
-    <Listbox value={selected?.value || ''} onChange={onChangeOption}>
-      <div className="relative">
-        {label?.length > 0 && (
-          <label className="block px-1 mb-1 text-base" htmlFor="">
-            {label}
-          </label>
-        )}
-        <Listbox.Button className={inputClass}>
-          <div className="flex items-center justify-between">
-            <span>{selected?.label || 'Choose option'}</span>
-            <ArrowDownIcon size={20} />
-          </div>
-        </Listbox.Button>
-        <Listbox.Options className="absolute z-10 w-full mt-1 overflow-hidden bg-white border border-gray-400 rounded-xl">
-          {options?.map((option: Option) => {
-            return (
-              <Listbox.Option
-                key={option.value}
-                value={option.value}
-                className="cursor-pointer"
-              >
-                {({ selected }) => {
-                  const optionClass = twMerge(
-                    `${
-                      selected ? 'bg-gray-100' : ''
-                    } flex items-center justify-between p-3 hover:bg-gray-100`,
-                    inputSizeStyle
-                  )
-                  return (
-                    <div className={optionClass}>
-                      <span className={selected ? 'font-bold' : ''}>
-                        {option.label}
-                      </span>
-                      {selected && <CheckIcon size={20} />}
-                    </div>
-                  )
+    <FieldLayout
+      size={size}
+      description={description}
+      append={
+        custom && (
+          <>
+            <div className="flex justify-end gap-3">
+              <Button
+                onClick={() => {
+                  setCustom(!custom)
+                  setCustomValue('')
+                  setSelected(null)
                 }}
-              </Listbox.Option>
-            )
-          })}
-        </Listbox.Options>
-      </div>
-    </Listbox>
+                variant="outlined-primary"
+                size="tiny"
+              >
+                Select from list
+              </Button>
+              <Button
+                onClick={onChangeCustomValue}
+                size="tiny"
+                disabled={disableConfirm}
+              >
+                Confirm
+              </Button>
+            </div>
+          </>
+        )
+      }
+    >
+      <Listbox value={selected?.value || ''} onChange={onChangeOption}>
+        <div className="relative">
+          {label?.length > 0 && (
+            <label className="block px-1 mb-1 text-base" htmlFor="">
+              {label}
+            </label>
+          )}
+          {custom ? (
+            <Input onChange={onCustomInputChange} />
+          ) : (
+            <>
+              <Listbox.Button className={inputClass}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {selected?.prepend && <div>{selected.prepend}</div>}
+                    <span>{selected?.label || 'Choose option'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {selected?.append && <div>{selected.append}</div>}
+                    <ArrowDownIcon size={20} />
+                  </div>
+                </div>
+              </Listbox.Button>
+              <Listbox.Options className="absolute z-10 w-full mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
+                {options?.map((option: Option) => {
+                  const hasAnyAppend = options?.some((option) => option.append)
+                  const hasAnyPrepend = options?.some(
+                    (option) => option.prepend
+                  )
+                  const disabled = (option?.disabled || fieldDisabled) ?? false
+
+                  return (
+                    <Listbox.Option
+                      key={option.value}
+                      value={option.value}
+                      className={disabled ? '' : 'cursor-pointer'}
+                      disabled={disabled}
+                    >
+                      {({ selected }) => {
+                        return (
+                          <SelectOption
+                            hasAnyAppend={hasAnyAppend}
+                            hasAnyPrepend={hasAnyPrepend}
+                            option={option}
+                            disabled={disabled}
+                            selected={selected}
+                          />
+                        )
+                      }}
+                    </Listbox.Option>
+                  )
+                })}
+                {customOption && (
+                  <Listbox.Option
+                    className={fieldDisabled ? '' : 'cursor-pointer'}
+                    value={CUSTOM_VALUE}
+                    disabled={fieldDisabled}
+                  >
+                    <SelectOption
+                      option={{ label: 'Other', value: CUSTOM_VALUE }}
+                      disabled={fieldDisabled}
+                    />
+                  </Listbox.Option>
+                )}
+              </Listbox.Options>
+            </>
+          )}
+        </div>
+      </Listbox>
+    </FieldLayout>
   )
 }

@@ -3,7 +3,6 @@ import {
   Fallback as AvatarFallback,
   Root as Avatar,
 } from '@radix-ui/react-avatar'
-import { Lock } from '~/unlockTypes'
 import dayjs from 'dayjs'
 import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 import { addressMinify } from '~/utils/strings'
@@ -14,6 +13,7 @@ import {
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { Button } from '@unlock-protocol/ui'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -34,7 +34,10 @@ export interface MembershipData {
 
 interface Props {
   timestamp: number
-  lock: Lock
+  lock: {
+    name: string
+    address: string
+  }
   membershipData: MembershipData
   network: number
   invalid?: string
@@ -43,6 +46,7 @@ interface Props {
   keyId: string
   children?: ReactNode
   onClose?: () => void
+  showWarning?: boolean
 }
 
 export function MembershipCard({
@@ -70,7 +74,8 @@ export function MembershipCard({
       >
         <div className="flex items-center justify-end">
           {onClose && (
-            <button
+            <Button
+              variant="borderless"
               onClick={(event) => {
                 event.preventDefault()
                 onClose()
@@ -83,7 +88,7 @@ export function MembershipCard({
                 size={24}
                 key="close"
               />
-            </button>
+            </Button>
           )}
         </div>
         <div className="p-6 text-center">

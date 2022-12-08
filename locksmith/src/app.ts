@@ -1,14 +1,11 @@
 import 'setimmediate' // polyfill to prevent jest from crashing
 import cors from 'cors'
 import express from 'express'
-import { ApolloServer } from 'apollo-server-express'
 import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
-import { typeDefs } from './graphql/typeDefinitions'
-import { resolvers } from './graphql/resolvers'
 
 const app = express()
 
@@ -24,7 +21,7 @@ Sentry.init({
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.5,
 })
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
@@ -38,11 +35,7 @@ app.use(cookieParser())
 // Request logging
 app.use(
   expressWinston.logger({
-    transports: [
-      new winston.transports.Console({
-        silent: process.env?.NODE_ENV === 'test',
-      }),
-    ],
+    transports: [new winston.transports.Console()],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()
@@ -55,17 +48,11 @@ app.use(
 )
 
 // Cors
-app.use(cors({}))
+app.use(cors())
 
 // Parse body
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '5mb' }))
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
-server.applyMiddleware({ app })
 
 const router = require('./routes')
 
@@ -77,11 +64,7 @@ app.use(Sentry.Handlers.errorHandler())
 // Error logging
 app.use(
   expressWinston.errorLogger({
-    transports: [
-      new winston.transports.Console({
-        silent: process.env?.NODE_ENV === 'test',
-      }),
-    ],
+    transports: [new winston.transports.Console()],
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()

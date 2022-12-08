@@ -7,12 +7,18 @@ export const avalanche: NetworkConfig = {
   multisig: '0xEc7777C51327917fd2170c62873272ea168120Cb',
   id: 43114,
   name: 'Avalanche (C-Chain)',
+  chain: 'avax',
   blockTime: 1000,
-  subgraphURI:
-    'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
+  subgraph: {
+    endpoint:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche-v2',
+  },
   explorer: {
     name: 'Snowtrace (Avalanche)',
     urls: {
+      base: `https://snowtrace.io/`,
       address: (address) => `https://snowtrace.io/address/${address}`,
       transaction: (hash) => `https://snowtrace.io/tx/${hash}`,
       token: (address, holder) =>
@@ -30,6 +36,7 @@ export const avalanche: NetworkConfig = {
     name: 'AVAX',
     symbol: 'AVAX',
     decimals: 18,
+    coingecko: 'avalanche-2',
   },
   startBlock: 17188332,
   previousDeploys: [],

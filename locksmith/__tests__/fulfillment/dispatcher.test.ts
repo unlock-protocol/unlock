@@ -90,10 +90,10 @@ describe('Dispatcher', () => {
           expirations: [],
           keyManagers: [],
           recipients: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
-          transactionOptions: {
-            maxFeePerGas: BigNumber.from(40000000000),
-            maxPriorityFeePerGas: BigNumber.from(40000000000),
-          },
+        },
+        {
+          maxFeePerGas: BigNumber.from(40000000000),
+          maxPriorityFeePerGas: BigNumber.from(40000000000),
         },
         callback
       )

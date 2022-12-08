@@ -27,7 +27,7 @@ interface ApiResponse {
 export const getAccountTokenBalance = async (
   web3Service: any,
   accountAddress: string,
-  contractAddress: string,
+  contractAddress: string | null,
   network: number
 ) => {
   if (contractAddress) {
@@ -46,7 +46,7 @@ export const useAccount = (address: string, network: number) => {
   const walletService = useWalletService()
   const wedlockService = useWedlockService()
 
-  const getTokenBalance = (tokenAddress: string) => {
+  const getTokenBalance = (tokenAddress: string | null) => {
     return getAccountTokenBalance(web3Service, address, tokenAddress, network)
   }
 
@@ -133,7 +133,7 @@ export const useAccount = (address: string, network: number) => {
           password,
           result.recoveryPhrase
         )
-        ToastHelper.success('Account succesfully created')
+        ToastHelper.success('Account successfully created')
       }
     } catch (error: any) {
       console.error(error)
@@ -238,7 +238,8 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    recipients: string[]
+    recipients: string[],
+    recurring = 0
   ) => {
     const response = await prepareCharge(
       config,
@@ -248,20 +249,26 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock,
       pricing,
-      recipients
+      recipients,
+      recurring
     )
     return response
   }
 
-  const claimMembershipFromLock = async (lock: any, network: number) => {
+  const claimMembershipFromLock = async (
+    lock: any,
+    network: number,
+    data?: string
+  ) => {
     const response = await claimMembership(
       config,
       walletService,
       address,
       network,
-      lock
+      lock,
+      data
     )
-    return response.transactionHash
+    return response
   }
 
   const setUserMetadataData = async (

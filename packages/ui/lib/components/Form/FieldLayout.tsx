@@ -7,8 +7,9 @@ export interface Props {
   size?: Size
   error?: string
   success?: string
-  description?: string
+  description?: ReactNode
   children: ReactNode
+  append?: ReactNode
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -31,6 +32,7 @@ export function FieldLayout(props: Props) {
     error,
     success,
     description,
+    append,
   } = props
   const labelSizeStyle = SIZE_STYLES[size!]
   const labelClass = twMerge('px-1', labelSizeStyle)
@@ -46,6 +48,7 @@ export function FieldLayout(props: Props) {
         </p>
       )
     }
+
     if (success) {
       return (
         <p id={label} className={successClass}>
@@ -72,8 +75,9 @@ export function FieldLayout(props: Props) {
         </label>
       )}
       {children}
-      <div className="pl-1">
+      <div className="flex items-center justify-between">
         <Message />
+        {append}
       </div>
     </div>
   )

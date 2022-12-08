@@ -2,6 +2,237 @@
 // throughout unlock-app.
 
 import { Card } from '@stripe/stripe-js'
+import { z } from 'zod'
+
+export const MetadataInputSchema = z.object({
+  type: z.enum(['text', 'date', 'color', 'email', 'url'], {
+    description:
+      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
+  }),
+  name: z.string({
+    description: 'Name of the attribute to collect.',
+  }),
+  required: z
+    .boolean({
+      description:
+        'Check if you require users to enter this before they complete the purchase.',
+    })
+    .optional()
+    .default(false),
+  placeholder: z
+    .string({
+      description: 'Placeholder displayed to users.',
+    })
+    .optional(),
+  defaultValue: z
+    .string({
+      description: 'Default value for the attribute.',
+    })
+    .optional(),
+  public: z
+    .boolean({
+      description:
+        'If you check this, the attribute will be visible to everyone. Recommended: leave unchecked.',
+    })
+    .optional(), // optional, all non-public fields are treated as protected
+})
+
+export const PaywallConfigLockSchema = z.object({
+  name: z
+    .string({
+      description: 'Name of the lock to display.',
+    })
+    .optional(),
+  network: z.number().int().positive().optional(),
+  metadataInputs: z.array(MetadataInputSchema).optional(),
+  recurringPayments: z
+    .union([z.string(), z.number()], {
+      description:
+        'The number of time a membership should be renewed automatically. This only applies to ERC20 locks.',
+    })
+    .optional(),
+  captcha: z
+    .boolean({
+      description:
+        'If enabled, the users will be prompted to go through a captcha during the checkout process. Warning: This only works if the lock is configured with a purchase hook that verifies that captcha is valid.',
+    })
+    .optional(),
+  password: z
+    .boolean({
+      description:
+        'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
+    })
+    .optional(),
+  emailRequired: z
+    .boolean({
+      description:
+        'If enabled, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager on the dashboard. Additionaly a confirmation email will be sent to the user once the NFT membership has been minted.',
+    })
+    .optional(),
+  minRecipients: z
+    .number({
+      description:
+        'During checkout, users can buy multiple memberships at once. You can set a minimum number they can buy.',
+    })
+    .int()
+    .positive()
+    .optional(),
+  maxRecipients: z
+    .number({
+      description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+    })
+    .int()
+    .positive()
+    .optional(),
+  superfluid: z
+    .boolean({
+      description:
+        'When set to true, superfluid will be enabled as payment method for the lock.',
+    })
+    .optional(),
+  default: z.boolean().optional(),
+  dataBuilder: z
+    .string({
+      description:
+        '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+    })
+    .optional(),
+  skipRecipient: z
+    .boolean({
+      description:
+        'When set to true, the checkout flow will not let the user customize the recipient of the NFT membership.',
+    })
+    .default(true)
+    .optional(),
+})
+
+export const PaywallConfigLocksSchema = z.record(PaywallConfigLockSchema)
+
+export const PaywallConfigSchema = z
+  .object({
+    title: z
+      .string({
+        description: 'Title for your checkout. This will show up on the head.',
+      })
+      .optional(),
+    icon: z
+      .string({
+        description:
+          'The URL for a icon to display in the top left corner of the modal.',
+      })
+      .optional(),
+    callToAction: z.any().optional(),
+    locks: z.record(PaywallConfigLockSchema),
+    metadataInputs: z.array(MetadataInputSchema).optional(),
+    persistentCheckout: z
+      .boolean({
+        description:
+          'If checked, the checkout modal cannot be closed. This is especially useful when the checkout UI is embedded directly. Leave unchecked if unsure.',
+      })
+      .optional(),
+    redirectUri: z
+      .string({
+        description:
+          'The address of a webpage where the user will be redirected when they complete the checkout flow.',
+      })
+      .optional(),
+    useDelegatedProvider: z.boolean().optional(),
+    network: z.number().int().optional(),
+    referrer: z
+      .string({
+        description:
+          '(Recommended) The address of the purchase referrer. This address may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
+      })
+      .optional(),
+    messageToSign: z
+      .string({
+        description:
+          '(Optional) If supplied, the user is prompted to sign this message using their wallet. Your application needs to handle the signature to identify the user.',
+      })
+      .optional(),
+    pessimistic: z
+      .boolean({
+        description:
+          'By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. If you check this, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
+      })
+      .default(true)
+      .optional(),
+    captcha: z
+      .boolean({
+        description:
+          'If set true, the users will be prompted to go through a captcha during the checkout process. This is better used in conjunction with a purchase hook that verifies that captcha is valid.',
+      })
+      .optional(),
+    minRecipients: z
+      .number({
+        description:
+          'Set the minimum number of memberships a user needs to purchase.',
+      })
+      .int()
+      .optional(),
+    maxRecipients: z
+      .number({
+        description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+      })
+      .int()
+      .optional(),
+    superfluid: z
+      .boolean({
+        description:
+          'When set to true, superfluid will be enabled as payment method for the lock.',
+      })
+      .optional(),
+    hideSoldOut: z
+      .boolean({
+        description:
+          'When enabled, sold our locks are not shown to users when they load the checkout modal.',
+      })
+      .optional(),
+    password: z
+      .boolean({
+        description:
+          'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
+      })
+      .optional(),
+    emailRequired: z
+      .boolean({
+        description:
+          'If enabled, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager on the dashboard. Additionaly a confirmation email will be sent to the user once the NFT membership has been minted.',
+      })
+      .optional(),
+    dataBuilder: z
+      .string({
+        description:
+          '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+      })
+      .optional(),
+    recurringPayments: z
+      .union([z.string(), z.number()], {
+        description:
+          'The number of time a membership should be renewed automatically. This only applies to ERC20 locks.',
+      })
+      .optional(),
+    skipRecipient: z
+      .boolean({
+        description:
+          'When set to true, the checkout flow will not let the user customize the recipient of the NFT membership.',
+      })
+      .default(true)
+      .optional(),
+  })
+  .passthrough()
+
+export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
+  redirectUri: true,
+  title: true,
+  icon: true,
+  persistentCheckout: true,
+  referrer: true,
+  messageToSign: true,
+  pessimistic: true,
+  hideSoldOut: true,
+  skipRecipient: true,
+})
 
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
@@ -77,36 +308,12 @@ export interface Error {
   }
 }
 
-export interface PaywallCallToAction {
-  default: string
-  expired: string
-  pending: string
-  confirmed: string
-  noWallet: string
-  metadata: string
-  card: string
-  quantity: string
-  [name: string]: string
-}
-
-export interface PaywallConfigLocks {
-  [address: string]: PaywallConfigLock
-}
-
-export interface PaywallConfigLock {
-  name?: string
-  network?: number
-  metadataInputs?: MetadataInput[]
-  secret?: string
-  recurringPayments?: number
-  captcha?: boolean
-  password?: boolean
-  emailRequired?: boolean
-  maxRecipients?: number
-  minRecipients?: number
-  superfluid?: boolean
-  default?: boolean
-}
+export type PaywallCallToAction = any
+export type PaywallConfigLock = z.infer<typeof PaywallConfigLockSchema>
+export type MetadataInput = z.infer<typeof MetadataInputSchema>
+export type PaywallConfig = z.infer<typeof PaywallConfigSchema>
+export type PaywallConfigLocks = z.infer<typeof PaywallConfigLocksSchema>
+export type BasicPaywallConfig = z.infer<typeof BasicPaywallConfigSchema>
 
 export enum KeyStatus {
   NONE = 'none',
@@ -183,50 +390,6 @@ export interface KeyholdersByLock {
       }
     }[]
   }[]
-}
-
-export interface MetadataInput {
-  name: string
-  defaultValue?: string
-  type: 'text' | 'date' | 'color' | 'email' | 'url'
-  required: boolean
-  placeholder?: string
-  public?: true // optional, all non-public fields are treated as protected
-}
-
-export interface PaywallConfig {
-  title?: string
-  icon?: string
-  callToAction?: Partial<PaywallCallToAction>
-  locks: PaywallConfigLocks
-  metadataInputs?: MetadataInput[]
-  persistentCheckout?: boolean
-  redirectUri?: string
-  useDelegatedProvider?: boolean
-  network?: number
-  referrer?: string
-  messageToSign?: string
-  pessimistic?: boolean
-  captcha?: boolean
-  maxRecipients?: number
-  minRecipients?: number
-  superfluid?: boolean
-  hideSoldOut?: boolean
-  password?: boolean
-  emailRequired?: boolean
-}
-
-export interface RawLock {
-  name: string
-  address: string
-  keyPrice: string
-  expirationDuration: number
-  currencyContractAddress: string | null
-  asOf?: number
-  maxNumberOfKeys?: number
-  outstandingKeys?: number
-  balance?: string
-  owner?: string
 }
 
 export interface Balances {

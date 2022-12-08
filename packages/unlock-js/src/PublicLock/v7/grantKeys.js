@@ -1,7 +1,8 @@
 import { ETHERS_MAX_UINT } from '../../constants'
 
 export default async function (
-  { lockAddress, recipients, expirations, keyManagers, transactionOptions },
+  { lockAddress, recipients, expirations, keyManagers },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -58,7 +59,7 @@ export default async function (
 
   const transferEvents = receipt.logs
     .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {
@@ -66,7 +67,12 @@ export default async function (
     })
 
   if (transferEvents.length) {
-    return transferEvents.map((item) => item.args.tokenId.toString())
+    return transferEvents.map((item) => {
+      return {
+        id: item.args.tokenId.toString(),
+        owner: item.args.to.toString(),
+      }
+    })
   }
   // There was no Transfer log (transaction failed?)
   return null

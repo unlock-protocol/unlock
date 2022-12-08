@@ -1,12 +1,27 @@
 import { newMockEvent } from 'matchstick-as'
-import { ethereum, Address, BigInt } from '@graphprotocol/graph-ts'
+import {
+  dataSourceMock,
+} from 'matchstick-as/assembly/index'
+
+import { ethereum, Address, BigInt, Value, Bytes, DataSourceContext } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
-  LockManagerAdded,
+  RoleGranted,
   LockManagerRemoved,
+  LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress } from './constants'
+import { lockAddress, lockAddressV8 } from './constants'
+import { LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
+
+export function mockDataSourceV8(): void {
+  const v8context = new DataSourceContext()
+  v8context.set(
+    'lockAddress',
+    Value.fromAddress(Address.fromString(lockAddressV8))
+  )
+  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8context)
+}
 
 export function createNewLockEvent(
   lockOwner: Address,
@@ -29,22 +44,35 @@ export function createNewLockEvent(
   return newLockEvent
 }
 
-export function createLockManagerAddedEvent(
+
+export function createRoleGrantedLockManagerAddedEvent(
   newLockManager: Address
-): LockManagerAdded {
-  const newLockManagerAdded = changetype<LockManagerAdded>(newMockEvent())
+): RoleGranted {
+  const newRoleGranted = changetype<RoleGranted>(newMockEvent())
 
   // set existing lock address
-  newLockManagerAdded.address = Address.fromString(lockAddress)
+  newRoleGranted.address = Address.fromString(lockAddress)
 
-  newLockManagerAdded.parameters = [
+  newRoleGranted.parameters = []
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(LOCK_MANAGER))
+    )
+  )
+
+  newRoleGranted.parameters.push(
     new ethereum.EventParam(
       'account',
       ethereum.Value.fromAddress(newLockManager)
-    ),
-  ]
+    )
+  )
 
-  return newLockManagerAdded
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newRoleGranted
 }
 
 export function createLockManagerRemovedEvent(
@@ -125,4 +153,32 @@ export function createLockUpgradedEvent(
     new ethereum.EventParam('version', ethereum.Value.fromI32(version.toI32()))
   )
   return lockUpgradedEvent
+}
+
+export function createLockMetadata(
+  name: string,
+  symbol: string,
+  baseTokenURI: string
+): LockMetadata {
+  const LockMetadataEvent = changetype<LockMetadata>(newMockEvent())
+
+  LockMetadataEvent.address = Address.fromString(lockAddress)
+
+  // set existing lock address
+  LockMetadataEvent.parameters = []
+
+  LockMetadataEvent.parameters.push(
+    new ethereum.EventParam('name', ethereum.Value.fromString(name))
+  )
+  LockMetadataEvent.parameters.push(
+    new ethereum.EventParam('symbol', ethereum.Value.fromString(symbol))
+  )
+  LockMetadataEvent.parameters.push(
+    new ethereum.EventParam(
+      'baseTokenURI',
+      ethereum.Value.fromString(baseTokenURI)
+    )
+  )
+
+  return LockMetadataEvent
 }

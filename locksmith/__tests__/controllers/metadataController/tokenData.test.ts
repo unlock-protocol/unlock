@@ -49,12 +49,6 @@ const mockOnChainLockOwnership = {
   }),
 }
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve(['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'])
-  }),
-}
-
 jest.mock('../../../src/utils/lockData', () => {
   return function mock() {
     return mockOnChainLockOwnership
@@ -70,13 +64,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
-}))
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
 }))
 
 jest.mock('../../../src/utils/keyData', () => {

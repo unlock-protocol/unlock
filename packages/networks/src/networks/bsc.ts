@@ -6,12 +6,18 @@ export const bsc: NetworkConfig = {
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   id: 56,
   name: 'Binance Smart Chain',
+  chain: 'bsc',
   blockTime: 1000,
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
+  },
   explorer: {
     name: 'BscScan',
     urls: {
+      base: `https://bscscan.com/`,
       address: (address) => `https://bscscan.com/address/${address}`,
       transaction: (hash) => `https://bscscan.com/tx/${hash}`,
       token: (address, holder) =>
@@ -29,6 +35,7 @@ export const bsc: NetworkConfig = {
     name: 'BNB',
     symbol: 'BNB',
     decimals: 18,
+    coingecko: 'binancecoin',
   },
   startBlock: 13079000, // 12368889,
   previousDeploys: [

@@ -1,7 +1,8 @@
-import models = require('../../../src/models')
-import app = require('../../../src/app')
+const models = require('../../../src/models')
+const app = require('../../../src/app')
+const request = require('supertest')
 
-const UserOperations = require('../../../src/operations/userOperations')
+import UserOperations from '../../../src/operations/userOperations'
 
 beforeAll(() => {
   jest.unmock('../../../src/operations/userOperations')
@@ -22,8 +23,6 @@ afterAll(() => {
 })
 
 describe('payment details', () => {
-  const request = require('supertest')
-
   describe("retrieving a user's card details ", () => {
     it("return the user's card details if available", async () => {
       expect.assertions(1)

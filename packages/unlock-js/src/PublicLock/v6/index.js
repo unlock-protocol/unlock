@@ -10,10 +10,21 @@ import isLockManager from './isLockManager'
 import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
 import getLock from './getLock'
+import addLockManager from './addLockManager'
+import renounceLockManager from './renounceLockManager'
+import updateTransferFee from './updateTransferFee'
 
 import v4 from '../v4'
 
-const { getTokenIdForOwner, getKeyExpirationByLockForOwner, totalKeys } = v4
+const {
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
+  totalKeys,
+  setBaseTokenURI,
+  updateLockName,
+  updateLockSymbol,
+  updateRefundPenalty,
+} = v4
 
 export default {
   version: 'v6',
@@ -33,4 +44,11 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  updateTransferFee,
 }

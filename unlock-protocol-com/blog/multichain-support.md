@@ -11,20 +11,14 @@ As transaction costs on Ethereum's mainnet keep sky-rocketing (it's a good thing
 
 Unfortunately, there is a cost to using multiple chains: complexity for users. We have many ideas on how to improve that, and that's one of the main areas of focus over the next months, but today, we're proud to introduce our support for what we call a **multi-chain paywall**: a way for the paywall application to connect to several locks at once, on different chains!
 
-This page is an example of this: it has a lock on Ethereum's main net, and an lock on xDAI. If you have a key (NFT) to any of these 2 locks, you will be able to leave comments!
-
 The configuration for these is simple: just pass the network as part of the locks' custom values:
 
 ```
 {
   locks: {
-    "0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F": {
+    "0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894": {
       name: "Unlock Community",
-      network: 1
-    },
-    "0xac1fceC2e4064CCd83ac8C9B0c9B8d944AB0D246": {
-      name: "Unlock Community",
-      network: 100
+      network: 100,
     }
   }
 ```

@@ -3,14 +3,24 @@ import 'cross-fetch/polyfill'
 import type { AppProps } from 'next/app'
 import TagManager from 'react-gtm-module'
 import { Toaster } from 'react-hot-toast'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import configure from '../config'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { config } from '~/config/app'
 import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
+import { ErrorBoundary } from '@sentry/nextjs'
+import { ErrorFallback } from '~/components/interface/ErrorFallback'
 
-const config = configure()
-
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 10,
+      refetchInterval: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
+    },
+  },
+})
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
@@ -24,7 +34,9 @@ const UnlockApp = ({ Component }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalWrapper>
-        <Component />
+        <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
+          <Component />
+        </ErrorBoundary>
         <Toaster />
       </GlobalWrapper>
     </QueryClientProvider>

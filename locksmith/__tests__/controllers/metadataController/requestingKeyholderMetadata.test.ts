@@ -65,19 +65,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([lockOwningAddress])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate({ cascade: true })
@@ -127,7 +114,7 @@ describe('Metadata Controller', () => {
         )
 
         const response = await request(app)
-          .get(`/api/key/${lockAddress}/keyHolderMetadata`)
+          .get(`/api/key/${lockAddress}/keyHolderMetadata?chain=${chain}`)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .query({ data: encodeURIComponent(JSON.stringify(typedData)) })
           .set('Accept', 'json')

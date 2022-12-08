@@ -1,22 +1,26 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
-  ExpirationChanged as ExpirationChangedEvent,
+  ExpirationChanged as ExpirationChangedUntilV11Event,
+  ExpirationChanged1 as ExpirationChangedEvent,
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
+  RoleGranted as RoleGrantedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
   PricingChanged as PricingChangedEvent,
   RenewKeyPurchase as RenewKeyPurchaseEvent,
   Transfer as TransferEvent,
+  LockMetadata as LockMetadataEvent,
+  LockConfig as LockConfigEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock } from '../generated/schema'
+import { Key, Lock, UnlockDailyData, LockStats } from '../generated/schema'
 
-import { genKeyID, getKeyExpirationTimestampFor } from './helpers'
+import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -27,13 +31,53 @@ function newKey(event: TransferEvent): void {
   key.createdAtBlock = event.block.number
 
   const lockContract = PublicLock.bind(event.address)
-  key.tokenURI = lockContract.tokenURI(event.params.tokenId)
+  const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
+  if (!tokenURI.reverted) {
+    key.tokenURI = tokenURI.value
+  }
   key.expiration = getKeyExpirationTimestampFor(
     event.address,
     event.params.tokenId,
     event.params.to
   )
   key.save()
+
+  // update lock
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.save()
+  }
+
+  // update lockDayData
+  const dayID = event.block.timestamp.toI32() / 86400
+  const unlockDailyData = UnlockDailyData.load(dayID.toString())
+  if (unlockDailyData) {
+    const activeLocks = unlockDailyData.activeLocks
+    unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
+    if (activeLocks && !activeLocks.includes(event.address)) {
+      activeLocks.push(event.address)
+      unlockDailyData.activeLocks = activeLocks
+    }
+    unlockDailyData.save()
+  }
+
+  // update lockStats
+  const lockStats = LockStats.load('Unlock')
+  if (lockStats) {
+    lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
+    lockStats.save()
+  }
+}
+
+export function handleLockConfig(event: LockConfigEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.expirationDuration = event.params.expirationDuration
+    lock.maxNumberOfKeys = event.params.maxNumberOfKeys
+    lock.maxKeysPerAddress = event.params.maxKeysPerAcccount
+    lock.save()
+  }
 }
 
 export function handleTransfer(event: TransferEvent): void {
@@ -41,6 +85,13 @@ export function handleTransfer(event: TransferEvent): void {
   if (event.params.from.toHex() == zeroAddress) {
     // create key
     newKey(event)
+  } else if (event.params.to.toHex() == zeroAddress) {
+    // burn key
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
+      lock.save()
+    }
   } else {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -70,13 +121,28 @@ export function handleExpireKey(event: ExpireKeyEvent): void {
   }
 }
 
-export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+export function handleExpirationChangedUntilV11(
+  event: ExpirationChangedUntilV11Event
+): void {
   const keyID = genKeyID(event.address, event.params._tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
     key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params._tokenId,
+      Address.fromBytes(key.owner)
+    )
+    key.save()
+  }
+}
+
+export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+  const keyID = genKeyID(event.address, event.params.tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.expiration = getKeyExpirationTimestampFor(
+      event.address,
+      event.params.tokenId,
       Address.fromBytes(key.owner)
     )
     key.save()
@@ -96,8 +162,14 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    key.cancelled = true
-    key.save()
+    // remove cancelled keys for v11
+    const lock = Lock.load(key.lock)
+    if (lock && lock.version == BigInt.fromI32(11)) {
+      store.remove('Key', keyID)
+    } else {
+      key.cancelled = true
+      key.save()
+    }
   }
 }
 
@@ -126,11 +198,35 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// lock functions
+// NB: Up to PublicLock v8, we handle the addition of a new lock managers
+// with our custom event `LockManagerAdded`. Starting from v9,
+// we use OpenZeppelin native `RoleGranted` event.
+export function handleRoleGranted(event: RoleGrantedEvent): void {
+  if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(LOCK_MANAGER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      const lockManagers = lock.lockManagers
+      if (lockManagers && lockManagers.length) {
+        if (!lockManagers.includes(event.params.account)) {
+          lockManagers.push(event.params.account)
+          lock.lockManagers = lockManagers
+        }
+      } else {
+        lock.lockManagers = [event.params.account]
+      }
+      lock.save()
+    }
+  }
+}
+
+// `LockManagerAdded` event is used only until v8
 export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
   const lock = Lock.load(event.address.toHexString())
 
-  if (lock && lock.lockManagers) {
+  if (lock && lock.lockManagers && lock.version.le(BigInt.fromI32(8))) {
     const lockManagers = lock.lockManagers
     lockManagers.push(event.params.account)
     lock.lockManagers = lockManagers
@@ -145,10 +241,14 @@ export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    const i = lockManagers.indexOf(event.params.account)
-    lockManagers.splice(i)
-    lock.lockManagers = lockManagers
+    const newManagers: Bytes[] = []
+    for (let i = 0; i < lock.lockManagers.length; i++) {
+      const managerAddress = lock.lockManagers[i]
+      if (managerAddress != event.params.account) {
+        newManagers.push(managerAddress)
+      }
+    }
+    lock.lockManagers = newManagers
     lock.save()
   }
 }
@@ -162,6 +262,41 @@ export function handlePricingChanged(event: PricingChangedEvent): void {
     ])
     lock.price = event.params.keyPrice
     lock.tokenAddress = event.params.tokenAddress
+    lock.save()
+  }
+}
+
+export function handleLockMetadata(event: LockMetadataEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  const lockContract = PublicLock.bind(event.address)
+
+  if (lock) {
+    lock.name = event.params.name
+    lock.symbol = event.params.symbol
+
+    // handle change in URI for all keys
+    const totalKeys = lock.totalKeys
+    const baseTokenURI = lockContract.try_tokenURI(BigInt.fromI32(0))
+
+    // update only if baseTokenURI has changed
+    if (
+      !baseTokenURI.reverted &&
+      baseTokenURI.value !== event.params.baseTokenURI
+    ) {
+      for (let i = 0; i < totalKeys.toI32(); i++) {
+        const keyID = genKeyID(event.address, `${i + 1}`)
+        const key = Key.load(keyID)
+        if (key) {
+          const tokenURI = lockContract.try_tokenURI(key.tokenId)
+          if (!tokenURI.reverted) {
+            key.tokenURI = tokenURI.value
+            key.save()
+          }
+        }
+      }
+    }
+
+    // lock.symbol = event.params.symbol
     lock.save()
   }
 }

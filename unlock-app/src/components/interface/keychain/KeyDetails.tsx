@@ -1,73 +1,74 @@
 import React, { useContext } from 'react'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
-import keyHolderQuery from '../../../queries/keyHolder'
 import 'cross-fetch/polyfill'
-import { DefaultError } from '../../creator/FatalError'
-import { OwnedKey } from './KeychainTypes'
 import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
-import ApolloClient from 'apollo-boost'
-import { NetworkConfig } from '@unlock-protocol/types'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { QueriesOptions, useQueries } from '@tanstack/react-query'
+import { ImageBar } from '../locks/Manage/elements/ImageBar'
+import { useConfig } from '~/utils/withConfig'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface KeysByNetworkProps {
   account: string
-  network: NetworkConfig
+  network: number
+  isLoading?: boolean
+  keys?: any[]
 }
-export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
-  const { loading, error, data } = useQuery(keyHolderQuery(), {
-    variables: { address: account },
-  })
 
-  const { name, id } = network
-
-  const [keyHolders] = data?.keyHolders ?? []
-  const { keys } = keyHolders ?? []
-  const hasKeys = keys?.length == 0
-
-  if (loading) {
-    return (
-      <div className="flex flex-col mb-3">
-        <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        </div>
+const KeysByNetworkPlaceholder = ({ name }: { name: string }) => {
+  return (
+    <div className="flex flex-col mb-3">
+      <h2 className="text-lg font-bold text-brand-ui-primary">{name}</h2>
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {Array(9)
+          .fill(null)
+          .map((_, index) => {
+            return (
+              <div
+                className="h-[250px] rounded-xl bg-slate-200 animate-pulse"
+                key={index}
+              ></div>
+            )
+          })}
       </div>
-    )
+    </div>
+  )
+}
+
+export const KeysByNetwork = ({
+  account,
+  network,
+  isLoading,
+  keys = [],
+}: KeysByNetworkProps) => {
+  const { networks } = useConfig()
+  const networkName = networks[network]?.name
+
+  const noKeys = keys?.length == 0
+
+  if (isLoading) {
+    return <KeysByNetworkPlaceholder name={networkName} />
   }
-  if (hasKeys || loading) return null
-  if (error) {
-    return (
-      <DefaultError
-        title="Could not retrieve keys"
-        illustration="/images/illustrations/error.svg"
-        critical
-      >
-        {error.message}
-      </DefaultError>
-    )
-  }
+
+  if (noKeys) return null
 
   return (
     <div className="flex flex-col mb-[2rem]">
       <div className="flex flex-col">
-        <small className="font-semibold uppercase text-gray-300 text-[10px] tracking-[.4px] mb-[.5px]">
-          network
-        </small>
-        <span className="font-semibold text-lg mb-3">{name}</span>
+        <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+          {networkName}
+        </h2>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {keys.map((key: OwnedKey) => (
-          <Key key={key.id} ownedKey={key} account={account} network={id} />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {keys?.map((key: any) => (
+          <Key
+            key={key.id}
+            ownedKey={key as any}
+            account={account}
+            network={network}
+          />
         ))}
       </div>
     </div>
@@ -76,48 +77,78 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
 
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
+  const networkItems: any[] =
+    Object.entries(networks ?? {})
+      .map(([network, value]) => [parseInt(network, 10), value])
+      // ignore localhost
+      .filter(([network]) => network !== 31337) ?? []
+
+  const getKeys = async (network: string) => {
+    const service = new SubgraphService()
+
+    return await service.keys(
+      {
+        first: 1000,
+        where: {
+          owner: account,
+        },
+      },
+      {
+        networks: [network],
+      }
+    )
+  }
+  const queries: QueriesOptions<any>[] = networkItems.map(([network]) => {
+    const networkName = networks[network]?.name
+    return {
+      queryKey: ['getLocks', network, account],
+      queryFn: async () => await getKeys(network),
+      onError: () => {
+        ToastHelper.error(`Can't load keys from ${networkName} network.`)
+      },
+    }
+  })
+
+  const results = useQueries({
+    queries,
+  })
+
+  const loadingResults = results?.some(({ isLoading }) => isLoading)
+  const hasKeys = results?.some(
+    ({ data = [] }: any) => (data ?? [])?.length > 0
+  )
 
   if (!account || !network) {
     return <LoginPrompt />
   }
 
-  return (
-    <div>
-      <div>
-        {Object.entries(networks).map(([networkId, networkObj]) => {
-          const subgraphURI = networkObj.subgraphURI
-          const apolloClientByNetwork = new ApolloClient({
-            uri: subgraphURI!,
-          }) as any
+  if (!hasKeys && !loadingResults) {
+    return (
+      <ImageBar
+        description="You don't have any keys yet"
+        src="/images/illustrations/img-error.svg"
+      />
+    )
+  }
 
-          return (
-            <div key={networkId}>
-              <ApolloProvider client={apolloClientByNetwork}>
-                <KeysByNetwork
-                  key={networkId}
-                  network={networkObj}
-                  account={account}
-                />
-              </ApolloProvider>
-            </div>
-          )
-        })}
-      </div>
+  return (
+    <div className="flex flex-col gap-5">
+      {networkItems.map(([network], index) => {
+        const keys: any = results?.[index]?.data || []
+        const isLoading: any = results?.[index]?.isLoading || false
+
+        return (
+          <KeysByNetwork
+            key={network}
+            network={network}
+            account={account}
+            keys={keys}
+            isLoading={isLoading}
+          />
+        )
+      })}
     </div>
   )
 }
 
 export default KeyDetails
-
-export const NoKeys = () => {
-  return (
-    <DefaultError
-      title="You don't have any keys yet"
-      illustration="/images/illustrations/key.svg"
-      critical={false}
-    >
-      The Keychain lets you view and manage the keys that you own. As soon as
-      you have one, you&apos;ll see it on this page.
-    </DefaultError>
-  )
-}

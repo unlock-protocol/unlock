@@ -9,6 +9,7 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
 import * as lockOperations from '../../operations/lockOperations'
+import { isEmpty } from 'lodash'
 
 const UserMetadata = z
   .object({
@@ -19,14 +20,20 @@ const UserMetadata = z
   .partial()
 
 const UserMetadataBody = z.object({
-  lockAddress: z.string(),
-  userAddress: z.string(),
+  lockAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
+  userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   metadata: UserMetadata,
 })
 
 const BulkUserMetadataBody = z.object({
   users: z.array(UserMetadataBody),
 })
+
+function isMetadataEmpty(data: Record<string, any>) {
+  const publicData = isEmpty(data?.public)
+  const protectedData = isEmpty(data?.protected)
+  return publicData && protectedData
+}
 
 export class MetadataController {
   public web3Service: Web3Service
@@ -120,7 +127,7 @@ export class MetadataController {
           message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
         })
       }
-      const [updatedLockMetadata, created] = await LockMetadata.upsert(
+      const [updatedLockMetadata] = await LockMetadata.upsert(
         {
           address: lockAddress,
           chain: network,
@@ -132,8 +139,7 @@ export class MetadataController {
           returning: true,
         }
       )
-      const statusCode = created ? 201 : 204
-      return response.status(statusCode).send(updatedLockMetadata.data)
+      return response.status(200).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -164,14 +170,19 @@ export class MetadataController {
         })
       }
 
-      const created = await KeyMetadata.upsert({
-        chain: network,
-        address: lockAddress,
-        id: keyId,
-        data: {
-          ...metadata,
+      await KeyMetadata.upsert(
+        {
+          chain: network,
+          address: lockAddress,
+          id: keyId,
+          data: {
+            ...metadata,
+          },
         },
-      })
+        {
+          conflictFields: ['address', 'id'],
+        }
+      )
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
@@ -180,8 +191,8 @@ export class MetadataController {
         host,
         network
       )
-      const statusCode = created ? 201 : 204
-      return response.status(statusCode).send(keyData)
+
+      return response.status(200).send(keyData)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -207,18 +218,24 @@ export class MetadataController {
       })
 
       // If no metadata was set previously, we let anyone set it.
-      if (!userData) {
-        const newUserData = new UserTokenMetadata()
-        newUserData.tokenAddress = tokenAddress
-        newUserData.chain = network
-        newUserData.userAddress = userAddress
-        newUserData.data = {
-          userMetadata: {
-            ...metadata,
+      if (isMetadataEmpty(userData?.data?.userMetadata)) {
+        const [createdUser] = await UserTokenMetadata.upsert(
+          {
+            tokenAddress,
+            chain: network,
+            userAddress: userAddress,
+            data: {
+              userMetadata: {
+                ...metadata,
+              },
+            },
           },
-        }
-        const createdUserMetadata = await newUserData.save()
-        return response.status(201).send(createdUserMetadata.data)
+          {
+            returning: true,
+            conflictFields: ['userAddress', 'tokenAddress'],
+          }
+        )
+        return response.status(201).send(createdUser.data)
       }
 
       return response.status(409).send({
@@ -345,37 +362,46 @@ export class MetadataController {
         },
       })
 
-      const newUsersData = users
-        // Filter existing users
-        .filter(
-          (nu) =>
-            !userMetadataResults.some(
-              (item) =>
-                item.tokenAddress === nu.lockAddress &&
-                item.userAddress === nu.userAddress
-            )
-        )
-        .map((user) => {
-          const { userAddress } = user
-          const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-          const tokenAddress = lockAddress
-          const metadata = UserMetadata.parse(user.metadata)
+      const filteredUsers = users.filter(
+        (user) =>
+          !userMetadataResults.some(
+            ({ tokenAddress, userAddress, data }) =>
+              user.lockAddress === tokenAddress &&
+              user.userAddress === userAddress &&
+              !isMetadataEmpty(data?.userMetadata)
+          )
+      )
+
+      const newUsersData = filteredUsers.map(
+        ({ userAddress, lockAddress, metadata }) => {
+          const data = UserMetadata.parse(metadata)
           const newUserData = {
             userAddress,
-            tokenAddress,
+            tokenAddress: lockAddress,
             chain: network,
             data: {
               userMetadata: {
-                ...metadata,
+                ...data,
               },
             },
           }
           return newUserData
-        })
+        }
+      )
 
-      const items = await UserTokenMetadata.bulkCreate(newUsersData)
+      // Sequelize v6.x support bulk upsert in the bulkCreate so replace
+      const result = await Promise.all(
+        newUsersData.map(async (item) => {
+          const [createdUser] = await UserTokenMetadata.upsert(item, {
+            returning: true,
+            conflictFields: ['tokenAddress', 'userAddress'],
+          })
+          return createdUser.toJSON()
+        })
+      )
+
       return response.status(201).send({
-        result: items,
+        result,
       })
     } catch (error) {
       logger.error(error)

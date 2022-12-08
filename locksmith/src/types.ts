@@ -3,7 +3,7 @@ import { Request } from 'express-serve-static-core'
 export interface UserCreationInput {
   emailAddress: string
   publicKey: string
-  passwordEncryptedPrivateKey: string
+  passwordEncryptedPrivateKey: any
 }
 
 export interface Lock {
@@ -51,3 +51,10 @@ export interface UserTokenMetadataInput {
 }
 
 export type ethereumAddress = string
+
+export interface Attribute {
+  display_type?: string
+  max_value?: number
+  trait_type: string
+  value: string | number
+}

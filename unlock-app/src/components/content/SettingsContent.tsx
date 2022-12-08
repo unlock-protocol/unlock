@@ -1,21 +1,20 @@
 import React from 'react'
 import { useState } from 'react'
 import Head from 'next/head'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import AccountInfo from '../interface/user-account/AccountInfo'
 import EjectAccount from '../interface/user-account/EjectAccount'
 import { useAuth } from '../../contexts/AuthenticationContext'
-import LoginPrompt from '../interface/LoginPrompt'
 import { loadStripe } from '@stripe/stripe-js'
 import { useConfig } from '~/utils/withConfig'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
-import { Card } from '../interface/checkout/alpha/Card'
+import { Card } from '../interface/checkout/Card'
 import { deleteCardForAddress } from '~/hooks/useCards'
-import { SetupForm } from '../interface/checkout/alpha/Checkout/CardPayment'
+import { SetupForm } from '../interface/checkout/main/CardPayment'
 import { Button } from '@unlock-protocol/ui'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const PaymentSettings = () => {
   const { account, network } = useAuth()
@@ -26,7 +25,7 @@ export const PaymentSettings = () => {
   const [isSaving, setIsSaving] = useState(false)
   const {
     data: methods,
-    isLoading: isMethodLoading,
+    isInitialLoading: isMethodLoading,
     refetch,
   } = useQuery(
     ['list-cards', account],
@@ -82,22 +81,15 @@ export const PaymentSettings = () => {
 }
 
 export const SettingsContent = () => {
-  const { account } = useAuth()
-
   return (
-    <Layout title="Account Settings">
+    <AppLayout title="Account Settings">
       <Head>
         <title>{pageTitle('Account Settings')}</title>
       </Head>
-      {!account && <LoginPrompt unlockUserAccount />}
-      {account && (
-        <>
-          <AccountInfo />
-          <PaymentSettings />
-          <EjectAccount />
-        </>
-      )}
-    </Layout>
+      <AccountInfo />
+      <PaymentSettings />
+      <EjectAccount />
+    </AppLayout>
   )
 }
 

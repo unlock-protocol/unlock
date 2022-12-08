@@ -9,13 +9,10 @@ import {
   useWalletService,
   WalletServiceContext,
 } from '../utils/withWalletService'
-import { GraphServiceContext } from '../utils/withGraphService'
 import { ConfigContext } from '../utils/withConfig'
-import {
-  AuthenticationContext,
-  useAuth,
-} from '../contexts/AuthenticationContext'
 import { processTransaction } from './useLock'
+import { useConfig } from '~/utils/withConfig'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 /**
  * Retrieves a lock object at the address
@@ -24,7 +21,6 @@ export const getLockAtAddress = async (web3Service, address, network) => {
   let lock
   try {
     lock = await web3Service.getLock(address, network)
-    lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
     lock.address = address
     lock.network = network
   } catch (error) {
@@ -39,7 +35,6 @@ export const getLockAtAddress = async (web3Service, address, network) => {
  */
 export const retrieveLocks = async (
   web3Service,
-  graphService,
   owner,
   addToLocks,
   setLoading,
@@ -48,11 +43,24 @@ export const retrieveLocks = async (
   // The locks from the subgraph miss some important things, such as balance,
   // ERC20 info.. etc so we need to retrieve them from unlock-js too.
   // TODO: add these missing fields to the graph!
-  const locks = await graphService.locksByManager(owner)
 
+  // ignore localhost
+  if (network == 31337) return []
+  const service = new SubgraphService()
+  const locks = await service.locks(
+    {
+      first: 1000,
+      where: {
+        lockManagers_contains: [owner],
+      },
+    },
+    {
+      networks: [`${network}`],
+    }
+  )
   // Sort locks to show the most recent first
   locks.sort((x, y) => {
-    return parseInt(y.creationBlock) - parseInt(x.creationBlock)
+    return parseInt(y.createdAtBlock) - parseInt(x.createdAtBlock)
   })
 
   const loadNext = async (locks, done) => {
@@ -120,8 +128,9 @@ export const createLock = async (
       owner,
       name,
       currencyContractAddress,
-      publicLockVersion: 11, // Current version that we deploy!
+      publicLockVersion: 12, // Current version that we deploy!
     },
+    {} /** transactionParams */,
     async (createLockError, transactionHash) => {
       if (createLockError) {
         setError(createLockError)
@@ -169,18 +178,18 @@ export const createLock = async (
  * A hook which yields locks
  * This hook yields the list of locks for the owner based on data from the graph and the chain
  * @param {*} address
+ * @param {*} network
  */
-export const useLocks = (owner) => {
-  const { network } = useAuth()
+export const useLocks = (owner, network) => {
+  const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
   const storageService = useStorageService()
-  const graphService = useContext(GraphServiceContext)
   const config = useContext(ConfigContext)
   const [error, setError] = useState(undefined)
   const [loading, setLoading] = useState(true)
 
-  graphService.connect(config.networks[network].subgraphURI)
+  const { subgraph } = networks[network] ?? {}
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
@@ -244,14 +253,7 @@ export const useLocks = (owner) => {
    */
   useEffect(() => {
     addToLocks(-1) // reset all locks!
-    retrieveLocks(
-      web3Service,
-      graphService,
-      owner,
-      addToLocks,
-      setLoading,
-      network
-    )
+    retrieveLocks(web3Service, owner, addToLocks, setLoading, network)
   }, [owner, network])
 
   return { error, loading, locks, addLock }

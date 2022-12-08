@@ -2,7 +2,6 @@ import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
-
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 const { getGasSettings } = require('../utils/gasSettings')
@@ -13,6 +12,17 @@ interface KeyToGrant {
   expiration?: number
 }
 export default class Dispatcher {
+  async getPurchaser(network: number) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+    return {
+      wallet,
+      provider,
+    }
+  }
+
   async balances() {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
@@ -26,6 +36,7 @@ export default class Dispatcher {
             network.id,
             {
               address: wallet.address,
+              name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
           ]
@@ -35,9 +46,29 @@ export default class Dispatcher {
         }
       })
     )
-    // @ts-expect-error
+    // @ts-expect-error - map type
     const entries = new Map(balances)
     return Object.fromEntries(entries)
+  }
+
+  async grantKeyExtension(
+    lockAddress: string,
+    keyId: number,
+    network: number,
+    callback: (error: any, hash: string | null) => Promise<void>
+  ) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getPurchaser(network)
+    await walletService.connect(provider, wallet)
+    await walletService.grantKeyExtension(
+      {
+        lockAddress,
+        tokenId: keyId.toString(),
+        duration: 0,
+      },
+      {} /** TransactionOptions */,
+      callback
+    )
   }
 
   /**
@@ -86,8 +117,8 @@ export default class Dispatcher {
         recipients,
         keyManagers,
         expirations,
-        transactionOptions,
       },
+      transactionOptions,
       cb
     )
   }
@@ -119,11 +150,15 @@ export default class Dispatcher {
   }
 
   async purchaseKey(
-    lockAddress: string,
-    owner: string,
-    network: number,
+    options: {
+      lockAddress: string
+      owner: string
+      network: number
+      data?: string
+    },
     cb?: any
   ) {
+    const { network, lockAddress, owner, data } = options
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
@@ -136,11 +171,15 @@ export default class Dispatcher {
     )
     await walletService.connect(provider, walletWithProvider)
 
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
     return await walletService.purchaseKey(
       {
         lockAddress,
         owner,
+        data,
       },
+      { maxFeePerGas, maxPriorityFeePerGas },
       cb
     )
   }
@@ -167,7 +206,6 @@ export default class Dispatcher {
 
     // send tx with custom gas (Polygon estimates are too often wrong...)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-
     return walletService.renewMembershipFor(
       {
         lockAddress,
@@ -204,5 +242,25 @@ export default class Dispatcher {
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
 
     return [payload, await wallet.signMessage(payload)]
+  }
+
+  async createLockContract(
+    network: number,
+    options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
+    callback: (error: any, hash: string | null) => Promise<void> | void
+  ) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const walletService = new WalletService(networks)
+    await walletService.connect(provider, signer)
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
+    return walletService.createLock(
+      options,
+      { maxFeePerGas, maxPriorityFeePerGas },
+      callback
+    )
   }
 }

@@ -2,13 +2,18 @@ type Lock @entity {
   id: ID!
   address: Bytes!
   name: String
+  symbol: String
   expirationDuration: BigInt
   tokenAddress: Bytes!
   price: BigInt!
   lockManagers: [Bytes!]!
   version: BigInt!
+  totalKeys: BigInt!
+  maxNumberOfKeys: BigInt
+  maxKeysPerAddress: BigInt
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
+  lastKeyMintedAt: BigInt
 }
 
 type Key @entity {
@@ -21,4 +26,18 @@ type Key @entity {
   tokenURI: String
   createdAtBlock: BigInt!
   cancelled: Boolean
+}
+
+type UnlockDailyData @entity {
+  id: ID!
+  lockDeployed: BigInt!
+  keysSold: BigInt!
+  activeLocks: [Bytes!]
+  grossNetworkProduct: BigInt!
+}
+
+type LockStats @entity {
+  id: ID!
+  totalLocksDeployed: BigInt!
+  totalKeysSold: BigInt!
 }

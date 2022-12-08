@@ -124,10 +124,10 @@ describe('HookController', () => {
       it('subscribe', async () => {
         expect.assertions(1)
         const response = await request(app)
-          .post('/api/hooks/4/locks')
+          .post('/api/hooks/1/locks')
           .type('form')
           .send({
-            'hub.topic': 'http://localhost:4000/api/hooks/4/locks',
+            'hub.topic': 'http://localhost:4000/api/hooks/1/locks',
             'hub.callback': 'http://localhost:4000/callback',
             'hub.mode': 'subscribe',
           })
@@ -152,7 +152,7 @@ describe('HookController', () => {
       it('subscription request should reject with wrong content type', async () => {
         expect.assertions(1)
         const response3 = await request(app)
-          .post('/api/hooks/4/locks')
+          .post('/api/hooks/1/locks')
           .type('json')
           .send({})
 
@@ -162,10 +162,10 @@ describe('HookController', () => {
       it('subscription request should fail with invalid form body', async () => {
         expect.assertions(1)
         const response2 = await request(app)
-          .post('/api/hooks/4/locks')
+          .post('/api/hooks/1/locks')
           .type('form')
           .send({
-            'hub.topic': 'http://localhost:4000/api/hooks/4/locks',
+            'hub.topic': 'http://localhost:4000/api/hooks/1/locks',
             'hub.mode': 'subscribe',
           })
         expect(response2.status).toBe(400)

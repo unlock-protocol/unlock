@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/eslint-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
@@ -12,15 +12,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.21.0",
-    "@typescript-eslint/parser": "5.21.0",
-    "eslint": "8.10.0",
-    "eslint-config-next": "12.1.6",
+    "@typescript-eslint/eslint-plugin": "5.45.0",
+    "@typescript-eslint/parser": "5.45.0",
+    "eslint": "8.28.0",
+    "eslint-config-next": "12.3.4",
     "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-jest": "26.1.5",
-    "eslint-plugin-mocha": "10.0.5",
-    "eslint-plugin-prettier": "4.0.0",
-    "typescript": "4.6.4"
+    "eslint-plugin-jest": "27.1.6",
+    "eslint-plugin-mocha": "10.1.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "typescript": "4.9.3"
   },
   "devDependencies": {
     "jest": "27.5.1"

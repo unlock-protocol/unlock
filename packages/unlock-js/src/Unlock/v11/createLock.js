@@ -29,11 +29,12 @@ async function _getKeyPrice(lock, provider) {
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */
-export default async function (lock, callback) {
-  // default lock version to 9
-  const lockVersion = lock.publicLockVersion || 9
-
+export default async function (lock, transactionOptions = {}, callback) {
   const unlockContract = await this.getUnlockContract()
+
+  const lockVersion =
+    lock.publicLockVersion || (await unlockContract.publicLockLatestVersion())
+
   let { maxNumberOfKeys, expirationDuration } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
@@ -48,10 +49,13 @@ export default async function (lock, callback) {
 
   const lockName = lock.name
 
+  const signerAddress = await this.signer.getAddress()
+
   // get lock creator
-  const lockCreator = await this.signer.getAddress()
+  const lockCreator = lock.creator || signerAddress
+
   if (!lockCreator) {
-    throw new Error('No signer detected')
+    throw new Error('No lock creator passed or found.')
   }
 
   // parse interface
@@ -74,7 +78,8 @@ export default async function (lock, callback) {
   // pass calldata
   const transactionPromise = unlockContract.createUpgradeableLockAtVersion(
     calldata,
-    lockVersion
+    lockVersion,
+    transactionOptions
   )
 
   const hash = await this._handleMethodCall(transactionPromise)

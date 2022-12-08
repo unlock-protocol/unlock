@@ -17,7 +17,7 @@ function* keyIdGen() {
 jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
-const network = 4
+const network = 5
 const keyGen = keyIdGen()
 const tokenId = keyGen.next().value!
 const wrongTokenId = '666'
@@ -51,7 +51,7 @@ describe('tickets endpoint', () => {
     const response = await request(app).get(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/sign`
     )
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('returns an error when authentication is there but the user is not the key owner', async () => {
@@ -96,7 +96,7 @@ describe('tickets endpoint', () => {
       `/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
     )
 
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('marks ticket as checked-in fails when user is not a verifier', async () => {
@@ -205,7 +205,7 @@ describe('tickets endpoint', () => {
     const response = await request(app).post(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
     )
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('does not send email when auhentication is present but the user is not the key manager', async () => {
@@ -242,7 +242,7 @@ describe('tickets endpoint', () => {
       const response = await request(app).get(
         `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr`
       )
-      expect(response.status).toBe(403)
+      expect(response.status).toBe(401)
     })
 
     it('returns an error when authentication is there but the user is not the lock manager', async () => {
