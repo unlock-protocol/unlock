@@ -154,7 +154,7 @@ export const KeyInfo = ({
         </Avatar>
         <h1 className="text-xl font-bold">{name}</h1>
       </header>
-      <div className="divide-y">
+      <div className="divide-y divide-brand-dark">
         <KeyItem label="Token ID">{tokenId}</KeyItem>
         <KeyItem label="Network">{config.networks[network].name}</KeyItem>
         {expiration !== ethers.constants.MaxUint256.toString() &&
