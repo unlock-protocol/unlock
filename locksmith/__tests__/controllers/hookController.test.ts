@@ -2,9 +2,8 @@ import { networks } from '@unlock-protocol/networks'
 import request from 'supertest'
 import { Hook } from '../../src/models'
 import { HookController } from '../../src/controllers/hookController'
-
-const app = require('../../src/app')
-
+import app from '../server'
+import { vi } from 'vitest'
 describe('HookController', () => {
   const controller = new HookController({
     leaseSeconds: {
@@ -63,7 +62,7 @@ describe('HookController', () => {
   describe('createHook', () => {
     it('should create a hook', async () => {
       expect.assertions(2)
-      const spyOn = jest.spyOn(controller, 'createHook')
+      const spyOn = vi.spyOn(controller, 'createHook')
       spyOn.mockReturnValue(Promise.resolve(new Hook()))
       const value = await controller.createHook({} as any, {})
       expect(value).toBeInstanceOf(Hook)
@@ -75,7 +74,7 @@ describe('HookController', () => {
     it("should update or create a hook if it doesn't exit", async () => {
       expect.assertions(7)
 
-      const spyOn = jest
+      const spyOn = vi
         .spyOn(controller, 'updateHook')
         .mockImplementation((hub, params) => {
           const hook = new Hook()

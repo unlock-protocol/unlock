@@ -1,6 +1,5 @@
 import request from 'supertest'
-
-const app = require('../../src/app')
+import app from '../server'
 
 describe('HubPublisherController', () => {
   describe('Hook publisher endpoints', () => {

@@ -24,4 +24,4 @@ router.post('/', (req, res) =>
   purchaseController.claim(req as SignedRequest, res)
 )
 
-module.exports = router
+export default router

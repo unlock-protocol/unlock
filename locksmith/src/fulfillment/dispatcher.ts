@@ -2,9 +2,9 @@ import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
-const config = require('../../config/config')
-const { GAS_COST } = require('../utils/keyPricer')
-const { getGasSettings } = require('../utils/gasSettings')
+import { GAS_COST } from '../utils/keyPricer'
+import { getGasSettings } from '../utils/gasSettings'
+import config from '../../config/config'
 
 interface KeyToGrant {
   recipient: string
