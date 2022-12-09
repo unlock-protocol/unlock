@@ -222,7 +222,7 @@ export const claimMembership = async (
         'base64'
       )}`,
       'Content-Type': 'application/json',
-      captcha,
+      captcha: captcha || '',
     },
     body: JSON.stringify(typedData),
   }
