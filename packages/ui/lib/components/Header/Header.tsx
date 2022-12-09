@@ -6,6 +6,7 @@ import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
 import { HTMLProps } from 'react'
 import { IconType } from 'react-icons'
+import LogoUrl from './../../assets/unlock-footer-logo.svg'
 
 interface NavbarMenuProps {
   title: string
@@ -53,6 +54,7 @@ interface ActionsProps {
 interface NavbarProps {
   menuSections: MenuSectionProps[]
   actions: ActionsProps[]
+  logoUrl: string
 }
 
 const NavSectionTitle = ({
@@ -231,10 +233,12 @@ const NavSection = (section: MenuSectionProps) => {
   )
 }
 
-const Navbar = ({ menuSections, actions }: NavbarProps) => {
+const Navbar = ({ menuSections, actions, logoUrl }: NavbarProps) => {
   return (
     <div className="grid grid-cols-[1fr_1fr_1fr] items-center justify-between h-24 w-full">
-      <div>LOGO</div>
+      <Link href={logoUrl}>
+        <img src={LogoUrl} alt="logo" className="h-10" />
+      </Link>
       <div className="relative flex justify-center gap-12">
         {menuSections?.map((menu, index) => (
           <NavSection key={index} {...menu} />
