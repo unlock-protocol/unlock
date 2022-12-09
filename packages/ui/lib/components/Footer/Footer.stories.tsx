@@ -12,6 +12,15 @@ export const Normal = Template.bind({})
 
 Normal.args = {
   logoUrl: 'https://unlock-protocol.com/',
+  actions: [
+    { label: 'Launch App', url: 'https://app.unlock-protocol.com' },
+    {
+      label: 'Get Unlock Membership',
+      onClick: () => {
+        // do custom things here 👈
+      },
+    },
+  ],
   subscriptionForm: {
     // example of implementation when form is submitted
     onSubmit: async (email: string) => {
