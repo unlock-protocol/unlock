@@ -22,6 +22,14 @@ import {
 } from '@radix-ui/react-avatar'
 import { RiExternalLinkFill as ExternalIcon } from 'react-icons/ri'
 import { getURL } from '~/utils/url'
+import { MAX_UINT } from '~/constants'
+import relative from 'dayjs/plugin/relativeTime'
+import duration from 'dayjs/plugin/duration'
+import custom from 'dayjs/plugin/customParseFormat'
+dayjs.extend(relative)
+dayjs.extend(duration)
+dayjs.extend(custom)
+
 interface KeyItemProps {
   children: ReactNode
   label: string
@@ -115,7 +123,33 @@ export const KeyInfo = ({
     }
   )
 
-  const isLoading = isKeyMetadataLoading && isKeyPriceLoading
+  const { data: subscriptions, isInitialLoading: isSubscriptionsLoading } =
+    useQuery(
+      ['subscriptions', lock.address, tokenId, network],
+      async () => {
+        storageService.loginPrompt({
+          walletService,
+          address: account!,
+          chainId: 1,
+        })
+        const response = await storageService.getSubscription({
+          network: network,
+          lockAddress: lock.address,
+          keyId: tokenId,
+        })
+        return response.subscriptions
+      },
+      {
+        retry: 0,
+        enabled: !!(lock?.address && account),
+        onError(error) {
+          console.error(error)
+        },
+      }
+    )
+
+  const isLoading =
+    isKeyMetadataLoading && isKeyPriceLoading && isSubscriptionsLoading
 
   if (isLoading) {
     return <LoadingIcon />
@@ -124,6 +158,9 @@ export const KeyInfo = ({
   const { ticket, properties, stats, levels } = categorizeAttributes(
     keyMetadata?.attributes
   )
+
+  // Primary subscription
+  const subscription = subscriptions?.[0]
 
   const name = lock?.name
   const eventURL = getURL(ticket?.event_url)
@@ -134,6 +171,7 @@ export const KeyInfo = ({
 
   const isTicketInfoNotAvailable = Object.keys(ticket || {}).length === 0
 
+  console.log(ticket?.event_start_date, ticket)
   return (
     <div className="grid gap-6">
       <header className="flex flex-col items-center w-full gap-6">
@@ -157,7 +195,7 @@ export const KeyInfo = ({
       <div className="divide-y divide-brand-dark">
         <KeyItem label="Token ID">{tokenId}</KeyItem>
         <KeyItem label="Network">{config.networks[network].name}</KeyItem>
-        {expiration !== ethers.constants.MaxUint256.toString() &&
+        {expiration !== MAX_UINT &&
           dayjs.unix(parseInt(expiration)).isAfter(dayjs()) && (
             <KeyItem label="Expire on">
               {dayjs.unix(parseInt(expiration)).format('MMM D, YYYY h:mm A')}
@@ -168,19 +206,42 @@ export const KeyInfo = ({
             {`${keyPrice.amount} ${keyPrice.symbol}`}
           </KeyItem>
         )}
+        {subscription && (
+          <KeyItem label="Renewals">
+            {subscription.possibleRenewals <= 0
+              ? 'Renewal will not happen due to low balance'
+              : subscription.approvedRenewals <= 0
+              ? 'No renewals approved.'
+              : `Renew ${subscription.approvedRenewals} times`}
+          </KeyItem>
+        )}
+        {lock.expirationDuration !== MAX_UINT && (
+          <KeyItem label="Renewal Duration">
+            {dayjs
+              .duration(
+                ethers.BigNumber.from(lock.expirationDuration)
+                  .div(86400)
+                  .toNumber(),
+                'day'
+              )
+              .humanize()}
+          </KeyItem>
+        )}
       </div>
       {!isTicketInfoNotAvailable && (
         <div>
           <h3 className="text-lg font-bold"> Event Information </h3>
           <div className="divide-y divide-brand-dark">
-            {ticket?.event_start_time && (
+            {!!ticket?.event_start_time && (
               <KeyItem label="Event Time">
-                {dayjs(`1/1/1 ${ticket.event_start_time}`).format('h:mm A')}
+                {dayjs(ticket.event_start_time, ['HH:mm', 'h:mm']).format(
+                  'h:mm A'
+                )}
               </KeyItem>
             )}
             {ticket?.event_start_date && (
               <KeyItem label="Event Date">
-                {dayjs(ticket.event_start_date).format('MMMM D, YYYY')}
+                {new Date(ticket.event_start_date).toDateString()}
               </KeyItem>
             )}
             {ticket?.event_address && (
