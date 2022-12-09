@@ -173,6 +173,18 @@ const NavSection = (section: MenuSectionProps) => {
     )
   }
 
+  const Navbar = () => {
+    return (
+      <div className="grid justify-between grid-cols-4 gap-10">
+        {hasEmbed ? (
+          <>embed</>
+        ) : (
+          options?.map((option, index) => <NavOption key={index} {...option} />)
+        )}
+      </div>
+    )
+  }
+
   if (url.length > 0) {
     return (
       <Link href={url}>
@@ -207,15 +219,7 @@ const NavSection = (section: MenuSectionProps) => {
               <Popover.Panel className="absolute z-10 w-screen pt-4 transform -translate-x-1/2 left-1/2 sm:px-0">
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
                   <div className="relative grid gap-8 px-10 py-8 bg-white">
-                    <div className="grid justify-between grid-cols-4 gap-10">
-                      {hasEmbed ? (
-                        <>embed</>
-                      ) : (
-                        options?.map((option, index) => (
-                          <NavOption key={index} {...option} />
-                        ))
-                      )}
-                    </div>
+                    <Navbar />
                   </div>
                 </div>
               </Popover.Panel>
