@@ -17386,6 +17386,7 @@ __metadata:
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.5.0
     typescript: 4.9.3
+    url-loader: 4.1.1
     vite: 3.2.4
     vite-plugin-svgr: 2.2.2
     vite-tsconfig-paths: 3.6.0
@@ -56569,7 +56570,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"url-loader@npm:^4.1.1":
+"url-loader@npm:4.1.1, url-loader@npm:^4.1.1":
   version: 4.1.1
   resolution: "url-loader@npm:4.1.1"
   dependencies:

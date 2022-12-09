@@ -26,7 +26,7 @@ export default defineConfig({
   plugins: [
     react(),
     svgr({
-      exportAsDefault: true,
+      exportAsDefault: false,
     }),
   ],
 })

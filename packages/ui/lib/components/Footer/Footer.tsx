@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { SOCIAL_LINKS } from '../constants'
-import Logo from './../../assets/unlock-footer-logo.svg'
+import LogoUrl from './../../assets/unlock-footer-logo.svg'
 
 import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
@@ -62,11 +62,15 @@ const Footer = ({
       {subscriptionForm && <EmailSubscriptionForm {...subscriptionForm} />}
       <div className="flex flex-col w-full gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
         <div className="flex flex-col w-full gap-10">
-          <Logo />
+          <div>
+            <img src={LogoUrl} alt="logo" className="h-10" />
+          </div>
+
           <div className="flex flex-col gap-9">
             <FooterAppLink label="Launch App" />
             <FooterAppLink label="Get Unlock Membership" />
           </div>
+
           <div className="flex gap-5">
             {SOCIAL_LINKS?.map(({ url, icon }, index) => (
               <Link

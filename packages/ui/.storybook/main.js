@@ -33,7 +33,7 @@ module.exports = {
       // Add your custom SVG loader
       {
         test: /\.svg$/i,
-        use: ['@svgr/webpack'],
+        use: ['@svgr/webpack', 'url-loader'],
       },
     ]
 
