@@ -25,10 +25,15 @@ interface LinkProps {
 }
 
 type NavOptionProps = NavbarMenuProps | NavbarImageProps | LinkProps
-interface MenuSectionProps {
-  title: string
-  options: NavOptionProps[]
-}
+type MenuSectionProps =
+  | {
+      title: string
+      options: NavOptionProps[]
+    }
+  | {
+      title: string
+      url: string
+    }
 
 interface ActionsProps {
   label: string
@@ -122,7 +127,31 @@ const NavOption = (option: NavOptionProps): JSX.Element | null => {
   return null
 }
 
-const NavSection = ({ title, options = [] }: MenuSectionProps) => {
+const NavSection = (section: MenuSectionProps) => {
+  const { title } = section
+  const options = 'options' in section ? section?.options : []
+  const url: string = 'url' in section ? section?.url : ''
+
+  const Title = ({ title, open }: any) => {
+    return (
+      <span
+        className={`text-lg duration-200  hover:text-brand-ui-primary ${
+          open ? 'text-brand-ui-primary' : 'text-brand-dark'
+        }`}
+      >
+        {title}
+      </span>
+    )
+  }
+
+  if (url.length > 0) {
+    return (
+      <Link href={url}>
+        <Title title={title} />
+      </Link>
+    )
+  }
+
   return (
     <>
       <Popover>
