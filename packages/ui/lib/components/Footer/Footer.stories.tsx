@@ -11,6 +11,7 @@ const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />
 export const Normal = Template.bind({})
 
 Normal.args = {
+  logoUrl: 'https://unlock-protocol.com/',
   subscriptionForm: {
     // example of implementation when form is submitted
     onSubmit: async (email: string) => {

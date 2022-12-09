@@ -21,6 +21,7 @@ interface MenuItemsProps {
 }
 
 interface FooterProps {
+  logoUrl: string // url of the website to redirect when logo is clicked
   privacyUrl?: string
   termsUrl?: string
   menuSections: MenuItemsProps[]
@@ -56,15 +57,16 @@ const Footer = ({
   termsUrl,
   menuSections,
   subscriptionForm,
+  logoUrl,
 }: FooterProps) => {
   return (
     <footer className="flex flex-col w-full gap-24">
       {subscriptionForm && <EmailSubscriptionForm {...subscriptionForm} />}
       <div className="flex flex-col w-full gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
         <div className="flex flex-col w-full gap-10">
-          <div>
+          <Link href={logoUrl}>
             <img src={LogoUrl} alt="logo" className="h-10" />
-          </div>
+          </Link>
 
           <div className="flex flex-col gap-9">
             <FooterAppLink label="Launch App" />
