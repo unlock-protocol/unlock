@@ -58,7 +58,7 @@
     "@storybook/addon-links": "6.5.14",
     "@storybook/addon-postcss": "2.0.0",
     "@storybook/react": "6.5.14",
-    "@svgr/webpack": "6.5.1",
+    "@svgr/webpack": "5.5.0",
     "@types/react": "17.0.52",
     "@types/react-dom": "17.0.18",
     "@vitejs/plugin-react": "2.2.0",
