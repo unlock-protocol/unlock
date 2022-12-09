@@ -8,7 +8,7 @@ import { getLockProps } from '~/utils/lock'
 import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
-import { Fragment, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
@@ -27,6 +27,7 @@ import { Pricing } from '../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
+import ReCaptcha from 'react-google-recaptcha'
 
 interface Props {
   injectedProvider: unknown
@@ -82,6 +83,7 @@ export function Confirm({
   const walletService = useWalletService()
   const config = useConfig()
   const web3Service = useWeb3Service()
+  const recaptchaRef = useRef<any>()
 
   const {
     prepareChargeForCard,
@@ -443,10 +445,13 @@ export function Confirm({
         return
       }
 
+      const captcha = await recaptchaRef.current?.executeAsync()
+
       const response = await claimMembershipFromLock(
         lockAddress,
         lockNetwork,
-        purchaseData?.[0]
+        purchaseData?.[0],
+        captcha
       )
 
       const { transactionHash: hash, error } = response
@@ -586,6 +591,12 @@ export function Confirm({
 
   return (
     <Fragment>
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
