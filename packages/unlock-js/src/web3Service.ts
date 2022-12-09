@@ -939,4 +939,13 @@ export default class Web3Service extends UnlockService {
     const unlockContract = await this.getUnlockContract(unlockAddress, provider)
     return await unlockContract.publicLockLatestVersion()
   }
+
+  /**
+   * Returns the resolved address from ENS name
+   */
+  async resolveENS(ensname: string, network: number) {
+    const provider = this.providerForNetwork(network)
+    const address = await provider.resolveName(ensname)
+    return address
+  }
 }
