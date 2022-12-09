@@ -19,12 +19,22 @@ interface NavbarImageProps {
   alt?: string
 }
 
-interface LinkProps {
+interface NavLinkProps {
   title: string
   url: string
 }
 
-type NavOptionProps = NavbarMenuProps | NavbarImageProps | LinkProps
+interface NavEmbedProps {
+  title: string
+  embed: string
+}
+
+type NavOptionProps =
+  | NavbarMenuProps
+  | NavbarImageProps
+  | NavLinkProps
+  | NavEmbedProps
+
 type MenuSectionProps =
   | {
       title: string
@@ -111,6 +121,20 @@ const NavMenuSection = ({ title, options }: NavbarMenuProps) => {
   )
 }
 
+const NavEmbedItem = ({ title, embed }: NavEmbedProps) => {
+  return (
+    <div className="flex flex-col gap-4 group">
+      <div className="overflow-hidden bg-center bg-cover border border-gray-100 rounded-3xl h-60">
+        <div dangerouslySetInnerHTML={{ __html: embed }}></div>
+      </div>
+      <NavSectionTitle
+        title={title}
+        className="group-hover:text-brand-ui-primary"
+      />
+    </div>
+  )
+}
+
 const NavOption = (option: NavOptionProps): JSX.Element | null => {
   if ('options' in option) {
     return <NavMenuSection {...option} />
@@ -118,6 +142,10 @@ const NavOption = (option: NavOptionProps): JSX.Element | null => {
 
   if ('src' in option) {
     return <NavImageItem {...option} />
+  }
+
+  if ('embed' in option) {
+    return <NavEmbedItem {...option} />
   }
 
   if (!('src' in option) && !('options' in option)) {
@@ -131,6 +159,7 @@ const NavSection = (section: MenuSectionProps) => {
   const { title } = section
   const options = 'options' in section ? section?.options : []
   const url: string = 'url' in section ? section?.url : ''
+  const hasEmbed = 'embed' in section ? section.embed : null
 
   const Title = ({ title, open }: any) => {
     return (
@@ -179,9 +208,13 @@ const NavSection = (section: MenuSectionProps) => {
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
                   <div className="relative grid gap-8 px-10 py-8 bg-white">
                     <div className="grid justify-between grid-cols-4 gap-10">
-                      {options?.map((option, index) => (
-                        <NavOption key={index} {...option} />
-                      ))}
+                      {hasEmbed ? (
+                        <>embed</>
+                      ) : (
+                        options?.map((option, index) => (
+                          <NavOption key={index} {...option} />
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
