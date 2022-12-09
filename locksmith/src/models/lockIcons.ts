@@ -1,19 +1,53 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import type {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface LockIconsAttributes {
-  lock: string
-  chain: number
-  icon: string
+export class LockIcons extends Model<
+  InferAttributes<LockIcons>,
+  InferCreationAttributes<LockIcons>
+> {
+  declare id: CreationOptional<number>
+  declare lock: string
+  declare chain: number
+  declare icon: string
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
 
-@Table({ tableName: 'LockIcons', timestamps: true })
-export class LockIcons extends Model<LockIconsAttributes> {
-  @Column({ unique: 'lock_chain_index' })
-  lock!: string
-
-  @Column({ unique: 'lock_chain_index' })
-  chain!: number
-
-  @Column
-  icon!: string
-}
+LockIcons.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    lock: {
+      type: DataTypes.STRING,
+      unique: 'lock_chain_index',
+    },
+    chain: {
+      type: DataTypes.INTEGER,
+      unique: 'lock_chain_index',
+    },
+    icon: {
+      type: DataTypes.TEXT,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'LockIcons',
+  }
+)

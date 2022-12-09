@@ -5,7 +5,9 @@
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "build",
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
   },
   "exclude": [
     "build"
