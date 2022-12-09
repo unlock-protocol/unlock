@@ -1,13 +1,15 @@
-import Header from './Header'
+import HeaderNav from './HeaderNav'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { CgArrowLongRight as ArrowRight } from 'react-icons/cg'
 
 export default {
-  component: Header,
+  component: HeaderNav,
   title: 'Header',
-} as ComponentMeta<typeof Header>
+} as ComponentMeta<typeof HeaderNav>
 
-const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />
+const Template: ComponentStory<typeof HeaderNav> = (args) => (
+  <HeaderNav {...args} />
+)
 
 export const Normal = Template.bind({})
 
@@ -18,10 +20,6 @@ Normal.args = {
       label: 'Launch App',
       url: 'https://app.unlock-protocol.com',
       icon: ArrowRight,
-    },
-    {
-      label: 'Test',
-      url: 'https://app.unlock-protocol.com',
     },
   ],
   menuSections: [
