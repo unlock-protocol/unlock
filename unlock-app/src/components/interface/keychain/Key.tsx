@@ -329,7 +329,7 @@ function Key({ ownedKey, account, network }: Props) {
                         }}
                       >
                         <InfoIcon />
-                        Show membership info
+                        Show details
                       </MenuButton>
                     )}
                   </Menu.Item>
