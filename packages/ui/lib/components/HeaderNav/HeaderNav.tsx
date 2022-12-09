@@ -240,12 +240,13 @@ const NavSectionMobile = ({
 }: {
   menuSections: MenuSectionProps[]
 }) => {
-  const Title = ({ title, open }: any) => {
+  const Title = ({ title, open, ...props }: any) => {
     return (
       <span
         className={`text-2xl font-bold duration-200  hover:text-brand-ui-primary ${
           open ? 'text-brand-ui-primary' : 'text-brand-dark'
         }`}
+        {...props}
       >
         {title}
       </span>
@@ -270,7 +271,7 @@ const NavSectionMobile = ({
     return (
       <div className="flex flex-col gap-4">
         <Title title={title} onClick={() => setOpen(!open)} />
-        {true && (
+        {open && (
           <div className="flex flex-col gap-4">
             {options?.map((option) => (
               <div className="flex flex-col">
@@ -363,7 +364,10 @@ const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
       {/* mobile menu */}
       {menuExpanded && (
         <div className="absolute z-10 block top-24 md:hidden">
-          <NavSectionMobile menuSections={menuSections} />
+          <div className="flex flex-col gap-10">
+            <NavSectionMobile menuSections={menuSections} />
+            <SocialIcons />
+          </div>
         </div>
       )}
     </div>
