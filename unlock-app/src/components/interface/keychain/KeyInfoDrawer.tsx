@@ -171,7 +171,6 @@ export const KeyInfo = ({
 
   const isTicketInfoNotAvailable = Object.keys(ticket || {}).length === 0
 
-  console.log(ticket?.event_start_date, ticket)
   return (
     <div className="grid gap-6">
       <header className="flex flex-col items-center w-full gap-6">
