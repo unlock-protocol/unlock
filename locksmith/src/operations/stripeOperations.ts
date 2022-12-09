@@ -59,6 +59,7 @@ export const saveStripeCustomerIdForAddress = async (
       StripeCustomerId: stripeCustomerId,
     })
   } catch (error) {
+    console.error(error)
     return false
   }
 }

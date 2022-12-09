@@ -51,6 +51,11 @@ export function Renew({
   const { messageToSign, referrer } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
+  const { network, isUnlockAccount, changeNetwork } = useAuth()
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
+  const networkConfig = config.networks[lockNetwork]
+  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
+
   const { isLoading: isFiatPricingLoading, data: fiatPricing } = useQuery(
     ['lockFiatPricing', lockAddress, lockNetwork],
     async () => {
@@ -171,6 +176,21 @@ export function Renew({
     }
   }
 
+  const SwitchNetwork = () => (
+    <Button
+      disabled={isSwitchingNetwork}
+      loading={isSwitchingNetwork}
+      onClick={async (event) => {
+        setIsSwitchingNetwork(true)
+        event.preventDefault()
+        await changeNetwork(lockNetwork)
+        setIsSwitchingNetwork(false)
+      }}
+    >
+      Switch to {networkConfig.name}
+    </Button>
+  )
+
   const stepItems: StepItem[] = useCheckoutSteps(checkoutService, true)
 
   return (
@@ -228,7 +248,8 @@ export function Renew({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          {hasMessageToSign ? (
+          {isNetworkSwitchRequired && <SwitchNetwork />}
+          {!isNetworkSwitchRequired && hasMessageToSign ? (
             <Button
               disabled={isSigningMessage}
               loading={isSigningMessage}
@@ -241,7 +262,11 @@ export function Renew({
             <Button
               disabled={isRenewing}
               loading={isRenewing}
-              onClick={() => {
+              onClick={async (event) => {
+                event.preventDefault()
+                if (isUnlockAccount) {
+                  await changeNetwork(network)
+                }
                 onRenew()
               }}
               className="w-full"

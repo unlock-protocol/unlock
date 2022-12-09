@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Request, Response } from 'express-serve-static-core'
+import { Request, Response } from 'express'
 import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types'

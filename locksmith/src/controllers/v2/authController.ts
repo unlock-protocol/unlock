@@ -12,7 +12,7 @@ import dayjs from 'dayjs'
 export class AuthController {
   async login(request: Request, response: Response) {
     try {
-      if (!request.body.message) {
+      if (!request.body?.message) {
         response.status(422).json({
           message: 'Expected message object as body.',
         })
@@ -79,7 +79,7 @@ export class AuthController {
   async token(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
+        request.body?.refreshToken ||
         request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {
@@ -87,12 +87,11 @@ export class AuthController {
           message: 'No refresh token provided in the header or body.',
         })
       }
-
       const refreshTokenData = await RefreshToken.findOne({
         where: {
           token: refreshToken,
           revoked: {
-            [Op.or]: [null, false],
+            [Op.or]: [false, null],
           },
         },
       })
@@ -162,7 +161,7 @@ export class AuthController {
   async revokeToken(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
+        request.body?.refreshToken ||
         request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {

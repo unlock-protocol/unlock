@@ -1,23 +1,51 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import type { InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface AuthorizedLockAttributes {
-  address: string
-  authorizedAt: Date
-  stripe_account_id: string
-  chain: number
+export class AuthorizedLock extends Model<
+  InferAttributes<AuthorizedLock>,
+  InferCreationAttributes<AuthorizedLock>
+> {
+  declare id: CreationOptional<number>
+  declare address: string
+  declare authorizedAt: Date
+  declare stripe_account_id: string
+  declare chain: number
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
 
-@Table({ tableName: 'AuthorizedLocks', timestamps: true })
-export class AuthorizedLock extends Model<AuthorizedLockAttributes> {
-  @Column
-  address!: string
-
-  @Column
-  authorizedAt!: Date
-
-  @Column
-  stripe_account_id!: string
-
-  @Column
-  chain!: number
-}
+AuthorizedLock.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    address: {
+      type: DataTypes.STRING,
+    },
+    authorizedAt: {
+      type: DataTypes.DATE,
+    },
+    stripe_account_id: {
+      type: DataTypes.STRING,
+    },
+    chain: {
+      type: DataTypes.INTEGER,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'AuthorizedLock',
+  }
+)
