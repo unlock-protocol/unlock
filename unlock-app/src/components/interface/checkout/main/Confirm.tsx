@@ -591,13 +591,14 @@ export function Confirm({
 
   return (
     <Fragment>
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
-        <ReCaptcha
-          ref={recaptchaRef}
-          sitekey={config.recaptchaKey}
-          size="invisible"
-        />
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
