@@ -11,7 +11,7 @@ import {
 
 interface FooterItem {
   label: ReactNode
-  url?: string
+  url: string
   target?: HTMLAnchorElement['target']
 }
 
@@ -39,7 +39,7 @@ interface FooterProps {
   subscriptionForm?: EmailSubscriptionFormProps
 }
 
-const FooterLink = ({ label, url }: { label: string; url: string }) => {
+const FooterLink = ({ label, url }: { label: ReactNode; url: string }) => {
   return (
     <Link href={url}>
       <span className="text-base duration-100 text-brand-dark hover:text-brand-ui-primary">
