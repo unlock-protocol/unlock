@@ -295,7 +295,7 @@ export function State() {
       })
       setSeries([
         {
-          name: 'Keys Sold',
+          name: 'Keys (Memberships) Minted',
           data: CalcRenderData(
             selectedNetworkSubgraphData,
             timestampArray,
