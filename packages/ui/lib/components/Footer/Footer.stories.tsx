@@ -14,15 +14,13 @@ Normal.args = {
   subscriptionForm: {
     // example of implementation when form is submitted
     onSubmit: async (email: string) => {
-      const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/19942922/868101be-ae3e-422e-bc86-356c96939187`
+      const endpoint = `https://example.it`
       const options = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          formGuid: '19942922',
-          portalId: '868101be-ae3e-422e-bc86-356c96939187',
           fields: [
             {
               name: 'email',
