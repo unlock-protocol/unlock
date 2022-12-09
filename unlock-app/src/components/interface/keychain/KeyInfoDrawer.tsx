@@ -208,7 +208,7 @@ export const KeyInfo = ({
         {subscription && (
           <KeyItem label="Renewals">
             {subscription.possibleRenewals <= 0
-              ? 'Renewal will not happen due to low balance'
+              ? `Your balance of ${subscription.balance.amount} ${subscription.balance.symbol} is too low to renew.`
               : subscription.approvedRenewals <= 0
               ? 'No renewals approved.'
               : `Renews ${subscription.approvedRenewals} times`}
