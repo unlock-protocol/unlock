@@ -211,7 +211,7 @@ export const KeyInfo = ({
               ? 'Renewal will not happen due to low balance'
               : subscription.approvedRenewals <= 0
               ? 'No renewals approved.'
-              : `Renew ${subscription.approvedRenewals} times`}
+              : `Renews ${subscription.approvedRenewals} times`}
           </KeyItem>
         )}
         {lock.expirationDuration !== MAX_UINT && (
