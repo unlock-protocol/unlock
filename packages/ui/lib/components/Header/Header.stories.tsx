@@ -117,10 +117,29 @@ Normal.args = {
       title: 'Showcase',
       options: [
         {
+          title: 'How to Sell NFT Tickets for an Event',
+          src: 'https://i.ytimg.com/vi/mq7xYFWe_yw/maxresdefault.jpg',
+          url: 'https://google.it',
+        },
+        {
           title: 'Test',
           options: [
             {
               label: 'test',
+              url: 'https://google.it',
+            },
+          ],
+        },
+        {
+          title: 'Create Digital Collectibles with Unlock Protocol',
+          src: 'https://i.ytimg.com/vi/mq7xYFWe_yw/maxresdefault.jpg',
+          url: 'https://google.it',
+        },
+        {
+          title: 'Articles for you',
+          options: [
+            {
+              label: 'How to sell membership NFT',
               url: 'https://google.it',
             },
           ],

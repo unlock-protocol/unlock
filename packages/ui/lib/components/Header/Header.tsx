@@ -19,9 +19,15 @@ interface NavbarImageProps {
   alt?: string
 }
 
+interface LinkProps {
+  title: string
+  url: string
+}
+
+type NavOptionProps = NavbarMenuProps | NavbarImageProps | LinkProps
 interface MenuSectionProps {
   title: string
-  options: Array<NavbarMenuProps | NavbarImageProps>
+  options: NavOptionProps[]
 }
 
 interface ActionsProps {
@@ -100,6 +106,22 @@ const NavMenuSection = ({ title, options }: NavbarMenuProps) => {
   )
 }
 
+const NavOption = (option: NavOptionProps): JSX.Element | null => {
+  if ('options' in option) {
+    return <NavMenuSection {...option} />
+  }
+
+  if ('src' in option) {
+    return <NavImageItem {...option} />
+  }
+
+  if (!('src' in option) && !('options' in option)) {
+    return null
+  }
+
+  return null
+}
+
 const NavSection = ({ title, options = [] }: MenuSectionProps) => {
   return (
     <>
@@ -128,16 +150,9 @@ const NavSection = ({ title, options = [] }: MenuSectionProps) => {
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
                   <div className="relative grid gap-8 px-10 py-8 bg-white">
                     <div className="grid justify-between grid-cols-4 gap-10">
-                      {options?.map((option) => {
-                        return (
-                          <>
-                            {'options' in option && (
-                              <NavMenuSection {...option} />
-                            )}
-                            {'src' in option && <NavImageItem {...option} />}
-                          </>
-                        )
-                      })}
+                      {options?.map((option, index) => (
+                        <NavOption key={index} {...option} />
+                      ))}
                     </div>
                   </div>
                 </div>
