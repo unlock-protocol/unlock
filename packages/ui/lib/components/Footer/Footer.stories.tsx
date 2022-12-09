@@ -17,7 +17,7 @@ Normal.args = {
     {
       label: 'Get Unlock Membership',
       onClick: () => {
-        console.log('do custom things here 👈')
+        // do custom things here 👈
       },
     },
   ],
