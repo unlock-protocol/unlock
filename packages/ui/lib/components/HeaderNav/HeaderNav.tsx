@@ -362,7 +362,7 @@ const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
 
       {/* mobile menu */}
       {menuExpanded && (
-        <div className="block md:hidden">
+        <div className="absolute z-10 block top-24 md:hidden">
           <NavSectionMobile menuSections={menuSections} />
         </div>
       )}
