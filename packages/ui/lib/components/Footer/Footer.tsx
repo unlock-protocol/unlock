@@ -20,17 +20,28 @@ interface MenuItemsProps {
   options: FooterItem[]
 }
 
+type ActionsProps =
+  | {
+      label: string
+      url: string
+    }
+  | {
+      label: string
+      onClick: () => void
+    }
+
 interface FooterProps {
   logoUrl: string // url of the website to redirect when logo is clicked
+  actions?: ActionsProps[]
   privacyUrl?: string
   termsUrl?: string
   menuSections: MenuItemsProps[]
   subscriptionForm?: EmailSubscriptionFormProps
 }
 
-const FooterLink = ({ label, url, target }: FooterItem) => {
+const FooterLink = ({ label, url }: { label: string; url: string }) => {
   return (
-    <Link href={url} target={target}>
+    <Link href={url}>
       <span className="text-base duration-100 text-brand-dark hover:text-brand-ui-primary">
         {label}
       </span>
@@ -38,18 +49,36 @@ const FooterLink = ({ label, url, target }: FooterItem) => {
   )
 }
 
-const FooterAppLink = ({ label, url }: FooterItem) => {
-  return (
-    <Link
-      href={url}
-      className="flex flex-col gap-2 cursor-pointer md:gap-4 group"
-    >
-      <span className="text-xl font-bold duration-100 text-brand-dark group-hover:text-brand-ui-primary">
-        {label}
-      </span>
-      <span className="w-full h-[2px] duration-100 bg-black"></span>
-    </Link>
-  )
+const FooterAppLink = (action: ActionsProps): JSX.Element | null => {
+  const { label } = action
+
+  const ActionLabel = ({ label, ...props }: { label: string } & any) => {
+    return (
+      <div
+        className="flex flex-col gap-2 cursor-pointer md:gap-4 group"
+        {...props}
+      >
+        <span className="text-xl font-bold duration-100 text-brand-dark group-hover:text-brand-ui-primary">
+          {label}
+        </span>
+        <span className="w-full h-[2px] duration-100 bg-black"></span>
+      </div>
+    )
+  }
+
+  if ('url' in action) {
+    return (
+      <Link href={action.url}>
+        <ActionLabel label={label} />
+      </Link>
+    )
+  }
+
+  if ('onClick' in action) {
+    return <ActionLabel label={label} onClick={action.onClick} />
+  }
+
+  return null
 }
 
 const Footer = ({
@@ -58,6 +87,7 @@ const Footer = ({
   menuSections,
   subscriptionForm,
   logoUrl,
+  actions,
 }: FooterProps) => {
   return (
     <footer className="flex flex-col w-full gap-24">
@@ -69,8 +99,9 @@ const Footer = ({
           </Link>
 
           <div className="flex flex-col gap-9">
-            <FooterAppLink label="Launch App" />
-            <FooterAppLink label="Get Unlock Membership" />
+            {actions?.map((action, index) => {
+              return <FooterAppLink key={index} {...action} />
+            })}
           </div>
 
           <div className="flex gap-5">
