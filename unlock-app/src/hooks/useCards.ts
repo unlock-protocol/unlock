@@ -198,7 +198,8 @@ export const claimMembership = async (
   address: string,
   network: number,
   lock: string,
-  data?: string
+  data?: string,
+  captcha?: string
 ) => {
   const typedData = generateTypedData(
     {
@@ -221,6 +222,7 @@ export const claimMembership = async (
         'base64'
       )}`,
       'Content-Type': 'application/json',
+      captcha: captcha || '',
     },
     body: JSON.stringify(typedData),
   }
