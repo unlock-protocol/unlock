@@ -236,9 +236,11 @@ const NavSection = (section: MenuSectionProps) => {
 const Navbar = ({ menuSections, actions, logoUrl }: NavbarProps) => {
   return (
     <div className="grid grid-cols-[1fr_1fr_1fr] items-center justify-between h-24 w-full">
-      <Link href={logoUrl}>
-        <img src={LogoUrl} alt="logo" className="h-10" />
-      </Link>
+      <div>
+        <Link href={logoUrl}>
+          <img src={LogoUrl} alt="logo" className="h-6" />
+        </Link>
+      </div>
       <div className="relative flex justify-center gap-12">
         {menuSections?.map((menu, index) => (
           <NavSection key={index} {...menu} />
