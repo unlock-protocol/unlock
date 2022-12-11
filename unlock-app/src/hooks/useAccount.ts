@@ -258,7 +258,8 @@ export const useAccount = (address: string, network: number) => {
   const claimMembershipFromLock = async (
     lock: any,
     network: number,
-    data?: string
+    data?: string,
+    captcha?: string
   ) => {
     const response = await claimMembership(
       config,
@@ -266,7 +267,8 @@ export const useAccount = (address: string, network: number) => {
       address,
       network,
       lock,
-      data
+      data,
+      captcha
     )
     return response
   }

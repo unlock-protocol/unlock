@@ -8,7 +8,7 @@ import { getLockProps } from '~/utils/lock'
 import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
-import { Fragment, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
@@ -27,6 +27,7 @@ import { Pricing } from '../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
+import ReCaptcha from 'react-google-recaptcha'
 
 interface Props {
   injectedProvider: unknown
@@ -78,10 +79,11 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network } = useAuth()
+  const { account, network, isUnlockAccount, changeNetwork } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
   const web3Service = useWeb3Service()
+  const recaptchaRef = useRef<any>()
 
   const {
     prepareChargeForCard,
@@ -90,6 +92,7 @@ export function Confirm({
   } = useAccount(account!, network!)
 
   const [isConfirming, setIsConfirming] = useState(false)
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
 
   const {
     lock,
@@ -108,6 +111,10 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
+
+  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
+
+  const networkConfig = config.networks[lockNetwork]
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -230,6 +237,21 @@ export function Confirm({
     baseCurrencySymbol,
     lockName,
     quantity
+  )
+
+  const SwitchNetwork = () => (
+    <Button
+      disabled={isSwitchingNetwork || isLoading}
+      loading={isSwitchingNetwork}
+      onClick={async (event) => {
+        setIsSwitchingNetwork(true)
+        event.preventDefault()
+        await changeNetwork(lockNetwork)
+        setIsSwitchingNetwork(false)
+      }}
+    >
+      Switch to {networkConfig.name}
+    </Button>
   )
 
   const onConfirmCard = async () => {
@@ -423,10 +445,13 @@ export function Confirm({
         return
       }
 
+      const captcha = await recaptchaRef.current?.executeAsync()
+
       const response = await claimMembershipFromLock(
         lockAddress,
         lockNetwork,
-        purchaseData?.[0]
+        purchaseData?.[0],
+        captcha
       )
 
       const { transactionHash: hash, error } = response
@@ -457,7 +482,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming}
+              disabled={isConfirming || isLoading}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmCard()
@@ -492,16 +517,22 @@ export function Confirm({
 
         return (
           <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming}
-              onClick={(event) => {
-                event.preventDefault()
-                onConfirmCrypto()
-              }}
-            >
-              {buttonLabel}
-            </Button>
+            {isNetworkSwitchRequired && <SwitchNetwork />}
+            {!isNetworkSwitchRequired && (
+              <Button
+                loading={isConfirming}
+                disabled={isConfirming || isLoading}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  onConfirmCrypto()
+                }}
+              >
+                {buttonLabel}
+              </Button>
+            )}
           </div>
         )
       }
@@ -510,7 +541,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming}
+              disabled={isConfirming || isLoading}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmClaim()
@@ -526,18 +557,24 @@ export function Confirm({
       case 'superfluid': {
         return (
           <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming}
-              onClick={(event) => {
-                event.preventDefault()
-                onConfirmSuperfluid()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using superfluid'
-                : 'Pay using superfluid'}
-            </Button>
+            {isNetworkSwitchRequired && <SwitchNetwork />}
+            {!isNetworkSwitchRequired && (
+              <Button
+                loading={isConfirming}
+                disabled={isConfirming || isLoading}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  onConfirmSuperfluid()
+                }}
+              >
+                {isConfirming
+                  ? 'Paying using superfluid'
+                  : 'Pay using superfluid'}
+              </Button>
+            )}
           </div>
         )
       }
@@ -554,6 +591,12 @@ export function Confirm({
 
   return (
     <Fragment>
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express-serve-static-core'
+import { Request, Response } from 'express'
 import { DecoyUser } from '../utils/decoyUser'
 import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
