@@ -7,11 +7,11 @@ const parseNetwork = ({
   explorer,
   nativeCurrency,
   description,
-  freeClaim,
+  maxFreeClaimCost,
 }) =>
   `
 ### ${name} ${
-    freeClaim > 1
+    maxFreeClaimCost > 1
       ? "<button class='button icon-button icon-gasless'></button>"
       : ''
   }
