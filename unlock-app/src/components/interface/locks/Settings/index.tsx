@@ -38,18 +38,16 @@ const NotManagerBanner = () => {
   )
 }
 
-const SidebarCard = ({ src, alt, description }: SidebarCardProps) => {
+const SidebarCard = ({ src, description }: SidebarCardProps) => {
   return (
-    <div className="relative flex w-full bg-slate-200 rounded-2xl min-h-80">
-      <div className="overflow-hidden rounded-2xl">
-        <img
-          className="object-cover w-full min-h-full bg-center"
-          src={src}
-          alt={alt ?? 'Sidebar image'}
-        />
-      </div>
+    <div
+      className="flex w-full overflow-hidden bg-cover rounded-2xl"
+      style={{
+        backgroundImage: `url(${src})`,
+      }}
+    >
       {description && (
-        <span className="absolute block px-4 mt-4 text-lg text-gray-800 top-5">
+        <span className="block p-4 py-3 mb-20 text-lg text-gray-800 md:mb-48">
           {description}
         </span>
       )}
