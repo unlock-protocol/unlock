@@ -1,37 +1,49 @@
+import { vi } from 'vitest'
 import { getGasSettings } from '../../src/utils/gasSettings'
 
-jest.mock('@unlock-protocol/networks', () => {
-  const networks = jest.requireActual('@unlock-protocol/networks')
-  networks.networks[123] = { publicProvider: null }
-  return networks
+vi.mock('@unlock-protocol/networks', async () => {
+  const networks = await vi.importActual<any>('@unlock-protocol/networks')
+  const items = {
+    ...networks,
+    '123': {
+      publicProvider: null,
+    },
+  }
+  return {
+    default: items,
+  }
 })
 
-jest.mock('ethers', () => {
-  const { ethers, BigNumber } = jest.requireActual('ethers')
+vi.mock('ethers', async () => {
+  const { ethers, BigNumber } = await vi.importActual<any>('ethers')
   return {
     BigNumber,
     ethers: {
       ...ethers,
       providers: {
-        JsonRpcProvider: jest.fn((providerUrl: string) => ({
+        JsonRpcProvider: vi.fn((providerUrl: string) => ({
           // when providerUrl is undefined gasFeeData throws
           getFeeData: providerUrl
-            ? jest.fn(async () => ({
+            ? vi.fn(async () => ({
                 maxFeePerGas: BigNumber.from(10000000000),
                 maxPriorityFeePerGas: BigNumber.from(10000000000),
-                catch: jest.fn(() => null),
+                catch: vi.fn(() => null),
               }))
-            : jest.fn(() => Promise.reject()),
+            : vi.fn(() => Promise.reject()),
         })),
       },
-      Wallet: jest.fn(),
+      Wallet: vi.fn(),
     },
   }
 })
 
-jest.mock('isomorphic-fetch', () => async () => ({
-  json: async () => ({ fast: { maxPriorityFee: 36.37, maxFee: 36.37 } }),
-}))
+vi.mock('isomorphic-fetch', () => {
+  return {
+    default: async () => ({
+      json: async () => ({ fast: { maxPriorityFee: 36.37, maxFee: 36.37 } }),
+    }),
+  }
+})
 
 describe('getGasSettings', () => {
   it('returns correct value from provider', async () => {

@@ -22,7 +22,7 @@ import purchaseRouterV2 from './v2/purchase'
 import priceRouterV2 from './v2/price'
 import contractsRouter from './v2/contracts'
 import subscriptionRouter from './v2/subscriptions'
-import config from '../../config/config'
+import config from '../config/config'
 
 const router = express.Router({ mergeParams: true })
 

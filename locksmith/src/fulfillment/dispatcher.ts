@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import logger from '../logger'
 import { GAS_COST } from '../utils/keyPricer'
 import { getGasSettings } from '../utils/gasSettings'
-import config from '../../config/config'
+import config from '../config/config'
 
 interface KeyToGrant {
   recipient: string

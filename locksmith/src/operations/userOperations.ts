@@ -4,7 +4,7 @@ import { ethereumAddress, UserCreationInput } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
-import config from '../../config/config'
+import config from '../config/config'
 
 import { User, UserReference } from '../models'
 import { generate } from '../utils/recoveryPhrase'

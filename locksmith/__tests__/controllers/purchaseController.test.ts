@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-import app from '../server'
+import app from '../../src/server'
 import { vi } from 'vitest'
 import { Buffer } from 'buffer'
 

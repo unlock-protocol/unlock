@@ -1,8 +1,6 @@
-// import { ethers } from 'ethers'
-// import { BigNumber } from 'ethers/utils'
 import KeyPricer from '../../src/utils/keyPricer'
 import PriceConversion from '../../src/utils/priceConversion'
-
+import { vi } from 'vitest'
 const standardLock = {
   asOf: 227,
   balance: '0.01',
@@ -15,32 +13,36 @@ const standardLock = {
   currencySymbol: null,
 }
 
-const mockWeb3Service: { getLock: any } = {
-  getLock: jest.fn(),
+const mockWeb3Service = {
+  getLock: vi.fn(),
 }
 
-function getMockWeb3Service() {
-  return mockWeb3Service
-}
+vi.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    web3Service: mockWeb3Service,
+  }
+})
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: getMockWeb3Service,
-}))
+vi.mock('../../src/utils/ethPrice', () => {
+  return {
+    default: async () => ({
+      getPrice: vi.fn(() => Promise.resolve(101.18)),
+    }),
+  }
+})
 
-jest.mock('../../src/utils/ethPrice', () => async () => ({
-  getPrice: jest.fn(() => Promise.resolve(101.18)),
-}))
-
-jest.mock('../../src/utils/gasPrice', () => {
-  return jest.fn(() => {
-    return {
-      gasPriceUSD: () => 0.01,
-    }
-  })
+vi.mock('../../src/utils/gasPrice', () => {
+  return {
+    default: vi.fn(() => {
+      return {
+        gasPriceUSD: () => 0.01,
+      }
+    }),
+  }
 })
 
 const keyPricer = new KeyPricer()
-const spy = jest.spyOn(PriceConversion.prototype, 'convertToUSD')
+const spy = vi.spyOn(PriceConversion.prototype, 'convertToUSD')
 describe('KeyPricer', () => {
   describe('keyPriceUSD', () => {
     describe('when the lock currency has an exchange rate on coinbase', () => {

@@ -10,7 +10,7 @@ import logger from '../../logger'
 import { z } from 'zod'
 import { isSoldOut } from '../../operations/lockOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
-import config from '../../../config/config'
+import config from '../../config/config'
 
 const createPaymentIntentBody = z.object({
   recipients: z
