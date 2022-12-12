@@ -1,7 +1,4 @@
 {
-  "ts-node": {
-    "files": true
-  },
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "build",
