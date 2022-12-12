@@ -307,7 +307,7 @@ const NavSectionMobile = ({
   )
 }
 
-const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
+export const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
   const [menuExpanded, setMenuExpanded] = useState(false)
 
   return (
@@ -373,5 +373,3 @@ const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
     </div>
   )
 }
-
-export default HeaderNav

@@ -81,7 +81,7 @@ const FooterAppLink = (action: ActionsProps): JSX.Element | null => {
   return null
 }
 
-const Footer = ({
+export const Footer = ({
   privacyUrl,
   termsUrl,
   menuSections,
@@ -165,5 +165,3 @@ const Footer = ({
     </footer>
   )
 }
-
-export default Footer
