@@ -22,7 +22,7 @@ import {
 } from '@radix-ui/react-avatar'
 import { RiExternalLinkFill as ExternalIcon } from 'react-icons/ri'
 import { getURL } from '~/utils/url'
-import { MAX_UINT } from '~/constants'
+import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
@@ -42,6 +42,43 @@ const KeyItem = ({ label, children }: KeyItemProps) => {
       <span className="font-bold">{children}</span>
     </div>
   )
+}
+
+interface KeyRenewalProps {
+  possibleRenewals: string
+  approvedRenewals: string
+  balance: Record<'amount' | 'symbol', string>
+}
+
+const KeyRenewal = ({
+  possibleRenewals,
+  approvedRenewals,
+  balance,
+}: KeyRenewalProps) => {
+  const possible = ethers.BigNumber.from(possibleRenewals)
+  const approved = ethers.BigNumber.from(approvedRenewals)
+
+  if (possible.lte(0)) {
+    return (
+      <KeyItem label="Renewals">
+        Your balance of {balance.amount} {balance.symbol} is too low to renew
+      </KeyItem>
+    )
+  }
+
+  if (approved.lte(0)) {
+    return <KeyItem label="Renewals">No renewals approved</KeyItem>
+  }
+
+  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+    return <KeyItem label="Renewals">{approved.toString()} times</KeyItem>
+  }
+
+  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+    return <KeyItem label="Renewals">Renews unlimited times</KeyItem>
+  }
+
+  return <KeyItem label="Renewals">-</KeyItem>
 }
 
 interface KeyInfoProps {
@@ -206,13 +243,11 @@ export const KeyInfo = ({
           </KeyItem>
         )}
         {subscription && (
-          <KeyItem label="Renewals">
-            {subscription.possibleRenewals <= 0
-              ? `Your balance of ${subscription.balance.amount} ${subscription.balance.symbol} is too low to renew.`
-              : subscription.approvedRenewals <= 0
-              ? 'No renewals approved.'
-              : `Renews ${subscription.approvedRenewals} times`}
-          </KeyItem>
+          <KeyRenewal
+            possibleRenewals={subscription.possibleRenewals}
+            approvedRenewals={subscription.approvedRenewals}
+            balance={subscription.balance}
+          />
         )}
         {lock.expirationDuration !== MAX_UINT && (
           <KeyItem label="Renewal Duration">
