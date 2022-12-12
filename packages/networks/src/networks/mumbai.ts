@@ -41,7 +41,7 @@ export const mumbai: NetworkConfig = {
   previousDeploys: [],
   description: 'Polygon test network. Do not use for production',
   isTestNetwork: true,
-  freeClaim: 1,
+  maxFreeClaimCost: 1,
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',

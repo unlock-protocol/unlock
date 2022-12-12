@@ -41,7 +41,7 @@ export const avalanche: NetworkConfig = {
   startBlock: 17188332,
   previousDeploys: [],
   isTestNetwork: false,
-  freeClaim: 1,
+  maxFreeClaimCost: 1,
   description:
     'Avalanche is an open, programmable smart contracts platform for decentralized applications.',
   tokens: [
