@@ -373,3 +373,5 @@ export const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
     </div>
   )
 }
+
+export default HeaderNav
