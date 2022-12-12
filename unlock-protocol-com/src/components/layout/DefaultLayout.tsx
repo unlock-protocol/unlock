@@ -133,10 +133,13 @@ const MENU = {
         {
           label: '',
           options: [
+            /* show link when `State of Unlock` page is ready
             {
               label: 'State of Unlock',
-              url: '', // todo: we have this page?
+              url: 'https://unlock-protocol.com/state',
             },
+          },
+          */
             {
               label: 'Unlock DAO',
               url: 'https://unlock-protocol.com/blog/unlock-dao',
