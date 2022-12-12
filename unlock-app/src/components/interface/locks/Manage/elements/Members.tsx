@@ -3,7 +3,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
 import { paginate } from '~/utils/pagination'
@@ -60,7 +59,6 @@ export const Members = ({
 }: MembersProps) => {
   const { account } = useAuth()
   const walletService = useWalletService()
-  const web3Service = useWeb3Service()
   const storageService = useStorageService()
 
   const getMembers = async () => {
