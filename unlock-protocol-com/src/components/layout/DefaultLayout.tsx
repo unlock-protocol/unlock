@@ -74,7 +74,7 @@ const MENU = {
         },
         {
           title: 'Watch Tutorials',
-          embed: '',
+          embed: '', // todo: set embed
         },
       ],
     },
