@@ -61,6 +61,7 @@
     "express-list-endpoints": "6.0.0",
     "express-winston": "4.2.0",
     "fuse.js": "6.6.2",
+    "geoip-country": "4.1.34",
     "graphql": "16.6.0",
     "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.1",
@@ -91,6 +92,7 @@
   "devDependencies": {
     "@types/cookie-parser": "1.4.3",
     "@types/cors": "2.8.12",
+    "@types/geoip-country": "^4.0.0",
     "@types/isomorphic-fetch": "0.0.36",
     "@types/jest": "27.5.2",
     "@types/jsonwebtoken": "8.5.9",
