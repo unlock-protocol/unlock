@@ -1,4 +1,4 @@
-import HeaderNav from './HeaderNav'
+import { HeaderNav } from './HeaderNav'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { CgArrowLongRight as ArrowRight } from 'react-icons/cg'
 
