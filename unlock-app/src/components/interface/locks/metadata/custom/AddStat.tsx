@@ -117,7 +117,7 @@ export function AddStatModal({
 
 export function Stat({ trait_type, max_value, value }: Attribute) {
   return (
-    <div className="flex items-center justify-between px-4 py-2 border rounded-lg border-ui-main-500 w-60">
+    <div className="flex items-center justify-between w-56 px-4 py-2 text-sm border rounded-lg border-ui-main-500">
       <div>{trait_type}</div>
       <div>
         {value} of {max_value}
