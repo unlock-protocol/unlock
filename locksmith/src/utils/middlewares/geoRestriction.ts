@@ -5,8 +5,7 @@ import geoip from 'geoip-country'
 export const createGeoRestriction = (restricted: string[]) => {
   const geoRestriction: RequestHandler = async (request, response, next) => {
     try {
-      const ip =
-        '103.136.43.0' || request.headers['x-forwarded-for'] || request.ip
+      const ip = request.headers['x-forwarded-for'] || request.ip
       if (typeof ip !== 'string') {
         return next()
       }
