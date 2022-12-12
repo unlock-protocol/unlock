@@ -220,7 +220,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-10 w-screen pt-4 transform -translate-x-1/2 left-1/2 sm:px-0">
+              <Popover.Panel className="absolute z-10 w-full pt-4 transform -translate-x-1/2 md:pt-9 left-1/2 sm:px-0">
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
                   <div className="relative grid gap-8 px-10 py-8 bg-white">
                     <Navbar />
@@ -327,7 +327,7 @@ export const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
             </Link>
           </div>
         </div>
-        <div className="relative justify-center hidden gap-12 md:flex">
+        <div className="justify-center hidden gap-12 md:flex">
           {menuSections?.map((menu, index) => (
             <NavSectionDesktop key={index} {...menu} />
           ))}

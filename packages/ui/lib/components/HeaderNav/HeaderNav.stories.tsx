@@ -4,11 +4,13 @@ import { CgArrowLongRight as ArrowRight } from 'react-icons/cg'
 
 export default {
   component: HeaderNav,
-  title: 'Header',
+  title: 'HeaderNav',
 } as ComponentMeta<typeof HeaderNav>
 
 const Template: ComponentStory<typeof HeaderNav> = (args) => (
-  <HeaderNav {...args} />
+  <div className="container px-40 mx-auto">
+    <HeaderNav {...args} />
+  </div>
 )
 
 export const Normal = Template.bind({})
