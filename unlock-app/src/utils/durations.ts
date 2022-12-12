@@ -1,4 +1,12 @@
 import { MAX_UINT, MONTH_NAMES, UNLIMITED_KEYS_DURATION } from '../constants'
+import dayjs from 'dayjs'
+import relative from 'dayjs/plugin/relativeTime'
+import duration from 'dayjs/plugin/duration'
+import custom from 'dayjs/plugin/customParseFormat'
+import { ethers } from 'ethers'
+dayjs.extend(relative)
+dayjs.extend(duration)
+dayjs.extend(custom)
 
 /**
  * Function which computes days, hours, minutes and seconds based on seconds
@@ -6,7 +14,10 @@ import { MAX_UINT, MONTH_NAMES, UNLIMITED_KEYS_DURATION } from '../constants'
  * @param {*} seconds
  * @param {*} intervals
  */
-export function durations(seconds, intervals) {
+export function durations(
+  seconds: number,
+  intervals: Record<string, number>
+): Record<string, number> {
   if (!seconds) {
     return intervals
   }
@@ -41,7 +52,7 @@ export function durations(seconds, intervals) {
  * Given a number of seconds, returns the durations as text (10 days, 3 hours and 40 minutes)
  * @param {number} seconds
  */
-export function durationsAsTextFromSeconds(seconds) {
+export function durationsAsTextFromSeconds(seconds: number) {
   if (seconds === UNLIMITED_KEYS_DURATION) {
     return 'Forever'
   }
@@ -75,7 +86,7 @@ export function durationsAsTextFromSeconds(seconds) {
  * @param seconds
  * @returns {number}
  */
-export function secondsAsDays(seconds) {
+export function secondsAsDays(seconds: number) {
   return Math.ceil(seconds / 86400).toString()
 }
 
@@ -84,7 +95,7 @@ export function secondsAsDays(seconds) {
  * @param timestamp
  * @returns {string}
  */
-export function expirationAsDate(timestamp) {
+export function expirationAsDate(timestamp: any) {
   if (!timestamp || timestamp === MAX_UINT || timestamp === -1) {
     return 'Never'
   }
@@ -107,4 +118,10 @@ export function expirationAsDate(timestamp) {
   const year = expirationDate.getFullYear()
 
   return `${MONTH_NAMES[month]} ${day}, ${year}`
+}
+
+export const durationAsText = (duration: string) => {
+  return dayjs
+    .duration(ethers.BigNumber.from(duration).div(86400).toNumber(), 'day')
+    .humanize()
 }
