@@ -1,50 +1,74 @@
-import { Table, Column, Model, AllowNull, DataType } from 'sequelize-typescript'
+import type { InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface HookEventAttributes {
-  id: number
-  network: number
-  lock?: string
-  key?: string
-  hookId: number
-  topic: string
-  body: any
-  state: string
-  lastError?: string
-  attempts: number
-  createdAt?: Date
-  updatedAt?: Date
+export class HookEvent extends Model<
+  InferAttributes<HookEvent>,
+  InferCreationAttributes<HookEvent>
+> {
+  declare id: CreationOptional<number>
+  declare network: number
+  declare lock?: string
+  declare key?: string
+  declare hookId: number
+  declare topic: string
+  declare body: any
+  declare state: string
+  declare lastError?: string
+  declare attempts: number
+  declare createdAt?: CreationOptional<Date>
+  declare updatedAt?: CreationOptional<Date>
 }
 
-@Table({ tableName: 'HookEvents', timestamps: true })
-export class HookEvent extends Model<HookEventAttributes> {
-  @Column({ primaryKey: true, autoIncrement: true })
-  id!: number
-
-  @Column
-  network!: number
-
-  @Column
-  lock?: string
-
-  @AllowNull(true)
-  @Column
-  key?: string
-
-  @Column
-  hookId!: number
-
-  @Column
-  topic!: string
-
-  @Column({ type: DataType.JSON })
-  body!: any
-
-  @Column
-  state!: string
-
-  @Column
-  lastError?: string
-
-  @Column
-  attempts!: number
-}
+HookEvent.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    network: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    topic: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    lock: {
+      type: DataTypes.STRING,
+    },
+    state: {
+      type: DataTypes.STRING,
+    },
+    body: {
+      type: DataTypes.JSON,
+    },
+    hookId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    attempts: {
+      type: DataTypes.INTEGER,
+    },
+    key: {
+      type: DataTypes.STRING,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    lastError: {
+      type: DataTypes.STRING,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'HookEvents',
+  }
+)

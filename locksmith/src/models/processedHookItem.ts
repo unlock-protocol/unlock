@@ -1,27 +1,57 @@
-import { Table, Model, Column, Validate } from 'sequelize-typescript'
+import type {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface ProcessedHookItemAttributes {
-  id: number
-  network: number
-  type: 'lock' | 'key'
-  objectId: string
+export class ProcessedHookItem extends Model<
+  InferAttributes<ProcessedHookItem>,
+  InferCreationAttributes<ProcessedHookItem>
+> {
+  declare id: CreationOptional<number>
+  declare network: number
+  declare type: string
+  declare objectId: string
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
 
-@Table({ tableName: 'ProcessedHookItems', timestamps: true })
-export class ProcessedHookItem extends Model<ProcessedHookItemAttributes> {
-  @Column({ primaryKey: true, autoIncrement: true })
-  id!: number
-
-  @Column
-  network!: number
-
-  // This is only code side validation so we can add more types in future without changing the migration for database.
-  @Validate({
-    isIn: [['lock', 'key']],
-  })
-  @Column
-  type!: string
-
-  @Column
-  objectId!: string
-}
+ProcessedHookItem.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    network: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    type: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    objectId: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['lock', 'key']],
+      },
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'ProcessedHookItems',
+  }
+)
