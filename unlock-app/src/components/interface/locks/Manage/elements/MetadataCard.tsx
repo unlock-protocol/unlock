@@ -9,16 +9,10 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import dayjs from 'dayjs'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
-import { UNLIMITED_RENEWAL_LIMIT } from '~/constants'
-import relative from 'dayjs/plugin/relativeTime'
-import duration from 'dayjs/plugin/duration'
-import custom from 'dayjs/plugin/customParseFormat'
-dayjs.extend(relative)
-dayjs.extend(duration)
-dayjs.extend(custom)
+import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { durationAsText } from '~/utils/durations'
 
 interface DetailProps {
   label: string
@@ -335,16 +329,11 @@ export const MetadataCard = ({
                   approvedRenewals={subscription.approvedRenewals}
                   balance={subscription.balance}
                 />
-                <MetadataDetail label="Renewal duration">
-                  {dayjs
-                    .duration(
-                      ethers.BigNumber.from(expirationDuration)
-                        .div(86400)
-                        .toNumber(),
-                      'day'
-                    )
-                    .humanize()}
-                </MetadataDetail>
+                {expirationDuration && expirationDuration !== MAX_UINT && (
+                  <MetadataDetail label="Renewal duration">
+                    {durationAsText(expirationDuration)}
+                  </MetadataDetail>
+                )}
               </>
             )}
           </div>
