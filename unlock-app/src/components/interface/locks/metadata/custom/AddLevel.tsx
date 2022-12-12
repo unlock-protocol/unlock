@@ -124,7 +124,7 @@ export function Level({ trait_type, max_value = 100, value = 50 }: Attribute) {
   width = width > 100 ? 100 : width
 
   return (
-    <div className="flex flex-col gap-2 px-4 py-2 border rounded-lg text-brand-dark border-ui-main-500 w-60">
+    <div className="flex flex-col w-56 gap-2 px-4 py-2 text-sm border rounded-lg text-brand-dark border-ui-main-500">
       <div className="flex items-center justify-between ">
         <div>{trait_type}</div>
         <div>
