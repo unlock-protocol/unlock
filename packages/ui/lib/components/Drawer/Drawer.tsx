@@ -7,7 +7,7 @@ interface DrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   children: React.ReactNode
-  title: string
+  title?: string
   description?: string
 }
 
@@ -41,7 +41,7 @@ export const Drawer = ({
           <Transition.Child {...easeOutTransaction}>
             <Dialog.Overlay className="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
           </Transition.Child>
-          <div className="fixed inset-y-0 right-0 w-full max-w-lg">
+          <div className="fixed inset-y-0 right-0 w-full max-w-xl">
             <Transition.Child
               as={React.Fragment}
               enter="transform transition ease-in-out duration-300 sm:duration-500"
@@ -51,7 +51,7 @@ export const Drawer = ({
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <div className="relative w-full h-screen p-6 overflow-y-auto sm:max-w-lg bg-ui-secondary-100">
+              <div className="relative w-full h-screen p-6 overflow-y-auto sm:max-w-xl bg-ui-secondary-100">
                 <Transition.Child {...easeOutTransaction}>
                   <IconButton
                     icon={<CloseIcon className="fill-inherit" size={20} />}
@@ -61,9 +61,11 @@ export const Drawer = ({
                   />
                 </Transition.Child>
                 <div className="mt-4 space-y-2">
-                  <Dialog.Title className="text-xl font-medium text-gray-800">
-                    {title}
-                  </Dialog.Title>
+                  {title && (
+                    <Dialog.Title className="text-xl font-medium text-gray-800">
+                      {title}
+                    </Dialog.Title>
+                  )}
                   {description && (
                     <Dialog.Description className="text-base text-gray-800">
                       {description}

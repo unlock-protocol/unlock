@@ -132,3 +132,6 @@ Love,
 
 The Unlock team
 *********************************************************************`
+
+// We show unlimited renewals as if it's above this.
+export const UNLIMITED_RENEWAL_LIMIT = 100000000000

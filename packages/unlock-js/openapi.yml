@@ -1380,7 +1380,6 @@ paths:
       responses:
         200:
           description: Any active subscription.
-
           content:
             application/json:
               schema:
@@ -1422,10 +1421,6 @@ paths:
                         approvedRenewals:
                           type: string
                           description: Approved number of renewals by user.
-
-                        approvedTime:
-                          type: string
-                          description: Approved time in human readable form.
 
                         possibleRenewals:
                           type: string

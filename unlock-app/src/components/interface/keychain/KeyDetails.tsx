@@ -4,7 +4,11 @@ import 'cross-fetch/polyfill'
 import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import {
+  KeyOrderBy,
+  OrderDirection,
+  SubgraphService,
+} from '@unlock-protocol/unlock-js'
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useConfig } from '~/utils/withConfig'
@@ -85,13 +89,14 @@ export const KeyDetails = () => {
 
   const getKeys = async (network: string) => {
     const service = new SubgraphService()
-
     return await service.keys(
       {
         first: 1000,
         where: {
           owner: account,
         },
+        orderBy: KeyOrderBy.Expiration,
+        orderDirection: OrderDirection.Desc,
       },
       {
         networks: [network],
