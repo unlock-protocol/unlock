@@ -150,21 +150,16 @@ function DateFilter({
 
 function CalcActiveLocksCount(graphData: any[]) {
   const currentDay = Math.round(new Date().getTime() / 86400000)
-  let activeLockList = []
-  const _2DArr = graphData.map((item) =>
-    item.data.unlockDailyDatas
-      .filter((data) => data.id >= currentDay - 30 && data.id <= currentDay)
-      .map((dailyItem) => dailyItem.activeLocks)
-  )
-  for (const activeLock in _2DArr) {
-    if (Array.isArray(_2DArr[activeLock])) {
-      _2DArr[activeLock].forEach((lockAddr) => {
-        activeLockList = activeLockList.concat(lockAddr)
-      })
-    } else {
-      activeLockList = activeLockList.concat(_2DArr[activeLock])
-    }
-  }
+  const unlockDailyDatas = graphData
+    .map((item) => item.data.unlockDailyDatas)
+    .flatMap((data) => data)
+  const activeLockList = unlockDailyDatas
+    .filter(
+      (dailyData) =>
+        dailyData.id > currentDay - 30 && dailyData.id <= currentDay
+    )
+    .map((item) => item.activeLocks)
+    .flatMap((data) => data)
   return [...new Set(activeLockList)].length
 }
 
@@ -174,43 +169,24 @@ function CalcRenderData(
   flag: 0 | 1 | 2,
   filter: string
 ) {
-  if (flag === 1) {
-    const activeLockList = timestampArray.map((timestamp) =>
-      graphData.unlockDailyDatas
-        .filter((data) => data.id >= timestamp - 30 && data.id <= timestamp)
-        .map(({ activeLocks }) => activeLocks)
+  return timestampArray.map((dayId) => {
+    const interval = ['1D', '7D', '1M'].includes(filter) ? 1 : 30
+    const dayDatas = graphData.unlockDailyDatas.filter(
+      (item) => item.id >= dayId - interval && item.id < dayId
     )
-    activeLockList.map((activeLock) => {
-      let _1Dlock = []
-      for (const key in activeLock) {
-        _1Dlock = _1Dlock.concat(activeLock[key])
-      }
-      return [...new Set(_1Dlock)].length
-    })
-  }
-  return timestampArray
-    .map((timestamp) =>
-      graphData.unlockDailyDatas.filter(
-        (data) =>
-          data.id >=
-            timestamp -
-              (filter === '1D' || filter === '7D' || filter === '1M'
-                ? 1
-                : 30) && data.id <= timestamp
-      )
-    )
-    .map((item) =>
-      item.reduce(
-        (a, b) =>
-          a +
-          (flag === 0
-            ? parseInt(b.keysSold)
-            : flag === 1
-            ? b.activeLocks.length
-            : parseInt(b.lockDeployed)),
-        0
-      )
-    )
+
+    if (flag === 0) return dayDatas.reduce((x, y) => x + Number(y.keysSold), 0)
+    if (flag === 1)
+      return dayDatas.reduce((x, y) => {
+        const lastMonthActiveLocks = graphData.unlockDailyDatas
+          .filter((item) => item.id > y.id - 30 && item.id <= y.id)
+          .map((item) => item.activeLocks)
+          .flatMap((lock) => lock)
+        return x + [...new Set(lastMonthActiveLocks)].length
+      }, 0)
+    if (flag === 2)
+      return dayDatas.reduce((x, y) => x + Number(y.lockDeployed), 0)
+  })
 }
 
 export function State() {
@@ -314,7 +290,7 @@ export function State() {
       })
       setSeries([
         {
-          name: 'Keys Sold',
+          name: 'Keys (Memberships) Minted',
           data: CalcRenderData(
             selectedNetworkSubgraphData,
             timestampArray,
@@ -360,53 +336,88 @@ export function State() {
 
   useEffect(() => {
     const run = async () => {
-      const { data } = await getSubgraph4GNP(
-        networks[selectedNetwork].subgraph.endpointV2,
-        currentDay -
-          (filter === '1D'
-            ? 32
-            : filter === '7D'
-            ? 38
-            : filter === '1M'
-            ? 61
-            : filter === '1Y'
-            ? 396
-            : 1030)
-      )
-      setSelectedNetworkSubgraphData(data)
+      if (selectedNetwork === 'ALL') {
+        const subgraphData = await Promise.all(
+          Object.keys(networks).map(async (key) => {
+            if (!networks[key].isTestNetwork) {
+              const { data } = await getSubgraph4GNP(
+                networks[key].subgraph.endpointV2,
+                currentDay - 1030
+              )
+              return data
+            }
+          })
+        )
+        setSelectedNetworkSubgraphData(
+          subgraphData
+            .filter((item) => item)
+            .reduce(
+              (a, b) => ({
+                lockStats: {
+                  totalKeysSold:
+                    a.lockStats.totalKeysSold +
+                    parseInt(b.lockStats.totalKeysSold),
+                  totalLocksDeployed:
+                    a.lockStats.totalLocksDeployed +
+                    parseInt(b.lockStats.totalLocksDeployed),
+                },
+                unlockDailyDatas: [
+                  ...a.unlockDailyDatas,
+                  ...b.unlockDailyDatas,
+                ],
+              }),
+              {
+                lockStats: { totalKeysSold: 0, totalLocksDeployed: 0 },
+                unlockDailyDatas: [],
+              }
+            )
+        )
+      } else {
+        const { data } = await getSubgraph4GNP(
+          networks[selectedNetwork].subgraph.endpointV2,
+          currentDay - 1030
+        )
+        setSelectedNetworkSubgraphData(data)
+      }
     }
     run()
-
-    const gnpPercentageByNetworks = subgraphData.map((networkData) => ({
-      name: networkData.name,
-      gnpPercentage:
-        parseFloat(
-          utils.formatUnits(
-            BigInt(
-              networkData.data.unlockDailyDatas
-                .filter(
-                  (item) =>
-                    item.id >=
-                      currentDay -
-                        (filter === '1D'
-                          ? 2
-                          : filter === '7D'
-                          ? 8
-                          : filter === '1M'
-                          ? 31
-                          : 366) && item.id <= currentDay
-                )
-                .reduce((pv, b) => pv + parseInt(b.grossNetworkProduct), 0)
-            ),
-            '18'
-          )
-        ) /
-        gnpTotalValueByNetwork.filter(
-          (item) => item.name === networkData.name
-        )[0]?.gnpSum,
-    }))
-    setGNPPByNetworks(gnpPercentageByNetworks)
   }, [selectedNetwork, filter, subgraphData])
+
+  useEffect(() => {
+    const gnpPercentageByNetworks = subgraphData.map((networkData) => {
+      const sumOfGNP = parseFloat(
+        utils.formatUnits(
+          BigInt(
+            networkData.data.unlockDailyDatas
+              .filter(
+                (item) =>
+                  item.id >=
+                    currentDay -
+                      (filter === '1D'
+                        ? 2
+                        : filter === '7D'
+                        ? 8
+                        : filter === '1M'
+                        ? 31
+                        : filter === '1Y'
+                        ? 200
+                        : 10000) && item.id <= currentDay
+              )
+              .reduce((pv, b) => pv + parseInt(b.grossNetworkProduct), 0)
+          ),
+          '18'
+        )
+      )
+      return {
+        name: networkData.name,
+        gnpPercentage:
+          sumOfGNP /
+          gnpTotalValueByNetwork.find((item) => item.name === networkData.name)
+            ?.gnpSum,
+      }
+    })
+    setGNPPByNetworks(gnpPercentageByNetworks)
+  }, [filter])
 
   useEffect(() => {
     const run = async () => {
@@ -515,6 +526,9 @@ export function State() {
                     setSelectedNetwork(e.target.value)
                   }}
                 >
+                  <option value="ALL" key="ALL">
+                    All
+                  </option>
                   {gnpValues &&
                     gnpValues
                       .filter(({ network }) => !network.isTestNetwork)

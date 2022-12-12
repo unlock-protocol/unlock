@@ -97,7 +97,8 @@ export const routes: Routes = {
     seo: customizeSEO({
       path: '/state',
       title: 'State of Unlock',
-      description: 'State of Unlock',
+      description:
+        'The state of the Unlock Protocol network, with total locks deployed, active locks and total keys minted. It displays data across all support blockchains.',
     }),
   },
 }
