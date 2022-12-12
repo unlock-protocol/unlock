@@ -1,24 +1,64 @@
-import { Table, Column, Model, BelongsTo } from 'sequelize-typescript'
-import { User, UserAttributes } from './user'
+import { User } from './user'
+import type {
+  Association,
+  CreationOptional,
+  ForeignKey,
+  InferAttributes,
+  InferCreationAttributes,
+  NonAttribute,
+} from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface UserReferenceAttributes {
-  emailAddress: string
-  User: UserAttributes
-  publicKey?: string
-  stripe_customer_id?: string | null
+export class UserReference extends Model<
+  InferAttributes<UserReference>,
+  InferCreationAttributes<UserReference>
+> {
+  declare emailAddress: string
+  declare publicKey: ForeignKey<User['publicKey']>
+  declare User?: NonAttribute<User>
+  declare stripe_customer_id?: string | null // TODO: deprecated!
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
+  public static associations: { User: Association<UserReference, User> }
 }
 
-@Table({ tableName: 'UserReferences', timestamps: true })
-export class UserReference extends Model<UserReferenceAttributes> {
-  @Column
-  emailAddress!: string
+UserReference.init(
+  {
+    emailAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    publicKey: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'Users',
+        key: 'publicKey',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+    },
+    stripe_customer_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'UserReferences',
+  }
+)
 
-  @BelongsTo(() => User, { foreignKey: 'publicKey', targetKey: 'publicKey' })
-  User!: User
-
-  @Column
-  publicKey!: string
-
-  @Column
-  stripe_customer_id!: string // TODO: deprecated!
-}
+UserReference.belongsTo(User, {
+  foreignKey: 'publicKey',
+  targetKey: 'publicKey',
+})
