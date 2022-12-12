@@ -203,7 +203,11 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
     async () => getLock()
   )
 
-  const isManager = true
+  const { isManager } = useLockManager({
+    lockAddress,
+    network: network!,
+  })
+
   return (
     <>
       <AirdropKeysDrawer
@@ -426,52 +430,63 @@ export const ManageLockPage = () => {
     )
   }
   return (
-    <div className="min-h-screen bg-ui-secondary-200 pb-60">
-      <Container>
-        <LockSelection />
-        {!withoutParams && (
-          <div className="pt-9">
-            <div className="flex flex-col gap-3 mb-7">
-              <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
-              {showNotManagerBanner && <NotManagerBanner />}
-            </div>
-            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
-              <div className="lg:col-span-3">
-                <LockDetailCard
+    <>
+      <AirdropKeysDrawer
+        isOpen={airdropKeys}
+        setIsOpen={setAirdropKeys}
+        lockAddress={lockAddress}
+        network={parseInt(network!, 10)}
+      />
+      <div className="min-h-screen bg-ui-secondary-200 pb-60">
+        <Container>
+          <LockSelection />
+          {!withoutParams && (
+            <div className="pt-9">
+              <div className="flex flex-col gap-3 mb-7">
+                <TopActionBar
                   lockAddress={lockAddress}
                   network={lockNetwork!}
                 />
+                {showNotManagerBanner && <NotManagerBanner />}
               </div>
-              <div className="flex flex-col gap-6 lg:col-span-9">
-                <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
-                <ActionBar
-                  lockAddress={lockAddress}
-                  network={lockNetwork!}
-                  isOpen={airdropKeys}
-                  setIsOpen={setAirdropKeys}
-                />
-                <FilterBar
-                  filters={filters}
-                  setFilters={setFilters}
-                  setLoading={setLoading}
-                  setPage={setPage}
-                  page={page}
-                />
-                <Members
-                  lockAddress={lockAddress}
-                  network={lockNetwork!}
-                  filters={filters}
-                  loading={loading}
-                  setPage={setPage}
-                  page={page}
-                  onAirdropKeys={toggleAirdropKeys}
-                />
+              <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
+                <div className="lg:col-span-3">
+                  <LockDetailCard
+                    lockAddress={lockAddress}
+                    network={lockNetwork!}
+                  />
+                </div>
+                <div className="flex flex-col gap-6 lg:col-span-9">
+                  <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                  <ActionBar
+                    lockAddress={lockAddress}
+                    network={lockNetwork!}
+                    isOpen={airdropKeys}
+                    setIsOpen={setAirdropKeys}
+                  />
+                  <FilterBar
+                    filters={filters}
+                    setFilters={setFilters}
+                    setLoading={setLoading}
+                    setPage={setPage}
+                    page={page}
+                  />
+                  <Members
+                    lockAddress={lockAddress}
+                    network={lockNetwork!}
+                    filters={filters}
+                    loading={loading}
+                    setPage={setPage}
+                    page={page}
+                    onAirdropKeys={toggleAirdropKeys}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </Container>
-    </div>
+          )}
+        </Container>
+      </div>
+    </>
   )
 }
 
