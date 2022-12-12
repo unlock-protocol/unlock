@@ -13,7 +13,8 @@ interface Props {
   resetError(): void
 }
 
-export function ErrorFallback({ error, componentStack, eventId }: Props) {
+export function ErrorFallback(props: Props) {
+  const { error, componentStack, eventId } = props
   const [isCopied, copy] = useClipboard(eventId ?? '', {
     successDuration: 1000,
   })
