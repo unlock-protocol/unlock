@@ -21,7 +21,7 @@ export const AboutDisclosure = ({
         <>
           <Disclosure.Button className="flex flex-col w-full gap-6 py-6 md:gap-0 md:items-center md:justify-between md:flex-row">
             <span className="text-5xl md:text-6xl">{icon}</span>
-            <div className="flex items-center justify-between w-full gap-1 md:justify-start md:w-auto">
+            <div className="flex items-start justify-between w-full gap-1 text-left md:items-center md:justify-start md:w-auto">
               <span className="text-5xl font-bold md:text-7xl">{title}</span>
               <Icon icon={PlusIcon} size={30} />
             </div>
