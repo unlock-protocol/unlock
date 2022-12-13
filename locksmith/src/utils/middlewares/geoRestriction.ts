@@ -6,20 +6,36 @@ export const createGeoRestriction = (restricted: string[]) => {
   const geoRestriction: RequestHandler = async (request, response, next) => {
     try {
       const ip = request.headers['x-forwarded-for'] || request.ip
-      if (typeof ip !== 'string') {
+
+      if (!ip) {
         return next()
       }
-      const result = geoip.lookup(ip)
-      if (!result) {
-        logger.info(`Geolocation could not be found for ${ip}`)
-        // Allow if country cannot be identified.
-        return next()
-      }
-      if (restricted.includes(result.country)) {
+
+      // If list of IPs is provided, we will split them and filter out empty strings.
+      const ips =
+        typeof ip === 'string'
+          ? ip
+              .split(',')
+              .filter((item) => !!item)
+              .map((item) => item.trim())
+          : ip
+
+      // If any of the IPs are restricted in the proxy chain, we will reject the request.
+      const restrict = ips.some((ip) => {
+        const result = geoip.lookup(ip)
+        if (!result) {
+          logger.info(`Geolocation could not be found for ${ip}`)
+          return false
+        }
+        return restricted.includes(result.country)
+      })
+
+      if (restrict) {
         return response.status(403).send({
           message: 'Access denied.',
         })
       }
+
       return next()
     } catch (error) {
       // Let it be optimistic and pass if the database is not available or check fails.
