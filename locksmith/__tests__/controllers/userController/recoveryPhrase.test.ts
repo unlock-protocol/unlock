@@ -1,13 +1,9 @@
-const models = require('../../../src/models')
-const app = require('../../../src/app')
-const request = require('supertest')
-
+import request from 'supertest'
+import app from '../../../src/server'
+import { User, UserReference } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),

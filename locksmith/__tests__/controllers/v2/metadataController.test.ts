@@ -4,18 +4,17 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import verifierOperations from '../../../src/operations/verifierOperations'
 import logger from '../../../src/logger'
 
-const app = require('../../../src/app')
-
-jest.setTimeout(600000)
+import app from '../../../src/server'
+import { vi } from 'vitest'
 
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const keyId = 100
 
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string, manager: string) =>
           lockAddress === lock || manager === lockManager,
@@ -23,7 +22,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
           owner,
       }
     }),
-    SubgraphService: jest.fn().mockImplementation(() => {
+    SubgraphService: vi.fn().mockImplementation(() => {
       return {
         key: (filter: any, opts: any) => {
           logger.info(filter, opts)

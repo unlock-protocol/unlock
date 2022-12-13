@@ -7,12 +7,12 @@ import { getStripeCustomerIdForAddress } from './stripeOperations'
 import config from '../config/config'
 
 import { User, UserReference } from '../models'
-import { generate } from '../utils/recoveryPhrase'
+import RecoveryPhrase from '../utils/recoveryPhrase'
 
 export const createUser = async (
   input: UserCreationInput
 ): Promise<string | undefined> => {
-  const recoveryPhrase = generate()
+  const recoveryPhrase = RecoveryPhrase.generate()
   const publicKey = Normalizer.ethereumAddress(input.publicKey)
   const userReference = await UserReference.create(
     {

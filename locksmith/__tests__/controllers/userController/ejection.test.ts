@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-const app = require('../../../src/app')
-const Base64 = require('../../../src/utils/base64')
-const models = require('../../../src/models')
+import app from '../../../src/server'
+import * as Base64 from '../../../src/utils/base64'
+import { User, UserReference } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
 
 function generateTypedData(message: any, messageKey: string) {
@@ -21,9 +21,6 @@ function generateTypedData(message: any, messageKey: string) {
 }
 
 beforeAll(() => {
-  const { User } = models
-  const { UserReference } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),

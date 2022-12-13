@@ -1,10 +1,9 @@
-import { User } from '../../../src/models/user'
-import { UserReference } from '../../../src/models/userReference'
-const app = require('../../../src/app')
+import request from 'supertest'
+import app from '../../../src/server'
+import { User, UserReference } from '../../../src/models'
 
 import UserOperations from '../../../src/operations/userOperations'
 // These tests are slow because we generate private keys
-jest.setTimeout(15000)
 
 beforeAll(() => {
   return Promise.all([
@@ -14,8 +13,6 @@ beforeAll(() => {
 })
 
 describe('encrypted private key retrevial', () => {
-  const request = require('supertest')
-
   describe('when the provided email exists in the persistence layer', () => {
     it('returns the relevant encrypted private key', async () => {
       expect.assertions(1)

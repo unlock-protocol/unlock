@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
-
-const app = require('../../../src/app')
+import app from '../../../src/server'
+import { vi } from 'vitest'
 
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
@@ -81,7 +81,7 @@ const metadatas = [
   },
 ]
 
-jest.mock('../../../src/operations/metadataOperations', () => {
+vi.mock('../../../src/operations/metadataOperations', () => {
   return {
     getKeysMetadata: () => {
       return metadatas
@@ -89,11 +89,11 @@ jest.mock('../../../src/operations/metadataOperations', () => {
   }
 })
 
-jest.mock('../../../src/graphql/datasource/keysByQuery', () => {
+vi.mock('../../../src/graphql/datasource/keysByQuery', () => {
   return {
-    keysByQuery: jest.fn().mockImplementation(() => {
+    keysByQuery: vi.fn().mockImplementation(() => {
       return {
-        get: jest.fn().mockImplementation(() => {
+        get: vi.fn().mockImplementation(() => {
           return Promise.resolve([lock])
         }),
       }
@@ -101,9 +101,9 @@ jest.mock('../../../src/graphql/datasource/keysByQuery', () => {
   }
 })
 
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string) =>
           lockAddress.toLowerCase() === lock.toLowerCase(),

@@ -16,8 +16,7 @@ import { isSoldOut } from '../operations/lockOperations'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
-
-const config = require('../../config/config')
+import config from '../config/config'
 
 export class PurchaseController {
   // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.

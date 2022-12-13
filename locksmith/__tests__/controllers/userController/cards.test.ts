@@ -1,16 +1,12 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 
-const app = require('../../../src/app')
-const Base64 = require('../../../src/utils/base64')
-const models = require('../../../src/models')
+import app from '../../../src/server'
+import * as Base64 from '../../../src/utils/base64'
+import { User, UserReference, StripeCustomer } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
 import StripeOperations from '../../../src/operations/stripeOperations'
-
-const { UserReference } = models
-const { User } = models
-const { StripeCustomer } = models
-
+import { vi } from 'vitest'
 const publicKey = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
 function generateTypedData(message: any, messageKey: string) {
@@ -46,9 +42,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  const { User } = models
-  const { UserReference } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
@@ -200,9 +193,9 @@ describe('when updating cards', () => {
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      jest
-        .spyOn(UserOperations, 'updatePaymentDetails')
-        .mockReturnValueOnce(Promise.resolve(true))
+      vi.spyOn(UserOperations, 'updatePaymentDetails').mockReturnValueOnce(
+        Promise.resolve(true)
+      )
 
       const typedData = generateTypedData(message, 'Save Card')
       const sig = await wallet.signMessage(
@@ -239,9 +232,9 @@ describe('when updating cards', () => {
         `I save my payment card for my account ${message['Save Card'].publicKey}`
       )
 
-      jest
-        .spyOn(UserOperations, 'updatePaymentDetails')
-        .mockReturnValueOnce(Promise.resolve(false))
+      vi.spyOn(UserOperations, 'updatePaymentDetails').mockReturnValueOnce(
+        Promise.resolve(false)
+      )
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -319,9 +312,10 @@ describe('when deleting cards', () => {
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
-      jest
-        .spyOn(StripeOperations, 'deletePaymentDetailsForAddress')
-        .mockReturnValueOnce(Promise.resolve(true))
+      vi.spyOn(
+        StripeOperations,
+        'deletePaymentDetailsForAddress'
+      ).mockReturnValueOnce(Promise.resolve(true))
 
       const typedData = generateTypedData(message, 'Delete Card')
       const sig = await wallet.signMessage(
@@ -351,9 +345,10 @@ describe('when deleting cards', () => {
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
-      jest
-        .spyOn(StripeOperations, 'deletePaymentDetailsForAddress')
-        .mockReturnValueOnce(Promise.resolve(false))
+      vi.spyOn(
+        StripeOperations,
+        'deletePaymentDetailsForAddress'
+      ).mockReturnValueOnce(Promise.resolve(false))
 
       const typedData = generateTypedData(message, 'Delete Card')
       const sig = await wallet.signMessage(

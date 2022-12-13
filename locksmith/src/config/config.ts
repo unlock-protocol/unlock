@@ -1,5 +1,5 @@
+import '../utils/envLoader'
 import { Options } from 'sequelize'
-import urlParser from 'url'
 
 const config = {
   database: {
@@ -33,7 +33,7 @@ if (process.env.ON_HEROKU) {
 
 // Database URL
 if (process.env.DATABASE_URL) {
-  const databaseConfigUrl = new urlParser.URL(process.env.DATABASE_URL)
+  const databaseConfigUrl = new URL(process.env.DATABASE_URL)
   config.database.username = databaseConfigUrl.username
   config.database.password = databaseConfigUrl.password
   config.database.host = databaseConfigUrl.hostname

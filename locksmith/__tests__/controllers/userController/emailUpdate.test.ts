@@ -1,9 +1,9 @@
 import { ethers } from 'ethers'
-const request = require('supertest')
-const models = require('../../../src/models')
-const app = require('../../../src/app')
 import UserOperations from '../../../src/operations/userOperations'
-const Base64 = require('../../../src/utils/base64')
+import request from 'supertest'
+import app from '../../../src/server'
+import * as Base64 from '../../../src/utils/base64'
+import { User, UserReference } from '../../../src/models'
 
 function generateTypedData(message: any, messageKey: string) {
   return {
@@ -25,9 +25,6 @@ function generateTypedData(message: any, messageKey: string) {
 }
 
 beforeAll(() => {
-  const { User } = models
-  const { UserReference } = models
-
   return Promise.all([
     UserReference.truncate({ cascade: true }),
     User.truncate({ cascade: true }),
@@ -35,7 +32,6 @@ beforeAll(() => {
 })
 
 describe("updating a user's email address", () => {
-  const { UserReference } = models
   const wallet = new ethers.Wallet(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
@@ -67,7 +63,7 @@ describe("updating a user's email address", () => {
 
       const response = await request(app)
         .put('/users/user@example.com')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 
@@ -88,7 +84,7 @@ describe("updating a user's email address", () => {
 
       const response = await request(app)
         .put('/users/non-existing@example.com')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
       expect(response.statusCode).toBe(400)
@@ -113,7 +109,7 @@ describe("updating a user's email address", () => {
 
       const response = await request(app)
         .put('/users/ejected_user@example.com')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 

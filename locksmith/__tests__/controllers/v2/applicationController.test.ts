@@ -1,9 +1,6 @@
 import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
-
-const app = require('../../../src/app')
-
-jest.setTimeout(10000)
+import app from '../../../src/server'
 
 // eslint-disable-next-line
 var application: any
