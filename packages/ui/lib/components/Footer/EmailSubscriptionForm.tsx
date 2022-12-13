@@ -49,7 +49,7 @@ export function EmailSubscriptionForm({
       }}
     >
       <div className="z-10 grid w-full gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
-        <div className="flex flex-col md:gap-4">
+        <div className="flex flex-col gap-2 md:gap-4">
           <span className="text-3xl font-semibold md:col-span-1">{title}</span>
           {description && (
             <span className="text-lg text-brand-dark">{description}</span>
