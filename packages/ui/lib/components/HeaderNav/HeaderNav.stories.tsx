@@ -16,7 +16,9 @@ const Template: ComponentStory<typeof HeaderNav> = (args) => (
 export const Normal = Template.bind({})
 
 Normal.args = {
-  logoUrl: 'https://unlock-protocol.com/',
+  logo: {
+    url: 'https://unlock-protocol.com/',
+  },
   actions: [
     {
       title: 'Launch App',
