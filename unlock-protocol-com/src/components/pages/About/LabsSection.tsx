@@ -1,47 +1,3 @@
-const TEAM_MEMBERS = [
-  {
-    name: 'Julien Genestoux',
-    role: 'CEO',
-    img: '/images/pages/about/julien.png',
-    socials: [],
-  },
-  {
-    name: 'Chris Carfi',
-    role: 'Head of Marketing',
-    img: '/images/pages/about/julien.png',
-  },
-  {
-    name: 'Kalidou Diagne',
-    role: 'Software Engineer, Front-End',
-    img: '/images/pages/about/kalidou.png',
-  },
-  {
-    name: 'Clément Renaud',
-    role: 'Senior Software Engineer',
-    img: '/images/pages/about/julien.png',
-  },
-  {
-    name: 'Searchableguy',
-    role: 'Software Engineer',
-    img: '/images/pages/about/julien.png',
-  },
-  {
-    name: 'Angela Steffens',
-    role: 'Head of Developer Relations',
-    img: '/images/pages/about/angela.png',
-  },
-  {
-    name: 'Patrick Workman',
-    role: 'VP, Growth & Partnerships',
-    img: '/images/pages/about/patrick.png',
-  },
-  {
-    name: 'Chiali Tsai',
-    role: 'Designer',
-    img: '/images/pages/about/chiali.png',
-  },
-]
-
 interface TeamProps {
   name: string
   img: string
@@ -51,6 +7,125 @@ interface TeamProps {
     url: string
   }[]
 }
+
+const TEAM_MEMBERS: TeamProps[] = [
+  {
+    name: 'Julien Genestoux',
+    role: 'CEO',
+    img: '/images/pages/about/julien.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/julien51',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/juliengenestoux/',
+      },
+    ],
+  },
+  {
+    name: 'Chris Carfi',
+    role: 'Head of Marketing',
+    img: '/images/pages/about/julien.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/ccarfi',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/ccarfi/',
+      },
+    ],
+  },
+  {
+    name: 'Kalidou Diagne',
+    role: 'Software Engineer, Front-End',
+    img: '/images/pages/about/kalidou.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/kld_diagne',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/kalidou-diagne/',
+      },
+    ],
+  },
+  {
+    name: 'Clément Renaud',
+    role: 'Senior Software Engineer',
+    img: '/images/pages/about/julien.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/clemsos',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/clementrenaud/',
+      },
+    ],
+  },
+  {
+    name: 'Searchableguy',
+    role: 'Software Engineer',
+    img: '/images/pages/about/julien.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/searchableguy',
+      },
+    ],
+  },
+  {
+    name: 'Angela Steffens',
+    role: 'Head of Developer Relations',
+    img: '/images/pages/about/angela.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/wonderwomancode',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/wonderwomancode/',
+      },
+    ],
+  },
+  {
+    name: 'Patrick Workman',
+    role: 'VP, Growth & Partnerships',
+    img: '/images/pages/about/patrick.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/PatrickWorkman',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/patrickworkman/',
+      },
+    ],
+  },
+  {
+    name: 'Chiali Tsai',
+    role: 'Designer',
+    img: '/images/pages/about/chiali.png',
+    socials: [
+      {
+        title: 'Twitter',
+        url: 'https://twitter.com/Chia_Tea',
+      },
+      {
+        title: 'Linked-in',
+        url: 'https://www.linkedin.com/in/chialitsai/',
+      },
+    ],
+  },
+]
 
 const TeamMember = ({ name, role, img, socials }: TeamProps) => {
   return (
@@ -67,7 +142,7 @@ const TeamMember = ({ name, role, img, socials }: TeamProps) => {
         <ul className="flex divide-x">
           {socials?.map(({ title, url }, index) => {
             return (
-              <li key={index} className="px-2">
+              <li key={index} className="px-2 first-of-type:pl-0">
                 <a
                   className="text-gray-600 duration-200 hover:text-brand-ui-primary"
                   href={url}
