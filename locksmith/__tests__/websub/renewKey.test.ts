@@ -126,19 +126,28 @@ vi.mock('../../src/utils/keyPricer', () => {
 })
 
 vi.mock('../../src/utils/gasPrice', () => {
-  return vi.fn(() => {
-    return {
-      gasPriceUSD: (network: number) => Promise.resolve(network === 1 ? 10 : 1),
-    }
-  })
+  return {
+    default: vi.fn().mockImplementation(() => {
+      return {
+        gasPriceUSD: (network: number) =>
+          Promise.resolve(network === 1 ? 10 : 1),
+      }
+    }),
+  }
 })
 
-vi.mock('isomorphic-fetch', () => async () => ({
-  json: async () => ({
-    data: { base: 'USDT', currency: 'USD', amount: 1 },
-  }),
-  ok: true,
-}))
+vi.mock('isomorphic-fetch', () => {
+  return {
+    default: vi.fn().mockImplementation(() => {
+      return {
+        json: async () => ({
+          data: { base: 'USDT', currency: 'USD', amount: 1 },
+        }),
+        ok: true,
+      }
+    }),
+  }
+})
 
 describe('isWorthRenewing', () => {
   it('should return true when gas refund is enough', async () => {

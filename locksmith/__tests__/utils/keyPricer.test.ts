@@ -14,13 +14,14 @@ const standardLock = {
   currencySymbol: null,
 }
 
-const mockWeb3Service = {
-  getLock: vi.fn(),
-}
-
 vi.mock('@unlock-protocol/unlock-js', () => {
+  const mockWeb3Service = vi.fn().mockImplementation(() => {
+    return {
+      getLock: vi.fn().mockResolvedValue(standardLock),
+    }
+  })
   return {
-    web3Service: mockWeb3Service,
+    Web3Service: mockWeb3Service,
   }
 })
 
@@ -49,7 +50,6 @@ describe('KeyPricer', () => {
     describe('when the lock currency has an exchange rate on coinbase', () => {
       it('returns the key price in USD', async () => {
         expect.assertions(1)
-        mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
         await keyPricer.keyPriceUSD(
           '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
           1
@@ -62,7 +62,6 @@ describe('KeyPricer', () => {
   describe('Generate price', () => {
     it('Generate price for a single quantity key', async () => {
       expect.assertions(3)
-      mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
       const pricing = await keyPricer.generate(
         '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
         100
@@ -75,7 +74,6 @@ describe('KeyPricer', () => {
 
     it('Generate price for multiple quantity keys', async () => {
       expect.assertions(3)
-      mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
       const pricing = await keyPricer.generate(
         '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
         100,
@@ -91,7 +89,6 @@ describe('KeyPricer', () => {
   describe('unlockServiceFee', () => {
     it('should return our vig', () => {
       expect.assertions(1)
-
       expect(keyPricer.unlockServiceFee(1000)).toBe(100)
     })
   })

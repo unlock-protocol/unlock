@@ -12,7 +12,7 @@ import { vi } from 'vitest'
 const mockCreateSource = vi.fn()
 
 vi.mock('stripe', () => {
-  return vi.fn().mockImplementation(() => {
+  const mockedStripe = vi.fn().mockImplementation(() => {
     return {
       customers: {
         create: vi
@@ -31,19 +31,25 @@ vi.mock('stripe', () => {
       },
     }
   })
+  return {
+    default: mockedStripe,
+  }
 })
 
 // eslint-disable-next-line
 var mockDispatcher = { purchase: vi.fn() }
 
 vi.mock('../../src/fulfillment/dispatcher', () => {
-  return vi.fn().mockImplementation(() => {
+  const mocked = vi.fn().mockImplementation(() => {
     return mockDispatcher
   })
+  return {
+    default: mocked,
+  }
 })
 
 vi.mock('../../src/utils/keyPricer', () => {
-  return vi.fn().mockImplementation(() => {
+  const mockedKeyPricer = vi.fn().mockImplementation(() => {
     return {
       generate: vi.fn().mockReturnValue({
         keyPrice: 10,
@@ -54,6 +60,9 @@ vi.mock('../../src/utils/keyPricer', () => {
       keyPriceUSD: vi.fn().mockResolvedValue(42),
     }
   })
+  return {
+    default: mockedKeyPricer,
+  }
 })
 
 describe('PaymentProcessor', () => {

@@ -4,9 +4,9 @@ import { ethereumAddress, UserCreationInput } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
-import config from '../config/config'
 import { User, UserReference } from '../models'
 import RecoveryPhrase from '../utils/recoveryPhrase'
+import config from '../config/config'
 
 export const createUser = async (
   input: UserCreationInput

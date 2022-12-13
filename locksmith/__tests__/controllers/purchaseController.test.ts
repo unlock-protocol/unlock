@@ -5,31 +5,32 @@ import { vi } from 'vitest'
 import { Buffer } from 'buffer'
 
 vi.mock('../../src/payment/paymentProcessor', () => {
-  return vi.fn().mockImplementation(() => {
-    const mockPaymentProcessor = {
+  const mockedPaymentProcessor = vi.fn().mockImplementation(() => {
+    const paymentProcessor = {
       chargeUser: vi.fn().mockResolvedValue('true'),
       initiatePurchase: vi.fn().mockResolvedValue('this is a transaction hash'),
       initiatePurchaseForConnectedStripeAccount: vi.fn().mockResolvedValue(''),
     }
-
-    return {
-      default: mockPaymentProcessor,
-    }
+    return paymentProcessor
   })
+  return {
+    default: mockedPaymentProcessor,
+  }
 })
 
 vi.mock('../../src/utils/keyPricer', () => {
-  return vi.fn().mockImplementation(() => {
-    const keyPricer = {
+  const mockedKeyPricer = vi.fn().mockImplementation(() => {
+    const item = {
       keyPriceUSD: vi
         .fn()
         .mockReturnValueOnce(250)
         .mockReturnValueOnce(1000000),
     }
-    return {
-      default: keyPricer,
-    }
+    return item
   })
+  return {
+    default: mockedKeyPricer,
+  }
 })
 
 const participatingLock = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
