@@ -1,6 +1,7 @@
 import { Footer } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
 import { EMAIL_SUBSCRIPTION_FORM } from '../../config/constants'
+import { unlockConfig } from '../../config/unlock'
 import { useMembership } from '../../hooks/useMembership'
 import { Navigation } from '../interface/Navigation'
 
@@ -41,7 +42,7 @@ export function Layout({ children }: Props) {
     actions: [
       {
         label: 'Launch App',
-        url: 'https://staging-app.unlock-protocol.com/locks',
+        url: `${unlockConfig.appURL!}/locks`,
       },
       {
         label: 'Get Unlock Membership',
