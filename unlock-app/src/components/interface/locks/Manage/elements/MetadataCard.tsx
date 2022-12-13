@@ -9,11 +9,14 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import dayjs from 'dayjs'
 import { LoadingIcon } from '../../../Loading'
+import { ethers } from 'ethers'
+import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { durationAsText } from '~/utils/durations'
+
 interface DetailProps {
-  title: string
-  value: React.ReactNode
+  label: string
+  children?: React.ReactNode
   append?: React.ReactNode
 }
 
@@ -21,6 +24,7 @@ interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
+  expirationDuration?: string
 }
 
 const keysToIgnore = [
@@ -32,14 +36,14 @@ const keysToIgnore = [
   'checkedInAt',
 ]
 
-const MetadataDetail = ({ title, value, append }: DetailProps) => {
+const MetadataDetail = ({ label, children, append }: DetailProps) => {
   return (
     <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
       <div className="flex items-center gap-2">
-        <span className="text-base">{title}: </span>
+        <span className="text-base">{label}: </span>
         <div className="flex items-center gap-2">
           <span className="block text-base font-bold break-words md:inline-block">
-            {value}
+            {children}
           </span>
           {append && <div>{append}</div>}
         </div>
@@ -48,10 +52,56 @@ const MetadataDetail = ({ title, value, append }: DetailProps) => {
   )
 }
 
+interface KeyRenewalProps {
+  possibleRenewals: string
+  approvedRenewals: string
+  balance: Record<'amount' | 'symbol', string>
+}
+
+const MembershipRenewal = ({
+  possibleRenewals,
+  approvedRenewals,
+  balance,
+}: KeyRenewalProps) => {
+  const possible = ethers.BigNumber.from(possibleRenewals)
+  const approved = ethers.BigNumber.from(approvedRenewals)
+
+  if (possible.lte(0)) {
+    return (
+      <MetadataDetail label="Renewals">
+        User balance of {balance.amount} {balance.symbol} is too low to renew
+      </MetadataDetail>
+    )
+  }
+
+  if (approved.lte(0)) {
+    return (
+      <MetadataDetail label="Renewals">No renewals approved</MetadataDetail>
+    )
+  }
+
+  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+    return (
+      <MetadataDetail label="Renewals">
+        {approved.toString()} times
+      </MetadataDetail>
+    )
+  }
+
+  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+    return (
+      <MetadataDetail label="Renewals">Renews unlimited times</MetadataDetail>
+    )
+  }
+
+  return <MetadataDetail label="Renewals">-</MetadataDetail>
+}
+
 export const MetadataCard = ({
   metadata,
   owner,
   network,
+  expirationDuration,
 }: MetadataCardProps) => {
   const { account } = useAuth()
   const storageService = useStorageService()
@@ -234,21 +284,20 @@ export const MetadataCard = ({
           )}
           <div className="flex flex-col gap-4">
             {isCheckedIn && (
-              <MetadataDetail title="Checked-in at" value={getCheckInTime()!} />
+              <MetadataDetail label="Checked-in at">
+                {getCheckInTime()}
+              </MetadataDetail>
             )}
 
             {items?.map(([key, value], index) => {
               return (
-                <MetadataDetail
-                  key={`${key}-${index}`}
-                  title={`${key}`}
-                  value={value as any}
-                />
+                <MetadataDetail key={`${key}-${index}`} label={`${key}`}>
+                  {value}
+                </MetadataDetail>
               )
             })}
             <MetadataDetail
-              title="Key Holder"
-              value={owner}
+              label="Key Holder"
               append={
                 <>
                   <Button
@@ -266,36 +315,24 @@ export const MetadataCard = ({
                   </Button>
                 </>
               }
-            />
+            >
+              {owner}
+            </MetadataDetail>
             {isSubscriptionLoading && <LoadingIcon />}
             {!isSubscriptionLoading && subscription && (
               <>
-                {subscription.balance && (
-                  <MetadataDetail
-                    title="User Balance"
-                    value={`${subscription.balance.amount} ${subscription.balance.symbol}`}
-                  />
-                )}
-
-                {subscription.approvedTime && (
-                  <MetadataDetail
-                    title="Renew cycle"
-                    value={subscription.approvedTime}
-                  />
-                )}
-                {subscription.next && (
-                  <MetadataDetail
-                    title="Next Renewal"
-                    value={dayjs
-                      .unix(subscription.next)
-                      .format('D MMM YYYY, h:mm A')}
-                  />
-                )}
-                {subscription.type && (
-                  <MetadataDetail
-                    title="Payment type"
-                    value={subscription.type}
-                  />
+                <MetadataDetail label="User Balance">
+                  {subscription.balance.amount} {subscription.balance.symbol}
+                </MetadataDetail>
+                <MembershipRenewal
+                  possibleRenewals={subscription.possibleRenewals}
+                  approvedRenewals={subscription.approvedRenewals}
+                  balance={subscription.balance}
+                />
+                {expirationDuration && expirationDuration !== MAX_UINT && (
+                  <MetadataDetail label="Renewal duration">
+                    {durationAsText(expirationDuration)}
+                  </MetadataDetail>
                 )}
               </>
             )}

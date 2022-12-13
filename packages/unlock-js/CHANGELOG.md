@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.13
+
+- Export utility types for subgraph service
+
 # 0.32.11
 
 - add `updateTransferFee` in walletService
