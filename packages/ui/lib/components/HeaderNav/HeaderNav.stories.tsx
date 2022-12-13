@@ -19,7 +19,7 @@ Normal.args = {
   logoUrl: 'https://unlock-protocol.com/',
   actions: [
     {
-      label: 'Launch App',
+      title: 'Launch App',
       url: 'https://app.unlock-protocol.com',
       icon: ArrowRight,
     },
@@ -36,28 +36,28 @@ Normal.args = {
         {
           title: 'Core Protocol',
           options: [
-            { label: 'Unlock Smart Contracts', url: 'https://google.it' },
-            { label: 'Deploying Locks', url: 'https://google.it' },
-            { label: 'Hooks', url: 'https://google.it' },
+            { title: 'Unlock Smart Contracts', url: 'https://google.it' },
+            { title: 'Deploying Locks', url: 'https://google.it' },
+            { title: 'Hooks', url: 'https://google.it' },
           ],
         },
         {
           title: 'Integrations',
           options: [
             {
-              label: 'Shopify',
+              title: 'Shopify',
               url: 'https://google.it',
             },
             {
-              label: 'Discourse',
+              title: 'Discourse',
               url: 'https://google.it',
             },
             {
-              label: 'Guild.xyz',
+              title: 'Guild.xyz',
               url: 'https://google.it',
             },
             {
-              label: 'Wordpress',
+              title: 'Wordpress',
               url: 'https://google.it',
             },
           ],
@@ -66,19 +66,19 @@ Normal.args = {
           title: 'Tools',
           options: [
             {
-              label: 'Building token gated applications',
+              title: 'Building token gated applications',
               url: 'https://google.it',
             },
             {
-              label: 'Sign in with Ethereum',
+              title: 'Sign in with Ethereum',
               url: 'https://google.it',
             },
             {
-              label: 'Webhooks',
+              title: 'Webhooks',
               url: 'https://google.it',
             },
             {
-              label: 'Subgraph',
+              title: 'Subgraph',
               url: 'https://google.it',
             },
           ],
@@ -107,7 +107,7 @@ Normal.args = {
           title: 'Articles for you',
           options: [
             {
-              label: 'How to sell membership NFT',
+              title: 'How to sell membership NFT',
               url: 'https://google.it',
             },
           ],

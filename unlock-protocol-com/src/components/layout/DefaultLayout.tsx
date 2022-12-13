@@ -17,16 +17,16 @@ const MENU = {
           title: 'Core Protocol',
           options: [
             {
-              label: 'Unlock Smart Contracts',
+              title: 'Unlock Smart Contracts',
               url: 'https://docs.unlock-protocol.com/core-protocol/',
             },
             {
-              label: 'Deploying Locks',
+              title: 'Deploying Locks',
               url: 'https://docs.unlock-protocol.com/core-protocol/public-lock/deploying-locks/',
             },
             {
-              label: 'Hooks',
-              url: 'https://docs.unlock-protocol.com/core-protocol/public-lock/hooks'
+              title: 'Hooks',
+              url: 'https://docs.unlock-protocol.com/core-protocol/public-lock/hooks',
             },
           ],
         },
@@ -34,15 +34,15 @@ const MENU = {
           title: 'Tools',
           options: [
             {
-              label: 'Unlock-js',
+              title: 'Unlock-js',
               url: 'https://docs.unlock-protocol.com/tools/unlock.js',
             },
             {
-              label: 'Sign in with Ethereum',
+              title: 'Sign in with Ethereum',
               url: 'https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/',
             },
             {
-              label: 'Subgraph',
+              title: 'Subgraph',
               url: 'https://docs.unlock-protocol.com/tutorials/misc/using-subgraphs/',
             },
           ],
@@ -51,19 +51,19 @@ const MENU = {
           title: 'Integrations',
           options: [
             {
-              label: 'Shopify',
+              title: 'Shopify',
               url: 'https://github.com/pwagner/unlock-shopify-app',
             },
             {
-              label: 'Discourse',
+              title: 'Discourse',
               url: 'https://unlock-protocol.com/guides/unlock-discourse-plugin/',
             },
             {
-              label: 'Guild.xyz',
+              title: 'Guild.xyz',
               url: 'https://unlock-protocol.com/guides/guild-xyz/',
             },
             {
-              label: 'Wordpress',
+              title: 'Wordpress',
               url: 'https://unlock-protocol.com/guides/guide-to-the-unlock-protocol-wordpress-plugin/',
             },
           ],
@@ -96,19 +96,19 @@ const MENU = {
           title: 'Articles for you',
           options: [
             {
-              label: 'How to sell membership NFT',
+              title: 'How to sell membership NFT',
               url: 'https://unlock-protocol.com/guides/how-to-sell-membership-nfts/',
             },
             {
-              label: 'Customizing Locks on OpenSea',
+              title: 'Customizing Locks on OpenSea',
               url: 'https://unlock-protocol.com/guides/customizing-locks-on-opensea/',
             },
             {
-              label: 'How to airdrop memberships',
+              title: 'How to airdrop memberships',
               url: 'https://unlock-protocol.com/guides/how-to-airdrop-memberships/',
             },
             {
-              label: 'View all',
+              title: 'View all',
               url: 'https://unlock-protocol.com/guides',
             },
           ],
@@ -127,29 +127,29 @@ const MENU = {
       title: 'More',
       options: [
         {
-          label: '',
+          title: '',
           options: [
             /* show link when `State of Unlock` page is ready
             {
-              label: 'State of Unlock',
+              title: 'State of Unlock',
               url: 'https://unlock-protocol.com/state',
             },
           },
           */
             {
-              label: 'Unlock DAO',
+              title: 'Unlock DAO',
               url: 'https://unlock-protocol.com/blog/unlock-dao',
             },
             {
-              label: 'Roadmap',
+              title: 'Roadmap',
               url: 'https://docs.unlock-protocol.com/governance/roadmap/',
             },
             {
-              label: 'Upcoming Events',
+              title: 'Upcoming Events',
               url: 'https://unlock-protocol.com/upcoming-events',
             },
             {
-              label: 'Grants Program',
+              title: 'Grants Program',
               url: 'https://unlock-protocol.com/grants',
             },
           ],
@@ -159,7 +159,7 @@ const MENU = {
   ],
   actions: [
     {
-      label: 'Launch App',
+      title: 'Launch App',
       url: 'https://app.unlock-protocol.com',
       icon: ArrowRight,
     },

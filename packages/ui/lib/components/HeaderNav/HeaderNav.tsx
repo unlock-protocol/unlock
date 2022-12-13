@@ -12,7 +12,7 @@ import { CgClose as CloseIcon } from 'react-icons/cg'
 
 interface NavbarMenuProps {
   title: string
-  options: { label: string; url: string }[]
+  options: { title: string; url: string }[]
 }
 
 interface NavbarImageProps {
@@ -49,7 +49,7 @@ type MenuSectionProps =
     }
 
 interface ActionsProps {
-  label: string
+  title: string
   url: string
   icon?: IconType
 }
@@ -109,14 +109,14 @@ const NavMenuSection = ({ title, options }: NavbarMenuProps) => {
     <div className="flex flex-col gap-4">
       <NavSectionTitle title={title} />
       <div className="flex flex-col gap-4">
-        {options?.map(({ label, url }, index) => {
+        {options?.map(({ title, url }, index) => {
           return (
             <Link
               key={index}
               href={url}
               className="duration-200 hover:text-brand-ui-primary"
             >
-              {label}
+              {title}
             </Link>
           )
         })}
@@ -278,14 +278,14 @@ const NavSectionMobile = ({
                 <div className="font-bold">{option.title}</div>
                 <div className="flex flex-col gap-4">
                   {'options' in option &&
-                    option.options?.map(({ label, url }, index) => {
+                    option.options?.map(({ title, url }, index) => {
                       return (
                         <Link
                           key={index}
                           href={url}
                           className="duration-200 hover:text-brand-ui-primary"
                         >
-                          {label}
+                          {title}
                         </Link>
                       )
                     })}
@@ -337,13 +337,13 @@ export const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
             <SocialIcons />
           </div>
           <div className="flex gap-2">
-            {actions?.map(({ label, url, icon }, index) => {
+            {actions?.map(({ title, url, icon }, index) => {
               return (
                 <Link href={url} key={index}>
                   <Button variant="outlined-primary" size="small">
                     <div className="flex items-center gap-2">
                       <span className="text-base font-bold text-brand-ui-primary">
-                        {label}
+                        {title}
                       </span>
                       {icon && (
                         <Icon
