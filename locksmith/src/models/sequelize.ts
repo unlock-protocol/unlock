@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize'
 
 import logger from '../logger'
-import config from '../config/sequelize.config'
+import config from '../config/config'
 
 logger.info(`Connecting to database`)
 
