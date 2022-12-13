@@ -92,7 +92,7 @@ export class PurchaseController {
     }
 
     try {
-      const processor = new PaymentProcessor(config.stripeSecret)
+      const processor = new PaymentProcessor(config.stripeSecret!)
       const paymentIntentDetails = await processor.createPaymentIntent(
         Normalizer.ethereumAddress(userAddress),
         normalizedRecipients,
@@ -148,7 +148,7 @@ export class PurchaseController {
     }
 
     try {
-      const processor = new PaymentProcessor(config.stripeSecret)
+      const processor = new PaymentProcessor(config.stripeSecret!)
       const { charge, paymentIntent, paymentIntentRecord } =
         await processor.getPaymentIntentRecordAndCharge({
           userAddress,
