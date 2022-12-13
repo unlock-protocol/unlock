@@ -16,4 +16,10 @@ Sentry.init({
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
   // that it will also get attached to your source maps
+  debug: process.env.NODE_ENV === 'development',
+  attachStacktrace: true,
+  allowUrls: true,
+  enabled: ['production', 'staging'].includes(process.env.NODE_ENV),
+  environment: process.env.NODE_ENV,
+  autoSessionTracking: true,
 })

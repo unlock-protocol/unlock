@@ -1,5 +1,5 @@
 import { Button, Input, Modal } from '@unlock-protocol/ui'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -15,6 +15,9 @@ import type { KeyProps } from './Key'
 import dayjs from 'dayjs'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
+import { ToggleSwitch } from '@unlock-protocol/ui'
+import { durationAsText } from '~/utils/durations'
+import { KeyItem } from './KeyInfoDrawer'
 
 const ExtendMembershipPlaceholder = () => {
   return (
@@ -51,8 +54,8 @@ export const ExtendMembershipModal = ({
   const provider = walletService.providerForNetwork(network)
   const { account } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
-  const [allowanceAmount, setAllowanceAmount] = useState<string>()
-
+  const [renewalAmount, setRenewalAmount] = useState<string>('0')
+  const [unlimited, setUnlimited] = useState(false)
   const { isLoading: isApprovalCurrencyLoading, data: approvalCurrency } =
     useQuery(
       ['approval', lockAddress, network],
@@ -83,30 +86,18 @@ export const ExtendMembershipModal = ({
     ownedKey.lock.tokenAddress &&
     ownedKey.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
 
-  const isExtendable =
-    ownedKey.lock.version >= 11 &&
-    ownedKey.expiration !== MAX_UINT &&
-    isKeyExpired
-
   const isRenewable =
     ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
 
   const extendMembership = async (value: string) => {
-    await approveTransfer(
-      tokenAddress,
-      lockAddress,
-      value,
-      provider,
-      walletService.signer
-    )
-
-    if (isKeyExpired) {
-      await walletService.extendKey({
-        lockAddress: lock?.address,
-        tokenId: ownedKey.tokenId,
-        referrer: account,
-      })
-    }
+    await walletService.extendKey({
+      lockAddress: lock?.address,
+      tokenId: ownedKey.tokenId,
+      referrer: account,
+      recurringPayment: value,
+      totalApproval: unlimited ? MAX_UINT : undefined,
+      extendApprovalOnly: !isKeyExpired,
+    })
   }
 
   const extend = useMutation(extendMembership, {
@@ -120,46 +111,91 @@ export const ExtendMembershipModal = ({
     },
   })
 
+  const message = useMemo(() => {
+    if (!isRenewable && isKeyExpired) {
+      return 'Your membership has expired. You can extend it by purchasing a new membership.'
+    }
+    if (isKeyExpired && isRenewable) {
+      return 'Set the number of renewals you want the membership to renew. Since your membership has also expired, you will be charged for the extension automatically.'
+    }
+    if (isRenewable) {
+      return 'Set the number of renewals you want the membership to renew.'
+    }
+    return 'You can extend your membership by purchasing a new membership.'
+  }, [isRenewable, isKeyExpired])
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {isApprovalCurrencyLoading ? (
         <ExtendMembershipPlaceholder />
       ) : (
         isOpen && (
-          <div className="flex flex-col w-full gap-4">
-            <div>
+          <div className="flex flex-col w-full gap-6">
+            <div className="space-y-2">
               <h3 className="text-xl font-bold"> Extend Membership </h3>
-              <p className="text-gray-600">
-                Set the amount in erc20 to be used for renewing this
-                subscription.
-              </p>
+              <p className="text-gray-600">{message}</p>
             </div>
-            <Input
-              type="number"
-              onChange={(event) => {
-                event.preventDefault()
-                const amount = event.target.value
-                setAllowanceAmount(amount)
-              }}
-              label={`Amount in ${approvalCurrency?.symbol}`}
-            />
+            <div className="divide-y">
+              <KeyItem label="Price">
+                {ethers.utils.formatUnits(
+                  ownedKey.lock.price,
+                  approvalCurrency?.decimal
+                )}{' '}
+                {approvalCurrency?.symbol}
+              </KeyItem>
+              <KeyItem label="Duration">
+                {durationAsText(ownedKey.lock.expirationDuration)}
+              </KeyItem>
+            </div>
+            {isRenewable && (
+              <div>
+                <div className="flex items-center justify-end w-full">
+                  <ToggleSwitch
+                    title="Unlimited Renewals"
+                    enabled={unlimited}
+                    size="small"
+                    setEnabled={(enabled) => {
+                      setRenewalAmount('0')
+                      setUnlimited(enabled)
+                    }}
+                  />
+                </div>
+                <Input
+                  type="number"
+                  disabled={unlimited}
+                  value={renewalAmount}
+                  onChange={(event) => {
+                    event.preventDefault()
+                    const amount = event.target.value
+                    setRenewalAmount(amount)
+                  }}
+                  label={`Number of renewals`}
+                />
+                {!unlimited && (
+                  <div className="text-sm text-gray-600">
+                    Your membership will renew for {renewalAmount} times and
+                    will cost{' '}
+                    {ethers.utils.formatUnits(
+                      ethers.BigNumber.from(ownedKey.lock.price).mul(
+                        renewalAmount || '1'
+                      ),
+                      approvalCurrency?.decimal
+                    )}{' '}
+                    {approvalCurrency?.symbol}
+                  </div>
+                )}
+              </div>
+            )}
             <Button
               type="button"
-              disabled={!allowanceAmount}
+              disabled={extend.isLoading || isApprovalCurrencyLoading}
               onClick={(event) => {
                 event.preventDefault()
-                extend.mutate(
-                  ethers.utils
-                    .parseUnits(
-                      allowanceAmount!,
-                      approvalCurrency?.decimal || 18
-                    )
-                    .toString()
-                )
+                extend.mutate(renewalAmount)
               }}
               loading={extend.isLoading}
             >
-              {extend.isLoading ? 'Increasing allowance...' : 'Confirm'}
+              {extend.isLoading ? 'Extending membership' : 'Extend membership'}
             </Button>
           </div>
         )

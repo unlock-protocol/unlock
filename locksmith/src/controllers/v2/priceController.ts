@@ -1,4 +1,4 @@
-import { Request, Response } from 'express-serve-static-core'
+import { Request, Response } from 'express'
 import { defiLammaPrice } from '../../utils/pricing'
 
 export class PriceController {

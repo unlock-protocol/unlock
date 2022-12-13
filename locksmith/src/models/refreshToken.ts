@@ -1,30 +1,58 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import type {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface RefreshTokenAttributes {
-  id: number
-  token: string
-  nonce: string
-  revoked: boolean | null
-  walletAddress: string
+export class RefreshToken extends Model<
+  InferAttributes<RefreshToken>,
+  InferCreationAttributes<RefreshToken>
+> {
+  declare id: CreationOptional<number>
+  declare token: string
+  declare nonce: string
+  declare revoked?: boolean | null
+  declare walletAddress: string
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
 
-@Table({
-  tableName: 'RefreshTokens',
-  timestamps: true,
-})
-export class RefreshToken extends Model<RefreshTokenAttributes> {
-  @Column({ primaryKey: true, autoIncrement: true })
-  id!: number
-
-  @Column
-  token!: string
-
-  @Column
-  nonce!: string
-
-  @Column
-  revoked!: boolean
-
-  @Column
-  walletAddress!: string
-}
+RefreshToken.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    nonce: {
+      type: DataTypes.STRING,
+    },
+    revoked: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    walletAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'RefreshTokens',
+  }
+)

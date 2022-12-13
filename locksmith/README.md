@@ -40,3 +40,7 @@ Once the database has been configured (per above), make sure to migrate by calli
 ### Running Locksmith
 
 For running in production, use `yarn start` otherwise `yarn dev` which will restart the server on file changes.
+
+### Attributions
+
+This product uses GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).

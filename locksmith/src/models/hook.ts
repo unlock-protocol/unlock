@@ -1,44 +1,69 @@
-import { Table, Column, Model, AllowNull, Validate } from 'sequelize-typescript'
+import type { InferAttributes, InferCreationAttributes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
-interface HookAttributes {
-  id: number
-  network: number
-  topic: string
-  lock?: string
-  expiration: Date
-  mode: 'subscribe' | 'unsubscribe'
-  callback: string
-  secret?: string
+export class Hook extends Model<
+  InferAttributes<Hook>,
+  InferCreationAttributes<Hook>
+> {
+  declare id: CreationOptional<number>
+  declare network: number
+  declare topic: string
+  declare lock?: string
+  declare expiration: Date
+  declare mode: 'subscribe' | 'unsubscribe'
+  declare callback: string
+  declare secret?: string
+  declare createdAt?: CreationOptional<Date>
+  declare updatedAt?: CreationOptional<Date>
 }
 
-@Table({ tableName: 'Hooks', timestamps: true })
-export class Hook extends Model<HookAttributes> {
-  @Column({ primaryKey: true, autoIncrement: true })
-  id!: number
-
-  @Column
-  network!: number
-
-  @Column
-  topic!: string
-
-  @AllowNull(true)
-  @Column
-  lock?: string
-
-  @Column
-  expiration!: Date
-
-  @Validate({
-    isIn: [['subscribe', 'unsubscribe']],
-  })
-  @Column
-  mode!: 'subscribe' | 'unsubscribe'
-
-  @Column
-  callback!: string
-
-  @AllowNull(true)
-  @Column
-  secret?: string
-}
+Hook.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    network: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    topic: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    lock: {
+      type: DataTypes.STRING,
+    },
+    expiration: {
+      type: DataTypes.DATE,
+    },
+    mode: {
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['subscribe', 'unsubscribe']],
+      },
+    },
+    callback: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    secret: {
+      type: DataTypes.STRING,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Hooks',
+  }
+)

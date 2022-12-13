@@ -96,9 +96,9 @@ export function AddPropertyModal({
 export function Property({ trait_type, value }: Attribute) {
   const link = getURL(value?.toString())
   return (
-    <div className="flex flex-col items-center justify-center w-40 h-20 text-center border bg-ui-main-50 rounded-xl aspect-1 border-ui-main-300">
+    <div className="flex flex-col items-center justify-center h-20 text-sm text-center border w-36 bg-ui-main-50 rounded-xl aspect-1 border-ui-main-300">
       <h4 className="text-sm"> {trait_type}</h4>
-      <div className="overflow-hidden font-semibold line-clamp-1 w-36 overflow-ellipsis">
+      <div className="w-32 overflow-hidden font-semibold line-clamp-1 overflow-ellipsis">
         {link ? (
           <a className="inline-flex items-center gap-2" href={link.toString()}>
             link <FiExternalLink />
