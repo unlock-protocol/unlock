@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.20.5",
+    "@chainsafe/dappeteer": "4.0.0-rc.1",
     "@headlessui/react": "1.7.4",
     "@radix-ui/react-avatar": "1.0.1",
     "@sentry/nextjs": "7.24.2",
@@ -60,6 +61,7 @@
     "postmate": "1.5.2",
     "prettier": "2.8.0",
     "prop-types": "15.8.1",
+    "puppeteer": "19.3.0",
     "qr-scanner": "1.4.2",
     "qrcode.react": "3.1.0",
     "react": "17.0.2",
@@ -103,7 +105,8 @@
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "ci": "yarn test && yarn lint"
+    "ci": "yarn test && yarn lint",
+    "e2e": "node ./__e2e__/index.js"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
