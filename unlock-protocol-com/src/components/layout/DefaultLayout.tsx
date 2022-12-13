@@ -26,7 +26,7 @@ const MENU = {
             },
             {
               label: 'Hooks',
-              url: 'https://docs.unlock-protocol.com/core-protocol/smart-contracts-api/archive/hooks', //todo: fix link
+              url: 'https://docs.unlock-protocol.com/core-protocol/public-lock/hooks'
             },
           ],
         },
