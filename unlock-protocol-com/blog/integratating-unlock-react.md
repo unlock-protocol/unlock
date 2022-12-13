@@ -38,9 +38,9 @@ The snippet inserted above needs to know which lock are used on this page. For t
 <script>
   var unlockProtocolConfig = {
     locks: {
-      '0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894': {
+      '0xb77030a7e47a5eb942a4748000125e70be598632': {
         name: 'The Unlock Members lock',
-        network: 100,
+        network: 137,
       },
     },
     icon: 'https://unlock-protocol.com/images/svg/unlock-word-mark.svg'
