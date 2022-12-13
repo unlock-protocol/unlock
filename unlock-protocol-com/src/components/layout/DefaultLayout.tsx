@@ -14,7 +14,9 @@ export function Layout({ children }: Props) {
 
   const FOOTER = {
     subscriptionForm: {
-      description: 'Sign up for updates & fresh news about Unlock.',
+      title: 'Sign up for Updates',
+      description:
+        'Receive fresh news about Unlock, including new features and opportunities to contribute',
       onSubmit: async (email: string) => {
         const { portalId, formGuid } = EMAIL_SUBSCRIPTION_FORM
         const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`
