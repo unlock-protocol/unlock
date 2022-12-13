@@ -42,10 +42,6 @@ const MENU = {
               url: 'https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/',
             },
             {
-              label: 'Webhooks',
-              url: 'https://docs.unlock-protocol.com/tools/locksmith/webhooks/',
-            },
-            {
               label: 'Subgraph',
               url: 'https://docs.unlock-protocol.com/tutorials/misc/using-subgraphs/',
             },
