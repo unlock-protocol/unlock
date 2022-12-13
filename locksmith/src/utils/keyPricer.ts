@@ -26,8 +26,10 @@ export default class KeyPricer {
   async canAffordGrant(network: number): Promise<boolean> {
     const gasPrice = new GasPrice()
     const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
-    const maxFreeClaimCost = networks[network]?.maxFreeClaimCost
-    return gasCost < maxFreeClaimCost
+    if (!networks[network].maxFreeClaimCost) {
+      return false
+    }
+    return gasCost < networks[network].maxFreeClaimCost!
   }
 
   async keyPriceUSD(lockAddress: string, network: number) {
