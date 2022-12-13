@@ -182,9 +182,7 @@ const LockManagerCard = ({
       />
       <div className="flex items-center justify-between px-4 py-2 border border-gray-200 rounded-lg">
         <div className="flex flex-col gap-2 ">
-          <span className="text-base text-brand-dark">
-            {addressMinify(manager)}
-          </span>
+          <span className="text-base text-brand-dark">{manager}</span>
           {isLoggedUser && (
             <span className="text-sm font-semibold text-brand-ui-primary">
               {`That's you`}

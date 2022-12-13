@@ -471,7 +471,7 @@ const LockListItem = ({
           <LockImage lockAddress={address} />
           <span className="text-base font-semibold">{name || 'Default'}</span>
         </div>
-        <span className="ml-auto">{addressMinify(address)}</span>
+        <span className="ml-auto">{address}</span>
       </div>
       <div className="flex gap-2 item-center">
         <Tooltip label="Edit" tip="Edit" side="bottom">

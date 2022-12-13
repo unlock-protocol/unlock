@@ -144,4 +144,4 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infras
 Thank you to all the Members of our lock as well!
 You can easily join this list by clicking on the ❤️ Sponsor button (it's free!) at the top of this page too.
 
-![Members](https://member-wall.unlock-protocol.com/api/members?network=100&locks=0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894&maxHeight=300)
+![Members](https://member-wall.unlock-protocol.com/api/members?network=137&locks=0xb77030a7e47a5eb942a4748000125e70be598632&maxHeight=300)
