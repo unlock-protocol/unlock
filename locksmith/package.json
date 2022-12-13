@@ -4,8 +4,8 @@
   "description": "an unlock storage service",
   "main": "server.js",
   "scripts": {
-    "prod": "cd build && node -r ./config/envLoader.js  ./server.js",
-    "start": "yarn build && node -r ./config/envLoader.js  ./build/server.js",
+    "prod": "node -r ./config/envLoader.js  ./build/src/server.js",
+    "start": "yarn build && node -r ./config/envLoader.js  ./build/src/server.js",
     "debug": "tsx -r ./config/envLoader.js  ./scripts/debug.js",
     "degen": "tsx -r ./config/envLoader.js  ./scripts/la-degen.js",
     "dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js src/server.ts",
@@ -108,6 +108,7 @@
     "nock": "13.2.9",
     "node-mocks-http": "1.12.1",
     "nodemon": "2.0.20",
+    "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
     "supertest": "6.3.1",
     "tsx": "3.12.1",
