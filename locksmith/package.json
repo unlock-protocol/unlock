@@ -101,7 +101,7 @@
     "@types/supertest": "2.0.12",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitest/coverage-c8": "^0.25.8",
+    "@vitest/coverage-c8": "0.25.8",
     "eslint": "8.28.0",
     "eslint-config-standard": "17.0.0",
     "msw": "0.49.1",
