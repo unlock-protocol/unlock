@@ -56,7 +56,10 @@ interface ActionsProps {
 interface NavbarProps {
   menuSections: MenuSectionProps[]
   actions: ActionsProps[]
-  logoUrl: string
+  logo: {
+    url: string
+    src?: string
+  }
 }
 
 const NavSectionTitle = ({
@@ -307,8 +310,10 @@ const NavSectionMobile = ({
   )
 }
 
-export const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
+export const HeaderNav = ({ menuSections, actions, logo }: NavbarProps) => {
   const [menuExpanded, setMenuExpanded] = useState(false)
+  const logoUrl = logo.url || '#'
+  const logoImageSrc = logo.src || LogoUrl
 
   return (
     <div className="relative">
@@ -323,7 +328,7 @@ export const HeaderNav = ({ menuSections, actions, logoUrl }: NavbarProps) => {
               />
             </div>
             <Link href={logoUrl}>
-              <img src={LogoUrl} alt="logo" className="h-5 md:h-6" />
+              <img src={logoImageSrc} alt="logo" className="h-5 md:h-6" />
             </Link>
           </div>
         </div>
