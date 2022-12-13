@@ -34,8 +34,8 @@ const MENU = {
           title: 'Tools',
           options: [
             {
-              label: 'Building token gated applications',
-              url: 'https://docs.unlock-protocol.com/tutorials/building-token-gated-applications/',
+              label: 'Unlock-js',
+              url: 'https://docs.unlock-protocol.com/tools/unlock.js',
             },
             {
               label: 'Sign in with Ethereum',
