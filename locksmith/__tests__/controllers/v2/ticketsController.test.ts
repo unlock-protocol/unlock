@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
 import * as metadataOperations from '../../../src/operations/metadataOperations'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { vi } from 'vitest'
 
 function* keyIdGen() {

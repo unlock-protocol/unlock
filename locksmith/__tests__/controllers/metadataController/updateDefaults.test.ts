@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import * as Base64 from '../../../src/utils/base64'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { vi } from 'vitest'
 
 const wallet2 = new ethers.Wallet(

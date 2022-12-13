@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import UserOperations from '../../../src/operations/userOperations'
 import request from 'supertest'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { User, UserReference } from '../../../src/models'
 import * as Base64 from '../../../src/utils/base64'
 

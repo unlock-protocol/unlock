@@ -1,10 +1,9 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import * as Base64 from '../../../src/utils/base64'
 import { User, UserReference } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
-
 function generateTypedData(message: any, messageKey: string) {
   return {
     types: {

@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { networks } from '@unlock-protocol/networks'
 
-import app from '../../../src/server'
+import app from '../../../src/app'
 
 const networkIds = Object.values(networks)
   .filter((network) => ![31337, 4, 69].includes(network.id))

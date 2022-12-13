@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import * as Base64 from '../../../src/utils/base64'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { vi } from 'vitest'
 
 const keyHolder = [

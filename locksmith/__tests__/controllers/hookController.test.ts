@@ -2,7 +2,7 @@ import { networks } from '@unlock-protocol/networks'
 import request from 'supertest'
 import { Hook } from '../../src/models'
 import { HookController } from '../../src/controllers/hookController'
-import app from '../../src/server'
+import app from '../../src/app'
 import { vi } from 'vitest'
 describe('HookController', () => {
   const controller = new HookController({

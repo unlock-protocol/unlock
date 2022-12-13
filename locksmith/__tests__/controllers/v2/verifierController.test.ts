@@ -1,8 +1,7 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
-
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { vi } from 'vitest'
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'

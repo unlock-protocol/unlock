@@ -1,6 +1,7 @@
 import KeyPricer from '../../src/utils/keyPricer'
 import PriceConversion from '../../src/utils/priceConversion'
 import { vi } from 'vitest'
+
 const standardLock = {
   asOf: 227,
   balance: '0.01',

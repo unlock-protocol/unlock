@@ -3,7 +3,7 @@ import request from 'supertest'
 import { LockMetadata } from '../../../src/models/lockMetadata'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
 import * as Base64 from '../../../src/utils/base64'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { vi } from 'vitest'
 
 const wallet = new ethers.Wallet(

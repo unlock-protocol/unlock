@@ -14,7 +14,7 @@
     "test:db:create": "NODE_ENV=test yarn sequelize db:create",
     "test:db:migrate": "NODE_ENV=test yarn sequelize db:migrate",
     "test:db:drop": "NODE_ENV=test yarn sequelize db:drop",
-    "test:run": "NODE_ENV=test vitest run __tests__/**/*.ts --coverage",
+    "test:run": "NODE_ENV=test vitest run --no-threads --coverage ",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ __tests__/",
     "db:migrate": "yarn sequelize db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",

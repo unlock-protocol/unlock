@@ -5,7 +5,7 @@ import {
   loginAsApplication,
 } from '../../test-helpers/utils'
 import { vi } from 'vitest'
-import app from '../../../src/server'
+import app from '../../../src/app'
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const managedLock = '0xdCc44A9502239657578cB626C5afe9c2615733c0'

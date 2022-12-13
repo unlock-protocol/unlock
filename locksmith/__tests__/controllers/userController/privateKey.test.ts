@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from '../../../src/server'
+import app from '../../../src/app'
 import { User, UserReference } from '../../../src/models'
 
 import UserOperations from '../../../src/operations/userOperations'
