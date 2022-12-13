@@ -19,10 +19,10 @@ export const AboutDisclosure = ({
     <Disclosure>
       {() => (
         <>
-          <Disclosure.Button className="flex flex-col w-full py-6 md:items-center md:justify-between md:flex-row">
+          <Disclosure.Button className="flex flex-col w-full gap-6 py-6 md:gap-0 md:items-center md:justify-between md:flex-row">
             <span className="text-5xl md:text-6xl">{icon}</span>
             <div className="flex items-center justify-between w-full gap-1 md:justify-start md:w-auto">
-              <span className="font-bold text-7xl">{title}</span>
+              <span className="text-5xl font-bold md:text-7xl">{title}</span>
               <Icon icon={PlusIcon} size={30} />
             </div>
           </Disclosure.Button>

@@ -1,10 +1,12 @@
+import { Button } from '@unlock-protocol/ui'
+import { Link } from '../../helpers/Link'
 import { AboutDisclosure } from './AboutDisclosure'
 import { LabsSection } from './LabsSection'
 
 const AboutSection = () => {
   return (
     <div>
-      <div className="container mx-auto md:max-w-xl sm:px-6">
+      <div className="container px-6 mx-auto md:max-w-xl sm:px-0">
         <div className="flex flex-col gap-8">
           <img
             className="h-8 md:h-12"
@@ -32,7 +34,7 @@ const AboutSection = () => {
 const MissionSection = () => {
   return (
     <div className="py-24 bg-brand-yellow">
-      <div className="container grid grid-cols-1 gap-6 mx-auto sm:px-6 max-w-7xl md:grid-cols-2 ">
+      <div className="container grid grid-cols-1 gap-6 px-6 mx-auto sm:px-0 max-w-7xl md:grid-cols-2 ">
         <span className="text-4xl font-bold text-white">
           We believe there is a way to make memberships better and, as a result,
           we believe there is a way to make the web better.
@@ -62,7 +64,7 @@ export function About() {
         }}
         className="h-screen bg-cover"
       >
-        <header className="container flex flex-col gap-6 mx-auto text-center sm:px-6 max-w-7xl md:px-10">
+        <header className="container flex flex-col gap-6 px-6 mx-auto text-center sm:px-0 max-w-7xl md:px-10">
           <span className="text-2xl font-bold text-brand-dark">
             About Unlock Protocol
           </span>
@@ -82,34 +84,49 @@ export function About() {
         <AboutSection />
       </div>
 
-      <div className="container mx-auto my-20 border-t border-b border-gray-700 divide-y divide-gray-700 sm:px-6 max-w-7xl divide-y-black">
-        <AboutDisclosure title="LABS" icon={<>🙌</>}>
-          <LabsSection />
-        </AboutDisclosure>
-        <AboutDisclosure title="PROTOCOL" icon={<>✊</>}>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
-            <span className="text-xl text-brand-dark">
-              Lorem ipsum dolor sit amet consectetur. Viverra iaculis felis
-              elementum mus. Lectus nunc urna elit scelerisque gravida eget sed
-              suscipit. Nunc augue sit velit amet nibh vel egestas pellentesque.
-            </span>
-            <div className="flex items-center justify-center bg-gray-100">
-              <img src="/images/pages/about/protocol.png" alt="protocol" />
+      <div className="container px-6 mx-auto my-20 sm:px-0 max-w-7xl">
+        <div className="border-t border-b border-gray-700 divide-y divide-gray-700 divide-y-black">
+          <AboutDisclosure title="LABS" icon={<>🙌</>}>
+            <LabsSection />
+          </AboutDisclosure>
+          <AboutDisclosure title="PROTOCOL" icon={<>✊</>}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
+              <span className="text-xl text-brand-dark">
+                Lorem ipsum dolor sit amet consectetur. Viverra iaculis felis
+                elementum mus. Lectus nunc urna elit scelerisque gravida eget
+                sed suscipit. Nunc augue sit velit amet nibh vel egestas
+                pellentesque.
+              </span>
+              <div className="flex items-center justify-center bg-gray-100">
+                <img src="/images/pages/about/protocol.png" alt="protocol" />
+              </div>
             </div>
-          </div>
-        </AboutDisclosure>
-        <AboutDisclosure title="DAO" icon={<>🤝</>}>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
-            <span className="text-xl text-brand-dark">
-              Lorem ipsum dolor sit amet consectetur. Viverra iaculis felis
-              elementum mus. Lectus nunc urna elit scelerisque gravida eget sed
-              suscipit. Nunc augue sit velit amet nibh vel egestas pellentesque.
-            </span>
-            <div className="flex items-center justify-center bg-gray-100">
-              <img src="/images/pages/about/dao.png" alt="dao" />
+          </AboutDisclosure>
+          <AboutDisclosure title="DAO" icon={<>🤝</>}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
+              <span className="text-xl text-brand-dark">
+                Lorem ipsum dolor sit amet consectetur. Viverra iaculis felis
+                elementum mus. Lectus nunc urna elit scelerisque gravida eget
+                sed suscipit. Nunc augue sit velit amet nibh vel egestas
+                pellentesque.
+              </span>
+              <div className="flex items-center justify-center bg-gray-100">
+                <img src="/images/pages/about/dao.png" alt="dao" />
+              </div>
             </div>
-          </div>
-        </AboutDisclosure>
+          </AboutDisclosure>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-8 pt-20 pb-24 text-center">
+        <span className="text-2xl font-semibold text-brand-dark">
+          {`We're always hiring, so get in touch if you want to join us!`}
+        </span>
+        <div>
+          <Link href="https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c">
+            <Button>View Job Openings</Button>
+          </Link>
+        </div>
       </div>
     </div>
   )
