@@ -29,7 +29,7 @@ async function main() {
   // Get keys metadata on goerli.
   const keysResponse = await service.keysMetadata(
     5,
-    '0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894',
+    '0xb77030a7e47a5eb942a4748000125e70be598632',
     '1'
   )
   console.log(keysResponse)
