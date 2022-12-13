@@ -152,10 +152,6 @@ const MENU = {
               label: 'Grants Program',
               url: 'https://unlock-protocol.com/grants',
             },
-            {
-              label: 'Got Questions?',
-              url: '', // todo: send to email? discord? form?
-            },
           ],
         },
       ],
