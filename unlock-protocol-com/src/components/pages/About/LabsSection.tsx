@@ -164,10 +164,12 @@ export const LabsSection = () => {
   return (
     <div className="flex flex-col mt-16 gap-14">
       <span className="w-2/3 text-xl text-brand-dark">
-        Unlock Labs created Unlock Protocol to provide an open, shared
-        infrastructure for memberships that removes friction, increases
-        conversion, enables scale, reduces costs, and evolves the web from a
-        business model built on attention toward one based on membership.
+        The Unlock Labs team is the core team that created and currently
+        maintains Unlock Protocol. Unlock Labs created Unlock Protocol to
+        provide an open, shared infrastructure for memberships that removes
+        friction, increases conversion, enables scale, reduces costs, and
+        evolves the web from a business model built on attention toward one
+        based on membership.
       </span>
       <div className="flex flex-col gap-6 mb-16">
         <h2 className="text-4xl font-bold text-uppercase text-brand-dark">

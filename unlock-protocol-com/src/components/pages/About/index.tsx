@@ -14,16 +14,13 @@ const AboutSection = () => {
             alt="img-deco"
           />
           <span className="text-xl text-center">
-            Unlock Protocol belongs to the Unlock Ecosystem, not Unlock Labs,
-            and is governed by the Unlock DAO.
+            Unlock Protocol is an open-source effort and is governed by the
+            Unlock DAO.
             <br />
             <br />
             We aim for Unlock Protocol to be the primitive for every membership,
             both online and offline, around the globe. Together, we will create
             an internet owned and monetized by creators and their supporters.
-            <br />
-            <br />
-            Learn more from the interdependent components of Unlock.
           </span>
         </div>
       </div>
@@ -40,15 +37,13 @@ const MissionSection = () => {
           we believe there is a way to make the web better.
         </span>
         <span className="text-2xl text-white">
-          {`Unlock is a protocol developers, creators, and platforms can use to
-        create memberships. Unlock's goal is to ease implementation and increase
-        conversion from “users” to “members,” creating a much healthier
-        monetization environment for the web.`}
+          {`Unlock is a protocol developers, creators, brands, and platforms can
+          use to create time-based memberships. Unlock’s goal is to ease
+          implementation and increase conversion from “users” to “members,”
+          creating a much healthier monetization environment for the web.`}
           <br />
           <br />
-          In short, Unlock is an open-source, collectively owned,
-          community-governed, peer-to-peer system that creates time-based
-          memberships.
+          Unlock is open-source, collectively owned, and community-governed.
         </span>
       </div>
     </div>
@@ -69,12 +64,14 @@ export function About() {
             About Unlock Protocol
           </span>
           <h1 className="text-5xl font-bold md:text-7xl text-brand-dark">
-            Streamline membership benefits for online communities.
+            Unlock is a protocol for memberships as time-bound non-fungible
+            tokens (NFTs).
           </h1>
           <span className="text-2xl">
-            {`Unlock is meant to help creators find ways to monetize without relying
-          on a middleman. It's an open source protocol — and not a centralized
-          platform that controls everything that happens on it.`}
+            {`Unlock enables developers, creators, brands, and platforms to
+            connect with their fans and followers without a middleman. It's an
+            open source protocol — and not a centralized platform that controls
+            everything that happens on it.`}
           </span>
         </header>
       </div>
@@ -86,32 +83,45 @@ export function About() {
 
       <div className="container px-6 mx-auto my-20 sm:px-0 max-w-7xl">
         <div className="border-t border-b border-gray-700 divide-y divide-gray-700 divide-y-black">
-          <AboutDisclosure title="LABS" icon={<>🙌</>}>
+          <AboutDisclosure title="UNLOCK LABS" icon={<>🙌</>}>
             <LabsSection />
           </AboutDisclosure>
-          <AboutDisclosure title="PROTOCOL" icon={<>✊</>}>
+          <AboutDisclosure title="UNLOCK PROTOCOL" icon={<>✊</>}>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
               <span className="text-xl text-brand-dark">
-                Lorem ipsum dolor sit amet consectetur. Viverra iaculis felis
-                elementum mus. Lectus nunc urna elit scelerisque gravida eget
-                sed suscipit. Nunc augue sit velit amet nibh vel egestas
-                pellentesque.
+                Unlock Protocol is a suite of upgradable smart contracts that
+                create memberships as NFTs. Unlock Protocol can be used as the
+                primitive for every membership, both online and offline, around
+                the globe.
               </span>
               <div className="flex items-center justify-center bg-gray-100">
-                <img src="/images/pages/about/protocol.png" alt="protocol" />
+                <img
+                  src="/images/pages/about/protocol.png"
+                  className="object-contain py-2"
+                  alt="protocol"
+                />
               </div>
             </div>
           </AboutDisclosure>
-          <AboutDisclosure title="DAO" icon={<>🤝</>}>
+          <AboutDisclosure title="UNLOCK DAO" icon={<>🤝</>}>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
               <span className="text-xl text-brand-dark">
-                Lorem ipsum dolor sit amet consectetur. Viverra iaculis felis
-                elementum mus. Lectus nunc urna elit scelerisque gravida eget
-                sed suscipit. Nunc augue sit velit amet nibh vel egestas
-                pellentesque.
+                The Unlock DAO is a decentralized organization of token holders
+                who govern and control Unlock Protocol.
+                <br />
+                <br />
+                UDT is the native governance token of Unlock Protocol. UDT can
+                be earned by active participants in the Unlock Protocol
+                ecosystem, as well as through grants from the Unlock Labs
+                treasury. UDT can be delegated to vote on proposals governing
+                the Unlock Protocol.
               </span>
               <div className="flex items-center justify-center bg-gray-100">
-                <img src="/images/pages/about/dao.png" alt="dao" />
+                <img
+                  src="/images/pages/about/dao.png"
+                  className="object-contain py-2 md:py-5"
+                  alt="dao"
+                />
               </div>
             </div>
           </AboutDisclosure>
