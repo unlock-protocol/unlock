@@ -25,6 +25,9 @@ Normal.args = {
   ],
   subscriptionForm: {
     // example of implementation when form is submitted
+    title: 'Sign up for Updates',
+    description:
+      'Receive fresh news about Unlock, including new features and opportunities to contribute',
     onSubmit: async (email: string) => {
       const endpoint = `https://example.it`
       const options = {
