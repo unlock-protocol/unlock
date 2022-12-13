@@ -11,7 +11,9 @@ const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />
 export const Normal = Template.bind({})
 
 Normal.args = {
-  logoUrl: 'https://unlock-protocol.com/',
+  logo: {
+    url: 'https://unlock-protocol.com/',
+  },
   actions: [
     { label: 'Launch App', url: 'https://app.unlock-protocol.com' },
     {
