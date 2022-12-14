@@ -38,7 +38,9 @@ export function Layout({ children }: Props) {
         await fetch(endpoint, options)
       },
     },
-    logoUrl: 'https://unlock-protocol.com/',
+    logo: {
+      url: 'https://unlock-protocol.com/',
+    },
     privacyUrl: '/privacy',
     termsUrl: '/terms',
     actions: [
