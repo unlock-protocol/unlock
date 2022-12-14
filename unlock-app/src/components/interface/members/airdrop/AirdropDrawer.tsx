@@ -114,18 +114,24 @@ export function AirdropKeysDrawer({
     }, initialValue)
 
     // Grant keys
-    await walletService.grantKeys(
-      {
-        ...options,
-        lockAddress,
-      },
-      {},
-      (error) => {
-        if (error) {
-          throw error
+    await walletService
+      .grantKeys(
+        {
+          ...options,
+          lockAddress,
+        },
+        {},
+        (error) => {
+          if (error) {
+            throw error
+          }
         }
-      }
-    )
+      )
+      .catch((error: any) => {
+        console.log(error)
+        window.debug = error
+        throw new Error('We were unable to airdrop these memberships.')
+      })
 
     ToastHelper.success(
       `Successfully granted ${options.recipients.length} keys to ${items.length} recipients`
