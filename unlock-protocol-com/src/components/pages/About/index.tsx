@@ -1,101 +1,138 @@
-import { PostType } from '../../../utils'
-import { Link } from '../../helpers/Link'
-import { SOCIAL_URL } from '../../../config/seo'
 import { Button } from '@unlock-protocol/ui'
+import { Link } from '../../helpers/Link'
+import { AboutDisclosure } from './AboutDisclosure'
+import { LabsSection } from './LabsSection'
 
-export const ABOUT_POINTS = [
-  'Unlock is meant to help creators find ways to monetize without relying on a middleman. It’s a protocol — and not a centralized platform that controls everything that happens on it.',
-  'The Unlock Protocol can be applied to publishing (paywalls), newsletters, software licenses or even the physical world, such as transportation systems. The web revolutionized all of these areas - Unlock will make them economically viable.',
-  "Unlock's mission is about taking back subscription and access from the domain of middlemen — from a million tiny silos and a handful of gigantic ones — and transforming it into a fundamental business model for the web.",
-]
-
-export interface Props {
-  updates?: PostType[]
+const AboutSection = () => {
+  return (
+    <div>
+      <div className="container px-6 mx-auto md:max-w-xl sm:px-0">
+        <div className="flex flex-col gap-8">
+          <img
+            className="h-8 md:h-12"
+            src="/images/pages/svg/img-deco-about.svg"
+            alt="img-deco"
+          />
+          <span className="text-xl text-center">
+            Unlock Protocol is an open-source effort and is governed by the
+            Unlock DAO.
+            <br />
+            <br />
+            We aim for Unlock Protocol to be the primitive for every membership,
+            both online and offline, around the globe. Together, we will create
+            an internet owned and monetized by creators and their supporters.
+          </span>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export function About({ updates }: Props) {
+const MissionSection = () => {
   return (
-    <div className="p-6">
-      <div className="mx-auto max-w-7xl">
-        <div className="space-y-4">
-          <header className="space-y-2">
-            <h1 className="heading"> About </h1>
-            <p className="sub-heading">
-              Unlock is an open source, Ethereum-based protocol designed to
-              streamline membership benefits for online communities.
-            </p>
-          </header>
-          <main className="grid gap-8">
-            <div className="grid gap-6 sm:grid-cols-2">
-              {ABOUT_POINTS.map((text, index) => (
-                <div key={index} className="w-full p-8 glass-pane rounded-3xl">
-                  <div>
-                    <p>{text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="w-full p-8 glass-pane rounded-3xl">
-              <div className="space-y-8">
-                <header className="grid space-y-2 text-center justify-items-center">
-                  <h2 className="text-xl font-semibold sm:text-3xl">
-                    We are community built and governed
-                  </h2>
-                  <p className="text-lg text-brand-gray sm:text-xl">
-                    Join a community of thousands of developers and creators
-                    building the future of Unlock!
-                  </p>
-                </header>
-                <div className="flex flex-wrap items-center justify-center gap-4">
-                  {Object.entries(SOCIAL_URL).map(([name, href], index) => (
-                    <div key={index}>
-                      <Button>
-                        <Link href={href}>
-                          {name.charAt(0).toUpperCase() + name.slice(1)}
-                        </Link>
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {updates && (
-              <div className="grid gap-6 pb-6">
-                <header className="space-y-2">
-                  <h2 className="text-2xl font-semibold sm:text-3xl">News</h2>
-                  <p className="text-lg text-brand-gray">
-                    Latest updates from Unlock.
-                  </p>
-                </header>
-                <ol className="grid gap-4">
-                  {updates.map((item, index) => {
-                    const date = new Date(
-                      item.frontMatter.publishDate
-                    ).toLocaleDateString()
-                    return (
-                      <li
-                        key={index}
-                        className="flex flex-col gap-y-0 sm:flex-row sm:gap-x-4 md:gap-x-6 lg:gap-x-8"
-                      >
-                        <div className="w-full max-w-[100px]">
-                          <time dateTime={date} className="text-brand-gray">
-                            {date}
-                          </time>
-                        </div>
+    <div className="py-24 bg-brand-yellow">
+      <div className="container grid grid-cols-1 gap-6 px-6 mx-auto sm:px-0 max-w-7xl md:grid-cols-2 ">
+        <span className="text-4xl font-bold text-white">
+          We believe there is a way to make memberships better and, as a result,
+          we believe there is a way to make the web better.
+        </span>
+        <span className="text-2xl text-white">
+          {`Unlock is a protocol developers, creators, brands, and platforms can
+          use to create time-based memberships. Unlock’s goal is to ease
+          implementation and increase conversion from “users” to “members,”
+          creating a much healthier monetization environment for the web.`}
+          <br />
+          <br />
+          Unlock is open-source, collectively owned, and community-governed.
+        </span>
+      </div>
+    </div>
+  )
+}
 
-                        <Link
-                          className="hover:text-brand-ui-primary"
-                          href={`/blog/${item.slug}`}
-                        >
-                          {item.frontMatter.title}
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ol>
+export function About() {
+  return (
+    <div className="pt-16 md:pt-20">
+      <div
+        className={`h-screen bg-cover bg-center bg-[url("/images/pages/png/img-hero-about-sm.png")] md:bg-[url("/images/pages/png/img-hero-about.png")]`}
+      >
+        <header className="container flex flex-col gap-6 px-2 mx-auto text-center sm:px-0 max-w-7xl md:px-10">
+          <span className="text-2xl font-bold text-brand-dark">
+            About Unlock Protocol
+          </span>
+          <h1 className="text-5xl font-bold md:text-7xl text-brand-dark">
+            Unlock is a protocol for memberships as time-bound non-fungible
+            tokens (NFTs).
+          </h1>
+          <span className="text-2xl">
+            {`Unlock enables developers, creators, brands, and platforms to
+            connect with their fans and followers without a middleman. It's an
+            open source protocol — and not a centralized platform that controls
+            everything that happens on it.`}
+          </span>
+        </header>
+      </div>
+
+      <MissionSection />
+      <div className="mt-20 md:mt-32">
+        <AboutSection />
+      </div>
+
+      <div className="container px-6 mx-auto my-20 sm:px-0 max-w-7xl">
+        <div className="border-t border-b border-gray-700 divide-y divide-gray-700 divide-y-black">
+          <AboutDisclosure title="UNLOCK LABS" icon={<>🙌</>}>
+            <LabsSection />
+          </AboutDisclosure>
+          <AboutDisclosure title="UNLOCK PROTOCOL" icon={<>✊</>}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
+              <span className="text-xl text-brand-dark">
+                Unlock Protocol is a suite of upgradable smart contracts that
+                create memberships as NFTs. Unlock Protocol can be used as the
+                primitive for every membership, both online and offline, around
+                the globe.
+              </span>
+              <div className="flex items-center justify-center bg-gray-100">
+                <img
+                  src="/images/pages/about/protocol.png"
+                  className="object-contain py-2"
+                  alt="protocol"
+                />
               </div>
-            )}
-          </main>
+            </div>
+          </AboutDisclosure>
+          <AboutDisclosure title="UNLOCK DAO" icon={<>🤝</>}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:mb-10">
+              <span className="text-xl text-brand-dark">
+                The Unlock DAO is a decentralized organization of token holders
+                who govern and control Unlock Protocol.
+                <br />
+                <br />
+                UDT is the native governance token of Unlock Protocol. UDT can
+                be earned by active participants in the Unlock Protocol
+                ecosystem, as well as through grants from the Unlock Labs
+                treasury. UDT can be delegated to vote on proposals governing
+                the Unlock Protocol.
+              </span>
+              <div className="flex items-center justify-center bg-gray-100">
+                <img
+                  src="/images/pages/about/dao.png"
+                  className="object-contain py-2 md:py-5"
+                  alt="dao"
+                />
+              </div>
+            </div>
+          </AboutDisclosure>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-8 pt-20 pb-24 text-center">
+        <span className="text-2xl font-semibold text-brand-dark">
+          {`We're always hiring, so get in touch if you want to join us!`}
+        </span>
+        <div>
+          <Link href="https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c">
+            <Button>View Job Openings</Button>
+          </Link>
         </div>
       </div>
     </div>
