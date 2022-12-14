@@ -80,6 +80,7 @@ export interface NetworkConfig {
     symbol: string
     address: string
   } | null
+  maxFreeClaimCost?: number 
   requiredConfirmations?: number
   baseCurrencySymbol?: string
   nativeCurrency?: Omit<Token, 'address'>
