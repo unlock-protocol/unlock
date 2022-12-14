@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { ethers } from 'ethers'
 import { generateNonce, SiweMessage } from 'siwe'
-import app from '../../src/app'
+import app from '../app'
 
 describe('Auth Endpoint', () => {
   it('returns an error if redirect_uri is missing', async () => {

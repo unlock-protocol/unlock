@@ -4,7 +4,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import verifierOperations from '../../../src/operations/verifierOperations'
 import logger from '../../../src/logger'
 
-import app from '../../../src/app'
+import app from '../../app'
 import { vi } from 'vitest'
 
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`

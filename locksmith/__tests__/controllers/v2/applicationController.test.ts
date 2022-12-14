@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
-import app from '../../../src/app'
+import app from '../../app'
 
 // eslint-disable-next-line
 var application: any

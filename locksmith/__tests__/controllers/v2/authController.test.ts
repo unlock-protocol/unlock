@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { getWalletInput, sleep } from '../../test-helpers/utils'
-import app from '../../../src/app'
+import app from '../../app'
 
 describe('Auth login endpoints for locksmith', () => {
   it('Nonce are unique on each request', async () => {

@@ -3,7 +3,7 @@ import {
   getKeysWithMetadata,
 } from '../../src/operations/keysOperations'
 import { loginRandomUser } from '../test-helpers/utils'
-import app from '../../src/app'
+import app from '../app'
 import { vi } from 'vitest'
 const network = 4
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'

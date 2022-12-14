@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-
-import app from '../../../src/app'
+import app from '../../app'
 import * as Base64 from '../../../src/utils/base64'
 import { User, UserReference, StripeCustomer } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'

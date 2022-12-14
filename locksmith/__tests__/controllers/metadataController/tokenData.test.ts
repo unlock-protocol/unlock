@@ -4,7 +4,7 @@ import { LockMetadata } from '../../../src/models/lockMetadata'
 import { KeyMetadata } from '../../../src/models/keyMetadata'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
 import { lockTypedData } from '../../test-helpers/typeDataGenerators'
-import app from '../../../src/app'
+import app from '../../app'
 import { vi } from 'vitest'
 import * as Base64 from '../../../src/utils/base64'
 
