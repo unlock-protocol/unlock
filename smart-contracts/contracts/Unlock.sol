@@ -30,10 +30,15 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
 import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
+import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
+import "./interfaces/IWETH.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "hardhat/console.sol";
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -98,6 +103,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
+  // Uniswap
+  address public uniswapRouter;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -134,6 +142,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address indexed impl,
     uint16 indexed version
   );
+
+  event SwapCallRefund(
+    address tokenAddress,
+    uint value
+  );
+
+  // errors
+  error UniswapNotSet();
+  error InsufficientAmount(address);
+  error SwapFailed();
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
@@ -489,6 +507,116 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
+   * Swap tokens and call a function in a lock contract
+   */
+  function swapAndCall(
+    address lock,
+    address srcToken,
+    uint amountInMax,
+    uint keyPrice,
+    uint24 poolFee,
+    bytes memory callData
+  ) public payable returns(bytes memory) {
+    // make sure uniswap is set
+    if(address(uniswapRouter) == address(0)) {
+      revert UniswapNotSet();
+    }
+
+    // get lock pricing 
+    address destToken = IPublicLock(lock).tokenAddress();
+    if (srcToken == destToken) {
+      revert('=');
+    }
+    
+    // TODO: fetch automatically price from lock
+    // uint keyPrice = IPublicLock(lock).keyPrice();
+    // make sure amount is enough to unwrap
+    // if(srcToken == address(0) && amountInMax < msg.value) {
+    //   revert InsufficientAmount(srcToken);
+    // }
+
+    // use WETH for native tokens
+    address tokenIn = srcToken == address(0) ? weth : srcToken;
+
+
+    // wrap native tokens
+    if(srcToken == address(0)) {      
+      IWETH(weth).deposit{value: amountInMax}();
+    } else {
+      // Transfer the specified amount of ERC20 to this contract
+      TransferHelper.safeTransferFrom(srcToken, msg.sender, address(this), amountInMax);
+    }
+
+    // Approve the router to spend ERC20.
+    TransferHelper.safeApprove(tokenIn, uniswapRouter, amountInMax);
+
+    // parse swap args
+    ISwapRouter.ExactOutputSingleParams memory params =
+      ISwapRouter.ExactOutputSingleParams({
+          tokenIn: tokenIn, 
+          tokenOut: destToken,
+          fee: poolFee,
+          recipient: address(this),
+          deadline: block.timestamp,
+          amountOut: keyPrice,
+          amountInMaximum: amountInMax,
+          sqrtPriceLimitX96: 0
+      });
+    
+    // Executes the swap, returning the amountIn needed
+    uint amountIn;
+    try ISwapRouter(uniswapRouter).exactOutputSingle(params) returns (uint _amountIn) {
+      amountIn = _amountIn;
+    } catch  {
+      revert SwapFailed();
+    }
+
+    // approve the lock to spend ERC20 token
+    if(destToken != address(0)) {
+      IERC20(destToken).approve(lock, keyPrice);
+    }
+
+    // call the lock
+    (bool success, bytes memory returnData) = lock.call{
+      value: destToken == address(0) ? amountIn : 0
+    }(
+      callData
+    );
+    
+    if (success == false) {
+      // TODO: refund user if call reverts
+      // catch revert reason
+      assembly {
+        let ptr := mload(0x40)
+        let size := returndatasize()
+        returndatacopy(ptr, 0, size)
+        revert(ptr, size)
+      }
+    }
+
+    // If the actual amount spent is less than the specified maximum amount, refund the msg.sender
+    uint remaining = amountInMax - amountIn;
+    if (remaining > 0) {
+      if(srcToken == address(0)) {
+        // unwrap remaining tokens
+        IWETH(weth).withdraw(remaining);
+        
+        // send back remaining balance
+        payable(msg.sender).transfer(remaining);
+      } else {
+        // clear unsiwap approval
+        TransferHelper.safeApprove(srcToken, uniswapRouter, 0);
+        // refund ERC20
+        TransferHelper.safeTransfer(srcToken, msg.sender, amountInMax - amountIn);
+      }
+      emit SwapCallRefund(srcToken, remaining);
+    }
+
+    // returns whatever the lock returned
+    return returnData;
+  }
+
+  /**
    * Update the GNP by a new value.
    * Emits an event to simply tracking
    */
@@ -535,7 +663,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
-    uint _chainId
+    uint _chainId,
+    address _uniswapRouter
   ) external onlyOwner {
     udt = _udt;
     weth = _weth;
@@ -545,6 +674,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     globalBaseTokenURI = _URI;
 
     chainId = _chainId;
+
+    uniswapRouter = _uniswapRouter;
 
     emit ConfigUnlock(
       _udt,
@@ -635,4 +766,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   {
     return globalTokenSymbol;
   }
+
+  // required to withdraw WETH
+  receive() external payable {}
 }
