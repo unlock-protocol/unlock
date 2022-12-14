@@ -27,7 +27,7 @@ const TEAM_MEMBERS: TeamProps[] = [
   {
     name: 'Chris Carfi',
     role: 'Head of Marketing',
-    img: '/images/pages/about/julien.png',
+    img: '/images/pages/about/ccarfi.png',
     socials: [
       {
         title: 'Twitter',
@@ -57,7 +57,7 @@ const TEAM_MEMBERS: TeamProps[] = [
   {
     name: 'Clément Renaud',
     role: 'Senior Software Engineer',
-    img: '/images/pages/about/julien.png',
+    img: '/images/pages/about/clement.png',
     socials: [
       {
         title: 'Twitter',
@@ -72,7 +72,7 @@ const TEAM_MEMBERS: TeamProps[] = [
   {
     name: 'Searchableguy',
     role: 'Software Engineer',
-    img: '/images/pages/about/julien.png',
+    img: '/images/pages/about/searchableguy.png',
     socials: [
       {
         title: 'Twitter',
