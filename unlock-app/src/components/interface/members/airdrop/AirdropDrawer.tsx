@@ -51,7 +51,14 @@ export function AirdropKeysDrawer({
   const handleConfirm = async (items: AirdropMember[]) => {
     // Create metadata
     const users = items.map(({ recipient: userAddress, ...rest }) => {
-      const data = omit(rest, ['manager', 'neverExpire', 'count', 'expiration'])
+      const data = omit(rest, [
+        'manager',
+        'neverExpire',
+        'count',
+        'expiration',
+        'balance',
+        'line',
+      ])
       const metadata = Object.entries(data).reduce<Metadata>(
         (result, [key, value]) => {
           const [name, designation] = key.split('.')
