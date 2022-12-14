@@ -1,6 +1,7 @@
 interface TeamProps {
   name: string
   img: string
+  imgHover?: string
   role: string
   socials?: {
     title: string
@@ -13,6 +14,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Julien Genestoux',
     role: 'CEO',
     img: '/images/pages/about/julien.png',
+    imgHover: '/images/pages/about/julien-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -28,6 +30,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Chris Carfi',
     role: 'Head of Marketing',
     img: '/images/pages/about/ccarfi.png',
+    imgHover: '/images/pages/about/ccarfi-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -43,6 +46,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Kalidou Diagne',
     role: 'Software Engineer, Front-End',
     img: '/images/pages/about/kalidou.png',
+    imgHover: '/images/pages/about/kalidou-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -58,6 +62,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Clément Renaud',
     role: 'Senior Software Engineer',
     img: '/images/pages/about/clement.png',
+    imgHover: '/images/pages/about/clement-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -73,6 +78,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Searchableguy',
     role: 'Software Engineer',
     img: '/images/pages/about/searchableguy.png',
+    imgHover: '/images/pages/about/searchableguy-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -84,6 +90,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Angela Steffens',
     role: 'Head of Developer Relations',
     img: '/images/pages/about/angela.png',
+    imgHover: '/images/pages/about/angela-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -99,6 +106,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Patrick Workman',
     role: 'VP, Growth & Partnerships',
     img: '/images/pages/about/patrick.png',
+    imgHover: '/images/pages/about/patrick-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -114,6 +122,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     name: 'Chiali Tsai',
     role: 'Designer',
     img: '/images/pages/about/chiali.png',
+    imgHover: '/images/pages/about/chiali-hover.png',
     socials: [
       {
         title: 'Twitter',
@@ -127,15 +136,26 @@ const TEAM_MEMBERS: TeamProps[] = [
   },
 ]
 
-const TeamMember = ({ name, role, img, socials }: TeamProps) => {
+const TeamMember = ({ name, role, img, imgHover, socials }: TeamProps) => {
+  const imageCoverWrapper =
+    'absolute ease-out inset-0 object-cover overflow-hidden bg-center bg-no-repeat rounded-3xl group-hover:cursor-pointer'
   return (
-    <div className="flex flex-col gap-6">
-      <div
-        className="object-cover overflow-hidden bg-center rounded-3xl h-72"
-        style={{
-          backgroundImage: `url("${img}")`,
-        }}
-      ></div>
+    <div className="flex flex-col gap-6 group">
+      <div className="relative h-72">
+        <div
+          className={`${imageCoverWrapper} opacity-90 group-hover:opacity-0`}
+          style={{
+            backgroundImage: `url("${img}")`,
+          }}
+        ></div>
+        <div
+          className={`${imageCoverWrapper} opacity-0 group-hover:opacity-100`}
+          style={{
+            backgroundImage: `url("${imgHover || img}")`,
+          }}
+        ></div>
+      </div>
+
       <div className="flex flex-col gap-2">
         <span className="text-2xl font-bold text-brand-dark">{name}</span>
         <span className="text-2xl font-bold text-brand-ui-primary">{role}</span>
