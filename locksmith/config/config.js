@@ -48,4 +48,9 @@ if (process.env.DATABASE_URL) {
   }
 }
 
+if (process.env.UNLOCK_ENV === 'prod' || process.env.UNLOCK_ENV === 'staging') {
+  config.services.wedlocks =
+    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
+}
+
 module.exports = config
