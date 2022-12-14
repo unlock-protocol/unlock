@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
 const WethABI = require('../test/helpers/ABIs/weth.json')
+// const erc20ABI = require('../test/helpers/ABIs/erc20.json')
 const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
 
 
@@ -15,10 +16,15 @@ const unlockMumbai = '0x058b58dbd676063b90618a1eb0c02bb2d0f27adc'
 const WETHGoerli = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
 const WETHMumbai = '0xfd2ab41e083c75085807c4a65c0a14fdd93d55a9'
 
-// free lock mumbai native currency MATIC
+// ERC20
+const isERC20 = true
+const ERC20Mumbai = '0xeDb95D8037f769B72AAab41deeC92903A98C9E16'
+const ERC20Goerli = '0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1'
+
+// lock mumbai 
 const lockAddressMumbai = "0xcB145795F79DeA52b6c8F2d29cA1e81E7e99A0f2"
 
-//lock deployed from new unlock on Goerli priced in WETH
+// lock Goerli (deployed from new unlock)
 const lockAddressGoerli = "0xde81091C88b56Cb7A1eCd077ac9750a5129C9953"
 
 
@@ -42,21 +48,21 @@ async function main() {
   //   maxPriorityFeePerGas: ethers.utils.parseUnits('100',   'gwei'),
   // } 
 
-  if(chainId === 80001) {
-    const nonce = await ethers.provider.getTransactionCount(deployer.address)
-    const pending = await ethers.provider.getTransactionCount(deployer.address, 'pending')
-    if( nonce < pending ) {
-      // unstuck polygon with some random tx
-      const tx = await deployer.sendTransaction({
-        to: deployer.address,
-        nonce,
-        gasLimit: 58000,
-        gasPrice: ethers.utils.parseUnits('50', 'gwei')
-        // data: 
-      })
-      await tx.wait()
-    }
-  }
+  // if(chainId === 80001) {
+  //   const nonce = await ethers.provider.getTransactionCount(deployer.address)
+  //   const pending = await ethers.provider.getTransactionCount(deployer.address, 'pending')
+  //   if( nonce < pending ) {
+  //     // unstuck polygon with some random tx
+  //     const tx = await deployer.sendTransaction({
+  //       to: deployer.address,
+  //       nonce,
+  //       gasLimit: 58000,
+  //       gasPrice: ethers.utils.parseUnits('50', 'gwei')
+  //       // data: 
+  //     })
+  //     await tx.wait()
+  //   }
+  // }
   
   
   let unlockAddress, lockAddress, destChainId, tokenAddress
@@ -66,7 +72,9 @@ async function main() {
 
     destChainId = 5
     lockAddress = lockAddressGoerli
-    tokenAddress = WETHMumbai
+
+    if(isERC20) tokenAddress = ERC20Mumbai
+    else tokenAddress = WETHMumbai
   } else if(chainId == 5) {    
     unlockAddress = unlockGoerli
     // wethAddress = WETHGoerli
@@ -75,37 +83,58 @@ async function main() {
     lockAddress = lockAddressMumbai 
     // NB: ZERO_ADDRESS will fail
     // tokenAddress = ZERO_ADDRESS
-    tokenAddress = WETHGoerli
+    if(isERC20) tokenAddress = ERC20Goerli
+    else tokenAddress = WETHGoerli
   }
+  
+
+  const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+
+  const keyPrice = isERC20 ? 
+    ethers.utils.parseEther('10') 
+    : 
+    ethers.BigNumber.from('10000000000000000')
+
+  // fee should be zero for testnet
+  const relayerFee = ethers.BigNumber.from('0')
+  const slippage = 300 // in BPS
+
   console.log({
     unlockAddress,
     destChainId,
     lockAddress,
-    tokenAddress
+    tokenAddress,
+    isERC20,
+    keyPrice: ethers.utils.formatEther(keyPrice),
+    slippage,
+    relayerFee,
   })
 
-  const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-
   if(tokenAddress != ZERO_ADDRESS) {
-    const weth = await ethers.getContractAt(WethABI.abi, tokenAddress)
-    console.log(await weth.allowance(deployer.address, unlock.address))
-    // tx = await weth.approve(unlock.address, keyPrice)
-    // await tx.wait()
+    let allowance 
+    let token
+    if(isERC20) {
+      // token = await ethers.getContractAt(erc20ABI.abi, tokenAddress)
+      token = await ethers.getContractAt(WethABI.abi, tokenAddress)
+    }
+    allowance = await token.allowance(deployer.address, unlock.address)
+    
+    if (allowance.lt(keyPrice)) {
+      throw Error(`Unsufficient balance (${allowance.toString()})`)
+      // tx = await weth.approve(unlock.address, keyPrice)
+      // await tx.wait()
+    }
   }
 
-  const keyPrice = ethers.BigNumber.from('10000000000000000')
-  // fee should be zero for testnet
-  const relayerFee = ethers.BigNumber.from('0')
   const value = tokenAddress == ZERO_ADDRESS ? relayerFee.add(keyPrice) : relayerFee
-  const slippage = 300 // in BPS
 
   // parse call data   
   const PublicLock = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
   const purchaseArgs = [
     tokenAddress == ZERO_ADDRESS ? [] : [keyPrice],
     ['0x81a662065d5c83Fa9c5C12d0dc0104dF57f85A12'],
-    ['0x0000000000000000000000000000000000001010'],
-    ['0x0000000000000000000000000000000000001010'],
+    ['0x0000000000000000000000000000000000000000'],
+    ['0x0000000000000000000000000000000000000000'],
     [[]],
   ]
   const { interface } = PublicLock
