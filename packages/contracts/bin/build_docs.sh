@@ -54,12 +54,13 @@ interface references.
 </a>
 
 ## Using Smart Contract Interfaces
+
 A Solidity contract interface is a list of function definitions without 
 implementation. This allows for a seperation between the interface and the 
 implementation much like Abstract Base Classes in Python or C++. 
 
 You can use these interfaces in your own smart contracts to interact with
-Unlock Protocol smart contracts, however they cannot be used to instaiate a
+Unlock Protocol smart contracts, however, they cannot be used to instantiate a
 new class.
 
 ### npm module
@@ -82,6 +83,7 @@ npm i @unlock-protocol/contracts
 ### Examples use cases
 
 #### Creating Hooks
+
 Let\'s say for instance you\'d like people to be able to sell their memberships,
 however you don\'t want people to pass these around too often to limit turnover. 
 So you want to let people transfer them but when they do you don\'t want to 
