@@ -80,7 +80,11 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
         },
       },
       xaxis: xaxis,
-      yaxis: { show: false },
+      yaxis: [
+        { show: false, logarithmic: true },
+        { show: false },
+        { show: false },
+      ],
       tooltip: {
         y: [
           {
@@ -170,20 +174,18 @@ function CalcRenderData(
   filter: string
 ) {
   return timestampArray.map((dayId) => {
-    const interval = ['1D', '7D', '1M'].includes(filter) ? 1 : 30
+    // const interval = ['1D', '7D', '1M'].includes(filter) ? 1 : 30
     const dayDatas = graphData.unlockDailyDatas.filter(
-      (item) => item.id >= dayId - interval && item.id < dayId
+      (item) => item.id >= dayId - 1 && item.id < dayId
     )
-
     if (flag === 0) return dayDatas.reduce((x, y) => x + Number(y.keysSold), 0)
-    if (flag === 1)
-      return dayDatas.reduce((x, y) => {
-        const lastMonthActiveLocks = graphData.unlockDailyDatas
-          .filter((item) => item.id > y.id - 30 && item.id <= y.id)
-          .map((item) => item.activeLocks)
-          .flatMap((lock) => lock)
-        return x + [...new Set(lastMonthActiveLocks)].length
-      }, 0)
+    if (flag === 1) {
+      const lastMonthActiveLocks = graphData.unlockDailyDatas
+        .filter((item) => item.id > dayId - 30 && item.id <= dayId)
+        .map((item) => item.activeLocks)
+        .flatMap((lock) => lock)
+      return [...new Set(lastMonthActiveLocks)].length
+    }
     if (flag === 2)
       return dayDatas.reduce((x, y) => x + Number(y.lockDeployed), 0)
   })
@@ -258,28 +260,28 @@ export function State() {
         case '1Y': {
           xAxisLabels = [...Array(12).keys()].reverse().map((key) => {
             const cur = new Date()
-            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
+            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
               'default',
-              { month: 'short' }
+              { dateStyle: 'short' }
             )
           })
           timestampArray = [...Array(12).keys()].reverse().map((key) => {
             const cur = new Date()
-            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
+            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
           })
           break
         }
         case 'All': {
           xAxisLabels = [...Array(36).keys()].reverse().map((key) => {
             const cur = new Date()
-            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
+            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
               'default',
-              { month: 'short', year: '2-digit' }
+              { dateStyle: 'short' }
             )
           })
           timestampArray = [...Array(36).keys()].reverse().map((key) => {
             const cur = new Date()
-            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
+            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
           })
           break
         }
