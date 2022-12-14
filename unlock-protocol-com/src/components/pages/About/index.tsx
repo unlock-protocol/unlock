@@ -54,10 +54,7 @@ export function About() {
   return (
     <div className="pt-20">
       <div
-        style={{
-          backgroundImage: 'url("/images/pages/png/img-hero-about.png")',
-        }}
-        className="h-screen bg-cover"
+        className={`h-screen bg-cover bg-[url("/images/pages/png/img-hero-about-sm.png")] md:bg-[url("/images/pages/png/img-hero-about.png")]`}
       >
         <header className="container flex flex-col gap-6 px-6 mx-auto text-center sm:px-0 max-w-7xl md:px-10">
           <span className="text-2xl font-bold text-brand-dark">

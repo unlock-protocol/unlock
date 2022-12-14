@@ -140,7 +140,7 @@ const TeamMember = ({ name, role, img, imgHover, socials }: TeamProps) => {
   const imageCoverWrapper =
     'absolute ease-out inset-0 object-cover overflow-hidden bg-center bg-no-repeat rounded-3xl group-hover:cursor-pointer'
   return (
-    <div className="flex flex-col gap-6 group">
+    <div className="flex flex-col gap-2 md:gap-6 group">
       <div className="relative h-72">
         <div
           className={`${imageCoverWrapper} opacity-90 group-hover:opacity-0`}
@@ -182,8 +182,8 @@ const TeamMember = ({ name, role, img, imgHover, socials }: TeamProps) => {
 
 export const LabsSection = () => {
   return (
-    <div className="flex flex-col mt-16 gap-14">
-      <span className="w-2/3 text-xl text-brand-dark">
+    <div className="flex flex-col gap-8 mt-2 md:mt-16 md:gap-14">
+      <span className="w-full text-xl md:w-2/3 text-brand-dark">
         The Unlock Labs team is the core team that created and currently
         maintains Unlock Protocol. Unlock Labs created Unlock Protocol to
         provide an open, shared infrastructure for memberships that removes
@@ -195,7 +195,7 @@ export const LabsSection = () => {
         <h2 className="text-4xl font-bold text-uppercase text-brand-dark">
           MEET THE CORE TEAM
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-10">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-x-6 md:gap-y-10">
           {TEAM_MEMBERS?.map((member, index) => {
             return <TeamMember key={index} {...member} />
           })}
