@@ -26,6 +26,7 @@ import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
+import { durationAsText } from '~/utils/durations'
 dayjs.extend(relative)
 dayjs.extend(duration)
 dayjs.extend(custom)
@@ -251,14 +252,7 @@ export const KeyInfo = ({
         )}
         {lock.expirationDuration !== MAX_UINT && (
           <KeyItem label="Renewal Duration">
-            {dayjs
-              .duration(
-                ethers.BigNumber.from(lock.expirationDuration)
-                  .div(86400)
-                  .toNumber(),
-                'day'
-              )
-              .humanize()}
+            {durationAsText(lock.expirationDuration)}
           </KeyItem>
         )}
       </div>

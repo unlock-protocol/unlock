@@ -1,4 +1,4 @@
-import Footer from './Footer'
+import { Footer } from './Footer'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 export default {
@@ -11,7 +11,9 @@ const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />
 export const Normal = Template.bind({})
 
 Normal.args = {
-  logoUrl: 'https://unlock-protocol.com/',
+  logo: {
+    url: 'https://unlock-protocol.com/',
+  },
   actions: [
     { label: 'Launch App', url: 'https://app.unlock-protocol.com' },
     {
@@ -23,6 +25,9 @@ Normal.args = {
   ],
   subscriptionForm: {
     // example of implementation when form is submitted
+    title: 'Sign up for Updates',
+    description:
+      'Receive fresh news about Unlock, including new features and opportunities to contribute',
     onSubmit: async (email: string) => {
       const endpoint = `https://example.it`
       const options = {

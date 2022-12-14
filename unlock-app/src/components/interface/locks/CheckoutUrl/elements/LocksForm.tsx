@@ -10,7 +10,6 @@ import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
 import { Button, Input, ToggleSwitch, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
 import { LockPicker } from '../../Manage/elements/LockPicker'
@@ -471,7 +470,7 @@ const LockListItem = ({
           <LockImage lockAddress={address} />
           <span className="text-base font-semibold">{name || 'Default'}</span>
         </div>
-        <span className="ml-auto">{addressMinify(address)}</span>
+        <span className="ml-auto">{address}</span>
       </div>
       <div className="flex gap-2 item-center">
         <Tooltip label="Edit" tip="Edit" side="bottom">

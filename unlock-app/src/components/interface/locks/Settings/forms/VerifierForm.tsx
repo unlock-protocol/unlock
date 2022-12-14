@@ -61,9 +61,7 @@ const VerifierCard = ({
   return (
     <div className="flex flex-col items-center justify-between px-4 py-2 border border-gray-200 rounded-lg md:flex-row">
       <div className="flex flex-col gap-2 ">
-        <span className="text-base text-brand-dark">
-          {addressMinify(address)}
-        </span>
+        <span className="text-base text-brand-dark">{address}</span>
         {isCurrentAccount && (
           <span className="text-sm font-semibold text-brand-ui-primary">
             {`That's you`}

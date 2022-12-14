@@ -1,20 +1,12 @@
 import Stripe from 'stripe'
-import Sequelize from 'sequelize'
+import { Op } from 'sequelize'
 import { ethereumAddress, UserCreationInput } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
-
-import RecoveryPhrase = require('../utils/recoveryPhrase')
-
-// eslint-disable-line no-unused-vars
-
-const config = require('../../config/config')
-const models = require('../models')
-
-const { User, UserReference } = models
-
-const { Op } = Sequelize
+import { User, UserReference } from '../models'
+import RecoveryPhrase from '../utils/recoveryPhrase'
+import config from '../config/config'
 
 export const createUser = async (
   input: UserCreationInput
@@ -25,6 +17,7 @@ export const createUser = async (
     {
       emailAddress: Normalizer.emailAddress(input.emailAddress),
       publicKey,
+      // @ts-expect-error - sequelize typescript type is unable to infer the type of the nested object
       User: {
         publicKey,
         recoveryPhrase,
@@ -52,7 +45,7 @@ export const getUserPrivateKeyByEmailAddress = async (
   })
 
   if (user) {
-    return user.User.passwordEncryptedPrivateKey
+    return user.User?.passwordEncryptedPrivateKey
   }
   return null
 }
@@ -68,7 +61,7 @@ export const ejectionStatus = async (
       include: [{ model: User, attributes: ['ejection'] }],
     })
 
-    return !!user.User.ejection
+    return !!user?.User?.ejection
   } catch (e) {
     return false
   }
@@ -105,7 +98,7 @@ export const getUserRecoveryPhraseByEmailAddress = async (
     })
 
     if (user) {
-      return user.User.recoveryPhrase
+      return user.User!.recoveryPhrase
     }
     return null
   } catch (e) {
@@ -138,7 +131,7 @@ export const updatePaymentDetails = async (
   token: string,
   publicKey: string
 ): Promise<boolean> => {
-  const paymentProcessor = new PaymentProcessor(config.stripeSecret)
+  const paymentProcessor = new PaymentProcessor(config.stripeSecret!)
   return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
 }
 
@@ -174,7 +167,7 @@ export const getCards = async (emailAddress: string): Promise<any[]> => {
 export const getCardDetailsFromStripe = async (
   customer_id: any
 ): Promise<any[]> => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
 
@@ -194,7 +187,7 @@ export const getCardDetailsFromStripe = async (
 
 export const eject = async (publicKey: ethereumAddress): Promise<any> => {
   return await User.update(
-    { ejection: Date.now() },
+    { ejection: new Date() },
     {
       where: {
         publicKey: {
