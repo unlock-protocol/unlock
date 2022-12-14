@@ -3,6 +3,14 @@ import { getWalletInput } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi } from 'vitest'
 
+beforeAll(() => {
+  vi.useFakeTimers()
+})
+
+afterAll(() => {
+  vi.clearAllTimers()
+})
+
 describe('Auth login endpoints for locksmith', () => {
   it('Nonce are unique on each request', async () => {
     expect.assertions(3)
@@ -26,8 +34,6 @@ describe('Auth login endpoints for locksmith', () => {
 
   it('User endpoint returns user if provided valid token', async () => {
     expect.assertions(4)
-
-    vi.useFakeTimers()
 
     const { walletAddress, message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
