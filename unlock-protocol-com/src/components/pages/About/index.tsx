@@ -91,13 +91,6 @@ export function About() {
                 primitive for every membership, both online and offline, around
                 the globe.
               </span>
-              <div className="flex items-center justify-center bg-gray-100">
-                <img
-                  src="/images/pages/about/protocol.png"
-                  className="object-contain py-2"
-                  alt="protocol"
-                />
-              </div>
             </div>
           </AboutDisclosure>
           <AboutDisclosure title="UNLOCK DAO" icon={<>🤝</>}>
@@ -113,13 +106,6 @@ export function About() {
                 treasury. UDT can be delegated to vote on proposals governing
                 the Unlock Protocol.
               </span>
-              <div className="flex items-center justify-center bg-gray-100">
-                <img
-                  src="/images/pages/about/dao.png"
-                  className="object-contain py-2 md:py-5"
-                  alt="dao"
-                />
-              </div>
             </div>
           </AboutDisclosure>
         </div>
