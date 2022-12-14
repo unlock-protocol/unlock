@@ -116,7 +116,7 @@ export function Layout({ children }: Props) {
     <>
       <Navigation />
       {children}
-      <div className="container px-6 py-4 mx-auto md:px-0 md:py-14 max-w-7xl">
+      <div className="container px-6 pt-4 mx-auto md:px-0 md:pt-14 max-w-7xl">
         <Footer {...FOOTER} />
       </div>
     </>
