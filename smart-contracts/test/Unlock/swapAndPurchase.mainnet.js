@@ -1,5 +1,6 @@
 const { ethers, unlock, upgrades } = require('hardhat')
 const { impersonate, DAI, WETH, ADDRESS_ZERO, UNISWAP_ROUTER_ADDRESS, deployLock } = require('../helpers')
+const { expect } = require('chai')
 
 // get unlock address in mainnet
 const { networks : { 1 : { unlockAddress }} } = unlock
@@ -90,11 +91,10 @@ describe(`swapAndCall`, function() {
     })
 
     describe('purchase', () => {
-      let calldata, receipt
       const value = ethers.utils.parseEther('.1')
-      let balanceBefore
-      let lockBalanceBefore
-      beforeEach(async () => {
+      let calldata, receipt, balanceBefore, lockBalanceBefore
+
+      before  (async () => {
         const args = [
             [keyPrice], // keyPrices
             [keyOwner.address], // recipients
@@ -105,7 +105,8 @@ describe(`swapAndCall`, function() {
           
         // parse call data
         calldata = await lock.interface.encodeFunctionData('purchase', args)
-        
+        balanceBefore = await ethers.provider.getBalance(keyOwner.address)
+        lockBalanceBefore = await dai.balanceOf(lock.address)        
 
         // do the swap
         const poolFee = 3000
@@ -121,8 +122,6 @@ describe(`swapAndCall`, function() {
           )
         receipt = await tx.wait()
 
-        balanceBefore = await ethers.provider.getBalance(keyOwner.address)
-        lockBalanceBefore = await dai.balanceOf(lock.address)
       })
 
       it('purchase a key for the sender', async() => {
@@ -132,15 +131,20 @@ describe(`swapAndCall`, function() {
       })
       
       it('lock has received the tokens', async () => {
+        console.log({
+          lockBalanceBefore: lockBalanceBefore.toString(),
+          lockBalanceAfter : (await dai.balanceOf(lock.address)).toString(),
+        })
         expect(
           await dai.balanceOf(lock.address)
         ).to.equal(lockBalanceBefore.add(keyPrice))
       })
 
       it('emit an event', async () => {
-        console.log(receipt)
+        // console.log(receipt)
         const { events } = receipt
         const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        console.log(args)
         expect(args.tokenAddress).to.equal(ADDRESS_ZERO)
 
         const balanceAfter = await ethers.provider.getBalance(keyOwner.address)
@@ -152,17 +156,17 @@ describe(`swapAndCall`, function() {
         const balanceAfter = await ethers.provider.getBalance(keyOwner.address)
         const remaining = balanceBefore.sub(balanceAfter)
         console.log(ethers.utils.formatEther(remaining))
-        expect(remaining.gte(ethers.parseEther('.09'))).to.equal(true)
+        expect(remaining.gte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
 
       it('refund user when lock call reverts')
     })
 
-    describe('extend')
+    // describe('extend')
   })
 
-  describe('use DAI with a lock priced in ETH')
-  describe('use USDC with a lock priced in DAI')
-  describe('use SHIBA INU with a lock priced in ETH')
+  // describe('use DAI with a lock priced in ETH')
+  // describe('use USDC with a lock priced in DAI')
+  // describe('use SHIBA INU with a lock priced in ETH')
 
 })
