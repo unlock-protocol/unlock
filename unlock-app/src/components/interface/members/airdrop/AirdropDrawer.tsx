@@ -129,7 +129,6 @@ export function AirdropKeysDrawer({
       )
       .catch((error: any) => {
         console.log(error)
-        window.debug = error
         throw new Error('We were unable to airdrop these memberships.')
       })
 
