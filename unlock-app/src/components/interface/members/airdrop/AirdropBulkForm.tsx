@@ -11,6 +11,8 @@ import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
+const MAX_SIZE = 50
+
 interface Props {
   lock: Lock
   onConfirm(members: AirdropMember[]): void | Promise<void>
@@ -18,6 +20,7 @@ interface Props {
 
 export function AirdropBulkForm({ lock, onConfirm }: Props) {
   const [list, { set, clear, removeAt }] = useList<AirdropMember>([])
+  const [error, setError] = useState('')
   const web3Service = useWeb3Service()
   const { account } = useAuth()
   const [isConfirming, setIsConfirming] = useState(false)
@@ -36,15 +39,18 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
     },
     onDropAccepted: async ([file]) => {
       const text = await file.text()
-      let discarded = 0
+      const discarded = []
       const json: any[] =
         parse(text, {
           delimiter: [',', ';'],
           columns: true,
         }) || []
 
+      const linesWithError: number[] = []
+      const duplicates: AirdropMember[] = []
+
       const members = await Promise.all(
-        json.map(async (item) => {
+        json.map(async (item, line) => {
           try {
             const record = AirdropMember.parse(item)
             const [recipient, manager] = await Promise.all([
@@ -52,62 +58,84 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
               getAddressForName(record.manager || account!),
             ])
 
+            // Deduplicate by looking at existing keys
             const balance = await web3Service.totalKeys(
               lock.address,
               recipient,
               lock.network
             )
-            // if total keys is higher than maxKeysPerAddress, we discard the member
-            if (balance >= (lock.maxKeysPerAddress || 1)) {
-              return
-            }
 
-            const member = {
+            return {
               ...record,
               recipient,
               manager,
+              balance,
+              line: line + 2,
             }
-            return member
           } catch (error) {
-            console.error(error)
+            linesWithError.push(line + 2) // index starts at 0, lines at 1 and we have the header row
+            console.error(`Failed to add `, item, error)
             return
           }
         })
       )
 
-      const filteredMembers = members.reduce<AirdropMember[]>(
-        (filtered, member) => {
+      const filteredMembers = members
+        .reduce<AirdropMember[]>((filtered, member) => {
           // filter null or undefined values
           if (!member) {
-            // keep track of discarded entries
-            discarded += 1
             return filtered
           }
 
-          // find existing member
-          const existingMember = filtered.find(
+          // find existing members
+          const existingMembers = filtered.filter(
             ({ recipient }) => recipient === member.recipient
           )
 
-          // if exist, discard the current entry to avoid duplicate.
-          if (existingMember) {
-            // keep track of discarded entries
-            discarded += 1
+          const existingBalance = member.balance || 0
+          const alreadyToBeAdded = existingMembers.reduce(
+            (total, existingMember) => total + existingMember.count,
+            0
+          )
+          const toBeAdded = member.count
+          if (
+            existingBalance + alreadyToBeAdded + toBeAdded >
+            (lock.maxKeysPerAddress || 1)
+          ) {
+            console.warn(`Discarded duplicate`, member)
+            duplicates.push(member)
+            discarded.push(member)
             return filtered
           }
 
           // push the item to array if new unique member found
           filtered.push(member)
-
           return filtered
-        },
-        []
-      )
+        }, [])
+        .slice(0, MAX_SIZE)
 
       // Notify how many loaded and discarded.
       ToastHelper.success(
-        `Loaded ${filteredMembers.length} members. ${discarded} members discarded.`
+        `Loaded ${filteredMembers.length} members. ${discarded.length} members discarded.`
       )
+      const errors: string[] = []
+      if (linesWithError.length > 0) {
+        errors.push(
+          `The following lines had errors in your CSV file and could not be imported: ${linesWithError.join(
+            ', '
+          )}.`
+        )
+      }
+      if (duplicates.length > 0) {
+        errors.push(
+          `The following recipients are duplicates and have been discarded: ${duplicates
+            .map((m) => `${m.recipient} (line ${m.line})`)
+            .join(', ')}`
+        )
+      }
+      if (errors.length > 0) {
+        setError(errors.join('\n\n'))
+      }
       setIsLoadingMembers(false)
       set(filteredMembers)
     },
@@ -135,6 +163,12 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
                 <p>
                   Once you upload the csv, you can see all the list of
                   memberships to be granted.
+                </p>
+                <p>
+                  Due to block size limit, you can only airdrop at most{' '}
+                  {MAX_SIZE} NFT at once, but you can re-upload the same file
+                  multiple times and the duplicates will automatically
+                  discarded.
                 </p>
                 <div>
                   <a
@@ -212,6 +246,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
           >
             Confirm aidrop
           </Button>
+          {error && <p>{error}</p>}
         </div>
       )}
     </div>

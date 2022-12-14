@@ -15,6 +15,8 @@ export const AirdropMember = z
     ),
     manager: z.string().optional(),
     email: z.string().optional(),
+    balance: z.number().optional(),
+    line: z.number().optional(),
   })
   .passthrough()
 
