@@ -8,7 +8,9 @@ interface Props {
 }
 
 const MENU = {
-  logoUrl: 'https://unlock-protocol.com/',
+  logo: {
+    url: 'https://unlock-protocol.com/',
+  },
   menuSections: [
     {
       title: 'Devs',
