@@ -1,6 +1,6 @@
 import * as Normalizer from '../utils/normalizer'
-import { UserTokenMetadataInput } from '../types' // eslint-disable-line no-unused-vars
-import { UserTokenMetadata } from '../models/userTokenMetadata'
+import { UserTokenMetadataInput } from '../types'
+import { UserTokenMetadata } from '../models/usertokenmetadata'
 
 export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
