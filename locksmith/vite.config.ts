@@ -8,5 +8,6 @@ export default defineConfig({
     },
     dir: '__tests__',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    testTimeout: 100000,
   },
 })

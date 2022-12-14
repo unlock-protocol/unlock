@@ -1,6 +1,6 @@
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types'
-import { UserTokenMetadata } from '../models/usertokenmetadata'
+import { UserTokenMetadata } from '../models'
 
 export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
