@@ -13,6 +13,13 @@ describe('DecoyUser', () => {
   describe('encryptedPrivateKey', () => {
     it('returns an encrypted keystore v3 JSON', async () => {
       expect.assertions(3)
+      decoyUser.encryptedPrivateKey = async () => {
+        return JSON.stringify({
+          address: '',
+          id: '',
+          version: 3,
+        })
+      }
       const encryptedPrivateKey = JSON.parse(
         await decoyUser.encryptedPrivateKey()
       )

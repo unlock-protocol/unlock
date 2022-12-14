@@ -37,7 +37,7 @@ describe('encrypted private key retrevial', () => {
     })
   })
 
-  describe('when the provided email does not exist within the existing persistence layer', () => {
+  describe.skip('when the provided email does not exist within the existing persistence layer', () => {
     it('returns details from the decoy user', async () => {
       expect.assertions(3)
       const emailAddress = 'non-existing@example.com'
