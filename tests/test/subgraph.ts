@@ -1,7 +1,6 @@
-import { expect } from 'chai'
+import { expect } from 'vitest'
 import { BigNumber, Contract } from 'ethers'
 import { unlock, ethers } from 'hardhat'
-
 import { lockParams } from './helpers/fixtures'
 import * as subgraph from './helpers/subgraph'
 import { purchaseKeys } from './helpers/keys'
