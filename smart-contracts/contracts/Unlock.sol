@@ -477,6 +477,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     );
   }
 
+  // TODO: cancel and refund the bridged call
+  // function refundBridgedCall(uint32 transferId) {
+  // 1. make sure transferId is failed
+  // 2. refund
+  // }
 
   /** 
    * Make sure all calls comes from Unlock contracts on other chains
