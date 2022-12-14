@@ -6,6 +6,7 @@ import winston from 'winston'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
+import router from './routes'
 
 const app = express()
 
@@ -58,8 +59,6 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
-const router = require('./routes')
-
 app.use('/', router)
 
 // The error handler must be before any other error middleware and after all controllers
@@ -75,4 +74,5 @@ app.use(
     ),
   })
 )
-module.exports = app
+
+export default app

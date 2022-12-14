@@ -98,4 +98,4 @@ router.delete(
 )
 // Deprecated
 router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
-module.exports = router
+export default router

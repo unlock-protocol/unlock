@@ -3,7 +3,7 @@
  * This is temporary until we have a proper storage for this which can be edited from the web app.
  */
 
-module.exports = [
+const metadata = [
   {
     address: '0x95de5F777A3e283bFf0c47374998E10D8A2183C7',
     name: 'Unlock Key to Week in Ethereum News',
@@ -166,3 +166,5 @@ module.exports = [
   //   image: '',
   // },
 ]
+
+export default metadata

@@ -1,9 +1,15 @@
 import request from 'supertest'
-import { getWalletInput, sleep } from '../../test-helpers/utils'
+import { getWalletInput } from '../../test-helpers/utils'
+import app from '../../app'
+import { vi } from 'vitest'
 
-const app = require('../../../src/app')
+beforeAll(() => {
+  vi.useFakeTimers()
+})
 
-jest.setTimeout(10000)
+afterAll(() => {
+  vi.clearAllTimers()
+})
 
 describe('Auth login endpoints for locksmith', () => {
   it('Nonce are unique on each request', async () => {
@@ -28,6 +34,7 @@ describe('Auth login endpoints for locksmith', () => {
 
   it('User endpoint returns user if provided valid token', async () => {
     expect.assertions(4)
+
     const { walletAddress, message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
@@ -41,7 +48,7 @@ describe('Auth login endpoints for locksmith', () => {
     expect(userResponse.status).toBe(200)
     expect(userResponse.body.walletAddress).toBe(walletAddress)
 
-    await sleep(3600)
+    vi.setSystemTime(Date.now() + 1000 * 60 * 60)
 
     const userResponse2 = await request(app)
       .get('/v2/auth/user')
@@ -62,8 +69,7 @@ describe('Auth login endpoints for locksmith', () => {
       message: message.prepareMessage(),
     })
 
-    // Wait a bit otherwise access token will be same due to expiration
-    await sleep(2000)
+    vi.setSystemTime(Date.now() + 1000 * 60 * 60)
 
     const tokenResponse = await request(app)
       .post('/v2/auth/token')

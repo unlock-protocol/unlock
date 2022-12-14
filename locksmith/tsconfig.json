@@ -7,6 +7,7 @@
     "emitDecoratorMetadata": false,
   },
   "exclude": [
-    "build"
+    "build",
+    "__tests__",
   ]
 }

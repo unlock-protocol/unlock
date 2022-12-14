@@ -11,4 +11,4 @@ router.post('/:network/lock', authMiddleware, captchaMiddleware, (req, res) => {
   contractsController.createLockContract(req, res)
 })
 
-module.exports = router
+export default router
