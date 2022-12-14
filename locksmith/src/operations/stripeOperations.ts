@@ -5,7 +5,7 @@ import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
-import config from '../../config/config'
+import config from '../config/config'
 
 const { Op } = Sequelize
 

@@ -2,28 +2,27 @@ import path from 'path'
 import PaymentProcessor from '../../src/payment/paymentProcessor'
 import * as Normalizer from '../../src/utils/normalizer'
 import { UserReference } from '../../src/models/userReference'
-
-const nock = require('nock')
-const nockBack = require('nock').back
+import nock from 'nock'
 import { User } from '../../src/models/user'
 const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
 const stripeToken = 'sk_test_token'
 const mockVisaToken = 'tok_visa'
+const nockBack = nock.back
+import { vi } from 'vitest'
+const mockCreateSource = vi.fn()
 
-const mockCreateSource = jest.fn()
-
-jest.mock('stripe', () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock('stripe', () => {
+  const mockedStripe = vi.fn().mockImplementation(() => {
     return {
       customers: {
-        create: jest
+        create: vi
           .fn()
           .mockResolvedValueOnce({ id: 'a valid customer id' })
           .mockRejectedValueOnce(new Error('unknown token')),
         createSource: mockCreateSource,
       },
       charges: {
-        create: jest
+        create: vi
           .fn()
           .mockResolvedValueOnce({
             status: 'succeeded',
@@ -32,29 +31,38 @@ jest.mock('stripe', () => {
       },
     }
   })
+  return {
+    default: mockedStripe,
+  }
 })
 
 // eslint-disable-next-line
-var mockDispatcher = { purchase: jest.fn() }
+var mockDispatcher = { purchase: vi.fn() }
 
-jest.mock('../../src/fulfillment/dispatcher', () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock('../../src/fulfillment/dispatcher', () => {
+  const mocked = vi.fn().mockImplementation(() => {
     return mockDispatcher
   })
+  return {
+    default: mocked,
+  }
 })
 
-jest.mock('../../src/utils/keyPricer', () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock('../../src/utils/keyPricer', () => {
+  const mockedKeyPricer = vi.fn().mockImplementation(() => {
     return {
-      generate: jest.fn().mockReturnValue({
+      generate: vi.fn().mockReturnValue({
         keyPrice: 10,
         gasFee: 5,
         creditCardProcessing: 100,
         unlockServiceFee: 70,
       }),
-      keyPriceUSD: jest.fn().mockResolvedValue(42),
+      keyPriceUSD: vi.fn().mockResolvedValue(42),
     }
   })
+  return {
+    default: mockedKeyPricer,
+  }
 })
 
 describe('PaymentProcessor', () => {

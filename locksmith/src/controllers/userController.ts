@@ -103,7 +103,7 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
       user.emailAddress
     )
 
-    if (result[0] == 0) {
+    if (result?.[0] == 0) {
       return res.sendStatus(400)
     }
     return res.sendStatus(202)

@@ -3,7 +3,7 @@ import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
 import logger from '../logger'
 import { ethers } from 'ethers'
-import config from '../../config/config'
+import config from '../config/config'
 
 export const hasAuthorization = async (
   address: string,

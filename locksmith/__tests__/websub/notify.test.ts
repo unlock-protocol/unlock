@@ -1,8 +1,9 @@
 import { subscriberServer } from '../../__mocks__/websub/subscriber'
 import { notify } from '../../src/websub/helpers'
 import { Hook, HookEvent } from '../../src/models'
+import { vi } from 'vitest'
 
-const notifyHook = jest.fn()
+const notifyHook = vi.fn()
 notifyHook.mockImplementation(() => new HookEvent())
 
 describe('Test notify helpers', () => {

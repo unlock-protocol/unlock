@@ -9,7 +9,7 @@ import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
 import * as Asset from '../utils/assets'
 import { Attribute } from '../types'
-import metadata from '../../config/metadata'
+import metadata from '../config/metadata'
 const baseURIFragement = 'https://assets.unlock-protocol.com'
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string

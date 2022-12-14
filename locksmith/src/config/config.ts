@@ -1,10 +1,11 @@
-require('./envLoader')
+import '../utils/envLoader'
+import { Options } from 'sequelize'
 
 const config = {
   database: {
     logging: false,
     dialect: 'postgres',
-  },
+  } as Options,
   stripeSecret: process.env.STRIPE_SECRET,
   defaultNetwork: process.env.DEFAULT_NETWORK,
   purchaserCredentials:
@@ -36,16 +37,13 @@ if (process.env.DATABASE_URL) {
   config.database.username = databaseConfigUrl.username
   config.database.password = databaseConfigUrl.password
   config.database.host = databaseConfigUrl.hostname
-  config.database.port = databaseConfigUrl.port
+  config.database.port = Number(databaseConfigUrl.port)
   config.database.database = databaseConfigUrl.pathname.substring(1)
 } else {
   config.database.username = process.env.DB_USERNAME
   config.database.password = process.env.DB_PASSWORD
   config.database.database = process.env.DB_NAME
   config.database.host = process.env.DB_HOSTNAME
-  config.database.options = {
-    dialect: 'postgres',
-  }
 }
 
 if (process.env.UNLOCK_ENV === 'prod' || process.env.UNLOCK_ENV === 'staging') {
@@ -53,4 +51,4 @@ if (process.env.UNLOCK_ENV === 'prod' || process.env.UNLOCK_ENV === 'staging') {
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
 }
 
-module.exports = config
+export default config

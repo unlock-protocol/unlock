@@ -1,13 +1,12 @@
-import Sequelize from 'sequelize'
+import { Op } from 'sequelize'
 import UserOperations from '../../src/operations/userOperations'
 import RecoveryPhrase from '../../src/utils/recoveryPhrase'
+import * as models from '../../src/models'
+import { vi } from 'vitest'
 
-const { Op } = Sequelize
+// TODO: remove this hack with proper mocking
+const { User, UserReference } = models as any
 
-const models = require('../../src/models')
-
-const { User } = models
-const { UserReference } = models
 const sampleCards = [
   {
     address_city: null,
@@ -38,7 +37,7 @@ const sampleCards = [
 
 const mockStripeCards = {
   customers: {
-    listSources: jest.fn().mockImplementation(() => {
+    listSources: vi.fn().mockImplementation(() => {
       return {
         data: sampleCards,
       }
@@ -48,7 +47,7 @@ const mockStripeCards = {
 
 const mockStripeWithoutCards = {
   customers: {
-    listSources: jest.fn().mockImplementation(() => {
+    listSources: vi.fn().mockImplementation(() => {
       return {
         data: [],
       }
@@ -56,12 +55,17 @@ const mockStripeWithoutCards = {
   },
 }
 
-jest.mock('../../src/utils/recoveryPhrase', () => ({}))
-jest.mock('stripe', () => {
-  return jest
-    .fn()
-    .mockImplementationOnce(() => mockStripeCards)
-    .mockImplementationOnce(() => mockStripeWithoutCards)
+vi.mock('../../src/utils/recoveryPhrase', () => {
+  return { default: {} }
+})
+
+vi.mock('stripe', () => {
+  return {
+    default: vi
+      .fn()
+      .mockImplementationOnce(() => mockStripeCards)
+      .mockImplementationOnce(() => mockStripeWithoutCards),
+  }
 })
 
 describe('User creation', () => {
@@ -76,8 +80,8 @@ describe('User creation', () => {
   describe('data normalization', () => {
     it('should normalize the public key/address & email address', async () => {
       expect.assertions(1)
-      UserReference.create = jest.fn(() => {})
-      RecoveryPhrase.generate = jest.fn(() => 'generated phrase')
+      UserReference.create = vi.fn(() => {})
+      RecoveryPhrase.generate = vi.fn(() => 'generated phrase')
 
       await UserOperations.createUser(userCreationDetails)
       expect(UserReference.create).toHaveBeenCalledWith(
@@ -97,7 +101,7 @@ describe('User creation', () => {
   describe('when able to create the user and associated data', () => {
     it('returns true', async () => {
       expect.assertions(1)
-      UserReference.create = jest.fn(() => {
+      UserReference.create = vi.fn(() => {
         return {}
       })
 
@@ -109,7 +113,7 @@ describe('User creation', () => {
   describe('when unable to create the user and associated data', () => {
     it('returns false', async () => {
       expect.assertions(1)
-      UserReference.create = jest.fn(() => {
+      UserReference.create = vi.fn(() => {
         return null
       })
 
@@ -121,7 +125,7 @@ describe('User creation', () => {
 
 describe('Private Key Lookup', () => {
   beforeAll(() => {
-    UserReference.findOne = jest
+    UserReference.findOne = vi
       .fn()
       .mockImplementationOnce(() => {
         return {
@@ -158,7 +162,7 @@ describe('Private Key Lookup', () => {
 
 describe('Recovery Phrase Lookup', () => {
   beforeAll(() => {
-    UserReference.findOne = jest
+    UserReference.findOne = vi
       .fn()
       .mockImplementationOnce(() => {
         return {
@@ -196,7 +200,7 @@ describe('Recovery Phrase Lookup', () => {
 describe('Updating encrypted private key', () => {
   it('attemtps to update the relevant records', async () => {
     expect.assertions(1)
-    User.update = jest.fn(() => {})
+    User.update = vi.fn(() => {})
 
     await UserOperations.updatePasswordEncryptedPrivateKey(
       '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
@@ -220,7 +224,7 @@ describe('Updating encrypted private key', () => {
 describe("Retrieving a user's cards", () => {
   describe('when the user has credit cards', () => {
     beforeAll(() => {
-      UserReference.findOne = jest.fn().mockImplementation(() => {
+      UserReference.findOne = vi.fn().mockImplementation(() => {
         return {
           stripe_customer_id: 'cus_AsampleID',
           publicKey: '0xpublicKey',
@@ -247,7 +251,7 @@ describe("Retrieving a user's cards", () => {
   })
   describe('when the user does not have a stripe customer id', () => {
     beforeAll(() => {
-      UserReference.findOne = jest.fn().mockImplementationOnce(() => {
+      UserReference.findOne = vi.fn().mockImplementationOnce(() => {
         return {
           stripe_customer_id: null,
         }

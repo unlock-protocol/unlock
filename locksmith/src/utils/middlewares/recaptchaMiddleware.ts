@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import fetch from 'isomorphic-fetch'
-import config from '../../../config/config'
+import config from '../../config/config'
 
 export const captchaMiddleware: RequestHandler = async (
   request,

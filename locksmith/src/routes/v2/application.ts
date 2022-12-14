@@ -19,4 +19,4 @@ router.put('/:id', (req: Request<{ id: string }>, res) =>
   appController.updateApplication(req, res)
 )
 
-module.exports = router
+export default router

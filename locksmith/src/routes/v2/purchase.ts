@@ -20,4 +20,4 @@ router.post('/intent/:network/locks/:lockAddress', (req, res) => {
   purchaseController.createPaymentIntent(req, res)
 })
 
-module.exports = router
+export default router

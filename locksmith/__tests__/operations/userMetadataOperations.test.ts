@@ -2,10 +2,7 @@ import {
   addMetadata,
   getMetadata,
 } from '../../src/operations/userMetadataOperations'
-
-const models = require('../../src/models')
-
-const { UserTokenMetadata } = models
+import { UserTokenMetadata } from '../../src/models'
 
 const chain = 31337
 

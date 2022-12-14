@@ -9,4 +9,4 @@ router.get('/:network/price', (req, res) => {
   priceController.amount(req, res)
 })
 
-module.exports = router
+export default router

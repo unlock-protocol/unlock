@@ -3,14 +3,12 @@ import {
   saveStripeCustomerIdForAddress,
   deletePaymentDetailsForAddress,
 } from '../../src/operations/stripeOperations'
+import { Op } from 'sequelize'
+import * as models from '../../src/models'
+import { vi } from 'vitest'
 
-const Sequelize = require('sequelize')
-
-const { Op } = Sequelize
-
-const models = require('../../src/models')
-
-let { UserReference, StripeCustomer } = models
+// TODO: remove this hack with proper mocking
+let { UserReference, StripeCustomer } = models as any
 
 beforeEach(() => {
   // resetting for before each test
@@ -24,7 +22,7 @@ describe('lockOperations', () => {
       expect.assertions(2)
       const stripeCustomerId = 'cus_customerId'
 
-      StripeCustomer.findOne = jest.fn(() =>
+      StripeCustomer.findOne = vi.fn(() =>
         Promise.resolve({ StripeCustomerId: stripeCustomerId })
       )
       const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
@@ -40,14 +38,14 @@ describe('lockOperations', () => {
 
   describe('deletePaymentDetailsForAddress', () => {
     beforeEach(() => {
-      StripeCustomer.destroy = jest.fn(() => Promise.resolve(0))
-      UserReference.update = jest.fn(() => Promise.resolve([0]))
+      StripeCustomer.destroy = vi.fn(() => Promise.resolve(0))
+      UserReference.update = vi.fn(() => Promise.resolve([0]))
     })
 
     it('should delete data from StripeCustomer if it exists', async () => {
       expect.assertions(2)
 
-      StripeCustomer.destroy = jest.fn(() => Promise.resolve(1))
+      StripeCustomer.destroy = vi.fn(() => Promise.resolve(1))
       const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
       const result = await deletePaymentDetailsForAddress(publicKey)
       expect(StripeCustomer.destroy).toHaveBeenCalledWith({
@@ -60,7 +58,7 @@ describe('lockOperations', () => {
 
     it('should delete data from UserReference and StripeCustomer if it exists', async () => {
       expect.assertions(2)
-      UserReference.update = jest.fn(() => Promise.resolve([1, 1]))
+      UserReference.update = vi.fn(() => Promise.resolve([1, 1]))
       const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
       const result = await deletePaymentDetailsForAddress(publicKey)
       expect(UserReference.update).toHaveBeenCalledWith(
@@ -89,7 +87,7 @@ describe('lockOperations', () => {
   describe('saveStripeCustomerIdForAddress', () => {
     it('should store a stripeCustomer, normalized', async () => {
       expect.assertions(1)
-      StripeCustomer.create = jest.fn(() => true)
+      StripeCustomer.create = vi.fn(() => true)
       const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
       const stripeCustomerId = 'cus_customerId'
       await saveStripeCustomerIdForAddress(publicKey, stripeCustomerId)

@@ -32,4 +32,4 @@ router.get(
   (req, res) => verifierController.isVerifierEnabled(req, res)
 )
 
-module.exports = router
+export default router

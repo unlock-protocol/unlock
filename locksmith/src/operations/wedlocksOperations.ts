@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
-import config from '../../config/config'
+import config from '../config/config'
 import { logger } from '../logger'
 import { generateQrCode } from '../utils/qrcode'
 import networks from '@unlock-protocol/networks'

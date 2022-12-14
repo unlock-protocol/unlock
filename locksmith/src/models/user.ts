@@ -11,9 +11,9 @@ export class User extends Model<
   InferCreationAttributes<User>
 > {
   declare publicKey: string
-  declare recoveryPhrase: string
+  declare recoveryPhrase: string | null
   declare passwordEncryptedPrivateKey: any
-  declare ejection?: CreationOptional<Date>
+  declare ejection?: CreationOptional<Date> | null
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }

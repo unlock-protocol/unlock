@@ -45,4 +45,4 @@ router.get(
   lockController.stripeConnected
 )
 
-module.exports = router
+export default router
