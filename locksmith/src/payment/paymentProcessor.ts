@@ -11,9 +11,8 @@ import {
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
 import logger from '../logger'
-const Sequelize = require('sequelize')
+import { Op, Sequelize } from 'sequelize'
 
-const { Op } = Sequelize
 export class PaymentProcessor {
   stripe: Stripe
 

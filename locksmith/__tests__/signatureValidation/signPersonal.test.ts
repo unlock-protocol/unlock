@@ -1,11 +1,8 @@
-/* eslint-disable no-shadow  */
 import { Wallet } from 'ethers'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
-
-import Base64 = require('../../src/utils/base64')
-
-const httpMocks = require('node-mocks-http')
-
+import * as Base64 from '../../src/utils/base64'
+import httpMocks from 'node-mocks-http'
+import { vi } from 'vitest'
 let request: any
 let response: any
 
@@ -97,16 +94,15 @@ describe('Signature Validation Middleware', () => {
     })
 
     describe('when the request does not have a token', () => {
-      it('does not return a signee', (done) => {
+      it('does not return a signee', async () => {
         expect.assertions(1)
 
         const request = httpMocks.createRequest({
-          body: 'a sample body',
+          text: 'a sample body',
         })
 
-        evaluator(request, response, function next() {
+        evaluator(request, response, () => {
           expect(request.signee).toBe(undefined)
-          done()
         })
       })
     })
@@ -168,7 +164,7 @@ describe('Signature Validation Middleware', () => {
     describe('a signature for Lock metadata', () => {
       it('moves the request to the application', async () => {
         expect.assertions(1)
-        Date.now = jest.fn(() => 1546130835000)
+        Date.now = vi.fn(() => 1546130835000)
 
         const body = {
           types: {
@@ -217,7 +213,7 @@ describe('Signature Validation Middleware', () => {
     describe('when a signature is not provided', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -234,7 +230,7 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -250,7 +246,7 @@ describe('Signature Validation Middleware', () => {
           body,
         })
 
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -266,7 +262,7 @@ describe('Signature Validation Middleware', () => {
           body,
         })
 
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
