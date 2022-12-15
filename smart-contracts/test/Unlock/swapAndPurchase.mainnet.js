@@ -332,8 +332,6 @@ describe(`swapAndCall`, function() {
         const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
         expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
       })
-
-      it('should revert if the amount of tokens is unsufficient')
     })
 
     describe('extend', async () => {
