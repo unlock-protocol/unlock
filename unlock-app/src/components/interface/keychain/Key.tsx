@@ -190,7 +190,7 @@ function Key({ ownedKey, account, network }: Props) {
 
   const isERC20 =
     ownedKey.lock.tokenAddress &&
-    ownedKey.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+    ownedKey.lock.tokenAddress !== ethers.constants.AddressZero
 
   const isExtendable =
     ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT

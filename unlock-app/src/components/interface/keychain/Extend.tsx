@@ -111,7 +111,7 @@ export const ExtendMembershipModal = ({
 
   const isERC20 =
     ownedKey.lock.tokenAddress &&
-    ownedKey.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+    ownedKey.lock.tokenAddress !== ethers.constants.AddressZero
 
   const isRenewable =
     ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
@@ -213,7 +213,7 @@ export const ExtendMembershipModal = ({
                   enabled={unlimited}
                   size="small"
                   setEnabled={(enabled) => {
-                    setRenewalAmount('0')
+                    setRenewalAmount(0)
                     setUnlimited(enabled)
                   }}
                 />
