@@ -131,35 +131,34 @@ describe(`swapAndCall`, function() {
       })
       
       it('lock has received the tokens', async () => {
-        console.log({
-          lockBalanceBefore: lockBalanceBefore.toString(),
-          lockBalanceAfter : (await dai.balanceOf(lock.address)).toString(),
-        })
         expect(
-          await dai.balanceOf(lock.address)
-        ).to.equal(lockBalanceBefore.add(keyPrice))
+          (await dai.balanceOf(lock.address)).toString()
+        ).to.equal(lockBalanceBefore.add(keyPrice).toString())
       })
 
       it('emit an event', async () => {
-        // console.log(receipt)
         const { events } = receipt
         const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        console.log(args)
         expect(args.tokenAddress).to.equal(ADDRESS_ZERO)
-
-        const balanceAfter = await ethers.provider.getBalance(keyOwner.address)
-        const remaining = balanceBefore.sub(balanceAfter)
-        expect(args.value).to.equal(remaining)
+        // test for value for xdai key price roughly
+        expect(args.value.gte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
 
       it('send back the excess tokens', async () => {
+        const { events, cumulativeGasUsed, effectiveGasPrice } = receipt
+        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        
         const balanceAfter = await ethers.provider.getBalance(keyOwner.address)
-        const remaining = balanceBefore.sub(balanceAfter)
-        console.log(ethers.utils.formatEther(remaining))
-        expect(remaining.gte(ethers.utils.parseEther('.09'))).to.equal(true)
+        const totalSpent = balanceBefore.sub(balanceAfter)
+        
+        const txFee = cumulativeGasUsed.mul(effectiveGasPrice)        
+        const keyPriceETH = value.sub(args.value).toString()
+        expect(totalSpent.toNumber()).to.equal(txFee.add(keyPriceETH).toNumber())
       })
 
-      it('refund user when lock call reverts')
+      it('refund user when lock call reverts', async () => {
+        
+      })
     })
 
     // describe('extend')
