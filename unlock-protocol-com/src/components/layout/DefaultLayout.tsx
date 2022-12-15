@@ -75,7 +75,8 @@ const MENU = {
         },
         {
           title: 'Watch Tutorials',
-          embed: '', // todo: set embed
+          embed:
+            '<iframe src="https://plugins.flockler.com/embed/iframe/18462b3104603cf8399278dfcbdfdad8/1850c9aba1e022ab838f498cc9cff0ee" height="800" style="display: block; border: none; width: 100%;" allowfullscreen> </iframe>',
         },
       ],
     },
