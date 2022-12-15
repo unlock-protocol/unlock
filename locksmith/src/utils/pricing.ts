@@ -17,7 +17,7 @@ interface Price {
 export async function defiLammaPrice({ network, address, amount }: Options) {
   const networkConfig = networks[network]
   if (!network) {
-    throw new Error(`No network found with id: ${network}`)
+    return {}
   }
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
@@ -41,7 +41,7 @@ export async function defiLammaPrice({ network, address, amount }: Options) {
   const response = await fetch(endpoint)
 
   if (!response.ok) {
-    throw new Error('Error in fetching price.')
+    return {}
   }
 
   const json: Record<'coins', Record<string, Price>> = await response.json()
@@ -50,7 +50,7 @@ export async function defiLammaPrice({ network, address, amount }: Options) {
   )[0]
 
   if (!item) {
-    throw new Error('No price found for the query')
+    return {}
   }
 
   return {

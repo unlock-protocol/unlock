@@ -28,6 +28,7 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface Props {
   injectedProvider: unknown
@@ -84,7 +85,7 @@ export function Confirm({
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
-
+  const storage = useStorageService()
   const {
     prepareChargeForCard,
     captureChargeForCard,
@@ -212,15 +213,28 @@ export function Confirm({
             }
           })
         )
-        return {
+        const item = {
           prices,
           total: prices
             .reduce((acc, item) => acc + parseFloat(item.amount), 0)
             .toString(),
         }
+
+        const response = await storage.locksmith.price(
+          lockNetwork,
+          parseFloat(item.total),
+          lock?.currencyContractAddress
+            ? lock?.currencyContractAddress
+            : undefined
+        )
+
+        return {
+          ...item,
+          usdPrice: response.data.result,
+        }
       },
       {
-        refetchInterval: Infinity,
+        refetchInterval: 1000 * 60 * 5,
         refetchOnMount: false,
         enabled: !isInitialDataLoading,
       }
@@ -665,7 +679,10 @@ export function Confirm({
                   ? 'FREE'
                   : `${pricingData?.total?.toString()} ${symbol}`
               }
-              usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+              usdPrice={`~$${(
+                pricingData?.usdPrice?.priceInAmount ||
+                fiatPricing?.usd?.keyPrice / 100
+              )?.toFixed(2)}`}
               isCardEnabled={formattedData.cardEnabled}
             />
           </>
