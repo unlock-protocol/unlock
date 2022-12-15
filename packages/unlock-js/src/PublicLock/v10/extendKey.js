@@ -25,7 +25,6 @@ export default async function (
     data,
     totalApproval,
     recurringPayment,
-    extendApprovalOnly = false,
   },
   transactionOptions = {},
   callback
@@ -91,10 +90,6 @@ export default async function (
     }
   } else {
     transactionOptions.value = actualAmount
-  }
-
-  if (extendApprovalOnly) {
-    return null
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!

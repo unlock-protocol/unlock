@@ -269,7 +269,6 @@ export default class WalletService extends UnlockService {
       keyPrice?: string
       recurringPayment?: string | number
       totalApproval?: string
-      extendApprovalOnly?: boolean
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

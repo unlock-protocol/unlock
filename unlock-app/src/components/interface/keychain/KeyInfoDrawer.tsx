@@ -27,6 +27,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
+
 dayjs.extend(relative)
 dayjs.extend(duration)
 dayjs.extend(custom)

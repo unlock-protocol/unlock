@@ -84,7 +84,7 @@ export class SubscriptionController {
 
     const balance = ethers.utils.formatUnits(userBalance, decimals)
 
-    const price = key.lock.price
+    const price = ethers.BigNumber.from(key.lock.price)
     const next =
       key.expiration === ethers.constants.MaxUint256.toString()
         ? null
@@ -93,7 +93,10 @@ export class SubscriptionController {
         : parseInt(key.expiration)
 
     // Approved renewals
-    const approvedRenewalsAmount = userAllowance.div(price)
+    const approvedRenewalsAmount =
+      userAllowance.gt(0) && price.gt(0)
+        ? userAllowance.div(price)
+        : ethers.BigNumber.from(0)
 
     const approvedRenewals = approvedRenewalsAmount.toString()
 
