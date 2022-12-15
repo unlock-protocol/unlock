@@ -39,6 +39,7 @@ export const TextBox = forwardRef(
       success,
       description,
       label,
+      name,
       ...restProps
     } = props
 
@@ -71,6 +72,7 @@ export const TextBox = forwardRef(
           value={value}
           ref={ref}
           className={textBoxClass}
+          data-testid={name || label}
         />
       </FieldLayout>
     )
