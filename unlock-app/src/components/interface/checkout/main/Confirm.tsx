@@ -268,7 +268,6 @@ export function Confirm({
     </Button>
   )
 
-  console.log(pricingData, fiatPricing)
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
