@@ -538,7 +538,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // use WETH for native tokens
     address tokenIn = srcToken == address(0) ? weth : srcToken;
 
-
     // wrap native tokens
     if(srcToken == address(0)) {      
       IWETH(weth).deposit{value: amountInMax}();
@@ -596,7 +595,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
     // If the actual amount spent is less than the specified maximum amount, refund the msg.sender
     uint remaining = amountInMax - amountIn;
-    console.log(remaining);
     if (remaining > 0) {
       if(srcToken == address(0)) {
         // unwrap remaining tokens
