@@ -75,4 +75,8 @@ app.use(
   })
 )
 
+app.use((err, req, res, next) => {
+  res.send({ error: err.message })
+})
+
 export default app
