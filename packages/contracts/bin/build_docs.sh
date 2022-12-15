@@ -71,6 +71,7 @@ We\'ve packaged the interfaces along with the contracts.
 </a>
 
 ### Load it in your project
+
 Add them to your project using yarn
 ```shell
 yarn add @unlock-protocol/contracts
