@@ -567,7 +567,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     try ISwapRouter(uniswapRouter).exactOutputSingle(params) returns (uint _amountIn) {
       amountIn = _amountIn;
     } catch  {
-      revert SwapFailed();
+      // read Uniswap revert reason from mem buffer
+      assembly {
+        let ptr := mload(0x40)
+        let size := returndatasize()
+        returndatacopy(ptr, 0, size)
+        revert(ptr, size)
+      }
     }
 
     // unwrap ETH or approve ERC20 to make the lock

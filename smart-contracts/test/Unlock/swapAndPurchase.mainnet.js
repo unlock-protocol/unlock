@@ -1,5 +1,5 @@
 const { ethers, unlock, upgrades } = require('hardhat')
-const { impersonate, DAI, WETH, ADDRESS_ZERO, UNISWAP_ROUTER_ADDRESS, deployLock, purchaseKey } = require('../helpers')
+const { impersonate, DAI, WETH, ADDRESS_ZERO, UNISWAP_ROUTER_ADDRESS, deployLock, purchaseKey, USDC } = require('../helpers')
 const { expect } = require('chai')
 
 // get unlock address in mainnet
@@ -7,13 +7,14 @@ const { networks : { 1 : { unlockAddress }} } = unlock
 
 const UNLOCK_PROXY_OWNER = '0xF867712b963F00BF30D372b857Ae7524305A0CE7'
 const ADDRESS_WITH_DAI = '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8'
+const ADDRESS_WITH_USDC = '0xf977814e90da44bfa03b6295a0616a897441acec' // binance
 
 const value = ethers.utils.parseEther('.1')
 const poolFee = 3000
 
 describe(`swapAndCall`, function() {
 
-  let unlock, lock, keyOwner, keyPrice, dai, daiOwner
+  let unlock, lock, keyOwner, keyPrice, dai, daiOwner, usdc, usdcOwner
 
   before(async function() {
     if (!process.env.RUN_MAINNET_FORK) {
@@ -27,7 +28,11 @@ describe(`swapAndCall`, function() {
     dai = await ethers.getContractAt('TestERC20', DAI)
     await impersonate(ADDRESS_WITH_DAI)
     daiOwner = await ethers.getSigner(ADDRESS_WITH_DAI)
-
+    
+    usdc = await ethers.getContractAt('TestERC20', USDC)
+    await impersonate(ADDRESS_WITH_USDC)
+    usdcOwner = await ethers.getSigner(ADDRESS_WITH_USDC)
+    
     // get contract
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
     
@@ -399,6 +404,179 @@ describe(`swapAndCall`, function() {
         expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
       })
     })
+  })
+
+  describe('use DAI with a lock priced in USDC', async () => {
+    const maxDAIAmount = ethers.utils.parseEther('1')
+    before(async () => {
+      lock = await deployLock({ 
+        unlock,
+        tokenAddress: USDC,
+        maxKeysPerAddress: 100,
+        keyPrice: ethers.utils.parseUnits('.5', 6), // USDC only 6 decimals
+        isEthers: true
+      })
+
+      keyPrice = await lock.keyPrice()
+
+      // give our guy some dai
+      await dai.connect(daiOwner).transfer(
+        keyOwner.address, 
+        maxDAIAmount.mul(4)
+      )
+    })
+    
+    it('lock is set properly', async () => {  
+      expect(await lock.tokenAddress()).to.equal(USDC)
+      expect(
+        (await lock.balanceOf(keyOwner.address)).toNumber()
+      ).to.equal(0)
+    })
+
+    it('signer has enough DAI to buy a bunch of keys', async () => {
+      expect((await dai.balanceOf(keyOwner.address)).gte(maxDAIAmount)).to.equal(true)
+    })
+    
+    describe('purchase', () => {
+      let calldata, receipt, balanceBefore, lockBalanceBefore
+
+      before (async () => {
+        const args = [
+            [keyPrice],
+            [keyOwner.address], // recipients
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]], // _data
+        ]
+          
+        // parse call data
+        calldata = await lock.interface.encodeFunctionData('purchase', args)
+        lockBalanceBefore = await usdc.balanceOf(lock.address)
+        balanceBefore = await dai.balanceOf(keyOwner.address)        
+
+        // do the swap
+        await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
+        const tx = await unlock.connect(keyOwner)
+          .swapAndCall(
+            lock.address,
+            DAI,
+            maxDAIAmount, // amountInMax (in DAI)
+            keyPrice, // amountOut (in ETH)
+            500, // poolFee - no 3% DAI/USDC pool 
+            calldata
+          )
+        receipt = await tx.wait()
+      })
+
+      it('purchase a key for the sender', async() => {
+        expect(
+          (await lock.balanceOf(keyOwner.address)).toNumber()
+        ).to.equal(1)
+      })
+      
+      it('lock has received the ETH', async () => {
+        expect(
+          (await usdc.balanceOf(lock.address)).toNumber()
+        ).to.equal(lockBalanceBefore.add(keyPrice).toNumber())
+      })
+
+      it('emit an event', async () => {
+        const { events } = receipt
+        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        expect(args.tokenAddress).to.equal(DAI)
+        // test for value for xdai key price roughly
+        expect(args.value.gte(ethers.utils.parseEther('.4'))).to.equal(true)
+      })
+
+      it('send back the excess tokens', async () => {
+        const { events } = receipt
+        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        
+        const balanceAfter = await dai.balanceOf(keyOwner.address)
+        const totalSpent = balanceBefore.sub(balanceAfter)
+        
+        const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
+        expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
+      })
+    })
+
+    describe('extend', async () => {
+      let tokenId, receipt, balanceBefore, lockBalanceBefore
+      beforeEach(async () => {    
+        
+        // purchase a key in USDC
+        await usdc.connect(usdcOwner).transfer(keyOwner.address, keyPrice)
+        await usdc.connect(keyOwner).approve(lock.address, keyPrice)
+        ;({tokenId} = await purchaseKey(lock, keyOwner.address, true, keyPrice))
+        
+        // expire the key
+        assert.equal(await lock.isValidKey(tokenId), true)
+        await lock.expireAndRefundFor(tokenId, 0)
+        assert.equal(await lock.isValidKey(tokenId), false)
+
+        // parse extend calldata
+        const extendArgs = [
+          keyPrice,
+          tokenId,
+          ADDRESS_ZERO,
+          [],
+        ]
+        const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
+        balanceBefore = await dai.balanceOf(keyOwner.address)
+        lockBalanceBefore = await usdc.balanceOf(lock.address)
+        assert((await dai.balanceOf(keyOwner.address)).gt(maxDAIAmount))
+        
+        // do the swap and call
+        await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
+        const tx = await unlock.connect(keyOwner)
+          .swapAndCall(
+            lock.address,
+            DAI,
+            maxDAIAmount, // amountInMax (in DAI)
+            keyPrice, // amountOut (in ETH)
+            poolFee,
+            calldata,
+            { value: 0 }
+          )
+        receipt = await tx.wait()
+      })
+
+      it('key is now valid', async () => {
+        assert.equal(await lock.isValidKey(tokenId), true)
+      })
+
+      it('lock has received the tokens', async () => {
+        expect(
+          (await usdc.balanceOf(lock.address)).toString()
+        ).to.equal(lockBalanceBefore.add(keyPrice).toString())
+      })
+
+      it('emit an event', async () => {
+        const { events } = receipt
+        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        expect(args.tokenAddress).to.equal(DAI)
+        // test for value for xdai key price roughly
+        expect(args.value.gte(ethers.utils.parseEther('.4'))).to.equal(true)
+      })
+
+      it('send back the excess tokens', async () => {
+        const { events } = receipt
+        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        
+        const balanceAfter = await dai.balanceOf(keyOwner.address)
+        const totalSpent = balanceBefore.sub(balanceAfter)
+        
+        const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
+        expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
+      })
+    })
+  })
+
+  describe('errors', () => {
+    it('pair does not exist (SHIBA/DAI)')
+    it('the amount of tokens is not sufficient')
+    it('the approval is unsufficient')
+    it('pool fee is wrong')
   })
 
 })
