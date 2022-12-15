@@ -105,8 +105,7 @@
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "ci": "yarn test && yarn lint",
-    "e2e": "node ./__e2e__/index.js"
+    "ci": "yarn test && yarn lint"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
