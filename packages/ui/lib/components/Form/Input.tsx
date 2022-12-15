@@ -58,6 +58,7 @@ export const Input = forwardRef(
       description,
       label,
       icon,
+      name,
       ...inputProps
     } = props
     const [isCopied, setCopy] = useClipboard(props.value as string)
@@ -103,6 +104,7 @@ export const Input = forwardRef(
             value={value}
             ref={ref}
             className={inputClass}
+            data-testid={name || label}
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-1 ml-4">
             {copy && !hidden && (
