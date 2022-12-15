@@ -160,7 +160,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     },
                   })
                 }}
-                className="grid w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay via cryptocurrency </h3>
