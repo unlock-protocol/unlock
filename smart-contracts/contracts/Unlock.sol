@@ -553,7 +553,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     ISwapRouter.ExactOutputSingleParams memory params =
       ISwapRouter.ExactOutputSingleParams({
           tokenIn: tokenIn, 
-          tokenOut: destToken,
+          tokenOut: destToken == address(0) ? weth : destToken,
           fee: poolFee,
           recipient: address(this),
           deadline: block.timestamp,
@@ -570,14 +570,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert SwapFailed();
     }
 
-    // approve the lock to spend ERC20 token
+    // unwrap ETH or approve ERC20 to make the lock
     if(destToken != address(0)) {
       IERC20(destToken).approve(lock, keyPrice);
+    } else {
+      IWETH(weth).withdraw(keyPrice);
     }
 
     // call the lock
     (bool success, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? amountIn : 0
+      value: destToken == address(0) ? keyPrice : 0
     }(
       callData
     );
