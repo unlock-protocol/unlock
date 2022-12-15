@@ -82,8 +82,8 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
       xaxis: xaxis,
       yaxis: [
         { show: false, logarithmic: true },
-        { show: false },
-        { show: false },
+        { show: false, logarithmic: true },
+        { show: false, logarithmic: true },
       ],
       tooltip: {
         y: [
