@@ -114,7 +114,6 @@ const LoginPrompt = ({
           {children}
 
           <WalletButton
-            data-testid="connect-in-browser-wallet"
             title="In browser wallet"
             icon={ButtonIcon}
             onClick={onInjectedHandler}
