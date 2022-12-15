@@ -352,7 +352,7 @@ function Key({ ownedKey, account, network }: Props) {
                         <ExtendMembershipIcon />
                         {wrongNetwork
                           ? `Switch to ${networks[network].name} to extend`
-                          : isRenewable
+                          : isRenewable && !isKeyExpired
                           ? 'Renew membership'
                           : 'Extend membership'}
                       </MenuButton>
