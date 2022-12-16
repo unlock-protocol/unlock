@@ -6,7 +6,7 @@ interface Props {
   disabled?: boolean
 }
 
-export function LockAdvancedForm({ disabled }: Props) {
+export function AdvancedForm({ disabled }: Props) {
   const {
     register,
     formState: { errors },
