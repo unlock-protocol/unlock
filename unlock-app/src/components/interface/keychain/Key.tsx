@@ -44,6 +44,7 @@ import {
 import dayjs from 'dayjs'
 import { ExtendMembershipModal } from './Extend'
 import { MAX_UINT } from '~/constants'
+import { ethers } from 'ethers'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
