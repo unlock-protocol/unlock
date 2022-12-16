@@ -1433,3 +1433,36 @@ paths:
                           description: The type of payment method used for the subscription.
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/claim/{network}/locks/{lockAddress}:
+    post:
+      security:
+        - User: []
+      operationId: claim
+      description: Claim a membership key for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+
+      responses:
+        200:
+          description: Successfully claimed the key.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
