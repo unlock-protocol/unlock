@@ -120,8 +120,14 @@ export function expirationAsDate(timestamp: any) {
   return `${MONTH_NAMES[month]} ${day}, ${year}`
 }
 
-export const durationAsText = (duration: string) => {
+export const durationAsText = (duration?: string) => {
+  if (!duration) {
+    return null
+  }
+  if (ethers.BigNumber.from(duration).eq(MAX_UINT)) {
+    return 'Unlimited'
+  }
   return dayjs
-    .duration(ethers.BigNumber.from(duration).div(86400).toNumber(), 'day')
+    .duration(ethers.BigNumber.from(duration).div(60).toNumber(), 'minutes')
     .humanize()
 }
