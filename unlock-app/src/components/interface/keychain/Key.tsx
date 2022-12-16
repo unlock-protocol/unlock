@@ -17,7 +17,6 @@ import {
 } from 'react-icons/ri'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
-import { expirationAsDate } from '../../../utils/durations'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import { useWalletService } from '../../../utils/withWalletService'
@@ -42,6 +41,10 @@ import {
   RiFileCopyLine as CopyLineIcon,
   RiExternalLinkFill as ExternalIcon,
 } from 'react-icons/ri'
+import dayjs from 'dayjs'
+import { ExtendMembershipModal } from './Extend'
+import { MAX_UINT } from '~/constants'
+import { ethers } from 'ethers'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -90,14 +93,17 @@ function Key({ ownedKey, account, network }: Props) {
   const web3Service = useWeb3Service()
   const { watchAsset } = useAuth()
   const config = useConfig()
-  const expirationStatus = expirationAsDate(expiration)
   const [showingQR, setShowingQR] = useState(false)
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
   const isKeyExpired =
-    expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
+    (ownedKey.expiration !== MAX_UINT
+      ? dayjs.unix(parseInt(ownedKey.expiration)).isBefore(dayjs())
+      : false) || expireAndRefunded
+
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
     () => {
@@ -137,8 +143,6 @@ function Key({ ownedKey, account, network }: Props) {
     })
   }
 
-  const isExtendable = lock?.version >= 11
-
   const onExploreLock = () => {
     const url = networks[network].explorer?.urls.address(lock.address)
     if (!url) {
@@ -172,23 +176,6 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
-  const onExtend = async () => {
-    try {
-      const promise = walletService.extendKey({
-        lockAddress: lock?.address,
-        tokenId,
-        referrer: account,
-      })
-      await ToastHelper.promise(promise, {
-        success: 'successfully extended the membership.',
-        error: 'Unable to extend the membership',
-        loading: 'Extending membership.',
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const isAvailableOnOpenSea =
     networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
@@ -201,6 +188,16 @@ function Key({ ownedKey, account, network }: Props) {
   const isRefundable = !isLockDataLoading && !isKeyExpired
 
   const wrongNetwork = network !== accountNetwork
+
+  const isERC20 =
+    ownedKey.lock.tokenAddress &&
+    ownedKey.lock.tokenAddress !== ethers.constants.AddressZero
+
+  const isExtendable =
+    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT
+
+  const isRenewable =
+    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
 
   return (
     <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
@@ -231,6 +228,16 @@ function Key({ ownedKey, account, network }: Props) {
         dismiss={() => setSignature(null)}
         sendEmail={sendEmail}
         signature={signature}
+      />
+      <ExtendMembershipModal
+        isOpen={showExtendMembershipModal}
+        setIsOpen={setShowExtendMembership}
+        lock={lock}
+        tokenId={tokenId}
+        account={account}
+        currency={symbol}
+        network={network}
+        ownedKey={ownedKey}
       />
       <div className="flex items-center justify-between">
         <div>
@@ -280,7 +287,7 @@ function Key({ ownedKey, account, network }: Props) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-72 ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-80 ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="p-1">
                   <Menu.Item disabled={!isAvailableOnOpenSea}>
                     {({ disabled, active }) => (
@@ -340,12 +347,14 @@ function Key({ ownedKey, account, network }: Props) {
                         active={active}
                         onClick={(event) => {
                           event.preventDefault()
-                          onExtend()
+                          setShowExtendMembership(true)
                         }}
                       >
                         <ExtendMembershipIcon />
                         {wrongNetwork
                           ? `Switch to ${networks[network].name} to extend`
+                          : isRenewable && !isKeyExpired
+                          ? 'Renew membership'
                           : 'Extend membership'}
                       </MenuButton>
                     )}
