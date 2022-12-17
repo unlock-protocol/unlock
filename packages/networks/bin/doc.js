@@ -23,8 +23,7 @@ ${description || ''}
 - unlockAddress: [\`${unlockAddress}\`](${explorer.urls.address(unlockAddress)})
 `
 
-const doc = `
----
+const doc = `---
 title: Networks
 description: >-
   Details on blockchain network deployments of Unlock Protocol.
