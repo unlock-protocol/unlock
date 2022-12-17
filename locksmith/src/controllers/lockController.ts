@@ -1,4 +1,3 @@
-// @ts-expect-error - no typings. TODO: remove this 4 line dependency.
 import parseDataUri from 'parse-data-uri'
 import stripeOperations from '../operations/stripeOperations'
 import { evaluateLockOwnership } from './metadataController'

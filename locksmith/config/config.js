@@ -1,9 +1,9 @@
-const urlParser = require('url')
+require('./envLoader')
 
 const config = {
   database: {
     logging: false,
-    dialect: 'postgres', // sequelize v4 needs this
+    dialect: 'postgres',
   },
   stripeSecret: process.env.STRIPE_SECRET,
   defaultNetwork: process.env.DEFAULT_NETWORK,
@@ -32,7 +32,7 @@ if (process.env.ON_HEROKU) {
 
 // Database URL
 if (process.env.DATABASE_URL) {
-  const databaseConfigUrl = new urlParser.URL(process.env.DATABASE_URL)
+  const databaseConfigUrl = new URL(process.env.DATABASE_URL)
   config.database.username = databaseConfigUrl.username
   config.database.password = databaseConfigUrl.password
   config.database.host = databaseConfigUrl.hostname

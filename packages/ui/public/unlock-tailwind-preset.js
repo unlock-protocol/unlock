@@ -21,6 +21,7 @@ module.exports = {
           primary: '#FFF7E8',
           secondary: '#FF6771',
           beige: '#FFFDF8',
+          yellow: '#F2C65E',
           ui: {
             primary: '#603DEB',
             secondary: '#020207',

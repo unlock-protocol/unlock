@@ -49,6 +49,7 @@ export const gnosis: NetworkConfig = {
   description:
     'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
   isTestNetwork: false,
+  maxFreeClaimCost: 100,
   teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
   tokens: [
     {

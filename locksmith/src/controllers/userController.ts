@@ -1,4 +1,4 @@
-import { Request, Response } from 'express-serve-static-core'
+import { Request, Response } from 'express'
 import { DecoyUser } from '../utils/decoyUser'
 import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
@@ -103,7 +103,7 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
       user.emailAddress
     )
 
-    if (result[0] == 0) {
+    if (result?.[0] == 0) {
       return res.sendStatus(400)
     }
     return res.sendStatus(202)

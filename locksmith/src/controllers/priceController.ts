@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core'
+import { Response } from 'express'
 import KeyPricer from '../utils/keyPricer'
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import { SignedRequest } from '../types'
