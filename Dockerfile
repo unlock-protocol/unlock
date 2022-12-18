@@ -15,7 +15,7 @@ USER root
 # install all deps required to build modules
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
-    apt-get install --assume-yes \
+    apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
     rsync \
@@ -56,6 +56,9 @@ RUN chown -R node:node .
 USER node
 RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
+# Dedupe deps
+RUN yarn dedupe
+
 ###################################################################
 # Stage 2: Build packages and app
 ###################################################################
@@ -80,6 +83,8 @@ RUN yarn build
 # Build locksmith and other apps separately to reduce startup time on heroku
 RUN yarn apps:build
 
+# Cleanup up image to make it lighter
+RUN sudo apt-get autoremove
 
 # Remove yarn cache (re-installing dependencies will take more time, but image will be 500MB lighter)
 RUN rm -rf .yarn/cache/ 
