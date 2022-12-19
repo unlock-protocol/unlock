@@ -6,7 +6,8 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
     "test": "hardhat test",
-    "ci": "hardhat test --network 0.0.0.0"
+    "ci": "hardhat test --network 0.0.0.0",
+    "e2e": "vitest run --coverage --browser"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
