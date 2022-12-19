@@ -366,12 +366,13 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   it('Get lock metadata', async () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const lockMetadataResponse = await request(app).get(
       `/v2/api/metadata/100/locks/${lockAddress}`
     )
-    expect(lockMetadataResponse.status).toBe(404)
+    expect(lockMetadataResponse.status).toBe(200)
+    expect(lockMetadataResponse.body).toStrictEqual({})
   })
 
   it('Bulk lock metadata returns error without authentication', async () => {
@@ -409,7 +410,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(lockAddressMetadataResponse.status).toBe(401)
+    expect(lockAddressMetadataResponse.status).toBe(403)
   })
 
   it('Does return error when authentication is present and payload is wrong', async () => {

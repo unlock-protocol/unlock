@@ -55,9 +55,7 @@ export class MetadataController {
       })
 
       if (!lockData) {
-        return response.status(404).send({
-          message: 'No lock metadata found.',
-        })
+        return response.status(200).send({})
       }
       return response.status(200).send(lockData.data)
     } catch (error) {
@@ -112,21 +110,6 @@ export class MetadataController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const { metadata } = request.body
-      const loggedUserAddress = Normalizer.ethereumAddress(
-        request.user!.walletAddress!
-      )
-
-      const isLockOwner = await this.web3Service.isLockManager(
-        lockAddress,
-        loggedUserAddress,
-        network
-      )
-
-      if (!isLockOwner) {
-        return response.status(401).send({
-          message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
-        })
-      }
       const [updatedLockMetadata] = await LockMetadata.upsert(
         {
           address: lockAddress,
@@ -153,22 +136,8 @@ export class MetadataController {
       const keyId = request.params.keyId.toLowerCase()
       const { metadata } = request.body
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const loggedUserAddress = Normalizer.ethereumAddress(
-        request.user!.walletAddress
-      )
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
-      const isLockOwner = await this.web3Service.isLockManager(
-        lockAddress,
-        loggedUserAddress,
-        network
-      )
-
-      if (!isLockOwner) {
-        return response.status(401).send({
-          message: 'You are not authorized to update this key.',
-        })
-      }
 
       await KeyMetadata.upsert(
         {
@@ -187,7 +156,7 @@ export class MetadataController {
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
         keyId,
-        isLockOwner,
+        true /* isLockManager */,
         host,
         network
       )
@@ -291,7 +260,7 @@ export class MetadataController {
       }
 
       if (!(isLockOwner || isUserMetadataOwner)) {
-        return response.status(401).send({
+        return response.status(403).send({
           message:
             'You are not authorized to update user metadata for this key.',
         })

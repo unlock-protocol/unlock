@@ -200,7 +200,6 @@ describe('tickets endpoint', () => {
 
   it('does not send email when auhentication is not present', async () => {
     expect.assertions(1)
-
     const response = await request(app).post(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
     )
@@ -217,7 +216,7 @@ describe('tickets endpoint', () => {
       .post(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/email`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(403)
   })
 
   it('send email when user is authenticated and is the key manager', async () => {

@@ -11,7 +11,7 @@ interface Props {
   network: number
 }
 
-export function LockTicketForm({ disabled, lockAddress, network }: Props) {
+export function TicketForm({ disabled, lockAddress, network }: Props) {
   const {
     register,
     control,

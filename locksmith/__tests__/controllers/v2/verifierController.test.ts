@@ -36,7 +36,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
       .get(`/v2/api/verifier/list/${network}/${lock}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(getListResponse.status).toBe(401)
+    expect(getListResponse.status).toBe(403)
   })
 
   it('Add verifier and delete correctly', async () => {

@@ -19,6 +19,7 @@ router.get('/:network/locks/:lockAddress', (req, res) =>
 router.put(
   '/:network/locks/:lockAddress',
   authenticatedMiddleware,
+  lockManagerMiddleware,
   (req, res) => metadataController.updateLockMetadata(req, res)
 )
 
@@ -29,6 +30,7 @@ router.get('/:network/locks/:lockAddress/keys/:keyId', (req, res) => {
 router.put(
   '/:network/locks/:lockAddress/keys/:keyId',
   authenticatedMiddleware,
+  lockManagerMiddleware,
   (req, res) => {
     metadataController.updateKeyMetadata(req, res)
   }

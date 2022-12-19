@@ -1,16 +1,16 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
-import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
 
 interface UpdateNameFormProps {
   disabled: boolean
   isManager: boolean
   lockAddress: string
   lockName: string
+  network: number
 }
 
 interface FormProps {
@@ -22,8 +22,8 @@ export const UpdateNameForm = ({
   isManager,
   lockAddress,
   lockName,
+  network,
 }: UpdateNameFormProps) => {
-  const [updateMetadata, setUpdateMetadata] = useState(false)
   const walletService = useWalletService()
   const {
     register,
@@ -61,61 +61,47 @@ export const UpdateNameForm = ({
   }
 
   const disabledInput = disabled || changeNameMutation.isLoading
-
+  const updateMetadataUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   return (
-    <>
-      <UpdateMetadataDrawer
-        isOpen={updateMetadata}
-        setIsOpen={setUpdateMetadata}
-      />
-
-      <form
-        className="flex flex-col gap-6"
-        onSubmit={handleSubmit(onChangeName)}
-      >
-        <div className="relative">
-          <Input
-            {...register('name', {
-              minLength: 3,
-              required: true,
-            })}
-            error={
-              errors?.name && 'Lock name should have at least 3 characters.'
-            }
-            autoComplete="off"
-            disabled={disabledInput}
-            description={
-              <span>
-                <span className="flex gap-1">
-                  <span>
-                    This value will be set on the contract but the NFT metadata
-                    will remain unchanged if you have set a value there.
-                  </span>
-                  <Button
-                    onClick={() => setUpdateMetadata(!updateMetadata)}
-                    className="font-bold cursor-pointer text-brand-ui-primary"
-                    variant="borderless"
-                    size="small"
-                  >
-                    Edit NFT properties
-                  </Button>
+    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onChangeName)}>
+      <div className="relative">
+        <Input
+          {...register('name', {
+            minLength: 3,
+            required: true,
+          })}
+          error={errors?.name && 'Lock name should have at least 3 characters.'}
+          autoComplete="off"
+          disabled={disabledInput}
+          description={
+            <span>
+              <span className="flex gap-1">
+                <span>
+                  This value will be set on the contract but the NFT metadata
+                  will remain unchanged if you have set a value there.
                 </span>
+                <Link
+                  href={updateMetadataUrl}
+                  className="font-bold cursor-pointer text-brand-ui-primary"
+                >
+                  Edit NFT properties
+                </Link>
               </span>
-            }
-          />
-        </div>
+            </span>
+          }
+        />
+      </div>
 
-        {isManager && (
-          <Button
-            type="submit"
-            className="w-full md:w-1/3"
-            disabled={disabledInput}
-            loading={changeNameMutation.isLoading}
-          >
-            Update
-          </Button>
-        )}
-      </form>
-    </>
+      {isManager && (
+        <Button
+          type="submit"
+          className="w-full md:w-1/3"
+          disabled={disabledInput}
+          loading={changeNameMutation.isLoading}
+        >
+          Update
+        </Button>
+      )}
+    </form>
   )
 }
