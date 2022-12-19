@@ -156,7 +156,7 @@ export class MetadataController {
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
         keyId,
-        true,
+        true /* isLockManager */,
         host,
         network
       )
