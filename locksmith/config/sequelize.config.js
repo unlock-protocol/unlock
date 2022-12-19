@@ -1,4 +1,2 @@
-require('../src/utils/envLoader')
-const config = require('./config').database
-
-module.exports = config
+const config = require('./config')
+module.exports = config.database

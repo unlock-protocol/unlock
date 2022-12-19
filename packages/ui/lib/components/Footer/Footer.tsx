@@ -96,9 +96,9 @@ export const Footer = ({
   const logoUrl = logo.url || '#'
 
   return (
-    <footer className="flex flex-col w-full gap-24">
+    <footer className="flex flex-col w-full gap-16 md:gap-24">
       {subscriptionForm && <EmailSubscriptionForm {...subscriptionForm} />}
-      <div className="flex flex-col w-full gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
+      <div className="flex flex-col w-full gap-16 md:mb-20 md:grid md:grid-cols-3 md:gap-44">
         <div className="flex flex-col w-full gap-10">
           <Link href={logoUrl}>
             <img src={logoImageUrl} alt="logo" className="h-10" />
