@@ -15,7 +15,7 @@ One of the core tenets of web3 is that users should “own” their data. The co
 
 I like to frame ownership as control. In the “web2” world, the data is usually completely controlled by large tech companies. This control stems directly from the fact that the data is stored in a database that _they_ host, on server for which they alone have access. Even with the best intentions in the world, and for better or worse: they have full control.
 
-You might be wondering why this would matter to you? Here is a fresh example. Last year in 2021, Twitter acquired a company called Revue, a newsletter platform similar to Substack. This week, Twitter [announced](https://techcrunch.com/2022/12/14/twitter-shuts-down-revue-its-newsletter-platform/) they will shut down Revue. When this happens, all the data stored in their databases will becomes inaccessible, unusable (maybe even deleted forever). This means that popular writers will lose access to the content they wrote on these.
+You might be wondering why this would matter to you? Here is a fresh example. Last year in 2021, Twitter acquired a company called Revue, a newsletter platform similar to Substack. This week, Twitter [announced](https://techcrunch.com/2022/12/14/twitter-shuts-down-revue-its-newsletter-platform/) they will shut down Revue. When this happens, all the data stored in their databases will become inaccessible, unusable (maybe even deleted forever). This means that popular writers will lose access to the content they wrote on these.
 
 More importantly, the relationships they built with their readers will be lost as well.
 
