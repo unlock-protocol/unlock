@@ -81,6 +81,9 @@ RUN yarn build
 RUN yarn apps:build
 
 
+# Remove yarn cache (re-installing dependencies will take more time, but image will be 500MB lighter)
+RUN rm -rf .yarn/cache/ 
+
 ###################################################################
 # Stage 3. export minimal image for prod app
 ###################################################################
