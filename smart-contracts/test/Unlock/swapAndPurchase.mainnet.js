@@ -99,7 +99,7 @@ describe(`swapAndCall`, function() {
     })
 
     describe('purchase', () => {
-      let calldata, receipt, balanceBefore, lockBalanceBefore
+      let calldata, receipt, lockBalanceBefore
 
       before  (async () => {
         const args = [
@@ -112,7 +112,6 @@ describe(`swapAndCall`, function() {
           
         // parse call data
         calldata = await lock.interface.encodeFunctionData('purchase', args)
-        balanceBefore = await ethers.provider.getBalance(keyOwner.address)
         lockBalanceBefore = await dai.balanceOf(lock.address)        
 
         // do the swap
@@ -121,7 +120,6 @@ describe(`swapAndCall`, function() {
             lock.address,
             ADDRESS_ZERO,
             value, // amountInMax (in ETH)
-            keyPrice, // amountOut (in DAI)
             poolFee,
             calldata,
             { value }
@@ -144,27 +142,16 @@ describe(`swapAndCall`, function() {
 
       it('emit an event', async () => {
         const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(ADDRESS_ZERO)
+        expect(args.lock).to.equal(lock.address)
         // test for value for xdai key price roughly
-        expect(args.value.gte(ethers.utils.parseEther('.09'))).to.equal(true)
-      })
-
-      it('send back the excess tokens', async () => {
-        const { events, cumulativeGasUsed, effectiveGasPrice } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        
-        const balanceAfter = await ethers.provider.getBalance(keyOwner.address)
-        const totalSpent = balanceBefore.sub(balanceAfter)
-        
-        const txFee = cumulativeGasUsed.mul(effectiveGasPrice)        
-        const keyPriceETH = value.sub(args.value).toString()
-        expect(totalSpent.toString()).to.equal(txFee.add(keyPriceETH).toString())
+        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
     })
 
     describe('extend', async () => {
-      let tokenId, receipt, balanceBefore, lockBalanceBefore
+      let tokenId, receipt, lockBalanceBefore
       beforeEach(async () => {    
         // give our guy some dai
         await dai.connect(daiOwner).transfer(
@@ -191,7 +178,6 @@ describe(`swapAndCall`, function() {
           [],
         ]
         const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
-        balanceBefore = await ethers.provider.getBalance(keyOwner.address)
         lockBalanceBefore = await dai.balanceOf(lock.address)        
 
         // do the swap and call
@@ -200,7 +186,6 @@ describe(`swapAndCall`, function() {
             lock.address,
             ADDRESS_ZERO,
             value, // amountInMax (in ETH)
-            keyPrice, // amountOut (in DAI)
             poolFee,
             calldata,
             { value }
@@ -220,23 +205,13 @@ describe(`swapAndCall`, function() {
 
       it('emit an event', async () => {
         const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(ADDRESS_ZERO)
         // test for value for xdai key price roughly
-        expect(args.value.gte(ethers.utils.parseEther('.09'))).to.equal(true)
+        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
 
-      it('send back the excess tokens', async () => {
-        const { events, cumulativeGasUsed, effectiveGasPrice } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        
-        const balanceAfter = await ethers.provider.getBalance(keyOwner.address)
-        const totalSpent = balanceBefore.sub(balanceAfter)
-        
-        const txFee = cumulativeGasUsed.mul(effectiveGasPrice)        
-        const keyPriceETH = value.sub(args.value).toString()
-        expect(totalSpent.toNumber()).to.equal(txFee.add(keyPriceETH).toNumber())
-      })
+      
     })
   })
 
@@ -271,7 +246,7 @@ describe(`swapAndCall`, function() {
     })
     
     describe('purchase', () => {
-      let calldata, receipt, balanceBefore, lockBalanceBefore
+      let calldata, receipt, lockBalanceBefore
 
       before (async () => {
         const args = [
@@ -285,8 +260,7 @@ describe(`swapAndCall`, function() {
         // parse call data
         calldata = await lock.interface.encodeFunctionData('purchase', args)
         lockBalanceBefore = await ethers.provider.getBalance(lock.address)
-        balanceBefore = await dai.balanceOf(keyOwner.address)        
-
+        
         // do the swap
         await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
         const tx = await unlock.connect(keyOwner)
@@ -294,7 +268,6 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            keyPrice, // amountOut (in ETH)
             poolFee,
             calldata,
             { value : 0 }
@@ -316,26 +289,15 @@ describe(`swapAndCall`, function() {
 
       it('emit an event', async () => {
         const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.value.gte(ethers.utils.parseEther('.09'))).to.equal(true)
-      })
-
-      it('send back the excess tokens', async () => {
-        const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        
-        const balanceAfter = await dai.balanceOf(keyOwner.address)
-        const totalSpent = balanceBefore.sub(balanceAfter)
-        
-        const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
-        expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
+        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
     })
 
     describe('extend', async () => {
-      let tokenId, receipt, balanceBefore, lockBalanceBefore
+      let tokenId, receipt, lockBalanceBefore
       beforeEach(async () => {    
         
         // purchase the key in ETH
@@ -354,7 +316,6 @@ describe(`swapAndCall`, function() {
           [],
         ]
         const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
-        balanceBefore = await dai.balanceOf(keyOwner.address)
         lockBalanceBefore = await ethers.provider.getBalance(lock.address)
         assert((await dai.balanceOf(keyOwner.address)).gt(maxDAIAmount))
         
@@ -365,7 +326,6 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            keyPrice, // amountOut (in ETH)
             poolFee,
             calldata,
             { value: 0 }
@@ -385,21 +345,10 @@ describe(`swapAndCall`, function() {
 
       it('emit an event', async () => {
         const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.value.gte(ethers.utils.parseEther('.09'))).to.equal(true)
-      })
-
-      it('send back the excess tokens', async () => {
-        const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        
-        const balanceAfter = await dai.balanceOf(keyOwner.address)
-        const totalSpent = balanceBefore.sub(balanceAfter)
-        
-        const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
-        expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
+        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
     })
   })
@@ -436,7 +385,7 @@ describe(`swapAndCall`, function() {
     })
     
     describe('purchase', () => {
-      let calldata, receipt, balanceBefore, lockBalanceBefore
+      let calldata, receipt, lockBalanceBefore
 
       before (async () => {
         const args = [
@@ -450,7 +399,7 @@ describe(`swapAndCall`, function() {
         // parse call data
         calldata = await lock.interface.encodeFunctionData('purchase', args)
         lockBalanceBefore = await usdc.balanceOf(lock.address)
-        balanceBefore = await dai.balanceOf(keyOwner.address)        
+
 
         // do the swap
         await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
@@ -459,7 +408,6 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            keyPrice, // amountOut (in ETH)
             500, // poolFee - no 3% DAI/USDC pool 
             calldata
           )
@@ -480,26 +428,15 @@ describe(`swapAndCall`, function() {
 
       it('emit an event', async () => {
         const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.value.gte(ethers.utils.parseEther('.4'))).to.equal(true)
-      })
-
-      it('send back the excess tokens', async () => {
-        const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        
-        const balanceAfter = await dai.balanceOf(keyOwner.address)
-        const totalSpent = balanceBefore.sub(balanceAfter)
-        
-        const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
-        expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
+        expect(args.amountIn.gte(ethers.utils.parseEther('.4'))).to.equal(true)
       })
     })
 
     describe('extend', async () => {
-      let tokenId, receipt, balanceBefore, lockBalanceBefore
+      let tokenId, receipt, lockBalanceBefore
       beforeEach(async () => {    
         
         // purchase a key in USDC
@@ -520,7 +457,6 @@ describe(`swapAndCall`, function() {
           [],
         ]
         const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
-        balanceBefore = await dai.balanceOf(keyOwner.address)
         lockBalanceBefore = await usdc.balanceOf(lock.address)
         assert((await dai.balanceOf(keyOwner.address)).gt(maxDAIAmount))
         
@@ -531,7 +467,6 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            keyPrice, // amountOut (in ETH)
             poolFee,
             calldata,
             { value: 0 }
@@ -551,21 +486,10 @@ describe(`swapAndCall`, function() {
 
       it('emit an event', async () => {
         const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
+        const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.value.gte(ethers.utils.parseEther('.4'))).to.equal(true)
-      })
-
-      it('send back the excess tokens', async () => {
-        const { events } = receipt
-        const { args } = events.find(({event}) => event === 'SwapCallRefund')
-        
-        const balanceAfter = await dai.balanceOf(keyOwner.address)
-        const totalSpent = balanceBefore.sub(balanceAfter)
-        
-        const keyPriceDAI = maxDAIAmount.sub(args.value).toString()
-        expect(totalSpent.eq(keyPriceDAI)).to.equal(true)
+        expect(args.amountIn.gte(ethers.utils.parseEther('.4'))).to.equal(true)
       })
     })
   })

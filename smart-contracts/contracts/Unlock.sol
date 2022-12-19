@@ -143,9 +143,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint16 indexed version
   );
 
-  event SwapCallRefund(
+  event SwapCall(
+    address lock,
     address tokenAddress,
-    uint value
+    uint amountSpent
   );
 
   // errors
@@ -508,12 +509,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   /**
    * Swap tokens and call a function in a lock contract
+   * @notice If the actual amount spent is less than the specified maximum amount, the remaining tokens wll 
+   * be held by the Unlock contract
    */
   function swapAndCall(
     address lock,
     address srcToken,
     uint amountInMax,
-    uint keyPrice,
     uint24 poolFee,
     bytes memory callData
   ) public payable returns(bytes memory) {
@@ -528,12 +530,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert('=');
     }
     
-    // TODO: fetch automatically price from lock
-    // uint keyPrice = IPublicLock(lock).keyPrice();
-    // make sure amount is enough to unwrap
-    // if(srcToken == address(0) && amountInMax < msg.value) {
-    //   revert InsufficientAmount(srcToken);
-    // }
+    // get price in destToken from lock
+    uint keyPrice = IPublicLock(lock).keyPrice();
 
     // use WETH for native tokens
     address tokenIn = srcToken == address(0) ? weth : srcToken;
@@ -583,6 +581,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       IWETH(weth).withdraw(keyPrice);
     }
 
+    // make sure amount is enough to unwrap
+    // if(srcToken == address(0) && amountInMax < msg.value) {
+    //   revert InsufficientAmount(srcToken);
+    // }
+
     // call the lock
     (bool success, bytes memory returnData) = lock.call{
       value: destToken == address(0) ? keyPrice : 0
@@ -591,8 +594,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     );
     
     if (success == false) {
-      // TODO: refund user if call reverts
-      // catch revert reason
+      // catch revert reason from lock
       assembly {
         let ptr := mload(0x40)
         let size := returndatasize()
@@ -601,23 +603,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       }
     }
 
-    // If the actual amount spent is less than the specified maximum amount, refund the msg.sender
-    uint remaining = amountInMax - amountIn;
-    if (remaining > 0) {
-      if(srcToken == address(0)) {
-        // unwrap remaining tokens
-        IWETH(weth).withdraw(remaining);
-        
-        // send back remaining balance
-        payable(msg.sender).transfer(remaining);
-      } else {
-        // clear unsiwap approval
-        TransferHelper.safeApprove(srcToken, uniswapRouter, 0);
-        // refund ERC20
-        TransferHelper.safeTransfer(srcToken, msg.sender, amountInMax - amountIn);
-      }
-      emit SwapCallRefund(srcToken, remaining);
-    }
+    emit SwapCall(
+      lock,
+      srcToken,
+      amountIn
+    );
+    
 
     // returns whatever the lock returned
     return returnData;
