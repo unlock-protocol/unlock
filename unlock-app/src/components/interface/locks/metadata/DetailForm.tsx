@@ -6,7 +6,7 @@ interface Props {
   disabled?: boolean
 }
 
-export function LockDetailForm({ disabled }: Props) {
+export function DetailForm({ disabled }: Props) {
   const {
     register,
     formState: { errors },
@@ -39,7 +39,7 @@ export function LockDetailForm({ disabled }: Props) {
     </p>
   )
   return (
-    <Disclosure label="Basic">
+    <Disclosure label="Basic" defaultOpen>
       <div className="grid gap-6">
         <Input
           {...register('name', {
