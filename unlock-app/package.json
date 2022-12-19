@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "7.20.5",
     "@headlessui/react": "1.7.4",
+    "@hookform/resolvers": "2.9.10",
     "@radix-ui/react-avatar": "1.0.1",
     "@sentry/nextjs": "7.24.2",
     "@stripe/react-stripe-js": "1.15.0",

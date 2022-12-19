@@ -135,6 +135,7 @@ export const PaywallConfigSchema = z
         description:
           'The address of a webpage where the user will be redirected when they complete the checkout flow.',
       })
+      .url()
       .optional(),
     useDelegatedProvider: z.boolean().optional(),
     network: z.number().int().optional(),
