@@ -1,5 +1,5 @@
-import { Button } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
+import { Button, Disclosure, Input } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
@@ -28,10 +28,12 @@ export function UpdateMetadataForm({
   name,
   keyId,
 }: Props) {
+  const [selectedKeyId, setSelectedKeyId] = useState<string | undefined>(keyId)
+  const [isKeySelected, setIsKeySelected] = useState<boolean>(!keyId)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
-    keyId,
+    keyId: selectedKeyId,
   })
 
   const methods = useForm<MetadataFormData>({
@@ -45,7 +47,7 @@ export function UpdateMetadataForm({
     useUpdateMetadata({
       lockAddress,
       network,
-      keyId,
+      keyId: selectedKeyId,
     })
 
   const onSubmit = async (formData: MetadataFormData) => {
@@ -58,54 +60,69 @@ export function UpdateMetadataForm({
       const form = toFormData(metadata as Metadata)
       methods.reset(form)
     }
-  }, [metadata, methods])
-
-  if (isMetadataLoading) {
-    return <LoadingIcon />
-  }
+  }, [metadata, methods, isMetadataLoading])
 
   return (
     <div className="max-w-screen-md mx-auto">
-      <div className="pt-2 pb-6 space-y-2">
-        <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
+      <div className="grid gap-6">
+        <div className="pt-2 pb-6 space-y-2">
+          <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
+          <div>
+            <p className="text-lg text-gray-700">
+              Add rich properties and data to your NFT memberships.
+            </p>
+            <a
+              href="https://docs.opensea.io/docs/metadata-standards"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
+            >
+              Learn about the OpenSea metadata.
+              <ExternalLinkIcon />
+            </a>
+          </div>
+        </div>
+        <Disclosure defaultOpen={!!keyId} label="Key">
+          <Input
+            value={selectedKeyId}
+            label="ID"
+            onChange={(event) => {
+              event.preventDefault()
+              const id = event.target.value
+              setSelectedKeyId(id ? id.toLowerCase() : undefined)
+            }}
+            description="Enter Token ID of your NFT membership to edit its properties. Leave blank to edit the lock properties."
+          />
+        </Disclosure>
         <div>
-          <p className="text-lg text-gray-700">
-            Add rich properties and data to your NFT memberships.
-          </p>
-          <a
-            href="https://docs.opensea.io/docs/metadata-standards"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
-          >
-            Learn about the OpenSea metadata.
-            <ExternalLinkIcon />
-          </a>
+          {isMetadataLoading && <LoadingIcon />}
+          {!isMetadataLoading && (
+            <FormProvider {...methods}>
+              <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+                <div className="grid gap-6">
+                  <DetailForm disabled={isMetadataUpating} />
+                  <TicketForm
+                    lockAddress={lockAddress}
+                    network={network}
+                    disabled={isMetadataUpating}
+                  />
+                  <AdvancedForm disabled={isMetadataUpating} />
+                  <LockCustomForm />
+                  <div className="flex justify-center">
+                    <Button
+                      disabled={isMetadataUpating}
+                      loading={isMetadataUpating}
+                      className="w-full max-w-sm"
+                    >
+                      Save Properties
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </FormProvider>
+          )}
         </div>
       </div>
-      <FormProvider {...methods}>
-        <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="grid gap-6">
-            <DetailForm disabled={isMetadataUpating} />
-            <TicketForm
-              lockAddress={lockAddress}
-              network={network}
-              disabled={isMetadataUpating}
-            />
-            <AdvancedForm disabled={isMetadataUpating} />
-            <LockCustomForm />
-            <div className="flex justify-center">
-              <Button
-                disabled={isMetadataUpating}
-                loading={isMetadataUpating}
-                className="w-full max-w-sm"
-              >
-                Save Properties
-              </Button>
-            </div>
-          </div>
-        </form>
-      </FormProvider>
     </div>
   )
 }

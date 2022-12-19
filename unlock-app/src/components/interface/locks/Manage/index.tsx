@@ -187,7 +187,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
-  const metadataPageUrl = `/locks/metadata?address=${lockAddress}&network=${network}`
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
   const verificationLink = `/verification`
 
