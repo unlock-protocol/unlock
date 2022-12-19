@@ -516,7 +516,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address lock,
     address srcToken,
     uint amountInMax,
-    uint24 poolFee,
+    bytes memory tokenPath,
     bytes memory callData
   ) public payable returns(bytes memory) {
     // make sure uniswap is set
@@ -548,21 +548,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     TransferHelper.safeApprove(tokenIn, uniswapRouter, amountInMax);
 
     // parse swap args
-    ISwapRouter.ExactOutputSingleParams memory params =
-      ISwapRouter.ExactOutputSingleParams({
-          tokenIn: tokenIn, 
-          tokenOut: destToken == address(0) ? weth : destToken,
-          fee: poolFee,
+    ISwapRouter.ExactOutputParams memory params =
+      ISwapRouter.ExactOutputParams({
+          path: tokenPath,
           recipient: address(this),
           deadline: block.timestamp,
           amountOut: keyPrice,
-          amountInMaximum: amountInMax,
-          sqrtPriceLimitX96: 0
+          amountInMaximum: amountInMax
       });
     
     // Executes the swap, returning the amountIn needed
     uint amountIn;
-    try ISwapRouter(uniswapRouter).exactOutputSingle(params) returns (uint _amountIn) {
+    try ISwapRouter(uniswapRouter).exactOutput(params) returns (uint _amountIn) {
       amountIn = _amountIn;
     } catch  {
       // read Uniswap revert reason from mem buffer

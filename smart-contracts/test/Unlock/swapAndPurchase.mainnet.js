@@ -1,6 +1,13 @@
 const { ethers, unlock, upgrades } = require('hardhat')
 const { impersonate, DAI, WETH, ADDRESS_ZERO, UNISWAP_ROUTER_ADDRESS, deployLock, purchaseKey, USDC } = require('../helpers')
+const { encodeRouteToPath } = require('@uniswap/v3-sdk')
+
 const { expect } = require('chai')
+
+// uniswap router
+const { AlphaRouter } = require('@uniswap/smart-order-router')
+const { Token, CurrencyAmount, TradeType } = require('@uniswap/sdk-core')
+const JSBI  = require('jsbi')
 
 // get unlock address in mainnet
 const { networks : { 1 : { unlockAddress }} } = unlock
@@ -10,11 +17,42 @@ const ADDRESS_WITH_DAI = '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8'
 const ADDRESS_WITH_USDC = '0xf977814e90da44bfa03b6295a0616a897441acec' // binance
 
 const value = ethers.utils.parseEther('.1')
-const poolFee = 3000
+
+const getUniswapRouterPath = async (token0, token1, amountOut) => {
+  const tokenIn = new Token(
+    1,
+    token0,
+    token0 === USDC ? 6 : 18,
+  )
+  const tokenOut = new Token(
+    1,
+    token1,
+    token1 === USDC ? 6 : 18,
+  )
+
+  const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt(amountOut))
+  
+  // uniswap smart router
+  const router = new AlphaRouter({ chainId: 1, provider: ethers.provider })
+  const route = await router.route(
+    outputAmount,
+    tokenIn, // quoteCurrency
+    TradeType.EXACT_OUTPUT, // swapType
+  )
+
+  const bestRoute = route.route[0].route
+  const path = encodeRouteToPath(bestRoute, TradeType.EXACT_OUTPUT)
+  
+  // console.log(`Quote Exact In: ${route.quote.toFixed(2)}`);
+  // console.log(`Gas Adjusted Quote In: ${route.quoteGasAdjusted.toFixed(2)}`);
+  // console.log(`Gas Used USD: ${route.estimatedGasUsedUSD.toFixed(6)}`);
+
+  return path
+}
 
 describe(`swapAndCall`, function() {
 
-  let unlock, lock, keyOwner, keyPrice, dai, daiOwner, usdc, usdcOwner
+  let unlock, lock, keyOwner, keyPrice, dai, daiOwner, usdc, usdcOwner, uniswapRouterPath
 
   before(async function() {
     if (!process.env.RUN_MAINNET_FORK) {
@@ -23,7 +61,7 @@ describe(`swapAndCall`, function() {
     }
 
     [, keyOwner] = await ethers.getSigners()
-
+    
     // ERC20
     dai = await ethers.getContractAt('TestERC20', DAI)
     await impersonate(ADDRESS_WITH_DAI)
@@ -79,6 +117,7 @@ describe(`swapAndCall`, function() {
         isEthers: true
       })
       keyPrice = await lock.keyPrice()
+      uniswapRouterPath = await getUniswapRouterPath(DAI, WETH, keyPrice)
     })
     
     it('lock is set properly', async () => {  
@@ -120,7 +159,7 @@ describe(`swapAndCall`, function() {
             lock.address,
             ADDRESS_ZERO,
             value, // amountInMax (in ETH)
-            poolFee,
+            uniswapRouterPath,
             calldata,
             { value }
           )
@@ -146,7 +185,7 @@ describe(`swapAndCall`, function() {
         expect(args.tokenAddress).to.equal(ADDRESS_ZERO)
         expect(args.lock).to.equal(lock.address)
         // test for value for xdai key price roughly
-        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
+        expect(args.amountSpent.lte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
     })
 
@@ -186,7 +225,7 @@ describe(`swapAndCall`, function() {
             lock.address,
             ADDRESS_ZERO,
             value, // amountInMax (in ETH)
-            poolFee,
+            uniswapRouterPath,
             calldata,
             { value }
           )
@@ -208,7 +247,7 @@ describe(`swapAndCall`, function() {
         const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(ADDRESS_ZERO)
         // test for value for xdai key price roughly
-        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
+        expect(args.amountSpent.lte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
 
       
@@ -268,7 +307,7 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            poolFee,
+            uniswapRouterPath,
             calldata,
             { value : 0 }
           )
@@ -292,7 +331,7 @@ describe(`swapAndCall`, function() {
         const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
+        expect(args.amountSpent.lte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
     })
 
@@ -326,7 +365,7 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            poolFee,
+            uniswapRouterPath,
             calldata,
             { value: 0 }
           )
@@ -348,7 +387,7 @@ describe(`swapAndCall`, function() {
         const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.amountIn.gte(ethers.utils.parseEther('.09'))).to.equal(true)
+        expect(args.amountSpent.lte(ethers.utils.parseEther('.09'))).to.equal(true)
       })
     })
   })
@@ -408,7 +447,7 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            500, // poolFee - no 3% DAI/USDC pool 
+            500, // uniswapRouterPath - no 3% DAI/USDC pool 
             calldata
           )
         receipt = await tx.wait()
@@ -431,7 +470,7 @@ describe(`swapAndCall`, function() {
         const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.amountIn.gte(ethers.utils.parseEther('.4'))).to.equal(true)
+        expect(args.amountSpent.lte(ethers.utils.parseEther('.4'))).to.equal(true)
       })
     })
 
@@ -467,7 +506,7 @@ describe(`swapAndCall`, function() {
             lock.address,
             DAI,
             maxDAIAmount, // amountInMax (in DAI)
-            poolFee,
+            uniswapRouterPath,
             calldata,
             { value: 0 }
           )
@@ -489,7 +528,7 @@ describe(`swapAndCall`, function() {
         const { args } = events.find(({event}) => event === 'SwapCall')
         expect(args.tokenAddress).to.equal(DAI)
         // test for value for xdai key price roughly
-        expect(args.amountIn.gte(ethers.utils.parseEther('.4'))).to.equal(true)
+        expect(args.amountSpent.lte(ethers.utils.parseEther('.4'))).to.equal(true)
       })
     })
   })
