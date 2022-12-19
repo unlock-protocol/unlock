@@ -9,7 +9,6 @@ interface Props {
 
 export function CodeBox({ lang, code }: Props) {
   return (
-    // @ts-expect-error
     <Highlight
       {...defaultProps}
       theme={UnlockPrismTheme}
