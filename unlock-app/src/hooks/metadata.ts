@@ -15,7 +15,7 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
     ['updateMetadata', lockAddress, keyId, network],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
       const token = await storageService.getAccessToken()
-      const headers = storageService.genAuthorizationHeader(token)
+      const headers = storageService.genAuthorizationHeader(token || '')
       if (keyId) {
         const keyResponse = await storageService.locksmith.updateKeyMetadata(
           network,
@@ -44,7 +44,7 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
       }
     },
     {
-      onError: (error) => {
+      onError: (error: Error) => {
         console.error(error)
         ToastHelper.error('Metadata update failed')
       },

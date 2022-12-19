@@ -29,7 +29,6 @@ export function UpdateMetadataForm({
   keyId,
 }: Props) {
   const [selectedKeyId, setSelectedKeyId] = useState<string | undefined>(keyId)
-  const [isKeySelected, setIsKeySelected] = useState<boolean>(!keyId)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
