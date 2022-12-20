@@ -41,25 +41,21 @@ const tokens = {
   )
 }
 
-async function main() {
+async function main({
+  tokenIn = tokens.dai,
+  tokenOut = tokens.weth,
+  keyPrice = ethers.utils.parseEther('.1')
+} = {}) {
   const router = new AlphaRouter({ chainId: 1, 
     provider: ethers.provider
   })
 
-  const keyPrice = ethers.utils.parseEther('.1')
-  const outputAmount = CurrencyAmount.fromRawAmount(tokens.shiba, JSBI.BigInt(keyPrice))
+  const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt(keyPrice))
   const args = {
     outputAmount,
-    quoteCurrency: tokens.weth,
+    quoteCurrency: tokenIn,
     swapType: TradeType.EXACT_OUTPUT,
-    // swapConfig: {
-    //   // recipient: keyOwner.address,
-    //   // slippageTolerance,
-    //   // deadline: Math.floor(Date.now()/1000 + 1800)
-    // }
   }
-
-  
 
   const route = await router.route(
       ...Object.values(args)
@@ -69,11 +65,9 @@ async function main() {
   const bestRoute = route.route[0].route
   console.log(route.route[0].route)
   
-
   const path = encodeRouteToPath(bestRoute, TradeType.EXACT_OUTPUT)
   console.log(path)
   
-
   console.log(`Quote Exact In: ${route.quote.toFixed(2)}`);
   console.log(`Gas Adjusted Quote In: ${route.quoteGasAdjusted.toFixed(2)}`);
   console.log(`Gas Used USD: ${route.estimatedGasUsedUSD.toFixed(6)}`);
