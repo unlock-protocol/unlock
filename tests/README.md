@@ -40,7 +40,7 @@ yarn test --network localhost
 
 ## Add a test
 
-1. Run the The Unlock protocol using docker: `sh ./bin/tests.sh`.
+1. Run the The Unlock protocol on your machine (see the Development section above)
 
 2. Create a file in the `/test` folder with your logic.
 
