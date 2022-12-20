@@ -3453,17 +3453,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/config-array@npm:^0.10.4":
-  version: 0.10.4
-  resolution: "@humanwhocodes/config-array@npm:0.10.4"
-  dependencies:
-    "@humanwhocodes/object-schema": ^1.2.1
-    debug: ^4.1.1
-    minimatch: ^3.0.4
-  checksum: d480e5d57e6d787565b6cff78e27c3d1b380692d4ffb0ada7d7f5957a56c9032f034da05a3e443065dbd0671ebf4d859036ced34e96b325bbc1badbae3c05300
-  languageName: node
-  linkType: hard
-
 "@humanwhocodes/config-array@npm:^0.11.6":
   version: 0.11.7
   resolution: "@humanwhocodes/config-array@npm:0.11.7"
@@ -6236,6 +6225,15 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.13.10
   checksum: d5b54984148ac52e30c6a92834deb619cf74b4af02709a20eb43e7895f98fed098968b597a715bf5b5431ae186372e65499a801d93e835f53bbc39e3a549f664
+  languageName: node
+  linkType: hard
+
+"@rehooks/local-storage@npm:2.4.4":
+  version: 2.4.4
+  resolution: "@rehooks/local-storage@npm:2.4.4"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 1aba4f4cfa0f1767d82730240a11c814f5b70917a0031989d3ce3a97b3d040523271738802a4a5deee20e9295e7c09bca6882a048337f0b78525347b7370ec73
   languageName: node
   linkType: hard
 
@@ -11005,6 +11003,7 @@ __metadata:
     "@headlessui/react": 1.7.4
     "@hookform/resolvers": 2.9.10
     "@radix-ui/react-avatar": 1.0.1
+    "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.24.2
     "@stripe/react-stripe-js": 1.15.0
     "@stripe/stripe-js": 1.45.0
@@ -11032,6 +11031,7 @@ __metadata:
     "@walletconnect/web3-provider": 1.8.0
     "@xstate/react": 3.0.1
     autoprefixer: 10.4.13
+    axios-auth-refresh: 3.3.4
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
     babel-loader: 9.1.0
@@ -11161,6 +11161,7 @@ __metadata:
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
+    axios: 1.2.1
     babel-jest: 28.1.3
     cross-fetch: 3.1.5
     eslint: 8.26.0
@@ -13604,12 +13605,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios-auth-refresh@npm:3.3.4":
+  version: 3.3.4
+  resolution: "axios-auth-refresh@npm:3.3.4"
+  peerDependencies:
+    axios: ">= 0.18 < 0.19.0 || >= 0.19.1"
+  checksum: 12ac40f73c144fbc29fbbcafce953b75158c999c0b66d1a98cf624f9c8508b7bb698a196774f8ff1f6e60b70feac44ae1dc143d4bb95ff75dff3b7890e5d1cec
+  languageName: node
+  linkType: hard
+
 "axios@npm:0.26.1":
   version: 0.26.1
   resolution: "axios@npm:0.26.1"
   dependencies:
     follow-redirects: ^1.14.8
   checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
+  languageName: node
+  linkType: hard
+
+"axios@npm:1.2.1":
+  version: 1.2.1
+  resolution: "axios@npm:1.2.1"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: c4dc4e119064c9aed09a3de309bedb797a139a6fb372223aafe3e0c10a7d4a14e4d3e9c9d309467fadb9d2b490b891ee3df96ef5b55716bb971910466ff9f0c5
   languageName: node
   linkType: hard
 
@@ -23741,7 +23762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.12.1, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.8":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.12.1, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
