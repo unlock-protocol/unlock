@@ -21,7 +21,7 @@ const Settings: NextPage = () => {
     setNetwork(query?.network as string)
     setLockAddress(query?.address as string)
     setDefaultTab((query?.defaultTab as SettingTab) ?? 'general')
-  }, [query?.network, query?.address])
+  }, [query?.network, query?.address, query.defaultTab])
 
   const withoutParams = query?.address?.length === 0 && !query.network
 
