@@ -84,7 +84,9 @@ RUN yarn build
 RUN yarn apps:build
 
 # Cleanup up image to make it lighter
+USER root
 RUN apt-get autoremove
+USER node
 
 # Remove yarn cache (re-installing dependencies will take more time, but image will be 500MB lighter)
 RUN rm -rf .yarn/cache/ 
