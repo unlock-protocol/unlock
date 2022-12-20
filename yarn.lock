@@ -3444,6 +3444,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:2.9.10":
+  version: 2.9.10
+  resolution: "@hookform/resolvers@npm:2.9.10"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: ae3395372d6ff11506a72bb6b3c57046bd14b457c2fe1f0485f60cf2dba0ef4484e3a2fb5a0f6a217f6d701393ebc3683a2ede7c81c6f13e71f965f520c7af16
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.6":
   version: 0.11.7
   resolution: "@humanwhocodes/config-array@npm:0.11.7"
@@ -9632,10 +9641,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:3.0.5":
-  version: 3.0.5
-  resolution: "@types/node-cron@npm:3.0.5"
-  checksum: 40347212fad2b1a82b0590edc6c031ccbb173c3d7e3e01e587268deb78865270d70e6a6e2f54de6a92e666fdde00ce56cc1714578edd2af3c302dcc86b7f7c3c
+"@types/node-cron@npm:3.0.6":
+  version: 3.0.6
+  resolution: "@types/node-cron@npm:3.0.6"
+  checksum: dfddb32f3a84e80413d78ff1bd7b0760765a3876929c54d3f35e0fe9d3365d19a32db38290c1d585de4dc35ab3e67dbe93faf440d8c524a520d5b96a8aa07404
   languageName: node
   linkType: hard
 
@@ -10688,7 +10697,7 @@ __metadata:
     "@types/jsonwebtoken": 8.5.9
     "@types/nock": 10.0.3
     "@types/node": 18.11.9
-    "@types/node-cron": 3.0.5
+    "@types/node-cron": 3.0.6
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/stripe": 8.0.416
@@ -10983,6 +10992,7 @@ __metadata:
     "@babel/core": 7.20.5
     "@babel/plugin-proposal-optional-chaining": 7.18.9
     "@headlessui/react": 1.7.4
+    "@hookform/resolvers": 2.9.10
     "@radix-ui/react-avatar": 1.0.1
     "@sentry/nextjs": 7.24.2
     "@stripe/react-stripe-js": 1.15.0
