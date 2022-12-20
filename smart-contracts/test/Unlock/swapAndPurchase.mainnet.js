@@ -154,6 +154,7 @@ describe(`swapAndCall`, function() {
         lockBalanceBefore = await dai.balanceOf(lock.address)        
 
         // do the swap
+        uniswapRouterPath = await getUniswapRouterPath(WETH, DAI, keyPrice)
         const tx = await unlock.connect(keyOwner)
           .swapAndCall(
             lock.address,
@@ -217,7 +218,8 @@ describe(`swapAndCall`, function() {
           [],
         ]
         const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
-        lockBalanceBefore = await dai.balanceOf(lock.address)        
+        lockBalanceBefore = await dai.balanceOf(lock.address)
+        uniswapRouterPath = await getUniswapRouterPath(WETH, DAI, keyPrice) 
 
         // do the swap and call
         const tx = await unlock.connect(keyOwner)
@@ -302,6 +304,7 @@ describe(`swapAndCall`, function() {
         
         // do the swap
         await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
+        uniswapRouterPath = await getUniswapRouterPath(DAI, WETH, keyPrice)
         const tx = await unlock.connect(keyOwner)
           .swapAndCall(
             lock.address,
@@ -360,6 +363,7 @@ describe(`swapAndCall`, function() {
         
         // do the swap and call
         await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
+        uniswapRouterPath = await getUniswapRouterPath(DAI, WETH, keyPrice)
         const tx = await unlock.connect(keyOwner)
           .swapAndCall(
             lock.address,
@@ -438,7 +442,7 @@ describe(`swapAndCall`, function() {
         // parse call data
         calldata = await lock.interface.encodeFunctionData('purchase', args)
         lockBalanceBefore = await usdc.balanceOf(lock.address)
-
+        uniswapRouterPath = await getUniswapRouterPath(DAI, USDC, keyPrice)
 
         // do the swap
         await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
@@ -498,7 +502,8 @@ describe(`swapAndCall`, function() {
         const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
         lockBalanceBefore = await usdc.balanceOf(lock.address)
         assert((await dai.balanceOf(keyOwner.address)).gt(maxDAIAmount))
-        
+        uniswapRouterPath = await getUniswapRouterPath(DAI, USDC, keyPrice)
+
         // do the swap and call
         await dai.connect(keyOwner).approve(unlock.address, maxDAIAmount)
         const tx = await unlock.connect(keyOwner)
