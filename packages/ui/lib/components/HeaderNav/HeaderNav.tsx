@@ -1,5 +1,5 @@
 import { Popover, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Button } from '../Button/Button'
 import { SOCIAL_LINKS } from '../constants'
 import { Icon } from '../Icon/Icon'
@@ -59,6 +59,10 @@ interface NavbarProps {
   logo: {
     url: string
     src?: string
+  }
+  extraClass?: {
+    mobile?: string
+    desktop?: string
   }
 }
 
@@ -276,8 +280,8 @@ const NavSectionMobile = ({
         <Title title={title} onClick={() => setOpen(!open)} />
         {open && (
           <div className="flex flex-col gap-4">
-            {options?.map((option) => (
-              <div className="flex flex-col">
+            {options?.map((option, index) => (
+              <div className="flex flex-col" key={index}>
                 <div className="font-bold">{option.title}</div>
                 <div className="flex flex-col gap-4">
                   {'options' in option &&
@@ -310,13 +314,29 @@ const NavSectionMobile = ({
   )
 }
 
-export const HeaderNav = ({ menuSections, actions, logo }: NavbarProps) => {
+export const HeaderNav = ({
+  menuSections,
+  actions,
+  logo,
+  extraClass,
+}: NavbarProps) => {
   const [menuExpanded, setMenuExpanded] = useState(false)
   const logoUrl = logo.url || '#'
   const logoImageSrc = logo.src || LogoUrl
 
+  useEffect(() => {
+    const html: HTMLElement = document.querySelector('html')!
+    // disable scroll of contents when menu mobile is expanded
+    const activeClasses = ['fixed', 'h-full', 'inset-9']
+    if (html && menuExpanded) {
+      activeClasses.forEach((activeClass) => html.classList.add(activeClass))
+    } else if (html.classList.contains(activeClasses[0])) {
+      activeClasses.forEach((activeClass) => html.classList.remove(activeClass))
+    }
+  }, [menuExpanded])
+
   return (
-    <div className="relative">
+    <div className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
       <div className="flex md:grid md:grid-cols-[1fr_1fr_1fr] items-center justify-between h-24 w-full">
         <div>
           <div className="flex items-center gap-2">
@@ -368,8 +388,12 @@ export const HeaderNav = ({ menuSections, actions, logo }: NavbarProps) => {
 
       {/* mobile menu */}
       {menuExpanded && (
-        <div className="absolute z-10 block top-24 md:hidden">
-          <div className="flex flex-col gap-10">
+        <div
+          className={`fixed bottom-0 left-0 right-0 z-10 block overflow-scroll pb-4 top-24 md:hidden ${
+            extraClass?.mobile ?? ''
+          }`}
+        >
+          <div className="flex flex-col gap-10 px-4">
             <NavSectionMobile menuSections={menuSections} />
             <SocialIcons />
           </div>

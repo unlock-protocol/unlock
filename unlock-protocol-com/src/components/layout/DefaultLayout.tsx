@@ -11,6 +11,9 @@ interface Props {
 }
 
 const MENU = {
+  extraClass: {
+    mobile: 'bg-brand-primary px-6',
+  },
   logo: {
     url: 'https://unlock-protocol.com/',
   },
@@ -275,13 +278,15 @@ export function Layout({ children }: Props) {
     ],
   }
 
+  const containerClass = 'container px-6 mx-auto md:px-0 max-w-7xl'
+
   return (
     <>
-      <div className="container mx-auto">
+      <div className={`${containerClass}`}>
         <HeaderNav {...MENU} />
       </div>
       {children}
-      <div className="container px-6 pt-4 mx-auto md:px-0 md:pt-14 max-w-7xl">
+      <div className={`${containerClass} md:pt-14 pt-4`}>
         <Footer {...FOOTER} />
       </div>
     </>

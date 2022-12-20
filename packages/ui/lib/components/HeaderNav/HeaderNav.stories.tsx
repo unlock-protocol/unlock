@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof HeaderNav>
 
 const Template: ComponentStory<typeof HeaderNav> = (args) => (
-  <div className="container px-40 mx-auto">
+  <div className="container mx-auto md:px-40">
     <HeaderNav {...args} />
   </div>
 )
