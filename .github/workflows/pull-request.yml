@@ -4,16 +4,16 @@ on:
   pull_request:
 
 jobs:
-  # run all tests if PR contains the 'run-all-tests' tag
+  # deprec, keeping to avoid conflicts
   run-all-tests:
-    # name: "Run all tests"
     if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
-    uses: ./.github/workflows/_tests.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Deprec run-all-tests"
+        run: echo "skipping."
 
   # check which folder changed in the repo
   check-changes:
-    # name: "Check for changes in monorepo"
-    if: ${{ ! contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     uses: ./.github/workflows/_check.yml
     with:
       targets: '[
@@ -28,6 +28,8 @@ jobs:
         "wedlocks",
         "unlock-app"
         ]'
+      # run all tests if PR contains the 'run-all-tests' tag
+      bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
 
   # run tests for folders that have changed
   run-tests:
