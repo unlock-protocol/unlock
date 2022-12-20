@@ -27,6 +27,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
+
 dayjs.extend(relative)
 dayjs.extend(duration)
 dayjs.extend(custom)
@@ -36,7 +37,7 @@ interface KeyItemProps {
   label: string
 }
 
-const KeyItem = ({ label, children }: KeyItemProps) => {
+export const KeyItem = ({ label, children }: KeyItemProps) => {
   return (
     <div className="flex items-center justify-between gap-2 py-1">
       <span className="text-gray-500 capitalize">{label}</span>

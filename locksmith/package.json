@@ -28,7 +28,8 @@
     "websub:start": "yarn build && node -r ./config/envLoader.js  ./build/src/websub/server.js",
     "websub:dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js  ./src/websub/server.ts",
     "websub:prod": "cd build && node -r ./src/utils/envLoader ./src/websub/server.js",
-    "send:email": "cd build && node -r ./config/envLoader.js  ./scripts/send_email.js"
+    "send:email": "cd build && node -r ./config/envLoader.js  ./scripts/send_email.js",
+    "create:access_token": "tsx -r ./config/envLoader.js  ./scripts/create_access_token.ts"
   },
   "lint-staged": {
     "*.{js,ts}": [
