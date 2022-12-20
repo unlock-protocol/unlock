@@ -9714,10 +9714,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:3.0.5":
-  version: 3.0.5
-  resolution: "@types/node-cron@npm:3.0.5"
-  checksum: 40347212fad2b1a82b0590edc6c031ccbb173c3d7e3e01e587268deb78865270d70e6a6e2f54de6a92e666fdde00ce56cc1714578edd2af3c302dcc86b7f7c3c
+"@types/node-cron@npm:3.0.6":
+  version: 3.0.6
+  resolution: "@types/node-cron@npm:3.0.6"
+  checksum: dfddb32f3a84e80413d78ff1bd7b0760765a3876929c54d3f35e0fe9d3365d19a32db38290c1d585de4dc35ab3e67dbe93faf440d8c524a520d5b96a8aa07404
   languageName: node
   linkType: hard
 
@@ -10770,7 +10770,7 @@ __metadata:
     "@types/jsonwebtoken": 8.5.9
     "@types/nock": 10.0.3
     "@types/node": 18.11.9
-    "@types/node-cron": 3.0.5
+    "@types/node-cron": 3.0.6
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/stripe": 8.0.416
