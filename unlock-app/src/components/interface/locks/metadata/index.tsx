@@ -14,6 +14,7 @@ import {
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useUpdateMetadata, useMetadata } from '~/hooks/metadata'
 import LoadingIcon from '../../Loading'
+import { config } from '~/config/app'
 
 interface Props {
   name?: string
@@ -50,7 +51,13 @@ export function UpdateMetadataForm({
     })
 
   const onSubmit = async (formData: MetadataFormData) => {
-    const metadata = formDataToMetadata(formData)
+    const metadata = formDataToMetadata({
+      // Handle ID in image URL
+      image: `${config.locksmithHost}/lock/${lockAddress}/icon${
+        selectedKeyId ? `?id=${selectedKeyId}` : ''
+      }`,
+      ...formData,
+    })
     await updateMetadata(metadata)
   }
 

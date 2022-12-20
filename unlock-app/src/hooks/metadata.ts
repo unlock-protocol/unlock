@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { storage } from '~/config/storage'
@@ -10,6 +10,7 @@ interface Options {
 }
 
 export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
+  const queryClient = useQueryClient()
   return useMutation(
     ['updateMetadata', lockAddress, keyId, network],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
@@ -41,6 +42,9 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
       },
       onSuccess: () => {
         ToastHelper.success('Metadata updated')
+        queryClient.invalidateQueries({
+          queryKey: ['metadata', lockAddress],
+        })
       },
     }
   )
