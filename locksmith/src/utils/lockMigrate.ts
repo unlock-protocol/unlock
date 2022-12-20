@@ -3,7 +3,7 @@ import * as contracts from '@unlock-protocol/contracts'
 import { networks } from '@unlock-protocol/networks'
 import { NetworkConfig } from '@unlock-protocol/types'
 import listManagers from './lockManagers'
-import { purchaserCredentials } from '../../config/config'
+import config from '../config/config'
 
 interface LockClonerProps {
   lockAddress: string
@@ -55,7 +55,7 @@ export default async function migrateLock(
     message: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
   })
 
-  const signer = new Wallet(purchaserCredentials, rpc)
+  const signer = new Wallet(config.purchaserCredentials, rpc)
 
   // serialize
   const serializer = new ethers.Contract(

@@ -1,7 +1,4 @@
 {
-  "ts-node": {
-    "files": true
-  },
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "build",
@@ -10,6 +7,7 @@
     "emitDecoratorMetadata": false,
   },
   "exclude": [
-    "build"
+    "build",
+    "__tests__",
   ]
 }

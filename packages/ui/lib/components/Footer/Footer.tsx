@@ -31,7 +31,10 @@ type ActionsProps =
     }
 
 interface FooterProps {
-  logoUrl: string // url of the website to redirect when logo is clicked
+  logo: {
+    url: string // url of the website to redirect when logo is clicked
+    src?: string // custom logo image
+  }
   actions?: ActionsProps[]
   privacyUrl?: string
   termsUrl?: string
@@ -81,21 +84,24 @@ const FooterAppLink = (action: ActionsProps): JSX.Element | null => {
   return null
 }
 
-const Footer = ({
+export const Footer = ({
   privacyUrl,
   termsUrl,
   menuSections,
   subscriptionForm,
-  logoUrl,
+  logo,
   actions,
 }: FooterProps) => {
+  const logoImageUrl = logo?.src || LogoUrl
+  const logoUrl = logo.url || '#'
+
   return (
-    <footer className="flex flex-col w-full gap-24">
+    <footer className="flex flex-col w-full gap-16 md:gap-24">
       {subscriptionForm && <EmailSubscriptionForm {...subscriptionForm} />}
-      <div className="flex flex-col w-full gap-16 mb-20 md:grid md:grid-cols-3 md:gap-44">
+      <div className="flex flex-col w-full gap-16 md:mb-20 md:grid md:grid-cols-3 md:gap-44">
         <div className="flex flex-col w-full gap-10">
           <Link href={logoUrl}>
-            <img src={LogoUrl} alt="logo" className="h-10" />
+            <img src={logoImageUrl} alt="logo" className="h-10" />
           </Link>
 
           <div className="flex flex-col gap-9">

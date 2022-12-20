@@ -27,7 +27,7 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] In the purchase URL, configure metadata collection to collect an email address (\`\"metadataInputs\": [ { name: 'Name', type: 'text', required: true } ],\`)
 * [ ] By using a recent lock, enable multiple purchase in the URL (\`\"maxRecipients\": 6\`)
 * [ ] Go through the checkout flow and ensure that it works as expected (data is collected for 2 users + and 2 keys are minted)
-* [ ] Use a v9 lock and check if multiple purchase is successful for compatibility. Use lock address: `0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894` on network `100` gnosis.
+* [ ] Use a v9 lock and check if multiple purchase is successful for compatibility. Use lock address: `0xb77030a7e47a5eb942a4748000125e70be598632` on network `100` gnosis.
 
 ## Credit Card flow for Unlock User accounts
 * [ ] Open the demo for a lock that has credit card enabled

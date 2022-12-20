@@ -4,12 +4,14 @@ import SignUpImageUrl from './../../assets/img-signup-lg.svg'
 
 export interface EmailSubscriptionFormProps {
   onSubmit: (email: string) => void
+  title: string
   description?: string
 }
 
 export function EmailSubscriptionForm({
   onSubmit,
-  description = 'Sign up for updates & fresh news about Unlock.',
+  title = 'Sign up for Updates',
+  description,
 }: EmailSubscriptionFormProps) {
   const [email, setEmail] = useState('')
   const [confirm, setConfirm] = useState(false)
@@ -46,10 +48,13 @@ export function EmailSubscriptionForm({
         backgroundImage: `url(${SignUpImageUrl})`,
       }}
     >
-      <div className="z-10 grid w-full gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
-        <span className="text-2xl font-semibold tracking-wider md:col-span-1">
-          {description}
-        </span>
+      <div className="grid w-full gap-6 p-6 md:gap-2 md:px-8 md:py-20 md:grid-cols-2">
+        <div className="flex flex-col gap-2 md:gap-4">
+          <span className="text-3xl font-semibold md:col-span-1">{title}</span>
+          {description && (
+            <span className="text-lg text-brand-dark">{description}</span>
+          )}
+        </div>
         <div className="w-full md:col-span-1">
           <form
             onSubmit={handleSubmit}

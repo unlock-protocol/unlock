@@ -28,34 +28,9 @@ export interface Subscription {
   next: number | null
   balance: Amount
   price: Amount
-  approvedTime: string
   possibleRenewals: string
   approvedRenewals: string
   type: 'Crypto' | 'Stripe'
-}
-
-const getApprovedTime = (renewals: string, durationInSeconds: string) => {
-  if (durationInSeconds === ethers.constants.MaxUint256.toString()) {
-    return 'No renewal required'
-  }
-  const approvedTimeInSeconds =
-    ethers.BigNumber.from(renewals).mul(durationInSeconds)
-
-  const approvedTimeInYears = approvedTimeInSeconds
-    .div(60)
-    .div(60)
-    .div(24)
-    .div(365)
-
-  const approvedSeconds = approvedTimeInSeconds.toNumber()
-
-  const approvedTime = approvedTimeInYears.gt(100)
-    ? 'No renewal required'
-    : approvedSeconds <= 0
-    ? 'No renewal available'
-    : dayjs.duration(approvedSeconds, 'seconds').humanize()
-
-  return approvedTime
 }
 
 export class SubscriptionController {
@@ -109,7 +84,7 @@ export class SubscriptionController {
 
     const balance = ethers.utils.formatUnits(userBalance, decimals)
 
-    const price = key.lock.price
+    const price = ethers.BigNumber.from(key.lock.price)
     const next =
       key.expiration === ethers.constants.MaxUint256.toString()
         ? null
@@ -118,7 +93,10 @@ export class SubscriptionController {
         : parseInt(key.expiration)
 
     // Approved renewals
-    const approvedRenewalsAmount = userAllowance.div(price)
+    const approvedRenewalsAmount =
+      userAllowance.gt(0) && price.gt(0)
+        ? userAllowance.div(price)
+        : ethers.BigNumber.from(0)
 
     const approvedRenewals = approvedRenewalsAmount.toString()
 
@@ -153,28 +131,18 @@ export class SubscriptionController {
     // if card subscription is found, add it.
     if (stripeSubscription) {
       const approvedRenewals = stripeSubscription.recurring?.toString()
-      const approvedTime = getApprovedTime(
-        approvedRenewals,
-        key.lock.expirationDuration
-      )
+
       subscriptions.push({
         ...info,
-        approvedTime,
         approvedRenewals,
         possibleRenewals: approvedRenewals,
         type: 'Stripe',
       })
     }
 
-    const approvedTime = getApprovedTime(
-      approvedRenewals,
-      key.lock.expirationDuration
-    )
-
     // Add the default crypto subscription details.
     const cryptoSubscription: Subscription = {
       ...info,
-      approvedTime,
       approvedRenewals: approvedRenewals,
       possibleRenewals: ethers.BigNumber.from(userBalance)
         .div(price)

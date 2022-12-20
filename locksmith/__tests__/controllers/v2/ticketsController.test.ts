@@ -1,8 +1,8 @@
 import request from 'supertest'
 import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
-const metadataOperations = require('../../../src/operations/metadataOperations')
-
-const app = require('../../../src/app')
+import * as metadataOperations from '../../../src/operations/metadataOperations'
+import app from '../../app'
+import { vi } from 'vitest'
 
 function* keyIdGen() {
   const start = Date.now()
@@ -14,7 +14,6 @@ function* keyIdGen() {
   }
 }
 
-jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 5
@@ -23,9 +22,9 @@ const tokenId = keyGen.next().value!
 const wrongTokenId = '666'
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
           owner,
@@ -37,7 +36,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-jest.mock('../../../src/operations/wedlocksOperations', () => {
+vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
     notifyNewKeyToWedlocks: (key: string, networkId?: number) =>
       tokenId.toString() === key && network === networkId,
@@ -141,7 +140,7 @@ describe('tickets endpoint', () => {
 
     const keyData = await metadataOperations.getKeyCentricData(
       lockAddress,
-      keyId
+      keyId!
     )
     expect(keyData.metadata.checkedInAt).not.toBeUndefined()
   })
@@ -193,7 +192,7 @@ describe('tickets endpoint', () => {
 
     expect(response.status).toBe(202)
 
-    const keyData = await metadataOperations.getKeyCentricData(lockAddress, id)
+    const keyData = await metadataOperations.getKeyCentricData(lockAddress, id!)
 
     expect(keyData.metadata.value).toBe('12')
     expect(keyData.KeyMetadata.custom_field).toBe('Random')
@@ -201,7 +200,6 @@ describe('tickets endpoint', () => {
 
   it('does not send email when auhentication is not present', async () => {
     expect.assertions(1)
-
     const response = await request(app).post(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
     )
@@ -218,7 +216,7 @@ describe('tickets endpoint', () => {
       .post(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/email`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(403)
   })
 
   it('send email when user is authenticated and is the key manager', async () => {

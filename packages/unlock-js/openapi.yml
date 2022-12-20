@@ -317,7 +317,7 @@ components:
             $ref: '#/components/schemas/GenericServerError'
 
     403.NotAuthenticatedOrAuthorized:
-      description: User is not authenticated or authorized to perform this action.
+      description: User is not authorized to perform this action.
       content:
         application/json:
           schema:
@@ -953,6 +953,40 @@ paths:
                     nullable: false
                 additionalProperties: true
 
+    put:
+      operationId: updateKeyMetadata
+      security:
+        - User: ['lockManager']
+      description: Update or create metadata for key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: JSON metadata inside metadata field will be saved.
+              type: object
+              nullable: false
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        201:
+          description: JSON metadata containing name, description, and custom properties for key.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties: true
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
         404:
           $ref: '#/components/responses/404.NotFound'
 
@@ -1072,53 +1106,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserMetadata'
-        400:
-          $ref: '#/components/responses/400.Invalid'
-
-        404:
-          $ref: '#/components/responses/404.NotFound'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
-  /v2/api/metadata/{network}/locks/{lockAddress}/keys:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-      - $ref: '#/components/parameters/LockAddress'
-    put:
-      operationId: updateKeyMetadata
-      security:
-        - User: ['lockManager']
-        - Application: ['lockManager']
-
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: false
-              properties:
-                keys:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      keyId:
-                        type: string
-                      owner:
-                        type: object
-                        additionalProperties: true
-      responses:
-        200:
-          description: Keys metadata.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  additionalProperties: true
         400:
           $ref: '#/components/responses/400.Invalid'
 
@@ -1380,7 +1367,6 @@ paths:
       responses:
         200:
           description: Any active subscription.
-
           content:
             application/json:
               schema:
@@ -1423,10 +1409,6 @@ paths:
                           type: string
                           description: Approved number of renewals by user.
 
-                        approvedTime:
-                          type: string
-                          description: Approved time in human readable form.
-
                         possibleRenewals:
                           type: string
                           description: Possible number of renewals based on the user account balance.
@@ -1436,5 +1418,38 @@ paths:
                             - crypto
                             - fiat
                           description: The type of payment method used for the subscription.
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/claim/{network}/locks/{lockAddress}:
+    post:
+      security:
+        - User: []
+      operationId: claim
+      description: Claim a membership key for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+
+      responses:
+        200:
+          description: Successfully claimed the key.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

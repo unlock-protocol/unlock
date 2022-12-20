@@ -6,6 +6,7 @@ export interface Ticket {
 }
 export interface MetadataFormData {
   name: string
+  image?: string
   description?: string
   external_url?: string
   youtube_url?: string
@@ -33,7 +34,7 @@ export interface Metadata {
   youtube_url?: string
   animation_url?: string
   background_color?: string
-  attributes?: Attribute[]
+  attributes: Attribute[]
   [key: string]: any
 }
 
@@ -46,6 +47,21 @@ export function toFormData({
   youtube_url,
   background_color,
 }: Metadata) {
+  const categorizedAttrs = categorizeAttributes(attributes)
+  return {
+    name,
+    description,
+    background_color: !background_color?.startsWith('#')
+      ? `#${background_color}`
+      : background_color,
+    animation_url,
+    external_url,
+    youtube_url,
+    ...categorizedAttrs,
+  } as MetadataFormData
+}
+
+export const categorizeAttributes = (attributes: Attribute[] | undefined) => {
   const ticket = attributes
     ?.filter((item) => item.trait_type.startsWith('event_'))
     .reduce((item, { trait_type, value }) => {
@@ -65,18 +81,104 @@ export function toFormData({
       !item.max_value &&
       !item.trait_type.startsWith('event_')
   )
+
   return {
-    name,
-    description,
-    background_color: !background_color?.startsWith('#')
-      ? `#${background_color}`
-      : background_color,
-    animation_url,
-    external_url,
-    youtube_url,
     ticket,
     levels,
     properties,
     stats,
-  } as MetadataFormData
+  }
+}
+
+export const formDataToMetadata = ({
+  name,
+  description,
+  animation_url,
+  youtube_url,
+  external_url,
+  background_color,
+  ticket,
+  properties,
+  levels,
+  stats,
+  image,
+}: MetadataFormData) => {
+  const metadata: Metadata & { attributes: Attribute[] } = {
+    name,
+    image,
+    attributes: [] as Attribute[],
+  }
+
+  if (ticket?.event_start_date) {
+    metadata.attributes.push({
+      trait_type: 'event_start_date',
+      value: ticket.event_start_date,
+    })
+  }
+
+  if (ticket?.event_start_time) {
+    metadata.attributes.push({
+      trait_type: 'event_start_time',
+      value: ticket.event_start_time,
+    })
+  }
+
+  if (ticket?.event_address) {
+    metadata.attributes.push({
+      trait_type: 'event_address',
+      value: ticket.event_address,
+    })
+  }
+
+  if (ticket?.event_url) {
+    metadata.attributes.push({
+      trait_type: 'event_url',
+      value: ticket.event_url,
+    })
+  }
+
+  const propertyAttributes = properties?.filter(
+    (item) => item.trait_type && item.value
+  )
+
+  const levelsAttributes = levels?.filter(
+    (item) => item.trait_type && item.value && item.max_value
+  )
+  const statsAttributes = stats?.filter(
+    (item) => item.trait_type && item.value && item.max_value
+  )
+
+  if (propertyAttributes?.length) {
+    metadata.attributes.push(...propertyAttributes)
+  }
+
+  if (levelsAttributes?.length) {
+    metadata.attributes.push(...levelsAttributes)
+  }
+
+  if (statsAttributes?.length) {
+    metadata.attributes.push(...statsAttributes)
+  }
+
+  // Opensea does not handle # in the color. We remove it if it's included in the color.
+  if (background_color && background_color.length === 7) {
+    metadata.background_color = background_color?.trim()?.replace('#', '')
+  }
+
+  if (description) {
+    metadata.description = description
+  }
+
+  if (youtube_url) {
+    metadata.youtube_url = youtube_url
+  }
+
+  if (animation_url) {
+    metadata.animation_url = animation_url
+  }
+
+  if (external_url) {
+    metadata.external_url = external_url
+  }
+  return metadata
 }
