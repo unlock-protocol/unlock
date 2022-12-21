@@ -1,5 +1,4 @@
 import { Disclosure, Drawer } from '@unlock-protocol/ui'
-import { useStorageService } from '~/utils/withStorageService'
 import React, { ReactNode } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
 import { useQuery } from '@tanstack/react-query'

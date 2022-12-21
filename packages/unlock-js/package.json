@@ -28,6 +28,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
+    "axios": "1.2.1",
     "ethers": "^5.7.x"
   },
   "lint-staged": {
@@ -63,7 +64,6 @@
   "dependencies": {
     "@morpho-labs/ethers-multicall": "3.0.1",
     "@uniswap/v3-periphery": "1.4.3",
-    "axios": "1.2.1",
     "cross-fetch": "3.1.5",
     "graphql": "16.6.0",
     "graphql-request": "5.1.0",

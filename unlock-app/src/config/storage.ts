@@ -31,8 +31,8 @@ export const getAuth = (): SessionAuth | undefined => {
 }
 
 export const clearAuth = () => {
-  writeStorage(AUTH_SESSION_KEY, undefined)
-  writeStorage(IS_REFUSED_TO_SIGN_KEY, undefined)
+  writeStorage(AUTH_SESSION_KEY, null)
+  writeStorage(IS_REFUSED_TO_SIGN_KEY, false)
 }
 
 export const storageClient = axios.create()
@@ -59,6 +59,7 @@ const refreshAuthLogic = async (failedRequest: any) => {
     const session = getAuth()
     const refreshToken = session?.refreshToken
     if (!refreshToken) {
+      clearAuth()
       return Promise.reject('No refresh token available')
     }
     const response = await service.refreshToken(refreshToken)
