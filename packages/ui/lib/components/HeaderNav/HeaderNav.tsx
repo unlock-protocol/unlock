@@ -388,7 +388,7 @@ export const HeaderNav = ({
             </Link>
           </div>
         </div>
-        <div className="items-center justify-between hidden gap-8 lg:flex">
+        <div className="items-center justify-center hidden gap-12 lg:flex">
           {menuSections?.map((menu, index) => (
             <NavSectionDesktop key={index} {...menu} />
           ))}
