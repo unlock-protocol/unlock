@@ -43,7 +43,10 @@ export function DetailForm({ disabled }: Props) {
       <div className="grid gap-6">
         <Input
           {...register('name', {
-            required: true,
+            required: {
+              value: true,
+              message: 'Name is required',
+            },
           })}
           error={errors.name?.message}
           disabled={disabled}
@@ -51,6 +54,15 @@ export function DetailForm({ disabled }: Props) {
           placeholder="Name"
           label="Name"
           description={<NameDescription />}
+        />
+        <Input
+          {...register('image')}
+          disabled={disabled}
+          type="url"
+          placeholder="https://"
+          label="Image URL"
+          error={errors.image?.message}
+          description="Include an image in the NFT, so members can see it."
         />
         <Input
           {...register('external_url')}

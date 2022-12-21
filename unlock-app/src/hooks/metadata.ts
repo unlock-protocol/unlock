@@ -6,10 +6,14 @@ import { useStorageService } from '~/utils/withStorageService'
 interface Options {
   lockAddress: string
   network: number
-  keyId?: string
+  keyId: string
 }
 
-export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
+export const useUpdateMetadata = ({
+  lockAddress,
+  network,
+  keyId,
+}: Partial<Options>) => {
   const storageService = useStorageService()
   const queryClient = useQueryClient()
   return useMutation(
@@ -17,6 +21,9 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
       const token = await storageService.getAccessToken()
       const headers = storageService.genAuthorizationHeader(token || '')
+      if (!(lockAddress && network)) {
+        throw new Error('Missing lock address or network')
+      }
       if (keyId) {
         const keyResponse = await storageService.locksmith.updateKeyMetadata(
           network,
@@ -59,7 +66,11 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
   )
 }
 
-export const useMetadata = ({ lockAddress, network, keyId }: Options) => {
+export const useMetadata = ({
+  lockAddress,
+  network,
+  keyId,
+}: Partial<Options>) => {
   const storageService = useStorageService()
   return useQuery(
     ['metadata', lockAddress, keyId, network],
@@ -67,21 +78,25 @@ export const useMetadata = ({ lockAddress, network, keyId }: Options) => {
       try {
         if (keyId) {
           const keyResponse = await storageService.locksmith.keyMetadata(
-            network,
-            lockAddress,
+            network!,
+            lockAddress!,
             keyId
           )
           return keyResponse.data as Metadata
         } else {
           const lockResponse = await storageService.locksmith.lockMetadata(
-            network,
-            lockAddress
+            network!,
+            lockAddress!
           )
           return lockResponse.data as Metadata
         }
       } catch {
         return {} as Metadata
       }
+    },
+    {
+      enabled: !!lockAddress && !!network,
+      initialData: {},
     }
   )
 }

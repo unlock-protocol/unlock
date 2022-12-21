@@ -1,5 +1,5 @@
-import { Button, Disclosure, Input } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { Button, Input } from '@unlock-protocol/ui'
+import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
@@ -15,120 +15,155 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useUpdateMetadata, useMetadata } from '~/hooks/metadata'
 import LoadingIcon from '../../Loading'
 import { config } from '~/config/app'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { Picker, PickerState } from '../../Picker'
 
 interface Props {
-  name?: string
-  lockAddress: string
-  network: number
+  lockAddress?: string
+  network?: number
   keyId?: string
 }
 
-export function UpdateMetadataForm({
+interface FormProps {
+  lockAddress: string
+  network: number
+  keyId?: string
+  defaultValues: MetadataFormData
+}
+
+export const Form = ({
   lockAddress,
   network,
-  name,
   keyId,
-}: Props) {
-  const [selectedKeyId, setSelectedKeyId] = useState<string | undefined>(keyId)
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
-    lockAddress,
-    network,
-    keyId: selectedKeyId,
+  defaultValues,
+}: FormProps) => {
+  const methods = useForm<MetadataFormData>({
+    mode: 'onSubmit',
   })
 
-  const methods = useForm<MetadataFormData>({
-    defaultValues: {
-      name,
-    },
-    mode: 'onChange',
-  })
+  const image = `${config.locksmithHost}/lock/${lockAddress}/icon${
+    keyId ? `?id=${keyId}` : ''
+  }`
+
+  useEffect(() => {
+    methods.reset()
+    methods.reset({
+      ...defaultValues,
+      image: defaultValues.image || image,
+    })
+  }, [defaultValues, methods, image])
 
   const { mutateAsync: updateMetadata, isLoading: isMetadataUpating } =
     useUpdateMetadata({
       lockAddress,
       network,
-      keyId: selectedKeyId,
+      keyId,
     })
 
   const onSubmit = async (formData: MetadataFormData) => {
     const metadata = formDataToMetadata({
       // Handle ID in image URL
-      image: `${config.locksmithHost}/lock/${lockAddress}/icon${
-        selectedKeyId ? `?id=${selectedKeyId}` : ''
-      }`,
+      image: formData.image || image,
       ...formData,
     })
     await updateMetadata(metadata)
   }
 
-  useEffect(() => {
-    if (metadata && !isMetadataLoading) {
-      const form = toFormData(metadata as Metadata)
-      methods.reset(form)
-    }
-  }, [metadata, methods, isMetadataLoading])
-
   return (
-    <div className="max-w-screen-md mx-auto">
-      <div className="grid gap-6">
-        <div className="pt-2 pb-6 space-y-2">
-          <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
-          <div>
-            <p className="text-lg text-gray-700">
-              Add rich properties and data to your NFT memberships.
-            </p>
-            <a
-              href="https://docs.opensea.io/docs/metadata-standards"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
+    <FormProvider {...methods}>
+      <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+        <div className="grid gap-6">
+          <DetailForm />
+          <TicketForm
+            lockAddress={lockAddress}
+            network={network}
+            disabled={isMetadataUpating}
+          />
+          <AdvancedForm />
+          <LockCustomForm />
+          <div className="flex justify-center">
+            <Button
+              disabled={isMetadataUpating}
+              loading={isMetadataUpating}
+              className="w-full max-w-sm"
             >
-              Learn about the OpenSea metadata.
-              <ExternalLinkIcon />
-            </a>
+              Save Properties
+            </Button>
           </div>
         </div>
-        <Disclosure defaultOpen={!!keyId} label="Key">
-          <Input
-            value={selectedKeyId}
-            label="ID"
-            onChange={(event) => {
-              event.preventDefault()
-              const id = event.target.value
-              setSelectedKeyId(id ? id.toLowerCase() : undefined)
-            }}
-            description="Enter Token ID of your NFT membership to edit its properties. Leave blank to edit the lock properties."
-          />
-        </Disclosure>
+      </form>
+    </FormProvider>
+  )
+}
+
+export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
+  const { account } = useAuth()
+  const [selected, setSelected] = useState<PickerState>({
+    lockAddress,
+    network,
+    keyId,
+  })
+
+  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+    lockAddress: selected.lockAddress,
+    network: selected.network,
+    keyId: selected.keyId,
+  })
+
+  const defaultValues = useMemo(() => {
+    return toFormData((metadata || {}) as Metadata)
+  }, [metadata])
+
+  return (
+    <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
+      <div className="pt-2 pb-6 space-y-2">
+        <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
         <div>
-          {isMetadataLoading && <LoadingIcon />}
-          {!isMetadataLoading && (
-            <FormProvider {...methods}>
-              <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
-                <div className="grid gap-6">
-                  <DetailForm disabled={isMetadataUpating} />
-                  <TicketForm
-                    lockAddress={lockAddress}
-                    network={network}
-                    disabled={isMetadataUpating}
-                  />
-                  <AdvancedForm disabled={isMetadataUpating} />
-                  <LockCustomForm />
-                  <div className="flex justify-center">
-                    <Button
-                      disabled={isMetadataUpating}
-                      loading={isMetadataUpating}
-                      className="w-full max-w-sm"
-                    >
-                      Save Properties
-                    </Button>
-                  </div>
-                </div>
-              </form>
-            </FormProvider>
-          )}
+          <p className="text-lg text-gray-700">
+            Add rich properties and data to your NFT memberships.
+          </p>
+          <a
+            href="https://docs.opensea.io/docs/metadata-standards"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
+          >
+            Learn about the OpenSea metadata.
+            <ExternalLinkIcon />
+          </a>
         </div>
       </div>
+      <div className="grid gap-6 p-6 border border-ui-secondary-600 bg-ui-secondary-400 rounded-xl">
+        <div className="space-y-1">
+          <h3 className="text-lg font-bold">NFT Selection</h3>
+          <p className="text-gray-600">
+            Select the Lock or Key you want to edit properties for.
+          </p>
+        </div>
+        <Picker
+          userAddress={account!}
+          lockAddress={lockAddress}
+          network={network}
+          keyId={keyId}
+          collect={{
+            keyId: true,
+            lockAddress: true,
+            network: true,
+          }}
+          onChange={(selected) => {
+            setSelected(selected)
+          }}
+        />
+      </div>
+      {isMetadataLoading && <LoadingIcon />}
+      {!isMetadataLoading && selected.lockAddress && selected.network && (
+        <Form
+          lockAddress={selected.lockAddress}
+          network={selected.network}
+          keyId={selected.keyId}
+          defaultValues={defaultValues}
+        />
+      )}
     </div>
   )
 }

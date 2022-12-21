@@ -28,7 +28,7 @@ const SelectPlaceholder = () => {
   )
 }
 
-const LockImage = ({ lockAddress }: LockImageProps) => {
+export const LockImage = ({ lockAddress }: LockImageProps) => {
   const config = useConfig()
   const lockImage = `${config.services.storage.host}/lock/${lockAddress}/icon`
 
@@ -119,7 +119,6 @@ export const LockPicker = ({
       <Select
         label="Network"
         options={networksOptions}
-        size="small"
         defaultValue={defaultValues?.network ?? connectedNetwork}
         onChange={setNetwork}
       />
@@ -127,28 +126,24 @@ export const LockPicker = ({
         <SelectPlaceholder />
       ) : (
         <>
-          <>
-            {networkHasLocks ? (
-              <Select
-                label="Lock"
-                options={locksOptions}
-                size="small"
-                onChange={(address?: string | number) => onChangeLock(address!)}
-                defaultValue={defaultValues?.lockAddress}
-                customOption={true}
-              />
-            ) : (
-              network && (
-                <span className="text-base">
-                  You have not deployed locks on this network yet.{' '}
-                  <Link className="underline" href="/locks/create">
-                    Deploy one now
-                  </Link>
-                  .
-                </span>
-              )
-            )}
-          </>
+          {networkHasLocks ? (
+            <Select
+              label="Lock"
+              options={locksOptions}
+              onChange={(address?: string | number) => onChangeLock(address!)}
+              defaultValue={defaultValues?.lockAddress}
+              customOption={true}
+            />
+          ) : (
+            network && (
+              <span className="text-base">
+                You have not deployed locks on this network yet.{' '}
+                <Link className="underline" href="/locks/create">
+                  Deploy one now
+                </Link>
+              </span>
+            )
+          )}
         </>
       )}
     </div>
