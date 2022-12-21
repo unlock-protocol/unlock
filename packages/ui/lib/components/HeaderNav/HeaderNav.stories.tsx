@@ -16,6 +16,9 @@ const Template: ComponentStory<typeof HeaderNav> = (args) => (
 export const Normal = Template.bind({})
 
 Normal.args = {
+  extraClass: {
+    mobile: 'px-6',
+  },
   logo: {
     url: 'https://unlock-protocol.com/',
   },
