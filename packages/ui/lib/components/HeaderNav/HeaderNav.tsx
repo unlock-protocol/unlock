@@ -110,7 +110,7 @@ const NavImageItem = ({ title, src, alt, url }: NavbarImageProps) => {
   return (
     <Link href={url} className="flex flex-col gap-4 group">
       <div
-        className="overflow-hidden bg-center bg-cover rounded-3xl h-60"
+        className="h-40 overflow-hidden bg-center bg-cover border rounded-3xl border-ui-main-100"
         style={{
           backgroundImage: `url(${src})`,
         }}
@@ -248,7 +248,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
             >
               <Popover.Panel className={`absolute z-10 ${classBySize}`}>
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
-                  <div className="relative grid gap-8 px-10 py-8 bg-white">
+                  <div className="relative grid gap-8 px-10 py-8 bg-ui-secondary-100">
                     <Navbar />
                   </div>
                 </div>
