@@ -9,6 +9,7 @@ import { config } from './app'
 import { SiweMessage, generateNonce } from 'siwe'
 import { writeStorage } from '@rehooks/local-storage'
 import { APP_NAME } from '~/hooks/useAppStorage'
+import { queryClient } from './queryClient'
 
 export interface SessionAuth {
   accessToken: string
@@ -33,6 +34,8 @@ export const getAuth = (): SessionAuth | undefined => {
 export const clearAuth = () => {
   writeStorage(AUTH_SESSION_KEY, null)
   writeStorage(IS_REFUSED_TO_SIGN_KEY, false)
+  // Remove all cache when logging out
+  queryClient.removeQueries()
 }
 
 export const storageClient = axios.create()

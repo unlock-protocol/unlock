@@ -33,6 +33,7 @@
     "@walletconnect/client": "1.8.0",
     "@walletconnect/web3-provider": "1.8.0",
     "@xstate/react": "3.0.1",
+    "axios": "1.2.1",
     "axios-auth-refresh": "3.3.4",
     "babel-eslint": "10.1.0",
     "babel-jest": "28.1.3",

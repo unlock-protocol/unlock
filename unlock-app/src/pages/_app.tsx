@@ -9,18 +9,7 @@ import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 10,
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchIntervalInBackground: false,
-    },
-  },
-})
+import { queryClient } from '~/config/queryClient'
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
