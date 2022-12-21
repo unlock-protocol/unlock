@@ -169,7 +169,7 @@ const MENU = {
   actions: [
     {
       title: 'Launch App',
-      url: 'https://app.unlock-protocol.com',
+      url: 'https://app.unlock-protocol.com/locks',
       icon: ArrowRight,
     },
   ],
