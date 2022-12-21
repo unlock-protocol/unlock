@@ -280,25 +280,37 @@ const NavSectionMobile = ({
         <Title title={title} onClick={() => setOpen(!open)} />
         {open && (
           <div className="flex flex-col gap-4">
-            {options?.map((option, index) => (
-              <div className="flex flex-col" key={index}>
-                <div className="font-bold">{option.title}</div>
-                <div className="flex flex-col gap-4">
-                  {'options' in option &&
-                    option.options?.map(({ title, url }, index) => {
-                      return (
-                        <Link
-                          key={index}
-                          href={url}
-                          className="duration-200 hover:text-brand-ui-primary"
-                        >
-                          {title}
-                        </Link>
-                      )
-                    })}
+            {options?.map((option, index) => {
+              const SectionTitle = () => {
+                return 'url' in option && option.url ? (
+                  <Link href={option.url}>
+                    <div className="font-bold">{option.title}</div>
+                  </Link>
+                ) : (
+                  <div className="font-bold">{option.title}</div>
+                )
+              }
+
+              return (
+                <div className="flex flex-col" key={index}>
+                  <SectionTitle />
+                  <div className="flex flex-col gap-4">
+                    {'options' in option &&
+                      option.options?.map(({ title, url }, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            href={url}
+                            className="duration-200 hover:text-brand-ui-primary"
+                          >
+                            {title}
+                          </Link>
+                        )
+                      })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>
@@ -327,7 +339,7 @@ export const HeaderNav = ({
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!
     // disable scroll of contents when menu mobile is expanded
-    const activeClasses = ['fixed', 'h-full', 'inset-9']
+    const activeClasses = ['fixed', 'h-full', 'inset-0']
     if (html && menuExpanded) {
       activeClasses.forEach((activeClass) => html.classList.add(activeClass))
     } else if (html.classList.contains(activeClasses[0])) {
