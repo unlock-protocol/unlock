@@ -17,6 +17,7 @@ export interface SessionAuth {
 }
 
 export const AUTH_SESSION_KEY = `${APP_NAME}.sessions`
+export const IS_REFUSED_TO_SIGN_KEY = `${APP_NAME}.refusedToSign`
 
 export const saveAuth = (auth: SessionAuth) => {
   writeStorage(AUTH_SESSION_KEY, auth)
@@ -31,6 +32,7 @@ export const getAuth = (): SessionAuth | undefined => {
 
 export const clearAuth = () => {
   writeStorage(AUTH_SESSION_KEY, undefined)
+  writeStorage(IS_REFUSED_TO_SIGN_KEY, undefined)
 }
 
 export const storageClient = axios.create()

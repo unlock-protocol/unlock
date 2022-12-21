@@ -101,7 +101,6 @@ export const KeyInfo = ({
   expiration,
   imageURL,
 }: KeyInfoProps) => {
-  const storageService = useStorageService()
   const walletService = useWalletService()
   const provider = walletService.providerForNetwork(network)
   const config = useConfig()
@@ -111,13 +110,8 @@ export const KeyInfo = ({
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
-      const response = await storageService.getKeyMetadataValues({
-        lockAddress: lock.address,
-        keyId: parseInt(tokenId),
-        network,
-      })
-
-      return response || {}
+      const response = await storage.keyMetadata(network, lock.address, tokenId)
+      return response.data || {}
     },
     {
       onError(error) {
