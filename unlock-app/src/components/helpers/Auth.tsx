@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import {
   AUTH_SESSION_KEY,
   IS_REFUSED_TO_SIGN_KEY,
@@ -58,9 +58,9 @@ export const Auth = ({ children }: Props) => {
   return (
     <div>
       {children}
-      <Fragment>
+      <React.Fragment>
         <AuthModal show={useSIWE} />
-      </Fragment>
+      </React.Fragment>
     </div>
   )
 }
