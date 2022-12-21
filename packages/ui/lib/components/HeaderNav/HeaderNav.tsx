@@ -75,7 +75,7 @@ interface NavbarProps {
 }
 
 const POPOVER_CLASSES: Record<MenuSectionSize, string> = {
-  small: 'w-64 -ml-24 pt-4 lg:pt-9 sm:px-0',
+  small: 'w-52 -ml-16 pt-4 lg:pt-9 sm:px-0',
   medium: 'w-full pt-4 transform -translate-x-1/2 lg:pt-9 left-1/2 sm:px-0',
 }
 
@@ -83,6 +83,7 @@ const NavSectionTitle = ({
   title,
   className,
 }: { title: string } & HTMLProps<HTMLAnchorElement>) => {
+  if (!title?.length) return null
   return (
     <div
       className={`text-xl font-bold duration-200 text-brand-dark ${className}`}
@@ -94,11 +95,15 @@ const NavSectionTitle = ({
 
 const SocialIcons = () => {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-6">
       {SOCIAL_LINKS?.map(({ url, icon }, index) => {
         return (
-          <Link key={index} href={url} className="hover:text-brand-ui-primary">
-            <Icon size={25} icon={icon} />
+          <Link
+            key={index}
+            href={url}
+            className="text-gray-700 transition duration-200 hover:text-brand-ui-primary"
+          >
+            <Icon size={25} icon={icon} className="" />
           </Link>
         )
       })}
@@ -190,12 +195,15 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
   const navbarClassBySize = ['medium', 'large'].includes(size)
     ? 'grid justify-between grid-cols-4 gap-10'
     : 'grid justify-between grid-cols-1 gap-10'
+  const popoverNavWrapperClass = ['medium', 'large'].includes(size)
+    ? 'px-10 pt-8 pb-14'
+    : 'px-10 py-8'
 
   const Title = ({ title, open }: any) => {
     return (
       <span
-        className={`text-lg duration-200  hover:text-brand-ui-primary ${
-          open ? 'text-brand-ui-primary' : 'text-brand-dark'
+        className={`text-lg duration-200  hover:text-brand-ui-primary md:p-4 ${
+          open ? 'text-brand-ui-primary' : 'text-gray-700'
         }`}
       >
         {title}
@@ -230,8 +238,8 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
           <>
             <Popover.Button className="outline-none">
               <span
-                className={`text-lg duration-200  hover:text-brand-ui-primary ${
-                  open ? 'text-brand-ui-primary' : 'text-brand-dark'
+                className={`text-lg duration-200 md:p-4 hover:text-brand-ui-primary ${
+                  open ? 'text-brand-ui-primary' : 'text-gray-700'
                 }`}
               >
                 {title}
@@ -248,7 +256,9 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
             >
               <Popover.Panel className={`absolute z-10 ${classBySize}`}>
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
-                  <div className="relative grid gap-8 px-10 py-8 bg-ui-secondary-100">
+                  <div
+                    className={`relative grid gap-8 bg-ui-secondary-100 ${popoverNavWrapperClass}`}
+                  >
                     <Navbar />
                   </div>
                 </div>
@@ -267,6 +277,7 @@ const NavSectionMobile = ({
   menuSections: MenuSectionProps[]
 }) => {
   const Title = ({ title, open, ...props }: any) => {
+    if (!title?.length) return null
     return (
       <div className="flex items-center justify-between" {...props}>
         <span
@@ -373,25 +384,27 @@ export const HeaderNav = ({
 
   return (
     <div className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
-      <div className="flex lg:grid lg:grid-cols-[minmax(200px,_1fr)_2fr_minmax(200px,_1fr)] items-center justify-between h-24 w-ful gap-2">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="block lg:hidden">
-              <Icon
-                size={30}
-                icon={menuExpanded ? CloseIcon : MenuIcon}
-                onClick={() => setMenuExpanded(!menuExpanded)}
-              />
+      <div className="flex items-center justify-between w-full h-24 gap-2">
+        <div className="flex gap-8">
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="block lg:hidden">
+                <Icon
+                  size={30}
+                  icon={menuExpanded ? CloseIcon : MenuIcon}
+                  onClick={() => setMenuExpanded(!menuExpanded)}
+                />
+              </div>
+              <Link href={logoUrl}>
+                <img src={logoImageSrc} alt="logo" className="h-5 lg:h-6" />
+              </Link>
             </div>
-            <Link href={logoUrl}>
-              <img src={logoImageSrc} alt="logo" className="h-5 lg:h-6" />
-            </Link>
           </div>
-        </div>
-        <div className="items-center justify-center hidden gap-12 lg:flex">
-          {menuSections?.map((menu, index) => (
-            <NavSectionDesktop key={index} {...menu} />
-          ))}
+          <div className="items-center justify-center hidden gap-4 lg:flex">
+            {menuSections?.map((menu, index) => (
+              <NavSectionDesktop key={index} {...menu} />
+            ))}
+          </div>
         </div>
         <div className="flex items-center justify-end gap-4">
           <div className="hidden lg:block">
