@@ -134,6 +134,7 @@ const MENU = {
     },
     {
       title: 'More',
+      size: 'small',
       options: [
         {
           title: '',
@@ -278,13 +279,16 @@ export function Layout({ children }: Props) {
     ],
   }
 
-  const containerClass = 'container px-6 mx-auto md:px-0 max-w-7xl'
+  const containerClass = 'container w-full mx-auto max-w-7xl'
 
   return (
     <>
-      <div className={`${containerClass}`}>
-        <HeaderNav {...MENU} />
+      <div className="px-6">
+        <div className={`${containerClass}`}>
+          <HeaderNav {...MENU} />
+        </div>
       </div>
+
       {children}
       <div className={`${containerClass} md:pt-14 pt-4`}>
         <Footer {...FOOTER} />

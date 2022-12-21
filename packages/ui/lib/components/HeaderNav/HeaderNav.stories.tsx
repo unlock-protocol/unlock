@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof HeaderNav>
 
 const Template: ComponentStory<typeof HeaderNav> = (args) => (
-  <div className="container mx-auto md:px-40">
+  <div className="container mx-auto">
     <HeaderNav {...args} />
   </div>
 )
@@ -129,16 +129,28 @@ Normal.args = {
     },
     {
       title: 'More',
+      size: 'small',
       options: [
         {
-          title: 'Test Embed Video',
-          embed:
-            '<iframe width="560" height="315" src="https://www.youtube.com/embed/FuDyzDYb_3E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-        },
-        {
-          title: 'Advent Calendar',
-          embed:
-            '<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">Want to build and deploy memberships and subscriptions using NFTs? <a href="https://twitter.com/CiaraNightingal?ref_src=twsrc%5Etfw">@CiaraNightingal</a> at <a href="https://twitter.com/thirdweb?ref_src=twsrc%5Etfw">@thirdweb</a> has just published a brilliant guide on how to do it. Check it. <a href="https://t.co/b3nJKXBPfV">https://t.co/b3nJKXBPfV</a></p>&mdash; Ʉnlock Protocol (@UnlockProtocol) <a href="https://twitter.com/UnlockProtocol/status/1600559098646638592?ref_src=twsrc%5Etfw">December 7, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
+          title: '',
+          options: [
+            {
+              title: 'Unlock DAO',
+              url: 'https://unlock-protocol.com/blog/unlock-dao',
+            },
+            {
+              title: 'Roadmap',
+              url: 'https://docs.unlock-protocol.com/governance/roadmap/',
+            },
+            {
+              title: 'Upcoming Events',
+              url: 'https://unlock-protocol.com/upcoming-events',
+            },
+            {
+              title: 'Grants Program',
+              url: 'https://unlock-protocol.com/grants',
+            },
+          ],
         },
       ],
     },

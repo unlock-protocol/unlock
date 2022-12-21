@@ -7,8 +7,13 @@ import { Link } from '../Link/Link'
 import { HTMLProps } from 'react'
 import { IconType } from 'react-icons'
 import LogoUrl from './../../assets/unlock-footer-logo.svg'
-import { FiMenu as MenuIcon } from 'react-icons/fi'
+import {
+  FiMenu as MenuIcon,
+  FiPlus as PlusIcon,
+  FiMinus as MinusIcon,
+} from 'react-icons/fi'
 import { CgClose as CloseIcon } from 'react-icons/cg'
+import { Size } from '~/types'
 
 interface NavbarMenuProps {
   title: string
@@ -38,13 +43,16 @@ type NavOptionProps =
   | NavLinkProps
   | NavEmbedProps
 
+type MenuSectionSize = Extract<Size, 'small' | 'medium'>
 type MenuSectionProps =
   | {
       title: string
+      size?: MenuSectionSize
       options: NavOptionProps[]
     }
   | {
       title: string
+      size?: MenuSectionSize
       url: string
     }
 
@@ -66,6 +74,11 @@ interface NavbarProps {
   }
 }
 
+const POPOVER_CLASSES: Record<MenuSectionSize, string> = {
+  small: 'w-64 -ml-24 pt-4 lg:pt-9 sm:px-0',
+  medium: 'w-full pt-4 transform -translate-x-1/2 lg:pt-9 left-1/2 sm:px-0',
+}
+
 const NavSectionTitle = ({
   title,
   className,
@@ -81,7 +94,7 @@ const NavSectionTitle = ({
 
 const SocialIcons = () => {
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-4">
       {SOCIAL_LINKS?.map(({ url, icon }, index) => {
         return (
           <Link key={index} href={url} className="hover:text-brand-ui-primary">
@@ -171,6 +184,12 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
   const options = 'options' in section ? section?.options : []
   const url: string = 'url' in section ? section?.url : ''
   const hasEmbed = 'embed' in section ? section.embed : null
+  const size = section.size ?? 'medium'
+
+  const classBySize = POPOVER_CLASSES[size]
+  const navbarClassBySize = ['medium', 'large'].includes(size)
+    ? 'grid justify-between grid-cols-4 gap-10'
+    : 'grid justify-between grid-cols-1 gap-10'
 
   const Title = ({ title, open }: any) => {
     return (
@@ -186,7 +205,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
 
   const Navbar = () => {
     return (
-      <div className="grid justify-between grid-cols-4 gap-10">
+      <div className={navbarClassBySize}>
         {hasEmbed ? (
           <>embed</>
         ) : (
@@ -227,7 +246,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-10 w-full pt-4 transform -translate-x-1/2 md:pt-9 left-1/2 sm:px-0">
+              <Popover.Panel className={`absolute z-10 ${classBySize}`}>
                 <div className="overflow-hidden border shadow-lg rounded-3xl">
                   <div className="relative grid gap-8 px-10 py-8 bg-white">
                     <Navbar />
@@ -249,14 +268,16 @@ const NavSectionMobile = ({
 }) => {
   const Title = ({ title, open, ...props }: any) => {
     return (
-      <span
-        className={`text-2xl font-bold duration-200  hover:text-brand-ui-primary ${
-          open ? 'text-brand-ui-primary' : 'text-brand-dark'
-        }`}
-        {...props}
-      >
-        {title}
-      </span>
+      <div className="flex items-center justify-between" {...props}>
+        <span
+          className={`text-2xl font-bold duration-200  hover:text-brand-ui-primary ${
+            open ? 'text-brand-ui-primary' : 'text-brand-dark'
+          }`}
+        >
+          {title}
+        </span>
+        <Icon icon={open ? MinusIcon : PlusIcon} size={30} />
+      </div>
     )
   }
 
@@ -277,11 +298,14 @@ const NavSectionMobile = ({
 
     return (
       <div className="flex flex-col gap-4">
-        <Title title={title} onClick={() => setOpen(!open)} />
+        {title?.length > 0 && (
+          <Title title={title} open={open} onClick={() => setOpen(!open)} />
+        )}
         {open && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6 mb-14">
             {options?.map((option, index) => {
               const SectionTitle = () => {
+                if (option.title?.length === 0) return null
                 return 'url' in option && option.url ? (
                   <Link href={option.url}>
                     <div className="font-bold">{option.title}</div>
@@ -318,7 +342,7 @@ const NavSectionMobile = ({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pt-6">
       {menuSections?.map((menu, index) => (
         <MenuItem key={index} {...menu} />
       ))}
@@ -349,10 +373,10 @@ export const HeaderNav = ({
 
   return (
     <div className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
-      <div className="flex md:grid md:grid-cols-[1fr_1fr_1fr] items-center justify-between h-24 w-full">
+      <div className="flex lg:grid lg:grid-cols-[minmax(200px,_1fr)_2fr_minmax(200px,_1fr)] items-center justify-between h-24 w-ful gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <div className="block md:hidden">
+            <div className="block lg:hidden">
               <Icon
                 size={30}
                 icon={menuExpanded ? CloseIcon : MenuIcon}
@@ -360,17 +384,17 @@ export const HeaderNav = ({
               />
             </div>
             <Link href={logoUrl}>
-              <img src={logoImageSrc} alt="logo" className="h-5 md:h-6" />
+              <img src={logoImageSrc} alt="logo" className="h-5 lg:h-6" />
             </Link>
           </div>
         </div>
-        <div className="justify-center hidden gap-12 md:flex">
+        <div className="items-center justify-between hidden gap-8 lg:flex">
           {menuSections?.map((menu, index) => (
             <NavSectionDesktop key={index} {...menu} />
           ))}
         </div>
-        <div className="flex items-center justify-end gap-8">
-          <div className="hidden md:block">
+        <div className="flex items-center justify-end gap-4">
+          <div className="hidden lg:block">
             <SocialIcons />
           </div>
           <div className="flex gap-2">
@@ -379,7 +403,7 @@ export const HeaderNav = ({
                 <Link href={url} key={index}>
                   <Button variant="outlined-primary" size="small">
                     <div className="flex items-center gap-2">
-                      <span className="text-base font-bold text-brand-ui-primary">
+                      <span className="text-xs font-bold lg:text-base text-brand-ui-primary">
                         {title}
                       </span>
                       {icon && (
@@ -401,7 +425,7 @@ export const HeaderNav = ({
       {/* mobile menu */}
       {menuExpanded && (
         <div
-          className={`fixed bottom-0 left-0 right-0 z-10 block overflow-scroll pb-4 top-24 md:hidden ${
+          className={`fixed bottom-0 left-0 right-0 z-10 block overflow-scroll pb-20 top-24 lg:hidden ${
             extraClass?.mobile ?? ''
           }`}
         >
