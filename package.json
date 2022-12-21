@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@babel/core": "7.20.5",
-    "@superfluid-finance/sdk-core": "0.5.6",
+    "@superfluid-finance/sdk-core": "0.6.1",
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
     "babel-eslint": "10.1.0",
