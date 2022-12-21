@@ -429,7 +429,7 @@ export const HeaderNav = ({
             extraClass?.mobile ?? ''
           }`}
         >
-          <div className="flex flex-col gap-10 px-4">
+          <div className="flex flex-col gap-10">
             <NavSectionMobile menuSections={menuSections} />
             <SocialIcons />
           </div>
