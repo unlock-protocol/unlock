@@ -153,7 +153,7 @@ const NavMenuSection = ({ title, options }: NavbarMenuProps) => {
 const NavEmbedItem = ({ title, embed }: NavEmbedProps) => {
   return (
     <div className="flex flex-col gap-4 group">
-      <div className="overflow-hidden bg-center bg-cover border border-gray-100 rounded-3xl h-60">
+      <div className="h-40 overflow-hidden bg-center bg-cover border border-ui-main-100 rounded-3xl">
         <div dangerouslySetInnerHTML={{ __html: embed }}></div>
       </div>
       <NavSectionTitle
