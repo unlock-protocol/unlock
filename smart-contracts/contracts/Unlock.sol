@@ -516,96 +516,90 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address lock,
     address srcToken,
     uint amountInMax,
-    bytes memory tokenPath,
+    address swapRouter,
+    bytes memory swapCalldata,
     bytes memory callData
   ) public payable returns(bytes memory) {
-    // make sure uniswap is set
-    if(address(uniswapRouter) == address(0)) {
-      revert UniswapNotSet();
+    // check if lock exists
+    if(!locks[msg.sender].deployed) {
+      revert();
     }
 
     // get lock pricing 
     address destToken = IPublicLock(lock).tokenAddress();
-    if (srcToken == destToken) {
-      revert('=');
-    }
-    
+
     // get price in destToken from lock
     uint keyPrice = IPublicLock(lock).keyPrice();
 
-    // use WETH for native tokens
-    address tokenIn = srcToken == address(0) ? weth : srcToken;
+    // get balances of Unlock before
+    uint balanceTokenSrcBefore = srcToken == address(0) ?
+      address(this).balance 
+      :
+      IERC20(srcToken).balanceOf(address(this));
+    
+    uint balanceTokenDestBefore = destToken == address(0) ?
+      address(this).balance 
+      :
+      IERC20(destToken).balanceOf(address(this));
 
-    // wrap native tokens
-    if(srcToken == address(0)) {      
-      IWETH(weth).deposit{value: amountInMax}();
-    } else {
+    if(srcToken != address(0)) {
       // Transfer the specified amount of ERC20 to this contract
       TransferHelper.safeTransferFrom(srcToken, msg.sender, address(this), amountInMax);
+
+      // Approve the router to spend ERC20.
+      TransferHelper.safeApprove(destToken, swapRouter, amountInMax);
     }
 
-    // Approve the router to spend ERC20.
-    TransferHelper.safeApprove(tokenIn, uniswapRouter, amountInMax);
+    // calculate value to send to Uniswap
+    uint swapValue = srcToken == address(0) ? amountInMax : 0;
 
-    // parse swap args
-    ISwapRouter.ExactOutputParams memory params =
-      ISwapRouter.ExactOutputParams({
-          path: tokenPath,
-          recipient: address(this),
-          deadline: block.timestamp,
-          amountOut: keyPrice,
-          amountInMaximum: amountInMax
-      });
+    // executes the swap
+    swapRouter.call{ value: swapValue }(swapCalldata);
+
+    // check that amount is enough to buy a key
+    uint balanceTokenDestAfterSwap = destToken == address(0) ?
+      address(this).balance 
+      :
+      IERC20(destToken).balanceOf(address(this));
+    if(
+      balanceTokenDestAfterSwap >= balanceTokenDestBefore + keyPrice
+    ) {
+      // balance too low
+      revert();
+    }
+
     
-    // Executes the swap, returning the amountIn needed
-    uint amountIn;
-    try ISwapRouter(uniswapRouter).exactOutput(params) returns (uint _amountIn) {
-      amountIn = _amountIn;
-    } catch  {
-      // read Uniswap revert reason from mem buffer
-      assembly {
-        let ptr := mload(0x40)
-        let size := returndatasize()
-        returndatacopy(ptr, 0, size)
-        revert(ptr, size)
-      }
-    }
-
-    // unwrap ETH or approve ERC20 to make the lock
+    // approve ERC20 to call the lock
     if(destToken != address(0)) {
       IERC20(destToken).approve(lock, keyPrice);
-    } else {
-      IWETH(weth).withdraw(keyPrice);
     }
 
-    // make sure amount is enough to unwrap
-    // if(srcToken == address(0) && amountInMax < msg.value) {
-    //   revert InsufficientAmount(srcToken);
-    // }
-
     // call the lock
-    (bool success, bytes memory returnData) = lock.call{
+    (, bytes memory returnData) = lock.call{
       value: destToken == address(0) ? keyPrice : 0
     }(
       callData
     );
-    
-    if (success == false) {
-      // catch revert reason from lock
-      assembly {
-        let ptr := mload(0x40)
-        let size := returndatasize()
-        returndatacopy(ptr, 0, size)
-        revert(ptr, size)
-      }
-    }
 
-    emit SwapCall(
-      lock,
-      srcToken,
-      amountIn
-    );
+    uint balanceTokenSrcAfter = srcToken == address(0) ?
+      address(this).balance 
+      :
+      IERC20(srcToken).balanceOf(address(this));
     
+    uint balanceTokenDestAfter = destToken == address(0) ?
+      address(this).balance 
+      :
+      IERC20(destToken).balanceOf(address(this));
+
+    // check that Unlock didnt spent more than we received
+    if(
+      balanceTokenSrcAfter - balanceTokenSrcBefore < 0
+      ||
+      balanceTokenDestAfter - balanceTokenDestBefore < 0
+    ) {
+      // balance too low
+      revert();
+    }
 
     // returns whatever the lock returned
     return returnData;
