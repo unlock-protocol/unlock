@@ -3,10 +3,32 @@ import dayjs from 'dayjs'
 import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
+import updateLocale from 'dayjs/plugin/updateLocale'
 import { ethers } from 'ethers'
 dayjs.extend(relative)
 dayjs.extend(duration)
 dayjs.extend(custom)
+dayjs.extend(updateLocale)
+
+dayjs.updateLocale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s ago',
+    s: 'A few seconds',
+    m: '1 minute',
+    mm: '%d minutes',
+    h: '1 hour',
+    hh: '%d hours',
+    d: '1 day',
+    dd: '%d days',
+    w: '%d week',
+    ww: '%d weeks',
+    M: '1 month',
+    MM: '%d months',
+    y: '1 year',
+    yy: '%d years',
+  },
+})
 
 /**
  * Function which computes days, hours, minutes and seconds based on seconds
