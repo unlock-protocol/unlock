@@ -1,7 +1,7 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 import { EthersMulticall } from '@morpho-labs/ethers-multicall'
-import QuoterABI from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import { abi } from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
 import { getErc20Decimals } from './erc20'
 export interface PoolOptions {
   network: number
@@ -62,7 +62,7 @@ export class UniswapService {
     ])
 
     const UniswapQuoter = multicall.wrap(
-      new ethers.Contract(quoterAddress, QuoterABI.abi, provider)
+      new ethers.Contract(quoterAddress, abi, provider)
     )
 
     const isBaseTokenSameAsNativeToken =
