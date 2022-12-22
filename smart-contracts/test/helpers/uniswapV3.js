@@ -377,18 +377,17 @@ async function getUniswapRoute (
   } = methodParameters
 
   // parse quote as BigNumber
-  const maxAmountIn = ethers.BigNumber.from(
+  const amountInMax = ethers.BigNumber.from(
     JSBI.multiply(
       quote.numerator, 
       quote.denominator,
       quote.decimalScale
     ).toString()
   )
-  
   return {
     swapCalldata,
     value,
-    maxAmountIn,
+    amountInMax,
     swapRouter,
     route
   }
