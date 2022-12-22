@@ -1,225 +1,134 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { Button } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { Button, Disclosure, Input } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useStorageService } from '~/utils/withStorageService'
-import { LockAdvancedForm } from './LockAdvancedForm'
+import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
-import { LockDetailForm } from './LockDetailForm'
-import { LockTicketForm } from './LockTicketForm'
-import { Attribute, Metadata, MetadataFormData, toFormData } from './utils'
-import { config } from '~/config/app'
-import { Lock } from '~/unlockTypes'
+import { DetailForm } from './DetailForm'
+import { TicketForm } from './TicketForm'
+import {
+  formDataToMetadata,
+  Metadata,
+  MetadataFormData,
+  toFormData,
+} from './utils'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { useUpdateMetadata, useMetadata } from '~/hooks/metadata'
+import LoadingIcon from '../../Loading'
+import { config } from '~/config/app'
 
 interface Props {
-  lock?: Lock
+  name?: string
+  lockAddress: string
+  network: number
+  keyId?: string
 }
 
-export function UpdateLockMetadata({ lock }: Props) {
-  const router = useRouter()
-  const lockAddress = router.query.address!.toString()
-  const network = Number(router.query.network)
-  const storageService = useStorageService()
-
-  const { data } = useQuery<Record<string, any>>(
-    ['lockMetadata', lockAddress, network],
-    async () => {
-      const response = await storageService.locksmith.lockMetadata(
-        network,
-        lockAddress
-      )
-      return response.data
-    },
-    {
-      onError(error) {
-        console.error(error)
-      },
-      refetchInterval: Infinity,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 2,
-    }
-  )
+export function UpdateMetadataForm({
+  lockAddress,
+  network,
+  name,
+  keyId,
+}: Props) {
+  const [selectedKeyId, setSelectedKeyId] = useState<string | undefined>(keyId)
+  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+    lockAddress,
+    network,
+    keyId: selectedKeyId,
+  })
 
   const methods = useForm<MetadataFormData>({
     defaultValues: {
-      name: lock?.name,
+      name,
     },
     mode: 'onChange',
   })
 
-  const lockMetadata = useMutation(
-    async (metadata: Record<string, any>) => {
-      const token = await storageService.getAccessToken()
-      const result = await storageService.locksmith.updateLockMetadata(
-        network,
-        lockAddress,
-        {
-          metadata,
-        },
-        {
-          headers: storageService.genAuthorizationHeader(token),
-        }
-      )
-      return result.data
-    },
-    {
-      mutationKey: ['lockMetadata', lockAddress, network],
-      onError(error) {
-        console.error(error)
-        ToastHelper.error('Could not update the lock data')
-      },
-      onSuccess() {
-        ToastHelper.success('Metadata successfully saved!')
-      },
-    }
-  )
+  const { mutateAsync: updateMetadata, isLoading: isMetadataUpating } =
+    useUpdateMetadata({
+      lockAddress,
+      network,
+      keyId: selectedKeyId,
+    })
 
-  const onSubmit = async ({
-    name,
-    description,
-    animation_url,
-    youtube_url,
-    external_url,
-    background_color,
-    ticket,
-    properties,
-    levels,
-    stats,
-  }: MetadataFormData) => {
-    const metadata: Metadata & { attributes: Attribute[] } = {
-      name,
-      image: `${config.locksmithHost}/lock/${lockAddress}/icon`,
-      attributes: [] as Attribute[],
-    }
-
-    if (ticket?.event_start_date) {
-      metadata.attributes.push({
-        trait_type: 'event_start_date',
-        value: ticket.event_start_date,
-      })
-    }
-
-    if (ticket?.event_start_time) {
-      metadata.attributes.push({
-        trait_type: 'event_start_time',
-        value: ticket.event_start_time,
-      })
-    }
-
-    if (ticket?.event_address) {
-      metadata.attributes.push({
-        trait_type: 'event_address',
-        value: ticket.event_address,
-      })
-    }
-
-    if (ticket?.event_url) {
-      metadata.attributes.push({
-        trait_type: 'event_url',
-        value: ticket.event_url,
-      })
-    }
-
-    const propertyAttributes = properties?.filter(
-      (item) => item.trait_type && item.value
-    )
-
-    const levelsAttributes = levels?.filter(
-      (item) => item.trait_type && item.value && item.max_value
-    )
-    const statsAttributes = stats?.filter(
-      (item) => item.trait_type && item.value && item.max_value
-    )
-
-    if (propertyAttributes?.length) {
-      metadata.attributes.push(...propertyAttributes)
-    }
-
-    if (levelsAttributes?.length) {
-      metadata.attributes.push(...levelsAttributes)
-    }
-
-    if (statsAttributes?.length) {
-      metadata.attributes.push(...statsAttributes)
-    }
-
-    // Opensea does not handle # in the color. We remove it if it's included in the color.
-    if (background_color && background_color.length === 7) {
-      metadata.background_color = background_color?.trim()?.replace('#', '')
-    }
-
-    if (description) {
-      metadata.description = description
-    }
-
-    if (youtube_url) {
-      metadata.youtube_url = youtube_url
-    }
-
-    if (animation_url) {
-      metadata.animation_url = animation_url
-    }
-
-    if (external_url) {
-      metadata.external_url = external_url
-    }
-
-    await lockMetadata.mutateAsync(metadata)
+  const onSubmit = async (formData: MetadataFormData) => {
+    const metadata = formDataToMetadata({
+      // Handle ID in image URL
+      image: `${config.locksmithHost}/lock/${lockAddress}/icon${
+        selectedKeyId ? `?id=${selectedKeyId}` : ''
+      }`,
+      ...formData,
+    })
+    await updateMetadata(metadata)
   }
 
   useEffect(() => {
-    if (data) {
-      const form = toFormData(data as Metadata)
+    if (metadata && !isMetadataLoading) {
+      const form = toFormData(metadata as Metadata)
       methods.reset(form)
     }
-  }, [data, methods])
+  }, [metadata, methods, isMetadataLoading])
 
   return (
     <div className="max-w-screen-md mx-auto">
-      <header className="pt-2 pb-6 space-y-2">
-        <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
-        <div>
-          <p className="text-lg text-gray-700">
-            Add rich properties and data to your NFT memberships.{' '}
-          </p>
-          <a
-            href="https://docs.opensea.io/docs/metadata-standards"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
-          >
-            Learn about the OpenSea metadata.
-            <ExternalLinkIcon />
-          </a>
-        </div>
-      </header>
-      <FormProvider {...methods}>
-        <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="grid gap-6">
-            <LockDetailForm disabled={lockMetadata.isLoading} />
-            <LockTicketForm
-              lockAddress={lockAddress}
-              network={network}
-              disabled={lockMetadata.isLoading}
-            />
-            <LockAdvancedForm disabled={lockMetadata.isLoading} />
-            <LockCustomForm />
-            <div className="flex justify-center">
-              <Button
-                disabled={lockMetadata.isLoading}
-                loading={lockMetadata.isLoading}
-                className="w-full max-w-sm"
-              >
-                Save Properties
-              </Button>
-            </div>
+      <div className="grid gap-6">
+        <div className="pt-2 pb-6 space-y-2">
+          <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
+          <div>
+            <p className="text-lg text-gray-700">
+              Add rich properties and data to your NFT memberships.
+            </p>
+            <a
+              href="https://docs.opensea.io/docs/metadata-standards"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
+            >
+              Learn about the OpenSea metadata.
+              <ExternalLinkIcon />
+            </a>
           </div>
-        </form>
-      </FormProvider>
+        </div>
+        <Disclosure defaultOpen={!!keyId} label="Key">
+          <Input
+            value={selectedKeyId}
+            label="ID"
+            onChange={(event) => {
+              event.preventDefault()
+              const id = event.target.value
+              setSelectedKeyId(id ? id.toLowerCase() : undefined)
+            }}
+            description="Enter Token ID of your NFT membership to edit its properties. Leave blank to edit the lock properties."
+          />
+        </Disclosure>
+        <div>
+          {isMetadataLoading && <LoadingIcon />}
+          {!isMetadataLoading && (
+            <FormProvider {...methods}>
+              <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+                <div className="grid gap-6">
+                  <DetailForm disabled={isMetadataUpating} />
+                  <TicketForm
+                    lockAddress={lockAddress}
+                    network={network}
+                    disabled={isMetadataUpating}
+                  />
+                  <AdvancedForm disabled={isMetadataUpating} />
+                  <LockCustomForm />
+                  <div className="flex justify-center">
+                    <Button
+                      disabled={isMetadataUpating}
+                      loading={isMetadataUpating}
+                      className="w-full max-w-sm"
+                    >
+                      Save Properties
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </FormProvider>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
