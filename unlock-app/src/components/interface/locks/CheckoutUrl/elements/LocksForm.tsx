@@ -331,10 +331,6 @@ export const LocksForm = ({
               ) : (
                 <Picker
                   userAddress={account!}
-                  collect={{
-                    lockAddress: true,
-                    network: true,
-                  }}
                   onChange={(state) => {
                     onChangeLock(state.lockAddress, state.network, state.name)
                   }}

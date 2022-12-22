@@ -273,6 +273,11 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
           lockAddress={lockAddress}
           network={network}
           keyId={keyId}
+          collect={{
+            lockAddress: true,
+            network: true,
+            keyId: true,
+          }}
           onChange={(selected) => {
             setSelected(selected)
           }}

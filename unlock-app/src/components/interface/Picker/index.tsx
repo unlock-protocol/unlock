@@ -27,7 +27,7 @@ export function Picker({
   userAddress,
   onChange,
   collect = {
-    key: true,
+    key: false,
     lockAddress: true,
     network: true,
   },
