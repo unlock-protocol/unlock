@@ -8,19 +8,18 @@ import { useAuth } from '../../contexts/AuthenticationContext'
 import { loadStripe } from '@stripe/stripe-js'
 import { useConfig } from '~/utils/withConfig'
 import { useQuery } from '@tanstack/react-query'
-import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { Card } from '../interface/checkout/Card'
 import { deleteCardForAddress } from '~/hooks/useCards'
 import { SetupForm } from '../interface/checkout/main/CardPayment'
 import { Button } from '@unlock-protocol/ui'
 import { AppLayout } from '../interface/layouts/AppLayout'
+import { storage } from '~/config/storage'
 
 export const PaymentSettings = () => {
-  const { account, network } = useAuth()
+  const { account } = useAuth()
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
-  const storageService = useStorageService()
   const walletService = useWalletService()
   const [isSaving, setIsSaving] = useState(false)
   const {
@@ -28,21 +27,18 @@ export const PaymentSettings = () => {
     isInitialLoading: isMethodLoading,
     refetch,
   } = useQuery(
-    ['list-cards', account],
+    ['listCards', account],
     async () => {
-      await storageService.loginPrompt({
-        walletService,
-        address: account!,
-        chainId: network!,
-      })
-      return storageService.listCardMethods()
+      const response = await storage.listPaymentMethods()
+      return response.data.methods || []
     },
     {
       enabled: !!account,
     }
   )
 
-  const card = methods?.[0]?.card
+  const payment = methods?.[0]
+  const card = payment?.card
 
   if (isMethodLoading) {
     return null
@@ -50,7 +46,11 @@ export const PaymentSettings = () => {
 
   return card ? (
     <Card
-      {...card}
+      name={payment!.billing_details?.name || ''}
+      last4={card.last4!}
+      exp_month={card.exp_month!}
+      exp_year={card.exp_year!}
+      country={card.country!}
       onChange={async () => {
         await deleteCardForAddress(config, walletService, account!)
         await refetch()
