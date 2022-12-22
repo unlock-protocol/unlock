@@ -1,4 +1,4 @@
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
@@ -42,8 +42,13 @@ export const Form = ({
   defaultValues,
 }: FormProps) => {
   const methods = useForm<MetadataFormData>({
-    mode: 'onSubmit',
+    mode: 'onChange',
+    shouldUnregister: false,
   })
+
+  const {
+    formState: { errors },
+  } = methods
 
   const image = `${config.locksmithHost}/lock/${lockAddress}/icon${
     keyId ? `?id=${keyId}` : ''
@@ -73,6 +78,7 @@ export const Form = ({
     await updateMetadata(metadata)
   }
 
+  const errorFields = Object.keys(errors)
   return (
     <FormProvider {...methods}>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
@@ -85,11 +91,17 @@ export const Form = ({
           />
           <AdvancedForm />
           <LockCustomForm />
-          <div className="flex justify-center">
+          <div className="flex flex-col justify-center gap-6">
+            {errorFields.length > 0 && (
+              <div className="px-2 text-red-600">
+                You need fix the issues in the following fields before saving
+                metadata: {errorFields.join(',')}
+              </div>
+            )}
             <Button
-              disabled={isMetadataUpating}
+              disabled={isMetadataUpating || errorFields.length > 0}
               loading={isMetadataUpating}
-              className="w-full max-w-sm"
+              className="w-full"
             >
               Save Properties
             </Button>
@@ -150,6 +162,8 @@ export const SwitchNetwork = ({
 export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
   const { account } = useAuth()
   const web3Service = useWeb3Service()
+  const walletService = useWalletService()
+
   const [selected, setSelected] = useState<PickerState>({
     lockAddress,
     network,
@@ -166,8 +180,8 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
     return toFormData((metadata || {}) as Metadata)
   }, [metadata])
 
-  const walletService = useWalletService()
   const baseTokenURI = `${config.locksmithHost}/api/key/${selected.network}/${selected.lockAddress}/`
+
   const {
     data: tokenURI,
     isInitialLoading: isTokenURILoading,
