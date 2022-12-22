@@ -372,13 +372,19 @@ async function getUniswapRoute (
   const { methodParameters } = route
   const { 
       calldata: swapCalldata, 
-      value: amountInMax, 
+      value, 
       to: swapRouter
   } = methodParameters
 
+  // TODO: parse `route.quoteGasAdjusted` to String
+  const maxAmountIn = ethers.BigNumber.from(
+    route.quoteGasAdjusted.toExact()
+  )
+  
   return {
     swapCalldata,
-    amountInMax,
+    value,
+    maxAmountIn,
     swapRouter,
     route
   }
