@@ -1,10 +1,12 @@
 const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
 const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk/')
-const { Token } = require('@uniswap/sdk-core')
+const { Token, CurrencyAmount, TradeType, Percent } = require('@uniswap/sdk-core')
+const { AlphaRouter, SwapType, nativeOnChain } = require('@uniswap/smart-order-router')
+const JSBI  = require('jsbi')
 
 const { abi: WethABI } = require('./ABIs/weth.json')
-const { WETH, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
+const { DAI, WETH, SHIBA_INU, USDC, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 const POSITION_MANAGER_ADDRESS = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
@@ -320,12 +322,86 @@ const deployUniswapV3Oracle = async function () {
   return oracle
 }
 
+
+async function getUniswapRoute (
+  tokenIn, 
+  tokenOut, 
+  amoutOut = ethers.utils.parseUnits('10', tokenOut.decimals),
+  recipient,
+  chainId = 1
+) {
+  // default to first signer
+  if(!recipient) {
+    const [signer] = await ethers.getSigners()
+    recipient = signer.address
+  }
+
+  console.log(`Swap ${tokenIn.symbol} > ${tokenOut.symbol}`)
+  console.log(`Out: ${amoutOut} to ${recipient}`)
+
+  // init router
+  const router = new AlphaRouter({ 
+    chainId, 
+    provider: ethers.provider,
+  })
+
+  // parse router args 
+  const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt(amoutOut))
+  const args = {
+    outputAmount,
+    quoteCurrency: tokenIn,
+    swapType: TradeType.EXACT_OUTPUT,
+    swapConfig: {
+      type: SwapType.UNIVERSAL_ROUTER,
+      recipient,
+      slippageTolerance: new Percent(5, 100),
+      deadline: Date.now() + 1800
+    }
+  }
+
+  // call router
+  const route = await router.route(
+    ...Object.values(args)
+  )
+
+  // log some prices
+  console.log(`Quote Exact In: ${route.quote.toFixed(2)}`);
+  console.log(`Gas Adjusted Quote In: ${route.quoteGasAdjusted.toFixed(2)}`);
+  console.log(`Gas Used USD: ${route.estimatedGasUsedUSD.toFixed(6)}`);
+
+  const { methodParameters } = route
+  const { 
+      calldata: swapCalldata, 
+      value: amountInMax, 
+      to: swapRouter
+  } = methodParameters
+
+  return {
+    swapCalldata,
+    amountInMax,
+    swapRouter,
+    route
+  }
+}
+
+const getUniswapTokens = (chainId = 1) => ({
+  native: nativeOnChain(chainId),
+  dai: new Token(chainId, DAI, 18, 'DAI'),
+  weth: new Token(chainId, WETH, 18, 'WETH'),
+  shiba: new Token(chainId, SHIBA_INU, 18, 'SHIBA'),
+  usdc: new Token(chainId, USDC, 6, 'USDC'),
+  udt: new Token(chainId, UDT, 18, 'UDT')
+  // wBTC
+})
+
 module.exports = {
   addLiquidity,
   createUniswapV3Pool: createPool,
   deployUniswapV3Oracle,
   getPoolState,
   getPoolImmutables,
+  getUniswapRoute,
+  getUniswapTokens,
   POSITION_MANAGER_ADDRESS,
   UNISWAP_FACTORY_ADDRESS,
   UNISWAP_ROUTER_ADDRESS
