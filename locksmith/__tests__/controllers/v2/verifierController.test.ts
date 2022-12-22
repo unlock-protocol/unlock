@@ -1,16 +1,14 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
-
-const app = require('../../../src/app')
-
-jest.setTimeout(600000)
+import app from '../../app'
+import { vi } from 'vitest'
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const network = 4
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string) => lockAddress === lock,
       }
@@ -38,7 +36,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
       .get(`/v2/api/verifier/list/${network}/${lock}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(getListResponse.status).toBe(401)
+    expect(getListResponse.status).toBe(403)
   })
 
   it('Add verifier and delete correctly', async () => {

@@ -4,12 +4,13 @@ import {
   sendEmail,
   notifyNewKeyToWedlocks,
 } from '../../src/operations/wedlocksOperations'
+import { vi } from 'vitest'
 
-jest.mock('node-fetch')
+vi.mock('node-fetch')
 
 describe('Wedlocks operations', () => {
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
   describe('notifyNewKeyToWedlocks', () => {
     it('should notify wedlocks if there is an email metadata', async () => {

@@ -4,18 +4,17 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import verifierOperations from '../../../src/operations/verifierOperations'
 import logger from '../../../src/logger'
 
-const app = require('../../../src/app')
-
-jest.setTimeout(600000)
+import app from '../../app'
+import { vi } from 'vitest'
 
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const keyId = 100
 
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string, manager: string) =>
           lockAddress === lock || manager === lockManager,
@@ -23,8 +22,14 @@ jest.mock('@unlock-protocol/unlock-js', () => {
           owner,
       }
     }),
-    SubgraphService: jest.fn().mockImplementation(() => {
+    SubgraphService: vi.fn().mockImplementation(() => {
       return {
+        lock: (filter: any, opts: any) => {
+          return {
+            name: 'Test Lock',
+            address: lockAddress,
+          }
+        },
         key: (filter: any, opts: any) => {
           logger.info(filter, opts)
           return {
@@ -367,12 +372,18 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   it('Get lock metadata', async () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const lockMetadataResponse = await request(app).get(
       `/v2/api/metadata/100/locks/${lockAddress}`
     )
-    expect(lockMetadataResponse.status).toBe(404)
+    expect(lockMetadataResponse.status).toBe(200)
+    expect(lockMetadataResponse.body).toStrictEqual({
+      description:
+        'Test Lock is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+      image: `https://staging-locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
+      name: 'Test Lock',
+    })
   })
 
   it('Bulk lock metadata returns error without authentication', async () => {
@@ -410,7 +421,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(lockAddressMetadataResponse.status).toBe(401)
+    expect(lockAddressMetadataResponse.status).toBe(403)
   })
 
   it('Does return error when authentication is present and payload is wrong', async () => {

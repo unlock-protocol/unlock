@@ -10,10 +10,9 @@ import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
 import { Button, Input, ToggleSwitch, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
-import { LockPicker } from '../../Manage/elements/LockPicker'
+import { Picker } from '~/components/interface/Picker'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -330,13 +329,13 @@ export const LocksForm = ({
               {isLoadingLocksByNetwork ? (
                 <SelectPlaceholder />
               ) : (
-                <LockPicker
-                  owner={account!}
-                  onChange={onChangeLock}
-                  defaultValues={{
-                    lockAddress,
-                    network,
+                <Picker
+                  userAddress={account!}
+                  onChange={(state) => {
+                    onChangeLock(state.lockAddress, state.network, state.name)
                   }}
+                  lockAddress={lockAddress}
+                  network={network ? Number(network) : undefined}
                 />
               )}
             </div>
@@ -471,7 +470,7 @@ const LockListItem = ({
           <LockImage lockAddress={address} />
           <span className="text-base font-semibold">{name || 'Default'}</span>
         </div>
-        <span className="ml-auto">{addressMinify(address)}</span>
+        <span className="ml-auto">{address}</span>
       </div>
       <div className="flex gap-2 item-center">
         <Tooltip label="Edit" tip="Edit" side="bottom">
