@@ -10,13 +10,14 @@ export interface PickerState {
   network?: number
   lockAddress?: string
   keyId?: string
+  name?: string
 }
 
 type CollectionItem = 'key' | 'lockAddress' | 'network'
 interface Props extends PickerState {
   userAddress: string
   onChange(state: PickerState): void
-  collect: Partial<Record<CollectionItem, boolean>>
+  collect?: Partial<Record<CollectionItem, boolean>>
 }
 
 export function Picker({
@@ -104,10 +105,15 @@ export function Picker({
             label="Lock"
             options={locksOptions}
             defaultValue={lockAddress}
-            onChange={(address) => {
+            onChange={(lockAddress) => {
               setState((state) => ({
                 network: state.network,
-                lockAddress: address.toString(),
+                lockAddress: lockAddress.toString(),
+                name: locksOptions.find(
+                  (item) =>
+                    item.value?.toLowerCase() ===
+                    lockAddress.toString().toLowerCase()
+                )?.label,
               }))
             }}
             description="Select the lock you want to use."
