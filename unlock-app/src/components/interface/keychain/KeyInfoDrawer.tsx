@@ -178,7 +178,7 @@ export const KeyInfo = ({
   }
 
   const { ticket, properties, stats, levels } = categorizeAttributes(
-    keyMetadata?.attributes
+    keyMetadata?.attributes || []
   )
 
   // Primary subscription

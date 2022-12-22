@@ -29,8 +29,8 @@ import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
-import { LockPicker } from './elements/LockPicker'
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
+import { Picker } from '../../Picker'
 
 interface ActionBarProps {
   lockAddress: string
@@ -393,7 +393,12 @@ export const ManageLockPage = () => {
               Select a lock to start manage it
             </h2>
             <div className="w-1/2">
-              <LockPicker owner={owner!} onChange={onLockPick} />
+              <Picker
+                userAddress={owner!}
+                onChange={(state) => {
+                  onLockPick(state.lockAddress, state.network)
+                }}
+              />
             </div>
           </>
         ) : (

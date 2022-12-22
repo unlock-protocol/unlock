@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "7.20.5",
     "@headlessui/react": "1.7.4",
+    "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "2.9.10",
     "@radix-ui/react-avatar": "1.0.1",
     "@rehooks/local-storage": "2.4.4",

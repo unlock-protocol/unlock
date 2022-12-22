@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
-import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
-import { Disclosure as DisclosureComponent } from '@headlessui/react'
+import { FiChevronDown as ArrowDownIcon } from 'react-icons/fi'
+import { Disclosure as HeadlessDisclosure } from '@headlessui/react'
 
 interface DisclosureProps {
   label: string
@@ -30,10 +30,10 @@ export const Disclosure = ({
   }
 
   return (
-    <DisclosureComponent defaultOpen={defaultOpen}>
+    <HeadlessDisclosure defaultOpen={defaultOpen}>
       {({ open }) => (
-        <div className="w-full p-6 bg-white border border-gray-100 shadow border-xs rounded-2xl">
-          <DisclosureComponent.Button
+        <div className="w-full p-6 bg-white border border-gray-200 rounded-2xl">
+          <HeadlessDisclosure.Button
             className="flex flex-col w-full gap-2 outline-none"
             disabled={disabled}
           >
@@ -41,7 +41,7 @@ export const Disclosure = ({
               <span className="text-xl font-bold text-brand-ui-primary">
                 {label}
               </span>
-              <ArrowUpIcon
+              <ArrowDownIcon
                 className={`transition duration-200 ease-in-out text-brand-ui-primary ${
                   open ? 'rotate-180' : ''
                 }`}
@@ -52,14 +52,12 @@ export const Disclosure = ({
                 <span className="text-base text-brand-dark">{description}</span>
               </div>
             )}
-          </DisclosureComponent.Button>
-          {children && (
-            <DisclosureComponent.Panel className="pt-10">
-              {children}
-            </DisclosureComponent.Panel>
-          )}
+          </HeadlessDisclosure.Button>
+          <HeadlessDisclosure.Panel unmount={false} className="pt-6">
+            {children}
+          </HeadlessDisclosure.Panel>
         </div>
       )}
-    </DisclosureComponent>
+    </HeadlessDisclosure>
   )
 }

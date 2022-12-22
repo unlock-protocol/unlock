@@ -3516,6 +3516,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/error-message@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@hookform/error-message@npm:2.0.1"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+    react-hook-form: ^7.0.0
+  checksum: eb3c33ab3fd2fe02b9bb1686f3d1ef2504ee2bb4e8e848797e2c68d957e53b1150f5f13946c65e386ed3b6e95e3b3fba29480bab1e0f60c4972e225248c8c68e
+  languageName: node
+  linkType: hard
+
 "@hookform/resolvers@npm:2.9.10":
   version: 2.9.10
   resolution: "@hookform/resolvers@npm:2.9.10"
@@ -11517,6 +11528,7 @@ __metadata:
     "@babel/core": 7.20.5
     "@babel/plugin-proposal-optional-chaining": 7.18.9
     "@headlessui/react": 1.7.4
+    "@hookform/error-message": 2.0.1
     "@hookform/resolvers": 2.9.10
     "@radix-ui/react-avatar": 1.0.1
     "@rehooks/local-storage": 2.4.4
