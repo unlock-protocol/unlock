@@ -1,31 +1,8 @@
-import networks from '@unlock-protocol/networks'
-import React, { useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { addressMinify } from '~/utils/strings'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { Select } from '@unlock-protocol/ui'
-import Link from 'next/link'
+import React from 'react'
 import { useConfig } from '~/utils/withConfig'
-import { useAuth } from '~/contexts/AuthenticationContext'
-
-interface LockPickerProps {
-  owner: string
-  onChange: (
-    lockAddress?: string,
-    network?: number | string,
-    name?: string
-  ) => void
-  defaultValues?: Record<string, any>
-}
 
 interface LockImageProps {
   lockAddress: string
-}
-
-const SelectPlaceholder = () => {
-  return (
-    <span className="w-full h-8 rounded-lg animate-pulse bg-slate-200"></span>
-  )
 }
 
 export const LockImage = ({ lockAddress }: LockImageProps) => {

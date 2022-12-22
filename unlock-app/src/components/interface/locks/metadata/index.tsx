@@ -22,6 +22,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+
 interface Props {
   lockAddress?: string
   network?: number
@@ -276,7 +277,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
           collect={{
             lockAddress: true,
             network: true,
-            keyId: true,
+            key: true,
           }}
           onChange={(selected) => {
             setSelected(selected)

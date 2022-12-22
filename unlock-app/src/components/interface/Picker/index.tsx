@@ -131,7 +131,7 @@ export function Picker({
       {state.lockAddress && lockExists && collect.key && (
         <Input
           className="w-full"
-          type="number"
+          pattern="\d+"
           label="Key ID"
           description="Enter the key ID you want to use. This can be an existing key ID or a new one which doesn't exist yet."
           value={state.keyId}
