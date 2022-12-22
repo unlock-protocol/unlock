@@ -132,7 +132,7 @@ describe('Upgrade a lock', function () {
   })
 })
 
-describe.only('(v11) key cancellation bug', function () {
+describe('(v11) key cancellation bug', function () {
   let lock: Contract
   let lockAddress: string
   let tokenIds: any
