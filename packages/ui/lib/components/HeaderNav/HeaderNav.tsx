@@ -13,7 +13,7 @@ import {
   FiMinus as MinusIcon,
 } from 'react-icons/fi'
 import { CgClose as CloseIcon } from 'react-icons/cg'
-import { Size } from '~/types'
+import { Size, SizeStyleProp } from '~/types'
 
 interface NavbarMenuProps {
   title: string
@@ -43,16 +43,15 @@ type NavOptionProps =
   | NavLinkProps
   | NavEmbedProps
 
-type MenuSectionSize = Extract<Size, 'small' | 'medium'>
 type MenuSectionProps =
   | {
       title: string
-      size?: MenuSectionSize
+      small?: boolean
       options: NavOptionProps[]
     }
   | {
       title: string
-      size?: MenuSectionSize
+      small?: boolean
       url: string
     }
 
@@ -74,7 +73,7 @@ interface NavbarProps {
   }
 }
 
-const POPOVER_CLASSES: Record<MenuSectionSize, string> = {
+const POPOVER_CLASSES: SizeStyleProp = {
   small: 'w-52 -ml-16 pt-4 lg:pt-9 sm:px-0',
   medium: 'w-full pt-4 transform -translate-x-1/2 lg:pt-9 left-1/2 sm:px-0',
 }
@@ -189,7 +188,7 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
   const options = 'options' in section ? section?.options : []
   const url: string = 'url' in section ? section?.url : ''
   const hasEmbed = 'embed' in section ? section.embed : null
-  const size = section.size ?? 'medium'
+  const size = (section.small ? 'small' : 'medium') as Size
 
   const classBySize = POPOVER_CLASSES[size]
   const navbarClassBySize = ['medium', 'large'].includes(size)

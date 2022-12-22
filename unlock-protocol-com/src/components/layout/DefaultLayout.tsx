@@ -1,6 +1,5 @@
-import { Footer } from '@unlock-protocol/ui'
+import { Footer, HeaderNav } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
-import { HeaderNav } from '@unlock-protocol/ui'
 import { CgArrowLongRight as ArrowRight } from 'react-icons/cg'
 import { EMAIL_SUBSCRIPTION_FORM } from '../../config/constants'
 import { unlockConfig } from '../../config/unlock'
@@ -134,18 +133,16 @@ const MENU = {
     },
     {
       title: 'More',
-      size: 'small',
+      small: true,
       options: [
         {
           title: '',
           options: [
-            /* show link when `State of Unlock` page is ready
-            {
-              title: 'State of Unlock',
-              url: 'https://unlock-protocol.com/state',
-            },
-          },
-          */
+            // {
+            //  title: 'State of Unlock',
+            //  url: 'https://unlock-protocol.com/state',
+            // },
+            //
             {
               title: 'Unlock DAO',
               url: 'https://unlock-protocol.com/blog/unlock-dao',
