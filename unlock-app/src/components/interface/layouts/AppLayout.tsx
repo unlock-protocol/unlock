@@ -36,7 +36,10 @@ const WalletNotConnected = () => {
           <span>
             Wallet is not connected yet.{' '}
             <Link href={loginUrl}>
-              <span className="cursor-pointer text-brand-ui-primary">
+              <span
+                className="cursor-pointer text-brand-ui-primary"
+                data-testid="connect"
+              >
                 Connect it now
               </span>
             </Link>

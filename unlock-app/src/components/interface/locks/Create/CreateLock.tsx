@@ -184,7 +184,7 @@ export const CreateLockSteps = () => {
 
 const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
   return (
-    <div>
+    <div data-testid="create-lock-page">
       <div className="grid gap-4 md:grid-cols-2 md:gap-28">
         <div className="flex-col hidden mx-auto md:flex md:max-w-lg">
           <h4 className="mb-4 text-5xl font-bold">
@@ -237,7 +237,12 @@ const CreateLockSummary = ({
         <div className="md:max-w-lg">
           <CreateLockFormSummary formData={formData} network={network} />
           <div className="flex flex-col justify-between w-full gap-4 mt-8 md:mt-12 md:px-12">
-            <Button onClick={onHandleSubmit}>Looks good to me</Button>
+            <Button
+              onClick={onHandleSubmit}
+              data-testid="confirm-lock-creation"
+            >
+              Looks good to me
+            </Button>
             <Button
               variant="transparent"
               onClick={() => setStep('data', formData)}

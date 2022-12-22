@@ -7,10 +7,11 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
     "test": "hardhat test",
     "ci": "hardhat test --network 0.0.0.0",
-    "e2e": "vitest run --coverage"
+    "e2e": "vitest run --no-threads"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@chainsafe/dappeteer": "4.0.0-rc.1",
     "@ethersproject/abi": "^5.4.7",
     "@ethersproject/providers": "^5.4.7",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
@@ -34,13 +35,14 @@
     "hardhat-gas-reporter": "^1.0.8",
     "isomorphic-fetch": "^3.0.0",
     "node-fetch": "2.6.7",
+    "puppeteer": "19.3.0",
     "solidity-coverage": "^0.7.21",
     "ts-node": ">=8.0.0",
     "typechain": "^8.1.0",
     "typescript": ">=4.5.0"
   },
   "devDependencies": {
-    "@vitest/browser": "^0.26.0",
+    "@vitest/browser": "0.26.0",
     "vitest": "0.25.8"
   }
 }

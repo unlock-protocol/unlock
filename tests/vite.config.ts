@@ -9,5 +9,6 @@ export default defineConfig({
     dir: 'test/e2e',
     include: ['**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     testTimeout: 100000,
+    hookTimeout: 100000,
   },
 })

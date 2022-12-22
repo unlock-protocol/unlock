@@ -167,6 +167,7 @@ export const CreateLockForm = ({
             />
             <div className="relative">
               <Input
+                data-testid="name"
                 label="Name:"
                 autoComplete="off"
                 placeholder="Lock Name"
@@ -202,6 +203,7 @@ export const CreateLockForm = ({
               </div>
               <div className="relative">
                 <Input
+                  data-testid="expirationDuration"
                   tabIndex={-1}
                   autoComplete="off"
                   step={0.01}
@@ -241,6 +243,7 @@ export const CreateLockForm = ({
               </div>
               <div className="relative">
                 <Input
+                  data-testid="maxNumberOfKeys"
                   placeholder="Enter quantity"
                   type="number"
                   autoComplete="off"
@@ -289,6 +292,7 @@ export const CreateLockForm = ({
                   </div>
 
                   <Input
+                    data-testid="keyPrice"
                     type="number"
                     autoComplete="off"
                     placeholder="0.00"
@@ -310,6 +314,7 @@ export const CreateLockForm = ({
               className="mt-8 md:mt-0"
               type="submit"
               disabled={submitDisabled}
+              data-testid="next-button"
             >
               Next
             </Button>
