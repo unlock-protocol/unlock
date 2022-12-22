@@ -566,7 +566,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     (bool success,) = swapRouter.call{ value: swapValue }(swapCalldata);
     // make sure Uniswap revert
     if(success == false) {
-      revert('swf');
+      revert SwapFailed();
     }
 
     // check that amount is enough to buy a key
