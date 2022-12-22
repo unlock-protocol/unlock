@@ -539,9 +539,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint keyPrice = IPublicLock(lock).keyPrice();
 
     // get balances of Unlock before
-    uint balanceTokenDestBefore = getBalance(destToken);
+    // if payments in ETH, substract the value sent by user to get actual balance
+    uint balanceTokenDestBefore = destToken == address(0) ? 
+      getBalance(destToken) - msg.value 
+            :
+      getBalance(destToken);
+
     uint balanceTokenSrcBefore = 
-        // if payment in ETH, substract the value sent by user to get actual balance
         srcToken == address(0) ? 
           getBalance(srcToken) - msg.value 
           :
@@ -559,10 +563,26 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint swapValue = srcToken == address(0) ? amountInMax : 0;
 
     // executes the swap
-    swapRouter.call{ value: swapValue }(swapCalldata);
+    (bool success,) = swapRouter.call{ value: swapValue }(swapCalldata);
+    if(success == false) {
+      // read Uniswap revert reason from mem buffer
+      assembly {
+        let ptr := mload(0x40)
+        let size := returndatasize()
+        returndatacopy(ptr, 0, size)
+        revert(ptr, size)
+      }
+    }
 
     // check that amount is enough to buy a key
-    uint balanceTokenDestAfterSwap = getBalance(destToken);
+    uint balanceTokenDestAfterSwap = destToken == address(0) ? 
+      getBalance(destToken) - msg.value 
+            :
+      getBalance(destToken);
+
+    console.log(balanceTokenDestBefore);
+    console.log(keyPrice);
+    console.log(balanceTokenDestAfterSwap);
 
     // make sure balance is enough to buy key
     if(balanceTokenDestAfterSwap < balanceTokenDestBefore + keyPrice) {
