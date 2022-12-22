@@ -369,16 +369,20 @@ async function getUniswapRoute (
   console.log(`Gas Adjusted Quote In: ${route.quoteGasAdjusted.toFixed(2)}`);
   console.log(`Gas Used USD: ${route.estimatedGasUsedUSD.toFixed(6)}`);
 
-  const { methodParameters } = route
+  const { methodParameters, quote } = route
   const { 
       calldata: swapCalldata, 
       value, 
       to: swapRouter
   } = methodParameters
 
-  // TODO: parse `route.quoteGasAdjusted` to String
+  // parse quote as BigNumber
   const maxAmountIn = ethers.BigNumber.from(
-    route.quoteGasAdjusted.toExact()
+    JSBI.multiply(
+      quote.numerator, 
+      quote.denominator,
+      quote.decimalScale
+    ).toString()
   )
   
   return {
