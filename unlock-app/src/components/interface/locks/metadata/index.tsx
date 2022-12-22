@@ -140,7 +140,7 @@ export const SwitchNetwork = ({
         </h3>
         <p className="text-gray-600">
           You are connected to the {connectedNetworkName} network. Please switch
-          to the {networkName} network to edit this lock.
+          to the {networkName} network to change token URI.
         </p>
       </div>
       <Button
@@ -261,9 +261,11 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
       </div>
       <div className="grid gap-6 p-6 border border-ui-secondary-600 bg-ui-secondary-400 rounded-xl">
         <div className="space-y-1">
-          <h3 className="text-lg font-bold">NFT Selection</h3>
+          <h3 className="text-lg font-bold">Metadata</h3>
           <p className="text-gray-600">
-            Select the Lock or Key you want to edit properties for.
+            Select the Lock or Key you want to edit properties for. If you save
+            metadata for lock only, it will be used for all keys which do not
+            have any metadata set.
           </p>
         </div>
         <Picker
