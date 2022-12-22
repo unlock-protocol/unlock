@@ -275,7 +275,7 @@ const NavSectionMobile = ({
 }: {
   menuSections: MenuSectionProps[]
 }) => {
-  const Title = ({ title, open, ...props }: any) => {
+  const Title = ({ title, open, options = [], ...props }: any) => {
     if (!title?.length) return null
     return (
       <div className="flex items-center justify-between" {...props}>
@@ -286,7 +286,9 @@ const NavSectionMobile = ({
         >
           {title}
         </span>
-        <Icon icon={open ? MinusIcon : PlusIcon} size={30} />
+        {options?.length > 0 && (
+          <Icon icon={open ? MinusIcon : PlusIcon} size={30} />
+        )}
       </div>
     )
   }
@@ -309,7 +311,12 @@ const NavSectionMobile = ({
     return (
       <div className="flex flex-col gap-4">
         {title?.length > 0 && (
-          <Title title={title} open={open} onClick={() => setOpen(!open)} />
+          <Title
+            title={title}
+            options={options}
+            open={open}
+            onClick={() => setOpen(!open)}
+          />
         )}
         {open && (
           <div className="flex flex-col gap-6 mb-14">
