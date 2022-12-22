@@ -10,6 +10,7 @@ import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
 import * as lockOperations from '../../operations/lockOperations'
 import { isEmpty } from 'lodash'
+import { getDefaultLockData } from '../../utils/metadata'
 
 const UserMetadata = z
   .object({
@@ -55,7 +56,11 @@ export class MetadataController {
       })
 
       if (!lockData) {
-        return response.status(200).send({})
+        const defaultLockData = await getDefaultLockData({
+          lockAddress,
+          network,
+        })
+        return response.status(200).send(defaultLockData)
       }
       return response.status(200).send(lockData.data)
     } catch (error) {

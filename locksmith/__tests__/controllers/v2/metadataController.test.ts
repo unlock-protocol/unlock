@@ -24,6 +24,12 @@ vi.mock('@unlock-protocol/unlock-js', () => {
     }),
     SubgraphService: vi.fn().mockImplementation(() => {
       return {
+        lock: (filter: any, opts: any) => {
+          return {
+            name: 'Test Lock',
+            address: lockAddress,
+          }
+        },
         key: (filter: any, opts: any) => {
           logger.info(filter, opts)
           return {
@@ -372,7 +378,12 @@ describe('Metadata v2 endpoints for locksmith', () => {
       `/v2/api/metadata/100/locks/${lockAddress}`
     )
     expect(lockMetadataResponse.status).toBe(200)
-    expect(lockMetadataResponse.body).toStrictEqual({})
+    expect(lockMetadataResponse.body).toStrictEqual({
+      description:
+        'Test Lock is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+      image: `https://staging-locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
+      name: 'Test Lock',
+    })
   })
 
   it('Bulk lock metadata returns error without authentication', async () => {
