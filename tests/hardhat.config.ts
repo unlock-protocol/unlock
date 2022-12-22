@@ -7,7 +7,7 @@ import fs from 'fs-extra'
 
 const SUBGRAPH_NETWORKS_CONFIG_PATH = process.env.CI
   ? '/home/unlock/networks.json'
-  : path.join(__dirname, '..', './docker/development/subgraph/networks.json')
+  : path.join(__dirname, '..', './subgraph/networks.json')
 
 const { localhost: subgraphConfig } = fs.readJSONSync(
   SUBGRAPH_NETWORKS_CONFIG_PATH
@@ -28,7 +28,6 @@ const config: HardhatUserConfig = {
     },
     docker: {
       unlockAddress,
-      url: 'http://localhost:8545',
     },
   },
   mocha: {
