@@ -176,7 +176,7 @@ export const ExtendMembershipModal = ({
             <p className="text-gray-600">{message}</p>
           </div>
           <div>
-            <h3 className="text-lg font-bold"> Details </h3>
+            <h3 className="text-lg font-bold"> Membership Details </h3>
             <div className="divide-y">
               <KeyItem label="Price">
                 {ethers.utils.formatUnits(
@@ -196,7 +196,7 @@ export const ExtendMembershipModal = ({
               <h3 className="text-lg font-bold"> Current</h3>
               <div className="divide-y">
                 {renewalInfo?.renewals && (
-                  <KeyItem label="Approved Renewals">
+                  <KeyItem label="Renews">
                     {renewalInfo.renewals.gte(UNLIMITED_RENEWAL_LIMIT)
                       ? 'Unlimited'
                       : `${renewalInfo.renewals.toString()} times`}
