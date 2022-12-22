@@ -6,18 +6,22 @@ import { storage } from '~/config/storage'
 interface Options {
   lockAddress: string
   network: number
-  keyId?: string
+  keyId: string
 }
 
-export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
+export const useUpdateMetadata = ({
+  lockAddress,
+  network,
+  keyId,
+}: Partial<Options>) => {
   const queryClient = useQueryClient()
   return useMutation(
-    ['updateMetadata', lockAddress, keyId, network],
+    ['updateMetadata', network, lockAddress, keyId],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
       if (keyId) {
         const keyResponse = await storage.updateKeyMetadata(
-          network,
-          lockAddress,
+          network!,
+          lockAddress!,
           keyId,
           {
             metadata,
@@ -26,8 +30,8 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
         return keyResponse.data as Metadata
       } else {
         const lockResponse = await storage.updateLockMetadata(
-          network,
-          lockAddress,
+          network!,
+          lockAddress!,
           {
             metadata,
           }
@@ -50,25 +54,35 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
   )
 }
 
-export const useMetadata = ({ lockAddress, network, keyId }: Options) => {
+export const useMetadata = ({
+  lockAddress,
+  network,
+  keyId,
+}: Partial<Options>) => {
   return useQuery(
-    ['metadata', lockAddress, keyId, network],
+    ['metadata', network, lockAddress, keyId],
     async (): Promise<Partial<Metadata>> => {
       try {
         if (keyId) {
           const keyResponse = await storage.keyMetadata(
-            network,
-            lockAddress,
+            network!,
+            lockAddress!,
             keyId
           )
           return keyResponse.data as Metadata
         } else {
-          const lockResponse = await storage.lockMetadata(network, lockAddress)
+          const lockResponse = await storage.lockMetadata(
+            network!,
+            lockAddress!
+          )
           return lockResponse.data as Metadata
         }
-      } catch {
+      } catch (error) {
         return {} as Metadata
       }
+    },
+    {
+      enabled: !!lockAddress && !!network,
     }
   )
 }
