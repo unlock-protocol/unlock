@@ -381,7 +381,6 @@ async function getUniswapRoute (
     JSBI.multiply(
       quote.numerator, 
       quote.denominator,
-      quote.decimalScale
     ).toString()
   )
   return {
