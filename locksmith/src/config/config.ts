@@ -16,6 +16,10 @@ const config = {
   logging: false,
   services: {
     wedlocks: 'http://localhost:1337',
+    locksmith:
+      process.env.UNLOCK_ENV === 'prod'
+        ? 'https://locksmith.unlock-protocol.com'
+        : 'https://staging-locksmith.unlock-protocol.com',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
