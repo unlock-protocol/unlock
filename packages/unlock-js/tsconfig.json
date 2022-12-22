@@ -8,7 +8,7 @@
         "alwaysStrict": true,
         "forceConsistentCasingInFileNames": true,
         "checkJs": false,
-        "esModuleInterop": false,
+        "esModuleInterop": true,
         "outDir": "dist",
         "resolveJsonModule": true,
         "skipLibCheck": true,
