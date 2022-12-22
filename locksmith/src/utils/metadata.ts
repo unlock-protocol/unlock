@@ -1,5 +1,5 @@
 import config from '../config/config'
-import { subgraph } from '../config/subgraph'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../logger'
 
 interface Options {
@@ -9,7 +9,8 @@ interface Options {
 
 export const getDefaultLockData = async ({ lockAddress, network }: Options) => {
   try {
-    const lock = await subgraph.lock(
+    const subgraphClient = new SubgraphService()
+    const lock = await subgraphClient.lock(
       {
         where: {
           address: lockAddress.toLowerCase(),
