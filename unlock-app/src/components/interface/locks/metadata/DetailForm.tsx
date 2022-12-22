@@ -43,7 +43,10 @@ export function DetailForm({ disabled }: Props) {
       <div className="grid gap-6">
         <Input
           {...register('name', {
-            required: true,
+            required: {
+              value: true,
+              message: 'Name is required',
+            },
           })}
           error={errors.name?.message}
           disabled={disabled}

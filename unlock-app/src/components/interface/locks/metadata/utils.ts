@@ -46,36 +46,65 @@ export function toFormData({
   external_url,
   youtube_url,
   background_color,
+  image,
 }: Metadata) {
-  const categorizedAttrs = categorizeAttributes(attributes)
-  return {
-    name,
-    description,
-    background_color: !background_color?.startsWith('#')
-      ? `#${background_color}`
-      : background_color,
-    animation_url,
-    external_url,
-    youtube_url,
+  const categorizedAttrs = categorizeAttributes(attributes || [])
+  const metadata = {
     ...categorizedAttrs,
   } as MetadataFormData
+
+  if (name) {
+    metadata.name = name
+  }
+
+  if (description) {
+    metadata.description = description
+  }
+
+  if (animation_url) {
+    metadata.animation_url = animation_url
+  }
+
+  if (external_url) {
+    metadata.external_url = external_url
+  }
+
+  if (youtube_url) {
+    metadata.youtube_url = youtube_url
+  }
+
+  if (image) {
+    metadata.image = image
+  }
+
+  if (background_color) {
+    metadata.background_color = background_color.startsWith('#')
+      ? `#${background_color}`
+      : background_color
+  }
+
+  return metadata
 }
 
-export const categorizeAttributes = (attributes: Attribute[] | undefined) => {
-  const ticket = attributes
-    ?.filter((item) => item.trait_type.startsWith('event_'))
-    .reduce((item, { trait_type, value }) => {
-      item[trait_type as keyof Ticket] = value as string
-      return item
-    }, {} as Ticket)
+export const categorizeAttributes = (
+  attributes: Attribute[] | undefined = []
+) => {
+  if (!attributes) {
+    return {}
+  }
 
-  const stats = attributes?.filter(
+  const ticket = attributes.reduce((item, { trait_type, value }) => {
+    item[trait_type as keyof Ticket] = value as string
+    return item
+  }, {} as Ticket)
+
+  const stats = attributes.filter(
     (item) => item.display_type === 'number' && typeof item.value === 'number'
   )
-  const levels = attributes?.filter(
+  const levels = attributes.filter(
     (item) => typeof item.value === 'number' && !item.display_type
   )
-  const properties = attributes?.filter(
+  const properties = attributes.filter(
     (item) =>
       typeof item.value === 'string' &&
       !item.max_value &&
