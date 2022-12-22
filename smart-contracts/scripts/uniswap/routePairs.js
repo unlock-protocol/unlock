@@ -8,16 +8,25 @@ const { getUniswapRoute, getUniswapTokens } = require('../../test/helpers')
 async function main() {
   
   // parse tokens
-
   const { chainId } = await ethers.provider.getNetwork()
-  const tokens = getUniswapTokens(chainId)
+  const tokens = Object.values(getUniswapTokens(chainId))
 
-  const pair = [tokens.usdc, tokens.native]
-  try {
-    await getUniswapRoute(...pair)
-  } catch (error) {
-    console.log(error)
+  // parse paris
+  let pairs = []
+  tokens.forEach(t0 => tokens.forEach(t1 => pairs.push([t0, t1])))
+  // remove duplicates
+  pairs = pairs.filter(p => p[0] !== p[1])
+
+  for (let i = 0; i < pairs.length; i++) {
+    console.log('-------------------------')
+    const pair = pairs[i];
+    try {
+      await getUniswapRoute(...pair)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
 }
 
 main()
