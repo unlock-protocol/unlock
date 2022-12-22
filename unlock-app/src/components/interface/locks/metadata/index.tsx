@@ -1,5 +1,5 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { useEffect, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
@@ -17,7 +17,11 @@ import LoadingIcon from '../../Loading'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker, PickerState } from '../../Picker'
-
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useWalletService } from '~/utils/withWalletService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 interface Props {
   lockAddress?: string
   network?: number
@@ -96,8 +100,56 @@ export const Form = ({
   )
 }
 
+interface SwitchNetworkProps {
+  network: number
+  children: ReactNode
+}
+
+export const SwitchNetwork = ({
+  network = 1,
+  children,
+}: SwitchNetworkProps) => {
+  const { network: connectedNetwork, changeNetwork } = useAuth()
+  const [isNetworkSwitching, setIsNetworkSwitching] = useState(false)
+
+  const isIncorrectNetwork = network !== connectedNetwork
+
+  if (!isIncorrectNetwork) {
+    return <>{children}</>
+  }
+  const connectedNetworkName = config.networks?.[connectedNetwork!]?.name
+  const networkName = config.networks?.[network]?.name
+
+  return (
+    <div className="grid gap-6 p-6 border border-ui-secondary-600 rounded-xl">
+      <div className="space-y-1">
+        <h3 className="text-xl font-bold">
+          You are connected to the wrong network
+        </h3>
+        <p className="text-gray-600">
+          You are connected to the {connectedNetworkName} network. Please switch
+          to the {networkName} network to edit this lock.
+        </p>
+      </div>
+      <Button
+        loading={isNetworkSwitching}
+        disabled={isNetworkSwitching}
+        onClick={async (event) => {
+          event.preventDefault()
+          setIsNetworkSwitching(true)
+          await changeNetwork(network)
+          setIsNetworkSwitching(false)
+        }}
+      >
+        Switch network to {networkName}
+      </Button>
+    </div>
+  )
+}
+
 export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
   const { account } = useAuth()
+  const web3Service = useWeb3Service()
   const [selected, setSelected] = useState<PickerState>({
     lockAddress,
     network,
@@ -113,6 +165,66 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
   const defaultValues = useMemo(() => {
     return toFormData((metadata || {}) as Metadata)
   }, [metadata])
+
+  const walletService = useWalletService()
+  const baseTokenURI = `${config.locksmithHost}/api/key/${selected.network}/${selected.lockAddress}/`
+  const {
+    data: tokenURI,
+    isInitialLoading: isTokenURILoading,
+    refetch,
+  } = useQuery(
+    ['baseTokenURI', selected.network, selected.lockAddress],
+    async () => {
+      const tokenURI = await web3Service.getBaseTokenURI({
+        network: selected.network!,
+        lockAddress: selected.lockAddress!,
+      })
+      return tokenURI
+    },
+    {
+      enabled: !!(selected.network && selected.lockAddress),
+    }
+  )
+
+  const { mutateAsync: update, isLoading: isUpdatingBaseTokenURI } =
+    useMutation({
+      mutationKey: [
+        'updateBaseTokenURI',
+        selected.network,
+        selected.lockAddress,
+      ],
+      mutationFn: async (baseTokenURI: string) => {
+        await walletService.setBaseTokenURI({
+          lockAddress: selected.lockAddress!,
+          baseTokenURI,
+        })
+      },
+      onError(error) {
+        console.error(error)
+        ToastHelper.error('Failed to update base token URI. Retry again.')
+      },
+      onSuccess() {
+        ToastHelper.success('Base token URI updated successfully.')
+        refetch()
+      },
+    })
+
+  const isLoading = isMetadataLoading || isTokenURILoading
+
+  const isLockSelected = selected.lockAddress && selected.network
+
+  const isTokenURIEditable = useMemo(() => {
+    if (!tokenURI || isTokenURILoading) {
+      return false
+    }
+    try {
+      const tokenURL = new URL(tokenURI!)
+      const locksmithURL = new URL(config.locksmithHost)
+      return tokenURL.hostname === locksmithURL.hostname
+    } catch {
+      return false
+    }
+  }, [tokenURI, isTokenURILoading])
 
   return (
     <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
@@ -145,21 +257,46 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
           lockAddress={lockAddress}
           network={network}
           keyId={keyId}
-          collect={{
-            keyId: true,
-            lockAddress: true,
-            network: true,
-          }}
           onChange={(selected) => {
             setSelected(selected)
           }}
         />
       </div>
-      {isMetadataLoading && <LoadingIcon />}
-      {!isMetadataLoading && selected.lockAddress && selected.network && (
+      {isLoading && <LoadingIcon />}
+      {!isLoading && !isTokenURIEditable && isLockSelected && (
+        <SwitchNetwork network={selected.network!}>
+          <div className="grid gap-6 p-6 border border-red-300 bg-red-50 rounded-xl">
+            <div className="flex items-center gap-4">
+              <div className="hidden p-2 bg-red-200 rounded-full sm:block">
+                <ErrorIcon size={24} className="fill-red-900" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-red-900">
+                  Unexpected Base Token URI
+                </h3>
+                <p className="text-gray-600">
+                  You need to change your base token URI to be editable by the
+                  Unlock Dashboard.
+                </p>
+              </div>
+            </div>
+            <Button
+              disabled={isUpdatingBaseTokenURI}
+              loading={isUpdatingBaseTokenURI}
+              onClick={async (event) => {
+                event.preventDefault()
+                await update(baseTokenURI)
+              }}
+            >
+              Change Base Token URI
+            </Button>
+          </div>
+        </SwitchNetwork>
+      )}
+      {!isLoading && isTokenURIEditable && isLockSelected && (
         <Form
-          lockAddress={selected.lockAddress}
-          network={selected.network}
+          lockAddress={selected.lockAddress!}
+          network={selected.network!}
           keyId={selected.keyId}
           defaultValues={defaultValues}
         />

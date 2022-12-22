@@ -5,7 +5,7 @@ import { config } from '~/config/app'
 import { subgraph } from '~/config/subgraph'
 import { LockImage } from '../locks/Manage/elements/LockPicker'
 import LoadingIcon from '../Loading'
-
+import Link from 'next/link'
 export interface PickerState {
   network?: number
   lockAddress?: string
@@ -14,7 +14,6 @@ export interface PickerState {
 
 interface Props extends PickerState {
   userAddress: string
-  collect?: Record<'keyId' | 'lockAddress' | 'network', boolean>
   onChange(state: PickerState): void
 }
 
@@ -23,11 +22,6 @@ export function Picker({
   lockAddress,
   keyId,
   userAddress,
-  collect = {
-    keyId: true,
-    lockAddress: true,
-    network: true,
-  },
   onChange,
 }: Props) {
   const [state, setState] = useState<Partial<PickerState>>({
@@ -82,21 +76,18 @@ export function Picker({
 
   return (
     <div className="grid gap-4">
-      {collect.network && (
-        <Select
-          label="Network"
-          options={networkOptions}
-          defaultValue={network}
-          onChange={(id) => {
-            setState({
-              network: Number(id),
-            })
-          }}
-          description="Select the network your lock is on."
-        />
-      )}
+      <Select
+        label="Network"
+        options={networkOptions}
+        defaultValue={network}
+        onChange={(id) => {
+          setState({
+            network: Number(id),
+          })
+        }}
+        description="Select the network your lock is on."
+      />
       {state.network &&
-        collect.lockAddress &&
         (lockExists ? (
           <Select
             key={state.network}
@@ -112,13 +103,21 @@ export function Picker({
             description="Select the lock you want to use."
           />
         ) : (
-          <div>No locks found</div>
+          <div>
+            You have not deployed locks on this network yet.{' '}
+            <Link href="/locks/create">
+              <span className="font-medium underline cursor-pointer">
+                Deploy one now
+              </span>
+            </Link>
+          </div>
         ))}
-      {state.lockAddress && collect.keyId && lockExists && (
+      {state.lockAddress && lockExists && (
         <Input
+          className="w-full"
           type="number"
           label="Key ID"
-          description="Enter the key ID you want to use."
+          description="Enter the key ID you want to use. This can be an existing key ID or a new one which doesn't exist yet."
           value={state.keyId}
           onChange={(event) => {
             event.preventDefault()

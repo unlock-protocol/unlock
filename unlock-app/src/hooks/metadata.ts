@@ -17,7 +17,7 @@ export const useUpdateMetadata = ({
   const storageService = useStorageService()
   const queryClient = useQueryClient()
   return useMutation(
-    ['updateMetadata', lockAddress, keyId, network],
+    ['updateMetadata', network, lockAddress, keyId],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
       const token = await storageService.getAccessToken()
       const headers = storageService.genAuthorizationHeader(token || '')
@@ -73,7 +73,7 @@ export const useMetadata = ({
 }: Partial<Options>) => {
   const storageService = useStorageService()
   return useQuery(
-    ['metadata', lockAddress, keyId, network],
+    ['metadata', network, lockAddress, keyId],
     async (): Promise<Partial<Metadata>> => {
       try {
         if (keyId) {
@@ -90,13 +90,12 @@ export const useMetadata = ({
           )
           return lockResponse.data as Metadata
         }
-      } catch {
+      } catch (error) {
         return {} as Metadata
       }
     },
     {
       enabled: !!lockAddress && !!network,
-      initialData: {},
     }
   )
 }
