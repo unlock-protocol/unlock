@@ -1,6 +1,5 @@
-import { Footer } from '@unlock-protocol/ui'
+import { Footer, HeaderNav } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
-import { HeaderNav } from '@unlock-protocol/ui'
 import { CgArrowLongRight as ArrowRight } from 'react-icons/cg'
 import { EMAIL_SUBSCRIPTION_FORM } from '../../config/constants'
 import { unlockConfig } from '../../config/unlock'
@@ -134,17 +133,16 @@ const MENU = {
     },
     {
       title: 'More',
+      small: true,
       options: [
         {
           title: '',
           options: [
-            /* show link when `State of Unlock` page is ready
-            {
-              title: 'State of Unlock',
-              url: 'https://unlock-protocol.com/state',
-            },
-          },
-          */
+            // {
+            //  title: 'State of Unlock',
+            //  url: 'https://unlock-protocol.com/state',
+            // },
+            //
             {
               title: 'Unlock DAO',
               url: 'https://unlock-protocol.com/blog/unlock-dao',
@@ -169,7 +167,7 @@ const MENU = {
   actions: [
     {
       title: 'Launch App',
-      url: 'https://app.unlock-protocol.com',
+      url: 'https://app.unlock-protocol.com/locks',
       icon: ArrowRight,
     },
   ],
@@ -278,13 +276,16 @@ export function Layout({ children }: Props) {
     ],
   }
 
-  const containerClass = 'container px-6 mx-auto md:px-0 max-w-7xl'
+  const containerClass = 'container w-full mx-auto max-w-7xl'
 
   return (
     <>
-      <div className={`${containerClass}`}>
-        <HeaderNav {...MENU} />
+      <div className="px-6">
+        <div className={`${containerClass}`}>
+          <HeaderNav {...MENU} />
+        </div>
       </div>
+
       {children}
       <div className={`${containerClass} md:pt-14 pt-4`}>
         <Footer {...FOOTER} />
