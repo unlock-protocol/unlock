@@ -4,7 +4,6 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
@@ -13,7 +12,8 @@ import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
 import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
-
+import { storage } from '~/config/storage'
+import { AxiosError } from 'axios'
 interface DetailProps {
   label: string
   children?: React.ReactNode
@@ -103,7 +103,6 @@ export const MetadataCard = ({
   network,
   expirationDuration,
 }: MetadataCardProps) => {
-  const { account } = useAuth()
   const storageService = useStorageService()
   const walletService = useWalletService()
   const [data, setData] = useState(metadata)
@@ -133,12 +132,12 @@ export const MetadataCard = ({
   const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
     ['subscription', lockAddress, tokenId, network],
     async () => {
-      const response = await storageService.getSubscription({
-        lockAddress,
+      const response = await storage.getSubscription(
         network,
-        keyId: tokenId,
-      })
-      return response.subscriptions?.[0] ?? null
+        lockAddress,
+        tokenId
+      )
+      return response.data.subscriptions?.[0] ?? null
     },
     {
       onError(error) {
@@ -148,11 +147,7 @@ export const MetadataCard = ({
   )
 
   const sendEmail = async () => {
-    return storageService.sendKeyQrCodeViaEmail({
-      lockAddress,
-      network,
-      tokenId,
-    })
+    return storage.emailTicket(network, lockAddress, tokenId)
   }
 
   const sendEmailMutation = useMutation(sendEmail)
@@ -161,12 +156,6 @@ export const MetadataCard = ({
     if (!network) return
     if (!storageService) return
     if (!walletService) return
-
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
 
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'QR-code sent by email',
@@ -189,25 +178,21 @@ export const MetadataCard = ({
   const onMarkAsCheckIn = async () => {
     if (!storageService) return
     const { lockAddress, token: keyId } = data
-    return storageService.markTicketAsCheckedIn({
-      lockAddress,
-      keyId,
-      network: network!,
-    })
+    return storage.checkTicket(network, lockAddress, keyId)
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
-    onSuccess: (response: any) => {
-      if (!response.ok && response.status === 409) {
-        ToastHelper.error('Ticket already checked in')
-      }
-
-      if (response.ok) {
-        setCheckedInTimestamp(new Date().toLocaleString())
-        ToastHelper.success('Successfully marked ticket as checked-in')
-      }
+    onSuccess: () => {
+      setCheckedInTimestamp(new Date().toLocaleString())
+      ToastHelper.success('Successfully marked ticket as checked-in')
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          ToastHelper.error('Ticket already checked-in')
+          return
+        }
+      }
       ToastHelper.error('Error on marking ticket as checked-in')
     },
   })
@@ -322,12 +307,12 @@ export const MetadataCard = ({
             {!isSubscriptionLoading && subscription && (
               <>
                 <MetadataDetail label="User Balance">
-                  {subscription.balance.amount} {subscription.balance.symbol}
+                  {subscription.balance?.amount} {subscription.balance?.symbol}
                 </MetadataDetail>
                 <MembershipRenewal
-                  possibleRenewals={subscription.possibleRenewals}
-                  approvedRenewals={subscription.approvedRenewals}
-                  balance={subscription.balance}
+                  possibleRenewals={subscription.possibleRenewals!}
+                  approvedRenewals={subscription.approvedRenewals!}
+                  balance={subscription.balance as any}
                 />
                 {expirationDuration && expirationDuration !== MAX_UINT && (
                   <MetadataDetail label="Renewal duration">
@@ -366,8 +351,6 @@ const UpdateEmailModal = ({
   setIsOpen: (status: boolean) => void
   onEmailChange: (values: FieldValues) => void
 }) => {
-  const storage = useStorageService()
-
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -386,7 +369,16 @@ const UpdateEmailModal = ({
 
   const createMetadata = async (params: any, callback?: () => void) => {
     try {
-      const createMetadataPromise = storage.createtMetadata(params)
+      const createMetadataPromise = storage.createUserMetadata(
+        network,
+        lockAddress,
+        userAddress,
+        {
+          metadata: {
+            protected: params.metadata,
+          },
+        }
+      )
       await ToastHelper.promise(createMetadataPromise, {
         loading: 'Saving email address',
         success: 'Email successfully added to member',
@@ -403,7 +395,16 @@ const UpdateEmailModal = ({
   }
 
   const updateMetadata = async (params: any, callback?: () => void) => {
-    const updateMetadataPromise = storage.updatetMetadata(params)
+    const updateMetadataPromise = storage.updateUserMetadata(
+      network,
+      lockAddress,
+      userAddress,
+      {
+        metadata: {
+          protected: params.metadata,
+        },
+      }
+    )
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
       success: 'Email successfully added to member',

@@ -11,6 +11,7 @@ import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import React from 'react'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
+import { Auth } from '~/components/helpers/Auth'
 
 interface DashboardLayoutProps {
   title?: string
@@ -153,70 +154,71 @@ export const AppLayout = ({
   const showLogin = authRequired && !account
 
   return (
-    <div className="bg-ui-secondary-200">
-      <Modal
-        isOpen={!termsAccepted}
-        setIsOpen={() => {
-          saveTermsAccepted()
-        }}
-      >
-        <div className="flex flex-col justify-center gap-4 bg-white">
-          <span className="text-base">
-            No account required{' '}
-            <span role="img" aria-label="stars">
-              ✨
+    <Auth>
+      <div className="bg-ui-secondary-200">
+        <Modal
+          isOpen={!termsAccepted}
+          setIsOpen={() => {
+            saveTermsAccepted()
+          }}
+        >
+          <div className="flex flex-col justify-center gap-4 bg-white">
+            <span className="text-base">
+              No account required{' '}
+              <span role="img" aria-label="stars">
+                ✨
+              </span>
+              , but you need to agree to our{' '}
+              <a
+                className="outline-none text-brand-ui-primary"
+                href={`${config.unlockStaticUrl}/terms`}
+              >
+                Terms of Service
+              </a>{' '}
+              and{' '}
+              <a
+                className="outline-none text-brand-ui-primary"
+                href={`${config.unlockStaticUrl}/privacy`}
+              >
+                Privacy Policy
+              </a>
+              .
             </span>
-            , but you need to agree to our{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/terms`}
-            >
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/privacy`}
-            >
-              Privacy Policy
-            </a>
-            .
-          </span>
-          <Button onClick={saveTermsAccepted}>I agree</Button>
-        </div>
-      </Modal>
-
-      <div className="w-full">
-        {showHeader && <AppHeader showLinks={showLinks} />}
-        <div className="min-w-full min-h-screen">
-          <div className="pt-8">
-            <Container>
-              <div className="flex flex-col gap-10">
-                {(title || description) && (
-                  <div className="flex flex-col gap-4">
-                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
-                    {description && (
-                      <p className="w-full text-base text-gray-700">
-                        {description}
-                      </p>
-                    )}
-                  </div>
-                )}
-                {showLogin ? (
-                  <div className="flex justify-center">
-                    <WalletNotConnected />
-                  </div>
-                ) : (
-                  <div>{children}</div>
-                )}
-              </div>
-            </Container>
+            <Button onClick={saveTermsAccepted}>I agree</Button>
+          </div>
+        </Modal>
+        <div className="w-full">
+          {showHeader && <AppHeader showLinks={showLinks} />}
+          <div className="min-w-full min-h-screen">
+            <div className="pt-8">
+              <Container>
+                <div className="flex flex-col gap-10">
+                  {(title || description) && (
+                    <div className="flex flex-col gap-4">
+                      {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                      {description && (
+                        <p className="w-full text-base text-gray-700">
+                          {description}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {showLogin ? (
+                    <div className="flex justify-center">
+                      <WalletNotConnected />
+                    </div>
+                  ) : (
+                    <div>{children}</div>
+                  )}
+                </div>
+              </Container>
+            </div>
+          </div>
+          <div className="px-4 mx-auto lg:container">
+            <Footer {...FOOTER} />
           </div>
         </div>
-        <div className="px-4 mx-auto lg:container">
-          <Footer {...FOOTER} />
-        </div>
       </div>
-    </div>
+    </Auth>
   )
 }

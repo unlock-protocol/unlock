@@ -15,7 +15,8 @@ const argv = yargs
   .example(
     'yarn tsx scripts/create_access_token.ts --address 0x123',
     'create an access token to test locksmith locally.'
-  ).argv
+  )
+  .parseSync()
 
 if (argv.address) {
   const token = createAccessToken({

@@ -1,5 +1,4 @@
 import { Disclosure, Drawer } from '@unlock-protocol/ui'
-import { useStorageService } from '~/utils/withStorageService'
 import React, { ReactNode } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
 import { useQuery } from '@tanstack/react-query'
@@ -27,6 +26,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
+import { storage } from '~/config/storage'
 
 dayjs.extend(relative)
 dayjs.extend(duration)
@@ -100,7 +100,6 @@ export const KeyInfo = ({
   expiration,
   imageURL,
 }: KeyInfoProps) => {
-  const storageService = useStorageService()
   const walletService = useWalletService()
   const provider = walletService.providerForNetwork(network)
   const config = useConfig()
@@ -110,19 +109,8 @@ export const KeyInfo = ({
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
-      await storageService.loginPrompt({
-        walletService,
-        address: account!,
-        chainId: network,
-      })
-
-      const response = await storageService.getKeyMetadataValues({
-        lockAddress: lock.address,
-        keyId: parseInt(tokenId),
-        network,
-      })
-
-      return response || {}
+      const response = await storage.keyMetadata(network, lock.address, tokenId)
+      return response.data || {}
     },
     {
       onError(error) {
@@ -166,17 +154,12 @@ export const KeyInfo = ({
     useQuery(
       ['subscriptions', lock.address, tokenId, network],
       async () => {
-        storageService.loginPrompt({
-          walletService,
-          address: account!,
-          chainId: 1,
-        })
-        const response = await storageService.getSubscription({
-          network: network,
-          lockAddress: lock.address,
-          keyId: tokenId,
-        })
-        return response.subscriptions
+        const response = await storage.getSubscription(
+          network,
+          lock.address,
+          tokenId
+        )
+        return response.data.subscriptions
       },
       {
         retry: 0,
@@ -246,9 +229,9 @@ export const KeyInfo = ({
         )}
         {subscription && (
           <KeyRenewal
-            possibleRenewals={subscription.possibleRenewals}
-            approvedRenewals={subscription.approvedRenewals}
-            balance={subscription.balance}
+            possibleRenewals={subscription.possibleRenewals!}
+            approvedRenewals={subscription.approvedRenewals!}
+            balance={subscription.balance as any}
           />
         )}
         {lock.expirationDuration !== MAX_UINT && (
