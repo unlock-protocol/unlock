@@ -230,7 +230,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
         queryFn: async () => await getSymbol(),
       },
       {
-        queryKey: ['getKeyPrice', lock, network, tokenAddress],
+        queryKey: ['getKeyPrice', lockAddress, network, tokenAddress],
         queryFn: async () => await getKeyPrice(),
       },
     ],
