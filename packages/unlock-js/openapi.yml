@@ -769,7 +769,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/ticket/{network}/{lockAddress}/{keyId}/check:
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/check:
     put:
       operationId: checkTicket
       security:
@@ -1006,7 +1006,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserMetadataInput'
+              type: object
+              properties:
+                metadata:
+                  $ref: '#/components/schemas/UserMetadataInput'
 
       responses:
         201:
@@ -1043,7 +1046,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserMetadataInput'
+              type: object
+              properties:
+                metadata:
+                  $ref: '#/components/schemas/UserMetadataInput'
 
       responses:
         204:

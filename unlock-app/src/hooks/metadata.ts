@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
-import { useStorageService } from '~/utils/withStorageService'
+import { storage } from '~/config/storage'
 
 interface Options {
   lockAddress: string
@@ -10,35 +10,26 @@ interface Options {
 }
 
 export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
-  const storageService = useStorageService()
   const queryClient = useQueryClient()
   return useMutation(
     ['updateMetadata', lockAddress, keyId, network],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
-      const token = await storageService.getAccessToken()
-      const headers = storageService.genAuthorizationHeader(token || '')
       if (keyId) {
-        const keyResponse = await storageService.locksmith.updateKeyMetadata(
+        const keyResponse = await storage.updateKeyMetadata(
           network,
           lockAddress,
           keyId,
           {
             metadata,
-          },
-          {
-            headers,
           }
         )
         return keyResponse.data as Metadata
       } else {
-        const lockResponse = await storageService.locksmith.updateLockMetadata(
+        const lockResponse = await storage.updateLockMetadata(
           network,
           lockAddress,
           {
             metadata,
-          },
-          {
-            headers,
           }
         )
         return lockResponse.data as Metadata
@@ -60,23 +51,19 @@ export const useUpdateMetadata = ({ lockAddress, network, keyId }: Options) => {
 }
 
 export const useMetadata = ({ lockAddress, network, keyId }: Options) => {
-  const storageService = useStorageService()
   return useQuery(
     ['metadata', lockAddress, keyId, network],
     async (): Promise<Partial<Metadata>> => {
       try {
         if (keyId) {
-          const keyResponse = await storageService.locksmith.keyMetadata(
+          const keyResponse = await storage.keyMetadata(
             network,
             lockAddress,
             keyId
           )
           return keyResponse.data as Metadata
         } else {
-          const lockResponse = await storageService.locksmith.lockMetadata(
-            network,
-            lockAddress
-          )
+          const lockResponse = await storage.lockMetadata(network, lockAddress)
           return lockResponse.data as Metadata
         }
       } catch {
