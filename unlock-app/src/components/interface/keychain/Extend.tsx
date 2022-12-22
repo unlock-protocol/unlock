@@ -193,7 +193,7 @@ export const ExtendMembershipModal = ({
           </div>
           {isRenewable && (
             <div>
-              <h3 className="text-lg font-bold"> Current</h3>
+              <h3 className="text-lg font-bold"> Current validity</h3>
               <div className="divide-y">
                 {renewalInfo?.renewals && (
                   <KeyItem label="Renews">
