@@ -12,9 +12,11 @@ export interface PickerState {
   keyId?: string
 }
 
+type CollectionItem = 'key' | 'lockAddress' | 'network'
 interface Props extends PickerState {
   userAddress: string
   onChange(state: PickerState): void
+  collect: Partial<Record<CollectionItem, boolean>>
 }
 
 export function Picker({
@@ -23,6 +25,11 @@ export function Picker({
   keyId,
   userAddress,
   onChange,
+  collect = {
+    key: true,
+    lockAddress: true,
+    network: true,
+  },
 }: Props) {
   const [state, setState] = useState<Partial<PickerState>>({
     lockAddress,
@@ -76,18 +83,21 @@ export function Picker({
 
   return (
     <div className="grid gap-4">
-      <Select
-        label="Network"
-        options={networkOptions}
-        defaultValue={network}
-        onChange={(id) => {
-          setState({
-            network: Number(id),
-          })
-        }}
-        description="Select the network your lock is on."
-      />
+      {collect.network && (
+        <Select
+          label="Network"
+          options={networkOptions}
+          defaultValue={network}
+          onChange={(id) => {
+            setState({
+              network: Number(id),
+            })
+          }}
+          description="Select the network your lock is on."
+        />
+      )}
       {state.network &&
+        collect.lockAddress &&
         (lockExists ? (
           <Select
             key={state.network}
@@ -112,7 +122,7 @@ export function Picker({
             </Link>
           </div>
         ))}
-      {state.lockAddress && lockExists && (
+      {state.lockAddress && lockExists && collect.key && (
         <Input
           className="w-full"
           type="number"

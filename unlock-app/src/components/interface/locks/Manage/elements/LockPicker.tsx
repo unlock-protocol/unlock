@@ -43,6 +43,7 @@ export const LockImage = ({ lockAddress }: LockImageProps) => {
   )
 }
 
+// TOOD(searchableguy): Replace with the generic Picker component
 export const LockPicker = ({
   owner,
   onChange,
