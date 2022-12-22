@@ -1,7 +1,4 @@
 import { useQueries } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
@@ -11,6 +8,7 @@ import React from 'react'
 import { ExpirationStatus } from './FilterBar'
 import Link from 'next/link'
 import { subgraph } from '~/config/subgraph'
+import { storage } from '~/config/storage'
 
 interface MembersProps {
   lockAddress: string
@@ -57,21 +55,15 @@ export const Members = ({
     expiration: ExpirationStatus.ALL,
   },
 }: MembersProps) => {
-  const { account } = useAuth()
-  const walletService = useWalletService()
-  const storageService = useStorageService()
-
   const getMembers = async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
-    return storageService.getKeys({
-      lockAddress,
+    const keys = await storage.keys(
       network,
-      filters,
-    })
+      lockAddress,
+      filters.query,
+      filters.filterKey,
+      filters.expiration
+    )
+    return keys.data
   }
 
   const [

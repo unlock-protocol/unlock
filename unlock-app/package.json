@@ -5,7 +5,9 @@
   "dependencies": {
     "@babel/core": "7.20.5",
     "@headlessui/react": "1.7.4",
+    "@hookform/resolvers": "2.9.10",
     "@radix-ui/react-avatar": "1.0.1",
+    "@rehooks/local-storage": "2.4.4",
     "@sentry/nextjs": "7.24.2",
     "@stripe/react-stripe-js": "1.15.0",
     "@stripe/stripe-js": "1.45.0",
@@ -31,6 +33,8 @@
     "@walletconnect/client": "1.8.0",
     "@walletconnect/web3-provider": "1.8.0",
     "@xstate/react": "3.0.1",
+    "axios": "1.2.1",
+    "axios-auth-refresh": "3.3.4",
     "babel-eslint": "10.1.0",
     "babel-jest": "28.1.3",
     "babel-loader": "9.1.0",

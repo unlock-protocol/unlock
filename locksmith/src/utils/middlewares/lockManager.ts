@@ -31,7 +31,7 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
     )
 
     if (!isLockManager) {
-      return res.status(401).send({
+      return res.status(403).send({
         message: `${lockManager} is not a lock manager for ${lockAddress} on ${network}`,
       })
     }
