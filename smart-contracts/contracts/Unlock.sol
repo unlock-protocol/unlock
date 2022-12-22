@@ -556,22 +556,17 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       TransferHelper.safeTransferFrom(srcToken, msg.sender, address(this), amountInMax);
 
       // Approve the router to spend ERC20.
-      TransferHelper.safeApprove(destToken, swapRouter, amountInMax);
+      TransferHelper.safeApprove(srcToken, swapRouter, amountInMax);
     }
 
     // calculate value to send to Uniswap
-    uint swapValue = srcToken == address(0) ? amountInMax : 0;
+    uint swapValue = srcToken == address(0) ? msg.value : 0;
 
     // executes the swap
     (bool success,) = swapRouter.call{ value: swapValue }(swapCalldata);
+    // make sure Uniswap revert
     if(success == false) {
-      // read Uniswap revert reason from mem buffer
-      assembly {
-        let ptr := mload(0x40)
-        let size := returndatasize()
-        returndatacopy(ptr, 0, size)
-        revert(ptr, size)
-      }
+      revert('swf');
     }
 
     // check that amount is enough to buy a key
