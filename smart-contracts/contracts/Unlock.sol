@@ -507,6 +507,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     }
   }
 
+  function getBalance(address token) internal view returns (uint) {
+    return token == address(0) ?
+      address(this).balance 
+      :
+      IERC20(token).balanceOf(address(this));
+  }
+
   /**
    * Swap tokens and call a function in a lock contract
    * @notice If the actual amount spent is less than the specified maximum amount, the remaining tokens wll 
@@ -521,8 +528,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes memory callData
   ) public payable returns(bytes memory) {
     // check if lock exists
-    if(!locks[msg.sender].deployed) {
-      revert();
+    if(!locks[lock].deployed) {
+      revert('l');
     }
 
     // get lock pricing 
@@ -532,15 +539,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint keyPrice = IPublicLock(lock).keyPrice();
 
     // get balances of Unlock before
-    uint balanceTokenSrcBefore = srcToken == address(0) ?
-      address(this).balance 
-      :
-      IERC20(srcToken).balanceOf(address(this));
-    
-    uint balanceTokenDestBefore = destToken == address(0) ?
-      address(this).balance 
-      :
-      IERC20(destToken).balanceOf(address(this));
+    uint balanceTokenDestBefore = getBalance(destToken);
+    uint balanceTokenSrcBefore = 
+        // if payment in ETH, substract the value sent by user to get actual balance
+        srcToken == address(0) ? 
+          getBalance(srcToken) - msg.value 
+          :
+          getBalance(srcToken);
 
     if(srcToken != address(0)) {
       // Transfer the specified amount of ERC20 to this contract
@@ -557,48 +562,36 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     swapRouter.call{ value: swapValue }(swapCalldata);
 
     // check that amount is enough to buy a key
-    uint balanceTokenDestAfterSwap = destToken == address(0) ?
-      address(this).balance 
-      :
-      IERC20(destToken).balanceOf(address(this));
-    if(
-      balanceTokenDestAfterSwap >= balanceTokenDestBefore + keyPrice
-    ) {
-      // balance too low
-      revert();
+    uint balanceTokenDestAfterSwap = getBalance(destToken);
+
+    // make sure balance is enough to buy key
+    if(balanceTokenDestAfterSwap < balanceTokenDestBefore + keyPrice) {
+      revert('b');
     }
 
-    
     // approve ERC20 to call the lock
     if(destToken != address(0)) {
       IERC20(destToken).approve(lock, keyPrice);
     }
 
     // call the lock
-    (, bytes memory returnData) = lock.call{
+    (,bytes memory returnData) = lock.call{
       value: destToken == address(0) ? keyPrice : 0
     }(
       callData
     );
 
-    uint balanceTokenSrcAfter = srcToken == address(0) ?
-      address(this).balance 
-      :
-      IERC20(srcToken).balanceOf(address(this));
-    
-    uint balanceTokenDestAfter = destToken == address(0) ?
-      address(this).balance 
-      :
-      IERC20(destToken).balanceOf(address(this));
+    uint balanceTokenSrcAfter = getBalance(srcToken);
+    uint balanceTokenDestAfter = getBalance(destToken);
 
-    // check that Unlock didnt spent more than we received
+    // check that Unlock didnt spent more than it received
     if(
       balanceTokenSrcAfter - balanceTokenSrcBefore < 0
       ||
       balanceTokenDestAfter - balanceTokenDestBefore < 0
     ) {
       // balance too low
-      revert();
+      revert('low');
     }
 
     // returns whatever the lock returned
@@ -652,8 +645,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
-    uint _chainId,
-    address _uniswapRouter
+    uint _chainId
   ) external onlyOwner {
     udt = _udt;
     weth = _weth;
@@ -663,8 +655,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     globalBaseTokenURI = _URI;
 
     chainId = _chainId;
-
-    uniswapRouter = _uniswapRouter;
 
     emit ConfigUnlock(
       _udt,
