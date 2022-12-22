@@ -275,8 +275,8 @@ const NavSectionMobile = ({
 }: {
   menuSections: MenuSectionProps[]
 }) => {
-  const Title = ({ title, open, ...props }: any) => {
-    if (!title?.length) return null
+  const Title = ({ text, open, options = [], ...props }: any) => {
+    if (!text?.length) return null
     return (
       <div className="flex items-center justify-between" {...props}>
         <span
@@ -284,9 +284,11 @@ const NavSectionMobile = ({
             open ? 'text-brand-ui-primary' : 'text-brand-dark'
           }`}
         >
-          {title}
+          {text}
         </span>
-        <Icon icon={open ? MinusIcon : PlusIcon} size={30} />
+        {options?.length > 0 && (
+          <Icon icon={open ? MinusIcon : PlusIcon} size={30} />
+        )}
       </div>
     )
   }
@@ -301,7 +303,7 @@ const NavSectionMobile = ({
     if (url.length > 0 || hasEmbed) {
       return (
         <Link href={url}>
-          <Title title={title} />
+          <Title text={title} />
         </Link>
       )
     }
@@ -309,7 +311,12 @@ const NavSectionMobile = ({
     return (
       <div className="flex flex-col gap-4">
         {title?.length > 0 && (
-          <Title title={title} open={open} onClick={() => setOpen(!open)} />
+          <Title
+            text={title}
+            options={options}
+            open={open}
+            onClick={() => setOpen(!open)}
+          />
         )}
         {open && (
           <div className="flex flex-col gap-6 mb-14">
