@@ -206,9 +206,18 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     )
   }
 
+  const getKeyPrice = async () => {
+    const decimals = await web3service.getTokenDecimals(
+      tokenAddress,
+      Number(network)
+    )
+    return ethers.utils.formatUnits(lock?.price, decimals)
+  }
+
   const [
     { isLoading: loadingBalance, data: balance },
     { isLoading: loadingSymbol, data: tokenSymbol },
+    { isLoading: loadingPrice, data: keyPrice },
   ] = useQueries({
     queries: [
       {
@@ -219,6 +228,10 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
       {
         queryKey: ['getSymbol', lockAddress, network, tokenAddress],
         queryFn: async () => await getSymbol(),
+      },
+      {
+        queryKey: ['getKeyPrice', lockAddress, network, tokenAddress],
+        queryFn: async () => await getKeyPrice(),
       },
     ],
   })
@@ -239,8 +252,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
       <Duration seconds={lock?.expirationDuration} />
     )
 
-  const keyPrice = ethers.utils.formatEther(lock?.price)
-  const isLoading = loadingBalance || loadingSymbol
+  const isLoading = loadingBalance || loadingSymbol || loadingPrice
 
   return (
     <>
