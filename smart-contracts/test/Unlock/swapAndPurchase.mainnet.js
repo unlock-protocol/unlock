@@ -81,6 +81,7 @@ describe(`swapAndCall`, function() {
 
   scenarios.forEach(([srcToken, lockToken]) => {
     let keyOwner, lock, keyPrice
+    let swapCalldata, value, swapRouter, amountInMax
     describe(`use ${srcToken.symbol} with a lock priced in ${lockToken.symbol}`, () => {
       before(async () => {
         ;[, keyOwner] = await ethers.getSigners()
@@ -95,6 +96,21 @@ describe(`swapAndCall`, function() {
           isEthers: true
         })
         expect(keyPrice.toString()).to.equal((await lock.keyPrice()).toString())
+
+        // get uniswap route
+        // NB: we reuse the same route calldata for purchase and renew (faster)
+        ;({ 
+          swapCalldata, 
+          value, 
+          swapRouter,
+          amountInMax
+         } = await getUniswapRoute(
+          srcToken, 
+          lockToken, 
+          keyPrice,
+          unlock.address
+        ))
+
       })
 
       it('lock is set properly', async () => {
@@ -124,19 +140,6 @@ describe(`swapAndCall`, function() {
   
           // parse call data
           const calldata = await lock.interface.encodeFunctionData('purchase', args)
-          
-          // get uniswap route
-          const { 
-            swapCalldata, 
-            value, 
-            swapRouter,
-            amountInMax
-           } = await getUniswapRoute(
-            srcToken, 
-            lockToken, 
-            keyPrice,
-            unlock.address
-          )
 
           // approve
           if(srcToken.isToken) {
@@ -148,7 +151,7 @@ describe(`swapAndCall`, function() {
           await unlock.connect(keyOwner)
             .swapAndCall(
               lock.address,
-              ADDRESS_ZERO,
+              srcToken.address || ADDRESS_ZERO,
               amountInMax, // value in ETH
               swapRouter,
               swapCalldata,
@@ -200,23 +203,11 @@ describe(`swapAndCall`, function() {
           const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
           lockBalanceBefore = await getBalance(lock.address, lockToken.address)
           
-          // get uniswap call
-          const { 
-            swapCalldata,
-            amountInMax, 
-            swapRouter
-          } = await getUniswapRoute(
-            tokens.native, 
-            tokens.dai, 
-            keyPrice,
-            unlock.address
-          )
-  
           // do the swap and call
           await unlock.connect(keyOwner)
             .swapAndCall(
               lock.address,
-              ADDRESS_ZERO,
+              srcToken.address || ADDRESS_ZERO,
               amountInMax, // (in ETH)
               swapRouter,
               swapCalldata,
@@ -241,6 +232,7 @@ describe(`swapAndCall`, function() {
 
 
   // TODO: make sure everything fails gracefully
+  // TODO: convert to custom errors
   describe('errors', () => {
     it('reverts if swap fails')
     it('reverts if lock call fails')
