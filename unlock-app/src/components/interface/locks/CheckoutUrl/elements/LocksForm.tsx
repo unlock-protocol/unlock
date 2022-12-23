@@ -334,8 +334,6 @@ export const LocksForm = ({
                   onChange={(state) => {
                     onChangeLock(state.lockAddress, state.network, state.name)
                   }}
-                  lockAddress={lockAddress}
-                  network={network ? Number(network) : undefined}
                 />
               )}
             </div>
