@@ -56,13 +56,13 @@ export function DetailForm({ disabled }: Props) {
           description={<NameDescription />}
         />
         <Input
-          {...register('external_url')}
+          {...register('image')}
           disabled={disabled}
           type="url"
           placeholder="https://"
-          label="External URL"
-          error={errors.external_url?.message}
-          description="Include a link in the NFT, so members can learn more about it."
+          label="Image URL"
+          error={errors.image?.message}
+          description="Include an image in the NFT, so members can see it."
         />
         <TextBox
           {...register('description')}
@@ -72,6 +72,15 @@ export function DetailForm({ disabled }: Props) {
           description={<DescDescription />}
           error={errors.description?.message}
           rows={4}
+        />
+        <Input
+          {...register('external_url')}
+          disabled={disabled}
+          type="url"
+          placeholder="https://"
+          label="External URL"
+          error={errors.external_url?.message}
+          description="Include a link in the NFT, so members can learn more about it."
         />
       </div>
     </Disclosure>
