@@ -941,11 +941,55 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * Returns the resolved address from ENS name
+   * Returns true if the address is a valid EOA
    */
-  async resolveENS(ensname: string, network: number) {
-    const provider = this.providerForNetwork(network)
-    const address = await provider.resolveName(ensname)
-    return address
+
+  async isValidEOA(address: string) {
+    const provider = this.providerForNetwork(1)
+    const code = await provider.getCode(address)
+    const count = await provider.getTransactionCount(address)
+    if (code === '0x' && count > 0) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Returns the resolved ens address that's a valid EOA
+   */
+  async resolveEns(ensName: string) {
+    const provider = this.providerForNetwork(1)
+    try {
+      const ensAddress = await provider.resolveName(ensName)
+      if (ensAddress !== null) {
+        const isValid = await this.isValidEOA(ensAddress)
+        if (isValid === true) {
+          return ensAddress
+        } else throw 'The ens address is not a valid EOA'
+      } else
+        throw 'The ens name is not owned or does not have a Resolver configured.'
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  /**
+   * Returns the resolved ens name that's a valid EOA
+   */
+  async lookupAddress(address: string) {
+    const provider = this.providerForNetwork(1)
+    try {
+      const ensName = await provider.lookupAddress(address)
+      const isValid = await this.isValidEOA(address)
+      if (ensName !== null) {
+        if (isValid === true) {
+          return ensName
+        } else throw 'The ens address is not a valid EOA'
+      } else
+        throw 'The name does not exist, or the forward lookup does not match.'
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
