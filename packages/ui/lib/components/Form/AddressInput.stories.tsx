@@ -14,12 +14,13 @@ const Template: ComponentStory<typeof AddressInput> = (args) => <AddressInput {.
 export const Normal = Template.bind({})
 
 Normal.args = {
-  icon: WalletIcon,
+  withIcon: true,
   label: 'Wallet address',
   size: 'small',
-  value: '0xF95f8038Eb7874Cde88A0A9a8270fcC94f5C226e',
+  value: '',
   description:
     'Enter your wallet address',
+  isTruncated: false
 }
 
 function CustomizedIcon(props: IconBaseProps) {
@@ -29,39 +30,37 @@ function CustomizedIcon(props: IconBaseProps) {
 export const Success = Template.bind({})
 
 Success.args = {
-  icon: CustomizedIcon,
+  withIcon: true,
   label: 'Wallet address',
-  size: 'medium',
-  description: 'Enter your wallet address',
+  size: 'small',
+  description: 'Enter a valid wallet address or ens',
   success: 'Wallet address is valid',
-  value: '0xF95f8038Eb7874Cde88A0A9a8270fcC94f5C226e',
+  value: 'souravinsights.eth',
+  isTruncated: false,
+  resolvedAddress: '0xF95f8038Eb7874Cde88A0A9a8270fcC94f5C226e'
 }
 
 export const Error = Template.bind({})
 
 Error.args = {
-  icon: CustomizedIcon,
+  withIcon: true,
   label: 'Wallet address',
-  size: 'large',
+  size: 'small',
   error: 'Invalid wallet address',
-  value: '0xjf8038Eb7874Cd88A0A9a8270fcC94f5C226e',
-  description: 'Enter a valid wallet address',
+  value: 'souravinghts.eth',
+  description: 'Enter a valid wallet address or ens',
+  isTruncated: false,
 }
 
-export const CustomDescription = Template.bind({})
+export const TruncatedAddress = Template.bind({})
 
-const Description = () => (
-  <div>
-    Check out this{' '}
-    <a className="underline" href="https://example.com" target="#">
-      link
-    </a>
-  </div>
-)
-
-CustomDescription.args = {
-  icon: CustomizedIcon,
-  label: 'Enter your wallet address',
-  value: 'unlock',
-  description: <Description />,
+TruncatedAddress.args = {
+  withIcon: true,
+  label: 'Wallet address',
+  size: 'small',
+  description: 'Enter your wallet address',
+  success: 'Enter a valid wallet address or ens',
+  value: 'souravinsights.eth',
+  isTruncated: true,
+  resolvedAddress: '0xF95...226e'
 }
