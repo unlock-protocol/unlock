@@ -5,7 +5,7 @@ import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
-import config from '../../config/config'
+import config from '../config/config'
 
 const { Op } = Sequelize
 
@@ -177,8 +177,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
+    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
     type: 'account_onboarding',
   })
 }

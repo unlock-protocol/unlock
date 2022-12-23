@@ -2,10 +2,6 @@ import { generateNonce, SiweMessage } from 'siwe'
 import { ethers } from 'ethers'
 import request from 'supertest'
 
-export function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
 export async function getWalletInput() {
   const wallet = ethers.Wallet.createRandom()
   const walletAddress = await wallet.getAddress()

@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-
-const app = require('../../../src/app')
-const Base64 = require('../../../src/utils/base64')
+import * as Base64 from '../../../src/utils/base64'
+import app from '../../app'
+import { vi } from 'vitest'
 
 const wallet2 = new ethers.Wallet(
   '0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a'
@@ -14,10 +14,10 @@ const wallet = new ethers.Wallet(
 
 // eslint-disable-next-line
 var mockWeb3Service = {
-  isLockManager: jest.fn(() => Promise.resolve(false)),
+  isLockManager: vi.fn(() => Promise.resolve(false)),
 }
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
@@ -64,7 +64,7 @@ describe('updateDefaults', () => {
 
   describe('when the signee does not own the lock', () => {
     beforeEach(() => {
-      mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(false))
     })
 
     it('returns unauthorized', async () => {
@@ -89,7 +89,7 @@ describe('updateDefaults', () => {
 
   describe('when the signee owns the lock', () => {
     beforeAll(() => {
-      mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
     })
 
     it('stores the provided lock metadata', async () => {

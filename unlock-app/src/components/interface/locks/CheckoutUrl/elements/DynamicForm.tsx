@@ -1,7 +1,13 @@
 import { Button, Input } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
-import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+import {
+  FieldErrorsImpl,
+  FormProvider,
+  useForm,
+  useFormContext,
+} from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 // TODO: move to zod config when supported there!
 export const LabelMapping: Record<string, string> = {
@@ -56,6 +62,7 @@ interface FieldProps {
   name: string
   description?: string
   props: Record<string, any>
+  errors?: Partial<FieldErrorsImpl<any>>
 }
 
 export const ConnectForm = ({ children }: any) => {
@@ -64,7 +71,7 @@ export const ConnectForm = ({ children }: any) => {
   return children({ ...methods })
 }
 
-const TextInput = ({ props, type, ...rest }: FieldProps) => {
+const TextInput = ({ props, type, errors, ...rest }: FieldProps) => {
   const { enum: enumList = [] } = props ?? {}
   const hasOptions = enumList?.length
   const isNumericField =
@@ -72,11 +79,20 @@ const TextInput = ({ props, type, ...rest }: FieldProps) => {
     type === 'number'
   const inputType = isNumericField ? 'number' : type
 
+  const error = errors?.[rest.name] ? errors?.[rest.name]?.message : ''
+
   if (!hasOptions) {
     return (
       <ConnectForm>
         {({ register }: any) => (
-          <Input type={inputType} {...register(rest.name)} {...rest} />
+          <Input
+            type={inputType}
+            {...register(rest.name, {
+              valueAsNumber: isNumericField,
+            })}
+            {...rest}
+            error={error}
+          />
         )}
       </ConnectForm>
     )
@@ -177,7 +193,10 @@ export const DynamicForm = ({
   const methods = useForm<z.infer<typeof schema>>({
     mode: 'onChange',
     defaultValues,
+    resolver: zodResolver(schema),
   })
+
+  const { errors } = methods.formState
 
   const onSubmit = (fields: z.infer<typeof schema>) => {
     if (typeof onSubmitCb === 'function') {
@@ -238,6 +257,7 @@ export const DynamicForm = ({
                             description={description}
                             props={fieldProps}
                             schema={schema}
+                            errors={errors}
                           />
                         </>
                       )
@@ -260,6 +280,7 @@ export const DynamicForm = ({
                   description={description}
                   size="small"
                   schema={schema}
+                  errors={errors}
                 />
               </div>
             )

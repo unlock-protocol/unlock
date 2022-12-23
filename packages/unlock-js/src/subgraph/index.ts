@@ -7,6 +7,16 @@ import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
 
+export {
+  OrderDirection,
+  Lock_OrderBy as LockOrderBy,
+  Key_OrderBy as KeyOrderBy,
+  Lock_Filter as LockFilter,
+  Key_Filter as KeyFilter,
+  Lock as SubgraphLock,
+  Key as SubgraphKey,
+} from '../@generated/subgraph'
+
 interface QueryOptions {
   networks?: number[] | string[]
 }

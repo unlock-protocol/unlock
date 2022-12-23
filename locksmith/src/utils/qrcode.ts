@@ -1,6 +1,6 @@
 import { Encoder, ErrorCorrectionLevel } from '@nuintun/qrcode'
 import Dispatcher from '../fulfillment/dispatcher'
-import config from '../../config/config'
+import config from '../config/config'
 
 interface GenerateQrCodeProps {
   network: number

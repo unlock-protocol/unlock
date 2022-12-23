@@ -31,14 +31,14 @@
     "README.md"
   ],
   "devDependencies": {
-    "@types/chai": "4.3.0",
+    "@types/chai": "4.3.4",
     "@types/fs-extra": "9.0.13",
     "@types/mocha": "10.0.1",
     "@types/node": "18.11.9",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
-    "chai": "4.3.4",
+    "chai": "4.3.7",
     "eslint": "8.28.0",
     "hardhat": "2.12.3",
     "mocha": "10.1.0",

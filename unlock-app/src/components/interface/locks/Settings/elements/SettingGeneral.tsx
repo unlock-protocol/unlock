@@ -31,6 +31,7 @@ export const SettingGeneral = ({
           isManager={isManager}
           disabled={!isManager}
           lockName={lock?.name ?? ''}
+          network={network}
         />
       </SettingCard>
 
