@@ -7,6 +7,11 @@ Object.keys(config.networks).forEach((networkId) => {
   ETHEREUM_NETWORKS_NAMES[networkId as number] = config.networks[networkId].name
 })
 
+export const EMAIL_SUBSCRIPTION_FORM = {
+  portalId: '19942922',
+  formGuid: '868101be-ae3e-422e-bc86-356c96939187',
+}
+
 /**
  * Returns a page title to be used within HTML <title> tags.
  * @param title
@@ -132,3 +137,6 @@ Love,
 
 The Unlock team
 *********************************************************************`
+
+// We show unlimited renewals as if it's above this.
+export const UNLIMITED_RENEWAL_LIMIT = 100000000000

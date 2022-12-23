@@ -1,5 +1,17 @@
 # Changes
 
+# 0.32.16
+
+- Add getBaseTokenURI to web3Service
+
+# 0.32.15
+
+- Add ability to pass recurring payment and total approval to extend key
+
+# 0.32.13
+
+- Export utility types for subgraph service
+
 # 0.32.11
 
 - add `updateTransferFee` in walletService

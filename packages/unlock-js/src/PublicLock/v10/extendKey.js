@@ -15,7 +15,17 @@ import formatKeyPrice from '../utils/formatKeyPrice'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, tokenId, keyPrice, erc20Address, decimals, referrer, data },
+  {
+    lockAddress,
+    tokenId,
+    keyPrice,
+    erc20Address,
+    decimals,
+    referrer,
+    data,
+    totalApproval,
+    recurringPayment,
+  },
   transactionOptions = {},
   callback
 ) {
@@ -50,6 +60,14 @@ export default async function (
     )
   }
 
+  let totalAmountToApprove = totalApproval
+
+  if (!totalAmountToApprove) {
+    totalAmountToApprove = recurringPayment
+      ? actualAmount.mul(recurringPayment)
+      : actualAmount
+  }
+
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
       erc20Address,
@@ -57,13 +75,14 @@ export default async function (
       this.provider,
       this.signer.getAddress()
     )
-    if (!approvedAmount || approvedAmount.lt(actualAmount)) {
+
+    if (!approvedAmount || approvedAmount.lt(totalAmountToApprove)) {
       // We must wait for the transaction to pass if we want the next one to succeed!
       await (
         await approveTransfer(
           erc20Address,
           lockAddress,
-          actualAmount,
+          totalAmountToApprove,
           this.provider,
           this.signer
         )

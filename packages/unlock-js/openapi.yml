@@ -250,6 +250,106 @@ components:
           default: 'resource not found'
           nullable: false
 
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        billing_details:
+          type: object
+          properties:
+            address:
+              type: object
+              properties:
+                city:
+                  type: string
+                  format: nullable
+                country:
+                  type: string
+                line1:
+                  type: string
+                  format: nullable
+                line2:
+                  type: string
+                  format: nullable
+                postal_code:
+                  type: string
+                  format: nullable
+                state:
+                  type: string
+                  format: nullable
+            email:
+              type: string
+              format: nullable
+            name:
+              type: string
+            phone:
+              type: string
+              format: nullable
+        card:
+          type: object
+          properties:
+            brand:
+              type: string
+            checks:
+              type: object
+              properties:
+                address_line1_check:
+                  type: string
+                  format: nullable
+                address_postal_code_check:
+                  type: string
+                  format: nullable
+                cvc_check:
+                  type: string
+            country:
+              type: string
+            exp_month:
+              type: number
+            exp_year:
+              type: number
+            fingerprint:
+              type: string
+            funding:
+              type: string
+            generated_from:
+              type: string
+              format: nullable
+            last4:
+              type: string
+            networks:
+              type: object
+              properties:
+                available:
+                  type: array
+                  items:
+                    type: string
+                preferred:
+                  type: string
+                  format: nullable
+            three_d_secure_usage:
+              type: object
+              properties:
+                supported:
+                  type: boolean
+            wallet:
+              type: string
+              format: nullable
+        created:
+          type: number
+        customer:
+          type: string
+        livemode:
+          type: boolean
+        metadata:
+          type: object
+          additionalProperties: true
+
+        type:
+          type: string
+
   parameters:
     Network:
       in: path
@@ -317,7 +417,7 @@ components:
             $ref: '#/components/schemas/GenericServerError'
 
     403.NotAuthenticatedOrAuthorized:
-      description: User is not authenticated or authorized to perform this action.
+      description: User is not authorized to perform this action.
       content:
         application/json:
           schema:
@@ -769,7 +869,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/ticket/{network}/{lockAddress}/{keyId}/check:
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/check:
     put:
       operationId: checkTicket
       security:
@@ -953,6 +1053,40 @@ paths:
                     nullable: false
                 additionalProperties: true
 
+    put:
+      operationId: updateKeyMetadata
+      security:
+        - User: ['lockManager']
+      description: Update or create metadata for key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: JSON metadata inside metadata field will be saved.
+              type: object
+              nullable: false
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        201:
+          description: JSON metadata containing name, description, and custom properties for key.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties: true
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
         404:
           $ref: '#/components/responses/404.NotFound'
 
@@ -972,7 +1106,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserMetadataInput'
+              type: object
+              properties:
+                metadata:
+                  $ref: '#/components/schemas/UserMetadataInput'
 
       responses:
         201:
@@ -1009,7 +1146,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserMetadataInput'
+              type: object
+              properties:
+                metadata:
+                  $ref: '#/components/schemas/UserMetadataInput'
 
       responses:
         204:
@@ -1072,53 +1212,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserMetadata'
-        400:
-          $ref: '#/components/responses/400.Invalid'
-
-        404:
-          $ref: '#/components/responses/404.NotFound'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
-  /v2/api/metadata/{network}/locks/{lockAddress}/keys:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-      - $ref: '#/components/parameters/LockAddress'
-    put:
-      operationId: updateKeyMetadata
-      security:
-        - User: ['lockManager']
-        - Application: ['lockManager']
-
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: false
-              properties:
-                keys:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      keyId:
-                        type: string
-                      owner:
-                        type: object
-                        additionalProperties: true
-      responses:
-        200:
-          description: Keys metadata.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  additionalProperties: true
         400:
           $ref: '#/components/responses/400.Invalid'
 
@@ -1380,7 +1473,6 @@ paths:
       responses:
         200:
           description: Any active subscription.
-
           content:
             application/json:
               schema:
@@ -1423,10 +1515,6 @@ paths:
                           type: string
                           description: Approved number of renewals by user.
 
-                        approvedTime:
-                          type: string
-                          description: Approved time in human readable form.
-
                         possibleRenewals:
                           type: string
                           description: Possible number of renewals based on the user account balance.
@@ -1436,5 +1524,80 @@ paths:
                             - crypto
                             - fiat
                           description: The type of payment method used for the subscription.
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/claim/{network}/locks/{lockAddress}:
+    post:
+      security:
+        - User: []
+      operationId: claim
+      description: Claim a membership key for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+
+      responses:
+        200:
+          description: Successfully claimed the key.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/setup:
+    post:
+      operationId: setupPayment
+      security:
+        - User: []
+      description: Setup a payment method for user.
+
+      responses:
+        200:
+          description: Created setup intent client secret.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientSecret:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/list:
+    get:
+      operationId: listPaymentMethods
+      security:
+        - User: []
+      description: List payment methods for user.
+      responses:
+        200:
+          description: Stripe payment methods for user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  methods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PaymentMethod'
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

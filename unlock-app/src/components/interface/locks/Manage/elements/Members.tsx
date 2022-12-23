@@ -1,9 +1,5 @@
 import { useQueries } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
 import { paginate } from '~/utils/pagination'
@@ -11,6 +7,8 @@ import { PaginationBar } from './PaginationBar'
 import React from 'react'
 import { ExpirationStatus } from './FilterBar'
 import Link from 'next/link'
+import { subgraph } from '~/config/subgraph'
+import { storage } from '~/config/storage'
 
 interface MembersProps {
   lockAddress: string
@@ -57,32 +55,20 @@ export const Members = ({
     expiration: ExpirationStatus.ALL,
   },
 }: MembersProps) => {
-  const { account } = useAuth()
-  const walletService = useWalletService()
-  const web3Service = useWeb3Service()
-  const storageService = useStorageService()
-
   const getMembers = async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
-    return storageService.getKeys({
-      lockAddress,
+    const keys = await storage.keys(
       network,
-      filters,
-    })
-  }
-
-  const getLockVersion = async (): Promise<number> => {
-    if (!network) return 0
-    return web3Service.publicLockVersion(lockAddress, network)
+      lockAddress,
+      filters.query,
+      filters.filterKey,
+      filters.expiration
+    )
+    return keys.data
   }
 
   const [
     { isLoading, data: members = [] },
-    { isLoading: isLoadingVersion, data: lockVersion = 0 },
+    { isLoading: isLockLoading, data: lock },
   ] = useQueries({
     queries: [
       {
@@ -92,17 +78,27 @@ export const Members = ({
           ToastHelper.error(`Can't load members, please try again`)
         },
       },
+
       {
-        queryFn: getLockVersion,
-        queryKey: ['getLockVersion', lockAddress, network],
+        queryFn: () => {
+          return subgraph.lock(
+            {
+              where: {
+                address: lockAddress,
+              },
+            },
+            { network }
+          )
+        },
+        queryKey: ['getSubgraphLock', lockAddress, network],
         onError: () => {
-          ToastHelper.error('Cant get lock version, please try again')
+          ToastHelper.error('Unable to fetch lock from subgraph')
         },
       },
     ],
   })
 
-  const loading = isLoadingVersion || isLoading || loadingFilters
+  const loading = isLockLoading || isLoading || loadingFilters
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
@@ -172,10 +168,11 @@ export const Members = ({
             token={token}
             owner={owner}
             expiration={expiration}
-            version={lockVersion}
+            version={lock?.version}
             metadata={metadata}
             lockAddress={lockAddress!}
             network={network}
+            expirationDuration={lock?.expirationDuration}
           />
         )
       })}

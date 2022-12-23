@@ -9,6 +9,7 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { UniswapService } from './uniswapService'
+import networks from '@unlock-protocol/networks'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -928,15 +929,20 @@ export default class Web3Service extends UnlockService {
     return ethers.BigNumber.from(referrerFees).toNumber()
   }
 
-  async getGlobalBaseTokenURI(network: number) {
-    const provider = this.providerForNetwork(network)
-    const networkConfig = this.networks[network]
-    const unlockAddress = networkConfig.unlockAddress
-
-    if (!unlockAddress) {
-      throw new Error('unlockAddress is not defined for the provided network. ')
-    }
-    const unlockContract = await this.getUnlockContract(unlockAddress, provider)
-    return await unlockContract.publicLockLatestVersion()
+  async getBaseTokenURI({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const tokenURI = await lockContract.tokenURI(1)
+    // We need to remove the last part (ID) of the URI to get the base URI
+    const baseTokenURI = tokenURI.substring(0, tokenURI.lastIndexOf('/') + 1)
+    return baseTokenURI
   }
 }

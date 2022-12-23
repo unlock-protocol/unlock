@@ -183,7 +183,8 @@ export const LockDetailCard = ({
   const loading = isLoading || isLoadingStripe
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
-  const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice
+  const priceLabel =
+    keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
 
   const { data: lockMetadata, isInitialLoading: isLockMetadataLoading } =
     useQuery<Record<string, any>>(
@@ -204,7 +205,7 @@ export const LockDetailCard = ({
       }
     )
 
-  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=payments`
+  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
 
   return (
     <>
