@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.16
+
+- Add getBaseTokenURI to web3Service
+
 # 0.32.15
 
 - Add ability to pass recurring payment and total approval to extend key
