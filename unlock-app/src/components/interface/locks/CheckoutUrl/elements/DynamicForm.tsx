@@ -87,7 +87,9 @@ const TextInput = ({ props, type, errors, ...rest }: FieldProps) => {
         {({ register }: any) => (
           <Input
             type={inputType}
-            {...register(rest.name)}
+            {...register(rest.name, {
+              valueAsNumber: isNumericField,
+            })}
             {...rest}
             error={error}
           />
