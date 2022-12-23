@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -222,6 +222,8 @@ export const LockManagerForm = ({
     },
   })
 
+  const [address, setResolvedAddress] = useState('')
+
   const getLock = async () => {
     const service = new SubgraphService()
     return await service.lock(
@@ -238,6 +240,10 @@ export const LockManagerForm = ({
 
   const addLockManager = async (address: string) => {
     const resolvedAddress = await getAddressForName(address)
+
+    if (resolvedAddress) {
+      setResolvedAddress(resolvedAddress)
+    }
 
     const managerAddress = addressMinify(resolvedAddress)
     const addManagerPromise = walletService.addLockManager({
@@ -306,10 +312,14 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <span className="text-base text-brand-dark">
-              Add manager, please enter the wallet address of theirs.
-            </span>
-            <Input disabled={disableInput} {...register('manager')} />
+            <AddressInput
+              withIcon
+              resolvedAddress={address}
+              label="Add manager, please enter the wallet address of theirs."
+              description="Enter a valid wallet address"
+              disabled={disableInput}
+              {...register('manager')}
+            />
           </div>
           <Button
             className="w-full md:w-1/2"
