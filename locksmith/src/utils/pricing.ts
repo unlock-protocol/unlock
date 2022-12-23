@@ -14,7 +14,11 @@ interface Price {
   confidence: number
 }
 
-export async function defiLammaPrice({ network, address, amount }: Options) {
+export async function defiLammaPrice({
+  network,
+  address,
+  amount = 1,
+}: Options) {
   const networkConfig = networks[network]
   if (!network) {
     return {}
@@ -55,6 +59,6 @@ export async function defiLammaPrice({ network, address, amount }: Options) {
 
   return {
     ...item,
-    priceInAmount: item.price * (amount || 1),
+    priceInAmount: item.price * amount,
   }
 }
