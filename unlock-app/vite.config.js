@@ -16,6 +16,7 @@ export default defineConfig({
     },
     dir: 'src/__tests__',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    exclude: ['**/test-helpers/**'],
     // 5 minute timeout
     testTimeout: 1000 * 60 * 5,
     setupFiles: ['vitest-localstorage-mock'],
