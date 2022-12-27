@@ -41,7 +41,7 @@ export class ContractsController {
         maxNumberOfKeys: lock.maxNumberOfKeys,
         creator: lock.creator || user,
         keyPrice: lock.keyPrice,
-        expirationDuration: lock.maxNumberOfKeys,
+        expirationDuration: lock.expirationDuration || 60 * 60 * 24 * 30,
         publicLockVersion: lock.publicLockVersion,
       },
       (error, hash) => {

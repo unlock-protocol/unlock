@@ -287,8 +287,10 @@ export function Layout({ children }: Props) {
       </div>
 
       {children}
-      <div className={`${containerClass} md:pt-14 pt-4`}>
-        <Footer {...FOOTER} />
+      <div className="px-6">
+        <div className={`${containerClass} md:pt-14 pt-4`}>
+          <Footer {...FOOTER} />
+        </div>
       </div>
     </>
   )
