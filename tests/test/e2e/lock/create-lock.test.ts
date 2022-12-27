@@ -20,7 +20,7 @@ describe('Create Lock', () => {
   })
 
   afterAll(async () => {
-    //await app.stop()
+    await app.stop()
   })
 
   it('Successfully create lock', async () => {
