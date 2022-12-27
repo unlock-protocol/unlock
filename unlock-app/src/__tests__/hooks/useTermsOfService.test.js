@@ -1,11 +1,14 @@
+// @vitest-environment jsdom
+
 import { renderHook, act } from '@testing-library/react-hooks'
 import useTermsOfService, {
   localStorageKey,
 } from '../../hooks/useTermsOfService'
+import { vi } from 'vitest'
 
 describe('useTermsOfService', () => {
   beforeAll(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('should default to false if no value is set in localtorage', async () => {
@@ -35,7 +38,7 @@ describe('useTermsOfService', () => {
     expect.assertions(1)
 
     // eslint-disable-next-line no-proto
-    jest.spyOn(localStorage.__proto__, 'getItem').mockImplementationOnce(() => {
+    vi.spyOn(localStorage.__proto__, 'getItem').mockImplementationOnce(() => {
       throw new Error()
     })
 

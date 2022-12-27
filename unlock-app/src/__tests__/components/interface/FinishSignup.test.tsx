@@ -1,12 +1,13 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { FinishSignup } from '../../../components/interface/FinishSignup'
+import { vi } from 'vitest'
 
-let signupCredentials = jest.fn((credentials: any) => credentials)
+let signupCredentials = vi.fn((credentials: any) => credentials)
 
 describe('FinishSignup', () => {
   beforeEach(() => {
-    signupCredentials = jest.fn((credentials: any) => credentials)
+    signupCredentials = vi.fn((credentials: any) => credentials)
   })
 
   it.skip('should call signupCredentials with the provided email and pass', () => {
@@ -16,7 +17,7 @@ describe('FinishSignup', () => {
     const password = 'password1'
 
     const { getByLabelText, getByDisplayValue, getByText } = rtl.render(
-      <FinishSignup onSuccess={jest.fn()} emailAddress={emailAddress} />
+      <FinishSignup onSuccess={vi.fn()} emailAddress={emailAddress} />
     )
 
     const inputs = [

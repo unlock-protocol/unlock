@@ -5,12 +5,13 @@ import {
   validatePassword,
   SetPassword,
 } from '../../../components/interface/SetPassword'
+import { vi } from 'vitest'
 
-let onSubmit = jest.fn((credentials: any) => credentials)
+let onSubmit = vi.fn((credentials: any) => credentials)
 
 describe.skip('SetPassword', () => {
   beforeEach(() => {
-    onSubmit = jest.fn((credentials: any) => credentials)
+    onSubmit = vi.fn((credentials: any) => credentials)
   })
 
   it('should call onSubmit with the provided email and pass', () => {

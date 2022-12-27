@@ -1,9 +1,9 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
-
+import { vi } from 'vitest'
 // These tests are slow because we generate private keys
-jest.setTimeout(15000)
+vi.setTimeout(15000)
 
 const utf8ToHex = (str) =>
   utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)
@@ -184,7 +184,7 @@ describe('Unlock Provider', () => {
   describe('implemented JSON-RPC calls', () => {
     it('should respond to personal_sign by calling the defined method', async () => {
       expect.assertions(1)
-      provider.personal_sign = jest.fn()
+      provider.personal_sign = vi.fn()
       await provider.send('personal_sign', ['some data', 'an address'])
 
       expect(provider.personal_sign).toHaveBeenCalledWith([

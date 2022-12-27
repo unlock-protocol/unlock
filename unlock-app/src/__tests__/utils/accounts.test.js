@@ -3,10 +3,10 @@ import {
   getAccountFromPrivateKey,
   reEncryptPrivateKey,
 } from '../../utils/accounts'
-
+import { vi } from 'vitest'
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
-jest.setTimeout(20000)
+vi.setTimeout(20000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {

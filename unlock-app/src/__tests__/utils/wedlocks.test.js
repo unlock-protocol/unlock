@@ -1,5 +1,5 @@
 import forge from 'node-forge'
-
+import { vi } from 'vitest'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 
 const emailAddressToSign = 'julien@unlock-protocol.com'
@@ -7,7 +7,7 @@ let signature
 let base64PublicKey
 
 // These tests are slow because we generate private keys
-jest.setTimeout(15000)
+vi.setTimeout(15000)
 
 describe('verifyEmailSignature', () => {
   beforeAll((done) => {

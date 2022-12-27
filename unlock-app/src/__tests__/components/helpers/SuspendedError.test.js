@@ -1,9 +1,10 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
+import { vi, describe, it } from 'vitest'
 
 import SuspendedRender from '../../../components/helpers/SuspendedRender'
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 describe('SuspendedRender', () => {
   const Fallback = () => <div>hi</div>
@@ -25,7 +26,7 @@ describe('SuspendedRender', () => {
       </SuspendedRender>
     )
     expect(rendered.queryByText('hi')).toBeNull()
-    jest.advanceTimersByTime(201)
+    vi.advanceTimersByTime(201)
     expect(rendered.queryByText('hi')).toHaveTextContent('hi')
   })
 })

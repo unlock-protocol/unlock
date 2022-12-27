@@ -2,11 +2,12 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import SignUp from '../../../components/interface/SignUp'
 import doNothing from '../../../utils/doNothing'
+import { vi } from 'vitest'
 
-const mockWedlocksUtil = { verifyEmailSignature: jest.fn() }
+const mockWedlocksUtil = { verifyEmailSignature: vi.fn() }
 
-jest.mock('../../../utils/wedlocks', () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock('../../../utils/wedlocks', () => {
+  return vi.fn().mockImplementation(() => {
     return mockWedlocksUtil
   })
 })
@@ -18,7 +19,7 @@ afterEach(rtl.cleanup)
 
 describe.skip('Sign Up Page', () => {
   beforeEach(() => {
-    signupEmail = jest.fn((email: string) => email)
+    signupEmail = vi.fn((email: string) => email)
     wrapper = rtl.render(<SignUp showLogin={doNothing} />)
   })
 

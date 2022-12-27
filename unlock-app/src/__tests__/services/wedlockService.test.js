@@ -1,12 +1,14 @@
 import WedlockService, { emailTemplate } from '../../services/wedlockService'
 import fetch from 'node-fetch'
-jest.mock('node-fetch', () => jest.fn())
+import { vi } from 'vitest'
+
+vi.mock('node-fetch', () => vi.fn())
 
 let w = new WedlockService('http://notareal.host')
 
 describe('Wedlocks Service', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     w = new WedlockService('http://notareal.host')
   })
 

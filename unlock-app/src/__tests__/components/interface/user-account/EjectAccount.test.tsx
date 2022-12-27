@@ -5,6 +5,7 @@ import {
   EjectionForm,
 } from '../../../../components/interface/user-account/EjectAccount'
 import { EncryptedPrivateKey } from '../../../../unlockTypes'
+import { vi } from 'vitest'
 
 const passwordEncryptedPrivateKey: EncryptedPrivateKey = {
   address: '51eb293d64dd50182a087583bf5c94455b323a83',
@@ -55,7 +56,7 @@ describe.skip('EjectAccount component', () => {
   describe('EjectionForm', () => {
     it('should prevent ejection unless the checkbox is checked', () => {
       expect.assertions(1)
-      const download = jest.fn()
+      const download = vi.fn()
       const { getByText } = rtl.render(
         <EjectionForm
           download={download}
@@ -69,7 +70,7 @@ describe.skip('EjectAccount component', () => {
 
     it('should allow ejection when the checkbox is checked', () => {
       expect.assertions(1)
-      const download = jest.fn()
+      const download = vi.fn()
       const { getByText, container } = rtl.render(
         <EjectionForm
           download={download}
