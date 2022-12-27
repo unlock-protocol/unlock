@@ -18,7 +18,6 @@
     "@testing-library/react-hooks": "8.0.1",
     "@tw-classed/react": "1.2.4",
     "@types/file-saver": "2.0.5",
-    "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
     "@types/qrcode.react": "1.0.2",
     "@types/react": "17.0.52",
@@ -53,9 +52,6 @@
     "ethers": "5.7.2",
     "file-saver": "2.0.5",
     "graphql": "16.6.0",
-    "jest": "27.5.1",
-    "jest-canvas-mock": "2.4.0",
-    "jest-fetch-mock": "3.0.3",
     "jest-mock-axios": "4.6.2",
     "jest-styled-components": "7.1.1",
     "lottie-react": "2.3.1",
@@ -95,12 +91,13 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.18.9",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+    "@vitejs/plugin-react": "^3.0.0",
     "@vitest/coverage-c8": "0.26.2",
     "autoprefixer": "10.4.13",
     "postcss": "8.4.19",
     "tailwindcss": "3.2.4",
     "vitest": "0.26.2",
-    "vitest-fetch-mock": "^0.2.1",
+    "vitest-fetch-mock": "0.2.1",
     "vitest-localstorage-mock": "0.0.1"
   },
   "scripts": {
@@ -110,7 +107,7 @@
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
-    "test": "UNLOCK_ENV=test vitest run --no-threads --coverage ",
+    "test": "UNLOCK_ENV=test vitest run --no-threads --coverage --environment=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "ci": "yarn test && yarn lint"
   },

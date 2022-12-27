@@ -1,10 +1,18 @@
 import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
+  plugins: [react()],
   test: {
     globals: true,
     coverage: {
       provider: 'c8',
+      enabled: true,
+      branches: 26,
+      functions: 34,
+      lines: 55,
+      statements: 57,
     },
     dir: 'src/__tests__',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
@@ -12,5 +20,11 @@ export default defineConfig({
     testTimeout: 1000 * 60 * 5,
     setupFiles: ['vitest-localstorage-mock'],
     mockReset: false,
+    environment: 'jsdom',
+  },
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, './src'),
+    },
   },
 })
