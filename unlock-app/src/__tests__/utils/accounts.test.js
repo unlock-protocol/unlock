@@ -6,8 +6,6 @@ import {
 import { vi } from 'vitest'
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
-vi.setTimeout(20000)
-
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
     it('should call ethers.createRandom', async () => {

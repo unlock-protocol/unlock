@@ -2,8 +2,6 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
 import { vi } from 'vitest'
-// These tests are slow because we generate private keys
-vi.setTimeout(15000)
 
 const utf8ToHex = (str) =>
   utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)
