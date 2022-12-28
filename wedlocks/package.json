@@ -43,8 +43,7 @@
   "scripts": {
     "build": "netlify build",
     "dev": "UNLOCK_ENV=dev netlify functions:serve",
-    "test": "UNLOCK_ENV=test jest",
-    "testvi": "UNLOCK_ENV=test vitest run --no-threads --coverage --environment=node",
+    "test": "UNLOCK_ENV=test vitest run --no-threads --coverage --environment=node",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/",
     "ci": "yarn test && yarn lint",
     "deploy-netlify": "./scripts/deploy-netlify.sh"
