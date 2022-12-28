@@ -1,25 +1,40 @@
 import forge from 'node-forge'
 import { signParam } from '../encrypter'
+import { vi, beforeAll, afterAll } from 'vitest'
 
-let privateKey
-let publicKey
+beforeAll(() => {
+  vi.useFakeTimers()
+})
 
-// These tests are slow because we generate private keys
-jest.setTimeout(15000)
+afterAll(() => {
+  vi.clearAllTimers()
+})
 
-describe('encrypter', () => {
-  beforeEach((done) => {
+const createKeyPair = async () => {
+  return new Promise((resolve) => {
     forge.rsa.generateKeyPair(
       { bits: 2048, workers: 2 },
       function (err, keypair) {
         if (err) {
           throw err
         }
-        privateKey = forge.pki.privateKeyToPem(keypair.privateKey)
-        publicKey = forge.pki.publicKeyToPem(keypair.publicKey)
-        done()
+
+        const privateKey = forge.pki.privateKeyToPem(keypair.privateKey)
+        const publicKey = forge.pki.publicKeyToPem(keypair.publicKey)
+        resolve({ privateKey, publicKey })
       }
     )
+  })
+}
+
+describe('encrypter', () => {
+  let privateKey
+  let publicKey
+  beforeEach(async () => {
+    vi.useFakeTimers()
+    const keypair = await createKeyPair()
+    privateKey = keypair.privateKey
+    publicKey = keypair.publicKey
   })
 
   describe('signParam', () => {

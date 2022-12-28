@@ -1,10 +1,12 @@
 import { handler } from '../functions/handler/handler'
 import { route } from '../route'
+import { vi } from 'vitest'
 
-jest.mock('../route')
+vi.mock('../route')
+vi.mock('handler')
 
 describe('handler', () => {
-  it('should render 204 if the method is OPTIONS', (done) => {
+  it('should render 204 if the method is OPTIONS', () => {
     expect.assertions(1)
     handler(
       {
@@ -16,12 +18,14 @@ describe('handler', () => {
           throw error
         }
         expect(response.statusCode).toBe(204)
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
 
-  it('should render 405 if the method is not a POST', (done) => {
+  it('should render 405 if the method is not a POST', () => {
     expect.assertions(2)
     handler(
       {
@@ -34,12 +38,14 @@ describe('handler', () => {
         }
         expect(response.statusCode).toBe(405)
         expect(response.body).toBe('Unsupported Method')
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
 
-  it('should render 415 if there are no headers', (done) => {
+  it('should render 415 if there are no headers', () => {
     expect.assertions(2)
     handler(
       {
@@ -52,12 +58,14 @@ describe('handler', () => {
         }
         expect(response.statusCode).toBe(415)
         expect(response.body).toBe('Unsupported Media Type')
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
 
-  it('should render 415 if the content type is not json', (done) => {
+  it('should render 415 if the content type is not json', () => {
     expect.assertions(2)
     handler(
       {
@@ -73,12 +81,14 @@ describe('handler', () => {
         }
         expect(response.statusCode).toBe(415)
         expect(response.body).toBe('Unsupported Media Type')
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
 
-  it('should render 422 if the body is malformed JSON', (done) => {
+  it('should render 422 if the body is malformed JSON', () => {
     expect.assertions(2)
     handler(
       {
@@ -95,7 +105,9 @@ describe('handler', () => {
         }
         expect(response.statusCode).toBe(422)
         expect(response.body).toBe('Malformed Body')
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
@@ -138,7 +150,7 @@ describe('handler', () => {
     )
   })
 
-  it('should route the request and yields its response when it is an error', (done) => {
+  it('should route the request and yields its response when it is an error', async () => {
     expect.assertions(3)
     const body = {
       hello: 'world',
@@ -149,7 +161,7 @@ describe('handler', () => {
       return Promise.reject(error)
     })
 
-    handler(
+    await handler(
       {
         httpMethod: 'POST',
         headers: {
@@ -161,12 +173,14 @@ describe('handler', () => {
       (_error, response) => {
         expect(response.statusCode).toBe(500)
         expect(response.body).toBe('Server Error')
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
 
-  it('should route the request and catch errors in response processing', (done) => {
+  it('should route the request and catch errors in response processing', () => {
     expect.assertions(3)
     const body = {
       hello: 'world',
@@ -191,7 +205,9 @@ describe('handler', () => {
       (_error, response) => {
         expect(response.statusCode).toBe(500)
         expect(response.body).toBe('Server Error') // We do not show the actual error to users
-        done()
+        new Promise((done) => {
+          done()
+        })
       }
     )
   })
