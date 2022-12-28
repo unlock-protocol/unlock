@@ -3,10 +3,11 @@ import { route } from '../route'
 import templates from '../templates'
 import encrypter from '../encrypter'
 import config from '../../config'
+import { vi } from 'vitest'
 
-jest.mock('nodemailer')
-jest.mock('../templates')
-jest.mock('../encrypter')
+vi.mock('nodemailer')
+vi.mock('../templates')
+vi.mock('../encrypter')
 
 describe('route', () => {
   describe('when there is no matching template', () => {
@@ -23,13 +24,13 @@ describe('route', () => {
 
   describe('when there is a matching template', () => {
     let transporter = {
-      sendMail: jest.fn(() => {
+      sendMail: vi.fn(() => {
         return Promise.resolve({ sent: true })
       }),
     }
 
     beforeEach(() => {
-      nodemailer.createTransport = jest.fn((params) => {
+      nodemailer.createTransport = vi.fn((params) => {
         expect(params).toEqual(config)
         return transporter
       })
@@ -54,7 +55,7 @@ describe('route', () => {
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
 
-      encrypter.signParam = jest.fn((value) => {
+      encrypter.signParam = vi.fn((value) => {
         expect(value).toEqual(args.params.encryptedEmail.value)
         return 'encrypted!'
       })
@@ -84,7 +85,7 @@ describe('route', () => {
       }
 
       const transporter = {
-        sendMail: jest.fn((options) => {
+        sendMail: vi.fn((options) => {
           expect(options).toEqual({
             from: config.sender,
             html: undefined,
@@ -96,7 +97,7 @@ describe('route', () => {
           return Promise.resolve({ sent: true })
         }),
       }
-      nodemailer.createTransport = jest.fn((params) => {
+      nodemailer.createTransport = vi.fn((params) => {
         expect(params).toEqual(config)
         return transporter
       })
@@ -117,13 +118,13 @@ describe('route', () => {
           recipient: 'julien@unlock-protocol.com',
         }
         const transporter = {
-          sendMail: jest.fn(() => {
+          sendMail: vi.fn(() => {
             return Promise.resolve({
               messageId: 'abc123',
             })
           }),
         }
-        nodemailer.createTransport = jest.fn((params) => {
+        nodemailer.createTransport = vi.fn((params) => {
           expect(params).toEqual(config)
           return transporter
         })
@@ -148,11 +149,11 @@ describe('route', () => {
           recipient: 'julien@unlock-protocol.com',
         }
         const transporter = {
-          sendMail: jest.fn(() => {
+          sendMail: vi.fn(() => {
             return Promise.reject(new Error('something went wrong'))
           }),
         }
-        nodemailer.createTransport = jest.fn((params) => {
+        nodemailer.createTransport = vi.fn((params) => {
           expect(params).toEqual(config)
           return transporter
         })
