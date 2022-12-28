@@ -1,9 +1,9 @@
-/**
- * @jest-environment jsdom
- */
+// @vitest-environment jsdom
+
 import keyMined from '../../templates/keyMined'
 import { prepareAll } from '../../templates/prepare'
 import { asHtml } from '../utils'
+import { expect, it, describe } from 'vitest'
 
 describe('keyMined', () => {
   it('should have the right subject', () => {
@@ -19,7 +19,7 @@ describe('keyMined', () => {
   })
 
   it('should have the right text', () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const content = asHtml(
       prepareAll(keyMined).html({
         keyId: '1337',
@@ -28,8 +28,11 @@ describe('keyMined', () => {
         network: 'Polygon',
       })
     )
-    expect(content).toHaveTextContent(
-      `A new Membership NFT in your wallet! A new membership (#1337) to the lock Ethereal NYC 202`
+    expect(content.textContent).toContain(
+      `A new Membership NFT in your wallet!`
+    )
+    expect(content.textContent).toContain(
+      `A new membership (#1337) to the lock Ethereal NYC 202`
     )
   })
 
@@ -43,7 +46,7 @@ describe('keyMined', () => {
         network: 'Polygon',
       })
     )
-    expect(content).toContainHTML(
+    expect(content.innerHTML).toContain(
       `<a href="https://app.unlock-protocol.com/keychain">Unlock Keychain</a>`
     )
   })
@@ -59,7 +62,7 @@ describe('keyMined', () => {
         txUrl: 'http://txurl.com',
       })
     )
-    expect(content).toContainHTML(
+    expect(content.innerHTML).toContain(
       `<a href="http://txurl.com">block explorer</a>`
     )
   })
@@ -74,9 +77,9 @@ describe('keyMined', () => {
       openSeaUrl: 'http://opensealurl.com',
     })
 
-    expect(asHtml(content)).toHaveTextContent(
+    expect(asHtml(content).textContent).toContain(
       `A new membership (#1337) to the lock Ethereal NYC 202 was just minted for you`
     )
-    expect(asHtml(content)).toContainHTML('href="http://opensealurl.com"')
+    expect(asHtml(content).innerHTML).toContain('href="http://opensealurl.com"')
   })
 })

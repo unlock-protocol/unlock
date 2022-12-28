@@ -1,7 +1,7 @@
 // see hardhat script https://github.com/unlock-protocol/unlock/blob/8e3b93f0c3b0c1ff0d8d883e2dbe8b01ca029e06/smart-contracts/scripts/renew.js
 import { BigNumber } from 'ethers'
 import { KeyRenewal } from '../../src/models'
-
+import { vi } from 'vitest'
 import { renewKey, isWorthRenewing } from '../../src/websub/helpers/renewKey'
 
 const renewalInfo = {
@@ -23,7 +23,7 @@ const mockLock = {
   }),
 }
 
-const mockLockFunctions = jest.fn((lockAddress: string) => {
+const mockLockFunctions = vi.fn((lockAddress: string) => {
   switch (lockAddress) {
     case 'v9':
       return { ...mockLock, publicLockVersion: async () => 9 }
@@ -44,65 +44,69 @@ const mockLockFunctions = jest.fn((lockAddress: string) => {
   }
 })
 
-const mockGetLockContract = jest.fn((lockAddress: string) => ({
+const mockGetLockContract = vi.fn((lockAddress: string) => ({
   ...mockLockFunctions(lockAddress),
-  connect: jest.fn(() => mockLockFunctions(lockAddress)),
+  connect: vi.fn(() => mockLockFunctions(lockAddress)),
 }))
 
 const mockWeb3Service = {
   getLockContract: mockGetLockContract,
-  getLock: jest.fn(() => ({
+  getLock: vi.fn(() => ({
     currencyContractAddress: '0xtestToken',
     currencySymbol: 'TEST',
   })),
 }
 
 const mockWalletService = {
-  connect: jest.fn(),
+  connect: vi.fn(),
   getLockContract: mockGetLockContract,
   renewMembershipFor: async () => ({
     hash: 'txhash',
   }),
 }
 
-jest.mock('@unlock-protocol/networks', () => ({
-  1: {},
-  31137: {},
-}))
+vi.mock('@unlock-protocol/networks', () => {
+  return {
+    default: {
+      1: {},
+      31137: {},
+    },
+  }
+})
 
-jest.mock('ethers', () => {
-  const original = jest.requireActual('ethers')
+vi.mock('ethers', async () => {
+  const original = await vi.importActual<any>('ethers')
   return {
     ...original,
     Wallet: {
-      createRandom: jest.fn(() => ({
+      createRandom: vi.fn(() => ({
         address: '0x',
-        connect: jest.fn(),
+        connect: vi.fn(),
       })),
     },
-    Contract: jest.fn(() => ({
-      decimals: jest.fn(),
+    Contract: vi.fn(() => ({
+      decimals: vi.fn(),
     })),
     ethers: {
       ...original.ethers,
       providers: {
-        JsonRpcProvider: jest.fn(() => ({
-          getFeeData: jest.fn(() => ({
+        JsonRpcProvider: vi.fn(() => ({
+          getFeeData: vi.fn(() => ({
             maxFeePerGas: BigNumber.from(10),
             maxPriorityFeePerGas: BigNumber.from(20),
-            catch: jest.fn(),
+            catch: vi.fn(),
           })),
         })),
       },
-      Wallet: jest.fn(),
+      Wallet: vi.fn(),
       utils: {
-        formatUnits: jest.fn(() => '0.01'),
+        formatUnits: vi.fn(() => '0.01'),
       },
     },
   }
 })
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
@@ -111,28 +115,39 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-jest.mock('../../src/utils/keyPricer', () => {
-  return jest.fn(() => {
-    return {
-      GAS_COST: 1000,
-    }
-  })
+vi.mock('../../src/utils/keyPricer', () => {
+  return {
+    default: vi.fn(() => {
+      return {
+        GAS_COST: 1000,
+      }
+    }),
+  }
 })
 
-jest.mock('../../src/utils/gasPrice', () => {
-  return jest.fn(() => {
-    return {
-      gasPriceUSD: (network: number) => Promise.resolve(network === 1 ? 10 : 1),
-    }
-  })
+vi.mock('../../src/utils/gasPrice', () => {
+  return {
+    default: vi.fn().mockImplementation(() => {
+      return {
+        gasPriceUSD: (network: number) =>
+          Promise.resolve(network === 1 ? 10 : 1),
+      }
+    }),
+  }
 })
 
-jest.mock('isomorphic-fetch', () => async () => ({
-  json: async () => ({
-    data: { base: 'USDT', currency: 'USD', amount: 1 },
-  }),
-  ok: true,
-}))
+vi.mock('isomorphic-fetch', () => {
+  return {
+    default: vi.fn().mockImplementation(() => {
+      return {
+        json: async () => ({
+          data: { base: 'USDT', currency: 'USD', amount: 1 },
+        }),
+        ok: true,
+      }
+    }),
+  }
+})
 
 describe('isWorthRenewing', () => {
   it('should return true when gas refund is enough', async () => {

@@ -266,6 +266,9 @@ export default class WalletService extends UnlockService {
       data?: string
       decimals?: number
       erc20Address?: string
+      keyPrice?: string
+      recurringPayment?: string | number
+      totalApproval?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
