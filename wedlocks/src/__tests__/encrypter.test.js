@@ -1,14 +1,5 @@
 import forge from 'node-forge'
 import { signParam } from '../encrypter'
-import { vi, beforeAll, afterAll } from 'vitest'
-
-beforeAll(() => {
-  vi.useFakeTimers()
-})
-
-afterAll(() => {
-  vi.clearAllTimers()
-})
 
 const createKeyPair = async () => {
   return new Promise((resolve) => {
@@ -31,7 +22,6 @@ describe('encrypter', () => {
   let privateKey
   let publicKey
   beforeEach(async () => {
-    vi.useFakeTimers()
     const keypair = await createKeyPair()
     privateKey = keypair.privateKey
     publicKey = keypair.publicKey
