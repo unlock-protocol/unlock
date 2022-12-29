@@ -9472,6 +9472,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tw-classed/core@npm:1.3.2":
+  version: 1.3.2
+  resolution: "@tw-classed/core@npm:1.3.2"
+  checksum: 75205b21f0de48dab9980fe985c8b6928bbbc233d82c7a6f2d08bfd063efc6205b6b8af8ceaa99294c40fc7ede7a462614ed4a2d63fdfda0f77f0f4e34adc056
+  languageName: node
+  linkType: hard
+
 "@tw-classed/react@npm:1.2.4":
   version: 1.2.4
   resolution: "@tw-classed/react@npm:1.2.4"
@@ -9480,6 +9487,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: 232da1e8fd3881774c95c5e18d31bda214fa9017162cdee4aad2e8bb3c6a92be2fcb6dd2b7b6bf101a57da1c4c7d849bf31bc683ddfff71dfc9db042f147cdfc
+  languageName: node
+  linkType: hard
+
+"@tw-classed/react@npm:1.3.2":
+  version: 1.3.2
+  resolution: "@tw-classed/react@npm:1.3.2"
+  dependencies:
+    "@tw-classed/core": 1.3.2
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 52f3751e50b6093d38cb090461c199cab8de13a877fc6f47f515a42f7ed01b966c20ceb73278e9db9252d081ecce058bc25440c83044a9fe2e6b1bd0ea676577
   languageName: node
   linkType: hard
 
@@ -11493,6 +11511,7 @@ __metadata:
     "@tailwindcss/forms": 0.5.3
     "@tailwindcss/line-clamp": 0.4.2
     "@tailwindcss/typography": 0.5.8
+    "@tw-classed/react": 1.3.2
     "@types/react": 17.0.52
     "@types/react-dom": 17.0.18
     "@unlock-protocol/networks": "workspace:./packages/networks"
