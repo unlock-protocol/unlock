@@ -11675,7 +11675,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-express@workspace:packages/unlock-express"
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    eslint: 8.28.0
+    eslint: 8.31.0
     ethers: 5.7.2
     passport-custom: 1.1.1
     prettier: 2.8.0
