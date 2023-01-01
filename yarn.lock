@@ -11345,10 +11345,10 @@ __metadata:
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.3
-    eslint: 8.28.0
-    eslint-plugin-jest: 27.1.6
+    eslint: 8.31.0
+    eslint-plugin-jest: 27.2.0
     eslint-plugin-mocha: 10.1.0
-    lint-staged: 13.0.4
+    lint-staged: 13.1.0
     next: 12.3.4
     nodemon: 2.0.20
     path-match: 1.2.4
@@ -21838,6 +21838,23 @@ __metadata:
     jest:
       optional: true
   checksum: 5b1640b5d575f0d5e27da8ef8cb3110a29f94ebd50ae51edc5ea34c1054f5dcf305416865b2919ac424bc02c4569848bbe7fd2c86e7e1aff23e77f1ff9ef7dfd
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-jest@npm:27.2.0":
+  version: 27.2.0
+  resolution: "eslint-plugin-jest@npm:27.2.0"
+  dependencies:
+    "@typescript-eslint/utils": ^5.10.0
+  peerDependencies:
+    "@typescript-eslint/eslint-plugin": ^5.0.0
+    eslint: ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@typescript-eslint/eslint-plugin":
+      optional: true
+    jest:
+      optional: true
+  checksum: 83554bb8eed289f903e2e03871a42a9b7b37b5e443d4a1501a42e004db49cddad894592ccec9840221b412ea3d2388428a1b11938031e5628d21c5a3210f1240
   languageName: node
   linkType: hard
 
