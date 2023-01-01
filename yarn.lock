@@ -10057,12 +10057,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:8.5.9, @types/jsonwebtoken@npm:^8.5.0, @types/jsonwebtoken@npm:^8.5.8":
+"@types/jsonwebtoken@npm:8.5.9, @types/jsonwebtoken@npm:^8.5.0":
   version: 8.5.9
   resolution: "@types/jsonwebtoken@npm:8.5.9"
   dependencies:
     "@types/node": "*"
   checksum: 33815ab02d1371b423118316b7706d2f2ec03eeee5e1494be72da50425d2384e5e0a09ea193f7a5ab4b4f6a9c5847147305f50e965f3d927a95bdf8adb471b2a
+  languageName: node
+  linkType: hard
+
+"@types/jsonwebtoken@npm:^9":
+  version: 9.0.0
+  resolution: "@types/jsonwebtoken@npm:9.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: c7791354ba895759524c18ba609ea04efdc576e2b660bd6f80d5b917db8dc4b01acd4d1bc115a62d35406a82e627067973d475c4b36035dabaa27862b141ae49
   languageName: node
   linkType: hard
 
@@ -11276,7 +11285,7 @@ __metadata:
     eslint-config-standard: 17.0.0
     ethers: 5.7.2
     express: 5.0.0-beta.1
-    express-jwt: 7.7.7
+    express-jwt: 8.2.1
     express-winston: 4.2.0
     fuse.js: 6.6.2
     geoip-country: 4.1.34
@@ -23472,14 +23481,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-jwt@npm:7.7.7":
-  version: 7.7.7
-  resolution: "express-jwt@npm:7.7.7"
+"express-jwt@npm:8.2.1":
+  version: 8.2.1
+  resolution: "express-jwt@npm:8.2.1"
   dependencies:
-    "@types/jsonwebtoken": ^8.5.8
+    "@types/jsonwebtoken": ^9
     express-unless: ^2.1.3
-    jsonwebtoken: ^8.5.1
-  checksum: b3aec510ce490cd8d449604c82ce1debf9b8c215fb0220f78d07e86c555fb06ca93b4199da135c00e62bb98c67a47fac8c1fdcc6ea74f2047f4e2defbc4578fe
+    jsonwebtoken: ^9.0.0
+  checksum: 3948b46e4721e63ea1c3e4f48f9300466d2a0107ac28fdf9662eaaa53e55f93e67fc4ed77ec002b64c2e51198b12d66c3f1d70309f84ef06e93430a48f6c133e
   languageName: node
   linkType: hard
 
@@ -30813,7 +30822,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.0":
+"jsonwebtoken@npm:9.0.0, jsonwebtoken@npm:^9.0.0":
   version: 9.0.0
   resolution: "jsonwebtoken@npm:9.0.0"
   dependencies:
