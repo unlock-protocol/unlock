@@ -11279,7 +11279,7 @@ __metadata:
     express-jwt: 7.7.7
     express-winston: 4.2.0
     fuse.js: 6.6.2
-    geoip-country: 4.1.34
+    geoip-country: 4.1.37
     graphql: 16.6.0
     graphql-tag: 2.12.6
     html-template-tag: 4.0.1
@@ -25097,9 +25097,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"geoip-country@npm:4.1.34":
-  version: 4.1.34
-  resolution: "geoip-country@npm:4.1.34"
+"geoip-country@npm:4.1.37":
+  version: 4.1.37
+  resolution: "geoip-country@npm:4.1.37"
   dependencies:
     async: ^2.6.4
     colors: ^1.4.0
@@ -25108,7 +25108,7 @@ fsevents@~2.1.1:
     lazy: ^1.0.11
     rimraf: ^2.7.1
     yauzl: ^2.10.0
-  checksum: 41abce0409a52b357ab3597a87e20c7feed9bc4844cefd8aaa045b31773fbf0755f81a28fabd0a9323218c2aea1f14acb87dc013021da886b4eed7fc19be89ee
+  checksum: e53d9fae272d6059b7f9bab33abf8044bc8d8d12728cc8f2d6ed7bd686d514b431f80fdf0690cea8122e696bfb99572e36d719a98b6aaee61e887d947c5a0dfc
   languageName: node
   linkType: hard
 
