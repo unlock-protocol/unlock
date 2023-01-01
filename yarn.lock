@@ -9867,7 +9867,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geoip-country@npm:^4.0.0":
+"@types/geoip-country@npm:4.0.0":
   version: 4.0.0
   resolution: "@types/geoip-country@npm:4.0.0"
   checksum: cd8af136e21f29e9b504ebf47ec5d9f717aabafee858b8f895c9936727e9ade40c6accf9df9c1005eeaa805d33d88b1ad9dcc6f19a8e0cc5791cd307dfcb7fba
@@ -11241,7 +11241,7 @@ __metadata:
     "@sentry/tracing": 7.23.0
     "@types/cookie-parser": 1.4.3
     "@types/cors": 2.8.12
-    "@types/geoip-country": ^4.0.0
+    "@types/geoip-country": 4.0.0
     "@types/isomorphic-fetch": 0.0.36
     "@types/jsonwebtoken": 8.5.9
     "@types/nock": 10.0.3
