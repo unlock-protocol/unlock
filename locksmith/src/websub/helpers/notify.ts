@@ -1,4 +1,4 @@
-import pRetry from 'p-retry'
+import pRetry, { AbortError } from 'p-retry'
 import crypto from 'crypto'
 import fetch from 'node-fetch'
 import { AbortController } from 'node-abort-controller'
@@ -112,7 +112,7 @@ export async function notifyHook(hook: Hook, body: unknown) {
           logger.error(`${hook.id}: ${error.message}`)
           await hookEvent.save()
           if (checkBadHealth) {
-            throw new pRetry.AbortError(
+            throw new AbortError(
               `Not retrying because hook: ${hook.id} has not been very responsive.`
             )
           }

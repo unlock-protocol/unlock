@@ -11605,10 +11605,10 @@ __metadata:
     nock: 13.2.9
     node-abort-controller: 3.0.1
     node-cron: 3.0.2
-    node-fetch: 2.6.7
+    node-fetch: 3.3.0
     node-mocks-http: 1.12.1
     nodemon: 2.0.20
-    p-retry: 4.6.2
+    p-retry: 5.1.2
     parse-data-uri: 0.2.0
     path-to-regexp: 6.2.1
     pg: 8.8.0
@@ -35361,6 +35361,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:3.3.0":
+  version: 3.3.0
+  resolution: "node-fetch@npm:3.3.0"
+  dependencies:
+    data-uri-to-buffer: ^4.0.0
+    fetch-blob: ^3.1.4
+    formdata-polyfill: ^4.0.10
+  checksum: e9936908d2783d3c48a038e187f8062de294d75ef43ec8ab812d7cbd682be2b67605868758d2e9cad6103706dcfe4a9d21d78f6df984e8edf10e7a5ce2e665f8
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^1.0.1, node-fetch@npm:~1.7.1":
   version: 1.7.3
   resolution: "node-fetch@npm:1.7.3"
@@ -36560,7 +36571,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"p-retry@npm:4.6.2, p-retry@npm:^4.5.0":
+"p-retry@npm:5.1.2":
+  version: 5.1.2
+  resolution: "p-retry@npm:5.1.2"
+  dependencies:
+    "@types/retry": 0.12.1
+    retry: ^0.13.1
+  checksum: f063c08b1adc3cf7c01de01eb2dbda841970229f9f229c5167ebf4e2080d8a38b1f4e6eccefac74bca97cfaf4436d0a0eeb0b551175b26bc8b3116195f61bba8
+  languageName: node
+  linkType: hard
+
+"p-retry@npm:^4.5.0":
   version: 4.6.2
   resolution: "p-retry@npm:4.6.2"
   dependencies:
