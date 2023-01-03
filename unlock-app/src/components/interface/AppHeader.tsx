@@ -67,7 +67,6 @@ export const AppHeader = ({ showLinks = true }: AppHeaderProps) => {
 
   const onDisconnect = () => {
     deAuthenticate()
-    storageService.signOut()
     setDisconnectModal(false)
   }
 
