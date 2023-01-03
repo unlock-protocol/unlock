@@ -5,8 +5,8 @@
   "main": "src/server.js",
   "dependencies": {
     "@babel/cli": "7.20.7",
-    "@babel/core": "7.20.5",
-    "@babel/node": "7.20.5",
+    "@babel/core": "7.20.7",
+    "@babel/node": "7.20.7",
     "@babel/preset-env": "7.20.2",
     "@typescript-eslint/parser": "5.47.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
