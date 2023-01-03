@@ -1,12 +1,14 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { Lock } from '@unlock-protocol/types'
+import { createTicket } from '../../utils/ticket'
+const subgraph = new SubgraphService()
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -167,4 +169,40 @@ export class TicketsController {
       })
     }
   }
+}
+
+export const generateTicket: RequestHandler = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const tokenId = request.params.keyId.toLowerCase()
+  const loggedInUser = request.user!.walletAddress
+  const key = await subgraph.key(
+    {
+      where: {
+        owner: loggedInUser.toLowerCase(),
+      },
+    },
+    {
+      network,
+    }
+  )
+
+  if (!key) {
+    return response.status(404).send({
+      message: 'Key not found',
+    })
+  }
+
+  const ticket = await createTicket({
+    lockAddress,
+    tokenId,
+    network,
+    owner: key.owner,
+    name: key.lock.name!,
+  })
+
+  return response
+    .setHeader('content-type', 'image/svg+xml')
+    .status(200)
+    .send(ticket)
 }

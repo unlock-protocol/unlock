@@ -1601,3 +1601,19 @@ paths:
                       $ref: '#/components/schemas/PaymentMethod'
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/5/generate:
+    get: 
+      operationId: generateTicket
+      security:
+        - User: []
+      description: Generate a ticket for a key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully generated the ticket.
+            
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
