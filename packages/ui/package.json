@@ -65,7 +65,7 @@
     "@vitejs/plugin-react": "2.2.0",
     "autoprefixer": "10.4.13",
     "babel-loader": "9.1.0",
-    "postcss": "8.4.19",
+    "postcss": "8.4.20",
     "storybook-builder-vite": "0.1.23",
     "tailwindcss": "3.2.4",
     "tsconfig-paths-webpack-plugin": "4.0.0",
