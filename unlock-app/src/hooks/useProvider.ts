@@ -7,7 +7,7 @@ import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { NetworkConfig } from '@unlock-protocol/types'
-import { clearAuth, signOut } from '~/config/storage'
+import { signOut } from '~/config/storage'
 
 export interface EthereumWindow extends Window {
   web3: any

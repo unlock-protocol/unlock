@@ -8,7 +8,6 @@ import { AiOutlineMenu as MenuIcon } from 'react-icons/ai'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
 import { Container } from './Container'
-import { useStorageService } from '~/utils/withStorageService'
 import React from 'react'
 
 interface Link {
@@ -34,8 +33,6 @@ export const AppHeader = ({ showLinks = true }: AppHeaderProps) => {
   const { account, deAuthenticate } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [disconnectModal, setDisconnectModal] = useState(false)
-
-  const storageService = useStorageService()
   const router = useRouter()
   const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
 
