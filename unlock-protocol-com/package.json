@@ -62,6 +62,7 @@
     "eslint-config-next": "12.3.4",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
+    "next-transpile-modules": "10.0.0",
     "postcss": "8.4.19",
     "prettier": "2.8.0",
     "remark": "14.0.2",
