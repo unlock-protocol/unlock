@@ -1,8 +1,10 @@
 /* eslint no-console: 0 */
 const dotenv = require('dotenv')
 const path = require('path')
+const withTM = require('next-transpile-modules')(['@tw-classed/react'])
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
@@ -80,5 +82,5 @@ const nextConfig = {
     return config
   },
 }
-
-module.exports = nextConfig
+// Remove it when upgrading to next@13 using transpilePackages option. No need for an external dependency.
+module.exports = withTM(nextConfig)
