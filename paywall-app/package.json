@@ -16,7 +16,7 @@
     "@types/next": "8.0.7",
     "@types/node": "18.11.9",
     "@types/postmate": "1.5.2",
-    "@types/react": "17.0.52",
+    "@types/react": "18.0.26",
     "@types/react-dom": "17.0.18",
     "@types/styled-components": "5.1.26",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
