@@ -2841,6 +2841,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@float-capital/float-subgraph-uncrashable@npm:^0.0.0-alpha.4":
+  version: 0.0.0-internal-testing.4
+  resolution: "@float-capital/float-subgraph-uncrashable@npm:0.0.0-internal-testing.4"
+  dependencies:
+    "@rescript/std": 9.0.0
+    graphql: ^16.6.0
+    graphql-import-node: ^0.0.5
+    js-yaml: ^4.1.0
+  bin:
+    uncrashable: bin/uncrashable
+  checksum: 27f2ef23a9e6646af0b9645b1b94d49416c18b97dc22b4d3869740d5da839eac1471bf5e7dd3f6dadea045dd1511a4db478ad1c6efb2cc4eac7bad6952cc75df
+  languageName: node
+  linkType: hard
+
 "@floating-ui/core@npm:^0.7.3":
   version: 0.7.3
   resolution: "@floating-ui/core@npm:0.7.3"
@@ -2946,11 +2960,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.35.0":
-  version: 0.35.0
-  resolution: "@graphprotocol/graph-cli@npm:0.35.0"
+"@graphprotocol/graph-cli@npm:0.37.1":
+  version: 0.37.1
+  resolution: "@graphprotocol/graph-cli@npm:0.37.1"
   dependencies:
-    assemblyscript: 0.19.10
+    "@float-capital/float-subgraph-uncrashable": ^0.0.0-alpha.4
+    assemblyscript: 0.19.23
     binary-install-raw: 0.0.13
     chalk: 3.0.0
     chokidar: 3.5.1
@@ -2977,16 +2992,16 @@ __metadata:
     yaml: 1.9.2
   bin:
     graph: bin/graph
-  checksum: c50ac69ca84fe855b5ab24175cca605d71ba8ad91d8f8fe8c18e6a96e027a13aace3d3b2686162c8f1e89fbfe3796cdc62a18b6fc57e8adff9008f5a244d03f3
+  checksum: 727dbd74250472f1c45690df7c6afa6492792b33a99f2c571945445772e1b0ee282bc51aace58302eaef8375e9f424d06f3a48559e4f77d725ede50b7e1aa17b
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:0.28.1":
-  version: 0.28.1
-  resolution: "@graphprotocol/graph-ts@npm:0.28.1"
+"@graphprotocol/graph-ts@npm:0.29.1":
+  version: 0.29.1
+  resolution: "@graphprotocol/graph-ts@npm:0.29.1"
   dependencies:
     assemblyscript: 0.19.10
-  checksum: f8e7aa9a770bf9e6953b771d7e4a84ec997d692cffc24c4f9ca227f317c1181452c9939de05df23b774b4abfecc7dc1e2e31f5e75b3376070e5f38cbb7885927
+  checksum: 9ec6f62d28625495b69d813d5ea836f6ab020b0dbd0c56b09277a994626068a660ec91dd21c697213e6531bcf070a3898d72006f6d9270f346a08a4deb1ca4cb
   languageName: node
   linkType: hard
 
@@ -6736,6 +6751,13 @@ __metadata:
   version: 3.0.4
   resolution: "@repeaterjs/repeater@npm:3.0.4"
   checksum: cca0db3e802bc26fcce0b4a574074d9956da53bf43094de03c0e4732d05e13441279a92f0b96e2a7a39da50933684947a138c1213406eaafe39cfd4683d6c0df
+  languageName: node
+  linkType: hard
+
+"@rescript/std@npm:9.0.0":
+  version: 9.0.0
+  resolution: "@rescript/std@npm:9.0.0"
+  checksum: f63916d567ac5ecb1fd955e7866e1e74fddb97938b7bc7a2c60437783f2244eea04fe7eb209b5822ebdace30b78c42e184b04db634174c00f001f5e118250bac
   languageName: node
   linkType: hard
 
@@ -11897,14 +11919,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.35.0
-    "@graphprotocol/graph-ts": 0.28.1
+    "@graphprotocol/graph-cli": 0.37.1
+    "@graphprotocol/graph-ts": 0.29.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
-    eslint: 8.26.0
+    eslint: 8.31.0
     fs-extra: 11.1.0
     handlebars: 4.7.7
-    lint-staged: 13.0.4
+    lint-staged: 13.1.0
     matchstick-as: 0.5.0
     yargs: 17.6.2
   languageName: unknown
@@ -14336,7 +14358,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assemblyscript@npm:^0.19.20":
+"assemblyscript@npm:0.19.23, assemblyscript@npm:^0.19.20":
   version: 0.19.23
   resolution: "assemblyscript@npm:0.19.23"
   dependencies:
@@ -22624,55 +22646,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.26.0":
-  version: 8.26.0
-  resolution: "eslint@npm:8.26.0"
-  dependencies:
-    "@eslint/eslintrc": ^1.3.3
-    "@humanwhocodes/config-array": ^0.11.6
-    "@humanwhocodes/module-importer": ^1.0.1
-    "@nodelib/fs.walk": ^1.2.8
-    ajv: ^6.10.0
-    chalk: ^4.0.0
-    cross-spawn: ^7.0.2
-    debug: ^4.3.2
-    doctrine: ^3.0.0
-    escape-string-regexp: ^4.0.0
-    eslint-scope: ^7.1.1
-    eslint-utils: ^3.0.0
-    eslint-visitor-keys: ^3.3.0
-    espree: ^9.4.0
-    esquery: ^1.4.0
-    esutils: ^2.0.2
-    fast-deep-equal: ^3.1.3
-    file-entry-cache: ^6.0.1
-    find-up: ^5.0.0
-    glob-parent: ^6.0.2
-    globals: ^13.15.0
-    grapheme-splitter: ^1.0.4
-    ignore: ^5.2.0
-    import-fresh: ^3.0.0
-    imurmurhash: ^0.1.4
-    is-glob: ^4.0.0
-    is-path-inside: ^3.0.3
-    js-sdsl: ^4.1.4
-    js-yaml: ^4.1.0
-    json-stable-stringify-without-jsonify: ^1.0.1
-    levn: ^0.4.1
-    lodash.merge: ^4.6.2
-    minimatch: ^3.1.2
-    natural-compare: ^1.4.0
-    optionator: ^0.9.1
-    regexpp: ^3.2.0
-    strip-ansi: ^6.0.1
-    strip-json-comments: ^3.1.0
-    text-table: ^0.2.0
-  bin:
-    eslint: bin/eslint.js
-  checksum: a2aced939ea060f77d10dcfced5cfeb940f63f383fd7ab1decadea64170ab552582e1c5909db1db641d4283178c9bc569f19b0f8900e00314a5f783e4b3f759d
-  languageName: node
-  linkType: hard
-
 "eslint@npm:8.28.0":
   version: 8.28.0
   resolution: "eslint@npm:8.28.0"
@@ -26373,6 +26346,15 @@ fsevents@~2.1.1:
   peerDependencies:
     graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
   checksum: 528f69c2c3620b51fe3d609e65d13861bdc11ccfdfcb75d476f758dc6e3047c78117a260f69b5e7efa5f0b66da1980c352a8b4053532ffb3018377f784331e21
+  languageName: node
+  linkType: hard
+
+"graphql-import-node@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "graphql-import-node@npm:0.0.5"
+  peerDependencies:
+    graphql: "*"
+  checksum: a9af565f3422e9e732dcf97077deff3f94b9af0d7e8001bb65a3cac607a462664f902b3603ead1626b294928c4b6302cb6aa2d49254444d465ce87c629fb842d
   languageName: node
   linkType: hard
 
