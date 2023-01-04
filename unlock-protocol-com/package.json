@@ -25,7 +25,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
-    "dayjs": "1.11.6",
+    "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "embla-carousel-autoplay": "7.0.5",
     "embla-carousel-react": "7.0.5",
