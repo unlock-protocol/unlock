@@ -72,7 +72,8 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "resolutions": {
-    "yargs": "17.6.2"
+    "yargs": "17.6.2",
+    "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.3.1",

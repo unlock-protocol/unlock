@@ -6929,6 +6929,135 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@resvg/resvg-js-android-arm-eabi@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-android-arm-eabi@npm:2.2.0"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-android-arm64@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-android-arm64@npm:2.2.0"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-darwin-arm64@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-darwin-arm64@npm:2.2.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-darwin-x64@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-darwin-x64@npm:2.2.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-linux-arm-gnueabihf@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-linux-arm-gnueabihf@npm:2.2.0"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-linux-arm64-gnu@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-linux-arm64-gnu@npm:2.2.0"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-linux-arm64-musl@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-linux-arm64-musl@npm:2.2.0"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-linux-x64-gnu@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-linux-x64-gnu@npm:2.2.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-linux-x64-musl@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-linux-x64-musl@npm:2.2.0"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-win32-arm64-msvc@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-win32-arm64-msvc@npm:2.2.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-win32-ia32-msvc@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-win32-ia32-msvc@npm:2.2.0"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js-win32-x64-msvc@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js-win32-x64-msvc@npm:2.2.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@resvg/resvg-js@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@resvg/resvg-js@npm:2.2.0"
+  dependencies:
+    "@resvg/resvg-js-android-arm-eabi": 2.2.0
+    "@resvg/resvg-js-android-arm64": 2.2.0
+    "@resvg/resvg-js-darwin-arm64": 2.2.0
+    "@resvg/resvg-js-darwin-x64": 2.2.0
+    "@resvg/resvg-js-linux-arm-gnueabihf": 2.2.0
+    "@resvg/resvg-js-linux-arm64-gnu": 2.2.0
+    "@resvg/resvg-js-linux-arm64-musl": 2.2.0
+    "@resvg/resvg-js-linux-x64-gnu": 2.2.0
+    "@resvg/resvg-js-linux-x64-musl": 2.2.0
+    "@resvg/resvg-js-win32-arm64-msvc": 2.2.0
+    "@resvg/resvg-js-win32-ia32-msvc": 2.2.0
+    "@resvg/resvg-js-win32-x64-msvc": 2.2.0
+  dependenciesMeta:
+    "@resvg/resvg-js-android-arm-eabi":
+      optional: true
+    "@resvg/resvg-js-android-arm64":
+      optional: true
+    "@resvg/resvg-js-darwin-arm64":
+      optional: true
+    "@resvg/resvg-js-darwin-x64":
+      optional: true
+    "@resvg/resvg-js-linux-arm-gnueabihf":
+      optional: true
+    "@resvg/resvg-js-linux-arm64-gnu":
+      optional: true
+    "@resvg/resvg-js-linux-arm64-musl":
+      optional: true
+    "@resvg/resvg-js-linux-x64-gnu":
+      optional: true
+    "@resvg/resvg-js-linux-x64-musl":
+      optional: true
+    "@resvg/resvg-js-win32-arm64-msvc":
+      optional: true
+    "@resvg/resvg-js-win32-ia32-msvc":
+      optional: true
+    "@resvg/resvg-js-win32-x64-msvc":
+      optional: true
+  checksum: 3da7d0db1dc631e7d016161c42a0c040c3879e36ef09c5022d0e92334b824330275522dd531cc641f0e2523b0032463ec9f0b3ce532c54963f238e92dbec332c
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-alias@npm:^3.0.1":
   version: 3.1.5
   resolution: "@rollup/plugin-alias@npm:3.1.5"
@@ -7423,6 +7552,18 @@ __metadata:
     "@sentry/cli": ^1.74.6
     webpack-sources: ^2.0.0 || ^3.0.0
   checksum: d582026c3686f287ddc23de4e64c6f03afc2a73a84ec5a8fd3eded56a45683094bf132f4c624a35386fff872eb518771109d5c0b91a2cf79da0aff035c5bb05b
+  languageName: node
+  linkType: hard
+
+"@shuding/opentype.js@npm:1.4.0-beta.0":
+  version: 1.4.0-beta.0
+  resolution: "@shuding/opentype.js@npm:1.4.0-beta.0"
+  dependencies:
+    fflate: ^0.7.3
+    string.prototype.codepointat: ^0.2.1
+  bin:
+    ot: bin/ot
+  checksum: af3478c40c068c7f6b6050b274a10837fcd1417c072b6af2b9d4fa48b8efe0bc93ec4b5f80b186678672f7d293027151389c66a4c5a156b48b810b8e8f3f5cdf
   languageName: node
   linkType: hard
 
@@ -11214,6 +11355,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/yoga-layout@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@types/yoga-layout@npm:1.9.2"
+  checksum: dbc3d6ab997d50fe1fcca5dd6822982c8fe586145ab648e0e97c3bc4ebc93d0b40c9edd75febaba374d61f60c1379b639f6be652965c776a901bf1068f2eac87
+  languageName: node
+  linkType: hard
+
 "@types/zen-observable@npm:^0.8.0":
   version: 0.8.3
   resolution: "@types/zen-observable@npm:0.8.3"
@@ -11827,6 +11975,7 @@ __metadata:
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
     "@nuintun/qrcode": 3.3.0
+    "@resvg/resvg-js": 2.2.0
     "@sentry/node": 7.23.0
     "@sentry/tracing": 7.23.0
     "@types/cookie-parser": 1.4.3
@@ -11846,6 +11995,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
+    "@unlock-protocol/ui": "workspace:^"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitest/coverage-c8": 0.25.8
     apollo-cache-inmemory: 1.6.6
@@ -11883,9 +12033,11 @@ __metadata:
     path-to-regexp: 6.2.1
     pg: 8.8.0
     random-words: 1.2.0
+    react: ^18.2.0
     request: 2.88.2
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
+    satori: 0.0.44
     sequelize: 6.26.0
     sequelize-cli: 6.5.2
     setimmediate: 1.0.5
@@ -12076,7 +12228,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/ui@workspace:./packages/ui, @unlock-protocol/ui@workspace:packages/ui":
+"@unlock-protocol/ui@workspace:./packages/ui, @unlock-protocol/ui@workspace:^, @unlock-protocol/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
@@ -19275,6 +19427,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-background-parser@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "css-background-parser@npm:0.1.0"
+  checksum: cf53bef8d5df8538af7179f787fe04f4ac53c60089b338bf167b3e18be13817e395d48e303ca13493927b6fc11b4c24db2b144054c8ed3a55a044c6d177a08a5
+  languageName: node
+  linkType: hard
+
 "css-blank-pseudo@npm:^3.0.0":
   version: 3.0.1
   resolution: "css-blank-pseudo@npm:3.0.1"
@@ -19285,6 +19444,13 @@ __metadata:
   bin:
     css-blank-pseudo: dist/cli.mjs
   checksum: 97902c61969a0a1d1e2563f427a7fb6bb9d831d92eab0bf6da1d426dd9164f3096ab650f1ac1b56a3f9f8100d950003b04bbad022b2e5bd674d86591cc4022dd
+  languageName: node
+  linkType: hard
+
+"css-box-shadow@npm:1.0.0-3":
+  version: 1.0.0-3
+  resolution: "css-box-shadow@npm:1.0.0-3"
+  checksum: 1b7f15b291261023bb57e8718849951f313ee54e5cc3c72a90fac8d141138ea73562ad28006533f4ed92cb672ccbba2d6483ecb187a6c7f800936b006ba27925
   languageName: node
   linkType: hard
 
@@ -24619,6 +24785,13 @@ __metadata:
   version: 5.0.2
   resolution: "fetch-retry@npm:5.0.2"
   checksum: 888d81e2a872cd47d4e5cf9156e13e7b73cb902a677f882a88fb3d8d5fb029a4238b44b07328dfb7735860b038fdc3d92acbef7f07d8633a314e4809d2f1f9c0
+  languageName: node
+  linkType: hard
+
+"fflate@npm:^0.7.3":
+  version: 0.7.4
+  resolution: "fflate@npm:0.7.4"
+  checksum: b812ab26047432db70ff4c73eb45ad53bd0774575b4818b9c61c2921e89ec65d1259f06ec1618f2ac55e6a2f2e29b6dc09173d213b46580bc69efae5344bf8f1
   languageName: node
   linkType: hard
 
@@ -40817,6 +40990,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
+  languageName: node
+  linkType: hard
+
 "read-cache@npm:^1.0.0":
   version: 1.0.0
   resolution: "read-cache@npm:1.0.0"
@@ -42448,6 +42630,21 @@ resolve@~1.20.0:
     sass:
       optional: true
   checksum: 0f7ca3633e7f61c412b0628766a9b57cb15f68def45e4303e68eb2f3a0722aec231956fbfd118489d93c997ab605470e89de8e3f7d6776830cc6366d9657d618
+  languageName: node
+  linkType: hard
+
+"satori@npm:0.0.44":
+  version: 0.0.44
+  resolution: "satori@npm:0.0.44"
+  dependencies:
+    "@shuding/opentype.js": 1.4.0-beta.0
+    css-background-parser: ^0.1.0
+    css-box-shadow: 1.0.0-3
+    css-to-react-native: ^3.0.0
+    emoji-regex: ^10.2.1
+    postcss-value-parser: ^4.2.0
+    yoga-layout-prebuilt: ^1.10.0
+  checksum: a6087d9c615d1239c7d0864bac61c21b5fab7c78260127e72de60368d26aaaff7aeb90a7c6f8a632eabc43f05668e28ba19345ceff82d534b7a94b309876315d
   languageName: node
   linkType: hard
 
@@ -44416,6 +44613,13 @@ resolve@~1.20.0:
     emoji-regex: ^9.2.2
     strip-ansi: ^7.0.1
   checksum: 7369deaa29f21dda9a438686154b62c2c5f661f8dda60449088f9f980196f7908fc39fdd1803e3e01541970287cf5deae336798337e9319a7055af89dafa7193
+  languageName: node
+  linkType: hard
+
+"string.prototype.codepointat@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "string.prototype.codepointat@npm:0.2.1"
+  checksum: bafa15844d7ea5bed24a01fa8954327c0c49226cefe68ab70573f1338f6a4680587db962724924f2cceb91abe408e11bd38c80095f25ee080f136a6c9d300f00
   languageName: node
   linkType: hard
 
@@ -52585,6 +52789,24 @@ typescript@^3.8.3:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 2cac84540f65c64ccc1683c267edce396b26b1e931aa429660aefac8fbe0188167b7aee815a3c22fa59a28a58d898d1a2b1825048f834d8d629f4c2a5d443801
+  languageName: node
+  linkType: hard
+
+"yoga-layout-prebuilt@npm:1.10.0":
+  version: 1.10.0
+  resolution: "yoga-layout-prebuilt@npm:1.10.0"
+  dependencies:
+    "@types/yoga-layout": 1.9.2
+  checksum: 6954c7c7b04c585a1c974391bea4734611adb85702b5e9131549a1d3dc5b94e69bcfea34121cdaeb5e702663bf290fcce5374910128e54d1031503a57c062865
+  languageName: node
+  linkType: hard
+
+"yoga-layout-prebuilt@patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch::locator=unlock%40workspace%3A.":
+  version: 1.10.0
+  resolution: "yoga-layout-prebuilt@patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch::version=1.10.0&hash=3a1884&locator=unlock%40workspace%3A."
+  dependencies:
+    "@types/yoga-layout": 1.9.2
+  checksum: 3e1d523d6a2f00b94e72f9bd45a9977108a1d50d4094743ea70b0eb4aa4eb844903ee72bb23663b65329d63c70a40908d89ad4f79504a0b482e43e2206be64b9
   languageName: node
   linkType: hard
 
