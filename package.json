@@ -22,7 +22,7 @@
     "eslint-plugin-prettier": "latest",
     "husky": "8.0.2",
     "lint-staged": "13.1.0",
-    "prettier": "2.8.0"
+    "prettier": "2.8.1"
   },
   "workspaces": [
     "packages/**",
