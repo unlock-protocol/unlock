@@ -76,10 +76,6 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       withIcon ? 'pl-10' : undefined
     )
 
-    // const [ensAddress, setEnsAddress] = useState('')
-    // const [loadingEnsAddress, setLoadingEnsAddress] = useState(true)
-    // console.log('loadingEnsAddress:', loadingEnsAddress)
-
     return (
       <>
         <FieldLayout
