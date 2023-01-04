@@ -7,7 +7,7 @@ import {
 } from '@unlock-protocol/unlock-js'
 import { config } from './app'
 import { SiweMessage, generateNonce } from 'siwe'
-import { writeStorage } from '@rehooks/local-storage'
+import { writeStorage, deleteFromStorage } from '@rehooks/local-storage'
 import { APP_NAME } from '~/hooks/useAppStorage'
 import { queryClient } from './queryClient'
 
@@ -16,6 +16,11 @@ export interface SessionAuth {
   refreshToken: string
   walletAddress: string
 }
+
+const service = new LocksmithService(
+  new LocksmithServiceConfiguration(),
+  config.locksmithHost
+)
 
 export const AUTH_SESSION_KEY = `${APP_NAME}.sessions`
 export const IS_REFUSED_TO_SIGN_KEY = `${APP_NAME}.refusedToSign`
@@ -34,16 +39,18 @@ export const getAuth = (): SessionAuth | undefined => {
 export const clearAuth = () => {
   writeStorage(AUTH_SESSION_KEY, null)
   writeStorage(IS_REFUSED_TO_SIGN_KEY, false)
+  deleteFromStorage(`${APP_NAME}.refresh-token`)
+}
+
+export const signOut = async () => {
   // Remove all cache when logging out
-  queryClient.removeQueries()
+  await Promise.all([queryClient.removeQueries(), storage.logout()])
+  clearAuth()
 }
 
 export const storageClient = axios.create()
 export const StorageAuthEvent = new EventTarget()
-const service = new LocksmithService(
-  new LocksmithServiceConfiguration(),
-  config.locksmithHost
-)
+
 // Use interceptor to inject the token to requests
 storageClient.interceptors.request.use((request) => {
   const session = getAuth()
