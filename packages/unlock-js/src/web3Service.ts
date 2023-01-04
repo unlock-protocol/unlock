@@ -965,17 +965,23 @@ export default class Web3Service extends UnlockService {
    * Returns the resolved ens address that's a valid EOA
    */
   async resolveEns(ensName: string) {
-    const provider = this.providerForNetwork(1)
-    const ensAddress = await provider.resolveName(ensName)
-    if (ensAddress) {
-      const isValid = await this.isValidEOA(ensAddress)
-      if (isValid) {
-        return ensAddress
-      } else throw new Error('The ens address is not a valid EOA')
-    } else
-      throw new Error(
-        'The ens name is not owned or does not have a Resolver configured'
-      )
+    try {
+      const provider = this.providerForNetwork(1)
+      const ensAddress = await provider.resolveName(ensName)
+      if (ensAddress) {
+        const isValid = await this.isValidEOA(ensAddress)
+        if (isValid) {
+          return ensAddress
+        } else {
+          throw new Error('The ens address is not a valid EOA')
+        }
+      } else
+        throw new Error(
+          'The ens name is not owned or does not have a Resolver configured'
+        )
+    } catch (error) {
+      return ''
+    }
   }
 
   /**
@@ -984,10 +990,7 @@ export default class Web3Service extends UnlockService {
   async lookupAddress(address: string) {
     const provider = this.providerForNetwork(1)
     const ensName = await provider.lookupAddress(address)
-    console.log('ensName:', ensName)
-    console.log('!ensName:', !ensName)
     const isValid = await this.isValidEOA(address)
-    console.log('isValid:', isValid)
     if (!ensName) {
       if (isValid) {
         return ensName
