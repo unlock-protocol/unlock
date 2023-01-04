@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.20.5",
+    "@babel/core": "7.20.7",
     "@superfluid-finance/sdk-core": "0.6.1",
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
@@ -21,7 +21,7 @@
     "eslint": "8.29.0",
     "eslint-plugin-prettier": "latest",
     "husky": "8.0.2",
-    "lint-staged": "13.0.4",
+    "lint-staged": "13.1.0",
     "prettier": "2.8.0"
   },
   "workspaces": [
@@ -72,10 +72,11 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "resolutions": {
-    "yargs": "17.6.2"
+    "yargs": "17.6.2",
+    "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@3.3.1",
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"

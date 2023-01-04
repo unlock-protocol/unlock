@@ -19,6 +19,7 @@ import {
   reEncryptPrivateKey,
 } from '../utils/accounts'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { storage } from '~/config/storage'
 
 interface ApiResponse {
   url: string
@@ -91,15 +92,9 @@ export const useAccount = (address: string, network: number) => {
     lockAddress: string
     network: number
   }) => {
-    const storageService = new StorageService(config.services.storage.host)
-
     try {
-      await storageService.loginPrompt({
-        walletService,
-        address,
-        chainId: network,
-      })
-      return await storageService.disconnectStripe(lockAddress, network)
+      const response = await storage.disconnectStripe(network, lockAddress)
+      return response.status
     } catch (error) {
       return null
     }
