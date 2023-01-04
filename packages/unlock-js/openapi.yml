@@ -806,7 +806,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/verifier/{network}/{lockAddress}/address/{verifierAddress}:
+  /v2/api/verifier/{network}/lock/{lockAddress}/address/{verifierAddress}:
     get:
       operationId: verifier
       security:
@@ -1616,5 +1616,18 @@ paths:
         200:
           description: Successfully generated the ticket.
             
+  /{network}/lock/{lockAddress}/stripe:
+    delete:
+      operationId: disconnectStripe
+      security:
+        - User: []
+      description: Disconnect stripe account.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully disconnected stripe account.
+
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

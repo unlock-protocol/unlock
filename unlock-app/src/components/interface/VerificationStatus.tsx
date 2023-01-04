@@ -17,6 +17,8 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 import { useConfig } from '~/utils/withConfig'
 import { Dialog, Transition } from '@headlessui/react'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { storage } from '~/config/storage'
+import { AxiosError } from 'axios'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -96,12 +98,9 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     isInitialLoading: isMembershipDataLoading,
   } = useQuery(
     [keyId, lockAddress, network],
-    (): Promise<MembershipData> => {
-      return storageService.getKeyMetadataValues({
-        lockAddress,
-        network,
-        keyId: Number(keyId),
-      })
+    async (): Promise<MembershipData> => {
+      const response = await storage.keyMetadata(network, lockAddress, keyId!)
+      return response.data as unknown as MembershipData
     },
     {
       refetchInterval: false,
@@ -112,15 +111,10 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { data: isVerifier, isInitialLoading: isVerifierLoading } = useQuery(
     [viewer, network, lockAddress],
     async () => {
-      const status = await storageService.getVerifierStatus({
-        viewer: viewer!,
-        network,
-        lockAddress,
-      })
-      return !!status
+      const response = await storage.verifier(network, lockAddress, viewer!)
+      return !!response.data?.enabled
     },
     {
-      enabled: storageService.isAuthenticated,
       refetchInterval: false,
     }
   )
@@ -128,23 +122,18 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
-      const response = await storageService.markTicketAsCheckedIn({
-        lockAddress,
-        keyId: keyId!,
-        network,
-      })
-      if (!response.ok) {
-        if (response.status === 409) {
-          ToastHelper.error('Ticket already checked in')
-        } else {
-          throw new Error('Failed to check in')
-        }
-      }
+      await storage.checkTicket(network, lockAddress, keyId!)
       await refetchMembershipData()
       setIsCheckingIn(false)
       setShowWarning(false)
     } catch (error) {
       console.error(error)
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          ToastHelper.error('Ticket already checked in')
+          return
+        }
+      }
       ToastHelper.error('Failed to check in')
     }
   }

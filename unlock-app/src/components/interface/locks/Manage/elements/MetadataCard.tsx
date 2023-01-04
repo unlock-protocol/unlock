@@ -5,7 +5,6 @@ import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
-import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
@@ -103,7 +102,6 @@ export const MetadataCard = ({
   network,
   expirationDuration,
 }: MetadataCardProps) => {
-  const storageService = useStorageService()
   const walletService = useWalletService()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
@@ -154,7 +152,6 @@ export const MetadataCard = ({
 
   const onSendQrCode = async () => {
     if (!network) return
-    if (!storageService) return
     if (!walletService) return
 
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
@@ -176,7 +173,6 @@ export const MetadataCard = ({
   }
 
   const onMarkAsCheckIn = async () => {
-    if (!storageService) return
     const { lockAddress, token: keyId } = data
     return storage.checkTicket(network, lockAddress, keyId)
   }
