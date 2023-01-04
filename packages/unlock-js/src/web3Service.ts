@@ -966,18 +966,16 @@ export default class Web3Service extends UnlockService {
    */
   async resolveEns(ensName: string) {
     const provider = this.providerForNetwork(1)
-    try {
-      const ensAddress = await provider.resolveName(ensName)
-      if (ensAddress !== null) {
-        const isValid = await this.isValidEOA(ensAddress)
-        if (isValid === true) {
-          return ensAddress
-        } else throw 'The ens address is not a valid EOA'
-      } else
-        throw 'The ens name is not owned or does not have a Resolver configured.'
-    } catch (error) {
-      console.error(error)
-    }
+    const ensAddress = await provider.resolveName(ensName)
+    if (ensAddress) {
+      const isValid = await this.isValidEOA(ensAddress)
+      if (isValid) {
+        return ensAddress
+      } else throw new Error('The ens address is not a valid EOA')
+    } else
+      throw new Error(
+        'The ens name is not owned or does not have a Resolver configured'
+      )
   }
 
   /**
@@ -985,17 +983,18 @@ export default class Web3Service extends UnlockService {
    */
   async lookupAddress(address: string) {
     const provider = this.providerForNetwork(1)
-    try {
-      const ensName = await provider.lookupAddress(address)
-      const isValid = await this.isValidEOA(address)
-      if (ensName !== null) {
-        if (isValid === true) {
-          return ensName
-        } else throw 'The ens address is not a valid EOA'
-      } else
-        throw 'The name does not exist, or the forward lookup does not match.'
-    } catch (error) {
-      console.error(error)
-    }
+    const ensName = await provider.lookupAddress(address)
+    console.log('ensName:', ensName)
+    console.log('!ensName:', !ensName)
+    const isValid = await this.isValidEOA(address)
+    console.log('isValid:', isValid)
+    if (!ensName) {
+      if (isValid) {
+        return ensName
+      } else throw new Error('The ens name is not a valid EOA')
+    } else
+      throw new Error(
+        'The name does not exist, or the forward lookup does not match.'
+      )
   }
 }
