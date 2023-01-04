@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.20.7",
-    "@headlessui/react": "1.7.4",
+    "@headlessui/react": "1.7.7",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "2.9.10",
     "@radix-ui/react-avatar": "1.0.1",
