@@ -1,6 +1,5 @@
-import { Ticket, TicketItem } from './Ticket'
+import { Ticket } from './Ticket'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { RiMailFill as MailIcon } from 'react-icons/ri'
 
 export default {
   component: Ticket,
@@ -18,7 +17,6 @@ TicketComponent.args = {
   recipient: '0xC8BD5B876E9c06F30b8f0E79aB25A3aEa7F47D97',
   lockAddress: '0xC8BD5B876E9c06F30b8f0E79aB25A3aEa7F47D97',
   network: 1,
-  bottomItems: [],
   time: '10:00 - 12:00',
   date: '10/10/2022 - 10/15/2022',
   location: '190 Bowery, Soho, New York',
@@ -34,7 +32,6 @@ TicketComponentWithENS.args = {
   recipient: 'julien51.eth',
   lockAddress: '0xC8BD5B876E9c06F30b8f0E79aB25A3aEa7F47D97',
   network: 100,
-  bottomItems: [],
   time: '10:00 - 12:00',
   date: '10/10/2022 - 10/15/2022',
   location: '190 Bowery, Soho, New York',
@@ -50,10 +47,8 @@ TicketComponentWithEmail.args = {
   recipient: 'julien51.eth',
   lockAddress: '0xC8BD5B876E9c06F30b8f0E79aB25A3aEa7F47D97',
   network: 100,
-  bottomItems: [
-    <TicketItem icon={<MailIcon />} value="julien@unlock-protocol.com" />,
-  ],
   time: '10:00 - 12:00',
   location: '190 Bowery, Soho, New York',
   QRCodeURL: '/images/qrcode.png',
+  email: 'team@unlock-protocol.com',
 }

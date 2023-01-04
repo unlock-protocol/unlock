@@ -1602,6 +1602,20 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/generate:
+    get: 
+      operationId: generateTicket
+      security:
+        - User: []
+      description: Generate a ticket for a key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully generated the ticket.
+            
   /{network}/lock/{lockAddress}/stripe:
     delete:
       operationId: disconnectStripe

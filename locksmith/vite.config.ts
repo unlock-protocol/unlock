@@ -2,6 +2,9 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
+    deps: {
+      inline: ['@tw-classed/react'],
+    },
     globals: true,
     coverage: {
       provider: 'c8',

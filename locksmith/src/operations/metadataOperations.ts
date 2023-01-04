@@ -55,8 +55,10 @@ export const generateKeyMetadata = async (
     ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
     : {}
 
-  const keyCentricData = await getKeyCentricData(address, keyId)
-  const baseTokenData = await getBaseTokenData(address, host, keyId)
+  const [keyCentricData, baseTokenData] = await Promise.all([
+    getKeyCentricData(address, keyId),
+    getBaseTokenData(address, host, keyId),
+  ])
 
   const attributes: Attribute[] = []
 

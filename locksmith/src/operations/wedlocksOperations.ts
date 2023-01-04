@@ -3,8 +3,9 @@ import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../config/config'
 import { logger } from '../logger'
-import { generateQrCode } from '../utils/qrcode'
 import networks from '@unlock-protocol/networks'
+import { createTicket } from '../utils/ticket'
+import resvg from '@resvg/resvg-js'
 
 type Params = {
   [key: string]: any
@@ -132,12 +133,17 @@ export const notifyNewKeyToWedlocks = async (
 
     const attachments: Attachment[] = []
     if (includeQrCode && network && tokenId) {
-      const qrCode = await generateQrCode({
-        network,
+      const ticket = await createTicket({
         lockAddress,
         tokenId,
+        network,
+        owner: ownerAddress,
       })
-      attachments.push({ path: qrCode })
+      const svg = new resvg.Resvg(ticket)
+      const pngData = svg.render()
+      const pngBuffer = pngData.asPng()
+      const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+      attachments.push({ path: dataURI })
     }
 
     const openSeaUrl =
