@@ -12377,7 +12377,7 @@ __metadata:
     ts-jest: 27.1.5
     typescript: 4.9.3
     use-local-storage: 2.3.6
-    vitest: 0.25.3
+    vitest: 0.26.3
     yaml-front-matter: 4.1.1
   languageName: unknown
   linkType: soft
@@ -12393,7 +12393,7 @@ __metadata:
     "@babel/preset-env": 7.20.2
     "@typescript-eslint/parser": 5.47.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@vitest/coverage-c8": 0.26.2
+    "@vitest/coverage-c8": 0.26.3
     babel-eslint: 10.1.0
     babel-loader: 9.1.0
     babel-plugin-wildcard: 7.0.0
@@ -12407,7 +12407,7 @@ __metadata:
     prettier: 2.8.1
     regenerator-runtime: 0.13.11
     typescript: 4.9.4
-    vitest: 0.26.2
+    vitest: 0.26.3
     winston: 3.8.2
   languageName: unknown
   linkType: soft
@@ -12474,13 +12474,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/coverage-c8@npm:0.26.2":
-  version: 0.26.2
-  resolution: "@vitest/coverage-c8@npm:0.26.2"
+"@vitest/coverage-c8@npm:0.26.3":
+  version: 0.26.3
+  resolution: "@vitest/coverage-c8@npm:0.26.3"
   dependencies:
     c8: ^7.12.0
-    vitest: 0.26.2
-  checksum: dfd19251278e2fa16cc428142d860c3edffac5149c6884415be58ba76ed3f331a91aa2eab2499da54c5584a66016c61a45d8a1f8aab93356fc91fa537fa904f4
+    vitest: 0.26.3
+  checksum: acd260d213c79d515511400003bfd36f4c4a60a9ac549071c33c8d735924a13a2697023978af5a18e66e3915d50e353f5f6ba98923a096fc1d3563d159e15f97
   languageName: node
   linkType: hard
 
@@ -44716,15 +44716,6 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"strip-literal@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "strip-literal@npm:0.4.2"
-  dependencies:
-    acorn: ^8.8.0
-  checksum: 831cdcaba61bc82c14ef5ca423a64bb8044b3b128abd15dff454d3fd05b0dbc7b4403760a7a636923d3c2e71a8e65174cef28ee9aef61f9a66819f865da4fdda
-  languageName: node
-  linkType: hard
-
 "strip-literal@npm:^1.0.0":
   version: 1.0.0
   resolution: "strip-literal@npm:1.0.0"
@@ -48234,9 +48225,9 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite-node@npm:0.26.2":
-  version: 0.26.2
-  resolution: "vite-node@npm:0.26.2"
+"vite-node@npm:0.26.3":
+  version: 0.26.3
+  resolution: "vite-node@npm:0.26.3"
   dependencies:
     debug: ^4.3.4
     mlly: ^1.0.0
@@ -48246,7 +48237,7 @@ typescript@^3.8.3:
     vite: ^3.0.0 || ^4.0.0
   bin:
     vite-node: vite-node.mjs
-  checksum: 83105cdf05c8a0673d1d939af864324d0468c225b2f126eaa8f039d16c66a6831ddf1367c62320f2ea0d8e987a872e5c67bddfa88ec7775fdf6433da23edc715
+  checksum: ae290288cbd5e79580365a5128f7ba4cbe088c27dbb014bd1dab3e1c0955c04a6add13bed5db923ddb8fd4eb1d75394fdf0e72ebf270f1a1007dd3e9b7049387
   languageName: node
   linkType: hard
 
@@ -48404,47 +48395,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vitest@npm:0.25.3":
-  version: 0.25.3
-  resolution: "vitest@npm:0.25.3"
-  dependencies:
-    "@types/chai": ^4.3.3
-    "@types/chai-subset": ^1.3.3
-    "@types/node": "*"
-    acorn: ^8.8.0
-    acorn-walk: ^8.2.0
-    chai: ^4.3.6
-    debug: ^4.3.4
-    local-pkg: ^0.4.2
-    source-map: ^0.6.1
-    strip-literal: ^0.4.2
-    tinybench: ^2.3.1
-    tinypool: ^0.3.0
-    tinyspy: ^1.0.2
-    vite: ^3.0.0
-  peerDependencies:
-    "@edge-runtime/vm": "*"
-    "@vitest/browser": "*"
-    "@vitest/ui": "*"
-    happy-dom: "*"
-    jsdom: "*"
-  peerDependenciesMeta:
-    "@edge-runtime/vm":
-      optional: true
-    "@vitest/browser":
-      optional: true
-    "@vitest/ui":
-      optional: true
-    happy-dom:
-      optional: true
-    jsdom:
-      optional: true
-  bin:
-    vitest: vitest.mjs
-  checksum: cd54de758f41295ef8a5304318b0de37f3182ec9b179d983cb0199dac89d51b80ee30124754703ef77ce4a1b675f3b02094ef96790889d5c9212dbab7490b4d0
-  languageName: node
-  linkType: hard
-
 "vitest@npm:0.25.6":
   version: 0.25.6
   resolution: "vitest@npm:0.25.6"
@@ -48527,9 +48477,9 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vitest@npm:0.26.2":
-  version: 0.26.2
-  resolution: "vitest@npm:0.26.2"
+"vitest@npm:0.26.3":
+  version: 0.26.3
+  resolution: "vitest@npm:0.26.3"
   dependencies:
     "@types/chai": ^4.3.4
     "@types/chai-subset": ^1.3.3
@@ -48545,7 +48495,7 @@ typescript@^3.8.3:
     tinypool: ^0.3.0
     tinyspy: ^1.0.2
     vite: ^3.0.0 || ^4.0.0
-    vite-node: 0.26.2
+    vite-node: 0.26.3
   peerDependencies:
     "@edge-runtime/vm": "*"
     "@vitest/browser": "*"
@@ -48565,7 +48515,7 @@ typescript@^3.8.3:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 2adc5fcead5b8b942e87d2ea6b2183baf0dc4728136758646bb674441d10a809bb6ff5bd1dc8f6a6e019f133b8537ddef770c9a1705d4cc9714411083581ab6e
+  checksum: b74c10444ab913c1d716005034308b347fa7341d26e3797eff17d1cc4903a30b6137d9e5da8b3f3c1047a7a645355c7a1b6601fcad94a29c44910289c5f12295
   languageName: node
   linkType: hard
 
