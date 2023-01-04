@@ -10827,10 +10827,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:18.11.9, @types/node@npm:>=12.0.0, @types/node@npm:>=6, @types/node@npm:>=8.1.0":
+"@types/node@npm:*, @types/node@npm:>=12.0.0, @types/node@npm:>=6, @types/node@npm:>=8.1.0":
   version: 18.11.9
   resolution: "@types/node@npm:18.11.9"
   checksum: cc0aae109e9b7adefc32eecb838d6fad931663bb06484b5e9cbbbf74865c721b03d16fd8d74ad90e31dbe093d956a7c2c306ba5429ba0c00f3f7505103d7a496
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:18.11.18":
+  version: 18.11.18
+  resolution: "@types/node@npm:18.11.18"
+  checksum: 03f17f9480f8d775c8a72da5ea7e9383db5f6d85aa5fefde90dd953a1449bd5e4ffde376f139da4f3744b4c83942166d2a7603969a6f8ea826edfb16e6e3b49d
   languageName: node
   linkType: hard
 
@@ -11935,7 +11942,7 @@ __metadata:
     "@types/chai": 4.3.4
     "@types/fs-extra": 9.0.13
     "@types/mocha": 10.0.1
-    "@types/node": 18.11.9
+    "@types/node": 18.11.18
     "@unlock-protocol/contracts": 0.0.12
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -11984,7 +11991,7 @@ __metadata:
     "@types/isomorphic-fetch": 0.0.36
     "@types/jsonwebtoken": 9.0.0
     "@types/nock": 10.0.3
-    "@types/node": 18.11.9
+    "@types/node": 18.11.18
     "@types/node-cron": 3.0.7
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
@@ -12073,7 +12080,7 @@ __metadata:
     "@babel/core": 7.20.7
     "@svgr/cli": 6.5.1
     "@types/next": 8.0.7
-    "@types/node": 18.11.9
+    "@types/node": 18.11.18
     "@types/postmate": 1.5.2
     "@types/react": 17.0.52
     "@types/react-dom": 17.0.18
@@ -12476,7 +12483,7 @@ __metadata:
     "@testing-library/react": 12.1.5
     "@types/jest": 27.5.2
     "@types/next": 8.0.7
-    "@types/node": 18.11.9
+    "@types/node": 18.11.18
     "@types/react": 17.0.52
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -39964,7 +39971,7 @@ fsevents@~2.1.1:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": 4.20221111.1
-    "@types/node": 18.11.9
+    "@types/node": 18.11.18
     typescript: 4.9.3
   languageName: unknown
   linkType: soft
