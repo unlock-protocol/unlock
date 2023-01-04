@@ -16,8 +16,6 @@ import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
-import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { useLockManager } from '~/hooks/useLockManager'
 import { addressMinify } from '~/utils/strings'
 import Link from 'next/link'
@@ -31,6 +29,7 @@ import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
+import { storage } from '~/config/storage'
 
 interface ActionBarProps {
   lockAddress: string
@@ -54,25 +53,15 @@ export function downloadAsCSV(cols: string[], metadata: any[]) {
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
-  const { account } = useAuth()
-  const storageService = useStorageService()
-  const walletService = useWalletService()
-
   const getMembers = async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
-    return storageService.getKeys({
-      lockAddress,
+    const response = await storage.keys(
       network,
-      filters: {
-        query: '',
-        filterKey: 'owner',
-        expiration: 'all',
-      },
-    })
+      lockAddress,
+      '',
+      'owner',
+      'all'
+    )
+    return response.data
   }
 
   const onDownloadCsv = async () => {

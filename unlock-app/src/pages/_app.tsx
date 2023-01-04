@@ -10,6 +10,7 @@ import '../index.css'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
+import { Auth } from '~/components/helpers/Auth'
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
@@ -24,7 +25,9 @@ const UnlockApp = ({ Component }: AppProps) => {
     <QueryClientProvider client={queryClient}>
       <GlobalWrapper>
         <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
-          <Component />
+          <Auth>
+            <Component />
+          </Auth>
         </ErrorBoundary>
         <Toaster />
       </GlobalWrapper>
