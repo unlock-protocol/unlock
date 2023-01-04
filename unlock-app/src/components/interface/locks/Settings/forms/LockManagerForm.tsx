@@ -6,7 +6,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { useWalletService } from '~/utils/withWalletService'
-import { getAddressForName } from '~/hooks/useEns'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -220,6 +220,7 @@ export const LockManagerForm = ({
     },
   })
 
+  const web3Service = useWeb3Service()
   const [address, setResolvedAddress] = useState('')
 
   const getLock = async () => {
@@ -237,8 +238,7 @@ export const LockManagerForm = ({
   }
 
   const addLockManager = async (address: string) => {
-    const resolvedAddress = await getAddressForName(address)
-
+    const resolvedAddress = await web3Service.resolveEns(address)
     if (resolvedAddress) {
       setResolvedAddress(resolvedAddress)
     }
