@@ -11883,6 +11883,7 @@ __metadata:
     path-to-regexp: 6.2.1
     pg: 8.8.0
     random-words: 1.2.0
+    react: ^18.2.0
     request: 2.88.2
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
@@ -40855,6 +40856,15 @@ fsevents@~2.1.1:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
+  languageName: node
+  linkType: hard
+
+"react@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
   languageName: node
   linkType: hard
 

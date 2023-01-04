@@ -31,6 +31,10 @@ const imageURLToBase64 = async (url: string) => {
   return imageURL
 }
 
+/**
+ * This generates a ticket using the satori library. We use the Ticket component from the UI library to generate the SVG from satori.
+ * This is used by the ticket controller to generate a ticket for a given key and as well as for sending tickets via email.
+ */
 export const createTicket = async ({
   network,
   lockAddress: lock,

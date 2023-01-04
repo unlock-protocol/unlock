@@ -8,7 +8,6 @@ import { generateQrCode } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { Lock } from '@unlock-protocol/types'
 import { createTicket } from '../../utils/ticket'
-const subgraph = new SubgraphService()
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -175,6 +174,7 @@ export const generateTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const tokenId = request.params.keyId.toLowerCase()
+  const subgraph = new SubgraphService()
   const loggedInUser = request.user!.walletAddress
   const key = await subgraph.key(
     {
