@@ -12665,7 +12665,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@zeit/next-source-maps": 0.0.3
-    apexcharts: ^3.36.0
+    apexcharts: 3.36.0
     autoprefixer: 10.4.13
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
@@ -12681,7 +12681,7 @@ __metadata:
     eslint-config-next: 12.3.4
     eslint-plugin-jest: 27.2.0
     eslint-plugin-mocha: 10.1.0
-    ethers: ^5.7.2
+    ethers: 5.7.2
     feed: 4.2.2
     gray-matter: 4.0.3
     jest: 27.5.1
@@ -12695,8 +12695,8 @@ __metadata:
     prettier: 2.8.1
     raw-loader: 4.0.2
     react: 17.0.2
-    react-apexcharts: ^1.4.0
-    react-crypto-icons: ^1.0.5
+    react-apexcharts: 1.4.0
+    react-crypto-icons: 1.0.5
     react-dom: 17.0.2
     react-ga: 3.3.1
     react-gtm-module: 2.0.11
@@ -14278,9 +14278,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:^3.36.0":
-  version: 3.36.3
-  resolution: "apexcharts@npm:3.36.3"
+"apexcharts@npm:3.36.0":
+  version: 3.36.0
+  resolution: "apexcharts@npm:3.36.0"
   dependencies:
     svg.draggable.js: ^2.2.2
     svg.easing.js: ^2.0.0
@@ -14288,7 +14288,7 @@ __metadata:
     svg.pathmorphing.js: ^0.1.3
     svg.resize.js: ^1.4.3
     svg.select.js: ^3.0.1
-  checksum: 2b92f123cf3e52255d379d95411d12943c096a1575234ae90513d9dd9dd3f118fa1f08098b5acf142e1d119ac0c19a7ca2a62d3979cf7e333d361d582ec12daf
+  checksum: 99ed3c1df728086a92bfa9c1a8e13771fd46b7dcd13445cc9275d3d04bea0efade3a4258467bbf6416c264458fd938ed37f62ba4bb3fa47eb253ec0aab1e82a6
   languageName: node
   linkType: hard
 
@@ -24170,7 +24170,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.0.0, ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.4.7, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.0.0, ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.4.7, ethers@npm:^5.7.1":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -40720,7 +40720,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-apexcharts@npm:^1.4.0":
+"react-apexcharts@npm:1.4.0":
   version: 1.4.0
   resolution: "react-apexcharts@npm:1.4.0"
   dependencies:
@@ -40758,7 +40758,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-crypto-icons@npm:1.0.5, react-crypto-icons@npm:^1.0.5":
+"react-crypto-icons@npm:1.0.5":
   version: 1.0.5
   resolution: "react-crypto-icons@npm:1.0.5"
   peerDependencies:
