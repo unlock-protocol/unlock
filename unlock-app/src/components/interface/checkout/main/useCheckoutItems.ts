@@ -13,6 +13,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
     paywallConfig.locks[lockAddress]?.captcha || paywallConfig.captcha
   const isPassword =
     paywallConfig.locks[lockAddress]?.password || paywallConfig.password
+  const isPromo = paywallConfig.locks[lockAddress]?.promo || paywallConfig.promo
 
   const checkoutItems: StepItem[] = [
     {
@@ -48,6 +49,12 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
           id: 6,
           name: 'Submit password',
           to: 'PASSWORD',
+        }
+      : isPromo
+      ? {
+          id: 6,
+          name: 'Enter promo code',
+          to: 'PROMO',
         }
       : {
           id: 6,
