@@ -150,9 +150,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   );
 
   // errors
-  error UniswapNotSet();
-  error InsufficientAmount(address);
   error SwapFailed();
+  error LockDoesntExist(address lockAddress);
+  error InsufficientBalance();
+  error UnauthorizedBalanceChange();
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
@@ -529,7 +530,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   ) public payable returns(bytes memory) {
     // check if lock exists
     if(!locks[lock].deployed) {
-      revert('l');
+      revert LockDoesntExist(lock);
     }
 
     // get lock pricing 
@@ -552,16 +553,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           getBalance(srcToken);
 
     if(srcToken != address(0)) {
-      // Transfer the specified amount of ERC20 to this contract
+      // Transfer the specified amount of src ERC20 to this contract
       TransferHelper.safeTransferFrom(srcToken, msg.sender, address(this), amountInMax);
 
-      // Approve the router to spend ERC20.
+      // Approve the router to spend src ERC20
       TransferHelper.safeApprove(srcToken, swapRouter, amountInMax);
     }
 
     // calculate value to send to Uniswap
     uint swapValue = srcToken == address(0) ? msg.value : 0;
-
+    
     // executes the swap
     (bool success,) = swapRouter.call{ value: swapValue }(swapCalldata);
     // make sure Uniswap revert
@@ -575,13 +576,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             :
       getBalance(destToken);
 
-    console.log(balanceTokenDestBefore);
-    console.log(keyPrice);
-    console.log(balanceTokenDestAfterSwap);
-
     // make sure balance is enough to buy key
     if(balanceTokenDestAfterSwap < balanceTokenDestBefore + keyPrice) {
-      revert('b');
+      revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
@@ -606,7 +603,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       balanceTokenDestAfter - balanceTokenDestBefore < 0
     ) {
       // balance too low
-      revert('low');
+      revert UnauthorizedBalanceChange();
     }
 
     // returns whatever the lock returned
