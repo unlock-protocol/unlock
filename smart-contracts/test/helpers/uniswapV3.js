@@ -322,6 +322,17 @@ const deployUniswapV3Oracle = async function () {
   return oracle
 }
 
+const currencyAmountToBigNumber = (amount) => {
+  const { decimals } = amount.currency
+  const fixed = ethers.FixedNumber.from(amount.toExact())
+  const tokenScale = ethers.FixedNumber.from(
+    ethers.BigNumber.from(10).pow(decimals)
+  )
+  return ethers.BigNumber.from(
+    // have to remove trailing .0 "manually" :/
+    fixed.mulUnsafe(tokenScale).floor().toString().split('.')[0]
+  )
+}
 
 async function getUniswapRoute (
   tokenIn, 
@@ -360,35 +371,32 @@ async function getUniswapRoute (
   }
 
   // call router
-  const route = await router.route(
+  const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } = await router.route(
     ...Object.values(args)
   )
 
-  // log some prices
-  console.log(`Quote Exact In: ${route.quote.toFixed(2)}`);
-  console.log(`Gas Adjusted Quote In: ${route.quoteGasAdjusted.toFixed(2)}`);
-  console.log(`Gas Used USD: ${route.estimatedGasUsedUSD.toFixed(6)}`);
+  // parse quote as BigNumber
+  const amountInMax = currencyAmountToBigNumber(quote)
 
-  const { methodParameters, quote } = route
+  // log some prices
+  console.log(`Quote Exact: ${quote.toExact()}`)
+  console.log(`Quote toFixed: ${quote.toFixed(2)}`);
+  console.log(`Gas Adjusted Quote: ${quoteGasAdjusted.toFixed(2)}`);
+  console.log(`Gas Used USD: ${estimatedGasUsedUSD.toFixed(6)}`);
+  console.log(`AmountInMax: ${amountInMax.toString()}`);
+
+  
   const { 
       calldata: swapCalldata, 
       value, 
       to: swapRouter
   } = methodParameters
 
-  // parse quote as BigNumber
-  const amountInMax = ethers.BigNumber.from(
-    JSBI.multiply(
-      quote.numerator, 
-      quote.denominator,
-    ).toString()
-  )
   return {
     swapCalldata,
     value,
     amountInMax,
     swapRouter,
-    route
   }
 }
 
@@ -406,6 +414,7 @@ module.exports = {
   addLiquidity,
   createUniswapV3Pool: createPool,
   deployUniswapV3Oracle,
+  currencyAmountToBigNumber,
   getPoolState,
   getPoolImmutables,
   getUniswapRoute,
