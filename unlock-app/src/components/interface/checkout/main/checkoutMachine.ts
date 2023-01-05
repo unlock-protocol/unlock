@@ -17,6 +17,7 @@ export type CheckoutPage =
   | 'RENEW'
   | 'RENEWED'
   | 'PASSWORD'
+  | 'PROMO'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -61,6 +62,11 @@ export interface SubmitDataEvent {
 
 export interface SubmitPasswordEvent {
   type: 'SUBMIT_PASSWORD'
+  data: string[]
+}
+
+export interface SubmitPromoEvent {
+  type: 'SUBMIT_PROMO'
   data: string[]
 }
 
@@ -120,6 +126,7 @@ export type CheckoutMachineEvents =
   | SelectCardToChargeEvent
   | SignMessageEvent
   | SubmitPasswordEvent
+  | SubmitPromoEvent
   | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
@@ -165,6 +172,7 @@ interface CheckoutMachineContext {
   skipQuantity: boolean
   skipRecipient: boolean
   password?: string[]
+  promo?: string[]
   data?: string[]
   renew: boolean
 }
@@ -203,6 +211,7 @@ export const checkoutMachine = createMachine(
       MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
       CAPTCHA: 'CAPTCHA',
       PASSWORD: 'PASSWORD',
+      PROMO: 'PROMO',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
         actions: ['updatePaywallConfig'],
@@ -226,6 +235,16 @@ export const checkoutMachine = createMachine(
                   ctx.paywallConfig.password ||
                   ctx.paywallConfig.locks?.[event.lock.address].password
                 return !!isPassword && event.expiredMember
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'PROMO',
+              cond: (ctx, event) => {
+                const isPromo =
+                  ctx.paywallConfig.promo ||
+                  ctx.paywallConfig.locks?.[event.lock.address].promo
+                return !!isPromo && event.expiredMember
               },
             },
             {
@@ -330,6 +349,11 @@ export const checkoutMachine = createMachine(
               cond: 'requirePassword',
             },
             {
+              target: 'PROMO',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePromo',
+            },
+            {
               target: 'CAPTCHA',
               actions: ['selectPaymentMethod'],
               cond: 'requireCaptcha',
@@ -368,6 +392,11 @@ export const checkoutMachine = createMachine(
               cond: 'requirePassword',
             },
             {
+              target: 'PROMO',
+              actions: ['selectCardToCharge'],
+              cond: 'requirePromo',
+            },
+            {
               target: 'CAPTCHA',
               actions: ['selectCardToCharge'],
               cond: 'requireCaptcha',
@@ -391,6 +420,11 @@ export const checkoutMachine = createMachine(
               target: 'PASSWORD',
               actions: ['signMessage'],
               cond: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              actions: ['signMessage'],
+              cond: 'requirePromo',
             },
             {
               target: 'CAPTCHA',
@@ -420,6 +454,38 @@ export const checkoutMachine = createMachine(
             {
               target: 'CONFIRM',
               actions: ['submitPassword'],
+            },
+          ],
+          BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PAYMENT',
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      PROMO: {
+        on: {
+          SUBMIT_PROMO: [
+            {
+              target: 'RENEW',
+              actions: ['submitPromo'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['submitPromo'],
             },
           ],
           BACK: [
@@ -667,6 +733,11 @@ export const checkoutMachine = createMachine(
           return event.data
         },
       }),
+      submitPromo: assign({
+        promo: (_, event) => {
+          return event.data
+        },
+      }),
       submitData: assign({
         data: (_, event) => {
           return event.data
@@ -688,6 +759,14 @@ export const checkoutMachine = createMachine(
           !!(
             context.paywallConfig.password ||
             context.paywallConfig.locks?.[context.lock!.address]?.password
+          ) && ['crypto', 'claim'].includes(context.payment.method)
+        )
+      },
+      requirePromo: (context) => {
+        return (
+          !!(
+            context.paywallConfig.promo ||
+            context.paywallConfig.locks?.[context.lock!.address]?.promo
           ) && ['crypto', 'claim'].includes(context.payment.method)
         )
       },

@@ -63,6 +63,12 @@ export const PaywallConfigLockSchema = z.object({
         'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
     })
     .optional(),
+  promo: z
+    .boolean({
+      description:
+        'If enabled, the user will be prompted to enter an optional promo code in order to receive discounts. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
+    })
+    .optional(),
   emailRequired: z
     .boolean({
       description:
@@ -193,6 +199,12 @@ export const PaywallConfigSchema = z
       .boolean({
         description:
           'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
+      })
+      .optional(),
+    promo: z
+      .boolean({
+        description:
+          'If enabled, the user will be prompted to enter an optional promo code in order to receive discounts. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
       })
       .optional(),
     emailRequired: z

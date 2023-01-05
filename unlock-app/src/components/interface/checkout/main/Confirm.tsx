@@ -108,6 +108,7 @@ export function Confirm({
     messageToSign,
     paywallConfig,
     password,
+    promo,
   } = state.context
 
   const {
@@ -160,7 +161,10 @@ export function Confirm({
       ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
       async () => {
         let purchaseData =
-          password || captcha || Array.from({ length: recipients.length })
+          promo ||
+          password ||
+          captcha ||
+          Array.from({ length: recipients.length })
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
