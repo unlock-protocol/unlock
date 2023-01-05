@@ -92,8 +92,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
-      const isPayable =
-        userCanAffordKey(lock, balance, recipients.length) && isGasPayable
+      const isPayable = isGasPayable
+      /** Note: we won't really know if user can afford because there could be discounts... */
+      /* userCanAffordKey(lock, balance, recipients.length) && isGasPayable */
 
       const options = {
         balance,
