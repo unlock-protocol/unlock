@@ -31,15 +31,12 @@ npx hardhat test --logs
 
 ### Run a mainnet fork
 
-Mainnet [forking with Hardhat](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet) relies on alchemy.com to retrieve chain archival data. An API key is required
-
-To test on a mainnet fork, you need to export `RUN_MAINNET_FORK=1` and `ALCHEMY_API_KEY=<xxx>` to your env
+To test on a [mainnet fork](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet), you need to export `RUN_MAINNET_FORK=1` to your env.
 
 ex .
 
 ```
 export RUN_MAINNET_FORK=1
-export ALCHEMY_API_KEY=<xxx>
 
 npx hardhat node
 // Running a mainnet fork...
@@ -85,7 +82,6 @@ npx hardhat run scripts/udt-upgrade.js --network goerli
 ```
 # setup credentials
 export RUN_MAINNET_FORK=1
-export ALCHEMY_API_KEY=<xxx>
 
 # run the tests
 yarn test test/mainnet/udt.js
@@ -136,8 +132,6 @@ Make a dry run of the upgrade on a mainnet fork by
 - impersonate all signers to run the tx
 
 ```shell
-export ALCHEMY_API_KEY=<alchemy api key>
-
 # to deploy a version already in the contracts package
 RUN_MAINNET_FORK=1 yarn hardhat submit:version --public-lock-version 12
 

@@ -34,7 +34,7 @@ router.get(
 router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
 
 router.delete(
-  '/:network/lock/:lockAddress/stripe/',
+  '/:network/lock/:lockAddress/stripe',
   authMiddleware,
   lockManagerMiddleware,
   lockController.disconnectStripe
