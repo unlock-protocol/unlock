@@ -9,7 +9,7 @@ import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
-import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
 import { Fragment } from 'react'
 import {
@@ -92,8 +92,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
-      const isPayable =
-        userCanAffordKey(lock, balance, recipients.length) && isGasPayable
+      const isPayable = isGasPayable
+      /** Note: we won't really know if user can afford because there could be discounts... */
+      /* userCanAffordKey(lock, balance, recipients.length) && isGasPayable */
 
       const options = {
         balance,

@@ -21,7 +21,7 @@ const argv = yargs
     'yarn ts-node scripts/send_email.ts --network 5 --lockAddress xyz',
     'send emails to all users on goerli on xyz lock address.'
   )
-  .parseSync()
+  .parse()
 
 interface Options {
   lockAddress: string
