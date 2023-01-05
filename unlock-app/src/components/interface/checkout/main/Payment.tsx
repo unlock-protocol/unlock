@@ -9,7 +9,7 @@ import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
-import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
 import { Fragment } from 'react'
 import {
