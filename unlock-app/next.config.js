@@ -1,6 +1,7 @@
 const dotenv = require('dotenv')
 const path = require('path')
 const { withSentryConfig } = require('@sentry/nextjs')
+const withTM = require('next-transpile-modules')(['@tw-classed/react'])
 
 const unlockEnv = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
@@ -33,4 +34,4 @@ const config = {
   },
 }
 
-module.exports = withSentryConfig(config)
+module.exports = withSentryConfig(withTM(config))
