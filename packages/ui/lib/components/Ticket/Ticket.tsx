@@ -1,8 +1,6 @@
 import { ReactNode } from 'react'
-import UnlockAssets from '@unlock-protocol/unlock-assets'
 import { networks } from '@unlock-protocol/networks'
 import { minifyAddress } from '~/utils'
-const { SvgComponents } = UnlockAssets
 
 interface Props {
   id: string
@@ -39,7 +37,7 @@ export function Ticket({
         display: 'flex',
         flexDirection: 'column',
         borderRadius: '24px',
-        maxWidth: '450px'
+        maxWidth: '450px',
       }}
     >
       <div
@@ -170,13 +168,7 @@ export function Ticket({
             lineHeight: '16px',
           }}
         >
-          Powered by
-          <SvgComponents.UnlockWordMark
-            style={{
-              marginLeft: '6px',
-            }}
-            width={56}
-          />
+          Powered by Unlock Protocol
         </div>
       </div>
       <div
@@ -281,7 +273,6 @@ export function TicketItem({ icon, value }: TicketItemProps) {
         display: 'flex',
         alignItems: 'center',
         marginBottom: '8px',
-
       }}
     >
       {icon}
