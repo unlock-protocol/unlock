@@ -15,7 +15,7 @@ USER root
 # install all deps required to build modules
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
-    apt-get install --assume-yes \
+    apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
     rsync \
@@ -35,17 +35,18 @@ WORKDIR ${DEST_FOLDER}
 # for packages install and used to invalidate buidkit docker cache
 RUN --mount=type=bind,target=/docker-context \
     rsync -amv --delete \
-          --exclude='node_modules' \
-          --exclude='*/node_modules' \
-          --include='package.json' \
-          --include='*/' --exclude='*' \
-          /docker-context/ $DEST_FOLDER;
+    --exclude='node_modules' \
+    --exclude='*/node_modules' \
+    --include='package.json' \
+    --include='*/' --exclude='*' \
+    /docker-context/ $DEST_FOLDER;
 
 # yarn related files
 COPY yarn.lock .
 COPY .yarnrc.yml .
 COPY .yarn/plugins .yarn/plugins
 COPY .yarn/releases .yarn/releases
+COPY .yarn/patches .yarn/patches
 
 # use custom .yarn/cache folder (for local dev)
 RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> .yarnrc.yml
@@ -55,6 +56,9 @@ RUN chown -R node:node .
 # install deps
 USER node
 RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
+
+# Dedupe deps
+RUN yarn dedupe
 
 ###################################################################
 # Stage 2: Build packages and app
@@ -80,6 +84,13 @@ RUN yarn build
 # Build locksmith and other apps separately to reduce startup time on heroku
 RUN yarn apps:build
 
+# Cleanup up image to make it lighter
+USER root
+RUN apt-get autoremove
+USER node
+
+# Remove yarn cache (re-installing dependencies will take more time, but image will be 500MB lighter)
+RUN rm -rf .yarn/cache/ 
 
 ###################################################################
 # Stage 3. export minimal image for prod app

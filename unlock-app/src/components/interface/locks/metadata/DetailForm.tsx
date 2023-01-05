@@ -6,7 +6,7 @@ interface Props {
   disabled?: boolean
 }
 
-export function LockDetailForm({ disabled }: Props) {
+export function DetailForm({ disabled }: Props) {
   const {
     register,
     formState: { errors },
@@ -39,11 +39,14 @@ export function LockDetailForm({ disabled }: Props) {
     </p>
   )
   return (
-    <Disclosure label="Basic">
+    <Disclosure label="Basic" defaultOpen>
       <div className="grid gap-6">
         <Input
           {...register('name', {
-            required: true,
+            required: {
+              value: true,
+              message: 'Name is required',
+            },
           })}
           error={errors.name?.message}
           disabled={disabled}
@@ -53,13 +56,13 @@ export function LockDetailForm({ disabled }: Props) {
           description={<NameDescription />}
         />
         <Input
-          {...register('external_url')}
+          {...register('image')}
           disabled={disabled}
           type="url"
           placeholder="https://"
-          label="External URL"
-          error={errors.external_url?.message}
-          description="Include a link in the NFT, so members can learn more about it."
+          label="Image URL"
+          error={errors.image?.message}
+          description="Include an image in the NFT, so members can see it."
         />
         <TextBox
           {...register('description')}
@@ -69,6 +72,15 @@ export function LockDetailForm({ disabled }: Props) {
           description={<DescDescription />}
           error={errors.description?.message}
           rows={4}
+        />
+        <Input
+          {...register('external_url')}
+          disabled={disabled}
+          type="url"
+          placeholder="https://"
+          label="External URL"
+          error={errors.external_url?.message}
+          description="Include a link in the NFT, so members can learn more about it."
         />
       </div>
     </Disclosure>

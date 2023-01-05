@@ -12,7 +12,7 @@ import { Button, Input, ToggleSwitch, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
-import { LockPicker } from '../../Manage/elements/LockPicker'
+import { Picker } from '~/components/interface/Picker'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -329,12 +329,10 @@ export const LocksForm = ({
               {isLoadingLocksByNetwork ? (
                 <SelectPlaceholder />
               ) : (
-                <LockPicker
-                  owner={account!}
-                  onChange={onChangeLock}
-                  defaultValues={{
-                    lockAddress,
-                    network,
+                <Picker
+                  userAddress={account!}
+                  onChange={(state) => {
+                    onChangeLock(state.lockAddress, state.network, state.name)
                   }}
                 />
               )}

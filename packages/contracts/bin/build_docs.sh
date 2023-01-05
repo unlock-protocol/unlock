@@ -36,7 +36,7 @@ sed -i -e "s/IPublicLockV${latest_template}/PublicLock (v${latest_template})/g" 
 sed -i -e "s/IUnlockV${latest_unlock}/Unlock (v${latest_unlock})/g" "$DEST_DOCS_FOLDER/Unlock.md"
 
 ### add README
-echo $'---
+echo '---
 sidebar_position: 1
 title: Unlock Smart Contract Interface Reference
 pagination_next: core-protocol/unlock/README
@@ -65,7 +65,7 @@ new class.
 
 ### npm module
 
-We\'ve packaged the interfaces along with the contracts. 
+We have packaged the interfaces along with the contracts. 
 <a href="https://www.npmjs.com/package/@unlock-protocol/contracts">
     <button class="button button-primary">See it on npm</button>
 </a>
@@ -85,10 +85,10 @@ npm i @unlock-protocol/contracts
 
 #### Creating Hooks
 
-Let\'s say for instance you\'d like people to be able to sell their memberships,
-however you don\'t want people to pass these around too often to limit turnover. 
-So you want to let people transfer them but when they do you don\'t want to 
-charge a fee but instead want to zero out the duration of time left. This might 
+Let us say for instance you would like people to be able to sell their memberships,
+however you do not want people to pass these around too often to limit turnover. 
+So you want to let people transfer them but when they do you do not want to 
+charge a fee, but instead want to zero out the duration of time left. This might 
 make sense if you have an exclusive membership, like country club with access to 
 physical space, limited in the number of people. 
 
@@ -134,7 +134,7 @@ section of the tutorials.
 #### Using them inside other smart contracts
 
 If you want to add subscription service functionality you can use them inside of
-other smart contracts to check for key ownership to the subscription Lock you\'ve
+other smart contracts to check for key ownership to the subscription Lock you have
 created. You can see an example of how that can be done to add paid functions
 to your dApps using Unlock in our [Smart Contracts/Unlocking Smart Contracts](/tutorials/smart-contracts/using-unlock-in-other-contracts) 
 section of the tutorials.

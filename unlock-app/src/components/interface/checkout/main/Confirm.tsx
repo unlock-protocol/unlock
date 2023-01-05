@@ -28,6 +28,7 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface Props {
   injectedProvider: unknown
@@ -51,11 +52,15 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
       </h4>
       <div className="flex justify-between w-full pt-2 text-xs border-t border-gray-300">
         <span className="text-gray-600">Service Fee</span>
-        <div>${(fiatPricing?.usd?.unlockServiceFee / 100).toFixed(2)}</div>
+        <div>
+          ${(fiatPricing?.usd?.unlockServiceFee / 100).toLocaleString()}
+        </div>
       </div>
       <div className="flex justify-between w-full pb-2 text-xs ">
         <span className="text-gray-600"> Payment Processor </span>
-        <div>${(fiatPricing?.usd?.creditCardProcessing / 100).toFixed(2)}</div>
+        <div>
+          ${(fiatPricing?.usd?.creditCardProcessing / 100).toLocaleString()}
+        </div>
       </div>
       <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Total </h4>
@@ -66,7 +71,7 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
               (t, amount) => t + Number(amount),
               0
             ) / 100
-          ).toFixed(2)}
+          ).toLocaleString()}
         </div>
       </div>
     </div>
@@ -84,7 +89,7 @@ export function Confirm({
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
-
+  const storage = useStorageService()
   const {
     prepareChargeForCard,
     captureChargeForCard,
@@ -212,15 +217,28 @@ export function Confirm({
             }
           })
         )
-        return {
+        const item = {
           prices,
           total: prices
             .reduce((acc, item) => acc + parseFloat(item.amount), 0)
             .toString(),
         }
+
+        const response = await storage.locksmith.price(
+          lockNetwork,
+          parseFloat(item.total),
+          lock?.currencyContractAddress
+            ? lock?.currencyContractAddress
+            : undefined
+        )
+
+        return {
+          ...item,
+          usdPrice: response.data.result,
+        }
       },
       {
-        refetchInterval: Infinity,
+        refetchInterval: 1000 * 60 * 5,
         refetchOnMount: false,
         enabled: !isInitialDataLoading,
       }
@@ -640,7 +658,7 @@ export function Confirm({
                       <div className="font-bold">
                         {item.amount === '0'
                           ? 'FREE'
-                          : item.amount.toString() + ' ' + symbol}
+                          : Number(item.amount).toLocaleString() + ' ' + symbol}
                       </div>
                     </div>
                   )
@@ -663,9 +681,12 @@ export function Confirm({
               keyPrice={
                 pricingData?.total === '0'
                   ? 'FREE'
-                  : `${pricingData?.total?.toString()} ${symbol}`
+                  : `${Number(pricingData?.total)?.toLocaleString()} ${symbol}`
               }
-              usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+              usdPrice={`~$${(
+                pricingData?.usdPrice?.priceInAmount ||
+                fiatPricing?.usd?.keyPrice / 100
+              )?.toLocaleString()}`}
               isCardEnabled={formattedData.cardEnabled}
             />
           </>
