@@ -12021,7 +12021,7 @@ __metadata:
     eslint: 8.31.0
     fs-extra: 11.1.0
     hardhat: 2.12.5
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
@@ -12038,7 +12038,7 @@ __metadata:
     eslint-plugin-mocha: 10.1.0
     eslint-plugin-prettier: 4.2.1
     jest: 27.5.1
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
@@ -12078,7 +12078,7 @@ __metadata:
     tslint: 5.20.1
     tslint-config-prettier: 1.18.0
     tslint-plugin-prettier: 2.3.0
-    typescript: 4.9.3
+    typescript: 4.9.4
   peerDependencies:
     ethers: ^5.7.x
     hardhat: ^2.12.x
@@ -12159,7 +12159,7 @@ __metadata:
     path-to-regexp: 6.2.1
     pg: 8.8.0
     random-words: 1.2.0
-    react: ^18.2.0
+    react: 18.2.0
     request: 2.88.2
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
@@ -12171,7 +12171,7 @@ __metadata:
     stripe: 8.222.0
     supertest: 6.3.3
     tsx: 3.12.1
-    typescript: 4.9.3
+    typescript: 4.9.4
     unlock-abi-1-1: 1.1.1
     vitest: 0.25.6
     winston: 3.8.2
@@ -12188,7 +12188,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     eslint: 8.31.0
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
@@ -12228,7 +12228,7 @@ __metadata:
     react-test-renderer: 17.0.2
     style-loader: 3.3.1
     styled-components: 5.3.6
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
@@ -12256,7 +12256,7 @@ __metadata:
     style-loader: 3.3.1
     ts-jest: 27.1.5
     ts-loader: 9.4.2
-    typescript: 4.9.3
+    typescript: 4.9.4
     webpack: 5.75.0
     webpack-cli: 5.0.1
   languageName: unknown
@@ -12350,7 +12350,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     ethers: 5.7.2
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
@@ -12392,7 +12392,7 @@ __metadata:
     tailwindcss: 3.2.4
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.5.0
-    typescript: 4.9.3
+    typescript: 4.9.4
     url-loader: 4.1.1
     vite: 4.0.4
     vite-plugin-svgr: 2.4.0
@@ -12494,7 +12494,7 @@ __metadata:
     tailwind-merge: 1.8.1
     tailwindcss: 3.2.4
     ts-jest: 27.1.5
-    typescript: 4.9.3
+    typescript: 4.9.4
     validator: 13.7.0
     walletlink: 2.5.0
     xstate: 4.34.0
@@ -12653,7 +12653,7 @@ __metadata:
     tailwind-merge: 1.8.1
     tailwindcss: 3.2.4
     ts-jest: 27.1.5
-    typescript: 4.9.3
+    typescript: 4.9.4
     use-local-storage: 2.3.6
     vitest: 0.26.3
     yaml-front-matter: 4.1.1
@@ -40051,7 +40051,7 @@ fsevents@~2.1.1:
   dependencies:
     "@cloudflare/workers-types": 4.20221111.1
     "@types/node": 18.11.18
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
@@ -41076,7 +41076,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react@npm:^18.2.0":
+"react@npm:18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -47207,7 +47207,7 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"typescript@>=4.5.0, typescript@^4.5.5, typescript@npm:4.9.3, typescript@npm:^4.8.4":
+"typescript@>=4.5.0, typescript@^4.5.5, typescript@npm:^4.8.4":
   version: 4.9.3
   resolution: "typescript@npm:4.9.3"
   bin:
@@ -47237,16 +47237,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@>=4.5.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
-  version: 4.9.3
-  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 67ca21a387c0572f1c04936e638dde7782c5aa520c3754aadc7cc9b7c915da9ebc3e27c601bfff4ccb7d7264e82dce6d277ada82ec09dc75024349e0ef64926d
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
   resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"
@@ -47254,6 +47244,16 @@ typescript@^3.8.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 1caaea6cb7f813e64345190fddc4e6c924d0b698ab81189b503763c4a18f7f5501c69362979d36e19c042d89d936443e768a78b0675690b35eb663d19e0eae71
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@>=4.5.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
+  version: 4.9.3
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 67ca21a387c0572f1c04936e638dde7782c5aa520c3754aadc7cc9b7c915da9ebc3e27c601bfff4ccb7d7264e82dce6d277ada82ec09dc75024349e0ef64926d
   languageName: node
   linkType: hard
 
@@ -47906,7 +47906,7 @@ typescript@^3.8.3:
     lint-staged: 13.1.0
     node-fetch: 2.6.7
     prettier: 2.8.1
-    typescript: 4.9.3
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
