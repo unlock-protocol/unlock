@@ -37,8 +37,6 @@ import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
 import "./interfaces/IWETH.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "hardhat/console.sol";
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -509,7 +507,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return token == address(0) ?
       address(this).balance 
       :
-      IERC20(token).balanceOf(address(this));
+      IMintableERC20(token).balanceOf(address(this));
   }
 
   /**
@@ -580,7 +578,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
     // approve ERC20 to call the lock
     if(destToken != address(0)) {
-      IERC20(destToken).approve(lock, keyPrice);
+      IMintableERC20(destToken).approve(lock, keyPrice);
     }
 
     // call the lock

@@ -17,4 +17,6 @@ interface IMintableERC20 {
   function balanceOf(
     address account
   ) external returns (uint256);
+
+  function approve(address spender, uint256 amount) external returns (bool);
 }
