@@ -687,10 +687,7 @@ export function Confirm({
                   ? 'FREE'
                   : `${Number(pricingData?.total)?.toLocaleString()} ${symbol}`
               }
-              usdPrice={`~$${(
-                pricingData?.usdPrice?.priceInAmount ||
-                fiatPricing?.usd?.keyPrice / 100
-              )?.toLocaleString()}`}
+              usdPrice={`~$${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`}
               isCardEnabled={formattedData.cardEnabled}
             />
           </>
