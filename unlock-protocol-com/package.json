@@ -38,6 +38,7 @@
     "jest-styled-components": "7.1.1",
     "lint-staged": "13.1.0",
     "next": "12.3.4",
+    "next-seo": "5.15.0",
     "numeral": "2.0.6",
     "path-match": "1.2.4",
     "prettier": "2.8.1",
