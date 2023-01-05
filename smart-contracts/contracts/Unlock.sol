@@ -103,9 +103,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
-  // Uniswap
-  address public uniswapRouter;
-
   // Events
   event NewLock(
     address indexed lockOwner,
