@@ -60,7 +60,7 @@ const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
   <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
 )
 
-const filters = ['1D', '7D', '1M', '1Y', 'All']
+const filters = ['7D', '1M', '1Y', 'All']
 
 function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
   const chartOptions = {
@@ -79,12 +79,15 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
           sizeOffset: 6,
         },
       },
-      xaxis: xaxis,
-      yaxis: [
-        { show: false, logarithmic: true },
-        { show: false, logarithmic: true },
-        { show: false, logarithmic: true },
-      ],
+      xaxis,
+      yaxis: series.map((s, i) => {
+        return {
+          opposite: i % 2,
+          title: {
+            text: s.name,
+          },
+        }
+      }),
       tooltip: {
         y: [
           {
@@ -113,7 +116,7 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
   }
 
   return (
-    <div className="w-full h-80">
+    <div className="w-full h-96">
       <ReactApexChart
         options={chartOptions.options}
         series={series}
@@ -174,7 +177,6 @@ function CalcRenderData(
   filter: string
 ) {
   return timestampArray.map((dayId) => {
-    // const interval = ['1D', '7D', '1M'].includes(filter) ? 1 : 30
     const dayDatas = graphData.unlockDailyDatas.filter(
       (item) => item.id >= dayId - 1 && item.id < dayId
     )
@@ -194,13 +196,11 @@ function CalcRenderData(
 export function State() {
   const currentDay = Math.round(new Date().getTime() / 86400000)
   const [subgraphData, setSubgraphData] = useState<any[]>([])
-  const [filter, setFilter] = useState<string>('1Y')
+  const [filter, setFilter] = useState<string>('7D')
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gnpValues, setGNPValues] = useState<any[]>([])
   const [overViewData, setOverViewData] = useState<IOverView[]>([])
-  const [selectedNetwork, setSelectedNetwork] = useState<string>(
-    Object.keys(networks)[0]
-  )
+  const [selectedNetwork, setSelectedNetwork] = useState<string>('ALL')
   const [selectedNetworkSubgraphData, setSelectedNetworkSubgraphData] =
     useState<INetworkSubgraph | undefined>(undefined)
   const [series, setSeries] = useState<ISeries[]>([])
@@ -215,20 +215,6 @@ export function State() {
       let xAxisLabels
       let timestampArray
       switch (filter) {
-        case '1D': {
-          xAxisLabels = [...Array(2).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
-              'default',
-              { dateStyle: 'short' }
-            )
-          })
-          timestampArray = [...Array(2).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
-          })
-          break
-        }
         case '7D': {
           xAxisLabels = [...Array(7).keys()].reverse().map((key) => {
             const cur = new Date()
@@ -395,9 +381,7 @@ export function State() {
                 (item) =>
                   item.id >=
                     currentDay -
-                      (filter === '1D'
-                        ? 2
-                        : filter === '7D'
+                      (filter === '7D'
                         ? 8
                         : filter === '1M'
                         ? 31
@@ -444,7 +428,7 @@ export function State() {
       const overview_contents: IOverView[] = [
         {
           value: subgraphData.reduce(
-            (pv, b) => pv + parseInt(b.data.lockStats.totalLocksDeployed),
+            (pv, b) => pv + parseInt(b?.data?.lockStats?.totalLocksDeployed),
             0
           ),
           title: 'Total of Locks Deployed',
@@ -453,7 +437,7 @@ export function State() {
         },
         {
           value: subgraphData.reduce(
-            (pv, b) => pv + parseInt(b.data.lockStats.totalKeysSold),
+            (pv, b) => pv + parseInt(b?.data?.lockStats?.totalKeysSold),
             0
           ),
           title: 'Total of Keys Sold',
@@ -522,7 +506,7 @@ export function State() {
               <div className="flex justify-between flex-wrap gap-2">
                 <select
                   id="network"
-                  className="bg-white text-black rounded-md border-none px-4"
+                  className="w-96	 bg-white text-black rounded-md border-none px-4"
                   value={selectedNetwork}
                   onChange={(e) => {
                     setSelectedNetwork(e.target.value)
