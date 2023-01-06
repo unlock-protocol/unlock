@@ -35,17 +35,18 @@ WORKDIR ${DEST_FOLDER}
 # for packages install and used to invalidate buidkit docker cache
 RUN --mount=type=bind,target=/docker-context \
     rsync -amv --delete \
-          --exclude='node_modules' \
-          --exclude='*/node_modules' \
-          --include='package.json' \
-          --include='*/' --exclude='*' \
-          /docker-context/ $DEST_FOLDER;
+    --exclude='node_modules' \
+    --exclude='*/node_modules' \
+    --include='package.json' \
+    --include='*/' --exclude='*' \
+    /docker-context/ $DEST_FOLDER;
 
 # yarn related files
 COPY yarn.lock .
 COPY .yarnrc.yml .
 COPY .yarn/plugins .yarn/plugins
 COPY .yarn/releases .yarn/releases
+COPY .yarn/patches .yarn/patches
 
 # use custom .yarn/cache folder (for local dev)
 RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> .yarnrc.yml

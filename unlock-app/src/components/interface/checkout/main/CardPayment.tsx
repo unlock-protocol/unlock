@@ -23,9 +23,9 @@ import {
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useForm } from 'react-hook-form'
+import { storage } from '~/config/storage'
 
 interface Props {
   injectedProvider: unknown
@@ -33,8 +33,7 @@ interface Props {
 }
 
 export function CardPayment({ checkoutService, injectedProvider }: Props) {
-  const { account, network } = useAuth()
-  const storageService = useStorageService()
+  const { account } = useAuth()
   const config = useConfig()
   const walletService = useWalletService()
   const stripe = loadStripe(config.stripeApiKey, {})
@@ -45,22 +44,20 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
     isInitialLoading: isMethodLoading,
     refetch,
   } = useQuery(
-    ['list-cards', account],
+    ['listCards', account],
     async () => {
-      await storageService.loginPrompt({
-        walletService,
-        address: account!,
-        chainId: network!,
-      })
-      return storageService.listCardMethods()
+      const response = await storage.listPaymentMethods()
+      return response.data.methods || []
     },
     {
       enabled: !!account,
     }
   )
 
-  const card = methods?.[0]?.card
   const stepItems = useCheckoutSteps(checkoutService)
+
+  const payment = methods?.[0]
+  const card = payment?.card
 
   return (
     <Fragment>
@@ -81,6 +78,11 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           />
         ) : (
           <Card
+            name={payment!.billing_details?.name || ''}
+            last4={card.last4!}
+            exp_month={card.exp_month!}
+            exp_year={card.exp_year!}
+            country={card.country!}
             onChange={async () => {
               const succeeeded = await deleteCardForAddress(
                 config,
@@ -93,7 +95,6 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
                 ToastHelper.error('Failed to remove the card.')
               }
             }}
-            {...card}
           />
         )}
       </main>
@@ -119,7 +120,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
               onClick={() => {
                 checkoutService.send({
                   type: 'SELECT_CARD_TO_CHARGE',
-                  cardId: card.id,
+                  cardId: payment.id!,
                 })
               }}
             >
@@ -140,20 +141,14 @@ interface SetupFormProps {
 }
 
 export function SetupForm({ onSubmit, stripe, onSuccess }: SetupFormProps) {
-  const storageService = useStorageService()
-  const walletService = useWalletService()
-  const { account, network } = useAuth()
-  const [clientSecret, setClientSecret] = useState(null)
-
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
   const fetchSetupIntent = useCallback(async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network!,
-    })
-    const secret = await storageService.getSetupIntent()
-    setClientSecret(secret)
-  }, [walletService, account, network, storageService])
+    const response = await storage.setupPayment()
+    const secret = response.data.clientSecret
+    if (secret) {
+      setClientSecret(secret)
+    }
+  }, [])
 
   useEffect(() => {
     fetchSetupIntent()
