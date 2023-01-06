@@ -113,7 +113,6 @@ export const createTicket = async ({
     {
       width: 500,
       height: 1000,
-      embedFont: true,
       fonts: [
         {
           name: 'Inter',
