@@ -20,6 +20,11 @@ const config = {
         ? 'https://locksmith.unlock-protocol.com'
         : 'https://staging-locksmith.unlock-protocol.com',
   },
+  storage: {
+    endpoint: process.env.STORAGE_ENDPOINT,
+    accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
+    secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
+  },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
 
