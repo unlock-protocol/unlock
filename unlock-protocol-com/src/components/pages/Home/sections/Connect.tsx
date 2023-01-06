@@ -97,13 +97,13 @@ export function Connect() {
           </ul>
         </div>
 
-        <div className="flex  gap-4 sm:justify-start">
-          <Button className="text-center" href="#get-started" as={Link}>
-            Join our free Community Membership
+        <div className="flex flex-col gap-2 sm:justify-start">
+          <Button href="#get-started" className="text-center" as={Link}>
+            Join our Community Membership
           </Button>
           <Button
-            className="text-center"
             as={Link}
+            className="text-center"
             href={`${unlockConfig.appURL}/locks/create`}
             variant="secondary"
           >
@@ -113,7 +113,7 @@ export function Connect() {
       </div>
 
       <div
-        className="overflow-hidden cursor-move w-full pb-6 max-w-fit lg:max-w-md md:pb-0"
+        className="w-full pb-6 overflow-hidden cursor-move max-w-fit lg:max-w-md md:pb-0"
         ref={emblaRef}
       >
         <div className="flex">
@@ -137,16 +137,16 @@ export function Connect() {
                 >
                   <div className="w-full bg-white rounded-3xl shadow-transparent">
                     <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-                      <p className="font-bold text-xl">{title}</p>
+                      <p className="text-xl font-bold">{title}</p>
                     </header>
                     <img
-                      className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
+                      className="object-cover w-full h-96 rounded-t-xl sm:rounded-none"
                       alt={title}
                       src={illustration}
                     />
                     <div className="flex h-[100px] sm:h-[80px] items-center gap-4 px-6 py-4">
                       <div>
-                        <h4 className="font-bold block sm:hidden">{title}</h4>
+                        <h4 className="block font-bold sm:hidden">{title}</h4>
                         <p className="text-sm brand-gray">{quote}</p>
                       </div>
                     </div>
