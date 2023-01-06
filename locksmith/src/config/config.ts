@@ -24,6 +24,7 @@ const config = {
     endpoint: process.env.STORAGE_ENDPOINT,
     accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
     secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
+    publicHost: process.env.STORAGE_PUBLIC_HOST,
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
