@@ -13,14 +13,18 @@ const {
 
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 
-let unlock
-let udt
-let lock
+let unlock, udt, lock, oracle, weth
 
 // skip on coverage until solidity-coverage supports EIP-1559
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
 const estimateGas = 252166 * 2
+
+// test with various chainIds 
+const scenarios = [
+  1, // mainnet
+  100 // xdai gnosis
+]
 
 contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [protocolOwner, minter, referrer, keyBuyer] = accounts
@@ -34,22 +38,23 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     lock = await deployLock({ unlock })
 
     // Deploy the exchange
-    const { oracle, weth } = await createUniswapV2Exchange({
+    ;({ oracle, weth } = await createUniswapV2Exchange({
       protocolOwner: await ethers.getSigner(protocolOwner),
       minter: await ethers.getSigner(minter),
       udtAddress: udt.address,
-    })
+    }))
 
-    // Config in Unlock
+    // default config Unlock oracle
     await unlock.configUnlock(
       udt.address,
       weth.address,
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
-      100, // xdai
+      1,
       { from: protocolOwner }
     )
+
     await unlock.setOracle(udt.address, oracle.address, {
       from: protocolOwner,
     })
@@ -107,110 +112,126 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     )
   })
 
-  describe('grant by gas price', () => {
-    let gasSpent
-
-    before(async () => {
-      // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
-      await unlock.resetTrackedValue(ethers.utils.parseUnits('1', 'wei'), 0, {
-        from: protocolOwner,
+  scenarios.forEach((chainId) => {
+    describe(`behaviour on chain with ${chainId}`, () => {
+      before(async () => {
+        await unlock.configUnlock(
+          udt.address,
+          weth.address,
+          estimateGas,
+          await unlock.globalTokenSymbol(),
+          await unlock.globalBaseTokenURI(),
+          chainId,
+          { from: protocolOwner }
+        )
       })
-      const { blockNumber } = await lock.purchase(
-        [],
-        [keyBuyer],
-        [referrer],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from: keyBuyer,
-          value: await lock.keyPrice(),
-        }
-      )
 
-      const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
-      // using estimatedGas instead of the actual gas used so this test does
-      // not regress as other features are implemented
-      gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
-    })
+      describe('grant by gas price', () => {
+        let gasSpent
 
-    it('referrer has some UDT now', async () => {
-      const actual = await udt.balanceOf(referrer)
-      assert.notEqual(actual.toString(), 0)
-    })
+        before(async () => {
+          // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
+          await unlock.resetTrackedValue(ethers.utils.parseUnits('1', 'wei'), 0, {
+            from: protocolOwner,
+          })
+          const { blockNumber } = await lock.purchase(
+            [],
+            [keyBuyer],
+            [referrer],
+            [ADDRESS_ZERO],
+            [[]],
+            {
+              from: keyBuyer,
+              value: await lock.keyPrice(),
+            }
+          )
 
-    it('amount granted for referrer ~= gas spent', async () => {
-      // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
-      assert.equal(
-        new BigNumber(await udt.balanceOf(referrer))
-          .shiftedBy(-18) // shift UDT balance
-          .times(rate.toString())
-          .shiftedBy(-18) // shift the rate
-          .toFixed(3),
-        gasSpent.shiftedBy(-18).toFixed(3)
-      )
-    })
+          const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
+          // using estimatedGas instead of the actual gas used so this test does
+          // not regress as other features are implemented
+          gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
+        })
 
-    it('amount granted for dev ~= gas spent * 20%', async () => {
-      assert.equal(
-        new BigNumber(await udt.balanceOf(await unlock.owner()))
-          .shiftedBy(-18) // shift UDT balance
-          .times(rate.toString())
-          .shiftedBy(-18) // shift the rate
-          .toFixed(3),
-        gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
-      )
-    })
-  })
+        it('referrer has some UDT now', async () => {
+          const actual = await udt.balanceOf(referrer)
+          assert.notEqual(actual.toString(), 0)
+        })
 
-  describeOrSkip('grant capped by % growth', () => {
-    before(async () => {
-      // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
-      // With 1,000,000 to distribute, that is 0.00001% supply
-      // which translates in a gdp growth of 0.002%
-      // So we need a GDP of 500 eth
-      // Example: ETH = 2000 USD
-      // Total value exchanged = 1M USD
-      // Key purchase 0.01 ETH = 20 USD
-      // user earns 10UDT or
-      await unlock.resetTrackedValue(
-        ethers.utils.parseUnits('500', 'ether'),
-        0,
-        {
-          from: protocolOwner,
-        }
-      )
+        it('amount granted for referrer ~= gas spent', async () => {
+          // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
+          assert.equal(
+            new BigNumber(await udt.balanceOf(referrer))
+              .shiftedBy(-18) // shift UDT balance
+              .times(rate.toString())
+              .shiftedBy(-18) // shift the rate
+              .toFixed(3),
+            gasSpent.shiftedBy(-18).toFixed(3)
+          )
+        })
 
-      const baseFeePerGas = 1000000000 // in gwei
-      await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-        ethers.BigNumber.from(baseFeePerGas).toHexString(16),
-      ])
-
-      await lock.purchase([], [keyBuyer], [referrer], [ADDRESS_ZERO], [[]], {
-        from: keyBuyer,
-        value: await lock.keyPrice(),
-        gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16),
+        it('amount granted for dev ~= gas spent * 20%', async () => {
+          assert.equal(
+            new BigNumber(await udt.balanceOf(await unlock.owner()))
+              .shiftedBy(-18) // shift UDT balance
+              .times(rate.toString())
+              .shiftedBy(-18) // shift the rate
+              .toFixed(3),
+            gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
+          )
+        })
       })
-    })
 
-    it('referrer has some UDT now', async () => {
-      const actual = await udt.balanceOf(referrer)
-      assert.notEqual(actual.toString(), 0)
-    })
+      describeOrSkip('grant capped by % growth', () => {
+        before(async () => {
+          // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
+          // With 1,000,000 to distribute, that is 0.00001% supply
+          // which translates in a gdp growth of 0.002%
+          // So we need a GDP of 500 eth
+          // Example: ETH = 2000 USD
+          // Total value exchanged = 1M USD
+          // Key purchase 0.01 ETH = 20 USD
+          // user earns 10UDT or
+          await unlock.resetTrackedValue(
+            ethers.utils.parseUnits('500', 'ether'),
+            0,
+            {
+              from: protocolOwner,
+            }
+          )
 
-    it('amount granted for referrer ~= 8 UDT', async () => {
-      assert.equal(
-        new BigNumber(await udt.balanceOf(referrer)).shiftedBy(-18).toFixed(0),
-        '8'
-      )
-    })
+          const baseFeePerGas = 1000000000 // in gwei
+          await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
+            ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+          ])
 
-    it('amount granted for dev ~= 2 UDT', async () => {
-      assert.equal(
-        new BigNumber(await udt.balanceOf(await unlock.owner()))
-          .shiftedBy(-18)
-          .toFixed(0),
-        '2'
-      )
+          await lock.purchase([], [keyBuyer], [referrer], [ADDRESS_ZERO], [[]], {
+            from: keyBuyer,
+            value: await lock.keyPrice(),
+            gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16),
+          })
+        })
+
+        it('referrer has some UDT now', async () => {
+          const actual = await udt.balanceOf(referrer)
+          assert.notEqual(actual.toString(), 0)
+        })
+
+        it('amount granted for referrer ~= 8 UDT', async () => {
+          assert.equal(
+            new BigNumber(await udt.balanceOf(referrer)).shiftedBy(-18).toFixed(0),
+            '8'
+          )
+        })
+
+        it('amount granted for dev ~= 2 UDT', async () => {
+          assert.equal(
+            new BigNumber(await udt.balanceOf(await unlock.owner()))
+              .shiftedBy(-18)
+              .toFixed(0),
+            '2'
+          )
+        })
+      })
     })
   })
 })
