@@ -4,7 +4,7 @@ subTitle: 2022 was year filled with new resources, new code, new partners, and m
 authorName: Christopher Carfi
 publishDate: January 6, 2023
 description: 2022 was year filled with new resources, new code, new partners, and massive uptake.
-image: /images/blog/unlock-2021-review/fireworks-min.jpg
+image: /images/blog/unlock-2022-review/fireworks-notext.png
 ---
 
 2022 was an incredible year for the Unlock Protocol community! The number of smart contracts deployed using Unlock Protocol [skyrocketed](https://dune.com/ccarfi/Unlock-Protocol-Rankings) from where we were in 2021; there were incredible enhancements made to the underlying protocol itself; tools, docs, guides, and community were completely redesigned; and new projects were popping off like wildflowers. (And just for fun, [over 12,000 individual wallets claimed over 200,000(!) membership NFTs](https://tpan.substack.com/p/thoughts-152-unlock-protocols-advent) from our Advent calendar over the holiday season!)
@@ -15,13 +15,13 @@ Here are a few highlights from 2022, and some of the things that are on tap for 
 
 ## Dozens of learning resources were delivered
 
-![https://hs-19942922.f.hubspotemail.net/hub/19942922/hubfs/resources.png?upscale=true&width=1120&upscale=true&name=resources.png]
+![/images/blog/unlock-2022-review/resources.png]
 
 Across every medium — [developer docs](https://docs.unlock-protocol.com/), [creator guides](https://unlock-protocol.com/guides/), our [YouTube channel](https://www.youtube.com/unlockprotocol), [source and example repos](https://github.com/unlock-protocol) and more — every key aspect of learning about and developing with Unlock Protocol was revamped in 2022.
 
 ## Protocol and product updates were everywhere across the experience
 
-![https://hs-19942922.f.hubspotemail.net/hub/19942922/hubfs/dashboard.png?upscale=true&width=1120&upscale=true&name=dashboard.png]
+![/images/blog/unlock-2022-review/dashboard.png]
 
 The Unlock Protocol project is rooted in envisioning and then *delivering* useful and usable implementations. To that end, the project knocked it out of the park in 2022, delivering an incredibly intuitive experience with the new [dashboard and no-code smart contract creation wizard](https://unlock-protocol.com/blog/dashboard-redesign), new monetization and incentive options for creators and developers by implementing the ability for projects to set [affiliate and referral incentives](https://unlock-protocol.com/blog/referral-fees), enabling recurring project revenue with [subscriptions](https://unlock-protocol.com/blog/recurring-subscription-nft), and a host of other improvements in the handling and experience of [metadata](https://unlock-protocol.com/blog/metadata-configurator), [airdrops](https://unlock-protocol.com/blog/email-airdrop-nft), [checkout](https://unlock-protocol.com/blog/redesigning-our-checkout), [lock settings](https://unlock-protocol.com/blog/settings-page), [credit card payment options](https://unlock-protocol.com/blog/support-for-google-and-apple-pay), and enabling new onchain capabilities with [hooks](https://docs.unlock-protocol.com/tutorials/smart-contracts/hooks/), [dynamic NFTs](https://unlock-protocol.com/blog/dynamic-nft), and [Sign In With Ethereum](https://unlock-protocol.com/blog/sign-in-with-ethereum).
 
@@ -29,13 +29,13 @@ You can see all the highlights here on the Unlock [blog](https://unlock-protoco
 
 ## Partners and projects launched and kept on launching
 
-![https://hs-19942922.f.hubspotemail.net/hub/19942922/hubfs/showcase.png?upscale=true&width=1120&upscale=true&name=showcase.png]
+![/images/blog/unlock-2022-review/showcase.png]
 
 2022 delivered an incredible array of projects and partnerships across the Unlock ecosystem — so many, we were having trouble keeping up with them all! To fix that, we created the [Unlock Showcase](https://showcase.unlock-protocol.com/), where you can explore all the latest projects and partnerships happening across the Unlock universe. We partnered with Polygon, thirdweb, Guild.xyz, web3 Academy, and many others, and innumerable projects were created across the ecosystem by community members.
 
 ## Community activity grew and grew
 
-![https://hs-19942922.f.hubspotemail.net/hub/19942922/hubfs/locksmith-leaderboard-oct-2022.png?upscale=true&width=1120&upscale=true&name=locksmith-leaderboard-oct-2022.png]
+![/images/blog/unlock-2022-review/locksmith-leaderboard-oct-2022.png]
 
 The Unlock community grew by leaps and bounds during 2022. One of the major initiatives launched in the second half of the year was the rollout of the [Locksmith Leaderboard](https://unlock.community/t/retroactive-funding-january-2023/409) — a monthly spotlight and recognition of the individuals in the community who are providing instrumental value to their peers. Through participating via design, development, helping others in the community, sharing the Unlock Protocol story, and many other ways, Locksmiths are the core of Unlock Protocol and help propel the project forward.
 
@@ -43,7 +43,7 @@ The most visible places where Locksmiths engage with the project and each other 
 
 ## Coming in 2023
 
-![https://hs-19942922.f.hubspotemail.net/hub/19942922/hubfs/fireworks-notext.png?upscale=true&width=1120&upscale=true&name=fireworks-notext.png]
+![/images/blog/unlock-2022-review/fireworks-notext.png]
 
 The new year is underway, and Unlock is hitting the ground running! There are a number of exciting cross-chain initiatives already in flight, we'll be at all the big web3 events and hackathons starting with ETHDenver next month, and the core team is rested and ready to keep pushing things forward in 2023.
 
