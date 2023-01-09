@@ -17,6 +17,7 @@ export interface CalendarItem {
   end: EventDate
   iCalUID: string
   url?: string
+  recurringEventId?: string
 }
 export interface Calendar {
   kind: string
@@ -40,8 +41,8 @@ const getUnlockEvents = async (): Promise<CalendarItem[]> => {
   return calendar?.items
     ?.filter((event: CalendarItem) => {
       const startDate = event?.start?.date || event?.start?.dateTime
+      // For future recurriung events, only show a single instance
       if (event.recurringEventId && dayjs().isBefore(startDate)) {
-        console.log(event.recurringEventId, event.summary, event.start.date)
         if (recurringEvents[event.recurringEventId]) {
           return false
         }
