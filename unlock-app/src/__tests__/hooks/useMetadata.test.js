@@ -7,13 +7,16 @@ import { vi } from 'vitest'
 const metadata = {
   image: 'https://...',
 }
-vi.mock('node-fetch', () =>
-  vi.fn(() => {
-    return Promise.resolve({
-      json: () => Promise.resolve(metadata),
-    })
-  })
-)
+vi.mock('node-fetch', () => {
+  return {
+    default: vi.fn(() => {
+      return Promise.resolve({
+        json: () => Promise.resolve(metadata),
+      })
+    }),
+  }
+})
+
 describe('useMetadata', () => {
   beforeEach(() => {
     vi.clearAllMocks

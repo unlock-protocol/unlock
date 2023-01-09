@@ -3,8 +3,6 @@ import { StorageService, success, failure } from '../../services/storageService'
 import UnlockUser from '../../structured_data/unlockUser'
 import { vi } from 'vitest'
 
-vi.mock('axios')
-
 const emailAddress = 'stick@stick.ly'
 const publicKey = '0x88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290'
 const passwordEncryptedPrivateKey = {
