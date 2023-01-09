@@ -54,12 +54,14 @@ networks.hardhat = {
 }
 
 // mainnet fork
-if (process.env.RUN_MAINNET_FORK) {
-  // eslint-disable-next-line no-console
-  console.log('Running a mainnet fork...')
+if (process.env.RUN_FORK) {
+  if(!isNaN()) {
+    throw Error(`RUN_FORK chain id should be a number ${process.env.RUN_FORK} `)
+  }
+  console.log(`Running a fork (chainId : ${process.env.RUN_FORK})...`)
   networks.hardhat = {
     forking: {
-      url: 'https://rpc.unlock-protocol.com/1',
+      url: `https://rpc.unlock-protocol.com/${process.env.RUN_FORK}`,
     },
   }
 

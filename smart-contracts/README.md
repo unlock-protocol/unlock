@@ -29,27 +29,31 @@ To see all emitted events
 npx hardhat test --logs
 ```
 
-### Run a mainnet fork
+### Run a fork (mainnet, polygon, etc)
 
-To test on a [mainnet fork](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet), you need to export `RUN_MAINNET_FORK=1` to your env.
+To test on a [network fork](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet), you need to export `RUN_FORK=xxx` to your env, where `xxx` is the chain id of the network.
 
 ex .
 
 ```
-export RUN_MAINNET_FORK=1
+export RUN_FORK=1
 
 npx hardhat node
 // Running a mainnet fork...
+
+export RUN_FORK=100 # xdai
+export RUN_FORK=5 # rinkeby
+...
 ```
 
 Once you have mainnet running locally, you can run the relevant tests in another terminal:
 
 ```
-export RUN_MAINNET_FORK=1
+export RUN_FORK=1
 yarn hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
 ```
 
-Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
+Note that if the var `RUN_FORK` is not set, the tests named with the suffix `.mainnet.js` are skipped and will be marked as pending on the CI.
 
 ### Setup networks
 
@@ -81,7 +85,7 @@ npx hardhat run scripts/udt-upgrade.js --network goerli
 
 ```
 # setup credentials
-export RUN_MAINNET_FORK=1
+export RUN_FORK=1
 
 # run the tests
 yarn test test/mainnet/udt.js
@@ -133,10 +137,10 @@ Make a dry run of the upgrade on a mainnet fork by
 
 ```shell
 # to deploy a version already in the contracts package
-RUN_MAINNET_FORK=1 yarn hardhat submit:version --public-lock-version 12
+RUN_FORK=1 yarn hardhat submit:version --public-lock-version 12
 
 # to deploy a version from the local ./contracts folder
-RUN_MAINNET_FORK=1 yarn hardhat submit:version
+RUN_FORK=1 yarn hardhat submit:version
 ```
 
 #### Update the PublicLock template 
