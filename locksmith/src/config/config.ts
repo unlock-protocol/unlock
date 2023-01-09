@@ -40,7 +40,7 @@ const config = {
   logging: false,
   services: {
     wedlocks: 'http://localhost:1337',
-    locksmith: process.env.LOCKSMITH_URI || defaultConfig.services.locksmith,
+    locksmith: defaultConfig.services.locksmith,
   },
   storage: {
     endpoint: process.env.STORAGE_ENDPOINT,
