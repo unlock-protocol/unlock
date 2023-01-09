@@ -5,6 +5,7 @@
     "useUnknownInCatchVariables": false,
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
+    "jsx": "react-jsx"
   },
   "exclude": [
     "build",
