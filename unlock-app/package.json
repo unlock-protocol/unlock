@@ -108,7 +108,7 @@
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
-    "test": "UNLOCK_ENV=test vitest run --no-threads --coverage --environment=jsdom",
+    "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "ci": "yarn test && yarn lint"
   },

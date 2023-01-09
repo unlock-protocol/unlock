@@ -19,7 +19,7 @@ export default defineConfig({
     // 5 minute timeout
     testTimeout: 1000 * 60 * 5,
     hookTimeout: 1000 * 60 * 5,
-    setupFiles: ['vitest-localstorage-mock'],
+    setupFiles: ['vitest-localstorage-mock', './src/__tests__/setup.js'],
     mockReset: false,
     environment: 'jsdom',
   },
