@@ -56,3 +56,5 @@ Then, on your code you would call the `grantKeys` function](https://docs.unlock-
 ---
 
 Airdropping memberships is a very important part of the Unlock protocol because it enables not only multiples types of memberships, but also new ways of rewarding or incentivizing community members!
+
+**Updated:** 9 January 2023
