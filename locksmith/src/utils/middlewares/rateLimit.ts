@@ -30,8 +30,7 @@ export const createRateLimitMiddleware = ({
       .then(() => {
         next()
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
         response.status(429).send({
           message: 'Too many requests',
         })
