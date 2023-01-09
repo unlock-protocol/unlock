@@ -1,11 +1,11 @@
 import React from 'react'
 import { EventEmitter } from 'events'
 import { renderHook } from '@testing-library/react-hooks'
-import fetch from 'vitest-fetch-mock'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import * as UseCards from '../../hooks/useCards'
 import { vi } from 'vitest'
+import fetch from 'node-fetch'
 
 class MockWalletService extends EventEmitter {
   constructor() {
