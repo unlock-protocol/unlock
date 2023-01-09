@@ -1,6 +1,31 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 
+const stagingConfig = {
+  storage: {
+    publicHost: 'https://staging-storage.unlock-protocol.com',
+  },
+  unlockApp: 'https://staging-app.unlock-protocol.com',
+  services: {
+    wedlocks: 'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+    locksmith: 'https://staging-locksmith.unlock-protocol.com',
+  },
+}
+
+const prodConfig = {
+  storage: {
+    publicHost: 'https://storage.unlock-protocol.com',
+  },
+  services: {
+    wedlocks: 'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+    locksmith: 'https://locksmith.unlock-protocol.com',
+  },
+  unlockApp: 'https://app.unlock-protocol.com',
+}
+
+const defaultConfig =
+  process.env.UNLOCK_ENV === 'prod' ? prodConfig : stagingConfig
+
 const config = {
   database: {
     logging: false,
@@ -11,20 +36,18 @@ const config = {
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
-  unlockApp: process.env.UNLOCK_APP || 'https://app.unlock-protocol.com',
+  unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
     wedlocks: 'http://localhost:1337',
-    locksmith:
-      process.env.UNLOCK_ENV === 'prod'
-        ? 'https://locksmith.unlock-protocol.com'
-        : 'https://staging-locksmith.unlock-protocol.com',
+    locksmith: process.env.LOCKSMITH_URI || defaultConfig.services.locksmith,
   },
   storage: {
     endpoint: process.env.STORAGE_ENDPOINT,
     accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
     secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
-    publicHost: process.env.STORAGE_PUBLIC_HOST,
+    publicHost:
+      process.env.STORAGE_PUBLIC_HOST || defaultConfig.storage.publicHost,
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
