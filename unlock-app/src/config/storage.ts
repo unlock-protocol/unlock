@@ -10,6 +10,7 @@ import { SiweMessage, generateNonce } from 'siwe'
 import { writeStorage, deleteFromStorage } from '@rehooks/local-storage'
 import { APP_NAME } from '~/hooks/useAppStorage'
 import { queryClient } from './queryClient'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export interface SessionAuth {
   accessToken: string
@@ -43,9 +44,10 @@ export const clearAuth = () => {
 }
 
 export const signOut = async () => {
-  // Remove all cache when logging out
-  await Promise.all([queryClient.removeQueries(), storage.logout()])
+  await storage.logout()
   clearAuth()
+  // Remove all cache when logging out
+  await queryClient.invalidateQueries()
 }
 
 export const storageClient = axios.create()
@@ -103,30 +105,36 @@ export const storage = new LocksmithService(
 )
 
 export const login = async (walletService: WalletService) => {
-  try {
-    const address = await walletService.signer.getAddress()
-    const siwe = new SiweMessage({
-      domain: window.location.hostname,
-      uri: window.location.origin,
-      address,
-      chainId: 1,
-      version: '1',
-      statement: '',
-      nonce: generateNonce(),
-    })
-    const message = siwe.prepareMessage()
-    const signature = await walletService.signMessage(message, 'personal_sign')
-    const response = await service.login({
-      message,
-      signature,
-    })
-    const { accessToken, refreshToken, walletAddress } = response.data
-    saveAuth({
-      accessToken,
-      refreshToken,
-      walletAddress: walletAddress!,
-    })
-  } catch (error) {
-    console.error(error)
+  const address = await walletService.signer.getAddress()
+  const siwe = new SiweMessage({
+    domain: window.location.hostname,
+    uri: window.location.origin,
+    address,
+    chainId: 1,
+    version: '1',
+    statement: '',
+    nonce: generateNonce(),
+  })
+  const message = siwe.prepareMessage()
+  const signatureRequest = walletService.signMessage(message, 'personal_sign')
+  const signature = await ToastHelper.promise(signatureRequest, {
+    loading: 'Sign message with your wallet',
+    success: 'Successfully signed in',
+    error: 'Failed to sign message',
+  })
+
+  if (!signature) {
+    throw new Error('Failed to sign message')
   }
+
+  const response = await service.login({
+    message,
+    signature,
+  })
+  const { accessToken, refreshToken, walletAddress } = response.data
+  saveAuth({
+    accessToken,
+    refreshToken,
+    walletAddress: walletAddress!,
+  })
 }
