@@ -97,7 +97,7 @@ export function Connect() {
           </ul>
         </div>
 
-        <div className="flex flex-col gap-2 sm:justify-start">
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-start">
           <Button href="#get-started" className="text-center" as={Link}>
             Join our Community Membership
           </Button>
