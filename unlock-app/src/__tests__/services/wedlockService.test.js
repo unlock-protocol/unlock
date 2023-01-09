@@ -2,7 +2,11 @@ import WedlockService, { emailTemplate } from '../../services/wedlockService'
 import fetch from 'node-fetch'
 import { vi } from 'vitest'
 
-vi.mock('node-fetch', () => vi.fn())
+vi.mock('node-fetch', () => {
+  return {
+    default: vi.fn(),
+  }
+})
 
 let w = new WedlockService('http://notareal.host')
 
