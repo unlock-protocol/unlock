@@ -418,7 +418,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
 
-      // Mint UDT
+      // Distribute UDT
       if (_referrer != address(0)) {
         IUniswapOracle udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
@@ -427,6 +427,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             udt,
             10 ** 18,
             weth
+          );
+
+          uint balance = IMintableERC20(udt).balanceOf(
+            address(this)
           );
 
           // base fee default to 100 GWEI for chains that does
@@ -453,10 +457,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
           // or tokensToDistribute is capped by network GDP growth
           // we distribute tokens using asymptotic curve between 0 and 0.5
-          // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));
-          uint maxTokens = (IMintableERC20(udt).balanceOf(
-              address(this)
-            ) * valueInETH) /
+          uint maxTokens = (balance * valueInETH) /
             (2 + (2 * valueInETH) / grossNetworkProduct) /
             grossNetworkProduct;
 
@@ -469,9 +470,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
             uint devReward = (tokensToDistribute * 20) / 100;
             
-            uint balance = IMintableERC20(udt).balanceOf(
-              address(this)
-            );
+            
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
               IMintableERC20(udt).transfer(
