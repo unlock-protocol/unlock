@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps<UpcomingEventsProps> = async () => {
 
   return {
     props: {
-      upcomingEvents,
+      upcomingEvents: upcomingEvents.reverse(),
       pastEvents,
     },
   }
