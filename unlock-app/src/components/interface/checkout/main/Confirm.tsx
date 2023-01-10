@@ -158,7 +158,15 @@ export function Confirm({
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     useQuery(
-      ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
+      [
+        'purchaseData',
+        lockAddress,
+        lockNetwork,
+        recipients,
+        promo,
+        password,
+        captcha,
+      ],
       async () => {
         let purchaseData =
           promo ||
@@ -194,7 +202,7 @@ export function Confirm({
 
   const { data: pricingData, isInitialLoading: isPricingDataLoading } =
     useQuery(
-      ['purchasePriceFor', lockAddress, lockNetwork],
+      ['purchasePriceFor', lockAddress, lockNetwork, recipients, purchaseData],
       async () => {
         const prices = await Promise.all(
           recipients.map(async (recipient, index) => {
