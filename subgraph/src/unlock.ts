@@ -37,6 +37,9 @@ export function handleNewLock(event: NewLock): void {
   unlockDailyData.lockDeployed = unlockDailyData.lockDeployed.plus(
     BigInt.fromI32(1)
   )
+  unlockDailyData.totalLockDeployed = unlockDailyData.totalLockDeployed.plus(
+    BigInt.fromI32(1)
+  )
   unlockDailyData.save()
 
   // fetch lock version

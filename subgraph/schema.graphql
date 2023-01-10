@@ -57,8 +57,12 @@ type UnlockDailyData @entity {
   id: ID!
   "Number of locks deployed on that day"
   lockDeployed: BigInt!
+  "Total number of locks deployed"
+  totalLockDeployed: BigInt!
   "Daily number of keys sold"
   keysSold: BigInt!
+  "Total number of keys sold"
+  totalKeysSold: BigInt!
   "Daily number of active locks"
   activeLocks: [Bytes!]
   "Total value exchanged on the network"

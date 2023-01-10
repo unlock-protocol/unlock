@@ -39,13 +39,25 @@ export function getKeyExpirationTimestampFor(
 export function loadOrCreateUnlockDailyData(timestamp: number) {
   const dayID = timestamp / 86400
   let unlockDailyData = UnlockDailyData.load(dayID.toString())
+  const unlockDailyDataYesterday = UnlockDailyData.load((dayID - 1).toString())
   if (unlockDailyData === null) {
     unlockDailyData = new UnlockDailyData(dayID.toString())
     unlockDailyData.lockDeployed = BigInt.fromI32(0)
     unlockDailyData.keysSold = BigInt.fromI32(0)
     unlockDailyData.grossNetworkProduct = BigInt.fromI32(0)
     unlockDailyData.activeLocks = []
+
+    if (unlockDailyDataYesterday) {
+      unlockDailyData.totalLockDeployed =
+        unlockDailyDataYesterday.totalLockDeployed
+      unlockDailyData.totalKeysSold = unlockDailyDataYesterday.totalKeysSold
+    } else {
+      unlockDailyData.totalLockDeployed = BigInt.fromI32(0)
+      unlockDailyData.totalKeysSold = BigInt.fromI32(0)
+    }
+
     unlockDailyData.save()
   }
+
   return unlockDailyData
 }

@@ -59,6 +59,9 @@ function newKey(event: TransferEvent): void {
   const unlockDailyData = loadOrCreateUnlockDailyData(timestamp)
   const activeLocks = unlockDailyData.activeLocks
   unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
+  unlockDailyData.totalKeysSold = unlockDailyData.totalKeysSold.plus(
+    BigInt.fromI32(1)
+  )
   if (activeLocks && !activeLocks.includes(event.address)) {
     activeLocks.push(event.address)
     unlockDailyData.activeLocks = activeLocks
