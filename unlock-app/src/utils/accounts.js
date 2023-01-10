@@ -1,6 +1,5 @@
 import { WALLET_ENCRYPTION_OPTIONS } from '../constants'
-
-const Wallet = require('ethers').Wallet
+import { Wallet } from 'ethers'
 
 export async function createAccountAndPasswordEncryptKey(password) {
   const newWallet = Wallet.createRandom()
