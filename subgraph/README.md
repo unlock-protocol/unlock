@@ -1,5 +1,5 @@
 This package contains the source code for Unlock Protocol subgraph, that
-index and allow easier querying from the EVM blockchains using [The Graph](https://thegraph.com).
+indexes and allows easier querying from the EVM blockchains using [The Graph](https://thegraph.com).
 
 ### Building the subgraph
 
