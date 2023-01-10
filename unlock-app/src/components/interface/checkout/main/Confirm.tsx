@@ -244,9 +244,16 @@ export function Confirm({
             : undefined
         )
 
+        // compute discount
+        let totalDiscount = 0
+        prices.forEach((item) => {
+          totalDiscount += Number(lock!.keyPrice) - Number(item.amount)
+        })
+
         return {
           ...item,
           usdPrice: response.data.result,
+          totalDiscount,
         }
       },
       {
@@ -666,7 +673,6 @@ export function Confirm({
                           </Badge>
                         ) : null}
                       </div>
-
                       <div className="font-bold">
                         {item.amount === '0'
                           ? 'FREE'
@@ -689,6 +695,14 @@ export function Confirm({
           </div>
         ) : (
           <>
+            {pricingData?.totalDiscount > 0 && (
+              <div className="grid text-right">
+                <span className="text-sm text-gray-500 text-green italic">
+                  (Total discount: {pricingData?.totalDiscount})
+                </span>
+              </div>
+            )}
+
             <Pricing
               keyPrice={
                 pricingData?.total === '0'
