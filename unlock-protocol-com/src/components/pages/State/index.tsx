@@ -80,14 +80,27 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
         },
       },
       xaxis,
-      yaxis: series.map((s, i) => {
-        return {
-          opposite: i % 2,
+      yaxis: [
+        {
+          opposite: 0,
           title: {
-            text: s.name,
+            text: 'Keys',
           },
-        }
-      }),
+        },
+        {
+          show: false,
+          opposite: 1,
+          title: {
+            text: 'Locks',
+          },
+        },
+        {
+          opposite: 1,
+          title: {
+            text: 'Locks',
+          },
+        },
+      ],
       tooltip: {
         y: [
           {
@@ -246,7 +259,7 @@ export function State() {
         case '1Y': {
           xAxisLabels = [...Array(12).keys()].reverse().map((key) => {
             const cur = new Date()
-            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
+            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
               'default',
               { dateStyle: 'short' }
             )
