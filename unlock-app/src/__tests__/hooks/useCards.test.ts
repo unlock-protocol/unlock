@@ -5,7 +5,6 @@ import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import * as UseCards from '../../hooks/useCards'
 import { vi } from 'vitest'
-import fetch from 'node-fetch'
 
 class MockWalletService extends EventEmitter {
   constructor() {
@@ -34,8 +33,17 @@ const walletService = {
   signMessage: vi.fn(() => signature),
 }
 
+vi.mock('node-fetch', () => {
+  return {
+    mockResponseOnce: vi.fn(),
+    resetMocks: vi.fn(),
+    mock: {},
+  }
+})
+
 describe('UseCards', () => {
   beforeEach(() => {
+    // @ts-ignore
     fetch.resetMocks()
     vi.clearAllMocks()
 

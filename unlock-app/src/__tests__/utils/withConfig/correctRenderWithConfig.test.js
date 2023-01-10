@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import withConfig from '../../../utils/withConfig'
+import { withConfig } from '../../../utils/withConfig'
 
 const Component = () => <div>An unlock component</div>
 

@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { node } from 'prop-types'
-import * as UnlockPropTypes from '../../propTypes'
+import { UnlockPropTypes } from '../../propTypes'
 
 export default class SuspendedRender extends Component {
   constructor(props) {

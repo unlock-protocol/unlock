@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { vi, describe, it } from 'vitest'
+import { vi } from 'vitest'
 
 import SuspendedRender from '../../../components/helpers/SuspendedRender'
 

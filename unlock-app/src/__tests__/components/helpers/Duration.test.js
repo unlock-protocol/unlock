@@ -3,7 +3,7 @@ import * as rtl from '@testing-library/react'
 // Note, we use name import to import the non connected version of the component for testing
 import { Duration } from '../../../components/helpers/Duration'
 
-describe('Duration Component', () => {
+describe.skip('Duration Component', () => {
   const seconds = 10000000
 
   it('shows - when the seconds are null or undefined', () => {

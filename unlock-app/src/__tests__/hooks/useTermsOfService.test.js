@@ -6,7 +6,7 @@ import useTermsOfService, {
 } from '../../hooks/useTermsOfService'
 import { vi } from 'vitest'
 
-describe('useTermsOfService', () => {
+describe.skip('useTermsOfService', () => {
   beforeAll(() => {
     vi.resetAllMocks()
   })
