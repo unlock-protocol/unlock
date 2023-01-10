@@ -36,7 +36,9 @@ export function getKeyExpirationTimestampFor(
   }
 }
 
-export function loadOrCreateUnlockDailyData(timestamp: number) {
+export function loadOrCreateUnlockDailyData(
+  timestamp: number
+): UnlockDailyData {
   const dayID = timestamp / 86400
   let unlockDailyData = UnlockDailyData.load(dayID.toString())
   const unlockDailyDataYesterday = UnlockDailyData.load((dayID - 1).toString())
