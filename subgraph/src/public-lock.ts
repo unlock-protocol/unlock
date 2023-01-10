@@ -55,8 +55,7 @@ function newKey(event: TransferEvent): void {
   }
 
   // update lockDayData
-  const timestamp = event.block.timestamp.toI32()
-  const unlockDailyData = loadOrCreateUnlockDailyData(timestamp)
+  const unlockDailyData = loadOrCreateUnlockDailyData(event.block.timestamp)
   const activeLocks = unlockDailyData.activeLocks
   unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
   unlockDailyData.totalKeysSold = unlockDailyData.totalKeysSold.plus(

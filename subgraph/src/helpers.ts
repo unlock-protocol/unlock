@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
 import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
 import { UnlockDailyData } from '../generated/schema'
@@ -37,11 +37,12 @@ export function getKeyExpirationTimestampFor(
 }
 
 export function loadOrCreateUnlockDailyData(
-  timestamp: number
+  timestamp: BigInt
 ): UnlockDailyData {
-  const dayID = timestamp / 86400
+  const dayID = timestamp.toI32() / 86400
   let unlockDailyData = UnlockDailyData.load(dayID.toString())
-  const unlockDailyDataYesterday = UnlockDailyData.load((dayID - 1).toString())
+  const unlockDailyDataYesterday =
+    dayID > 0 ? UnlockDailyData.load((dayID - 1).toString()) : null
   if (unlockDailyData === null) {
     unlockDailyData = new UnlockDailyData(dayID.toString())
     unlockDailyData.lockDeployed = BigInt.fromI32(0)

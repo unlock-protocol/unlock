@@ -32,8 +32,7 @@ export function handleNewLock(event: NewLock): void {
   }
 
   // update lockDayData
-  const timestamp = event.block.timestamp.toI32()
-  const unlockDailyData = loadOrCreateUnlockDailyData(timestamp)
+  const unlockDailyData = loadOrCreateUnlockDailyData(event.block.timestamp)
   unlockDailyData.lockDeployed = unlockDailyData.lockDeployed.plus(
     BigInt.fromI32(1)
   )
@@ -114,8 +113,7 @@ export function handleLockUpgraded(event: LockUpgraded): void {
 }
 
 export function handleGNPChanged(event: GNPChanged): void {
-  let timestamp = event.block.timestamp.toI32()
-  const unlockDailyData = loadOrCreateUnlockDailyData(timestamp)
+  const unlockDailyData = loadOrCreateUnlockDailyData(event.block.timestamp)
   unlockDailyData.grossNetworkProduct = event.params.grossNetworkProduct
   unlockDailyData.save()
 }
