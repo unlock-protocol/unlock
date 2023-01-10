@@ -5,6 +5,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   test: {
+    deps: {
+      inline: ['@tw-classed/react'],
+    },
     globals: true,
     coverage: {
       provider: 'c8',

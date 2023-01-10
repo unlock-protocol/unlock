@@ -3,8 +3,7 @@ import ReactDOMServer from 'react-dom/server'
 import * as rtl from '@testing-library/react'
 import BrowserOnly from '../../../components/helpers/BrowserOnly'
 
-// todo: fix
-describe.skip('BrowserOnly', () => {
+describe('BrowserOnly', () => {
   const tester = (
     <BrowserOnly>
       <div>first</div>
