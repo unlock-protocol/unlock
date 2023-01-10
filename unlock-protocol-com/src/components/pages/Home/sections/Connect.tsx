@@ -99,7 +99,7 @@ export function Connect() {
 
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-start">
           <Button href="#get-started" className="text-center" as={Link}>
-            Join our Community Membership
+            Join Community Membership
           </Button>
           <Button
             as={Link}
@@ -107,7 +107,7 @@ export function Connect() {
             href={`${unlockConfig.appURL}/locks/create`}
             variant="secondary"
           >
-            Create your Membership Contract
+            Create Membership Contract
           </Button>
         </div>
       </div>
