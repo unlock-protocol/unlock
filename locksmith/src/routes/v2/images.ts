@@ -23,7 +23,7 @@ export const upload = multer({
     fileSize: 104857600, // 100MB
   },
   fileFilter(_, file, callback) {
-    const type = file.mimetype?.split('/')[0]
+    const type = file.mimetype?.trim().split('/')[0]
     if (['image', 'video'].includes(type.toLowerCase())) {
       callback(null, true)
     } else {
