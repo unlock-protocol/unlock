@@ -2,7 +2,7 @@
 title: Discount Codes
 subTitle: Apply promo codes and coupons to your memberships
 authorName: Julien Genestoux
-publishDate: January 9, 2023
+publishDate: January 10, 2023
 description: Whether you are organizing events, selling subscriptions to your content, or running a knitting club, sometimes, you want to provide discounts to your mosy loyal customers. You can do that with your lock smart contract.
 image: /images/blog/promo-codes/coupon-code.png
 ---
