@@ -1,12 +1,13 @@
 import * as useKeychain from '../../hooks/useKeychain'
+import { vi } from 'vitest'
 
 const mockWeb3Service = {
-  transferFeeBasisPoints: jest.fn(() => Promise.resolve(10)),
-  getAddressBalance: jest.fn(() => Promise.resolve(1)),
-  getCancelAndRefundValueFor: jest.fn(() => Promise.resolve(0.1)),
+  transferFeeBasisPoints: vi.fn(() => Promise.resolve(10)),
+  getAddressBalance: vi.fn(() => Promise.resolve(1)),
+  getCancelAndRefundValueFor: vi.fn(() => Promise.resolve(0.1)),
 }
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },

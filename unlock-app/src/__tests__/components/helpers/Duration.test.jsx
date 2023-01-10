@@ -8,16 +8,28 @@ describe('Duration Component', () => {
 
   it('shows - when the seconds are null or undefined', () => {
     expect.assertions(2)
-    let wrapper = rtl.render(<Duration seconds={null} />)
+    let wrapper = rtl.render(
+      Duration({
+        seconds: null,
+      })
+    )
     expect(wrapper.queryAllByText('-')).not.toBe(null)
 
-    wrapper = rtl.render(<Duration seconds={undefined} />)
+    wrapper = rtl.render(
+      Duration({
+        seconds: null,
+      })
+    )
     expect(wrapper.queryAllByText('-')).not.toBe(null)
   })
 
   it('shows the duration in seconds', () => {
     expect.assertions(1)
-    const wrapper = rtl.render(<Duration seconds={seconds} />)
+    const wrapper = rtl.render(
+      Duration({
+        seconds,
+      })
+    )
     expect(
       wrapper.queryByText('115 days, 17 hours, 46 minutes and 40 seconds')
     ).not.toBe(null)
@@ -25,7 +37,12 @@ describe('Duration Component', () => {
 
   it('unless we want to round', () => {
     expect.assertions(1)
-    const wrapper = rtl.render(<Duration seconds={seconds} round />)
+    const wrapper = rtl.render(
+      Duration({
+        seconds,
+        round: true,
+      })
+    )
     expect(wrapper.queryByText('116 days')).not.toBe(null)
   })
 })

@@ -6,6 +6,7 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionStatus } from '../../unlockTypes'
+import { vi } from 'vitest'
 
 import useLocks, {
   getLockAtAddress,
@@ -47,10 +48,10 @@ const network = 5
 const transaction = {}
 
 const mockSubGraphService = {
-  locks: jest.fn(() => Promise.resolve(graphLocks)),
+  locks: vi.fn(() => Promise.resolve(graphLocks)),
 }
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   SubgraphService: function SubgraphService() {
     return mockSubGraphService
   },
@@ -58,9 +59,9 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
 
 describe('useLocks', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
-    jest.spyOn(React, 'useContext').mockImplementation((context) => {
+    vi.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === Web3ServiceContext) {
         return mockWeb3Service
       }
@@ -75,18 +76,18 @@ describe('useLocks', () => {
       }
     })
     mockWeb3Service = new MockWeb3Service()
-    mockWeb3Service.getLock = jest.fn((address) => {
+    mockWeb3Service.getLock = vi.fn((address) => {
       return Promise.resolve({
         address,
         ...web3ServiceLock,
       })
     })
-    mockWeb3Service.getTransaction = jest.fn(() => {
+    mockWeb3Service.getTransaction = vi.fn(() => {
       Promise.resolve(transaction)
     })
 
-    mockWalletService.connect = jest.fn(() => {})
-    mockWalletService.createLock = jest.fn(() => {})
+    mockWalletService.connect = vi.fn(() => {})
+    mockWalletService.createLock = vi.fn(() => {})
   })
 
   it.skip('should default to loading and an empty list', async () => {
@@ -128,7 +129,7 @@ describe('useLocks', () => {
   describe('getLockAtAddress', () => {
     it('should retrieve the lock using web3Service', async () => {
       expect.assertions(2)
-      mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
+      mockWeb3Service.getLock = vi.fn(() => Promise.resolve(web3ServiceLock))
       const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 5)
       expect(lock).toEqual(web3ServiceLock)
       expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress, network)
@@ -139,8 +140,8 @@ describe('useLocks', () => {
     it('should retrieve the locks from the graph', async () => {
       expect.assertions(1)
       const locks = []
-      const addToLocks = jest.fn()
-      const setLoading = jest.fn()
+      const addToLocks = vi.fn()
+      const setLoading = vi.fn()
       await retrieveLocks(
         mockWeb3Service,
         ownerAddress,
@@ -161,9 +162,9 @@ describe('useLocks', () => {
           address: '0xlock2',
         },
       ]
-      mockSubGraphService.locks = jest.fn(() => Promise.resolve(locks))
-      const addToLocks = jest.fn()
-      const setLoading = jest.fn()
+      mockSubGraphService.locks = vi.fn(() => Promise.resolve(locks))
+      const addToLocks = vi.fn()
+      const setLoading = vi.fn()
       await retrieveLocks(
         mockWeb3Service,
         ownerAddress,
@@ -201,14 +202,14 @@ describe('useLocks', () => {
     let setError
 
     beforeEach(() => {
-      addToLocks = jest.fn()
-      setError = jest.fn()
-      mockWalletService.createLock = jest.fn(() => {})
+      addToLocks = vi.fn()
+      setError = vi.fn()
+      mockWalletService.createLock = vi.fn(() => {})
     })
 
     it('should call createLock on walletService', async () => {
       expect.assertions(1)
-      mockWalletService.createLock = jest.fn(() => {})
+      mockWalletService.createLock = vi.fn(() => {})
       await createLock(
         mockWeb3Service,
         mockWalletService,
@@ -238,7 +239,7 @@ describe('useLocks', () => {
 
     it('should call addToLocks', async () => {
       expect.assertions(1)
-      mockWalletService.createLock = jest.fn(
+      mockWalletService.createLock = vi.fn(
         (lock, transactionParams, callback) => {
           callback(null, transaction.hash)
         }

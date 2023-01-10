@@ -1392,7 +1392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.20.7, @babel/core@npm:^7.20.5":
+"@babel/core@npm:7.20.7":
   version: 7.20.7
   resolution: "@babel/core@npm:7.20.7"
   dependencies:
@@ -1435,6 +1435,29 @@ __metadata:
     json5: ^2.2.1
     semver: ^6.3.0
   checksum: 9547f1e6364bc58c3621e3b17ec17f0d034ff159e5a520091d9381608d40af3be4042dd27c20ad7d3e938422d75850ac56a3758d6801d65df701557af4bd244b
+  languageName: node
+  linkType: hard
+
+"@babel/core@npm:^7.20.5, @babel/core@npm:^7.20.7":
+  version: 7.20.12
+  resolution: "@babel/core@npm:7.20.12"
+  dependencies:
+    "@ampproject/remapping": ^2.1.0
+    "@babel/code-frame": ^7.18.6
+    "@babel/generator": ^7.20.7
+    "@babel/helper-compilation-targets": ^7.20.7
+    "@babel/helper-module-transforms": ^7.20.11
+    "@babel/helpers": ^7.20.7
+    "@babel/parser": ^7.20.7
+    "@babel/template": ^7.20.7
+    "@babel/traverse": ^7.20.12
+    "@babel/types": ^7.20.7
+    convert-source-map: ^1.7.0
+    debug: ^4.1.0
+    gensync: ^1.0.0-beta.2
+    json5: ^2.2.2
+    semver: ^6.3.0
+  checksum: 62e6c3e2149a70b5c9729ef5f0d3e2e97e9dcde89fc039c8d8e3463d5d7ba9b29ee84d10faf79b61532ac1645aa62f2bd42338320617e6e3a8a4d8e2a27076e7
   languageName: node
   linkType: hard
 
@@ -1654,7 +1677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-transforms@npm:^7.20.7":
+"@babel/helper-module-transforms@npm:^7.20.11, @babel/helper-module-transforms@npm:^7.20.7":
   version: 7.20.11
   resolution: "@babel/helper-module-transforms@npm:7.20.11"
   dependencies:
@@ -3113,9 +3136,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.20.10, @babel/traverse@npm:^7.20.7":
-  version: 7.20.10
-  resolution: "@babel/traverse@npm:7.20.10"
+"@babel/traverse@npm:^7.20.10, @babel/traverse@npm:^7.20.12, @babel/traverse@npm:^7.20.7":
+  version: 7.20.12
+  resolution: "@babel/traverse@npm:7.20.12"
   dependencies:
     "@babel/code-frame": ^7.18.6
     "@babel/generator": ^7.20.7
@@ -3127,7 +3150,7 @@ __metadata:
     "@babel/types": ^7.20.7
     debug: ^4.1.0
     globals: ^11.1.0
-  checksum: 8e36dfc76b8f7aafa01b98130c0257e3148eb7132e4b599be565bddae5faec7e20a0f92786a829a8d962a0bf5652fe0019cadd85716d70d140785dec640ff6f7
+  checksum: d758b355ab4f1e87984524b67785fa23d74e8a45d2ceb8bcf4d5b2b0cd15ee160db5e68c7078808542805774ca3802e2eafb1b9638afa4cd7f9ecabd0ca7fd56
   languageName: node
   linkType: hard
 
@@ -4487,7 +4510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript@npm:2.8.6, @graphql-codegen/typescript@npm:^2.8.6":
+"@graphql-codegen/typescript@npm:2.8.6":
   version: 2.8.6
   resolution: "@graphql-codegen/typescript@npm:2.8.6"
   dependencies:
@@ -4499,6 +4522,21 @@ __metadata:
   peerDependencies:
     graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
   checksum: 15f75f1cfea8d632d05a0836cfe657f580d7a49bfafe9b8a143b32f71985b09773dbc45e1e09010654789ea4dba15952767bc3dc412bda16b90eb57a3657f328
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/typescript@npm:^2.8.6":
+  version: 2.8.7
+  resolution: "@graphql-codegen/typescript@npm:2.8.7"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^3.1.2
+    "@graphql-codegen/schema-ast": ^2.6.1
+    "@graphql-codegen/visitor-plugin-common": 2.13.7
+    auto-bind: ~4.0.0
+    tslib: ~2.4.0
+  peerDependencies:
+    graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 67cbafc0dc8695222fd3b2db26c3fcd91148a1dba7bb5dcf71eaf6425dadbaa378c5703f2844e34718954aa283aa95919d8d4650bd1d0b85b22b404ffc3436fa
   languageName: node
   linkType: hard
 
@@ -4539,6 +4577,26 @@ __metadata:
   peerDependencies:
     graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
   checksum: 3e3bcbe6c7f3fa665b53f35016bce4385fd045ef54b1a986add0b86a14abec6c5b30201496b210ab493afe6bb89bed80f81d164efd643155621fd7bf7fbafec7
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/visitor-plugin-common@npm:2.13.7":
+  version: 2.13.7
+  resolution: "@graphql-codegen/visitor-plugin-common@npm:2.13.7"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^3.1.2
+    "@graphql-tools/optimize": ^1.3.0
+    "@graphql-tools/relay-operation-optimizer": ^6.5.0
+    "@graphql-tools/utils": ^9.0.0
+    auto-bind: ~4.0.0
+    change-case-all: 1.0.15
+    dependency-graph: ^0.11.0
+    graphql-tag: ^2.11.0
+    parse-filepath: ^1.0.2
+    tslib: ~2.4.0
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 4218af8b1542789d9c8c614ccb4362a2b4944d5c3a4a59909844fe9f1f8672825adb28deeb1b9a4d45410e1ae94cde9bd1f5c5d888ae53469260d6668814732e
   languageName: node
   linkType: hard
 
@@ -5942,16 +6000,16 @@ __metadata:
   linkType: hard
 
 "@netlify/build@npm:^29.2.2":
-  version: 29.3.0
-  resolution: "@netlify/build@npm:29.3.0"
+  version: 29.4.1
+  resolution: "@netlify/build@npm:29.4.1"
   dependencies:
     "@bugsnag/js": ^7.0.0
     "@netlify/cache-utils": ^5.1.0
-    "@netlify/config": ^20.2.0
+    "@netlify/config": ^20.3.0
     "@netlify/edge-bundler": 8.0.0
     "@netlify/functions-utils": ^5.1.1
     "@netlify/git-utils": ^5.1.0
-    "@netlify/plugins-list": ^6.59.0
+    "@netlify/plugins-list": ^6.61.0
     "@netlify/run-utils": ^5.1.0
     "@netlify/zip-it-and-ship-it": ^8.2.0
     "@sindresorhus/slugify": ^2.0.0
@@ -6000,7 +6058,7 @@ __metadata:
     yargs: ^17.6.0
   bin:
     netlify-build: bin.js
-  checksum: ab3c37b97e34e4b43bdf7ef11d83d1524af90ec3d0ff9e7b92a198fa6cdbebe2bb479ef98aa34cb195f3811dbe6c8ef462461d23891a15e5a92a67616ddfc38e
+  checksum: 1756c96a5ef99a377cce8f63303f12210d77570c1914204718d2762d1f0ebdb42f9e70d77219ab0b6813cf525c8e48d0f418bd5efb9741d2d0d4d657978bd1b1
   languageName: node
   linkType: hard
 
@@ -6055,7 +6113,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/edge-bundler@npm:8.0.0, @netlify/edge-bundler@npm:^8.0.0":
+"@netlify/config@npm:^20.3.0":
+  version: 20.3.0
+  resolution: "@netlify/config@npm:20.3.0"
+  dependencies:
+    chalk: ^5.0.0
+    cron-parser: ^4.1.0
+    deepmerge: ^4.2.2
+    dot-prop: ^7.0.0
+    execa: ^6.0.0
+    fast-safe-stringify: ^2.0.7
+    figures: ^4.0.0
+    filter-obj: ^3.0.0
+    find-up: ^6.0.0
+    indent-string: ^5.0.0
+    is-plain-obj: ^4.0.0
+    js-yaml: ^4.0.0
+    map-obj: ^5.0.0
+    netlify: ^13.1.0
+    netlify-headers-parser: ^7.1.0
+    netlify-redirect-parser: ^14.1.0
+    omit.js: ^2.0.2
+    p-locate: ^6.0.0
+    path-exists: ^5.0.0
+    path-type: ^5.0.0
+    toml: ^3.0.0
+    tomlify-j0.4: ^3.0.0
+    validate-npm-package-name: ^4.0.0
+    yargs: ^17.6.0
+  bin:
+    netlify-config: bin.js
+  checksum: 1ccafcf7dd7e3ffe241f809968c9e8f73fbeb56e078836eed15da8d8da1054945150aa57fdfc87981eebfd065908812071eda745322f9302c8d1226e668ca4a8
+  languageName: node
+  linkType: hard
+
+"@netlify/edge-bundler@npm:8.0.0":
   version: 8.0.0
   resolution: "@netlify/edge-bundler@npm:8.0.0"
   dependencies:
@@ -6080,6 +6172,34 @@ __metadata:
     tmp-promise: ^3.0.3
     uuid: ^9.0.0
   checksum: b6e387fc46469179b3e53a82895740da02f98011e224827d26009254f671916393c3e4e8a7d4696e12d9220dbe7307f9abc8e479d4d5e833e00178a8bf276cd0
+  languageName: node
+  linkType: hard
+
+"@netlify/edge-bundler@npm:^8.0.0":
+  version: 8.1.1
+  resolution: "@netlify/edge-bundler@npm:8.1.1"
+  dependencies:
+    "@import-maps/resolve": ^1.0.1
+    ajv: ^8.11.2
+    ajv-errors: ^3.0.0
+    better-ajv-errors: ^1.2.0
+    common-path-prefix: ^3.0.0
+    del: ^7.0.0
+    env-paths: ^3.0.0
+    execa: ^6.0.0
+    find-up: ^6.3.0
+    get-port: ^6.1.2
+    glob-to-regexp: ^0.4.1
+    jsonc-parser: ^3.2.0
+    node-fetch: ^3.1.1
+    node-stream-zip: ^1.15.0
+    p-retry: ^5.1.1
+    p-wait-for: ^4.1.0
+    path-key: ^4.0.0
+    semver: ^7.3.5
+    tmp-promise: ^3.0.3
+    uuid: ^9.0.0
+  checksum: 0c7b07bcfa137a651f9ce58cf4cdd7c3ddaaf559844f0eb297afbc1aac7c27879e7f48ae4dc61259ff3e913e1fe40c4bc0be36c614019f9a95399d6993839a2d
   languageName: node
   linkType: hard
 
@@ -6498,7 +6618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/plugins-list@npm:^6.59.0":
+"@netlify/plugins-list@npm:^6.61.0":
   version: 6.61.0
   resolution: "@netlify/plugins-list@npm:6.61.0"
   checksum: c1a62683f2c0d413e5787241bd2d3b0e6e1d05d4651d8bc9ed06647fdd50f5ab7f2aa2d9041559c5be3029a7064fd6ecf6b9ae0f46f844624bb81f8e7059ddd1
@@ -13675,12 +13795,10 @@ __metadata:
     "@stripe/react-stripe-js": 1.16.1
     "@stripe/stripe-js": 1.46.0
     "@tanstack/react-query": 4.20.4
-    "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.1
     "@tw-classed/react": 1.3.2
     "@types/file-saver": 2.0.5
-    "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
     "@types/react": 17.0.52
@@ -13688,12 +13806,13 @@ __metadata:
     "@types/react-gtm-module": 2.0.1
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@vitejs/plugin-react": ^3.0.0
+    "@vitest/coverage-c8": 0.26.2
     "@walletconnect/client": 1.8.0
     "@walletconnect/web3-provider": 1.8.0
     "@xstate/react": 3.0.1
@@ -13701,7 +13820,6 @@ __metadata:
     axios: 1.2.1
     axios-auth-refresh: 3.3.4
     babel-eslint: 10.1.0
-    babel-jest: 28.1.3
     babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
@@ -13712,16 +13830,10 @@ __metadata:
     deep-object-diff: 1.1.9
     dotenv: 16.0.3
     eslint: 8.31.0
-    eslint-plugin-jest: 27.2.0
     eslint-plugin-mocha: 10.1.0
     ethers: 5.7.2
     file-saver: 2.0.5
     graphql: 16.6.0
-    jest: 27.5.1
-    jest-canvas-mock: 2.4.0
-    jest-fetch-mock: 3.0.3
-    jest-mock-axios: 4.6.2
-    jest-styled-components: 7.1.1
     lottie-react: 2.3.1
     next: 12.3.4
     next-transpile-modules: 10.0.0
@@ -13751,9 +13863,11 @@ __metadata:
     styled-components: 5.3.6
     tailwind-merge: 1.8.1
     tailwindcss: 3.2.4
-    ts-jest: 27.1.5
     typescript: 4.9.4
     validator: 13.7.0
+    vitest: 0.26.2
+    vitest-fetch-mock: 0.2.1
+    vitest-localstorage-mock: 0.0.1
     walletlink: 2.5.0
     xstate: 4.35.1
     zod: 3.20.2
@@ -14000,6 +14114,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vitejs/plugin-react@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "@vitejs/plugin-react@npm:3.0.1"
+  dependencies:
+    "@babel/core": ^7.20.7
+    "@babel/plugin-transform-react-jsx-self": ^7.18.6
+    "@babel/plugin-transform-react-jsx-source": ^7.19.6
+    magic-string: ^0.27.0
+    react-refresh: ^0.14.0
+  peerDependencies:
+    vite: ^4.0.0
+  checksum: fde9dd4d3a3387d3a93ea164f58b71a40786842d66b072e75b10ef3c1c1f30cbe545367c4adb980d15f310a70c3ca24f8bf36ea5e896d0fcae0adc926172ca58
+  languageName: node
+  linkType: hard
+
 "@vitest/coverage-c8@npm:0.25.8":
   version: 0.25.8
   resolution: "@vitest/coverage-c8@npm:0.25.8"
@@ -14007,6 +14136,16 @@ __metadata:
     c8: ^7.12.0
     vitest: 0.25.8
   checksum: 189a7d8df0e4185d7f016184c70a65fc40bf661294de340b7c63991ffb494acf09769ce1bc4817d879f13b5b5e462ab4052ca35fa8315ca2723b69f9fce61a28
+  languageName: node
+  linkType: hard
+
+"@vitest/coverage-c8@npm:0.26.2":
+  version: 0.26.2
+  resolution: "@vitest/coverage-c8@npm:0.26.2"
+  dependencies:
+    c8: ^7.12.0
+    vitest: 0.26.2
+  checksum: dfd19251278e2fa16cc428142d860c3edffac5149c6884415be58ba76ed3f331a91aa2eab2499da54c5584a66016c61a45d8a1f8aab93356fc91fa537fa904f4
   languageName: node
   linkType: hard
 
@@ -20735,7 +20874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:3.1.5, cross-fetch@npm:^3.0.4, cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
+"cross-fetch@npm:3.1.5, cross-fetch@npm:^3.0.4, cross-fetch@npm:^3.0.6, cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
   version: 3.1.5
   resolution: "cross-fetch@npm:3.1.5"
   dependencies:
@@ -21146,13 +21285,6 @@ __metadata:
   bin:
     cssesc: bin/cssesc
   checksum: f8c4ababffbc5e2ddf2fa9957dda1ee4af6048e22aeda1869d0d00843223c1b13ad3f5d88b51caa46c994225eacb636b764eb807a8883e2fb6f99b4f4e8c48b2
-  languageName: node
-  linkType: hard
-
-"cssfontparser@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "cssfontparser@npm:1.2.1"
-  checksum: 952d487cddab591fb944f2a4c326a7736bc963784a6d92b6ad4051f3bf5ee49a732eff62e29a52ff085197cb07f5bd66525a2245ded7fd356113ac81be9238b9
   languageName: node
   linkType: hard
 
@@ -31454,16 +31586,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-canvas-mock@npm:2.4.0":
-  version: 2.4.0
-  resolution: "jest-canvas-mock@npm:2.4.0"
-  dependencies:
-    cssfontparser: ^1.2.1
-    moo-color: ^1.0.2
-  checksum: feda3c9a3301dc8f1ce3eee3d6cd944d3e2f50d713f1a3f159bdd85b88b275871c400dc0a4a50d14b36eef347dde2d7223e50d1109501b80668d87253712675e
-  languageName: node
-  linkType: hard
-
 "jest-changed-files@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-changed-files@npm:27.5.1"
@@ -32015,17 +32137,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-mock-axios@npm:4.6.2":
-  version: 4.6.2
-  resolution: "jest-mock-axios@npm:4.6.2"
-  dependencies:
-    "@jest/globals": ^27.5.1
-    jest: ^27.5.1
-    synchronous-promise: ^2.0.15
-  checksum: 4ce7812c180b010604a56b12af362fb1407658fb6ef53bcfcbe799c76aaca3cf37caaa86b18df57f02188360afdbb2fe61c65e266989ad2c56e7da5ba67dd3cb
-  languageName: node
-  linkType: hard
-
 "jest-mock@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-mock@npm:27.5.1"
@@ -32555,7 +32666,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest@npm:27.5.1, jest@npm:^27.4.3, jest@npm:^27.5.1":
+"jest@npm:27.5.1, jest@npm:^27.4.3":
   version: 27.5.1
   resolution: "jest@npm:27.5.1"
   dependencies:
@@ -32989,6 +33100,15 @@ fsevents@~2.1.1:
   bin:
     json5: lib/cli.js
   checksum: e76ea23dbb8fc1348c143da628134a98adf4c5a4e8ea2adaa74a80c455fc2cdf0e2e13e6398ef819bfe92306b610ebb2002668ed9fc1af386d593691ef346fc3
+  languageName: node
+  linkType: hard
+
+"json5@npm:^2.2.2":
+  version: 2.2.3
+  resolution: "json5@npm:2.2.3"
+  bin:
+    json5: lib/cli.js
+  checksum: 2a7436a93393830bce797d4626275152e37e877b265e94ca69c99e3d20c2b9dab021279146a39cdb700e71b2dd32a4cebd1514cd57cee102b1af906ce5040349
   languageName: node
   linkType: hard
 
@@ -36292,15 +36412,6 @@ fsevents@~2.1.1:
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
   checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
-  languageName: node
-  linkType: hard
-
-"moo-color@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "moo-color@npm:1.0.2"
-  dependencies:
-    color-name: ^1.1.4
-  checksum: 9425438cf14314ff8847fa911b3c6936cbe8550644c380733c4803719c3980a0de9324c70c3bc21c36b4aab3c181745774cc0efc4d3f5bfce009382eeeb89572
   languageName: node
   linkType: hard
 
@@ -40802,7 +40913,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.20, postcss@npm:^8.3.5, postcss@npm:^8.4.12, postcss@npm:^8.4.18, postcss@npm:^8.4.19, postcss@npm:^8.4.20, postcss@npm:^8.4.4":
+"postcss@npm:8.4.20, postcss@npm:^8.3.5, postcss@npm:^8.4.12, postcss@npm:^8.4.18, postcss@npm:^8.4.20, postcss@npm:^8.4.4":
   version: 8.4.20
   resolution: "postcss@npm:8.4.20"
   dependencies:
@@ -40831,6 +40942,17 @@ fsevents@~2.1.1:
     picocolors: ^0.2.1
     source-map: ^0.6.1
   checksum: 4ac793f506c23259189064bdc921260d869a115a82b5e713973c5af8e94fbb5721a5cc3e1e26840500d7e1f1fa42a209747c5b1a151918a9bc11f0d7ed9048e3
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.19":
+  version: 8.4.21
+  resolution: "postcss@npm:8.4.21"
+  dependencies:
+    nanoid: ^3.3.4
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: e39ac60ccd1542d4f9d93d894048aac0d686b3bb38e927d8386005718e6793dbbb46930f0a523fe382f1bbd843c6d980aaea791252bf5e176180e5a4336d9679
   languageName: node
   linkType: hard
 
@@ -49852,6 +49974,22 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"vite-node@npm:0.26.2":
+  version: 0.26.2
+  resolution: "vite-node@npm:0.26.2"
+  dependencies:
+    debug: ^4.3.4
+    mlly: ^1.0.0
+    pathe: ^0.2.0
+    source-map: ^0.6.1
+    source-map-support: ^0.5.21
+    vite: ^3.0.0 || ^4.0.0
+  bin:
+    vite-node: vite-node.mjs
+  checksum: 83105cdf05c8a0673d1d939af864324d0468c225b2f126eaa8f039d16c66a6831ddf1367c62320f2ea0d8e987a872e5c67bddfa88ec7775fdf6433da23edc715
+  languageName: node
+  linkType: hard
+
 "vite-node@npm:0.26.3":
   version: 0.26.3
   resolution: "vite-node@npm:0.26.3"
@@ -50022,6 +50160,26 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"vitest-fetch-mock@npm:0.2.1":
+  version: 0.2.1
+  resolution: "vitest-fetch-mock@npm:0.2.1"
+  dependencies:
+    cross-fetch: ^3.0.6
+  peerDependencies:
+    vitest: ">=0.16.0"
+  checksum: e5f876686ae7579e38f41498d71769502cda481d46d2e979f202740255855ae1420497bdddeb1b0bdb13b6636172c39b750a85eeb7f7351948a12d529189bf18
+  languageName: node
+  linkType: hard
+
+"vitest-localstorage-mock@npm:0.0.1":
+  version: 0.0.1
+  resolution: "vitest-localstorage-mock@npm:0.0.1"
+  peerDependencies:
+    vitest: "*"
+  checksum: 2cdaa4a6540383b1133f9fbb6eceef89e7fd1981017de9c280ae53f39494c98bccc9095c92665e0d1c7929d648d31112050a1714d645ddf4d4247b022dd88adf
+  languageName: node
+  linkType: hard
+
 "vitest@npm:0.25.6":
   version: 0.25.6
   resolution: "vitest@npm:0.25.6"
@@ -50101,6 +50259,48 @@ typescript@^3.8.3:
   bin:
     vitest: vitest.mjs
   checksum: 2444dc04c87c261fcd43e1e240e5c62d6e96d0b52c0142f30200fde1078e97afad7cc6dd3163aa520ef4b0584f02cecfcc676300cb839e4470751403f54d2623
+  languageName: node
+  linkType: hard
+
+"vitest@npm:0.26.2":
+  version: 0.26.2
+  resolution: "vitest@npm:0.26.2"
+  dependencies:
+    "@types/chai": ^4.3.4
+    "@types/chai-subset": ^1.3.3
+    "@types/node": "*"
+    acorn: ^8.8.1
+    acorn-walk: ^8.2.0
+    chai: ^4.3.7
+    debug: ^4.3.4
+    local-pkg: ^0.4.2
+    source-map: ^0.6.1
+    strip-literal: ^1.0.0
+    tinybench: ^2.3.1
+    tinypool: ^0.3.0
+    tinyspy: ^1.0.2
+    vite: ^3.0.0 || ^4.0.0
+    vite-node: 0.26.2
+  peerDependencies:
+    "@edge-runtime/vm": "*"
+    "@vitest/browser": "*"
+    "@vitest/ui": "*"
+    happy-dom: "*"
+    jsdom: "*"
+  peerDependenciesMeta:
+    "@edge-runtime/vm":
+      optional: true
+    "@vitest/browser":
+      optional: true
+    "@vitest/ui":
+      optional: true
+    happy-dom:
+      optional: true
+    jsdom:
+      optional: true
+  bin:
+    vitest: vitest.mjs
+  checksum: 2adc5fcead5b8b942e87d2ea6b2183baf0dc4728136758646bb674441d10a809bb6ff5bd1dc8f6a6e019f133b8537ddef770c9a1705d4cc9714411083581ab6e
   languageName: node
   linkType: hard
 

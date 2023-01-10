@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { StorageService, success, failure } from '../../services/storageService'
 import UnlockUser from '../../structured_data/unlockUser'
-
-jest.mock('axios')
+import { vi } from 'vitest'
 
 const emailAddress = 'stick@stick.ly'
 const publicKey = '0x88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290'
@@ -40,7 +39,7 @@ describe.skip('StorageService', () => {
   let storageService
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     storageService = new StorageService(serviceHost)
   })
 

@@ -8,11 +8,11 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-
+import { vi } from 'vitest'
 const config = configure()
 const networkId = 31337
 const mockWeb3Service = {
-  getTransaction: jest.fn(),
+  getTransaction: vi.fn(),
 }
 const mockWalletService = {
   networkId,
@@ -22,12 +22,12 @@ const propsLock = {
   name: 'My Lock',
 }
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 describe('useLock', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-    jest.spyOn(React, 'useContext').mockImplementation((context) => {
+    vi.clearAllMocks()
+    vi.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === LocksContext) {
         return { locks: {}, addLock: () => {} }
       }
@@ -58,12 +58,12 @@ describe('useLock', () => {
       address: propsLock.address,
     }
     const newKeyPrice = '123'
-    const setLock = jest.fn(() => {})
-    const callback = jest.fn(() => {})
+    const setLock = vi.fn(() => {})
+    const callback = vi.fn(() => {})
     const hash = '0xtransaction'
 
     beforeEach(() => {
-      mockWalletService.updateKeyPrice = jest.fn()
+      mockWalletService.updateKeyPrice = vi.fn()
     })
     it('should use walletService to update the key price', async () => {
       expect.assertions(1)
@@ -87,7 +87,7 @@ describe('useLock', () => {
     })
     it('should process the transaction to start polling it', async () => {
       expect.assertions(1)
-      mockWalletService.updateKeyPrice = jest.fn(
+      mockWalletService.updateKeyPrice = vi.fn(
         (params, transactionParams, callback) => {
           return callback(null, hash)
         }
@@ -109,7 +109,7 @@ describe('useLock', () => {
 
     it.skip('should callback', async () => {
       expect.assertions(1)
-      mockWalletService.updateKeyPrice = jest.fn(
+      mockWalletService.updateKeyPrice = vi.fn(
         (params, transactionParams, callback) => {
           return callback(null, hash)
         }

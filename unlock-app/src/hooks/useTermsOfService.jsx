@@ -12,7 +12,7 @@ export const useTermsOfService = () => {
 
   const readFromLocalStorage = () => {
     try {
-      setTermsAccepted(window.localStorage.getItem(localStorageKey) === 'true')
+      setTermsAccepted(localStorage.getItem(localStorageKey) === 'true')
       setTermsLoading(false)
     } catch (error) {
       // No localstorage, assume false!
@@ -28,7 +28,7 @@ export const useTermsOfService = () => {
   const saveTermsAccepted = () => {
     setTermsAccepted(true)
     try {
-      window.localStorage.setItem(localStorageKey, 'true')
+      localStorage.setItem(localStorageKey, 'true')
     } catch (error) {
       // Could not store in localstorage.
     }
