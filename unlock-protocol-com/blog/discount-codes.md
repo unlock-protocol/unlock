@@ -3,7 +3,7 @@ title: Discount Codes
 subTitle: Apply promo codes and coupons to your memberships
 authorName: Julien Genestoux
 publishDate: January 10, 2023
-description: Whether you are organizing events, selling subscriptions to your content, or running a knitting club, sometimes, you want to provide discounts to your mosy loyal customers. You can do that with your lock smart contract.
+description: Whether you are organizing events, selling subscriptions to your content, or running a knitting club, sometimes, you want to provide discounts to your most loyal customers. You can do that with your lock smart contract.
 image: /images/blog/promo-codes/coupon-code.png
 ---
 
@@ -15,4 +15,4 @@ Since an example is worth a thousand words, here is one. Here is a membership [t
 
 ![enter coupon](/images/blog/promo-codes/promo-screen.jpeg)
 
-Of course, this is "safe" and evesdropping on the transaction from a block explorer will not let someone _guess_ promo codes. Like always we published the [source code on Github](https://github.com/unlock-protocol/discount-hook) along with detailed explainations on how to set this up for your own lock contract.
+Of course, this is "safe" and evesdropping on the transaction from a block explorer will not let someone _guess_ promo codes. Like always, we published the [source code on Github](https://github.com/unlock-protocol/discount-hook) along with detailed explainations on how to set this up for your own lock contract.
