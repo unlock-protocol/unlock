@@ -1603,7 +1603,7 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/generate:
-    get: 
+    get:
       operationId: generateTicket
       security:
         - User: []
@@ -1615,7 +1615,10 @@ paths:
       responses:
         200:
           description: Successfully generated the ticket.
-            
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
   /{network}/lock/{lockAddress}/stripe:
     delete:
       operationId: disconnectStripe
@@ -1629,5 +1632,62 @@ paths:
         200:
           description: Successfully disconnected stripe account.
 
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/images/upload:
+    post:
+      operationId: uploadImages
+      security:
+        - User: []
+      description: Upload images to locksmith
+
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        201:
+          description: Successfully uploaded images.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                        publicUrl:
+                          type: string
+                        originamName:
+                          type: string
+                        mimetype:
+                          type: string
+                        contentType:
+                          type: string
+                        size:
+                          type: number
+                        key:
+                          type: string
+                        metadata:
+                          type: object
+                          properties:
+                            fieldName:
+                              type: string
+                            createdBy:
+                              type: string
+                        encoding:
+                          type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
