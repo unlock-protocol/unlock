@@ -4,18 +4,19 @@ import {
   setItem,
 } from '../../utils/localStorage'
 import { LocalStorageWindow } from '../../windowTypes'
+import { vi } from 'vitest'
 
 let mockWindow: LocalStorageWindow
 
 const setup = () => {
   mockWindow = {
     localStorage: {
-      getItem: jest.fn(),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
       length: 15,
-      key: jest.fn(),
+      key: vi.fn(),
     },
   }
 }
@@ -38,7 +39,7 @@ describe('localStorage utils', () => {
     it('should return false when setItem throws', () => {
       expect.assertions(1)
 
-      mockWindow.localStorage.setItem = jest.fn(() => {
+      mockWindow.localStorage.setItem = vi.fn(() => {
         throw new Error('an error')
       })
 
@@ -72,7 +73,7 @@ describe('localStorage utils', () => {
     it('should return what the internal getItem returns if storage is available', () => {
       expect.assertions(1)
 
-      mockWindow.localStorage.getItem = jest.fn(() => 'a result')
+      mockWindow.localStorage.getItem = vi.fn(() => 'a result')
 
       const result = getItem(mockWindow, 'neato')
 
@@ -98,7 +99,7 @@ describe('localStorage utils', () => {
       expect.assertions(1)
 
       // Works on the first check, throws when setting a new value
-      mockWindow.localStorage.setItem = jest
+      mockWindow.localStorage.setItem = vi
         .fn()
         .mockImplementationOnce(() => {})
         .mockImplementationOnce(() => {
