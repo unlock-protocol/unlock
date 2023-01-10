@@ -1,10 +1,14 @@
 
 
-const { ethers, deployLock, upgrades } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
+const {
+  deployLock,
+} = require('../helpers')
 
-export const setup = async (accounts) => {
+
+const setup = async () => {
   // Deploy a lock
-  const lock = await deployLock({ from: accounts[0] })
+  const lock = await deployLock()
 
   // Deploy upgradable KeyManager
   const KeyManager = await ethers.getContractFactory(
@@ -15,4 +19,9 @@ export const setup = async (accounts) => {
   await keyManager.deployed()
 
   return [keyManager, lock]
+}
+
+
+module.exports = {
+  setup
 }
