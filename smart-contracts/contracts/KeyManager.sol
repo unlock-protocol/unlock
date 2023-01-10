@@ -17,6 +17,8 @@ error TOO_LATE();
 contract KeyManager is Initializable, OwnableUpgradeable {
   address public signer;
 
+  event SignerChanged(address indexed signer);
+
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
@@ -56,5 +58,6 @@ contract KeyManager is Initializable, OwnableUpgradeable {
    */
   function setSigner(address _signer) public onlyOwner {
     signer = _signer;
+    emit SignerChanged(_signer);
   }
 }
