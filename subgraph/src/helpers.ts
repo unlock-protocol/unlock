@@ -1,6 +1,7 @@
 import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
 import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
+import { UnlockDailyData } from '../generated/schema'
 
 // keccak 256 of 'LOCK_MANAGER'
 export const LOCK_MANAGER =
@@ -33,4 +34,18 @@ export function getKeyExpirationTimestampFor(
     const lockContract = PublicLockV7.bind(lockAddress)
     return lockContract.keyExpirationTimestampFor(ownerAddress)
   }
+}
+
+export function loadOrCreateUnlockDailyData(timestamp: number) {
+  const dayID = timestamp / 86400
+  let unlockDailyData = UnlockDailyData.load(dayID.toString())
+  if (unlockDailyData === null) {
+    unlockDailyData = new UnlockDailyData(dayID.toString())
+    unlockDailyData.lockDeployed = BigInt.fromI32(0)
+    unlockDailyData.keysSold = BigInt.fromI32(0)
+    unlockDailyData.grossNetworkProduct = BigInt.fromI32(0)
+    unlockDailyData.activeLocks = []
+    unlockDailyData.save()
+  }
+  return unlockDailyData
 }

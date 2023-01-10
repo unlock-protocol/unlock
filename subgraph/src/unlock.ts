@@ -5,7 +5,7 @@ import { NewLock, LockUpgraded, GNPChanged } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
 import { Lock, LockStats, UnlockDailyData } from '../generated/schema'
-import { LOCK_MANAGER } from './helpers'
+import { loadOrCreateUnlockDailyData, LOCK_MANAGER } from './helpers'
 
 const ROLE_GRANTED =
   '0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d'
@@ -31,23 +31,13 @@ export function handleNewLock(event: NewLock): void {
     lockStats.save()
   }
 
-  // create lockDayData
-  let timestamp = event.block.timestamp.toI32()
-  let dayID = timestamp / 86400
-  let unlockDailyData = UnlockDailyData.load(dayID.toString())
-  if (unlockDailyData === null) {
-    unlockDailyData = new UnlockDailyData(dayID.toString())
-    unlockDailyData.lockDeployed = BigInt.fromI32(1)
-    unlockDailyData.keysSold = BigInt.fromI32(0)
-    unlockDailyData.grossNetworkProduct = BigInt.fromI32(0)
-    unlockDailyData.activeLocks = []
-    unlockDailyData.save()
-  } else {
-    unlockDailyData.lockDeployed = unlockDailyData.lockDeployed.plus(
-      BigInt.fromI32(1)
-    )
-    unlockDailyData.save()
-  }
+  // update lockDayData
+  const timestamp = event.block.timestamp.toI32()
+  const unlockDailyData = loadOrCreateUnlockDailyData(timestamp)
+  unlockDailyData.lockDeployed = unlockDailyData.lockDeployed.plus(
+    BigInt.fromI32(1)
+  )
+  unlockDailyData.save()
 
   // fetch lock version
   let lockContract = PublicLockMerged.bind(lockAddress)
@@ -95,13 +85,12 @@ export function handleNewLock(event: NewLock): void {
   lock.createdAtBlock = event.block.number
 
   if (version.le(BigInt.fromI32(8))) {
-    // prior to v8, add default lock manager 
+    // prior to v8, add default lock manager
     lock.lockManagers = [event.params.lockOwner]
   } else {
     // after v8, lock managers are parsed from `RoleGranted` events
     lock.lockManagers = []
   }
-  
 
   lock.save()
 
@@ -122,10 +111,7 @@ export function handleLockUpgraded(event: LockUpgraded): void {
 
 export function handleGNPChanged(event: GNPChanged): void {
   let timestamp = event.block.timestamp.toI32()
-  let dayID = timestamp / 86400
-  let unlockDailyData = UnlockDailyData.load(dayID.toString())
-  if (unlockDailyData) {
-    unlockDailyData.grossNetworkProduct = event.params.grossNetworkProduct
-    unlockDailyData.save()
-  }
+  const unlockDailyData = loadOrCreateUnlockDailyData(timestamp)
+  unlockDailyData.grossNetworkProduct = event.params.grossNetworkProduct
+  unlockDailyData.save()
 }
