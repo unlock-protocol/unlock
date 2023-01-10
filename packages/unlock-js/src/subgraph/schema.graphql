@@ -22,7 +22,6 @@ query allLocks(
     version
     createdAtBlock
     totalKeys
-    deployer
   }
 }
 
