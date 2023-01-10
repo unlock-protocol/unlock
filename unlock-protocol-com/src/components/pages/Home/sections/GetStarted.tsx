@@ -31,7 +31,7 @@ export function GetStarted() {
           access to our members-only Discord.
         </p>
       </header>
-      <div className="flex flex-col items-center justify-center p-8 h-96 glass-pane rounded-3xl">
+      <div className="flex flex-col items-center justify-center p-2 h-96 glass-pane rounded-3xl">
         {isMember === 'yes' ? (
           <div>
             <div className="flex flex-col gap-4 sm:flex-row">

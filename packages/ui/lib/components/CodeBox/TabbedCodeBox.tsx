@@ -26,6 +26,7 @@ export function TabbedCodeBox({ blocks }: Props) {
         <Tab.List className="flex justify-between w-full">
           {blocks.map((item, index) => (
             <Tab
+              key={index}
               className={({ selected }) =>
                 twMerge(
                   'w-full p-2.5 border border-white text-white font-medium opacity-90 hover:opacity-100 hover:bg-white hover:text-brand-ui-primary',
