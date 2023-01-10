@@ -6,11 +6,7 @@ import useTermsOfService, {
 } from '../../hooks/useTermsOfService'
 import { vi } from 'vitest'
 
-describe.skip('useTermsOfService', () => {
-  beforeAll(() => {
-    vi.resetAllMocks()
-  })
-
+describe('useTermsOfService', () => {
   it('should default to false if no value is set in localtorage', async () => {
     expect.assertions(1)
     const { result } = renderHook(() => useTermsOfService())
