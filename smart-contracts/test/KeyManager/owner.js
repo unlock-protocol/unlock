@@ -5,7 +5,7 @@ const { reverts } = require('../helpers')
 
 let keyManager
 
-contract('KeyManager', (accounts) => {
+contract('KeyManager / Ownable', (accounts) => {
 
   beforeEach(async () => {
     [keyManager] = await setup()

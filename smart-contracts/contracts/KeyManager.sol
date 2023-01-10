@@ -15,9 +15,9 @@ error TOO_LATE();
 
 /// @custom:security-contact hello@unlock-protocol.com
 contract KeyManager is Initializable, OwnableUpgradeable {
-  address public signer;
+  address public locksmith;
 
-  event SignerChanged(address indexed signer);
+  event LocksmithChanged(address indexed locksmith);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -46,7 +46,7 @@ contract KeyManager is Initializable, OwnableUpgradeable {
     bytes32 hash = keccak256(
       abi.encode(lock, token, owner, deadline, msg.sender)
     );
-    if (!SignatureChecker.isValidSignatureNow(signer, hash, transferCode)) {
+    if (!SignatureChecker.isValidSignatureNow(locksmith, hash, transferCode)) {
       revert NOT_AUTHORIZED();
     }
 
@@ -56,8 +56,8 @@ contract KeyManager is Initializable, OwnableUpgradeable {
   /**
    * Function to change the signer. This can only be called by the owner.
    */
-  function setSigner(address _signer) public onlyOwner {
-    signer = _signer;
-    emit SignerChanged(_signer);
+  function setLocksmith(address _locksmith) public onlyOwner {
+    locksmith = _locksmith;
+    emit LocksmithChanged(locksmith);
   }
 }
