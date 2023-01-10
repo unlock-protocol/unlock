@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
 // Hardcoding the lendKey interface
-interface IPublicLock {
+interface IPublicLockForKeyManager {
   function lendKey(address from, address to, uint tokenId) external;
 }
 
@@ -50,7 +50,7 @@ contract KeyManager is Initializable, OwnableUpgradeable {
       revert NOT_AUTHORIZED();
     }
 
-    return IPublicLock(lock).lendKey(owner, msg.sender, token);
+    return IPublicLockForKeyManager(lock).lendKey(owner, msg.sender, token);
   }
 
   /**
