@@ -29,6 +29,8 @@ type Lock @entity {
   createdAtBlock: BigInt
   "The timestamp of the block in which the last key was minted"
   lastKeyMintedAt: BigInt
+  "Address of the lock deployer"
+  deployer: Bytes!
 }
 
 type Key @entity {
@@ -63,7 +65,7 @@ type UnlockDailyData @entity {
   keysSold: BigInt!
   "Total number of keys sold"
   totalKeysSold: BigInt!
-  "Daily number of active locks"
+  "Daily number of active locks (active locks have minted at least one membership in the last 30 days"
   activeLocks: [Bytes!]
   "Total value exchanged on the network"
   grossNetworkProduct: BigInt!

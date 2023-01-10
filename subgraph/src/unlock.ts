@@ -59,6 +59,7 @@ export function handleNewLock(event: NewLock): void {
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
+  lock.deployer = event.params.lockOwner // The `lockOwner` name is wrong, as it is in fact msg.sender
 
   // default value
   const symbol = lockContract.try_symbol()
