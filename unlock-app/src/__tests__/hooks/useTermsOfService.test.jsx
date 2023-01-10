@@ -32,12 +32,6 @@ describe('useTermsOfService', () => {
 
   it('should return false if localstorage could not be read', async () => {
     expect.assertions(1)
-
-    // eslint-disable-next-line no-proto
-    vi.spyOn(localStorage.__proto__, 'getItem').mockImplementationOnce(() => {
-      throw new Error()
-    })
-
     const { result } = renderHook(() => useTermsOfService())
     const termsAccepted = result.current.termsAccepted
     expect(termsAccepted).toBe(false)
