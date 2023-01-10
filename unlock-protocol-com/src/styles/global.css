@@ -15,14 +15,10 @@ body {
   }
 
   .heading-small {
-    @apply text-xl font-semibold sm:text-2xl lg:text-2xl xl:text-3xl;
+    @apply text-xl font-semibold sm:text-3xl lg:text-4xl;
   }
   .sub-heading-small {
     @apply text-lg sm:text-xl lg:text-2xl text-brand-gray max-w-prose;
-  }
-
-  .trans-pane {
-    @apply border border-gray-400 bg-transparent;
   }
 }
 
