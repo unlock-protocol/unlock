@@ -133,6 +133,8 @@ export function handleGNPChanged(event: GNPChanged): void {
   unlockDailyData.save()
 
   const unlockStats = UnlockStats.load('0')
-  unlockStats.grossNetworkProduct = event.params.grossNetworkProduct
-  unlockStats.save()
+  if (unlockStats) {
+    unlockStats.grossNetworkProduct = event.params.grossNetworkProduct
+    unlockStats.save()
+  }
 }
