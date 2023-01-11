@@ -1,20 +1,76 @@
-const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { setup } = require('./setup')
+const { reverts } = require('../helpers')
 
 let lock
 let keyManager
+const OneMonthFromNow = Math.floor(new Date().getTime() / 1000) + 60 * 60 * 24 * 30
+const OneDayAgo = Math.floor(new Date().getTime() / 1000) - 60 * 60 * 24
+const OneHourFromNow = Math.floor(new Date().getTime() / 1000) + 60 * 60
 
-contract('KeyManager', (accounts) => {
+let domain
+const types = {
+  Transfer: [
+    { name: 'lock', type: 'address' },
+    { name: 'token', type: 'uint256' },
+    { name: 'owner', type: 'address' },
+    { name: 'deadline', type: 'uint256' }
+  ],
+};
+contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
 
   beforeEach(async () => {
-    [keyManager, lock] = await setup(accounts)
+    [keyManager, lock] = await setup()
+    // Let's now aidrop a key to an address and set the keyManager as... keyManager!
+    await keyManager.setLocksmith(locksmith)
+    await lock.grantKeys([grantee], [OneMonthFromNow], [keyManager.address])
+    domain = {
+      name: 'KeyManager',
+      version: '1',
+      chainId: 1,
+      verifyingContract: keyManager.address
+    };
+
   })
 
-  it('should fail transfers if they have expired')
+  it('should fail transfers if they have expired', async () => {
+    const transfer = {
+      lock: lock.address,
+      token: 1,
+      owner: grantee,
+      deadline: OneDayAgo,
+    };
+    const locksmithSigner = await ethers.getSigner(locksmith)
+    const signature = await locksmithSigner._signTypedData(domain, types, transfer);
+    await reverts(keyManager.transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature), `VM Exception while processing transaction: reverted with custom error 'TOO_LATE()'`)
+  })
 
-  it('should fail transfers if they were not signed by the signer')
+  it('should fail transfers if they were not signed by the signer', async () => {
+    const transfer = {
+      lock: lock.address,
+      token: 1,
+      owner: grantee,
+      deadline: OneHourFromNow,
+    };
+    const attackerSigner = await ethers.getSigner(attacker)
+    const signature = await attackerSigner._signTypedData(domain, types, transfer);
+    await reverts(keyManager.transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature), `VM Exception while processing transaction: reverted with custom error 'NOT_AUTHORIZED()'`)
+  })
 
-  it('should lend the key to the sender if the signature matches')
+
+  it('should lend the key to the sender if the signature matches', async () => {
+    const transfer = {
+      lock: lock.address,
+      token: 1,
+      owner: grantee,
+      deadline: OneHourFromNow,
+    };
+    const locksmithSigner = await ethers.getSigner(locksmith)
+    const signature = await locksmithSigner._signTypedData(domain, types, transfer);
+
+    const realUserSigner = await ethers.getSigner(realUser)
+    await keyManager.connect(realUserSigner).transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature)
+  })
+
 
 })
