@@ -26,7 +26,8 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
     _disableInitializers();
   }
 
-  function initialize() public initializer {
+  function initialize(address _locksmith) public initializer {
+    locksmith = _locksmith;
     __Ownable_init();
     __EIP712_init("KeyManager", "1");
   }

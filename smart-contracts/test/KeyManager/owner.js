@@ -8,7 +8,7 @@ let keyManager
 contract('KeyManager / Ownable', (accounts) => {
 
   beforeEach(async () => {
-    [keyManager] = await setup()
+    [keyManager] = await setup(accounts[10])
   })
 
 
