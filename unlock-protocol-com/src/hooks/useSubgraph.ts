@@ -14,8 +14,8 @@ const subgraphConfig = (upToDate: number) => `{
     id_gt: ${upToDate}
   }) {
     id
-    lockDeployed
-    keysSold
+    totalLockDeployed
+    totalKeysSold
     activeLocks
     grossNetworkProduct
   }

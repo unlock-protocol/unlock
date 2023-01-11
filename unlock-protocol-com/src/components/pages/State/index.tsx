@@ -42,8 +42,8 @@ type INetworkSubgraph = {
   unlockDailyDatas: {
     activeLocks: string[]
     id: number
-    keysSold: string
-    lockDeployed: string
+    totalKeysSold: string
+    totalLockDeployed: string
   }[]
 }
 
@@ -63,6 +63,9 @@ const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
 const filters = ['7D', '1M', '1Y', 'All']
 
 function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
+  if (!series || series.length === 0) {
+    return null
+  }
   const chartOptions = {
     options: {
       chart: { zoom: { enabled: false } },
@@ -86,6 +89,11 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
           title: {
             text: 'Keys',
           },
+          min: Math.max(
+            0,
+            Math.min(...series[0].data) -
+              0.1 * (Math.max(...series[0].data) - Math.min(...series[0].data))
+          ),
         },
         {
           show: false,
@@ -93,12 +101,22 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
           title: {
             text: 'Locks',
           },
+          min: Math.max(
+            0,
+            Math.min(...series[1].data) -
+              0.1 * (Math.max(...series[1].data) - Math.min(...series[1].data))
+          ),
         },
         {
           opposite: 1,
           title: {
             text: 'Locks',
           },
+          min: Math.max(
+            0,
+            Math.min(...series[2].data) -
+              0.1 * (Math.max(...series[2].data) - Math.min(...series[2].data))
+          ),
         },
       ],
       tooltip: {
@@ -193,7 +211,8 @@ function CalcRenderData(
     const dayDatas = graphData.unlockDailyDatas.filter(
       (item) => item.id >= dayId - 1 && item.id < dayId
     )
-    if (flag === 0) return dayDatas.reduce((x, y) => x + Number(y.keysSold), 0)
+    if (flag === 0)
+      return dayDatas.reduce((x, y) => x + Number(y.totalKeysSold), 0)
     if (flag === 1) {
       const lastMonthActiveLocks = graphData.unlockDailyDatas
         .filter((item) => item.id > dayId - 30 && item.id <= dayId)
@@ -202,7 +221,7 @@ function CalcRenderData(
       return [...new Set(lastMonthActiveLocks)].length
     }
     if (flag === 2)
-      return dayDatas.reduce((x, y) => x + Number(y.lockDeployed), 0)
+      return dayDatas.reduce((x, y) => x + Number(y.totalLockDeployed), 0)
   })
 }
 
@@ -425,7 +444,7 @@ export function State() {
           if (!networks[key].isTestNetwork) {
             const { data } = await getSubgraph4GNP(
               networks[key].subgraph.endpointV2,
-              currentDay - 1030
+              currentDay - 1030 // why?
             )
             return { name: networks[key].name, data }
           }
