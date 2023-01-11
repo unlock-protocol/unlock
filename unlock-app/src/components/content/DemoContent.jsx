@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import Head from 'next/head'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
-import Media from '../../theme/media'
 
 const usePaywall = () => {
   const config = useContext(ConfigContext)

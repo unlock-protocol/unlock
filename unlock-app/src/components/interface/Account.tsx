@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
-import styled from 'styled-components'
-import Jazzicon from 'react-jazzicon'
+import UserIcon from 'react-jazzicon'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
 import { Select, Button } from '@unlock-protocol/ui'
@@ -42,7 +41,7 @@ export function Account() {
     <div>
       <div className="flex items-end gap-3 md:flex-row">
         <div className="hidden col-auto md:block">
-          {account && iconSeed && <UserIcon seed={iconSeed} />}
+          {account && iconSeed && <UserIcon diameter={40} seed={iconSeed} />}
         </div>
         <div className="flex flex-col w-full gap-2">
           {network && (
@@ -74,9 +73,5 @@ export function Account() {
     </div>
   )
 }
-
-const UserIcon = styled(Jazzicon).attrs({
-  diameter: 40,
-})``
 
 export default Account
