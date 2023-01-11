@@ -5,6 +5,7 @@ export const mainnet: NetworkConfig = {
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   provider: 'https://rpc.unlock-protocol.com/1',
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
+  keyManagerAddress: '0x',
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   name: 'Ethereum',
   chain: 'ethereum',

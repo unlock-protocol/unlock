@@ -4,6 +4,7 @@ export const mumbai: NetworkConfig = {
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
   provider: 'https://rpc.unlock-protocol.com/80001',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  keyManagerAddress: '0x',
   multisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   id: 80001,
   name: 'Mumbai (Polygon)',
