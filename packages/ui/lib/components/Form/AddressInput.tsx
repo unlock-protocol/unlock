@@ -87,7 +87,6 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
    
     const isValidEns = address?.includes('.eth')
     const isValidAddress = address && ethers.utils.isAddress(address)
-    console.log('isValidAddress:', isValidAddress)
   
     useEffect(() => {
       const resolveEns = async () => {
