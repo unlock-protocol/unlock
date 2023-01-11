@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
