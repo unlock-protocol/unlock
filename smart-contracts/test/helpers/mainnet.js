@@ -16,10 +16,9 @@ const UNLOCK_GOVERNOR = '0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94'
 const UNLOCK_TIMELOCK = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 
 // whales
-const BINANCE9 = '0xf977814e90da44bfa03b6295a0616a897441acec'
 const whales = {
-  [DAI]: BINANCE9,
-  [USDC]: BINANCE9 // binance
+  [DAI]: '0xf977814e90da44bfa03b6295a0616a897441acec',// binance
+  [USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28' 
 }
 
 const resetNodeState = async () => {
