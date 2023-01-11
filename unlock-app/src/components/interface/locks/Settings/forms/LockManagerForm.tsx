@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
@@ -214,14 +215,19 @@ export const LockManagerForm = ({
   disabled,
 }: LockManagerFormProps) => {
   const walletService = useWalletService()
-  const { register, handleSubmit, reset } = useForm<FormProps>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<FormProps>({
     defaultValues: {
       manager: '',
     },
   })
 
   const web3Service = useWeb3Service()
-  const [address, setResolvedAddress] = useState('')
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -238,15 +244,10 @@ export const LockManagerForm = ({
   }
 
   const addLockManager = async (address: string) => {
-    const resolvedAddress = await web3Service.resolveEns(address)
-    if (resolvedAddress) {
-      setResolvedAddress(resolvedAddress)
-    }
-
-    const managerAddress = addressMinify(resolvedAddress)
+    const managerAddress = addressMinify(address)
     const addManagerPromise = walletService.addLockManager({
       lockAddress,
-      userAddress: resolvedAddress,
+      userAddress: address,
     })
     await ToastHelper.promise(addManagerPromise, {
       loading: `Adding ${managerAddress} as Lock Manager.`,
@@ -276,6 +277,19 @@ export const LockManagerForm = ({
 
   const onAddLockManager = async ({ manager }: FormProps) => {
     await addLockManagerMutation.mutateAsync(manager)
+  }
+
+  const managerAddress = watch('manager')
+
+  const isValidEns = () => {
+    const isValid = managerAddress?.includes('.eth')
+    return isValid
+  }
+
+  const isValidAddress = () => {
+    const isValidAddress =
+      managerAddress && ethers.utils.isAddress(managerAddress)
+    return isValidAddress
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
@@ -312,11 +326,18 @@ export const LockManagerForm = ({
           <div className="flex flex-col gap-2">
             <AddressInput
               withIcon
-              resolvedAddress={address}
+              address={managerAddress}
               label="Add manager, please enter the wallet address of theirs."
-              description="Enter a valid wallet address"
+              description="Enter a wallet address or an ens name"
               disabled={disableInput}
-              {...register('manager')}
+              errors={errors}
+              web3Service={web3Service}
+              {...register('manager', {
+                validate: {
+                  isValidEns: isValidEns,
+                  isValidAddress: isValidAddress,
+                },
+              })}
             />
           </div>
           <Button
