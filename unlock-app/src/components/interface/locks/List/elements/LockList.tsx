@@ -24,7 +24,7 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
   const { networks } = useConfig()
   const { name: networkName } = networks[network]
 
-  if (isLoading) return <LocksByNetworkPlaceholder />
+  if (isLoading) return <LocksByNetworkPlaceholder networkName={networkName} />
   if (locks?.length === 0) return null
 
   return (
@@ -103,12 +103,11 @@ export const LockList = ({ owner }: LockListProps) => {
     queries,
   })
 
-  const isLoading = results?.some(({ isLoading }) => isLoading)
-
   return (
     <div className="grid gap-20 mb-20">
       {networkItems.map(([network], index) => {
         const locksByNetwork: any = results?.[index]?.data || []
+        const isLoading = results?.[index]?.isLoading || false
 
         return (
           <LocksByNetwork

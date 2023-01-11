@@ -266,13 +266,16 @@ export default class WalletService extends UnlockService {
       data?: string
       decimals?: number
       erc20Address?: string
+      keyPrice?: string
+      recurringPayment?: string | number
+      totalApproval?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.cancelAndRefund) {
+    if (!version.extendKey) {
       throw new Error('Lock version not supported')
     }
     return version.extendKey.bind(this)(params, transactionOptions, callback)

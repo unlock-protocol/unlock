@@ -9,16 +9,17 @@ import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
-import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
 import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
-import useAccount from '~/hooks/useAccount'
+import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -48,11 +49,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const config = useConfig()
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
-  const { account, network, isUnlockAccount } = useAuth()
-  const { getTokenBalance } = useAccount(account!, network!)
+  const { account, isUnlockAccount } = useAuth()
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+  const web3Service = useWeb3Service()
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
     async () => {
@@ -80,14 +81,20 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     ['balance', account, lock.address],
     async () => {
       const [balance, networkBalance] = await Promise.all([
-        getTokenBalance(lock.currencyContractAddress),
-        getTokenBalance(null),
+        getAccountTokenBalance(
+          web3Service,
+          account!,
+          lock.currencyContractAddress,
+          lock.network
+        ),
+        getAccountTokenBalance(web3Service, account!, null, lock.network),
       ])
 
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
-      const isPayable =
-        userCanAffordKey(lock, balance, recipients.length) && isGasPayable
+      const isPayable = isGasPayable
+      /** Note: we won't really know if user can afford because there could be discounts... */
+      /* userCanAffordKey(lock, balance, recipients.length) && isGasPayable */
 
       const options = {
         balance,
@@ -131,6 +138,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableSuperfluid,
   ].every((item) => !item)
 
+  const keyPrice = Number(parseFloat(lock.keyPrice)).toLocaleString()
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
@@ -154,11 +162,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     },
                   })
                 }}
-                className="grid w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay via cryptocurrency </h3>
-                  <AmountBadge amount={lock.keyPrice} symbol={symbol} />
+                  <AmountBadge amount={keyPrice} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
@@ -251,7 +259,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Stream payment via superfluid </h3>
-                  <AmountBadge amount={lock.keyPrice} symbol={symbol} />
+                  <AmountBadge amount={keyPrice} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full gap-2">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">

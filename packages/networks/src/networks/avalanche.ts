@@ -18,6 +18,7 @@ export const avalanche: NetworkConfig = {
   explorer: {
     name: 'Snowtrace (Avalanche)',
     urls: {
+      base: `https://snowtrace.io/`,
       address: (address) => `https://snowtrace.io/address/${address}`,
       transaction: (hash) => `https://snowtrace.io/tx/${hash}`,
       token: (address, holder) =>
@@ -40,6 +41,7 @@ export const avalanche: NetworkConfig = {
   startBlock: 17188332,
   previousDeploys: [],
   isTestNetwork: false,
+  maxFreeClaimCost: 1,
   description:
     'Avalanche is an open, programmable smart contracts platform for decentralized applications.',
   tokens: [

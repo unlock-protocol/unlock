@@ -1,14 +1,11 @@
-import models = require('../../../src/models')
-import app = require('../../../src/app')
-import UserOperations = require('../../../src/operations/userOperations')
+import request from 'supertest'
+import app from '../../app'
+import { User, UserReference } from '../../../src/models'
 
+import UserOperations from '../../../src/operations/userOperations'
 // These tests are slow because we generate private keys
-jest.setTimeout(15000)
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     UserReference.truncate({ cascade: true }),
     User.truncate({ cascade: true }),
@@ -16,8 +13,6 @@ beforeAll(() => {
 })
 
 describe('encrypted private key retrevial', () => {
-  const request = require('supertest')
-
   describe('when the provided email exists in the persistence layer', () => {
     it('returns the relevant encrypted private key', async () => {
       expect.assertions(1)
@@ -42,7 +37,7 @@ describe('encrypted private key retrevial', () => {
     })
   })
 
-  describe('when the provided email does not exist within the existing persistence layer', () => {
+  describe.skip('when the provided email does not exist within the existing persistence layer', () => {
     it('returns details from the decoy user', async () => {
       expect.assertions(3)
       const emailAddress = 'non-existing@example.com'

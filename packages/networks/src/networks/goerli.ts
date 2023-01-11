@@ -18,6 +18,7 @@ export const goerli: NetworkConfig = {
   explorer: {
     name: 'Goerli (Testnet)',
     urls: {
+      base: `https://goerli.etherscan.io/`,
       address: (address) => `https://goerli.etherscan.io/address/${address}`,
       transaction: (hash) => `https://goerli.etherscan.io/tx/${hash}`,
       token: (address, holder) =>
@@ -42,6 +43,7 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
+  maxFreeClaimCost: 100,
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',

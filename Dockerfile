@@ -1,9 +1,12 @@
 # syntax = docker/dockerfile:experimental
 
-#
-# 1. install only deps (to be cached)
-#
-FROM node:16-bullseye as deps
+ARG NODE_VERSION=18
+
+###################################################################
+# Stage 1: Install all workspaces (dev)dependencies               #
+#          and generates node_modules folder(s)                   #
+###################################################################
+FROM node:$NODE_VERSION as deps
 LABEL Unlock <ops@unlock-protocol.com>
 
 # Setting user as root to handle apt install
@@ -12,9 +15,10 @@ USER root
 # install all deps required to build modules
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
-    apt-get install --assume-yes \
+    apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
+    rsync \
     python3 \
     postgresql \
     default-jdk \
@@ -22,45 +26,48 @@ RUN apt-get update \
     build-essential \
     ca-certificates
 
-# switch to user
+# setup folder
 ENV DEST_FOLDER=/home/unlock
-
 RUN mkdir $DEST_FOLDER
+WORKDIR ${DEST_FOLDER}
 
-# copy files 
-WORKDIR /tmp
-COPY . .
+# We use rsync to prepare all package.json files that are necessary 
+# for packages install and used to invalidate buidkit docker cache
+RUN --mount=type=bind,target=/docker-context \
+    rsync -amv --delete \
+    --exclude='node_modules' \
+    --exclude='*/node_modules' \
+    --include='package.json' \
+    --include='*/' --exclude='*' \
+    /docker-context/ $DEST_FOLDER;
 
-# copy all package.json files
-RUN find . -maxdepth 3 -mindepth 2 -type f -name "package.json" ! -path '**node_modules**' ! -path './docker' -exec cp --parents '{}' $DEST_FOLDER \;
-COPY package.json $DEST_FOLDER
-COPY yarn.lock $DEST_FOLDER
+# yarn related files
+COPY yarn.lock .
+COPY .yarnrc.yml .
+COPY .yarn/plugins .yarn/plugins
+COPY .yarn/releases .yarn/releases
+COPY .yarn/patches .yarn/patches
 
-# copy al yarn related files
-COPY .yarnrc.yml $DEST_FOLDER
-COPY .prettierrc $DEST_FOLDER
-COPY .yarn/plugins $DEST_FOLDER/.yarn/plugins
-COPY .yarn/releases $DEST_FOLDER/.yarn/releases
-RUN chown -R node:node $DEST_FOLDER
-
-# specify yarn cache folder location (to be used by docker buildkit)
-USER node
-RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> $DEST_FOLDER/.yarnrc.yml
-RUN mkdir $DEST_FOLDER/yarn-cache
+# use custom .yarn/cache folder (for local dev)
+RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> .yarnrc.yml
+RUN mkdir ./yarn-cache
+RUN chown -R node:node .
 
 # install deps
-WORKDIR ${DEST_FOLDER}
-RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn
+USER node
+RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
-#
-# 2. build packages and prepare image for testing/dev
-#
+# Dedupe deps
+RUN yarn dedupe
+
+###################################################################
+# Stage 2: Build packages and app
+###################################################################
 FROM deps as dev
 
-# enforce perms
-WORKDIR /home/unlock
+ENV DEST_FOLDER=/home/unlock
 
-# default user
+# enforce perms
 USER node
 COPY --chown=node . .
 
@@ -69,17 +76,22 @@ RUN java -version
 RUN javac -version
 
 # Run yarn to install missing dependencies from cached image
-RUN yarn
+RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
 # build all packages in packages/**
 RUN yarn build
 
-# Build locksmith and other apps separately to reduce startup time on heroku
-RUN yarn apps:build
+# Cleanup up image to make it lighter
+USER root
+RUN apt-get autoremove
+USER node
 
-#
-## 3. export image for prod app
-##
+# Remove yarn cache (re-installing dependencies will take more time, but image will be 500MB lighter)
+RUN rm -rf .yarn/cache/ 
+
+###################################################################
+# Stage 3. export minimal image for prod app
+###################################################################
 FROM dev as prod
 
 # default values

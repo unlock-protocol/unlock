@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
@@ -9,6 +10,7 @@ interface UpdateNameFormProps {
   isManager: boolean
   lockAddress: string
   lockName: string
+  network: number
 }
 
 interface FormProps {
@@ -20,6 +22,7 @@ export const UpdateNameForm = ({
   isManager,
   lockAddress,
   lockName,
+  network,
 }: UpdateNameFormProps) => {
   const walletService = useWalletService()
   const {
@@ -58,7 +61,7 @@ export const UpdateNameForm = ({
   }
 
   const disabledInput = disabled || changeNameMutation.isLoading
-
+  const updateMetadataUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onChangeName)}>
       <div className="relative">
@@ -70,6 +73,22 @@ export const UpdateNameForm = ({
           error={errors?.name && 'Lock name should have at least 3 characters.'}
           autoComplete="off"
           disabled={disabledInput}
+          description={
+            <span>
+              <span className="flex gap-1">
+                <span>
+                  This value will be set on the contract but the NFT metadata
+                  will remain unchanged if you have set a value there.
+                </span>
+                <Link
+                  href={updateMetadataUrl}
+                  className="font-bold cursor-pointer text-brand-ui-primary"
+                >
+                  Edit NFT properties
+                </Link>
+              </span>
+            </span>
+          }
         />
       </div>
 

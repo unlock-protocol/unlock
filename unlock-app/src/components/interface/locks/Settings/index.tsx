@@ -1,5 +1,5 @@
 import { Tab } from '@headlessui/react'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { SettingTerms } from './elements/SettingTerms'
 
 import { SettingRoles } from './elements/SettingRoles'
@@ -12,10 +12,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
 import { SettingPayments } from './elements/SettingPayments'
+import { SettingTab } from '~/pages/locks/settings'
 
 interface LockSettingsPageProps {
   lockAddress: string
   network: number
+  defaultTab?: SettingTab
 }
 
 interface SidebarCardProps {
@@ -36,18 +38,16 @@ const NotManagerBanner = () => {
   )
 }
 
-const SidebarCard = ({ src, alt, description }: SidebarCardProps) => {
+const SidebarCard = ({ src, description }: SidebarCardProps) => {
   return (
-    <div className="relative flex w-full bg-slate-200 rounded-2xl min-h-80">
-      <div className="overflow-hidden rounded-2xl">
-        <img
-          className="object-cover w-full min-h-full bg-center"
-          src={src}
-          alt={alt ?? 'Sidebar image'}
-        />
-      </div>
+    <div
+      className="flex w-full overflow-hidden bg-cover rounded-2xl"
+      style={{
+        backgroundImage: `url(${src})`,
+      }}
+    >
       {description && (
-        <span className="absolute block px-4 mt-4 text-lg text-gray-800 top-5">
+        <span className="block p-4 py-3 mb-20 text-lg text-gray-800 md:mb-48">
           {description}
         </span>
       )}
@@ -55,7 +55,11 @@ const SidebarCard = ({ src, alt, description }: SidebarCardProps) => {
   )
 }
 
-const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
+const LockSettingsPage = ({
+  lockAddress,
+  network,
+  defaultTab,
+}: LockSettingsPageProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { isManager, isLoading: isLoadingManager } = useLockManager({
     lockAddress,
@@ -95,8 +99,25 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
 
   const isLoading = isLoadingLock || isLoadingManager
 
-  const tabs: { label: string; children: ReactNode; sidebar?: ReactNode }[] = [
+  /**
+   * Open default tab by id
+   */
+  useEffect(() => {
+    if (!defaultTab) return
+    const defaultTabIndex = tabs?.findIndex(({ id }) => id === defaultTab)
+    if (defaultTabIndex === undefined) return
+
+    setSelectedIndex(defaultTabIndex)
+  }, [defaultTab])
+
+  const tabs: {
+    label: string
+    id: SettingTab
+    children: ReactNode
+    sidebar?: ReactNode
+  }[] = [
     {
+      id: 'general',
       label: 'General',
       children: (
         <SettingGeneral
@@ -115,6 +136,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       ),
     },
     {
+      id: 'terms',
       label: 'Membership Terms',
       children: (
         <SettingTerms
@@ -123,6 +145,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
           isManager={isManager}
           lock={lock}
           isLoading={isLoading}
+          publicLockVersion={publicLockVersion}
         />
       ),
       sidebar: (
@@ -133,6 +156,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       ),
     },
     {
+      id: 'payments',
       label: 'Payments',
       children: (
         <SettingPayments
@@ -151,6 +175,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       ),
     },
     {
+      id: 'roles',
       label: 'Roles',
       children: (
         <SettingRoles
@@ -168,6 +193,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       ),
     },
     {
+      id: 'advanced',
       label: 'Advanced',
       children: (
         <SettingMisc

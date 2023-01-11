@@ -43,4 +43,4 @@ router.head('/:network/keys', (req, res) =>
   hubPublisherController.handle(req, res)
 )
 
-module.exports = router
+export default router

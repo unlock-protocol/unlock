@@ -1,13 +1,14 @@
 {
-  "ts-node": {
-    "files": true
-  },
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "build",
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "jsx": "react-jsx"
   },
   "exclude": [
-    "build"
+    "build",
+    "__tests__",
   ]
 }

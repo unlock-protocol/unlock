@@ -12,9 +12,9 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { useStorageService } from '~/utils/withStorageService'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
+import { storage } from '~/config/storage'
 
 interface LockDetailCardProps {
   network: number
@@ -133,7 +133,6 @@ export const LockDetailCard = ({
 }: LockDetailCardProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const storageService = useStorageService()
 
   const [isRecurring, setIsRecurring] = useState(false)
 
@@ -183,16 +182,14 @@ export const LockDetailCard = ({
   const loading = isLoading || isLoadingStripe
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
-  const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice
+  const priceLabel =
+    keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
 
   const { data: lockMetadata, isInitialLoading: isLockMetadataLoading } =
     useQuery<Record<string, any>>(
       ['lockMetadata', lockAddress, network],
       async () => {
-        const response = await storageService.locksmith.lockMetadata(
-          network,
-          lockAddress
-        )
+        const response = await storage.lockMetadata(network, lockAddress)
         return response.data
       },
       {

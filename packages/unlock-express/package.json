@@ -14,11 +14,11 @@
     "passport-custom": "1.1.1"
   },
   "peerDependencies": {
-    "passport": "0.6.0"
+    "passport": "^0.6.x"
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "8.26.0",
-    "prettier": "2.7.1"
+    "eslint": "8.31.0",
+    "prettier": "2.8.1"
   }
 }

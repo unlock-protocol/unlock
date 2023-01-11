@@ -1,5 +1,4 @@
 import React, { useState, useEffect, ReactNode } from 'react'
-import GlobalStyle from '../../theme/globalStyle'
 import { WedlockServiceContext } from '../../contexts/WedlocksContext'
 import WedlockService from '../../services/wedlockService'
 import { ConfigContext } from '../../utils/withConfig'
@@ -24,7 +23,6 @@ export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
 
   return (
     <>
-      <GlobalStyle />
       {children && (
         <ConfigContext.Provider value={config}>
           <WedlockServiceContext.Provider value={wedlockService}>

@@ -17,6 +17,7 @@ export const bsc: NetworkConfig = {
   explorer: {
     name: 'BscScan',
     urls: {
+      base: `https://bscscan.com/`,
       address: (address) => `https://bscscan.com/address/${address}`,
       transaction: (hash) => `https://bscscan.com/tx/${hash}`,
       token: (address, holder) =>
@@ -45,6 +46,7 @@ export const bsc: NetworkConfig = {
   ],
   description: 'EVM compatible network. Cheaper transaction cost.',
   isTestNetwork: false,
+  maxFreeClaimCost: 1,
   teamMultisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
   tokens: [
     {

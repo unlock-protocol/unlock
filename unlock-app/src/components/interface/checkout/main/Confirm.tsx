@@ -8,7 +8,7 @@ import { getLockProps } from '~/utils/lock'
 import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
-import { Fragment, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
@@ -27,6 +27,8 @@ import { Pricing } from '../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
+import ReCaptcha from 'react-google-recaptcha'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface Props {
   injectedProvider: unknown
@@ -50,11 +52,15 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
       </h4>
       <div className="flex justify-between w-full pt-2 text-xs border-t border-gray-300">
         <span className="text-gray-600">Service Fee</span>
-        <div>${(fiatPricing?.usd?.unlockServiceFee / 100).toFixed(2)}</div>
+        <div>
+          ${(fiatPricing?.usd?.unlockServiceFee / 100).toLocaleString()}
+        </div>
       </div>
       <div className="flex justify-between w-full pb-2 text-xs ">
         <span className="text-gray-600"> Payment Processor </span>
-        <div>${(fiatPricing?.usd?.creditCardProcessing / 100).toFixed(2)}</div>
+        <div>
+          ${(fiatPricing?.usd?.creditCardProcessing / 100).toLocaleString()}
+        </div>
       </div>
       <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Total </h4>
@@ -65,7 +71,7 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
               (t, amount) => t + Number(amount),
               0
             ) / 100
-          ).toFixed(2)}
+          ).toLocaleString()}
         </div>
       </div>
     </div>
@@ -78,11 +84,12 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network } = useAuth()
+  const { account, network, isUnlockAccount, changeNetwork } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
   const web3Service = useWeb3Service()
-
+  const recaptchaRef = useRef<any>()
+  const storage = useStorageService()
   const {
     prepareChargeForCard,
     captureChargeForCard,
@@ -90,6 +97,7 @@ export function Confirm({
   } = useAccount(account!, network!)
 
   const [isConfirming, setIsConfirming] = useState(false)
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
 
   const {
     lock,
@@ -100,6 +108,7 @@ export function Confirm({
     messageToSign,
     paywallConfig,
     password,
+    promo,
   } = state.context
 
   const {
@@ -108,6 +117,10 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
+
+  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
+
+  const networkConfig = config.networks[lockNetwork]
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -145,10 +158,21 @@ export function Confirm({
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     useQuery(
-      ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
+      [
+        'purchaseData',
+        lockAddress,
+        lockNetwork,
+        recipients,
+        promo,
+        password,
+        captcha,
+      ],
       async () => {
         let purchaseData =
-          password || captcha || Array.from({ length: recipients.length })
+          promo ||
+          password ||
+          captcha ||
+          Array.from({ length: recipients.length })
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
@@ -178,7 +202,7 @@ export function Confirm({
 
   const { data: pricingData, isInitialLoading: isPricingDataLoading } =
     useQuery(
-      ['purchasePriceFor', lockAddress, lockNetwork],
+      ['purchasePriceFor', lockAddress, lockNetwork, recipients, purchaseData],
       async () => {
         const prices = await Promise.all(
           recipients.map(async (recipient, index) => {
@@ -205,15 +229,28 @@ export function Confirm({
             }
           })
         )
-        return {
+        const item = {
           prices,
           total: prices
             .reduce((acc, item) => acc + parseFloat(item.amount), 0)
             .toString(),
         }
+
+        const response = await storage.locksmith.price(
+          lockNetwork,
+          parseFloat(item.total),
+          lock?.currencyContractAddress
+            ? lock?.currencyContractAddress
+            : undefined
+        )
+
+        return {
+          ...item,
+          usdPrice: response.data.result,
+        }
       },
       {
-        refetchInterval: Infinity,
+        refetchInterval: 1000 * 60 * 5,
         refetchOnMount: false,
         enabled: !isInitialDataLoading,
       }
@@ -230,6 +267,21 @@ export function Confirm({
     baseCurrencySymbol,
     lockName,
     quantity
+  )
+
+  const SwitchNetwork = () => (
+    <Button
+      disabled={isSwitchingNetwork || isLoading}
+      loading={isSwitchingNetwork}
+      onClick={async (event) => {
+        setIsSwitchingNetwork(true)
+        event.preventDefault()
+        await changeNetwork(lockNetwork)
+        setIsSwitchingNetwork(false)
+      }}
+    >
+      Switch to {networkConfig.name}
+    </Button>
   )
 
   const onConfirmCard = async () => {
@@ -423,10 +475,13 @@ export function Confirm({
         return
       }
 
+      const captcha = await recaptchaRef.current?.executeAsync()
+
       const response = await claimMembershipFromLock(
         lockAddress,
         lockNetwork,
-        purchaseData?.[0]
+        purchaseData?.[0],
+        captcha
       )
 
       const { transactionHash: hash, error } = response
@@ -457,7 +512,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming}
+              disabled={isConfirming || isLoading}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmCard()
@@ -471,18 +526,43 @@ export function Confirm({
         )
       }
       case 'crypto': {
+        let buttonLabel = ''
+        const isFree = pricingData?.prices.reduce((previousTotal, item) => {
+          return previousTotal && parseFloat(item.amount) === 0
+        }, true)
+
+        if (isFree) {
+          if (isConfirming) {
+            buttonLabel = 'Claiming'
+          } else {
+            buttonLabel = 'Claim'
+          }
+        } else {
+          if (isConfirming) {
+            buttonLabel = 'Paying using crypto'
+          } else {
+            buttonLabel = 'Pay using crypto'
+          }
+        }
+
         return (
           <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming}
-              onClick={(event) => {
-                event.preventDefault()
-                onConfirmCrypto()
-              }}
-            >
-              {isConfirming ? 'Paying using crypto' : 'Pay using crypto'}
-            </Button>
+            {isNetworkSwitchRequired && <SwitchNetwork />}
+            {!isNetworkSwitchRequired && (
+              <Button
+                loading={isConfirming}
+                disabled={isConfirming || isLoading}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  onConfirmCrypto()
+                }}
+              >
+                {buttonLabel}
+              </Button>
+            )}
           </div>
         )
       }
@@ -491,7 +571,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming}
+              disabled={isConfirming || isLoading}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmClaim()
@@ -507,18 +587,24 @@ export function Confirm({
       case 'superfluid': {
         return (
           <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming}
-              onClick={(event) => {
-                event.preventDefault()
-                onConfirmSuperfluid()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using superfluid'
-                : 'Pay using superfluid'}
-            </Button>
+            {isNetworkSwitchRequired && <SwitchNetwork />}
+            {!isNetworkSwitchRequired && (
+              <Button
+                loading={isConfirming}
+                disabled={isConfirming || isLoading}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  onConfirmSuperfluid()
+                }}
+              >
+                {isConfirming
+                  ? 'Paying using superfluid'
+                  : 'Pay using superfluid'}
+              </Button>
+            )}
           </div>
         )
       }
@@ -535,6 +621,12 @@ export function Confirm({
 
   return (
     <Fragment>
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
@@ -556,6 +648,11 @@ export function Confirm({
               {!!pricingData?.prices?.length &&
                 pricingData.prices.map((item, index) => {
                   const first = index <= 0
+                  const discount =
+                    Number(lock!.keyPrice) > 0
+                      ? (100 * (Number(lock!.keyPrice) - Number(item.amount))) /
+                        Number(lock!.keyPrice)
+                      : 0
                   return (
                     <div
                       key={index}
@@ -570,7 +667,7 @@ export function Confirm({
                         </span>{' '}
                         {Number(item.amount) < Number(lock!.keyPrice) ? (
                           <Badge variant="green" size="tiny">
-                            Discounted
+                            {discount}% Discount
                           </Badge>
                         ) : null}
                       </div>
@@ -578,7 +675,7 @@ export function Confirm({
                       <div className="font-bold">
                         {item.amount === '0'
                           ? 'FREE'
-                          : item.amount.toString() + ' ' + symbol}
+                          : Number(item.amount).toLocaleString() + ' ' + symbol}
                       </div>
                     </div>
                   )
@@ -601,9 +698,9 @@ export function Confirm({
               keyPrice={
                 pricingData?.total === '0'
                   ? 'FREE'
-                  : `${pricingData?.total?.toString()} ${symbol}`
+                  : `${Number(pricingData?.total)?.toLocaleString()} ${symbol}`
               }
-              usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+              usdPrice={`~$${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`}
               isCardEnabled={formattedData.cardEnabled}
             />
           </>

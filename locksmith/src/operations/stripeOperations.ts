@@ -5,7 +5,7 @@ import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
-import config from '../../config/config'
+import config from '../config/config'
 
 const { Op } = Sequelize
 
@@ -59,6 +59,7 @@ export const saveStripeCustomerIdForAddress = async (
       StripeCustomerId: stripeCustomerId,
     })
   } catch (error) {
+    console.error(error)
     return false
   }
 }
@@ -73,7 +74,6 @@ export const deletePaymentDetailsForAddress = async (
 
   // First, let's delete the StripeCustomer
   const deletedStripeCustomer = await StripeCustomer.destroy({
-    // @ts-expect-error - typescript typing issue
     where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
   })
 
@@ -84,7 +84,6 @@ export const deletePaymentDetailsForAddress = async (
       stripe_customer_id: null,
     },
     {
-      // @ts-expect-error - typescript typing issue
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
     }
   )
@@ -178,8 +177,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
+    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
     type: 'account_onboarding',
   })
 }

@@ -66,6 +66,7 @@ export interface NetworkConfig {
   explorer?: {
     name: string
     urls: {
+      base: string
       address(address: string): string
       transaction(hash: string): string
       token(address: string, owner: string): string
@@ -79,6 +80,7 @@ export interface NetworkConfig {
     symbol: string
     address: string
   } | null
+  maxFreeClaimCost?: number 
   requiredConfirmations?: number
   baseCurrencySymbol?: string
   nativeCurrency?: Omit<Token, 'address'>

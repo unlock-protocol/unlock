@@ -4,7 +4,11 @@ import 'cross-fetch/polyfill'
 import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import {
+  KeyOrderBy,
+  OrderDirection,
+  SubgraphService,
+} from '@unlock-protocol/unlock-js'
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useConfig } from '~/utils/withConfig'
@@ -17,10 +21,10 @@ interface KeysByNetworkProps {
   keys?: any[]
 }
 
-const KeysByNetworkPlaceholder = () => {
+const KeysByNetworkPlaceholder = ({ name }: { name: string }) => {
   return (
     <div className="flex flex-col mb-3">
-      <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
+      <h2 className="text-lg font-bold text-brand-ui-primary">{name}</h2>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {Array(9)
           .fill(null)
@@ -49,7 +53,7 @@ export const KeysByNetwork = ({
   const noKeys = keys?.length == 0
 
   if (isLoading) {
-    return <KeysByNetworkPlaceholder />
+    return <KeysByNetworkPlaceholder name={networkName} />
   }
 
   if (noKeys) return null
@@ -61,7 +65,7 @@ export const KeysByNetwork = ({
           {networkName}
         </h2>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {keys?.map((key: any) => (
           <Key
             key={key.id}
@@ -77,7 +81,6 @@ export const KeysByNetwork = ({
 
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
-
   const networkItems: any[] =
     Object.entries(networks ?? {})
       .map(([network, value]) => [parseInt(network, 10), value])
@@ -86,13 +89,14 @@ export const KeyDetails = () => {
 
   const getKeys = async (network: string) => {
     const service = new SubgraphService()
-
     return await service.keys(
       {
         first: 1000,
         where: {
           owner: account,
         },
+        orderBy: KeyOrderBy.Expiration,
+        orderDirection: OrderDirection.Desc,
       },
       {
         networks: [network],
@@ -114,7 +118,7 @@ export const KeyDetails = () => {
     queries,
   })
 
-  const isLoading = results?.some(({ isLoading }) => isLoading)
+  const loadingResults = results?.some(({ isLoading }) => isLoading)
   const hasKeys = results?.some(
     ({ data = [] }: any) => (data ?? [])?.length > 0
   )
@@ -123,7 +127,7 @@ export const KeyDetails = () => {
     return <LoginPrompt />
   }
 
-  if (!hasKeys && !isLoading) {
+  if (!hasKeys && !loadingResults) {
     return (
       <ImageBar
         description="You don't have any keys yet"
@@ -136,6 +140,8 @@ export const KeyDetails = () => {
     <div className="flex flex-col gap-5">
       {networkItems.map(([network], index) => {
         const keys: any = results?.[index]?.data || []
+        const isLoading: any = results?.[index]?.isLoading || false
+
         return (
           <KeysByNetwork
             key={network}

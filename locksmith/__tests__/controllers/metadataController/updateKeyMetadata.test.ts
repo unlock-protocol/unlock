@@ -1,9 +1,9 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
+import * as Base64 from '../../../src/utils/base64'
+import app from '../../app'
+import { vi } from 'vitest'
 
 const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
@@ -11,10 +11,10 @@ const wallet = new ethers.Wallet(
 
 // eslint-disable-next-line
 var mockWeb3Service = {
-  isLockManager: jest.fn(() => Promise.resolve(false)),
+  isLockManager: vi.fn(() => Promise.resolve(false)),
 }
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
@@ -34,7 +34,7 @@ describe('updateKeyMetadata', () => {
         'KeyMetaData'
       )
 
-      mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(false))
     })
 
     it('returns unauthorized', async () => {

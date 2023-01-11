@@ -51,7 +51,14 @@ export function AirdropKeysDrawer({
   const handleConfirm = async (items: AirdropMember[]) => {
     // Create metadata
     const users = items.map(({ recipient: userAddress, ...rest }) => {
-      const data = omit(rest, ['manager', 'neverExpire', 'count', 'expiration'])
+      const data = omit(rest, [
+        'manager',
+        'neverExpire',
+        'count',
+        'expiration',
+        'balance',
+        'line',
+      ])
       const metadata = Object.entries(data).reduce<Metadata>(
         (result, [key, value]) => {
           const [name, designation] = key.split('.')
@@ -114,18 +121,23 @@ export function AirdropKeysDrawer({
     }, initialValue)
 
     // Grant keys
-    await walletService.grantKeys(
-      {
-        ...options,
-        lockAddress,
-      },
-      {},
-      (error) => {
-        if (error) {
-          throw error
+    await walletService
+      .grantKeys(
+        {
+          ...options,
+          lockAddress,
+        },
+        {},
+        (error) => {
+          if (error) {
+            throw error
+          }
         }
-      }
-    )
+      )
+      .catch((error: any) => {
+        console.log(error)
+        throw new Error('We were unable to airdrop these memberships.')
+      })
 
     ToastHelper.success(
       `Successfully granted ${options.recipients.length} keys to ${items.length} recipients`

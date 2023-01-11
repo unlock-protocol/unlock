@@ -20,7 +20,12 @@ import {
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 import { Key, Lock, UnlockDailyData, LockStats } from '../generated/schema'
 
-import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
+import {
+  genKeyID,
+  getKeyExpirationTimestampFor,
+  loadOrCreateUnlockDailyData,
+  LOCK_MANAGER,
+} from './helpers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -50,17 +55,17 @@ function newKey(event: TransferEvent): void {
   }
 
   // update lockDayData
-  const dayID = event.block.timestamp.toI32() / 86400
-  const unlockDailyData = UnlockDailyData.load(dayID.toString())
-  if (unlockDailyData) {
-    const activeLocks = unlockDailyData.activeLocks
-    unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
-    if (activeLocks && !activeLocks.includes(event.address)) {
-      activeLocks.push(event.address)
-      unlockDailyData.activeLocks = activeLocks
-    }
-    unlockDailyData.save()
+  const unlockDailyData = loadOrCreateUnlockDailyData(event.block.timestamp)
+  const activeLocks = unlockDailyData.activeLocks
+  unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
+  unlockDailyData.totalKeysSold = unlockDailyData.totalKeysSold.plus(
+    BigInt.fromI32(1)
+  )
+  if (activeLocks && !activeLocks.includes(event.address)) {
+    activeLocks.push(event.address)
+    unlockDailyData.activeLocks = activeLocks
   }
+  unlockDailyData.save()
 
   // update lockStats
   const lockStats = LockStats.load('Unlock')
@@ -75,7 +80,7 @@ export function handleLockConfig(event: LockConfigEvent): void {
   if (lock) {
     lock.expirationDuration = event.params.expirationDuration
     lock.maxNumberOfKeys = event.params.maxNumberOfKeys
-    lock.maxKeysPerAddress = event.params.maxKeysPerAddress
+    lock.maxKeysPerAddress = event.params.maxKeysPerAcccount
     lock.save()
   }
 }

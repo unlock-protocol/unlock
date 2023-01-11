@@ -70,7 +70,11 @@ const Detail = ({
   )
 }
 
-export const LocksByNetworkPlaceholder = () => {
+export const LocksByNetworkPlaceholder = ({
+  networkName,
+}: {
+  networkName: string
+}) => {
   const DetailPlaceholder = () => {
     return (
       <div className="flex flex-col gap-1">
@@ -112,13 +116,9 @@ export const LocksByNetworkPlaceholder = () => {
     )
   }
 
-  const NetworkNamePlaceholder = () => {
-    return <div className="w-56 h-6 animate-pulse bg-slate-200"></div>
-  }
-
   return (
     <div className="flex flex-col gap-4">
-      <NetworkNamePlaceholder />
+      <h2 className="text-lg font-bold text-brand-ui-primary">{networkName}</h2>
       <div className="flex flex-col gap-6">
         <LockCardPlaceHolder />
         <LockCardPlaceHolder />
@@ -206,9 +206,18 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     )
   }
 
+  const getKeyPrice = async () => {
+    const decimals = await web3service.getTokenDecimals(
+      tokenAddress,
+      Number(network)
+    )
+    return ethers.utils.formatUnits(lock?.price, decimals)
+  }
+
   const [
     { isLoading: loadingBalance, data: balance },
     { isLoading: loadingSymbol, data: tokenSymbol },
+    { isLoading: loadingPrice, data: keyPrice },
   ] = useQueries({
     queries: [
       {
@@ -219,6 +228,10 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
       {
         queryKey: ['getSymbol', lockAddress, network, tokenAddress],
         queryFn: async () => await getSymbol(),
+      },
+      {
+        queryKey: ['getKeyPrice', lockAddress, network, tokenAddress],
+        queryFn: async () => await getKeyPrice(),
       },
     ],
   })
@@ -239,8 +252,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
       <Duration seconds={lock?.expirationDuration} />
     )
 
-  const keyPrice = ethers.utils.formatEther(lock?.price)
-  const isLoading = loadingBalance || loadingSymbol
+  const isLoading = loadingBalance || loadingSymbol || loadingPrice
 
   return (
     <>

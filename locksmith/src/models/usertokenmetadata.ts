@@ -1,16 +1,58 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript'
+import type {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './index'
 
-@Table({ tableName: 'UserTokenMetadata', timestamps: true })
-export class UserTokenMetadata extends Model<UserTokenMetadata> {
-  @Column({ unique: 'token_user_address_unique_constraint' })
-  tokenAddress!: string
-
-  @Column({ unique: 'token_user_address_unique_constraint' })
-  userAddress!: string
-
-  @Column(DataType.JSONB)
-  data!: any
-
-  @Column
-  chain!: number
+export class UserTokenMetadata extends Model<
+  InferAttributes<UserTokenMetadata>,
+  InferCreationAttributes<UserTokenMetadata>
+> {
+  declare id: CreationOptional<number>
+  declare tokenAddress: string
+  declare userAddress: string
+  declare data: any
+  declare chain: number
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
+
+UserTokenMetadata.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    tokenAddress: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    userAddress: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    data: {
+      allowNull: false,
+      type: DataTypes.JSONB,
+    },
+    chain: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    sequelize,
+  }
+)

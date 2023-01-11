@@ -19,6 +19,7 @@ export const celo: NetworkConfig = {
   explorer: {
     name: 'Celoscan',
     urls: {
+      base: `https://celoscan.io/`,
       address: (address) => `https://celoscan.io/address/${address}`,
       transaction: (hash) => `https://celoscan.io/tx/${hash}`,
       token: (address, holder) =>
@@ -41,6 +42,7 @@ export const celo: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: false,
+  maxFreeClaimCost: 1,
   teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',

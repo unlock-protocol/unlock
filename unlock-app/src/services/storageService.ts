@@ -7,7 +7,7 @@ import {
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
-import fetch, { RequestInit } from 'node-fetch'
+import fetch from 'node-fetch'
 import { APP_NAME } from '~/hooks/useAppStorage'
 
 // The goal of the success and failure objects is to act as a registry of events
@@ -431,25 +431,6 @@ export class StorageService extends EventEmitter {
     return response.json()
   }
 
-  /**
-   * Given a lock address and a typed data signature, disconnect stripe
-   * @param {string} lockAddress
-   * @param {string} signature
-   * @param {*} data
-   */
-  async disconnectStripe(lockAddress: string, network: number) {
-    const url = new URL(`${this.host}/${network}/lock/${lockAddress}/stripe`)
-    const token = await this.getAccessToken()
-
-    return await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  }
-
   async updateLockIcon(
     lockAddress: string,
     signature: string,
@@ -638,26 +619,6 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
-    const endpoint = `${this.host}${url}`
-    let params = options
-    const token = await this.getAccessToken()
-    if (withAuth) {
-      params = {
-        ...params,
-        headers: {
-          ...params.headers,
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    }
-    return fetch(endpoint, {
-      ...params,
-    }).then((res) => {
-      return res.json()
-    })
-  }
-
   async userExist(emailAddress: string) {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
@@ -694,178 +655,6 @@ export class StorageService extends EventEmitter {
     return response.json()
   }
 
-  async updatetMetadata({
-    lockAddress,
-    userAddress,
-    network,
-    metadata,
-  }: {
-    lockAddress: string
-    userAddress: string
-    network: number
-    metadata: any
-  }) {
-    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
-    const token = await this.getAccessToken()
-    const formattedMetadata = {
-      metadata: {
-        protected: {
-          ...metadata,
-        },
-      },
-    }
-
-    const opts = {
-      method: 'PUT',
-      body: JSON.stringify(formattedMetadata),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-    return await fetch(url, opts)
-  }
-
-  async createtMetadata({
-    lockAddress,
-    userAddress,
-    network,
-    metadata,
-  }: {
-    lockAddress: string
-    userAddress: string
-    network: number
-    metadata: any
-  }) {
-    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
-    const token = await this.getAccessToken()
-    const formattedMetadata = {
-      metadata: {
-        protected: {
-          ...metadata,
-        },
-      },
-    }
-
-    const opts = {
-      method: 'POST',
-      body: JSON.stringify(formattedMetadata),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-    const response = await fetch(url, opts)
-    return response.json()
-  }
-
-  async markTicketAsCheckedIn({
-    lockAddress,
-    keyId,
-    network,
-  }: {
-    lockAddress: string
-    keyId: string
-    network: number
-  }) {
-    const token = await this.getAccessToken()
-    const endpoint = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
-    return fetch(endpoint, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  }
-
-  async getVerifierStatus({
-    viewer,
-    network,
-    lockAddress,
-  }: {
-    viewer: string
-    network: number
-    lockAddress: string
-  }): Promise<boolean> {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await this.getEndpoint(
-      `/v2/api/verifier/${network}/lock/${lockAddress}/address/${viewer}`,
-      options,
-      true
-    ).then((res: any) => {
-      if (res.message) {
-        return false
-      } else {
-        return res?.enabled ?? false
-      }
-    })
-  }
-
-  async getKeyMetadataValues({
-    lockAddress,
-    network,
-    keyId,
-  }: {
-    lockAddress: string
-    network: number
-    keyId: number
-  }): Promise<any> {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await this.getEndpoint(
-      `/v2/api/metadata/${network}/locks/${lockAddress}/keys/${keyId}`,
-      options,
-      true
-    )
-  }
-
-  async getKeysMetadata({
-    lockAddress,
-    network,
-    lock,
-  }: {
-    lockAddress: string
-    network: number
-    lock: any
-  }): Promise<any> {
-    const options = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(lock),
-    }
-    return await this.getEndpoint(
-      `/v2/api/metadata/${network}/locks/${lockAddress}/keys`,
-      options,
-      true
-    )
-  }
-
-  async sendKeyQrCodeViaEmail({
-    lockAddress,
-    tokenId,
-    network,
-  }: {
-    lockAddress: string
-    tokenId: string
-    network: number
-  }): Promise<any> {
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await this.getEndpoint(
-      `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`,
-      options,
-      true
-    )
-  }
-
   async canClaimMembership({
     network,
     lockAddress,
@@ -881,62 +670,5 @@ export class StorageService extends EventEmitter {
       return !!json?.canClaim
     }
     return false
-  }
-
-  async getKeys({
-    lockAddress,
-    network,
-    filters,
-  }: {
-    lockAddress: string
-    network: number
-    filters: { [key: string]: any }
-  }): Promise<any> {
-    const token = await this.getAccessToken()
-    const url = new URL(
-      `${this.host}/v2/api/${network}/locks/${lockAddress}/keys`
-    )
-
-    Object.entries(filters).forEach(([key, value]) => {
-      url.searchParams.append(key, value)
-    })
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const data = await response.json()
-
-    return data
-  }
-
-  async listCardMethods() {
-    const response = await this.getEndpoint(
-      '/v2/purchase/list',
-      {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/json',
-        },
-      },
-      true
-    )
-    return response.methods
-  }
-
-  async getSetupIntent() {
-    const response = await this.getEndpoint(
-      '/v2/purchase/setup',
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-      },
-      true
-    )
-    return response.clientSecret
   }
 }

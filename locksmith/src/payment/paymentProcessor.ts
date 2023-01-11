@@ -11,9 +11,8 @@ import {
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
 import logger from '../logger'
-const Sequelize = require('sequelize')
+import { Op, Sequelize } from 'sequelize'
 
-const { Op } = Sequelize
 export class PaymentProcessor {
   stripe: Stripe
 
@@ -32,7 +31,7 @@ export class PaymentProcessor {
 
     return UserReference.findOne({
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
-      include: [{ model: User, attributes: ['publicKey'] }],
+      include: [{ model: User, attributes: ['publicKey'], as: 'User' }],
     })
   }
 
@@ -285,6 +284,8 @@ export class PaymentProcessor {
     return {
       clientSecret: intent.client_secret,
       stripeAccount,
+      totalPriceInCents,
+      pricing,
     }
   }
 
@@ -381,12 +382,12 @@ export class PaymentProcessor {
       userAddress: paymentIntent.metadata.purchaser,
       recipients: paymentIntent.metadata.recipient.split(','),
       lock: paymentIntent.metadata.lock,
-      stripeCustomerId: paymentIntent.customer, // TODO: consider checking the customer id under Unlock's stripe account?
-      connectedCustomer: paymentIntent.customer,
+      stripeCustomerId: paymentIntent.customer?.toString(), // TODO: consider checking the customer id under Unlock's stripe account?
+      connectedCustomer: paymentIntent.customer?.toString(),
       totalPriceInCents: paymentIntent.amount,
       unlockServiceFee: paymentIntent.application_fee_amount,
       stripeCharge: paymentIntent.id,
-      recurring: paymentIntent.metadata.recurring,
+      recurring: parseInt(paymentIntent.metadata.recurring),
       chain: network,
     })
 

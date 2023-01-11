@@ -9,21 +9,17 @@ import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Container } from '../../Container'
 import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
-import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { useLockManager } from '~/hooks/useLockManager'
 import { addressMinify } from '~/utils/strings'
 import Link from 'next/link'
 import { Popover, Transition } from '@headlessui/react'
-import { UpdateMetadataDrawer } from '../metadata/MetadataUpdate'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { TbTools as ToolsIcon } from 'react-icons/tb'
 import { CgWebsite as WebsiteIcon } from 'react-icons/cg'
 import { FaRegEdit as EditIcon } from 'react-icons/fa'
@@ -31,7 +27,9 @@ import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
-import { LockPicker } from './elements/LockPicker'
+import { BiQrScan as ScanIcon } from 'react-icons/bi'
+import { Picker } from '../../Picker'
+import { storage } from '~/config/storage'
 
 interface ActionBarProps {
   lockAddress: string
@@ -55,25 +53,15 @@ export function downloadAsCSV(cols: string[], metadata: any[]) {
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
-  const { account } = useAuth()
-  const storageService = useStorageService()
-  const walletService = useWalletService()
-
   const getMembers = async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
-    return storageService.getKeys({
-      lockAddress,
+    const response = await storage.keys(
       network,
-      filters: {
-        query: '',
-        filterKey: 'owner',
-        expiration: 'all',
-      },
-    })
+      lockAddress,
+      '',
+      'owner',
+      'all'
+    )
+    return response.data
   }
 
   const onDownloadCsv = async () => {
@@ -167,7 +155,7 @@ const PopoverItem = ({
     <>
       <div className="flex gap-3 cursor-pointer" {...props}>
         {icon && (
-          <div className="w-4">
+          <div className="w-4 pt-1">
             <Icon className="text-brand-ui-primary" icon={icon} size={20} />
           </div>
         )}
@@ -185,23 +173,18 @@ const PopoverItem = ({
 }
 
 const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
-  const web3Service = useWeb3Service()
   const [airdropKeys, setAirdropKeys] = useState(false)
-  const [updateMetadata, setUpdateMetadata] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+  const verificationLink = `/verification`
 
-  const getLock = async () => {
-    return web3Service.getLock(lockAddress, network)
-  }
+  const { isManager } = useLockManager({
+    lockAddress,
+    network: network!,
+  })
 
-  const { isLoading, data: lock } = useQuery(
-    ['getLock', lockAddress, network],
-    async () => getLock()
-  )
-
-  const isManager = true
   return (
     <>
       <AirdropKeysDrawer
@@ -211,11 +194,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
         network={network!}
       />
 
-      <UpdateMetadataDrawer
-        lock={lock}
-        isOpen={updateMetadata}
-        setIsOpen={setUpdateMetadata}
-      />
       <div className="">
         <Popover className="relative">
           <>
@@ -243,7 +221,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                       <PopoverItem
                         label="Preview"
                         description="Preview the checkout experience"
-                        isLoading={isLoading}
                         icon={WebsiteIcon}
                       />
                     </a>
@@ -251,7 +228,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                       <PopoverItem
                         label="Create Checkout URL"
                         description="Customize your member's purchase journey"
-                        isLoading={isLoading}
                         icon={RightArrowIcon}
                       />
                     </Link>
@@ -259,28 +235,33 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                       label="Airdrop Keys"
                       description="Send memberships to your members"
                       onClick={() => setAirdropKeys(!airdropKeys)}
-                      isLoading={isLoading}
                       icon={PlantIcon}
                     />
                     {isManager && (
                       <>
-                        <PopoverItem
-                          label="Edit NFT Properties"
-                          description="Edit & update NFT metadata that will display in platforms such as Opensea"
-                          onClick={() => setUpdateMetadata(!updateMetadata)}
-                          isLoading={isLoading}
-                          icon={EditIcon}
-                        />
+                        <Link href={metadataPageUrl}>
+                          <PopoverItem
+                            label="Edit NFT Properties"
+                            description="Edit & update NFT metadata that will display in platforms such as Opensea"
+                            icon={EditIcon}
+                          />
+                        </Link>
                         <Link href={settingsPageUrl}>
                           <PopoverItem
                             label="Update Lock Settings"
                             description="Update membership smart contract settings including price and duration"
-                            isLoading={isLoading}
                             icon={SettingIcon}
                           />
                         </Link>
                       </>
                     )}
+                    <Link href={verificationLink} className="text-left">
+                      <PopoverItem
+                        label="Verification"
+                        description="Scan and verify the authentication of tickets for your events"
+                        icon={ScanIcon}
+                      />
+                    </Link>
                   </div>
                 </div>
               </Popover.Panel>
@@ -294,7 +275,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
 
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
-
   return (
     <>
       <div className="flex items-center justify-between">
@@ -402,7 +382,12 @@ export const ManageLockPage = () => {
               Select a lock to start manage it
             </h2>
             <div className="w-1/2">
-              <LockPicker owner={owner!} onChange={onLockPick} />
+              <Picker
+                userAddress={owner!}
+                onChange={(state) => {
+                  onLockPick(state.lockAddress, state.network)
+                }}
+              />
             </div>
           </>
         ) : (
@@ -416,52 +401,63 @@ export const ManageLockPage = () => {
     )
   }
   return (
-    <div className="min-h-screen bg-ui-secondary-200 pb-60">
-      <Container>
-        <LockSelection />
-        {!withoutParams && (
-          <div className="pt-9">
-            <div className="flex flex-col gap-3 mb-7">
-              <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
-              {showNotManagerBanner && <NotManagerBanner />}
-            </div>
-            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
-              <div className="lg:col-span-3">
-                <LockDetailCard
+    <>
+      <AirdropKeysDrawer
+        isOpen={airdropKeys}
+        setIsOpen={setAirdropKeys}
+        lockAddress={lockAddress}
+        network={parseInt(network!, 10)}
+      />
+      <div className="min-h-screen bg-ui-secondary-200 pb-60">
+        <Container>
+          <LockSelection />
+          {!withoutParams && (
+            <div className="pt-9">
+              <div className="flex flex-col gap-3 mb-7">
+                <TopActionBar
                   lockAddress={lockAddress}
                   network={lockNetwork!}
                 />
+                {showNotManagerBanner && <NotManagerBanner />}
               </div>
-              <div className="flex flex-col gap-6 lg:col-span-9">
-                <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
-                <ActionBar
-                  lockAddress={lockAddress}
-                  network={lockNetwork!}
-                  isOpen={airdropKeys}
-                  setIsOpen={setAirdropKeys}
-                />
-                <FilterBar
-                  filters={filters}
-                  setFilters={setFilters}
-                  setLoading={setLoading}
-                  setPage={setPage}
-                  page={page}
-                />
-                <Members
-                  lockAddress={lockAddress}
-                  network={lockNetwork!}
-                  filters={filters}
-                  loading={loading}
-                  setPage={setPage}
-                  page={page}
-                  onAirdropKeys={toggleAirdropKeys}
-                />
+              <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
+                <div className="lg:col-span-3">
+                  <LockDetailCard
+                    lockAddress={lockAddress}
+                    network={lockNetwork!}
+                  />
+                </div>
+                <div className="flex flex-col gap-6 lg:col-span-9">
+                  <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                  <ActionBar
+                    lockAddress={lockAddress}
+                    network={lockNetwork!}
+                    isOpen={airdropKeys}
+                    setIsOpen={setAirdropKeys}
+                  />
+                  <FilterBar
+                    filters={filters}
+                    setFilters={setFilters}
+                    setLoading={setLoading}
+                    setPage={setPage}
+                    page={page}
+                  />
+                  <Members
+                    lockAddress={lockAddress}
+                    network={lockNetwork!}
+                    filters={filters}
+                    loading={loading}
+                    setPage={setPage}
+                    page={page}
+                    onAirdropKeys={toggleAirdropKeys}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </Container>
-    </div>
+          )}
+        </Container>
+      </div>
+    </>
   )
 }
 

@@ -19,6 +19,7 @@ export const arbitrum: NetworkConfig = {
   explorer: {
     name: 'Arbitrum',
     urls: {
+      base: `https://arbiscan.io/`,
       address: (address) => `https://arbiscan.io/address/${address}`,
       transaction: (hash) => `https://arbiscan.io/tx/${hash}`,
       token: (address, holder) =>
@@ -42,6 +43,7 @@ export const arbitrum: NetworkConfig = {
   startBlock: 17429533,
   previousDeploys: [],
   isTestNetwork: false,
+  maxFreeClaimCost: 1,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
   uniswapV3: {

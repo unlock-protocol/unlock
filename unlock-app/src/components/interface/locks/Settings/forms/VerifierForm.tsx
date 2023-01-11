@@ -4,10 +4,9 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
-import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
 import { addressMinify } from '~/utils/strings'
+import { storage } from '~/config/storage'
 
 interface VerifierProps {
   address: string
@@ -61,9 +60,7 @@ const VerifierCard = ({
   return (
     <div className="flex flex-col items-center justify-between px-4 py-2 border border-gray-200 rounded-lg md:flex-row">
       <div className="flex flex-col gap-2 ">
-        <span className="text-base text-brand-dark">
-          {addressMinify(address)}
-        </span>
+        <span className="text-base text-brand-dark">{address}</span>
         {isCurrentAccount && (
           <span className="text-sm font-semibold text-brand-ui-primary">
             {`That's you`}
@@ -89,9 +86,6 @@ export const VerifierForm = ({
   disabled,
 }: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
-  const { account } = useAuth()
-  const storageService = useStorageService()
-  const walletService = useWalletService()
 
   const { register, handleSubmit, reset } = useForm<VerifierFormDataProps>({
     defaultValues: {
@@ -100,52 +94,23 @@ export const VerifierForm = ({
   })
 
   const getVerifiers = async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
-
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await storageService.getEndpoint(
-      `/v2/api/verifier/list/${network}/${lockAddress}`,
-      options,
-      true /* withAuth */
-    )
+    const response = await storage.verifiers(network, lockAddress)
+    return response.data.results || []
   }
 
   const addVerifier = async (address: string) => {
-    const options = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
     const resolvedAddress = await getAddressForName(address)
-    const res = await storageService.getEndpoint(
-      `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
-      options,
-      true /* withAuth */
+    const response = await storage.createVerifier(
+      network,
+      lockAddress,
+      resolvedAddress
     )
-    return res
+    return response.data
   }
 
   const deleteVerifier = async (address: string) => {
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-    const res = await storageService.getEndpoint(
-      `/v2/api/verifier/${network}/${lockAddress}/${address}`,
-      options,
-      true /* withAuth */
-    )
-    return res
+    const response = await storage.deleteVerifier(network, lockAddress, address)
+    return response.data.results
   }
 
   const addVerifierMutation = useMutation(addVerifier, {
@@ -187,11 +152,7 @@ export const VerifierForm = ({
     {
       enabled: isManager,
       refetchInterval: false,
-      onSuccess: (res: any) => {
-        if (res.message) {
-          ToastHelper.error(res.message)
-        }
-        const verifiers = res?.results ?? []
+      onSuccess: (verifiers: VerifierProps[]) => {
         setVerifiers(verifiers)
       },
       onError: (err: any) => {

@@ -1,9 +1,7 @@
 import React, { useContext } from 'react'
-import styled from 'styled-components'
-import Jazzicon from 'react-jazzicon'
+import UserIcon from 'react-jazzicon'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
-import { useStorageService } from '~/utils/withStorageService'
 import { Select, Button } from '@unlock-protocol/ui'
 import { addressMinify } from '~/utils/strings'
 interface NetworkType {
@@ -23,7 +21,6 @@ export function Account() {
   const { account, network, deAuthenticate, changeNetwork } = useContext(
     AuthenticationContext
   )
-  const storageService = useStorageService()
 
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt((account || '0x0000').slice(2, 10), 16)
@@ -44,7 +41,7 @@ export function Account() {
     <div>
       <div className="flex items-end gap-3 md:flex-row">
         <div className="hidden col-auto md:block">
-          {account && iconSeed && <UserIcon seed={iconSeed} />}
+          {account && iconSeed && <UserIcon diameter={40} seed={iconSeed} />}
         </div>
         <div className="flex flex-col w-full gap-2">
           {network && (
@@ -65,7 +62,6 @@ export function Account() {
                 variant="outlined-primary"
                 onClick={() => {
                   deAuthenticate()
-                  storageService.signOut()
                 }}
               >
                 Disconnect
@@ -77,9 +73,5 @@ export function Account() {
     </div>
   )
 }
-
-const UserIcon = styled(Jazzicon).attrs({
-  diameter: 40,
-})``
 
 export default Account

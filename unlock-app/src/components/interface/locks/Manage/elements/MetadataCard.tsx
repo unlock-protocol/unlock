@@ -2,17 +2,20 @@ import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
-import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-
+import { LoadingIcon } from '../../../Loading'
+import { ethers } from 'ethers'
+import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { durationAsText } from '~/utils/durations'
+import { storage } from '~/config/storage'
+import { AxiosError } from 'axios'
 interface DetailProps {
-  title: string
-  value: React.ReactNode
+  label: string
+  children?: React.ReactNode
   append?: React.ReactNode
 }
 
@@ -20,6 +23,7 @@ interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
+  expirationDuration?: string
 }
 
 const keysToIgnore = [
@@ -31,14 +35,14 @@ const keysToIgnore = [
   'checkedInAt',
 ]
 
-const MetadataDetail = ({ title, value, append }: DetailProps) => {
+const MetadataDetail = ({ label, children, append }: DetailProps) => {
   return (
     <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
       <div className="flex items-center gap-2">
-        <span className="text-base">{title}: </span>
+        <span className="text-base">{label}: </span>
         <div className="flex items-center gap-2">
           <span className="block text-base font-bold break-words md:inline-block">
-            {value}
+            {children}
           </span>
           {append && <div>{append}</div>}
         </div>
@@ -47,13 +51,57 @@ const MetadataDetail = ({ title, value, append }: DetailProps) => {
   )
 }
 
+interface KeyRenewalProps {
+  possibleRenewals: string
+  approvedRenewals: string
+  balance: Record<'amount' | 'symbol', string>
+}
+
+const MembershipRenewal = ({
+  possibleRenewals,
+  approvedRenewals,
+  balance,
+}: KeyRenewalProps) => {
+  const possible = ethers.BigNumber.from(possibleRenewals)
+  const approved = ethers.BigNumber.from(approvedRenewals)
+
+  if (possible.lte(0)) {
+    return (
+      <MetadataDetail label="Renewals">
+        User balance of {balance.amount} {balance.symbol} is too low to renew
+      </MetadataDetail>
+    )
+  }
+
+  if (approved.lte(0)) {
+    return (
+      <MetadataDetail label="Renewals">No renewals approved</MetadataDetail>
+    )
+  }
+
+  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+    return (
+      <MetadataDetail label="Renewals">
+        {approved.toString()} times
+      </MetadataDetail>
+    )
+  }
+
+  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+    return (
+      <MetadataDetail label="Renewals">Renews unlimited times</MetadataDetail>
+    )
+  }
+
+  return <MetadataDetail label="Renewals">-</MetadataDetail>
+}
+
 export const MetadataCard = ({
   metadata,
   owner,
   network,
+  expirationDuration,
 }: MetadataCardProps) => {
-  const { account } = useAuth()
-  const storageService = useStorageService()
   const walletService = useWalletService()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
@@ -79,26 +127,32 @@ export const MetadataCard = ({
     return new Date(checkInTimeValue as number).toLocaleString()
   }
 
+  const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
+    ['subscription', lockAddress, tokenId, network],
+    async () => {
+      const response = await storage.getSubscription(
+        network,
+        lockAddress,
+        tokenId
+      )
+      return response.data.subscriptions?.[0] ?? null
+    },
+    {
+      onError(error) {
+        console.error(error)
+      },
+    }
+  )
+
   const sendEmail = async () => {
-    return storageService.sendKeyQrCodeViaEmail({
-      lockAddress,
-      network,
-      tokenId,
-    })
+    return storage.emailTicket(network, lockAddress, tokenId)
   }
 
   const sendEmailMutation = useMutation(sendEmail)
 
   const onSendQrCode = async () => {
     if (!network) return
-    if (!storageService) return
     if (!walletService) return
-
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
 
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'QR-code sent by email',
@@ -119,27 +173,22 @@ export const MetadataCard = ({
   }
 
   const onMarkAsCheckIn = async () => {
-    if (!storageService) return
     const { lockAddress, token: keyId } = data
-    return storageService.markTicketAsCheckedIn({
-      lockAddress,
-      keyId,
-      network: network!,
-    })
+    return storage.checkTicket(network, lockAddress, keyId)
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
-    onSuccess: (response: any) => {
-      if (!response.ok && response.status === 409) {
-        ToastHelper.error('Ticket already checked in')
-      }
-
-      if (response.ok) {
-        setCheckedInTimestamp(new Date().toLocaleString())
-        ToastHelper.success('Successfully marked ticket as checked-in')
-      }
+    onSuccess: () => {
+      setCheckedInTimestamp(new Date().toLocaleString())
+      ToastHelper.success('Successfully marked ticket as checked-in')
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          ToastHelper.error('Ticket already checked-in')
+          return
+        }
+      }
       ToastHelper.error('Error on marking ticket as checked-in')
     },
   })
@@ -202,9 +251,7 @@ export const MetadataCard = ({
           </Button>
         )}
       </div>
-      <div className="mt-5 md:mt-8">
-        <span className="text-base">Metadata</span>
-
+      <div className="pt-6">
         <div className="mt-6">
           {isCheckedIn && (
             <Badge
@@ -218,20 +265,20 @@ export const MetadataCard = ({
           )}
           <div className="flex flex-col gap-4">
             {isCheckedIn && (
-              <MetadataDetail title="Checked-in at" value={getCheckInTime()!} />
+              <MetadataDetail label="Checked-in at">
+                {getCheckInTime()}
+              </MetadataDetail>
             )}
+
             {items?.map(([key, value], index) => {
               return (
-                <MetadataDetail
-                  key={`${key}-${index}`}
-                  title={`${key}`}
-                  value={value as any}
-                />
+                <MetadataDetail key={`${key}-${index}`} label={`${key}`}>
+                  {value}
+                </MetadataDetail>
               )
             })}
             <MetadataDetail
-              title="Key Holder"
-              value={owner}
+              label="Key Holder"
               append={
                 <>
                   <Button
@@ -249,7 +296,27 @@ export const MetadataCard = ({
                   </Button>
                 </>
               }
-            />
+            >
+              {owner}
+            </MetadataDetail>
+            {isSubscriptionLoading && <LoadingIcon />}
+            {!isSubscriptionLoading && subscription && (
+              <>
+                <MetadataDetail label="User Balance">
+                  {subscription.balance?.amount} {subscription.balance?.symbol}
+                </MetadataDetail>
+                <MembershipRenewal
+                  possibleRenewals={subscription.possibleRenewals!}
+                  approvedRenewals={subscription.approvedRenewals!}
+                  balance={subscription.balance as any}
+                />
+                {expirationDuration && expirationDuration !== MAX_UINT && (
+                  <MetadataDetail label="Renewal duration">
+                    {durationAsText(expirationDuration)}
+                  </MetadataDetail>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -280,8 +347,6 @@ const UpdateEmailModal = ({
   setIsOpen: (status: boolean) => void
   onEmailChange: (values: FieldValues) => void
 }) => {
-  const storage = useStorageService()
-
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -300,7 +365,16 @@ const UpdateEmailModal = ({
 
   const createMetadata = async (params: any, callback?: () => void) => {
     try {
-      const createMetadataPromise = storage.createtMetadata(params)
+      const createMetadataPromise = storage.createUserMetadata(
+        network,
+        lockAddress,
+        userAddress,
+        {
+          metadata: {
+            protected: params.metadata,
+          },
+        }
+      )
       await ToastHelper.promise(createMetadataPromise, {
         loading: 'Saving email address',
         success: 'Email successfully added to member',
@@ -317,7 +391,16 @@ const UpdateEmailModal = ({
   }
 
   const updateMetadata = async (params: any, callback?: () => void) => {
-    const updateMetadataPromise = storage.updatetMetadata(params)
+    const updateMetadataPromise = storage.updateUserMetadata(
+      network,
+      lockAddress,
+      userAddress,
+      {
+        metadata: {
+          protected: params.metadata,
+        },
+      }
+    )
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
       success: 'Email successfully added to member',

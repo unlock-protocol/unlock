@@ -15,13 +15,14 @@ import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
 import { Password } from './Password'
+import { Promo } from './Promo'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 interface Props {
-  injectedProvider: unknown
+  injectedProvider: any
   paywallConfig: PaywallConfig
   communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
@@ -202,6 +203,15 @@ export function Checkout({
       case 'PASSWORD': {
         return (
           <Password
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
+
+      case 'PROMO': {
+        return (
+          <Promo
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
