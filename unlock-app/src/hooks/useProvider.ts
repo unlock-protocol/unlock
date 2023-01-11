@@ -7,7 +7,7 @@ import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { NetworkConfig } from '@unlock-protocol/types'
-import { clearAuth } from '~/config/storage'
+import { signOut } from '~/config/storage'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -122,7 +122,7 @@ export const useProvider = (config: any) => {
       if (provider.on) {
         provider.on('accountsChanged', async () => {
           resetProvider(new ethers.providers.Web3Provider(provider))
-          clearAuth()
+          await signOut()
         })
 
         provider.on('chainChanged', async () => {
@@ -164,7 +164,7 @@ export const useProvider = (config: any) => {
     }
     setProvider(null)
     setLoading(false)
-    clearAuth()
+    await signOut()
   }
 
   const changeNetwork = async (networkConf: NetworkConfig | number) => {
