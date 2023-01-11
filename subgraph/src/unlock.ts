@@ -4,7 +4,7 @@ import { log, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded, GNPChanged } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
-import { Lock, LockStats, UnlockDailyData } from '../generated/schema'
+import { Lock, LockStats, UnlockStats } from '../generated/schema'
 import { loadOrCreateUnlockDailyData, LOCK_MANAGER } from './helpers'
 
 const ROLE_GRANTED =
@@ -12,6 +12,16 @@ const ROLE_GRANTED =
 
 export function handleNewLock(event: NewLock): void {
   let lockAddress = event.params.newLockAddress
+
+  // update unlockStats
+  let unlockStats = UnlockStats.load('0')
+  if (!unlockStats) {
+    unlockStats = new UnlockStats('0')
+    unlockStats.totalLockDeployed = BigInt.fromI32(0)
+    unlockStats.totalKeysSold = BigInt.fromI32(0)
+    unlockStats.grossNetworkProduct = BigInt.fromI32(0)
+    unlockStats.save()
+  }
 
   // create new lock
   let lockID = lockAddress.toHexString()
@@ -40,6 +50,11 @@ export function handleNewLock(event: NewLock): void {
     BigInt.fromI32(1)
   )
   unlockDailyData.save()
+
+  unlockStats.totalLockDeployed = unlockStats.totalLockDeployed.plus(
+    BigInt.fromI32(1)
+  )
+  unlockStats.save()
 
   // fetch lock version
   let lockContract = PublicLockMerged.bind(lockAddress)
@@ -116,4 +131,10 @@ export function handleGNPChanged(event: GNPChanged): void {
   const unlockDailyData = loadOrCreateUnlockDailyData(event.block.timestamp)
   unlockDailyData.grossNetworkProduct = event.params.grossNetworkProduct
   unlockDailyData.save()
+
+  const unlockStats = UnlockStats.load('0')
+  if (unlockStats) {
+    unlockStats.grossNetworkProduct = event.params.grossNetworkProduct
+    unlockStats.save()
+  }
 }
