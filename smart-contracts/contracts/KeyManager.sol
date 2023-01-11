@@ -21,10 +21,6 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
 
   event LocksmithChanged(address indexed locksmith);
 
-  // solhint-disable-next-line var-name-mixedcase
-  bytes32 private constant _TRANSFER_TYPEHASH =
-    keccak256("Transfer(address lock,uint token,address owner,uint deadline)");
-
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
@@ -51,15 +47,21 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
     }
 
     bytes32 structHash = keccak256(
-      abi.encode(_TRANSFER_TYPEHASH, lock, token, owner, deadline)
+      abi.encode(
+        keccak256(
+          "Transfer(address lock,uint token,address owner,uint deadline)"
+        ),
+        lock,
+        token,
+        owner,
+        deadline
+      )
     );
 
     bytes32 hash = _hashTypedDataV4(structHash);
 
     address signer = ECDSAUpgradeable.recover(hash, transferCode);
 
-    console.log(signer);
-    console.log(locksmith);
     if (signer != locksmith) {
       revert NOT_AUTHORIZED();
     }

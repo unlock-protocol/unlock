@@ -24,10 +24,11 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     // Let's now aidrop a key to an address and set the keyManager as... keyManager!
     await keyManager.setLocksmith(locksmith)
     await lock.grantKeys([grantee], [OneMonthFromNow], [keyManager.address])
+    const { chainId } = await ethers.provider.getNetwork()
     domain = {
       name: 'KeyManager',
       version: '1',
-      chainId: 1,
+      chainId,
       verifyingContract: keyManager.address
     };
 
@@ -67,7 +68,7 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     };
     const locksmithSigner = await ethers.getSigner(locksmith)
     const signature = await locksmithSigner._signTypedData(domain, types, transfer);
-
+    expect(ethers.utils.verifyTypedData(domain, types, transfer, signature)).to.equal(locksmith)
     const realUserSigner = await ethers.getSigner(realUser)
     await keyManager.connect(realUserSigner).transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature)
   })
