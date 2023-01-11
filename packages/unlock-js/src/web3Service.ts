@@ -9,7 +9,7 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { UniswapService } from './uniswapService'
-import networks from '@unlock-protocol/networks'
+
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -967,6 +967,7 @@ export default class Web3Service extends UnlockService {
   async resolveEns(ensName: string) {
     try {
       const provider = this.providerForNetwork(1)
+      console.log('ensName:', ensName)
       const ensAddress = await provider.resolveName(ensName)
       if (ensAddress) {
         const isValid = await this.isValidEOA(ensAddress)

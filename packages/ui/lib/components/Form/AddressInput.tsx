@@ -3,7 +3,9 @@ import {
   ForwardedRef,
   ReactNode,
   useState,
+  useEffect
 } from 'react'
+import { ethers } from 'ethers'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -12,6 +14,8 @@ import { Icon } from '../Icon/Icon'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
+import { FieldErrors } from 'react-hook-form'
+
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -20,12 +24,13 @@ export interface Props
   label?: string
   size?: Size
   success?: string
-  error?: string
+  errors?: FieldErrors
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: Boolean
-  resolvedAddress?: string
+  address?: string
   resolvedEns?: string
+  web3Service?: any
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -49,21 +54,22 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       size = 'medium',
       value,
       className,
-      error,
+      errors,
       success,
       description,
       label,
       withIcon = true,
       isTruncated,
-      resolvedAddress,
+      address,
       resolvedEns,
+      web3Service,
       ...inputProps
     } = props
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
 
-    if (error) {
+    if (errors) {
       inputStateStyles = STATE_STYLES.error
     } else if (success) {
       inputStateStyles = STATE_STYLES.success
@@ -76,12 +82,31 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       withIcon ? 'pl-10' : undefined
     )
 
+    const [resolvedAddress, setResolvedAddress] = useState('')
+    const [loadingResolvedAddress, setLoading] = useState(true)
+   
+    const isValidEns = address?.includes('.eth')
+    const isValidAddress = address && ethers.utils.isAddress(address)
+    console.log('isValidAddress:', isValidAddress)
+  
+    useEffect(() => {
+      const resolveEns = async () => {
+        if (address && isValidEns) {
+          const result = await web3Service.resolveEns(address)
+            if (result) {
+              setResolvedAddress(result)
+              setLoading(false)
+            }
+        }
+      }
+      resolveEns()
+    }, [address, isValidEns ])
+
     return (
       <>
         <FieldLayout
           label={label}
           size={size}
-          error={error}
           success={success}
           description={description}
         >
@@ -102,17 +127,23 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
             </div>
           </div>
         </FieldLayout>
-        <>
-          {resolvedAddress && isTruncated ? (
+        <div>
+          {!isValidEns && !isValidAddress && address ? (
+            <span className='text-rose-700'>Please enter a valid ens or address</span>
+          ) : isValidEns  && loadingResolvedAddress ? (
+            <span className='text-gray-600'>
+              Loading resolved address...
+            </span>
+          ) : resolvedAddress !== '' && isTruncated ? (
             <span className='text-gray-600'>
               {minifyAddress(resolvedAddress)}
             </span>
-          ) : (
+          ) : resolvedAddress !== '' && (
             <span className='text-gray-600'>
               {resolvedAddress}
             </span>
           )}
-        </>
+        </div>
       </>
     )
   }

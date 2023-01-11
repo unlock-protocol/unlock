@@ -31,16 +31,13 @@ export const getNameOrAddressForAddress = async (
 export const getAddressForName = async (_name: string): Promise<string> => {
   try {
     const name = _name.trim()
-    console.log('name:', name)
     const isAddress = ethers.utils.isAddress(name)
-    console.log('isAddress:', isAddress)
     if (isAddress) {
       return name
     }
     const result = await new ethers.providers.JsonRpcProvider(
       publicProvider
     ).resolveName(name)
-    console.log('result:', result)
     return result || ''
   } catch (error) {
     // Resolution failed. So be it, we'll show the 0x address

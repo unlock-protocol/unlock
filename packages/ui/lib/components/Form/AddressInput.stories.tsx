@@ -37,7 +37,7 @@ Success.args = {
   success: 'Wallet address is valid',
   value: 'souravinsights.eth',
   isTruncated: false,
-  resolvedAddress: '0xF95f8038Eb7874Cde88A0A9a8270fcC94f5C226e'
+  address: '0xF95f8038Eb7874Cde88A0A9a8270fcC94f5C226e'
 }
 
 export const Error = Template.bind({})
@@ -46,7 +46,6 @@ Error.args = {
   withIcon: true,
   label: 'Wallet address',
   size: 'small',
-  error: 'Invalid wallet address',
   value: 'souravinghts.eth',
   description: 'Enter a valid wallet address or ens',
   isTruncated: false,
@@ -62,5 +61,5 @@ TruncatedAddress.args = {
   success: 'Enter a valid wallet address or ens',
   value: 'souravinsights.eth',
   isTruncated: true,
-  resolvedAddress: '0xF95...226e'
+  address: '0xF95...226e'
 }
