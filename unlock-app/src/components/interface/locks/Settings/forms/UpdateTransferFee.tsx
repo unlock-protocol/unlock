@@ -78,7 +78,11 @@ export const UpdateTransferFee = ({
 
   useEffect(() => {
     setValue('transferFeePercentage', (transferFeeBasisPoints ?? 0) / 100)
-    setAllowTransfer((transferFeeBasisPoints ?? 0) > 0)
+    if (transferFeeBasisPoints === undefined) {
+      setAllowTransfer(false)
+    } else {
+      setAllowTransfer(transferFeeBasisPoints < 100)
+    }
   }, [transferFeeBasisPoints])
 
   const disabledInput =
@@ -95,20 +99,32 @@ export const UpdateTransferFee = ({
             enabled ? (transferFeeBasisPoints ?? 0) / 100 : 100
           )
         }}
-        title="Allow Transfer"
-        description="By default, members can transfer valid Keys to any account/wallet. "
+        title="Transfer authorized"
+        description={
+          allowTransfer
+            ? 'Members can transfer their valid key(s) to any other wallet.'
+            : 'Transfers are disabled and tokens are soul-bound.'
+        }
         disabled={disabledInput}
       />
-      <Input
-        label="Transfer fee (in % of time left on the membership)"
-        type="number"
-        description="You can set up a fee when member transfer their key to another account or wallet. The fee is taken in time. Setting 100% will disable transfers."
-        disabled={disabledInput || !allowTransfer}
-        {...register('transferFeePercentage', {
-          min: 0,
-          max: 100,
-        })}
-      />
+      {allowTransfer && (
+        <>
+          <Input
+            label="Transfer fee (%)"
+            type="number"
+            description="You can set up a fee when member transfer their key to another account or wallet. The fee is taken in time."
+            min="0"
+            max="100"
+            placeholder="10%"
+            disabled={disabledInput || !allowTransfer}
+            {...register('transferFeePercentage', {
+              min: 0,
+              max: 100,
+            })}
+          />
+        </>
+      )}
+
       {isManager && (
         <Button
           type="submit"
