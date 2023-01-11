@@ -49,7 +49,7 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
     bytes32 structHash = keccak256(
       abi.encode(
         keccak256(
-          "Transfer(address lock,uint token,address owner,uint deadline)"
+          "Transfer(address lock,uint256 token,address owner,uint256 deadline)"
         ),
         lock,
         token,
