@@ -418,7 +418,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
 
-      // Mint UDT
+      // Distribute UDT
       if (_referrer != address(0)) {
         IUniswapOracle udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
@@ -427,6 +427,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             udt,
             10 ** 18,
             weth
+          );
+
+          uint balance = IMintableERC20(udt).balanceOf(
+            address(this)
           );
 
           // base fee default to 100 GWEI for chains that does
@@ -452,24 +456,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
               udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
-          uint maxTokens = 0;
-          if (chainId > 1) {
-            // non mainnet: we distribute tokens using asymptotic curve between 0 and 0.5
-            // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));
-            maxTokens =
-              (IMintableERC20(udt).balanceOf(
-                address(this)
-              ) * valueInETH) /
-              (2 + (2 * valueInETH) / grossNetworkProduct) /
-              grossNetworkProduct;
-          } else {
-            // Mainnet: we mint new token using log curve
-            maxTokens =
-              (IMintableERC20(udt).totalSupply() *
-                valueInETH) /
-              2 /
-              grossNetworkProduct;
-          }
+          // we distribute tokens using asymptotic curve between 0 and 0.5
+          uint maxTokens = (balance * valueInETH) /
+            (2 + (2 * valueInETH) / grossNetworkProduct) /
+            grossNetworkProduct;
 
           // cap to GDP growth!
           if (tokensToDistribute > maxTokens) {
@@ -478,30 +468,19 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
           if (tokensToDistribute > 0) {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            uint devReward = (tokensToDistribute * 20) /
-              100;
-            if (chainId > 1) {
-              uint balance = IMintableERC20(udt).balanceOf(
-                address(this)
-              );
-              if (balance > tokensToDistribute) {
-                // Only distribute if there are enough tokens
-                IMintableERC20(udt).transfer(
-                  _referrer,
-                  tokensToDistribute - devReward
-                );
-                IMintableERC20(udt).transfer(
-                  owner(),
-                  devReward
-                );
-              }
-            } else {
-              // No distribnution
-              IMintableERC20(udt).mint(
+            uint devReward = (tokensToDistribute * 20) / 100;
+            
+            
+            if (balance > tokensToDistribute) {
+              // Only distribute if there are enough tokens
+              IMintableERC20(udt).transfer(
                 _referrer,
                 tokensToDistribute - devReward
               );
-              IMintableERC20(udt).mint(owner(), devReward);
+              IMintableERC20(udt).transfer(
+                owner(),
+                devReward
+              );
             }
           }
         }
