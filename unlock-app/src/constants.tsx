@@ -77,12 +77,6 @@ export const MONTH_NAMES = [
   'Dec',
 ]
 
-export const MAX_DEVICE_WIDTHS = {
-  PHONE: 736,
-  TABLET: 1000,
-  DESKTOP: false,
-}
-
 export const INFINITY = '∞'
 export const UNLIMITED_KEYS_COUNT = -1
 export const UNLIMITED_KEYS_DURATION = -1

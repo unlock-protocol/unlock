@@ -3,12 +3,13 @@ import {
   getNameOrAddressForAddress,
   getAddressForName,
 } from '../../hooks/useEns'
+import { vi } from 'vitest'
 
-jest.mock('ethers')
+vi.mock('ethers')
 
 describe('getNameOrAddressForAddress', () => {
   beforeAll(() => {
-    ethers.providers.JsonRpcProvider = jest.fn(() => {
+    ethers.providers.JsonRpcProvider = vi.fn(() => {
       return {
         lookupAddress: () => {
           return 'julien51.eth'
@@ -28,7 +29,7 @@ describe('getNameOrAddressForAddress', () => {
 
 describe('getAddressForName', () => {
   beforeAll(() => {
-    ethers.providers.JsonRpcProvider = jest.fn(() => {
+    ethers.providers.JsonRpcProvider = vi.fn(() => {
       return {
         resolveName: () => {
           return '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'
