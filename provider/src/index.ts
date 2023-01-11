@@ -29,6 +29,7 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
+    ctx.passThroughOnException()
     // Handling CORS
     if (request.method === 'OPTIONS') {
       return new Response('', {
