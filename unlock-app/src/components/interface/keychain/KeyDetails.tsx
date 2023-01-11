@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
-import 'cross-fetch/polyfill'
 import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
