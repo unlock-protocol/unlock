@@ -18,7 +18,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock, UnlockDailyData, LockStats } from '../generated/schema'
+import { Key, Lock, UnlockStats, LockStats } from '../generated/schema'
 
 import {
   genKeyID,
@@ -66,6 +66,15 @@ function newKey(event: TransferEvent): void {
     unlockDailyData.activeLocks = activeLocks
   }
   unlockDailyData.save()
+
+  const unlockStats = UnlockStats.load('0')
+  if (unlockStats) {
+    // This always exists because for a key to be minted, the lock needs to have been deployed!
+    unlockStats.totalKeysSold = unlockStats.totalKeysSold.plus(
+      BigInt.fromI32(1)
+    )
+    unlockStats.save()
+  }
 
   // update lockStats
   const lockStats = LockStats.load('Unlock')

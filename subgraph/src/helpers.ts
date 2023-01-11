@@ -1,7 +1,7 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
 import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
-import { UnlockDailyData } from '../generated/schema'
+import { UnlockDailyData, UnlockStats } from '../generated/schema'
 
 // keccak 256 of 'LOCK_MANAGER'
 export const LOCK_MANAGER =
@@ -41,8 +41,7 @@ export function loadOrCreateUnlockDailyData(
 ): UnlockDailyData {
   const dayID = timestamp.toI32() / 86400
   let unlockDailyData = UnlockDailyData.load(dayID.toString())
-  const unlockDailyDataYesterday =
-    dayID > 0 ? UnlockDailyData.load((dayID - 1).toString()) : null
+
   if (unlockDailyData === null) {
     unlockDailyData = new UnlockDailyData(dayID.toString())
     unlockDailyData.lockDeployed = BigInt.fromI32(0)
@@ -50,10 +49,11 @@ export function loadOrCreateUnlockDailyData(
     unlockDailyData.grossNetworkProduct = BigInt.fromI32(0)
     unlockDailyData.activeLocks = []
 
-    if (unlockDailyDataYesterday) {
-      unlockDailyData.totalLockDeployed =
-        unlockDailyDataYesterday.totalLockDeployed
-      unlockDailyData.totalKeysSold = unlockDailyDataYesterday.totalKeysSold
+    const unlockStats = UnlockStats.load('0')
+    if (unlockStats) {
+      // This is always true because we create the UnlockStats when we start handling the createLock event!
+      unlockDailyData.totalLockDeployed = unlockStats.totalLockDeployed
+      unlockDailyData.totalKeysSold = unlockStats.totalKeysSold
     } else {
       unlockDailyData.totalLockDeployed = BigInt.fromI32(0)
       unlockDailyData.totalKeysSold = BigInt.fromI32(0)
