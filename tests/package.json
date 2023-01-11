@@ -10,8 +10,8 @@
     "e2e": "vitest run --no-threads"
   },
   "dependencies": {
-    "@chainsafe/dappeteer": "4.0.0-rc.1",
     "@apollo/client": "^3.6.9",
+    "@chainsafe/dappeteer": "4.0.0-rc.1",
     "@ethersproject/abi": "^5.4.7",
     "@ethersproject/providers": "^5.4.7",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
@@ -23,7 +23,7 @@
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.2.0",
     "@types/mocha": "^9.1.0",
-    "@types/node": ">=12.0.0",
+    "@types/node": ">=14.0.0",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "apollo-link-http": "^1.5.17",
