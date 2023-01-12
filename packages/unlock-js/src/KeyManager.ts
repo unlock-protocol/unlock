@@ -118,19 +118,6 @@ export class KeyManager {
   }
 
   /**
-   * This function sets the locksmith address.
-   */
-  async setLocksmith({
-    network,
-    params: { locksmith },
-    signer,
-  }: SetLocksmithOptions) {
-    const KeyManagerContract = this.getContract({ network, signer })
-    const tx = await KeyManagerContract.setLocksmith(locksmith)
-    return tx
-  }
-
-  /**
    * This function checks if a transfer is possible.
    */
   async isTransferPossible({
@@ -152,16 +139,7 @@ export class KeyManager {
   /**
    * This function creates a wallet address from a lock address and an email address.
    */
-  createTransferAddressWallet({
-    params: { lockAddress, email },
-  }: CreateTransferAddressKey) {
-    const privateKey = ethers.utils.keccak256(
-      ethers.utils.defaultAbiCoder.encode(
-        ['address', 'string'],
-        [lockAddress, email]
-      )
-    )
-    const wallet = new ethers.Wallet(privateKey)
-    return wallet.address
+  createTransferAddress({ params }: CreateTransferAddressKey) {
+    return ethers.utils.id(JSON.stringify(params))
   }
 }
