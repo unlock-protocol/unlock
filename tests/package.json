@@ -6,7 +6,7 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
     "test": "hardhat test",
-    "e2e": "vitest run --no-threads",
+    "e2e": "vitest run",
     "ci": "hardhat test --network 0.0.0.0 && yarn e2e"
   },
   "dependencies": {
