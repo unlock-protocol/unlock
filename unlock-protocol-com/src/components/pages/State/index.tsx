@@ -291,21 +291,21 @@ export function State() {
           })
           timestampArray = [...Array(12).keys()].reverse().map((key) => {
             const cur = new Date()
-            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
+            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
           })
           break
         }
         case 'All': {
           xAxisLabels = [...Array(36).keys()].reverse().map((key) => {
             const cur = new Date()
-            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
+            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
               'default',
               { dateStyle: 'short' }
             )
           })
           timestampArray = [...Array(36).keys()].reverse().map((key) => {
             const cur = new Date()
-            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
+            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
           })
           break
         }
