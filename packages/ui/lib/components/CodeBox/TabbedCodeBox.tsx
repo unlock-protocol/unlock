@@ -1,4 +1,4 @@
-import { Language, PrismTheme } from 'prism-react-renderer'
+import { Language } from 'prism-react-renderer'
 import { CodeBox } from './CodeBox'
 import { Tab } from '@headlessui/react'
 import { UnlockPrismTheme } from './theme'

@@ -281,16 +281,16 @@ export const KeyInfo = ({
           <h3 className="text-lg font-bold"> User information </h3>
           <div className="divide-y divide-brand-dark">
             {Object.entries(keyMetadata?.userMetadata?.public || {}).map(
-              ([key, value]) => (
+              ([key, value]: any) => (
                 <KeyItem label={key} key={key}>
-                  {value}
+                  {value || null}
                 </KeyItem>
               )
             )}
             {Object.entries(keyMetadata?.userMetadata?.protected || {}).map(
-              ([key, value]) => (
+              ([key, value]: any) => (
                 <KeyItem label={key} key={key}>
-                  {value}
+                  {value || null}
                 </KeyItem>
               )
             )}

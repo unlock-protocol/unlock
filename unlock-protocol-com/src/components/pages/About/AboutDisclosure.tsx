@@ -2,11 +2,10 @@ import { Disclosure } from '@headlessui/react'
 import { BsPlusLg as PlusIcon } from 'react-icons/bs'
 import { Icon } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
-import { IconType } from 'react-icons'
 
 interface AboutDetailProps {
   title: string
-  icon: ReactNode | IconType
+  icon: ReactNode
   children?: any
 }
 

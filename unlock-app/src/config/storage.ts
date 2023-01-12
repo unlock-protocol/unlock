@@ -51,7 +51,6 @@ export const signOut = async () => {
 }
 
 export const storageClient = axios.create()
-export const StorageAuthEvent = new EventTarget()
 
 // Use interceptor to inject the token to requests
 storageClient.interceptors.request.use((request) => {

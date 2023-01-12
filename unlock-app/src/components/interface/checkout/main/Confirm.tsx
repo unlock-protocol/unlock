@@ -621,6 +621,10 @@ export function Confirm({
 
   return (
     <Fragment>
+      {/* 
+      todo: Type '{}' is not assignable to type 'ReactNode'.
+      
+      @ts-ignore */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}

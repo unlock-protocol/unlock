@@ -324,11 +324,13 @@ const NavSectionMobile = ({
               const SectionTitle = () => {
                 if (option.title?.length === 0) return null
                 return 'url' in option && option.url ? (
-                  <Link href={option.url}>
+                  <Link href={option.url} key={index}>
                     <div className="font-bold">{option.title}</div>
                   </Link>
                 ) : (
-                  <div className="font-bold">{option.title}</div>
+                  <div className="font-bold" key={index}>
+                    {option.title}
+                  </div>
                 )
               }
 
