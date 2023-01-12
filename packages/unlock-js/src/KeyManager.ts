@@ -140,6 +140,6 @@ export class KeyManager {
    * This function creates a wallet address from a lock address and an email address.
    */
   createTransferAddress({ params }: CreateTransferAddressKey) {
-    return ethers.utils.id(JSON.stringify(params))
+    return ethers.utils.id(JSON.stringify(params)).slice(0, 42)
   }
 }
