@@ -444,6 +444,24 @@ export function State() {
   }, [filter])
 
   useEffect(() => {
+    const run = async () => {
+      const subgraphData = await Promise.all(
+        Object.keys(networks).map(async (key) => {
+          if (!networks[key].isTestNetwork) {
+            const { data } = await getSubgraph4GNP(
+              networks[key].subgraph.endpointV2,
+              currentDay - 1030 // why?
+            )
+            return { name: networks[key].name, data }
+          }
+        })
+      )
+      setSubgraphData(subgraphData.filter((item) => item))
+    }
+    run()
+  }, [networks])
+
+  useEffect(() => {
     if (subgraphData !== undefined && subgraphData.length > 0) {
       const overview_contents: IOverView[] = [
         {
