@@ -6,7 +6,7 @@ export default defineConfig({
     coverage: {
       provider: 'c8',
     },
-    dir: 'test/e2e',
+    dir: 'e2e',
     include: ['**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     testTimeout: 100000,
     hookTimeout: 100000,
