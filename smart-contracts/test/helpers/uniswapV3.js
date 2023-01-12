@@ -364,35 +364,6 @@ async function generatePermitSignature(permit, signer, chainId) {
   return await signer._signTypedData(domain, types, values)
 }
 
-const PERMIT2_APPROVE_ABI = [{
-  "inputs": [
-    {
-      "internalType": "address",
-      "name": "token",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "spender",
-      "type": "address"
-    },
-    {
-      "internalType": "uint160",
-      "name": "amount",
-      "type": "uint160"
-    },
-    {
-      "internalType": "uint48",
-      "name": "expiration",
-      "type": "uint48"
-    }
-  ],
-  "name": "approve",
-  "outputs": [],
-  "stateMutability": "nonpayable",
-  "type": "function"
-}]
-
 /** 
  * UNISWAP ROUTER
  * */ 
@@ -402,10 +373,10 @@ async function getUniswapRoute ({
   amoutOut = ethers.utils.parseUnits('10', tokenOut.decimals),
   recipient,
   slippageTolerance = new Percent(10, 100),
+  deadline = Math.floor(new Date().getTime() / 1000 + 100000),
   permitOptions: {
-    usePermit2Sig = true,
-    permitAmount = ethers.utils.parseUnits('10', tokenIn.decimals),
-    deadline = Math.floor(new Date().getTime() / 1000 + 100000),
+    usePermit2Sig = false,
+    inputTokenPermit
   },
   chainId = 1
 }) {
@@ -414,26 +385,6 @@ async function getUniswapRoute ({
     chainId, 
     provider: ethers.provider,
   })
-
-  // permissions
-  const [spender] = await ethers.getSigners()
-  let permit, signature
-  if (usePermit2Sig) {
-    // create signed permit
-    permit = makePermit(tokenIn.address, permitAmount.toString() )
-    signature = await generatePermitSignature(permit, spender, chainId)
-  } else {
-    const permit2 = await ethers.getContractAt(PERMIT2_APPROVE_ABI, PERMIT2_ADDRESS)
-    const txApproval = await permit2.approve(
-      tokenIn.address,
-      V3_SWAP_ROUTER_ADDRESS,
-      MAX_UINT160,
-      20_000_000_000_000 // expiration
-    )
-    const { transactionHash } = await txApproval.wait()
-    console.log(`Approved permit2 to spend USDC at tx: ${transactionHash}`)
-  }
-  console.log(`Using Permit2 with ${usePermit2Sig ? 'signature' : 'litteral approval (tx)'}`)
 
   // parse router args 
   const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt(amoutOut))
@@ -448,12 +399,9 @@ async function getUniswapRoute ({
       deadline
     }
   ]
-
-  // add Permit2 sig if needed
-  if(usePermit2Sig) routeArgs.inputTokenPermit = {
-    ...permit,
-    signature,
-  }
+  
+  // add sig if necessary
+  if(usePermit2Sig) routeArgs.inputTokenPermit = inputTokenPermit
 
   // call router
   const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } = await router.route(
@@ -507,4 +455,7 @@ module.exports = {
   UNISWAP_FACTORY_ADDRESS,
   UNISWAP_ROUTER_ADDRESS,
   PERMIT2_ADDRESS,
+  MAX_UINT160,
+  makePermit,
+  generatePermitSignature
 }
