@@ -1,4 +1,4 @@
-import { expect } from 'vitest'
+import { expect } from 'chai'
 import { BigNumber, Contract } from 'ethers'
 import { unlock, ethers } from 'hardhat'
 import { lockParams } from './helpers/fixtures'
