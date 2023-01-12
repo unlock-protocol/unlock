@@ -79,3 +79,14 @@ type LockStats @entity {
   "Total keys sold"
   totalKeysSold: BigInt!
 }
+
+type UnlockStats @entity {
+  "Identifier"
+  id: ID!
+  "Total number of locks deployed"
+  totalLockDeployed: BigInt!
+  "Total number of keys sold"
+  totalKeysSold: BigInt!
+  "Total value exchanged on the network"
+  grossNetworkProduct: BigInt!
+}

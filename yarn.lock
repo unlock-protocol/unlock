@@ -18823,7 +18823,6 @@ __metadata:
     "@types/react": 18.0.25
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
-    "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
