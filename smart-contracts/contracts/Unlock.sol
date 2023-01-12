@@ -37,6 +37,7 @@ import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
 import "./interfaces/IWETH.sol";
+import "./interfaces/IPermit2.sol";
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -100,6 +101,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(address => uint16) private _publicLockVersions;
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
+
+  // required by Uniswap Universal Router
+  address public permit2;
 
   // Events
   event NewLock(
@@ -510,6 +514,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       IMintableERC20(token).balanceOf(address(this));
   }
 
+  // set permit2 address
+  function setPermit2(address _permit2) public onlyOwner {
+     permit2 = _permit2;
+  }
+
   /**
    * Swap tokens and call a function in a lock contract
    * @notice If the actual amount spent is less than the specified maximum amount, the remaining tokens wll 
@@ -555,24 +564,36 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       TransferHelper.safeApprove(srcToken, swapRouter, amountInMax);
     }
 
+    // issue PERMIT2 Allowance
+    IPermit2(permit2).approve(
+      srcToken,
+      swapRouter,
+      uint160(amountInMax),
+      uint48(block.timestamp + 3600) // expiration
+    );
+
     // calculate value to send to Uniswap
     uint swapValue = srcToken == address(0) ? msg.value : 0;
-    
+
     // executes the swap
-    (bool success,) = swapRouter.call{ value: swapValue }(swapCalldata);
+    (bool success, ) = swapRouter.call{ value: swapValue }(swapCalldata);
     // make sure Uniswap revert
     if(success == false) {
-      revert SwapFailed();
+      assembly {
+        let ptr := mload(0x40)
+        let size := returndatasize()
+        returndatacopy(ptr, 0, size)
+        revert(ptr, size)
+      }
     }
 
-    // check that amount is enough to buy a key
-    uint balanceTokenDestAfterSwap = destToken == address(0) ? 
+    // make sure balance is enough to buy key
+    if((
+      destToken == address(0) ? 
       getBalance(destToken) - msg.value 
             :
-      getBalance(destToken);
-
-    // make sure balance is enough to buy key
-    if(balanceTokenDestAfterSwap < balanceTokenDestBefore + keyPrice) {
+      getBalance(destToken)
+    ) < balanceTokenDestBefore + keyPrice) {
       revert InsufficientBalance();
     }
 
