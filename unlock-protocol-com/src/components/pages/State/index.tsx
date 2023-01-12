@@ -86,7 +86,7 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
       xaxis,
       yaxis: [
         {
-          opposite: 0,
+          opposite: false,
           title: {
             text: 'Keys',
           },
@@ -107,7 +107,7 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
           show: false,
         },
         {
-          opposite: 1,
+          opposite: true,
           title: {
             text: 'Locks',
           },

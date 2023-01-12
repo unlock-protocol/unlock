@@ -270,10 +270,10 @@ export const MetadataCard = ({
               </MetadataDetail>
             )}
 
-            {items?.map(([key, value], index) => {
+            {items?.map(([key, value]: any, index) => {
               return (
                 <MetadataDetail key={`${key}-${index}`} label={`${key}`}>
-                  {value}
+                  {value || null}
                 </MetadataDetail>
               )
             })}
