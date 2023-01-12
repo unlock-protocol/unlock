@@ -11,7 +11,7 @@ const E2E_METAMASK_SEED =
   'tiny question spoil sugar alcohol harsh high approve energy relief lobster trade'
 const E2E_METAMASK_PASSWORD = 'password'
 
-const HOST = `http://127.0.0.1:3000`
+const HOST = process.env.UNLOCK_APP_URL || `http://127.0.0.1:3000`
 
 const DEFAULT_TIMEOUT = 5000
 /**
