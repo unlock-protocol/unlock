@@ -198,9 +198,9 @@ export const AppLayout = ({
                   <div className="flex flex-col gap-4">
                     {title && <h1 className="text-4xl font-bold">{title}</h1>}
                     {description && (
-                      <p className="w-full text-base text-gray-700">
+                      <div className="w-full text-base text-gray-700">
                         {description}
-                      </p>
+                      </div>
                     )}
                   </div>
                 )}
