@@ -377,7 +377,7 @@ async function getUniswapRoute ({
   permitOptions: {
     usePermit2Sig = false,
     inputTokenPermit
-  },
+  } = {},
   chainId = 1
 }) {
   // init router
