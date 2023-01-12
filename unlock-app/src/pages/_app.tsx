@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import 'cross-fetch/polyfill'
 import type { AppProps } from 'next/app'
 import TagManager from 'react-gtm-module'
 import { Toaster } from 'react-hot-toast'

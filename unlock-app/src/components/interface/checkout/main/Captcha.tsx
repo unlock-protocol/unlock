@@ -1,7 +1,7 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
@@ -67,6 +67,10 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="space-y-4">
           <div className="flex justify-center">
+            {/* 
+            todo: Type '{}' is not assignable to type 'ReactNode'.
+              
+            @ts-ignore */}
             <ReCAPTCHA
               sitekey={config.recaptchaKey}
               onChange={(token) => setRecaptchaValue(token)}

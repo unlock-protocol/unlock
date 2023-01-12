@@ -1,31 +1,19 @@
 import { Env } from './types'
 
 // This is the list of networks currently supported
-const supportedNetworks = (env: Env, networkId: string) => {
-  switch (networkId) {
-    case '1':
-      return env.MAINNET_PROVIDER
-    case '5':
-      return env.GOERLI_PROVIDER
-    case '10':
-      return env.OPTIMISM_PROVIDER
-    case '56':
-      return env.BSC_PROVIDER
-    case '100':
-      return env.GNOSIS_PROVIDER
-    case '137':
-      return env.POLYGON_PROVIDER
-    case '42161':
-      return env.ARBITRUM_PROVIDER
-    case '42220':
-      return env.CELO_PROVIDER
-    case '43114':
-      return env.AVALANCHE_PROVIDER
-    case '80001':
-      return env.MUMBAI_PROVIDER
-    default:
-      return null
-  }
+const supportedNetworks = (env: Env, networkId: string): string | undefined => {
+  return {
+    '1': env.MAINNET_PROVIDER,
+    '5': env.GOERLI_PROVIDER,
+    '10': env.OPTIMISM_PROVIDER,
+    '56': env.BSC_PROVIDER,
+    '100': env.GNOSIS_PROVIDER,
+    '137': env.POLYGON_PROVIDER,
+    '42161': env.ARBITRUM_PROVIDER,
+    '42220': env.CELO_PROVIDER,
+    '43114': env.AVALANCHE_PROVIDER,
+    '80001': env.MUMBAI_PROVIDER,
+  }[networkId]
 }
 
 export default supportedNetworks
