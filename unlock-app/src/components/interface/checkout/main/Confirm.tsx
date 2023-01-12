@@ -621,6 +621,10 @@ export function Confirm({
 
   return (
     <Fragment>
+      {/* 
+      todo: Type '{}' is not assignable to type 'ReactNode'.
+      
+      @ts-ignore */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
@@ -648,6 +652,11 @@ export function Confirm({
               {!!pricingData?.prices?.length &&
                 pricingData.prices.map((item, index) => {
                   const first = index <= 0
+                  const discount =
+                    Number(lock!.keyPrice) > 0
+                      ? (100 * (Number(lock!.keyPrice) - Number(item.amount))) /
+                        Number(lock!.keyPrice)
+                      : 0
                   return (
                     <div
                       key={index}
@@ -662,7 +671,7 @@ export function Confirm({
                         </span>{' '}
                         {Number(item.amount) < Number(lock!.keyPrice) ? (
                           <Badge variant="green" size="tiny">
-                            Discounted
+                            {discount}% Discount
                           </Badge>
                         ) : null}
                       </div>
