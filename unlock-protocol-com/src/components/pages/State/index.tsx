@@ -66,6 +66,7 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
   if (!series || series.length === 0) {
     return null
   }
+
   const chartOptions = {
     options: {
       chart: { zoom: { enabled: false } },
@@ -92,20 +93,18 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
           min: Math.max(
             0,
             Math.min(...series[0].data) -
-              0.1 * (Math.max(...series[0].data) - Math.min(...series[0].data))
+              0.1 *
+                (Math.max(...series[0].data) - Math.min(...series[0].data)) -
+              1
           ),
+          labels: {
+            formatter: function (val, index) {
+              return val.toFixed(0)
+            },
+          },
         },
         {
           show: false,
-          opposite: 1,
-          title: {
-            text: 'Locks',
-          },
-          min: Math.max(
-            0,
-            Math.min(...series[1].data) -
-              0.1 * (Math.max(...series[1].data) - Math.min(...series[1].data))
-          ),
         },
         {
           opposite: 1,
@@ -115,8 +114,15 @@ function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
           min: Math.max(
             0,
             Math.min(...series[2].data) -
-              0.1 * (Math.max(...series[2].data) - Math.min(...series[2].data))
+              0.1 *
+                (Math.max(...series[2].data) - Math.min(...series[2].data)) -
+              1
           ),
+          labels: {
+            formatter: function (val, index) {
+              return val.toFixed(0)
+            },
+          },
         },
       ],
       tooltip: {
@@ -362,7 +368,7 @@ export function State() {
             if (!networks[key].isTestNetwork) {
               const { data } = await getSubgraph4GNP(
                 networks[key].subgraph.endpointV2,
-                currentDay - 1030
+                currentDay - 1030 // why?
               )
               return data
             }
@@ -395,7 +401,7 @@ export function State() {
       } else {
         const { data } = await getSubgraph4GNP(
           networks[selectedNetwork].subgraph.endpointV2,
-          currentDay - 1030
+          currentDay - 1030 // why?
         )
         setSelectedNetworkSubgraphData(data)
       }
@@ -436,24 +442,6 @@ export function State() {
     })
     setGNPPByNetworks(gnpPercentageByNetworks)
   }, [filter])
-
-  useEffect(() => {
-    const run = async () => {
-      const subgraphData = await Promise.all(
-        Object.keys(networks).map(async (key) => {
-          if (!networks[key].isTestNetwork) {
-            const { data } = await getSubgraph4GNP(
-              networks[key].subgraph.endpointV2,
-              currentDay - 1030 // why?
-            )
-            return { name: networks[key].name, data }
-          }
-        })
-      )
-      setSubgraphData(subgraphData.filter((item) => item))
-    }
-    run()
-  }, [networks])
 
   useEffect(() => {
     if (subgraphData !== undefined && subgraphData.length > 0) {
