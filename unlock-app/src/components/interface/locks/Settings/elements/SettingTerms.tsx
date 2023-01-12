@@ -32,6 +32,19 @@ export const SettingTerms = ({
 }: SettingTermsProps) => {
   const settings: SettingProps[] = [
     {
+      label: 'Transfers',
+      description:
+        'Make tokens non-transferable (soulbound) or apply fees on transfers.',
+      children: (
+        <UpdateTransferFee
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      ),
+    },
+    {
       label: 'Duration',
       description: 'Set up how long each membership lasts. ',
       children: (
@@ -69,18 +82,6 @@ export const SettingTerms = ({
           lockAddress={lockAddress}
           network={network}
           publicLockVersion={publicLockVersion}
-        />
-      ),
-    },
-    {
-      label: 'Transfer',
-      description: 'Allow members to transfer memberships.',
-      children: (
-        <UpdateTransferFee
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
         />
       ),
     },
