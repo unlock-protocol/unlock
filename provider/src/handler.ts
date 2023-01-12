@@ -60,24 +60,32 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   // Reject requests that are not POST
   if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ message: 'Method not supported' }), {
-      status: 400,
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
+    console.error(`Method ${request.method} not supported`)
+    return new Response(
+      JSON.stringify({ message: `Method ${request.method} not supported` }),
+      {
+        status: 400,
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    )
   }
 
   const matched = pathname.match(/\/([0-9]*)/)
 
   // Missing network
   if (!matched) {
-    return new Response(JSON.stringify({ message: 'Bad Request' }), {
-      headers: {
-        'content-type': 'application/json',
-      },
-      status: 400,
-    })
+    console.error('Bad Request, missing chain id')
+    return new Response(
+      JSON.stringify({ message: 'Bad Request, missing chain id' }),
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+        status: 400,
+      }
+    )
   }
 
   const [_, networkId] = matched
@@ -86,6 +94,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   // Network not supported
   if (!supportedNetwork) {
+    console.error(`Unsupported network ID: ${networkId}`)
     return new Response(
       JSON.stringify({ message: `Unsupported network ID: ${networkId}` }),
       {
