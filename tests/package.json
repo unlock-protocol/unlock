@@ -7,7 +7,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
     "test": "hardhat test --network localhost",
     "e2e": "vitest run",
-    "ci": "hardhat test --network 0.0.0.0 && yarn e2e"
+    "ci": "hardhat test && yarn e2e"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
