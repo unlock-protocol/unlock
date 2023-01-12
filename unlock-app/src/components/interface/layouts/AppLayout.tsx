@@ -185,7 +185,9 @@ export const AppLayout = ({
             </a>
             .
           </span>
-          <Button onClick={saveTermsAccepted}>I agree</Button>
+          <Button data-testid="accept-terms" onClick={saveTermsAccepted}>
+            I agree
+          </Button>
         </div>
       </Modal>
       <div className="w-full">
