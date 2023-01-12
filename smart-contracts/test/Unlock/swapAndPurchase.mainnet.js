@@ -8,9 +8,9 @@ const {
   deployLock, 
   purchaseKey,
   getBalance,
-  DAI,
-  USDC,
-  WETH
+  WETH,
+  addERC20,
+  PERMIT2_ADDRESS
  } = require('../helpers')
 
 // get unlock address in mainnet
@@ -22,28 +22,14 @@ const UNLOCK_PROXY_OWNER = '0xF867712b963F00BF30D372b857Ae7524305A0CE7'
 // get uniswap-formatted tokens
 const tokens = getUniswapTokens()
 
-const whales = {
-  [DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8',
-  [USDC]: '0xf977814e90da44bfa03b6295a0616a897441acec' // binance
-}
-
 // TODO: add wBTC
 const scenarios = [
   // [tokens.native, tokens.dai],
-  // [tokens.native, tokens.usdc],
+  [tokens.native, tokens.usdc],
   // [tokens.dai, tokens.usdc],
-  [tokens.usdc, tokens.native],
+  // [tokens.usdc, tokens.native],
   // [tokens.usdc, tokens.shiba]
 ]
-
-async function fund(token, keyOwner, amountInMax) {
-  const whale = await ethers.getSigner(whales[token.address])
-  await impersonate(whale.address)
-
-  const erc20Contract = await ethers.getContractAt('TestERC20', token.address)
-  await erc20Contract.connect(whale).transfer(keyOwner.address, amountInMax)
-  return erc20Contract
-}
 
 describe(`swapAndCall`, function() {
 
@@ -68,7 +54,7 @@ describe(`swapAndCall`, function() {
     await impersonate(unlockOwnerAddress)
     const unlockOwner = await ethers.getSigner(unlockOwnerAddress)
     
-    // add uniswap address
+    // config unlock
     await unlock.connect(unlockOwner).configUnlock(
       ADDRESS_ZERO, // udt
       WETH,
@@ -77,6 +63,13 @@ describe(`swapAndCall`, function() {
       'http://locksmith:8080/api/key/',
       1, // mainnet fork
     )
+
+    // config permit2
+    await unlock.connect(unlockOwner).setPermit2(PERMIT2_ADDRESS);
+  })
+
+  it('permit2 is set properly', async () => {
+    expect(await unlock.permit2()).to.equal(PERMIT2_ADDRESS)
   })
 
   scenarios.forEach(([srcToken, lockToken]) => {
@@ -85,9 +78,12 @@ describe(`swapAndCall`, function() {
     describe(`use ${srcToken.symbol} with a lock priced in ${lockToken.symbol}`, () => {
       before(async () => {
         ;[, keyOwner] = await ethers.getSigners()
-        // parse token decimals properly
-        keyPrice = ethers.utils.parseUnits('1', lockToken.decimals)
-        lock = await deployLock({ 
+        // parse token decimals properly (100 USDC or 1 ETH)
+        keyPrice = ethers.utils.parseUnits(
+          lockToken.symbol === 'USDC' ? '100' : '1', 
+          lockToken.decimals
+        )
+        lock = await deployLock({
           unlock,
           tokenAddress: lockToken.address,
           // make sure we can add multiple keys
@@ -104,17 +100,33 @@ describe(`swapAndCall`, function() {
           value, 
           swapRouter,
           amountInMax
-         } = await getUniswapRoute(
-          srcToken, 
-          lockToken, 
-          keyPrice,
-          unlock.address
-        ))
+         } = await getUniswapRoute({
+          tokenIn: srcToken,
+          tokenOut: lockToken,
+          amoutOut: keyPrice,
+          recipient: unlock.address,
+        }))
 
+        console.log({
+          swapCalldata, 
+          value
+        })
+
+        // ;({ 
+        //   swapCalldata, 
+        //   value, 
+        //   swapRouter,
+        //   amountInMax
+        //  } = {
+        //   swapCalldata: '0x24856bc30000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000030b010c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000001175ddc2f4bfdb800000000000000000000000000000000000000000000000000000000000001000000000000000000000000003d5409cce1d45233de1d4ebdee74b8e004abdd130000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000001175ddc2f4bfdb800000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002ba0b86991c6218b36c1d19d4a2e9eb0ce3606eb480001f4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000003d5409cce1d45233de1d4ebdee74b8e004abdd130000000000000000000000000000000000000000000000000000000000000000',
+        //   value: '78634718769970616',
+        //   swapRouter: '0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B',
+        //   amountInMax: ethers.BigNumber.from("71486107972700560")
+        // })
       })
 
       it('lock is set properly', async () => {
-        expect(await lock.tokenAddress()).to.equal(lockToken.address)
+        expect(await lock.tokenAddress()).to.equal(lockToken.address || ADDRESS_ZERO)
         expect(
           (await lock.balanceOf(keyOwner.address)).toNumber()
         ).to.equal(0)
@@ -126,9 +138,10 @@ describe(`swapAndCall`, function() {
       })
 
       describe('purchase', () => {
-        let lockBalanceBefore
+        let lockBalanceBefore, keyOwnerBalanceBefore
         before(async () => {
           lockBalanceBefore = await getBalance(lock.address, lockToken.address)
+          keyOwnerBalanceBefore = await lock.balanceOf(keyOwner.address)
 
           const args = [
             lockToken.isToken ? [keyPrice]: [], // keyPrices
@@ -143,7 +156,7 @@ describe(`swapAndCall`, function() {
 
           // approve
           if(srcToken.isToken) {
-            const token = await fund(srcToken, keyOwner, amountInMax)
+            const token = await addERC20(srcToken, keyOwner, amountInMax)
             await token.connect(keyOwner).approve(unlock.address, amountInMax)
           }
 
@@ -152,7 +165,7 @@ describe(`swapAndCall`, function() {
             .swapAndCall(
               lock.address,
               srcToken.address || ADDRESS_ZERO,
-              amountInMax, // value in ETH
+              amountInMax, // value in src token
               swapRouter,
               swapCalldata,
               calldata,
@@ -163,13 +176,17 @@ describe(`swapAndCall`, function() {
         it('purchase a key for the sender', async() => {
           expect(
             (await lock.balanceOf(keyOwner.address)).toNumber()
-          ).to.equal(1)
+          ).to.equal(
+            keyOwnerBalanceBefore.toNumber() + 1
+          )
         })
         
         it('lock has received the tokens', async () => {
           expect(
-            await getBalance(lock.address, lockToken.address)
-          ).to.equal(lockBalanceBefore.add(keyPrice).toString())
+            (await getBalance(lock.address, lockToken.address)).toString()
+          ).to.equal(
+            lockBalanceBefore.plus(keyPrice.toString()).toString()
+          )
         })
       })
 
@@ -177,18 +194,18 @@ describe(`swapAndCall`, function() {
         let tokenId, lockBalanceBefore
         before(async () => {    
 
-          // give our buyer some ERC20 tokens if needed
+          // give our buyer some ERC20 tokens to first buy a key
           if(lockToken.isToken) {
-            const token = await fund(srcToken)
-            assert((await token.balanceOf(keyOwner.address)).gt(keyPrice))
-            await token.connect(keyOwner).approve(lock.address, keyPrice.mul(1))
+            const token = await addERC20(lockToken.address, keyOwner.address, keyPrice)
+            assert((await token.balanceOf(keyOwner.address)).gte(keyPrice))
+            await token.connect(keyOwner).approve(lock.address, keyPrice)
           }
 
           // purchase the key
           const isErc20 = lockToken.isToken
           ;({tokenId} = await purchaseKey(lock, keyOwner.address, isErc20, keyPrice))
           assert.equal(await lock.isValidKey(tokenId), true)
-  
+          
           // expire the key
           await lock.expireAndRefundFor(tokenId, 0)
           assert.equal(await lock.isValidKey(tokenId), false)
@@ -202,18 +219,26 @@ describe(`swapAndCall`, function() {
           ]
           const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
           lockBalanceBefore = await getBalance(lock.address, lockToken.address)
+
+          // approve our src token that will be swapped
+          if(srcToken.isToken) {
+            const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
+            await token.connect(keyOwner).approve(unlock.address, amountInMax)
+          }
           
           // do the swap and call
-          await unlock.connect(keyOwner)
+          const tx = await unlock.connect(keyOwner)
             .swapAndCall(
               lock.address,
               srcToken.address || ADDRESS_ZERO,
-              amountInMax, // (in ETH)
+              amountInMax, // (in src token)
               swapRouter,
               swapCalldata,
               calldata,
-              { value: srcToken.isNative ? amountInMax : 0 }
+              { value }
             )
+
+          console.log(tx)
         })
   
         it('key is now valid', async () => {
