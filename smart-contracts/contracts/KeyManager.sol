@@ -17,17 +17,17 @@ error TOO_LATE();
 
 /// @custom:security-contact hello@unlock-protocol.com
 contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
-  address public locksmith;
+  mapping(address => bool) public locksmiths;
 
-  event LocksmithChanged(address indexed locksmith);
+  event LocksmithAdded(address indexed locksmith);
+  event LocksmithRemoved(address indexed locksmith);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
   }
 
-  function initialize(address _locksmith) public initializer {
-    locksmith = _locksmith;
+  function initialize() public initializer {
     __Ownable_init();
     __EIP712_init("KeyManager", "1");
   }
@@ -63,7 +63,7 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
 
     address signer = ECDSAUpgradeable.recover(hash, transferCode);
 
-    if (signer != locksmith) {
+    if (!locksmiths[signer]) {
       revert NOT_AUTHORIZED();
     }
 
@@ -71,10 +71,18 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
   }
 
   /**
-   * Function to change the signer. This can only be called by the owner.
+   * Function to add a signer. This can only be called by the owner.
    */
-  function setLocksmith(address _locksmith) public onlyOwner {
-    locksmith = _locksmith;
-    emit LocksmithChanged(locksmith);
+  function addLocksmith(address _locksmith) public onlyOwner {
+    locksmiths[_locksmith] = true;
+    emit LocksmithAdded(_locksmith);
+  }
+
+  /**
+   * Function to remove a signer. This can only be called by the owner.
+   */
+  function removeLocksmith(address _locksmith) public onlyOwner {
+    locksmiths[_locksmith] = false;
+    emit LocksmithRemoved(_locksmith);
   }
 }

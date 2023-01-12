@@ -6,7 +6,7 @@ const {
 } = require('../helpers')
 
 
-const setup = async (locksmith) => {
+const setup = async () => {
   // Deploy a lock
   const lock = await deployLock()
 
@@ -15,7 +15,7 @@ const setup = async (locksmith) => {
     'KeyManager'
   )
 
-  const keyManager = await upgrades.deployProxy(KeyManager, [locksmith])
+  const keyManager = await upgrades.deployProxy(KeyManager, [])
   await keyManager.deployed()
 
   return [keyManager, lock]

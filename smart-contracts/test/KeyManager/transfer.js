@@ -20,9 +20,9 @@ const types = {
 contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
 
   beforeEach(async () => {
-    [keyManager, lock] = await setup(locksmith)
+    [keyManager, lock] = await setup()
     // Let's now aidrop a key to an address and set the keyManager as... keyManager!
-    await keyManager.setLocksmith(locksmith)
+    await keyManager.addLocksmith(locksmith)
     await lock.grantKeys([grantee], [OneMonthFromNow], [keyManager.address])
     const { chainId } = await ethers.provider.getNetwork()
     domain = {
