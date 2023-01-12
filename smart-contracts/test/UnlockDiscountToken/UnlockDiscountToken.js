@@ -1,21 +1,22 @@
 const BigNumber = require('bignumber.js')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers')
 
-const UnlockDiscountToken = artifacts.require('UnlockDiscountToken.sol')
-const getProxy = require('../helpers/proxy')
+const deployContracts = require('../fixtures/deploy')
+const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 
 contract('UnlockDiscountToken', (accounts) => {
   let unlockDiscountToken
   const minter = accounts[1]
 
   before(async () => {
-    unlockDiscountToken = await getProxy(UnlockDiscountToken)
+    const { udt } = await deployContracts()
+    unlockDiscountToken = await UnlockDiscountToken.at(udt.address)
   })
 
   it('shouldFail to call init again', async () => {
     await reverts(
       unlockDiscountToken.initialize(minter),
-      'Contract instance has already been initialized'
+      'Initializable: contract is already initialized'
     )
   })
 

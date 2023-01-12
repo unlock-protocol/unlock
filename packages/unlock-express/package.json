@@ -1,0 +1,24 @@
+{
+  "name": "@unlock-protocol/unlock-express",
+  "version": "0.0.6",
+  "public": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js ."
+  },
+  "dependencies": {
+    "ethers": "5.7.2",
+    "passport-custom": "1.1.1"
+  },
+  "peerDependencies": {
+    "passport": "^0.6.x"
+  },
+  "devDependencies": {
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "eslint": "8.31.0",
+    "prettier": "2.8.1"
+  }
+}

@@ -1,11 +1,9 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
+import app from '../../app'
+import * as Base64 from '../../../src/utils/base64'
 
 const chain = 31337
 
@@ -14,22 +12,9 @@ const keyHolder = [
   '0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c',
 ]
 const lockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
-const privateKey = ethJsUtil.toBuffer(
+const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
-
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([keyHolder[0]])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
 
 describe('reading address holder metadata', () => {
   beforeAll(async () => {
@@ -50,16 +35,22 @@ describe('reading address holder metadata', () => {
 
   it('yields the stored passed data if the timestamp is recent', async () => {
     expect.assertions(2)
-    const typedData = keyTypedData({
-      UserMetaData: {
-        owner: keyHolder[0],
-        timestamp: Date.now(),
+    const typedData = keyTypedData(
+      {
+        UserMetaData: {
+          owner: keyHolder[0],
+          timestamp: Date.now(),
+        },
       },
-    })
+      'UserMetaData'
+    )
 
-    const sig = sigUtil.signTypedData(privateKey, {
-      data: typedData,
-    })
+    const { domain, types, message } = typedData
+    const sig = await wallet._signTypedData(
+      domain,
+      types,
+      message['UserMetaData']
+    )
 
     const response = await request(app)
       .get(`/api/key/${lockAddress}/user/${keyHolder[0]}`)
@@ -82,16 +73,22 @@ describe('reading address holder metadata', () => {
 
   it('does not yield the stored passed data if the timestamp is old', async () => {
     expect.assertions(2)
-    const typedData = keyTypedData({
-      UserMetaData: {
-        owner: keyHolder[0],
-        timestamp: 0,
+    const typedData = keyTypedData(
+      {
+        UserMetaData: {
+          owner: keyHolder[0],
+          timestamp: 0,
+        },
       },
-    })
+      'UserMetaData'
+    )
 
-    const sig = sigUtil.signTypedData(privateKey, {
-      data: typedData,
-    })
+    const { domain, types, message } = typedData
+    const sig = await wallet._signTypedData(
+      domain,
+      types,
+      message['UserMetaData']
+    )
 
     const response = await request(app)
       .get(`/api/key/${lockAddress}/user/${keyHolder[0]}`)
@@ -107,21 +104,27 @@ describe('reading address holder metadata', () => {
     it('returns unauthorized', async () => {
       expect.assertions(2)
 
-      const typedData = keyTypedData({
-        UserMetaData: {
-          owner: keyHolder[0],
-          protected: {
-            hidden: 'metadata',
-          },
-          public: {
-            mock: 'values',
+      const typedData = keyTypedData(
+        {
+          UserMetaData: {
+            owner: keyHolder[0],
+            protected: {
+              hidden: 'metadata',
+            },
+            public: {
+              mock: 'values',
+            },
           },
         },
-      })
+        'UserMetaData'
+      )
 
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const { domain, types, message } = typedData
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['UserMetaData']
+      )
 
       const response = await request(app)
         .get(`/api/key/${lockAddress}/user/${keyHolder[0]}`)

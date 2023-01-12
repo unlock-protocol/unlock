@@ -7,8 +7,7 @@ import { ACCOUNT_REGEXP } from '../constants'
 const { env } = configure()
 
 export const log = (message) => {
-  if (env !== 'test') {
-    // eslint-disable-next-line no-console
+  if (env !== 'dev') {
     console.log(message)
   }
 }
@@ -51,7 +50,8 @@ export const isValidIcon = (icon) => {
     !isDataURI(icon)
   ) {
     log('The paywall config\'s "icon" property is not a valid URL.')
-    return false
+    // Icon failure is not a huge deal.
+    return true
   }
   return true
 }
@@ -329,9 +329,9 @@ export const isValidLock = (lock) => {
     return false
   }
 
-  if (lock.hasOwnProperty('name') && typeof lock.name !== 'string') return false
+  if (Object.hasOwn(lock, 'name') && typeof lock.name !== 'string') return false
   if (
-    lock.hasOwnProperty('currencyContractAddress') &&
+    Object.hasOwn(lock, 'currencyContractAddress') &&
     !isAccountOrNull(lock.currencyContractAddress)
   ) {
     return false

@@ -1,7 +1,8 @@
 import { PaywallConfig, NetworkConfigs } from '@unlock-protocol/types'
 
-import { keyExpirationTimestampFor } from './keyExpirationTimestampFor'
+import { hasValidKey } from './hasValidKey'
 import { optimisticUnlocking } from './optimisticUnlocking'
+import { locksmithUri } from '../urls'
 
 /**
  * A function which, given a user account, a paywall config will return the list of unlocked locks.
@@ -17,19 +18,15 @@ export const isUnlocked = async (
   await Promise.all(
     // For each lock
     Object.entries(paywallConfig.locks).map(async ([lockAddress]) => {
-      let network = paywallConfig.network
-      const { readOnlyProvider, locksmithUri } = networks[network]
-      const timestamp = await keyExpirationTimestampFor(
-        readOnlyProvider,
-        lockAddress,
-        userAccountAddress!
-      )
-      if (timestamp > new Date().getTime() / 1000) {
+      const network =
+        paywallConfig.locks[lockAddress].network || paywallConfig.network
+      const { provider } = networks[network]
+      if (await hasValidKey(provider, lockAddress, userAccountAddress!)) {
         // This lock is unlocked!
         unlockedLocks.push(lockAddress)
       } else if (!paywallConfig.pessimistic) {
         const optimistic = await optimisticUnlocking(
-          readOnlyProvider,
+          provider,
           locksmithUri,
           [lockAddress],
           userAccountAddress!

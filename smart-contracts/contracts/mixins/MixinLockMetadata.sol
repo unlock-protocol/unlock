@@ -1,22 +1,21 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
-import '../UnlockUtils.sol';
-import './MixinKeys.sol';
-import './MixinLockCore.sol';
-import './MixinLockManagerRole.sol';
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
+import "../UnlockUtils.sol";
+import "./MixinKeys.sol";
+import "./MixinLockCore.sol";
+import "./MixinRoles.sol";
 
 /**
  * @title Mixin for metadata about the Lock.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
-  IERC721Enumerable,
-  ERC165,
-  MixinLockManagerRole,
+  ERC165StorageUpgradeable,
+  MixinRoles,
   MixinLockCore,
   MixinKeys
 {
@@ -33,15 +32,16 @@ contract MixinLockMetadata is
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
   string private baseTokenURI;
 
-  event NewLockSymbol(
-    string symbol
+  event LockMetadata(
+    string name,
+    string symbol,
+    string baseTokenURI
   );
 
   function _initializeMixinLockMetadata(
-    string memory _lockName
-  ) internal
-  {
-    ERC165.initialize();
+    string calldata _lockName
+  ) internal {
+    ERC165StorageUpgradeable.__ERC165Storage_init();
     name = _lockName;
     // registering the optional erc721 metadata interface with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
@@ -49,52 +49,35 @@ contract MixinLockMetadata is
   }
 
   /**
-   * Allows the Lock owner to assign a descriptive name for this Lock.
+   * Allows the Lock owner to assign
+   * @param _lockName a descriptive name for this Lock.
+   * @param _lockSymbol a Symbol for this Lock (default to KEY).
+   * @param _baseTokenURI the baseTokenURI for this Lock
    */
-  function updateLockName(
-    string calldata _lockName
-  ) external
-    onlyLockManager
-  {
+  function setLockMetadata(
+    string calldata _lockName,
+    string calldata _lockSymbol,
+    string calldata _baseTokenURI
+  ) public {
+    _onlyLockManager();
+
     name = _lockName;
-  }
-
-  /**
-   * Allows the Lock owner to assign a Symbol for this Lock.
-   */
-  function updateLockSymbol(
-    string calldata _lockSymbol
-  ) external
-    onlyLockManager
-  {
     lockSymbol = _lockSymbol;
-    emit NewLockSymbol(_lockSymbol);
+    baseTokenURI = _baseTokenURI;
+
+    emit LockMetadata(name, lockSymbol, baseTokenURI);
   }
 
   /**
-    * @dev Gets the token symbol
-    * @return string representing the token name
-    */
-  function symbol()
-    external view
-    returns(string memory)
-  {
-    if(bytes(lockSymbol).length == 0) {
+   * @dev Gets the token symbol
+   * @return string representing the token name
+   */
+  function symbol() external view returns (string memory) {
+    if (bytes(lockSymbol).length == 0) {
       return unlockProtocol.globalTokenSymbol();
     } else {
       return lockSymbol;
     }
-  }
-
-  /**
-   * Allows the Lock owner to update the baseTokenURI for this Lock.
-   */
-  function setBaseTokenURI(
-    string calldata _baseTokenURI
-  ) external
-    onlyLockManager
-  {
-    baseTokenURI = _baseTokenURI;
   }
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
@@ -108,34 +91,58 @@ contract MixinLockMetadata is
    */
   function tokenURI(
     uint256 _tokenId
-  ) external
-    view
-    returns(string memory)
-  {
+  ) external view returns (string memory) {
     string memory URI;
     string memory tokenId;
     string memory lockAddress = address(this).address2Str();
     string memory seperator;
 
-    if(_tokenId != 0) {
+    if (_tokenId != 0) {
       tokenId = _tokenId.uint2Str();
     } else {
-      tokenId = '';
+      tokenId = "";
     }
 
-    if(bytes(baseTokenURI).length == 0) {
+    if (address(onTokenURIHook) != address(0)) {
+      uint expirationTimestamp = keyExpirationTimestampFor(
+        _tokenId
+      );
+      return
+        onTokenURIHook.tokenURI(
+          address(this),
+          msg.sender,
+          ownerOf(_tokenId),
+          _tokenId,
+          expirationTimestamp
+        );
+    }
+
+    if (bytes(baseTokenURI).length == 0) {
       URI = unlockProtocol.globalBaseTokenURI();
-      seperator = '/';
+      seperator = "/";
     } else {
       URI = baseTokenURI;
-      seperator = '';
-      lockAddress = '';
+      seperator = "";
+      lockAddress = "";
     }
 
-    return URI.strConcat(
-        lockAddress,
-        seperator,
-        tokenId
-      );
+    return URI.strConcat(lockAddress, seperator, tokenId);
   }
+
+  function supportsInterface(
+    bytes4 interfaceId
+  )
+    public
+    view
+    virtual
+    override(
+      AccessControlUpgradeable,
+      ERC165StorageUpgradeable
+    )
+    returns (bool)
+  {
+    return super.supportsInterface(interfaceId);
+  }
+
+  uint256[1000] private __safe_upgrade_gap;
 }

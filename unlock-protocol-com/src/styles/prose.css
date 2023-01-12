@@ -1,0 +1,29 @@
+.prose code {
+  @apply rounded-md border border-slate-300 bg-slate-100 px-1 py-0.5;
+}
+
+.prose code::after,
+.prose code::before {
+  content: '';
+}
+
+.prose code,
+.prose pre {
+  @apply font-medium;
+}
+
+.prose pre > code {
+  @apply p-0 m-0 text-gray-200 bg-transparent border-none;
+}
+
+.prose pre {
+  @apply p-2 m-0 text-slate-100 bg-brand-dark;
+}
+
+.prose li::marker {
+  @apply text-brand-ui-primary;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-brand-ui-primary;
+}

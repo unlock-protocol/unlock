@@ -27,7 +27,7 @@ export default function localStorageAvailable(): boolean {
 
 export function store(key: string, value: object) {
   if (localStorageAvailable()) {
-    window.localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value))
   } else {
     // Fail silently!
   }
@@ -35,8 +35,11 @@ export function store(key: string, value: object) {
 
 export function retrieve(key: string) {
   if (localStorageAvailable()) {
-    const item = localStorage.getItem(key) || ''
-    return JSON.parse(item)
+    const item = localStorage.getItem(key) || false
+    if (item) {
+      return JSON.parse(item)
+    }
+    return undefined
   }
   return undefined
 }

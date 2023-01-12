@@ -25,12 +25,21 @@ require('solidity-coverage')
 // eslint-disable-next-line global-require
 require('@nomiclabs/hardhat-etherscan')
 
+// check contract size
+require('hardhat-contract-sizer')
+
+// our own hardhat plugin (for mainnet tests)
+require('@unlock-protocol/hardhat-plugin')
+
+// import helpers
+const { etherscan } = require('@unlock-protocol/hardhat-helpers')
+
 const { getHardhatNetwork } = require('./helpers/network')
 
 const settings = {
   optimizer: {
     enabled: true,
-    runs: 200,
+    runs: 80,
   },
   outputSelection: {
     '*': {
@@ -40,26 +49,19 @@ const settings = {
 }
 
 const networks = getHardhatNetwork()
+networks.hardhat = {
+  initialBaseFeePerGas: 100000000,
+}
 
-// Etherscan api for verification
-const etherscan = process.env.ETHERSCAN_API_KEY
-  ? {
-      apiKey: process.env.ETHERSCAN_API_KEY,
-    }
-  : {}
-
-// add mainnet fork -- if API key is present
-if (process.env.RUN_MAINNET_FORK) {
-  // eslint-disable-next-line no-console
-  console.log('Running a mainnet fork...')
-  const alchemyAPIKey = process.env.ALCHEMY_API_KEY
-  if (!alchemyAPIKey) {
-    throw new Error('Missing Alchemy API Key, couldnt run a mainnet fork')
+// mainnet fork
+if (process.env.RUN_FORK) {
+  if(!isNaN()) {
+    throw Error(`RUN_FORK chain id should be a number ${process.env.RUN_FORK} `)
   }
-  const alchemyURL = `https://eth-mainnet.alchemyapi.io/v2/${alchemyAPIKey}`
+  console.log(`Running a fork (chainId : ${process.env.RUN_FORK})...`)
   networks.hardhat = {
     forking: {
-      url: alchemyURL,
+      url: `https://rpc.unlock-protocol.com/${process.env.RUN_FORK}`,
     },
   }
 
@@ -70,13 +72,17 @@ if (process.env.RUN_MAINNET_FORK) {
 // tasks
 require('./tasks/accounts')
 require('./tasks/balance')
-require('./tasks/config')
 require('./tasks/deploy')
-require('./tasks/impl')
 require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
 require('./tasks/release')
+require('./tasks/gov')
+require('./tasks/utils')
+require('./tasks/lock')
+require('./tasks/verify')
+require('./tasks/keys')
+require('./tasks/unlock')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -86,7 +92,7 @@ module.exports = {
   etherscan,
   gasReporter: {
     currency: 'USD',
-    excludeContracts: ['Migrations', 'TestNoop'],
+    excludeContracts: ['TestNoop'],
     gasPrice: 5,
   },
   solidity: {
@@ -103,6 +109,15 @@ module.exports = {
       { version: '0.8.0', settings },
       { version: '0.8.2', settings },
       { version: '0.8.4', settings },
+      { version: '0.8.7', settings },
+      { version: '0.8.13', settings },
     ],
+  },
+  mocha: {
+    timeout: 2000000,
+  },
+  contractSizer: {
+    alphaSort: true,
+    only: [':PublicLock', 'Mixin'],
   },
 }

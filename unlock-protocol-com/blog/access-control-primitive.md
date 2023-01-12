@@ -3,7 +3,7 @@ title: The Access Control Primitive
 authorName: Julien Genestoux
 publishDate: March 10, 2020
 description: The web is an operating system. Unlock Protocol is its access control primitive
-image: /static/images/blog/first-lock/new-lock.jpg
+image: /images/blog/first-lock/new-lock.jpg
 ---
 
 [Wikipedia says it best](https://en.wikipedia.org/wiki/Operating_system):

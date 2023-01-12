@@ -10,6 +10,9 @@
     },
     "exclude" : [
         "deprec",
-        "test"
+        "test",
+        "dist",
+        "task",
+        "hardhat.config.js"
     ]
 }

@@ -1,7 +1,8 @@
-import getConfigFromSearch from '../../utils/getConfigFromSearch'
+import { getPaywallConfigFromQuery } from '../../utils/paywallConfig'
+import { vi } from 'vitest'
 
 let originalConsole: any
-let error = jest.fn()
+let error = vi.fn()
 
 const lock = '0x1234567890123456789012345678901234567890'
 const validConfig = {
@@ -24,7 +25,7 @@ describe('getConfigFromSearch', () => {
     originalConsole = global.console
   })
   beforeEach(() => {
-    error = jest.fn()
+    error = vi.fn()
     ;(global.console as any) = { error }
   })
   afterAll(() => {
@@ -34,14 +35,14 @@ describe('getConfigFromSearch', () => {
   it('should be undefined if there is no paywall config', () => {
     expect.assertions(2)
 
-    expect(getConfigFromSearch({})).toBeUndefined()
+    expect(getPaywallConfigFromQuery({})).toBeUndefined()
     expect(error).not.toHaveBeenCalled()
   })
 
   it('should be undefined if paywall config is malformed JSON', () => {
     expect.assertions(2)
 
-    expect(getConfigFromSearch({ paywallConfig: '{' })).toBeUndefined()
+    expect(getPaywallConfigFromQuery({ paywallConfig: '{' })).toBeUndefined()
     expect(error).toHaveBeenCalledWith(
       'paywall config in URL not valid JSON, continuing with undefined'
     )
@@ -50,7 +51,7 @@ describe('getConfigFromSearch', () => {
   it('should be undefined if paywall config does not pass validation', () => {
     expect.assertions(2)
 
-    expect(getConfigFromSearch({ paywallConfig: '{}' })).toBeUndefined()
+    expect(getPaywallConfigFromQuery({ paywallConfig: '{}' })).toBeUndefined()
     expect(error).toHaveBeenCalledWith(
       'paywall config in URL does not pass validation, continuing with undefined'
     )
@@ -60,7 +61,7 @@ describe('getConfigFromSearch', () => {
     expect.assertions(2)
 
     expect(
-      getConfigFromSearch({
+      getPaywallConfigFromQuery({
         paywallConfig: encodeURIComponent(JSON.stringify(validConfig)),
       })
     ).toEqual(

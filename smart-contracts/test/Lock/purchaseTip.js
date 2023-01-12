@@ -1,18 +1,20 @@
-const truffleAssert = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
-const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const {
+  getBalance,
+  deployERC20,
+  deployLock,
+  reverts,
+  ADDRESS_ZERO,
+} = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const Erc20Token = artifacts.require('IERC20.sol')
-
+const { ethers } = require('hardhat')
 const scenarios = [false, true]
-let unlock
-let locks
+
 let testToken
-const keyPrice = web3.utils.toWei('0.01', 'ether')
-const tip = new BigNumber(keyPrice).plus(web3.utils.toWei('1', 'ether'))
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const tip = new BigNumber(keyPrice.toString()).plus(
+  ethers.utils.parseUnits('1', 'ether').toString()
+)
 
 contract('Lock / purchaseTip', (accounts) => {
   scenarios.forEach((isErc20, i) => {
@@ -23,17 +25,14 @@ contract('Lock / purchaseTip', (accounts) => {
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await tokens.dai.deploy(web3, accounts[0])
+        testToken = await deployERC20(accounts[0])
         // Mint some tokens for testing
         await testToken.mint(accounts[2], '100000000000000000000', {
           from: accounts[0],
         })
 
-        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
-
-        unlock = await getProxy(unlockContract)
-        locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks.FIRST
+        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        lock = await deployLock({ tokenAddress })
 
         // Approve spending
         await testToken.approve(lock.address, tip, {
@@ -44,10 +43,11 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with exact value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            [],
+            [keyPrice.toString()],
+            [accounts[2]],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
             {
               from: accounts[2],
               value: isErc20 ? 0 : keyPrice.toString(),
@@ -56,9 +56,7 @@ contract('Lock / purchaseTip', (accounts) => {
         })
 
         it('user sent keyPrice to the contract', async () => {
-          const balance = isErc20
-            ? await Erc20Token.at(tokenAddress).balanceOf(lock.address)
-            : await web3.eth.getBalance(lock.address)
+          const balance = await getBalance(lock.address, tokenAddress)
           assert.equal(balance.toString(), keyPrice.toString())
         })
       })
@@ -66,10 +64,11 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with tip', () => {
         beforeEach(async () => {
           await lock.purchase(
-            tip.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            [],
+            [tip.toString()],
+            [accounts[2]],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
             {
               from: accounts[2],
               value: isErc20 ? 0 : tip.toString(),
@@ -78,9 +77,7 @@ contract('Lock / purchaseTip', (accounts) => {
         })
 
         it('user sent the tip to the contract', async () => {
-          const balance = isErc20
-            ? await Erc20Token.at(tokenAddress).balanceOf(lock.address)
-            : await web3.eth.getBalance(lock.address)
+          const balance = await getBalance(lock.address, tokenAddress)
           assert.notEqual(balance.toString(), keyPrice.toString())
           assert.equal(balance.toString(), tip.toString())
         })
@@ -89,10 +86,11 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with ETH tip > value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            [],
+            [keyPrice.toString()],
+            [accounts[2]],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
             {
               from: accounts[2],
               value: isErc20 ? 0 : tip.toString(),
@@ -101,9 +99,7 @@ contract('Lock / purchaseTip', (accounts) => {
         })
 
         it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-          const balance = isErc20
-            ? await Erc20Token.at(tokenAddress).balanceOf(lock.address)
-            : await web3.eth.getBalance(lock.address)
+          const balance = await getBalance(lock.address, tokenAddress)
           if (!isErc20) {
             assert.equal(balance.toString(), tip.toString())
           } else {
@@ -115,16 +111,21 @@ contract('Lock / purchaseTip', (accounts) => {
       if (!isErc20) {
         describe('purchase with unspecified ETH tip', () => {
           beforeEach(async () => {
-            await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
-              from: accounts[2],
-              value: isErc20 ? 0 : tip.toString(),
-            })
+            await lock.purchase(
+              [],
+              [accounts[2]],
+              [ADDRESS_ZERO],
+              [ADDRESS_ZERO],
+              [[]],
+              {
+                from: accounts[2],
+                value: isErc20 ? 0 : tip.toString(),
+              }
+            )
           })
 
           it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-            const balance = isErc20
-              ? await Erc20Token.at(tokenAddress).balanceOf(lock.address)
-              : await web3.eth.getBalance(lock.address)
+            const balance = await getBalance(lock.address, tokenAddress)
             if (!isErc20) {
               assert.equal(balance.toString(), tip.toString())
             } else {
@@ -136,12 +137,18 @@ contract('Lock / purchaseTip', (accounts) => {
 
       if (isErc20) {
         it('should fail if value is less than keyPrice', async () => {
-          await truffleAssert.fails(
-            lock.purchase(1, accounts[2], web3.utils.padLeft(0, 40), [], {
-              from: accounts[2],
-              value: isErc20 ? 0 : keyPrice.toString(),
-            }),
-            'revert',
+          await reverts(
+            lock.purchase(
+              [1],
+              [accounts[2]],
+              [ADDRESS_ZERO],
+              [ADDRESS_ZERO],
+              [[]],
+              {
+                from: accounts[2],
+                value: isErc20 ? 0 : keyPrice.toString(),
+              }
+            ),
             'INSUFFICIENT_VALUE'
           )
         })

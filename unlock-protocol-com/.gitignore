@@ -20,8 +20,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/src/.next
+.next
 /out
 
 blog/blog.index
-src/static/blog.rss
+public/blog.xml
+public/blog.rss

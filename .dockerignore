@@ -1,36 +1,51 @@
-**/node_modules
-**/build/**
-
-**/src/.next
-**/src/out
-
-node_modules/
-
-.vscode
-.git
-
 # docker itself (prevent rebuilds when editing)
 Dockerfile
 
+# root level 
+node_modules
+
 # Artifacts
 unlock-app/src/artifacts/
-smart-contract-extensions/build/
 smart-contracts/build/
 smart-contracts/cache
 smart-contracts/artifacts
 builds/
+.eslintcache
 
-shared/node_modules/
+# for all workspaces 
+**/node_modules
+**/build
+**/dist
+**/coverage
+**/artifacts
+**/cache
+**/.next
+**/out
+**/deprec
 
+# git 
+.git
+
+# Log files
+logs
+*.log
+
+# Temp files
+tmp
+*.tmp
+.DS_Store
+**/.DS_Store
+
+# IDE related
+.idea
 .vscode
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 
 # yarn
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
+
+# check in unlock-assets -- see #9697
+!./packages/unlock-assets/build
+!./packages/unlock-assets/dist

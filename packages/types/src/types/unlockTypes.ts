@@ -1,6 +1,6 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
-
+import { ethers } from 'ethers'
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
 /* eslint-disable no-unused-vars */
@@ -23,13 +23,87 @@ export enum TransactionStatus {
 }
 /* eslint-enable no-unused-vars */
 
-interface NetworkConfig {
-  readOnlyProvider: string
-  locksmithUri: string
-  unlockAppUrl: string
+export interface NetworkDeploy {
+  unlockAddress: string
+  startBlock: number
 }
+
+export interface Token {
+  name: string
+  address: string
+  symbol: string
+  decimals: number
+  coingecko?: string
+  mainnetAddress?: string
+}
+export interface NetworkConfig {
+  id: number
+  name: string
+  chain?: string
+  provider: string
+  publicProvider: string
+  locksmithUri?: string // TODO: remove as this should not be network specific
+  unlockAppUrl?: string // TODO: remove as this should not be network specific
+  blockTime?: number
+  unlockAddress?: string
+  serializerAddress?: string
+  multisig?: string
+  subgraph: {
+    endpoint: string
+    endpointV2?: string
+    networkName?: string // for thegraph hosted service
+  }
+  uniswapV2?: {
+    oracle?: string
+  }
+  uniswapV3?: Partial<{
+    subgraph: string
+    factoryAddress: string
+    quoterAddress: string
+    oracle?: string
+  }>
+  ethersProvider?: ethers.providers.Provider
+  explorer?: {
+    name: string
+    urls: {
+      base: string
+      address(address: string): string
+      transaction(hash: string): string
+      token(address: string, owner: string): string
+    }
+  }
+  opensea?: {
+    tokenUrl: (lockAddress: string, tokenId: string) => string | null
+  }
+  isTestNetwork?: boolean
+  erc20?: {
+    symbol: string
+    address: string
+  } | null
+  maxFreeClaimCost?: number 
+  requiredConfirmations?: number
+  baseCurrencySymbol?: string
+  nativeCurrency?: Omit<Token, 'address'>
+  wrappedNativeCurrency?: Token
+  startBlock?: number
+  previousDeploys?: NetworkDeploy[]
+  description?: string
+  teamMultisig?: string
+  tokens?: Token[]
+}
+
 export interface NetworkConfigs {
   [networkId: string]: NetworkConfig
+}
+
+export interface ContractAbi {
+  contractName: string
+  abi: Array<{}>
+  bytecode: string
+  deployedBytecode: string
+  compiler: string
+  schemaVersion: string
+  updatedAt: string
 }
 
 export interface Transaction {

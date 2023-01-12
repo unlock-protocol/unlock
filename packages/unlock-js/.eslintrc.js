@@ -1,4 +1,5 @@
 const rulesToIgnore = [
+  'import/no-extraneous-dependencies',
   'no-underscore-dangle',
   'no-param-reassign',
   'class-methods-use-this',
@@ -12,6 +13,8 @@ const rulesToIgnore = [
   'prefer-destructuring',
   'radix',
   'no-async-promise-executor',
+  'no-promise-executor-return',
+  'default-param-last',
   'prefer-promise-reject-errors',
   'prefer-const',
 ]

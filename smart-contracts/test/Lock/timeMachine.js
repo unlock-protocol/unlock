@@ -1,97 +1,113 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const unlockContract = artifacts.require('Unlock.sol')
 const TimeMachineMock = artifacts.require('TimeMachineMock')
-const { reverts } = require('truffle-assertions')
-const getProxy = require('../helpers/proxy')
 
-let unlock
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 
 contract('Lock / timeMachine', (accounts) => {
-  let lock
-  const lockOwner = accounts[1]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  let timeMachine
   const keyOwner = accounts[2]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
   const tooMuchTime = new BigNumber(60 * 60 * 24 * 42) // 42 days
   let timestampBefore
   let timestampAfter
-  let lockAddress
   let tokenId
   let tx
 
   before(async () => {
-    let salt = 42
-    unlock = await getProxy(unlockContract)
-    await unlock.setLockTemplate((await TimeMachineMock.new()).address)
-    let tx = await unlock.createLock(
-      new BigNumber(60 * 60 * 24 * 30), // 30 days
-      web3.utils.padLeft(0, 40),
-      new BigNumber(web3.utils.toWei('0.01', 'ether')),
-      11,
-      'TimeMachineMockLock',
-      `0x${salt.toString(16)}`,
-      { from: lockOwner }
-    )
-    lockAddress = tx.logs[0].args.newLockAddress
+    // init template
+    timeMachine = await TimeMachineMock.new()
 
-    lock = await TimeMachineMock.at(lockAddress)
-    // Change the fee to 5%
-    await lock.updateTransferFee(500, { from: lockOwner })
-    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice.toFixed(),
-    })
+    timestampBefore = new BigNumber(
+      (await ethers.provider.getBlock('latest')).timestamp
+    ).plus(expirationDuration)
+
+    tx = await timeMachine.createNewKey(
+      keyOwner,
+      ADDRESS_ZERO, // beneficiary
+      timestampBefore
+    )
+
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    tokenId = args.tokenId
   })
 
   describe('modifying the time remaining for a key', () => {
     it('should reduce the time by the amount specified', async () => {
-      let hasKey = await lock.getHasValidKey.call(keyOwner)
-      assert.equal(hasKey, true)
-      timestampBefore = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(keyOwner)
-      )
-      tokenId = await lock.getTokenIdFor(keyOwner)
-      await lock.timeMachine(tokenId, 1000, false, {
+      assert.equal(await timeMachine.isValidKey(tokenId), true)
+      await timeMachine.timeMachine(tokenId, 1000, false, {
         from: accounts[0],
       }) // decrease the time with "false"
+
       timestampAfter = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(keyOwner)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
       assert(timestampAfter.eq(timestampBefore.minus(1000)))
     })
 
-    it('should increase the time by the amount specified', async () => {
+    it('should increase the time by the amount specified if the key is not expired', async () => {
       timestampBefore = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(keyOwner)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
-      await lock.timeMachine(tokenId, 42, true, {
+      await timeMachine.timeMachine(tokenId, 42, true, {
         from: accounts[0],
       }) // increase the time with "true"
       timestampAfter = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(keyOwner)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
       assert(timestampAfter.eq(timestampBefore.plus(42)))
     })
-    it('should prevent overflow & maximise the time remaining', async () => {
-      tx = await lock.timeMachine(tokenId, tooMuchTime, true, {
+
+    it('should set a new expiration ts from current date/blocktime', async () => {
+      // First we substract too much time
+      tx = await timeMachine.timeMachine(tokenId, tooMuchTime, false, {
         from: accounts[0],
       })
-      timestampAfter = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(keyOwner)
+
+      // Then we add back some time (the normal duration)
+      tx = await timeMachine.timeMachine(tokenId, expirationDuration, true, {
+        from: accounts[0],
+      })
+
+      const { timestamp: now } = await ethers.provider.getBlock(
+        tx.receipt.blockNumber
       )
-      assert(timestampAfter.lte(expirationDuration.plus(Date.now())))
+
+      timestampAfter = new BigNumber(
+        await timeMachine.keyExpirationTimestampFor(tokenId)
+      )
+      assert(timestampAfter.eq(new BigNumber(now).plus(expirationDuration)))
     })
 
     it('should emit the ExpirationChanged event', async () => {
       assert.equal(tx.logs[0].event, 'ExpirationChanged')
+      timestampBefore = new BigNumber(
+        await timeMachine.keyExpirationTimestampFor(tokenId)
+      )
+      assert.equal(
+        tx.logs[0].args.newExpiration.toString(),
+        timestampBefore.toString()
+      )
+
+      const tx2 = await timeMachine.timeMachine(tokenId, 42, true, {
+        from: accounts[0],
+      }) // increase the time with "true"
+      timestampAfter = new BigNumber(
+        await timeMachine.keyExpirationTimestampFor(tokenId)
+      )
+      assert(timestampAfter.eq(tx2.logs[0].args.newExpiration))
+      assert.equal(tx2.logs[0].args.amount, 42)
+      assert.equal(tx2.logs[0].args.timeAdded, true)
+      assert.equal(tx2.logs[0].args.tokenId.eq(tokenId), true)
     })
   })
 
   describe('failures', async () => {
     it('should not work for a non-existant key', async () => {
       await reverts(
-        lock.timeMachine(17, 42, true, { from: accounts[3] }),
-        'NON_EXISTENT_KEY'
+        timeMachine.timeMachine(17, 42, true, { from: accounts[3] }),
+        'NO_SUCH_KEY'
       )
     })
   })

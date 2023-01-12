@@ -1,24 +1,52 @@
-const { ethers } = require('hardhat')
+const { ethers, run } = require('hardhat')
+const { addDeployment } = require('../../helpers/deployments')
+const { getNetworkName } = require('../../helpers/network')
+const contracts = require('@unlock-protocol/contracts')
 
-async function main() {
-  const PublicLock = await ethers.getContractFactory('PublicLock')
+async function main({ publicLockVersion }) {
+  // fetch chain info
+  const { chainId } = await ethers.provider.getNetwork()
+  const networkName = getNetworkName(chainId)
+  const isLocalNet = networkName === 'localhost'
+
+  const [signer] = await ethers.getSigners()
+  console.log(`Deploying lock template with signer ${signer.address}`)
+
+  let PublicLock
+  if (publicLockVersion) {
+    const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
+    PublicLock = await ethers.getContractFactory(abi, bytecode)
+  } else {
+    PublicLock = await ethers.getContractFactory('PublicLock')
+  }
+
   const publicLock = await PublicLock.deploy()
   await publicLock.deployed()
 
   // eslint-disable-next-line no-console
   console.log(
-    `PUBLIC LOCK > deployed to : ${publicLock.address} (tx: ${publicLock.deployTransaction.hash})`
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${
+      publicLock.address
+    } (tx: ${publicLock.deployTransaction.hash})`
   )
-  // eslint-disable-next-line no-console
-  console.log(
-    'PUBLIC LOCK > Please verify it and call `npx hardhat set template` on the Unlock.'
-  )
+
+  // verify
+  if (!isLocalNet) {
+    try {
+      await run(`verify`, { address: publicLock.address })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // save deployment info
+  await addDeployment('PublicLock', publicLock, false)
+
   return publicLock.address
 }
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

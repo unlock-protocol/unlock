@@ -5,11 +5,20 @@
   "author": "unlock inc",
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
-  "source": "src/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
-    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
+    "build": "yarn svg-2-components && tsup src/index.tsx --dts --format esm,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepublish": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -23,35 +32,35 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "react": "17.0.2"
+    "react": "18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.15.8",
-    "@storybook/addon-actions": "6.3.9",
-    "@storybook/addon-essentials": "6.3.9",
-    "@storybook/addon-links": "6.3.9",
-    "@storybook/react": "6.3.9",
-    "@svgr/cli": "5.5.0",
+    "@babel/core": "7.20.7",
+    "@storybook/addon-actions": "6.5.15",
+    "@storybook/addon-essentials": "6.5.15",
+    "@storybook/addon-links": "6.5.15",
+    "@storybook/react": "6.5.15",
+    "@svgr/cli": "6.5.1",
     "babel-eslint": "10.1.0",
-    "babel-loader": "8.2.2",
-    "eslint": "7.32.0",
-    "eslint-config-prettier": "8.3.0",
-    "eslint-config-standard": "16.0.3",
-    "eslint-config-standard-react": "11.0.1",
-    "eslint-plugin-import": "2.24.2",
+    "babel-loader": "9.1.0",
+    "eslint": "8.31.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-config-standard": "17.0.0",
+    "eslint-config-standard-react": "13.0.0",
+    "eslint-plugin-import": "2.26.0",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-promise": "5.1.0",
-    "eslint-plugin-react": "7.26.1",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-react": "7.31.10",
     "eslint-plugin-standard": "4.1.0",
-    "gh-pages": "3.2.3",
     "microbundle-crl": "0.13.11",
     "npm-run-all": "4.1.5",
-    "prettier": "2.4.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-scripts": "4.0.3",
-    "styled-components": "5.3.1"
+    "prettier": "2.7.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "styled-components": "5.3.6",
+    "tsup": "6.5.0"
   },
   "files": [
     "dist"

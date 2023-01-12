@@ -5,3 +5,4 @@
 /out
 /.cache
 .babelrc
+src/**/*.typegen.ts

@@ -29,30 +29,31 @@ To see all emitted events
 npx hardhat test --logs
 ```
 
-### Run a mainnet fork
+### Run a fork (mainnet, polygon, etc)
 
-Mainnet [forking with Hardhat](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet) relies on alchemy.com to retrieve chain archival data. An API key is required
-
-To test on a mainnet fork, you need to export `RUN_MAINNET_FORK=1` and  `ALCHEMY_API_KEY=<xxx>` to your env
+To test on a [network fork](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet), you need to export `RUN_FORK=xxx` to your env, where `xxx` is the chain id of the network.
 
 ex .
+
 ```
-export RUN_MAINNET_FORK=1
-export ALCHEMY_API_KEY=<xxx>
+export RUN_FORK=1
 
 npx hardhat node
 // Running a mainnet fork...
+
+export RUN_FORK=100 # xdai
+export RUN_FORK=5 # rinkeby
+...
 ```
 
 Once you have mainnet running locally, you can run the relevant tests in another terminal:
 
 ```
-export RUN_MAINNET_FORK=1
-npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
+export RUN_FORK=1
+yarn hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
 ```
 
-Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
-
+Note that if the var `RUN_FORK` is not set, the tests named with the suffix `.mainnet.js` are skipped and will be marked as pending on the CI.
 
 ### Setup networks
 
@@ -69,15 +70,26 @@ module.exports = {
   initialIndex: 0,
 }
 ```
+
 ### Run the UDT contract upgrade
 
 Once your network are setup, you can run the UDT contract upgrade
 
 ```
-npx hardhat run scripts/udt-upgrade.js --network rinkeby
+npx hardhat run scripts/udt-upgrade.js --network goerli
 ```
 
 ## Upgrade a contract
+
+### Prepare and test the new contract on a mainnet node
+
+```
+# setup credentials
+export RUN_FORK=1
+
+# run the tests
+yarn test test/mainnet/udt.js
+```
 
 ### Unlock
 
@@ -101,6 +113,65 @@ NB: for Polygon, you need an API key from https://polygonscan.com
 
 ### Update PublicLock template
 
+#### Check changes in storage layout
+
+```
+yarn hardhat run scripts/lock/testUpgrade.js
+```
+
+Note: you need to update the `LATEST_PUBLIC_LOCK_VERSION` in the script.
+
+This script is use to check the changes in storage layout between two upgrades
+using the openzeppellin plugin. It will deploy first the version `LATEST_PUBLIC_LOCK_VERSION`
+then deploy the version in `contracts/PublicLock.sol`. The errors thrown by the upgrades plugin
+should allow to detect changes in storage layout.
+
+#### Test the PublicLock template on mainnet fork
+
+Make a dry run of the upgrade on a mainnet fork by 
+
+- deploy the specified PublicLock tempalte
+- parse the calldata for `addLockTemplate`
+- send the calldata tx to the multisig
+- impersonate all signers to run the tx
+
+```shell
+# to deploy a version already in the contracts package
+RUN_FORK=1 yarn hardhat submit:version --public-lock-version 12
+
+# to deploy a version from the local ./contracts folder
+RUN_FORK=1 yarn hardhat submit:version
+```
+
+#### Update the PublicLock template 
+
+Export all block explorers api keys into the terminal
+
+```
+cp .env.copy .env
+source .env
+```
+
+Deploy a template 
+
+```
+# deploy and submit tx to the multisig
+yarn hardhat submit:version --public-lock-version 12
+
+# to just submit an exsiting version to the mulisig
+yarn hardhat submit:version --public-lock-address 0x....
+```
+
+Deploy on all networks at once
+
+```
+sh scripts/all_networks.sh submit:version --public-lock-version 12
+```
+
+
+
+
+#### Deploy a PublicLock upgrade (step by step)
 ```
 # deploy a new template
 yarn hardhat deploy:template
@@ -140,6 +211,11 @@ yarn hardhat set:unlock-oracle --oracle-address <xxx> \
 
 see `npx hardhat --help` for a list of all available tasks and deployments
 
+#### Deploy previous versions
+
+```
+yarn hardhat deploy:unlock --unlock-version 8
+```
 
 ### Update Unlock config
 
@@ -161,16 +237,262 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 > Governor deployed (w proxy) at: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
 > Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true
 > Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false
-````
+```
+
+### Make a DAO proposal
+
+1. First, create a file in the `proposals` folder to descibe the proposal itself. The file needs to export the following:
+
+```js
+{
+  contractName, // the contract - ex. UnlockDiscountTokenV3
+    functionName, // the function to be executed - ex. 'transfer'
+    functionArgs, // args of the function - ex. [ 0x000, 10000 ]
+    proposalName, // ex 'wire Worpdress plugin grant`
+    proposerAddress // the proposer (you)
+}
+```
+
+check [`./proposals/000-example.js`](./proposals/000-example.js) for an example.
+
+2. Test you proposal locally
+
+```
+# start a node
+yarn hardhat node
+
+# from a 2nd terminal, deploy contracts and governor
+yarn hardhat deploy --network localhost
+yarn hardhat deploy:governor --network localhost
+
+# test your proposal
+yarn hardhat gov --proposal proposals/<your-proposal>.js --network localhost
+```
+
+3. When things are ready, post it ot the DAO!
+
+```
+yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainnet
+```
+
+4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
 
 ## Release a new version of a contract
 
 1. Update the version number in the contract
 2. Fix relevant tests
 3. Create a PR mentioning the version bump
-4. Make you changes 
+4. Make you changes
 5. Release the new versions of the contracts ABI with the following command
 
 ```
 yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contracts/<Unlock|PublicLock>.sol
 ```
+
+## Handle locks
+
+### Deploy sample locks
+
+Once you have deployed the Unlock contract on localhost, you can try
+
+```
+yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
+```
+
+### Serialize existing lock
+
+```
+# deploy LockSerializer contract
+yarn deploy:serializer --network localhost
+
+# copy data of a lock locally
+yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+
+## Clone an existing locks
+
+```
+# copy data of a lock locally
+yarn hardhat lock:clone --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+
+## Handle locks
+
+### Deploy sample locks
+
+Once you have deployed the Unlock contract on localhost, you can try
+
+```
+yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
+```
+
+### Serialize existing lock
+
+```
+# deploy LockSerializer contract
+yarn deploy:serializer --network localhost
+
+# copy data of a lock locally
+yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+
+## Clone an existing locks
+
+```
+yarn hardhat lock:clone --lock-address 0x84Ee59446F664c933b175fBB96c489ac2Ed76d31 /
+  --serializer-address 0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128 /
+  --unlock-address 0x071586BA1b380B00B793Cc336fe01106B0BFbE6D /
+  --network localhost
+```
+
+## List lock managers
+
+```
+yarn hardhat lock:managers --lock-address 0x06441a9ac376b80004c32f8f37b1f80a2135362c --network xdai
+LOCK > managers for the lock 'lido':
+[0]: 0x61e155fac2bb8e58fa8c5c01a21e0513cfe52fc4
+```
+
+## Verify contracts
+
+Contracts can be verified contracts on Xdai, Polygon and BSC using the command line.
+
+```
+# xdai
+export BLOCKSCOUT_API_KEY=<xxx>
+yarn hardhat verify <address> --network xdai
+
+# polygon
+export POLYGONSCAN_API_KEY=<xxx>
+yarn hardhat verify <address> --network polygon
+
+# bsc
+export BSCSCAN_API_KEY=<xxx>
+yarn hardhat verify <address> --network binance
+```
+
+## How to deploy the Protocol on a new network
+
+### Create accounts file
+
+Get tokens and add your account. In the smart contracts folder, create an `accounts.<xxx>.js` file.
+
+ex. `accounts.goerli.ts`
+
+### Add network to `@unlock-protocol/networks`
+
+- add `goerli.ts` to `packages/networks/src`
+- add `export * from './goerli'` to `packages/networks/src/index.ts`
+
+### Deploy contracts
+
+```
+yarn hardhat deploy --public-lock-version 10 --network goerli
+
+Starting deployments on Goerli (Testnet)...
+UNLOCK DEPLOYMENT > Deploying contracts on Goerli (Testnet) with the account: 0x81a662065d5c83Fa9c5C12d0dc0104dF57f85A12
+UNLOCK DEPLOYMENT > isLocalNet : false
+UNLOCK SETUP > Unlock (w proxy) deployed to: 0x1FF7e338d5E582138C46044dc238543Ce555C963 (tx: 0x01f01178b5dffe20d700e71c9dd89bdc7e69ab93808334f4a68846471fc2633b)
+PUBLIC LOCK > deployed v10 to : 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 (tx: 0xd02145635e7a865d4ad4fe7b22f1ba66b4aa45597d74a5bed376e7fd70c90dc5)
+```
+
+### Verify contracts
+
+You need to verify the deployed contracts : Unlock , PublicLock and the Proxy used to create locks
+NB: you can get `yarn hardhat impl --proxy-address <UNLOCK_ADDRESS> --network goerli`
+
+```
+export ETHERSCAN_API_KEY=<xxx>
+
+# verify unlock
+yarn hardhat verify <UNLOCK_IMPLEMENTATION_ADDRESS> --network goerli
+
+# verify public-lock (while specifying a version)
+yarn hardhat verify-template --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
+    --public-lock-version 10 \
+    --network goerli
+
+# verify proxy
+yarn hardhat verify-proxy --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
+  --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \ # this is from `unlock.proxyAdminAddress`
+  --network goerli
+```
+
+### Set template
+
+```
+yarn hardhat set:template --unlock-address 0x1FF7e338d5E582138C46044dc238543Ce555C963 \
+  --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
+  --network avalanche
+```
+
+### Config Unlock
+
+Run `configUnlock` on the Unlock contract with the following params
+
+```
+udt :0x0000000000000000000000000000000000000000
+weth: <Wrapped base currency (eth on mainnet... etc) address on network>
+estimatedGasForPurchase: 200000
+symbol: KEY
+URI: https://locksmith.unlock-protocol.com/api/key/<chainId>
+chainId: <chainId>
+```
+
+### Create a gnosis safe and transfer Unlock ownership there
+
+1. Run this command to create a safe with the same owners as the mainnet wallet
+
+```
+yarn hardhat gnosis:create --network goerli
+```
+
+2. Go to https://gnosis-safe.io/app/load and follow the steps to add the new wallet.
+
+3. Transfer the ownership of the Unlock instance to the multisig
+
+```
+yarn hardhat gnosis:transfer --safe-address <GNOSIS_SAFE_ADDRESS> \
+  --contract-address <UNLOCK_ADDRESS>
+  --network goerli
+```
+
+### Update the `networks` package
+
+Add info about unlock and multisig to the network file
+
+- edit `packages/networks/src/goerli.ts`
+- add the unlock address to `unlockAddress`
+- add the gnosis safe address to `multisig`
+- add the block number before Unlock contract creation as `startBlock`
+- rebuild the package with `yarn build`
+
+### Deploy a subgraph
+
+1. Prepare `subgraph.yaml` and related deployment files
+
+```shell
+# got to the subgraph folder
+cd subgraph
+
+# create the subgraph.yaml
+yarn generate-subgraph-yaml --network goerli
+
+# generate .ts contract and template
+yarn codegen
+
+# build as JSON/wasm
+yarn build --network goerli
+```
+
+2. create a new graph on [The Graph hosted service](https://thegraph.com/hosted-service/subgraph/create?account=unlock-protocol) with the name of the network (here _goerli_)
+
+3. deploy the graph
+
+```
+yarn deploy --access-token <THEGRAPH_ACCESS_TOKEN>  --environment production --network goerli
+```
+
+4. Wait for the graph index to sync
+
+The graph will crawl all blocks from the `startBlock` set in the `@unlock-protocol/networks` network file up to the latest block height in the network. The process takes several hours.

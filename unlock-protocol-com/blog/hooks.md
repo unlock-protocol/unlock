@@ -4,7 +4,7 @@ subTitle: The "callback" pattern is a very good way to customize a lock's behavi
 authorName: Julien Genestoux
 publishDate: May 27, 2020
 description: Our Public Lock contracts implements a hook pattern to let lock owners customize the behavior of their lock upon key purchases and key cancellations.
-image: /static/images/blog/hooks/settings-hooks.png
+image: /images/blog/hooks/settings-hooks.png
 ---
 
 Locks are primitives which manage access control. When a creator deploys a lock, they can integrate it with other primitives on the Ethereum chain, [such as any ERC20](https://unlock-protocol.com/blog/erc20-locks) (including stable coins or personal tokens).
@@ -13,7 +13,7 @@ When deploying them, a creator can customize their parameters (price and duratio
 
 Any lock manager (learn more about roles for locks) can point to a 3rd party contract which would implement the `ILockKeyPurchaseHook` [interface](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/interfaces/hooks/ILockKeyPurchaseHook.sol) and/or the `ILockKeyCancelHook` [interface](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/interfaces/hooks/ILockKeyCancelHook.sol). The first one is invoked when a key purchase is performed, while the second would be called when a key has been cancelled.
 
-![Setting hooks](/static/images/blog/hooks/settings-hooks.png)
+![Setting hooks](/images/blog/hooks/settings-hooks.png)
 
 # Key Purchase Hook
 
@@ -34,6 +34,6 @@ This hook only has a single entry point, `onKeyCancel`, which is invoked when a 
 
 # Examples
 
-Our docs provide 2 examples for how to use callback hooks. The first one shows how to create a [discount code for key purchases](https://docs.unlock-protocol.com/developers/smart-contracts/discount-codes) on a hook. This hook is quite interesting because it solves the challenge of keeping the discount code secret (it is not submitted when performing the purchase!). The second example shows an example where key purchases are restricted to people who have a special access code.
+Our docs provide 2 examples for how to use callback hooks. The first one shows how to create a discount code for key purchases on a hook. This hook is quite interesting because it solves the challenge of keeping the discount code secret (it is not submitted when performing the purchase!). The second example shows an example where key purchases are restricted to people who have a special access code.
 
 With Ethereum, smart contracts are all running in the same "computer" which opens the door for very deep integrations between different components which provide different features.

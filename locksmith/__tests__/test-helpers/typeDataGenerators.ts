@@ -1,18 +1,10 @@
-export function lockTypedData(message: any) {
+export function lockTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       LockMetadata: [
         { name: 'address', type: 'address' },
-        { name: 'name', type: 'string' },
-        { name: 'description', type: 'string' },
-        { name: 'image', type: 'string' },
+        { name: 'owner', type: 'address' },
+        { name: 'timestamp', type: 'uint256' },
       ],
     },
     domain: {
@@ -21,19 +13,13 @@ export function lockTypedData(message: any) {
     },
     primaryType: 'LockMetadata',
     message,
+    messageKey,
   }
 }
 
-export function keyTypedData(message: any) {
+export function keyTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       KeyMetadata: [],
     },
     domain: {
@@ -42,5 +28,6 @@ export function keyTypedData(message: any) {
     },
     primaryType: 'KeyMetadata',
     message,
+    messageKey,
   }
 }

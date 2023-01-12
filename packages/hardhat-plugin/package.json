@@ -1,0 +1,63 @@
+{
+  "name": "@unlock-protocol/hardhat-plugin",
+  "version": "0.0.17",
+  "description": "Hardhat Plugin for Unlock Protocol",
+  "author": "Unlock Protocol",
+  "license": "MIT",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "keywords": [
+    "unlock",
+    "unlock-protocol",
+    "ethereum",
+    "smart-contracts",
+    "hardhat",
+    "hardhat-plugin"
+  ],
+  "scripts": {
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/ test/",
+    "test": "ts-mocha --exit --recursive 'test/**/*.ts'",
+    "ci": "yarn build && yarn lint && yarn test",
+    "build": "yarn networks && tsc",
+    "watch": "tsc -w",
+    "clean": "rm -rf dist test/fixture-projects/hardhat-project/.openzeppelin test/fixture-projects/hardhat-project/artifacts test/fixture-projects/hardhat-project/cache test/fixture-projects/hardhat-project/contracts",
+    "prepublishOnly": "yarn clean && yarn build",
+    "networks": "node scripts/parseNetworks.js"
+  },
+  "files": [
+    "dist/src/**/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@types/chai": "4.3.4",
+    "@types/fs-extra": "9.0.13",
+    "@types/mocha": "10.0.1",
+    "@types/node": "18.11.18",
+    "@unlock-protocol/eslint-config": "workspace:^",
+    "@unlock-protocol/networks": "workspace:^",
+    "@unlock-protocol/tsconfig": "workspace:^",
+    "chai": "4.3.7",
+    "eslint": "8.31.0",
+    "hardhat": "2.12.5",
+    "mocha": "10.2.0",
+    "prettier": "2.8.1",
+    "ts-mocha": "10.0.0",
+    "ts-node": "10.9.1",
+    "tslint": "5.20.1",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-plugin-prettier": "2.3.0",
+    "typescript": "4.9.4"
+  },
+  "peerDependencies": {
+    "ethers": "^5.7.x",
+    "hardhat": "^2.12.x"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "2.2.1",
+    "@unlock-protocol/contracts": "0.0.12",
+    "eslint-plugin-jest": "27.2.0",
+    "eslint-plugin-mocha": "10.1.0"
+  }
+}

@@ -4,7 +4,7 @@ subTitle: Memberships can have diverse benefits!
 authorName: Julien Genestoux
 publishDate: December 17, 2019
 description: Forbes introduced their very first membership today and it lets anyone with an ethereum wallet unlock an ads free experience
-image: /static/images/blog/forbes-ads-free/forbes.svg
+image: /images/blog/forbes-ads-free/forbes.png
 ---
 
 At Unlock, we believe that the attention driven economy will be replaced by a membership driven economy. In today's web, creation is rewarded if it is able to attract the eyes, rather than expand the sight: this brought us information overload, endless slideshows, clickbait and fake news.
@@ -17,13 +17,13 @@ Today, we're proud to announce that [Forbes](https://www.forbes.com/), a publica
 
 Forbes deployed 2 locks, the [first one](https://etherscan.io/token/0xf429bb8044bf4b21c65e3ec459eb3010197c6f82) offers a month long ad-free experience on the Forbes.com, while the [second offers](https://etherscan.io/token/0xb2b879764c649c7769f7c90845b0cb2a86add821) the same but only for a week. To purchase a key, you will need to use a crypto wallet such as Opera, MetaMask or Coinbase Wallet. Then, head to The [crypto section of forbes.com](https://www.forbes.com/crypto-blockchain), and click on the "Unlock an ads free experience" button.
 
-![Forbes NFT](/static/images/blog/forbes-ads-free/unlock-forbes.png)
+![Forbes NFT](/images/blog/forbes-ads-free/unlock-forbes.png)
 
 An Unlock powered pop-up will open up, allowing you to send a transaction to purchase key! Immediately, even if the transaction has not been mined yet (thanks to optimistic unlocking), you should see the ads disappear, for the duration of the key you bought, on the whole forbes.com website!
 
 Once the transaction has been mined, users will receive a non fungible token which represents their membership! Like any NFT, they can transfer it on marketplaces like OpenSea, for example.
 
-![Forbes NFT](/static/images/blog/forbes-ads-free/forbes-nft.png)
+![Forbes NFT](/images/blog/forbes-ads-free/forbes-nft.png)
 
 ## Dog fooding
 

@@ -1,84 +1,42 @@
-import ethJsUtil = require('ethereumjs-util')
-import Sequelize = require('sequelize')
-
-const models = require('../models')
-
-const { Op } = Sequelize
-const { Lock, UserTokenMetadata } = models
-
-/**
- * Creates a lock. Normalizes addresses before saving.
- * @param {*} lock
- */
-export async function createLock(lock: any) {
-  return Lock.create({
-    chain: lock.chain,
-    address: ethJsUtil.toChecksumAddress(lock.address),
-    owner: ethJsUtil.toChecksumAddress(lock.owner),
-  })
-}
-
-/**
- * Get a lock by its address
- * @param {*} address
- */
-export async function getLockByAddress(address: string) {
-  return Lock.findOne({
-    attributes: Lock.publicFields,
-    where: {
-      address: { [Op.eq]: ethJsUtil.toChecksumAddress(address) },
-    },
-  })
-}
-
-/**
- * Retrieve all locks by an owner
- * @param {*} owner
- */
-export async function getLocksByOwner(owner: string) {
-  return Lock.findAll({
-    attributes: Lock.publicFields,
-    where: {
-      owner: { [Op.eq]: ethJsUtil.toChecksumAddress(owner) },
-    },
-  })
-}
-
-export async function getLockAddresses() {
-  const lockAddresses = await Lock.findAll({ attributes: ['address'] })
-  return lockAddresses.map((lockAddress: any) => lockAddress.address)
-}
-
-export async function updateLockOwnership(
-  address: string,
-  owner: string,
-  chain: number
-) {
-  return Lock.upsert(
-    {
-      chain,
-      address: ethJsUtil.toChecksumAddress(address),
-      owner: ethJsUtil.toChecksumAddress(owner),
-    },
-    {
-      fields: ['owner'],
-    }
-  )
-}
+import networks from '@unlock-protocol/networks'
+import * as Normalizer from '../utils/normalizer'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { Op } from 'sequelize'
+import { UserTokenMetadata } from '../models'
 
 export async function getKeyHolderMetadata(
   address: string,
-  keyHolders: [string],
+  keyHolders: string[],
   network: number
 ) {
-  return UserTokenMetadata.findAll({
+  const userTokenMetadata = await UserTokenMetadata.findAll({
     attributes: ['userAddress', 'data'],
     where: {
       chain: network,
       tokenAddress: address,
       userAddress: {
-        [Op.in]: keyHolders,
+        [Op.in]: keyHolders.map((address) =>
+          Normalizer.ethereumAddress(address)
+        ),
       },
     },
   })
+  return userTokenMetadata
 }
+
+export async function isSoldOut(
+  address: string,
+  chain: number,
+  keysNeeded = 10
+): Promise<boolean> {
+  const web3Service = new Web3Service(networks)
+  const keysAvailable = await web3Service.keysAvailable(address, chain)
+  return keysAvailable.lte(keysNeeded) // true of keysAvailable smaller than keysNeeded
+}
+
+const lockOperations = {
+  isSoldOut,
+  getKeyHolderMetadata,
+}
+
+export default lockOperations

@@ -4,10 +4,10 @@ subTitle: Grantee Kale Nixon Explores Unlock Integrations for Musicians
 authorName: Crystal Street
 publishDate: September 20, 2021
 description: We’re thrilled to have musician, producer, and performer Kale Nixon on board as a grantee! Kale will be integrating Unlock with the various aspects of their online presence and creating examples of how Unlock can support creators, musicians, and more
-image: /static/images/blog/kale-nixon/unlockgrant-kalenixon.jpg
+image: /images/blog/kale-nixon/unlockgrant-kalenixon.jpg
 ---
 
-![kale nixon](/static/images/blog/kale-nixon/unlockgrant-kalenixon.jpg)
+![kale nixon](/images/blog/kale-nixon/unlockgrant-kalenixon.jpg)
 
 Supporting creators and artists is one of our core objectives at Unlock. We strongly believe in empowering artists to control and monetize their content in a manner that allows the artist to create a thriving income from their art and never sacrifice the connection to their fans and community.
 

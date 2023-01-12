@@ -7,10 +7,5 @@ development.sqlite3
 # typescript build artifacts
 /build
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-
 # .env files
 .env*

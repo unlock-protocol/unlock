@@ -13,6 +13,7 @@ const rulesToIgnore = [
   'prefer-const',
   'no-return-await',
   'prefer-object-spread',
+  '@typescript-eslint/no-var-requires',
 ]
 
 module.exports = {
@@ -31,8 +32,10 @@ module.exports = {
     after: true,
     afterEach: true,
   },
+  ignorePatterns: ['coverage'],
   rules: {
     'import/extensions': 0,
+    'no-unused-vars': 'error',
     'mocha/no-exclusive-tests': 'error',
     'jest/prefer-expect-assertions': 0, // Smart contract tests are using mocha...
     ...rulesToIgnore.reduce((obj, rule) => {

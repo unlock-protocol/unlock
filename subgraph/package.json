@@ -4,27 +4,44 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
+    "clean": "rm -rf abis networks.json build generated",
+    "prepare": "yarn prepare:networks && yarn prepare:abis",
+    "prepare:networks": "node ./bin/networks.js",
+    "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
+    "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
-    "build": "node ./bin/build",
-    "create": "node ./bin/create",
-    "remove": "node ./bin/remove",
-    "deploy": "node ./bin/deploy",
+    "build": "yarn prepare && yarn codegen && yarn build:graph",
+    "build:graph": "node bin/thegraph build",
+    "deploy": "node bin/thegraph deploy",
+    "deploy-all": "node bin/thegraph deploy-all",
+    "create-local": "graph create --node http://localhost:8020/ ",
+    "remove-local": "graph remove --node http://localhost:8020/ ",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
+    "test": "graph test",
+    "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ unlock-protocol-mainnet",
+    "ci": "yarn prepare && yarn codegen && yarn test -l",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.22.2",
-    "@graphprotocol/graph-ts": "0.22.1",
+    "@graphprotocol/graph-cli": "0.37.1",
+    "@graphprotocol/graph-ts": "0.29.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "7.32.0",
-    "fs-extra": "10.0.0",
+    "@unlock-protocol/networks": "workspace:^",
+    "eslint": "8.31.0",
+    "fs-extra": "11.1.0",
     "handlebars": "4.7.7",
-    "lint-staged": "11.1.2",
-    "yargs": "17.2.1"
+    "lint-staged": "13.1.0",
+    "yargs": "17.6.2"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
   },
   "lint-staged": {
     ".{js,ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
   }
 }

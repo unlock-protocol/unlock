@@ -4,7 +4,7 @@ subTitle: After a few weeks of work, we're proud to release our brand new websit
 authorName: Julien Genestoux
 publishDate: July 19, 2021
 description: "We worked hard to surface some of the amazing things we worked on in the last few months: our grants program, our developer community, and some of the integrations!"
-image: /static/images/illustrations/banner-key.svg
+image: /images/illustrations/banner-key.png
 ---
 
 After a few weeks of work, we're proud to release our brand new website! We need a refresher to showcase some of the things we worked on over the last few months.

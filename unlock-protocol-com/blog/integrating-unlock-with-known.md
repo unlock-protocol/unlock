@@ -4,7 +4,7 @@ subTitle: How I added the Unlock protocol to an open source publishing platform 
 authorName: Ben Werdmuller
 publishDate: July 2, 2019
 description: The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.
-image: /static/images/blog/known/known-unlock.png
+image: /images/blog/known/known-unlock.png
 latestUpdateDate: April 6, 2020
 ---
 
@@ -18,25 +18,25 @@ Integrating Unlock with Known means allowing these indieweb users to sell member
 
 Here's what I wanted to achieve:
 
-* I want to restrict access to long-form content
-* I want to restrict access to commenting
-* I don't want Known users to have to write a single line of code
+- I want to restrict access to long-form content
+- I want to restrict access to commenting
+- I don't want Known users to have to write a single line of code
 
 In other words, I want to add a paywall to my long-form posts (but just my long-form posts), and I want comments on _all_ posts to be limited to people who have bought access with Unlock.
 
 If you don't care about how I built this, you can stop now: [the plugin is available to download on GitHub](https://github.com/benwerd/unlock), and you can install it as a plugin in the latest Known platform. Everything is powered using a simple admin panel.
 
-![The Unlock admin panel in Known.](/static/images/blog/known/unlock-admin.png)
+![The Unlock admin panel in Known.](/images/blog/known/unlock-admin.png)
 
 To build the plugin, I used two aspects of Unlock in tandem: the paywall and the Unlock JavaScript API.
 
-![The Unlock paywall on Known.](/static/images/blog/known/known-unlock.png)
+![The Unlock paywall on Known.](/images/blog/known/known-unlock.png)
 
 ## 1. The paywall.
 
 I added the site-wide ability to attach a lock to my Known site. When this is present, all long-form posts will be protected by that Unlock lock.
 
-![Unlock fields](/static/images/blog/known/unlock-fields.png)
+![Unlock fields](/images/blog/known/unlock-fields.png)
 
 I also added a per-post lock field. Instead of using a site-wide lock, I could choose to add a lock address to just one or two particularly valuable posts. Then most of my site would remain free, but these posts would be restricted. I could _also_ keep the whole site protected under one lock, but then use a different lock address for a handful of posts. That would allow me to charge extra for access to those.
 
@@ -44,7 +44,7 @@ When Known finds a lock on the page - either site-wide or relating to the post w
 
 ```
 <!-- Include this script in the <head> section of your page -->
-<script src="https://paywall.unlock-protocol.com/static/paywall.min.js"
+<script src="https://paywall.unlock-protocol.com/paywall.min.js"
         data-unlock-url="https://paywall.unlock-protocol.com"></script>
 <meta name="lock" content="<?= $lockAddress ?>"/>
 ```
@@ -71,7 +71,7 @@ First the configuration object:
             name: '<?=\Idno\Core\Idno::site()->config()->getTitle()?> Members',
         },
     },
-    icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
+    icon: 'https://unlock-protocol.com/images/svg/unlock-word-mark.svg',
     callToAction: {
         default:
             'Members can leave comments and participate in discussion.',
@@ -87,7 +87,7 @@ And then the library itself:
     (function (d, s) {
     var js = d.createElement(s),
     sc = d.getElementsByTagName(s)[0];
-    js.src = "https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
+    js.src = "https://paywall.unlock-protocol.com/unlock.latest.min.js";
     sc.parentNode.insertBefore(js, sc);
     }(document, "script"));
 </script>
@@ -128,7 +128,7 @@ The form HTML is purely for Known, so I won't go into it here, but it's worth lo
 
 On click, I check that `window.unlockProtocol` exists (i.e., the library has been loaded), and then load a provided method called `unlockProtocol.loadCheckoutModal()` that loads a modal containing the Unlock lock. The text shouldn't be a surprise: I set it in the `callToAction` of my configuration section.
 
-![Unlock modal](/static/images/blog/known/unlock-modal.png)
+![Unlock modal](/images/blog/known/unlock-modal.png)
 
 And that's all I need to do. The Unlock API manages the purchase process and all of the access control. It's as lightweight as it can be.
 

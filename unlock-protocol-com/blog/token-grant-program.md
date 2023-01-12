@@ -3,10 +3,10 @@ title: Announcing our Token Grant Program!
 authorName: Amber Case
 publishDate: June 7, 2021
 description: Welcome to Unlock’s very first Token Grant Announcement!
-image: /static/images/blog/grants-program/udt-grant-program.png
+image: /images/blog/grants-program/udt-grant-program.png
 ---
 
-![udt grants](/static/images/blog/grants-program/udt-grant-program.png)
+![udt grants](/images/blog/grants-program/udt-grant-program.png)
 
 ## Welcome to Unlock’s very first Token Grant Announcement!
 

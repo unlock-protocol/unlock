@@ -4,10 +4,10 @@ subTitle: Providing an on-ramp for those who are new to crypto
 authorName: Christopher Nascone
 publishDate: September 17, 2019
 description: Unlock Inc. provides a way for users without crypto wallets to buy keys to locks on the Unlock protocol. For this we introduce managed user accounts as well as payment via Credit Card.
-image: /static/images/blog/unlock-user-accounts/user-accounts.jpg
+image: /images/blog/unlock-user-accounts/user-accounts.jpg
 ---
 
-![User accounts let you easily pay with crypto.](/static/images/blog/unlock-user-accounts/user-accounts.jpg)
+![User accounts let you easily pay with crypto.](/images/blog/unlock-user-accounts/user-accounts.jpg)
 
 The decentralized web is great, but we want it to be available for those who aren't early adopters. Currently interacting with Dapps like Unlock requires the use of a Web3 wallet (like [MetaMask](https://metamask.io/) on desktop web browsers or the use of a browser with an integrated wallet like [Opera](https://www.opera.com/crypto)). At Unlock we want to provide an on-ramp for everyone, not just those already interested in crypto. Thus, we are pleased to introduce Unlock User Accounts, which allow people with no knowledge of crypto to use our services on selected locks. Once they're ready, they can "eject" their accounts and import them into the wallet of their choice.
 

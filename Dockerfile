@@ -1,138 +1,107 @@
 # syntax = docker/dockerfile:experimental
 
-# default LISTEN port to 3000
-ARG PORT=3000
+ARG NODE_VERSION=18
 
-##
-## 1. get only needed packages
-##
-FROM alpine:3.14 as manifests
-
-# args need to be mentioned at each stage
-ARG BUILD_DIR
-ARG PORT
-
-# install deps
-RUN apk add coreutils jq
-
-# copy 
-WORKDIR /tmp
-COPY package.json .
-COPY yarn.lock .
-
-# only needed workspaces in manifest
-RUN  mkdir /opt/manifests /opt/manifests/packages
-
-# scope workspaces and prevent package hoisting
-RUN jq  -r '.workspaces |= ["packages/**", "'${BUILD_DIR}'"]' /tmp/package.json > /opt/manifests/package.json \
-    && cp yarn.lock /opt/manifests
-
-# add shared folder
-WORKDIR /opt/manifests
-COPY packages  /opt/manifests/packages
-
-##
-## 2. fetch all deps
-##
-FROM node:12-alpine as dev
+###################################################################
+# Stage 1: Install all workspaces (dev)dependencies               #
+#          and generates node_modules folder(s)                   #
+###################################################################
+FROM node:$NODE_VERSION as deps
 LABEL Unlock <ops@unlock-protocol.com>
 
-# args need to be mentioned at each stage
-ARG BUILD_DIR
-ARG PORT
-
-# setup home dir
-RUN mkdir -p /home/unlock
-RUN chown -R node /home/unlock
-WORKDIR /home/unlock
-
-# copy packages info
-COPY --chown=node --from=manifests /opt/manifests .
-COPY --chown=node .prettierrc /home/unlock/.
-
-# yarn config
-COPY --chown=node .yarn/ /home/unlock/.yarn/
-COPY --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
-
-# add yarn cache folder to be used by docker buildkit 
-RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml 
-
-# Setting user as root to handle apk install
+# Setting user as root to handle apt install
 USER root
 
-# apk steps merged to leverage virtual install of package
-# allowing for removal after yarn dependencies install
-RUN apk add --no-cache --virtual .build-deps \
+# install all deps required to build modules
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
-    openssh \
-    python \
-    python-dev \
-    py-pip \
-    build-base \
-    && pip install --no-cache-dir virtualenv
+    rsync \
+    python3 \
+    postgresql \
+    default-jdk \
+    openjdk-11-jre \
+    build-essential \
+    ca-certificates
 
+# setup folder
+ENV DEST_FOLDER=/home/unlock
+RUN mkdir $DEST_FOLDER
+WORKDIR ${DEST_FOLDER}
+
+# We use rsync to prepare all package.json files that are necessary 
+# for packages install and used to invalidate buidkit docker cache
+RUN --mount=type=bind,target=/docker-context \
+    rsync -amv --delete \
+    --exclude='node_modules' \
+    --exclude='*/node_modules' \
+    --include='package.json' \
+    --include='*/' --exclude='*' \
+    /docker-context/ $DEST_FOLDER;
+
+# yarn related files
+COPY yarn.lock .
+COPY .yarnrc.yml .
+COPY .yarn/plugins .yarn/plugins
+COPY .yarn/releases .yarn/releases
+COPY .yarn/patches .yarn/patches
+
+# use custom .yarn/cache folder (for local dev)
+RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> .yarnrc.yml
+RUN mkdir ./yarn-cache
+RUN chown -R node:node .
 
 # install deps
 USER node
+RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
-# attempt to create dir only for non-packages
-RUN if echo ${BUILD_DIR} | grep -q "packages" ; then echo "skipping"; else mkdir /home/unlock/${BUILD_DIR}; fi
+# Dedupe deps
+RUN yarn dedupe
 
-COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
-RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
+###################################################################
+# Stage 2: Build packages and app
+###################################################################
+FROM deps as dev
 
-# delete deps once packages are built
-USER root
-RUN apk del .build-deps \
-    && apk add bash
+ENV DEST_FOLDER=/home/unlock
 
-# make sure of cache folder perms
-RUN chown -R node:node /home/unlock/yarn-cache
-
+# enforce perms
 USER node
+COPY --chown=node . .
+
+# make sure java is installed properly
+RUN java -version
+RUN javac -version
+
+# Run yarn to install missing dependencies from cached image
+RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
 # build all packages in packages/**
 RUN yarn build
 
-# copy scripts
-RUN mkdir /home/unlock/scripts
-COPY --chown=node scripts /home/unlock/scripts
-
-# copy app code
-COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
-
-##
-## 3. build the app
-##
-FROM dev as build
-
-ARG BUILD_DIR
-ARG PORT
-
-# additional build step (nb: strip "packages/" to get worspace name)
-RUN yarn workspace @unlock-protocol/${BUILD_DIR/packages\/} build
-
-# package everything for prod
-RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
-
-##
-## 4. export a minimal image w only the prod app
-##
-FROM node:12-alpine as prod
-
-ARG BUILD_DIR
-ARG PORT
-
+# Cleanup up image to make it lighter
 USER root
-RUN mkdir /app
-RUN chown node:node /app
+RUN apt-get autoremove
+USER node
 
-WORKDIR /app
+# Remove yarn cache (re-installing dependencies will take more time, but image will be 500MB lighter)
+RUN rm -rf .yarn/cache/ 
 
-# copy package info
-COPY --from=build --chown=node /home/node/app .
+###################################################################
+# Stage 3. export minimal image for prod app
+###################################################################
+FROM dev as prod
+
+# default values
+ARG COMMAND="yarn prod"
+ENV BUILD_DIR='locksmith'
+ENV COMMAND=${COMMAND}
+
+WORKDIR /home/unlock/${BUILD_DIR}
 
 # start command
-EXPOSE $PORT
-CMD ["yarn", "prod"]
+EXPOSE 3000
+
+CMD $COMMAND

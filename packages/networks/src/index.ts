@@ -1,29 +1,15 @@
-import { NetworkConfigs } from './types';
+import { NetworkConfigs } from '@unlock-protocol/types'
 
-import {
-    mainnet,
-    rinkeby,
-    xdai,
-    polygon,
-    localhost
-} from './networks';
+import * as supportedNetworks from './networks'
 
-// re-export by name
-export {
-    mainnet,
-    rinkeby,
-    xdai,
-    polygon,
-    localhost
-} from './networks';
+export * from './networks'
 
-// export by chainId
-export const networks: NetworkConfigs = {
-    1: mainnet,
-    4: rinkeby,
-    100: xdai,
-    137: polygon,
-    31337: localhost,
-}
+export const networks: NetworkConfigs = {}
+
+Object.keys(supportedNetworks).forEach((networkName: string) => {
+  // @ts-expect-error
+  const network = supportedNetworks[networkName]
+  networks[network.id] = network
+})
 
 export default networks

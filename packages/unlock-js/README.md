@@ -1,53 +1,62 @@
 # unlock-js
 
-Unlock-js is a npm module which provides a wrapper around the Unlock smart contract APIs.
+Unlock-js is an npm module that provides a wrapper around the Unlock smart contract ABIs to simplify interactions with the protocols smart contracts (both Unlock and PublicLock).
 
-It can used both on server side (node.js) applications and front end applications.
+It is used in production by the Unlock front-end applications and can be deployed both on server side (node.js) applications and front end applications (using your favorite JavaScript framework).
 
-The module provides 2 classes: web3Service and walletService.
+One of the core goals of this library is to abstract the complexity of the multiple Unlock and PublicLock versions with a single library. It covers some of the data type conversions so that API calls are more user-friendly (strings instead of BigInts).
 
-It covers some of the data type conversions so that API calls are more user friendly (strings instead of BigInts), as well as manages the multiple versions of the smart contracts.
+You can find more docs and detailed usage examples in [Unlock's main documentation](https://docs.unlock-protocol.com/developers/unlock.js).
 
-The `/examples` folder includes some examples of how to use the library.
+## Scripts
 
-## web3Service
+This library also includes a few scripts that are usable to perform some actions.
+To use it, clone the repo and install its dependencies (follow the Getting Started section on the main README).
 
-web3Service provides a "read only" API which lets app developers query Unlock's smart contracts (both Unlock and Locks).
+For example, you can use the following command to grant keys:
 
-Functionalities:
-* Generating new lock address
-* Retrieving transaction from hash
-* Getting balance of an address (both Eth and tokens)
-* Retrieving lock info
-* Retrieves lock manager status for an address
-* Retrieves key for a lock and address
+```bash
+yarn run grant-keys <network id> <lock address> <recipient>,<expiration?>,<manager?>...
+```
 
-## walletService
+Where `network id`, `lock address` are respectively the network id and lock address. And `recipient`, `expiration` and `manager` are respectively the recipient, the desired expiration and manager for the granted keys. If `expiration` is not set, it will be based on the lock's duration. If `manager` is left empty, it will be set to senders address.
 
-walletService provides a mechanism to send transactions and sign messages for a user. walletService requires the use of a web3 provider which encapsulating the user's wallet information.
+You need to set `export PRIVATE_KEY=...` that will be used to grant keys.
 
-Functionnalities:
-* create a lock
-* update the key price on a lock
-* withdraw funds
-* purchase a key
+Example:
 
+```bash
+yarn run grant-keys 4 0x6F6A5558743Fe28F5F4106a83b1E42cF2cB36C0B 0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44,1,0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44 julien51.eth
+```
 
-## Updating unlock-js to support a new smart contract version
+## Open API Client
 
-When a new smart contract version is released, there are a few steps needed to enable the unlock-js library to use it.
+We have openapi.yml file which has our endpoint documented. We use it to generate typescript API client using openapi-generator-tools but it can be used with most programming languages. Check the [openapi documentation](https://openapi-generator.tech/docs/generators) for your language of choice.
 
-1. update the `scripts/compressAbi.js` script to import and auto-generate
-   the new version in `src/abi.js`, `src/bytecode.js` and in `src/__tests__/helpers/bytecode.js`
-2. re-run `yarn build` to generate the new contract abi and bytecode
-3. copy the newest directory of smart contract functions and rename it.
-   For example, `src/v02` to `src/v03`
-4. update the `index.js` in the new `src/v03` (or whatever version it is) directory to use
-   the right abi version, and change the exported version
-5. add the directory as an import in `src/unlockService.js`
-6. update `lockContractAbiVersion()` and `unlockContractAbiVersion()` to return the new contract versions
-   (also in `unlockService.js`)
-7. update `web3Service.test.js` to test against the new contract versions
-   (search for `describe.each`)
-8. update `walletService.test.js` to test against the new contract versions (look at the last test)
-9. profit
+Before generating, make sure you install a valid JDK for your platform. You can find installation steps on the [openapi site](https://openapi-generator.tech/docs/installation).
+
+You can run the generator for your language through this command. Replace the generator and config with your own. You may download the open api file directly as well if you don't want to clone this repo.
+
+`openapi-generator-cli generate -i ./openapi.yml -g [generator] -c config.json -o client`
+
+There is a `yarn generate` command which generates the client and spits it out in the @generated folder for internal use.
+
+## Tests
+
+You can run the entire test suite using 
+
+```
+yarn test
+```
+
+Run a single test 
+
+```
+yarn test:single --file src/__tests__/utils.test.js
+```
+
+Run a single integration test with specific versions
+
+```
+yarn hardhat test:integration src/__tests__/integration/lock/cancelAndRefund.js --unlock-version 10 --lock-version 12
+```

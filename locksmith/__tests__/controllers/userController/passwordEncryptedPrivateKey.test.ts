@@ -1,15 +1,13 @@
-import models = require('../../../src/models')
+import { ethers } from 'ethers'
+import UserOperations from '../../../src/operations/userOperations'
+import request from 'supertest'
+import app from '../../app'
+import { User, UserReference } from '../../../src/models'
+import * as Base64 from '../../../src/utils/base64'
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [
         { name: 'emailAddress', type: 'string' },
         { name: 'publicKey', type: 'address' },
@@ -22,13 +20,11 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     UserReference.truncate({ cascade: true }),
     User.truncate({ cascade: true }),
@@ -36,17 +32,7 @@ beforeAll(() => {
 })
 
 describe("updating a user's password encrypted private key", () => {
-  const models = require('../../../src/models')
-  const { User } = models
-  const request = require('supertest')
-  const sigUtil = require('eth-sig-util')
-  const ethJsUtil = require('ethereumjs-util')
-  const app = require('../../../src/app')
-
-  const UserOperations = require('../../../src/operations/userOperations')
-  const Base64 = require('../../../src/utils/base64')
-
-  const privateKey = ethJsUtil.toBuffer(
+  const wallet = new ethers.Wallet(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
 
@@ -59,10 +45,9 @@ describe("updating a user's password encrypted private key", () => {
       },
     }
 
-    const typedData = generateTypedData(message)
-    const sig = sigUtil.signTypedData(privateKey, {
-      data: typedData,
-    })
+    const typedData = generateTypedData(message, 'user')
+
+    const { domain, types } = typedData
 
     it('updates the password encrypted private key of the user', async () => {
       expect.assertions(2)
@@ -77,11 +62,13 @@ describe("updating a user's password encrypted private key", () => {
 
       await UserOperations.createUser(userCreationDetails)
 
+      const sig = await wallet._signTypedData(domain, types, message['user'])
+
       const response = await request(app)
         .put(
           '/users/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/passwordEncryptedPrivateKey'
         )
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 
@@ -89,7 +76,7 @@ describe("updating a user's password encrypted private key", () => {
         where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
       })
 
-      expect(user.passwordEncryptedPrivateKey).toEqual(
+      expect(user?.passwordEncryptedPrivateKey).toEqual(
         '{"data" : "New Encrypted Password"}'
       )
       expect(response.status).toBe(202)
@@ -102,7 +89,7 @@ describe("updating a user's password encrypted private key", () => {
       const emailAddress = 'ejected_user@example.com'
       const user = {
         emailAddress,
-        publicKey: 'ejected_user_phrase_public_key',
+        publicKey: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
@@ -113,14 +100,14 @@ describe("updating a user's password encrypted private key", () => {
         user,
       }
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const typedData = generateTypedData(message, 'user')
+
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 

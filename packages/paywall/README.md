@@ -22,9 +22,7 @@ const paywallConfig = {};
 // Configure networks to use
 const networkConfigs = {
   1: {
-    readOnlyProvider: 'HTTP PROVIDER',
-    locksmithUri: 'https://locksmith.unlock-protocol.com',
-    unlockAppUrl: 'https://app.unlock-protocol.com'
+    provider: 'HTTP PROVIDER',
   },
   100: {
     // configuration for xdai... etc

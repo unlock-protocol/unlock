@@ -4,7 +4,7 @@ subTitle: Enabling richer provider interactions
 authorName: Christopher Nascone
 publishDate: April 29, 2020
 description: The delegated provider allows the embedded paywall to synchronize with the provider used on the host page
-image: /static/images/blog/delegated-provider/Web3Modal.jpg
+image: /images/blog/delegated-provider/Web3Modal.jpg
 ---
 
 The latest release of the Unlock Paywall includes a feature that allows the host page to share the provider it uses with the embedded iframe. Let's take a look at why that's important, and what this enables.

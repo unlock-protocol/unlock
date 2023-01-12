@@ -6,6 +6,7 @@ async function main({
   wethAddress,
   estimatedGasForPurchase,
   locksmithURI,
+  isLocalNet,
 }) {
   if (!unlockAddress) {
     // eslint-disable-next-line no-console
@@ -33,15 +34,19 @@ async function main({
   const Unlock = await ethers.getContractFactory('Unlock')
   const unlock = Unlock.attach(unlockAddress)
 
+  let hostname = isLocalNet
+    ? 'http://127.0.0.1:3000'
+    : 'https://locksmith.unlock-protocol.com'
+
   // set lock config
   const tx = await unlock
     .connect(deployer)
     .configUnlock(
       udtAddress,
       wethAddress,
-      estimatedGasForPurchase || 0,
+      estimatedGasForPurchase || 200000,
       'KEY',
-      locksmithURI || `http://127.0.0.1:3000/api/key/${chainId}/`,
+      locksmithURI || `${hostname}/api/key/${chainId}/`,
       chainId
     )
 
@@ -55,7 +60,6 @@ async function main({
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

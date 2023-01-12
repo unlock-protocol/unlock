@@ -1,15 +1,22 @@
-import { gql } from 'apollo-server-express'
+import gql from 'graphql-tag'
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import networks from '@unlock-protocol/networks'
 
 export class Key extends GraphQLDataSource {
-  async getKeys(args: any, network: number) {
-    this.baseURL = networks[network].subgraphURI
-    const queryPredicate = args.first ? `(first: ${args.first})` : ''
+  constructor(public network: number) {
+    super()
+    this.baseURL = networks[network].subgraph.endpointV2
+  }
 
+  async getKeys(args: any) {
     const keysQuery = gql`
-      query Keys($first: Int) {
-        keys${queryPredicate}{
+      query Keys($first: Int, $skip: Int) {
+        keys(
+          first: $first
+          skip: $skip
+          orderBy: createdAtBlock
+          orderDirection: desc
+        ) {
           id
           lock {
             id
@@ -18,21 +25,17 @@ export class Key extends GraphQLDataSource {
             tokenAddress
             price
             expirationDuration
-            totalSupply
           }
-          keyId
+          tokenId
           expiration
-          owner {
-            id
-            address
-          }
+          owner
         }
       }
     `
 
     try {
       const response = await this.query(keysQuery, {
-        variables: { first: args.first },
+        variables: { first: args.first, skip: args.skip },
       })
       return response.data.keys
     } catch (error) {
@@ -52,14 +55,10 @@ export class Key extends GraphQLDataSource {
           tokenAddress
           price
           expirationDuration
-          totalSupply
         }
-        keyId
+        tokenId
         expiration
-        owner {
-          id
-          address
-        }
+        owner
       }
     }
   `

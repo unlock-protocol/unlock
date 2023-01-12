@@ -1,51 +1,41 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
+import * as Base64 from '../../../src/utils/base64'
+import app from '../../app'
+import { vi } from 'vitest'
 
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
-
-const privateKey = ethJsUtil.toBuffer(
+const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
 const lockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
 const owningAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
-const mockWeb3Service = {
-  isLockManager: jest.fn(() => Promise.resolve(false)),
+// eslint-disable-next-line
+var mockWeb3Service = {
+  isLockManager: vi.fn(() => Promise.resolve(false)),
 }
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
 }))
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([owningAddress])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 let typedData: any
 beforeAll(() => {
-  typedData = keyTypedData({
-    KeyMetaData: {
-      custom_field: 'custom value',
-      owner: owningAddress,
+  typedData = keyTypedData(
+    {
+      KeyMetaData: {
+        custom_field: 'custom value',
+        owner: owningAddress,
+      },
     },
-  })
+    'KeyMetaData'
+  )
 
-  mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
+  mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(false))
 })
 
 describe('when missing relevant signature details', () => {
@@ -66,11 +56,14 @@ describe('When the signee is the Lock owner', () => {
     it('stores the provided key metadata', async () => {
       expect.assertions(1)
 
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const { domain, types, message } = typedData
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['KeyMetaData']
+      )
 
-      mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
       const response = await request(app)
         .put(`/api/key/${lockAddress}/5`)
         .set('Accept', 'json')

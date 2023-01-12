@@ -4,7 +4,7 @@ subTitle: Let a thousand wallets bloom!
 authorName: Julien Genestoux
 publishDate: March 17, 2021
 description: We have added Wallet Connect to all Unlock dapps! You can now connect to your dashboard or unlock memberships in your favorite applications from any web browser!
-image: /static/images/blog/wallet-connect/wallet-connect.svg
+image: /images/blog/wallet-connect/wallet-connect.png
 ---
 
 The most recent NFT craze is bringing a lot of new users down the crypto rabbit-hole. Many of them are using Metamask as they discover the wonders of self-sovereign identity. Many of them are also discovering web3 through the lens of a native application such as [Rainbow](https://apps.apple.com/us/app/rainbow-ethereum-wallet/id1457119021), [Trust](https://trustwallet.com/), [Argent](https://www.argent.xyz/), and more.

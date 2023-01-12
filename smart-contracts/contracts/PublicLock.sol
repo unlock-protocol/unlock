@@ -1,22 +1,20 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
 
-
-import './interfaces/IPublicLock.sol';
-import '@openzeppelin/upgrades/contracts/Initializable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import './mixins/MixinDisable.sol';
-import './mixins/MixinERC721Enumerable.sol';
-import './mixins/MixinFunds.sol';
-import './mixins/MixinGrantKeys.sol';
-import './mixins/MixinKeys.sol';
-import './mixins/MixinLockCore.sol';
-import './mixins/MixinLockMetadata.sol';
-import './mixins/MixinPurchase.sol';
-import './mixins/MixinRefunds.sol';
-import './mixins/MixinTransfer.sol';
-import './mixins/MixinLockManagerRole.sol';
-import './mixins/MixinKeyGranterRole.sol';
-
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
+import "./mixins/MixinDisable.sol";
+import "./mixins/MixinERC721Enumerable.sol";
+import "./mixins/MixinFunds.sol";
+import "./mixins/MixinGrantKeys.sol";
+import "./mixins/MixinKeys.sol";
+import "./mixins/MixinLockCore.sol";
+import "./mixins/MixinLockMetadata.sol";
+import "./mixins/MixinPurchase.sol";
+import "./mixins/MixinRefunds.sol";
+import "./mixins/MixinTransfer.sol";
+import "./mixins/MixinRoles.sol";
+import "./mixins/MixinConvenienceOwnable.sol";
 
 /**
  * @title The Lock contract
@@ -26,11 +24,9 @@ import './mixins/MixinKeyGranterRole.sol';
  * https://eips.ethereum.org/EIPS/eip-721
  */
 contract PublicLock is
-  IPublicLock,
   Initializable,
-  ERC165,
-  MixinLockManagerRole,
-  MixinKeyGranterRole,
+  ERC165StorageUpgradeable,
+  MixinRoles,
   MixinFunds,
   MixinDisable,
   MixinLockCore,
@@ -40,26 +36,32 @@ contract PublicLock is
   MixinGrantKeys,
   MixinPurchase,
   MixinTransfer,
-  MixinRefunds
+  MixinRefunds,
+  MixinConvenienceOwnable
 {
   function initialize(
-    address _lockCreator,
+    address payable _lockCreator,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys,
-    string memory _lockName
-  ) public
-    initializer()
-  {
+    string calldata _lockName
+  ) public initializer {
     MixinFunds._initializeMixinFunds(_tokenAddress);
-    MixinDisable._initializeMixinDisable();
-    MixinLockCore._initializeMixinLockCore(_lockCreator, _expirationDuration, _keyPrice, _maxNumberOfKeys);
-    MixinLockMetadata._initializeMixinLockMetadata(_lockName);
+    MixinLockCore._initializeMixinLockCore(
+      _lockCreator,
+      _expirationDuration,
+      _keyPrice,
+      _maxNumberOfKeys
+    );
+    MixinLockMetadata._initializeMixinLockMetadata(
+      _lockName
+    );
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRefunds._initializeMixinRefunds();
-    MixinLockManagerRole._initializeMixinLockManagerRole(_lockCreator);
-    MixinKeyGranterRole._initializeMixinKeyGranterRole(_lockCreator);
+    MixinRoles._initializeMixinRoles(_lockCreator);
+    MixinConvenienceOwnable
+      ._initializeMixinConvenienceOwnable(_lockCreator);
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
@@ -69,5 +71,25 @@ contract PublicLock is
    * @notice Allow the contract to accept tips in ETH sent directly to the contract.
    * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
-  function() external payable {}
+  receive() external payable {}
+
+  /**
+   Overrides
+  */
+  function supportsInterface(
+    bytes4 interfaceId
+  )
+    public
+    view
+    virtual
+    override(
+      MixinERC721Enumerable,
+      MixinLockMetadata,
+      AccessControlUpgradeable,
+      ERC165StorageUpgradeable
+    )
+    returns (bool)
+  {
+    return super.supportsInterface(interfaceId);
+  }
 }

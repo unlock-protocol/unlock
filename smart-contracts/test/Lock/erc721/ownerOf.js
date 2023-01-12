@@ -1,30 +1,31 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
-const deployLocks = require('../../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
-
-let unlock
-let locks
+const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../../helpers')
+let lock
 
 contract('Lock / erc721 / ownerOf', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    lock = await deployLock()
   })
 
   it('should return 0x0 when key is nonexistent', async () => {
-    let address = await locks.FIRST.ownerOf.call(42)
-    assert.equal(address, constants.ZERO_ADDRESS)
+    let address = await lock.ownerOf(42)
+    assert.equal(address, ADDRESS_ZERO)
   })
 
   it('should return the owner of the key', async () => {
-    await locks.FIRST.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-      value: web3.utils.toWei('0.01', 'ether'),
+    const { tokenId } = await purchaseKey(lock, accounts[1])
+    let address = await lock.ownerOf(tokenId)
+    assert.equal(address, accounts[1])
+  })
+
+  it('should work correctly after a transfer', async () => {
+    const { tokenId } = await purchaseKey(lock, accounts[1])
+    let address = await lock.ownerOf(tokenId)
+    assert.equal(address, accounts[1])
+
+    // transfer
+    await lock.transferFrom(accounts[1], accounts[7], tokenId, {
       from: accounts[1],
     })
-    const ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
-    let address = await locks.FIRST.ownerOf.call(ID)
-    assert.equal(address, accounts[1])
+    assert.equal(await lock.ownerOf(tokenId), accounts[7])
   })
 })

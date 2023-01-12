@@ -4,9 +4,9 @@ subTitle: We’re building an open protocol to allow anyone on the web to earn m
 authorName: Ben Werdmuller
 publishDate: March 20, 2019
 description: We’re building an open protocol to allow anyone on the web to earn money from their work. The possibilities are endless. Here are some of them.
-image: /static/images/blog/waystounlocktheweb/hero.jpg
+image: /images/blog/waystounlocktheweb/hero.jpg
 ---
-![ocean scene](/static/images/blog/waystounlocktheweb/hero.jpg)
+![ocean scene](/images/blog/waystounlocktheweb/hero.jpg)
 
 Imagine if paying for content had been built into the web from day one.
 
@@ -20,7 +20,7 @@ Here are just a few examples.
 
 As publishers move away from advertising-based business models, they’re increasingly looking to replace ads with direct revenue. Paywalls are the most common way to do this.
 
-![paywall screenshot](/static/images/blog/waystounlocktheweb/paywalldesktop.png)
+![paywall screenshot](/images/blog/waystounlocktheweb/paywalldesktop.png)
 
 Let’s say you’re a writer who publishes on your own site, independently. Most of your content is free, but some of your content is so valuable to a particular group of people — maybe you analyze the tech industry, or you’ve got a unique insight into the future of journalism — that you know some people will pay for it. By adding a hard paywall, you give your readers a small preview of that content, but require them to pay to access the whole thing.
 

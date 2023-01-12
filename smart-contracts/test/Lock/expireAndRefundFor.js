@@ -1,35 +1,19 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
-
-let unlock
-let locks
+const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
 
 contract('Lock / expireAndRefundFor', (accounts) => {
-  before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-  })
-
   let lock
+  let tokenIds
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  const refundAmount = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+  const refundAmount = ethers.utils.parseUnits('0.01', 'ether')
   const lockCreator = accounts[0]
 
   before(async () => {
-    lock = locks.SECOND
-    const purchases = keyOwners.map((account) => {
-      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-        value: keyPrice.toFixed(),
-        from: account,
-      })
-    })
-    await Promise.all(purchases)
+    lock = await deployLock()
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   describe('should cancel and refund when enough time remains', () => {
@@ -38,13 +22,10 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     let txObj
 
     before(async () => {
-      initialLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      )
-      initialKeyOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
-      txObj = await lock.expireAndRefundFor(keyOwners[0], refundAmount, {
+      initialLockBalance = await getBalance(lock.address)
+      initialKeyOwnerBalance = await getBalance(keyOwners[0])
+
+      txObj = await lock.expireAndRefundFor(tokenIds[0], refundAmount, {
         from: lockCreator,
       })
     })
@@ -55,32 +36,30 @@ contract('Lock / expireAndRefundFor', (accounts) => {
 
     it('the amount of refund should be the key price', async () => {
       const refund = new BigNumber(txObj.logs[0].args.refund)
-      assert.equal(refund.toFixed(), keyPrice.toFixed())
+      assert.equal(refund.toString(), keyPrice.toString())
     })
 
     it('should make the key no longer valid (i.e. expired)', async () => {
-      const isValid = await lock.getHasValidKey.call(keyOwners[0])
+      const isValid = await lock.getHasValidKey(keyOwners[0])
       assert.equal(isValid, false)
     })
 
     it("should increase the owner's balance with the amount of funds refunded from the lock", async () => {
-      const txHash = await web3.eth.getTransaction(txObj.tx)
+      const txHash = await ethers.provider.getTransaction(txObj.tx)
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
-      const finalOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      const finalOwnerBalance = await getBalance(keyOwners[0])
       assert(
-        finalOwnerBalance.toFixed(),
-        initialKeyOwnerBalance.plus(keyPrice).minus(txFee).toFixed()
+        finalOwnerBalance.toString(),
+        initialKeyOwnerBalance.plus(keyPrice).minus(txFee).toString()
       )
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
-      const finalLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      ).minus(initialLockBalance)
+      const finalLockBalance = (await getBalance(lock.address)).minus(
+        initialLockBalance
+      )
 
       assert(
         finalLockBalance.toFixed(),
@@ -90,30 +69,30 @@ contract('Lock / expireAndRefundFor', (accounts) => {
   })
 
   describe('should fail when', () => {
-    it('should fail if invoked by the key owner', async () => {
+    it('invoked by the key owner', async () => {
       await reverts(
-        lock.expireAndRefundFor(keyOwners[3], refundAmount, {
+        lock.expireAndRefundFor(tokenIds[3], refundAmount, {
           from: keyOwners[3],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
 
-    it('should fail if invoked by another user', async () => {
+    it('invoked by another user', async () => {
       await reverts(
-        lock.expireAndRefundFor(accounts[7], refundAmount, {
-          from: keyOwners[3],
+        lock.expireAndRefundFor(tokenIds[3], refundAmount, {
+          from: accounts[1],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
 
-    it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress.call(), 0, {
+    it('the Lock owner withdraws too much funds', async () => {
+      await lock.withdraw(await lock.tokenAddress(), lockCreator, 0, {
         from: lockCreator,
       })
       await reverts(
-        lock.expireAndRefundFor(keyOwners[3], refundAmount, {
+        lock.expireAndRefundFor(tokenIds[3], refundAmount, {
           from: lockCreator,
         }),
         ''
@@ -121,23 +100,23 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     })
 
     it('the key is expired', async () => {
-      await lock.expireAndRefundFor(keyOwners[3], 0, {
+      await lock.expireAndRefundFor(tokenIds[3], 0, {
         from: lockCreator,
       })
       await reverts(
-        lock.expireAndRefundFor(keyOwners[3], refundAmount, {
+        lock.expireAndRefundFor(tokenIds[3], refundAmount, {
           from: lockCreator,
         }),
         'KEY_NOT_VALID'
       )
     })
 
-    it('the owner does not have a key', async () => {
+    it('the key does not exist', async () => {
       await reverts(
-        lock.expireAndRefundFor(accounts[7], refundAmount, {
+        lock.expireAndRefundFor(18, refundAmount, {
           from: lockCreator,
         }),
-        'KEY_NOT_VALID'
+        'NO_SUCH_KEY'
       )
     })
   })

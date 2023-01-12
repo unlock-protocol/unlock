@@ -16,6 +16,8 @@ async function main({
   premintAmount, // in ETH, must be a string
   liquidity, // in ETH, must be a string
   unlockAddress,
+  unlockVersion,
+  publicLockVersion,
   udtAddress,
   publicLockAddress,
   wethAddress,
@@ -26,7 +28,6 @@ async function main({
   locksmithURI,
 }) {
   let udt
-
   const [deployer, minter] = await ethers.getSigners()
 
   // fetch chain info
@@ -38,21 +39,21 @@ async function main({
   )
 
   log(`isLocalNet : ${isLocalNet}`)
-
   if (!unlockAddress) {
     // deploying Unlock with a transparent / upgradable proxy
-    unlockAddress = await run('deploy:unlock')
+    unlockAddress = await run('deploy:unlock', { unlockVersion })
   }
 
   // deploying PublicLock
   if (!publicLockAddress) {
-    publicLockAddress = await run('deploy:template')
+    publicLockAddress = await run('deploy:template', { publicLockVersion })
   }
 
   // set lock template
   await run('set:template', {
     publicLockAddress,
     unlockAddress,
+    unlockVersion,
   })
 
   // deploy UDT
@@ -61,16 +62,14 @@ async function main({
     udtAddress = await run('deploy:udt')
   }
   if (!udtAddress) {
-    throw new Error(
-      'Missing udtAddress. Cannot proceed. Please use --udt-address'
-    )
+    udtAddress = '0x0000000000000000000000000000000000000000'
   }
 
   // If UDT is not set for this network, let's not worry about it
   if (udtAddress !== '0x0000000000000000000000000000000000000000') {
     // pre-mint some UDTs, then delegate mint caps to contract
     if (isLocalNet || premintAmount) {
-      const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+      const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
       udt = UDT.attach(udtAddress)
 
       udt = udt.connect(minter)
@@ -97,7 +96,6 @@ async function main({
       const WETH = {
         mainnet: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
         ropsten: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
-        rinkeby: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
         goerli: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
         kovan: '0xd0A1E359811322d97991E03f863a0C30C2cF029C',
       }
@@ -174,6 +172,7 @@ async function main({
     wethAddress,
     estimatedGasForPurchase,
     locksmithURI,
+    isLocalNet,
   })
 
   if (
@@ -191,7 +190,6 @@ async function main({
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

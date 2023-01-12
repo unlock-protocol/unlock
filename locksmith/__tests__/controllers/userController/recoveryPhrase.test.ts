@@ -1,11 +1,9 @@
-import app = require('../../../src/app')
-import UserOperations = require('../../../src/operations/userOperations')
-import models = require('../../../src/models')
+import request from 'supertest'
+import app from '../../app'
+import { User, UserReference } from '../../../src/models'
+import UserOperations from '../../../src/operations/userOperations'
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
@@ -13,15 +11,13 @@ beforeAll(() => {
 })
 
 describe("retrieving a user's recovery phrase", () => {
-  const request = require('supertest')
-
   describe('when the user exists', () => {
     it("returns the user's recovery phrase", async () => {
       expect.assertions(1)
       const emailAddress = 'recovery_phrase_user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: 'recovery_phrase_public_key',
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
@@ -56,7 +52,7 @@ describe("retrieving a user's recovery phrase", () => {
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: 'ejected_user_phrase_public_key',
+        publicKey: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 

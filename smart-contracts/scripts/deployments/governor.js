@@ -1,8 +1,9 @@
-const { ethers, upgrades } = require('hardhat')
+const { ethers, upgrades, network } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
 const { getNetworkName } = require('../../helpers/network')
 const { getDeployment, addDeployment } = require('../../helpers/deployments')
+const { addUDT } = require('../../test/helpers/mainnet')
 
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
@@ -30,8 +31,9 @@ async function main() {
     'UnlockProtocolTimelock'
   )
 
-  // one week in seconds
-  const MINDELAY = 60 * 24 * 7
+  // time lock in seconds
+  const oneWeekInSeconds = 60 * 60 * 24 * 7
+  const MINDELAY = networkName === 'localhost' ? 30 : oneWeekInSeconds
 
   const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
     MINDELAY,
@@ -58,7 +60,7 @@ async function main() {
   // get UDT token address
   let tokenAddress
   if (networkName === 'localhost') {
-    const UDTInfo = await getDeployment(chainId, 'UnlockDiscountToken')
+    const UDTInfo = await getDeployment(chainId, 'UnlockDiscountTokenV3')
     tokenAddress = UDTInfo.address
   } else {
     const [UDTInfo] =
@@ -81,6 +83,18 @@ async function main() {
     governor.address,
     ` (tx: ${governor.deployTransaction.hash})`
   )
+
+  if (networkName === 'localhost') {
+    // bring default voting period to 10 blocks while developing locally
+    await network.provider.send('hardhat_setStorageAt', [
+      governor.address,
+      '0x1c7', // '455' storage slot
+      '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
+    ])
+
+    // grant timelock some UDT
+    await addUDT(timelock.address, 10000)
+  }
 
   // save deployment info
   await addDeployment('UnlockProtocolGovernor', governor, true)
@@ -111,7 +125,6 @@ async function main() {
 }
 
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

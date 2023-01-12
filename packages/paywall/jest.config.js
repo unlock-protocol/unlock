@@ -1,4 +1,7 @@
+const base = require('@unlock-protocol/jest-config')
+
 module.exports = {
+  ...base,
   setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: [
@@ -8,24 +11,16 @@ module.exports = {
     '<rootDir>/build/',
     '<rootDir>/dist/',
   ],
-  preset: 'ts-jest/presets/js-with-ts',
-  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
   moduleNameMapper: {
     '\\.css$': '<rootDir>/src/__mocks__/styleMocks.js',
   },
-  collectCoverage: true,
   coverageThreshold: {
     global: {
-      statements: 77,
+      statements: 76,
       branches: 58,
-      lines: 76,
+      lines: 75,
       functions: 65,
     },
   },
-  globals: {
-    PAYWALL_URL: 'localhost',
-    __ENVIRONMENT_VARIABLES__: {
-      locksmithUri: 'http://0.0.0.0:8080',
-    },
-  },
+  globals: {},
 }

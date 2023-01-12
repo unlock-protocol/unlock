@@ -1,53 +1,34 @@
 /* eslint react/prop-types: 0 */
-import React, { createContext, useContext, useState, useMemo } from 'react'
-import ApolloClient from 'apollo-boost'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react'
 import PropTypes, { number } from 'prop-types'
-import { ApolloProvider } from '@apollo/react-hooks'
 import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
-import { GraphServiceContext } from '../../utils/withGraphService'
-import { GraphService } from '../../services/graphService'
-
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
-import {
-  NotEnabledInProvider,
-  NetworkNotSupported,
-  WrongNetwork,
-} from '../creator/FatalError'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
-
-const GraphServiceProvider = GraphServiceContext.Provider
+import { useAutoLogin } from '../../hooks/useAutoLogin'
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
-
-export const AuthenticationContext = createContext()
 
 /**
  * Utility providers set to retrieve content based on network settings
  * @returns
  */
-const Providers = ({ network, networkConfig, children }) => {
-  const apolloClient = useMemo(
-    () =>
-      new ApolloClient({
-        uri: networkConfig[network].subgraphURI,
-      }),
-    [networkConfig, network]
-  )
-
-  const graphService = useMemo(
-    () => new GraphService(networkConfig[network].subgraphURI),
-    [networkConfig, network]
-  )
-
+const Providers = ({ network, networkConfig, children, authenticate }) => {
   const storageService = useMemo(
     () => new StorageService(networkConfig[network].locksmith),
     [networkConfig, network]
@@ -57,16 +38,20 @@ const Providers = ({ network, networkConfig, children }) => {
     return new Web3Service(networkConfig)
   }, [networkConfig])
 
+  const { tryAutoLogin } = useAutoLogin({
+    authenticate,
+  })
+
+  useEffect(() => {
+    tryAutoLogin()
+  }, [])
+
   return (
-    <ApolloProvider client={apolloClient}>
-      <StorageServiceProvider value={storageService}>
-        <Web3ServiceProvider value={web3Service}>
-          <GraphServiceProvider value={graphService}>
-            {children}
-          </GraphServiceProvider>
-        </Web3ServiceProvider>
-      </StorageServiceProvider>
-    </ApolloProvider>
+    <StorageServiceProvider value={storageService}>
+      <Web3ServiceProvider value={web3Service}>
+        {web3Service && <>{children}</>}
+      </Web3ServiceProvider>
+    </StorageServiceProvider>
   )
 }
 
@@ -95,7 +80,7 @@ export const Authenticate = ({
     error,
     loading,
     network,
-    signedMessage,
+    signMessage,
     account,
     email,
     encryptedPrivateKey,
@@ -104,15 +89,17 @@ export const Authenticate = ({
     disconnectProvider,
     isUnlockAccount,
     changeNetwork,
+    watchAsset,
+    providerSend,
   } = useProvider(config)
 
-  const authenticate = async (provider, messageToSign) => {
+  const authenticate = async (provider) => {
     if (!provider) {
       if (providerAdapter) {
-        return connectProvider(providerAdapter, messageToSign)
+        return connectProvider(providerAdapter)
       }
     }
-    return connectProvider(provider, messageToSign)
+    return connectProvider(provider)
   }
 
   const deAuthenticate = () => {
@@ -122,7 +109,8 @@ export const Authenticate = ({
   return (
     <AuthenticationContext.Provider
       value={{
-        signedMessage,
+        providerSend,
+        signMessage,
         account,
         network,
         email,
@@ -131,22 +119,21 @@ export const Authenticate = ({
         isUnlockAccount,
         deAuthenticate,
         changeNetwork,
+        watchAsset,
       }}
     >
-      {error && <p>{error}</p>}
-      {!error && (
-        <WalletServiceContext.Provider value={walletService}>
-          <Providers
-            network={requiredNetwork || network}
-            networkConfig={config.networks}
-            account={account}
-            email={email}
-            encryptedPrivateKey={encryptedPrivateKey}
-          >
-            {children}
-          </Providers>
-        </WalletServiceContext.Provider>
-      )}
+      <WalletServiceContext.Provider value={walletService}>
+        <Providers
+          network={requiredNetwork || network}
+          networkConfig={config.networks}
+          account={account}
+          email={email}
+          encryptedPrivateKey={encryptedPrivateKey}
+          authenticate={authenticate}
+        >
+          {children}
+        </Providers>
+      </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>
   )
 }

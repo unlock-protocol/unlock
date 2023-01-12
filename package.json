@@ -8,48 +8,53 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.15.8",
-    "@typescript-eslint/eslint-plugin": "4.32.0",
-    "@typescript-eslint/parser": "4.32.0",
+    "@babel/core": "7.20.7",
+    "@superfluid-finance/sdk-core": "0.6.1",
+    "@typescript-eslint/eslint-plugin": "5.48.0",
+    "@typescript-eslint/parser": "5.48.0",
     "babel-eslint": "10.1.0",
-    "babel-plugin-polyfill-corejs2": "0.2.2",
-    "eslint": "7.32.0",
-    "prettier": "2.4.1",
-    "typescript": "4.4.3"
+    "babel-plugin-polyfill-corejs2": "0.3.3",
+    "node-fetch": "2.6.7",
+    "typescript": "4.9.4"
   },
   "devDependencies": {
-    "husky": "7.0.2",
-    "lint-staged": "11.1.2"
+    "eslint": "8.31.0",
+    "eslint-plugin-prettier": "latest",
+    "husky": "8.0.2",
+    "lint-staged": "13.1.0",
+    "prettier": "2.8.1"
   },
   "workspaces": [
     "packages/**",
     "smart-contracts",
-    "smart-contract-extensions",
     "subgraph",
+    "tests",
     "unlock-app",
     "unlock-js",
     "unlock-protocol-com",
     "locksmith",
-    "newsletter",
     "paywall",
     "paywall-app",
-    "wedlocks"
+    "wedlocks",
+    "provider"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/networks,@unlock-protocol/contracts}'",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/jest-config,@unlock-protocol/jest-config,@unlock-protocol/express,@unlock-protocol/networks,@unlock-protocol/unlock-assets,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin}'",
     "packages:clean": "yarn packages --parallel run clean",
-    "packages:build": "yarn packages --parallel --topological-dev run build",
-    "packages:publish": "yarn packages --no-private npm publish ",
+    "packages:build": "yarn packages --topological-dev run build",
+    "packages:publish": "yarn packages --parallel --verbose npm publish --tolerate-republish",
+    "apps:build": "yarn workspace @unlock-protocol/locksmith run build",
     "build": "yarn packages:clean && yarn packages:build",
     "packages:version": "yarn packages version --deferred",
     "version:apply": "yarn version apply --all",
     "version:check": "yarn version check --interactive",
     "bump": "yarn packages:version patch && yarn version:apply",
-    "release": "yarn build && yarn bump && yarn publish",
+    "release": "yarn build && yarn bump && yarn packages:publish",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
-    "lint": "yarn workspaces foreach -p lint"
+    "lint": "yarn workspaces foreach -p lint",
+    "postinstall": "husky install"
   },
   "repository": {
     "type": "git",
@@ -66,6 +71,14 @@
   "bugs": {
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
+  "resolutions": {
+    "yargs": "17.6.2",
+    "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch"
+  },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.1.0-rc.7"
+  "packageManager": "yarn@3.3.1",
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
 }

@@ -1,12 +1,9 @@
 const { time } = require('@openzeppelin/test-helpers')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
-const { getDeployment } = require('../../helpers/deployments')
-const { errorMessages } = require('../helpers/constants')
-
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
+const { ADDRESS_ZERO } = require('../helpers/constants')
+const deployContracts = require('../fixtures/deploy')
 
 const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
@@ -29,7 +26,8 @@ contract('UnlockProtocolGovernor', () => {
     assert.equal(await gov.state(proposalId), 0) // Pending
 
     // wait for a block (default voting delay)
-    await time.advanceBlock()
+    const currentBlock = await ethers.provider.getBlockNumber()
+    await time.advanceBlockTo(currentBlock + 2)
 
     // now ready to receive votes
     assert.equal(await gov.state(proposalId), 1) // Active
@@ -40,7 +38,7 @@ contract('UnlockProtocolGovernor', () => {
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await time.advanceBlockTo(deadline.toNumber())
+    await time.advanceBlockTo(deadline.toNumber() + 1)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
@@ -61,6 +59,10 @@ contract('UnlockProtocolGovernor', () => {
     updateTx = await tx.wait()
   }
 
+  before(async () => {
+    ;({ udt } = await deployContracts())
+  })
+
   beforeEach(async () => {
     // deploying timelock with a proxy
     const UnlockProtocolTimelock = await ethers.getContractFactory(
@@ -70,17 +72,9 @@ contract('UnlockProtocolGovernor', () => {
     const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
       1, // 1 second delay
       [], // proposers list is empty at deployment
-      [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
+      [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
     ])
     await timelock.deployed()
-
-    const UDTInfo = await getDeployment(31337, 'UnlockDiscountTokenV2')
-    const tokenAddress = UDTInfo.address
-
-    const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV2'
-    )
-    udt = await UnlockDiscountToken.attach(tokenAddress)
 
     // deploy governor
     const UnlockProtocolGovernor = await ethers.getContractFactory(
@@ -88,7 +82,7 @@ contract('UnlockProtocolGovernor', () => {
     )
 
     gov = await upgrades.deployProxy(UnlockProtocolGovernor, [
-      tokenAddress,
+      udt.address,
       timelock.address,
     ])
     await gov.deployed()
@@ -114,18 +108,9 @@ contract('UnlockProtocolGovernor', () => {
   describe('Update voting params', () => {
     it('should only be possible through voting', async () => {
       assert.equal(await gov.votingDelay(), 1)
-      await reverts(
-        gov.setVotingDelay(2),
-        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
-      )
-      await reverts(
-        gov.setQuorum(2),
-        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
-      )
-      await reverts(
-        gov.setVotingPeriod(2),
-        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
-      )
+      await reverts(gov.setVotingDelay(2), 'Governor: onlyGovernance')
+      await reverts(gov.setQuorum(2), 'Governor: onlyGovernance')
+      await reverts(gov.setVotingPeriod(2), 'Governor: onlyGovernance')
     })
 
     beforeEach(async () => {
@@ -165,7 +150,7 @@ contract('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description: update the quorum>',
         ]
@@ -199,7 +184,7 @@ contract('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]
@@ -231,7 +216,7 @@ contract('UnlockProtocolGovernor', () => {
 
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]

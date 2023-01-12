@@ -4,7 +4,7 @@ subTitle: Helping people get started with Unlock.
 authorName: Akeem Adeniji
 publishDate: November 15, 2019
 description: Helping people get started with Unlock.
-image: /static/images/blog/user-facing-documentation/documentation.jpg
+image: /images/blog/user-facing-documentation/documentation.jpg
 ---
 
 Documentation is important as it allows thoughts and ideas to scale outside of its original context.

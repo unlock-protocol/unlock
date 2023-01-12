@@ -1,57 +1,131 @@
-import React, { useState, useContext } from 'react'
-import styled from 'styled-components'
-import Media from '../../../theme/media'
-import { expirationAsDate } from '../../../utils/durations'
-import { OwnedKey } from './KeychainTypes'
+import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
+import useClipboard from 'react-use-clipboard'
+import {
+  AvatarImage,
+  Root as Avatar,
+  Fallback as AvatarFallback,
+} from '@radix-ui/react-avatar'
+import { BsTrashFill as CancelIcon } from 'react-icons/bs'
+import {
+  FaWallet as WalletIcon,
+  FaCheckCircle as CheckIcon,
+  FaInfoCircle as InfoIcon,
+} from 'react-icons/fa'
+import {
+  RiErrorWarningFill as DangerIcon,
+  RiArrowGoForwardFill as ExtendMembershipIcon,
+} from 'react-icons/ri'
+import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
+import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useWalletService } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
+import { useAuth } from '../../../contexts/AuthenticationContext'
+import { useConfig } from '../../../utils/withConfig'
+import { OpenSeaIcon } from '../../icons'
+import { CancelAndRefundModal } from './CancelAndRefundModal'
+import { KeyInfoDrawer } from './KeyInfoDrawer'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { useQuery } from '@tanstack/react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { Menu, Transition } from '@headlessui/react'
+import { classed as tw } from '@tw-classed/react'
+import { TbTools as ToolsIcon } from 'react-icons/tb'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import {
+  RiNavigationFill as ExploreIcon,
+  RiQrCodeLine as QrCodeIcon,
+} from 'react-icons/ri'
+import {
+  RiFileCopyLine as CopyLineIcon,
+  RiExternalLinkFill as ExternalIcon,
+} from 'react-icons/ri'
+import dayjs from 'dayjs'
+import { ExtendMembershipModal } from './Extend'
+import { MAX_UINT } from '~/constants'
+import { ethers } from 'ethers'
 
-interface KeyBoxProps {
-  tokenURI: string
-  lock: any
+export const MenuButton = tw.button(
+  'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
+  {
+    variants: {
+      active: {
+        true: 'bg-ui-main-500 text-white fill-white',
+      },
+    },
+  }
+)
+
+export interface KeyProps {
+  id: string
+  tokenId: string
+  owner: string
+  manager?: any
   expiration: string
-  keyId: string
-}
-
-const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
-  const metadata = useMetadata(tokenURI)
-  return (
-    <KeyContent>
-      <LockIcon src={metadata.image} width="40" />
-      <KeyInfo>
-        <LockName>{lock.name}</LockName>
-        <FieldLabel>Token ID</FieldLabel>
-        <FieldValue>{keyId}</FieldValue>
-        <FieldLabel>Valid Until</FieldLabel>
-        <FieldValue>{expirationAsDate(expiration)}</FieldValue>
-      </KeyInfo>
-    </KeyContent>
-  )
+  tokenURI?: string
+  createdAtBlock: any
+  cancelled?: boolean
+  lock: {
+    id: string
+    address: any
+    name?: string
+    expirationDuration?: any
+    tokenAddress: any
+    price: any
+    lockManagers: any[]
+    version: any
+    createdAtBlock?: any
+  }
 }
 
 export interface Props {
-  ownedKey: OwnedKey
+  ownedKey: KeyProps
   account: string
   network: number
 }
 
-const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, tokenURI, keyId } = ownedKey
-  const walletService = useContext(WalletServiceContext)
+function Key({ ownedKey, account, network }: Props) {
+  const { lock, expiration, tokenId } = ownedKey
+  const { network: accountNetwork } = useAuth()
+  const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
-
-  const [error, setError] = useState<string | null>(null)
+  const web3Service = useWeb3Service()
+  const { watchAsset } = useAuth()
+  const config = useConfig()
   const [showingQR, setShowingQR] = useState(false)
+  const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
-  const handleSignature = async () => {
-    setError('')
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
+  const isKeyExpired =
+    (ownedKey.expiration !== MAX_UINT
+      ? dayjs.unix(parseInt(ownedKey.expiration)).isBefore(dayjs())
+      : false) || expireAndRefunded
+
+  const { data: lockData, isLoading: isLockDataLoading } = useQuery(
+    ['lock', lock.address, network],
+    () => {
+      return web3Service.getLock(lock.address, network)
+    }
+  )
+  const metadata = useMetadata(lock.address, tokenId, network)
+  const [_, setCopied] = useClipboard(lock.address, {
+    successDuration: 2000,
+  })
+
+  const handleSignature: MouseEventHandler<HTMLButtonElement> = async (
+    event
+  ) => {
+    event.preventDefault()
+    event.stopPropagation()
     const payload = JSON.stringify({
       network,
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
+      tokenId,
     })
     const signature = await walletService.signMessage(payload, 'personal_sign')
     setSignature({
@@ -61,135 +135,305 @@ const Key = ({ ownedKey, account, network }: Props) => {
     setShowingQR(true)
   }
 
-  const sendEmail = (recipient: string, qrImage: string) => {
-    if (wedlockService) {
-      try {
-        wedlockService.keychainQREmail(
-          recipient,
-          `${window.location.origin}/keychain`,
-          lock.name,
-          qrImage
-        )
-      } catch {
-        setError('We could not send the email. Please try again later')
-      }
-    } else {
-      setError('We could not send the email. Please try again later')
+  const addToWallet = () => {
+    watchAsset({
+      address: lock.address,
+      symbol: 'KEY',
+      image: `${config.services.storage.host}/lock/${lock.address}/icon`,
+    })
+  }
+
+  const onExploreLock = () => {
+    const url = networks[network].explorer?.urls.address(lock.address)
+    if (!url) {
+      return
+    }
+    window.open(url, '_')
+  }
+
+  const onOpenSea = () => {
+    const { opensea } = networks[network]
+    const url = opensea?.tokenUrl(lock.address, tokenId) ?? null
+    if (!url) {
+      return
+    }
+    window.open(url, '_')
+  }
+
+  const sendEmail = async (recipient: string, qrImage: string) => {
+    if (!wedlockService) {
+      return
+    }
+    try {
+      await wedlockService.keychainQREmail(
+        recipient,
+        `${window.location.origin}/keychain`,
+        lock!.name ?? '',
+        qrImage
+      )
+    } catch {
+      ToastHelper.error('We could not send the email. Please try again later')
     }
   }
+
+  const isAvailableOnOpenSea =
+    networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+
+  const baseSymbol = walletService.networks[network].baseCurrencySymbol!
+  const symbol =
+    isLockDataLoading || !lockData
+      ? baseSymbol
+      : lockTickerSymbol(lockData, baseSymbol)
+
+  const isRefundable = !isLockDataLoading && !isKeyExpired
+
+  const wrongNetwork = network !== accountNetwork
+
+  const isERC20 =
+    ownedKey.lock.tokenAddress &&
+    ownedKey.lock.tokenAddress !== ethers.constants.AddressZero
+
+  const isExtendable =
+    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT
+
+  const isRenewable =
+    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
+
   return (
-    <Box>
-      {signature && (
-        <QRModal
-          active={showingQR}
-          dismiss={() => setSignature(null)}
-          sendEmail={sendEmail}
-          signature={signature}
-        />
-      )}
-      <KeyBox
+    <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
+      <KeyInfoDrawer
+        isOpen={showMoreInfo}
+        setIsOpen={setShowMoreInfo}
+        account={account}
         lock={lock}
+        tokenId={tokenId}
+        network={network}
         expiration={expiration}
-        tokenURI={tokenURI}
-        keyId={keyId}
+        imageURL={metadata.image}
       />
-      {error && <Error>{error}</Error>}
-      <ButtonAction type="button" onClick={handleSignature}>
-        Confirm Ownership
-      </ButtonAction>
-    </Box>
+      <CancelAndRefundModal
+        isOpen={showCancelModal}
+        setIsOpen={setShowCancelModal}
+        lock={lock}
+        tokenId={tokenId}
+        account={account}
+        currency={symbol}
+        network={network}
+        onExpireAndRefund={() => setExpireAndRefunded(true)}
+      />
+      <QRModal
+        lock={lock}
+        isOpen={!!(showingQR && signature)}
+        setIsOpen={setShowingQR}
+        dismiss={() => setSignature(null)}
+        sendEmail={sendEmail}
+        signature={signature}
+      />
+      <ExtendMembershipModal
+        isOpen={showExtendMembershipModal}
+        setIsOpen={setShowExtendMembership}
+        lock={lock}
+        tokenId={tokenId}
+        account={account}
+        currency={symbol}
+        network={network}
+        ownedKey={ownedKey}
+      />
+      <div className="flex items-center justify-between">
+        <div>
+          {isKeyExpired ? (
+            <Badge
+              size="small"
+              variant="red"
+              iconRight={<DangerIcon size={12} key="expired" />}
+            >
+              Expired
+            </Badge>
+          ) : (
+            <Badge
+              size="small"
+              variant="green"
+              iconRight={<CheckIcon size={12} key="valid" />}
+            >
+              Valid
+            </Badge>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            aria-label="QR Code"
+            className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
+            type="button"
+            onClick={handleSignature}
+          >
+            <QrCodeIcon size={18} />
+          </button>
+          <Menu as="div" className="relative inline-block text-left">
+            <Menu.Button as={Fragment}>
+              <Button
+                size="small"
+                variant="outlined-primary"
+                iconLeft={<ToolsIcon key="options" />}
+              >
+                Options
+              </Button>
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-80 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="p-1">
+                  <Menu.Item disabled={!isAvailableOnOpenSea}>
+                    {({ disabled, active }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={onOpenSea}
+                      >
+                        <OpenSeaIcon size={16} />
+                        View on Opensea
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ disabled, active }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={onExploreLock}
+                      >
+                        <ExploreIcon size={16} />
+                        Block explorer
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={addToWallet}
+                      >
+                        <WalletIcon />
+                        Add to my wallet
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowMoreInfo(true)
+                        }}
+                      >
+                        <InfoIcon />
+                        Show details
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item disabled={!isExtendable || wrongNetwork}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowExtendMembership(true)
+                        }}
+                      >
+                        <ExtendMembershipIcon />
+                        {wrongNetwork
+                          ? `Switch to ${networks[network].name} to extend`
+                          : isRenewable && !isKeyExpired
+                          ? 'Renew membership'
+                          : 'Extend membership'}
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                </div>
+                <div className="p-1">
+                  <Menu.Item disabled={!isRefundable || wrongNetwork}>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setShowCancelModal(!showCancelModal)
+                        }}
+                      >
+                        <CancelIcon />
+                        {wrongNetwork
+                          ? `Switch to ${networks[network].name} to cancel`
+                          : 'Cancel and refund'}
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        </div>
+      </div>
+      <div className="grid gap-2">
+        <Avatar
+          onClick={(event) => {
+            event.preventDefault()
+            setShowMoreInfo(true)
+          }}
+          className="flex items-center justify-center cursor-pointer hover:bg-gray-50"
+        >
+          <AvatarImage
+            className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
+            alt={lock.name}
+            src={metadata.image}
+            width={250}
+            height={250}
+          />
+          <AvatarFallback
+            className="flex flex-col items-center justify-center text-3xl font-bold uppercase rounded-xl aspect-1 h-72 w-72"
+            delayMs={100}
+          >
+            {lock?.name?.slice(0, 2)}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex items-center justify-between rounded">
+          <div className="inline-flex items-center gap-2">
+            {minifyAddress(lock.address)}
+            <button
+              aria-label="Copy Lock Address"
+              onClick={(event) => {
+                event.preventDefault()
+                setCopied()
+                ToastHelper.success('Copied!')
+              }}
+            >
+              <CopyLineIcon size={18} />
+            </button>
+          </div>
+          <a
+            href={config.networks?.[network]?.explorer?.urls.address(
+              lock.address
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-ui-main-500 px-2 py-0.5 rounded-lg bg-ui-main-50 hover:bg-ui-main-100 hover:text-ui-main-600"
+          >
+            View <ExternalIcon size={18} />
+          </a>
+        </div>
+        <h3 className="text-xl font-bold rounded">{lock.name}</h3>
+      </div>
+    </div>
   )
 }
 export default Key
-
-const Box = styled.div`
-  display: grid;
-  width: 212px;
-  padding: 16px;
-  background: #ffffff;
-  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
-  border-radius: 4px;
-  ${Media.phone`
-    width: 100%;
-    margin: 0 0 16px 0;
-  `}
-  ${Media.nophone`
-    width: 30%;
-    margin: 0 16px 16px 0;
-  `}
-  &:hover {
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 500ms ease;
-  }
-`
-
-const LockName = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 19px;
-  /* or 127% */
-
-  display: flex;
-  align-items: center;
-  color: #4d8be8;
-`
-
-const LockIcon = styled.img`
-  width: 40px;
-`
-
-const KeyContent = styled.div`
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  grid-gap: 15px;
-  margin-bottom: 20px;
-`
-
-const KeyInfo = styled.div`
-  overflow: hidden;
-  min-width: 0;
-`
-
-const FieldLabel = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 10px;
-  /* identical to box height */
-
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #a6a6a6;
-  margin-top: 8px;
-`
-
-const FieldValue = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 20px;
-  color: #333333;
-`
-
-const ButtonAction = styled.button`
-  cursor: pointer;
-  font: inherit;
-  align-self: end;
-  /* background: none; */
-  border: none;
-  padding: 5px;
-  &:hover {
-    color: #333;
-    transition: color 100ms ease;
-  }
-`
-const Error = styled.p`
-  color: var(--red);
-`

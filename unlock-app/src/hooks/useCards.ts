@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { useState } from 'react'
 import { Card } from '@stripe/stripe-js'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { ConfigContext } from '../utils/withConfig'
+import { useWalletService } from '../utils/withWalletService'
+import { useConfig } from '../utils/withConfig'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 // TODO: cleanup. We don't need a hook but the API calls should be kept
 
@@ -15,20 +15,14 @@ interface Config {
 }
 
 export const genAuthorizationHeader = (token: string) => {
+  console.log('DEPRECATED!')
   return { Authorization: ` Bearer ${token}` }
 }
 
 // Taken from locksmith's userController/cards.test.ts
-export function generateTypedData(message: any) {
+export function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [{ name: 'publicKey', type: 'address' }],
     },
     domain: {
@@ -37,6 +31,7 @@ export function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -51,10 +46,26 @@ export const getSignature = async (
   typedData: any,
   address: string
 ) => {
-  const signature = await walletService.unformattedSignTypedData(
-    address,
-    typedData
-  )
+  let signature
+  if (typedData.message['Charge Card']) {
+    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey} with my card.`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Get Card']) {
+    const message = `I want to retrieve the card token for ${typedData.message['Get Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Save Card']) {
+    const message = `I save my payment card for my account ${typedData.message['Save Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Delete Card']) {
+    const message = `I am deleting the card linked to my account ${typedData.message['Delete Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Claim Membership']) {
+    const message = `I claim a membership for ${typedData.message['Claim Membership'].lock} to ${typedData.message['Claim Membership'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else {
+    signature = await walletService.unformattedSignTypedData(address, typedData)
+  }
+
   return signature
 }
 
@@ -69,25 +80,32 @@ export const chargeAndSaveCard = async (
   stripeTokenId: string,
   network: number,
   lock: string,
-  pricing: any
+  pricing: any,
+  recipients: string[]
 ) => {
-  const typedData = generateTypedData({
-    'Charge Card': {
-      publicKey: address,
-      stripeTokenId,
-      pricing,
-      lock,
-      network,
+  const typedData = generateTypedData(
+    {
+      'Charge Card': {
+        publicKey: address,
+        userAddress: address,
+        stripeTokenId,
+        recipients,
+        pricing,
+        lock,
+        network,
+      },
     },
-  })
+    'Charge Card'
+  )
 
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -96,29 +114,115 @@ export const chargeAndSaveCard = async (
   return response.json()
 }
 
+/**
+ * @param walletService
+ * @param address
+ */
+export const prepareCharge = async (
+  config: any,
+  walletService: any,
+  address: string,
+  stripeTokenId: string,
+  network: number,
+  lock: string,
+  pricing: any,
+  recipients: string[],
+  recurring = 0
+) => {
+  const typedData = generateTypedData(
+    {
+      'Charge Card': {
+        publicKey: address,
+        userAddress: address,
+        stripeTokenId,
+        recipients,
+        pricing,
+        lock,
+        network,
+        recurring,
+      },
+    },
+    'Charge Card'
+  )
+
+  const signature = await getSignature(walletService, typedData, address)
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/prepare`,
+    opts
+  )
+  return response.json()
+}
+
+export const captureCharge = async (
+  config: any,
+  lock: string,
+  network: number,
+  address: string,
+  recipients: string[],
+  paymentIntent: string
+) => {
+  const opts = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      lock,
+      network,
+      userAddress: address,
+      recipients,
+      paymentIntent,
+    }),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/capture`,
+    opts
+  )
+  return response.json()
+}
+
 export const claimMembership = async (
   config: any,
   walletService: any,
   address: string,
   network: number,
-  lock: string
+  lock: string,
+  data?: string,
+  captcha?: string
 ) => {
-  const typedData = generateTypedData({
-    'Claim Membership': {
-      publicKey: address,
-      lock,
-      network,
+  const typedData = generateTypedData(
+    {
+      'Claim Membership': {
+        publicKey: address,
+        lock,
+        network,
+        data,
+      },
     },
-  })
+    'Claim Membership'
+  )
 
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
+      captcha: captcha || '',
     },
     body: JSON.stringify(typedData),
   }
@@ -132,19 +236,23 @@ export const saveCardsForAddress = async (
   address: string,
   stripeTokenId: string
 ) => {
-  const typedData = generateTypedData({
-    user: {
-      publicKey: address,
-      stripeTokenId,
+  const typedData = generateTypedData(
+    {
+      'Save Card': {
+        publicKey: address,
+        stripeTokenId,
+      },
     },
-  })
+    'Save Card'
+  )
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'PUT',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -163,16 +271,24 @@ export const getCardsForAddress = async (
   walletService: any,
   address: string
 ) => {
-  const typedData = generateTypedData({
-    user: {
-      publicKey: address,
+  const typedData = generateTypedData(
+    {
+      'Get Card': {
+        publicKey: address,
+      },
     },
-  })
+    'Get Card'
+  )
+
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
+
   const opts = {
     method: 'GET',
-    headers: genAuthorizationHeader(token),
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+    },
   }
 
   const response = await fetch(
@@ -181,7 +297,8 @@ export const getCardsForAddress = async (
     )}/credit-cards?data=${JSON.stringify(typedData)}`,
     opts
   )
-  return response.json()
+  const json = await response.json()
+  return json.map((item: any) => item.card)
 }
 
 /**
@@ -194,29 +311,36 @@ export const deleteCardForAddress = async (
   walletService: any,
   address: string
 ) => {
-  const typedData = generateTypedData({
-    user: {
-      publicKey: address,
+  const typedData = generateTypedData(
+    {
+      'Delete Card': {
+        publicKey: address,
+      },
     },
-  })
+    'Delete Card'
+  )
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'DELETE',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
   }
 
-  const response = fetch(
+  const response = await fetch(
     `${config.services.storage.host}/users/${encodeURIComponent(
       address!
     )}/credit-cards?data=${JSON.stringify(typedData)}`,
     opts
   )
-  return (await response).status === 202
+
+  const text = await response.text()
+
+  return response.status === 202 && text
 }
 
 /**
@@ -225,7 +349,8 @@ export const deleteCardForAddress = async (
 export const getFiatPricing = async (
   config: any,
   lock: string,
-  network: number
+  network: number,
+  quantity = 1
 ) => {
   const opts = {
     method: 'GET',
@@ -233,9 +358,8 @@ export const getFiatPricing = async (
       'Content-Type': 'application/json',
     },
   }
-
   const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}`,
+    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}&quantity=${quantity}`,
     opts
   )
   return response.json()
@@ -260,24 +384,23 @@ export const getCardConnected = async (
   return response.json()
 }
 
-export const useCards = (address: string) => {
-  const walletService: WalletService = useContext(WalletServiceContext)
-  const config: Config = useContext(ConfigContext)
+export const useCards = () => {
+  const walletService = useWalletService()
+  const config: Config = useConfig()
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | undefined>(undefined)
 
   /**
    * retrieves cards for an address
    * @param address
    */
-  const getCards = async () => {
+  const getCards = async (address: string) => {
     setLoading(true)
     try {
       const cards = await getCardsForAddress(config, walletService, address)
       setCards(cards)
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -285,15 +408,17 @@ export const useCards = (address: string) => {
   /**
    * saves cards (stripe token) for an address
    * @param address
+   * @param stripeTokenId
    */
-  const saveCard = async (stripeTokenId: string) => {
+  const saveCard = async (address: string, stripeTokenId: string) => {
     setLoading(true)
     try {
       await saveCardsForAddress(config, walletService, address, stripeTokenId)
       // Refresh cards: TODO make locksmith return the cards
-      await getCards()
+      await getCards(address)
     } catch (e: any) {
-      setError(e)
+      console.error(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -301,7 +426,7 @@ export const useCards = (address: string) => {
   /**
    * Deletes a card for a user!
    */
-  const deleteCard = async () => {
+  const deleteCard = async (address: string) => {
     setLoading(true)
     try {
       const deleted = await deleteCardForAddress(config, walletService, address)
@@ -309,9 +434,9 @@ export const useCards = (address: string) => {
         setCards([])
       }
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
-  return { cards, error, loading, saveCard, deleteCard, getCards }
+  return { cards, loading, saveCard, deleteCard, getCards }
 }

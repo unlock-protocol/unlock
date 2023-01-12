@@ -1,32 +1,34 @@
-import React, { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Layout from '../interface/Layout'
-import Account from '../interface/Account'
-import VerificationStatus from '../interface/VerificationStatus'
+import React, { useState } from 'react'
+import { getMembershipVerificationConfig } from '~/utils/verification'
 import { pageTitle } from '../../constants'
-import Authenticate from '../interface/Authenticate'
-import Loading from '../interface/Loading'
 import LocksContext from '../../contexts/LocksContext'
+import { AppLayout } from '../interface/layouts/AppLayout'
+import { Scanner } from '../interface/verification/Scanner'
+import VerificationStatus from '../interface/VerificationStatus'
 
-export const VerificationContent = () => {
+export const VerificationContent: React.FC<unknown> = () => {
   const { query } = useRouter()
   const [locks, setLocks] = useState({})
-  let data
-  let hexData
-  let sig
+  const router = useRouter()
 
-  if (typeof query.data === 'string' && typeof query.sig === 'string') {
-    data = JSON.parse(decodeURIComponent(query.data))
-    hexData = `0x${Buffer.from(
-      decodeURIComponent(query.data),
-      'utf-8'
-    ).toString('hex')}`
-    sig = query.sig
-  }
+  const membershipVerificationConfig = getMembershipVerificationConfig({
+    data: query.data?.toString(),
+    sig: query.sig?.toString(),
+  })
 
-  if (!data || !sig || !hexData) {
-    return <Loading />
+  if (!membershipVerificationConfig) {
+    return (
+      <AppLayout title="Verification" showLinks={false} authRequired={false}>
+        <Head>
+          <title>{pageTitle('Verification')}</title>
+        </Head>
+        <main>
+          <Scanner />
+        </main>
+      </AppLayout>
+    )
   }
 
   const addLock = (lock: any) => {
@@ -37,22 +39,24 @@ export const VerificationContent = () => {
   }
 
   return (
-    <Layout title="Verification">
+    <AppLayout title="Verification" showLinks={false} authRequired={false}>
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Authenticate optional>
-        <Account />
-        <LocksContext.Provider
-          value={{
-            locks,
-            addLock,
+      <LocksContext.Provider
+        value={{
+          locks,
+          addLock,
+        }}
+      >
+        <VerificationStatus
+          config={membershipVerificationConfig}
+          onVerified={() => {
+            router.push('/verification')
           }}
-        >
-          <VerificationStatus data={data} sig={sig} hexData={hexData} />
-        </LocksContext.Provider>
-      </Authenticate>
-    </Layout>
+        />
+      </LocksContext.Provider>
+    </AppLayout>
   )
 }
 

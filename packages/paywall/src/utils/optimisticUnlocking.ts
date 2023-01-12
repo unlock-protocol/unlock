@@ -1,5 +1,5 @@
 import { getTransaction } from './getTransaction'
-import { keyExpirationTimestampFor } from './keyExpirationTimestampFor'
+import { hasValidKey } from './hasValidKey'
 
 interface StoredTransaction {
   transactionHash: string
@@ -111,8 +111,7 @@ export const willUnlock = async (
     }
     if (transaction.blockNumber) {
       // The transaction has actually been mined, so we should check whether indeed there is a key!
-      const expiration = await keyExpirationTimestampFor(provider, lock, user)
-      return expiration > new Date().getTime() / 1000
+      return hasValidKey(provider, lock, user!)
     }
     // The transaction, has not been mined, let's be optimisic
     return true
@@ -138,9 +137,16 @@ export const getTransactionsForUserAndLocks = async (
     .join('&')
 
   const url = `${locksmithUri}/transactions?for=${user}&${filterLocks}`
-  const response = await fetch(url)
-  const body = await response.json()
-  return body.transactions
+  try {
+    const response = await fetch(url)
+    const body = await response.json()
+    return body.transactions
+  } catch (error: any) {
+    console.error(
+      `Could not retrieve transactions for ${user} on ${locks}: ${error}`
+    )
+    return []
+  }
 }
 
 export const withinLast24Hours = (dateString: string) => {

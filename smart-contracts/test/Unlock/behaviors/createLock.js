@@ -1,4 +1,6 @@
-const { reverts } = require('truffle-assertions')
+const { ethers } = require('hardhat')
+const createLockHash = require('../../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const PublicLock = artifacts.require('PublicLock')
 
@@ -15,18 +17,17 @@ exports.shouldCreateLock = (options) => {
     describe('lock created successfully', () => {
       let transaction
       beforeEach(async () => {
-        transaction = await unlock.createLock(
+        const args = [
           60 * 60 * 24 * 30, // expirationDuration: 30 days
-          web3.utils.padLeft(0, 40),
-          web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+          ADDRESS_ZERO,
+          ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
           100, // maxNumberOfKeys
           'New Lock',
-          '0x000000000000000000000000',
-          {
-            from: accounts[0],
-            gas: 6000000,
-          }
-        )
+        ]
+        const calldata = await createLockHash({ args, from: accounts[0] })
+        transaction = await unlock.createUpgradeableLock(calldata, {
+          gas: 6000000,
+        })
         evt = transaction.logs.find((v) => v.event === 'NewLock')
       })
 
@@ -42,37 +43,18 @@ exports.shouldCreateLock = (options) => {
         const event = transaction.logs.find((v) => v.event === 'NewLock')
         assert(event)
         assert.equal(
-          web3.utils.toChecksumAddress(event.args.lockOwner),
-          web3.utils.toChecksumAddress(accounts[0])
+          ethers.utils.getAddress(event.args.lockOwner),
+          ethers.utils.getAddress(accounts[0])
         )
         assert(event.args.newLockAddress)
       })
 
       it('should have created the lock with the right address for unlock', async () => {
         let publicLock = await PublicLock.at(evt.args.newLockAddress)
-        let unlockProtocol = await publicLock.unlockProtocol.call()
+        let unlockProtocol = await publicLock.unlockProtocol()
         assert.equal(
-          web3.utils.toChecksumAddress(unlockProtocol),
-          web3.utils.toChecksumAddress(unlock.address)
-        )
-      })
-    })
-
-    describe('lock creation fails', () => {
-      it('should fail if expirationDuration is too large', async () => {
-        await reverts(
-          unlock.createLock(
-            60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-            web3.utils.padLeft(0, 40),
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-            100, // maxNumberOfKeys
-            'Too Big Expiration Lock',
-            '0x000000000000000000000000',
-            {
-              from: accounts[0],
-              gas: 4000000,
-            }
-          )
+          ethers.utils.getAddress(unlockProtocol),
+          ethers.utils.getAddress(unlock.address)
         )
       })
     })

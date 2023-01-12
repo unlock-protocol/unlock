@@ -5,24 +5,18 @@
  * @param {*} opts: SVGR options
  * @param {*} values: Pre-computed values to use (or not) in your templates
  */
+
 function svgTemplate(
-  { template },
-  opts,
-  { imports, componentName, props, jsx, exports }
+  { imports, interfaces, componentName, props, jsx, exports },
+  { tpl }
 ) {
-  return template.ast`
+  return tpl`
     ${imports}
-    import PropTypes from 'prop-types'
+    ${interfaces}
+
     const ${componentName} = ${props} => ${jsx}
 
-    ${componentName}.propTypes = {
-      title: PropTypes.string
-    }
-
-    ${componentName}.defaultProps = {
-      title: ''
-    }
-
+    export type { SVGRProps }
     ${exports}
   `
 }

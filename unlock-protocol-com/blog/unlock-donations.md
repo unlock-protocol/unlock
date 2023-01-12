@@ -4,12 +4,12 @@ subTitle: Easily add a sponsorship button to your Github repository, using Unloc
 authorName: Julien Genestoux
 publishDate: August 26, 2019
 description: "A sponsor or a donor is a member of a unique club; the club of people and organizations which help someone do their work \"for free\" for the rest of the world. Unlock can easily be used to create sponsorships!"
-image: /static/images/blog/unlock-donations/supporting-member.jpg
+image: /images/blog/unlock-donations/supporting-member.jpg
 ---
 
 Today, we're excited to unveil our work on donations. In the last few years, it has become clear that the tech industry needs to have a deep reflection about Open Source: who works on it, how they are being paid, who supports them... Companies like [OpenCollective](https://opencollective.com/) have laid the groundwork by providing tools for open source developers to raise funds and organize their work. Earlier this year, Github [introduced sponsorship support](https://github.blog/2019-05-23-announcing-github-sponsors-a-new-way-to-contribute-to-open-source/) for repositories; letting maintainers show options to support them.
 
-![sponsor unlock](/static/images/blog/unlock-donations/sponsor-unlock.png)
+![sponsor unlock](/images/blog/unlock-donations/sponsor-unlock.png)
 *Become a member to Unlock from Github, and Unlock comments in this blog!*
 
 As you may know, Unlock is a **protocol for memberships**. A sponsor is a member of a unique club: the club of people which help someone do their work "for free" for the rest of the world. Today, with a [simple tool](https://donate.unlock-protocol.com/about.html), creators can easily use their locks to raise funds for their work and create their own membership.
@@ -42,7 +42,7 @@ Join [MyCrypto](https://github.com/MyCryptoHQ/mycrypto), [WalletConnect](WalletC
 
 * Then, hop onto our helper page to generate the right configuration for the donation page. You can pick an URL, set up your own call to action, as well as a thank you note that members will be able to see. Add the lock address from the previous step, as well as its name. Once generated you will see a JSON blob that you need to save as file named <code>.unlock-protocol.config.js</code> at the root of your Github repository.
 
-* Once it is saved, you need to head over to your project's settings pages. In the "Features" tab there should be a "Sponsorship" section. Make sure it is enabled. ![enable sponsorship](/static/images/blog/unlock-donations/enable-sponsorship.png)
+* Once it is saved, you need to head over to your project's settings pages. In the "Features" tab there should be a "Sponsorship" section. Make sure it is enabled. ![enable sponsorship](/images/blog/unlock-donations/enable-sponsorship.png)
 
 * After enabling sponsorships, click on the "Set up sponsor button". This will let you edit a file named `.github/FUNDING.yml` which can also be found in your repository. Replace the last line with Make sure to change `<ORG>/<REPO>` with the actual values for your own repository (you can also certainly use a user repository instead of an organization). <br> `custom: https://donate.unlock-protocol.com/?r=<ORG>/<REPO>`
 

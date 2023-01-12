@@ -61,20 +61,19 @@ task('set', 'Various setters for Unlock contracts')
   )
 
 task('set:template', 'Set PublicLock address in Unlock contract')
-  .addOptionalParam(
-    'unlockAddress',
-    'the address of an existing Unlock contract'
-  )
-  .addOptionalParam(
+  .addParam('unlockAddress', 'the address of an existing Unlock contract')
+  .addParam(
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )
-  .setAction(async ({ publicLockAddress, unlockAddress }) => {
+  .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
+  .setAction(async ({ publicLockAddress, unlockAddress, unlockVersion }) => {
     // eslint-disable-next-line global-require
     const templateSetter = require('../scripts/setters/set-template')
     await templateSetter({
       publicLockAddress,
       unlockAddress,
+      unlockVersion,
     })
   })
 
@@ -87,6 +86,7 @@ task('set:unlock-config', 'Configure Unlock contract')
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )
+  .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
   .addOptionalParam('locksmithURI', 'the locksmith URL to use in Unlock config')

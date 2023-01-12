@@ -1,35 +1,44 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import { Heading, Description } from '../interface/SignupSuccess'
 import LoginPrompt from '../interface/LoginPrompt'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { useAuth } from '../../contexts/AuthenticationContext'
+import { useRouter } from 'next/router'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const LoginContent = () => {
-  const { account } = useContext(AuthenticationContext)
+  const { account } = useAuth()
+  const router = useRouter()
+  const redirect = router.query?.redirect?.toString()
+
+  useEffect(() => {
+    // auto redirect to previous page
+    if (redirect && account) {
+      router.push(redirect)
+    }
+  }, [account, redirect, router])
 
   return (
-    <Layout title="Login">
+    <AppLayout showLinks={false} authRequired={false} title="Login">
       <Head>
         <title>{pageTitle('Login')}</title>
       </Head>
       {!account && <LoginPrompt unlockUserAccount />}
       {account && (
         <>
-          <Heading>Login</Heading>
-
-          <Description>
-            You are now logged in! Visit{' '}
-            <Link href="/settings">
-              <a>your settings page</a>
+          <span className="text-base">
+            You are now logged in.{' '}
+            <Link className="" href={redirect || '/settings'}>
+              <span className="underline text-brand-ui-primary">
+                {redirect ? 'Go back' : 'Visit Settings'}
+              </span>
             </Link>
             .
-          </Description>
+          </span>
         </>
       )}
-    </Layout>
+    </AppLayout>
   )
 }
 

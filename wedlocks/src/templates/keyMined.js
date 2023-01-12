@@ -1,15 +1,29 @@
+import handlebars from 'handlebars'
+
+handlebars.registerHelper('links', function (txUrl, openSeaUrl) {
+  const hasTxUrl = txUrl?.length > 0
+  const hasOpenSeaUrl = openSeaUrl?.length > 0
+  let linksMessage = ''
+
+  if (hasTxUrl && hasOpenSeaUrl) {
+    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a> or even <a href="${openSeaUrl}">OpenSea</a>.</p>`
+  } else if (hasTxUrl) {
+    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a>.</p>`
+  } else if (hasOpenSeaUrl) {
+    linksMessage = `<p>You can also see it on <a href="${openSeaUrl}">OpenSea</a>.</p>`
+  }
+  return new handlebars.SafeString(linksMessage)
+})
+
 export default {
-  subject: () => 'A key was added to your wallet!',
-  text: (params) =>
-    `Hello!
+  subject: 'A membership was added to your wallet!',
+  html: `<h1>A new Membership NFT in your wallet!</h1>
 
-A new key (#${params.keyId}) to the lock "${params.lockName}" was just mined for you!
-It has been added to your Unlock keychain, where you can view it and, if needed, print it!
+<p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
-Check out your keychain: ${params.keychainUrl}
+<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 
-If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
+{{links txUrl openSeaUrl}}
 
-The Unlock team
 `,
 }

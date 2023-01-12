@@ -3,10 +3,10 @@ title: Our Second Class of Unlock Token Grantees
 authorName: Amber Case
 publishDate: August 10, 2021
 description: We are so excited to announce the following grant recipients for our second cohort! Our grant selection committee carefully reviewed each project and, the winners were chosen for their vision and potential growth for the protocol.
-image: /static/images/blog/udt-grants-class-2.png
+image: /images/blog/udt-grants-class-2.png
 ---
 
-![udt grants](/static/images/blog/udt-grants-class-2.png)
+![udt grants](/images/blog/udt-grants-class-2.png)
 
 We are so excited to announce the following grant recipients for our second cohort! Our grant selection committee carefully reviewed each project and, the winners were chosen for their vision and potential growth for the protocol.
 

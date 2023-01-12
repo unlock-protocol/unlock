@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "7ba524db-b736-4d3d-a29e-ff7035483365",
+    "team": "619b9be3-0557-4501-92c9-322f4f3bdefa",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "unlock"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "out",
+    "rootDir": ""
+  }
+}

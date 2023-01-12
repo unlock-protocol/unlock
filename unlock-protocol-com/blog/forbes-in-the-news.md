@@ -4,12 +4,12 @@ subTitle: We made something the internet loves
 authorName: Sascha Mombartz
 publishDate: Jan 6, 2020
 description: A rundown of a few memorable tweets and press coverage from our Forbes Ad Free Experience Launch
-image: /static/images/blog/forbes-in-the-news/forbes-article.jpg
+image: /images/blog/forbes-in-the-news/forbes-article.jpg
 scripts:
   - https://platform.twitter.com/widgets.js
 ---
 
-![A few clicks to make it ad free.](/static/images/blog/forbes-in-the-news/hero.jpg)
+![A few clicks to make it ad free.](/images/blog/forbes-in-the-news/hero.jpg)
 
 A few weeks ago we launched a new feature together with Forbes – an Ad Free Experience. Readers can now remove all ads on Forbes by purchasing a key for 0.0052 ETH a day (there's also a monthly option).
 

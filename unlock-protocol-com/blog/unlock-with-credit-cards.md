@@ -4,7 +4,7 @@ subTitle: Unlock memberships with credit cards, whether you use a crypto wallet,
 authorName: Julien Genestoux
 publishDate: April 16, 2020
 description: Unlock memberships with credit cards, whether you use a crypto wallet, or not!
-image: /static/images/blog/unlock-user-accounts/user-accounts.jpg
+image: /images/blog/unlock-user-accounts/user-accounts.jpg
 ---
 
 The blockchain movement started with crypto-currencies. Bitcoin became the first permission-less and decentralized money. Money balances are "state" stored in a ledger. Ethereum went further by becoming the first blockchain which can store any kind of "state". At Unlock, we think it's a great [platform to store memberships](https://unlock-protocol.com/blog/protocol-for-membership/).

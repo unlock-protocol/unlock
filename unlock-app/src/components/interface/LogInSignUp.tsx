@@ -7,7 +7,6 @@ interface LogInSignUpProps {
   login?: boolean
   signup?: boolean
   embedded?: boolean
-  onProvider: (provider: any) => void
   onCancel?: () => void
   network: number
   useWallet?: () => void
@@ -17,7 +16,6 @@ export const LogInSignUp = ({
   signup,
   login,
   embedded,
-  onProvider,
   onCancel,
   network,
   useWallet,
@@ -28,13 +26,7 @@ export const LogInSignUp = ({
     <BrowserOnly>
       {!isSignup && (
         <>
-          <h1>Login</h1>
-          <LogIn
-            network={network}
-            onCancel={onCancel}
-            onProvider={onProvider}
-            useWallet={useWallet}
-          />
+          <LogIn network={network} onCancel={onCancel} useWallet={useWallet} />
         </>
       )}
       {isSignup && (

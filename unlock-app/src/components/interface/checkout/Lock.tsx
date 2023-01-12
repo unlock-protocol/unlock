@@ -1,118 +1,46 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { durationsAsTextFromSeconds } from '../../../utils/durations'
-import {
-  lockKeysAvailable,
-  numberOfAvailableKeys,
-  convertedKeyPrice,
-  formattedKeyPrice,
-} from '../../../utils/checkoutLockUtils'
-import * as LockVariations from './LockVariations'
-import { useLock } from '../../../hooks/useLock'
-import { AuthenticationContext } from '../Authenticate'
-import { ConfigContext } from '../../../utils/withConfig'
-
-interface LockProps {
-  lock: any
-  setHasKey: (state: boolean) => void
-  onSelected: (lock: any) => void | null
-  network: number
-  name: string
-  hasOptimisticKey: boolean
-  purchasePending: boolean
+interface PricingProps {
+  isCardEnabled: boolean
+  usdPrice?: string
+  keyPrice?: string
 }
 
-const getLockProps = (
-  lock: any,
-  network: number,
-  baseCurrencySymbol: string,
-  name: string
-) => {
-  return {
-    cardEnabled: lock?.fiatPricing?.creditCardEnabled,
-    formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: formattedKeyPrice(lock, baseCurrencySymbol),
-    convertedKeyPrice: convertedKeyPrice(lock),
-    formattedKeysAvailable: lockKeysAvailable(lock),
-    name: name || lock.name,
-    address: lock.address,
-    network,
-  }
-}
-export const Lock = ({
-  network,
-  lock,
-  setHasKey,
-  name,
-  onSelected,
-  hasOptimisticKey,
-  purchasePending,
-}: LockProps) => {
-  const config = useContext(ConfigContext)
-  const [loading, setLoading] = useState(false)
-  const { account } = useContext(AuthenticationContext)
-  const { getKeyForAccount } = useLock(lock, network)
-  const [hasValidKey, setHasValidKey] = useState(hasOptimisticKey)
-
-  const alreadyHasKey = (key: any) => {
-    const now = new Date().getTime() / 1000
-    if (key && key.expiration > now) {
-      setHasValidKey(true)
-    } else {
-      setHasValidKey(false)
-    }
-    setHasKey(key)
-  }
-
-  useEffect(() => {
-    const getKey = async () => {
-      setLoading(true)
-      alreadyHasKey(await getKeyForAccount(account))
-      setLoading(false)
-    }
-
-    if (account) {
-      getKey()
-    } else {
-      setHasValidKey(false)
-    }
-  }, [account])
-
-  const onClick = async () => {
-    onSelected && onSelected(lock)
-  }
-
-  const lockProps: LockVariations.LockProps = {
-    onClick,
-    ...getLockProps(
-      lock,
-      network,
-      config.networks[network].baseCurrencySymbol,
-      name
-    ),
-  }
-
-  if (loading) {
+export function Pricing({ usdPrice, keyPrice, isCardEnabled }: PricingProps) {
+  if (isCardEnabled && !usdPrice) {
     return (
-      <LockVariations.LoadingLock address={lock.address} network={network} />
+      <div className="grid text-right">
+        <span className="font-semibold">{keyPrice}</span>
+      </div>
     )
   }
-
-  const isSoldOut = numberOfAvailableKeys(lock) <= 0
-  if (isSoldOut) {
-    return <LockVariations.SoldOutLock {...lockProps} />
+  if (isCardEnabled) {
+    return (
+      <div className="grid text-right">
+        <span className="font-semibold">{usdPrice}</span>
+        <span className="text-sm text-gray-500">{keyPrice} </span>
+      </div>
+    )
   }
-
-  if (hasValidKey || hasOptimisticKey) {
-    return <LockVariations.ConfirmedLock {...lockProps} selectable={false} />
-  }
-
-  if (purchasePending) {
-    return <LockVariations.ProcessingLock {...lockProps} />
-  }
-
   return (
-    <LockVariations.PurchaseableLock {...lockProps} selectable={!!onSelected} />
+    <div className="grid text-right">
+      <span className="font-semibold">{keyPrice} </span>
+      <span className="text-sm text-gray-500">{usdPrice}</span>
+    </div>
   )
 }
 
-Lock.defaultProps = {}
+export const LockOptionPlaceholder = () => {
+  return (
+    <div className="relative flex flex-col items-center justify-between w-full gap-4 p-2 duration-150 border cursor-pointer ring-gray-200 animate-pulse rounded-xl">
+      <div className="inline-flex items-start justify-between w-full gap-x-4">
+        <div>
+          <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-gray-50" />
+        </div>
+        <div className="w-full h-6 duration-150 rounded-full bg-gray-50 animate-pulse" />
+      </div>
+      <div className="flex justify-start w-full gap-x-2">
+        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
+        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
+      </div>
+    </div>
+  )
+}

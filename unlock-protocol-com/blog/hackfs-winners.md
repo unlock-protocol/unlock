@@ -4,12 +4,12 @@ subTitle:
 authorName: Crystal Street
 publishDate: Sept 22, 2021
 description: We’re so pleased that eight teams won a little $UDT for deploying our protocol in their projects. Seeing what’s possible with Unlock by such amazingly creative and brilliant dev teams is a pure delight for the Unlock team.
-image: /static/images/blog/hackfs/hackfs.png
+image: /images/blog/hackfs/hackfs.png
 ---
 
 Last month, Unlock Protocol participated in ETH Global’s [HackFS Hackathon](https://fs.ethglobal.com/) as a sponsor. The hackathon’s theme was to help build the web3 foundation, so of course, we were all over that mission!
 
-![HackFS](/static/images/blog/hackfs/hackfs.png)
+![HackFS](/images/blog/hackfs/hackfs.png)
 
 We’re so pleased that eight teams won a little $UDT for deploying our protocol in their projects. Seeing what’s possible with Unlock by such amazingly creative and brilliant dev teams is a pure delight for the Unlock team and we’re so excited we could support this hackathon.
 

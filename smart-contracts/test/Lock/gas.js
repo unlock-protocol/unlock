@@ -1,28 +1,25 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const WalletService = require('../helpers/walletServiceMock.js')
 
-let unlock
 let lock
 
 contract('Lock / gas', (accounts) => {
-  beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+  before(async () => {
+    lock = await deployLock()
   })
 
   it('gas used to purchaseFor is less than wallet service limit', async () => {
     let tx = await lock.purchase(
-      0,
-      accounts[0],
-      web3.utils.padLeft(0, 40),
       [],
+      [accounts[0]],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      [[]],
       {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
       }
     )
     const gasUsed = new BigNumber(tx.receipt.gasUsed)

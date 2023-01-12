@@ -22,5 +22,12 @@ yarn-error.log*
 
 # next builds
 /src/.next
+.next
 /out
 .next/cache/**
+next-env.d.ts
+scripts/paywallURL.ts
+scripts/index.html
+
+# Sentry
+.sentryclirc

@@ -1,18 +1,16 @@
-/* eslint-disable no-shadow  */
+import { ethers } from 'ethers'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
-
-const ethJsUtil = require('ethereumjs-util')
-const sigUtil = require('eth-sig-util')
-const httpMocks = require('node-mocks-http')
-const Base64 = require('../../src/utils/base64')
+import * as Base64 from '../../src/utils/base64'
+import httpMocks from 'node-mocks-http'
+import { vi } from 'vitest'
 
 let request: any
 let response: any
 
 const validSignature =
-  'MHhkYTk4ZDY0MjVkZTc1NjAyNjFlYTM0MzVmNzFkYjhhYmFlY2JjYzM1ZjczNWZhZDM0OGQ2ODZkZGM2OTM0ZWE1M2FjOTY2ZmNhYjNkZTA0NmNmMjdjOGY1YmI5NGQ3ZjA0NzY0NWU2ZTczN2I0ZTQwZjAzZjJkMDg4Y2E2NWMxMDFi'
+  '0x869568dc19561e6820671a556afb199cd35a2c1e141e8992aec235c2a662e8c97ae03c639d284b9102cffb4af86339a195d8acdc4b5c5deb3e68d430a81c265a1b'
 const validSig2 =
-  'MHg3ZTVmMzM3NzViOWQ3MGYwZWQ2NjZiMGE3MTMwMDgyZWY2NTEzMWZjYWRkODFmM2IzM2U4N2NlY2ZmYjUxYTZkNGE2YmUwM2FhZDUwZjM0MzNiMjQ1Y2NiNTliYmMxYmFmYWU0MDhlZmRkOTY3YjQ2M2UxYmMyZWE0YTA1ZjE0YjFi'
+  '0x49792512ab963f229eeaf9c64a43c7ca8a106a2217b06ade3496cdb5568740157b8eb69c1828df6c7687b83da4cda886f0b74406f55766a6172ffb604f97d1581c'
 
 let processor = signatureValidationMiddleware.generateProcessor({
   name: 'lock',
@@ -34,19 +32,12 @@ beforeAll(() => {
 describe('Signature Validation Middleware', () => {
   describe('generateSignatureEvaluator', () => {
     describe('when the request has a token', () => {
-      it('returns the signee', (done) => {
+      it('returns the signee', async () => {
         expect.assertions(1)
 
         const body = {
           types: {
-            EIP712Domain: [
-              { name: 'name', type: 'string' },
-              { name: 'version', type: 'string' },
-              { name: 'chainId', type: 'uint256' },
-              { name: 'verifyingContract', type: 'address' },
-              { name: 'salt', type: 'bytes32' },
-            ],
-            User: [{ name: 'publickKey', type: 'address' }],
+            User: [{ name: 'publicKey', type: 'address' }],
           },
           domain: { name: 'Unlock', version: '1' },
           primaryType: 'User',
@@ -55,15 +46,15 @@ describe('Signature Validation Middleware', () => {
               publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
             },
           },
+          messageKey: 'user',
         }
 
-        const privateKey = ethJsUtil.toBuffer(
+        const wallet = new ethers.Wallet(
           '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
         )
 
-        const sig = sigUtil.signTypedData(privateKey, {
-          data: body,
-        })
+        const { domain, types, message } = body
+        const sig = await wallet._signTypedData(domain, types, message['user'])
 
         const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${Base64.encode(sig)}` },
@@ -72,26 +63,26 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        evaluator(request, response, function next() {
-          expect(request.signee).toBe(
-            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-          )
-          done()
+        const signee = await new Promise((resolve) => {
+          evaluator(request, response, function next() {
+            resolve(request.signee)
+          })
         })
+
+        expect(signee).toBe('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
       })
     })
 
     describe('when the request does not have a token', () => {
-      it('does not return a signee', (done) => {
+      it('does not return a signee', async () => {
         expect.assertions(1)
 
         const request = httpMocks.createRequest({
-          body: 'a sample body',
+          text: 'a sample body',
         })
 
-        evaluator(request, response, function next() {
+        evaluator(request, response, () => {
           expect(request.signee).toBe(undefined)
-          done()
         })
       })
     })
@@ -99,22 +90,15 @@ describe('Signature Validation Middleware', () => {
 
   describe('when a valid signature is received', () => {
     describe('a signature for User creation', () => {
-      it('moves the request to the application', (done) => {
+      it('moves the request to the application', () => {
         expect.assertions(1)
         const request = httpMocks.createRequest({
-          headers: { Authorization: `Bearer ${validSig2}` },
+          headers: { Authorization: `Bearer ${Base64.encode(validSig2)}` },
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               User: [
                 { name: 'emailAddress', type: 'string' },
-                { name: 'publickKey', type: 'address' },
+                { name: 'publicKey', type: 'address' },
                 { name: 'passwordEncryptedPrivateKey', type: 'string' },
               ],
             },
@@ -123,10 +107,11 @@ describe('Signature Validation Middleware', () => {
             message: {
               user: {
                 emailAddress: 'new_user@example.com',
-                publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+                publicKey: '0x976EA74026E726554dB657fA54763abd0C3a0aa9',
                 passwordEncryptedPrivateKey: 'an encrypted value',
               },
             },
+            messageKey: 'user',
           },
         })
 
@@ -139,31 +124,23 @@ describe('Signature Validation Middleware', () => {
           ],
           signee: 'publicKey',
         })
-        processor(request, response, function next() {
+        processor(request, response, () => {
           expect(request.owner).toBe(
-            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+            '0x976EA74026E726554dB657fA54763abd0C3a0aa9'
           )
-          done()
         })
       })
     })
 
     describe('a signature for Lock metadata', () => {
-      it('moves the request to the application', (done) => {
+      it('moves the request to the application', () => {
         expect.assertions(1)
-        Date.now = jest.fn(() => 1546130835000)
+        Date.now = vi.fn(() => 1546130835000)
         const request = httpMocks.createRequest({
-          headers: { Authorization: `Bearer ${validSignature}` },
+          headers: { Authorization: `Bearer ${Base64.encode(validSignature)}` },
 
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               Lock: [
                 { name: 'name', type: 'string' },
                 { name: 'owner', type: 'address' },
@@ -171,14 +148,15 @@ describe('Signature Validation Middleware', () => {
               ],
             },
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
-            primaryType: 'Lock',
+            primaryType: 'lock',
             message: {
               lock: {
                 name: 'New Lock',
-                owner: '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140',
+                owner: '0x976EA74026E726554dB657fA54763abd0C3a0aa9',
                 address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
               },
             },
+            messageKey: 'lock',
           },
         })
 
@@ -187,11 +165,10 @@ describe('Signature Validation Middleware', () => {
           required: ['name', 'owner', 'address'],
           signee: 'owner',
         })
-        processor(request, response, function next() {
+        processor(request, response, () => {
           expect(request.owner).toBe(
-            '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140'
+            '0x976EA74026E726554dB657fA54763abd0C3a0aa9'
           )
-          done()
         })
       })
     })
@@ -201,7 +178,7 @@ describe('Signature Validation Middleware', () => {
     describe('when a signature is not provided', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -214,7 +191,7 @@ describe('Signature Validation Middleware', () => {
           headers: { Authorization: `Bearer ${validSignature}` },
         })
 
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -228,13 +205,6 @@ describe('Signature Validation Middleware', () => {
 
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               Lock: [
                 { name: 'name', type: 'string' },
                 { name: 'owner', type: 'address' },
@@ -250,10 +220,11 @@ describe('Signature Validation Middleware', () => {
                 address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
               },
             },
+            messageKey: 'lock',
           },
         })
 
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -267,13 +238,6 @@ describe('Signature Validation Middleware', () => {
 
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               Lock: [
                 { name: 'name', type: 'string' },
                 { name: 'owner', type: 'address' },
@@ -289,10 +253,11 @@ describe('Signature Validation Middleware', () => {
                 address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
               },
             },
+            messageKey: 'lock',
           },
         })
 
-        const spy = jest.spyOn(response, 'status')
+        const spy = vi.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })

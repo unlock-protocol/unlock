@@ -1,22 +1,21 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import './MixinKeys.sol';
-import './MixinLockCore.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-
+import "./MixinKeys.sol";
+import "./MixinLockCore.sol";
+import "./MixinErrors.sol";
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 
 /**
  * @title Implements the ERC-721 Enumerable extension.
  */
 contract MixinERC721Enumerable is
-  IERC721Enumerable,
-  ERC165,
+  ERC165StorageUpgradeable,
+  MixinErrors,
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
-  function _initializeMixinERC721Enumerable() internal
-  {
+  function _initializeMixinERC721Enumerable() internal {
     /**
      * register the supported interface to conform to ERC721Enumerable via ERC165
      * 0x780e9d63 ===
@@ -34,27 +33,27 @@ contract MixinERC721Enumerable is
   ///  (sort order not specified)
   function tokenByIndex(
     uint256 _index
-  ) public view
-    returns (uint256)
-  {
-    require(_index < _totalSupply, 'OUT_OF_RANGE');
+  ) public view returns (uint256) {
+    if (_index >= _totalSupply) {
+      revert OUT_OF_RANGE();
+    }
     return _index;
   }
 
-  /// @notice Enumerate NFTs assigned to an owner
-  /// @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
-  ///  `_keyOwner` is the zero address, representing invalid NFTs.
-  /// @param _keyOwner An address where we are interested in NFTs owned by them
-  /// @param _index A counter less than `balanceOf(_keyOwner)`
-  /// @return The token identifier for the `_index`th NFT assigned to `_keyOwner`,
-  ///   (sort order not specified)
-  function tokenOfOwnerByIndex(
-    address _keyOwner,
-    uint256 _index
-  ) public view
-    returns (uint256)
+  function supportsInterface(
+    bytes4 interfaceId
+  )
+    public
+    view
+    virtual
+    override(
+      AccessControlUpgradeable,
+      ERC165StorageUpgradeable
+    )
+    returns (bool)
   {
-    require(_index == 0, 'ONLY_ONE_KEY_PER_OWNER');
-    return getTokenIdFor(_keyOwner);
+    return super.supportsInterface(interfaceId);
   }
+
+  uint256[1000] private __safe_upgrade_gap;
 }

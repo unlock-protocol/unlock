@@ -1,54 +1,54 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
-const { ethers } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
+const { getBalance, deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
-
-let unlock
-let locks
-
+const keyPrice = ethers.utils.parseEther('0.01', 'ether')
 contract('Lock / purchaseFor', (accounts) => {
-  before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+  let lock
+  let anotherLock
+  let lockSingleKey
+  let lockFree
+
+  beforeEach(async () => {
+    lock = await deployLock()
+    anotherLock = await deployLock()
+    lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
+    lockFree = await deployLock({ name: 'FREE' })
   })
 
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
       await reverts(
-        locks.FIRST.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.0001', 'ether'),
+        lock.purchase([], [accounts[0]], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
+          value: ethers.utils.parseEther('0.0001', 'ether'),
         }),
         'INSUFFICIENT_VALUE'
       )
       // Making sure we do not have a key set!
-      assert.equal(
-        await locks.FIRST.keyExpirationTimestampFor.call(accounts[0]),
-        0
-      )
+      assert.equal(await lock.keyExpirationTimestampFor(accounts[0]), 0)
     })
 
     it('should fail if we reached the max number of keys', async () => {
-      await locks['SINGLE KEY'].purchase(
-        0,
-        accounts[0],
-        web3.utils.padLeft(0, 40),
+      await lockSingleKey.purchase(
         [],
+        [accounts[0]],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: keyPrice,
         }
       )
       await reverts(
-        locks['SINGLE KEY'].purchase(
-          0,
-          accounts[1],
-          web3.utils.padLeft(0, 40),
+        lockSingleKey.purchase(
           [],
+          [accounts[1]],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
             from: accounts[1],
           }
         ),
@@ -57,13 +57,14 @@ contract('Lock / purchaseFor', (accounts) => {
     })
 
     it('should trigger an event when successful', async () => {
-      const tx = await locks.FIRST.purchase(
-        0,
-        accounts[2],
-        web3.utils.padLeft(0, 40),
+      const tx = await lock.purchase(
         [],
+        [accounts[2]],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: keyPrice,
         }
       )
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -75,96 +76,68 @@ contract('Lock / purchaseFor', (accounts) => {
     })
 
     describe('when the user already owns an expired key', () => {
-      it('should expand the validity by the default key duration', async () => {
-        await locks.SECOND.purchase(
-          0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
+      it('should create a new key', async () => {
+        const tx = await anotherLock.purchase(
           [],
+          [accounts[4]],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
+        assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
+        assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
+
         // let's now expire the key
-        await locks.SECOND.expireAndRefundFor(accounts[4], 0)
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        await anotherLock.expireAndRefundFor(args.tokenId, 0)
+        assert.equal(await anotherLock.getHasValidKey(accounts[4]), false)
+        assert.equal(await anotherLock.balanceOf(accounts[4]), 0)
+        assert.equal(await anotherLock.totalKeys(accounts[4]), 1)
 
         // Purchase a new one
-        const newKeyTx = await locks.SECOND.purchase(
-          0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
+        await anotherLock.purchase(
           [],
+          [accounts[4]],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
-
-        const transferBlock = await ethers.provider.getBlock(
-          newKeyTx.receipt.blockNumber
-        )
-        const transferTs = transferBlock.timestamp
-
-        // And check the expiration which shiuld be exactly now + keyDuration
-        const expirationTimestamp = new BigNumber(
-          await locks.SECOND.keyExpirationTimestampFor.call(accounts[4])
-        )
-        assert.equal(
-          expirationTimestamp.minus(transferTs).toNumber(),
-          locks.SECOND.params.expirationDuration.toNumber()
-        )
+        assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
+        assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
+        assert.equal(await anotherLock.totalKeys(accounts[4]), 2)
       })
     })
 
     describe('when the user already owns a non expired key', () => {
-      let tx2
-      let firstExpiration
-
-      it('should expand the validity by the default key duration', async () => {
-        await locks.FIRST.purchase(
-          0,
-          accounts[1],
-          web3.utils.padLeft(0, 40),
+      it('should create a new key', async () => {
+        await lock.purchase(
           [],
+          [accounts[1]],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
-        firstExpiration = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
-        )
-        assert(firstExpiration.gt(0))
-        tx2 = await locks.FIRST.purchase(
-          0,
-          accounts[1],
-          web3.utils.padLeft(0, 40),
+        assert.equal(await lock.balanceOf(accounts[1]), 1)
+        await lock.purchase(
           [],
+          [accounts[1]],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
-        const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
-        )
-        assert.equal(
-          expirationTimestamp.toFixed(),
-          firstExpiration.plus(locks.FIRST.params.expirationDuration).toFixed()
-        )
-      })
-
-      it('should emit the RenewKeyPurchase event', async () => {
-        let expirationDuration = new BigNumber(
-          await locks.FIRST.expirationDuration.call()
-        )
-        assert.equal(tx2.logs[0].event, 'RenewKeyPurchase')
-        assert.equal(tx2.logs[0].args.owner, accounts[1])
-        assert(
-          new BigNumber(tx2.logs[0].args.newExpiration).eq(
-            firstExpiration.plus(expirationDuration)
-          )
-        )
-        // Verify that Transfer does not emit on a key renewal
-        const included = tx2.logs.filter((l) => l.event === 'Transfer')
-        assert.equal(included.length, 0)
+        assert.equal(await lock.balanceOf(accounts[1]), 2)
       })
     })
 
@@ -173,52 +146,52 @@ contract('Lock / purchaseFor', (accounts) => {
       let numberOfOwners
       let balance
       let now
+      let tokenId
 
-      before(async () => {
-        balance = new BigNumber(await web3.eth.getBalance(locks.FIRST.address))
-        totalSupply = new BigNumber(await locks.FIRST.totalSupply.call())
-        now = parseInt(new Date().getTime() / 1000)
-        numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners.call())
-        return locks.FIRST.purchase(
-          0,
-          accounts[0],
-          web3.utils.padLeft(0, 40),
+      beforeEach(async () => {
+        balance = await getBalance(lock.address)
+        totalSupply = new BigNumber(await lock.totalSupply())
+        numberOfOwners = new BigNumber(await lock.numberOfOwners())
+        const newKeyTx = await lock.purchase(
           [],
+          [accounts[0]],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
+        const { args } = newKeyTx.logs.find((v) => v.event === 'Transfer')
+        tokenId = args.tokenId
+        const transferBlock = await ethers.provider.getBlock(
+          newKeyTx.receipt.blockNumber
+        )
+        now = transferBlock.timestamp
       })
 
       it('should have the right expiration timestamp for the key', async () => {
         const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(accounts[0])
+          await lock.keyExpirationTimestampFor(tokenId)
         )
         const expirationDuration = new BigNumber(
-          await locks.FIRST.expirationDuration.call()
+          await lock.expirationDuration()
         )
         assert(expirationTimestamp.gte(expirationDuration.plus(now)))
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(
-          await web3.eth.getBalance(locks.FIRST.address)
-        )
-        assert.equal(
-          parseFloat(web3.utils.fromWei(newBalance.toFixed(), 'ether')),
-          parseFloat(web3.utils.fromWei(balance.toFixed(), 'ether')) + 0.01
-        )
+        const newBalance = await getBalance(lock.address)
+        assert.equal(newBalance.toString(), balance.plus(keyPrice.toString()))
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        const _totalSupply = new BigNumber(await locks.FIRST.totalSupply.call())
+        const _totalSupply = new BigNumber(await lock.totalSupply())
         assert.equal(_totalSupply.toFixed(), totalSupply.plus(1).toFixed())
       })
 
       it('should have increased the number of owners', async () => {
-        const _numberOfOwners = new BigNumber(
-          await locks.FIRST.numberOfOwners.call()
-        )
+        const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
         assert.equal(
           _numberOfOwners.toFixed(),
           numberOfOwners.plus(1).toFixed()
@@ -227,89 +200,16 @@ contract('Lock / purchaseFor', (accounts) => {
     })
 
     it('can purchase a free key', async () => {
-      const tx = await locks.FREE.purchase(
-        0,
-        accounts[2],
-        web3.utils.padLeft(0, 40),
-        []
+      const tx = await lockFree.purchase(
+        [],
+        [accounts[2]],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]]
       )
       assert.equal(tx.logs[0].event, 'Transfer')
       assert.equal(tx.logs[0].args.from, 0)
       assert.equal(tx.logs[0].args.to, accounts[2])
     })
-
-    describe('can re-purchase an expired key', () => {
-      let tx
-
-      before(async () => {
-        await locks.SHORT.purchase(
-          0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: web3.utils.toWei('0.01', 'ether'),
-          }
-        )
-        // let's now expire the key
-        await locks.SHORT.expireAndRefundFor(accounts[4], 0)
-        // sleep 10 seconds
-        await sleep(10000)
-      })
-
-      it('should expand the validity by the default key duration', async () => {
-        // Purchase a new one
-        tx = await locks.SHORT.purchase(
-          0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: web3.utils.toWei('0.01', 'ether'),
-          }
-        )
-
-        const transferBlock = await ethers.provider.getBlock(
-          tx.receipt.blockNumber
-        )
-        const transferTs = transferBlock.timestamp
-
-        // And check the expiration which shiuld be exactly now + keyDuration
-        const expirationTimestamp = new BigNumber(
-          await locks.SHORT.keyExpirationTimestampFor.call(accounts[4])
-        )
-
-        assert.equal(
-          expirationTimestamp.minus(transferTs).toNumber(),
-          locks.SHORT.params.expirationDuration.toNumber()
-        )
-      })
-
-      it('should emit the RenewKeyPurchase event', async () => {
-        let duration = new BigNumber(
-          await locks.SHORT.expirationDuration.call()
-        )
-
-        assert.equal(tx.logs[0].event, 'RenewKeyPurchase')
-        assert.equal(tx.logs[0].args.owner, accounts[4])
-
-        const transferBlock = await ethers.provider.getBlock(
-          tx.receipt.blockNumber
-        )
-        const transferTs = transferBlock.timestamp
-        assert.equal(
-          new BigNumber(tx.logs[0].args.newExpiration).toNumber(),
-          duration.plus(transferTs).toNumber()
-        )
-
-        // Verify that Transfer does not emit on an expired key re-purchase
-        const included = tx.logs.filter((l) => l.event === 'Transfer')
-        assert.equal(included.length, 0)
-      })
-    })
   })
 })
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}

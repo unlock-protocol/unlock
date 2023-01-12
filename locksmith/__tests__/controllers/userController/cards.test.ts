@@ -1,29 +1,16 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-
-import ethJsUtil = require('ethereumjs-util')
-import sigUtil = require('eth-sig-util')
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
-import models = require('../../../src/models')
-import UserOperations = require('../../../src/operations/userOperations')
-import StripeOperations = require('../../../src/operations/stripeOperations')
-
-const { UserReference } = models
-const { User } = models
-const { StripeCustomer } = models
-
+import app from '../../app'
+import * as Base64 from '../../../src/utils/base64'
+import { User, UserReference, StripeCustomer } from '../../../src/models'
+import UserOperations from '../../../src/operations/userOperations'
+import StripeOperations from '../../../src/operations/stripeOperations'
+import { vi } from 'vitest'
 const publicKey = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [{ name: 'publicKey', type: 'address' }],
     },
     domain: {
@@ -32,6 +19,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -53,9 +41,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  const { User } = models
-  const { UserReference } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
@@ -79,19 +64,23 @@ describe('when requesting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Get Card': {
           publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const typedData = generateTypedData(message, 'Get Card')
+
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['Get Card']
+      )
 
       const response = await request(app)
         .get(`/users/${publicKey}/credit-cards`)
@@ -106,19 +95,20 @@ describe('when requesting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Get Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Get Card')
+
+      const sig = await wallet.signMessage(
+        `I want to retrieve the card token for ${message['Get Card'].publicKey}`
+      )
 
       const response = await request(app)
         .get(`/users/${publicKey}/credit-cards`)
@@ -138,13 +128,13 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey,
           stripeTokenId: 'tok_visa',
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Save Card')
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -163,20 +153,18 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
           stripeTokenId: 'tok_visa',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Save Card')
+      const sig = await wallet.signMessage(JSON.stringify(typedData))
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -194,24 +182,24 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey,
           stripeTokenId: 'tok_visa',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      jest
-        .spyOn(UserOperations, 'updatePaymentDetails')
-        .mockReturnValueOnce(Promise.resolve(true))
+      vi.spyOn(UserOperations, 'updatePaymentDetails').mockReturnValueOnce(
+        Promise.resolve(true)
+      )
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Save Card')
+      const sig = await wallet.signMessage(
+        `I save my payment card for my account ${message['Save Card'].publicKey}`
+      )
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -228,24 +216,24 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey,
           stripeTokenId: 'tok_visa',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Save Card')
+      const sig = await wallet.signMessage(
+        `I save my payment card for my account ${message['Save Card'].publicKey}`
+      )
 
-      jest
-        .spyOn(UserOperations, 'updatePaymentDetails')
-        .mockReturnValueOnce(Promise.resolve(false))
+      vi.spyOn(UserOperations, 'updatePaymentDetails').mockReturnValueOnce(
+        Promise.resolve(false)
+      )
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -264,12 +252,12 @@ describe('when deleting cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey,
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Delete Card')
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)
@@ -288,19 +276,17 @@ describe('when deleting cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Delete Card')
+      const sig = await wallet.signMessage(JSON.stringify(typedData))
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)
@@ -316,23 +302,24 @@ describe('when deleting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
-      jest
-        .spyOn(StripeOperations, 'deletePaymentDetailsForAddress')
-        .mockReturnValueOnce(Promise.resolve(true))
+      vi.spyOn(
+        StripeOperations,
+        'deletePaymentDetailsForAddress'
+      ).mockReturnValueOnce(Promise.resolve(true))
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Delete Card')
+      const sig = await wallet.signMessage(
+        `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`
+      )
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)
@@ -348,23 +335,24 @@ describe('when deleting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
-      jest
-        .spyOn(StripeOperations, 'deletePaymentDetailsForAddress')
-        .mockReturnValueOnce(Promise.resolve(false))
+      vi.spyOn(
+        StripeOperations,
+        'deletePaymentDetailsForAddress'
+      ).mockReturnValueOnce(Promise.resolve(false))
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const typedData = generateTypedData(message, 'Delete Card')
+      const sig = await wallet.signMessage(
+        `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`
+      )
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)

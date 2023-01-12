@@ -4,10 +4,10 @@ subTitle: Graduating with grace!
 authorName: Julien Genestoux
 publishDate: Nov 5, 2019
 description: Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!
-image: /static/images/blog/ejecting-account/ejecting.jpg
+image: /images/blog/ejecting-account/ejecting.jpg
 ---
 
-![Eject Unlock Account](/static/images/blog/ejecting-account/ejecting.jpg)
+![Eject Unlock Account](/images/blog/ejecting-account/ejecting.jpg)
 
 A couple of weeks ago, we introduced the [Unlock User Accounts](/blog/unlock-user-accounts). These accounts behave exactly like any other web account, with an email and password. Yet, under the hood, they're actually powerful Ethereum wallets with a private key which can be used to send transactions, receive funds, or interact directly with any smart contract.
 
@@ -27,6 +27,6 @@ Next, you need to install a web3 wallet. The most popular is [MetaMask](https://
 
 Once you've installed MetaMask, choose a password to secure the extension. After this, click on the circle which represents your address. In the menu, select _Import Account_. Select the JSON file, and type your Unlock account's password. Submit the form and you'll be done!
 
-![Metamask Menu](/static/images/blog/ejecting-account/import.jpg)
+![Metamask Menu](/images/blog/ejecting-account/import.jpg)
 
 At Unlock, we deeply believe that each web user should _own and manage_ their account in a decentralized way. We understand that this is a significant change from what we've been used to on the web, which is why we're providing user accounts, however, our hope is that every Unlock user eventually ejects!

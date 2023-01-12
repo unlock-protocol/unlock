@@ -1,6 +1,14 @@
 {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
-    "outDir": "build"
-  }
+    "outDir": "build",
+    "useUnknownInCatchVariables": false,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "jsx": "react-jsx"
+  },
+  "exclude": [
+    "build",
+    "__tests__",
+  ]
 }

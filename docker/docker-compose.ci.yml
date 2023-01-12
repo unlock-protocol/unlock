@@ -1,6 +1,5 @@
 version: '3.2'
 services:
-
   eth-node: # hardhat node
     image: eth-node
     build:
@@ -9,21 +8,26 @@ services:
     ports:
       - 8545:8545
 
-  smart-contract-extensions: # example of Unlock integrations
-    image: smart-contract-extensionss
-    build:
-      context: ../
-      target: dev
-      args:
-        BUILD_DIR: smart-contract-extensions
-
   smart-contracts: # Image with our contracts
     image: smart-contracts
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: smart-contracts
+  
+  subgraph: # Subgraph unit testing
+    image: subgraph
+    platform: linux/amd64
+    build:
+      context: ../
+      target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: subgraph
 
   unlock-app: # Container for the dashboard
     env_file:
@@ -32,6 +36,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: unlock-app
     ports:
@@ -46,6 +52,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: unlock-protocol-com
     ports:
@@ -58,6 +66,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: paywall-app
     ports:
@@ -70,41 +80,56 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/paywall
     ports:
       - 3001:3001
-
-  newsletter: # Container for the newsletter application
-    image: newsletter
-    build:
-      context: ../
-      target: dev
-      args:
-        BUILD_DIR: newsletter
-    env_file:
-      - ./${UNLOCK_ENV}.env
-    ports:
-      - 3003:3003
 
   unlock-js: # Container for Unlockjs
     image: unlock-js
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
       - ./${UNLOCK_ENV}.env
-    depends_on: 
-      - eth-node
 
+  hardhat-plugin: # Container for @unlock-protocol/hardhat-plugin
+    image: hardhat-plugin
+    build:
+      context: ../
+      target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: packages/hardhat-plugin
+    env_file:
+      - ./${UNLOCK_ENV}.env
+
+  contracts: # Container for @unlock-protocol/contracts
+    image: contracts
+    build:
+      context: ../
+      target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: packages/contracts
+    env_file:
+      - ./${UNLOCK_ENV}.env
 
   wedlocks: # Container for wedlocks
     image: wedlocks
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: wedlocks
     env_file:
@@ -115,13 +140,14 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: integration-tests
-
     env_file:
       - ./${UNLOCK_ENV}.env
     depends_on:
-      # - eth-node
+      - eth-node
       - unlock-app
       - paywall
       - locksmith
@@ -133,6 +159,8 @@ services:
     build:
       context: ../
       target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: locksmith
     env_file:
@@ -141,6 +169,22 @@ services:
     command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn start'
     ports:
       - 8080:8080
+    depends_on:
+      - postgres
+  
+  locksmith-websub:
+    image: locksmith-websub
+    build:
+      context: ../
+      target: dev
+      cache_from: 
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: locksmith
+    env_file:
+      - ././${UNLOCK_ENV}.env
+      - ./integration-locksmith.env
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn websub:start'
     depends_on:
       - postgres
 
@@ -157,7 +201,7 @@ services:
       - postgres
 
   ipfs: # Required for subgraph
-    image: ipfs/go-ipfs:v0.10.0
+    image: ipfs/go-ipfs:v0.17.0
     ports:
       - '5001:5001'
 

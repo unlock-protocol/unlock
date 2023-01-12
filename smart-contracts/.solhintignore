@@ -1,5 +1,4 @@
 node_modules
-contracts/Migrations.sol
 contracts/ERC20Patched.sol
 contracts/test-artifacts/**
 contracts/past-versions/**

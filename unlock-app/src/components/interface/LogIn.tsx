@@ -1,24 +1,21 @@
-// eslint-disable-next-line no-unused-vars
-import React, { FormEvent, useState, useReducer } from 'react'
-import styled from 'styled-components'
+import { Input, Button } from '@unlock-protocol/ui'
+import React, { FormEvent, useState, useReducer, useEffect } from 'react'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAccount } from '../../hooks/useAccount'
-import {
-  Button,
-  LoadingButton,
-  Form,
-  Input,
-  Label,
-  FormError,
-} from './checkout/FormStyles'
 
 interface LogInProps {
   onCancel?: () => void
-  onProvider: (provider: any) => void
   network: number
   useWallet?: () => void
+  storedLoginEmail?: string
 }
 
-const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
+const LogIn = ({
+  onCancel,
+  network,
+  useWallet,
+  storedLoginEmail = '',
+}: LogInProps) => {
   const { retrieveUserAccount } = useAccount('', network)
   const [loginState, dispatch] = useReducer(
     (state: any, action: any) => {
@@ -45,6 +42,7 @@ const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
     }
   )
   const [submitted, setSubmitted] = useState(false)
+  const { authenticateWithProvider } = useAuthenticate()
 
   const { emailAddress, password, error } = loginState
 
@@ -57,7 +55,7 @@ const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
 
     try {
       const unlockProvider = await retrieveUserAccount(emailAddress, password)
-      onProvider(unlockProvider)
+      authenticateWithProvider('UNLOCK', unlockProvider)
     } catch (e) {
       // TODO: password isn't the only thing that can go wrong here...
       console.error(e)
@@ -80,72 +78,67 @@ const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
     })
   }
 
+  useEffect(() => {
+    if (storedLoginEmail?.length === 0) return
+    dispatch({
+      change: [{ name: 'emailAddress', value: storedLoginEmail }],
+    })
+  }, [])
+
   return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <Label htmlFor="emailInput">Email Address</Label>
+    <div className="flex flex-col w-full mx-auto">
+      <form className="flex flex-col gap-4 mt-5" onSubmit={handleSubmit}>
         <Input
           name="emailAddress"
           autoComplete="username"
-          id="emailInput"
+          label="Email Address"
           type="email"
           placeholder="Enter your email"
           onChange={handleInputChange}
+          value={emailAddress}
         />
-        <Label htmlFor="passwordInput">Password</Label>
         <Input
           name="password"
-          id="passwordInput"
           type="password"
+          label="Password"
           placeholder="Enter your password"
           autoComplete="current-password"
           onChange={handleInputChange}
         />
-        {submitted && <LoadingButton>Logging In...</LoadingButton>}
         {!submitted && (
-          <Button type="submit" value="Submit">
-            Login
-          </Button>
-        )}
-        {error && <FormError>{error}</FormError>}
-      </Form>
-      <Description>
-        {onCancel && <LinkButton onClick={onCancel}>Cancel</LinkButton>}
-        {useWallet && (
           <>
-            Use <LinkButton onClick={useWallet}> crypto wallet</LinkButton>
+            {storedLoginEmail.length > 0 && (
+              <small>Welcome back, type your password to continue</small>
+            )}
           </>
         )}
-      </Description>
-    </Container>
+        <Button type="submit" value="Submit" loading={submitted}>
+          {!submitted ? 'Login' : 'Logging In...'}
+        </Button>
+        {error && <span className="text-red-500 font-sm">{error}</span>}
+      </form>
+      <p className="mt-2">
+        {onCancel && (
+          <a className="underline cursor-pointer" onClick={onCancel}>
+            Cancel
+          </a>
+        )}
+        {useWallet && (
+          <p>
+            <a className="underline cursor-pointer" onClick={useWallet}>
+              Use crypto wallet
+            </a>
+          </p>
+        )}
+      </p>
+    </div>
   )
 }
 
 LogIn.defaultProps = {
   onCancel: undefined,
   useWallet: undefined,
+  storedLoginEmail: '',
 }
 
 export default LogIn
-const Description = styled.p`
-  width: 100%;
-  font-size: 14px;
-  color: var(--grey);
-  button {
-    border: none;
-    outline: none;
-    display: inline;
-    padding: 0;
-    background-color: transparent;
-    color: var(--link);
-    cursor: pointer;
-  }
-`
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`
-
-const Container = styled.div`
-  width: 100%;
-`

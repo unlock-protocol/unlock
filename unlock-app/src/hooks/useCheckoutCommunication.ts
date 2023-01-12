@@ -13,6 +13,7 @@ export interface TransactionInfo {
 }
 
 export enum CheckoutEvents {
+  enable = 'checkout.enable',
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
@@ -41,6 +42,7 @@ export interface MethodCallResult {
 
 // Taken from https://github.com/ethers-io/ethers.js/blob/master/src.ts/providers/web3-provider.ts
 export type AsyncSendable = {
+  enable: () => void
   isMetaMask?: boolean
   host?: string
   path?: string
@@ -58,11 +60,13 @@ export type AsyncSendable = {
 export const waitingMethodCalls: {
   [id: number]: (error: any, response: any) => void
 } = {}
-
 // TODO: see if we can support multiple handlers for same event name
 export const eventHandlers: {
   [name: string]: () => void
 } = {}
+
+// Defaults to no-op
+let enabled: (value?: unknown) => void = (_: unknown) => {}
 
 export const resolveMethodCall = (result: MethodCallResult) => {
   const callback = waitingMethodCalls[result.id]
@@ -76,6 +80,10 @@ export const resolveMethodCall = (result: MethodCallResult) => {
   }
   delete waitingMethodCalls[result.id]
   callback(result.error, result.response)
+}
+
+export const resolveOnEnable = () => {
+  enabled()
 }
 
 export const resolveOnEvent = (name: string) => {
@@ -97,13 +105,17 @@ export const useCheckoutCommunication = () => {
   >(undefined)
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
+  const [user, setUser] = useState<string | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setConfig(config)
     },
     resolveMethodCall,
     resolveOnEvent,
+    resolveOnEnable,
   })
+
+  let insideIframe = false
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
     if (!parent) {
@@ -124,6 +136,11 @@ export const useCheckoutCommunication = () => {
   }, [parent, buffer])
 
   const emitUserInfo = (info: UserInfo) => {
+    // if user already emitted, avoid re-emitting
+    if (info.address === user && !info.signedMessage) {
+      return
+    }
+    setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
   }
 
@@ -139,14 +156,27 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.methodCall, call)
   }
 
+  const emitEnable = () => {
+    pushOrEmit(CheckoutEvents.enable)
+  }
+
   const emitOnEvent = (eventName: string) => {
     pushOrEmit(CheckoutEvents.onEvent, eventName)
   }
+
   // If the page is not inside an iframe, window and window.top will be identical
-  const insideIframe = window.top !== window
+  if (typeof window !== 'undefined') {
+    insideIframe = window.top !== window
+  }
 
   if (config && config.useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
+      enable: () => {
+        return new Promise((resolve) => {
+          enabled = resolve
+          emitEnable()
+        })
+      },
       sendAsync: (request: MethodCall, callback) => {
         waitingMethodCalls[request.id] = (error: any, response: any) => {
           callback(error, response)
@@ -173,3 +203,5 @@ export const useCheckoutCommunication = () => {
     ready: !!parent,
   }
 }
+
+export type CheckoutCommunication = ReturnType<typeof useCheckoutCommunication>

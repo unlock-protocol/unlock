@@ -1,51 +1,112 @@
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
-
-let unlock
-let locks
+const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
+const { ethers } = require('hardhat')
 
 contract('Lock / getHasValidKey', (accounts) => {
-  const account = accounts[1]
+  const [, keyOwner] = accounts
   let lock
+  let tokenId
 
-  before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+  beforeEach(async () => {
+    lock = await deployLock()
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
   it('should be false before purchasing a key', async () => {
-    const isValid = await lock.getHasValidKey.call(account)
+    const isValid = await lock.getHasValidKey(keyOwner)
     assert.equal(isValid, false)
   })
 
   describe('after purchase', () => {
-    before(async () => {
-      await lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-        value: web3.utils.toWei('0.01', 'ether'),
-      })
+    beforeEach(async () => {
+      ;({ tokenId } = await purchaseKey(lock, keyOwner))
     })
 
     it('should be true', async () => {
-      const isValid = await lock.getHasValidKey.call(account)
+      assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 1)
+      const isValid = await lock.getHasValidKey(keyOwner)
       assert.equal(isValid, true)
     })
 
     describe('after transfering a previously purchased key', () => {
-      before(async () => {
-        await lock.transferFrom(
-          account,
-          accounts[5],
-          await lock.getTokenIdFor.call(account),
-          { from: account }
+      beforeEach(async () => {
+        await lock.transferFrom(keyOwner, accounts[5], tokenId, {
+          from: keyOwner,
+        })
+      })
+
+      it('should be false', async () => {
+        const isValid = await lock.getHasValidKey(keyOwner)
+        assert.equal(isValid, false)
+      })
+    })
+  })
+
+  describe('with multiple keys', () => {
+    let tokenIds
+    const keyOwner = accounts[6]
+    beforeEach(async () => {
+      const tx = await lock.purchase(
+        [],
+        [keyOwner, keyOwner, keyOwner],
+        [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+        [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+        [[], [], []],
+        {
+          value: ethers.utils.parseUnits('0.03', 'ether'),
+        }
+      )
+      tokenIds = tx.logs
+        .filter((v) => v.event === 'Transfer')
+        .map(({ args }) => args.tokenId)
+    })
+
+    it('should be true', async () => {
+      const isValid = await lock.getHasValidKey(keyOwner)
+      assert.equal(isValid, true)
+    })
+
+    describe('after transfering one of the purchased key', () => {
+      beforeEach(async () => {
+        await lock.transferFrom(keyOwner, accounts[5], tokenIds[0], {
+          from: keyOwner,
+        })
+      })
+
+      it('should still be true', async () => {
+        const isValid = await lock.getHasValidKey(keyOwner)
+        assert.equal(isValid, true)
+        assert.equal(await lock.getHasValidKey(accounts[5]), true)
+      })
+    })
+
+    describe('after cancelling one of the purchased key', () => {
+      beforeEach(async () => {
+        await lock.cancelAndRefund(tokenIds[0], {
+          from: keyOwner,
+        })
+      })
+
+      it('should be true', async () => {
+        const isValid = await lock.getHasValidKey(keyOwner)
+        assert.equal(isValid, true)
+      })
+    })
+
+    describe('after transferring all of the purchased key', () => {
+      beforeEach(async () => {
+        await Promise.all(
+          tokenIds.map((id) =>
+            lock.transferFrom(keyOwner, accounts[5], id, {
+              from: keyOwner,
+            })
+          )
         )
       })
 
       it('should be false', async () => {
-        const isValid = await lock.getHasValidKey.call(account)
+        assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 0)
+        assert.equal((await lock.balanceOf(accounts[5])).toNumber(), 3)
+        const isValid = await lock.getHasValidKey(keyOwner)
         assert.equal(isValid, false)
       })
     })

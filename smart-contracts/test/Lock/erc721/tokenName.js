@@ -1,37 +1,31 @@
-const { reverts } = require('truffle-assertions')
-const deployLocks = require('../../helpers/deployLocks')
+const { deployLock, reverts } = require('../../helpers')
+const metadata = require('../../fixtures/metadata')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
-
-let unlock
 let unnamedlock
 let namedLock
 
 contract('Lock / erc721 / name', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    unnamedlock = locks.FIRST
-    namedLock = locks.NAMED
+    unnamedlock = await deployLock()
+    namedLock = await deployLock({ name: 'NAMED' })
   })
 
   describe('when no name has been set on creation', () => {
     it('should return the default name when attempting to read the name', async () => {
-      assert.equal(await unnamedlock.name.call(), 'Unlock-Protocol Lock')
+      assert.equal(await unnamedlock.name(), 'Unlock-Protocol Lock')
     })
 
     it('should fail if someone other than the owner tries to set the name', async () => {
       await reverts(
-        unnamedlock.updateLockName('Hardly', {
+        unnamedlock.setLockMetadata(...Object.values(metadata), {
           from: accounts[1],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
 
     it('should allow the owner to set a name', async () => {
-      await unnamedlock.updateLockName('Hardly', {
+      await unnamedlock.setLockMetadata(...Object.values(metadata), {
         from: accounts[0],
       })
     })
@@ -39,12 +33,12 @@ contract('Lock / erc721 / name', (accounts) => {
 
   describe('when the Lock has a name', () => {
     it('should return return the expected name', async () => {
-      assert.equal(await namedLock.name.call(), 'Custom Named Lock')
+      assert.equal(await namedLock.name(), 'Custom Named Lock')
     })
 
     it('should fail if someone other than the owner tries to change the name', async () => {
       await reverts(
-        namedLock.updateLockName('Difficult', {
+        namedLock.setLockMetadata(...Object.values(metadata), {
           from: accounts[1],
         })
       )
@@ -52,25 +46,28 @@ contract('Lock / erc721 / name', (accounts) => {
 
     describe('should allow the owner to set a name', () => {
       before(async () => {
-        await namedLock.updateLockName('Difficult', {
+        await namedLock.setLockMetadata(...Object.values(metadata), {
           from: accounts[0],
         })
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name.call(), 'Difficult')
+        assert.equal(await namedLock.name(), metadata.name)
       })
     })
 
     describe('should allow the owner to unset the name', () => {
       before(async () => {
-        await namedLock.updateLockName('', {
-          from: accounts[0],
-        })
+        await namedLock.setLockMetadata(
+          ...Object.values({ ...metadata, name: '' }),
+          {
+            from: accounts[0],
+          }
+        )
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name.call(), '')
+        assert.equal(await namedLock.name(), '')
       })
     })
   })

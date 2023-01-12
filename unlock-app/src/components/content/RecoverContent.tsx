@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import { Heading, Instructions, Label } from '../interface/FinishSignup'
 import { SetPassword } from '../interface/SetPassword'
 import Loading from '../interface/Loading'
 import { StorageService } from '../../services/storageService'
@@ -13,6 +11,8 @@ import UnlockProvider from '../../services/unlockProvider'
 import ProviderContext from '../../contexts/ProviderContext'
 
 import {} from '../interface/Authenticate'
+import { Badge } from '@unlock-protocol/ui'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 interface RestoreAccountProps {
   config: any
@@ -38,9 +38,8 @@ export const RestoreAccount = ({
     setLoading(true)
     const getRecoveryPhrase = async () => {
       if (email) {
-        const { recoveryPhrase } = await storageService.getUserRecoveryPhrase(
-          email
-        )
+        const result = await storageService.getUserRecoveryPhrase(email)
+        const { recoveryPhrase } = result!
         if (!recoveryPhrase) {
           setError('We do not have a valid recovery phrase for your user')
           setLoading(false)
@@ -77,14 +76,14 @@ export const RestoreAccount = ({
       newPassword
     )
     try {
-      const { data, signature } = provider.signUserData({
+      const { data, signature } = await provider.signUserData({
         passwordEncryptedPrivateKey,
       })
       await storageService.updateUserEncryptedPrivateKey(email, data, signature)
       setSuccess(true)
       // TODO: send email for confirmation
       // TODO: create new recovery key
-    } catch (error) {
+    } catch (error: any) {
       setError('There was an error resettings your password. Please try again.')
       console.error(error)
     }
@@ -102,33 +101,34 @@ export const RestoreAccount = ({
   if (success) {
     return (
       <div>
-        <Heading>Recover your Unlock Account</Heading>
-        <Instructions>
+        <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
+        <span className="mt-1 text-sm font-thin">
           Your password was successfuly changed. Visit{' '}
           <Link href="/settings">
             <a>your settings page</a>
           </Link>
           .
-        </Instructions>
+        </span>
       </div>
     )
   }
   return (
     <>
-      <div>
-        <Heading>Recover your Unlock Account</Heading>
-        <Instructions>
+      <div className="w-1/2 mx-auto">
+        <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
+        <span className="block mb-5 text-xl font-light">
           Please, set a new password for your account.
-        </Instructions>
-        <Label htmlFor="emailPlaceholder">Email</Label>
-        <p>{email}</p>
-      </div>
+        </span>
+        <div className="flex gap-2 mt-2 mb-3">
+          <Badge>{email}</Badge>
+        </div>
 
-      <SetPassword
-        loading={loading}
-        buttonLabel="Resetting password"
-        onSubmit={resetPassword}
-      />
+        <SetPassword
+          loading={loading}
+          buttonLabel="Resetting password"
+          onSubmit={resetPassword}
+        />
+      </div>
     </>
   )
 }
@@ -153,7 +153,7 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
         ? query.recoveryKey[0]
         : query.recoveryKey
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error('We could not parse the recovery key')
   }
 
@@ -163,10 +163,10 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
   if (!email || !recoveryKey) {
     content = (
       <div>
-        <Heading>Recover your Unlock Account</Heading>
-        <Instructions>
+        <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
+        <span className="text-sm font-thin">
           Your recovery link is not valid. Please try again.
-        </Instructions>
+        </span>
       </div>
     )
   } else {
@@ -180,12 +180,12 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
     )
   }
   return (
-    <Layout title="Acccount Recovery">
+    <AppLayout title="Account Recovery" showLinks={false} authRequired={false}>
       <Head>
         <title>{pageTitle('Account Recovery')}</title>
       </Head>
       {content}
-    </Layout>
+    </AppLayout>
   )
 }
 export default RecoverContent

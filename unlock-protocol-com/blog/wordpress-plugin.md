@@ -1,13 +1,13 @@
 ---
-title: Wordpress Plugin
+title: WordPress Plugin
 subTitle: Adding a lock to your WordPress.org website has never been easier!
 authorName: Julien Genestoux
 publishDate: September 11, 2019
-description: Wordpress.org is the most popular Content Management System. Adding a lock to your site lets you monetize the words you write without asking anyone's permission!
-image: /static/images/blog/wordpress-plugin/unlock-wordpress.jpg
+description: WordPress is the most popular Content Management System. Adding a lock to your site lets you monetize the words you write without asking anyone's permission!
+image: /images/blog/wordpress-plugin/unlock-wordpress.jpg
 ---
 
-![Introducing the Unlock WordPress plugin.](/static/images/blog/wordpress-plugin/unlock-wordpress.jpg)
+**UPDATE DECEMBER 2021:** This plugin has been updated. [Learn about v3 of this plugin here](https://www.unlock-protocol.com/blog/unlock-protocol-wordpress-plugin).
 
 The world of publishing is [moving away from ads](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f) as the single way to monetize content. In the last 18 months, most of the largest and most influential publications in the US and Europe have been moving to what they call "direct consumer revenue." This is a great thing because it changes incentives from trying steal their users' attention (click bait, fake news, endless slideshows... etc) to creating value for their members.
 
@@ -19,9 +19,9 @@ Today, we're introducing a [WordPress plugin for Unlock](https://wordpress.org/p
 
 # Demo
 
-First thing first: you can try it today on our [demo wordpress.org website](https://wordpress-demo.unlock-protocol.com/). This blog only has a single story, and some of the content on this page has been put behind a [lock](https://etherscan.io/address/0xb0114bbdce17e0af91b2be32916a1e236cf6034f): you will see a different version of it based on whether you are already a member or if you're not one.
+First thing first: you can try it today on our [demo wordpress.org website](https://wordpress-demo.unlock-protocol.com/). This blog only has a single story, and some of the content on this page has been put behind a [lock](https://etherscan.io/address/0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894): you will see a different version of it based on whether you are already a member or if you're not one.
 
-![become member](/static/images/blog/wordpress-plugin/become-member-wordpress.png)
+![become member](/images/blog/wordpress-plugin/become-member-wordpress.png)
 _If you're not a member you're invited to become one by clicking on a button_
 
 # Installing on your own Wordpress
@@ -32,11 +32,11 @@ If you'd like to add a lock to your site, start by [deploying your first lock](h
 
 While the lock is deploying you should install this plugin. From the administration of your Wordpress.org website, in the `Plugins` section, click on the `Add New` button and search for `Unlock Protocol` in the search bar.
 
-![search plugin](/static/images/blog/wordpress-plugin/search-plugin.png)
+![search plugin](/images/blog/wordpress-plugin/search-plugin.png)
 
 Once installed, check the plugin's settings to add the address of the lock that you have deployed.
 
-![plugin settings](/static/images/blog/wordpress-plugin/plugin-settings.png)
+![plugin settings](/images/blog/wordpress-plugin/plugin-settings.png)
 
 ## Writing locked stories
 

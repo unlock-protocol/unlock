@@ -4,27 +4,21 @@ subTitle: You can now embed locks from multiple chain in the same application!
 authorName: Julien Genestoux
 publishDate: May 11, 2021
 description: You can now embed locks from multiple chain in the same application! Also, you can customize the configuration for the checkout modal, independently of the paywall configuration!
-image: /static/images/blog/xdai/xdai.png
+image: /images/blog/xdai/xdai.png
 ---
 
 As transaction costs on Ethereum's mainnet keep sky-rocketing (it's a good thing!), like many other projects in the web3 space, we are exploring ways to provide a seamless experience in the Ethereum ecosystem, without the costs associated with a blockchain used heavily for large-value transactions. A few weeks ago, we launch the [Unlock Protocol on xDAI](/blog/xdai) and we're working on several more.
 
 Unfortunately, there is a cost to using multiple chains: complexity for users. We have many ideas on how to improve that, and that's one of the main areas of focus over the next months, but today, we're proud to introduce our support for what we call a **multi-chain paywall**: a way for the paywall application to connect to several locks at once, on different chains!
 
-This page is an example of this: it has a lock on Ethereum's main net, and an lock on xDAI. If you have a key (NFT) to any of these 2 locks, you will be able to leave comments!
-
 The configuration for these is simple: just pass the network as part of the locks' custom values:
 
 ```
 {
   locks: {
-    "0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F": {
+    "0xb77030a7e47a5eb942a4748000125e70be598632": {
       name: "Unlock Community",
-      network: 1
-    },
-    "0xac1fceC2e4064CCd83ac8C9B0c9B8d944AB0D246": {
-      name: "Unlock Community",
-      network: 100
+      network: 137,
     }
   }
 ```

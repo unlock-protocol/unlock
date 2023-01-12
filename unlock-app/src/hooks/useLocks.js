@@ -1,14 +1,18 @@
 import { useState, useEffect, useContext, useReducer } from 'react'
-import { TransactionType, TransactionStatus } from '../unlockTypes'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
-import { StorageServiceContext } from '../utils/withStorageService'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { GraphServiceContext } from '../utils/withGraphService'
-import { transactionTypeMapping } from '../utils/types'
+import {
+  StorageServiceContext,
+  useStorageService,
+} from '../utils/withStorageService'
+import { useWeb3Service, Web3ServiceContext } from '../utils/withWeb3Service'
+import {
+  useWalletService,
+  WalletServiceContext,
+} from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
-import { AuthenticationContext } from '../components/interface/Authenticate'
 import { processTransaction } from './useLock'
+import { useConfig } from '~/utils/withConfig'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 /**
  * Retrieves a lock object at the address
@@ -17,8 +21,8 @@ export const getLockAtAddress = async (web3Service, address, network) => {
   let lock
   try {
     lock = await web3Service.getLock(address, network)
-    lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
     lock.address = address
+    lock.network = network
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Could not get lock at ${address}: ${error.message}`)
@@ -31,7 +35,6 @@ export const getLockAtAddress = async (web3Service, address, network) => {
  */
 export const retrieveLocks = async (
   web3Service,
-  graphService,
   owner,
   addToLocks,
   setLoading,
@@ -40,11 +43,24 @@ export const retrieveLocks = async (
   // The locks from the subgraph miss some important things, such as balance,
   // ERC20 info.. etc so we need to retrieve them from unlock-js too.
   // TODO: add these missing fields to the graph!
-  const locks = await graphService.locksByManager(owner)
 
+  // ignore localhost
+  if (network == 31337) return []
+  const service = new SubgraphService()
+  const locks = await service.locks(
+    {
+      first: 1000,
+      where: {
+        lockManagers_contains: [owner],
+      },
+    },
+    {
+      networks: [`${network}`],
+    }
+  )
   // Sort locks to show the most recent first
   locks.sort((x, y) => {
-    return parseInt(y.creationBlock) - parseInt(x.creationBlock)
+    return parseInt(y.createdAtBlock) - parseInt(x.createdAtBlock)
   })
 
   const loadNext = async (locks, done) => {
@@ -96,19 +112,25 @@ export const createLock = async (
   // New locks have the following properties
   lock.outstandingKeys = 0
   lock.balance = '0'
-  // First get the address
-  const address = await web3Service.generateLockAddress(owner, lock, network)
-  lock.address = address
-  // Second, create the lock
-  return walletService.createLock(
+  const {
+    name,
+    expirationDuration,
+    maxNumberOfKeys,
+    currencyContractAddress,
+    keyPrice,
+  } = lock
+
+  const lockAddress = await walletService.createLock(
     {
-      expirationDuration: lock.expirationDuration,
-      keyPrice: lock.keyPrice,
-      maxNumberOfKeys: lock.maxNumberOfKeys,
+      expirationDuration,
+      keyPrice,
+      maxNumberOfKeys,
       owner,
-      name: lock.name,
-      currencyContractAddress: lock.currencyContractAddress,
+      name,
+      currencyContractAddress,
+      publicLockVersion: 12, // Current version that we deploy!
     },
+    {} /** transactionParams */,
     async (createLockError, transactionHash) => {
       if (createLockError) {
         setError(createLockError)
@@ -124,40 +146,50 @@ export const createLock = async (
           walletService.networkId
         )
 
+        lock.address = '0x' // Address is not known
+        lock.pending = true
         lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
         lock.network = network
-
-        // Store the hash!
-        storageService.storeTransaction(
-          transactionHash,
-          owner,
-          config.unlockAddress,
-          network.name
-        )
-
+        lock.transactions = {
+          [transactionHash]: {
+            confirmations: 0,
+          },
+        }
         addToLocks(lock)
         callback(null, lock)
       }
     }
   )
+
+  setTimeout(async () => {
+    // Adding a 1 sec delay just to make sure data is available!
+    const newLock = await getLockAtAddress(web3Service, lockAddress, network)
+    newLock.creationBlock = newLock.asOf // Assume the lock was just created!
+    // remove the pending lock
+    lock.delete = true
+    addToLocks(lock)
+    addToLocks(newLock)
+  }, 1000)
+
+  return 'lockAddress'
 }
 
 /**
  * A hook which yields locks
  * This hook yields the list of locks for the owner based on data from the graph and the chain
  * @param {*} address
+ * @param {*} network
  */
-export const useLocks = (owner) => {
-  const { network } = useContext(AuthenticationContext)
-  const web3Service = useContext(Web3ServiceContext)
-  const walletService = useContext(WalletServiceContext)
-  const storageService = useContext(StorageServiceContext)
-  const graphService = useContext(GraphServiceContext)
+export const useLocks = (owner, network) => {
+  const { networks } = useConfig()
+  const web3Service = useWeb3Service()
+  const walletService = useWalletService()
+  const storageService = useStorageService()
   const config = useContext(ConfigContext)
   const [error, setError] = useState(undefined)
   const [loading, setLoading] = useState(true)
 
-  graphService.connect(config.networks[network].subgraphURI)
+  const { subgraph } = networks[network] ?? {}
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
@@ -165,28 +197,36 @@ export const useLocks = (owner) => {
       // Reset!
       return []
     }
-    if (lock.network !== network) {
+    if (lock?.network !== network) {
       // Wrong network
       return locks
     }
 
     const index = locks.findIndex(
-      (element) => element.address.toLowerCase() === lock.address.toLowerCase()
+      (element) =>
+        element?.address?.toLowerCase() === lock.address?.toLowerCase()
     )
 
     if (index === -1) {
-      // New lock, add it
-      locks.push(lock)
+      locks.push(lock) // not previously seen lock
+    } else if (lock.delete) {
+      locks[index] = null // we delete!
     } else {
-      // The lock already exists. we merge
+      // merging existing lock
       locks[index] = {
         ...locks[index],
         ...lock,
       }
     }
-    return [...locks].sort((x, y) => {
-      return parseInt(y.creationBlock) - parseInt(x.creationBlock)
-    })
+
+    const filteredAndSorted = [...locks]
+      .filter((lock) => !!lock)
+      .sort((x, y) => {
+        return parseInt(y.creationBlock) - parseInt(x.creationBlock)
+      })
+
+    // filter and sort!
+    return filteredAndSorted
   }, [])
 
   /**
@@ -213,14 +253,7 @@ export const useLocks = (owner) => {
    */
   useEffect(() => {
     addToLocks(-1) // reset all locks!
-    retrieveLocks(
-      web3Service,
-      graphService,
-      owner,
-      addToLocks,
-      setLoading,
-      network
-    )
+    retrieveLocks(web3Service, owner, addToLocks, setLoading, network)
   }, [owner, network])
 
   return { error, loading, locks, addLock }

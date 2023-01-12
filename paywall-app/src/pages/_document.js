@@ -4,9 +4,9 @@ import { ServerStyleSheet } from 'styled-components'
 import Fonts from '../theme/fonts'
 
 export default class MyDocument extends Document {
-  static getInitialProps({ renderPage }) {
+  static async getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet()
-    const page = renderPage(
+    const page = await renderPage(
       // eslint-disable-next-line react/display-name
       (App) => (props) => sheet.collectStyles(<App {...props} />)
     )

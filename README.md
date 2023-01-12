@@ -1,4 +1,5 @@
-![Unlock](https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png)
+![Unlock](/unlock-protocol-com/public/images/unlock-word-mark-dark.png#gh-dark-mode-only)
+![Unlock](/unlock-protocol-com/public/images/unlock-word-mark.png#gh-light-mode-only)
 
 ---
 
@@ -8,16 +9,14 @@ This repository includes all the code deployed by Unlock, including smart contra
 
 Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://circleci.com/gh/unlock-protocol/unlock.svg?style=svg)](https://circleci.com/gh/unlock-protocol/unlock)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Demo
 
 [You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
 
 We are building this in the open, which means you can also run the code locally (see instructions below).
-You can try out the staging version - which runs the latest, in-progress code, but against the Rinkeby test network - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com).
-
-Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
+You can try out the staging version - which runs the latest, in-progress code, but against the Goerli test network.
 
 ## Contributing
 
@@ -43,6 +42,12 @@ yarn
 # install all dependencies (...may take a while)
 ```
 
+Build all packages:
+
+```
+yarn build
+```
+
 To execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
 
 ```
@@ -55,13 +60,12 @@ yarn workspace @unlock-protocol/paywall lint
 # etc.
 ```
 
-
 ### The protocol
 
-You can run a local version of the protocol using [Docker](https://docs.docker.com/install/). 
+You can run a local version of the protocol using [Docker](https://docs.docker.com/install/).
 
 ```
-cd docker && docker-compose up --build 
+cd docker && docker-compose up --build
 ```
 
 This will create the required infrastructure (database, local ethereum test network, subgraph...) and start core services such as the [Locksmith](./locksmith) API and a [Wedlocks](./wedlocks) mailing service for debug purposes.
@@ -79,27 +83,26 @@ docker-compose exec eth-node yarn provision
 
 ### Run one of the app
 
-The main dashboard lives in the `unlock-app` folder of this repo. 
+The main dashboard lives in the `unlock-app` folder of this repo.
 
 To launch it locally:
 
 ```
 # install deps
-yarn 
+yarn
 
 # start Unlock main app
-yarn worskspace @unlock-protocol/unlock-app start
+yarn workspace @unlock-protocol/unlock-app start
 ```
 
-This will start 
+This will start
 
--  `http://localhost:3000/dashboard` to start using the application and deploy locks locally. 
--  `http://localhost:3002` our static landing page site.
-
+- `http://localhost:3000/locks` to start using the application and deploy locks locally.
+- `http://localhost:3002` our static landing page site.
 
 ### Config and environment variables
 
-If you run the app locally on you machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
+If you run the app locally on your machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
 
 ```
 # your wallet address to the first line
@@ -128,9 +131,9 @@ BOOTSTRAP_AMOUNT=15.0
 LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 ```
 
-Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interract with the application using your regular setup.
+Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interact with the application using your regular setup.
 
-NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder. 
+NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder.
 
 ## Thank you
 
@@ -141,4 +144,4 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infras
 Thank you to all the Members of our lock as well!
 You can easily join this list by clicking on the ❤️ Sponsor button (it's free!) at the top of this page too.
 
-![Members](https://member-wall.julien51.now.sh/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxWidth=1000)
+![Members](https://member-wall.unlock-protocol.com/api/members?network=137&locks=0xb77030a7e47a5eb942a4748000125e70be598632&maxHeight=300)

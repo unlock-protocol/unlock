@@ -2,24 +2,23 @@
 /* eslint-disable no-undef */
 import React from 'react'
 import Head from 'next/head'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const SignupContent = () => {
   return (
-    <Layout title="Signup">
+    <AppLayout title="Signup" authRequired={false} showLinks={false}>
       <Head>
         <title>{pageTitle('Signup')}</title>
       </Head>
       <LogInSignUp
         network={1} // TODO: figure out what/if network is really needed.
         embedded={false}
-        signup
-        onProvider={() => {}}
+        signup={false}
         onCancel={() => {}}
       />
-    </Layout>
+    </AppLayout>
   )
 }
 

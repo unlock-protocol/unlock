@@ -4,12 +4,12 @@ subTitle: Welcome UX/Monetization Expert Amber Case as Strategic Advisor to Unlo
 authorName: Julien Genestoux
 publishDate: August 25, 2021
 description: Welcome UX/Monetization Expert Amber Case as Strategic Advisor to Unlock! Here’s the Kind of Applications & Partnerships She'll Help Build With Our Community
-image: /static/images/blog/amber-case.png
+image: /images/blog/amber-case.png
 ---
 
 Hello everyone! Let me warmly introduce [Amber Case](https://twitter.com/caseorganic) to the Unlock community. Someone I’ve known and admired for years, Amber is a UX expert, a Mozilla Fellow working on the future of money, and a powerful advocate of the open web. ([Full bio here](https://www.caseorganic.com/about).)
 
-![HackFS](/static/images/blog/amber-case.png)
+![Amber Case](/images/blog/amber-case.png)
 
 Amber is joining the Unlock team as a strategic advisor who’ll drive our partnerships with creators, communities, and companies, while improving our protocol’s user experience. And we’re both excited about the wide and amazing variety of applications we’ve already seen bubble up in such a short time, including:
 

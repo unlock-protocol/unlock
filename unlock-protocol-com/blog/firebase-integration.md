@@ -4,7 +4,7 @@ subTitle: You can now easily add an Unlock membership to any Firebase applicatio
 authorName: Julien Genestoux
 publishDate: Sept 2, 2021
 description: The team at Novum Insights has received a grant to build a Firebase integration to let any developer on that platform easily integrate a membership in their application!
-image: /static/images/blog/firebase/firebase.svg
+image: /images/blog/firebase/firebase.png
 ---
 
 Every single application, whether it is built for the web, for mobile devices, or computer can be monetized with Unlock! Memberships are an elegant way to restrict access to some content, features or even APIs. Today, we're excited to showcase the work of the [Novum Insights](https://novuminsights.com/) team who have shipped a integration of Unlock with [Firebase](https://firebase.google.com/)!

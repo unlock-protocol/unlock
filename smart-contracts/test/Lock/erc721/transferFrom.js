@@ -1,69 +1,25 @@
-const BigNumber = require('bignumber.js')
+const {
+  deployLock,
+  reverts,
+  ADDRESS_ZERO,
+  purchaseKeys,
+  purchaseKey,
+} = require('../../helpers')
 
-const { constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
-const { ethers } = require('hardhat')
-const deployLocks = require('../../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
-
-let unlock
-let locks
+let tokenIds
+let keyOwners
 
 contract('Lock / erc721 / transferFrom', (accounts) => {
-  before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    await locks.FIRST.updateTransferFee(0) // disable the transfer fee for this test
-    await locks['SINGLE KEY'].updateTransferFee(0) // disable the transfer fee for this test
-  })
+  let lock
+  let lockSingleKey
+  keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
 
-  const from = accounts[1]
-  const to = accounts[2]
-  const accountWithNoKey = accounts[3]
-  const accountWithKey = accounts[4]
-  const accountWithKeyApproved = accounts[5]
-  const accountNotApproved = accounts[6]
-  const accountApproved = accounts[7]
-  const accountWithExpiredKey = accounts[8]
-  let keyExpiration
-  let ID
-
-  before(async () => {
-    await Promise.all([
-      locks.FIRST.purchase(0, accountWithKey, web3.utils.padLeft(0, 40), [], {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from: accountWithKey,
-      }),
-      locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from,
-      }),
-      locks.FIRST.purchase(
-        0,
-        accountWithExpiredKey,
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from: accountWithExpiredKey,
-        }
-      ),
-      locks.FIRST.purchase(
-        0,
-        accountWithKeyApproved,
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from: accountWithKeyApproved,
-        }
-      ),
-    ])
-    keyExpiration = new BigNumber(
-      await locks.FIRST.keyExpirationTimestampFor.call(from)
-    )
+  beforeEach(async () => {
+    lock = await deployLock()
+    lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
+    await lockSingleKey.updateTransferFee(0) // disable the transfer fee for this test
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized
@@ -74,264 +30,214 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
   describe('when the lock is public', () => {
     it('should abort when there is no key to transfer', async () => {
       await reverts(
-        locks.FIRST.transferFrom(accountWithNoKey, to, 999),
+        lock.transferFrom(keyOwners[0], accounts[9], 999),
         'KEY_NOT_VALID'
       )
     })
 
     it('should abort if the recipient is 0x', async () => {
       await reverts(
-        locks.FIRST.transferFrom(
-          from,
-          web3.utils.padLeft(0, 40),
-          await locks.FIRST.getTokenIdFor.call(from),
-          {
-            from,
-          }
-        ),
+        lock.transferFrom(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
+          from: keyOwners[0],
+        }),
         'INVALID_ADDRESS'
       )
-      // Ensuring that ownership of the key did not change
-      const expirationTimestamp = new BigNumber(
-        await locks.FIRST.keyExpirationTimestampFor.call(from)
-      )
-      assert.equal(keyExpiration.toFixed(), expirationTimestamp.toFixed())
     })
 
-    it('should abort if the params are not consistent', async () => {
-      const id = await locks.FIRST.getTokenIdFor.call(accountWithKey)
-      const mismatchedId = id + 1
-      // testing an id mismatch
+    it('should abort if token owner (from) is incorrect', async () => {
       await reverts(
-        locks.FIRST.transferFrom(accountWithKey, to, mismatchedId, {
-          from: accountWithKey,
+        lock.transferFrom(keyOwners[0], accounts[9], tokenIds[2], {
+          from: keyOwners[0],
         }),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
-      // testing a mismatched _from address
+    })
+
+    it('should only allow owner without KM, KM or approved to transfer', async () => {
       await reverts(
-        locks.FIRST.transferFrom(accountWithKeyApproved, to, id, {
-          from: accountWithKey,
+        lock.transferFrom(keyOwners[2], accounts[9], tokenIds[2], {
+          from: keyOwners[5],
         }),
-        'TRANSFER_FROM: NOT_KEY_OWNER'
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 
-    describe('when the recipient already has an expired key', () => {
-      it('should transfer the key validity without extending it', async () => {
-        // First let's make sure from has a key!
-        let fromExpirationTimestamp
-        let ID
-        await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from,
+    it('should prevent transfering an expired key', async () => {
+      // Then let's expire the key
+      await lock.expireAndRefundFor(tokenIds[0], 0, {
+        from: accounts[0],
+      })
+      await reverts(
+        lock.transferFrom(keyOwners[1], accounts[7], tokenIds[0], {
+          from: keyOwners[1],
         })
-        // Get the tokenID
-        ID = await locks.FIRST.getTokenIdFor.call(from)
-        // Let's check the expiration date for that key
-        fromExpirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
-        )
-        // Then let's expire the key for accountWithExpiredKey
-        await locks.FIRST.expireAndRefundFor(accountWithExpiredKey, 0)
-        await locks.FIRST.transferFrom(from, accountWithExpiredKey, ID, {
-          from,
+      )
+    })
+
+    describe('when the key owner is the sender', () => {
+      beforeEach(async () => {
+        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
+          from: keyOwners[0],
         })
-        const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(
-            accountWithExpiredKey
-          )
-        )
-        assert.equal(
-          expirationTimestamp.toFixed(),
-          fromExpirationTimestamp.toFixed()
-        )
+      })
+
+      it('should transfer ownership correctly', async () => {
+        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
+      })
+
+      it('update balances properly', async () => {
+        assert.equal(await lock.balanceOf(accounts[7]), 1)
+        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
+      })
+
+      it('update key validity properly', async () => {
+        assert.equal(await lock.getHasValidKey(accounts[7]), true)
+        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
       })
     })
 
-    describe('when the recipient already has a non expired key', () => {
-      let transferredKeyTimestamp
-      let transferTs
-      let receiverKeyOriginalTimestamp
-
-      before(async () => {
-        await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from,
+    describe('when the key owner is the sender and a key manager is set', async () => {
+      it('should revert if a key manager is set', async () => {
+        const keyManager = accounts[8]
+        await lock.setKeyManagerOf(tokenIds[0], keyManager, {
+          from: keyOwners[0],
         })
-
-        ID = await locks.FIRST.getTokenIdFor.call(from)
-
-        transferredKeyTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
+        await reverts(
+          lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+            from: keyOwners[0],
+          }),
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
-
-        receiverKeyOriginalTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
-        )
-
-        const tx = await locks.FIRST.transferFrom(from, accountWithKey, ID, {
-          from,
-        })
-
-        const transferBlock = await ethers.provider.getBlock(
-          tx.receipt.blockNumber
-        )
-        transferTs = transferBlock.timestamp
-      })
-
-      it("should expand the key's validity", async () => {
-        const receiverKeyUpdatedTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
-        )
-
-        assert.equal(
-          transferredKeyTimestamp
-            .plus(receiverKeyOriginalTimestamp)
-            .minus(transferTs)
-            .toNumber(),
-          receiverKeyUpdatedTimestamp.toNumber()
-        )
-      })
-
-      it("should invalidate the previous owner's key", async () => {
-        const response = await locks.FIRST.getHasValidKey.call(from)
-        assert.equal(response, false)
       })
     })
 
     describe('when the key owner is not the sender', async () => {
+      let accountApproved
+
+      beforeEach(async () => {
+        accountApproved = accounts[8]
+        await lock.approve(accountApproved, tokenIds[0], {
+          from: keyOwners[0],
+        })
+      })
+
       it('should fail if the sender has not been approved for that key', async () => {
-        const previousExpirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
-        )
         await reverts(
-          locks.FIRST.transferFrom(from, accountNotApproved, ID, {
-            from: accountNotApproved,
+          lock.transferFrom(keyOwners[0], accountApproved, tokenIds[2], {
+            from: accountApproved,
           }),
-          'KEY_NOT_VALID'
-        )
-        // Ensuring that ownership of the key did not change
-        const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
-        )
-        assert.equal(
-          previousExpirationTimestamp.toFixed(),
-          expirationTimestamp.toFixed()
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
       it('should succeed if the sender has been approved for that key', async () => {
-        ID = await locks.FIRST.getTokenIdFor.call(accountWithKeyApproved)
-        await locks.FIRST.approve(accountApproved, ID, {
-          from: accountWithKeyApproved,
+        await lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+          from: accountApproved,
         })
-        await locks.FIRST.transferFrom(
-          accountWithKeyApproved,
-          accountApproved,
-          ID,
-          {
-            from: accountApproved,
-          }
-        )
-        let balance = await locks.FIRST.balanceOf.call(accountApproved)
-        assert.equal(balance, 1)
+        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[9])
+        assert.equal(await lock.balanceOf(accounts[9]), 1)
       })
 
       it('approval should be cleared after a transfer', async () => {
-        assert.equal(await locks.FIRST.getApproved(ID), constants.ZERO_ADDRESS)
+        await lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+          from: accountApproved,
+        })
+        assert.equal(await lock.getApproved(tokenIds[0]), ADDRESS_ZERO)
       })
     })
 
-    describe('when the key owner is the sender', () => {
-      before(async () => {
-        // first, let's purchase a brand new key that we can transfer
-        await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from,
+    describe('when the sender is a key manager', async () => {
+      let keyManager
+      beforeEach(async () => {
+        keyManager = accounts[8]
+        await lock.setKeyManagerOf(tokenIds[0], keyManager, {
+          from: keyOwners[0],
         })
-        ID = await locks.FIRST.getTokenIdFor.call(from)
-        keyExpiration = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
-        )
-        await locks.FIRST.transferFrom(from, to, ID, {
-          from,
+        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
+          from: keyManager,
         })
       })
-
-      it('should mark the previous owner`s key as expired', async () => {
-        const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
-        )
-        assert(expirationTimestamp.gt(0))
-        assert(expirationTimestamp.lt(keyExpiration))
+      it('should transfer ownership correctly to the sender', async () => {
+        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
       })
 
-      it('should have assigned the key`s previous expiration to the new owner', async () => {
-        const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(to)
-        )
-        assert.equal(expirationTimestamp.toFixed(), keyExpiration.toFixed())
+      it('update balances properly', async () => {
+        assert.equal(await lock.balanceOf(accounts[7]), 1)
+        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
       })
 
-      it("should no longer associate the transferred tokenId with the previous owner's address", async () => {
-        let transferredKeyTokenId = ID
-        let ownerOfToken = await locks.FIRST.ownerOf.call(transferredKeyTokenId)
-        assert.notEqual(from, ownerOfToken)
+      it('update key validity properly', async () => {
+        assert.equal(await lock.getHasValidKey(accounts[7]), true)
+        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
+      })
+      it('reset the key manager to address zero', async () => {
+        assert.equal(await lock.keyManagerOf(tokenIds[0]), ADDRESS_ZERO)
+      })
+    })
+
+    describe('when the sender is approved', async () => {
+      let approved
+      beforeEach(async () => {
+        approved = accounts[8]
+        await lock.setApprovalForAll(approved, true, {
+          from: keyOwners[0],
+        })
+        assert.equal(await lock.isApprovedForAll(keyOwners[0], approved), true)
+      })
+      it('should allow the transfer', async () => {
+        await lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+          from: approved,
+        })
+        assert.equal(await lock.isApprovedForAll(keyOwners[0], approved), true)
+        await reverts(
+          lock.transferFrom(accounts[9], approved, tokenIds[0], {
+            from: approved,
+          })
+        )
       })
     })
 
     describe('when the lock is sold out', () => {
-      before(async () => {
-        // first we create a lock with only 1 key
-        await locks['SINGLE KEY'].purchase(
-          0,
-          from,
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: web3.utils.toWei('0.01', 'ether'),
-            from,
-          }
-        )
-        // confirm that the lock is sold out
-        await reverts(
-          locks['SINGLE KEY'].purchase(
-            0,
-            accounts[8],
-            web3.utils.padLeft(0, 40),
-            [],
-            {
-              value: web3.utils.toWei('0.01', 'ether'),
-              from: accounts[8],
-            }
-          ),
-          'LOCK_SOLD_OUT'
-        )
-      })
-
       it('should still allow the transfer of keys', async () => {
-        ID = await locks['SINGLE KEY'].getTokenIdFor.call(from)
-        let ownerOfBefore = await locks['SINGLE KEY'].ownerOf.call(ID)
-        await locks['SINGLE KEY'].transferFrom(ownerOfBefore, accounts[9], ID, {
-          from: ownerOfBefore,
+        // first we create a lock with only 1 key
+        const { tokenId } = await purchaseKey(lockSingleKey, keyOwners[0])
+
+        // confirm that the lock is sold out
+        await reverts(purchaseKey(lockSingleKey, keyOwners[0]), 'LOCK_SOLD_OUT')
+
+        // check ownership
+        assert.equal(await lockSingleKey.ownerOf(tokenId), keyOwners[0])
+
+        // transfer
+        await lockSingleKey.transferFrom(keyOwners[0], accounts[9], tokenId, {
+          from: keyOwners[0],
         })
-        let ownerOfAfter = await locks['SINGLE KEY'].ownerOf.call(ID)
-        assert.equal(ownerOfAfter, accounts[9])
+
+        assert.equal(await lockSingleKey.ownerOf(tokenId), accounts[9])
       })
     })
   })
 
   it('can transfer a FREE key', async () => {
-    await locks.FREE.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
+    const lockFree = await deployLock({ name: 'FREE' })
+    const tx = await lockFree.purchase(
+      [],
+      [accounts[1]],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      [[]],
+      {
+        from: accounts[1],
+      }
+    )
+    const { args } = tx.logs.find(
+      (v) => v.event === 'Transfer' && v.args.from === ADDRESS_ZERO
+    )
+    const { tokenId: newTokenId } = args
+
+    await lockFree.transferFrom(accounts[1], accounts[2], newTokenId, {
       from: accounts[1],
     })
-    let ID = await locks.FREE.getTokenIdFor.call(accounts[1])
-    await locks.FREE.transferFrom(accounts[1], accounts[2], ID, {
-      from: accounts[1],
-    })
-    let toID = await locks.FREE.getTokenIdFor.call(accounts[2])
-    assert.notEqual(ID, 0)
-    assert.equal(ID.toString(), toID.toString())
+    assert.equal(await lockFree.ownerOf(newTokenId), accounts[2])
   })
 })

@@ -1,15 +1,12 @@
-const { reverts } = require('truffle-assertions')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const { reverts, deployContracts } = require('../helpers')
 
 let unlock
 let unlockOwner
 
 contract('Lock / configUnlock', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
-    unlockOwner = accounts[0]
+    ;({ unlock } = await deployContracts())
+    ;[unlockOwner] = accounts
   })
 
   describe('configuring the Unlock contract', () => {
@@ -40,7 +37,7 @@ contract('Lock / configUnlock', (accounts) => {
             from: accounts[7],
           }
         ),
-        'Ownable: caller is not the owner'
+        'ONLY_OWNER'
       )
     })
   })
