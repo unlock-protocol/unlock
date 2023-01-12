@@ -146,3 +146,11 @@ task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
     return await govDeployer()
   }
 )
+
+task('deploy:keyManager', 'Deploy KeyManager contract').setAction(
+  async () => {
+    // eslint-disable-next-line global-require
+    const keyManagerDeployer = require('../scripts/deployments/keyManager')
+    return await keyManagerDeployer()
+  }
+)
