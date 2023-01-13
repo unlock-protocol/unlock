@@ -579,8 +579,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
     // executes the swap
     (bool success, ) = swapRouter.call{ value: swapValue }(swapCalldata);
-    // make sure Uniswap revert
+    // make sure to catch Uniswap revert
     if(success == false) {
+      // propagate revert reason from swap
       assembly {
         let ptr := mload(0x40)
         let size := returndatasize()
@@ -611,14 +612,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       callData
     );
 
-    uint balanceTokenSrcAfter = getBalance(srcToken);
-    uint balanceTokenDestAfter = getBalance(destToken);
-
     // check that Unlock didnt spent more than it received
     if(
-      balanceTokenSrcAfter - balanceTokenSrcBefore < 0
+      getBalance(srcToken) - balanceTokenSrcBefore < 0
       ||
-      balanceTokenDestAfter - balanceTokenDestBefore < 0
+      getBalance(destToken) - balanceTokenDestBefore < 0
     ) {
       // balance too low
       revert UnauthorizedBalanceChange();
