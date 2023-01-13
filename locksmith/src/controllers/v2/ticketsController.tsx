@@ -201,8 +201,10 @@ export const generateTicket: RequestHandler = async (request, response) => {
     name: key.lock.name!,
   })
 
-  return response
-    .setHeader('content-type', 'image/svg+xml')
-    .status(200)
-    .send(ticket)
+  response.writeHead(200, {
+    'Content-Type': 'image/png',
+    'Content-Length': ticket.length,
+  })
+
+  return response.end(ticket)
 }

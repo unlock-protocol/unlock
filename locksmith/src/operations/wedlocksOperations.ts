@@ -5,7 +5,6 @@ import config from '../config/config'
 import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
-import resvg from '@resvg/resvg-js'
 
 type Params = {
   [key: string]: any
@@ -139,10 +138,7 @@ export const notifyNewKeyToWedlocks = async (
         network,
         owner: ownerAddress,
       })
-      const svg = new resvg.Resvg(ticket)
-      const pngData = svg.render()
-      const pngBuffer = pngData.asPng()
-      const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+      const dataURI = `data:image/png;base64,${ticket.toString('base64')}`
       attachments.push({ path: dataURI })
     }
 

@@ -32,7 +32,10 @@ export function Ticket({
   const networkConfig = networks[network]
   return (
     <div
+      className="ticket"
       style={{
+        fontFamily:
+          'system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         background: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
