@@ -5,14 +5,9 @@ import type {
 } from '@chainsafe/dappeteer'
 import puppeteer from 'puppeteer'
 import dappeteer from '@chainsafe/dappeteer'
-
-// todo: use env
-const E2E_METAMASK_SEED =
-  'tiny question spoil sugar alcohol harsh high approve energy relief lobster trade'
-const E2E_METAMASK_PASSWORD = 'password'
+import { E2E_METAMASK_PASSWORD, E2E_METAMASK_SEED } from './constants'
 
 const HOST = process.env.UNLOCK_APP_URL || `http://127.0.0.1:3000`
-
 const DEFAULT_TIMEOUT = 5000
 /**
  * Helper `launch` function to install metamask and login before every test, this export all the things we need for the tests
@@ -36,7 +31,7 @@ export async function launch(): Promise<App> {
     seed: E2E_METAMASK_SEED,
     password: E2E_METAMASK_PASSWORD,
   })
-  await metamask.switchNetwork('goerli') // todo: change to localhost
+  await metamask.switchNetwork('localhost')
   const page = await browser.newPage()
 
   return {

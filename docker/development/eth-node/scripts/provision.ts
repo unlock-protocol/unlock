@@ -7,7 +7,7 @@
  */
 
 import { ethers, unlock } from 'hardhat'
-
+import { E2E_WALLET_ADDRESS } from '../../../constants'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
@@ -16,9 +16,7 @@ const { AddressZero } = ethers.constants
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
-const e2eWalletAddress = '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b' // test wallet for e2e
-
-const users = [e2eWalletAddress]
+const users = [E2E_WALLET_ADDRESS]
 
 if (process.env.LOCKSMITH_PURCHASER_ADDRESS) {
   users.push(process.env.LOCKSMITH_PURCHASER_ADDRESS)
