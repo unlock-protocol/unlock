@@ -61,7 +61,7 @@ const stopImpersonate = async (address) => {
 }
 
 const addERC20 =  async function (tokenAddress, address, amount = ethers.utils.parseEther('1000')) {
-  if(!whales[tokenAddress]) throw Error('No whale for this address')
+  if(!whales[tokenAddress]) throw Error(`No whale for this address: ${tokenAddress}`)
   const whale = await ethers.getSigner(whales[tokenAddress])
   await impersonate(whale.address)
 
