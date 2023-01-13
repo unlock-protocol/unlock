@@ -4,7 +4,6 @@ export const arbitrum: NetworkConfig = {
   publicProvider: 'https://arb1.arbitrum.io/rpc',
   provider: 'https://rpc.unlock-protocol.com/42161',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
-  keyManagerAddress: '0x',
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   id: 42161,
   name: 'Arbitrum',

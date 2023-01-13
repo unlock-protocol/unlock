@@ -3,8 +3,7 @@ import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 export const KeyManagerAbi = [
-  'function transfer(address lock, uint token, address owner, uint deadline, bytes memory transferCode)',
-  'function setLocksmith(address _locksmith)',
+  'function transfer(address lock, uint256 token, address owner, uint256 deadline, bytes transferCode)',
 ]
 
 export interface TransferCode {
@@ -14,8 +13,9 @@ export interface TransferCode {
   deadline: number
 }
 
+type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 export interface CreateTransferSignatureOptions {
-  signer: ethers.providers.JsonRpcSigner
+  signer: Signer
   params: TransferCode
   network: number
 }
@@ -25,7 +25,7 @@ export interface TransferOptions {
     transferSignature: string
   }
   network: number
-  signer: ethers.providers.JsonRpcSigner
+  signer: Signer
 }
 
 export interface CreateTransferAddressKey {
@@ -40,7 +40,7 @@ export interface SetLocksmithOptions {
     locksmith: string
   }
   network: number
-  signer: ethers.providers.JsonRpcSigner
+  signer: Signer
 }
 
 export const TransferTypes = {
@@ -54,12 +54,23 @@ export const TransferTypes = {
 
 export interface GetContractOptions {
   network: number
-  signer: ethers.providers.JsonRpcSigner
+  signer: Signer
 }
+
 export class KeyManager {
   public networks: NetworkConfigs
   constructor(networks?: NetworkConfigs) {
     this.networks = networks || networkConfigs
+  }
+
+  providerForNetwork(network: number) {
+    if (!this.networks[network]) {
+      throw new Error(`Missing config for ${network}`)
+    }
+    return new ethers.providers.JsonRpcProvider(
+      this.networks[network].provider,
+      network
+    )
   }
 
   /**
@@ -71,12 +82,13 @@ export class KeyManager {
     if (!keyManagerContractAddress) {
       throw new Error('No key manager contract address found for network')
     }
+    const provider = this.providerForNetwork(network)
     const KeyManagerContract = new ethers.Contract(
       keyManagerContractAddress,
       KeyManagerAbi,
-      signer
+      provider
     )
-    return KeyManagerContract
+    return KeyManagerContract.connect(signer)
   }
 
   /**
@@ -107,6 +119,7 @@ export class KeyManager {
     signer,
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
+
     const tx = await KeyManagerContract.transfer(
       lock,
       token,
