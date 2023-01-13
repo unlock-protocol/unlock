@@ -55,13 +55,15 @@ networks.hardhat = {
 
 // mainnet fork
 if (process.env.RUN_FORK) {
-  if(!isNaN()) {
-    throw Error(`RUN_FORK chain id should be a number ${process.env.RUN_FORK} `)
+  const chainId = parseInt(process.env.RUN_FORK)
+  if(isNaN(chainId)) {
+    throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
   }
-  console.log(`Running a fork (chainId : ${process.env.RUN_FORK})...`)
+  console.log(`Running a fork (chainId : ${chainId})...`)
   networks.hardhat = {
+    chainId,
     forking: {
-      url: `https://rpc.unlock-protocol.com/${process.env.RUN_FORK}`,
+      url: `https://rpc.unlock-protocol.com/${chainId}`,
     },
   }
 
