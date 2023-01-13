@@ -6,6 +6,7 @@ const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 const SHIBA_INU = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE'
 const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
 const DAI = '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+const WBTC = '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'
 
 // Unlock stuff
 const { unlockAddress } = mainnet
@@ -18,7 +19,9 @@ const UNLOCK_TIMELOCK = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 // whales
 const whales = {
   [DAI]: '0xf977814e90da44bfa03b6295a0616a897441acec',// binance
-  [USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28' 
+  [USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28',
+  [WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
+  [UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534', // unlock-protocol.eth
 }
 
 const resetNodeState = async () => {
@@ -133,6 +136,7 @@ module.exports = {
   WETH,
   DAI,
   UDT,
+  WBTC,
   UNLOCK_ADDRESS,
   UNLOCK_MULTISIG,
   UNLOCK_GOVERNOR,

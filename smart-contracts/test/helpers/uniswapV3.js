@@ -8,7 +8,7 @@ const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
 
 const { abi: WethABI } = require('./ABIs/weth.json')
-const { DAI, WETH, SHIBA_INU, USDC, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
+const { DAI, WETH, SHIBA_INU, USDC, UDT, WBTC, addUDT, impersonate, addSomeETH } = require('./mainnet')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 const POSITION_MANAGER_ADDRESS = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
@@ -438,8 +438,9 @@ const getUniswapTokens = (chainId = 1) => ({
   weth: new Token(chainId, WETH, 18, 'WETH'),
   shiba: new Token(chainId, SHIBA_INU, 18, 'SHIBA'),
   usdc: new Token(chainId, USDC, 6, 'USDC'),
-  udt: new Token(chainId, UDT, 18, 'UDT')
-  // wBTC
+  udt: new Token(chainId, UDT, 18, 'UDT'),
+  wBtc: new Token(chainId, WBTC, 18, 'wBTC')
+  
 })
 
 module.exports = {

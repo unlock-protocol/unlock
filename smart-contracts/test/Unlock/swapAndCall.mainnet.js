@@ -22,13 +22,13 @@ const UNLOCK_PROXY_OWNER = '0xF867712b963F00BF30D372b857Ae7524305A0CE7'
 // get uniswap-formatted tokens
 const tokens = getUniswapTokens()
 
-// TODO: add wBTC, UDT
 const scenarios = [
   [tokens.native, tokens.dai],
   [tokens.native, tokens.usdc],
   [tokens.dai, tokens.usdc],
   [tokens.usdc, tokens.native],
-  // [tokens.usdc, tokens.shiba]
+  [tokens.udt, tokens.native]
+  [tokens.native, tokens.wBtc],
 ]
 
 describe(`swapAndCall`, function() {
