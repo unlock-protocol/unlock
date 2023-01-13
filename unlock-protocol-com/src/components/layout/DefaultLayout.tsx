@@ -138,11 +138,11 @@ const MENU = {
         {
           title: '',
           options: [
-            // {
-            //  title: 'State of Unlock',
-            //  url: 'https://unlock-protocol.com/state',
-            // },
-            //
+            {
+              title: 'State of Unlock',
+              url: '/state',
+            },
+
             {
               title: 'Unlock DAO',
               url: 'https://unlock-protocol.com/blog/unlock-dao',
