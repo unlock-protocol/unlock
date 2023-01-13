@@ -92,20 +92,6 @@ describe(`swapAndCall`, function() {
           isEthers: true
         })
         expect(keyPrice.toString()).to.equal((await lock.keyPrice()).toString())
-
-        // get uniswap route
-        // NB: we reuse the same route calldata for purchase and renew (faster)
-        ;({ 
-          swapCalldata, 
-          value, 
-          swapRouter,
-          amountInMax
-         } = await getUniswapRoute({
-          tokenIn: srcToken,
-          tokenOut: lockToken,
-          amoutOut: keyPrice,
-          recipient: unlock.address,
-        }))
       })
 
       it('lock is set properly', async () => {
@@ -136,6 +122,19 @@ describe(`swapAndCall`, function() {
   
           // parse call data
           const calldata = await lock.interface.encodeFunctionData('purchase', args)
+
+          // get uniswap route
+          ;({ 
+            swapCalldata, 
+            value, 
+            swapRouter,
+            amountInMax
+          } = await getUniswapRoute({
+            tokenIn: srcToken,
+            tokenOut: lockToken,
+            amoutOut: keyPrice,
+            recipient: unlock.address,
+          }))
 
           // approve
           if(srcToken.isToken) {
@@ -203,6 +202,19 @@ describe(`swapAndCall`, function() {
           const calldata = lock.interface.encodeFunctionData('extend', extendArgs)
           lockBalanceBefore = await getBalance(lock.address, lockToken.address)
 
+          // get uniswap route
+          ;({ 
+            swapCalldata, 
+            value, 
+            swapRouter,
+            amountInMax
+          } = await getUniswapRoute({
+            tokenIn: srcToken,
+            tokenOut: lockToken,
+            amoutOut: keyPrice,
+            recipient: unlock.address,
+          }))
+
           // approve our src token that will be swapped
           if(srcToken.isToken) {
             const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
@@ -210,7 +222,7 @@ describe(`swapAndCall`, function() {
           }
           
           // do the swap and call
-          const tx = await unlock.connect(keyOwner)
+          await unlock.connect(keyOwner)
             .swapAndCall(
               lock.address,
               srcToken.address || ADDRESS_ZERO,
@@ -220,8 +232,6 @@ describe(`swapAndCall`, function() {
               calldata,
               { value }
             )
-
-          console.log(tx)
         })
   
         it('key is now valid', async () => {
