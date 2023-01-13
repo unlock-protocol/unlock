@@ -1,5 +1,12 @@
 /**
- * Testing Universal Router
+ * Get a swap route using Uniswap Universal Router
+ * This also demonstrate how to use the frontend lib (see `getUniswapRoute` for more details)
+ * with either passing an already signed calldata, or sending a tx for approval. Check 
+ * the `usePermit2Sig` var for more.
+ * 
+ * You can test locall using
+ * 
+ * RUN_FORK=1 yarn hardhat run scripts/uniswap/quote.js
  */
 const { ethers } = require('hardhat')
 
@@ -84,18 +91,15 @@ async function main ({
   // approve permit2 to manipulate token0 for us
   const token0_ERC20 = await ethers.getContractAt('@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20', token0.address)
   await token0_ERC20.connect(spender).approve(PERMIT2_ADDRESS, MAX_UINT)
-  
+
   // permissions
   let permit, signature
-  // max amount to spend / allow (here 5000 USDC or 2 ETH)
-  
-  const permitAmount = ethers.utils.parseUnits(
-    token0 === isStable(token1) ? '5000' : '2',
-    token0.decimals
-  )
-
   if (usePermit2Sig) {
     // create signed permit
+    const permitAmount = ethers.utils.parseUnits(
+      token0 === isStable(token1) ? '5000' : '2',
+      token0.decimals
+    )
     permit = makePermit(token0.address, permitAmount.toString() )
     signature = await generatePermitSignature(permit, spender, 1)
   } else {
@@ -127,7 +131,6 @@ async function main ({
     }
   }
 
-  
   const { 
     swapCalldata, 
     value, 
