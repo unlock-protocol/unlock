@@ -57,9 +57,6 @@ RUN chown -R node:node .
 USER node
 RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
-# Dedupe deps
-RUN yarn dedupe
-
 ###################################################################
 # Stage 2: Build packages and app
 ###################################################################
