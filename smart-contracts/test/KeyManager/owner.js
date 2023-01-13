@@ -6,11 +6,9 @@ const { reverts } = require('../helpers')
 let keyManager
 
 contract('KeyManager / Ownable', (accounts) => {
-
   beforeEach(async () => {
     [keyManager] = await setup()
   })
-
 
   it('should be owned by the owner', async () => {
     const owner = await keyManager.owner()
@@ -31,6 +29,4 @@ contract('KeyManager / Ownable', (accounts) => {
 
     expect(await keyManager.owner()).to.equal(accounts[0])
   })
-
-
 })

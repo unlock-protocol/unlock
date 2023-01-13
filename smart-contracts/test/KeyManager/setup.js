@@ -1,5 +1,3 @@
-
-
 const { ethers, upgrades } = require('hardhat')
 const {
   deployLock,
@@ -20,7 +18,6 @@ const setup = async () => {
 
   return [keyManager, lock]
 }
-
 
 module.exports = {
   setup

@@ -41,10 +41,7 @@ async function main(locksmiths) {
     } else {
       console.log(`⚠️ Proxy admin is owned by ${proxyAdminOwner}! Make sure to transfer to multisig ${multisig}!`)
     }
-
-
   }
-
   return keyManager.address
 }
 
