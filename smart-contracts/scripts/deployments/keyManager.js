@@ -24,14 +24,26 @@ async function main(locksmiths) {
   }
 
   // Transfer ownership to multisig (based on networks package)
-  if (networks[chainId.toString()].multisig) {
-    await keyManager.transferOwnership(networks[chainId.toString()].multisig)
-    console.log(`> Transfered ownership of KeyManager to ${networks[chainId.toString()].multisig}`)
+  const multisig = networks[chainId.toString()].multisig
+  if (multisig) {
+    await keyManager.transferOwnership(multisig)
+    console.log(`> Transfered ownership of KeyManager to multisig ${multisig}`)
+
+    // Transfer ownership of proxyadmin!
+    const proxyAdmin = await upgrades.admin.getInstance()
+    const proxyAdminOwner = await proxyAdmin.owner()
+    if (proxyAdminOwner === deployer.address) {
+      console.log(`> Proxy admin is owned by deployer, transfering to multisig ${multisig}`)
+      await upgrades.admin.transferProxyAdminOwnership(multisig)
+      console.log(`> Transfered proxy admin ownership to ${multisig}`)
+    } else if (proxyAdminOwner === multisig) {
+      console.log(`> Proxy admin is already onwed by multisig`)
+    } else {
+      console.log(`⚠️ Proxy admin is owned by ${proxyAdminOwner}! Make sure to transfer to multisig ${multisig}!`)
+    }
+
+
   }
-
-  // TODO: transfer proxy admin to multisig (based on networks package?)
-
-  // TODO: verify?
 
   return keyManager.address
 }
