@@ -5,7 +5,7 @@ const UnlockTruffle = artifacts.require('Unlock')
 
 module.exports = async () => {
   // when running a mainnet fork
-  if (process.env.RUN_MAINNET_FORK) {
+  if (process.env.RUN_FORK) {
     // copy .oppenzeppelin mainnet network manifest
     copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
     // skip contracts setup
