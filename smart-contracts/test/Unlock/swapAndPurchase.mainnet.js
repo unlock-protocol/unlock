@@ -35,7 +35,7 @@ describe(`swapAndCall`, function() {
 
   let unlock
   before(async function() {
-    if (!process.env.RUN_MAINNET_FORK) {
+    if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
@@ -139,7 +139,7 @@ describe(`swapAndCall`, function() {
 
           // approve
           if(srcToken.isToken) {
-            const token = await addERC20(srcToken, keyOwner, amountInMax)
+            const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
             await token.connect(keyOwner).approve(unlock.address, amountInMax)
           }
 
