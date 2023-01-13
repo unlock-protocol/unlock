@@ -1,5 +1,11 @@
-import deployUnlock from './deployUnlock'
-import configureUnlock from './configureUnlock'
-import deployTemplate from './deployTemplate'
+import integration from './integration'
+import hardhat from './hardhat'
+import contracts from './contracts'
+import coinbase from './coinbase'
 
-export { configureUnlock, deployUnlock, deployTemplate }
+export default {
+  ...integration,
+  ...hardhat,
+  ...coinbase,
+  ...contracts,
+}

@@ -1,9 +1,7 @@
-import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 
-import { deployUnlock, deployTemplate } from '.'
-
+import { getSigners } from '../helpers'
 export const chainId = 31337
 
 // used to run some tests only for ERC20 locks
@@ -15,10 +13,9 @@ export const setupTest = async (unlockVersion) => {
   let web3Service
   let accounts
 
-  const [signer] = await ethers.getSigners()
+  const [signer] = await getSigners()
   const ethersProvider = signer.provider
 
-  // pass hardhat ethers provider
   const networks = {
     [chainId]: {
       provider: 'http://localhost:8545',
@@ -26,8 +23,11 @@ export const setupTest = async (unlockVersion) => {
   }
   networks[chainId].ethersProvider = ethersProvider
 
-  // deploy Unlock
-  const unlockAddress = await deployUnlock(unlockVersion)
+  // TODO: deploy Unlock using shelljs
+  // await shelljs(`yarn hardhat deploy-unlock --unlock-version ${unlockVersion}`)
+  const unlockAddress = ''
+  console.log(unlockAddress)
+
   networks[chainId].unlockAddress = unlockAddress
 
   walletService = new WalletService(networks)
@@ -61,7 +61,9 @@ export const setupLock = async ({
     const unlock = await walletService.getUnlockContract()
 
     // deploy the relevant template
-    const templateAddress = await deployTemplate(publicLockVersion)
+    // TODO: deploy template using shelljs
+    // await shelljs(`yarn hardhat deploy-template --unlock-version ${publicLockVersion}`)
+    const templateAddress = '' // await deployTemplate(publicLockVersion)
 
     // prepare unlock for upgradeable locks
     if (versionEqualOrAbove(unlockVersion, 'v10')) {

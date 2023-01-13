@@ -2,8 +2,8 @@ import {
   itIfErc20,
   versionEqualOrBelow,
   versionEqualOrAbove,
-} from '../../helpers/integration'
-import { ethers } from 'hardhat'
+  getSigners,
+} from '../../helpers'
 
 let web3Service, chainId, walletService, lock, lockAddress, ERC20
 
@@ -22,7 +22,7 @@ export default ({ isERC20, publicLockVersion }) =>
       beforeAll(async () => {
         ;({ web3Service, chainId, walletService, lock, lockAddress, ERC20 } =
           global.suiteData)
-        ;[, spender, receiver] = await ethers.getSigners()
+        ;[, spender, receiver] = await getSigners()
         // Get the erc20 balance of the user before the purchase
         receiverBalanceBefore = await web3Service.getTokenBalance(
           lock.currencyContractAddress,

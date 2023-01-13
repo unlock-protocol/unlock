@@ -1,10 +1,10 @@
 /**
  * This is a helper to run a single test file against specific lock/unlock version
- * The easiest way to use it is throuhg the hardhat cli
+ * The easiest way to use it is throuhg the cli
  *
  * Usage:
  *
- * yarn hardhat test:integration src/__tests__/integration/lock/purchaseKey.js \
+ * yarn test:integration src/__tests__/integration/lock/purchaseKey.js \
  *     --lock-version 9 \
  *     --unlock-version 10 \
  * */
@@ -118,8 +118,9 @@ describe(`Unlock ${unlockVersion}`, () => {
       describe('lock creation', lockCreation(testSetupArgs))
 
       // lock tests
-      const testDescribe = require(testPath)
-      describe(testName, testDescribe.default(testSetupArgs))
+      // TODO: find how to run a single test
+      // const testDescribe = require(testPath)
+      // describe(testName, testDescribe.default(testSetupArgs))
     })
   })
 })

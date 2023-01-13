@@ -1,7 +1,7 @@
-import { ethers } from 'hardhat'
 import {
   versionEqualOrBelow,
   versionEqualOrAbove,
+  getSigners,
 } from '../../helpers/integration'
 
 let walletService, web3Service, lockAddress, lock, chainId
@@ -30,7 +30,7 @@ export default ({ publicLockVersion }) =>
       ;({ walletService, web3Service, lockAddress, lock, chainId } =
         global.suiteData)
 
-      const [deployer, ...signers] = await ethers.getSigners()
+      const [deployer, ...signers] = await getSigners()
       keyOwners = signers.slice(14, 19).map(({ address }) => address)
 
       // buy some keys

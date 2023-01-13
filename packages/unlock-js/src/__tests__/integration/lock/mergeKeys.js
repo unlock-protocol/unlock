@@ -1,5 +1,4 @@
-import { ethers } from 'hardhat'
-import { versionEqualOrAbove } from '../../helpers/integration'
+import { versionEqualOrAbove, getSigners } from '../../helpers'
 
 let walletService, web3Service, lockAddress, lock, chainId, accounts
 
@@ -29,7 +28,7 @@ export default ({ publicLockVersion }) =>
         )
 
         // merge entire key
-        const signers = await ethers.getSigners()
+        const signers = await getSigners()
         await walletService.connect(signers[5].provider, signers[5])
         await walletService.mergeKeys(
           {
