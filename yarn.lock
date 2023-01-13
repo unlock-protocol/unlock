@@ -12647,6 +12647,7 @@ __metadata:
     ts-jest: 29.0.3
     tsup: 6.5.0
     typescript: 4.9.4
+    vitest: 0.27.0
   peerDependencies:
     axios: 1.2.1
     ethers: ^5.7.x
@@ -17338,6 +17339,13 @@ __metadata:
   version: 6.7.12
   resolution: "cac@npm:6.7.12"
   checksum: c0d4129eb30fc43449e9078ac37bb3b837aab6261236a6642a6fb9d839bb6a41e191e1f2776f87569535db07dcbf4937680419126215b4c17c9dba4351d1bd5e
+  languageName: node
+  linkType: hard
+
+"cac@npm:^6.7.14":
+  version: 6.7.14
+  resolution: "cac@npm:6.7.14"
+  checksum: 45a2496a9443abbe7f52a49b22fbe51b1905eff46e03fd5e6c98e3f85077be3f8949685a1849b1a9cd2bc3e5567dfebcf64f01ce01847baf918f1b37c839791a
   languageName: node
   linkType: hard
 
@@ -26623,7 +26631,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 
@@ -48576,6 +48584,24 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"vite-node@npm:0.27.0":
+  version: 0.27.0
+  resolution: "vite-node@npm:0.27.0"
+  dependencies:
+    cac: ^6.7.14
+    debug: ^4.3.4
+    mlly: ^1.0.0
+    pathe: ^0.2.0
+    picocolors: ^1.0.0
+    source-map: ^0.6.1
+    source-map-support: ^0.5.21
+    vite: ^3.0.0 || ^4.0.0
+  bin:
+    vite-node: vite-node.mjs
+  checksum: 946d410750640ad0ab2d41f1a8faed42b3c004dd323532bd3d630d5ce41e0a3f56b03fb955afbfb1165b861488cace7093ad82aeedbadf2f631bf388d9140e9b
+  languageName: node
+  linkType: hard
+
 "vite-plugin-mdx@npm:^3.5.6":
   version: 3.5.10
   resolution: "vite-plugin-mdx@npm:3.5.10"
@@ -48851,6 +48877,50 @@ typescript@^3.8.3:
   bin:
     vitest: vitest.mjs
   checksum: b74c10444ab913c1d716005034308b347fa7341d26e3797eff17d1cc4903a30b6137d9e5da8b3f3c1047a7a645355c7a1b6601fcad94a29c44910289c5f12295
+  languageName: node
+  linkType: hard
+
+"vitest@npm:0.27.0":
+  version: 0.27.0
+  resolution: "vitest@npm:0.27.0"
+  dependencies:
+    "@types/chai": ^4.3.4
+    "@types/chai-subset": ^1.3.3
+    "@types/node": "*"
+    acorn: ^8.8.1
+    acorn-walk: ^8.2.0
+    cac: ^6.7.14
+    chai: ^4.3.7
+    debug: ^4.3.4
+    local-pkg: ^0.4.2
+    picocolors: ^1.0.0
+    source-map: ^0.6.1
+    strip-literal: ^1.0.0
+    tinybench: ^2.3.1
+    tinypool: ^0.3.0
+    tinyspy: ^1.0.2
+    vite: ^3.0.0 || ^4.0.0
+    vite-node: 0.27.0
+  peerDependencies:
+    "@edge-runtime/vm": "*"
+    "@vitest/browser": "*"
+    "@vitest/ui": "*"
+    happy-dom: "*"
+    jsdom: "*"
+  peerDependenciesMeta:
+    "@edge-runtime/vm":
+      optional: true
+    "@vitest/browser":
+      optional: true
+    "@vitest/ui":
+      optional: true
+    happy-dom:
+      optional: true
+    jsdom:
+      optional: true
+  bin:
+    vitest: vitest.mjs
+  checksum: 46e68b74ce691dd95210991338c6ef7498b1f816c26388066f789f803e1b64ab5ea9ab89e9efcf244c1bcd7a76c281a9467d79380ac3506abfd2cd79c72d37e2
   languageName: node
   linkType: hard
 
