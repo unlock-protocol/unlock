@@ -101,7 +101,7 @@ type Receipt @entity {
   sender: Bytes
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
   payer: Bytes!
-  "Lock identifier"
+  "Address of the Lock smart contract"
   lockAddress: Bytes!
   "owner"
   owner: Bytes!
