@@ -27,8 +27,8 @@ const scenarios = [
   [tokens.native, tokens.usdc],
   [tokens.dai, tokens.usdc],
   [tokens.usdc, tokens.native],
-  [tokens.udt, tokens.native]
-  [tokens.native, tokens.wBtc],
+  [tokens.udt, tokens.native],
+  [tokens.native, tokens.wBtc]
 ]
 
 describe(`swapAndCall`, function() {

@@ -441,7 +441,6 @@ const getUniswapTokens = (chainId = 1) => ({
   usdc: new Token(chainId, USDC, 6, 'USDC'),
   udt: new Token(chainId, UDT, 18, 'UDT'),
   wBtc: new Token(chainId, WBTC, 18, 'wBTC')
-  
 })
 
 module.exports = {
