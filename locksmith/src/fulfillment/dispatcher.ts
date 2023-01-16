@@ -18,7 +18,7 @@ interface KeyToGrant {
 export default class Dispatcher {
   async getPurchaser(network: number) {
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
     return {
@@ -32,7 +32,7 @@ export default class Dispatcher {
       Object.values(networks).map(async (network: any) => {
         try {
           const provider = new ethers.providers.JsonRpcProvider(
-            networks[network].provider
+            network.publicProvider
           )
           const wallet = new ethers.Wallet(config.purchaserCredentials)
           const balance = await provider.getBalance(wallet.address)
@@ -87,7 +87,7 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const walletWithProvider = new ethers.Wallet(
@@ -129,7 +129,7 @@ export default class Dispatcher {
 
   async hasFundsForTransaction(network: number) {
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
@@ -166,7 +166,7 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const walletWithProvider = new ethers.Wallet(
@@ -195,7 +195,7 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const walletWithProvider = new ethers.Wallet(
@@ -229,7 +229,7 @@ export default class Dispatcher {
    */
   async signToken(network: number, lockAddress: string, tokenId: string) {
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
     const web3Service = new Web3Service(networks)
 
@@ -254,7 +254,7 @@ export default class Dispatcher {
     callback: (error: any, hash: string | null) => Promise<void> | void
   ) {
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
     const signer = new ethers.Wallet(config.purchaserCredentials, provider)
     const walletService = new WalletService(networks)
@@ -275,7 +275,7 @@ export default class Dispatcher {
     >[0]['params']
   ) {
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
     const signer = new ethers.Wallet(config.purchaserCredentials, provider)
     const keyManager = new KeyManager()
