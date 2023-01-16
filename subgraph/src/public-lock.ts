@@ -217,7 +217,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
     key.save()
   }
 
-  // handle receipt
+  // create receipt
   createReceipt(keyID, event)
 }
 
