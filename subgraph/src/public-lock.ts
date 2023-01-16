@@ -330,22 +330,23 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  * @return {void}
  */
 export function createReceipt(
-  keyID: string | number,
+  keyID: string,
   event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
 ): void {
-  const receipt = Receipt.load(`${keyID}`)
+  const receipt = new Receipt(keyID)
   const lock = Lock.load(event.address.toHexString())
+  const key = Key.load(keyID)
 
   if (receipt) {
     receipt.hash = event.transaction.hash.toString()
     receipt.timestamp = event.block.timestamp
     receipt.payer = event.transaction.from // address who pays for the membership
-    receipt.sender = event.transaction.to || null // address will sends the transaction
+    receipt.sender = event.transaction.to || null // sender of the transactions
     receipt.lockAddress = event.address
     receipt.amountTransferred = event.transaction.value
     receipt.tokenAddress = lock!.tokenAddress
     receipt.gasTotal = event.transaction.gasPrice
-    receipt.owner = event.transaction.to ?? ''
+    receipt.owner = key!.owner // key owner
     receipt.save()
   }
 }
