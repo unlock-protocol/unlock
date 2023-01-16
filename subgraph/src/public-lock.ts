@@ -198,7 +198,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.save()
   }
 
-  // handle receipt
+  // create receipt
   createReceipt(keyID, event)
 }
 
