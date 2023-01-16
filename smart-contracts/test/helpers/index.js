@@ -3,7 +3,7 @@ const lock = require('./lock')
 const constants = require('./constants')
 const errors = require('./errors')
 const tokens = require('./tokens')
-const mainnet = require('./mainnet')
+const contracts = require('./contracts')
 const multisig = require('./multisig')
 const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
@@ -12,6 +12,7 @@ const interface = require('./interface')
 const uniswapV2 = require('./uniswapV2')
 const uniswapV3 = require('./uniswapV3')
 const math = require('./math')
+const fork = require('./fork')
 
 module.exports = {
   getBalance,
@@ -21,11 +22,12 @@ module.exports = {
   ...deployLocks,
   ...tokens,
   ...errors,
-  ...mainnet,
+  ...contracts,
   ...multisig,
   ...time,
   ...interface,
   ...uniswapV2,
   ...uniswapV3,
   ...math,
+  ...fork,
 }

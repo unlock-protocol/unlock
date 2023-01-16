@@ -4,7 +4,8 @@ const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk/')
 const { Token } = require('@uniswap/sdk-core')
 
 const { abi: WethABI } = require('./ABIs/weth.json')
-const { WETH, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
+const { addUDT, impersonate, addSomeETH } = require('./fork')
+const { WETH, UDT } = require('./contracts')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 const POSITION_MANAGER_ADDRESS = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
@@ -315,7 +316,7 @@ const createPool = async function ({
 }
 
 const deployUniswapV3Oracle = async function () {
-  const Oracle = await ethers.getContractFactory('UniswapV3Oracle')
+  const Oracle = await ethers.getContractFactory('UniswapOracleV3')
   const oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
   return oracle
 }
