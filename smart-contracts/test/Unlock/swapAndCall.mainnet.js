@@ -1,4 +1,4 @@
-const { ethers, unlock, upgrades } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 const { expect } = require('chai')
 const { 
   impersonate, 
@@ -10,17 +10,15 @@ const {
   getBalance,
   WETH,
   addERC20,
-  PERMIT2_ADDRESS
+  UNLOCK_PROXY_OWNER,
+  UNLOCK_ADDRESS,
+  PERMIT2_ADDRESS,
+  CHAIN_ID
  } = require('../helpers')
 
-// get unlock address in mainnet
-const { networks : { 1 : { unlockAddress }} } = unlock
-
-// some whales
-const UNLOCK_PROXY_OWNER = '0xF867712b963F00BF30D372b857Ae7524305A0CE7'
 
 // get uniswap-formatted tokens
-const tokens = getUniswapTokens()
+const tokens = getUniswapTokens(CHAIN_ID)
 
 const scenarios = [
   [tokens.native, tokens.dai],
@@ -41,13 +39,13 @@ describe(`swapAndCall`, function() {
     }
 
     // get Unlock contract
-    unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
     
     // upgrade Unlock with the modified version
     await impersonate(UNLOCK_PROXY_OWNER)
     const unlockProxyOwner = await ethers.getSigner(UNLOCK_PROXY_OWNER)
     const Unlock = await ethers.getContractFactory('Unlock', unlockProxyOwner)
-    await upgrades.upgradeProxy(unlockAddress, Unlock)
+    await upgrades.upgradeProxy(UNLOCK_ADDRESS, Unlock)
 
     // get unlock owner
     const unlockOwnerAddress = await unlock.owner()
@@ -61,7 +59,7 @@ describe(`swapAndCall`, function() {
       16000, // gasEstimate
       'KEY_SWAP',
       'http://locksmith:8080/api/key/',
-      1, // mainnet fork
+      CHAIN_ID, // fork
     )
 
     // config permit2

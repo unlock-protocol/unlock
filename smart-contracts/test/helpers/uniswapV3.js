@@ -9,7 +9,7 @@ const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
 
 const { abi: WethABI } = require('./ABIs/weth.json')
 const { addUDT, impersonate, addSomeETH } = require('./fork')
-const { WETH, UDT } = require('./contracts')
+const { WETH, USDC, DAI, UDT, WBTC, UNISWAP_FACTORY_ADDRESS, V3_SWAP_ROUTER_ADDRESS, POSITION_MANAGER_ADDRESS, CHAIN_ID } = require('./contracts')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 const POSITION_MANAGER_ADDRESS = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
@@ -360,7 +360,7 @@ const makePermit = (
   }
 }
 
-async function generatePermitSignature(permit, signer, chainId) {
+async function generatePermitSignature(permit, signer, chainId = CHAIN_ID) {
   const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
   return await signer._signTypedData(domain, types, values)
 }
@@ -379,7 +379,7 @@ async function getUniswapRoute ({
     usePermit2Sig = false,
     inputTokenPermit
   } = {},
-  chainId = 1
+  chainId = CHAIN_ID
 }) {
   // init router
   const router = new AlphaRouter({ 
@@ -437,7 +437,6 @@ const getUniswapTokens = (chainId = 1) => ({
   native: nativeOnChain(chainId),
   dai: new Token(chainId, DAI, 18, 'DAI'),
   weth: new Token(chainId, WETH, 18, 'WETH'),
-  shiba: new Token(chainId, SHIBA_INU, 18, 'SHIBA'),
   usdc: new Token(chainId, USDC, 6, 'USDC'),
   udt: new Token(chainId, UDT, 18, 'UDT'),
   wBtc: new Token(chainId, WBTC, 18, 'wBTC')
