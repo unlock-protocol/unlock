@@ -12,11 +12,6 @@ const { addUDT, impersonate, addSomeETH } = require('./fork')
 const { WETH, USDC, DAI, UDT, WBTC, UNISWAP_FACTORY_ADDRESS, V3_SWAP_ROUTER_ADDRESS, POSITION_MANAGER_ADDRESS, CHAIN_ID } = require('./contracts')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
-const POSITION_MANAGER_ADDRESS = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
-const UNISWAP_FACTORY_ADDRESS = '0x1F98431c8aD98523631AE4a59f267346ea31F984'
-const UNISWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564';
-const V3_SWAP_ROUTER_ADDRESS = '0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B'
-
 // default fee
 const FEE = 500
 const BASIS_POINTS = 1000000
@@ -320,7 +315,7 @@ const createPool = async function ({
   return poolContract
 }
 
-const deployUniswapOracleV3 = async function () {
+const deployUniswapV3Oracle = async function () {
   const Oracle = await ethers.getContractFactory('UniswapOracleV3')
   const oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
   return oracle
@@ -451,10 +446,6 @@ module.exports = {
   getPoolImmutables,
   getUniswapRoute,
   getUniswapTokens,
-  POSITION_MANAGER_ADDRESS,
-  UNISWAP_FACTORY_ADDRESS,
-  UNISWAP_ROUTER_ADDRESS,
-  V3_SWAP_ROUTER_ADDRESS,
   PERMIT2_ADDRESS,
   MAX_UINT160,
   makePermit,

@@ -1,13 +1,5 @@
 const { ethers, network, config } = require('hardhat')
-const { UDT, unlockAddress } = require('./contracts')
-
-// whales
-const whales = {
-  [DAI]: '0xf977814e90da44bfa03b6295a0616a897441acec',// binance
-  [USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28',
-  [WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
-  [UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534', // unlock-protocol.eth
-}
+const { UDT, unlockAddress, whales } = require('./contracts')
 
 const resetNodeState = async () => {
   // reset fork
@@ -116,4 +108,5 @@ module.exports = {
   getUDTMainnet,
   addUDT,
   addSomeETH,
+  addERC20,
 }
