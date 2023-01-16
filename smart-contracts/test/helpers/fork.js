@@ -1,20 +1,5 @@
 const { ethers, network, config } = require('hardhat')
-const { mainnet } = require('@unlock-protocol/networks')
-
-// currencies
-const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
-const SHIBA_INU = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE'
-const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
-const DAI = '0x6B175474E89094C44Da98b954EedeAC495271d0F'
-const WBTC = '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599'
-
-// Unlock stuff
-const { unlockAddress } = mainnet
-const UDT = '0x90DE74265a416e1393A450752175AED98fe11517'
-const UNLOCK_ADDRESS = unlockAddress
-const UNLOCK_MULTISIG = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const UNLOCK_GOVERNOR = '0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94'
-const UNLOCK_TIMELOCK = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
+const { UDT, unlockAddress } = require('./contracts')
 
 // whales
 const whales = {
@@ -131,15 +116,4 @@ module.exports = {
   getUDTMainnet,
   addUDT,
   addSomeETH,
-  addERC20,
-  USDC,
-  WETH,
-  DAI,
-  UDT,
-  WBTC,
-  UNLOCK_ADDRESS,
-  UNLOCK_MULTISIG,
-  UNLOCK_GOVERNOR,
-  UNLOCK_TIMELOCK,
-  SHIBA_INU,
 }
