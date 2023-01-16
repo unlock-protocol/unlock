@@ -51,20 +51,20 @@ const polygon = {
 const polygonWhales = {
   [polygon.USDC]: '0xf977814e90da44bfa03b6295a0616a897441acec',
   [polygon.DAI]: '0x91993f2101cc758d0deb7279d41e880f7defe827',
-  [polygon.WBTC]: '',
+  [polygon.WBTC]: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
   [polygon.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534',
 }
 
 let contracts 
 
 switch (process.env.RUN_FORK) {
-  case 1:
+  case '1':
     contracts = {
       ...mainnet,
       whales,
     }
     break;
-  case 137:
+  case '137':
     contracts = {
       ...polygon,
       polygonWhales,
