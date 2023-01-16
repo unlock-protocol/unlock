@@ -11,7 +11,7 @@ interface IPublicLockForKeyManager {
   function lendKey(address from, address to, uint tokenId) external;
 }
 
-error NOT_AUTHORIZED();
+error NOT_AUTHORIZED(address signer);
 error TOO_LATE();
 
 /// @custom:security-contact hello@unlock-protocol.com
@@ -63,7 +63,7 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
     address signer = ECDSAUpgradeable.recover(hash, transferCode);
 
     if (!locksmiths[signer]) {
-      revert NOT_AUTHORIZED();
+      revert NOT_AUTHORIZED(signer);
     }
 
     return IPublicLockForKeyManager(lock).lendKey(owner, msg.sender, token);

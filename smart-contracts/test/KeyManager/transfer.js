@@ -55,7 +55,7 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     };
     const attackerSigner = await ethers.getSigner(attacker)
     const signature = await attackerSigner._signTypedData(domain, types, transfer);
-    await reverts(keyManager.transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature), `VM Exception while processing transaction: reverted with custom error 'NOT_AUTHORIZED()'`)
+    await reverts(keyManager.transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature), `VM Exception while processing transaction: reverted with custom error 'NOT_AUTHORIZED("0x90F79bf6EB2c4f870365E785982E1f101E93b906")'`)
   })
 
 
