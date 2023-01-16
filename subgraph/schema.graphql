@@ -97,7 +97,7 @@ type Receipt @entity {
   hash: String!
   "Timestamp"
   timestamp: BigInt!
-  "Sender"
+  "Sender of the transaction"
   sender: Bytes
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
   payer: Bytes!
