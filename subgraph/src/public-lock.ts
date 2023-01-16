@@ -83,7 +83,7 @@ function newKey(event: TransferEvent): void {
     lockStats.save()
   }
 
-  // update receipt
+  // create receipt
   createReceipt(keyID, event)
 }
 
