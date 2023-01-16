@@ -146,3 +146,15 @@ task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
     return await govDeployer()
   }
 )
+
+task('deploy:keyManager', 'Deploy KeyManager contract')
+  .addOptionalParam('locksmiths', 'addresses for the locksmith signers, comma separated')
+  .setAction(
+    async ({ locksmiths }) => {
+      const locksmithsArray = !locksmiths ? [] : locksmiths.split(',')
+
+      // eslint-disable-next-line global-require
+      const keyManagerDeployer = require('../scripts/deployments/keyManager')
+      return await keyManagerDeployer(locksmithsArray)
+    }
+  )
