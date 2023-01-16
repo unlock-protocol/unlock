@@ -7,7 +7,7 @@
  */
 
 import { ethers, unlock } from 'hardhat'
-import { E2E_WALLET_ADDRESS } from '../../../constants'
+import { E2E_WALLET_ADDRESS } from './constants'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
