@@ -50,6 +50,7 @@ const addERC20 =  async function (tokenAddress, address, amount = ethers.utils.p
   return erc20Contract
 }
 
+
 const toBytes32 = (bn) => {
   return ethers.utils.hexlify(ethers.utils.zeroPad(bn.toHexString(), 32))
 }
