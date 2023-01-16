@@ -33,7 +33,7 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     })
   }
 
-  const validPeriod = 86400 // 1 day in seconds
+  const validPeriod = 60 * 60 * 15 // 15 minutes
   const deadline = Math.floor(Date.now() / 1000) + validPeriod
 
   const key = await subgraph.key(
@@ -69,7 +69,7 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     transferCode,
     keyId,
     transferUrl: transferUrl.toString(),
-    validPeriod: '24 hours',
+    validPeriod: '15 minutes',
   })
 
   return response.status(200).send({
