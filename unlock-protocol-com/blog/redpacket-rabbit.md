@@ -1,8 +1,8 @@
 ---
-title: The story behind the red packet
+title: The Story Behind the Red Packet
 authorName: Christopher Carfi
 publishDate: January 18, 2023
-description: 
+description: The exchanging of hongbao, also referred to as “red packet” or “red envelope”, is a traditional Chinese gift-giving practice to show appreciation or gratitude.
 image: /images/blog/redpacket-rabbit/titleofimage.png
 ---
 
