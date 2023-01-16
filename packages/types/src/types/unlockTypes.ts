@@ -48,6 +48,7 @@ export interface NetworkConfig {
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
+  keyManagerAddress?: string
   subgraph: {
     endpoint: string
     endpointV2?: string
@@ -80,7 +81,7 @@ export interface NetworkConfig {
     symbol: string
     address: string
   } | null
-  maxFreeClaimCost?: number 
+  maxFreeClaimCost?: number
   requiredConfirmations?: number
   baseCurrencySymbol?: string
   nativeCurrency?: Omit<Token, 'address'>

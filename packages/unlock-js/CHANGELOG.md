@@ -1,6 +1,10 @@
 # Changes
 
-# 0.32.16
+# 0.32.18
+
+- Add KeyManager for interacting with key manager contracts.
+
+# 0.32.17
 
 - Add getBaseTokenURI to web3Service
 
