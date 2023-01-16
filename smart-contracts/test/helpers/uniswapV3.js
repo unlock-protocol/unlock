@@ -315,7 +315,7 @@ const createPool = async function ({
   return poolContract
 }
 
-const deployUniswapOracleV3 = async function () {
+const deployUniswapV3Oracle = async function () {
   const Oracle = await ethers.getContractFactory('UniswapOracleV3')
   const oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
   return oracle
@@ -324,7 +324,7 @@ const deployUniswapOracleV3 = async function () {
 module.exports = {
   addLiquidity,
   createUniswapV3Pool: createPool,
-  deployUniswapOracleV3,
+  deployUniswapV3Oracle,
   getPoolState,
   getPoolImmutables,
   POSITION_MANAGER_ADDRESS,
