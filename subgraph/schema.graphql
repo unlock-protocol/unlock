@@ -92,9 +92,8 @@ type UnlockStats @entity {
 }
 
 type Receipt @entity {
-  id: ID!
   "Transaction Hash"
-  hash: String!
+  id: ID!
   "Timestamp"
   timestamp: BigInt!
   "Sender of the transaction"

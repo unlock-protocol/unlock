@@ -333,20 +333,18 @@ export function createReceipt(
   keyID: string,
   event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
 ): void {
-  const receipt = new Receipt(keyID)
+  const hash = event.transaction.hash.toString()
+  const receipt = new Receipt(hash)
   const lock = Lock.load(event.address.toHexString())
   const key = Key.load(keyID)
 
-  if (receipt) {
-    receipt.hash = event.transaction.hash.toString()
-    receipt.timestamp = event.block.timestamp
-    receipt.payer = event.transaction.from // address who pays for the membership
-    receipt.sender = event.transaction.to || null // sender of the transactions
-    receipt.lockAddress = event.address
-    receipt.amountTransferred = event.transaction.value
-    receipt.tokenAddress = lock!.tokenAddress
-    receipt.gasTotal = event.transaction.gasPrice
-    receipt.owner = key!.owner // key owner
-    receipt.save()
-  }
+  receipt.timestamp = event.block.timestamp
+  receipt.payer = event.transaction.from // address who pays for the membership
+  receipt.sender = event.transaction.to || null // sender of the transactions
+  receipt.lockAddress = event.address
+  receipt.amountTransferred = event.transaction.value
+  receipt.tokenAddress = lock!.tokenAddress
+  receipt.gasTotal = event.transaction.gasPrice
+  receipt.owner = key!.owner // key owner
+  receipt.save()
 }
