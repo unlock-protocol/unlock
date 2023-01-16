@@ -18,7 +18,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock, UnlockStats, LockStats } from '../generated/schema'
+import { Key, Lock, UnlockStats, LockStats, Receipt } from '../generated/schema'
 
 import {
   genKeyID,
@@ -82,6 +82,9 @@ function newKey(event: TransferEvent): void {
     lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
     lockStats.save()
   }
+
+  // update receipt
+  handleKeyReceipt(keyID, event)
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -194,6 +197,9 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.expiration = event.params.newTimestamp
     key.save()
   }
+
+  // handle receipt
+  handleKeyReceipt(keyID, event)
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -210,6 +216,9 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
     key.expiration = event.params.newExpiration
     key.save()
   }
+
+  // handle receipt
+  handleKeyReceipt(keyID, event)
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -312,5 +321,30 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
 
     // lock.symbol = event.params.symbol
     lock.save()
+  }
+}
+/**
+ * Create Receipt object for subgraph for key 'purchase'/'extend'/'renewal'
+ * @param {String} keyID - key id
+ * @param {event} Object - Object event
+ * @return {void}
+ */
+export function handleKeyReceipt(
+  keyID: string | number,
+  event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
+): void {
+  const receipt = Receipt.load(`${keyID}`)
+  const lock = Lock.load(event.address.toHexString())
+
+  if (receipt) {
+    receipt.hash = event.transaction.hash.toString()
+    receipt.timestamp = event.block.timestamp
+    receipt.payer = event.transaction.from.toString() // address who pays for the membership
+    receipt.sender = event.transaction.to?.toString() || null // address will sends the transaction
+    receipt.lockAddress = event.address.toHexString()
+    receipt.amountTransferred = event.transaction.value
+    receipt.tokenAddress = lock!.tokenAddress
+    receipt.gasTotal = event.transaction.gasPrice
+    receipt.save()
   }
 }
