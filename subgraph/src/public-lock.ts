@@ -84,7 +84,7 @@ function newKey(event: TransferEvent): void {
   }
 
   // update receipt
-  handleKeyReceipt(keyID, event)
+  createReceipt(keyID, event)
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -199,7 +199,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   }
 
   // handle receipt
-  handleKeyReceipt(keyID, event)
+  createReceipt(keyID, event)
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -218,7 +218,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 
   // handle receipt
-  handleKeyReceipt(keyID, event)
+  createReceipt(keyID, event)
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -329,7 +329,7 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  * @param {event} Object - Object event
  * @return {void}
  */
-export function handleKeyReceipt(
+export function createReceipt(
   keyID: string | number,
   event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
 ): void {
@@ -339,12 +339,13 @@ export function handleKeyReceipt(
   if (receipt) {
     receipt.hash = event.transaction.hash.toString()
     receipt.timestamp = event.block.timestamp
-    receipt.payer = event.transaction.from.toString() // address who pays for the membership
-    receipt.sender = event.transaction.to?.toString() || null // address will sends the transaction
-    receipt.lockAddress = event.address.toHexString()
+    receipt.payer = event.transaction.from // address who pays for the membership
+    receipt.sender = event.transaction.to || null // address will sends the transaction
+    receipt.lockAddress = event.address
     receipt.amountTransferred = event.transaction.value
     receipt.tokenAddress = lock!.tokenAddress
     receipt.gasTotal = event.transaction.gasPrice
+    receipt.owner = event.transaction.to ?? ''
     receipt.save()
   }
 }

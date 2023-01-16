@@ -98,11 +98,13 @@ type Receipt @entity {
   "Timestamp"
   timestamp: BigInt!
   "Sender"
-  sender: String
+  sender: Bytes
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
-  payer: String!
+  payer: Bytes!
   "Lock identifier"
-  lockAddress: String!
+  lockAddress: Bytes!
+  "owner"
+  owner: Bytes!
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
   tokenAddress: Bytes!
   "amount"
