@@ -15,7 +15,7 @@ const {
   impersonate,
   purchaseKey,
   purchaseKeys,
-  deployUniswapV3Oracle,
+  deployUniswapOracleV3,
 } = require('../helpers')
 
 const { unlockAddress } = mainnet
@@ -44,7 +44,7 @@ contract('Unlock / uniswapValue', () => {
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
     // deploy oracle
-    oracle = await deployUniswapV3Oracle()
+    oracle = await deployUniswapOracleV3()
     oracleAddress = oracle.address
 
     //impersonate unlock multisig
