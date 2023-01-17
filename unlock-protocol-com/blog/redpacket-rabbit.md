@@ -2,9 +2,11 @@
 title: The Story Behind the Red Envelope
 authorName: Christopher Carfi
 publishDate: January 18, 2023
-description: The exchanging of hongbao, also referred to as “red packet” or “red envelope”, is a traditional Chinese gift-giving practice to show appreciation or gratitude.
+description: The exchanging of hongbao, also referred to as “red packet” or “red envelope,” is a traditional Chinese gift-giving practice to show appreciation or gratitude.
 image: /images/blog/redpacket-rabbit/redpacket-rabbit.png
 ---
+
+![red packet](/images/blog/redpacket-rabbit/redpacket-rabbit.png)
 
 The exchanging of [hongbao](https://en.wikipedia.org/wiki/Red_envelope) (also referred to as “red packet” or “red envelope”) is a traditional Chinese gift-giving practice that dates back centuries and is typically associated with holidays such as Chinese New Year and other special occasions. It is also [commonly used in business and professional settings](https://en.wikipedia.org/wiki/WeChat_red_envelope) to show appreciation or gratitude.
 
