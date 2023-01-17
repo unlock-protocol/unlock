@@ -50,18 +50,21 @@ export const createTransferCode: RequestHandler = async (request, response) => {
 
   const owner = normalizer.ethereumAddress(key.owner)
 
-  const transferCode = await dispatcher.createTransferCode(network, {
+  const transfer = {
     owner,
     lock: lockAddress,
     token: keyId,
     deadline: deadline,
-  })
+  }
+
+  const transferCode = await dispatcher.createTransferCode(network, transfer)
 
   const transferUrl = new URL(config.unlockApp)
   transferUrl.searchParams.set('lockAddress', lockAddress)
   transferUrl.searchParams.set('keyId', keyId)
   transferUrl.searchParams.set('transferCode', transferCode)
   transferUrl.searchParams.set('network', network.toString())
+  transferUrl.searchParams.set('transfer', JSON.stringify(transfer))
 
   await sendEmail('transferCode', 'transferCode', email, {
     lockName: key.lock.name || 'Unlock Lock',
@@ -72,7 +75,5 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     validPeriod: '15 minutes',
   })
 
-  return response.status(200).send({
-    message: 'Successfully sent transfer code.',
-  })
+  return response.status(200).send(transfer)
 }

@@ -1710,9 +1710,20 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - 'owner'
+                  - 'lock'
+                  - 'token'
+                  - 'deadline'
                 properties:
-                  message:
+                  owner:
                     type: string
+                  lock:
+                    type: string
+                  token:
+                    type: string
+                  deadline:
+                    type: number
 
         404:
           description: Key not found.
@@ -1720,6 +1731,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - 'message'
                 properties:
                   message:
                     type: string
