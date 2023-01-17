@@ -16,7 +16,7 @@ Our designer [Chiali](https://chialitsai.com/about/) brought up the idea of seei
 
 Chiali’s design and results are delightful.
 
-![red packet](/images/blog/redpacket-rabbit/redpacket-rabbit.png)
+![red packet rarities](/images/blog/redpacket-rabbit/redpacket-all-rarities.png)
 
 In addition to Chiali’s fantastic art, which stands on its own, some of the packets may have a little something special inside them as well to help cheer in the Year of the Rabbit. 🧧
 
