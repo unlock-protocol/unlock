@@ -7,7 +7,7 @@
  */
 
 import { ethers, unlock } from 'hardhat'
-import { E2E_WALLET_ADDRESS } from './constants'
+import { E2E_METAMASK_SEED } from './../../../../tests/e2e/constants'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
@@ -16,7 +16,7 @@ const { AddressZero } = ethers.constants
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
-const users = [E2E_WALLET_ADDRESS]
+const users: string[] = []
 
 if (process.env.LOCKSMITH_PURCHASER_ADDRESS) {
   users.push(process.env.LOCKSMITH_PURCHASER_ADDRESS)
@@ -31,6 +31,10 @@ const log = (message: string) => {
 }
 
 async function main() {
+  // e2e test wallet from mnemonic
+  const walletMnemonic = await ethers.Wallet.fromMnemonic(E2E_METAMASK_SEED)
+  users.push(walletMnemonic.address)
+
   const [deployer, holder] = await ethers.getSigners()
 
   /**
