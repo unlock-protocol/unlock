@@ -24,7 +24,7 @@ We will open a mint window on Wednesday, January 18, 2023, and you can mint and 
 
 The five hongbao designs with differing rarity traits will be revealed to holders on Sunday, January 22, 2023 (Lunar New Year).
 
-Mint price to send a gift of hongbao is 1 MATIC (right around a dollar at today’s rates) and takes place on the Polygon Network. 
+Mint price to send a gift of hongbao is 1 MATIC (right around a dollar at today’s rates) and takes place on the Polygon Network. While you can mint multiple times to send to multiple recipients, there is a maximum of one hongbao gift per wallet. 
 
 **If you would like to gift a web3-powered red packet to someone this year, please visit: [https://red-packet.unlock-protocol.com](https://red-packet.unlock-protocol.com).**
 
