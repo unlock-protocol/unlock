@@ -1,4 +1,4 @@
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, ToggleSwitch, Toggle } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { getAddressForName } from '~/hooks/useEns'
 import { ACCOUNT_REGEXP } from '~/constants'
@@ -10,6 +10,8 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { formatDate } from '~/utils/lock'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { KeyManager } from '@unlock-protocol/unlock-js'
+import { useConfig } from '~/utils/withConfig'
 export interface Props {
   add(member: AirdropMember): void
   lock: Lock
@@ -18,6 +20,7 @@ export interface Props {
 }
 
 export function AirdropForm({ add, defaultValues, lock }: Props) {
+  const config = useConfig()
   const {
     handleSubmit,
     register,
@@ -29,6 +32,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
     defaultValues,
   })
 
+  const [isEmailAirdrop, setIsEmailAirdrop] = useState(false)
   const formValues = watch()
 
   const addressFieldChanged = (name: keyof AirdropMember) => {
@@ -48,21 +52,69 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   return (
     <form
       onSubmit={handleSubmit((member) => {
+        if (!member.recipient && member.email) {
+          const keyManager = new KeyManager(config.networks)
+          const networkConfig = config.networks[lock.network]
+          const recipient = keyManager.createTransferAddress({
+            params: {
+              email: member.email,
+              lockAddress: lock.address,
+            },
+          })
+          member.manager = networkConfig.keyManagerAddress
+          member.recipient = recipient
+        }
         const parsed = AirdropMember.parse(member)
         add(parsed)
         reset()
       })}
       className="grid gap-6"
     >
+      <div className="p-4 bg-white border border-gray-200 rounded-xl">
+        <div className="flex items-center justify-between">
+          <label htmlFor="email-toggle">
+            I don&apos;t have recipient&apos;s wallet address or ENS
+          </label>
+          <Toggle
+            value={isEmailAirdrop}
+            aria-label="email-toggle"
+            onChange={(value) => {
+              setIsEmailAirdrop(value)
+            }}
+          />
+        </div>
+      </div>
+
+      {!isEmailAirdrop && (
+        <Input
+          disabled={isEmailAirdrop}
+          label="Recipient"
+          {...register('recipient', {
+            disabled: isEmailAirdrop,
+            pattern: ACCOUNT_REGEXP,
+            required: 'Recipient is required',
+            onChange: addressFieldChanged('recipient'),
+          })}
+          error={errors.recipient?.message}
+          description="Enter recipient address or ENS."
+        />
+      )}
+
       <Input
-        label="Recipient"
-        {...register('recipient', {
-          pattern: ACCOUNT_REGEXP,
-          required: 'Recipient is required',
-          onChange: addressFieldChanged('recipient'),
+        type="email"
+        label="Email Address"
+        {...register('email', {
+          required: {
+            value: isEmailAirdrop,
+            message: 'Email is required',
+          },
         })}
-        error={errors.recipient?.message}
-        description="Enter recipient address or ENS."
+        description={
+          isEmailAirdrop
+            ? 'A confirmation email will sent to your recipient with the QR code and a link to claim the NFT to their own wallet.'
+            : 'A confirmation email will be sent to your recipient with the QR code and link for NFT.'
+        }
+        error={errors.email?.message}
       />
       <Input
         pattern="[0-9]+"
@@ -111,21 +163,16 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
           )}
         </div>
       </div>
-      <Input
-        type="email"
-        label="Email Address (optional)"
-        {...register('email')}
-        description="Send a confirmation email to your recipient with the QR code and link for NFT."
-        error={errors.email?.message}
-      />
-      <Input
-        label="Key Manager (optional)"
-        {...register('manager', {
-          onChange: addressFieldChanged('manager'),
-        })}
-        description="Key manager will be grant the permission to transfer, cancel the membership. By default, your address is set as manager."
-        error={errors.manager?.message}
-      />
+      {!isEmailAirdrop && (
+        <Input
+          label="Key Manager"
+          {...register('manager', {
+            onChange: addressFieldChanged('manager'),
+          })}
+          description="Key manager will be grant the permission to transfer, cancel the membership. By default, your address is set as manager."
+          error={errors.manager?.message}
+        />
+      )}
       <Button loading={isSubmitting} disabled={isSubmitting} type="submit">
         Add recipient
       </Button>
