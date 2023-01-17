@@ -7,7 +7,7 @@ export const KeyManagerAbi = [
   'function transfer(address lock, uint256 token, address owner, uint256 deadline, bytes transferCode)',
 ]
 
-export interface TransferCode {
+export interface TransferObject {
   lock: string
   token: string
   owner: string
@@ -17,12 +17,12 @@ export interface TransferCode {
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 export interface CreateTransferSignatureOptions {
   signer: Signer
-  params: TransferCode
+  params: TransferObject
   network: number
 }
 
 export interface TransferOptions {
-  params: TransferCode & {
+  params: TransferObject & {
     transferSignature: string
   }
   network: number
