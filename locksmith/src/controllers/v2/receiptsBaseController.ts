@@ -93,25 +93,51 @@ export class ReceiptsBaseController {
           message: 'Missing country',
         })
       }
-      const receipts = new ReceiptsBase()
 
-      receipts.supplier = supplier
-      receipts.vat = vat
-      receipts.servicePerformed = servicePerformed
-      receipts.addressLine1 = addressLine1
-      receipts.addressLine2 = addressLine2
-      receipts.city = city
-      receipts.country = country
-
-      receipts.lockAddress = lockAddress
-      receipts.network = network
-      receipts.hash = hash
-
-      await receipts.save()
-
-      return response.status(200).send({
-        message: 'Receipts details saved',
+      const receiptBase = await ReceiptsBase.findOne({
+        where: {
+          lockAddress,
+          network,
+          hash,
+        },
       })
+
+      if (receiptBase) {
+        // receipts already exists need to be updated
+        await ReceiptsBase.upsert(
+          {
+            lockAddress,
+            network,
+            hash,
+            ...request.body,
+          },
+          {
+            returning: true,
+          }
+        )
+        return response.status(200).json({
+          message: 'Receipts updated.',
+        })
+      } else {
+        // receipts not exists need to be sets
+        const receiptBase = new ReceiptsBase()
+
+        receiptBase.supplier = request?.body?.supplier
+        receiptBase.vat = request?.body?.vat
+        receiptBase.servicePerformed = request?.body?.servicePerformed
+        receiptBase.addressLine1 = request?.body?.addressLine1
+        receiptBase.addressLine2 = request?.body?.addressLine2
+        receiptBase.city = request?.body?.city
+        receiptBase.zip = request?.body?.zip
+        receiptBase.state = request?.body?.state
+        receiptBase.country = request?.body?.country
+
+        await receiptBase.save()
+
+        return response.status(200).send({
+          message: 'Receipts details saved',
+        })
+      }
     } catch (err) {
       return response.status(500)
     }

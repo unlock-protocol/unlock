@@ -112,15 +112,22 @@ export class ReceiptsController {
         })
       } else {
         // receipts not exists need to be sets
-        const receipts = new Receipts({
-          ...request.body,
-        })
-        await receipts.save()
-      }
+        const receipts = new Receipts()
 
-      return response.status(200).send({
-        message: 'Receipts details saved',
-      })
+        receipts.fullname = request?.body?.fullname
+        receipts.businessName = request?.body?.business
+        receipts.addressLine1 = request?.body?.addressLine1
+        receipts.addressLine2 = request?.body?.addressLine2
+        receipts.city = request?.body?.city
+        receipts.zip = request?.body?.zip
+        receipts.state = request?.body?.state
+        receipts.country = request?.body?.country
+
+        await receipts.save()
+        return response.status(200).send({
+          message: 'Receipts details saved',
+        })
+      }
     } catch (err) {
       return response.status(500)
     }
