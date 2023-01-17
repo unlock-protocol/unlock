@@ -10,6 +10,7 @@ export class Receipts extends Model<
   InferAttributes<Receipts>,
   InferCreationAttributes<Receipts>
 > {
+  // receipts details
   declare id: number
   declare fullname: string
   declare businessName: string
@@ -19,6 +20,11 @@ export class Receipts extends Model<
   declare zip: string
   declare state: string
   declare country: string
+
+  // lock & transaction details
+  declare network: number
+  declare lockAddress: string
+  declare hash: string
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -30,6 +36,11 @@ Receipts.init(
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
+    },
+    hash: {
+      allowNull: true,
+      unique: true,
+      type: DataTypes.STRING,
     },
     fullname: {
       type: DataTypes.STRING,
@@ -60,6 +71,14 @@ Receipts.init(
       allowNull: false,
     },
     country: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    network: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+    },
+    lockAddress: {
       type: DataTypes.STRING,
       allowNull: false,
     },

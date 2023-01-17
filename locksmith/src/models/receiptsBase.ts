@@ -10,6 +10,7 @@ export class ReceiptsBase extends Model<
   InferAttributes<ReceiptsBase>,
   InferCreationAttributes<ReceiptsBase>
 > {
+  // receipts details
   declare id: number
   declare supplier: string
   declare vat: string
@@ -20,6 +21,11 @@ export class ReceiptsBase extends Model<
   declare zip: string
   declare state: string
   declare country: string
+
+  // lock & transaction details
+  declare network: number
+  declare lockAddress: string
+  declare hash: string
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -67,6 +73,19 @@ ReceiptsBase.init(
     country: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    network: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+    },
+    lockAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    hash: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
     createdAt: {
       allowNull: false,
