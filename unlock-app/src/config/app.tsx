@@ -69,7 +69,9 @@ export const config = {
       host: app.wedlocksUri,
     },
   },
-  recaptchaKey: '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir',
+  recaptchaKey:
+    '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir' ||
+    process.env.NEXT_PUBLIC_CAPTCHA_KEY,
   requiredConfirmations: 12,
   ...app,
 }

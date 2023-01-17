@@ -16,7 +16,6 @@ router.post(
   '/:network/locks/:lockAddress/keys/:keyId/transfer',
   authenticatedMiddleware,
   rateLimiter,
-  captchaMiddleware,
   createTransferCode
 )
 
