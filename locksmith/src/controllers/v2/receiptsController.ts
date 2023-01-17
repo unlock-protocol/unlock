@@ -1,15 +1,24 @@
 import { Request, Response } from 'express'
 import { Receipts } from '../../models/receipts'
-import Normalizer from '../../utils/normalizer'
+import * as z from 'zod'
+
+export const ReceiptBody = z.object({
+  fullname: z.string().optional().default(''),
+  businessName: z.string().optional().default(''),
+  addressLine1: z.string().optional().default(''),
+  addressLine2: z.string().optional().default(''),
+  city: z.string().optional().default(''),
+  state: z.string().optional().default(''),
+  zip: z.string().optional().default(''),
+  country: z.string().optional().default(''),
+})
 export class ReceiptsController {
   async get(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
-    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const hash = request.params.hash
 
     const receipt = await Receipts.findOne({
       where: {
-        lockAddress,
         network,
         hash,
       },
@@ -23,111 +32,28 @@ export class ReceiptsController {
       message: 'No receipts found with the provided attributes.',
     })
   }
+
   async save(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
-    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const hash = request.params.hash
-    const noParams = Object.keys(request.body).length === 0
-
-    if (noParams) {
-      return response.status(404)
-    }
 
     try {
-      const {
-        fullname = '',
-        businessName = '',
-        addressLine1 = '',
-        state = '',
-        city = '',
-        zip = '',
-        country = '',
-      } = (request.body as Receipts) ?? {}
+      const props = await ReceiptBody.parseAsync(request.body)
 
-      if (!fullname.length) {
-        return response.status(404).send({
-          message: 'Missing fullname',
-        })
-      }
-
-      if (!businessName.length) {
-        return response.status(404).send({
-          message: 'Missing business name',
-        })
-      }
-
-      if (!addressLine1.length) {
-        return response.status(404).send({
-          message: 'Missing address',
-        })
-      }
-
-      if (!zip.length) {
-        return response.status(404).send({
-          message: 'Missing zip',
-        })
-      }
-
-      if (!state.length) {
-        return response.status(404).send({
-          message: 'Missing state',
-        })
-      }
-
-      if (!city.length) {
-        return response.status(404).send({
-          message: 'Missing city',
-        })
-      }
-
-      if (!country.length) {
-        return response.status(404).send({
-          message: 'Missing country',
-        })
-      }
-
-      const receipt = await Receipts.findOne({
-        where: {
-          lockAddress,
+      await Receipts.upsert(
+        {
           network,
           hash,
+          ...(props as any),
         },
+        {
+          returning: true,
+        }
+      )
+
+      return response.status(200).json({
+        message: 'Receipts saved.',
       })
-
-      if (receipt) {
-        // receipts already exists need to be updated
-        await Receipts.upsert(
-          {
-            lockAddress,
-            network,
-            hash,
-            ...request.body,
-          },
-          {
-            returning: true,
-          }
-        )
-        return response.status(200).json({
-          message: 'Receipts updated.',
-        })
-      } else {
-        // receipts not exists need to be sets
-        const receipts = new Receipts()
-
-        receipts.fullname = request?.body?.fullname
-        receipts.businessName = request?.body?.business
-        receipts.addressLine1 = request?.body?.addressLine1
-        receipts.addressLine2 = request?.body?.addressLine2
-        receipts.city = request?.body?.city
-        receipts.zip = request?.body?.zip
-        receipts.state = request?.body?.state
-        receipts.country = request?.body?.country
-
-        await receipts.save()
-        return response.status(200).send({
-          message: 'Receipts details saved',
-        })
-      }
     } catch (err) {
       return response.status(500)
     }

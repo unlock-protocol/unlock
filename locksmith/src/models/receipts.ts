@@ -11,7 +11,7 @@ export class Receipts extends Model<
   InferCreationAttributes<Receipts>
 > {
   // receipts details
-  declare id: number
+  declare hash: string
   declare fullname: string
   declare businessName: string
   declare addressLine1: string
@@ -21,10 +21,7 @@ export class Receipts extends Model<
   declare state: string
   declare country: string
 
-  // lock & transaction details
   declare network: number
-  declare lockAddress: string
-  declare hash: string
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -32,14 +29,10 @@ export class Receipts extends Model<
 
 Receipts.init(
   {
-    id: {
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
-    },
     hash: {
       allowNull: true,
       unique: true,
+      primaryKey: true,
       type: DataTypes.STRING,
     },
     fullname: {
@@ -74,12 +67,12 @@ Receipts.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    /*lockAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },*/
     network: {
       type: DataTypes.NUMBER,
-      allowNull: false,
-    },
-    lockAddress: {
-      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {
@@ -94,5 +87,6 @@ Receipts.init(
   {
     sequelize,
     modelName: 'Receipts',
+    freezeTableName: true,
   }
 )
