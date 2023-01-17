@@ -12,30 +12,6 @@ export const createTransferCode: RequestHandler = async (request, response) => {
   const keyId = request.params.keyId
   const dispatcher = new Dispatcher()
   const subgraph = new SubgraphService()
-
-  const user = await UserTokenMetadata.findOne({
-    where: {
-      tokenAddress: lockAddress,
-      chain: network,
-    },
-  })
-
-  const userData = user?.data?.userMetadata?.protected
-  const email = Object.keys(userData || {}).find((key) => {
-    return ['email', 'emailaddress', 'email_address', 'email-address'].includes(
-      key.toLowerCase()
-    )
-  })
-
-  if (!email) {
-    return response.status(404).send({
-      message: 'No email address found for this user',
-    })
-  }
-
-  const validPeriod = 60 * 60 * 15 // 15 minutes
-  const deadline = Math.floor(Date.now() / 1000) + validPeriod
-
   const key = await subgraph.key(
     {
       where: {
@@ -48,7 +24,37 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     }
   )
 
+  if (!key) {
+    return response.status(404).send({
+      message: 'No key found for this lock and keyId',
+    })
+  }
+
   const owner = normalizer.ethereumAddress(key.owner)
+
+  const user = await UserTokenMetadata.findOne({
+    where: {
+      tokenAddress: lockAddress,
+      chain: network,
+      userAddress: owner,
+    },
+  })
+
+  const userData = user?.data?.userMetadata?.protected
+  const email = Object.entries(userData || {}).find(([key]) => {
+    return ['email', 'emailaddress', 'email_address', 'email-address'].includes(
+      key.toLowerCase()
+    )
+  })?.[1] as string
+
+  if (!email) {
+    return response.status(404).send({
+      message: 'No email address found for this user',
+    })
+  }
+
+  const validPeriod = 60 * 60 * 15 // 15 minutes
+  const deadline = Math.floor(Date.now() / 1000) + validPeriod
 
   const transfer = {
     owner,
