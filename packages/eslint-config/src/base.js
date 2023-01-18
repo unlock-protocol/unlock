@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:json/recommended'],
   env: {
     es6: true,
     node: true,

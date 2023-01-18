@@ -13526,6 +13526,7 @@ __metadata:
     eslint-config-next: 12.3.4
     eslint-config-prettier: 8.5.0
     eslint-plugin-jest: 27.2.0
+    eslint-plugin-json: 3.1.0
     eslint-plugin-mocha: 10.1.0
     eslint-plugin-prettier: 4.2.1
     jest: 27.5.1
@@ -24303,6 +24304,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-json@npm:3.1.0":
+  version: 3.1.0
+  resolution: "eslint-plugin-json@npm:3.1.0"
+  dependencies:
+    lodash: ^4.17.21
+    vscode-json-languageservice: ^4.1.6
+  checksum: bc7fa4c2e1fdac4365e499bd24ecdf6cddeb6bb647ea9543f214fd811559345a3c1a944b78ff1d3e4b6a49980bcea592f0d58b26a41e05e451e222bb43322cac
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jsx-a11y@npm:^6.5.1":
   version: 6.5.1
   resolution: "eslint-plugin-jsx-a11y@npm:6.5.1"
@@ -28037,7 +28048,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
+  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
   languageName: node
   linkType: hard
 
@@ -33081,7 +33092,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:^3.2.0":
+"jsonc-parser@npm:^3.0.0, jsonc-parser@npm:^3.2.0":
   version: 3.2.0
   resolution: "jsonc-parser@npm:3.2.0"
   checksum: 946dd9a5f326b745aa326d48a7257e3f4a4b62c5e98ec8e49fa2bdd8d96cef7e6febf1399f5c7016114fd1f68a1c62c6138826d5d90bc650448e3cf0951c53c7
@@ -50645,6 +50656,47 @@ typescript@^3.8.3:
   version: 1.1.2
   resolution: "vm-browserify@npm:1.1.2"
   checksum: 10a1c50aab54ff8b4c9042c15fc64aefccce8d2fb90c0640403242db0ee7fb269f9b102bdb69cfb435d7ef3180d61fd4fb004a043a12709abaf9056cfd7e039d
+  languageName: node
+  linkType: hard
+
+"vscode-json-languageservice@npm:^4.1.6":
+  version: 4.2.1
+  resolution: "vscode-json-languageservice@npm:4.2.1"
+  dependencies:
+    jsonc-parser: ^3.0.0
+    vscode-languageserver-textdocument: ^1.0.3
+    vscode-languageserver-types: ^3.16.0
+    vscode-nls: ^5.0.0
+    vscode-uri: ^3.0.3
+  checksum: 46b7f17d81e750bde854eb2dffb8d6effb6ab3765ce6482828b033a52800c5bd33e23b14634229227d1c42976c3ebbdb4cfa57e95da84b28e2d861008e541d07
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-textdocument@npm:^1.0.3":
+  version: 1.0.9
+  resolution: "vscode-languageserver-textdocument@npm:1.0.9"
+  checksum: 36b76f725098d3e0d97885c05c51fca47388d9b62e936f6c8824c44a4fac7a96e1406538538a0f46ef1fdb9f1053ddc1cacb5e7b168cecb36d3c018942ec6f52
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-types@npm:^3.16.0":
+  version: 3.17.2
+  resolution: "vscode-languageserver-types@npm:3.17.2"
+  checksum: ef2d862d22f622b64de0f428773d50a5928ec6cdd485960a7564ebe4fd4a3c8bcd956f29eb15bc45a0f353846e62f39f6c764d2ab85ce774b8724411ba84342f
+  languageName: node
+  linkType: hard
+
+"vscode-nls@npm:^5.0.0":
+  version: 5.2.0
+  resolution: "vscode-nls@npm:5.2.0"
+  checksum: c9f43c0f85000b3008fc4a3a8fc122e580f4f0402a77186c6c0f3219ca8ac258f4893c7a563d66f097a6da09951d7f5a7e6295d3e21dcbaec707937c9089b5a8
+  languageName: node
+  linkType: hard
+
+"vscode-uri@npm:^3.0.3":
+  version: 3.0.7
+  resolution: "vscode-uri@npm:3.0.7"
+  checksum: c899a0334f9f6ba53021328e083f6307978c09b94407d7e5fe86fcd8fcb8f1da0cb344123a335e55769055007a46d51aff83f9ee1dfc0296ee54b78f34ef0e4f
   languageName: node
   linkType: hard
 
