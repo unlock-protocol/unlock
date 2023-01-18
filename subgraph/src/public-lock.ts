@@ -217,7 +217,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 
   // create receipt
-  createReceipt(keyID, event)
+  createReceipt(event)
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -339,6 +339,7 @@ export async function createReceipt(
 
   if (hasErc20) {
     // todo
+    console.log(event.receipt?.logs)
   } else {
     receipt.payer = event.transaction.from // address who pays for the membership
     receipt.amountTransferred = event.transaction.value
