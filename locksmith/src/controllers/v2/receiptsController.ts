@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { Receipts } from '../../models/receipts'
 import * as z from 'zod'
+import { ReceiptsBase } from '../../models/receiptsBase'
+import Normalizer from '../../utils/normalizer'
 
 export const ReceiptBody = z.object({
   fullname: z.string().optional().default(''),
@@ -13,28 +15,44 @@ export const ReceiptBody = z.object({
   country: z.string().optional().default(''),
 })
 export class ReceiptsController {
-  async get(request: Request, response: Response) {
+  // Get Receipts details
+  async getReceipt(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
-    const hash = request.params.hash
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+    const hash = request.params.hash ?? ''
 
-    const receipt = await Receipts.findOne({
-      where: {
-        network,
-        hash,
-      },
-    })
+    try {
+      const supplier = await Receipts.findOne({
+        where: {
+          lockAddress,
+          network,
+          hash,
+        },
+      })
 
-    if (receipt) {
-      return response.status(200).send(receipt)
+      const purchaser = await ReceiptsBase.findOne({
+        where: {
+          network,
+          lockAddress,
+          hash,
+        },
+      })
+
+      return response.status(200).json({
+        supplier,
+        purchaser,
+      })
+    } catch (err) {
+      return response.status(500).send({
+        message: 'Impossible to retrieve receipt details',
+      })
     }
-
-    return response.status(404).send({
-      message: 'No receipts found with the provided attributes.',
-    })
   }
 
-  async save(request: Request, response: Response) {
+  // Save Purchaser  details for Receipts
+  async savePurchaser(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const hash = request.params.hash
 
     try {
@@ -42,6 +60,7 @@ export class ReceiptsController {
 
       await Receipts.upsert(
         {
+          lockAddress,
           network,
           hash,
           ...(props as any),

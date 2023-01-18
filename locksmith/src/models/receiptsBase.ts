@@ -23,6 +23,7 @@ export class ReceiptsBase extends Model<
   declare country: string
 
   declare network: number
+  declare lockAddress: string
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -74,6 +75,10 @@ ReceiptsBase.init(
     },
     network: {
       type: DataTypes.NUMBER,
+      allowNull: false,
+    },
+    lockAddress: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {

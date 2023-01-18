@@ -15,26 +15,8 @@ export const ReceiptBody = z.object({
 })
 
 export class ReceiptsBaseController {
-  async get(request: Request, response: Response) {
-    const network = Number(request.params.network || 1)
-    const hash = request.params.hash
-
-    const receipt = await ReceiptsBase.findOne({
-      where: {
-        network,
-        hash,
-      },
-    })
-
-    if (receipt) {
-      return response.status(200).send(receipt)
-    }
-
-    return response.status(404).send({
-      message: 'No receipts found with the provided attributes.',
-    })
-  }
-  async save(request: Request, response: Response) {
+  // Save Supplier details for Receipts
+  async saveSupplier(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
     const hash = request.params.hash
 
