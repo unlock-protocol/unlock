@@ -34,7 +34,6 @@ export class ReceiptsController {
         where: {
           network,
           lockAddress,
-          hash,
         },
       })
 

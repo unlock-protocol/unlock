@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { ReceiptsBase } from '../../models/receiptsBase'
+import Normalizer from '../../utils/normalizer'
 import * as z from 'zod'
 
 export const ReceiptBody = z.object({
@@ -18,7 +19,7 @@ export class ReceiptsBaseController {
   // Save Supplier details for Receipts
   async saveSupplier(request: Request, response: Response) {
     const network = Number(request.params.network || 1)
-    const hash = request.params.hash
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
 
     try {
       const props = await ReceiptBody.parseAsync(request.body)
@@ -26,7 +27,7 @@ export class ReceiptsBaseController {
       await ReceiptsBase.upsert(
         {
           network,
-          hash,
+          lockAddress,
           ...(props as any),
         },
         {

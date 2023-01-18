@@ -11,7 +11,6 @@ export class ReceiptsBase extends Model<
   InferCreationAttributes<ReceiptsBase>
 > {
   // receipts details
-  declare hash: string
   declare supplier: string
   declare vat: string
   declare servicePerformed: string
@@ -31,12 +30,6 @@ export class ReceiptsBase extends Model<
 
 ReceiptsBase.init(
   {
-    hash: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      primaryKey: true,
-    },
     supplier: {
       type: DataTypes.STRING,
       allowNull: false,
