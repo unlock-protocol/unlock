@@ -258,6 +258,7 @@ export default (opts = {}) => {
                         {{{content}}}
 
                         <p style="margin-top: 40px">
+                          -<br>
                           If you have any questions, you can always email us at
                           <br /><a
                             href="mailto:hello@unlock-protocol.com"
