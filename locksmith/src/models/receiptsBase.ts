@@ -11,6 +11,7 @@ export class ReceiptsBase extends Model<
   InferCreationAttributes<ReceiptsBase>
 > {
   // receipts details
+  declare id: number
   declare supplier: string
   declare vat: string
   declare servicePerformed: string
@@ -30,6 +31,12 @@ export class ReceiptsBase extends Model<
 
 ReceiptsBase.init(
   {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.NUMBER,
+    },
     supplier: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -85,6 +92,6 @@ ReceiptsBase.init(
   },
   {
     sequelize,
-    modelName: 'ReceiptsBase',
+    modelName: 'ReceiptsBases',
   }
 )
