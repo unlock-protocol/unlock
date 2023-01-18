@@ -1,3 +1,13 @@
+/**
+ * Send a bridged call from once chain to another
+ * 
+ * To track a call:
+ * 
+ * - send a call using this script
+ * - check the call status on the bridge explorer https://testnet.amarok.connextscan.io/
+ * or using the subgraph (see https://docs.connext.network/developers/guides/xcall-status)
+ * - 
+ */
 const { ethers } = require('hardhat')
 const WethABI = require('../test/helpers/ABIs/weth.json')
 // const erc20ABI = require('../test/helpers/ABIs/erc20.json')
@@ -14,7 +24,7 @@ const unlockMumbai = '0x058b58dbd676063b90618a1eb0c02bb2d0f27adc'
 
 // WETH
 const WETHGoerli = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
-const WETHMumbai = '0xfd2ab41e083c75085807c4a65c0a14fdd93d55a9'
+const WETHMumbai = '0xFD2AB41e083c75085807c4A65C0A14FDD93d55A9'
 
 // ERC20
 const isERC20 = true
@@ -118,9 +128,10 @@ async function main() {
       token = await ethers.getContractAt(WethABI.abi, tokenAddress)
     }
     allowance = await token.allowance(deployer.address, unlock.address)
-    
+    console.log(`Balance (${await token.balanceOf(deployer.address)}) - Allowance (-> Unlock ) (${allowance.toString()})`)
+
     if (allowance.lt(keyPrice)) {
-      throw Error(`Unsufficient balance (${allowance.toString()})`)
+      throw Error(`Unsufficient Allowance (${allowance.toString()})`)
       // tx = await weth.approve(unlock.address, keyPrice)
       // await tx.wait()
     }
@@ -141,7 +152,7 @@ async function main() {
   const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
   
   // send bridged call
-  const args = [
+  const txArgs = [
     destChainId, // destChainId,
     lockAddress, // lock.address,
     tokenAddress, // from src chain
@@ -150,14 +161,16 @@ async function main() {
     relayerFee,
     slippage
   ]
-  console.log(args, { value })
+  console.log(txArgs, { value })
   const tx = await unlock.sendBridgedLockCall(
-    ...args, 
+    ...txArgs, 
     { 
       value,
     }
   )
-  console.log(tx)
+  const { events } = await tx.wait()
+  const { args } = events.find(({event}) => event === 'BridgeCallEmitted')
+  console.log(`Call emitted to chain ${args.destChainId} with transferID: ${args.transferID}`)
 }
 
 // execute as standalone
