@@ -7,7 +7,7 @@
  */
 
 import { ethers, unlock } from 'hardhat'
-import { E2E_METAMASK_SEED } from './../../../../tests/e2e/constants'
+import { E2E_METAMASK_SEED } from '../../../../tests/e2e/constants'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
