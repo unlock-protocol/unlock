@@ -1,5 +1,4 @@
 import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
-
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -84,7 +83,7 @@ function newKey(event: TransferEvent): void {
   }
 
   // create receipt
-  createReceipt(keyID, event)
+  createReceipt(event)
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -199,7 +198,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   }
 
   // create receipt
-  createReceipt(keyID, event)
+  createReceipt(event)
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -329,20 +328,25 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  * @param {event} Object - Object event
  * @return {void}
  */
-export function createReceipt(
-  keyID: string,
+export async function createReceipt(
   event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
-): void {
+): Promise<void> {
   const hash = event.transaction.hash.toString()
   const receipt = new Receipt(hash)
   const lock = Lock.load(event.address.toHexString())
-  const key = Key.load(keyID)
+  const key = Key.load(hash)
+  const hasErc20 = (lock?.tokenAddress ?? '')?.length > 0
+
+  if (hasErc20) {
+    // todo
+  } else {
+    receipt.payer = event.transaction.from // address who pays for the membership
+    receipt.amountTransferred = event.transaction.value
+  }
 
   receipt.timestamp = event.block.timestamp
-  receipt.payer = event.transaction.from // address who pays for the membership
   receipt.sender = event.transaction.to || null // sender of the transactions
   receipt.lockAddress = event.address
-  receipt.amountTransferred = event.transaction.value
   receipt.tokenAddress = lock!.tokenAddress
   receipt.gasTotal = event.transaction.gasPrice
   receipt.owner = key!.owner // key owner
