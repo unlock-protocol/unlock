@@ -53,7 +53,7 @@
     "release": "yarn build && yarn bump && yarn packages:publish",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
-    "lint": "yarn workspaces foreach -p lint",
+    "lint": "yarn packages --parallel run lint",
     "postinstall": "husky install"
   },
   "repository": {
