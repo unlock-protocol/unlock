@@ -8,7 +8,7 @@ import { renewAllFiatKeys } from './jobs/renewFiatKeys'
 logger.info('Websub server started.')
 
 // every minute!
-const CURRENT_CRON_SCHEDULE = '*/1 * * * *'
+const CURRENT_CRON_SCHEDULE = '*/5 * * * *'
 
 const run = async () => {
   logger.info('Running keys and locks job')
