@@ -1,4 +1,11 @@
-import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigInt,
+  log,
+  Bytes,
+  store,
+  ethereum,
+} from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -25,6 +32,36 @@ import {
   loadOrCreateUnlockDailyData,
   LOCK_MANAGER,
 } from './helpers'
+
+import kecakk256 from 'kecakk256'
+
+interface ReceiptProps {
+  hash: string
+  timestamp: BigInt
+  sender?: Address | null
+  lockAddress: Address
+  gasTotal: BigInt
+  logs: any[]
+  to: Address | null
+  from: Address | null
+  amount: BigInt
+}
+
+function createReceiptObject(
+  event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
+): ReceiptProps {
+  return {
+    hash: event.transaction.hash.toString(),
+    timestamp: event.block.timestamp,
+    sender: event.transaction.to || null, // sender of the transactions,
+    lockAddress: event.address,
+    gasTotal: event.transaction.gasPrice,
+    logs: event.receipt?.logs ?? [],
+    to: event.transaction.to,
+    from: event.transaction.from,
+    amount: event.transaction.value,
+  }
+}
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -83,7 +120,7 @@ function newKey(event: TransferEvent): void {
   }
 
   // create receipt
-  createReceipt(event)
+  createReceipt(createReceiptObject(event))
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -198,7 +235,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   }
 
   // create receipt
-  createReceipt(event)
+  createReceipt(createReceiptObject(event))
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -217,7 +254,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 
   // create receipt
-  createReceipt(event)
+  createReceipt(createReceiptObject(event))
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -328,28 +365,43 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  * @param {event} Object - Object event
  * @return {void}
  */
-export async function createReceipt(
-  event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
-): Promise<void> {
-  const hash = event.transaction.hash.toString()
+export async function createReceipt({
+  hash,
+  lockAddress,
+  timestamp,
+  gasTotal,
+  logs,
+  to,
+  from,
+  amount,
+}: ReceiptProps): Promise<void> {
   const receipt = new Receipt(hash)
-  const lock = Lock.load(event.address.toHexString())
+  const lock = Lock.load(lockAddress.toHexString())
   const key = Key.load(hash)
   const hasErc20 = (lock?.tokenAddress ?? '')?.length > 0
 
-  if (hasErc20) {
-    // todo
-    console.log(event.receipt?.logs)
+  if (hasErc20 && logs.length) {
+    // find the ERC20 Transfer event
+    const log = logs.find(
+      (l: ethereum.Log) =>
+        l.address.toString() === lock?.tokenAddress.toString() &&
+        l.topics[0] === kecakk256('Transfer(from, to, value)').toString('hex')
+    )
+
+    // decode event data
+    const decoded = ethereum.decode('(address,address,uint256)', log!.data)
+    receipt.payer = decoded ? decoded[0] : ''
+    receipt.amountTransferred = decoded ? decoded[2] : 0
   } else {
-    receipt.payer = event.transaction.from // address who pays for the membership
-    receipt.amountTransferred = event.transaction.value
+    receipt.payer = (from || '') as Bytes // address who pays for the membership
+    receipt.amountTransferred = amount
   }
 
-  receipt.timestamp = event.block.timestamp
-  receipt.sender = event.transaction.to || null // sender of the transactions
-  receipt.lockAddress = event.address
+  receipt.timestamp = timestamp
+  receipt.sender = to || null // sender of the transactions
+  receipt.lockAddress = lockAddress
   receipt.tokenAddress = lock!.tokenAddress
-  receipt.gasTotal = event.transaction.gasPrice
+  receipt.gasTotal = gasTotal
   receipt.owner = key!.owner // key owner
   receipt.save()
 }
