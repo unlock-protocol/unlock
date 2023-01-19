@@ -17,6 +17,7 @@ export interface CalendarItem {
   end: EventDate
   iCalUID: string
   url?: string
+  recurringEventId?: string
 }
 export interface Calendar {
   kind: string
@@ -35,17 +36,21 @@ const getUnlockEvents = async (): Promise<CalendarItem[]> => {
 
   const calendar: Calendar = await fetch(CALENDAR_URL).then((res) => res.json())
 
-  const CURRENT_YEAR = new Date().getFullYear()
+  const recurringEvents = {}
 
-  // order events in 'desc' order, google api have  'orderBy' parameters that accept only 'startTime' or 'updated'
-  const events = calendar?.items?.reverse()
-
-  return events?.filter((event: CalendarItem) => {
-    const startDate = event?.start?.date || event?.start?.dateTime
-
-    // ignore next year events
-    return dayjs(startDate).get('year') <= CURRENT_YEAR
-  })
+  return calendar?.items
+    ?.filter((event: CalendarItem) => {
+      const startDate = event?.start?.date || event?.start?.dateTime
+      // For future recurriung events, only show a single instance
+      if (event.recurringEventId && dayjs().isBefore(startDate)) {
+        if (recurringEvents[event.recurringEventId]) {
+          return false
+        }
+        recurringEvents[event.recurringEventId] = true
+      }
+      return true
+    })
+    .reverse()
 }
 /**
  * Get list of events

@@ -6,13 +6,14 @@ import {
   waitingMethodCalls,
   resolveMethodCall,
 } from '../../hooks/useCheckoutCommunication'
+import { vi } from 'vitest'
 
-let emit = jest.fn()
+let emit = vi.fn()
 
 describe('useCheckoutCommunication', () => {
   beforeEach(() => {
-    emit = jest.fn()
-    jest.spyOn(Postmate, 'Model').mockResolvedValue({ emit })
+    emit = vi.fn()
+    vi.spyOn(Postmate, 'Model').mockResolvedValue({ emit })
   })
 
   it('emits a userInfo event when emitUserInfo is called', async () => {
@@ -109,8 +110,8 @@ describe('useCheckoutCommunication', () => {
 })
 
 describe('useCheckoutCommunication - resolveMethodCall', () => {
-  const resultCallback = jest.fn()
-  const errorCallback = jest.fn()
+  const resultCallback = vi.fn()
+  const errorCallback = vi.fn()
   waitingMethodCalls[1] = resultCallback
   waitingMethodCalls[2] = errorCallback
 
