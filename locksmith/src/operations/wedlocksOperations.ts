@@ -6,7 +6,7 @@ import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
-
+import { KeyManager } from '@unlock-protocol/unlock-js'
 type Params = {
   [key: string]: string | number | undefined
   keyId: string
@@ -31,6 +31,8 @@ interface Key {
   keyId?: string
 }
 
+const keyManager = new KeyManager()
+
 /**
  * Function to send an email with the Wedlocks service
  * Pass a template, a recipient, some params and attachements
@@ -45,7 +47,7 @@ export const sendEmail = async (
   template: string,
   failoverTemplate: string,
   recipient: string,
-  params: Params = {} as Record<string, string | number>,
+  params: Params = {} as any,
   attachments: Attachment[] = []
 ) => {
   const payload = {
@@ -86,8 +88,8 @@ export const notifyNewKeysToWedlocks = async (
   logger.info('Notifying following keys to wedlock', {
     keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
-  for (const key of keys) {
-    await notifyNewKeyToWedlocks(key, network, true)
+  for await (const key of keys) {
+    notifyNewKeyToWedlocks(key, network, true)
   }
 }
 
@@ -122,6 +124,16 @@ export const notifyNewKeyToWedlocks = async (
 
   const recipient = protectedData?.email as string
 
+  const airdroppedRecipient = keyManager.createTransferAddress({
+    params: {
+      email: recipient,
+      lockAddress,
+    },
+  })
+
+  const isAirdroppedRecipient =
+    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase()
+
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
   if (recipient) {
@@ -151,10 +163,19 @@ export const notifyNewKeyToWedlocks = async (
         ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
           undefined
         : undefined
+
+    const transferUrl = new URL('/transfer', config.unlockApp)
+    transferUrl.searchParams.set('lockAddress', lockAddress)
+    transferUrl.searchParams.set('keyId', tokenId ?? '')
+    transferUrl.searchParams.set('network', network?.toString() ?? '')
+
+    const templates = isAirdroppedRecipient
+      ? [`keyAirdropped${lockAddress}`, `keyAirdropped`]
+      : [`keyMined${lockAddress}`, 'keyMined']
     // Lock address to find the specific template
     await sendEmail(
-      `keyMined${lockAddress}`,
-      'keyMined',
+      templates[0],
+      templates[1],
       recipient,
       {
         lockName: key.lock.name,
@@ -162,6 +183,7 @@ export const notifyNewKeyToWedlocks = async (
         keyId: tokenId ?? '',
         network: networks[network!]?.name ?? '',
         openSeaUrl,
+        transferUrl: transferUrl.toString(),
       },
       attachments
     )
