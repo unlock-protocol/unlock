@@ -140,7 +140,7 @@ describe(`swapAndCall`, function() {
             await token.connect(keyOwner).approve(unlock.address, amountInMax)
           }
 
-          // do the swap
+          // do the swap and call!
           await unlock.connect(keyOwner)
             .swapAndCall(
               lock.address,
