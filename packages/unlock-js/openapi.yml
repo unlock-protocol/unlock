@@ -1715,6 +1715,7 @@ paths:
                   - 'lock'
                   - 'token'
                   - 'deadline'
+                  - 'transferCode'
                 properties:
                   owner:
                     type: string
@@ -1724,6 +1725,9 @@ paths:
                     type: string
                   deadline:
                     type: number
+                  transferCode:
+                    type: string
+                    description: Part of the transfer code that is required to be used with the part sent to the recipient.
 
         404:
           description: Key not found.

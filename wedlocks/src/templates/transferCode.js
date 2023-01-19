@@ -1,11 +1,19 @@
 export default {
-  subject: 'A transfer code for NFT was generated for you!',
-  html: `<h1>A transfer code for a NFT membership was generated for you to claim!</h1>
+  subject: 'Your Transfer Code is Here',
+  html: `
+<h1> Your Transfer Code is Here </h1>
 
-<p>A transfer code for NFT #{{keyId}} to the lock <strong>{{lockName}}</strong> was just generated for you!</p>. It is valid for {{validPeriod}}.
+<p> Your transfer code for {{lockName}} NFT has been successfully generated and is ready for you to use. This code will enable you to transfer your NFT for a limited period of {{validPeriod}}. </p>
 
-Transfer code: {{transferCode}}
+<p> Your transfer code is <code>{{transferCode}}</code> and it will expire in 15 minutes from now. </p>
+<p> We kindly advise you to use it as soon as possible to ensure a successful transfer. If you left the transfer page, you will need to regenerate a code and re-enter the code on the same page for a successful transfer. </p>
 
-You can use this code to claim your membership at <a href="{{transferUrl}}">Unlock Airdrop page</a>.
+<p> If you have any questions or need help with the transfer process, please do not hesitate to contact us. </p>
+
+
+<p>
+Sincerely, <br/>
+Unlock Team
+</p>
 `,
 }
