@@ -5,9 +5,6 @@ import { AirdropBulkForm } from './AirdropBulkForm'
 import { AirdropMember } from './AirdropElements'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
-import { useQuery } from '@tanstack/react-query'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
 import { formatDate } from '~/utils/lock'
@@ -15,6 +12,7 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { omit } from 'lodash'
+import { useLockData } from '~/hooks/useLockData'
 
 dayjs.extend(customParseFormat)
 
@@ -35,22 +33,12 @@ export function AirdropKeysDrawer({
 }: Props) {
   const storageService = useStorageService()
   const walletService = useWalletService()
-  const web3Service = useWeb3Service()
   const { account } = useAuth()
 
-  const { data: lockData, isLoading: isLockDataLoading } = useQuery<Lock>(
-    ['lock', lockAddress, network],
-    async () => {
-      const result = await web3Service.getLock(lockAddress, network)
-      return {
-        ...result,
-        network,
-      }
-    },
-    {
-      refetchInterval: false,
-    }
-  )
+  const { lock: lockData, isLockLoading: isLockDataLoading } = useLockData({
+    lockAddress,
+    network,
+  })
 
   const handleConfirm = async (items: AirdropMember[]) => {
     // Create metadata
