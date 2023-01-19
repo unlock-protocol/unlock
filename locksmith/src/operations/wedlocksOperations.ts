@@ -31,8 +31,6 @@ interface Key {
   keyId?: string
 }
 
-const keyManager = new KeyManager()
-
 /**
  * Function to send an email with the Wedlocks service
  * Pass a template, a recipient, some params and attachements
@@ -57,6 +55,7 @@ export const sendEmail = async (
     params,
     attachments,
   }
+
   try {
     const response = await fetch(config.services.wedlocks, {
       method: 'POST',
@@ -103,14 +102,15 @@ export const notifyNewKeyToWedlocks = async (
   network?: number,
   includeQrCode = true
 ) => {
-  const lockAddress = key.lock.address
-  const ownerAddress = key.owner
+  const keyManager = new KeyManager()
+  const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+  const ownerAddress = Normalizer.ethereumAddress(key.owner)
   const tokenId = key?.tokenId
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
-      tokenAddress: Normalizer.ethereumAddress(lockAddress),
-      userAddress: Normalizer.ethereumAddress(ownerAddress),
+      tokenAddress: lockAddress,
+      userAddress: ownerAddress,
     },
   })
   logger.info(
