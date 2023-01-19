@@ -270,7 +270,7 @@ export function Confirm({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const isTokenPayable = pricingData?.total < balance
+      const isTokenPayable = pricingData?.total && pricingData?.total < balance
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
 
       return {
@@ -280,8 +280,6 @@ export function Confirm({
     }
   )
   const canAfford = isPayable?.isTokenPayable && isPayable?.isGasPayable
-
-  console.log({ canAfford })
 
   const isLoading =
     isPricingDataLoading ||
