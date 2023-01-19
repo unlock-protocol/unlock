@@ -6,39 +6,57 @@ import type {
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
 
-export class ReceiptsBase extends Model<
-  InferAttributes<ReceiptsBase>,
-  InferCreationAttributes<ReceiptsBase>
+export class Receipt extends Model<
+  InferAttributes<Receipt>,
+  InferCreationAttributes<Receipt>
 > {
-  // receipts details
-  declare supplier: string
-  declare vat: string
-  declare servicePerformed: string
-  declare addressLine1: string
-  declare addressLine2?: string | null
-  declare city: string
-  declare zip: string
-  declare state: string
-  declare country: string
+  declare id: CreationOptional<number>
 
   declare network: number
   declare lockAddress: string
+  declare hash: string
+
+  // receipts details
+  declare fullname?: string
+  declare businessName?: string
+  declare addressLine1?: string
+  declare addressLine2?: string
+  declare city?: string
+  declare zip?: string
+  declare state?: string
+  declare country?: string
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
 
-ReceiptsBase.init(
+Receipt.init(
   {
-    supplier: {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    lockAddress: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    vat: {
+    network: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    hash: {
+      allowNull: true,
+      unique: true,
+      primaryKey: true,
+      type: DataTypes.STRING,
+    },
+    fullname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    servicePerformed: {
+    businessName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -66,14 +84,6 @@ ReceiptsBase.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    network: {
-      type: DataTypes.NUMBER,
-      allowNull: false,
-    },
-    lockAddress: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
@@ -85,6 +95,7 @@ ReceiptsBase.init(
   },
   {
     sequelize,
-    modelName: 'ReceiptsBase',
+    modelName: 'Receipt',
+    freezeTableName: true,
   }
 )
