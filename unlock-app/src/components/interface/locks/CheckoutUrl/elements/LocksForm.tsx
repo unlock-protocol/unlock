@@ -283,6 +283,7 @@ export const LocksForm = ({
     setLockAddress(address)
     setNetwork(config?.network)
     setDefaultValue(config ?? {})
+    setAddLock(false)
   }
 
   const onRecurringChange = ({ recurringPayments }: any) => {
@@ -309,7 +310,7 @@ export const LocksForm = ({
     <div className="flex flex-col gap-2">
       {Object.keys(locks ?? {}).length > 0 && <LockList />}
       <div className="flex gap-2">
-        {!addLock && (
+        {!addLock && !lockAddress && (
           <Button
             className="w-full"
             size="small"
@@ -461,7 +462,7 @@ export const LocksForm = ({
                     />
                   </div>
                 )}
-                <Button onClick={() => reset()}>Next</Button>
+                <Button onClick={() => reset()}>Done</Button>
               </>
             )}
           </>
