@@ -24,6 +24,8 @@ import contractsRouter from './v2/contracts'
 import subscriptionRouter from './v2/subscriptions'
 import claimV2Router from './v2/claim'
 import imagesRouter from './v2/images'
+import receiptRouter from './v2/receipt'
+import receiptBaseRouter from './v2/receiptBase'
 
 import config from '../config/config'
 
@@ -67,6 +69,8 @@ router.use('/v2/applications', applicationRouter)
 router.use('/v2/purchase', purchaseRouterV2)
 router.use('/v2/subscriptions', subscriptionRouter)
 router.use('/v2/claim', claimV2Router)
+router.use('/v2/receipts', receiptRouter)
+router.use('/v2/receipts-base', receiptBaseRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
