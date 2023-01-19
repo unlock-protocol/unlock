@@ -12415,13 +12415,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.11.9":
-  version: 18.11.9
-  resolution: "@types/node@npm:18.11.9"
-  checksum: cc0aae109e9b7adefc32eecb838d6fad931663bb06484b5e9cbbbf74865c721b03d16fd8d74ad90e31dbe093d956a7c2c306ba5429ba0c00f3f7505103d7a496
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^10.0.3, @types/node@npm:^10.12.18, @types/node@npm:^10.3.2":
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
@@ -14083,7 +14076,7 @@ __metadata:
     "@testing-library/react": 12.1.5
     "@types/jest": 27.5.2
     "@types/next": 8.0.7
-    "@types/node": 18.11.9
+    "@types/node": 18.11.18
     "@types/react": 18.0.25
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
