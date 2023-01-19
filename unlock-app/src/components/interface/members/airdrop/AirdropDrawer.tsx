@@ -1,4 +1,4 @@
-import { Drawer } from '@unlock-protocol/ui'
+import { Drawer, Placeholder } from '@unlock-protocol/ui'
 import { Tab } from '@headlessui/react'
 import { AirdropManualForm } from './AirdropManualForm'
 import { AirdropBulkForm } from './AirdropBulkForm'
@@ -37,6 +37,7 @@ export function AirdropKeysDrawer({
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const { account } = useAuth()
+
   const { data: lockData, isLoading: isLockDataLoading } = useQuery<Lock>(
     ['lock', lockAddress, network],
     async () => {
@@ -45,6 +46,9 @@ export function AirdropKeysDrawer({
         ...result,
         network,
       }
+    },
+    {
+      refetchInterval: false,
     }
   )
 
@@ -135,7 +139,7 @@ export function AirdropKeysDrawer({
         }
       )
       .catch((error: any) => {
-        console.log(error)
+        console.error(error)
         throw new Error('We were unable to airdrop these memberships.')
       })
 
@@ -147,46 +151,38 @@ export function AirdropKeysDrawer({
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Airdrop Keys">
       <div className="mt-2 space-y-6">
-        <div>
-          {isLockDataLoading ? (
-            <div className="space-y-6">
-              {Array.from({ length: 8 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-full h-8 bg-gray-100 rounded-lg animate-pulse"
-                />
+        {isLockDataLoading ? (
+          <Placeholder.Root>
+            {Array.from({ length: 8 }).map((_, index) => (
+              <Placeholder.Line key={index} />
+            ))}
+          </Placeholder.Root>
+        ) : (
+          <Tab.Group defaultIndex={0}>
+            <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
+              {['Manual', 'Bulk'].map((text) => (
+                <Tab
+                  key={text}
+                  className={({ selected }) => {
+                    return `font-medium ${
+                      selected ? 'text-brand-ui-primary' : ''
+                    }`
+                  }}
+                >
+                  {text}
+                </Tab>
               ))}
-            </div>
-          ) : (
-            <Tab.Group defaultIndex={0}>
-              <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
-                {['Manual', 'Bulk'].map((text) => (
-                  <Tab
-                    key={text}
-                    className={({ selected }) => {
-                      return `font-medium ${
-                        selected ? 'text-brand-ui-primary' : ''
-                      }`
-                    }}
-                  >
-                    {text}
-                  </Tab>
-                ))}
-              </Tab.List>
-              <Tab.Panels className="mt-6">
-                <Tab.Panel>
-                  <AirdropManualForm
-                    lock={lockData!}
-                    onConfirm={handleConfirm}
-                  />
-                </Tab.Panel>
-                <Tab.Panel>
-                  <AirdropBulkForm lock={lockData!} onConfirm={handleConfirm} />
-                </Tab.Panel>
-              </Tab.Panels>
-            </Tab.Group>
-          )}
-        </div>
+            </Tab.List>
+            <Tab.Panels className="mt-6">
+              <Tab.Panel>
+                <AirdropManualForm lock={lockData!} onConfirm={handleConfirm} />
+              </Tab.Panel>
+              <Tab.Panel>
+                <AirdropBulkForm lock={lockData!} onConfirm={handleConfirm} />
+              </Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
+        )}
       </div>
     </Drawer>
   )

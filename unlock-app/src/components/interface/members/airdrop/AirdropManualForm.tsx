@@ -16,10 +16,18 @@ export interface Props {
   add(member: AirdropMember): void
   lock: Lock
   list: AirdropMember[]
+  isEmailAirdrop: boolean
+  setIsEmailAirdrop(value: boolean): void
   defaultValues?: Partial<AirdropMember>
 }
 
-export function AirdropForm({ add, defaultValues, lock }: Props) {
+export function AirdropForm({
+  add,
+  defaultValues,
+  lock,
+  isEmailAirdrop,
+  setIsEmailAirdrop,
+}: Props) {
   const config = useConfig()
   const {
     handleSubmit,
@@ -32,7 +40,6 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
     defaultValues,
   })
 
-  const [isEmailAirdrop, setIsEmailAirdrop] = useState(false)
   const formValues = watch()
 
   const addressFieldChanged = (name: keyof AirdropMember) => {
@@ -73,30 +80,32 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
       <div className="p-4 bg-white border border-gray-200 rounded-xl">
         <div className="flex items-center justify-between">
           <label htmlFor="email-toggle">
-            I don&apos;t have recipient&apos;s wallet address or ENS
+            I don&apos;t have wallet address or ENS
           </label>
-          <Toggle
-            value={isEmailAirdrop}
-            aria-label="email-toggle"
-            onChange={(value) => {
-              setIsEmailAirdrop(value)
-            }}
-          />
+          <div>
+            <Toggle
+              value={isEmailAirdrop}
+              aria-label="email-toggle"
+              onChange={(value) => {
+                setIsEmailAirdrop(value)
+              }}
+            />
+          </div>
         </div>
       </div>
 
       {!isEmailAirdrop && (
         <Input
           disabled={isEmailAirdrop}
-          label="Recipient"
+          label="Wallet"
           {...register('recipient', {
             disabled: isEmailAirdrop,
             pattern: ACCOUNT_REGEXP,
-            required: 'Recipient is required',
+            required: 'Wallet address or ENS is required',
             onChange: addressFieldChanged('recipient'),
           })}
           error={errors.recipient?.message}
-          description="Enter recipient address or ENS."
+          description="Enter wallet address or ENS."
         />
       )}
 
@@ -186,6 +195,7 @@ interface AirdropManualFormProps {
 }
 
 export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
+  const [isEmailAirdrop, setIsEmailAirdrop] = useState(false)
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
   const expiration = formatDate(lock.expirationDuration || 0)
@@ -197,6 +207,8 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
         lock={lock}
         add={(member) => push(member)}
         list={list}
+        isEmailAirdrop={isEmailAirdrop}
+        setIsEmailAirdrop={setIsEmailAirdrop}
         defaultValues={{
           expiration,
           manager: account,
