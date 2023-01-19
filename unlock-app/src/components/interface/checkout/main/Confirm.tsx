@@ -592,17 +592,22 @@ export function Confirm({
                 >
                   {buttonLabel}
                 </Button>
-                {!isPayable?.isGasPayable && (
-                  <small className="text-red-500 text-center">
-                    You do not have enough{' '}
-                    {config.networks[lock!.network].baseCurrencySymbol} to pay
-                    transaction fees (gas).
-                  </small>
-                )}
-                {!isPayable?.isTokenPayable && (
-                  <small className="text-red-500 text-center">
-                    You do not have enough {symbol} to complete this purchase.
-                  </small>
+                {!isLoading && (
+                  <>
+                    {!isPayable?.isTokenPayable && (
+                      <small className="text-red-500 text-center">
+                        You do not have enough {symbol} to complete this
+                        purchase.
+                      </small>
+                    )}
+                    {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                      <small className="text-red-500 text-center">
+                        You do not have enough{' '}
+                        {config.networks[lock!.network].baseCurrencySymbol} to
+                        pay transaction fees (gas).
+                      </small>
+                    )}
+                  </>
                 )}
               </>
             )}
