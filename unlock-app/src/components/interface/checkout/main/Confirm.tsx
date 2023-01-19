@@ -258,7 +258,7 @@ export function Confirm({
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
   const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
-    ['canAfford', lockAddress, lockNetwork, recipients, purchaseData],
+    ['canAfford', account, lock, pricingData],
     async () => {
       const [balance, networkBalance] = await Promise.all([
         getAccountTokenBalance(
@@ -270,7 +270,9 @@ export function Confirm({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const isTokenPayable = pricingData?.total && pricingData?.total < balance
+      const isTokenPayable =
+        pricingData?.total &&
+        parseFloat(pricingData?.total) < parseFloat(balance)
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
 
       return {
@@ -279,6 +281,7 @@ export function Confirm({
       }
     }
   )
+
   const canAfford = isPayable?.isTokenPayable && isPayable?.isGasPayable
 
   const isLoading =
