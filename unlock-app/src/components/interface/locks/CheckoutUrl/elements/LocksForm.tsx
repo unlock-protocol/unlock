@@ -197,18 +197,6 @@ export const LocksForm = ({
             )
           }
         )}
-        <div className="flex gap-2">
-          {!addLock && !lockAddress && !network && (
-            <Button
-              className="w-full"
-              size="small"
-              variant="outlined-primary"
-              onClick={() => setAddLock(true)}
-            >
-              Add another lock
-            </Button>
-          )}
-        </div>
       </div>
     )
   }
@@ -320,6 +308,19 @@ export const LocksForm = ({
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(locks ?? {}).length > 0 && <LockList />}
+      <div className="flex gap-2">
+        {!addLock && (
+          <Button
+            className="w-full"
+            size="small"
+            variant="outlined-primary"
+            onClick={() => setAddLock(true)}
+          >
+            Add a lock
+          </Button>
+        )}
+      </div>
+
       <div className="flex flex-col gap-8">
         {addLock && (
           <div>
