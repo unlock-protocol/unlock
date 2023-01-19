@@ -6,11 +6,6 @@ interface ReceiptDetailsProps {
   hash: string
 }
 
-interface PurchaseProps {
-  lockAddress: string
-  network: number
-  hash: string
-}
 export const getReceiptDetails = async ({
   lockAddress,
   network,
@@ -38,19 +33,4 @@ export const getReceiptDetails = async ({
     supplier,
     purchaser,
   }
-}
-
-export const getPurchaserDetails = async ({
-  lockAddress,
-  network,
-  hash,
-}: PurchaseProps): Promise<Receipt | null> => {
-  const receipt = await Receipt.findOne({
-    where: {
-      lockAddress,
-      network,
-      hash,
-    },
-  })
-  return receipt
 }
