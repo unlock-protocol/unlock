@@ -18,7 +18,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
-    "build": "tsup src/index.tsx --dts --format esm,cjs",
+    "build": "yarn svg-2-components && tsup src/index.tsx --dts --format esm,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepublish": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -32,7 +32,7 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "react": "^17.x.x"
+    "react": "18.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.7",
@@ -55,9 +55,9 @@
     "eslint-plugin-standard": "4.1.0",
     "microbundle-crl": "0.13.11",
     "npm-run-all": "4.1.5",
-    "prettier": "2.8.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "prettier": "2.7.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
     "styled-components": "5.3.6",
     "tsup": "6.5.0"

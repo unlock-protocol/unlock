@@ -21,7 +21,7 @@ describe('Unlock GNP conversion', () => {
   let oracle
 
   before(async function () {
-    if (!process.env.RUN_MAINNET_FORK) {
+    if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }

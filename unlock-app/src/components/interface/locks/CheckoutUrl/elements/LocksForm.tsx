@@ -8,7 +8,13 @@ import {
 } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
-import { Button, Input, ToggleSwitch, Tooltip } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  ToggleSwitch,
+  Tooltip,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
@@ -191,18 +197,6 @@ export const LocksForm = ({
             )
           }
         )}
-        <div className="flex gap-2">
-          {!addLock && !lockAddress && !network && (
-            <Button
-              className="w-full"
-              size="small"
-              variant="outlined-primary"
-              onClick={() => setAddLock(true)}
-            >
-              Add another lock
-            </Button>
-          )}
-        </div>
       </div>
     )
   }
@@ -289,7 +283,7 @@ export const LocksForm = ({
     setLockAddress(address)
     setNetwork(config?.network)
     setDefaultValue(config ?? {})
-    setAddLock(true)
+    setAddLock(false)
   }
 
   const onRecurringChange = ({ recurringPayments }: any) => {
@@ -297,10 +291,6 @@ export const LocksForm = ({
       recurringPayments,
     })
   }
-
-  const hasLocks =
-    Object.keys(locks ?? {}).length > 0 && !lockAddress && !network
-  const showForm = !hasLocks || addLock
 
   const [addMetadata, setAddMetadata] = useState(false)
 
@@ -319,8 +309,21 @@ export const LocksForm = ({
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(locks ?? {}).length > 0 && <LockList />}
-      {showForm && (
-        <div className="flex flex-col gap-8">
+      <div className="flex gap-2">
+        {!addLock && !lockAddress && (
+          <Button
+            className="w-full"
+            size="small"
+            variant="outlined-primary"
+            onClick={() => setAddLock(true)}
+          >
+            Add a lock
+          </Button>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-8">
+        {addLock && (
           <div>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
               Select a lock
@@ -329,128 +332,142 @@ export const LocksForm = ({
               {isLoadingLocksByNetwork ? (
                 <SelectPlaceholder />
               ) : (
-                <Picker
-                  userAddress={account!}
-                  onChange={(state) => {
-                    onChangeLock(state.lockAddress, state.network, state.name)
-                  }}
-                />
+                <>
+                  <Picker
+                    userAddress={account!}
+                    onChange={(state) => {
+                      onChangeLock(state.lockAddress, state.network, state.name)
+                    }}
+                  />
+                  <Button
+                    className="w-full"
+                    size="small"
+                    onClick={() => {
+                      setAddLock(false)
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </>
               )}
             </div>
           </div>
-          {lockAddress && network && (
-            <>
-              <div className="flex flex-col">
-                <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-                  Settings
-                </h2>
+        )}
+        {lockAddress && network && (
+          <>
+            <div className="flex flex-col">
+              <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+                Settings
+              </h2>
+              <div className="flex whitespace-nowrap text-sm mb-5">
+                Address: <pre className="ml-3">{lockAddress}</pre>
+              </div>
+              <div className="flex flex-col gap-1">
                 <div className="flex flex-col gap-1">
-                  <div className="flex flex-col gap-1">
-                    <span className="flex items-center justify-between">
-                      <span className="px-1 text-sm">Recurring frequency</span>
-                      <ToggleSwitch
-                        title="Unlimited"
-                        enabled={recurringUnlimited}
-                        setEnabled={(enabled: boolean) => {
-                          setRecurringUnlimited(enabled)
-                          const recurringPayments = enabled ? 'forever' : ''
-                          setRecurring(recurringPayments)
-                          onRecurringChange({
-                            recurringPayments,
-                          })
-                        }}
-                      />
-                    </span>
-                    <Input
-                      size="small"
-                      onChange={(e) => {
-                        setRecurring(e?.target.value)
+                  <span className="flex items-center justify-between">
+                    <span className="px-1 text-sm">Recurring frequency</span>
+                    <ToggleSwitch
+                      title="Unlimited"
+                      enabled={recurringUnlimited}
+                      setEnabled={(enabled: boolean) => {
+                        setRecurringUnlimited(enabled)
+                        const recurringPayments = enabled ? 'forever' : ''
+                        setRecurring(recurringPayments)
                         onRecurringChange({
-                          recurringPayments: e?.target?.value ?? '',
+                          recurringPayments,
                         })
                       }}
-                      value={recurring}
-                      disabled={recurringUnlimited}
                     />
-                    <span className="mb-4 text-xs text-gray-600">
-                      This only applies to locks which have been enable for
-                      recurring payments.{' '}
-                      <a
-                        className="underline"
-                        target="_blank"
-                        href="https://unlock-protocol.com/guides/recurring-memberships/"
-                        rel="noreferrer"
-                      >
-                        Learn more
-                      </a>
-                      .
+                  </span>
+                  <Input
+                    size="small"
+                    onChange={(e) => {
+                      setRecurring(e?.target.value)
+                      onRecurringChange({
+                        recurringPayments: e?.target?.value ?? '',
+                      })
+                    }}
+                    value={recurring}
+                    disabled={recurringUnlimited}
+                  />
+                  <span className="mb-4 text-xs text-gray-600">
+                    This only applies to locks which have been enable for
+                    recurring payments.{' '}
+                    <a
+                      className="underline"
+                      target="_blank"
+                      href="https://unlock-protocol.com/guides/recurring-memberships/"
+                      rel="noreferrer"
+                    >
+                      Learn more
+                    </a>
+                    .
+                  </span>
+                </div>
+                <DynamicForm
+                  name={'locks'}
+                  defaultValues={defaultValue}
+                  schema={LockSchema.omit({
+                    metadataInputs: true,
+                    minRecipients: true, // This option is confusing. Let's not add it by default.
+                    superfluid: true,
+                    default: true,
+                    recurringPayments: true, // Managed separately to get Unlimited recurring
+                  })}
+                  onChange={(fields: any) =>
+                    onAddLock(lockAddress, network, undefined, fields)
+                  }
+                />
+              </div>
+            </div>
+            {hasMinValue && (
+              <>
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <h2 className="text-lg font-bold text-brand-ui-primary">
+                      Metadata
+                    </h2>
+                    <span className="text-xs text-gray-600">
+                      (Optional) Collect additional information from your
+                      members during the checkout process.
+                      <br />
+                      Note: if you have checked{' '}
+                      <code>Collect email address</code> above, there is no need
+                      to enter email address again here.
                     </span>
                   </div>
-                  <DynamicForm
-                    name={'locks'}
-                    defaultValues={defaultValue}
-                    schema={LockSchema.omit({
-                      metadataInputs: true,
-                      minRecipients: true, // This option is confusing. Let's not add it by default.
-                      superfluid: true,
-                      default: true,
-                      recurringPayments: true, // Managed separately to get Unlimited recurring
-                    })}
-                    onChange={(fields: any) =>
-                      onAddLock(lockAddress, network, undefined, fields)
-                    }
-                  />
-                </div>
-              </div>
-              {hasMinValue && (
-                <>
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <h2 className="text-lg font-bold text-brand-ui-primary">
-                        Metadata
-                      </h2>
-                      <span className="text-xs text-gray-600">
-                        (Optional) Collect additional information from your
-                        members during the checkout process.
-                        <br />
-                        Note: if you have checked{' '}
-                        <code>Collect email address</code> above, there is no
-                        need to enter email address again here.
-                      </span>
-                    </div>
-                    {!addMetadata && (
-                      <Button
-                        variant="outlined-primary"
-                        size="small"
-                        onClick={() => setAddMetadata(true)}
-                      >
-                        Add
-                      </Button>
-                    )}
-                  </div>
-                  {!addMetadata ? (
-                    <MetadataList />
-                  ) : (
-                    <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
-                      <DynamicForm
-                        name={'metadata'}
-                        schema={MetadataInputSchema.omit({
-                          defaultValue: true, // default value is not needed
-                        })}
-                        onChange={() => void 0}
-                        onSubmit={onAddMetadata}
-                        submitLabel={'Add'}
-                        showSubmit={true}
-                      />
-                    </div>
+                  {!addMetadata && (
+                    <Button
+                      variant="outlined-primary"
+                      size="small"
+                      onClick={() => setAddMetadata(true)}
+                    >
+                      Add
+                    </Button>
                   )}
-                  <Button onClick={() => reset()}>Next</Button>
-                </>
-              )}
-            </>
-          )}
-        </div>
-      )}
+                </div>
+                {!addMetadata ? (
+                  <MetadataList />
+                ) : (
+                  <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
+                    <DynamicForm
+                      name={'metadata'}
+                      schema={MetadataInputSchema.omit({
+                        defaultValue: true, // default value is not needed
+                      })}
+                      onChange={() => void 0}
+                      onSubmit={onAddMetadata}
+                      submitLabel={'Add'}
+                      showSubmit={true}
+                    />
+                  </div>
+                )}
+                <Button onClick={() => reset()}>Done</Button>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
@@ -468,7 +485,7 @@ const LockListItem = ({
           <LockImage lockAddress={address} />
           <span className="text-base font-semibold">{name || 'Default'}</span>
         </div>
-        <span className="ml-auto">{address}</span>
+        <span className="ml-auto">{minifyAddress(address)}</span>
       </div>
       <div className="flex gap-2 item-center">
         <Tooltip label="Edit" tip="Edit" side="bottom">
