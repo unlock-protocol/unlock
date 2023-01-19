@@ -158,6 +158,10 @@ export class KeyManager {
    * This function creates a wallet address from a lock address and an email address.
    */
   createTransferAddress({ params }: CreateTransferAddressKey) {
-    return ethers.utils.id(JSON.stringify(params)).slice(0, 42)
+    const item = {
+      email: params.email.trim().toLowerCase(),
+      lock: params.lockAddress.trim().toLowerCase(),
+    }
+    return ethers.utils.id(JSON.stringify(item)).slice(0, 42)
   }
 }
