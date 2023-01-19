@@ -1,18 +1,16 @@
 import forge from 'node-forge'
-
+import { vi } from 'vitest'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 
 const emailAddressToSign = 'julien@unlock-protocol.com'
 let signature
 let base64PublicKey
 
-// These tests are slow because we generate private keys
-jest.setTimeout(15000)
-
-describe('verifyEmailSignature', () => {
-  beforeAll((done) => {
+const generateKeyPair = async () => {
+  return new Promise((resolve, reject) => {
     forge.rsa.generateKeyPair({ bits: 2048, workers: 2 }, (err, keypair) => {
       if (err) {
+        reject(err)
         throw err
       }
       const privateKeyPem = forge.pki.privateKeyToPem(keypair.privateKey)
@@ -24,8 +22,18 @@ describe('verifyEmailSignature', () => {
       const privateKey = forge.pki.privateKeyFromPem(privateKeyPem)
       const signed = privateKey.sign(md)
       signature = Buffer.from(signed).toString('base64')
-      done()
+      return resolve({
+        signature,
+        privateKey,
+        base64PublicKey,
+        emailAddressToSign,
+      })
     })
+  })
+}
+describe('verifyEmailSignature', () => {
+  beforeAll(async () => {
+    await generateKeyPair()
   })
 
   it('should return true if the signature matches the wedlocks public key', () => {

@@ -1,5 +1,5 @@
 const { ethers, network } = require('hardhat')
-const { impersonate } = require('./mainnet')
+const { impersonate } = require('./fork')
 
 const multisigABI = require('./ABIs/multisig.json')
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'

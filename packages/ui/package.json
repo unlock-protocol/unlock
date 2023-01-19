@@ -45,8 +45,9 @@
     "tailwindcss": "3.2.4"
   },
   "peerDependencies": {
-    "react": "^17.x.x",
-    "react-dom": "^17.x.x"
+    "@headlessui/react": "1.7.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.7",
@@ -58,11 +59,10 @@
     "@storybook/addon-essentials": "6.5.15",
     "@storybook/addon-links": "6.5.15",
     "@storybook/addon-postcss": "2.0.0",
-    "@storybook/react": "6.5.15",
-    "@svgr/webpack": "5.5.0",
-    "@types/react": "17.0.52",
-    "@types/react-dom": "17.0.18",
-    "@vitejs/plugin-react": "3.0.0",
+    "@storybook/react": "6.5.0-alpha.31",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.8",
+    "@vitejs/plugin-react": "2.2.0",
     "autoprefixer": "10.4.13",
     "babel-loader": "9.1.0",
     "postcss": "8.4.20",
