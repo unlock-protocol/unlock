@@ -4,7 +4,6 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import { sendEmail } from '../operations/wedlocksOperations'
-import config from '../config/config'
 
 export const createTransferCode: RequestHandler = async (request, response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
@@ -63,23 +62,29 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     deadline: deadline,
   }
 
-  const transferCode = await dispatcher.createTransferCode(network, transfer)
+  const transferSignature = await dispatcher.createTransferCode(
+    network,
+    transfer
+  )
 
-  const transferUrl = new URL(config.unlockApp)
-  transferUrl.searchParams.set('lockAddress', lockAddress)
-  transferUrl.searchParams.set('keyId', keyId)
-  transferUrl.searchParams.set('transferCode', transferCode)
-  transferUrl.searchParams.set('network', network.toString())
-  transferUrl.searchParams.set('transfer', JSON.stringify(transfer))
+  const transferCode = Buffer.from(transferSignature.slice(2), 'hex').toString(
+    'base64'
+  )
+
+  const [part1, part2] = [transferCode.slice(0, 12), transferCode.slice(12)]
 
   await sendEmail('transferCode', 'transferCode', email, {
     lockName: key.lock.name || 'Unlock Lock',
     network: network.toString(),
-    transferCode,
+    transferCode: part1,
     keyId,
-    transferUrl: transferUrl.toString(),
     validPeriod: '15 minutes',
   })
 
-  return response.status(200).send(transfer)
+  const responseBody = {
+    ...transfer,
+    transferCode: part2,
+  }
+
+  return response.status(200).send(responseBody)
 }
