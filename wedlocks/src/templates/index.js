@@ -3,6 +3,7 @@ import welcome from './welcome'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
+import transferCode from './transferCode'
 
 import LockTemplates from './locks'
 
@@ -11,6 +12,7 @@ const baseTemplates = {
   welcome,
   keyOwnership,
   keyMined,
+  transferCode,
   debug,
 }
 

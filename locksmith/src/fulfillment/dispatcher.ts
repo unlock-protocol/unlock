@@ -1,4 +1,8 @@
-import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
+import {
+  KeyManager,
+  WalletService,
+  Web3Service,
+} from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
@@ -262,5 +266,24 @@ export default class Dispatcher {
       { maxFeePerGas, maxPriorityFeePerGas },
       callback
     )
+  }
+
+  async createTransferCode(
+    network: number,
+    params: Parameters<
+      InstanceType<typeof KeyManager>['createTransferSignature']
+    >[0]['params']
+  ) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const keyManager = new KeyManager()
+    const transferCode = await keyManager.createTransferSignature({
+      params,
+      signer,
+      network,
+    })
+    return transferCode
   }
 }

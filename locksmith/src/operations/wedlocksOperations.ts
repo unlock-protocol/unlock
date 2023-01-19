@@ -8,9 +8,9 @@ import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
 
 type Params = {
-  [key: string]: any
+  [key: string]: string | number | undefined
   keyId: string
-  keychainUrl: string
+  keychainUrl?: string
   lockName: string
   network: string
   txUrl?: string
@@ -45,7 +45,7 @@ export const sendEmail = async (
   template: string,
   failoverTemplate: string,
   recipient: string,
-  params: Params = {} as any,
+  params: Params = {} as Record<string, string | number>,
   attachments: Attachment[] = []
 ) => {
   const payload = {
