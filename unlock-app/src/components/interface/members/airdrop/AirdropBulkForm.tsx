@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, minifyAddress } from '@unlock-protocol/ui'
 import { useList } from 'react-use'
 import { AirdropMember, AirdropListItem } from './AirdropElements'
 import { useDropzone } from 'react-dropzone'
@@ -10,6 +10,8 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { KeyManager } from '@unlock-protocol/unlock-js'
+import { useConfig } from '~/utils/withConfig'
 
 const MAX_SIZE = 50
 
@@ -21,6 +23,7 @@ interface Props {
 export function AirdropBulkForm({ lock, onConfirm }: Props) {
   const [list, { set, clear, removeAt }] = useList<AirdropMember>([])
   const [error, setError] = useState('')
+  const config = useConfig()
   const web3Service = useWeb3Service()
   const { account } = useAuth()
   const [isConfirming, setIsConfirming] = useState(false)
@@ -52,6 +55,19 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
       const members = await Promise.all(
         json.map(async (item, line) => {
           try {
+            if (!item.recipient && item.email) {
+              // If no recipient is provided but email is, we create a transfer address for walletless users
+              const keyManager = new KeyManager(config.networks)
+              const networkConfig = config.networks[lock.network]
+              const recipient = keyManager.createTransferAddress({
+                params: {
+                  lockAddress: lock.address,
+                  email: item.email,
+                },
+              })
+              item.manager = networkConfig.keyManagerAddress
+              item.recipient = recipient
+            }
             const record = AirdropMember.parse(item)
             const [recipient, manager] = await Promise.all([
               getAddressForName(record.recipient),
@@ -129,7 +145,10 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
       if (duplicates.length > 0) {
         errors.push(
           `The following recipients are duplicates and have been discarded: ${duplicates
-            .map((m) => `${m.recipient} (line ${m.line})`)
+            .map(
+              (m) =>
+                `${minifyAddress(m.recipient)} - ${m.email} (line ${m.line})`
+            )
             .join(', ')}`
         )
       }
