@@ -52,9 +52,9 @@ export const SendTransferForm = ({
       <div className="space-y-1">
         <h1 className="text-xl font-bold"> Request transfer code</h1>
         <p className="text-gray-800">
-          You will be sent a transfer code by email. You can use this transfer
-          code to initiate the transfer. This code will expire in 15 minutes and
-          can only be used once on this page.
+          You will receive a transfer code by email. You need to use this transfer
+          code to transfer the membership token. This code will expire in 15 minutes and
+          can only be used once, from this page.
         </p>
       </div>
       <div className="flex items-center justify-end">
@@ -132,10 +132,9 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
       <div className="space-y-1">
         <h1 className="text-xl font-bold">Confirm Transfer </h1>
         <p className="text-gray-800">
-          Enter the transfer code you received by email to confirm the transfer.
-          This code will expire in 15 minutes and can only be used once on this
-          page. If you do not use the transfer code or it expires, you will need
-          to request a new one.
+          Keep this window open and enter the transfer code you received by email to confirm the transfer.
+          This code expires in 15 minutes and can only be used once from this
+          page. If you do not use the transfer code or it expires, you can request a new one and start again.
         </p>
       </div>
       <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
