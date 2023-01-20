@@ -148,7 +148,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   );
 
   // errors
-  error SwapFailed();
+  error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
   error LockDoesntExist(address lockAddress);
   error InsufficientBalance();
   error UnauthorizedBalanceChange();
@@ -581,13 +581,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     (bool success, ) = swapRouter.call{ value: swapValue }(swapCalldata);
     // make sure to catch Uniswap revert
     if(success == false) {
-      // propagate revert reason from swap
-      assembly {
-        let ptr := mload(0x40)
-        let size := returndatasize()
-        returndatacopy(ptr, 0, size)
-        revert(ptr, size)
-      }
+      revert SwapFailed(swapRouter, srcToken, destToken, amountInMax, swapCalldata);
     }
 
     // make sure balance is enough to buy key
