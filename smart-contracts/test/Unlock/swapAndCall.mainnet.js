@@ -13,7 +13,8 @@ const {
   UNLOCK_PROXY_OWNER,
   UNLOCK_ADDRESS,
   PERMIT2_ADDRESS,
-  CHAIN_ID
+  CHAIN_ID,
+  reverts
  } = require('../helpers')
 
 
@@ -245,18 +246,74 @@ describe(`swapAndCall`, function() {
           )
         })
       })
+
+      describe('errors', () => {
+        let calldata
+        before(async () => {
+          const args = [
+            lockToken.isToken ? [keyPrice]: [], // keyPrices
+            [keyOwner.address], // recipients
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]], // _data
+          ]
+    
+          // parse call data
+          calldata = await lock.interface.encodeFunctionData('purchase', args)
+    
+          // get uniswap route
+          ;({ 
+            swapCalldata, 
+            value, 
+            swapRouter,
+            amountInMax
+          } = await getUniswapRoute({
+            tokenIn: srcToken,
+            tokenOut: lockToken,
+            amoutOut: keyPrice,
+            recipient: unlock.address,
+          }))
+          
+        })
+    
+        it('reverts if swap fails', async () => {
+          const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
+          await reverts(
+            unlock.connect(keyOwner) 
+            .swapAndCall(
+              lock.address,
+              srcToken.address || ADDRESS_ZERO,
+              amountInMax, // (in src token)
+              swapRouter,
+              corruptCallData,
+              calldata,
+              { value }
+            ),
+            'SwapFailed'
+          )
+        })
+  
+        it('reverts if lock call fails', async () => {
+          const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
+          await reverts(
+            unlock.connect(keyOwner) 
+            .swapAndCall(
+              lock.address,
+              srcToken.address || ADDRESS_ZERO,
+              amountInMax, // (in src token)
+              swapRouter,
+              swapCalldata,
+              corruptCallData,
+              { value }
+            ),
+            'SwapFailed'
+          )
+        })
+        // it('the amount of tokens is not sufficient')
+        // it('the approval is unsufficient')
+      })
     })
   })
 
 
-  // TODO: make sure everything fails gracefully
-  // TODO: convert to custom errors
-  describe('errors', () => {
-    it('reverts if swap fails')
-    it('reverts if lock call fails')
-    it('pair does not exist (SHIBA/DAI)')
-    it('the amount of tokens is not sufficient')
-    it('the approval is unsufficient')
-    it('pool fee is wrong')
-  })
 })
