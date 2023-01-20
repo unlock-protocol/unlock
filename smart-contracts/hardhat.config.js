@@ -67,9 +67,8 @@ if (process.env.RUN_FORK) {
     },
   }
 
-  if (process.env.RUN_FORK === '137') {
-    networks.hardhat.blockGasLimit = 1_000_000_000 // 100000000429720
-  }
+  // needed for Uniswap Router to compute routes on local forks
+  networks.hardhat.blockGasLimit = 1_000_000_000
 
   // replace localhost manifest by mainnet one
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
