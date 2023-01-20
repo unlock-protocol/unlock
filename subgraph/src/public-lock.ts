@@ -33,8 +33,6 @@ import {
   LOCK_MANAGER,
 } from './helpers'
 
-import kecakk256 from 'kecakk256'
-
 interface ReceiptProps {
   hash: string
   timestamp: BigInt
@@ -45,22 +43,6 @@ interface ReceiptProps {
   to: Address | null
   from: Address | null
   amount: BigInt
-}
-
-function createReceiptObject(
-  event: RenewKeyPurchaseEvent | TransferEvent | KeyExtendedEvent
-): ReceiptProps {
-  return {
-    hash: event.transaction.hash.toString(),
-    timestamp: event.block.timestamp,
-    sender: event.transaction.to || null, // sender of the transactions,
-    lockAddress: event.address,
-    gasTotal: event.transaction.gasPrice,
-    logs: event.receipt?.logs ?? [],
-    to: event.transaction.to,
-    from: event.transaction.from,
-    amount: event.transaction.value,
-  }
 }
 
 function newKey(event: TransferEvent): void {
@@ -120,7 +102,17 @@ function newKey(event: TransferEvent): void {
   }
 
   // create receipt
-  createReceipt(createReceiptObject(event))
+  createReceipt({
+    hash: event.transaction.hash.toString(),
+    timestamp: event.block.timestamp,
+    sender: event.transaction.to || null, // sender of the transactions,
+    lockAddress: event.address,
+    gasTotal: event.transaction.gasPrice,
+    logs: event.receipt?.logs ?? [],
+    to: event.transaction.to,
+    from: event.transaction.from,
+    amount: event.transaction.value,
+  })
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -235,7 +227,17 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   }
 
   // create receipt
-  createReceipt(createReceiptObject(event))
+  createReceipt({
+    hash: event.transaction.hash.toString(),
+    timestamp: event.block.timestamp,
+    sender: event.transaction.to || null, // sender of the transactions,
+    lockAddress: event.address,
+    gasTotal: event.transaction.gasPrice,
+    logs: event.receipt?.logs ?? [],
+    to: event.transaction.to,
+    from: event.transaction.from,
+    amount: event.transaction.value,
+  })
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -254,7 +256,17 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 
   // create receipt
-  createReceipt(createReceiptObject(event))
+  createReceipt({
+    hash: event.transaction.hash.toString(),
+    timestamp: event.block.timestamp,
+    sender: event.transaction.to || null, // sender of the transactions,
+    lockAddress: event.address,
+    gasTotal: event.transaction.gasPrice,
+    logs: event.receipt?.logs ?? [],
+    to: event.transaction.to,
+    from: event.transaction.from,
+    amount: event.transaction.value,
+  })
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -384,12 +396,13 @@ export async function createReceipt({
     // find the ERC20 Transfer event
     const log = logs.find(
       (l: ethereum.Log) =>
-        l.address.toString() === lock?.tokenAddress.toString() &&
-        l.topics[0] === kecakk256('Transfer(from, to, value)').toString('hex')
+        l.address.toString() === lock?.tokenAddress.toString()
+      /* &&fix:
+        l.topics[0] === 'Transfer(from, to, value)'.toString('hex') */
     )
 
     // decode event data
-    const decoded = ethereum.decode('(address,address,uint256)', log!.data)
+    const decoded = ethereum.decode('(address,address,uint256)', log!.topics[0])
     receipt.payer = decoded ? decoded[0] : ''
     receipt.amountTransferred = decoded ? decoded[2] : 0
   } else {
