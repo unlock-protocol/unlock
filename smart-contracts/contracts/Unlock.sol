@@ -562,7 +562,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       // Approve the router to spend src ERC20
       TransferHelper.safeApprove(srcToken, swapRouter, amountInMax);
 
-      // approve PERMIT2 to mainpulate the token
+      // approve PERMIT2 to manipulate the token
       IERC20(srcToken).approve(permit2, amountInMax);
     }
 
