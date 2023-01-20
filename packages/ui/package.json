@@ -24,7 +24,7 @@
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "tsc && vite build && tsup ./lib/index.tsx --dts-only",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
@@ -59,7 +59,7 @@
     "@storybook/addon-essentials": "6.5.15",
     "@storybook/addon-links": "6.5.15",
     "@storybook/addon-postcss": "2.0.0",
-    "@storybook/react": "6.5.0-alpha.31",
+    "@storybook/react": "6.5.15",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
     "@vitejs/plugin-react": "2.2.0",
