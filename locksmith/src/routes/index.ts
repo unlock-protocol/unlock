@@ -24,7 +24,7 @@ import contractsRouter from './v2/contracts'
 import subscriptionRouter from './v2/subscriptions'
 import claimV2Router from './v2/claim'
 import imagesRouter from './v2/images'
-
+import airdropRouter from './v2/airdrop'
 import config from '../config/config'
 
 const router = express.Router({ mergeParams: true })
@@ -67,6 +67,7 @@ router.use('/v2/applications', applicationRouter)
 router.use('/v2/purchase', purchaseRouterV2)
 router.use('/v2/subscriptions', subscriptionRouter)
 router.use('/v2/claim', claimV2Router)
+router.use('/v2/airdrop', airdropRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
