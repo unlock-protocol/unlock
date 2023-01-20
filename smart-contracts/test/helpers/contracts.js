@@ -14,6 +14,7 @@ const mainnet = {
   'UNLOCK_MULTISIG' : '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   'UNLOCK_GOVERNOR' : '0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94',
   'UNLOCK_TIMELOCK' : '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B',
+  'UNLOCK_PROXY_OWNER' : '0xF867712b963F00BF30D372b857Ae7524305A0CE7',
 
   // uniswap
   'POSITION_MANAGER_ADDRESS' : '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
@@ -32,7 +33,6 @@ const whales = {
 const polygon = {
   // currencies
   'USDC' : '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-  'SHIBA_INU' : '',
   'WETH' : '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
   'DAI' : '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
   'WBTC' : '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
@@ -40,6 +40,7 @@ const polygon = {
   // Unlock stuff
   'UNLOCK_ADDRESS' : networks['polygon'].unlockAddress,
   'UDT' : '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+  'UNLOCK_PROXY_OWNER' : '0x479f3830fbd715342868BA95E438609BCe443DFB',
   
   // uniswap
   // 'POSITION_MANAGER_ADDRESS' : '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
@@ -55,26 +56,25 @@ const polygonWhales = {
   [polygon.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534',
 }
 
-let contracts 
+let contracts = {
+  ...mainnet,
+  CHAIN_ID: 1,
+  whales,
+}
 
 switch (process.env.RUN_FORK) {
   case '1':
-    contracts = {
-      ...mainnet,
-      whales,
-    }
+    contracts
     break;
   case '137':
     contracts = {
       ...polygon,
-      polygonWhales,
+      CHAIN_ID: 137,
+      whales: polygonWhales,
     }
     break;
   default:
-    contracts = {
-      ...mainnet,
-      whales,
-    }
+    contracts 
     break;
 }
 
