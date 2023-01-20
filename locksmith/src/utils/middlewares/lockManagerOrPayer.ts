@@ -35,11 +35,22 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
   )
 
   const subgraph = new SubgraphService(networks)
-  // todo: get payer from subgraph
 
-  const isPayer = false
+  // get receipt
+  const receipt = await subgraph.receipt(
+    {
+      where: {
+        id: hash,
+        lockAddress,
+        payer: userAddress,
+      },
+    },
+    {
+      network,
+    }
+  )
 
-  if (!isLockManager && !isPayer) {
+  if (!isLockManager && !receipt) {
     return res.status(401).send({
       message: `${userAddress} is not a lock manager or payer of this transaction`,
     })
