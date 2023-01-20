@@ -172,8 +172,8 @@ export const notifyNewKeyToWedlocks = async (
   transferUrl.searchParams.set('network', network?.toString() ?? '')
 
   const templates = isAirdroppedRecipient
-    ? [`keyAirdropped${lockAddress}`, `keyAirdropped`]
-    : [`keyMined${lockAddress}`, 'keyMined']
+    ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
+    : [`keyMined${lockAddress.trim()}`, 'keyMined']
   // Lock address to find the specific template
   await sendEmail(
     templates[0],
