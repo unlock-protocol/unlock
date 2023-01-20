@@ -520,10 +520,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address payable lockAddress;
     bytes memory lockCalldata;
     (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
+    
     if (currency != address(0)) {
       IERC20 token = IERC20(currency);
-      // get tokens from bridge
-      token.transferFrom(msg.sender, address(this), amount);
+      // make sure we got enough tokens from the bridge
       require(token.balanceOf(address(this)) >= amount, "not enough");
       // approve the lock to get the tokens 
       token.approve(lockAddress, amount);
