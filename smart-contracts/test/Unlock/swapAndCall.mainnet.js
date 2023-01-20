@@ -261,59 +261,120 @@ describe(`swapAndCall`, function() {
           // parse call data
           calldata = await lock.interface.encodeFunctionData('purchase', args)
     
-          // get uniswap route
-          ;({ 
-            swapCalldata, 
-            value, 
-            swapRouter,
-            amountInMax
-          } = await getUniswapRoute({
-            tokenIn: srcToken,
-            tokenOut: lockToken,
-            amoutOut: keyPrice,
-            recipient: unlock.address,
-          }))
+          // // get uniswap route
+          // ;({ 
+          //   swapCalldata, 
+          //   value, 
+          //   swapRouter,
+          //   amountInMax
+          // } = await getUniswapRoute({
+          //   tokenIn: srcToken,
+          //   tokenOut: lockToken,
+          //   amoutOut: keyPrice,
+          //   recipient: unlock.address,
+          // }))
+
+          // // approve
+          // if(srcToken.isToken) {
+          //   const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
+          //   await token.connect(keyOwner).approve(unlock.address, amountInMax)
+          // }
           
         })
-    
-        it('reverts if swap fails', async () => {
-          const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
-          await reverts(
-            unlock.connect(keyOwner) 
-            .swapAndCall(
-              lock.address,
-              srcToken.address || ADDRESS_ZERO,
-              amountInMax, // (in src token)
-              swapRouter,
-              corruptCallData,
-              calldata,
-              { value }
-            ),
-            'SwapFailed'
-          )
+
+        describe('swap failures', () => {
+          it('reverts if swap fails', async () => {
+            const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
+            await reverts(
+              unlock.connect(keyOwner) 
+              .swapAndCall(
+                lock.address,
+                srcToken.address || ADDRESS_ZERO,
+                amountInMax, // (in src token)
+                swapRouter,
+                corruptCallData,
+                calldata,
+                { value }
+              ),
+              'SwapFailed'
+            )
+          })
+
+          it('the allowance is unsufficient', async () => {
+            // reset approval
+            const token = await ethers.getContractAt('TestERC20', srcToken.address)
+            await token.connect(keyOwner).approve(unlock.address, 0)
+
+            await reverts(
+              unlock.connect(keyOwner) 
+              .swapAndCall(
+                lock.address,
+                srcToken.address || ADDRESS_ZERO,
+                amountInMax, 
+                swapRouter,
+                swapCalldata,
+                calldata,
+                { value }
+              ),
+              'SwapFailed'
+            )
+          })
         })
-  
-        it('reverts if lock call fails', async () => {
-          const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
-          await reverts(
-            unlock.connect(keyOwner) 
-            .swapAndCall(
-              lock.address,
-              srcToken.address || ADDRESS_ZERO,
-              amountInMax, // (in src token)
+
+        describe('lock call failures', () => {
+          it('reverts if calldata is wrong', async () => {
+            const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
+            await reverts(
+              unlock.connect(keyOwner) 
+              .swapAndCall(
+                lock.address,
+                srcToken.address || ADDRESS_ZERO,
+                amountInMax, // (in src token)
+                swapRouter,
+                swapCalldata,
+                corruptCallData,
+                { value }
+              ),
+              'LockCallFailed'
+            )
+          })
+
+          it('reverts if key price is unsufficient', async () => {
+
+            ;({ 
+              swapCalldata, 
+              value, 
               swapRouter,
-              swapCalldata,
-              corruptCallData,
-              { value }
-            ),
-            'SwapFailed'
-          )
+              amountInMax
+            } = await getUniswapRoute({
+              tokenIn: srcToken,
+              tokenOut: lockToken,
+              amoutOut: keyPrice.div(2),
+              recipient: unlock.address,
+            }))
+
+            // approve
+            if(srcToken.isToken) {
+              const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
+              await token.connect(keyOwner).approve(unlock.address, amountInMax)
+            }
+
+            await reverts(
+              unlock.connect(keyOwner) 
+              .swapAndCall(
+                lock.address,
+                srcToken.address || ADDRESS_ZERO,
+                amountInMax, // (in src token)
+                swapRouter,
+                swapCalldata,
+                calldata,
+                { value }
+              ),
+              'InsufficientBalance'
+            )
+          })
         })
-        // it('the amount of tokens is not sufficient')
-        // it('the approval is unsufficient')
       })
     })
   })
-
-
 })
