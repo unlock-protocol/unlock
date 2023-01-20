@@ -152,6 +152,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error LockDoesntExist(address lockAddress);
   error InsufficientBalance();
   error UnauthorizedBalanceChange();
+  error LockCallFailed();
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
@@ -574,11 +575,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       uint48(block.timestamp + 60) // expires after 1min
     );
 
-    // calculate value to send to Uniswap
-    uint swapValue = srcToken == address(0) ? msg.value : 0;
-
     // executes the swap
-    (bool success, ) = swapRouter.call{ value: swapValue }(swapCalldata);
+    (bool success, ) = swapRouter.call{ 
+      value: srcToken == address(0) ? msg.value : 0 
+    }(swapCalldata);
+
     // make sure to catch Uniswap revert
     if(success == false) {
       revert SwapFailed(swapRouter, srcToken, destToken, amountInMax, swapCalldata);
@@ -600,11 +601,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     }
 
     // call the lock
-    (,bytes memory returnData) = lock.call{
+    (bool lockCallSuccess, bytes memory returnData) = lock.call{
       value: destToken == address(0) ? keyPrice : 0
     }(
       callData
     );
+
+    if(lockCallSuccess == false) {
+      revert LockCallFailed();
+    }
 
     // check that Unlock didnt spent more than it received
     if(
