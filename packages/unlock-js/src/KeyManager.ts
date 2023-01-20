@@ -1,5 +1,5 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { Transaction, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 export const KeyManagerAbi = [
@@ -120,7 +120,7 @@ export class KeyManager {
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
 
-    const tx: Transaction = await KeyManagerContract.transfer(
+    const tx = await KeyManagerContract.transfer(
       lock,
       token,
       owner,
@@ -140,13 +140,14 @@ export class KeyManager {
     signer,
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
-    const tx: Transaction = await KeyManagerContract.callStatic.transfer(
+    const tx = await KeyManagerContract.callStatic.transfer(
       lock,
       token,
       owner,
       deadline,
       transferSignature
     )
+
     return tx
   }
 
