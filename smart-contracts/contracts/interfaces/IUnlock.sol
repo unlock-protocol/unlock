@@ -262,7 +262,7 @@ interface IUnlock {
   /**
    * @return the address of Uniswap permit2  
    */
-  function permit2() external returns (address);
+  function permit2() external view returns (address);
 
   /**
    * Set the address of Uniswap Permit2 helper contract
