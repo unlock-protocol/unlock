@@ -7,7 +7,6 @@ import { vi } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
-let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const network = 5
 
 const supplier: z.infer<typeof SupplierBody> = {
@@ -26,11 +25,8 @@ vi.mock('@unlock-protocol/unlock-js', () => {
   return {
     Web3Service: vi.fn().mockImplementation(() => {
       return {
-        isLockManager: (lock: string, manager: string) => {
-          return (
-            lockAddress.toLowerCase() === lock.toLowerCase() ||
-            manager === lockManager
-          )
+        isLockManager: (lock: string) => {
+          return lockAddress.toLowerCase() === lock.toLowerCase()
         },
       }
     }),
