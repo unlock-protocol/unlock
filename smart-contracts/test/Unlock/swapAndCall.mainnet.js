@@ -261,29 +261,29 @@ describe(`swapAndCall`, function() {
           // parse call data
           calldata = await lock.interface.encodeFunctionData('purchase', args)
     
-          // // get uniswap route
-          // ;({ 
-          //   swapCalldata, 
-          //   value, 
-          //   swapRouter,
-          //   amountInMax
-          // } = await getUniswapRoute({
-          //   tokenIn: srcToken,
-          //   tokenOut: lockToken,
-          //   amoutOut: keyPrice,
-          //   recipient: unlock.address,
-          // }))
+          // get uniswap route
+          ;({ 
+            swapCalldata, 
+            value, 
+            swapRouter,
+            amountInMax
+          } = await getUniswapRoute({
+            tokenIn: srcToken,
+            tokenOut: lockToken,
+            amoutOut: keyPrice,
+            recipient: unlock.address,
+          }))
 
-          // // approve
-          // if(srcToken.isToken) {
-          //   const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
-          //   await token.connect(keyOwner).approve(unlock.address, amountInMax)
-          // }
+          // approve
+          if(srcToken.isToken) {
+            const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
+            await token.connect(keyOwner).approve(unlock.address, amountInMax)
+          }
           
         })
 
-        describe('swap failures', () => {
-          it('reverts if swap fails', async () => {
+        describe('swap reverts if', () => {
+          it('calldata is wrong', async () => {
             const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
             await reverts(
               unlock.connect(keyOwner) 
@@ -300,29 +300,34 @@ describe(`swapAndCall`, function() {
             )
           })
 
-          it('the allowance is unsufficient', async () => {
-            // reset approval
-            const token = await ethers.getContractAt('TestERC20', srcToken.address)
-            await token.connect(keyOwner).approve(unlock.address, 0)
+          
+          it('the ERC20 allowance is unsufficient', async () => {
+            if(srcToken.isToken) { // skip test if native token
+              // give some tokens
+              const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
 
-            await reverts(
-              unlock.connect(keyOwner) 
-              .swapAndCall(
-                lock.address,
-                srcToken.address || ADDRESS_ZERO,
-                amountInMax, 
-                swapRouter,
-                swapCalldata,
-                calldata,
-                { value }
-              ),
-              'SwapFailed'
-            )
+              // reset approval
+              await token.connect(keyOwner).approve(unlock.address, 0)
+  
+              await reverts(
+                unlock.connect(keyOwner)
+                .swapAndCall(
+                  lock.address,
+                  srcToken.address || ADDRESS_ZERO,
+                  amountInMax,
+                  swapRouter,
+                  swapCalldata,
+                  calldata,
+                  { value }
+                ),
+                'SwapFailed'
+              )
+            }
           })
         })
 
-        describe('lock call failures', () => {
-          it('reverts if calldata is wrong', async () => {
+        describe('lock call reverts if', () => {
+          it('calldata is wrong', async () => {
             const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
             await reverts(
               unlock.connect(keyOwner) 
@@ -339,7 +344,7 @@ describe(`swapAndCall`, function() {
             )
           })
 
-          it('reverts if key price is unsufficient', async () => {
+          it('key price is unsufficient', async () => {
 
             ;({ 
               swapCalldata, 
