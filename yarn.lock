@@ -3249,6 +3249,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@enzoferey/ethers-error-parser@npm:0.2.3":
+  version: 0.2.3
+  resolution: "@enzoferey/ethers-error-parser@npm:0.2.3"
+  peerDependencies:
+    ethers: ^5.7.0
+  checksum: cae3e284da043b61ce78a3a7a30bc76d6b2096e1e0dd13b793b821d6c4e82e1ce29b368ec679bb7adb55e3d4aaa65309ebd0a9671784ee83b0d1b2c1e7af3fd7
+  languageName: node
+  linkType: hard
+
 "@esbuild-kit/cjs-loader@npm:^2.4.0":
   version: 2.4.1
   resolution: "@esbuild-kit/cjs-loader@npm:2.4.1"
@@ -13063,6 +13072,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
+    "@enzoferey/ethers-error-parser": 0.2.3
     "@headlessui/react": 1.7.7
     "@hookform/error-message": 2.0.1
     "@hookform/resolvers": 2.9.10
@@ -27099,7 +27109,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 

@@ -2,18 +2,27 @@ import { Input, Button } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter } from 'next/router'
 import { MouseEventHandler, useMemo, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { Controller, useForm } from 'react-hook-form'
 import { useTransferCode } from '~/hooks/transfer'
 import { useConfig } from '~/utils/withConfig'
 import { useWalletService } from '~/utils/withWalletService'
 import ReCaptcha from 'react-google-recaptcha'
+import {
+  EthersError,
+  getParsedEthersError,
+} from '@enzoferey/ethers-error-parser'
+import { SwitchNetwork } from '~/components/helpers/SwitchNetwork'
+import { toast } from 'react-hot-toast'
 
 interface SendTransferFormProps {
   lockAddress: string
   keyId: string
   network: number
-  onTransferCodeCreated: (transfer: TransferObject) => void
+  onTransferCodeCreated: (
+    transfer: TransferObject & {
+      transferCode: string
+    }
+  ) => void
 }
 
 export const SendTransferForm = ({
@@ -64,49 +73,58 @@ export const SendTransferForm = ({
 }
 
 interface ConfirmTransferData {
-  transferCode: string
+  transferSignature: string
 }
 
 interface Props {
   transferObject: TransferObject & {
     transferCode: string
   }
+  network: number
 }
 
-export const ConfirmTransferForm = ({ transferObject }: Props) => {
+export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const config = useConfig()
   const walletService = useWalletService()
   const manager = new KeyManager(config.networks)
-  const { network } = useAuth()
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
+    control,
+    formState: { errors, isValid, isSubmitting },
   } = useForm<ConfirmTransferData>({
-    reValidateMode: 'onChange',
+    reValidateMode: 'onBlur',
   })
 
-  const onSubmit = async ({ transferCode: part1 }: ConfirmTransferData) => {
+  const onSubmit = async ({ transferSignature }: ConfirmTransferData) => {
     const signer = walletService.signer
-    const transferSignature = [
-      '0x',
-      Buffer.from(
-        [part1, transferObject.transferCode].join(''),
-        'base64'
-      ).toString('hex'),
-    ].join('')
-
-    const tx = await manager.transfer({
-      network: network!,
-      params: {
-        transferSignature,
-        deadline: transferObject.deadline,
-        lock: transferObject.lock,
-        token: transferObject.token,
-        owner: transferObject.owner,
-      },
-      signer,
-    })
+    try {
+      const tx = await manager.transfer({
+        network: network!,
+        params: {
+          transferSignature,
+          deadline: transferObject.deadline,
+          lock: transferObject.lock,
+          token: transferObject.token,
+          owner: transferObject.owner,
+        },
+        signer,
+      })
+      const successId = toast.loading('Transfer in progress...')
+      await tx.wait()
+      toast.success('Transfer successful', {
+        id: successId,
+      })
+    } catch (error) {
+      const parsedError = getParsedEthersError(error as EthersError)
+      if (parsedError.context) {
+        toast.error(
+          parsedError.context.length > 250
+            ? parsedError.errorCode
+            : parsedError.context
+        )
+        return
+      }
+    }
   }
 
   return (
@@ -121,8 +139,10 @@ export const ConfirmTransferForm = ({ transferObject }: Props) => {
         </p>
       </div>
       <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          {...register('transferCode', {
+        <Controller
+          name="transferSignature"
+          control={control}
+          rules={{
             required: {
               value: true,
               message: 'Code is required.',
@@ -131,16 +151,49 @@ export const ConfirmTransferForm = ({ transferObject }: Props) => {
               value: 12,
               message: 'Code must be at least 12 characters.',
             },
-          })}
-          placeholder="Enter transfer code"
-          description="Enter the transfer code you received by email."
-          error={errors?.transferCode?.message}
-          label="Transfer Code"
+          }}
+          render={({ field: { onChange, onBlur } }) => (
+            <Input
+              onChange={(event) => {
+                event.preventDefault()
+                const { value } = event.target
+                const transferSignature = [
+                  '0x',
+                  Buffer.from(
+                    [value, transferObject.transferCode].join(''),
+                    'base64'
+                  ).toString('hex'),
+                ].join('')
+                onChange(transferSignature)
+              }}
+              onBlur={onBlur}
+              placeholder="Enter transfer code"
+              description="Enter the transfer code you received by email."
+              error={errors?.transferSignature?.message}
+              label="Transfer Code"
+              disabled={isSubmitting}
+            />
+          )}
         />
+
         <div className="flex items-center justify-end">
-          <Button disabled={!isValid} type="submit">
-            Confirm Transfer
-          </Button>
+          <SwitchNetwork requiredNetwork={network}>
+            {({ isOnRequiredNetwork, onNetworkChangeHandler }) => {
+              return isOnRequiredNetwork ? (
+                <Button
+                  loading={isSubmitting}
+                  disabled={!isValid}
+                  type="submit"
+                >
+                  Confirm Transfer
+                </Button>
+              ) : (
+                <Button onClick={onNetworkChangeHandler} disabled={!isValid}>
+                  Switch Network to Confirm Transfer
+                </Button>
+              )
+            }}
+          </SwitchNetwork>
         </div>
       </form>
     </div>
@@ -189,7 +242,10 @@ export const Transfer = () => {
           />
         )}
         {transferObject && (
-          <ConfirmTransferForm transferObject={transferObject} />
+          <ConfirmTransferForm
+            network={props.network}
+            transferObject={transferObject}
+          />
         )}
       </main>
     </div>

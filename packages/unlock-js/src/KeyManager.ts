@@ -1,7 +1,6 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { ethers } from 'ethers'
+import { Transaction, ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
-import { TransactionOptions } from './types'
 
 export const KeyManagerAbi = [
   'function transfer(address lock, uint256 token, address owner, uint256 deadline, bytes transferCode)',
@@ -27,7 +26,6 @@ export interface TransferOptions {
   }
   network: number
   signer: Signer
-  transactionOptions?: TransactionOptions
 }
 
 export interface CreateTransferAddressKey {
@@ -119,17 +117,15 @@ export class KeyManager {
     network,
     params: { lock, token, owner, deadline, transferSignature },
     signer,
-    transactionOptions = {},
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
 
-    const tx = await KeyManagerContract.populateTransaction.transfer(
+    const tx: Transaction = await KeyManagerContract.transfer(
       lock,
       token,
       owner,
       deadline,
-      transferSignature,
-      transactionOptions
+      transferSignature
     )
 
     return tx
@@ -144,7 +140,7 @@ export class KeyManager {
     signer,
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
-    const tx = await KeyManagerContract.callStatic.transfer(
+    const tx: Transaction = await KeyManagerContract.callStatic.transfer(
       lock,
       token,
       owner,

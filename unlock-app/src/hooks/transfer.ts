@@ -8,7 +8,11 @@ interface Options {
   lockAddress: string
   network: number
   keyId: string
-  onTransferCodeCreated?: (transferObject: TransferObject) => void
+  onTransferCodeCreated?: (transferObject: KeyTransferData) => void
+}
+
+export type KeyTransferData = TransferObject & {
+  transferCode: string
 }
 
 export const useTransferCode = ({
@@ -23,7 +27,7 @@ export const useTransferCode = ({
     data,
   } = useMutation(
     ['transferCode', network, lockAddress, keyId],
-    async ({ captcha }: { captcha: string }): Promise<TransferObject> => {
+    async ({ captcha }: { captcha: string }): Promise<KeyTransferData> => {
       const response = await storage.createTransferCode(
         network!,
         lockAddress!,
@@ -38,7 +42,7 @@ export const useTransferCode = ({
       if (!deadline || !owner || !lock || !token || !transferCode) {
         throw new Error('Invalid transfer code response')
       }
-      const transferObject: TransferObject & { transferCode: string } = {
+      const transferObject: KeyTransferData = {
         deadline,
         owner,
         lock,
@@ -60,7 +64,7 @@ export const useTransferCode = ({
         }
         ToastHelper.error(error.message)
       },
-      onSuccess(transferObject: TransferObject) {
+      onSuccess(transferObject: KeyTransferData) {
         if (onTransferCodeCreated) {
           onTransferCodeCreated(transferObject)
         }

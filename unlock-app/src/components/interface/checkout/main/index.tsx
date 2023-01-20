@@ -34,6 +34,7 @@ export function Checkout({
   communication,
   redirectURI,
 }: Props) {
+  // @ts-expect-error - xstate extension type generation is buggy
   const checkoutService = useInterpret(checkoutMachine, {
     context: {
       paywallConfig,
