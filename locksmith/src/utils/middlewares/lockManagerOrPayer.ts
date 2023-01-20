@@ -4,6 +4,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import Normalizer from '../normalizer'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 
+// check if the endpoint caller is the lock manager or the payer of the transaction
 export const lockManagerOrPayerMiddleware: RequestHandler = async (
   req,
   res,
@@ -37,12 +38,10 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
   const subgraph = new SubgraphService(networks)
 
   // get receipt
-  const receipt = await subgraph.receipt(
+  const receipt = await subgraph.key(
     {
       where: {
         id: hash,
-        lockAddress,
-        payer: userAddress,
       },
     },
     {
@@ -50,7 +49,10 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
     }
   )
 
-  if (!isLockManager && !receipt) {
+  const isPayer =
+    receipt?.payer?.toLocaleLowerCase() === userAddress?.toLocaleLowerCase()
+
+  if (!isLockManager && !isPayer) {
     return res.status(401).send({
       message: `${userAddress} is not a lock manager or payer of this transaction`,
     })
