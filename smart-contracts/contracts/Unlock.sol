@@ -571,7 +571,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       srcToken,
       swapRouter,
       uint160(amountInMax),
-      uint48(block.timestamp + 3600) // expiration
+      uint48(block.timestamp + 60) // expires after 1min
     );
 
     // calculate value to send to Uniswap
