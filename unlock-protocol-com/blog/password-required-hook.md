@@ -15,11 +15,7 @@ Today, we’re excited to announce how **creators can easily use their membershi
 
 Of course, this process is *secured* and cannot be bypassed by calling the contract directly, as the password is used to submit the transaction on-chain. Additionally, the password is not transmitted “in the clear” to ensure that it remains secret but used to sign the recipient’s address, making the transaction unique for each user.
 
-The hooks were deployed on the production networks (and can easily be added to more):
-
-- [Ethereum](https://etherscan.io/address/0xe87eFc02F26EFE45171afDBEc85D743FDB2Eb1FB#code)
-- [Polygon](https://polygonscan.com/address/0xD925Ac2887Ba4372849F0fd64217A6749552bb21)
-- [Gnosis Chain](https://blockscout.com/xdai/mainnet/address/0xe87eFc02F26EFE45171afDBEc85D743FDB2Eb1FB)
+The hooks were [deployed on the production networks](https://github.com/unlock-protocol/password-required-hook#production-networks) (and can easily be added to more).
 
 ## Example
 
