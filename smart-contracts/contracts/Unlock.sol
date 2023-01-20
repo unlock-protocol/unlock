@@ -520,9 +520,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * Swap tokens and call a function in a lock contract
-   * @notice If the actual amount spent is less than the specified maximum amount, the remaining tokens wll 
-   * be held by the Unlock contract
+   * Please refer to IUnlock.sol for documentation
    */
   function swapAndCall(
     address lock,
