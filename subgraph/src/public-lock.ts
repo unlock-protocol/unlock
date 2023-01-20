@@ -33,7 +33,7 @@ import {
   LOCK_MANAGER,
 } from './helpers'
 
-import { keccak256 } from '@ethersproject/keccak256'
+import { ethers } from 'ethers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -358,7 +358,8 @@ export function createReceipt(event: ethereum.Event): void {
     const log = logs.find(
       (l: ethereum.Log) =>
         l.address.toString() === tokenAddress.toString() &&
-        l.topics[0].toString() === keccak256('Transfer(from, to, value)')
+        l.topics[0].toString() ===
+          ethers.utils.keccak256('Transfer(from, to, value)')
     )
 
     const topic = log && log.topics ? log.topics[0] : null
