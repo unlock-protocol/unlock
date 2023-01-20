@@ -33,18 +33,6 @@ import {
   LOCK_MANAGER,
 } from './helpers'
 
-interface ReceiptProps {
-  hash: string
-  timestamp: BigInt
-  sender?: Address | null
-  lockAddress: Address
-  gasTotal: BigInt
-  logs: any[]
-  to: Address | null
-  from: Address | null
-  amount: BigInt
-}
-
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = new Key(keyID)
@@ -101,18 +89,10 @@ function newKey(event: TransferEvent): void {
     lockStats.save()
   }
 
+  const logs = event && event.receipt ? event.receipt.logs : []
+
   // create receipt
-  createReceipt({
-    hash: event.transaction.hash.toString(),
-    timestamp: event.block.timestamp,
-    sender: event.transaction.to || null, // sender of the transactions,
-    lockAddress: event.address,
-    gasTotal: event.transaction.gasPrice,
-    logs: event.receipt?.logs ?? [],
-    to: event.transaction.to,
-    from: event.transaction.from,
-    amount: event.transaction.value,
-  })
+  createReceipt(event)
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -225,19 +205,8 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.expiration = event.params.newTimestamp
     key.save()
   }
-
   // create receipt
-  createReceipt({
-    hash: event.transaction.hash.toString(),
-    timestamp: event.block.timestamp,
-    sender: event.transaction.to || null, // sender of the transactions,
-    lockAddress: event.address,
-    gasTotal: event.transaction.gasPrice,
-    logs: event.receipt?.logs ?? [],
-    to: event.transaction.to,
-    from: event.transaction.from,
-    amount: event.transaction.value,
-  })
+  createReceipt(event)
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -256,17 +225,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 
   // create receipt
-  createReceipt({
-    hash: event.transaction.hash.toString(),
-    timestamp: event.block.timestamp,
-    sender: event.transaction.to || null, // sender of the transactions,
-    lockAddress: event.address,
-    gasTotal: event.transaction.gasPrice,
-    logs: event.receipt?.logs ?? [],
-    to: event.transaction.to,
-    from: event.transaction.from,
-    amount: event.transaction.value,
-  })
+  createReceipt(event)
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -377,28 +336,26 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  * @param {event} Object - Object event
  * @return {void}
  */
-export async function createReceipt({
-  hash,
-  lockAddress,
-  timestamp,
-  gasTotal,
-  logs,
-  to,
-  from,
-  amount,
-}: ReceiptProps): Promise<void> {
+export function createReceipt(event: ethereum.Event): void {
+  const lockAddress = event.address.toHexString()
+  const hash = event.transaction.hash.toString()
+
   const receipt = new Receipt(hash)
-  const lock = Lock.load(lockAddress.toHexString())
-  const key = Key.load(hash)
-  const hasErc20 = (lock?.tokenAddress ?? '')?.length > 0
+
+  const lock = Lock.load(lockAddress)
+
+  const tokenAddress = (
+    lock && lock.tokenAddress ? lock.tokenAddress : ''
+  ) as Bytes
+  const hasErc20 = tokenAddress.length > 0
+
+  const logs =
+    event && event.receipt && event.receipt.logs ? event.receipt.logs : []
 
   if (hasErc20 && logs.length) {
-    // find the ERC20 Transfer event
     const log = logs.find(
       (l: ethereum.Log) =>
-        l.address.toString() === lock?.tokenAddress.toString()
-      /* &&fix:
-        l.topics[0] === 'Transfer(from, to, value)'.toString('hex') */
+        l.address.toString() === tokenAddress.toString() /* parse log*/
     )
 
     // decode event data
@@ -406,15 +363,15 @@ export async function createReceipt({
     receipt.payer = decoded ? decoded[0] : ''
     receipt.amountTransferred = decoded ? decoded[2] : 0
   } else {
-    receipt.payer = (from || '') as Bytes // address who pays for the membership
-    receipt.amountTransferred = amount
+    receipt.payer = event.transaction.from as Bytes // address who pays for the membership
+    receipt.amountTransferred = event.transaction.value
   }
 
-  receipt.timestamp = timestamp
-  receipt.sender = to || null // sender of the transactions
-  receipt.lockAddress = lockAddress
-  receipt.tokenAddress = lock!.tokenAddress
-  receipt.gasTotal = gasTotal
-  receipt.owner = key!.owner // key owner
+  receipt.timestamp = event.block.timestamp
+  receipt.sender = event.transaction.to
+  receipt.lockAddress = event.address
+  receipt.tokenAddress = tokenAddress
+  receipt.gasTotal = event.transaction.gasPrice
+  //receipt.owner =
   receipt.save()
 }
