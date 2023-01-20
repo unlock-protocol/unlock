@@ -4,13 +4,14 @@ import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
 import transferCode from './transferCode'
-
+import keyAirdropped from './keyAirdropped'
 import LockTemplates from './locks'
 
 const baseTemplates = {
   confirmEmail,
   welcome,
   keyOwnership,
+  keyAirdropped,
   keyMined,
   transferCode,
   debug,
