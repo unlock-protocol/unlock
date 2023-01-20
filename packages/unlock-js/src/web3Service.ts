@@ -946,6 +946,31 @@ export default class Web3Service extends UnlockService {
     return baseTokenURI
   }
 
+  async validateName(name: string) {
+    const isValidEns = name.endsWith('.eth')
+    return isValidEns
+  }
+
+  async getEthAddressType(address: string) {
+    const ETH_ADDRESS_TYPE = {
+      name: 'name',
+      address: 'address',
+      error: 'error',
+    }
+
+    if (!address) return ETH_ADDRESS_TYPE.error
+
+    if (ethers.utils.isAddress(address)) {
+      return ETH_ADDRESS_TYPE.address
+    }
+
+    try {
+      if (await this.validateName(address)) return ETH_ADDRESS_TYPE.name
+    } catch (e) {
+      return ETH_ADDRESS_TYPE.error
+    }
+  }
+
   /**
    * Returns true if the address is a valid EOA
    */
@@ -965,23 +990,20 @@ export default class Web3Service extends UnlockService {
    * Returns the resolved ens address that's a valid EOA
    */
   async resolveEns(ensName: string) {
-    try {
-      const provider = this.providerForNetwork(1)
-      console.log('ensName:', ensName)
-      const ensAddress = await provider.resolveName(ensName)
-      if (ensAddress) {
-        const isValid = await this.isValidEOA(ensAddress)
-        if (isValid) {
-          return ensAddress
-        } else {
-          throw new Error('The ens address is not a valid EOA')
-        }
-      } else
-        throw new Error(
-          'The ens name is not owned or does not have a Resolver configured'
-        )
-    } catch (error) {
-      return ''
+    const provider = this.providerForNetwork(1)
+    console.log('ensName:', ensName)
+    const ensAddress = await provider.resolveName(ensName)
+    console.log('ensAddress:', ensAddress)
+    if (ensAddress) {
+      const isValid = await this.isValidEOA(ensAddress)
+      if (isValid) return ensAddress
+    }
+
+    if (ensAddress === null) {
+      return 'null'
+      throw new Error(
+        'The name does not exist, or the forward lookup does not match.'
+      )
     }
   }
 
@@ -996,9 +1018,43 @@ export default class Web3Service extends UnlockService {
       if (isValid) {
         return ensName
       } else throw new Error('The ens name is not a valid EOA')
-    } else
+    } else {
       throw new Error(
         'The name does not exist, or the forward lookup does not match.'
       )
+    }
+  }
+
+  async resolveName(address: string) {
+    const provider = this.providerForNetwork(1)
+    const isValid = await this.isValidEOA(address)
+
+    const ETH_ADDRESS_TYPE = {
+      name: 'name',
+      address: 'address',
+      error: 'error',
+    }
+
+    const addressType = await this.getEthAddressType(address)
+    console.log('addressType:', addressType)
+
+    console.log('ETH_ADDRESS_TYPE:', ETH_ADDRESS_TYPE)
+    if (isValid && addressType === ETH_ADDRESS_TYPE.name) {
+      return {
+        input: address,
+        address: await provider.resolveName(address),
+        name: address,
+        type: 'name',
+      }
+    } else if (isValid && addressType === ETH_ADDRESS_TYPE.address) {
+      return {
+        input: address,
+        name: await provider.lookupAddress(address),
+        address: address,
+        type: 'address',
+      }
+    }
+
+    throw 'Invalid address or name'
   }
 }

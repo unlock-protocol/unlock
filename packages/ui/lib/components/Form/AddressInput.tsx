@@ -5,7 +5,6 @@ import {
   useState,
   useEffect
 } from 'react'
-import { ethers } from 'ethers'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -13,8 +12,7 @@ import { FieldLayout } from './FieldLayout'
 import { Icon } from '../Icon/Icon'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { minifyAddress } from '../../utils'
-import { FieldErrors } from 'react-hook-form'
+import { isValidAddress, isValidEns, minifyAddress } from '../../utils'
 
 export interface Props
   extends Omit<
@@ -23,13 +21,10 @@ export interface Props
   > {
   label?: string
   size?: Size
-  success?: string
-  errors?: FieldErrors
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: Boolean
   address?: string
-  resolvedEns?: string
   web3Service?: any
 }
 
@@ -54,22 +49,29 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       size = 'medium',
       value,
       className,
-      errors,
-      success,
       description,
       label,
       withIcon = true,
       isTruncated,
       address,
-      resolvedEns,
       web3Service,
       ...inputProps
     } = props
 
+    const [addressType, setAddressType] = useState('')
+    const [resolvedAddress, setResolvedAddress] = useState('')
+    const [resolvedName, setResolvedName] = useState('')
+    const [loadingResolvedAddress, setLoading] = useState(false)
+    const [error, setError] = useState<any>('')
+    const [success, setSuccess] = useState('')
+
+    const [isValidEthAddress, setIsValidEthAddress] = useState(false)
+    const [isValidEnsName, setIsValidEnsName] = useState(false)
+
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
 
-    if (errors) {
+    if (error) {
       inputStateStyles = STATE_STYLES.error
     } else if (success) {
       inputStateStyles = STATE_STYLES.success
@@ -82,24 +84,64 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       withIcon ? 'pl-10' : undefined
     )
 
-    const [resolvedAddress, setResolvedAddress] = useState('')
-    const [loadingResolvedAddress, setLoading] = useState(true)
-   
-    const isValidEns = address?.includes('.eth')
-    const isValidAddress = address && ethers.utils.isAddress(address)
-  
     useEffect(() => {
-      const resolveEns = async () => {
-        if (address && isValidEns) {
-          const result = await web3Service.resolveEns(address)
-            if (result) {
-              setResolvedAddress(result)
-              setLoading(false)
-            }
+      const getAddressType = async () => {
+        if (address && address.length) {
+          if (isValidAddress(address)) {
+            setLoading(true)
+            setIsValidEthAddress(true)
+            const addressType = await web3Service.getEthAddressType(address)
+            setAddressType(addressType)
+          } else if (isValidEns(address)) {
+            setLoading(true)
+            setIsValidEnsName(true)
+            const addressType = await web3Service.getEthAddressType(address)
+            setAddressType(addressType)
+          }
+        } else {
+          setLoading(false)
+          setIsValidEnsName(false)
+          setIsValidEthAddress(false)
+          setError('')
         }
       }
-      resolveEns()
-    }, [address, isValidEns ])
+      getAddressType()
+    }, [address, address?.length])
+  
+    useEffect(() => {
+      const handleResolver = async () => {
+        if (isValidEnsName && addressType === 'name') {
+          try {
+            const result = await web3Service.resolveName(address)
+            if (result) {
+              setLoading(false)
+              setError('')
+              setSuccess(`It's a valid ens name`)
+              setResolvedAddress(result.address)
+            } 
+          } catch (error) {
+            setLoading(false)
+            setError('Ens name is not configured')
+            setAddressType('error')
+          }
+        } else if (isValidEthAddress && addressType === 'address') {
+          try {
+            const result = await web3Service.resolveName(address)
+            if (result) {
+              setLoading(false)
+              setError('')
+              setSuccess(`It's a valid eth address`)
+              setResolvedName(result.name)
+            }
+          } catch (error) {
+            setLoading(false)
+            setError('Invalid eth address')
+            setAddressType('error')
+          }
+        }
+      }
+      handleResolver()
+    }, [isValidEnsName, isValidEthAddress, error, addressType])
 
     return (
       <>
@@ -107,6 +149,7 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
           label={label}
           size={size}
           success={success}
+          error={error}
           description={description}
         >
           <div className="flex flex-col">
@@ -120,27 +163,34 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
                 {...inputProps}
                 id={label}
                 value={value}
-                ref={ref}
                 className={inputClass}
               />
             </div>
           </div>
         </FieldLayout>
         <div>
-          {!isValidEns && !isValidAddress && address ? (
-            <span className='text-rose-700'>Please enter a valid ens or address</span>
-          ) : isValidEns  && loadingResolvedAddress ? (
+          {loadingResolvedAddress && addressType === 'name' ? (
             <span className='text-gray-600'>
               Loading resolved address...
             </span>
-          ) : resolvedAddress !== '' && isTruncated ? (
-            <span className='text-gray-600'>
-              {minifyAddress(resolvedAddress)}
-            </span>
-          ) : resolvedAddress !== '' && (
+          ) : !loadingResolvedAddress && resolvedAddress !== '' && addressType === 'name' && isValidEnsName  ? (
             <span className='text-gray-600'>
               {resolvedAddress}
             </span>
+          ) : !loadingResolvedAddress && addressType === 'name' && isValidEnsName && resolvedAddress !== '' && isTruncated ? (
+            <span className='text-gray-600'>
+             {minifyAddress(resolvedAddress)}
+            </span>
+          ) : loadingResolvedAddress && addressType === 'address'? (
+            <span className='text-gray-600'>
+              Loading resolved ens...
+            </span> 
+            ) : !loadingResolvedAddress && addressType === 'address' && isValidEthAddress && resolvedName !== '' ? (
+            <span className='text-gray-600'>
+              {resolvedName}
+            </span>
+          ) : addressType === 'error' && error !== '' && (
+            <span className='text-rose-700'>Please enter a valid ens or address</span>
           )}
         </div>
       </>

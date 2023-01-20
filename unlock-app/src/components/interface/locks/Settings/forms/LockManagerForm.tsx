@@ -1,8 +1,8 @@
-import { ethers } from 'ethers'
+// import { ethers } from 'ethers'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
@@ -215,13 +215,7 @@ export const LockManagerForm = ({
   disabled,
 }: LockManagerFormProps) => {
   const walletService = useWalletService()
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm<FormProps>({
+  const { handleSubmit, reset, watch, control } = useForm<FormProps>({
     defaultValues: {
       manager: '',
     },
@@ -281,17 +275,6 @@ export const LockManagerForm = ({
 
   const managerAddress = watch('manager')
 
-  const isValidEns = () => {
-    const isValid = managerAddress?.includes('.eth')
-    return isValid
-  }
-
-  const isValidAddress = () => {
-    const isValidAddress =
-      managerAddress && ethers.utils.isAddress(managerAddress)
-    return isValidAddress
-  }
-
   const managers = lockSubgraph?.lockManagers ?? []
 
   const noManagers = managers?.length === 0
@@ -324,20 +307,19 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <AddressInput
-              withIcon
-              address={managerAddress}
-              label="Add manager, please enter the wallet address of theirs."
-              description="Enter a wallet address or an ens name"
-              disabled={disableInput}
-              errors={errors}
-              web3Service={web3Service}
-              {...register('manager', {
-                validate: {
-                  isValidEns: isValidEns,
-                  isValidAddress: isValidAddress,
-                },
-              })}
+            <Controller
+              control={control}
+              name="manager"
+              render={({ field: { onChange } }) => (
+                <AddressInput
+                  withIcon
+                  address={managerAddress}
+                  label="Add manager, please enter the wallet address of theirs."
+                  description="Enter a wallet address or an ens name"
+                  web3Service={web3Service}
+                  onChange={onChange}
+                />
+              )}
             />
           </div>
           <Button

@@ -1,6 +1,5 @@
 import { AddressInput } from './AddressInput'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { FiAtSign as AtSignIcon } from 'react-icons/fi'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 
@@ -34,7 +33,6 @@ Success.args = {
   label: 'Wallet address',
   size: 'small',
   description: 'Enter a valid wallet address or ens',
-  success: 'Wallet address is valid',
   value: 'souravinsights.eth',
   isTruncated: false,
   address: '0xF95f8038Eb7874Cde88A0A9a8270fcC94f5C226e'
@@ -58,7 +56,6 @@ TruncatedAddress.args = {
   label: 'Wallet address',
   size: 'small',
   description: 'Enter your wallet address',
-  success: 'Enter a valid wallet address or ens',
   value: 'souravinsights.eth',
   isTruncated: true,
   address: '0xF95...226e'
