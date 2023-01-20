@@ -38,7 +38,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
   const subgraph = new SubgraphService(networks)
 
   // get receipt
-  const receipt = await subgraph.key(
+  const receipt = await subgraph.receipt(
     {
       where: {
         id: hash,
