@@ -30,10 +30,13 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
 import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
+import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
+import "./interfaces/IPermit2.sol";
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -98,6 +101,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
+  // required by Uniswap Universal Router
+  address public permit2;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -134,6 +140,19 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address indexed impl,
     uint16 indexed version
   );
+
+  event SwapCall(
+    address lock,
+    address tokenAddress,
+    uint amountSpent
+  );
+
+  // errors
+  error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
+  error LockDoesntExist(address lockAddress);
+  error InsufficientBalance();
+  error UnauthorizedBalanceChange();
+  error LockCallFailed();
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
@@ -488,6 +507,122 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     }
   }
 
+  function getBalance(address token) internal view returns (uint) {
+    return token == address(0) ?
+      address(this).balance 
+      :
+      IMintableERC20(token).balanceOf(address(this));
+  }
+
+  // set permit2 address
+  function setPermit2(address _permit2) public onlyOwner {
+     permit2 = _permit2;
+  }
+
+  /**
+   * Please refer to IUnlock.sol for documentation
+   */
+  function swapAndCall(
+    address lock,
+    address srcToken,
+    uint amountInMax,
+    address swapRouter,
+    bytes memory swapCalldata,
+    bytes memory callData
+  ) public payable returns(bytes memory) {
+    // check if lock exists
+    if(!locks[lock].deployed) {
+      revert LockDoesntExist(lock);
+    }
+
+    // get lock pricing 
+    address destToken = IPublicLock(lock).tokenAddress();
+
+    // get price in destToken from lock
+    uint keyPrice = IPublicLock(lock).keyPrice();
+
+    // get balances of Unlock before
+    // if payments in ETH, substract the value sent by user to get actual balance
+    uint balanceTokenDestBefore = destToken == address(0) ? 
+      getBalance(destToken) - msg.value 
+            :
+      getBalance(destToken);
+
+    uint balanceTokenSrcBefore = 
+        srcToken == address(0) ? 
+          getBalance(srcToken) - msg.value 
+          :
+          getBalance(srcToken);
+
+    if(srcToken != address(0)) {
+      // Transfer the specified amount of src ERC20 to this contract
+      TransferHelper.safeTransferFrom(srcToken, msg.sender, address(this), amountInMax);
+
+      // Approve the router to spend src ERC20
+      TransferHelper.safeApprove(srcToken, swapRouter, amountInMax);
+
+      // approve PERMIT2 to manipulate the token
+      IERC20(srcToken).approve(permit2, amountInMax);
+    }
+
+    // issue PERMIT2 Allowance
+    IPermit2(permit2).approve(
+      srcToken,
+      swapRouter,
+      uint160(amountInMax),
+      uint48(block.timestamp + 60) // expires after 1min
+    );
+
+    // executes the swap
+    (bool success, ) = swapRouter.call{ 
+      value: srcToken == address(0) ? msg.value : 0 
+    }(swapCalldata);
+
+    // make sure to catch Uniswap revert
+    if(success == false) {
+      revert SwapFailed(swapRouter, srcToken, destToken, amountInMax, swapCalldata);
+    }
+
+    // make sure balance is enough to buy key
+    if((
+      destToken == address(0) ? 
+      getBalance(destToken) - msg.value 
+            :
+      getBalance(destToken)
+    ) < balanceTokenDestBefore + keyPrice) {
+      revert InsufficientBalance();
+    }
+
+    // approve ERC20 to call the lock
+    if(destToken != address(0)) {
+      IMintableERC20(destToken).approve(lock, keyPrice);
+    }
+
+    // call the lock
+    (bool lockCallSuccess, bytes memory returnData) = lock.call{
+      value: destToken == address(0) ? keyPrice : 0
+    }(
+      callData
+    );
+
+    if(lockCallSuccess == false) {
+      revert LockCallFailed();
+    }
+
+    // check that Unlock didnt spent more than it received
+    if(
+      getBalance(srcToken) - balanceTokenSrcBefore < 0
+      ||
+      getBalance(destToken) - balanceTokenDestBefore < 0
+    ) {
+      // balance too low
+      revert UnauthorizedBalanceChange();
+    }
+
+    // returns whatever the lock returned
+    return returnData;
+  }
+
   /**
    * Update the GNP by a new value.
    * Emits an event to simply tracking
@@ -635,4 +770,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   {
     return globalTokenSymbol;
   }
+
+  // required to withdraw WETH
+  receive() external payable {}
 }
