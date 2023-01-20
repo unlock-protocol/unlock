@@ -124,6 +124,10 @@ export const notifyNewKeyToWedlocks = async (
 
   const recipient = protectedData?.email as string
 
+  if (!recipient) {
+    return
+  }
+
   const airdroppedRecipient = keyManager.createTransferAddress({
     params: {
       email: recipient,
@@ -136,56 +140,53 @@ export const notifyNewKeyToWedlocks = async (
 
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
-  if (recipient) {
-    logger.info('Notifying wedlock for new key', {
-      recipient,
-      lock: lockAddress,
-      keyId: tokenId,
+  logger.info('Notifying wedlock for new key', {
+    recipient,
+    lock: lockAddress,
+    keyId: tokenId,
+  })
+
+  const attachments: Attachment[] = []
+  if (includeQrCode && network && tokenId) {
+    const ticket = await createTicket({
+      lockAddress,
+      tokenId,
+      network,
+      owner: ownerAddress,
     })
-
-    const attachments: Attachment[] = []
-    if (includeQrCode && network && tokenId) {
-      const ticket = await createTicket({
-        lockAddress,
-        tokenId,
-        network,
-        owner: ownerAddress,
-      })
-      const svg = new resvg.Resvg(ticket)
-      const pngData = svg.render()
-      const pngBuffer = pngData.asPng()
-      const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-      attachments.push({ path: dataURI })
-    }
-
-    const openSeaUrl =
-      networks[network!] && tokenId && lockAddress
-        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
-          undefined
-        : undefined
-
-    const transferUrl = new URL('/transfer', config.unlockApp)
-    transferUrl.searchParams.set('lockAddress', lockAddress)
-    transferUrl.searchParams.set('keyId', tokenId ?? '')
-    transferUrl.searchParams.set('network', network?.toString() ?? '')
-
-    const templates = isAirdroppedRecipient
-      ? [`keyAirdropped${lockAddress}`, `keyAirdropped`]
-      : [`keyMined${lockAddress}`, 'keyMined']
-    // Lock address to find the specific template
-    await sendEmail(
-      templates[0],
-      templates[1],
-      recipient,
-      {
-        lockName: key.lock.name,
-        keychainUrl: 'https://app.unlock-protocol.com/keychain',
-        keyId: tokenId ?? '',
-        network: networks[network!]?.name ?? '',
-        openSeaUrl,
-        transferUrl: transferUrl.toString(),
-      },
-      attachments
-    )
+    const svg = new resvg.Resvg(ticket)
+    const pngData = svg.render()
+    const pngBuffer = pngData.asPng()
+    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+    attachments.push({ path: dataURI })
   }
+
+  const openSeaUrl =
+    networks[network!] && tokenId && lockAddress
+      ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ?? undefined
+      : undefined
+
+  const transferUrl = new URL('/transfer', config.unlockApp)
+  transferUrl.searchParams.set('lockAddress', lockAddress)
+  transferUrl.searchParams.set('keyId', tokenId ?? '')
+  transferUrl.searchParams.set('network', network?.toString() ?? '')
+
+  const templates = isAirdroppedRecipient
+    ? [`keyAirdropped${lockAddress}`, `keyAirdropped`]
+    : [`keyMined${lockAddress}`, 'keyMined']
+  // Lock address to find the specific template
+  await sendEmail(
+    templates[0],
+    templates[1],
+    recipient,
+    {
+      lockName: key.lock.name,
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      keyId: tokenId ?? '',
+      network: networks[network!]?.name ?? '',
+      openSeaUrl,
+      transferUrl: transferUrl.toString(),
+    },
+    attachments
+  )
 }
