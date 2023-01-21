@@ -49,6 +49,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/ui"
+  },
   "devDependencies": {
     "@babel/core": "7.20.7",
     "@headlessui/react": "1.7.7",

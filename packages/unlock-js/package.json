@@ -7,7 +7,8 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unlock-protocol/unlock.git"
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/unlock-js"
   },
   "scripts": {
     "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",
