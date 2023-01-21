@@ -8,9 +8,9 @@ export interface Typegen0 {
   invokeSrcNameMap: {}
   missingImplementations: {
     actions: never
-    services: never
-    guards: never
     delays: never
+    guards: never
+    services: 'unlockAccount'
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
@@ -28,7 +28,7 @@ export interface Typegen0 {
     submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
-  eventsCausingServices: {}
+  eventsCausingDelays: {}
   eventsCausingGuards: {
     requireCaptcha:
       | 'SELECT_CARD_TO_CHARGE'
@@ -47,7 +47,9 @@ export interface Typegen0 {
       | 'SELECT_PAYMENT_METHOD'
       | 'SIGN_MESSAGE'
   }
-  eventsCausingDelays: {}
+  eventsCausingServices: {
+    unlockAccount: 'UNLOCK_ACCOUNT'
+  }
   matchesStates:
     | 'CAPTCHA'
     | 'CARD'
@@ -56,8 +58,8 @@ export interface Typegen0 {
     | 'METADATA'
     | 'MINTING'
     | 'PASSWORD'
-    | 'PROMO'
     | 'PAYMENT'
+    | 'PROMO'
     | 'QUANTITY'
     | 'RENEW'
     | 'RENEWED'

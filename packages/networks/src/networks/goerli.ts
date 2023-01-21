@@ -6,7 +6,7 @@ export const goerli: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/5',
   unlockAddress: '0x627118a4fB747016911e5cDA82e2E77C531e8206',
   multisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
-  keyManagerAddress: '0x862a839fcdba499bbfd6325ba1845787b4b44e61',
+  keyManagerAddress: '0xc328aE7fc36f975BE120aaa99f2d96C3E732e5b6',
   id: 5,
   name: 'Goerli (Testnet)',
   chain: 'goerli',
