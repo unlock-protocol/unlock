@@ -59,6 +59,7 @@ export const CreateLockSteps = () => {
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
   const { addLock } = useLocks(owner!, network!)
+  const [lockAddress, setLockAddress] = useState<string>(null)
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined
   )
@@ -75,7 +76,7 @@ export const CreateLockSteps = () => {
   }
 
   const onSummarySubmit = async (data: LockFormProps) => {
-    await createLockMutation.mutateAsync(data)
+    setLockAddress(await createLockMutation.mutateAsync(data))
   }
 
   const createLockPromise = async (data: LockCreatePayloadProps) => {
@@ -151,6 +152,7 @@ export const CreateLockSteps = () => {
           <CreateLockFormSummary
             formData={values!}
             network={network!}
+            lockAddress={lockAddress}
             transactionHash={transactionHash}
             showStatus
           />
