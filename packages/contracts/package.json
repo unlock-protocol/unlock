@@ -18,6 +18,11 @@
     "prepublish": "yarn clean && yarn build",
     "publish:npm": "yarn prepublish && npm publish"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/contracts"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-etherscan": "3.1.4",
     "@primitivefi/hardhat-dodoc": "0.2.3",

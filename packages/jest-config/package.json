@@ -12,5 +12,10 @@
   },
   "peerDependencies": {
     "jest": "^27.5.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/jest-config"
   }
 }

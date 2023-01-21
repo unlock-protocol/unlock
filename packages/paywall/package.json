@@ -3,6 +3,11 @@
   "version": "0.2.0",
   "exports": "./dist/unlock.latest.min.js",
   "main": "./dist/unlock.latest.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/paywall"
+  },
   "scripts": {
     "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js",

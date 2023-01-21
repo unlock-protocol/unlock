@@ -1,26 +1,31 @@
 {
-    "name": "@unlock-protocol/networks",
-    "version": "0.0.9",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "description": "Unlock Protocol's contract addressess for various networks",
-    "scripts": {
-        "start": "tsc --watch",
-        "lint:fix": "yarn lint --fix",
-        "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
-        "build": "tsc",
-        "clean": "rm -rf ./dist",
-        "prepublish": "yarn build",
-        "doc": "node ./bin/doc.js",
-        "version:show": "echo $npm_package_version"
-    },
-    "devDependencies": {
-        "@unlock-protocol/tsconfig": "workspace:^",
-        "@unlock-protocol/types": "workspace:^",
-        "eslint": "8.31.0",
-        "typescript": "4.9.4"
-    },
-    "files": [
-        "dist"
-    ]
+  "name": "@unlock-protocol/networks",
+  "version": "0.0.9",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "Unlock Protocol's contract addressess for various networks",
+  "scripts": {
+    "start": "tsc --watch",
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
+    "build": "tsc",
+    "clean": "rm -rf ./dist",
+    "prepublish": "yarn build",
+    "doc": "node ./bin/doc.js",
+    "version:show": "echo $npm_package_version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/networks"
+  },
+  "devDependencies": {
+    "@unlock-protocol/tsconfig": "workspace:^",
+    "@unlock-protocol/types": "workspace:^",
+    "eslint": "8.31.0",
+    "typescript": "4.9.4"
+  },
+  "files": [
+    "dist"
+  ]
 }
