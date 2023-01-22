@@ -594,7 +594,6 @@ export function State() {
               <p className="text-2xl space-y-1 font-bold">
                 Gross Network Product
               </p>
-              {isLoading && <p>loadConfig</p>}
               {!isLoading && (
                 <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-4 md:grid-cols-2 grid-cols-1">
                   {gnpValues
