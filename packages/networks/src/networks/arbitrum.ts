@@ -33,6 +33,7 @@ export const arbitrum: NetworkConfig = {
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'ETH',
+  baseCurrencyFormat: '0,0.000',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'ETH',

@@ -32,6 +32,7 @@ export const celo: NetworkConfig = {
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'CELO',
+  baseCurrencyFormat: '0,0',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'CELO',

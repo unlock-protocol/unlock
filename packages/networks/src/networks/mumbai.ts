@@ -30,6 +30,7 @@ export const mumbai: NetworkConfig = {
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'MATIC',
+  baseCurrencyFormat: '0,0',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'MATIC',

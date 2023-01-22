@@ -33,7 +33,8 @@ export const mainnet: NetworkConfig = {
     address: '0x6b175474e89094c44da98b954eedeac495271d0f',
   },
   requiredConfirmations: 12,
-  baseCurrencySymbol: 'Eth',
+  baseCurrencySymbol: 'ETH',
+  baseCurrencyFormat: '0,0.000',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'Ether',

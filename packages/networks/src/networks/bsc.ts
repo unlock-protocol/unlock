@@ -30,6 +30,7 @@ export const bsc: NetworkConfig = {
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'BNB',
+  baseCurrencyFormat: '0,0.00',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'BNB',

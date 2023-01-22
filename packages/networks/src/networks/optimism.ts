@@ -31,7 +31,8 @@ export const optimism: NetworkConfig = {
       `https://opensea.io/assets/optimism/${_lockAddress}/${_tokenId}`,
   },
   requiredConfirmations: 12,
-  baseCurrencySymbol: 'Eth',
+  baseCurrencySymbol: 'ETH',
+  baseCurrencyFormat: '0,0.000',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'Eth',

@@ -1,8 +1,6 @@
-import { Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
 import { ActiveLock, Lock, Key } from '../../icons'
 import numeral from 'numeral'
-import { useQuery } from 'react-query'
 import dynamic from 'next/dynamic'
 import { networks } from '@unlock-protocol/networks'
 
@@ -10,6 +8,7 @@ import { getGNPs } from '../../../utils/apiRequest'
 import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
 import { IconBaseProps } from 'react-icons'
 import { utils } from 'ethers'
+import loadConfig from 'next/dist/server/config'
 
 const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -32,6 +31,7 @@ type IOverView = {
 type ISeries = {
   name: string
   data: number[]
+  type: 'line' | 'column'
 }
 
 type INetworkSubgraph = {
@@ -237,7 +237,7 @@ export function State() {
   const [filter, setFilter] = useState<string>('7D')
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gnpValues, setGNPValues] = useState<any[]>([])
-  const [overViewData, setOverViewData] = useState<IOverView[]>([])
+  const [overviewData, setOverviewData] = useState<IOverView[]>([])
   const [selectedNetwork, setSelectedNetwork] = useState<string>('ALL')
   const [selectedNetworkSubgraphData, setSelectedNetworkSubgraphData] =
     useState<INetworkSubgraph | undefined>(undefined)
@@ -248,6 +248,26 @@ export function State() {
   >([])
   const [gnpPByNetworks, setGNPPByNetworks] = useState<any[]>([])
 
+  // Retrieve Subgraph data
+  useEffect(() => {
+    const run = async () => {
+      const subgraphData = await Promise.all(
+        Object.keys(networks).map(async (key) => {
+          if (!networks[key].isTestNetwork) {
+            const { data } = await getSubgraph4GNP(
+              networks[key].subgraph.endpointV2,
+              currentDay - 1030 // why?
+            )
+            return { name: networks[key].name, data }
+          }
+        })
+      )
+      setSubgraphData(subgraphData.filter((item) => item))
+    }
+    run()
+  }, [currentDay])
+
+  // Format chart
   useEffect(() => {
     if (selectedNetworkSubgraphData) {
       let xAxisLabels
@@ -323,6 +343,7 @@ export function State() {
             0,
             filter
           ),
+          type: 'line',
         },
         {
           name: 'Active Locks',
@@ -332,6 +353,7 @@ export function State() {
             1,
             filter
           ),
+          type: 'column',
         },
         {
           name: 'Locks Deployed',
@@ -341,11 +363,13 @@ export function State() {
             2,
             filter
           ),
+          type: 'line',
         },
       ])
     }
-  }, [selectedNetworkSubgraphData])
+  }, [selectedNetworkSubgraphData, filter])
 
+  // Retrieves GNP
   useEffect(() => {
     const run = async () => {
       const values = await getGNPs()
@@ -360,6 +384,7 @@ export function State() {
     run()
   }, [])
 
+  // Apply filter
   useEffect(() => {
     const run = async () => {
       if (selectedNetwork === 'ALL') {
@@ -407,8 +432,9 @@ export function State() {
       }
     }
     run()
-  }, [selectedNetwork, filter, subgraphData])
+  }, [selectedNetwork, filter, subgraphData, currentDay])
 
+  // Compute GNP
   useEffect(() => {
     const gnpPercentageByNetworks = subgraphData.map((networkData) => {
       const sumOfGNP = parseFloat(
@@ -441,29 +467,12 @@ export function State() {
       }
     })
     setGNPPByNetworks(gnpPercentageByNetworks)
-  }, [filter])
+  }, [filter, currentDay, subgraphData, gnpTotalValueByNetwork])
 
-  useEffect(() => {
-    const run = async () => {
-      const subgraphData = await Promise.all(
-        Object.keys(networks).map(async (key) => {
-          if (!networks[key].isTestNetwork) {
-            const { data } = await getSubgraph4GNP(
-              networks[key].subgraph.endpointV2,
-              currentDay - 1030 // why?
-            )
-            return { name: networks[key].name, data }
-          }
-        })
-      )
-      setSubgraphData(subgraphData.filter((item) => item))
-    }
-    run()
-  }, [networks])
-
+  // Format Overview
   useEffect(() => {
     if (subgraphData !== undefined && subgraphData.length > 0) {
-      const overview_contents: IOverView[] = [
+      const overviewContents: IOverView[] = [
         {
           value: subgraphData.reduce(
             (pv, b) => pv + parseInt(b?.data?.lockStats?.totalLocksDeployed),
@@ -503,10 +512,21 @@ export function State() {
           )
         ),
       }))
-      setOverViewData(overview_contents)
+      setOverviewData(overviewContents)
       setGnpTotalValueByNetwork(gnpDataByNetworks)
     }
   }, [subgraphData])
+
+  let since = ''
+  if (filter === '1M') {
+    since = 'in the last month'
+  }
+  if (filter === '7D') {
+    since = 'in the last week'
+  }
+  if (filter === '1Y') {
+    since = 'in the last year'
+  }
 
   return (
     <div className="p-6">
@@ -517,26 +537,25 @@ export function State() {
             <div className="space-y-2">
               <p className="text-2xl space-y-1 font-bold">Overview</p>
               <div className="grid gap-1 md:gap-4 grid-cols-1 md:grid-cols-3">
-                {overViewData &&
-                  overViewData.map(
-                    ({ value, title, description, Icon }, index) => (
-                      <div
-                        key={index}
-                        className="w-full p-8 trans-pane rounded-md"
-                      >
-                        <h2 className="heading-small space-y-4">
-                          {numeral(value).format('0,0')}
-                        </h2>
-                        <p className="py-2 text-lg sm:text-xl lg:text-2xl text-black max-w-prose font-bold">
-                          {title}
-                        </p>
-                        <div className="flex justify-between">
-                          <span>{description}</span>
-                          <Icon className="self-center w-7 h-7 not-sr-only" />
-                        </div>
+                {overviewData?.map(
+                  ({ value, title, description, Icon }, index) => (
+                    <div
+                      key={index}
+                      className="w-full p-8 trans-pane rounded-md"
+                    >
+                      <h2 className="heading-small space-y-4">
+                        {numeral(value).format('0,0')}
+                      </h2>
+                      <p className="py-2 text-lg sm:text-xl lg:text-2xl text-black max-w-prose font-bold">
+                        {title}
+                      </p>
+                      <div className="flex justify-between">
+                        <span>{description}</span>
+                        <Icon className="self-center w-7 h-7 not-sr-only" />
                       </div>
-                    )
-                  )}
+                    </div>
+                  )
+                )}
               </div>
             </div>
             <div className="space-y-2">
@@ -575,40 +594,48 @@ export function State() {
               <p className="text-2xl space-y-1 font-bold">
                 Gross Network Product
               </p>
+              {isLoading && <p>loadConfig</p>}
               {!isLoading && (
                 <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-4 md:grid-cols-2 grid-cols-1">
                   {gnpValues
                     .filter((item) => !item.network.isTestNetwork)
-                    .map(({ total, network }, index) => (
-                      <div
-                        key={index}
-                        className="p-6 border border-gray-300 rounded-md"
-                      >
-                        <div className="flex justify-start pb-4 border-b border-gray-300">
-                          <CryptoIcon
-                            symbol={network.baseCurrencySymbol}
-                            size={40}
-                          />
-                          <p className="heading-small pr-2 self-center">
-                            {numeral(total).format('0,0.000')}{' '}
-                          </p>
-                          <p className="heading-small pr-2 self-center">
-                            {network.baseCurrencySymbol.toUpperCase()}
-                          </p>
+                    .map(({ total, network }, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="p-6 border border-gray-300 rounded-md"
+                        >
+                          <div className="flex justify-start pb-4 border-b border-gray-300">
+                            <CryptoIcon
+                              symbol={network.baseCurrencySymbol}
+                              size={40}
+                            />
+                            <p className="heading-small pr-2 self-center ml-2">
+                              {numeral(total).format(
+                                network.baseCurrencyFormat
+                              )}
+                            </p>
+                            <p className="heading-small pr-2 self-center">
+                              {network.baseCurrencySymbol}
+                            </p>
+                          </div>
+                          <div className="flex justify-between pt-4">
+                            <p className="font-bold text-xl">{network.name}</p>
+                            {filter !== 'All' && (
+                              <p className="font-bold text-xl">
+                                +
+                                {numeral(
+                                  gnpPByNetworks.filter(
+                                    (item) => item.name === network.name
+                                  )[0]?.gnpPercentage
+                                ).format('0.0%')}{' '}
+                                <small>{since}</small>
+                              </p>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex justify-between pt-4">
-                          <p className="font-bold text-xl">{network.name}</p>
-                          <p className="font-bold text-xl">
-                            +
-                            {numeral(
-                              gnpPByNetworks.filter(
-                                (item) => item.name === network.name
-                              )[0]?.gnpPercentage
-                            ).format('0.0%')}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                 </div>
               )}
             </div>

@@ -33,6 +33,7 @@ export const goerli: NetworkConfig = {
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'ETH',
+  baseCurrencyFormat: '0,0.000',
   description: 'Main Ethereum test network. Do not use for production',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {

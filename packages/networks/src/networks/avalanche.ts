@@ -31,6 +31,7 @@ export const avalanche: NetworkConfig = {
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'AVAX',
+  baseCurrencyFormat: '0,0.00',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'AVAX',

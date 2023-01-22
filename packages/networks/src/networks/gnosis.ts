@@ -33,6 +33,7 @@ export const gnosis: NetworkConfig = {
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   baseCurrencySymbol: 'DAI',
+  baseCurrencyFormat: '0,0',
   nativeCurrency: {
     name: 'DAI',
     symbol: 'DAI',
