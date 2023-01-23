@@ -5,6 +5,7 @@ import {
   Bytes,
   store,
   ethereum,
+  crypto,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
@@ -32,8 +33,6 @@ import {
   loadOrCreateUnlockDailyData,
   LOCK_MANAGER,
 } from './helpers'
-
-import { ethers } from 'ethers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -90,8 +89,6 @@ function newKey(event: TransferEvent): void {
     lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
     lockStats.save()
   }
-
-  const logs = event && event.receipt ? event.receipt.logs : []
 
   // create receipt
   createReceipt(event)
@@ -346,30 +343,37 @@ export function createReceipt(event: ethereum.Event): void {
 
   const lock = Lock.load(lockAddress)
 
-  const tokenAddress = (
-    lock && lock.tokenAddress ? lock.tokenAddress : ''
-  ) as Bytes
-  const hasErc20 = tokenAddress.length > 0
+  const tokenAddress =
+    lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
 
-  const logs =
-    event && event.receipt && event.receipt.logs ? event.receipt.logs : []
+  if (event) {
+    const hasErc20 = tokenAddress.toString().length > 0
+    if (event.receipt && hasErc20) {
+      const logIndex = event.receipt.logs.findIndex(
+        (l: ethereum.Log) =>
+          l.address.toString() === tokenAddress.toString() &&
+          l.topics[0] ===
+            crypto.keccak256(Bytes.fromHexString('Transfer(from, to, value)'))
+      )
 
-  if (hasErc20 && logs.length) {
-    const log = logs.find(
-      (l: ethereum.Log) =>
-        l.address.toString() === tokenAddress.toString() &&
-        l.topics[0].toString() ===
-          ethers.utils.keccak256('Transfer(from, to, value)')
-    )
+      const log = event.receipt.logs[logIndex]
+      if (log) {
+        const topic = log && log.topics ? log.topics[0] : null
 
-    const topic = log && log.topics ? log.topics[0] : null
-    // decode event data
-    const decoded = ethereum.decode('(address,address,uint256)', topic as Bytes)
-    receipt.payer = decoded ? decoded[0] : ''
-    receipt.amountTransferred = decoded ? decoded[2] : 0
-  } else {
-    receipt.payer = event.transaction.from as Bytes // address who pays for the membership
-    receipt.amountTransferred = event.transaction.value
+        if (topic) {
+          // decode event data
+          const decoded = ethereum.decode(
+            '(address,address,uint256)',
+            topic as Bytes
+          )
+          receipt.payer = decoded ? decoded[0] : Bytes.fromHexString('')
+          receipt.amountTransferred = decoded ? decoded[2] : 0
+        }
+      }
+    } else {
+      receipt.payer = event.transaction.from
+      receipt.amountTransferred = event.transaction.value
+    }
   }
 
   receipt.timestamp = event.block.timestamp
