@@ -140,7 +140,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const Supplier = () => {
     return (
       <div className="grid gap-2">
-        <h2 className="text-lg font-bold text-brand-ui-primary">From:</h2>
         <div className="flex flex-col gap-1">
           <span className="text-lg font-semibold">
             {supplier?.supplierName}
