@@ -1,8 +1,8 @@
+// testing Bridge using a MockBridge contract
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 
 const {
-  deployContracts,
   deployLock,
   purchaseKey,
   reverts,
@@ -12,8 +12,8 @@ const {
   deployWETH,
 } = require('../helpers')
 
-let unlockSrc,
-  unlockDest,
+let purchaserDest,
+  purchaserSrc,
   lock,
   connext,
   keyPrice,
@@ -31,8 +31,6 @@ const destChainId = 4
 const srcDomainId = 1735353714
 const destDomainId = 1734439522
 
-const gasEstimate = 16000
-const url = `http://locksmith:8080/api/key/`
 const defaultCalldata = '0x3381899700000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000'
 const slippage = 30
 
@@ -61,87 +59,77 @@ contract('Unlock / bridge', () => {
     await addSomeETH(connext.address)
     await erc20Dest.mint(connext.address, ethers.utils.parseEther('100'))
 
+    const UnlockCrossChainPurchaser = ethers.getContractFactory('UnlockCrossChainPurchaser')
+
     // source chain
-    ;({ unlockEthers: unlockSrc } = await deployContracts())
-    await unlockSrc.configUnlock(
-      ADDRESS_ZERO, // udt
-      weth.address, // wrappedEth
-      gasEstimate,
-      'SRC_KEY',
-      url,
-      srcChainId,
-      connext.address // bridge
+    purchaserSrc = await UnlockCrossChainPurchaser.deploy(
+      connext.address, // bridge
+      weth.address
     )
 
     // destination chain
-    ;({ unlockEthers: unlockDest } = await deployContracts())
-    await unlockDest.configUnlock(
-      ADDRESS_ZERO, // udt
-      weth.address, // wrappedEth
-      gasEstimate,
-      'DEST_KEY',
-      url,
-      destChainId,
-      connext.address // bridge
+    purchaserDest = await UnlockCrossChainPurchaser.deploy(
+      connext.address, // bridge
+      weth.address
     )
 
     // setup receiver
-    await unlockSrc.setUnlockAddresses(destChainId, destDomainId, unlockDest.address)
-    await unlockDest.setUnlockAddresses(srcChainId, srcDomainId, unlockSrc.address)
+    await purchaserSrc.setCrossChainPurchasers([destChainId], [destDomainId], [purchaserDest.address])
+    await purchaserDest.setCrossChainPurchasers([srcChainId], [srcDomainId], [purchaserSrc.address])
   })
 
   describe('bridgeAddress', () => {
     it('stores bridger sender', async () => {
-      assert.equal(connext.address, await unlockSrc.bridgeAddress())
-      assert.equal(connext.address, await unlockDest.bridgeAddress())
+      assert.equal(connext.address, await purchaserDest.bridgeAddress())
+      assert.equal(connext.address, await purchaserDest.bridgeAddress())
     })
   })
 
-  describe('unlockAddresses', () => {
+  describe('crossChainPurchasers', () => {
     it('set the unlock address properly', async () => {
       assert.equal(
-        await unlockSrc.unlockAddresses(destChainId),
-        unlockDest.address
+        await purchaserSrc.crossChainPurchasers(destChainId),
+        purchaserDest.address
       )
       assert.equal(
-        await unlockDest.unlockAddresses(srcChainId),
-        unlockSrc.address
+        await purchaserDest.crossChainPurchasers(srcChainId),
+        purchaserSrc.address
       )
     })
     
     it('set the domains and chainIds properly', async () => {
       assert.equal(
-        await unlockSrc.domains(destChainId),
+        await purchaserSrc.domains(destChainId),
         destDomainId
       )
       assert.equal(
-        await unlockSrc.chainIds(destDomainId),
+        await purchaserSrc.chainIds(destDomainId),
         destChainId
       )
       assert.equal(
-        await unlockDest.domains(srcChainId),
+        await purchaserDest.domains(srcChainId),
         srcDomainId
       )
       assert.equal(
-        await unlockDest.chainIds(srcDomainId),
+        await purchaserDest.chainIds(srcDomainId),
         srcChainId
       )
     })
 
     it('only unlock owner can call', async () => {
       reverts(
-        unlockSrc.connect(keyOwner).setUnlockAddresses(destChainId, destDomainId, unlockDest.address),
+        purchaserSrc.connect(keyOwner).setCrossChainPurchasers([destChainId], [destDomainId], [purchaserDest.address]),
         'ONLY_OWNER'
       )
     })
   })
 
   describe('sendBridgedLockCall', () => {
-    it('reverts if dest is not an unlocck contract', async () => {
-      const lock = await deployLock({ unlockDest })
+    it('reverts if dest is not an unlock contract', async () => {
+      const lock = await deployLock()
       keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
       await reverts (
-        unlockSrc
+        purchaserSrc
             .connect(keyOwner)
             .sendBridgedLockCall(
               1, // chain id
@@ -163,11 +151,11 @@ contract('Unlock / bridge', () => {
   describe('xReceive', () => {
     it('reverts if sender is not the bridge', async () => {
       await reverts(
-        unlockDest.xReceive(
+        purchaserDest.xReceive(
           ethers.utils.formatBytes32String('123'), // transferId,
           ethers.utils.parseEther('0.01'), // amount of token in wei
           erc20Dest.address, // native or bridged ERC20 token
-          unlockSrc.address, // sender on the origin chain
+          purchaserSrc.address, // sender on the origin chain
           srcChainId, // domain ID of the origin chain
           defaultCalldata
         ),
@@ -176,11 +164,11 @@ contract('Unlock / bridge', () => {
     })
     it('reverts if the chain id / unlock is not set', async () => {
       await reverts(
-        unlockDest.xReceive(
+        purchaserDest.xReceive(
           ethers.utils.formatBytes32String('123'), // transferId,
           ethers.utils.parseEther('0.01'), // amount of token in wei
           erc20Dest.address, // native or bridged ERC20 token
-          unlockSrc.address, // sender on the origin chain
+          purchaserSrc.address, // sender on the origin chain
           1, // domain ID of the origin chain
           defaultCalldata
         ),
@@ -197,7 +185,7 @@ contract('Unlock / bridge', () => {
       beforeEach(async () => {
         // deploy a lock priced on destination chain
         const tokenAddress = isErc20 ? erc20Dest.address : ADDRESS_ZERO
-        lock = await deployLock({ unlockDest, tokenAddress })
+        lock = await deployLock({ purchaserDest, tokenAddress })
         keyPrice = ethers.BigNumber.from((await lock.keyPrice()).toString())
       })
 
@@ -225,14 +213,14 @@ contract('Unlock / bridge', () => {
               // give user some tokens on origin chain
               await erc20Src.mint(keyOwner.address, keyPrice)
               // allow unlock on src chain to get his tokens (to send to bridge)
-              // await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+              // await erc20Src.connect(keyOwner).approve(purchaserSrc.address, keyPrice)
             }
 
             assert.equal(await lock.balanceOf(keyOwner.address), 0)
 
             // send call from src > dest
             await reverts(
-              unlockSrc
+              purchaserSrc
                 .connect(keyOwner)
                 .sendBridgedLockCall(
                   destChainId,
@@ -273,13 +261,13 @@ contract('Unlock / bridge', () => {
             // give user some tokens on origin chain
             await erc20Src.mint(keyOwner.address, keyPrice)
             // allow unlock on src chain to get his tokens (to send to bridge)
-            await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+            await erc20Src.connect(keyOwner).approve(purchaserSrc.address, keyPrice)
           }
 
           assert.equal(await lock.balanceOf(keyOwner.address), 0)
 
           // send call from src > dest
-          tx = await unlockSrc
+          tx = await purchaserSrc
             .connect(keyOwner)
             .sendBridgedLockCall(
               destChainId,
@@ -306,7 +294,7 @@ contract('Unlock / bridge', () => {
   
           const { args: argsEmitted } = events.find(({event}) => event === 'BridgeCallEmitted')
           assert.equal(argsEmitted.destChainId.toNumber(), destChainId)
-          assert.equal(argsEmitted.unlockAddress, unlockDest.address)
+          assert.equal(argsEmitted.unlockAddress, purchaserDest.address)
           assert.equal(argsEmitted.lockAddress,  lock.address)
           assert.equal(argsEmitted.transferID, timestamp)
           
@@ -351,11 +339,11 @@ contract('Unlock / bridge', () => {
             // give user some tokens on origin chain
             await erc20Src.mint(keyOwner.address, keyPrice)
             // allow unlock on src chain to get his tokens (to send to bridge)
-            await erc20Src.connect(keyOwner).approve(unlockSrc.address, keyPrice)
+            await erc20Src.connect(keyOwner).approve(purchaserSrc.address, keyPrice)
           }
 
           // send call from src > dest
-          tx = await unlockSrc
+          tx = await purchaserSrc
             .connect(keyOwner)
             .sendBridgedLockCall(
               destChainId,
