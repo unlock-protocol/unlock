@@ -4,6 +4,7 @@ import { storage } from '~/config/storage'
 import ReactToPrint from 'react-to-print'
 import { useRef } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
+import { addressMinify } from '~/utils/strings'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -11,12 +12,58 @@ interface ReceiptBoxProps {
   hash: string
 }
 
+interface DetailLabelProps {
+  label: string
+  value: string
+  inline?: boolean
+}
+
+export const DetailLabel = ({
+  label,
+  value,
+  inline = false,
+}: DetailLabelProps) => {
+  return (
+    <div className={`flex ${inline ? 'gap-2' : 'flex-col'}`}>
+      <span className="text-base">{label || 'label'}</span>
+      <div className="flex items-center">
+        <span className="block text-base font-bold break-words md:inline-block">
+          {value || 'value'}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+const Address = ({
+  addressLine1 = '',
+  addressLine2 = '',
+  city = '',
+  zip = '',
+  country = '',
+  state = '',
+}: any) => {
+  const addressLine =
+    city.length + state.length + zip.length > 0
+      ? [city, state, zip].join(', ')
+      : ''
+  return (
+    <div className="flex flex-col gap-1">
+      {addressLine1 && <span className="text-base">{addressLine1}</span>}
+      {addressLine2 && <span className="text-base">{addressLine2}</span>}
+      {addressLine?.length > 0 && (
+        <span className="text-base">{addressLine}</span>
+      )}
+      <span className="text-base">{country}</span>
+    </div>
+  )
+}
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const getReceipt = async (): Promise<any> => {
     return await storage.getReceipt(network, lockAddress, hash)
   }
 
-  const { isLoading, data: receipt } = useQuery(
+  const { data: receipt } = useQuery(
     ['getReceipt', lockAddress, network],
     async () => {
       return getReceipt()
@@ -31,30 +78,34 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
   const isPurchaser = false
 
-  const Details = () => {
+  const PurchaseDetails = () => {
+    return (
+      <div className="grid gap-2">
+        <DetailLabel label="Transaction Date" value="" />
+        <DetailLabel
+          label="Transaction Hash"
+          value={addressMinify(
+            '0x3a79aa355a3c1e461b9479f4ef5bfb558da67943bfd2d97ce36c86cbd528af85'
+          )}
+        />
+      </div>
+    )
+  }
+
+  const ReceiptDetails = () => {
     return (
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <div className="flex items-center gap-2">
-              <span className="text-base">Amount payed: </span>
-              <div className="flex items-center gap-2">
-                <span className="block text-base font-bold break-words md:inline-block">
-                  {/* todo */}
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-base">Total gas: </span>
-              <div className="flex items-center gap-2">
-                <span className="block text-base font-bold break-words md:inline-block">
-                  {/* todo */}
-                </span>
-              </div>
-            </div>
+          <div className="grid gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
+            <DetailLabel inline label="Amount payed:" value="" />
+            <DetailLabel inline label="Total gas:" value="" />
+            <DetailLabel
+              label="Service performed:"
+              value={supplier?.servicePerformed}
+            />
           </div>
         </div>
       </div>
@@ -80,12 +131,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
             {purchaser?.businessName}
           </span>
           <span className="text-base">{purchaser?.fullname}</span>
-          <span className="text-base">{purchaser?.addressLine1}</span>
-          <span className="text-base">{purchaser?.addressLine2}</span>
-          <span className="text-base">{purchaser?.city}</span>
-          <span className="text-base">{purchaser?.state}</span>
-          <span className="text-base">{purchaser?.zip}</span>
-          <span className="text-base">{purchaser?.country}</span>
+          <Address {...purchaser} />
         </div>
       </div>
     )
@@ -100,19 +146,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
             {supplier?.supplierName}
           </span>
           <span className="text-base">{supplier?.vat}</span>
-          <span className="text-base">{supplier?.servicePerformed}</span>
-          <span className="text-base">{supplier?.addressLine1}</span>
-          <span className="text-base">{supplier?.addressLine2}</span>
-          <span className="text-base">{supplier?.city}</span>
-          <span className="text-base">{supplier?.state}</span>
-          <span className="text-base">{supplier?.zip}</span>
-          <span className="text-base">{supplier?.Country}</span>
+          <Address {...supplier} />
         </div>
       </div>
     )
   }
 
-  const disableInput = isLoading
   const componentRef = useRef<any>()
 
   return (
@@ -122,17 +161,18 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           className="grid w-full gap-4 p-4 bg-white border rounded-xl"
           ref={componentRef}
         >
+          <div className="ml-auto">
+            <PurchaseDetails />
+          </div>
           <Supplier />
           <Purchaser />
-          <Details />
+          <ReceiptDetails />
           <PoweredByUnlock />
         </div>
         <ReactToPrint
           trigger={() => (
             <div className="flex justify-end w-full">
-              <Button size="small" disabled={!disableInput}>
-                Print PDF
-              </Button>
+              <Button size="small">Print PDF</Button>
             </div>
           )}
           content={() => componentRef.current}
