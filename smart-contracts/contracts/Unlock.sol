@@ -388,176 +388,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * @param _chainId ID of the chain where the Unlock contract is deployed
-   * @param _domain Domain IDs used by the Connext Bridge https://docs.connext.network/resources/supported-chains
-   * @param _unlockAddress address of the Unlock contract on the chain
-   */
-  function setUnlockAddresses(
-    uint _chainId, 
-    uint32 _domain,
-    address _unlockAddress
-  ) public onlyOwner {
-    domains[_chainId] = _domain;
-    chainIds[_domain] = _chainId;
-    unlockAddresses[_chainId] = _unlockAddress;
-  }
-
-  // make sure receiver contract exists on dest chain
-  function _chainIsSet(uint _chainId) internal view {
-    if(domains[_chainId] == 0 || unlockAddresses[_chainId] == address(0)) {
-      revert ChainNotSet();
-    }
-  }
-
-  /**
-   * @notice Purchase a key on another chain
-   * Purchase a key from a lock on another chain
-   * @param destChainId: the chain id on which the lock is located
-   * @param lock: address of the lock that the user is attempting to purchase a key from
-   * @param currency : address of the token to be swapped into the lock’s currency
-   * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
-   * @param callData: blob of data passed to the lock that includes the following:
-   * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
-   * @dev to construct the callData you need the following parameter
-      - `recipients`: address of the recipients of the membership
-      - `referrers`: address of the referrers
-      - `keyManagers`: address of the key managers
-      - `callData`: bytes passed to the purchase function function of the lock
-   */
-  function sendBridgedLockCall(
-    uint destChainId, 
-    address lock, 
-    address currency, 
-    uint amount, 
-    bytes calldata callData,
-    uint relayerFee,
-    uint slippage
-  ) public payable returns (bytes32 transferID){
-    
-    // make sure receiver contract exists on dest chain
-    _chainIsSet(destChainId);
-
-    if(currency != address(0)) {
-      // TODO: send using transfer (no approval)
-      if(IERC20(currency).allowance(msg.sender, address(this)) < amount) {
-        revert InsufficientApproval(amount);
-      }
-
-      // User sends funds to this contract
-      IERC20(currency).transferFrom(msg.sender, address(this), amount);
-
-      // This contract approves transfer to Connext
-      IERC20(currency).approve(bridgeAddress, amount);
-    } 
-
-    // make sure we have enough balance
-    // NB: using a ternary to avoid variable and Stack Too Deep error
-    if((currency == address(0) ? amount + relayerFee : relayerFee) > address(this).balance) {
-      revert InsufficientBalance();
-    }
-
-    bytes memory cd = abi.encode(lock, callData); 
-
-    // send the call over the chain
-    transferID = IConnext(bridgeAddress).xcall{value: currency == address(0) ? amount + relayerFee : relayerFee}(
-      domains[destChainId],    // _destination: Domain ID of the destination chain
-      unlockAddresses[destChainId], // _to: address of the target contract
-      currency,           // _asset: address of the token contract
-      msg.sender,           // _delegate: TODO address that can revert or forceLocal on destination
-      amount,             // _amount: amount of tokens to transfer
-      slippage,         // _slippage: the maximum amount of slippage the user will accept
-      cd // pass the lock address in calldata
-    );
-
-    emit BridgeCallEmitted(
-      destChainId,
-      unlockAddresses[destChainId],
-      lock, 
-      uint(transferID)
-    );
-  }
-
-  // TODO: cancel and refund the bridged call
-  // function refundBridgedCall(uint32 transferId) {
-  // 1. make sure transferId is failed
-  // 2. refund
-  // }
-
-  /** 
-   * Make sure all calls comes from Unlock contracts on other chains
-   */ 
-  function _onlyUnlockBridge(
-    address _originSender,
-    uint32 _originDomain
-  ) internal view returns (bool) {
-    if(
-        chainIds[_originDomain] == 0 || // domain is set
-        _originSender != unlockAddresses[chainIds[_originDomain]] ||
-        msg.sender != bridgeAddress
-    ) {
-      revert OnlyUnlock();
-    }
-  }
-
-  /** 
-   * @notice The receiver function as required by the IXReceiver interface.
-   * @dev The Connext bridge contract will call this function.
-   */
-  function xReceive(
-    bytes32 transferId,
-    uint256 amount,
-    address currency,
-    address originSender, // address of the contract on the origin chain
-    uint32 origin, // 	Domain ID of the origin chain
-    bytes memory callData
-  ) external returns (bytes memory) {
-    _onlyUnlockBridge(originSender, origin);
-
-    // 0 if is erc20
-    uint valueToSend;
-
-    // unpack lock address and calldata
-    address payable lockAddress;
-    bytes memory lockCalldata;
-    (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
-    
-    if (currency != address(0)) {
-      IERC20 token = IERC20(currency);
-      // make sure we got enough tokens from the bridge
-      require(token.balanceOf(address(this)) >= amount, "not enough");
-      // approve the lock to get the tokens 
-      token.approve(lockAddress, amount);
-    } else {
-      // unwrap native tokens
-      valueToSend = amount;
-      require(
-        valueToSend <= IWETH(weth).balanceOf(address(this)),
-        "INSUFFICIENT_BALANCE"
-      );
-      IWETH(weth).withdraw(valueToSend);
-      require(valueToSend <= address(this).balance, "INSUFFICIENT_BALANCE");
-    }
-
-    (bool success, ) = lockAddress.call{value: valueToSend}(lockCalldata);
-    // catch revert reason
-    if (success == false) {
-      assembly {
-        let ptr := mload(0x40)
-        let size := returndatasize()
-        returndatacopy(ptr, 0, size)
-        revert(ptr, size)
-      }
-    }
-
-    emit BridgeCallReceived(
-      chainIds[origin],
-      lockAddress, 
-      uint(transferId)
-    );
-  }
-
-
-  /**
    * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
    * @dev [DEPRECATED] Kept for backwards compatibility
    */
@@ -855,8 +685,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI,
-    uint _chainId,
-    address _bridgeAddress
+    uint _chainId
   ) external onlyOwner {
     udt = _udt;
     weth = _weth;
@@ -866,9 +695,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     globalBaseTokenURI = _URI;
 
     chainId = _chainId;
-    bridgeAddress = _bridgeAddress;
 
-    // TODO: should we emit the bridgeAddress in that event?
     emit ConfigUnlock(
       _udt,
       _weth,
