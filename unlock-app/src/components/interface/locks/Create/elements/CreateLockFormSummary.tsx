@@ -19,7 +19,8 @@ interface DeployStatusProps {
   title: string
   description: string
   status: string
-  backText: string
+  nextNext: string
+  nextUrl: (...params: any) => string
 }
 
 interface CreateLockFormSummaryProps {
@@ -27,28 +28,33 @@ interface CreateLockFormSummaryProps {
   network: number
   showStatus?: boolean
   transactionHash?: string
+  lockAddress?: string
 }
 
 type DeployStatus = 'progress' | 'deployed' | 'txError'
 
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
-    title: 'This will take few minutes...',
+    title: 'This will take few seconds...',
     description: 'Feel free to wait here or return to main page.',
     status: 'In progress...',
-    backText: 'Return to Lock list',
+    nextNext: 'Return to Lock list',
+    nextUrl: () => '/locks',
   },
   deployed: {
     title: '🚀​ Lock has successfully been deployed',
-    description: 'Redirecting you back to main page...',
+    description: "Let's start configuring it!",
     status: 'Completed!',
-    backText: 'Return to Lock list',
+    nextNext: 'Start managing it!',
+    nextUrl: (lockAddress: string, network: string) =>
+      `/locks/lock?address=${lockAddress}&network=${network}`,
   },
   txError: {
     title: 'Something went wrong...',
     description: 'Please try again.',
     status: 'Not completed.',
-    backText: 'Close',
+    nextNext: 'Close',
+    nextUrl: () => '/locks',
   },
 }
 
@@ -86,6 +92,7 @@ export const CreateLockFormSummary = ({
   network,
   showStatus = false,
   transactionHash,
+  lockAddress,
 }: CreateLockFormSummaryProps) => {
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
   const router = useRouter()
@@ -134,18 +141,18 @@ export const CreateLockFormSummary = ({
     ? 'deployed'
     : 'progress'
 
-  const { title, description, status, backText } =
+  const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]
   const symbol = formData?.symbol || baseCurrencySymbol
 
   useEffect(() => {
-    // redirect to dashboard after the key is deployed
+    // redirect to manage lock page once deployed!
     if (isDeployed) {
       setTimeout(() => {
-        router.push('/locks')
+        router.push(nextUrl(lockAddress, network))
       }, 5000)
     }
-  }, [isDeployed, router])
+  }, [isDeployed, lockAddress, network, router])
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(
@@ -219,9 +226,9 @@ export const CreateLockFormSummary = ({
         <div className="flex flex-col items-center my-12 text-center">
           <h3 className="block mb-4 text-2xl font-bold md:text-4xl">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
-          <Link href={'/locks'}>
+          <Link href={nextUrl(lockAddress, network)}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
-              {backText}
+              {nextNext}
             </Button>
           </Link>
         </div>

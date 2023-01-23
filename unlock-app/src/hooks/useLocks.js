@@ -171,7 +171,7 @@ export const createLock = async (
     addToLocks(newLock)
   }, 1000)
 
-  return 'lockAddress'
+  return lockAddress
 }
 
 /**
@@ -234,7 +234,7 @@ export const useLocks = (owner, network) => {
    * @param {*} lock
    */
   const addLock = (lock, callback) => {
-    createLock(
+    return createLock(
       web3Service,
       walletService,
       storageService,
