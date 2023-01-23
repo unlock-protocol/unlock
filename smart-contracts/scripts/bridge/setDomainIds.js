@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const addresses = ('./_addresses')
+const addresses = require('./_addresses')
 
 async function main() {
 
@@ -20,7 +20,6 @@ async function main() {
   console.log(args)
   
   const tx = await purchaser.setCrossChainPurchasers(...args)
-  
   console.log(`Done at ${tx.hash}`)
 }
 

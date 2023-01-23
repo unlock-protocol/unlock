@@ -12,45 +12,38 @@ const { ethers } = require('hardhat')
 const WethABI = require('../../test/helpers/ABIs/weth.json')
 // const erc20ABI = require('../test/helpers/ABIs/erc20.json')
 const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
-const { 
-  purchaserAddresses,
-  wethAddresses,
-  testERC20s,
-  testLocks,
- } = require('./_addresses')
+const addresses = require('./_addresses')
 
 
-/**
- * script to execute a simple bridged call example
- */
-
-// ERC20
 const isERC20 = true
-
 
 async function main() {
   const [deployer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
-  console.log(`sending a call from ${chainId}`)
-
-  if (![80001, 5].includes(chainId))throw Error('Use mumbai or goerli plz')
-
-  const destChainId = chainId == 80001 ? 5 : 80001
-  const purchaserAddress = purchaserAddresses[chainId]
-  const lockAddress = testLocks[chainId]    
-  const tokenAddress = isERC20 ? testERC20s[chainId] : wethAddresses[chainId]
   
+  if (![80001, 5].includes(chainId))throw Error('Use mumbai or goerli plz')
+  const destChainId = chainId == 80001 ? 5 : 80001
+  
+  console.log(`sending a call from ${chainId} > ${destChainId}`)
 
-  const purchaser = await ethers.getContractAt('UnlockCrossChainPurchaser', purchaserAddress)
+  const { 
+    purchaserAddress,
+    wethAddress,
+    testERC20,
+  } = addresses[chainId]
 
-  const keyPrice = isERC20 ? 
-    ethers.utils.parseEther('10') 
-    : 
-    ethers.BigNumber.from('10000000000000000')
-
+  // purchase info 
+  const tokenAddress = isERC20 ? testERC20 : wethAddress
+  
+  // dest info 
+  const lockAddress = addresses[destChainId].testLock
+  const keyPrice = ethers.utils.parseEther('10') 
+  
   // fee should be zero for testnet
   const relayerFee = ethers.BigNumber.from('0')
-  const slippage = 300 // in BPS
+  
+  // in BPS
+  const slippage = 300 
 
   console.log({
     purchaserAddress,
@@ -63,23 +56,7 @@ async function main() {
     relayerFee,
   })
 
-  if(tokenAddress != ZERO_ADDRESS) {
-    let allowance 
-    let token
-    if(isERC20) {
-      // token = await ethers.getContractAt(erc20ABI.abi, tokenAddress)
-      token = await ethers.getContractAt(WethABI.abi, tokenAddress)
-    }
-    allowance = await token.allowance(deployer.address, purchaser.address)
-    console.log(`Balance (${await token.balanceOf(deployer.address)}) - Allowance (${allowance.toString()})`)
-
-    if (allowance.lt(keyPrice)) {
-      throw Error(`Unsufficient Allowance (${allowance.toString()})`)
-      // tx = await weth.approve(purchaser.address, keyPrice)
-      // await tx.wait()
-    }
-  }
-
+  const purchaser = await ethers.getContractAt('UnlockCrossChainPurchaser', purchaserAddress)
   const value = tokenAddress == ZERO_ADDRESS ? relayerFee.add(keyPrice) : relayerFee
 
   // parse call data   
@@ -93,11 +70,21 @@ async function main() {
   ]
   const { interface } = PublicLock
   const calldata = interface.encodeFunctionData('purchase', purchaseArgs)
-  
+
+  // make sure allowance is ok
+  if(tokenAddress != ZERO_ADDRESS) {
+    const token = await ethers.getContractAt(WethABI.abi, tokenAddress)
+    const allowance = await token.allowance(deployer.address, purchaser.address)
+    console.log(`Balance (${await token.balanceOf(deployer.address)}) - Allowance (${allowance.toString()})`)
+    if (allowance.lt(keyPrice)) {
+      throw Error(`Unsufficient Allowance (${allowance.toString()})`)
+    }
+  }
+
   // send bridged call
   const txArgs = [
-    destChainId, // destChainId,
-    lockAddress, // lock.address,
+    destChainId, // dest chainId,
+    lockAddress, // lock on dest chain 
     tokenAddress, // from src chain
     keyPrice,
     calldata,
@@ -105,6 +92,7 @@ async function main() {
     slippage
   ]
   console.log(txArgs, { value })
+
   const tx = await purchaser.sendBridgedLockCall(
     ...txArgs, 
     { 
@@ -113,6 +101,7 @@ async function main() {
   )
   const { events } = await tx.wait()
   const { args } = events.find(({event}) => event === 'BridgeCallEmitted')
+  console.log(args)
   console.log(`Call emitted to chain ${args.destChainId} with transferID: ${args.transferID}`)
 }
 
