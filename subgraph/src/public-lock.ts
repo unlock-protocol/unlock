@@ -5,7 +5,6 @@ import {
   Bytes,
   store,
   ethereum,
-  crypto,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
@@ -329,6 +328,12 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
     lock.save()
   }
 }
+
+// Topic0 of ERC20 Transfer event.
+// Transfer(address,address.uint256)
+export const ERC20_TRANSFER_TOPIC0 =
+  '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+
 /**
  * Create Receipt object for subgraph for key 'purchase'/'extend'/'renewal'
  * @param {String} keyID - key id
@@ -346,41 +351,36 @@ export function createReceipt(event: ethereum.Event): void {
   const tokenAddress =
     lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
 
-  if (event) {
-    const hasErc20 = tokenAddress.toString().length > 0
-    if (event.receipt && hasErc20) {
-      const logIndex = event.receipt.logs.findIndex(
-        (l: ethereum.Log) =>
-          l.address.toString() === tokenAddress.toString() &&
-          l.topics[0] ===
-            crypto.keccak256(Bytes.fromHexString('Transfer(from, to, value)'))
-      )
-
-      const log = event.receipt.logs[logIndex]
-      if (log) {
-        const topic = log && log.topics ? log.topics[0] : null
-
-        if (topic) {
-          // decode event data
-          const decoded = ethereum.decode(
-            '(address,address,uint256)',
-            topic as Bytes
-          )
-          receipt.payer = decoded ? decoded[0] : Bytes.fromHexString('')
-          receipt.amountTransferred = decoded ? decoded[2] : 0
+  if (lock && tokenAddress.toString().length > 0) {
+    const txReceipt = event.receipt!
+    const logs: ethereum.Log[] = txReceipt.logs
+    if (logs) {
+      for (let i = 0; i < logs.length; i++) {
+        const txLog = logs[i]
+        if (
+          txLog.address.toString() === tokenAddress.toString() &&
+          txLog.topics[0].toHexString() === ERC20_TRANSFER_TOPIC0 &&
+          ethereum.decode('address', txLog.topics[0])!.toAddress() ===
+            lock.address
+        ) {
+          receipt.payer = ethereum
+            .decode('address', txLog.topics[1])!
+            .toAddress()
+          receipt.amountTransferred = ethereum
+            .decode('uint256', txLog.data)!
+            .toBigInt()
         }
       }
     } else {
       receipt.payer = event.transaction.from
       receipt.amountTransferred = event.transaction.value
     }
-  }
 
-  receipt.timestamp = event.block.timestamp
-  receipt.sender = event.transaction.to
-  receipt.lockAddress = event.address
-  receipt.tokenAddress = tokenAddress
-  receipt.gasTotal = event.transaction.gasPrice
-  //receipt.owner =
-  receipt.save()
+    receipt.timestamp = event.block.timestamp
+    receipt.sender = event.transaction.to
+    receipt.lockAddress = event.address
+    receipt.tokenAddress = tokenAddress
+    receipt.gasTotal = event.transaction.gasPrice
+    receipt.save()
+  }
 }
