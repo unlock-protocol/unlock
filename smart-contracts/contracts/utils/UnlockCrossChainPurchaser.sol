@@ -34,14 +34,14 @@ contract UnlockCrossChainPurchaser is Ownable {
   event BridgeCallReceived(
     uint originChainId,
     address indexed lockAddress, 
-    uint transferID
+    bytes32 transferID
   );
 
   event BridgeCallEmitted(
     uint destChainId,
     address indexed unlockAddress, 
     address indexed lockAddress, 
-    uint transferID
+    bytes32 transferID
   );
 
   constructor(
@@ -155,7 +155,7 @@ contract UnlockCrossChainPurchaser is Ownable {
       destChainId,
       crossChainPurchasers[destChainId],
       lock, 
-      uint(transferID)
+      transferID
     );
   }
 
@@ -224,7 +224,7 @@ contract UnlockCrossChainPurchaser is Ownable {
     emit BridgeCallReceived(
       chainIds[origin],
       lockAddress, 
-      uint(transferId)
+      transferId
     );
   }
 
