@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.15;
+pragma solidity ^0.8.7;
 
 /**
  * @title The Unlock contract
@@ -26,9 +26,7 @@ pragma solidity ^0.8.15;
  *  a. Keeping track of deployed locks
  *  b. Keeping track of GNP
  */
-import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
-import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
 import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
@@ -105,22 +103,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // required by Uniswap Universal Router
   address public permit2;
-
-  // in BPS, in this case 0.3%
-  uint constant MAX_SLIPPAGE = 30;
-
-  // the chain id => address of Unlock receiver on the destination chain
-  mapping (uint => address) public unlockAddresses;
-
-  // the mapping 
-  mapping(uint => uint32) public domains; 
-  mapping(uint32 => uint) public chainIds; 
-
-  // Errors
-  error OnlyUnlock();
-  error ChainNotSet();
-  error InsufficientApproval(uint requiredAmount);
-  error InsufficientBalance();
 
   // Events
   event NewLock(
@@ -382,7 +364,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return lockAddress;
   }
 
-  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
+  function _isLockManager(
+    address lockAddress,
+    address _sender
+  ) private view returns (bool isManager) {
     IPublicLock lock = IPublicLock(lockAddress);
     return lock.isLockManager(_sender);
   }
@@ -786,4 +771,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return globalTokenSymbol;
   }
 
+  // required to withdraw WETH
+  receive() external payable {}
 }

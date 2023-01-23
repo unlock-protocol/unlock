@@ -283,7 +283,7 @@ contract MixinLockCore is
     return _totalSupply;
   }
 
-  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
+  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
   // decreased from 997 to 996 when adding `onKeyExtendHook` in v12
   // decreased from 996 to 995 when adding `onKeyGrantHook` in v12
