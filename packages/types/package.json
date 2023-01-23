@@ -1,34 +1,29 @@
 {
-  "name": "@unlock-protocol/types",
-  "version": "0.0.6",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "description": "Unlock's base Typescript config",
-  "engines": {
-    "node": ">=12"
-  },
-  "files": [
-    "tsconfig.json"
-  ],
-  "keywords": [
-    "tsconfig",
-    "typescript",
-    "ts",
-    "config",
-    "configuration"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/unlock-protocol/unlock.git",
-    "directory": "packages/types"
-  },
-  "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf dist"
-  },
-  "devDependencies": {
-    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "ethers": "5.7.2",
-    "typescript": "4.9.4"
-  }
+    "name": "@unlock-protocol/types",
+    "version": "0.0.6",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "description": "Unlock's base Typescript config",
+    "engines": {
+        "node": ">=12"
+    },
+    "files": [
+        "tsconfig.json"
+    ],
+    "keywords": [
+        "tsconfig",
+        "typescript",
+        "ts",
+        "config",
+        "configuration"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf dist"
+    },
+    "devDependencies": {
+        "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+        "ethers": "5.7.2",
+        "typescript": "4.9.4"
+    }
 }
