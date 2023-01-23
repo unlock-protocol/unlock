@@ -94,3 +94,23 @@ export const getKey = async (lockAddress: string, tokenId: BigNumber) => {
   })
   return key
 }
+
+const getReceiptQuery = gql`
+  query Receipt($id: Bytes!) {
+    receipt(id: $id) {
+      amount
+      tokenAddress
+    }
+  }
+`
+export const getReceipt = async (txHash: string) => {
+  const {
+    data: { receipt },
+  } = await subgraph.query({
+    query: getReceiptQuery,
+    variables: {
+      id: txHash,
+    },
+  })
+  return receipt
+}

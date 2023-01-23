@@ -33,11 +33,11 @@ export const purchaseKey = async (
     )
 
   // get token ids
-  const { events, blockNumber } = await tx.wait()
+  const { events, blockNumber, transactionHash } = await tx.wait()
   const { args } = events.find((v: any) => v.event === 'Transfer')
   const { tokenId, from, to } = args
 
-  return { tokenId, blockNumber, from, to }
+  return { tokenId, blockNumber, from, to, transactionHash }
 }
 
 export const purchaseKeys = async (

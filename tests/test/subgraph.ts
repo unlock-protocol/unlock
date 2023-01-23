@@ -4,7 +4,7 @@ import { unlock, ethers } from 'hardhat'
 
 import { lockParams } from './helpers/fixtures'
 import * as subgraph from './helpers/subgraph'
-import { purchaseKeys } from './helpers/keys'
+import { purchaseKeys, purchaseKey } from './helpers/keys'
 
 const awaitTimeout = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay))
@@ -277,6 +277,39 @@ describe('Keep track of changes in metadata', function () {
           `${keyInGraph.tokenURI}`
         )
       }
+    })
+  })
+
+  describe('Receipts', function () {
+    let lock: Contract
+    let lockAddress: string
+    let tokenId: BigNumber
+    let transactionHash: string
+
+    before(async () => {
+      ;({ lock } = await unlock.createLock({ ...lockParams }))
+      lockAddress = lock.address.toLowerCase()
+      unlockContract = await unlock.getUnlockContract()
+
+      // purchase a key
+      const [keyOwner] = await ethers.getSigners()
+      ;({ tokenId, transactionHash } = await purchaseKey(
+        lockAddress,
+        keyOwner.address
+      ))
+
+      // wait for graph to update
+      await awaitTimeout(2000)
+    })
+
+    it('created the receipt successfully', async () => {
+      const receiptInGraph = await subgraph.getReceipt(
+        transactionHash.toString()
+      )
+      expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
+      expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
+        await lock.address.toLocaleLowerCase()
+      )
     })
   })
 })
