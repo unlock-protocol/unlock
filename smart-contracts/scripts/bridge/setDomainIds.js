@@ -1,29 +1,22 @@
 const { ethers } = require('hardhat')
-
-const domainIds = {
-  5: 1735353714,
-  80001: 9991
-}
-
-const purchaserAddresses = {
-  5: '0x78ff4bbA01DAbfb235C395f8369f78770581F1f8',
-  80001: '0x84d085898F6ae4ae8c4225f2601F29a10335F653'
-}
+const addresses = ('./_addresses')
 
 async function main() {
 
   const { chainId } = await ethers.provider.getNetwork()
   
-  const purchaserAddress = purchaserAddresses[chainId]
+  const { purchaserAddress } = addresses[chainId]
   const purchaser = await ethers.getContractAt('UnlockCrossChainPurchaser', purchaserAddress)
   
   console.log(`Setting chains info on ${purchaserAddress}...`)
   
-  const args = [
-    Object.keys(domainIds),
-    Object.values(domainIds),
-    Object.values(purchaserAddresses)
-  ] 
+  const args = [[], [], []]
+  Object.keys(addresses).forEach(id => {
+    const { domainId, purchaserAddress} = addresses[id]
+    args[0] = [...args[0], id]
+    args[1] = [...args[1], domainId]
+    args[2] = [...args[2], purchaserAddress]
+  })
   console.log(args)
   
   const tx = await purchaser.setCrossChainPurchasers(...args)
