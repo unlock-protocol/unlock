@@ -65,7 +65,7 @@ export const SettingPayments = ({
 
       <SettingCard
         label="Receipts"
-        description="Save Supplier details for Receipts"
+        description="Update the supplier information to be shown on receipts."
         isLoading={isLoading}
       >
         <ReceiptBaseForm
