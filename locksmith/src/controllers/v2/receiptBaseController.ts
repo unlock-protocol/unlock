@@ -16,6 +16,7 @@ export const SupplierBody = z.object({
   zip: z.string().optional().default(''),
   country: z.string().optional().default(''),
 })
+export type SupplierBodyProps = z.infer<typeof SupplierBody>
 
 export class ReceiptBaseController {
   // Get supplier details
@@ -62,13 +63,13 @@ export class ReceiptBaseController {
         return response.status(200).json({
           ...dataValues,
         })
-      } catch (err) {
+      } catch (err: any) {
         logger.error(err.message)
         return response.status(500).json({
           message: 'Failed to save supplier details',
         })
       }
-    } catch (err) {
+    } catch (err: any) {
       return response.send(500).json({
         message: 'Failed to save supplier details',
       })
