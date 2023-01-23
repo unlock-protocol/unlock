@@ -26,7 +26,7 @@ contract UnlockCrossChainPurchaser is Ownable {
   mapping(uint32 => uint) public chainIds; 
 
   // Errors
-  error OnlyUnlock();
+  error OnlyBridge();
   error ChainNotSet();
   error InsufficientApproval(uint requiredAmount);
   error InsufficientBalance();
@@ -57,6 +57,14 @@ contract UnlockCrossChainPurchaser is Ownable {
     if(domains[_chainId] == 0 || crossChainPurchasers[_chainId] == address(0)) {
       revert ChainNotSet();
     }
+  }
+
+  /**
+   * Allow to set bridge address
+   * @param _bridgeAddress the address of the bridge
+   */
+  function setBridgeAddress(address _bridgeAddress) public onlyOwner {
+    bridgeAddress = _bridgeAddress;
   }
 
   /**
@@ -157,6 +165,8 @@ contract UnlockCrossChainPurchaser is Ownable {
   // 2. refund
   // }
 
+
+    
   /** 
    * @notice The receiver function as required by the IXReceiver interface.
    * @dev The Connext bridge contract will call this function.
@@ -170,6 +180,11 @@ contract UnlockCrossChainPurchaser is Ownable {
     bytes memory callData
   ) external returns (bytes memory) {
 
+    // only connext can call this function
+    if(msg.sender != bridgeAddress) {
+      revert OnlyBridge();
+    }
+
     // 0 if is erc20
     uint valueToSend;
 
@@ -181,7 +196,7 @@ contract UnlockCrossChainPurchaser is Ownable {
     if (currency != address(0)) {
       IERC20 token = IERC20(currency);
       // make sure we got enough tokens from the bridge
-      require(token.balanceOf(address(this)) >= amount, "not enough");
+      require(token.balanceOf(address(this)) >= amount, "INSUFFICIENT_BALANCE");
       // approve the lock to get the tokens 
       token.approve(lockAddress, amount);
     } else {
@@ -213,5 +228,7 @@ contract UnlockCrossChainPurchaser is Ownable {
     );
   }
 
+  // required as WETH withdraw will unwrap and send tokens here
+  receive() external payable {}
 
 }

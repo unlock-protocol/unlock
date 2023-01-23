@@ -60,7 +60,7 @@ contract TestBridge {
       );
 
       // SWAP using a (fake) bridged token
-      IERC20(destToken).approve(_to, _amount);
+      IERC20(destToken).transfer(_to, _amount);
     }
 
     // cross the bridge

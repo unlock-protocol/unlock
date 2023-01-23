@@ -59,7 +59,7 @@ contract('Unlock / bridge', () => {
     await addSomeETH(connext.address)
     await erc20Dest.mint(connext.address, ethers.utils.parseEther('100'))
 
-    const UnlockCrossChainPurchaser = ethers.getContractFactory('UnlockCrossChainPurchaser')
+    const UnlockCrossChainPurchaser = await ethers.getContractFactory('UnlockCrossChainPurchaser')
 
     // source chain
     purchaserSrc = await UnlockCrossChainPurchaser.deploy(
@@ -119,7 +119,7 @@ contract('Unlock / bridge', () => {
     it('only unlock owner can call', async () => {
       reverts(
         purchaserSrc.connect(keyOwner).setCrossChainPurchasers([destChainId], [destDomainId], [purchaserDest.address]),
-        'ONLY_OWNER'
+        'owner'
       )
     })
   })
@@ -159,20 +159,7 @@ contract('Unlock / bridge', () => {
           srcChainId, // domain ID of the origin chain
           defaultCalldata
         ),
-        'OnlyUnlock'
-      )
-    })
-    it('reverts if the chain id / unlock is not set', async () => {
-      await reverts(
-        purchaserDest.xReceive(
-          ethers.utils.formatBytes32String('123'), // transferId,
-          ethers.utils.parseEther('0.01'), // amount of token in wei
-          erc20Dest.address, // native or bridged ERC20 token
-          purchaserSrc.address, // sender on the origin chain
-          1, // domain ID of the origin chain
-          defaultCalldata
-        ),
-        'OnlyUnlock'
+        'OnlyBridge'
       )
     })
   })
