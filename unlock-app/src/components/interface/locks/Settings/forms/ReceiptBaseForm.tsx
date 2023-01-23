@@ -88,14 +88,6 @@ export const ReceiptBaseForm = ({
           {...register('supplierName')}
         />
         <Input disabled={disabledInput} label="VAT" {...register('vat')} />
-
-        <div className="col-span-2">
-          <TextBox
-            disabled={disabledInput}
-            label="Service performed"
-            {...register('servicePerformed')}
-          />
-        </div>
         <Input
           disabled={disabledInput}
           label="Address line 1"
@@ -114,6 +106,13 @@ export const ReceiptBaseForm = ({
           label="Country"
           {...register('country')}
         />
+        <div className="col-span-2">
+          <TextBox
+            disabled={disabledInput}
+            label="Service performed"
+            {...register('servicePerformed')}
+          />
+        </div>
       </div>
 
       {isManager && (
