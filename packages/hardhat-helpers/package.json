@@ -1,18 +1,23 @@
 {
-    "name": "@unlock-protocol/hardhat-helpers",
-    "version": "0.0.2",
-    "description": "Some internal parser/helpers for Unlock Protocol's hardhat configs",
-    "main": "src/index.js",
-    "scripts": {
-        "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/"
-    },
-    "dependencies": {
-        "@unlock-protocol/networks": "workspace:^",
-        "@unlock-protocol/tsconfig": "workspace:^",
-        "@unlock-protocol/types": "workspace:^",
-        "hardhat": "2.12.5"
-    },
-    "files": [
-        "src"
-    ]
+  "name": "@unlock-protocol/hardhat-helpers",
+  "version": "0.0.2",
+  "description": "Some internal parser/helpers for Unlock Protocol's hardhat configs",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/"
+  },
+  "dependencies": {
+    "@unlock-protocol/networks": "workspace:^",
+    "@unlock-protocol/tsconfig": "workspace:^",
+    "@unlock-protocol/types": "workspace:^",
+    "hardhat": "2.12.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/hardhat-helpers"
+  },
+  "files": [
+    "src"
+  ]
 }
