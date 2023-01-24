@@ -3,7 +3,7 @@ title: How-to do NFT Red Packets
 subTitle: Using the public lock contract for fun and profit!
 authorName: Julien Genestoux
 publishDate: January 24, 2023
-description: Let's explore how the Unlock Labs team built a fun experiment by leveraging some of the core characteristics of the Publick Lock NFT contract!
+description: Let's explore how the Unlock Labs team built a fun experiment by leveraging some of the core characteristics of the PublicLock NFT contract!
 image: /images/blog/redpacket-rabbit/redpacket-all-rarities.png
 ---
 
