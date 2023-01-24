@@ -385,9 +385,7 @@ export function createReceipt(event: ethereum.Event): void {
     }
   } else {
     receipt.payer = event.transaction.from.toHexString()
-    receipt.amountTransferred = BigInt.fromString(
-      event.transaction.value.toString()
-    )
+    receipt.amountTransferred = event.transaction.value
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)

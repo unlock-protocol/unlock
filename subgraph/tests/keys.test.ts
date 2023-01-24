@@ -240,12 +240,7 @@ describe('Extend key', () => {
     assert.assertNotNull(newKeyExtended)
     assert.entityCount('Receipt', 1)
     assert.fieldEquals('Receipt', hash, 'id', hash)
-    assert.fieldEquals(
-      'Receipt',
-      hash,
-      'lockAddress',
-      newKeyExtended.address.toString()
-    )
+    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
     assert.fieldEquals(
       'Receipt',
       hash,
@@ -255,6 +250,8 @@ describe('Extend key', () => {
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
+
+    dataSourceMock.resetValues()
   })
 
   test('should create receipt after key is extended', () => {
@@ -299,6 +296,8 @@ describe('Extend key', () => {
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
+
+    dataSourceMock.resetValues()
   })
 })
 
@@ -455,8 +454,9 @@ describe('Receipt for key renewal', () => {
     const hash = newRenewKeyPurchase.transaction.hash.toHexString()
     const sender = newRenewKeyPurchase.transaction.from.toHexString()
     const payer = newRenewKeyPurchase.transaction.from.toHexString()
+    const lockAddress = newTransferEvent.address.toHexString()
 
-    const amount = newRenewKeyPurchase.transaction.value.toHexString()
+    const amount = newRenewKeyPurchase.transaction.value.toString()
 
     // test values for not ERC20
     assert.assertNotNull(newRenewKeyPurchase)
@@ -472,5 +472,7 @@ describe('Receipt for key renewal', () => {
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', amount)
+
+    dataSourceMock.resetValues()
   })
 })
