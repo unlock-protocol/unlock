@@ -122,6 +122,15 @@ export default (opts = {}) => {
         margin: 0;
         margin-bottom: 16px;
       }
+      code {
+        border-radius: 0.375rem;
+        font-weight: 500;
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgb(203 213 225);
+        background-color: rgb(241 245 249);
+        padding: 0.125rem 0.25rem;
+      }
     </style>
   </head>
   <body style="
