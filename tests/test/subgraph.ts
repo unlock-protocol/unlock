@@ -279,12 +279,19 @@ describe('Keep track of changes in metadata', function () {
       }
     })
   })
+})
+
+describe('Receipts', function () {
+  let lock: Contract
+  let unlockContract: Contract
+  let lockAddress: string
 
   describe('Receipts', function () {
     let lock: Contract
     let lockAddress: string
     let tokenId: BigNumber
     let transactionHash: string
+    let receiptInGraph: any
 
     before(async () => {
       ;({ lock } = await unlock.createLock({ ...lockParams }))
@@ -297,15 +304,11 @@ describe('Keep track of changes in metadata', function () {
         lockAddress,
         keyOwner.address
       ))
-
-      // wait for graph to update
       await awaitTimeout(2000)
+      receiptInGraph = await subgraph.getReceipt(transactionHash)
     })
 
     it('created the receipt successfully', async () => {
-      const receiptInGraph = await subgraph.getReceipt(
-        transactionHash.toString()
-      )
       expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
       expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
         await lock.address.toLocaleLowerCase()
