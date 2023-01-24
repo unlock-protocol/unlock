@@ -2,7 +2,6 @@ const { ethers, upgrades, network } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
 const { getNetworkName } = require('../../helpers/network')
-const { getDeployment, addDeployment } = require('../../helpers/deployments')
 const { addUDT } = require('../../test/helpers/mainnet')
 
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
@@ -49,9 +48,6 @@ async function main() {
     ` (tx: ${timelock.deployTransaction.hash})`
   )
 
-  // save deployment info
-  await addDeployment('UnlockProtocolTimelock', timelock, true)
-
   // deploying Unlock Protocol with a proxy
   const UnlockProtocolGovernor = await ethers.getContractFactory(
     'UnlockProtocolGovernor'
@@ -59,13 +55,10 @@ async function main() {
 
   // get UDT token address
   let tokenAddress
-  if (networkName === 'localhost') {
-    const UDTInfo = await getDeployment(chainId, 'UnlockDiscountTokenV3')
-    tokenAddress = UDTInfo.address
-  } else {
+  if (networkName !== 'localhost') {
     const [UDTInfo] =
       OZ_SDK_EXPORT.networks[networkName].proxies[
-        'unlock-protocol/UnlockDiscountToken'
+      'unlock-protocol/UnlockDiscountToken'
       ]
     tokenAddress = UDTInfo.address
   }
@@ -95,9 +88,6 @@ async function main() {
     // grant timelock some UDT
     await addUDT(timelock.address, 10000)
   }
-
-  // save deployment info
-  await addDeployment('UnlockProtocolGovernor', governor, true)
 
   // governor should be the only proposer
   await timelock.grantRole(PROPOSER_ROLE, governor.address)
