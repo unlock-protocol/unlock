@@ -60,6 +60,7 @@ export const createTicket = async ({
       network,
       lockAddress,
       tokenId,
+      account: owner,
     }),
     generateKeyMetadata(
       lockAddress,
