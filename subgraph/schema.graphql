@@ -95,19 +95,19 @@ type Receipt @entity {
   "Transaction Hash"
   id: ID!
   "Timestamp"
-  timestamp: BigInt!
+  timestamp: BigInt
   "Sender of the transaction"
-  sender: Bytes
+  sender: String
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
-  payer: Bytes!
+  payer: String
   "Address of the Lock smart contract"
-  lockAddress: Bytes!
+  lockAddress: String
   "Owner of the membership NFT"
-  owner: Bytes!
+  owner: Bytes
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
-  tokenAddress: Bytes!
+  tokenAddress: String
   "amount"
-  amountTransferred: BigInt!
+  amountTransferred: BigInt
   "Total gas paid"
   gasTotal: BigInt!
 }

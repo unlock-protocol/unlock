@@ -116,6 +116,7 @@ export function handleTransfer(event: TransferEvent): void {
       lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
       lock.save()
     }
+    createReceipt(event)
   } else {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -129,6 +130,7 @@ export function handleTransfer(event: TransferEvent): void {
       )
       key.save()
     }
+    createReceipt(event)
   }
 }
 
@@ -338,7 +340,7 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  */
 export function createReceipt(event: ethereum.Event): void {
   const lockAddress = event.address.toHexString()
-  const hash = event.transaction.hash.toString()
+  const hash = event.transaction.hash.toHexString()
 
   const receipt = new Receipt(hash)
 
@@ -368,21 +370,26 @@ export function createReceipt(event: ethereum.Event): void {
           receipt.payer = ethereum
             .decode('address', txLog.topics[1])!
             .toAddress()
+            .toHexString()
           receipt.amountTransferred = ethereum
             .decode('uint256', txLog.data)!
             .toBigInt()
         }
       }
-    } else {
-      receipt.payer = event.transaction.from
-      receipt.amountTransferred = event.transaction.value
     }
+  } else {
+    receipt.payer = event.transaction.from.toHexString()
+    receipt.amountTransferred = BigInt.fromString(
+      event.transaction.value.toString()
+    )
   }
 
+  const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
+
+  receipt.lockAddress = lockAddress
   receipt.timestamp = event.block.timestamp
-  receipt.sender = event.transaction.to
-  receipt.lockAddress = event.address
-  receipt.tokenAddress = tokenAddress
-  receipt.gasTotal = event.transaction.gasPrice
+  receipt.sender = event.transaction.from.toHexString()
+  receipt.tokenAddress = tokenAddress.toHexString()
+  receipt.gasTotal = BigInt.fromString(totalGas.toString())
   receipt.save()
 }
