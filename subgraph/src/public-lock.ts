@@ -377,12 +377,12 @@ export function createReceipt(event: ethereum.Event): void {
       receipt.payer = event.transaction.from
       receipt.amountTransferred = event.transaction.value
     }
-
-    receipt.timestamp = event.block.timestamp
-    receipt.sender = event.transaction.to
-    receipt.lockAddress = event.address
-    receipt.tokenAddress = tokenAddress
-    receipt.gasTotal = event.transaction.gasPrice
-    receipt.save()
   }
+
+  receipt.timestamp = event.block.timestamp
+  receipt.sender = event.transaction.to
+  receipt.lockAddress = event.address
+  receipt.tokenAddress = tokenAddress
+  receipt.gasTotal = event.transaction.gasPrice
+  receipt.save()
 }

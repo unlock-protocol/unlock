@@ -17,6 +17,7 @@ import {
   handleKeyExtended,
   handleKeyManagerChanged,
   handleRenewKeyPurchase,
+  createReceipt,
 } from '../src/public-lock'
 import {
   createTransferEvent,
@@ -212,6 +213,32 @@ describe('Extend key', () => {
     handleKeyExtended(newKeyExtended)
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 5000}`)
     dataSourceMock.resetValues()
+  })
+
+  test('should create receipt after key is extended', () => {
+    mockDataSourceV11()
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    // mock and test
+    updateExpiration(BigInt.fromU64(expiration + 5000))
+
+    const newKeyExtended = createKeyExtendedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU64(expiration + 5000)
+    )
+
+    // check that receipt is created after key is extended
+    handleKeyExtended(newKeyExtended)
+
+    assert.entityCount('Receipt', 1)
+    const hash = newTransferEvent.transaction.hash.toString()
+    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
   })
 })
 
