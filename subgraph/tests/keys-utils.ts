@@ -32,6 +32,8 @@ import {
   tokenId,
   keyOwnerAddress,
   tokenAddress,
+  defaultMockAddress,
+  nullAddress,
 } from './constants'
 
 export function mockDataSourceV8(): void {
@@ -64,8 +66,6 @@ export function mockLockV11Erc20(): void {
   )
   dataSourceMock.setReturnValues(lockAddress, 'rinkeby', v11context)
 }
-
-export function createERC20TransferEvent() {}
 
 export function createTransferEvent(
   from: Address,
@@ -281,6 +281,21 @@ export function createKeyExtendedEvent(
       ethereum.Value.fromUnsignedBigInt(newTimestamp)
     )
   )
+
+  if (createErc20TransferEvent) {
+    // mock transaction
+    keyExtendedEvent.transaction = [
+      nullAddress, //hash
+      1, // index
+      defaultMockAddress, // from
+      nullAddress, // to
+      null, // value
+      0, // gasLimit
+      0, // gasPrice
+      null, // input
+      null, // nonce
+    ]
+  }
 
   return keyExtendedEvent
 }
