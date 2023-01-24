@@ -187,15 +187,21 @@ export function handleKeyManagerChanged(event: KeyManagerChangedEvent): void {
 export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
+  const fallbackTimestamp = event.block.timestamp
   if (key) {
-    // remove cancelled keys for v11
+    // Due to a bug in v11, we need to check the version of the lock and fallback to the timestamp since expiration can be for a different key
     const lock = Lock.load(key.lock)
     if (lock && lock.version == BigInt.fromI32(11)) {
-      store.remove('Key', keyID)
+      key.expiration = fallbackTimestamp
     } else {
-      key.cancelled = true
-      key.save()
+      key.expiration = getKeyExpirationTimestampFor(
+        event.address,
+        event.params.tokenId,
+        Address.fromBytes(key.owner)
+      )
     }
+    key.cancelled = true
+    key.save()
   }
 }
 
