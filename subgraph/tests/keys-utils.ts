@@ -284,17 +284,17 @@ export function createKeyExtendedEvent(
 
   if (createErc20TransferEvent) {
     // mock transaction
-    keyExtendedEvent.transaction = [
-      nullAddress, //hash
-      1, // index
-      defaultMockAddress, // from
-      nullAddress, // to
-      null, // value
-      0, // gasLimit
-      0, // gasPrice
-      null, // input
-      null, // nonce
-    ]
+    keyExtendedEvent.transaction = new ethereum.Transaction(
+      newMockEvent().transaction.hash,
+      newMockEvent().logIndex,
+      newMockEvent().transaction.from,
+      newMockEvent().transaction.to,
+      newMockEvent().transaction.value,
+      newMockEvent().transaction.gasLimit,
+      newMockEvent().transaction.gasPrice,
+      newMockEvent().transaction.input,
+      newMockEvent().transaction.nonce
+    )
   }
 
   return keyExtendedEvent
