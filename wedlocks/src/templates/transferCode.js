@@ -5,15 +5,11 @@ export default {
 
 <p> Your transfer code for {{lockName}} NFT has been successfully generated and is ready for you to use. This code will enable you to transfer your NFT for a limited period of {{validPeriod}}. </p>
 
-<p> Your transfer code is <code>{{transferCode}}</code>. </p>
-<p> We kindly advise you to use it as soon as possible to ensure a successful transfer. If you left the transfer page, you will need to regenerate a code and re-enter the code on the same page for a successful transfer. </p>
-
-<p> If you have any questions or need help with the transfer process, please do not hesitate to contact us. </p>
-
-
-<p>
-Sincerely, <br/>
-Unlock Team
+<p style="text-align: center">
+<code style="font-size: 2em;">{{transferCode}}</code> 
 </p>
+<p>Please, use it as soon as possible to ensure a successful transfer. </p>
+
+
 `,
 }
