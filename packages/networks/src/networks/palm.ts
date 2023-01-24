@@ -4,7 +4,7 @@ export const palm: NetworkConfig = {
   publicProvider:
     'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/11297108109',
-  unlockAddress: '0x',
+  unlockAddress: '0x8e0B46ec3B95c81355175693dA0083b00fCc1326',
   multisig: '0x',
   id: 11297108109,
   name: 'Palm',
@@ -12,7 +12,7 @@ export const palm: NetworkConfig = {
   blockTime: 5000,
   subgraph: {
     endpoint: 'https://graph.palm.io/subgraphs/name/unlock-protocol/palm',
-    networkName: 'palm',
+    networkName: 'Palm-mainnet',
     endpointV2: 'https://graph.palm.io/subgraphs/name/unlock-protocol/palm-v2',
   },
   explorer: {
@@ -38,7 +38,7 @@ export const palm: NetworkConfig = {
     decimals: 18,
     coingecko: 'palm',
   },
-  startBlock: 0,
+  startBlock: 9856400,
   previousDeploys: [],
   isTestNetwork: false,
   maxFreeClaimCost: 1,
