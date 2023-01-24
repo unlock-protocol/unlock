@@ -390,7 +390,7 @@ describe('RenewKeyPurchase (lock <v10)', () => {
 
 describe('Receipt for key renewal', () => {
   test('should create receipt after key is renew', () => {
-    mockDataSourceV11()
+    mockDataSourceV8()
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
