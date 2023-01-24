@@ -20,7 +20,7 @@ For the front-end, we used Next.js, which, as you probably know is a React-based
 We also used some custom hooks:
 
 - [`useAuth`](https://github.com/unlock-protocol/red-packet-2023/blob/main/hooks/useAuth.tsx) which connects to Unlock's [Sign-In with Ethereum](https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/) endpoint. We used it to identify the users.
-- [`useLock`](https://github.com/unlock-protocol/red-packet-2023/blob/main/hooks/useLock.tsx) which queries the RPC endpoint to check if an address owns a valid NFT from the Hongbao contract. We used it to check if a given user already owns an NFT
+- [`useLock`](https://github.com/unlock-protocol/red-packet-2023/blob/main/hooks/useLock.tsx) which queries the RPC endpoint to check if an address owns a valid NFT from the Hongbao contract. We used it to check if a given user already owns an NFT.
 - [`useMetadata`](https://github.com/unlock-protocol/red-packet-2023/blob/main/hooks/useMetadata.tsx) which queries the RPC endpoint to retrive the `tokenURI` of a given token. Since the metadata is in fact generated on-chain (more below), this yields it in the form of base64 encoded JSON.
 
 Finally, we also added an API function. When thinking about this experiment, we wanted people to be able to send red packets to _anyone_, even if that person did not previously use the Polygon chain, so that means we needed a mechanism to "claim" the potential prizes in a gasless way because these recipients would otherwise need MATIC tokens to pay for the gas to claim from the red pockets.
