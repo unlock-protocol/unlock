@@ -1,43 +1,39 @@
 import { Button, Input, ToggleSwitch, Toggle } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { getAddressForName } from '~/hooks/useEns'
-import { ACCOUNT_REGEXP } from '~/constants'
 import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
 import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { formatDate } from '~/utils/lock'
-import { useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
+import { twMerge } from 'tailwind-merge'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 export interface Props {
   add(member: AirdropMember): void
   lock: Lock
   list: AirdropMember[]
-  isEmailAirdrop: boolean
-  setIsEmailAirdrop(value: boolean): void
   defaultValues?: Partial<AirdropMember>
 }
 
-export function AirdropForm({
-  add,
-  defaultValues,
-  lock,
-  isEmailAirdrop,
-  setIsEmailAirdrop,
-}: Props) {
+export function AirdropForm({ add, defaultValues, lock }: Props) {
   const config = useConfig()
+  const [useEmail, setUseEmail] = useState(false)
   const {
     handleSubmit,
     register,
     reset,
     setValue,
     watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<AirdropMember>({
     defaultValues,
+    mode: 'onSubmit',
   })
 
   const formValues = watch()
@@ -54,77 +50,137 @@ export function AirdropForm({
     }
   }
 
+  const required = useEmail ? 'Email is required' : 'Wallet Address is required'
+  const label = useEmail ? 'Email' : 'Wallet'
+
+  const description = useEmail
+    ? 'Enter the email address that will receive the membership NFT'
+    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+  const error = errors?.recipient?.message
+  const placeholder = useEmail ? 'user@email.com' : '0x...'
+  const inputClass = twMerge(
+    'box-border flex-1 block w-full transition-all border pl-4 py-2 text-base border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none disabled:bg-gray-100',
+    error &&
+      'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
+  )
+
   const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
+  const web3Service = useWeb3Service()
+
+  const onRecipientChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const recipient = event.target.value
+      if (useEmail) {
+        const networkConfig = config.networks[lock.network]
+        const keyManager = new KeyManager(config.networks)
+        const address = keyManager.createTransferAddress({
+          params: {
+            email: event.target.value,
+            lockAddress: lock!.address,
+          },
+        })
+        setValue('email', recipient)
+        setValue('manager', networkConfig.keyManagerAddress)
+        return address
+      }
+      return recipient
+    },
+    [setValue, useEmail, lock, config.networks]
+  )
+
+  const onSubmitHandler = useCallback(
+    async (member: AirdropMember) => {
+      const address = await getAddressForName(member.recipient)
+      member.recipient = address
+      const parsed = AirdropMember.parse(member)
+      add(parsed)
+      reset()
+    },
+    [add, reset]
+  )
 
   return (
-    <form
-      onSubmit={handleSubmit((member) => {
-        if (!member.recipient && member.email) {
-          const keyManager = new KeyManager(config.networks)
-          const networkConfig = config.networks[lock.network]
-          const recipient = keyManager.createTransferAddress({
-            params: {
-              email: member.email,
-              lockAddress: lock.address,
+    <form onSubmit={handleSubmit(onSubmitHandler)} className="grid gap-6">
+      <Controller
+        name="recipient"
+        control={control}
+        rules={{
+          required,
+          validate: {
+            max_keys: async (value) => {
+              if (!value) {
+                return true
+              }
+              try {
+                const address = await getAddressForName(value)
+                const numberOfMemberships = await web3Service.balanceOf(
+                  lock!.address,
+                  address,
+                  lock!.network
+                )
+                return numberOfMemberships < (lock?.maxKeysPerAddress || 1)
+                  ? true
+                  : 'Address already holds the maximum number of memberships.'
+              } catch (error) {
+                console.error(error)
+                return 'There is a problem with using this address. Try another.'
+              }
             },
-          })
-          member.manager = networkConfig.keyManagerAddress
-          member.recipient = recipient
-        }
-        const parsed = AirdropMember.parse(member)
-        add(parsed)
-        reset()
-      })}
-      className="grid gap-6"
-    >
-      <div className="p-4 bg-white border border-gray-200 rounded-xl">
-        <div className="flex items-center justify-between">
-          <label htmlFor="email-toggle">
-            I don&apos;t have wallet address or ENS
-          </label>
-          <div>
-            <Toggle
-              value={isEmailAirdrop}
-              aria-label="email-toggle"
-              onChange={(value) => {
-                setIsEmailAirdrop(value)
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {!isEmailAirdrop && (
+          },
+        }}
+        render={({ field: { onChange, ref, onBlur } }) => {
+          return (
+            <div className="grid gap-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-base" htmlFor={label}>
+                  {label}
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="text-base">No wallet address?</div>
+                  <Toggle
+                    value={useEmail}
+                    onChange={(value) => {
+                      setUseEmail(value)
+                    }}
+                  />
+                </div>
+              </div>
+              <input
+                className={inputClass}
+                placeholder={placeholder}
+                name={label}
+                id={label}
+                type={useEmail ? 'email' : 'text'}
+                onChange={(event) => {
+                  onChange(onRecipientChange(event))
+                }}
+                ref={ref}
+                onBlur={onBlur}
+              />
+              {description && !error && (
+                <p className="text-sm text-gray-600"> {description} </p>
+              )}
+              {error && <p className="text-sm text-red-500">{error}</p>}
+            </div>
+          )
+        }}
+      />
+      {!useEmail && (
         <Input
-          disabled={isEmailAirdrop}
-          label="Wallet"
-          {...register('recipient', {
-            disabled: isEmailAirdrop,
-            pattern: ACCOUNT_REGEXP,
-            required: 'Wallet address or ENS is required',
-            onChange: addressFieldChanged('recipient'),
+          type="email"
+          label="Email Address"
+          {...register('email', {
+            required: {
+              value: useEmail,
+              message: 'Email is required',
+            },
           })}
-          error={errors.recipient?.message}
-          description="Enter wallet address or ENS."
+          description={
+            'A confirmation email will be sent to your recipient with the QR code and link for NFT.'
+          }
+          error={errors.email?.message}
         />
       )}
-
-      <Input
-        type="email"
-        label="Email Address"
-        {...register('email', {
-          required: {
-            value: isEmailAirdrop,
-            message: 'Email is required',
-          },
-        })}
-        description={
-          isEmailAirdrop
-            ? 'A confirmation email will sent to your recipient with the QR code and a link to claim the NFT to their own wallet.'
-            : 'A confirmation email will be sent to your recipient with the QR code and link for NFT.'
-        }
-        error={errors.email?.message}
-      />
       <Input
         pattern="[0-9]+"
         label="Number of keys to airdrop"
@@ -172,7 +228,7 @@ export function AirdropForm({
           )}
         </div>
       </div>
-      {!isEmailAirdrop && (
+      {!useEmail && (
         <Input
           label="Key Manager"
           {...register('manager', {
@@ -195,7 +251,6 @@ interface AirdropManualFormProps {
 }
 
 export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
-  const [isEmailAirdrop, setIsEmailAirdrop] = useState(false)
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
   const expiration = formatDate(lock.expirationDuration || 0)
@@ -207,8 +262,6 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
         lock={lock}
         add={(member) => push(member)}
         list={list}
-        isEmailAirdrop={isEmailAirdrop}
-        setIsEmailAirdrop={setIsEmailAirdrop}
         defaultValues={{
           expiration,
           manager: account,

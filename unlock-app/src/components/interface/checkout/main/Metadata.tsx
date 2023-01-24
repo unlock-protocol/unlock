@@ -7,7 +7,14 @@ import {
   useForm,
   useFormContext,
 } from 'react-hook-form'
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import {
+  ChangeEvent,
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
@@ -62,15 +69,45 @@ export const MetadataInputs = ({
     setValue,
     formState: { errors },
   } = useFormContext<FormData>()
+  const networkConfig = config.networks[lock.network]
+  const onRecipientChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value
+      let recipient = value
+      if (useEmail) {
+        const keyManager = new KeyManager(config.networks)
+        recipient = keyManager.createTransferAddress({
+          params: {
+            email: event.target.value,
+            lockAddress: lock!.address,
+          },
+        })
+        setValue(`metadata.${id}.email`, value)
+        setValue(`metadata.${id}.keyManager`, networkConfig.keyManagerAddress)
+      } else {
+        setValue(`metadata.${id}.keyManager`, '')
+      }
+      return recipient
+    },
+    [setValue, useEmail, id, lock, config.networks, networkConfig]
+  )
+
   const required = useEmail ? 'Email is required' : 'Wallet Address is required'
+  const labelText = useEmail ? 'Email' : 'Wallet'
+  const label = id >= 1 ? `${labelText} #${id + 1}` : labelText
+  const description = useEmail
+    ? 'Enter the email address that will receive the membership NFT'
+    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+  const error = errors?.metadata?.[id]?.recipient?.message
+  const placeholder = useEmail ? 'user@email.com' : '0x...'
+  const inputClass = twMerge(
+    'box-border flex-1 block w-full transition-all border pl-2.5 py-1.5 text-sm border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none disabled:bg-gray-100',
+    error &&
+      'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
+  )
+
   return (
     <div className="grid gap-2">
-      {!hideRecipientAddress && (
-        <div className="flex items-center shadow-sm justify-between p-1.5 text-sm rounded-lg bg-gray-50">
-          <p>I don&apos;t have wallet address or ENS</p>
-          <Toggle value={useEmail} onChange={setUseEmail} />
-        </div>
-      )}
       {hideRecipientAddress ? (
         <div className="space-y-1">
           <div className="ml-1 text-sm">
@@ -122,42 +159,41 @@ export const MetadataInputs = ({
             },
           }}
           render={({ field: { onChange, ref, onBlur } }) => {
-            const labelText = useEmail ? 'Email' : 'Wallet'
-            const label = id >= 1 ? `${labelText} #${id + 1}` : labelText
-            const description = useEmail
-              ? 'Enter the email address that will receive the membership NFT'
-              : 'Enter the wallet address or an ENS that will receive the membership NFT'
-            const error = errors?.metadata?.[id]?.recipient?.message
-            const placeholder = useEmail ? 'user@email.com' : '0x...'
-
             return (
-              <Input
-                size="small"
-                type={useEmail ? 'email' : 'text'}
-                label={label}
-                disabled={disabled}
-                placeholder={placeholder}
-                onChange={(event) => {
-                  event.preventDefault()
-                  const value = event.target.value
-                  let recipient = value
-                  if (useEmail) {
-                    const keyManager = new KeyManager(config.networks)
-                    recipient = keyManager.createTransferAddress({
-                      params: {
-                        email: event.target.value,
-                        lockAddress: lock!.address,
-                      },
-                    })
-                    setValue(`metadata.${id}.email`, value)
-                  }
-                  onChange(recipient)
-                }}
-                description={description}
-                error={error}
-                ref={ref}
-                onBlur={onBlur}
-              />
+              <div className="grid gap-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm" htmlFor={label}>
+                    {label}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm">No wallet address?</div>
+                    <Toggle
+                      value={useEmail}
+                      onChange={(value) => {
+                        setUseEmail(value)
+                      }}
+                      size="small"
+                    />
+                  </div>
+                </div>
+                <input
+                  className={inputClass}
+                  placeholder={placeholder}
+                  name={label}
+                  id={label}
+                  type={useEmail ? 'email' : 'text'}
+                  disabled={disabled}
+                  onChange={(event) => {
+                    onChange(onRecipientChange(event))
+                  }}
+                  ref={ref}
+                  onBlur={onBlur}
+                />
+                {description && !error && (
+                  <p className="text-xs text-gray-600"> {description} </p>
+                )}
+                {error && <p className="text-xs text-red-500">{error}</p>}
+              </div>
             )
           }}
         />
@@ -209,7 +245,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =
     locksConfig.emailRequired || paywallConfig.emailRequired
-
   const metadataInputs = useMemo(() => {
     const inputs =
       locksConfig.metadataInputs || paywallConfig.metadataInputs || []
@@ -278,15 +313,23 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
 
   async function onSubmit(data: FormData) {
     try {
+      data.metadata = await Promise.all(
+        data.metadata.map(async (item) => {
+          const address = await getAddressForName(item.recipient)
+          return {
+            ...item,
+            recipient: address,
+          }
+        })
+      )
       const users = await Promise.all(
-        data.metadata.map(async ({ recipient, ...props }) => {
-          const address = await getAddressForName(recipient)
+        data.metadata.map(async ({ recipient, keyManager, ...props }) => {
           const formattedMetadata = formResultToMetadata(
             props,
             metadataInputs || []
           )
           return {
-            userAddress: address,
+            userAddress: recipient,
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -296,12 +339,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         })
       )
 
-      const recipients = users.map((item) => item.userAddress)
+      const recipients = data.metadata.map((item) => item.recipient)
+      const keyManagers = data.metadata.map(
+        (item) => item.keyManager || item.recipient
+      )
       await storage.submitMetadata(users, lock!.network)
-
       send({
         type: 'SELECT_RECIPIENTS',
         recipients,
+        keyManagers,
       })
     } catch (error) {
       if (error instanceof Error) {
