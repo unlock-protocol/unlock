@@ -133,7 +133,7 @@ describe('Upgrade a lock', function () {
   })
 })
 
-describe('(v11) key cancellation bug', function () {
+describe('key cancellation', function () {
   let lock: Contract
   let lockAddress: string
   let tokenIds: any
@@ -162,7 +162,7 @@ describe('(v11) key cancellation bug', function () {
       lockAddress,
       tokenIds[1]
     )
-    expect(keyInGraphAfterCancellation).to.be.null
+    expect(keyInGraphAfterCancellation.cancelled).to.be.true
   })
 })
 

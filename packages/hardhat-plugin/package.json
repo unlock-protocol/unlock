@@ -30,6 +30,11 @@
     "LICENSE",
     "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/hardhat-plugin"
+  },
   "devDependencies": {
     "@types/chai": "4.3.4",
     "@types/fs-extra": "9.0.13",

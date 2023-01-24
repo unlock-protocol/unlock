@@ -82,7 +82,7 @@ contract('Unlock (on mainnet)', async () => {
   before(async function setupMainnetForkTestEnv() {
     this.timeout(2000000)
 
-    if (!process.env.RUN_MAINNET_FORK) {
+    if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }

@@ -15,7 +15,7 @@ Object.keys(networks).forEach((key) => {
     hardhatNetworks[key] = {
       chainId: networks[key].id,
       name: networks[key].name,
-      url: networks[key].publicProvider,
+      url: networks[key].provider,
     }
   }
   // duplicate xdai record as gnosis
@@ -23,7 +23,7 @@ Object.keys(networks).forEach((key) => {
     hardhatNetworks['gnosis'] = {
       chainId: 100,
       name: 'gnosis',
-      url: networks[key].publicProvider,
+      url: networks[key].provider,
     }
   }
 })

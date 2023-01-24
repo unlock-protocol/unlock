@@ -40,7 +40,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/jest-config,@unlock-protocol/jest-config,@unlock-protocol/express,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin}'",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/jest-config,@unlock-protocol/jest-config,@unlock-protocol/express,@unlock-protocol/networks,@unlock-protocol/unlock-assets,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin}'",
     "packages:clean": "yarn packages --parallel run clean",
     "packages:build": "yarn packages --topological-dev run build",
     "packages:publish": "yarn packages --parallel --verbose npm publish --tolerate-republish",
@@ -53,7 +53,7 @@
     "release": "yarn build && yarn bump && yarn packages:publish",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
-    "lint": "yarn workspaces foreach -p lint",
+    "lint": "yarn packages --parallel run lint",
     "postinstall": "husky install"
   },
   "repository": {
@@ -75,6 +75,10 @@
     "yargs": "17.6.2",
     "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.3.1",
   "lint-staged": {

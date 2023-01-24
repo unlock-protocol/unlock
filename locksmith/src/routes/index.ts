@@ -23,7 +23,10 @@ import priceRouterV2 from './v2/price'
 import contractsRouter from './v2/contracts'
 import subscriptionRouter from './v2/subscriptions'
 import claimV2Router from './v2/claim'
-
+import imagesRouter from './v2/images'
+import airdropRouter from './v2/airdrop'
+import receiptRouter from './v2/receipt'
+import receiptBaseRouter from './v2/receiptBase'
 import config from '../config/config'
 
 const router = express.Router({ mergeParams: true })
@@ -53,6 +56,7 @@ router.use('/api/oauth', authRouter)
 router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
 router.use('/v2', authMiddleware)
+router.use('/v2/images', imagesRouter)
 router.use('/v2/auth', authRouterV2)
 router.use('/v2/api/metadata', metadataRouterV2)
 router.use('/v2/api/verifier', verifierRouter)
@@ -65,6 +69,9 @@ router.use('/v2/applications', applicationRouter)
 router.use('/v2/purchase', purchaseRouterV2)
 router.use('/v2/subscriptions', subscriptionRouter)
 router.use('/v2/claim', claimV2Router)
+router.use('/v2/airdrop', airdropRouter)
+router.use('/v2/receipts', receiptRouter)
+router.use('/v2/receipts-base', receiptBaseRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

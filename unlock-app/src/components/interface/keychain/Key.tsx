@@ -41,10 +41,8 @@ import {
   RiFileCopyLine as CopyLineIcon,
   RiExternalLinkFill as ExternalIcon,
 } from 'react-icons/ri'
-import dayjs from 'dayjs'
 import { ExtendMembershipModal } from './Extend'
-import { MAX_UINT } from '~/constants'
-import { ethers } from 'ethers'
+import { Key } from '~/hooks/useKeys'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -57,36 +55,15 @@ export const MenuButton = tw.button(
   }
 )
 
-export interface KeyProps {
-  id: string
-  tokenId: string
-  owner: string
-  manager?: any
-  expiration: string
-  tokenURI?: string
-  createdAtBlock: any
-  cancelled?: boolean
-  lock: {
-    id: string
-    address: any
-    name?: string
-    expirationDuration?: any
-    tokenAddress: any
-    price: any
-    lockManagers: any[]
-    version: any
-    createdAtBlock?: any
-  }
-}
-
 export interface Props {
-  ownedKey: KeyProps
+  ownedKey: Key
   account: string
   network: number
 }
 
 function Key({ ownedKey, account, network }: Props) {
-  const { lock, expiration, tokenId } = ownedKey
+  const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
+    ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
@@ -99,10 +76,7 @@ function Key({ ownedKey, account, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
-  const isKeyExpired =
-    (ownedKey.expiration !== MAX_UINT
-      ? dayjs.unix(parseInt(ownedKey.expiration)).isBefore(dayjs())
-      : false) || expireAndRefunded
+  const isKeyExpired = isExpired || expireAndRefunded
 
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
@@ -189,15 +163,7 @@ function Key({ ownedKey, account, network }: Props) {
 
   const wrongNetwork = network !== accountNetwork
 
-  const isERC20 =
-    ownedKey.lock.tokenAddress &&
-    ownedKey.lock.tokenAddress !== ethers.constants.AddressZero
-
-  const isExtendable =
-    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT
-
-  const isRenewable =
-    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
+  const networkName = networks[ownedKey.network]?.name
 
   return (
     <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
@@ -394,7 +360,7 @@ function Key({ ownedKey, account, network }: Props) {
         >
           <AvatarImage
             className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
-            alt={lock.name}
+            alt={lock.name!}
             src={metadata.image}
             width={250}
             height={250}
@@ -432,6 +398,12 @@ function Key({ ownedKey, account, network }: Props) {
           </a>
         </div>
         <h3 className="text-xl font-bold rounded">{lock.name}</h3>
+        {networkName && (
+          <div className="flex items-center justify-between gap-2 py-1">
+            <span className="text-gray-500 capitalize">Network</span>
+            <span className="font-bold">{networkName}</span>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -24,7 +24,7 @@
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "tsc && vite build && tsup ./lib/index.tsx --dts-only",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
@@ -45,8 +45,14 @@
     "tailwindcss": "3.2.4"
   },
   "peerDependencies": {
-    "react": "^17.x.x",
-    "react-dom": "^17.x.x"
+    "@headlessui/react": "1.7.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/ui"
   },
   "devDependencies": {
     "@babel/core": "7.20.7",
@@ -59,10 +65,9 @@
     "@storybook/addon-links": "6.5.15",
     "@storybook/addon-postcss": "2.0.0",
     "@storybook/react": "6.5.15",
-    "@svgr/webpack": "5.5.0",
-    "@types/react": "17.0.52",
-    "@types/react-dom": "17.0.18",
-    "@vitejs/plugin-react": "3.0.0",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.8",
+    "@vitejs/plugin-react": "2.2.0",
     "autoprefixer": "10.4.13",
     "babel-loader": "9.1.0",
     "postcss": "8.4.20",

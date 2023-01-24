@@ -53,20 +53,22 @@ networks.hardhat = {
   initialBaseFeePerGas: 100000000,
 }
 
-// add mainnet fork -- if API key is present
-if (process.env.RUN_MAINNET_FORK) {
-  // eslint-disable-next-line no-console
-  console.log('Running a mainnet fork...')
-  const alchemyAPIKey = process.env.ALCHEMY_API_KEY
-  if (!alchemyAPIKey) {
-    throw new Error('Missing Alchemy API Key, couldnt run a mainnet fork')
+// mainnet fork
+if (process.env.RUN_FORK) {
+  const chainId = parseInt(process.env.RUN_FORK)
+  if(isNaN(chainId)) {
+    throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
   }
-  const alchemyURL = `https://eth-mainnet.alchemyapi.io/v2/${alchemyAPIKey}`
+  console.log(`Running a fork (chainId : ${chainId})...`)
   networks.hardhat = {
+    chainId,
     forking: {
-      url: alchemyURL,
+      url: `https://rpc.unlock-protocol.com/${chainId}`,
     },
   }
+
+  // needed for Uniswap Router to compute routes on local forks
+  networks.hardhat.blockGasLimit = 1_000_000_000
 
   // replace localhost manifest by mainnet one
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')

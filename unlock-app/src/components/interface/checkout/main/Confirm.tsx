@@ -10,7 +10,7 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import useAccount from '~/hooks/useAccount'
+import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
@@ -29,6 +29,7 @@ import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
 import { useStorageService } from '~/utils/withStorageService'
+import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 
 interface Props {
   injectedProvider: unknown
@@ -108,6 +109,7 @@ export function Confirm({
     messageToSign,
     paywallConfig,
     password,
+    promo,
   } = state.context
 
   const {
@@ -157,10 +159,21 @@ export function Confirm({
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     useQuery(
-      ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
+      [
+        'purchaseData',
+        lockAddress,
+        lockNetwork,
+        recipients,
+        promo,
+        password,
+        captcha,
+      ],
       async () => {
         let purchaseData =
-          password || captcha || Array.from({ length: recipients.length })
+          promo ||
+          password ||
+          captcha ||
+          Array.from({ length: recipients.length })
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
@@ -188,64 +201,100 @@ export function Confirm({
       }
     )
 
-  const { data: pricingData, isInitialLoading: isPricingDataLoading } =
-    useQuery(
-      ['purchasePriceFor', lockAddress, lockNetwork],
-      async () => {
-        const prices = await Promise.all(
-          recipients.map(async (recipient, index) => {
-            const options = {
-              lockAddress: lockAddress,
-              network: lockNetwork,
-              userAddress: recipient,
-              referrer: paywallConfig.referrer || recipient,
-              data: purchaseData?.[index] || '0x',
-            }
-            const price = await web3Service.purchasePriceFor(options)
+  const {
+    data: pricingData,
+    isInitialLoading: isPricingDataLoading,
+    isError,
+  } = useQuery(
+    ['purchasePriceFor', lockAddress, lockNetwork, recipients, purchaseData],
+    async () => {
+      const prices = await Promise.all(
+        recipients.map(async (recipient, index) => {
+          const options = {
+            lockAddress: lockAddress,
+            network: lockNetwork,
+            userAddress: recipient,
+            referrer: paywallConfig.referrer || recipient,
+            data: purchaseData?.[index] || '0x',
+          }
+          const price = await web3Service.purchasePriceFor(options)
 
-            const decimals = lock!.currencyContractAddress
-              ? await web3Service.getTokenDecimals(
-                  lock!.currencyContractAddress!,
-                  lockNetwork
-                )
-              : networks[lockNetwork].nativeCurrency?.decimals
+          const decimals = lock!.currencyContractAddress
+            ? await web3Service.getTokenDecimals(
+                lock!.currencyContractAddress!,
+                lockNetwork
+              )
+            : networks[lockNetwork].nativeCurrency?.decimals
 
-            const amount = ethers.utils.formatUnits(price, decimals)
-            return {
-              userAddress: recipient,
-              amount: amount,
-            }
-          })
-        )
-        const item = {
-          prices,
-          total: prices
-            .reduce((acc, item) => acc + parseFloat(item.amount), 0)
-            .toString(),
-        }
-
-        const response = await storage.locksmith.price(
-          lockNetwork,
-          parseFloat(item.total),
-          lock?.currencyContractAddress
-            ? lock?.currencyContractAddress
-            : undefined
-        )
-
-        return {
-          ...item,
-          usdPrice: response.data.result,
-        }
-      },
-      {
-        refetchInterval: 1000 * 60 * 5,
-        refetchOnMount: false,
-        enabled: !isInitialDataLoading,
+          const amount = ethers.utils.formatUnits(price, decimals)
+          return {
+            userAddress: recipient,
+            amount: amount,
+          }
+        })
+      )
+      const item = {
+        prices,
+        total: prices
+          .reduce((acc, item) => acc + parseFloat(item.amount), 0)
+          .toString(),
       }
-    )
+
+      const response = await storage.locksmith.price(
+        lockNetwork,
+        parseFloat(item.total),
+        lock?.currencyContractAddress
+          ? lock?.currencyContractAddress
+          : undefined
+      )
+
+      return {
+        ...item,
+        usdPrice: response.data.result,
+      }
+    },
+    {
+      refetchInterval: 1000 * 60 * 5,
+      refetchOnMount: false,
+      enabled: !isInitialDataLoading,
+    }
+  )
+
+  // TODO: run full estimate so we can catch all errors, rather just check balances
+  const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
+    ['canAfford', account, lock, pricingData],
+    async () => {
+      const [balance, networkBalance] = await Promise.all([
+        getAccountTokenBalance(
+          web3Service,
+          account!,
+          lock!.currencyContractAddress,
+          lock!.network
+        ),
+        getAccountTokenBalance(web3Service, account!, null, lock!.network),
+      ])
+
+      const isTokenPayable =
+        pricingData?.total &&
+        parseFloat(pricingData?.total) < parseFloat(balance)
+      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
+
+      return {
+        isTokenPayable,
+        isGasPayable,
+      }
+    }
+  )
+
+  // By default, until fully loaded we assume payable.
+  const canAfford =
+    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
 
   const isLoading =
-    isPricingDataLoading || isFiatPriceLoading || isInitialDataLoading
+    isPricingDataLoading ||
+    isFiatPriceLoading ||
+    isInitialDataLoading ||
+    isPayableLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -456,6 +505,7 @@ export function Confirm({
       ToastHelper.error(error?.error?.message || error.message)
     }
   }
+
   const onConfirmClaim = async () => {
     try {
       setIsConfirming(true)
@@ -537,19 +587,38 @@ export function Confirm({
           <div className="grid">
             {isNetworkSwitchRequired && <SwitchNetwork />}
             {!isNetworkSwitchRequired && (
-              <Button
-                loading={isConfirming}
-                disabled={isConfirming || isLoading}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  if (isUnlockAccount) {
-                    await changeNetwork(lockNetwork)
-                  }
-                  onConfirmCrypto()
-                }}
-              >
-                {buttonLabel}
-              </Button>
+              <>
+                <Button
+                  loading={isConfirming}
+                  disabled={isConfirming || isLoading || !canAfford || isError}
+                  onClick={async (event) => {
+                    event.preventDefault()
+                    if (isUnlockAccount) {
+                      await changeNetwork(lockNetwork)
+                    }
+                    onConfirmCrypto()
+                  }}
+                >
+                  {buttonLabel}
+                </Button>
+                {!isLoading && !isError && isPayable && (
+                  <>
+                    {!isPayable?.isTokenPayable && (
+                      <small className="text-red-500 text-center">
+                        You do not have enough {symbol} to complete this
+                        purchase.
+                      </small>
+                    )}
+                    {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                      <small className="text-red-500 text-center">
+                        You do not have enough{' '}
+                        {config.networks[lock!.network].baseCurrencySymbol} to
+                        pay transaction fees (gas).
+                      </small>
+                    )}
+                  </>
+                )}
+              </>
             )}
           </div>
         )
@@ -609,6 +678,10 @@ export function Confirm({
 
   return (
     <Fragment>
+      {/* 
+      todo: Type '{}' is not assignable to type 'ReactNode'.
+      
+      @ts-ignore */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
@@ -626,16 +699,35 @@ export function Confirm({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+              className="inline-flex items-center gap-1 text-xs text-brand-ui-primary hover:opacity-75"
             >
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           </div>
-          {!isLoading && (
+          {isError && (
+            // TODO: use actual error from simulation
+            <div>
+              <p className="font-bold text-sm">
+                <ErrorIcon className="inline" />
+                There was an error when preparing the transaction.
+              </p>
+              {password && (
+                <p className="text-xs">
+                  Please, check that the password you used is correct.
+                </p>
+              )}
+            </div>
+          )}
+          {!isLoading && !isError && (
             <div>
               {!!pricingData?.prices?.length &&
                 pricingData.prices.map((item, index) => {
                   const first = index <= 0
+                  const discount =
+                    Number(lock!.keyPrice) > 0
+                      ? (100 * (Number(lock!.keyPrice) - Number(item.amount))) /
+                        Number(lock!.keyPrice)
+                      : 0
                   return (
                     <div
                       key={index}
@@ -650,7 +742,7 @@ export function Confirm({
                         </span>{' '}
                         {Number(item.amount) < Number(lock!.keyPrice) ? (
                           <Badge variant="green" size="tiny">
-                            Discounted
+                            {discount}% Discount
                           </Badge>
                         ) : null}
                       </div>
@@ -666,43 +758,46 @@ export function Confirm({
             </div>
           )}
         </div>
-        {isLoading ? (
-          <div className="flex flex-col items-center gap-2">
-            {recipients.map((user) => (
-              <div
-                key={user}
-                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-              />
-            ))}
-          </div>
-        ) : (
+        {!isError && (
           <>
-            <Pricing
-              keyPrice={
-                pricingData?.total === '0'
-                  ? 'FREE'
-                  : `${Number(pricingData?.total)?.toLocaleString()} ${symbol}`
-              }
-              usdPrice={`~$${(
-                pricingData?.usdPrice?.priceInAmount ||
-                fiatPricing?.usd?.keyPrice / 100
-              )?.toLocaleString()}`}
-              isCardEnabled={formattedData.cardEnabled}
-            />
-          </>
-        )}
-        {isLoading ? (
-          <div className="py-1.5 space-y-2 items-center">
-            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-          </div>
-        ) : (
-          <div>
-            {!isLoading && payingWithCard && (
-              <CreditCardPricingBreakdown {...fiatPricing} />
+            {isLoading ? (
+              <div className="flex flex-col items-center gap-2">
+                {recipients.map((user) => (
+                  <div
+                    key={user}
+                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : (
+              <>
+                <Pricing
+                  keyPrice={
+                    pricingData?.total === '0'
+                      ? 'FREE'
+                      : `${Number(
+                          pricingData?.total
+                        )?.toLocaleString()} ${symbol}`
+                  }
+                  usdPrice={`~$${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`}
+                  isCardEnabled={formattedData.cardEnabled}
+                />
+              </>
             )}
-          </div>
+            {isLoading ? (
+              <div className="py-1.5 space-y-2 items-center">
+                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+              </div>
+            ) : (
+              <div>
+                {!isLoading && payingWithCard && (
+                  <CreditCardPricingBreakdown {...fiatPricing} />
+                )}
+              </div>
+            )}
+          </>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

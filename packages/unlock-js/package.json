@@ -1,13 +1,14 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.32.16",
+  "version": "0.32.18",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unlock-protocol/unlock.git"
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/unlock-js"
   },
   "scripts": {
     "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",

@@ -15,6 +15,7 @@ import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
 import { Password } from './Password'
+import { Promo } from './Promo'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
@@ -33,6 +34,7 @@ export function Checkout({
   communication,
   redirectURI,
 }: Props) {
+  // @ts-expect-error - xstate extension type generation is buggy
   const checkoutService = useInterpret(checkoutMachine, {
     context: {
       paywallConfig,
@@ -202,6 +204,15 @@ export function Checkout({
       case 'PASSWORD': {
         return (
           <Password
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
+
+      case 'PROMO': {
+        return (
+          <Promo
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
