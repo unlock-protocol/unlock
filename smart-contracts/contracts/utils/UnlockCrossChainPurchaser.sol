@@ -175,8 +175,8 @@ contract UnlockCrossChainPurchaser is Ownable {
     bytes32 transferId,
     uint256 amount,
     address currency,
-    address originSender, // address of the contract on the origin chain
-    uint32 origin, // 	Domain ID of the origin chain
+    address, // originSender: address of the contract on the origin chain
+    uint32 origin, // Domain ID of the origin chain
     bytes memory callData
   ) external returns (bytes memory) {
 
@@ -196,18 +196,22 @@ contract UnlockCrossChainPurchaser is Ownable {
     if (currency != address(0)) {
       IERC20 token = IERC20(currency);
       // make sure we got enough tokens from the bridge
-      require(token.balanceOf(address(this)) >= amount, "INSUFFICIENT_BALANCE");
+      if(token.balanceOf(address(this)) < amount){
+        revert InsufficientBalance();
+      }
       // approve the lock to get the tokens 
       token.approve(lockAddress, amount);
     } else {
       // unwrap native tokens
       valueToSend = amount;
-      require(
-        valueToSend <= IWETH(weth).balanceOf(address(this)),
-        "INSUFFICIENT_BALANCE"
-      );
+      if(valueToSend <= IWETH(weth).balanceOf(address(this))) {
+        revert InsufficientBalance();
+      }
+      
       IWETH(weth).withdraw(valueToSend);
-      require(valueToSend <= address(this).balance, "INSUFFICIENT_BALANCE");
+      if(valueToSend > address(this).balance) {
+        revert InsufficientBalance();
+      }
     }
 
     (bool success, ) = lockAddress.call{value: valueToSend}(lockCalldata);
