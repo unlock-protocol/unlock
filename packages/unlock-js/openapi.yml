@@ -1691,3 +1691,282 @@ paths:
                           type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/airdrop/{network}/locks/{lockAddress}/keys/{keyId}/transfer:
+    post:
+      operationId: createTransferCode
+      security:
+        - User: []
+      description: Create a transfer code to transfer an airdropped key to an email address.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Successfully created transfer code and sent an email to the recipient.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'owner'
+                  - 'lock'
+                  - 'token'
+                  - 'deadline'
+                  - 'transferCode'
+                properties:
+                  owner:
+                    type: string
+                  lock:
+                    type: string
+                  token:
+                    type: string
+                  deadline:
+                    type: number
+                  transferCode:
+                    type: string
+                    description: Part of the transfer code that is required to be used with the part sent to the recipient.
+
+        404:
+          description: Key not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/receipts/{network}/{lockAddress}:
+    get:
+      operationId: getReceipt
+      security:
+        - User: []
+      description: Get receipt details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully receipt details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  purchaser:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+                      businessName:
+                        type: string
+                      addressLine1:
+                        type: string
+                      addressLine2:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                      country:
+                        type: string
+                  supplier:
+                    type: object
+                    properties:
+                      supplierName:
+                        type: string
+                      vat:
+                        type: string
+                      servicePerformed:
+                        type: string
+                      addressLine1:
+                        type: string
+                      addressLine2:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                      country:
+                        type: string
+
+        500:
+          description: Failed to retrieve receipt details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Impossible to retrieve receipt details.
+
+    post:
+      operationId: saveReceipt
+      security:
+        - User: []
+      description: Create purchaser details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully creates purchaser details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fullname:
+                    type: string
+                  businessName:
+                    type: string
+                  addressLine1:
+                    type: string
+                  addressLine2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+
+        500:
+          description: Failed to update or create purchaser details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/receipts-base/{network}/{lockAddress}:
+    get:
+      operationId: getReceiptsBase
+      security:
+        - User: []
+      description: Get supplier details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  supplierName:
+                    type: string
+                  vat:
+                    type: string
+                  servicePerformed:
+                    type: string
+                  addressLine1:
+                    type: string
+                  addressLine2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+
+        500:
+          description: Failed to retrieve supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Impossible to retrieve supplier details.
+
+    post:
+      operationId: saveReceiptsBase
+      security:
+        - User: []
+      description: Create supplier details.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully creates supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  supplierName:
+                    type: string
+                  vat:
+                    type: string
+                  servicePerformed:
+                    type: string
+                  addressLine1:
+                    type: string
+                  addressLine2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+
+        500:
+          description: Failed to update or create supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'

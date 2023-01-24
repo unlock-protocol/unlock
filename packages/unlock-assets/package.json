@@ -5,6 +5,11 @@
   "author": "unlock inc",
   "license": "MIT",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/unlock-assets"
+  },
   "exports": {
     ".": {
       "import": {

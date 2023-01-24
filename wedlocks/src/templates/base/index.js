@@ -107,6 +107,13 @@ export default (opts = {}) => {
         margin: 0;
         margin-bottom: 16px;
       }
+      body: {
+        font-family: sans-serif;
+        font-size: 18px;
+        font-weight: normal;
+        margin: 0;
+        margin-bottom: 16px;
+      }
       h1 {
         font-family: sans-serif;
         font-size: 28px;
@@ -114,6 +121,15 @@ export default (opts = {}) => {
         font-weight: bold;
         margin: 0;
         margin-bottom: 16px;
+      }
+      code {
+        border-radius: 0.375rem;
+        font-weight: 500;
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgb(203 213 225);
+        background-color: rgb(241 245 249);
+        padding: 0.125rem 0.25rem;
       }
     </style>
   </head>
@@ -258,6 +274,7 @@ export default (opts = {}) => {
                         {{{content}}}
 
                         <p style="margin-top: 40px">
+                          -<br>
                           If you have any questions, you can always email us at
                           <br /><a
                             href="mailto:hello@unlock-protocol.com"
