@@ -58,6 +58,7 @@ const Address = ({
     </div>
   )
 }
+
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const getReceipt = async (): Promise<any> => {
     return await storage.getReceipt(network, lockAddress, hash)
@@ -122,6 +123,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
             className="print:hidden"
             size="small"
             disabled={!isPurchaser}
+            variant="outlined-primary"
           >
             Edit
           </Button>
@@ -157,16 +159,18 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     <>
       <div className="grid w-full max-w-lg gap-4">
         <div
-          className="grid w-full gap-4 p-4 bg-white border rounded-xl"
+          className="relative grid w-full gap-4 px-6 py-10 bg-white border rounded-xl"
           ref={componentRef}
         >
-          <div className="ml-auto">
+          <div className="absolute ml-auto right-6 top-10">
             <PurchaseDetails />
           </div>
           <Supplier />
           <Purchaser />
           <ReceiptDetails />
-          <PoweredByUnlock />
+          <div className="mt-4">
+            <PoweredByUnlock />
+          </div>
         </div>
         <ReactToPrint
           trigger={() => (
