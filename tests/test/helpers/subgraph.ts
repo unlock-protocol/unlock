@@ -98,8 +98,15 @@ export const getKey = async (lockAddress: string, tokenId: BigNumber) => {
 const getReceiptQuery = gql`
   query Receipt($id: Bytes!) {
     receipt(id: $id) {
-      amount
+      id
+      timestamp
+      sender
+      payer
+      lockAddress
+      owner
       tokenAddress
+      amountTransferred
+      gasTotal
     }
   }
 `

@@ -5,6 +5,7 @@ import {
   Bytes,
   store,
   ethereum,
+  crypto,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
@@ -53,6 +54,9 @@ function newKey(event: TransferEvent): void {
   )
   key.save()
 
+  // create receipt
+  createReceipt(event)
+
   // update lock
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
@@ -88,9 +92,6 @@ function newKey(event: TransferEvent): void {
     lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
     lockStats.save()
   }
-
-  // create receipt
-  createReceipt(event)
 }
 
 export function handleLockConfig(event: LockConfigEvent): void {
@@ -329,11 +330,6 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
   }
 }
 
-// Topic0 of ERC20 Transfer event.
-// Transfer(address,address.uint256)
-export const ERC20_TRANSFER_TOPIC0 =
-  '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
-
 /**
  * Create Receipt object for subgraph for key 'purchase'/'extend'/'renewal'
  * @param {String} keyID - key id
@@ -357,9 +353,15 @@ export function createReceipt(event: ethereum.Event): void {
     if (logs) {
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
+        const ERC20_TRANSFER_TOPIC0 = Bytes.fromByteArray(
+          crypto.keccak256(
+            Bytes.fromHexString('Transfer(address,address.uint256')
+          )
+        )
+
         if (
           txLog.address.toString() === tokenAddress.toString() &&
-          txLog.topics[0].toHexString() === ERC20_TRANSFER_TOPIC0 &&
+          txLog.topics[0] === ERC20_TRANSFER_TOPIC0 &&
           ethereum.decode('address', txLog.topics[0])!.toAddress() ===
             lock.address
         ) {
