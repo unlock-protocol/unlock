@@ -66,12 +66,12 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
 
   const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
   const web3Service = useWeb3Service()
+  const networkConfig = config.networks[lock.network]
 
   const onRecipientChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const recipient = event.target.value
       if (useEmail && networkConfig.keyManagerAddress) {
-        const networkConfig = config.networks[lock.network]
         const keyManager = new KeyManager(config.networks)
         const address = keyManager.createTransferAddress({
           params: {
@@ -85,7 +85,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
       }
       return recipient
     },
-    [setValue, useEmail, lock, config.networks]
+    [setValue, useEmail, lock, config.networks, networkConfig]
   )
 
   const onSubmitHandler = useCallback(
