@@ -97,4 +97,4 @@ Finally the `RedPacket.sol` contract also includes a `claimPrize` function which
 
 ## Conclusion
 
-Unlock is a protocol for memberships that leverages NFT. It is also an incredibly versatile NFT contract that lets anyone build fun and unique experiences that would not be possible to build _without_ blockchains in a trustless way! In December, the Unlock Labs team released an Avent Calendar, last week we shipped a Hongbao application... and we will do a lot more of these activations over the next few months! Please stay tuned!
+Unlock is a protocol for memberships that leverages NFTs. It is also an incredibly versatile NFT contract that lets anyone build fun and unique experiences that would not be possible to build _without_ blockchains in a trustless way! In December, the Unlock Labs team released an Avent Calendar, last week we shipped a Hongbao application... and we will do a lot more of these activations over the next few months! Please stay tuned!
