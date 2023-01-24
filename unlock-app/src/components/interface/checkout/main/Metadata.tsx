@@ -74,7 +74,7 @@ export const MetadataInputs = ({
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value
       let recipient = value
-      if (useEmail) {
+      if (useEmail && networkConfig.keyManagerAddress) {
         const keyManager = new KeyManager(config.networks)
         recipient = keyManager.createTransferAddress({
           params: {

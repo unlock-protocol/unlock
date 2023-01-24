@@ -70,7 +70,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   const onRecipientChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const recipient = event.target.value
-      if (useEmail) {
+      if (useEmail && networkConfig.keyManagerAddress) {
         const networkConfig = config.networks[lock.network]
         const keyManager = new KeyManager(config.networks)
         const address = keyManager.createTransferAddress({
