@@ -1700,7 +1700,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  /v2/airdrop/{network}/locks/{lockAddress}/keys/{keyId}/transfer:
+  /v2/transfer/{network}/locks/{lockAddress}/keys/{keyId}:
     post:
       operationId: createTransferCode
       security:
@@ -1737,6 +1737,75 @@ paths:
                     type: string
                     description: Part of the transfer code that is required to be used with the part sent to the recipient.
 
+        404:
+          description: Key not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/transfer/done:
+    get:
+      operationId: transferDone
+      security:
+        - User: []
+      description: Finalize the transfer of a key to a recipient. This is to copy over any locksmith related data to the recipient's account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'transferSignature'
+                - 'owner'
+                - 'lock'
+                - 'token'
+                - 'network'
+                - 'deadline'
+              properties:
+                transferSignature:
+                  type: string
+                  description: The signature of the transfer code sent to the recipient.
+                owner:
+                  type: string
+                lock:
+                  type: string
+                token:
+                  type: string
+                network:
+                  type: string
+                deadline:
+                  type: number
+      responses:
+        200:
+          description: Successfully transferred key to recipient.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        403:
+          description: Transfer not authorized by locksmith
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
         404:
           description: Key not found.
           content:
@@ -1836,6 +1905,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
 
       responses:
         200:

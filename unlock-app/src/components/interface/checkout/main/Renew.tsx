@@ -186,6 +186,7 @@ export function Renew({
         await changeNetwork(lockNetwork)
         setIsSwitchingNetwork(false)
       }}
+      className="w-full"
     >
       Switch to {networkConfig.name}
     </Button>
@@ -248,8 +249,7 @@ export function Renew({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          {isNetworkSwitchRequired && <SwitchNetwork />}
-          {!isNetworkSwitchRequired && hasMessageToSign ? (
+          {hasMessageToSign ? (
             <Button
               disabled={isSigningMessage}
               loading={isSigningMessage}
@@ -258,6 +258,8 @@ export function Renew({
             >
               Sign message
             </Button>
+          ) : isNetworkSwitchRequired ? (
+            <SwitchNetwork />
           ) : (
             <Button
               disabled={isRenewing}
