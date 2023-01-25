@@ -12,9 +12,6 @@ contract UnlockCrossChainPurchaser is Ownable {
   // The connext contract on the origin domain
   address public bridgeAddress;
 
-  // in BPS, in this case 0.3%
-  uint constant MAX_SLIPPAGE = 30;
-
   // The WETH token address
   address public weth;
 
@@ -217,6 +214,7 @@ contract UnlockCrossChainPurchaser is Ownable {
     (bool success, ) = lockAddress.call{value: valueToSend}(lockCalldata);
     // catch revert reason
     if (success == false) {
+      // TODO: potentially refund if the lock call failed
       assembly {
         let ptr := mload(0x40)
         let size := returndatasize()
