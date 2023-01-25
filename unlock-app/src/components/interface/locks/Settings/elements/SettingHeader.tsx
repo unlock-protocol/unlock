@@ -9,6 +9,7 @@ import { IoMdClose as CloseIcon } from 'react-icons/io'
 import { useConfig } from '~/utils/withConfig'
 import { Lock } from '@unlock-protocol/types'
 import Link from 'next/link'
+import { AddressLink } from '~/components/interface/AddressLink'
 
 interface SettingHeaderProps {
   lockAddress: string
@@ -82,22 +83,7 @@ export const SettingHeader = ({
             </span>
             <div className="flex gap-4">
               <div className="px-4 py-1 bg-lime-200 rounded-2xl">{version}</div>
-              <div className="flex items-center gap-3">
-                <span className="text-brand-dark">
-                  {addressMinify(lockAddress)}
-                </span>
-                <Button variant="borderless" onClick={setCopied}>
-                  <CopyIcon size={20} />
-                </Button>
-                <a href={explorerUrl} target="_blank" rel="noreferrer">
-                  <Button variant="borderless">
-                    <ExternalLinkIcon
-                      size={20}
-                      className="text-brand-ui-primary"
-                    />
-                  </Button>
-                </a>
-              </div>
+              <AddressLink lockAddress={lock.address} network={network} />
             </div>
           </div>
         </div>

@@ -21,6 +21,7 @@ import { ImFilePicture as PictureFile } from 'react-icons/im'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
+import { AddressLink } from '~/components/interface/AddressLink'
 
 interface LockCardProps {
   lock: any
@@ -262,20 +263,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             <LockIcon lock={lock} />
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-bold">{lock.name}</span>
-              <div className="flex items-center gap-3">
-                <span>{addressMinify(lockAddress)}</span>
-                <Button variant="borderless" onClick={setCopied}>
-                  <CopyIcon size={20} />
-                </Button>
-                <a href={explorerUrl} target="_blank" rel="noreferrer">
-                  <Button variant="borderless">
-                    <ExternalLinkIcon
-                      size={20}
-                      className="text-brand-ui-primary"
-                    />
-                  </Button>
-                </a>
-              </div>
+              <AddressLink lockAddress={lock.address} network={network} />
             </div>
           </div>
           <div className="grid items-center grid-cols-4 gap-3 md:col-span-3 md:gap-14">
