@@ -215,6 +215,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const key = Key.load(keyID)
   if (key) {
     key.expiration = event.params.newExpiration
+    key.cancelled = false
     key.save()
   }
 }
