@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import path from 'path'
-import fs from 'fs-extra'
-import abis from '@unlock-protocol/contracts'
-import ethers from 'ethers'
+const path = require('path')
+const fs = require('fs-extra')
+const abis = require('@unlock-protocol/contracts')
+const ethers = require('ethers')
 
 const abisFolderPath = path.join(__dirname, '..', 'abis')
 

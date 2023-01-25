@@ -23,7 +23,6 @@ dataSources:
         - name: PublicLockV7
           file: ./abis/PublicLockV7.json
         - name: ERC20
-          file: ./vendor/ERC20.json
       eventHandlers:
         - event: NewLock(indexed address,indexed address)
           handler: handleNewLock

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import path from 'path'
-import fs from 'fs-extra'
-import networksConfig from '@unlock-protocol/networks'
+const path = require('path')
+const fs = require('fs-extra')
+const networksConfig = require('@unlock-protocol/networks')
 
 const networkFilePath = path.join(__dirname, '..', 'networks.json')
 
