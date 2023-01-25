@@ -53,7 +53,7 @@ type Key @entity {
   "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key"
   cancelled: Boolean
   "hash of the transaction"
-  transactionHash: [String!]
+  transactionsHash: [String!]
 }
 
 type UnlockDailyData @entity {

@@ -225,8 +225,8 @@ describe('Key is expired by lock manager', () => {
     assert.fieldEquals(
       'Key',
       keyID,
-      'transactionHash',
-      newExpireKeyEvent.transaction.hash.toString()
+      'transactionsHash',
+      `[${newExpireKeyEvent.transaction.hash.toString()}]`
     )
     dataSourceMock.resetValues()
   })
@@ -287,8 +287,8 @@ describe('Key managers', () => {
     assert.fieldEquals(
       'Key',
       keyID,
-      'transactionHash',
-      newKeyManagerChanged.transaction.hash.toString()
+      'transactionsHash',
+      `[${newKeyManagerChanged.transaction.hash.toString()}]`
     )
     dataSourceMock.resetValues()
   })
@@ -347,8 +347,8 @@ describe('Cancel keys', () => {
     assert.fieldEquals(
       'Key',
       keyID,
-      'transactionHash',
-      newCancelKey.transaction.hash.toString()
+      'transactionsHash',
+      `[${newCancelKey.transaction.hash.toString()}]`
     )
     dataSourceMock.resetValues()
   })

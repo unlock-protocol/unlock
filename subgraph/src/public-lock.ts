@@ -46,8 +46,14 @@ function newKey(event: TransferEvent): void {
     event.params.to
   )
 
-  if (key.transactionHash) {
-    key.transactionHash.push(event.transaction.hash.toString())
+  const hash = event.transaction.hash.toString()
+  const transactionsHash = key.transactionsHash
+  if (transactionsHash && transactionsHash.length) {
+    if (!transactionsHash.includes(hash)) {
+      transactionsHash.push(hash)
+    }
+  } else {
+    key.transactionsHash = [hash]
   }
 
   key.save()
@@ -123,8 +129,14 @@ export function handleTransfer(event: TransferEvent): void {
         event.params.to
       )
 
-      if (key.transactionHash) {
-        key.transactionHash.push(event.transaction.hash.toString())
+      const hash = event.transaction.hash.toString()
+      const transactionsHash = key.transactionsHash
+      if (transactionsHash && transactionsHash.length) {
+        if (!transactionsHash.includes(hash)) {
+          transactionsHash.push(hash)
+        }
+      } else {
+        key.transactionsHash = [hash]
       }
       key.save()
     }
@@ -206,8 +218,14 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    if (key.transactionHash) {
-      key.transactionHash.push(event.transaction.hash.toString())
+    const hash = event.transaction.hash.toString()
+    const transactionsHash = key.transactionsHash
+    if (transactionsHash && transactionsHash.length) {
+      if (!transactionsHash.includes(hash)) {
+        transactionsHash.push(hash)
+      }
+    } else {
+      key.transactionsHash = [hash]
     }
     key.expiration = event.params.newTimestamp
     key.save()
@@ -225,8 +243,14 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const keyID = genKeyID(event.address, tokenId.value.toString())
   const key = Key.load(keyID)
   if (key) {
-    if (key.transactionHash) {
-      key.transactionHash.push(event.transaction.hash.toString())
+    const hash = event.transaction.hash.toString()
+    const transactionsHash = key.transactionsHash
+    if (transactionsHash && transactionsHash.length) {
+      if (!transactionsHash.includes(hash)) {
+        transactionsHash.push(hash)
+      }
+    } else {
+      key.transactionsHash = [hash]
     }
     key.expiration = event.params.newExpiration
     key.save()
