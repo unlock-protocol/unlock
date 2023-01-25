@@ -11,6 +11,8 @@ import {
   DataSourceContext,
   Value,
   dataSource,
+  Bytes,
+  Wrapped,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey,
@@ -34,6 +36,7 @@ import {
   tokenAddress,
   defaultMockAddress,
   nullAddress,
+  keyPrice,
 } from './constants'
 
 export function mockDataSourceV8(): void {
@@ -270,18 +273,39 @@ export function createKeyExtendedEvent(
   )
 
   if (createErc20TransferEvent) {
-    // mock transaction
-    keyExtendedEvent.transaction = new ethereum.Transaction(
-      newMockEvent().transaction.hash,
-      newMockEvent().logIndex,
-      newMockEvent().transaction.from,
-      newMockEvent().transaction.to,
-      newMockEvent().transaction.value,
-      newMockEvent().transaction.gasLimit,
-      newMockEvent().transaction.gasPrice,
-      newMockEvent().transaction.input,
-      newMockEvent().transaction.nonce
+    // mock ERC20 transfer event
+    const ERC20_TRANSFER_TOPIC0 =
+      '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+
+    keyExtendedEvent.parameters = []
+    const topics = [
+      Bytes.fromHexString(ERC20_TRANSFER_TOPIC0), // event signature
+      Bytes.fromHexString(keyOwnerAddress), // from
+      Bytes.fromHexString(defaultMockAddress), // to
+    ]
+    const amount = Bytes.fromU32(keyPrice)
+
+    const log: ethereum.Log = new ethereum.Log(
+      Address.fromString(lockAddress),
+      topics,
+      Bytes.fromByteArray(amount), // price is passed as data
+      keyExtendedEvent.transaction.hash,
+      keyExtendedEvent.transaction.hash,
+      keyExtendedEvent.transaction.hash,
+      BigInt.fromU32(123),
+      BigInt.fromU32(123),
+      BigInt.fromU32(123),
+      'log_type',
+      new Wrapped(false)
     )
+
+    if (keyExtendedEvent.receipt) {
+      keyExtendedEvent.receipt = [
+        {
+          logs: [log],
+        },
+      ]
+    }
   }
 
   return keyExtendedEvent

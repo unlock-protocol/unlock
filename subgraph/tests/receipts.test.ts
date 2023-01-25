@@ -1,7 +1,6 @@
 import {
   afterAll,
   assert,
-  beforeAll,
   clearStore,
   dataSourceMock,
   describe,
@@ -9,6 +8,7 @@ import {
 } from 'matchstick-as/assembly/index'
 import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { Lock } from '../generated/schema'
+import { log } from 'matchstick-as/assembly/log'
 
 import {
   keyOwnerAddress,
@@ -61,6 +61,7 @@ describe('Receipts for non-ERC20', () => {
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.save()
 
+    // transfer event
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
@@ -72,6 +73,7 @@ describe('Receipts for non-ERC20', () => {
     const timestamp = newTransferEvent.block.timestamp.toString()
     const msgSender = newTransferEvent.transaction.from.toHexString()
     const amount = newTransferEvent.transaction.value
+
     // key is there
     assert.entityCount('Key', 1)
     assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
@@ -85,14 +87,14 @@ describe('Receipts for non-ERC20', () => {
     assert.fieldEquals('Receipt', hash, 'sender', msgSender)
     assert.fieldEquals('Receipt', hash, 'payer', msgSender)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
+
+    dataSourceMock.resetValues()
   })
 
   test('Receipt created after key is extended', () => {
     mockDataSourceV11()
 
-    // mock and test
-    updateExpiration(BigInt.fromU64(expiration + 5000))
-
+    // extend key event
     const newKeyExtended = createKeyExtendedEvent(
       BigInt.fromU32(tokenId),
       BigInt.fromU64(expiration + 5000),
@@ -108,7 +110,7 @@ describe('Receipts for non-ERC20', () => {
 
     const amount = newKeyExtended.transaction.value
 
-    // test values for not ERC20
+    // receipt is fine
     assert.assertNotNull(newKeyExtended)
     assert.entityCount('Receipt', 1)
     assert.fieldEquals('Receipt', hash, 'id', hash)
@@ -128,14 +130,7 @@ describe('Receipts for non-ERC20', () => {
 
   test('should create receipt after key is renew', () => {
     mockDataSourceV8()
-    // create a key
-    const newTransferEvent = createTransferEvent(
-      Address.fromString(nullAddress),
-      Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId)
-    )
-    handleTransfer(newTransferEvent)
-
+    // renew event
     const newExpiration = expiration + 1000
     const newRenewKeyPurchase = createRenewKeyPurchaseEvent(
       Address.fromString(keyOwnerAddress),
@@ -148,21 +143,17 @@ describe('Receipts for non-ERC20', () => {
     const hash = newRenewKeyPurchase.transaction.hash.toHexString()
     const sender = newRenewKeyPurchase.transaction.from.toHexString()
     const payer = newRenewKeyPurchase.transaction.from.toHexString()
-    const lockAddress = newTransferEvent.address.toHexString()
+    const lockAddress = newRenewKeyPurchase.address.toHexString()
+    const timestamp = newRenewKeyPurchase.block.timestamp
 
     const amount = newRenewKeyPurchase.transaction.value.toString()
 
-    // test values for not ERC20
+    // receipts is fine
     assert.assertNotNull(newRenewKeyPurchase)
     assert.entityCount('Receipt', 1)
     assert.fieldEquals('Receipt', hash, 'id', hash)
     assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
-    assert.fieldEquals(
-      'Receipt',
-      hash,
-      'timestamp',
-      `${newRenewKeyPurchase.block.timestamp}`
-    )
+    assert.fieldEquals('Receipt', hash, 'timestamp', `${timestamp}`)
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', amount)
