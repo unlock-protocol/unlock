@@ -285,34 +285,29 @@ describe('Receipts', function () {
   let lock: Contract
   let unlockContract: Contract
   let lockAddress: string
+  let tokenId: BigNumber
+  let transactionHash: string
+  let receiptInGraph: any
 
-  describe('Receipts', function () {
-    let lock: Contract
-    let lockAddress: string
-    let tokenId: BigNumber
-    let transactionHash: string
-    let receiptInGraph: any
+  before(async () => {
+    ;({ lock } = await unlock.createLock({ ...lockParams }))
+    lockAddress = lock.address.toLowerCase()
+    unlockContract = await unlock.getUnlockContract()
 
-    before(async () => {
-      ;({ lock } = await unlock.createLock({ ...lockParams }))
-      lockAddress = lock.address.toLowerCase()
-      unlockContract = await unlock.getUnlockContract()
+    // purchase a key
+    const [keyOwner] = await ethers.getSigners()
+    ;({ tokenId, transactionHash } = await purchaseKey(
+      lockAddress,
+      keyOwner.address
+    ))
+    await awaitTimeout(2000)
+    receiptInGraph = await subgraph.getReceipt(transactionHash)
+  })
 
-      // purchase a key
-      const [keyOwner] = await ethers.getSigners()
-      ;({ tokenId, transactionHash } = await purchaseKey(
-        lockAddress,
-        keyOwner.address
-      ))
-      await awaitTimeout(2000)
-      receiptInGraph = await subgraph.getReceipt(transactionHash)
-    })
-
-    it('created the receipt successfully', async () => {
-      expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
-      expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
-        await lock.address.toLocaleLowerCase()
-      )
-    })
+  it('created the receipt successfully', async () => {
+    expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
+    expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
+      await lock.address.toLocaleLowerCase()
+    )
   })
 })

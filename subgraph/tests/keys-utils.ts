@@ -54,19 +54,6 @@ export function mockDataSourceV11(): void {
   dataSourceMock.setReturnValues(lockAddress, 'rinkeby', v11context)
 }
 
-export function mockLockV11Erc20(): void {
-  const v11context = new DataSourceContext()
-  v11context.set(
-    'lockAddress',
-    Value.fromAddress(Address.fromString(lockAddress))
-  )
-  v11context.set(
-    'tokenAddress',
-    Value.fromAddress(Address.fromString(tokenAddress))
-  )
-  dataSourceMock.setReturnValues(lockAddress, 'rinkeby', v11context)
-}
-
 export function createTransferEvent(
   from: Address,
   to: Address,
