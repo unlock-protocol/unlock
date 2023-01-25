@@ -26,7 +26,7 @@ contract UnlockCrossChainPurchaser is Ownable {
   error OnlyBridge();
   error ChainNotSet();
   error InsufficientApproval(uint requiredAmount);
-  error InsufficientBalance();
+  error InsufficientBalance(uint requiredAmount);
 
   event BridgeCallReceived(
     uint originChainId,
@@ -97,7 +97,8 @@ contract UnlockCrossChainPurchaser is Ownable {
    * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
    * @param callData: blob of data passed to the lock that includes the following:
    * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
-   * @dev to construct the callData you need the following parameter
+   * @dev to construct the callData you need the follow PublicLock.
+   * ex. a purchase call encodes the following:
       - `recipients`: address of the recipients of the membership
       - `referrers`: address of the referrers
       - `keyManagers`: address of the key managers
@@ -130,21 +131,20 @@ contract UnlockCrossChainPurchaser is Ownable {
     } 
 
     // make sure we have enough balance
-    // NB: using a ternary to avoid variable and Stack Too Deep error
     if((currency == address(0) ? amount + relayerFee : relayerFee) > address(this).balance) {
-      revert InsufficientBalance();
+      revert InsufficientBalance(currency == address(0) ? amount + relayerFee : relayerFee);
     }
 
-    bytes memory cd = abi.encode(lock, callData); 
+    bytes memory cd = abi.encode(lock, callData);
 
     // send the call over the chain
     transferID = IConnext(bridgeAddress).xcall{value: currency == address(0) ? amount + relayerFee : relayerFee}(
-      domains[destChainId],    // _destination: Domain ID of the destination chain
+      domains[destChainId], // _destination: Domain ID of the destination chain
       crossChainPurchasers[destChainId], // _to: address of the target contract
-      currency,           // _asset: address of the token contract
-      msg.sender,           // _delegate: TODO address that can revert or forceLocal on destination
-      amount,             // _amount: amount of tokens to transfer
-      slippage,         // _slippage: the maximum amount of slippage the user will accept
+      currency,   // _asset: address of the token contract
+      msg.sender, // _delegate: TODO address that can revert or forceLocal on destination
+      amount,     // _amount: amount of tokens to transfer
+      slippage,   // _slippage: the maximum amount of slippage the user will accept
       cd // pass the lock address in calldata
     );
 
@@ -190,24 +190,29 @@ contract UnlockCrossChainPurchaser is Ownable {
     bytes memory lockCalldata;
     (lockAddress, lockCalldata) = abi.decode(callData, (address, bytes));
     
-    if (currency != address(0)) {
-      IERC20 token = IERC20(currency);
-      // make sure we got enough tokens from the bridge
-      if(token.balanceOf(address(this)) < amount){
-        revert InsufficientBalance();
-      }
-      // approve the lock to get the tokens 
-      token.approve(lockAddress, amount);
-    } else {
-      // unwrap native tokens
+    // unwrap WETH in native tokens
+    if (currency == weth) {
       valueToSend = amount;
       if(valueToSend <= IWETH(weth).balanceOf(address(this))) {
-        revert InsufficientBalance();
+        revert InsufficientBalance(valueToSend);
       }
       
       IWETH(weth).withdraw(valueToSend);
       if(valueToSend > address(this).balance) {
-        revert InsufficientBalance();
+        revert InsufficientBalance(valueToSend);
+      }
+    } else if (currency != address(0)) {
+      // handle bridged ERC20
+      IERC20 token = IERC20(currency);
+      // make sure we got enough tokens from the bridge
+      if(token.balanceOf(address(this)) < amount){
+        revert InsufficientBalance(amount);
+      }
+      // approve the lock to get the tokens 
+      token.approve(lockAddress, amount);
+    } else {
+      if(valueToSend > address(this).balance) {
+        revert InsufficientBalance(valueToSend);
       }
     }
 
