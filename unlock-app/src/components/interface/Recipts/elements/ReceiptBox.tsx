@@ -1,11 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
 import { Button } from '@unlock-protocol/ui'
-import { storage } from '~/config/storage'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
 import { addressMinify } from '~/utils/strings'
 import { UpdatePurchaserDrawer } from './UpdatePurchaserDrawer'
+import { updateReceipt, useGetReceipt } from '~/hooks/receipts'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -26,10 +25,10 @@ export const DetailLabel = ({
 }: DetailLabelProps) => {
   return (
     <div className={`flex ${inline ? 'gap-2' : 'flex-col'}`}>
-      <span className="text-base">{label || 'label'}</span>
+      <span className="text-base">{label}</span>
       <div className="flex items-center">
         <span className="block text-base font-bold break-words md:inline-block">
-          {value || 'value'}
+          {value || '-'}
         </span>
       </div>
     </div>
@@ -60,33 +59,42 @@ const Address = ({
   )
 }
 
+const ReceiptBoxPlaceholder = () => {
+  return (
+    <div className="w-full max-w-lg rounded-xl bg-slate-200 animate-pulse h-[500px]"></div>
+  )
+}
+
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
-  const getReceipt = async (): Promise<any> => {
-    return await storage.getReceipt(network, lockAddress, hash)
-  }
 
-  const { data: receipt } = useQuery(
-    ['getReceipt', lockAddress, network],
-    async () => {
-      return getReceipt()
-    }
-  )
+  const {
+    data: receipt,
+    isLoading,
+    refetch: refetchReceipt,
+  } = useGetReceipt({
+    lockAddress,
+    hash,
+    network,
+  })
+
+  const { isLoading: isUpdatingReceipt } = updateReceipt({
+    lockAddress,
+    hash,
+    network,
+  })
 
   const { purchaser, supplier } = receipt ?? {}
 
-  const isPurchaser = false
+  const isPurchaser = true
+
+  const disabledInput = isLoading || isUpdatingReceipt
 
   const PurchaseDetails = () => {
     return (
       <div className="grid gap-2">
         <DetailLabel label="Transaction Date" value="" />
-        <DetailLabel
-          label="Transaction Hash"
-          value={addressMinify(
-            '0x3a79aa355a3c1e461b9479f4ef5bfb558da67943bfd2d97ce36c86cbd528af85'
-          )}
-        />
+        <DetailLabel label="Transaction Hash" value={addressMinify(hash)} />
       </div>
     )
   }
@@ -120,11 +128,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
             <Button
               onClick={() => setPurchaserDrawer(!purchaserDrawer)}
               className="print:hidden"
-              size="small"
-              disabled={!isPurchaser}
+              size="tiny"
+              disabled={disabledInput}
               variant="outlined-primary"
             >
-              Edit
+              {purchaser ? 'Edit' : 'Add details'}
             </Button>
           )}
         </div>
@@ -155,6 +163,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
   const componentRef = useRef<any>()
 
+  if (isLoading) {
+    return <ReceiptBoxPlaceholder />
+  }
+
   return (
     <>
       {isPurchaser && (
@@ -165,6 +177,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           network={network}
           hash={hash}
           purchaser={purchaser}
+          onSave={() => {
+            refetchReceipt()
+            setPurchaserDrawer(false)
+          }}
         />
       )}
       <div className="grid w-full max-w-lg gap-4">

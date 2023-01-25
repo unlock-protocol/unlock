@@ -38,16 +38,19 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
   const subgraph = new SubgraphService(networks)
 
   // get receipt
-  const receipt = await subgraph.receipt(
-    {
-      where: {
-        id: hash,
+  let receipt: any = {}
+  if (subgraph && subgraph.receipt) {
+    receipt = await subgraph.receipt(
+      {
+        where: {
+          id: hash,
+        },
       },
-    },
-    {
-      network,
-    }
-  )
+      {
+        network,
+      }
+    )
+  }
 
   const isPayer =
     receipt?.payer?.toLocaleLowerCase() === userAddress?.toLocaleLowerCase()

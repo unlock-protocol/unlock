@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
 import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { PurchaserBodyProps } from '../../../../../../locksmith/src/controllers/v2/receiptController'
-import { storage } from '~/config/storage'
+import { useUpdateReceipt } from '~/hooks/receipts'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export interface Props {
   lockAddress: string
@@ -11,6 +11,7 @@ export interface Props {
   isOpen: boolean
   setIsOpen(value: boolean): void
   purchaser?: Partial<PurchaserBodyProps>
+  onSave: () => void
 }
 
 export function UpdatePurchaserDrawer({
@@ -20,6 +21,7 @@ export function UpdatePurchaserDrawer({
   setIsOpen,
   purchaser,
   hash,
+  onSave,
 }: Props) {
   const { register, handleSubmit } = useForm<PurchaserBodyProps>({
     mode: 'onChange',
@@ -28,26 +30,22 @@ export function UpdatePurchaserDrawer({
     },
   })
 
-  const savePurchaser = async (purchaser: PurchaserBodyProps): Promise<any> => {
-    return await storage.savePurchaser(network, lockAddress, hash, {
-      data: {
-        ...purchaser,
-      },
-    })
-  }
-
-  const savePurchaserMutation = useMutation(
-    ['savePurchaserDetails', lockAddress, network, hash],
-    async (purchaser: PurchaserBodyProps) => {
-      return savePurchaser(purchaser)
-    }
-  )
+  const { mutateAsync: updateReceiptMutation, isLoading } = useUpdateReceipt({
+    lockAddress,
+    network,
+    hash,
+  })
 
   const onSubmit = async (formData: PurchaserBodyProps) => {
-    await savePurchaserMutation.mutateAsync(formData)
+    await ToastHelper.promise(updateReceiptMutation(formData), {
+      loading: 'Updating purchaser details.',
+      success: 'Purchaser details updated.',
+      error: 'There is some issue updating purchaser details.',
+    })
+    onSave()
   }
 
-  const disabledInput = savePurchaserMutation.isLoading
+  const disabledInput = isLoading
 
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Purchaser Details">
