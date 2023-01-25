@@ -3,6 +3,7 @@ import {
   assert,
   beforeAll,
   clearStore,
+  dataSourceMock,
   describe,
   test,
 } from 'matchstick-as/assembly/index'
@@ -17,14 +18,21 @@ import {
   keyPrice,
   tokenAddress,
   lockManagers,
+  expiration,
 } from './constants'
 
 import {
+  createKeyExtendedEvent,
+  createRenewKeyPurchaseEvent,
   createTransferEvent,
   mockDataSourceV11,
+  mockDataSourceV8,
+  updateExpiration,
 } from './keys-utils'
 
 import {
+  handleKeyExtended,
+  handleRenewKeyPurchase,
   handleTransfer,
 } from '../src/public-lock'
 
@@ -33,18 +41,16 @@ import './mocks'
 
 const keyID = `${lockAddress}-${tokenId}`
 
-describe('Receipts for new key (in ETH)', () => {
-
+describe('Receipts for non-ERC20', () => {
   afterAll(() => {
     clearStore()
   })
 
   test('Receipt has been created', () => {
-
     mockDataSourceV11()
 
     // create fake ETH lock in subgraph
-    let lock = new Lock(lockAddress)
+    const lock = new Lock(lockAddress)
     lock.address = Bytes.fromHexString(lockAddress)
     lock.tokenAddress = Bytes.fromHexString(nullAddress)
     lock.price = BigInt.fromU32(keyPrice)
@@ -65,11 +71,11 @@ describe('Receipts for new key (in ETH)', () => {
     const hash = newTransferEvent.transaction.hash.toHexString()
     const timestamp = newTransferEvent.block.timestamp.toString()
     const msgSender = newTransferEvent.transaction.from.toHexString()
-
-    // key is there 
+    const amount = newTransferEvent.transaction.value
+    // key is there
     assert.entityCount('Key', 1)
     assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
-  
+
     // receipt is fine
     assert.entityCount('Receipt', 1)
     assert.fieldEquals('Receipt', hash, 'id', hash)
@@ -78,93 +84,10 @@ describe('Receipts for new key (in ETH)', () => {
     assert.fieldEquals('Receipt', hash, 'tokenAddress', nullAddress)
     assert.fieldEquals('Receipt', hash, 'sender', msgSender)
     assert.fieldEquals('Receipt', hash, 'payer', msgSender)
-    assert.fieldEquals('Receipt', hash, 'amountTransferred', keyPrice.toString())
-  })
-})
-
-/*
-describe('Receipts for new key (in ERC20)', () => {
-  let hash: string, timestamp:string , msgSender: string
-  beforeAll(() => {
-    mockDataSourceV11();
-    
-    // create fake ERC20 lock in subgraph
-    let lock = new Lock(lockAddress)
-    lock.tokenAddress = Bytes.fromHexString(tokenAddress)
-    lock.save()
-
-    const newTransferEvent = createTransferEvent(
-      Address.fromString(nullAddress),
-      Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId)
-    )
-    handleTransfer(newTransferEvent)
-    hash = newTransferEvent.transaction.hash.toHexString()
-    timestamp = newTransferEvent.block.timestamp.toString()
-    msgSender = newTransferEvent.transaction.from.toHexString()
-  })
-
-  afterAll(() => {
-    clearStore()
-  })
-
-  test('Key has been created', () => {
-    assert.entityCount('Key', 1)
-    assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
-  })
-
-  test('Receipt has been created', () => {
-    assert.entityCount('Receipt', 1)
-    assert.fieldEquals('Receipt', hash, 'id', hash)
-    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
-    assert.fieldEquals('Receipt', hash, 'timestamp', timestamp)
-    assert.fieldEquals('Receipt', hash, 'tokenAddress', tokenAddress)
-    assert.fieldEquals('Receipt', hash, 'sender', msgSender)
-    assert.fieldEquals('Receipt', hash, 'payer', msgSender)
-    assert.fieldEquals('Receipt', hash, 'amountTransferred', keyPrice.toString())
-  })
-})
-
-describe('Receipts for key extended', () => {
-  test('should create receipt after key is extended on ERC20 lock', () => {
-    mockDataSourceV11()
-
-    // mock and test
-    updateExpiration(BigInt.fromU64(expiration + 5000))
-
-    const newKeyExtended = createKeyExtendedEvent(
-      BigInt.fromU32(tokenId),
-      BigInt.fromU64(expiration + 5000),
-      true 
-    )
-
-    // check that receipt is created after key is extended
-    handleKeyExtended(newKeyExtended)
-
-    const hash = newKeyExtended.transaction.hash.toHexString()
-    const sender = newKeyExtended.transaction.from.toHexString()
-    const payer = newKeyExtended.transaction.from.toHexString()
-    const amount = newKeyExtended.transaction.value
-
-    // test values for not ERC20
-    assert.assertNotNull(newKeyExtended)
-    assert.entityCount('Receipt', 1)
-    assert.fieldEquals('Receipt', hash, 'id', hash)
-    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
-    assert.fieldEquals(
-      'Receipt',
-      hash,
-      'timestamp',
-      `${newTransferEvent.block.timestamp}`
-    )
-    assert.fieldEquals('Receipt', hash, 'sender', sender)
-    assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
-
-    dataSourceMock.resetValues()
   })
 
-  test('should create receipt after key is extended', () => {
+  test('Receipt created after key is extended', () => {
     mockDataSourceV11()
 
     // mock and test
@@ -179,11 +102,11 @@ describe('Receipts for key extended', () => {
     // check that receipt is created after key is extended
     handleKeyExtended(newKeyExtended)
 
-    const hash = newTransferEvent.transaction.hash.toHexString()
-    const sender = newTransferEvent.transaction.from.toHexString()
-    const payer = newTransferEvent.transaction.from.toHexString()
+    const hash = newKeyExtended.transaction.hash.toHexString()
+    const sender = newKeyExtended.transaction.from.toHexString()
+    const payer = newKeyExtended.transaction.from.toHexString()
 
-    const amount = newTransferEvent.transaction.value
+    const amount = newKeyExtended.transaction.value
 
     // test values for not ERC20
     assert.assertNotNull(newKeyExtended)
@@ -194,7 +117,7 @@ describe('Receipts for key extended', () => {
       'Receipt',
       hash,
       'timestamp',
-      `${newTransferEvent.block.timestamp}`
+      `${newKeyExtended.block.timestamp}`
     )
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
@@ -202,9 +125,7 @@ describe('Receipts for key extended', () => {
 
     dataSourceMock.resetValues()
   })
-})
 
-describe('Receipt for key renewal', () => {
   test('should create receipt after key is renew', () => {
     mockDataSourceV8()
     // create a key
@@ -249,4 +170,89 @@ describe('Receipt for key renewal', () => {
     dataSourceMock.resetValues()
   })
 })
-*/
+
+describe('Receipts for ERC20', () => {
+  afterAll(() => {
+    clearStore()
+  })
+
+  test('should create receipt after key is extended on ERC20 lock', () => {
+    mockDataSourceV11()
+
+    // mock and test
+    updateExpiration(BigInt.fromU64(expiration + 5000))
+
+    const newKeyExtended = createKeyExtendedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU64(expiration + 5000),
+      true
+    )
+
+    // check that receipt is created after key is extended
+    handleKeyExtended(newKeyExtended)
+
+    const hash = newKeyExtended.transaction.hash.toHexString()
+    const sender = newKeyExtended.transaction.from.toHexString()
+    const payer = newKeyExtended.transaction.from.toHexString()
+    const amount = newKeyExtended.transaction.value
+
+    // test values for not ERC20
+    assert.assertNotNull(newKeyExtended)
+    assert.entityCount('Receipt', 1)
+    assert.fieldEquals('Receipt', hash, 'id', hash)
+    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
+    assert.fieldEquals(
+      'Receipt',
+      hash,
+      'timestamp',
+      `${newKeyExtended.block.timestamp}`
+    )
+    assert.fieldEquals('Receipt', hash, 'sender', sender)
+    assert.fieldEquals('Receipt', hash, 'payer', payer)
+    assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
+
+    dataSourceMock.resetValues()
+  })
+
+  test('should create receipt for new ERC20 lock', () => {
+    mockDataSourceV11()
+
+    // create fake ERC20 lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(tokenAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.keys = []
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.save()
+
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+    const hash = newTransferEvent.transaction.hash.toHexString()
+    const timestamp = newTransferEvent.block.timestamp.toString()
+    const msgSender = newTransferEvent.transaction.from.toHexString()
+
+    assert.entityCount('Receipt', 1)
+    assert.fieldEquals('Receipt', hash, 'id', hash)
+    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
+    assert.fieldEquals('Receipt', hash, 'timestamp', timestamp)
+    assert.fieldEquals('Receipt', hash, 'tokenAddress', tokenAddress)
+
+    // check payer & sender
+    assert.fieldEquals('Receipt', hash, 'sender', msgSender)
+    assert.fieldEquals('Receipt', hash, 'payer', msgSender)
+    assert.fieldEquals(
+      'Receipt',
+      hash,
+      'amountTransferred',
+      keyPrice.toString()
+    )
+  })
+})
