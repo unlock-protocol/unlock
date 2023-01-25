@@ -41,7 +41,7 @@ export class ReceiptController {
 
       // Returns details for purchaser and supplier
       return response.status(200).json(receiptDetails)
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err.message)
       return response.status(500).send({
         message: 'Impossible to retrieve receipt details.',
@@ -72,7 +72,7 @@ export class ReceiptController {
       return response.status(200).json({
         ...dataValues,
       })
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err.message)
       return response.status(500).json({
         message: 'Failed to save purchaser details.',
