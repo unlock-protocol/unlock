@@ -1,9 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
 import { TextBox } from '@unlock-protocol/ui'
 import { Input, Button } from '@unlock-protocol/ui'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { storage } from '~/config/storage'
+import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/receipts'
 
 import { SupplierBodyProps } from '../../../../../../../locksmith/src/controllers/v2/receiptBaseController'
 
@@ -22,33 +22,32 @@ export const ReceiptBaseForm = ({
   const {
     register,
     handleSubmit,
-    getValues,
     reset,
     formState: { isValid },
   } = useForm<SupplierBodyProps>({
     mode: 'onChange',
   })
 
-  const getReceiptBase = async (): Promise<any> => {
-    return await storage.getReceiptsBase(network, lockAddress)
-  }
-
-  const saveReceiptBase = async (): Promise<any> => {
-    if (!isManager) return
-    const supplier = await getValues()
-    return await storage.saveReceiptsBase(network, lockAddress, {
-      data: {
-        ...supplier,
-      },
+  const { data: receiptsBase, isLoading: isLoadingDetails } =
+    useGetReceiptsBase({
+      lockAddress,
+      network,
+      isManager,
     })
-  }
 
-  const receiptBaseMutation = useMutation(saveReceiptBase)
+  const {
+    mutateAsync: receiptBaseMutation,
+    isLoading: isReceiptsBaseUpdating,
+  } = useUpdateReceiptsBase({
+    lockAddress,
+    network,
+    isManager,
+  })
 
-  const onHandleSubmit = async () => {
+  const onHandleSubmit = async (data: SupplierBodyProps) => {
     if (isValid) {
-      await ToastHelper.promise(receiptBaseMutation.mutateAsync(), {
-        loading: 'Updating  supplier details,',
+      await ToastHelper.promise(receiptBaseMutation(data), {
+        loading: 'Updating  supplier details.',
         success: 'Supplier updated',
         error: 'We could not update the details.',
       })
@@ -58,23 +57,13 @@ export const ReceiptBaseForm = ({
     }
   }
 
-  const { isLoading: isLoadingDetails } = useQuery(
-    ['getReceiptBase', lockAddress, network, receiptBaseMutation.isSuccess],
-    async () => {
-      return getReceiptBase()
-    },
-    {
-      onSuccess: (res) => {
-        if (res.data) {
-          reset(res.data)
-        }
-      },
-      enabled: isManager,
+  useEffect(() => {
+    if (receiptsBase) {
+      reset(receiptsBase)
     }
-  )
+  }, [receiptsBase, reset])
 
-  const disabledInput =
-    receiptBaseMutation.isLoading || disabled || isLoadingDetails
+  const disabledInput = isReceiptsBaseUpdating || disabled || isLoadingDetails
 
   return (
     <form
@@ -120,7 +109,7 @@ export const ReceiptBaseForm = ({
           type="submit"
           className="w-full md:w-1/3"
           disabled={disabledInput}
-          loading={receiptBaseMutation.isLoading}
+          loading={isReceiptsBaseUpdating}
         >
           Update
         </Button>
