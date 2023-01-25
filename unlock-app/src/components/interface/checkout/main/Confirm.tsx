@@ -110,6 +110,7 @@ export function Confirm({
     paywallConfig,
     password,
     promo,
+    keyManagers,
   } = state.context
 
   const {
@@ -422,6 +423,7 @@ export function Confirm({
           keyPrices,
           owners: recipients!,
           data: purchaseData,
+          keyManagers: keyManagers?.length ? keyManagers : undefined,
           recurringPayments,
           referrers,
           totalApproval,
@@ -604,13 +606,13 @@ export function Confirm({
                 {!isLoading && !isError && isPayable && (
                   <>
                     {!isPayable?.isTokenPayable && (
-                      <small className="text-red-500 text-center">
+                      <small className="text-center text-red-500">
                         You do not have enough {symbol} to complete this
                         purchase.
                       </small>
                     )}
                     {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                      <small className="text-red-500 text-center">
+                      <small className="text-center text-red-500">
                         You do not have enough{' '}
                         {config.networks[lock!.network].baseCurrencySymbol} to
                         pay transaction fees (gas).
@@ -678,10 +680,6 @@ export function Confirm({
 
   return (
     <Fragment>
-      {/* 
-      todo: Type '{}' is not assignable to type 'ReactNode'.
-      
-      @ts-ignore */}
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
@@ -707,7 +705,7 @@ export function Confirm({
           {isError && (
             // TODO: use actual error from simulation
             <div>
-              <p className="font-bold text-sm">
+              <p className="text-sm font-bold">
                 <ErrorIcon className="inline" />
                 There was an error when preparing the transaction.
               </p>

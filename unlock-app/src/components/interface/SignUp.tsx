@@ -67,10 +67,8 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
             <br />
             If you want to know more about Unlock&#39;s decentralized payment
             protocol, check out{' '}
-            <Link href="https://unlock-protocol.com/blog">
-              <a target="_blank">
-                <span>our blog</span>
-              </a>
+            <Link target="_blank" href="https://unlock-protocol.com/blog">
+              <span>our blog</span>
             </Link>
             .
           </span>
@@ -97,14 +95,14 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
           <span className="flex flex-col gap-2 text-md">
             <div className="flex items-center gap-2">
               <span> Already have an account?</span>
-              <a className="underline cursor-pointer" onClick={showLogin}>
+              <button className="underline cursor-pointer" onClick={showLogin}>
                 Log in
-              </a>
+              </button>
               <br />
             </div>
             <div className="flex items-center gap-2">
               Have an Ethereum Wallet?
-              <a
+              <Link
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://ethereum.org/en/wallets/"
@@ -113,7 +111,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
                 <div className="flex items-center gap-2 underline">
                   Connect it
                 </div>
-              </a>
+              </Link>
             </div>
           </span>
         </>
