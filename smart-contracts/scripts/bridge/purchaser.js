@@ -14,8 +14,7 @@ const WethABI = require('../../test/helpers/ABIs/weth.json')
 const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
 const addresses = require('./_addresses')
 
-
-const isERC20 = true
+const isERC20 = false
 
 async function main() {
   const [deployer] = await ethers.getSigners()
@@ -36,9 +35,16 @@ async function main() {
   const tokenAddress = isERC20 ? testERC20 : wethAddress
   
   // dest info 
-  const lockAddress = addresses[destChainId].testLock
-  const keyPrice = ethers.utils.parseEther('10') 
-  
+  const lockAddress = addresses[destChainId][isERC20 ? 'testLockERC20' : 'testLockNative']
+
+  // rate 
+  const oneETH = ethers.utils.parseEther('1700') // 1700 MATIC
+  const oneMATIC = ethers.BigNumber.from('6500000000000000') // 0.000613 ETH
+
+  let keyPrice = isERC20 ? ethers.utils.parseEther('10') // 10 TEST
+    : chainId === 5 ? oneMATIC.mul('10')// 10 MaTIC in ETH
+    : oneETH.mul('0.01') // 0.01 ETH in MATIC
+
   // fee should be zero for testnet
   const relayerFee = ethers.BigNumber.from('0')
   
