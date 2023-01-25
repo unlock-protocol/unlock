@@ -46,8 +46,7 @@ export class ReceiptBaseController {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
 
     try {
-      const props = await SupplierBody.parseAsync(request.body)
-
+      const props = await SupplierBody.parseAsync(request.body || {})
       try {
         const [{ dataValues }] = await ReceiptBase.upsert(
           {
@@ -70,7 +69,8 @@ export class ReceiptBaseController {
         })
       }
     } catch (err: any) {
-      return response.send(500).json({
+      logger.error(err.message)
+      return response.status(500).json({
         message: 'Failed to save supplier details',
       })
     }
