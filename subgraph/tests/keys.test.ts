@@ -55,8 +55,7 @@ describe('Key transfers (v8)', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -81,8 +80,7 @@ describe('Key transfers', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
   })
@@ -105,8 +103,7 @@ describe('Key transfers', () => {
     const burnEvent = createTransferEvent(
       Address.fromString(keyOwnerAddress),
       Address.fromString(nullAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(burnEvent)
   })
@@ -116,8 +113,7 @@ describe('Key transfers', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(keyOwnerAddress),
       Address.fromString(newOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
     assert.fieldEquals('Key', keyID, 'owner', newOwnerAddress)
@@ -131,8 +127,7 @@ describe('Change in expiration timestamp', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -155,8 +150,7 @@ describe('Change in expiration timestamp', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -179,8 +173,7 @@ describe('Change in expiration timestamp', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -206,8 +199,7 @@ describe('Extend key', () => {
     updateExpiration(BigInt.fromU64(expiration + 5000))
     const newKeyExtended = createKeyExtendedEvent(
       BigInt.fromU32(tokenId),
-      BigInt.fromU64(expiration + 5000),
-      false
+      BigInt.fromU64(expiration + 5000)
     )
 
     handleKeyExtended(newKeyExtended)
@@ -223,8 +215,7 @@ describe('Key is expired by lock manager', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -243,8 +234,7 @@ describe('Key is expired by lock manager', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -268,8 +258,7 @@ describe('Key managers', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -290,8 +279,7 @@ describe('Key managers', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -313,8 +301,7 @@ describe('Cancel keys', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 
@@ -334,8 +321,7 @@ describe('RenewKeyPurchase (lock <v10)', () => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
       Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId),
-      false
+      BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
 

@@ -11,8 +11,6 @@ import {
   DataSourceContext,
   Value,
   dataSource,
-  Bytes,
-  Wrapped,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey,
@@ -33,10 +31,6 @@ import {
   lockAddressV8,
   tokenId,
   keyOwnerAddress,
-  tokenAddress,
-  defaultMockAddress,
-  nullAddress,
-  keyPrice,
 } from './constants'
 
 export function mockDataSourceV8(): void {
@@ -80,6 +74,7 @@ export function createTransferEvent(
       ethereum.Value.fromUnsignedBigInt(tokenId)
     )
   )
+
   return transferEvent
 }
 

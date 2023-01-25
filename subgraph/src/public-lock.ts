@@ -3,7 +3,6 @@ import {
   BigInt,
   log,
   Bytes,
-  store,
   ethereum,
   crypto,
 } from '@graphprotocol/graph-ts'
