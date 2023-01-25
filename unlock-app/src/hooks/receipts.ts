@@ -37,7 +37,9 @@ export const useUpdateReceiptsBase = ({
           network,
           lockAddress,
           {
-            ...supplier,
+            data: {
+              ...supplier,
+            },
           }
         )
         return supplierResponse.data
