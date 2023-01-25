@@ -6,6 +6,7 @@ interface GenerateQrCodeProps {
   network: number
   lockAddress: string
   tokenId: string
+  account?: string
 }
 
 const generateQrCodeUrl = (data: any, signature: any): string => {
@@ -19,12 +20,14 @@ export const generateQrCode = async ({
   network,
   lockAddress,
   tokenId,
+  account,
 }: GenerateQrCodeProps) => {
   const dispatcher = new Dispatcher()
   const [payload, signature] = await dispatcher.signToken(
     network,
     lockAddress,
-    tokenId
+    tokenId,
+    account
   )
   const qrcode = new Encoder()
   qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.L)

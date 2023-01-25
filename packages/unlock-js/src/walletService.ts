@@ -221,6 +221,7 @@ export default class WalletService extends UnlockService {
       referrers?: (string | null)[]
       recurringPayments?: number[] | string[]
       totalApproval?: string
+      keyManagers?: string[]
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
