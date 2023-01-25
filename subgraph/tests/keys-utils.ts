@@ -285,7 +285,7 @@ export function createKeyExtendedEvent(
     ]
     const amount = Bytes.fromU32(keyPrice)
 
-    const log: ethereum.Log = new ethereum.Log(
+    const log = new ethereum.Log(
       Address.fromString(lockAddress),
       topics,
       Bytes.fromByteArray(amount), // price is passed as data
@@ -300,11 +300,7 @@ export function createKeyExtendedEvent(
     )
 
     if (keyExtendedEvent.receipt) {
-      keyExtendedEvent.receipt = [
-        {
-          logs: [log],
-        },
-      ]
+      keyExtendedEvent.receipt = [{ logs: [log] }]
     }
   }
 
