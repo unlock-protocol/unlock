@@ -5,6 +5,8 @@ async function main({
   bridgeAddress,
   wethAddress,
 } = {}) {
+
+  await run('compile')
   const { chainId } = await ethers.provider.getNetwork()
   
   ;({bridgeAddress, wethAddress} = addresses[chainId])
@@ -21,7 +23,7 @@ async function main({
     `CROSS_CHAIN > deployed to : ${purchaser.address}(tx: ${purchaser.deployTransaction.hash}`
   )
 
-  await purchaser.wait(2)
+  await purchaser.deployTransaction.wait(2)
   
   await run('verify:verify', {
     address: purchaser.address,
