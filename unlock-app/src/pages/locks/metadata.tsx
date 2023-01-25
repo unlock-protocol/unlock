@@ -20,10 +20,8 @@ const Metadata: NextPage = () => {
   return (
     <AppLayout>
       <div>
-        <Link href={backHref}>
-          <a className="cursor-pointer hover:text-ui-main-500">
-            <BackIcon size={20} />
-          </a>
+        <Link className="cursor-pointer hover:text-ui-main-500" href={backHref}>
+          <BackIcon size={20} />
         </Link>
       </div>
       <UpdateMetadataForm
