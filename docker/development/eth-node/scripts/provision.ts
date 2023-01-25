@@ -33,6 +33,9 @@ const log = (message) => {
 async function main() {
   const [deployer, holder] = await ethers.getSigners()
 
+  // Making sure these 2 get some ERC20 tokens
+  users.push(...[deployer.address, holder.address])
+
   /**
    * 1. Transfer some ETH to users
    */

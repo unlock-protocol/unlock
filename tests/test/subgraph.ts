@@ -290,6 +290,14 @@ describe('Receipts', function () {
   let receiptInGraph: any
 
   before(async () => {
+    const [deployer, holder] = await ethers.getSigners()
+    // holder has 500 ERC20
+    // List all locks
+    // find the one that is ERC20
+    // Now we have the ERC20 address
+    // and we can easily purchase keys
+    // And we can look at the receipts!
+
     ;({ lock } = await unlock.createLock({ ...lockParams }))
     lockAddress = lock.address.toLowerCase()
     unlockContract = await unlock.getUnlockContract()
@@ -311,3 +319,5 @@ describe('Receipts', function () {
     )
   })
 })
+
+// We should have an ERC20 contract provisioned

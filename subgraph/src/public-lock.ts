@@ -358,9 +358,14 @@ export function createReceipt(event: ethereum.Event): void {
   if (lock && tokenAddress.toString().length > 0) {
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
+
     if (logs) {
+      // If it is an ERC20 lock, there should be multiple events
+      // including one for the ERC20 transfer
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
+        // TODO: Can we want to use the ABI for this?
+        // TODO2: For some tokens it may be different...
         const ERC20_TRANSFER_TOPIC0 = Bytes.fromByteArray(
           crypto.keccak256(
             Bytes.fromHexString('Transfer(address,address.uint256')

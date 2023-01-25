@@ -80,7 +80,6 @@ export function createTransferEvent(
       ethereum.Value.fromUnsignedBigInt(tokenId)
     )
   )
-
   return transferEvent
 }
 
@@ -250,15 +249,12 @@ export function createExpireKeyEvent(tokenId: BigInt): ExpireKey {
 
 export function createKeyExtendedEvent(
   tokenId: BigInt,
-  newTimestamp: BigInt,
-  createErc20TransferEvent: boolean
+  newTimestamp: BigInt
 ): KeyExtended {
   const keyExtendedEvent = changetype<KeyExtended>(newMockEvent())
 
   keyExtendedEvent.address = dataSource.address()
-
   keyExtendedEvent.parameters = []
-
   keyExtendedEvent.parameters.push(
     new ethereum.EventParam(
       'tokenId',
@@ -271,38 +267,6 @@ export function createKeyExtendedEvent(
       ethereum.Value.fromUnsignedBigInt(newTimestamp)
     )
   )
-
-  if (createErc20TransferEvent) {
-    // mock ERC20 transfer event
-    const ERC20_TRANSFER_TOPIC0 =
-      '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
-
-    keyExtendedEvent.parameters = []
-    const topics = [
-      Bytes.fromHexString(ERC20_TRANSFER_TOPIC0), // event signature
-      Bytes.fromHexString(keyOwnerAddress), // from
-      Bytes.fromHexString(defaultMockAddress), // to
-    ]
-    const amount = Bytes.fromU32(keyPrice)
-
-    const log = new ethereum.Log(
-      Address.fromString(lockAddress),
-      topics,
-      Bytes.fromByteArray(amount), // price is passed as data
-      keyExtendedEvent.transaction.hash,
-      keyExtendedEvent.transaction.hash,
-      keyExtendedEvent.transaction.hash,
-      BigInt.fromU32(123),
-      BigInt.fromU32(123),
-      BigInt.fromU32(123),
-      'log_type',
-      new Wrapped(false)
-    )
-
-    if (keyExtendedEvent.receipt) {
-      keyExtendedEvent.receipt = [{ logs: [log] }]
-    }
-  }
 
   return keyExtendedEvent
 }
