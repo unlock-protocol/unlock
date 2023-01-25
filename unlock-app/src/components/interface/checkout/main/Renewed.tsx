@@ -13,6 +13,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import { useCheckoutSteps } from './useCheckoutItems'
+import Link from 'next/link'
 
 interface Props {
   injectedProvider: unknown
@@ -123,7 +124,7 @@ export function Renewed({
             {content?.text}
           </p>
           {renewStatus === 'FINISHED' && (
-            <a
+            <Link
               href="/keychain"
               target="_blank"
               rel="noopener noreferrer"
@@ -131,7 +132,7 @@ export function Renewed({
             >
               Open keychain
               <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
+            </Link>
           )}
           {transactionHash && (
             <a
