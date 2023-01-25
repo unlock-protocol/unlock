@@ -1,5 +1,8 @@
 import express from 'express'
-import { createTransferCode } from '../../controllers/AirdropController'
+import {
+  createTransferCode,
+  transferDone,
+} from '../../controllers/v2/transferController'
 import { createRateLimitMiddleware } from '../../utils/middlewares/rateLimit'
 import { captchaMiddleware } from '../../utils/middlewares/recaptchaMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
@@ -13,11 +16,13 @@ const rateLimiter = createRateLimitMiddleware({
 })
 
 router.post(
-  '/:network/locks/:lockAddress/keys/:keyId/transfer',
+  '/:network/locks/:lockAddress/keys/:keyId',
   authenticatedMiddleware,
   rateLimiter,
   captchaMiddleware,
   createTransferCode
 )
+
+router.post('/done', authenticatedMiddleware, rateLimiter, transferDone)
 
 export default router

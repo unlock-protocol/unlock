@@ -73,6 +73,17 @@ export class KeyManager {
     )
   }
 
+  getDomain(network: number) {
+    const networkConfig = this.networks[network]
+    const domain = {
+      name: 'KeyManager',
+      version: '1',
+      chainId: networkConfig.id,
+      verifyingContract: networkConfig.keyManagerAddress,
+    }
+    return domain
+  }
+
   /**
    * This function returns the KeyManager contract for a given network.
    */
@@ -99,13 +110,7 @@ export class KeyManager {
     signer,
     network,
   }: CreateTransferSignatureOptions) {
-    const networkConfig = this.networks[network]
-    const domain = {
-      name: 'KeyManager',
-      version: '1',
-      chainId: networkConfig.id,
-      verifyingContract: networkConfig.keyManagerAddress,
-    }
+    const domain = this.getDomain(network)
     const signature = await signer._signTypedData(domain, TransferTypes, params)
     return signature
   }
@@ -160,5 +165,22 @@ export class KeyManager {
       lock: params.lockAddress.trim().toLowerCase(),
     }
     return ethers.utils.id(JSON.stringify(item)).slice(0, 42)
+  }
+
+  /**
+   * Return signer for the transfer signature provided in the params
+   */
+  getSignerForTransferSignature({
+    params: { lock, token, owner, deadline, transferSignature },
+    network,
+  }: Omit<TransferOptions, 'signer'>) {
+    const domain = this.getDomain(network)
+    const recoveredAddress = ethers.utils.verifyTypedData(
+      domain,
+      TransferTypes,
+      { lock, token, owner, deadline },
+      transferSignature
+    )
+    return recoveredAddress
   }
 }
