@@ -18,9 +18,9 @@ With this new feature, we aim to make the process of sending airdrops and buying
 
 ### How does it work?
 
-We are excited to introduce our new KeyManager contract, a game-changing contract that powers our email recipient approach in airdrops and checkout.
+We are excited to introduce our new `KeyManager` contract, a game-changing contract that powers our email recipient approach in airdrops and checkout.
 
-When a users enters a recipient’s email, we create a uniue wallet address without a private key from it and drop the NFT to it while setting the manager of NFT to the KeyManager contract address. This gives the KeyManager contract rights to transfer the NFT on request.
+When a users enters a recipient’s email, we create a unique wallet address without a private key from it and drop the NFT to it while setting the manager of NFT to the KeyManager contract address. This gives the `KeyManager` contract rights to transfer the NFT on request.
 
 A signed proof, in the form of a QR code, is generated and sent to the recipient's email. Recipients can verify their ownership of the NFT at events using this QR code, without transferring the NFT to their own wallet. Additionally, they can also transfer the NFT to their own wallet at any time by following the instructions and link to the transfer page in the email.
 
