@@ -12,6 +12,7 @@ import { FaCalendar, FaRegCalendarPlus, FaClock } from 'react-icons/fa'
 import { GoLocation } from 'react-icons/go'
 import { FiTwitter } from 'react-icons/fi'
 import Link from 'next/link'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 const formatEventData = (metadata: any) => {
   const accentColor = metadata.background_color
@@ -85,6 +86,8 @@ interface EventDetailsProps {
 }
 
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
+  const { account } = useAuth()
+
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
@@ -182,12 +185,14 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         </ul>
       </section>
       <section className="mb-8">
-        <Button
-          className="mt-8 w-full"
-          style={{ backgroundColor: eventData.accentColor }}
-        >
-          Register
-        </Button>
+        {account && (
+          <Button
+            className="mt-8 w-full"
+            style={{ backgroundColor: eventData.accentColor }}
+          >
+            Register
+          </Button>
+        )}
       </section>
     </main>
   )
