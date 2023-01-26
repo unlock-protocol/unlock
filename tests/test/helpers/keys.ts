@@ -10,34 +10,34 @@ export const genKeyId = (lockAddress: string, tokenId: BigNumber) =>
 export const purchaseKey = async (
   lockAddress: string,
   keyOwnerAddress: string,
-  price = DEFAULT_KEY_PRICE,
+  price = null,
   isErc20 = false
 ) => {
   // make sure we got ethers lock
   const lock = await unlock.getLockContract(lockAddress)
 
-  // get ethers signer
-  const keyOwner = await ethers.getSigner(keyOwnerAddress)
+  const purchasePrice = price || (await lock.keyPrice())
 
-  const tx = await lock
-    .connect(keyOwner)
-    .purchase(
-      isErc20 ? [price] : [],
-      [keyOwnerAddress],
-      [AddressZero],
-      [AddressZero],
-      [[]],
-      {
-        value: isErc20 ? 0 : price,
-      }
-    )
-
+  const tx = await lock.purchase(
+    [purchasePrice],
+    [keyOwnerAddress],
+    [AddressZero],
+    [AddressZero],
+    [[]],
+    {
+      value: isErc20 ? 0 : purchasePrice,
+    }
+  )
   // get token ids
-  const { events, blockNumber } = await tx.wait()
-  const { args } = events.find((v: any) => v.event === 'Transfer')
+  const { events, blockNumber, transactionHash } = await tx.wait()
+  const { args } = events.find(
+    (v: any) =>
+      v.event === 'Transfer' &&
+      v.address.toLowerCase() === lockAddress.toLowerCase()
+  )
   const { tokenId, from, to } = args
 
-  return { tokenId, blockNumber, from, to }
+  return { tokenId, blockNumber, from, to, transactionHash }
 }
 
 export const purchaseKeys = async (

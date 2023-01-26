@@ -7,7 +7,7 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Value } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
@@ -194,6 +194,7 @@ describe('Change in expiration timestamp', () => {
 describe('Extend key', () => {
   test('should increase key timestamp', () => {
     mockDataSourceV11()
+
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
