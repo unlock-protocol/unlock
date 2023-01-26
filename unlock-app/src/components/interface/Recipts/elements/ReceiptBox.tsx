@@ -9,6 +9,8 @@ import dayjs from 'dayjs'
 import networks from '@unlock-protocol/networks'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from '@tanstack/react-query'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -83,7 +85,7 @@ const NotAuthorizedBar = () => {
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const { account } = useAuth()
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
-
+  const web3Service = useWeb3Service()
   const { isManager } = useLockManager({
     lockAddress,
     network,
@@ -106,6 +108,19 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   })
 
   const { purchaser, supplier, receipt: receiptDetails } = receipt ?? {}
+
+  const { data: tokenSymbol } = useQuery(
+    ['getContractTokenSymbol', lockAddress, network],
+    async () => {
+      return await web3Service.getTokenSymbol(
+        receiptDetails?.tokenAddress,
+        network
+      )
+    },
+    {
+      enabled: receiptDetails?.tokenAddress?.length > 0,
+    }
+  )
 
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
@@ -138,8 +153,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         : 0
 
     const totalPayed = parseFloat(`${gasTotal + amountPayed}`).toFixed(2)
-    const symbol =
-      receiptDetails?.tokenAddress || networks[network]?.nativeCurrency?.symbol
+    const symbol = tokenSymbol || networks[network]?.nativeCurrency?.symbol
 
     return (
       <div className="grid gap-2">
