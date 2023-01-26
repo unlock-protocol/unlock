@@ -946,12 +946,13 @@ export default class Web3Service extends UnlockService {
     return baseTokenURI
   }
 
-  async validateName(name: string) {
-    const isValidEns = name.endsWith('.eth')
-    return isValidEns
-  }
+  /**
+   * Returns the type of the input address
+   */
 
   async getEthAddressType(address: string) {
+    const isValidEns = address.endsWith('.eth')
+    const isValidAddress = ethers.utils.isAddress(address)
     const ETH_ADDRESS_TYPE = {
       name: 'name',
       address: 'address',
@@ -960,15 +961,11 @@ export default class Web3Service extends UnlockService {
 
     if (!address) return ETH_ADDRESS_TYPE.error
 
-    if (ethers.utils.isAddress(address)) {
+    if (isValidAddress) {
       return ETH_ADDRESS_TYPE.address
-    }
-
-    try {
-      if (await this.validateName(address)) return ETH_ADDRESS_TYPE.name
-    } catch (e) {
-      return ETH_ADDRESS_TYPE.error
-    }
+    } else if (isValidEns) {
+      return ETH_ADDRESS_TYPE.name
+    } else return ETH_ADDRESS_TYPE.error
   }
 
   /**
@@ -987,74 +984,53 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * Returns the resolved ens address that's a valid EOA
+   * Returns an object the contains the resolved address or ens
+   * name of the input address with it's type
    */
-  async resolveEns(ensName: string) {
-    const provider = this.providerForNetwork(1)
-    console.log('ensName:', ensName)
-    const ensAddress = await provider.resolveName(ensName)
-    console.log('ensAddress:', ensAddress)
-    if (ensAddress) {
-      const isValid = await this.isValidEOA(ensAddress)
-      if (isValid) return ensAddress
-    }
-
-    if (ensAddress === null) {
-      return 'null'
-      throw new Error(
-        'The name does not exist, or the forward lookup does not match.'
-      )
-    }
-  }
-
-  /**
-   * Returns the resolved ens name that's a valid EOA
-   */
-  async lookupAddress(address: string) {
-    const provider = this.providerForNetwork(1)
-    const ensName = await provider.lookupAddress(address)
-    const isValid = await this.isValidEOA(address)
-    if (!ensName) {
-      if (isValid) {
-        return ensName
-      } else throw new Error('The ens name is not a valid EOA')
-    } else {
-      throw new Error(
-        'The name does not exist, or the forward lookup does not match.'
-      )
-    }
-  }
 
   async resolveName(address: string) {
     const provider = this.providerForNetwork(1)
     const isValid = await this.isValidEOA(address)
-
-    const ETH_ADDRESS_TYPE = {
-      name: 'name',
-      address: 'address',
-      error: 'error',
-    }
-
     const addressType = await this.getEthAddressType(address)
-    console.log('addressType:', addressType)
 
-    console.log('ETH_ADDRESS_TYPE:', ETH_ADDRESS_TYPE)
-    if (isValid && addressType === ETH_ADDRESS_TYPE.name) {
-      return {
-        input: address,
-        address: await provider.resolveName(address),
-        name: address,
-        type: 'name',
-      }
-    } else if (isValid && addressType === ETH_ADDRESS_TYPE.address) {
-      return {
-        input: address,
-        name: await provider.lookupAddress(address),
-        address: address,
-        type: 'address',
+    if (addressType === 'name') {
+      const resolvedAddress = await provider.resolveName(address)
+      if (resolvedAddress !== 'null') {
+        return {
+          input: address,
+          address: resolvedAddress,
+          name: address,
+          type: 'name',
+        }
+      } else {
+        return {
+          input: address,
+          address: resolvedAddress,
+          name: address,
+          type: 'error',
+        }
       }
     }
 
-    throw 'Invalid address or name'
+    if (isValid && addressType === 'address') {
+      const resolvedName = await provider.lookupAddress(address)
+      if (resolvedName !== 'null') {
+        return {
+          input: address,
+          name: resolvedName,
+          address: address,
+          type: 'address',
+        }
+      } else {
+        return {
+          input: address,
+          name: resolvedName,
+          address: address,
+          type: 'error',
+        }
+      }
+    }
+
+    return ''
   }
 }

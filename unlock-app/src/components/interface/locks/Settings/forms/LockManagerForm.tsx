@@ -2,7 +2,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
@@ -10,6 +10,7 @@ import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
+
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -21,10 +22,6 @@ interface LockManagerCardProps {
   lockAddress: string
   manager: string
   hasMultipleManagers: boolean
-}
-
-interface FormProps {
-  manager: string
 }
 
 interface RenounceModalFormProps {
@@ -215,11 +212,12 @@ export const LockManagerForm = ({
   disabled,
 }: LockManagerFormProps) => {
   const walletService = useWalletService()
-  const { handleSubmit, reset, watch, control } = useForm<FormProps>({
-    defaultValues: {
-      manager: '',
-    },
+
+  const localForm = useForm({
+    mode: 'all',
   })
+
+  const { handleSubmit, reset, watch } = localForm
 
   const web3Service = useWeb3Service()
 
@@ -269,11 +267,10 @@ export const LockManagerForm = ({
     }
   )
 
-  const onAddLockManager = async ({ manager }: FormProps) => {
-    await addLockManagerMutation.mutateAsync(manager)
+  const onAddLockManager = async () => {
+    const managerValue = await watch('manager')
+    await addLockManagerMutation.mutateAsync(managerValue)
   }
-
-  const managerAddress = watch('manager')
 
   const managers = lockSubgraph?.lockManagers ?? []
 
@@ -307,19 +304,13 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <Controller
-              control={control}
+            <AddressInput
+              withIcon
               name="manager"
-              render={({ field: { onChange } }) => (
-                <AddressInput
-                  withIcon
-                  address={managerAddress}
-                  label="Add manager, please enter the wallet address of theirs."
-                  description="Enter a wallet address or an ens name"
-                  web3Service={web3Service}
-                  onChange={onChange}
-                />
-              )}
+              label="Add manager, please enter the wallet address of theirs."
+              description="Enter a wallet address or an ens name"
+              web3Service={web3Service}
+              localForm={localForm}
             />
           </div>
           <Button
