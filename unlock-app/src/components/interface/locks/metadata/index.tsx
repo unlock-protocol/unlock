@@ -12,7 +12,7 @@ import {
   toFormData,
 } from './utils'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { useUpdateMetadata, useMetadata } from '~/hooks/metadata'
+import { useUpdateMetadata, useMetadata } from '~/hooks/useMetadata'
 import LoadingIcon from '../../Loading'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'

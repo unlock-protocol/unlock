@@ -1,9 +1,9 @@
-import { Input, Button } from '@unlock-protocol/ui'
+import { Input, Button, Placeholder } from '@unlock-protocol/ui'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useRouter } from 'next/router'
 import { MouseEventHandler, useMemo, useRef, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { useTransferCode } from '~/hooks/transfer'
+import { useForm } from 'react-hook-form'
+import { useTransferCode, useTransferDone } from '~/hooks/useTransfer'
 import { useConfig } from '~/utils/withConfig'
 import { useWalletService } from '~/utils/withWalletService'
 import ReCaptcha from 'react-google-recaptcha'
@@ -13,38 +13,48 @@ import {
 } from '@enzoferey/ethers-error-parser'
 import { SwitchNetwork } from '~/components/helpers/SwitchNetwork'
 import { toast } from 'react-hot-toast'
+import { AxiosError } from 'axios'
 
 interface SendTransferFormProps {
-  lockAddress: string
-  keyId: string
-  network: number
-  onTransferCodeCreated: (
-    transfer: TransferObject & {
-      transferCode: string
-    }
+  createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
+  isLoading: boolean
+  onTransferCodeReceived: (
+    transferObject: TransferObject & { transferCode: string }
   ) => void
 }
 
 export const SendTransferForm = ({
-  onTransferCodeCreated,
-  lockAddress,
-  keyId,
-  network,
+  isLoading,
+  createTransferCode,
+  onTransferCodeReceived,
 }: SendTransferFormProps) => {
   const config = useConfig()
-  const { createTransferCode, isLoading } = useTransferCode({
-    network,
-    lockAddress,
-    keyId,
-    onTransferCodeCreated,
-  })
 
   const recaptchaRef = useRef<any>()
 
   const onTransfer: MouseEventHandler = async (event) => {
     event.preventDefault()
     const captcha = await recaptchaRef.current?.executeAsync()
-    await createTransferCode({ captcha })
+    createTransferCode(
+      { captcha },
+      {
+        async onSettled() {
+          await recaptchaRef.current?.reset()
+        },
+        onError(error) {
+          if (error instanceof AxiosError) {
+            if (error.status === 409) {
+              return toast.error(
+                'Too many requests. Please wait a few minutes before trying again.'
+              )
+            }
+          }
+        },
+        onSuccess(transferObject) {
+          onTransferCodeReceived(transferObject)
+        },
+      }
+    )
   }
 
   return (
@@ -52,9 +62,9 @@ export const SendTransferForm = ({
       <div className="space-y-1">
         <h1 className="text-xl font-bold"> Request transfer code</h1>
         <p className="text-gray-800">
-          You will receive a transfer code by email. You need to use this
-          transfer code to transfer the membership token. This code will expire
-          in 15 minutes and can only be used once, from this page.
+          We will send you a transfer code to your email address. You will need
+          to use this transfer code to confirm the transaction below. This will
+          expire within 15 minutes so hurry up.
         </p>
       </div>
       <div className="flex items-center justify-end">
@@ -73,7 +83,7 @@ export const SendTransferForm = ({
 }
 
 interface ConfirmTransferData {
-  transferSignature: string
+  transferCode: string
 }
 
 interface Props {
@@ -89,13 +99,43 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const manager = new KeyManager(config.networks)
   const {
     handleSubmit,
-    control,
+    register,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ConfirmTransferData>({
     reValidateMode: 'onBlur',
   })
 
-  const onSubmit = async ({ transferSignature }: ConfirmTransferData) => {
+  const { transferDone } = useTransferDone()
+
+  const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
+    const transferSignature = [
+      '0x',
+      Buffer.from(
+        [transferCode, transferObject.transferCode].join(''),
+        'base64'
+      ).toString('hex'),
+    ].join('')
+
+    await transferDone(
+      {
+        ...transferObject,
+        transferSignature,
+        network,
+      },
+      {
+        onError(error) {
+          if (error instanceof AxiosError) {
+            if (error.status === 409) {
+              return toast.error(
+                'Too many requests. Please wait a few minutes before trying again.'
+              )
+            }
+            toast.error(error.message)
+          }
+        },
+      }
+    )
+
     const signer = walletService.signer
     try {
       const tx = await manager.transfer({
@@ -139,43 +179,23 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
         </p>
       </div>
       <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="transferSignature"
-          control={control}
-          rules={{
+        <Input
+          {...register('transferCode', {
             required: {
               value: true,
-              message: 'Code is required.',
+              message: 'Transfer code is required.',
             },
             minLength: {
               value: 12,
-              message: 'Code must be at least 12 characters.',
+              message: 'Transfer code is too short.',
             },
-          }}
-          render={({ field: { onChange, onBlur } }) => (
-            <Input
-              onChange={(event) => {
-                event.preventDefault()
-                const { value } = event.target
-                const transferSignature = [
-                  '0x',
-                  Buffer.from(
-                    [value, transferObject.transferCode].join(''),
-                    'base64'
-                  ).toString('hex'),
-                ].join('')
-                onChange(transferSignature)
-              }}
-              onBlur={onBlur}
-              placeholder="Enter transfer code"
-              description="Enter the transfer code you received by email."
-              error={errors?.transferSignature?.message}
-              label="Transfer Code"
-              disabled={isSubmitting}
-            />
-          )}
+          })}
+          placeholder="Enter transfer code"
+          description="Enter the transfer code you received by email."
+          error={errors?.transferCode?.message}
+          label="Transfer Code"
+          disabled={isSubmitting}
         />
-
         <div className="flex items-center justify-end">
           <SwitchNetwork requiredNetwork={network}>
             {({ isOnRequiredNetwork, onNetworkChangeHandler }) => {
@@ -221,6 +241,12 @@ export const Transfer = () => {
     (TransferObject & { transferCode: string }) | undefined
   >(transfer)
 
+  const { createTransferCode, isLoading } = useTransferCode({
+    network: props.network!,
+    lockAddress: props.lockAddress!,
+    keyId: props.keyId!,
+  })
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <header>
@@ -231,17 +257,24 @@ export const Transfer = () => {
       </header>
       <main className="grid gap-6">
         {!isReady && <div> Invalid transfer URL </div>}
-        {isReady && !transferObject && (
+        {isReady && (
           <SendTransferForm
-            onTransferCodeCreated={(obj) => {
+            isLoading={isLoading}
+            createTransferCode={createTransferCode}
+            onTransferCodeReceived={(obj) => {
               setTransferObject(obj)
             }}
-            lockAddress={props.lockAddress!}
-            keyId={props.keyId!}
-            network={props.network!}
           />
         )}
-        {transferObject && (
+        {isLoading && (
+          <Placeholder.Root className="p-6 bg-white border rounded-lg">
+            <Placeholder.Line size="lg" />
+            <Placeholder.Line size="lg" />
+            <Placeholder.Line size="lg" />
+            <Placeholder.Line size="lg" />
+          </Placeholder.Root>
+        )}
+        {transferObject && !isLoading && (
           <ConfirmTransferForm
             network={props.network}
             transferObject={transferObject}
