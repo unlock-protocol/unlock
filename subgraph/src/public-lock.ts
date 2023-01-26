@@ -231,6 +231,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
       key.transactionsHash = [hash]
     }
     key.expiration = event.params.newTimestamp
+    key.cancelled = false
     key.save()
   }
 }
@@ -257,6 +258,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
       key.transactionsHash = [hash]
     }
     key.expiration = event.params.newExpiration
+    key.cancelled = false
     key.save()
   }
 }
