@@ -92,3 +92,22 @@ type UnlockStats @entity {
   "Total value exchanged on the network"
   grossNetworkProduct: BigInt!
 }
+
+type Receipt @entity {
+  "Transaction Hash"
+  id: ID!
+  "Timestamp"
+  timestamp: BigInt
+  "Sender of the transaction"
+  sender: String
+  "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
+  payer: String
+  "Address of the Lock smart contract"
+  lockAddress: String
+  "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
+  tokenAddress: String
+  "amount"
+  amountTransferred: BigInt
+  "Total gas paid"
+  gasTotal: BigInt!
+}
