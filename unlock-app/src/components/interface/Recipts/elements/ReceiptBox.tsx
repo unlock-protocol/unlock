@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
 import { addressMinify } from '~/utils/strings'
 import { UpdatePurchaserDrawer } from './UpdatePurchaserDrawer'
-import { updateReceipt, useGetReceipt } from '~/hooks/receipts'
+import { useUpdateReceipt, useGetReceipt } from '~/hooks/receipts'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -78,7 +78,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     network,
   })
 
-  const { isLoading: isUpdatingReceipt } = updateReceipt({
+  const { isLoading: isUpdatingReceipt } = useUpdateReceipt({
     lockAddress,
     hash,
     network,
