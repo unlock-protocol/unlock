@@ -28,7 +28,6 @@ export const purchaseKey = async (
       value: isErc20 ? 0 : purchasePrice,
     }
   )
-  const tokenAddress = (await lock.tokenAddress()).toLocaleLowerCase()
   // get token ids
   const { events, blockNumber, transactionHash } = await tx.wait()
   const { args } = events.find(
