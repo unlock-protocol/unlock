@@ -1,11 +1,4 @@
-import {
-  Address,
-  BigInt,
-  log,
-  Bytes,
-  ethereum,
-  crypto,
-} from '@graphprotocol/graph-ts'
+import { Address, BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -51,6 +44,18 @@ function newKey(event: TransferEvent): void {
     event.params.tokenId,
     event.params.to
   )
+
+  const hash = event.transaction.hash.toString()
+  const transactionsHash = key.transactionsHash
+  // add transaction hash for new key event
+  if (transactionsHash && transactionsHash.length) {
+    if (!transactionsHash.includes(hash)) {
+      transactionsHash.push(hash)
+    }
+  } else {
+    key.transactionsHash = [hash]
+  }
+
   key.save()
 
   // create receipt
@@ -127,6 +132,17 @@ export function handleTransfer(event: TransferEvent): void {
         event.params.tokenId,
         event.params.to
       )
+
+      const hash = event.transaction.hash.toString()
+      const transactionsHash = key.transactionsHash
+      // add transaction hash for transfer event
+      if (transactionsHash && transactionsHash.length) {
+        if (!transactionsHash.includes(hash)) {
+          transactionsHash.push(hash)
+        }
+      } else {
+        key.transactionsHash = [hash]
+      }
       key.save()
     }
     createReceipt(event)
@@ -208,6 +224,16 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
+    const hash = event.transaction.hash.toString()
+    const transactionsHash = key.transactionsHash
+    // add transaction hash for extend event
+    if (transactionsHash && transactionsHash.length) {
+      if (!transactionsHash.includes(hash)) {
+        transactionsHash.push(hash)
+      }
+    } else {
+      key.transactionsHash = [hash]
+    }
     key.expiration = event.params.newTimestamp
     key.cancelled = false
     key.save()
@@ -227,6 +253,16 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const keyID = genKeyID(event.address, tokenId.value.toString())
   const key = Key.load(keyID)
   if (key) {
+    const hash = event.transaction.hash.toString()
+    const transactionsHash = key.transactionsHash
+    // add transaction hash for renew event
+    if (transactionsHash && transactionsHash.length) {
+      if (!transactionsHash.includes(hash)) {
+        transactionsHash.push(hash)
+      }
+    } else {
+      key.transactionsHash = [hash]
+    }
     key.expiration = event.params.newExpiration
     key.cancelled = false
     key.save()
