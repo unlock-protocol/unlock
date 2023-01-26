@@ -103,4 +103,4 @@ templates:
         - event: LockMetadata(string,string,string)
           handler: handleLockMetadata
           receipt: true
-      file: ./src/public-lock.t
+      file: ./src/public-lock.ts
