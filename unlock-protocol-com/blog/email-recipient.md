@@ -1,5 +1,5 @@
 ---
-title: Unlock Launches Support For Email Recipients on Airdrops and Checkout
+title: Wallet-less airdrops!
 subTitle: Unlock Launches Support For Email Recipients on Airdrops and Checkout
 authorName: searchableguy
 publishDate: January 27, 2023
