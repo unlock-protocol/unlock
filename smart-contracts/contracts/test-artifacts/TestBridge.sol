@@ -2,13 +2,12 @@
 pragma solidity ^0.8.7;
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "hardhat/console.sol";
 import "../interfaces/IWETH.sol";
-
 
 contract TestBridge {
   
-  IWETH weth;
+  IWETH wethSrc;
+  IWETH wethDest;
   
   // used to know here does the call come from
   uint32 srcDomainId; 
@@ -18,12 +17,14 @@ contract TestBridge {
   address destToken;
 
   constructor(
-    address _weth, 
+    address _wethSrc, 
+    address _wethDest,
     uint32 _srcDomainId,
     address _srcToken,
     address _destToken
   ) {
-    weth = IWETH(_weth);
+    wethSrc = IWETH(_wethSrc);
+    wethDest = IWETH(_wethDest);
     srcDomainId = _srcDomainId;
     srcToken = _srcToken;
     destToken = _destToken;
@@ -45,9 +46,14 @@ contract TestBridge {
     transferId = bytes32(block.timestamp);
 
     // wrap native assets
-    if (_asset == address(0)) {
-      weth.deposit{value: _amount}();
-      bool success = weth.transfer(_to, _amount);
+    if (_asset == address(wethSrc)) {
+      // get assets from src
+      wethSrc.transferFrom(msg.sender, address(this), _amount);
+      wethSrc.withdraw(_amount);
+
+      // send assets to WETH on the other side
+      wethDest.deposit{value: _amount}();
+      bool success = wethDest.transfer(_to, _amount);
       require(success, "wrapping token failed");
     } else {
       // get asset from the src lock
@@ -67,10 +73,14 @@ contract TestBridge {
     IXReceiver(_to).xReceive(
       transferId,
       _amount, // amount of token in wei
-      _asset == address(0) ? address(0) : address(destToken), // native or bridged ERC20 token
+      _asset == address(wethSrc) ? address(wethDest) : address(destToken), // native or bridged ERC20 token
       msg.sender, // sender on the origin chain
       srcDomainId, // domain ID of the origin chain
       _callData
     );
   }
+
+
+  // required as WETH withdraw will unwrap and send tokens here
+  receive() external payable {}
 }

@@ -21,10 +21,11 @@ let purchaserDest,
   erc20Dest,
   unlockOwner,
   keyOwner,
-  weth
+  wethSrc,
+  wethDest
 
 // test for ERC20 and ETH
-const scenarios = [true, false]
+const scenarios = [false, true]
 
 const srcChainId = 31337
 const destChainId = 4
@@ -39,7 +40,8 @@ contract('Unlock / bridge', () => {
     ;[unlockOwner, keyOwner] = await ethers.getSigners()
 
     // deploy weth & a token
-    weth = await deployWETH(unlockOwner)
+    wethSrc = await deployWETH(unlockOwner)
+    wethDest = await deployWETH(unlockOwner)
 
     // ERC20s on each chain
     erc20Src = await deployERC20(unlockOwner, true)
@@ -48,7 +50,8 @@ contract('Unlock / bridge', () => {
     // connext
     const MockConnext = await ethers.getContractFactory('TestBridge')
     connext = await MockConnext.deploy(
-      weth.address, 
+      wethSrc.address, 
+      wethDest.address, 
       srcDomainId,
       // both token mentioned for the swap
       erc20Src.address, 
@@ -64,13 +67,13 @@ contract('Unlock / bridge', () => {
     // source chain
     purchaserSrc = await UnlockCrossChainPurchaser.deploy(
       connext.address, // bridge
-      weth.address
+      wethSrc.address
     )
 
     // destination chain
     purchaserDest = await UnlockCrossChainPurchaser.deploy(
       connext.address, // bridge
-      weth.address
+      wethDest.address
     )
 
     // setup receiver

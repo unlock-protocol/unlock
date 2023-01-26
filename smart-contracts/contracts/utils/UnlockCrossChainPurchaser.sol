@@ -96,7 +96,7 @@ contract UnlockCrossChainPurchaser is Ownable {
    * @param currency : address of the token to be swapped into the lock’s currency
    * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
    * @param callData: blob of data passed to the lock that includes the following:
-   * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
+   * @param relayerFee The fee offered to connext relayers paid on origin chain in native asset. On testnet, this can be 0.
    * @dev to construct the callData you need the follow PublicLock.
    * ex. a purchase call encodes the following:
       - `recipients`: address of the recipients of the membership
@@ -117,32 +117,38 @@ contract UnlockCrossChainPurchaser is Ownable {
     // make sure receiver contract exists on dest chain
     _chainIsSet(destChainId);
 
-    if(currency != address(0)) {
-      // TODO: send using transfer (no approval)
-      if(IERC20(currency).allowance(msg.sender, address(this)) < amount) {
-        revert InsufficientApproval(amount);
-      }
-
-      // User sends funds to this contract
-      IERC20(currency).transferFrom(msg.sender, address(this), amount);
-
-      // This contract approves transfer to Connext
-      IERC20(currency).approve(bridgeAddress, amount);
-    } 
-
-    // make sure we have enough balance
+    // make sure we have enough ETH
     if((currency == address(0) ? amount + relayerFee : relayerFee) > address(this).balance) {
       revert InsufficientBalance(currency == address(0) ? amount + relayerFee : relayerFee);
     }
 
-    bytes memory cd = abi.encode(lock, callData);
+    if(currency != address(0)) {
+      // check allowance
+      if(IERC20(currency).allowance(msg.sender, address(this)) < amount) {
+        revert InsufficientApproval(amount);
+      }
 
+      // get funds from user to this contract
+      IERC20(currency).transferFrom(msg.sender, address(this), amount);
+
+      // this contract approves transfer to Connext
+      IERC20(currency).approve(bridgeAddress, amount);
+    } else {
+      // wrap native asset
+      IWETH(weth).deposit{value: amount}();
+
+      // approves transfer to Connext
+      IWETH(weth).approve(bridgeAddress, amount);
+    }
+    
+    bytes memory cd = abi.encode(lock, callData);
+    
     // send the call over the chain
-    transferID = IConnext(bridgeAddress).xcall{value: currency == address(0) ? amount + relayerFee : relayerFee}(
+    transferID = IConnext(bridgeAddress).xcall{value: relayerFee}(
       domains[destChainId], // _destination: Domain ID of the destination chain
       crossChainPurchasers[destChainId], // _to: address of the target contract
-      currency,   // _asset: address of the token contract
-      msg.sender, // _delegate: TODO address that can revert or forceLocal on destination
+      currency == address(0) ? weth : currency,   // _asset: asset sent to the bridge
+      address(0), // _delegate
       amount,     // _amount: amount of tokens to transfer
       slippage,   // _slippage: the maximum amount of slippage the user will accept
       cd // pass the lock address in calldata
@@ -162,8 +168,6 @@ contract UnlockCrossChainPurchaser is Ownable {
   // 2. refund
   // }
 
-
-    
   /** 
    * @notice The receiver function as required by the IXReceiver interface.
    * @dev The Connext bridge contract will call this function.
@@ -193,7 +197,7 @@ contract UnlockCrossChainPurchaser is Ownable {
     // unwrap WETH in native tokens
     if (currency == weth) {
       valueToSend = amount;
-      if(valueToSend <= IWETH(weth).balanceOf(address(this))) {
+      if(valueToSend > IWETH(weth).balanceOf(address(this))) {
         revert InsufficientBalance(valueToSend);
       }
       
