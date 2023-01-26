@@ -103,7 +103,6 @@ const getReceiptQuery = gql`
       sender
       payer
       lockAddress
-      owner
       tokenAddress
       amountTransferred
       gasTotal
