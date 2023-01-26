@@ -52,7 +52,7 @@ type Key @entity {
   createdAtBlock: BigInt!
   "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key"
   cancelled: Boolean
-  "hash of the transaction"
+  "list of transaction hash from specific token"
   transactionsHash: [String!]
 }
 

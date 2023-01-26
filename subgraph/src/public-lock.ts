@@ -48,6 +48,7 @@ function newKey(event: TransferEvent): void {
 
   const hash = event.transaction.hash.toString()
   const transactionsHash = key.transactionsHash
+  // add transaction hash for new key event
   if (transactionsHash && transactionsHash.length) {
     if (!transactionsHash.includes(hash)) {
       transactionsHash.push(hash)
@@ -131,6 +132,7 @@ export function handleTransfer(event: TransferEvent): void {
 
       const hash = event.transaction.hash.toString()
       const transactionsHash = key.transactionsHash
+      // add transaction hash for transfer event
       if (transactionsHash && transactionsHash.length) {
         if (!transactionsHash.includes(hash)) {
           transactionsHash.push(hash)
@@ -220,6 +222,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   if (key) {
     const hash = event.transaction.hash.toString()
     const transactionsHash = key.transactionsHash
+    // add transaction hash for extend event
     if (transactionsHash && transactionsHash.length) {
       if (!transactionsHash.includes(hash)) {
         transactionsHash.push(hash)
@@ -245,6 +248,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   if (key) {
     const hash = event.transaction.hash.toString()
     const transactionsHash = key.transactionsHash
+    // add transaction hash for renew event
     if (transactionsHash && transactionsHash.length) {
       if (!transactionsHash.includes(hash)) {
         transactionsHash.push(hash)
