@@ -391,6 +391,14 @@ components:
       schema:
         type: string
 
+    Hash:
+      in: path
+      name: hash
+      required: true
+      description: Hash
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -1812,7 +1820,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  /v2/receipts/{network}/{lockAddress}:
+  /v2/receipts/{network}/{lockAddress}/{hash}:
     get:
       operationId: getReceipt
       security:
@@ -1821,6 +1829,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
 
       responses:
         200:
@@ -1896,6 +1905,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
 
       responses:
         200:
