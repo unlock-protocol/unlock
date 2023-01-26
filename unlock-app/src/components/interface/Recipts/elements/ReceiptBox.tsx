@@ -162,13 +162,13 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         </div>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <div className="col-span-1">
+            <div className="col-span-2 md:col-span-1">
               <DetailLabel
                 label="Service performed:"
                 value={supplier?.servicePerformed}
               />
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2 md:col-span-1">
               <DetailLabel
                 label="Amount Paid:"
                 value={`${totalPayed} ${symbol}`}
@@ -248,12 +248,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           }}
         />
       )}
-      <div className="grid w-full max-w-lg gap-4">
+      <div className="grid w-full max-w-lg gap-4 mb-5">
         <div
           className="relative grid w-full gap-4 px-6 py-10 bg-white border rounded-xl"
           ref={componentRef}
         >
-          <div className="absolute ml-auto right-6 top-10">
+          <div className="ml-auto md::absolute right-6 top-10">
             <PurchaseDetails />
           </div>
           <Supplier />
