@@ -62,9 +62,9 @@ export const SendTransferForm = ({
       <div className="space-y-1">
         <h1 className="text-xl font-bold"> Request transfer code</h1>
         <p className="text-gray-800">
-          We will send a transfer code to your email address. You will need
-          to use this transfer code to confirm the transaction below. It 
-          expires within 15 minutes.
+          We will send a transfer code to your email address. You will need to
+          use this transfer code to confirm the transaction below. It expires
+          within 15 minutes.
         </p>
       </div>
       <div className="flex items-center justify-end">
