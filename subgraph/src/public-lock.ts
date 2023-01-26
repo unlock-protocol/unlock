@@ -354,11 +354,9 @@ export function createReceipt(event: ethereum.Event): void {
   const tokenAddress =
     lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
 
-  // Hardcoded?
+  // Hardcoded : TODO: compile from contract ABI
   const ERC20_TRANSFER_TOPIC0 =
     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
-
-  log.info('____LOG___', [])
 
   if (lock && tokenAddress.toString().length > 0) {
     const txReceipt = event.receipt!
@@ -366,7 +364,6 @@ export function createReceipt(event: ethereum.Event): void {
     if (logs) {
       // If it is an ERC20 lock, there should be multiple events
       // including one for the ERC20 transfer
-
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
         // TODO: Can we want to use the ABI for this?

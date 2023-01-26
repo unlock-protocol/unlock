@@ -195,6 +195,14 @@ describe('Extend key', () => {
   test('should increase key timestamp', () => {
     mockDataSourceV11()
 
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
     // mock and test
     updateExpiration(BigInt.fromU64(expiration + 5000))
     const newKeyExtended = createKeyExtendedEvent(
