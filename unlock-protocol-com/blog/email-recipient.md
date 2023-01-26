@@ -24,7 +24,7 @@ When a users enters a recipient’s email, we create a uniue wallet address with
 
 A signed proof, in the form of a QR code, is generated and sent to the recipient's email. Recipients can verify their ownership of the NFT at events using this QR code, without transferring the NFT to their own wallet. Additionally, they can also transfer the NFT to their own wallet at any time by following the instructions and link to the transfer page in the email.
 
-Recipients need to go to the transfer page and request a transfer code to their email. After entering the transfer code, they can transfer the NFT to their own wallet. Transferring the NFT also transfer any associated data to the new owner.
+Recipients need to go to the transfer page and request a transfer code to their email. After entering the transfer code, they can transfer the NFT to their wallet. Transferring the NFT also transfers any associated data to the new owner.
 
 ![Transfer Page](/images/blog/email-recipient/transfer.png)
 
