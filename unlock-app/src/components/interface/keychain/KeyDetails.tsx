@@ -26,7 +26,7 @@ export const KeyDetails = () => {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-6 pb-16 sm:grid-cols-2 lg:grid-cols-4">
       {isKeysLoading &&
         Array.from({ length: 10 }).map((_, index) => (
           <Placeholder.Root
