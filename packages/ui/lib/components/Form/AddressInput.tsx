@@ -12,7 +12,7 @@ import { FieldLayout } from './FieldLayout'
 import { Icon } from '../Icon/Icon'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { isValidAddress, isValidEns, minifyAddress } from '../../utils'
+import { minifyAddress } from '../../utils'
 
 export interface Props
   extends Omit<
@@ -24,8 +24,9 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: Boolean
-  address?: string
   web3Service?: any
+  localForm: any;
+  name: any,
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -43,6 +44,16 @@ const STATE_STYLES = {
 
 const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} className="fill-gray-500" />
 
+/**
+ * Primary Input component for React Hook Form
+ *
+ * @param label - Label for the input
+ * @param name - Name of the input
+ * @param type - Type of the input
+ * @param localForm - React Hook Form object
+ * @returns Input component
+ *
+ */
  export const AddressInput = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
     const {
@@ -53,20 +64,21 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       label,
       withIcon = true,
       isTruncated,
-      address,
       web3Service,
+      localForm,
+      name,
       ...inputProps
     } = props
 
+    if (!localForm) return null;
+    const { register } = localForm
+  
     const [addressType, setAddressType] = useState('')
     const [resolvedAddress, setResolvedAddress] = useState('')
     const [resolvedName, setResolvedName] = useState('')
     const [loadingResolvedAddress, setLoading] = useState(false)
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
-
-    const [isValidEthAddress, setIsValidEthAddress] = useState(false)
-    const [isValidEnsName, setIsValidEnsName] = useState(false)
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
@@ -84,64 +96,32 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
       withIcon ? 'pl-10' : undefined
     )
 
-    useEffect(() => {
-      const getAddressType = async () => {
-        if (address && address.length) {
-          if (isValidAddress(address)) {
-            setLoading(true)
-            setIsValidEthAddress(true)
-            const addressType = await web3Service.getEthAddressType(address)
-            setAddressType(addressType)
-          } else if (isValidEns(address)) {
-            setLoading(true)
-            setIsValidEnsName(true)
-            const addressType = await web3Service.getEthAddressType(address)
-            setAddressType(addressType)
-          }
-        } else {
-          setLoading(false)
-          setIsValidEnsName(false)
-          setIsValidEthAddress(false)
-          setError('')
-        }
+    const handleResolver = async (address: string) => {
+      if (address.length) {
+        setLoading(true)
       }
-      getAddressType()
-    }, [address, address?.length])
-  
-    useEffect(() => {
-      const handleResolver = async () => {
-        if (isValidEnsName && addressType === 'name') {
-          try {
-            const result = await web3Service.resolveName(address)
-            if (result) {
-              setLoading(false)
-              setError('')
-              setSuccess(`It's a valid ens name`)
-              setResolvedAddress(result.address)
-            } 
-          } catch (error) {
-            setLoading(false)
-            setError('Ens name is not configured')
-            setAddressType('error')
-          }
-        } else if (isValidEthAddress && addressType === 'address') {
-          try {
-            const result = await web3Service.resolveName(address)
-            if (result) {
-              setLoading(false)
-              setError('')
-              setSuccess(`It's a valid eth address`)
-              setResolvedName(result.name)
-            }
-          } catch (error) {
-            setLoading(false)
-            setError('Invalid eth address')
-            setAddressType('error')
-          }
-        }
+      const result = await web3Service.resolveName(address)
+      if (result && result.type === 'address') {
+        setLoading(false)
+        setAddressType(result.type)
+        setSuccess(`It's a valid eth address`)
+        setResolvedName(result.name)
+        return result.address;
+      } else if (result && result.type === 'name') {
+        setLoading(false)
+        setAddressType(result.type)
+        setSuccess(`It's a valid ens name`)
+        setResolvedAddress(result.address)
+        return result.address;
+      } else {
+        setLoading(false)
+        setAddressType(result.type)
+        setError(`It's not a valid ens name or address`)
+        setSuccess('')
+        setResolvedAddress('')
+        return result.error;
       }
-      handleResolver()
-    }, [isValidEnsName, isValidEthAddress, error, addressType])
+    }
 
     return (
       <>
@@ -162,30 +142,28 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
               <input
                 {...inputProps}
                 id={label}
-                value={value}
                 className={inputClass}
+                {...register(name, {
+                  setValueAs: (value: string) => handleResolver(value),
+                })}
               />
             </div>
           </div>
         </FieldLayout>
         <div>
-          {loadingResolvedAddress && addressType === 'name' ? (
+          {loadingResolvedAddress ? (
             <span className='text-gray-600'>
-              Loading resolved address...
+              Loading resolved address or ens...
             </span>
-          ) : !loadingResolvedAddress && resolvedAddress !== '' && addressType === 'name' && isValidEnsName  ? (
+          ) : !loadingResolvedAddress && resolvedAddress !== '' && addressType === 'name'  ? (
             <span className='text-gray-600'>
               {resolvedAddress}
             </span>
-          ) : !loadingResolvedAddress && addressType === 'name' && isValidEnsName && resolvedAddress !== '' && isTruncated ? (
+          ) : !loadingResolvedAddress && addressType === 'name' && resolvedAddress !== '' && isTruncated ? (
             <span className='text-gray-600'>
              {minifyAddress(resolvedAddress)}
             </span>
-          ) : loadingResolvedAddress && addressType === 'address'? (
-            <span className='text-gray-600'>
-              Loading resolved ens...
-            </span> 
-            ) : !loadingResolvedAddress && addressType === 'address' && isValidEthAddress && resolvedName !== '' ? (
+          ) : !loadingResolvedAddress && addressType === 'address' && resolvedName !== '' ? (
             <span className='text-gray-600'>
               {resolvedName}
             </span>
