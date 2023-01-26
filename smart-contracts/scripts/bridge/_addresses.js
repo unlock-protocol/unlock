@@ -2,7 +2,7 @@
 
 const mumbai = {
   domainId : 9991,
-  purchaserAddress: '0x14d3566922A4f30Dff736566AA8422284aFE69d6',
+  purchaserAddress: '0xe79B93f8E22676774F2A8dAd469175ebd00029FA',
   connext : '0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a',
   testERC20: '0xeDb95D8037f769B72AAab41deeC92903A98C9E16',
   testLockERC20: '0xcB145795F79DeA52b6c8F2d29cA1e81E7e99A0f2',
@@ -13,7 +13,7 @@ const mumbai = {
 
 const goerli = {
   domainId: 1735353714,
-  purchaserAddress: '0x8f7d2A9EBeA31c335AA89cC18e41463A2A27302c',
+  purchaserAddress: '0x9162477c4ec6fBEa1ba11553087C79222be90FE2',
   connext : '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
   testLock: "0xde81091C88b56Cb7A1eCd077ac9750a5129C9953",
   testERC20: '0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1',
