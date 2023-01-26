@@ -5,6 +5,10 @@ import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
 import { addressMinify } from '~/utils/strings'
 import { UpdatePurchaserDrawer } from './UpdatePurchaserDrawer'
 import { useUpdateReceipt, useGetReceipt } from '~/hooks/receipts'
+import dayjs from 'dayjs'
+import networks from '@unlock-protocol/networks'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -65,8 +69,25 @@ const ReceiptBoxPlaceholder = () => {
   )
 }
 
+const NotAuthorizedBar = () => {
+  const { account } = useAuth()
+  return (
+    <div className="w-full max-w-lg p-2 mt-5 text-base text-center text-red-700 bg-red-100 border border-red-700 rounded-xl">
+      You are connected as {addressMinify(account!)} and this address is not a
+      manager or payer for this receipts. If you want to update details, please
+      connect as lock manager or payer of the transaction.
+    </div>
+  )
+}
+
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
+  const { account } = useAuth()
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
 
   const {
     data: receipt,
@@ -84,35 +105,61 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     network,
   })
 
-  const { purchaser, supplier } = receipt ?? {}
+  const { purchaser, supplier, receipt: receiptDetails } = receipt ?? {}
 
-  const isPurchaser = true
+  // enable edit of purchaser only if purchaser match the account
+  const isPurchaser =
+    receiptDetails?.payer?.toLowerCase() === account?.toLowerCase()
 
   const disabledInput = isLoading || isUpdatingReceipt
 
   const PurchaseDetails = () => {
+    const transactionDate =
+      receiptDetails && receiptDetails.timestamp
+        ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
+        : ''
+
     return (
       <div className="grid gap-2">
-        <DetailLabel label="Transaction Date" value="" />
+        <DetailLabel label="Transaction Date" value={transactionDate} />
         <DetailLabel label="Transaction Hash" value={addressMinify(hash)} />
       </div>
     )
   }
 
   const ReceiptDetails = () => {
+    const gasTotal: number =
+      receiptDetails && receiptDetails.gasTotal
+        ? Number(parseFloat(receiptDetails?.gasTotal).toFixed(2))
+        : 0
+    const amountPayed: number =
+      receiptDetails && receiptDetails.amountTransferred
+        ? Number(parseFloat(receiptDetails?.amountTransferred).toFixed(2))
+        : 0
+
+    const totalPayed = parseFloat(`${gasTotal + amountPayed}`).toFixed(2)
+    const symbol =
+      receiptDetails?.tokenAddress || networks[network]?.nativeCurrency?.symbol
+
     return (
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <DetailLabel inline label="Amount payed:" value="" />
-            <DetailLabel inline label="Total gas:" value="" />
-            <DetailLabel
-              label="Service performed:"
-              value={supplier?.servicePerformed}
-            />
+          <div className="grid grid-cols-2 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
+            <div className="col-span-1">
+              <DetailLabel
+                label="Service performed:"
+                value={supplier?.servicePerformed}
+              />
+            </div>
+            <div className="col-span-1">
+              <DetailLabel
+                label="Amount Paid:"
+                value={`${totalPayed} ${symbol}`}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -165,6 +212,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
   if (isLoading) {
     return <ReceiptBoxPlaceholder />
+  }
+
+  if (!isManager && !isPurchaser) {
+    return <NotAuthorizedBar />
   }
 
   return (

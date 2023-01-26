@@ -10,13 +10,16 @@ export const ReceiptsPage = () => {
   return (
     <>
       {hasParams && (
-        <div className="flex flex-col items-center">
-          <ReceiptBox
-            lockAddress={query!.address as string}
-            network={Number(query.network)}
-            hash={query.hash as string}
-          />
-        </div>
+        <>
+          <div className="flex flex-col items-center">
+            <h1 className="mb-10 text-4xl font-bold">Receipt details</h1>
+            <ReceiptBox
+              lockAddress={query!.address as string}
+              network={Number(query.network)}
+              hash={query.hash as string}
+            />
+          </div>
+        </>
       )}
     </>
   )
