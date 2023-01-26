@@ -102,8 +102,6 @@ type Receipt @entity {
   payer: String
   "Address of the Lock smart contract"
   lockAddress: String
-  "Owner of the membership NFT"
-  owner: Bytes
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
   tokenAddress: String
   "amount"

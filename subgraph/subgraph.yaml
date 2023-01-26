@@ -7,7 +7,6 @@ dataSources:
     name: Unlock
     source:
       abi: Unlock
-      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -31,7 +30,6 @@ dataSources:
         - event: GNPChanged(uint256,uint256,address,uint256,address)
           handler: handleGNPChanged
       file: ./src/unlock.ts
-    network: localhost
 templates:
   - kind: ethereum
     name: PublicLock
@@ -105,5 +103,4 @@ templates:
         - event: LockMetadata(string,string,string)
           handler: handleLockMetadata
           receipt: true
-      file: ./src/public-lock.ts
-    network: localhost
+      file: ./src/public-lock.t
