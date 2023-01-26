@@ -1752,7 +1752,7 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/transfer/done:
-    get:
+    post:
       operationId: transferDone
       security:
         - User: []
@@ -1780,7 +1780,7 @@ paths:
                 token:
                   type: string
                 network:
-                  type: string
+                  type: number
                 deadline:
                   type: number
       responses:

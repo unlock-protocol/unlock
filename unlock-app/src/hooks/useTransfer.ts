@@ -1,26 +1,18 @@
 import { useMutation } from '@tanstack/react-query'
 import { storage } from '~/config/storage'
 import { TransferObject } from '@unlock-protocol/unlock-js'
-import { AxiosError } from 'axios'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Options {
   lockAddress: string
   network: number
   keyId: string
-  onTransferCodeCreated?: (transferObject: KeyTransferData) => void
 }
 
 export type KeyTransferData = TransferObject & {
   transferCode: string
 }
 
-export const useTransferCode = ({
-  network,
-  lockAddress,
-  keyId,
-  onTransferCodeCreated,
-}: Options) => {
+export const useTransferCode = ({ network, lockAddress, keyId }: Options) => {
   const {
     mutate: createTransferCode,
     isLoading,
@@ -52,23 +44,7 @@ export const useTransferCode = ({
       return transferObject
     },
     {
-      onError(error: Error) {
-        if (error instanceof AxiosError) {
-          if (error.status === 429) {
-            ToastHelper.error(
-              'Too many requests. Please try again after 5 minutes.'
-            )
-          } else {
-            ToastHelper.error('Transfer code creation failed')
-          }
-        }
-        ToastHelper.error(error.message)
-      },
-      onSuccess(transferObject: KeyTransferData) {
-        if (onTransferCodeCreated) {
-          onTransferCodeCreated(transferObject)
-        }
-      },
+      retry: 3,
     }
   )
 
@@ -76,5 +52,31 @@ export const useTransferCode = ({
     createTransferCode,
     isLoading,
     transferObject: data,
+  }
+}
+
+export const useTransferDone = () => {
+  const {
+    mutate: transferDone,
+    isLoading,
+    isError,
+    error,
+    data,
+  } = useMutation(
+    async (
+      option: TransferObject & { transferSignature: string; network: number }
+    ): Promise<void> => {
+      await storage.transferDone(option)
+    },
+    {
+      retry: 3,
+    }
+  )
+  return {
+    transferDone,
+    isLoading,
+    isError,
+    error,
+    data,
   }
 }
