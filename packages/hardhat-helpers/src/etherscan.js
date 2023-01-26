@@ -12,6 +12,7 @@ const etherscan = {
     optimisticEthereum: 'V51DWC44XURIGPP49X85VZQGH1DCBAW5EC',
     arbitrumOne: 'W5XNFPZS8D6JZ5AXVWD4XCG8B5ZH5JCD4Y',
     polygonMumbai: 'W9TVEYKW2CDTQ94T3A2V93IX6U3IHQN5Y3',
+    avalanche: 'N4AF8AYN8PXY2MFPUT8PAFSZNVJX5Q814X',
   },
   customChains: [
     {
