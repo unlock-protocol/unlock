@@ -34,7 +34,7 @@ export default class Dispatcher {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const provider = this.getProviderForNetwork(network)
+          const provider = this.getProviderForNetwork(network.id)
           const wallet = new ethers.Wallet(config.purchaserCredentials)
           const balance = await provider.getBalance(wallet.address)
           return [

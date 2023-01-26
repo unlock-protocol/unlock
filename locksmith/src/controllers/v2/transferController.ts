@@ -93,22 +93,16 @@ export const createTransferCode: RequestHandler = async (request, response) => {
 const TransferDoneBody = z.object({
   transferSignature: z.string(),
   deadline: z.number(),
-  keyId: z.string(),
-  lockAddress: z.string().transform((item) => normalizer.ethereumAddress(item)),
+  token: z.string(),
+  lock: z.string().transform((item) => normalizer.ethereumAddress(item)),
   network: z.number(),
   owner: z.string().transform((item) => normalizer.ethereumAddress(item)),
 })
 
 export const transferDone: RequestHandler = async (request, response) => {
   const userAddress = request.user!.walletAddress
-  const {
-    transferSignature,
-    deadline,
-    owner,
-    lockAddress: lock,
-    keyId: token,
-    network,
-  } = await TransferDoneBody.parseAsync(request.body)
+  const { transferSignature, deadline, owner, lock, token, network } =
+    await TransferDoneBody.parseAsync(request.body)
   const dispatch = new Dispatcher()
 
   const isTransferSignedByLocksmith = dispatch.isTransferSignedByLocksmith(
@@ -136,12 +130,17 @@ export const transferDone: RequestHandler = async (request, response) => {
     },
   })
 
-  await UserTokenMetadata.upsert({
-    tokenAddress: lock,
-    chain: network,
-    userAddress: userAddress,
-    data: keyOwnerMetadata?.data || {},
-  })
+  await UserTokenMetadata.upsert(
+    {
+      tokenAddress: lock,
+      chain: network,
+      userAddress: userAddress,
+      data: keyOwnerMetadata?.data || {},
+    },
+    {
+      conflictFields: ['userAddress', 'tokenAddress'],
+    }
+  )
 
   return response.status(200).send({
     message: 'Transfer done',
