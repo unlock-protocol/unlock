@@ -27,8 +27,8 @@ export const useKeys = ({ networks, lockAddress, owner }: Options) => {
         {
           first: 500,
           where: {
-            lock: lockAddress,
-            owner: owner,
+            lock: lockAddress?.toLowerCase(),
+            owner: owner?.toLowerCase(),
           },
           orderBy: KeyOrderBy.Expiration,
           orderDirection: OrderDirection.Desc,
@@ -51,6 +51,7 @@ export const useKeys = ({ networks, lockAddress, owner }: Options) => {
 
         const isRenewable =
           item.lock.version >= 11 && item.expiration !== MAX_UINT && isERC20
+
         return {
           ...item,
           isExpired,

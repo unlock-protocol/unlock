@@ -95,6 +95,7 @@ interface Props {
 
 export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const config = useConfig()
+  const router = useRouter()
   const walletService = useWalletService()
   const manager = new KeyManager(config.networks)
   const {
@@ -149,12 +150,11 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
         },
         signer,
       })
-      const successId = toast.loading('Transfer in progress...')
       await tx.wait()
-      toast.success('Transfer successful', {
-        id: successId,
-      })
+      // Push to keychain on success
+      router.push('/keychain')
     } catch (error) {
+      console.log(error)
       const parsedError = getParsedEthersError(error as EthersError)
       if (parsedError.context) {
         toast.error(
@@ -175,7 +175,8 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
           Keep this window open and enter the transfer code you received by
           email to confirm the transfer. This code expires in 15 minutes and can
           only be used once from this page. If you do not use the transfer code
-          or it expires, you can request a new one and start again.
+          or it expires, you can request a new one and start again. If you have
+          any existing NFT membership, it&apos;s user data will be overwritten.
         </p>
       </div>
       <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
