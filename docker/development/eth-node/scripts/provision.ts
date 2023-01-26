@@ -108,7 +108,10 @@ async function main() {
 
       log(`LOCK "${await lockParams.name}" DEPLOYED TO ${lock.address}`)
 
-      if (lockParams.tokenAddress && process.env.LOCKSMITH_PURCHASER_ADDRESS) {
+      if (
+        lockParams.currencyContractAddress &&
+        process.env.LOCKSMITH_PURCHASER_ADDRESS
+      ) {
         const purchaser = await ethers.getSigner(
           process.env.LOCKSMITH_PURCHASER_ADDRESS
         )

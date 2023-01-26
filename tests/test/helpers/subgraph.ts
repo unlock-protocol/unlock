@@ -121,3 +121,21 @@ export const getReceipt = async (txHash: string) => {
   })
   return receipt
 }
+
+const getLocksQuery = gql`
+  query Locks($first: Int = 1) {
+    locks(first: $first) {
+      tokenAddress
+      address
+    }
+  }
+`
+export const getLocks = async (first = 100) => {
+  const { data } = await subgraph.query({
+    query: getLocksQuery,
+    variables: {
+      first: first,
+    },
+  })
+  return data.locks
+}

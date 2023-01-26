@@ -354,33 +354,33 @@ export function createReceipt(event: ethereum.Event): void {
   const tokenAddress =
     lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
 
+  // Hardcoded?
+  const ERC20_TRANSFER_TOPIC0 =
+    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+
+  log.info('____LOG___', [])
+
   if (lock && tokenAddress.toString().length > 0) {
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
-
     if (logs) {
       // If it is an ERC20 lock, there should be multiple events
       // including one for the ERC20 transfer
+
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
         // TODO: Can we want to use the ABI for this?
         // TODO2: For some tokens it may be different...
-        const ERC20_TRANSFER_TOPIC0 = Bytes.fromByteArray(
-          crypto.keccak256(
-            Bytes.fromHexString('Transfer(address,address.uint256')
-          )
-        )
-
         if (
-          txLog.address.toString() === tokenAddress.toString() &&
-          txLog.topics[0] === ERC20_TRANSFER_TOPIC0 &&
-          ethereum.decode('address', txLog.topics[0])!.toAddress() ===
-            lock.address
+          txLog.address == tokenAddress &&
+          // Do we always have txLog.topics[0] ?
+          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
         ) {
           receipt.payer = ethereum
             .decode('address', txLog.topics[1])!
             .toAddress()
             .toHexString()
+
           receipt.amountTransferred = ethereum
             .decode('uint256', txLog.data)!
             .toBigInt()

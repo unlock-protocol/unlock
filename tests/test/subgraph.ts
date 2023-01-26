@@ -5,6 +5,7 @@ import { unlock, ethers } from 'hardhat'
 import { lockParams } from './helpers/fixtures'
 import * as subgraph from './helpers/subgraph'
 import { purchaseKeys, purchaseKey } from './helpers/keys'
+import ERC20ABI from './helpers/ERC20.abi'
 
 const awaitTimeout = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay))
@@ -282,42 +283,70 @@ describe('Keep track of changes in metadata', function () {
 })
 
 describe('Receipts', function () {
-  let lock: Contract
-  let unlockContract: Contract
-  let lockAddress: string
-  let tokenId: BigNumber
-  let transactionHash: string
-  let receiptInGraph: any
-
-  before(async () => {
-    const [deployer, holder] = await ethers.getSigners()
-    // holder has 500 ERC20
-    // List all locks
-    // find the one that is ERC20
-    // Now we have the ERC20 address
-    // and we can easily purchase keys
-    // And we can look at the receipts!
-
-    ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = lock.address.toLowerCase()
-    unlockContract = await unlock.getUnlockContract()
+  it('created the receipt successfully for a native currency lock', async () => {
+    const locks = await subgraph.getLocks()
+    const lockAddress = locks.find(
+      (lock: any) =>
+        lock.tokenAddress === '0x0000000000000000000000000000000000000000'
+    ).address
+    const lock = await unlock.getLockContract(lockAddress)
 
     // purchase a key
-    const [keyOwner] = await ethers.getSigners()
-    ;({ tokenId, transactionHash } = await purchaseKey(
+    const [payer] = await ethers.getSigners()
+    const { transactionHash } = await purchaseKey(
       lockAddress,
-      keyOwner.address
-    ))
+      ethers.Wallet.createRandom().address
+    )
+    // wait for subgraph to index
     await awaitTimeout(2000)
-    receiptInGraph = await subgraph.getReceipt(transactionHash)
-  })
+    const receiptInGraph = await subgraph.getReceipt(transactionHash)
 
-  it('created the receipt successfully', async () => {
     expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
     expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
       await lock.address.toLocaleLowerCase()
     )
+    expect(receiptInGraph.sender).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.payer).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.amountTransferred).to.equal(await lock.keyPrice()) // assuming price paid was keyPrice
+    expect(parseInt(receiptInGraph.gasTotal, 10)).to.greaterThan(0)
+  })
+
+  it('created the receipt successfully for an ERC20 currency lock', async () => {
+    const locks = await subgraph.getLocks()
+    const lockAddress = locks.find(
+      (lock: any) =>
+        lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+    ).address
+    const lock = await unlock.getLockContract(lockAddress)
+
+    // purchase a key
+    const [payer] = await ethers.getSigners()
+
+    // Check the balance!
+    const erc20 = new ethers.Contract(
+      await lock.tokenAddress(),
+      ERC20ABI,
+      payer
+    )
+    // Approve ERC20
+    await erc20.approve(lockAddress, ethers.constants.MaxUint256)
+    const { transactionHash } = await purchaseKey(
+      lockAddress,
+      ethers.Wallet.createRandom().address // buying for someone else!
+    )
+    // wait for subgraph to index
+    await awaitTimeout(2000)
+    const receiptInGraph = await subgraph.getReceipt(transactionHash)
+
+    expect(receiptInGraph.tokenAddress.toLocaleLowerCase()).to.equals(
+      (await lock.tokenAddress()).toLocaleLowerCase()
+    )
+    expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
+      await lock.address.toLocaleLowerCase()
+    )
+    expect(receiptInGraph.sender).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.payer).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.amountTransferred).to.equal(await lock.keyPrice()) // assuming price paid was keyPrice
+    expect(parseInt(receiptInGraph.gasTotal, 10)).to.greaterThan(0)
   })
 })
-
-// We should have an ERC20 contract provisioned
