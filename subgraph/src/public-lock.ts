@@ -198,6 +198,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   const key = Key.load(keyID)
   if (key) {
     key.expiration = event.params.newTimestamp
+    key.cancelled = false
     key.save()
   }
 }
@@ -214,6 +215,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const key = Key.load(keyID)
   if (key) {
     key.expiration = event.params.newExpiration
+    key.cancelled = false
     key.save()
   }
 }
