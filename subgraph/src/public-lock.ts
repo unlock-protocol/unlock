@@ -45,7 +45,7 @@ function newKey(event: TransferEvent): void {
     event.params.to
   )
 
-  const hash = Address.fromBytes(event.transaction.hash).toHexString()
+  const hash = event.transaction.hash.toHexString()
   const transactionsHash = key.transactionsHash
   // add transaction hash for new key event
   if (transactionsHash && transactionsHash.length) {
@@ -133,7 +133,7 @@ export function handleTransfer(event: TransferEvent): void {
         event.params.to
       )
 
-      const hash = Address.fromBytes(event.transaction.hash).toHexString()
+      const hash = event.transaction.hash.toHexString()
       const transactionsHash = key.transactionsHash
       // add transaction hash for transfer event
       if (transactionsHash && transactionsHash.length) {
@@ -224,7 +224,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    const hash = Address.fromBytes(event.transaction.hash).toHexString()
+    const hash = event.transaction.hash.toHexString()
     const transactionsHash = key.transactionsHash
     // add transaction hash for extend event
     if (transactionsHash && transactionsHash.length) {
@@ -253,7 +253,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const keyID = genKeyID(event.address, tokenId.value.toString())
   const key = Key.load(keyID)
   if (key) {
-    const hash = Address.fromBytes(event.transaction.hash).toHexString()
+    const hash = event.transaction.hash.toHexString()
     const transactionsHash = key.transactionsHash
     // add transaction hash for renew event
     if (transactionsHash && transactionsHash.length) {
@@ -383,7 +383,7 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  */
 export function createReceipt(event: ethereum.Event): void {
   const lockAddress = event.address.toHexString()
-  const hash = Address.fromBytes(event.transaction.hash).toHexString()
+  const hash = event.transaction.hash.toHexString()
 
   const receipt = new Receipt(hash)
 

@@ -222,9 +222,7 @@ describe('Key is expired by lock manager', () => {
     // create a key
     const newExpireKeyEvent = createExpireKeyEvent(BigInt.fromU32(tokenId))
 
-    const hash = Address.fromBytes(
-      newExpireKeyEvent.transaction.hash
-    ).toHexString()
+    const hash = newExpireKeyEvent.transaction.hash.toHexString()
 
     // check for transactionHash
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
@@ -283,9 +281,7 @@ describe('Key managers', () => {
 
     handleKeyManagerChanged(newKeyManagerChanged)
 
-    const hash = Address.fromBytes(
-      newKeyManagerChanged.transaction.hash
-    ).toHexString()
+    const hash = newKeyManagerChanged.transaction.hash.toHexString()
 
     // check for transactionHash
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
@@ -341,7 +337,7 @@ describe('Cancel keys', () => {
 
     const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
     handleCancelKey(newCancelKey)
-    const hash = Address.fromBytes(newCancelKey.transaction.hash).toHexString()
+    const hash = newCancelKey.transaction.hash.toHexString()
     // check for transactionHash
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
