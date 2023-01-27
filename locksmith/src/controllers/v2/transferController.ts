@@ -130,12 +130,17 @@ export const transferDone: RequestHandler = async (request, response) => {
     },
   })
 
-  await UserTokenMetadata.upsert({
-    tokenAddress: lock,
-    chain: network,
-    userAddress: userAddress,
-    data: keyOwnerMetadata?.data || {},
-  })
+  await UserTokenMetadata.upsert(
+    {
+      tokenAddress: lock,
+      chain: network,
+      userAddress: userAddress,
+      data: keyOwnerMetadata?.data || {},
+    },
+    {
+      conflictFields: ['userAddress', 'tokenAddress'],
+    }
+  )
 
   return response.status(200).send({
     message: 'Transfer done',
