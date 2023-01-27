@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@connext/nxtp-contracts": "0.2.1-rc.16",
+    "@connext/sdk": "0.2.1-rc.19",
     "@gnosis.pm/safe-core-sdk": "3.1.1",
     "@gnosis.pm/safe-ethers-lib": "1.6.1",
     "@gnosis.pm/safe-service-client": "1.3.1",
