@@ -110,4 +110,8 @@ type Receipt @entity {
   amountTransferred: BigInt
   "Total gas paid"
   gasTotal: BigInt!
+  "Refer to token id"
+  tokenId: BigInt
+  "Owner of the receipt"
+  owner: String
 }
