@@ -8,7 +8,6 @@ export {
   LocksmithServiceConfiguration,
 } from './locksmithService'
 export * from './subgraph'
-export { UniswapService } from './uniswapService'
 export * from './erc20'
 export * from './erc20abi'
 export * from './KeyManager'

@@ -1,7 +1,6 @@
 import Web3Service from '../web3Service'
 import PublicLockVersions from '../PublicLock'
 import networks from '@unlock-protocol/networks'
-import { getCoinbasePricing } from './helpers/coinbase'
 
 var web3Service = new Web3Service(networks)
 const lock = {
@@ -87,70 +86,6 @@ describe('Web3Service', () => {
       )
 
       expect(returnedAddress).toBe(account)
-    })
-  })
-
-  describe('Uniswap pricing', () => {
-    it('Return WETH price to USDC', async () => {
-      expect.assertions(1)
-      const uniswap = await web3Service.consultUniswap({
-        // WETH
-        tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-        amount: '1',
-      })
-
-      const coinbase = await getCoinbasePricing('ETH', 1)
-      const diff = Math.ceil((uniswap / coinbase) * 100)
-      expect(diff).toBeGreaterThan(95)
-    })
-    it('Return MATIC price to USDC', async () => {
-      expect.assertions(1)
-      const uniswap = await web3Service.consultUniswap({
-        // MATIC
-        tokenInAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
-        amount: '1',
-      })
-
-      const coinbase = await getCoinbasePricing('MATIC', 1)
-      const diff = Math.ceil((uniswap / coinbase) * 100)
-      expect(diff).toBeGreaterThan(95)
-    })
-    it('Return WBTC price to USDC', async () => {
-      expect.assertions(1)
-      const uniswap = await web3Service.consultUniswap({
-        // WBTC
-        tokenInAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-        amount: '1',
-      })
-
-      const coinbase = await getCoinbasePricing('BTC', 1)
-      const diff = Math.ceil((uniswap / coinbase) * 100)
-      expect(diff).toBeGreaterThan(95)
-    })
-
-    it('Return LINK price to USDC', async () => {
-      expect.assertions(1)
-      const uniswap = await web3Service.consultUniswap({
-        // LINK
-        tokenInAddress: '0x514910771af9ca656af840dff83e8264ecf986ca',
-        amount: '1',
-      })
-
-      const coinbase = await getCoinbasePricing('LINK', 1)
-      const diff = Math.ceil((uniswap / coinbase) * 100)
-      expect(diff).toBeGreaterThan(95)
-    })
-    it('Return USDT price to USDC', async () => {
-      expect.assertions(1)
-      const uniswap = await web3Service.consultUniswap({
-        // USDT
-        tokenInAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-        amount: '1',
-      })
-
-      const coinbase = await getCoinbasePricing('USDT', 1)
-      const diff = Math.ceil((uniswap / coinbase) * 100)
-      expect(diff).toBeGreaterThan(95)
     })
   })
 })
