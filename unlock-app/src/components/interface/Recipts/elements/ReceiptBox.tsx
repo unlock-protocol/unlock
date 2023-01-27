@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Collapse, Disclosure } from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
@@ -128,12 +128,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
   const disabledInput = isLoading || isUpdatingReceipt
 
-  const PurchaseDetails = () => {
-    const transactionDate =
-      receiptDetails && receiptDetails.timestamp
-        ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
-        : ''
+  const transactionDate =
+    receiptDetails && receiptDetails.timestamp
+      ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
+      : ''
 
+  const PurchaseDetails = () => {
     return (
       <div className="grid gap-2">
         <DetailLabel label="Transaction Date" value={transactionDate} />
@@ -249,28 +249,37 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         />
       )}
       <div className="grid w-full max-w-lg gap-4 mb-5">
-        <div
-          className="relative grid w-full gap-4 px-6 py-10 bg-white border rounded-xl"
-          ref={componentRef}
-        >
-          <div className="ml-auto md::absolute right-6 top-10">
-            <PurchaseDetails />
-          </div>
-          <Supplier />
-          <Purchaser />
-          <ReceiptDetails />
-          <div className="mt-4">
-            <PoweredByUnlock />
-          </div>
-        </div>
-        <ReactToPrint
-          trigger={() => (
-            <div className="flex justify-end w-full">
-              <Button size="small">Print PDF</Button>
+        <div className="grid w-full">
+          <Disclosure
+            label={`Date: ${transactionDate}`}
+            description={
+              <div className="text-base">{`Tx ${addressMinify(hash)}`}</div>
+            }
+          >
+            <div
+              className="relative w-full print:px-6 print:py-10 "
+              ref={componentRef}
+            >
+              <div className="ml-auto md:absolute right-6 top-10">
+                <PurchaseDetails />
+              </div>
+              <Supplier />
+              <Purchaser />
+              <ReceiptDetails />
+              <div className="mt-4">
+                <PoweredByUnlock />
+              </div>
             </div>
-          )}
-          content={() => componentRef.current}
-        />
+            <ReactToPrint
+              trigger={() => (
+                <div className="flex justify-end w-full">
+                  <Button size="small">Print PDF</Button>
+                </div>
+              )}
+              content={() => componentRef.current}
+            />
+          </Disclosure>
+        </div>
       </div>
     </>
   )
