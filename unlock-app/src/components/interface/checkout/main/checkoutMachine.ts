@@ -593,12 +593,6 @@ export const checkoutMachine = createMachine(
         on: {
           MAKE_ANOTHER_PURCHASE: [
             {
-              target: 'PAYMENT',
-              cond: (ctx) => {
-                return ctx.skipQuantity && ctx.skipRecipient
-              },
-            },
-            {
               target: 'METADATA',
               cond: (ctx) => {
                 return ctx.skipQuantity
