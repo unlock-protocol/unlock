@@ -108,3 +108,25 @@ task(
     const prepareLockUpgrade = require('../scripts/upgrade/submitLockVersion')
     await prepareLockUpgrade({ publicLockAddress, publicLockVersion })
   })
+
+task(
+  'proxy-admin',
+  'Retrieve the proxy admin address'
+)
+  .addOptionalParam('publicLockAddress', 'The deployed contract address')
+  .addOptionalParam(
+    'publicLockVersion',
+    'Specify the template version to deploy (from contracts package)'
+  )
+  .setAction(async (_, { ethers, network }) => {
+    // eslint-disable-next-line global-require
+    const { getProxyAdminAddress } = require('../helpers/deployments')
+    const proxyAdminAddress = await getProxyAdminAddress({ network })
+    const proxyAdmin = await ethers.getContractAt(
+      'TestProxyAdmin',
+      proxyAdminAddress
+    )
+    console.log(`ProxyAdmin at ${proxyAdminAddress} (owner: ${await proxyAdmin.owner()})`)
+  })
+
+  
