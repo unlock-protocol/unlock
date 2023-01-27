@@ -12,7 +12,7 @@ export function Modal({ isOpen, setIsOpen, children, empty }: Props) {
   let content
   if (empty) {
     content = (
-      <div className="block overflow-hidden transition-all transform">
+      <div className="min-h-screen min-w-full flex flex-col items-center justify-center overflow-auto">
         {children}
       </div>
     )

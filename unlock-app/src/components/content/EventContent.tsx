@@ -17,6 +17,7 @@ import Link from 'next/link'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConfig } from '~/utils/withConfig'
 import { Checkout } from '../interface/checkout/main'
+import { Attribute } from '../interface/locks/metadata/utils'
 
 const formatEventData = (metadata: any) => {
   const accentColor = metadata.background_color
@@ -25,16 +26,17 @@ const formatEventData = (metadata: any) => {
 
   let date, time, address
 
-  metadata.attributes.forEach(({ trait_type, value }) => {
+  metadata.attributes.forEach(({ trait_type, value }: Attribute) => {
     if (trait_type === 'event_start_date') {
-      const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }
-
-      date = new Date(Date.parse(value)).toLocaleDateString(undefined, options)
+      date = new Date(Date.parse(value.toString())).toLocaleDateString(
+        undefined,
+        {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }
+      )
     } else if (trait_type === 'event_start_time') {
       time = value
     } else if (trait_type === 'event_address') {
@@ -119,20 +121,21 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const injectedProvider = selectProvider(config)
 
+  const paywallConfig = {
+    locks: {
+      [lockAddress]: {
+        network,
+        emailRequired: true,
+      },
+    },
+  }
+
   return (
     <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
       <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
         <Checkout
           injectedProvider={injectedProvider as any}
-          paywallConfig={
-            {
-              locks: {
-                [lockAddress]: {
-                  network,
-                },
-              },
-            } as any
-          }
+          paywallConfig={paywallConfig}
           handleClose={() => setCheckoutOpen(false)}
         />
       </Modal>

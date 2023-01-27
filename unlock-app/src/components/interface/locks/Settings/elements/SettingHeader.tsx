@@ -1,10 +1,4 @@
 import { Button } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
-import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { addressMinify } from '~/utils/strings'
-import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { IoMdClose as CloseIcon } from 'react-icons/io'
 import { useConfig } from '~/utils/withConfig'
 import { Lock } from '@unlock-protocol/types'
@@ -43,19 +37,8 @@ export const SettingHeader = ({
   isLoading,
   lock,
 }: SettingHeaderProps) => {
-  const { networks, services } = useConfig()
-  const [isCopied, setCopied] = useClipboard(lockAddress, {
-    successDuration: 2000,
-  })
+  const { services } = useConfig()
 
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success(`Lock address copied`)
-  }, [isCopied])
-
-  const { explorer } = networks?.[network] ?? {}
-
-  const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
   const imageUrl = lockAddress
     ? `${services.storage.host}/lock/${lockAddress}/icon`
     : '/images/svg/default-lock-logo.svg'
