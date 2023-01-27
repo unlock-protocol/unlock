@@ -6,6 +6,7 @@ export const mainnet: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/1',
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
+  keyManagerAddress: '0x9A1f43090307034DBFBE2ba20320Ce815ff046D4',
   name: 'Ethereum',
   chain: 'ethereum',
   blockTime: 8000,

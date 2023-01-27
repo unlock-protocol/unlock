@@ -12,7 +12,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
 ) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const network = Number(req.params.network)
-  const hash = Number(req.params.hash)
+  const hash = req.params.hash
   const userAddress = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
   if (!lockAddress) {
@@ -37,7 +37,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
 
   const subgraph = new SubgraphService(networks)
 
-  // get receipt
+  // get receipt from subgraph
   const receipt = await subgraph.receipt(
     {
       where: {
@@ -57,5 +57,6 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
       message: `${userAddress} is not a lock manager or payer of this transaction`,
     })
   }
+
   return next()
 }
