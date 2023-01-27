@@ -1,3 +1,4 @@
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Receipt, ReceiptBase } from '../models'
 
 interface ReceiptDetailsProps {
@@ -13,6 +14,7 @@ export const getReceiptDetails = async ({
 }: ReceiptDetailsProps): Promise<{
   supplier: ReceiptBase | null
   purchaser: Receipt | null
+  receipt: any
 }> => {
   const purchaser = await Receipt.findOne({
     where: {
@@ -29,8 +31,22 @@ export const getReceiptDetails = async ({
     },
   })
 
+  // get receipts details from subgraph
+  const subgraph = new SubgraphService()
+  const receipt = await subgraph.receipt(
+    {
+      where: {
+        id: hash,
+      },
+    },
+    {
+      network,
+    }
+  )
+
   return {
     supplier,
     purchaser,
+    receipt,
   }
 }

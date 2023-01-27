@@ -2,6 +2,7 @@ import {
   getSdk,
   AllLocksQueryVariables,
   AllKeysQueryVariables,
+  AllReceiptsQueryVariables,
 } from '../@generated/subgraph'
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
@@ -110,5 +111,35 @@ export class SubgraphService {
   ) {
     const keys = await this.keys(variables, { networks: [options.network] })
     return keys?.[0]
+  }
+
+  /** Get list or receipts from multiple networks */
+  async receipts(variables: AllReceiptsQueryVariables, options?: QueryOptions) {
+    const networks =
+      options?.networks?.map((item) => this.networks[item]) ||
+      Object.values(this.networks).filter((item) => item.id !== 31337)
+
+    const items = await Promise.all(
+      networks.map(async (config) => {
+        const sdk = this.createSdk(config.id)
+        const results = await sdk.AllReceipts(variables)
+        return results.receipts.map((item) => ({
+          ...item,
+          network: config.id,
+        }))
+      })
+    )
+    return items.flat()
+  }
+
+  /** Get a single receipt for a specific network */
+  async receipt(
+    variables: Omit<AllReceiptsQueryVariables, 'first'>,
+    options: { network: number }
+  ) {
+    const receipts = await this.receipts(variables, {
+      networks: [options.network],
+    })
+    return receipts?.[0]
   }
 }

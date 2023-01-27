@@ -1879,6 +1879,25 @@ paths:
                         type: string
                       country:
                         type: string
+                  receipt:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      timestamp:
+                        type: number
+                      sender:
+                        type: string
+                      payer:
+                        type: string
+                      lockAddress:
+                        type: string
+                      tokenAddress:
+                        type: string
+                      gasTotal:
+                        type: number
+                      amountTransferred:
+                        type: number
 
         500:
           description: Failed to retrieve receipt details.
