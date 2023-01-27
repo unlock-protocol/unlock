@@ -2,6 +2,8 @@ const { ethers } = require('hardhat')
 const getOwners = require('./owners')
 const yesno = require('yesno')
 
+const { networks } = require('@unlock-protocol/networks')
+
 const abi = [
   {
     anonymous: false,
@@ -51,11 +53,19 @@ const abi = [
 ]
 
 async function main({ contractAddress, safeAddress }) {
-  if (!safeAddress) {
-    console.log('TRANSFER > missing safe address')
+
+  const { chainId } = await ethers.provider.getNetwork()
+  const { teamMultisig } = networks[chainId]
+  if(teamMultisig) { 
+    safeAddress = teamMultisig
   }
+
+  if (!safeAddress) {
+    throw Error('TRANSFER > missing safe address')
+  }
+
   if (!contractAddress) {
-    console.log('TRANSFER > missing contract address')
+    throw Error('TRANSFER > missing contract address')
   }
 
   // get contract
@@ -75,7 +85,7 @@ async function main({ contractAddress, safeAddress }) {
     const tx = await contract.transferOwnership(safeAddress)
     const { transactionHash } = await tx.wait()
     console.log(
-      `TRANSFER > Contract ownership transferred > ${transactionHash}.`
+      `TRANSFER > Contract ownership transferred (tx: ${transactionHash}).`
     )
   } else {
     console.log('Transfer aborted.')
