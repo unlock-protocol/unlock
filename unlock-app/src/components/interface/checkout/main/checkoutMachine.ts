@@ -42,6 +42,7 @@ export interface SelectLockEvent {
   skipQuantity?: boolean
   skipRecipient?: boolean
   recipients?: string[]
+  keyManagers?: string[]
 }
 
 export interface SignMessageEvent {
@@ -73,6 +74,7 @@ export interface SubmitPromoEvent {
 export interface SelectRecipientsEvent {
   type: 'SELECT_RECIPIENTS'
   recipients: string[]
+  keyManagers?: string[]
 }
 
 export interface SelectPaymentMethodEvent {
@@ -167,6 +169,7 @@ interface CheckoutMachineContext {
   }
   quantity: number
   recipients: string[]
+  keyManagers?: string[]
   mint?: Transaction
   renewed?: Transaction
   skipQuantity: boolean
@@ -199,6 +202,7 @@ export const checkoutMachine = createMachine(
       quantity: 1,
       renewed: undefined,
       recipients: [],
+      keyManagers: [],
       skipQuantity: false,
       renew: false,
     },
@@ -589,12 +593,6 @@ export const checkoutMachine = createMachine(
         on: {
           MAKE_ANOTHER_PURCHASE: [
             {
-              target: 'PAYMENT',
-              cond: (ctx) => {
-                return ctx.skipQuantity && ctx.skipRecipient
-              },
-            },
-            {
               target: 'METADATA',
               cond: (ctx) => {
                 return ctx.skipQuantity
@@ -646,6 +644,7 @@ export const checkoutMachine = createMachine(
           skipQuantity: false,
           renew: false,
           skipRecipient: true,
+          keyManagers: [],
         } as CheckoutMachineContext
       }),
       selectLock: assign((context, event) => {
@@ -656,6 +655,7 @@ export const checkoutMachine = createMachine(
           skipQuantity: event.skipQuantity,
           skipRecipient: event.skipRecipient,
           recipients: event.recipients,
+          keyManagers: event.keyManagers,
         }
       }),
       selectQuantity: assign({
@@ -671,6 +671,9 @@ export const checkoutMachine = createMachine(
       selectRecipients: assign({
         recipients: (_, event) => {
           return event.recipients
+        },
+        keyManagers: (_, event) => {
+          return event.keyManagers
         },
       }),
       selectCardToCharge: assign({
@@ -721,6 +724,7 @@ export const checkoutMachine = createMachine(
           skipQuantity: false,
           renew: false,
           skipRecipient: true,
+          keyManagers: [],
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({

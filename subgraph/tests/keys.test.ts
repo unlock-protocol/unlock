@@ -7,7 +7,7 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Value } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
@@ -194,6 +194,7 @@ describe('Change in expiration timestamp', () => {
 describe('Extend key', () => {
   test('should increase key timestamp', () => {
     mockDataSourceV11()
+
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -216,6 +217,20 @@ describe('Extend key', () => {
 })
 
 describe('Key is expired by lock manager', () => {
+  test('should have transaction hash', () => {
+    mockDataSourceV11()
+    // create a key
+    const newExpireKeyEvent = createExpireKeyEvent(BigInt.fromU32(tokenId))
+
+    // check for transactionHash
+    assert.fieldEquals(
+      'Key',
+      keyID,
+      'transactionsHash',
+      `[${newExpireKeyEvent.transaction.hash.toString()}]`
+    )
+    dataSourceMock.resetValues()
+  })
   test('should update the key expiration', () => {
     mockDataSourceV11()
     // create a key
@@ -258,6 +273,26 @@ describe('Key is expired by lock manager', () => {
 describe('Key managers', () => {
   const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
 
+  test('should have transaction hash', () => {
+    mockDataSourceV11()
+    // create a key
+
+    const newKeyManagerChanged = createKeyManagerChangedEvent(
+      BigInt.fromU32(tokenId),
+      Address.fromString(newKeyManagerAddress)
+    )
+
+    handleKeyManagerChanged(newKeyManagerChanged)
+
+    // check for transactionHash
+    assert.fieldEquals(
+      'Key',
+      keyID,
+      'transactionsHash',
+      `[${newKeyManagerChanged.transaction.hash.toString()}]`
+    )
+    dataSourceMock.resetValues()
+  })
   test('key manager changed', () => {
     mockDataSourceV11()
 
@@ -302,6 +337,22 @@ describe('Key managers', () => {
 })
 
 describe('Cancel keys', () => {
+  test('should have transaction hash', () => {
+    mockDataSourceV11()
+    // create a key
+
+    const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
+    handleCancelKey(newCancelKey)
+
+    // check for transactionHash
+    assert.fieldEquals(
+      'Key',
+      keyID,
+      'transactionsHash',
+      `[${newCancelKey.transaction.hash.toString()}]`
+    )
+    dataSourceMock.resetValues()
+  })
   test('cancel a key', () => {
     mockDataSourceV11()
     // create a key
