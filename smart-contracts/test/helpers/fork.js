@@ -1,5 +1,5 @@
 const { ethers, network, config } = require('hardhat')
-const { UDT, unlockAddress } = require('./contracts')
+const { UDT, unlockAddress, whales } = require('./contracts')
 
 const resetNodeState = async () => {
   // reset fork
@@ -32,12 +32,24 @@ const impersonate = async (address) => {
   })
   await addSomeETH(address) // give some ETH just in case
 }
+
 const stopImpersonate = async (address) => {
   await network.provider.request({
     method: 'hardhat_stopImpersonatingAccount',
     params: [address],
   })
 }
+
+const addERC20 =  async function (tokenAddress, address, amount = ethers.utils.parseEther('1000')) {
+  if(!whales[tokenAddress]) throw Error(`No whale for this address: ${tokenAddress}`)
+  const whale = await ethers.getSigner(whales[tokenAddress])
+  await impersonate(whale.address)
+
+  const erc20Contract = await ethers.getContractAt('TestERC20', tokenAddress)
+  await erc20Contract.connect(whale).transfer(address, amount)
+  return erc20Contract
+}
+
 
 const toBytes32 = (bn) => {
   return ethers.utils.hexlify(ethers.utils.zeroPad(bn.toHexString(), 32))
@@ -97,4 +109,5 @@ module.exports = {
   getUDTMainnet,
   addUDT,
   addSomeETH,
+  addERC20,
 }

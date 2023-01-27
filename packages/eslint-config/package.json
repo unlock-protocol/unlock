@@ -7,6 +7,11 @@
     "./base": "./src/base.js",
     "./next": "./src/next.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/eslint-config"
+  },
   "description": "Unlock's base JS ESLint config",
   "scripts": {
     "test": "jest"

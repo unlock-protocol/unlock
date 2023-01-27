@@ -1,10 +1,11 @@
-const Unlock = artifacts.require('Unlock.sol')
-const { reverts, deployContracts } = require('../helpers')
+const { ethers } = require('hardhat')
+const { reverts, deployContracts, parseInterface } = require('../helpers')
 
 contract('Unlock / initializers', (accounts) => {
   it('There is only 1 public initializer in Unlock', async () => {
-    const count = Unlock.abi.filter(
-      (x) => x.name.toLowerCase() === 'initialize'
+    const { interface } = await ethers.getContractFactory('Unlock')
+    const count = parseInterface(interface).filter(
+      (func) => func === 'function initialize(address)'
     ).length
     assert.equal(count, 1)
   })

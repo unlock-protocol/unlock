@@ -6,7 +6,7 @@ export const KeyManagerAbi = [
   'function transfer(address lock, uint256 token, address owner, uint256 deadline, bytes transferCode)',
 ]
 
-export interface TransferCode {
+export interface TransferObject {
   lock: string
   token: string
   owner: string
@@ -16,12 +16,12 @@ export interface TransferCode {
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 export interface CreateTransferSignatureOptions {
   signer: Signer
-  params: TransferCode
+  params: TransferObject
   network: number
 }
 
 export interface TransferOptions {
-  params: TransferCode & {
+  params: TransferObject & {
     transferSignature: string
   }
   network: number
@@ -73,6 +73,17 @@ export class KeyManager {
     )
   }
 
+  getDomain(network: number) {
+    const networkConfig = this.networks[network]
+    const domain = {
+      name: 'KeyManager',
+      version: '1',
+      chainId: networkConfig.id,
+      verifyingContract: networkConfig.keyManagerAddress,
+    }
+    return domain
+  }
+
   /**
    * This function returns the KeyManager contract for a given network.
    */
@@ -99,13 +110,7 @@ export class KeyManager {
     signer,
     network,
   }: CreateTransferSignatureOptions) {
-    const networkConfig = this.networks[network]
-    const domain = {
-      name: 'KeyManager',
-      version: '1',
-      chainId: networkConfig.id,
-      verifyingContract: networkConfig.keyManagerAddress,
-    }
+    const domain = this.getDomain(network)
     const signature = await signer._signTypedData(domain, TransferTypes, params)
     return signature
   }
@@ -127,6 +132,7 @@ export class KeyManager {
       deadline,
       transferSignature
     )
+
     return tx
   }
 
@@ -146,6 +152,7 @@ export class KeyManager {
       deadline,
       transferSignature
     )
+
     return tx
   }
 
@@ -153,6 +160,27 @@ export class KeyManager {
    * This function creates a wallet address from a lock address and an email address.
    */
   createTransferAddress({ params }: CreateTransferAddressKey) {
-    return ethers.utils.id(JSON.stringify(params)).slice(0, 42)
+    const item = {
+      email: params.email.trim().toLowerCase(),
+      lock: params.lockAddress.trim().toLowerCase(),
+    }
+    return ethers.utils.id(JSON.stringify(item)).slice(0, 42)
+  }
+
+  /**
+   * Return signer for the transfer signature provided in the params
+   */
+  getSignerForTransferSignature({
+    params: { lock, token, owner, deadline, transferSignature },
+    network,
+  }: Omit<TransferOptions, 'signer'>) {
+    const domain = this.getDomain(network)
+    const recoveredAddress = ethers.utils.verifyTypedData(
+      domain,
+      TransferTypes,
+      { lock, token, owner, deadline },
+      transferSignature
+    )
+    return recoveredAddress
   }
 }

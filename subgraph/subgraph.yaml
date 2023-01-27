@@ -9,7 +9,7 @@ dataSources:
       abi: Unlock
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - NewLock
@@ -37,7 +37,7 @@ templates:
       abi: PublicLock
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - CancelKey
@@ -63,31 +63,44 @@ templates:
       eventHandlers:
         - event: LockConfig(uint256,uint256,uint256)
           handler: handleLockConfig
+          receipt: true
         - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
           handler: handleCancelKey
+          receipt: true
         - event: ExpirationChanged(indexed uint256,uint256,bool)
           handler: handleExpirationChangedUntilV11
+          receipt: true
         - event: ExpirationChanged(indexed uint256,uint256,uint256,bool)
           handler: handleExpirationChanged
+          receipt: true
         - event: ExpireKey(indexed uint256)
           handler: handleExpireKey
+          receipt: true
         - event: KeyExtended(indexed uint256,uint256)
           handler: handleKeyExtended
+          receipt: true
         - event: KeyManagerChanged(indexed uint256,indexed address)
           handler: handleKeyManagerChanged
+          receipt: true
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
           handler: handleRoleGranted
           receipt: true
         - event: LockManagerAdded(indexed address)
           handler: handleLockManagerAdded
+          receipt: true
         - event: LockManagerRemoved(indexed address)
           handler: handleLockManagerRemoved
+          receipt: true
         - event: PricingChanged(uint256,uint256,address,address)
           handler: handlePricingChanged
+          receipt: true
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+          receipt: true
         - event: RenewKeyPurchase(indexed address,uint256)
           handler: handleRenewKeyPurchase
+          receipt: true
         - event: LockMetadata(string,string,string)
           handler: handleLockMetadata
+          receipt: true
       file: ./src/public-lock.ts
