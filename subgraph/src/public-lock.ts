@@ -59,7 +59,7 @@ function newKey(event: TransferEvent): void {
   key.save()
 
   // create receipt
-  createReceipt(event)
+  createReceipt(event, event.params.to, event.params.tokenId)
 
   // update lock
   const lock = Lock.load(event.address.toHexString())
@@ -120,11 +120,11 @@ export function handleTransfer(event: TransferEvent): void {
       lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
       lock.save()
     }
-    createReceipt(event)
   } else {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
     const key = Key.load(keyID)
+
     if (key) {
       key.owner = event.params.to
       key.expiration = getKeyExpirationTimestampFor(
@@ -145,7 +145,7 @@ export function handleTransfer(event: TransferEvent): void {
       }
       key.save()
     }
-    createReceipt(event)
+    createReceipt(event, event.params.to, event.params.tokenId)
   }
 }
 
@@ -239,7 +239,11 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.save()
   }
   // create receipt
-  createReceipt(event)
+  if (key && key.owner) {
+    createReceipt(event, key.owner, event.params.tokenId)
+  } else {
+    createReceipt(event, Address.fromString(''), event.params.tokenId)
+  }
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -269,7 +273,11 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 
   // create receipt
-  createReceipt(event)
+  if (key && key.owner) {
+    createReceipt(event, key.owner, tokenId.value)
+  } else {
+    createReceipt(event, Address.fromString(''), tokenId.value)
+  }
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -381,7 +389,11 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  * @param {event} Object - Object event
  * @return {void}
  */
-export function createReceipt(event: ethereum.Event): void {
+export function createReceipt(
+  event: ethereum.Event,
+  owner: Address,
+  tokenId: BigInt
+): void {
   const lockAddress = event.address.toHexString()
   const hash = event.transaction.hash.toHexString()
 
@@ -427,6 +439,10 @@ export function createReceipt(event: ethereum.Event): void {
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
+
+  // store tokenId and owner information
+  receipt.tokenId = tokenId
+  receipt.owner = owner.toString()
 
   receipt.lockAddress = lockAddress
   receipt.timestamp = event.block.timestamp
