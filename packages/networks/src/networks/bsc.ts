@@ -4,6 +4,7 @@ export const bsc: NetworkConfig = {
   publicProvider: 'https://bsc-dataseed.binance.org/',
   provider: 'https://rpc.unlock-protocol.com/56',
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
+  keyManagerAddress: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
   id: 56,
   name: 'Binance Smart Chain',
   chain: 'bsc',
