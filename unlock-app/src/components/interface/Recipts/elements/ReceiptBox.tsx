@@ -11,6 +11,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -67,7 +68,7 @@ const Address = ({
 
 const ReceiptBoxPlaceholder = () => {
   return (
-    <div className="w-full max-w-lg rounded-xl bg-slate-200 animate-pulse h-[500px]"></div>
+    <div className="w-full max-w-lg rounded-xl bg-slate-200 animate-pulse h-[100px]"></div>
   )
 }
 
@@ -232,6 +233,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     return <NotAuthorizedBar />
   }
 
+  const transactionHashUrl =
+    networks[network].explorer?.urls.transaction(hash) || '#'
+
   return (
     <>
       {isPurchaser && (
@@ -253,7 +257,15 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           <Disclosure
             label={`Date: ${transactionDate}`}
             description={
-              <div className="text-base">{`Tx ${addressMinify(hash)}`}</div>
+              <div className="text-base">
+                {`Transaction Hash:`}{' '}
+                <Link href={transactionHashUrl}>
+                  {' '}
+                  <span className="font-semibold text-brand-ui-primary">
+                    {addressMinify(hash)}
+                  </span>
+                </Link>
+              </div>
             }
           >
             <div
