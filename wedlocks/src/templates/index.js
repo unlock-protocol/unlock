@@ -1,24 +1,19 @@
 import confirmEmail from './confirmEmail'
-import ejectedEmail from './ejectedEmail'
-import ejectionWarningEmail from './ejectionWarningEmail'
 import welcome from './welcome'
-import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
-import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
-
-import * as LockTemplates from './locks'
+import transferCode from './transferCode'
+import keyAirdropped from './keyAirdropped'
+import LockTemplates from './locks'
 
 const baseTemplates = {
   confirmEmail,
-  ejectedEmail,
-  ejectionWarningEmail,
   welcome,
-  recoveryKeyConfirmEmail,
-  confirmEvent,
   keyOwnership,
+  keyAirdropped,
   keyMined,
+  transferCode,
   debug,
 }
 
@@ -30,4 +25,5 @@ Object.keys(LockTemplates).forEach((template) => {
 Object.keys(baseTemplates).forEach((template) => {
   templates[template.toLowerCase()] = baseTemplates[template]
 })
+
 export default templates

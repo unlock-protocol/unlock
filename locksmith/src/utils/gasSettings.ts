@@ -41,13 +41,15 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
       const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
       const data = await resp.json()
 
-      const maxFeePerGas = ethers.utils
-        .parseUnits(`${Math.ceil(data.fast.maxFee)}`, 'gwei')
-        .mul(2)
+      const maxFeePerGas = ethers.utils.parseUnits(
+        `${Math.ceil(data.fast.maxFee)}`,
+        'gwei'
+      )
 
-      const maxPriorityFeePerGas = ethers.utils
-        .parseUnits(`${Math.ceil(data.fast.maxPriorityFee)}`, 'gwei')
-        .mul(2)
+      const maxPriorityFeePerGas = ethers.utils.parseUnits(
+        `${Math.ceil(data.fast.maxPriorityFee)}`,
+        'gwei'
+      )
 
       return setMaxFeePerGas({
         maxFeePerGas,
@@ -60,7 +62,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
 
   // get fees from network provider
   const provider = new ethers.providers.JsonRpcProvider(
-    networks[network].publicProvider
+    networks[network]?.publicProvider
   )
 
   let feedata

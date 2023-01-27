@@ -12,10 +12,11 @@ import dayjs from 'dayjs'
 export class AuthController {
   async login(request: Request, response: Response) {
     try {
-      if (!request.body.message) {
+      if (!request.body?.message) {
         response.status(422).json({
           message: 'Expected message object as body.',
         })
+        return
       }
       const message = new SiweMessage(request.body.message)
       const fields = await message.validate(request.body.signature)
@@ -26,11 +27,13 @@ export class AuthController {
           nonce: fields.nonce,
         },
       })
+
       if (isNonceLoggedIn) {
         logger.info(`${fields.nonce} was already used for login.`)
         response.status(422).json({
           message: 'Invalid nonce',
         })
+        return
       }
 
       const accessToken = createAccessToken({
@@ -76,7 +79,7 @@ export class AuthController {
   async token(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
+        request.body?.refreshToken ||
         request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {
@@ -84,12 +87,11 @@ export class AuthController {
           message: 'No refresh token provided in the header or body.',
         })
       }
-
       const refreshTokenData = await RefreshToken.findOne({
         where: {
           token: refreshToken,
           revoked: {
-            [Op.or]: [null, false],
+            [Op.or]: [false, null],
           },
         },
       })
@@ -159,7 +161,7 @@ export class AuthController {
   async revokeToken(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
+        request.body?.refreshToken ||
         request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {

@@ -1,8 +1,13 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.1.0",
-  "module": "src/index.ts",
-  "main": "dist/unlock.latest.min.js",
+  "version": "0.2.0",
+  "exports": "./dist/unlock.latest.min.js",
+  "main": "./dist/unlock.latest.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/paywall"
+  },
   "scripts": {
     "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js",
@@ -16,25 +21,25 @@
     "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/jest-config": "workspace:^",
+    "@unlock-protocol/networks": "workspace:^",
+    "@unlock-protocol/tsconfig": "workspace:^",
+    "@unlock-protocol/types": "workspace:^",
     "babel-jest": "28.1.3",
-    "css-loader": "6.7.1",
-    "dotenv": "16.0.1",
-    "eslint": "8.21.0",
+    "css-loader": "6.7.3",
+    "dotenv": "16.0.3",
+    "eslint": "8.31.0",
     "jest": "27.5.1",
     "jest-fetch-mock": "3.0.3",
     "node-fetch": "2.6.7",
     "style-loader": "3.3.1",
     "ts-jest": "27.1.5",
-    "ts-loader": "9.3.1",
-    "typescript": "4.7.4",
-    "webpack": "5.74.0",
-    "webpack-cli": "4.10.0"
+    "ts-loader": "9.4.2",
+    "typescript": "4.9.4",
+    "webpack": "5.75.0",
+    "webpack-cli": "5.0.1"
   },
   "dependencies": {
-    "@unlock-protocol/jest-config": "workspace:^",
-    "@unlock-protocol/networks": "workspace:^",
-    "@unlock-protocol/tsconfig": "workspace:^",
-    "@unlock-protocol/types": "workspace:^",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.7",
     "postmate": "1.5.2"

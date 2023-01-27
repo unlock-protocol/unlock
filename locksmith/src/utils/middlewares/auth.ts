@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { RequestHandler, response } from 'express'
 import { Application } from '../../models/application'
 import { logger } from '../../logger'
+import normalizer from '../normalizer'
 
 export type User =
   | {
@@ -16,16 +17,20 @@ export type User =
     }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: User
+      owner: string
+      signee: string
+      chain: number
     }
   }
 }
 
 export const jwtConfig = {
   tokenSecret: process.env.JWT_TOKEN_SECRET ?? 'access-token-secret',
-  expire: process.env.JWT_EXPIRE ?? '3600',
+  expire: process.env.JWT_EXPIRE ?? '30m',
 }
 
 export function createRandomToken() {
@@ -52,7 +57,7 @@ export const authenticateWithApiKey = async (req: any, token: string) => {
 
   req.user = {
     type: 'application',
-    walletAddress: app.walletAddress,
+    walletAddress: normalizer.ethereumAddress(app.walletAddress),
     id: app.id,
   }
 }
@@ -79,7 +84,10 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
 
     if (tokenType === 'bearer') {
       const user = jwt.verify(token, jwtConfig.tokenSecret) as User
-      req.user = user
+      req.user = {
+        ...user,
+        walletAddress: normalizer.ethereumAddress(user.walletAddress),
+      }
       return next()
     }
 
@@ -99,7 +107,7 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
 
 export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
   if (!req.user) {
-    return res.status(403).send({
+    return res.status(401).send({
       message: 'You are not authenticated.',
     })
   }

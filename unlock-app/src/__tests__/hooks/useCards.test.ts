@@ -1,10 +1,10 @@
 import React from 'react'
 import { EventEmitter } from 'events'
 import { renderHook } from '@testing-library/react-hooks'
-import fetch from 'jest-fetch-mock'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import * as UseCards from '../../hooks/useCards'
+import { vi } from 'vitest'
 
 class MockWalletService extends EventEmitter {
   constructor() {
@@ -30,15 +30,24 @@ const config = {
 const signature = 'signature'
 
 const walletService = {
-  signMessage: jest.fn(() => signature),
+  signMessage: vi.fn(() => signature),
 }
+
+vi.mock('node-fetch', () => {
+  return {
+    mockResponseOnce: vi.fn(),
+    resetMocks: vi.fn(),
+    mock: {},
+  }
+})
 
 describe('UseCards', () => {
   beforeEach(() => {
+    // @ts-ignore
     fetch.resetMocks()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
-    jest.spyOn(React, 'useContext').mockImplementation((context) => {
+    vi.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === WalletServiceContext) {
         return mockWalletService
       }
@@ -48,7 +57,7 @@ describe('UseCards', () => {
     })
 
     mockWalletService = new MockWalletService()
-    mockWalletService.signMessage = jest.fn().mockResolvedValue('a signature')
+    mockWalletService.signMessage = vi.fn().mockResolvedValue('a signature')
   })
 
   describe('useCards', () => {

@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import GlobalStyle from '../../theme/globalStyle'
-import configure from '../../config'
+import React, { useState, useEffect, ReactNode } from 'react'
 import { WedlockServiceContext } from '../../contexts/WedlocksContext'
 import WedlockService from '../../services/wedlockService'
 import { ConfigContext } from '../../utils/withConfig'
 import ProviderContext from '../../contexts/ProviderContext'
 import Authenticate from './Authenticate'
 import { CONSOLE_MESSAGE } from '../../constants'
+import { config } from '~/config/app'
 
-const config = configure()
 const wedlockService = new WedlockService(config.services.wedlocks.host)
 
 interface GlobalWrapperProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
@@ -25,7 +23,6 @@ export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
 
   return (
     <>
-      <GlobalStyle />
       {children && (
         <ConfigContext.Provider value={config}>
           <WedlockServiceContext.Provider value={wedlockService}>

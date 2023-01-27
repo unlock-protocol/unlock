@@ -3,7 +3,7 @@ import * as contracts from '@unlock-protocol/contracts'
 import { networks } from '@unlock-protocol/networks'
 import { NetworkConfig } from '@unlock-protocol/types'
 import listManagers from './lockManagers'
-import { purchaserCredentials } from '../../config/config'
+import config from '../config/config'
 
 interface LockClonerProps {
   lockAddress: string
@@ -28,14 +28,14 @@ export default async function migrateLock(
   let unlockAddress
   let serializerAddress
   let provider
-  let subgraphURI
+  let subgraph
   if (
     chainId === 100 ||
     chainId === 137 ||
     chainId === 31337 ||
     chainId === 4
   ) {
-    ;({ unlockAddress, serializerAddress, provider, subgraphURI } = network)
+    ;({ unlockAddress, serializerAddress, provider, subgraph } = network)
   } else {
     throw new Error(
       `Chain with id ${chainId} not supported (only Polygon & xDai)`
@@ -55,7 +55,7 @@ export default async function migrateLock(
     message: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
   })
 
-  const signer = new Wallet(purchaserCredentials, rpc)
+  const signer = new Wallet(config.purchaserCredentials, rpc)
 
   // serialize
   const serializer = new ethers.Contract(
@@ -153,12 +153,12 @@ export default async function migrateLock(
   })
 
   // fetch managers from graph
-  if (subgraphURI) {
+  if (subgraph.endpoint) {
     let managers
     try {
       managers = await listManagers({
         lockAddress,
-        subgraphURI,
+        subgraphURI: subgraph.endpoint,
       })
     } catch (error) {
       callback(null, {

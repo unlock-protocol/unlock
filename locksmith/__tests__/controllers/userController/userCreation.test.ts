@@ -1,10 +1,9 @@
 import { ethers } from 'ethers'
-
-import models = require('../../../src/models')
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
-
-const UserOperations = require('../../../src/operations/userOperations')
+import request from 'supertest'
+import app from '../../app'
+import * as Base64 from '../../../src/utils/base64'
+import { User, UserReference } from '../../../src/models'
+import UserOperations from '../../../src/operations/userOperations'
 
 function generateTypedData(message: any, messageKey: string) {
   return {
@@ -26,9 +25,6 @@ function generateTypedData(message: any, messageKey: string) {
 }
 
 beforeAll(() => {
-  const { User } = models
-  const { UserReference } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
@@ -36,8 +32,6 @@ beforeAll(() => {
 })
 
 describe('user creation', () => {
-  const request = require('supertest')
-
   const wallet = new ethers.Wallet(
     '0x68eec585ce3c13bf0cbe407cb05cd2679cb829fe350471846c9a8aa2ea85b6ac'
   )
@@ -52,16 +46,12 @@ describe('user creation', () => {
   const typedData = generateTypedData(message, 'user')
 
   describe('when a user matching the public key does not exist', () => {
-    const models = require('../../../src/models')
-    const { User } = models
-    const { UserReference } = models
-
     it('creates the appropriate records', async () => {
       expect.assertions(3)
 
       const response = await request(app)
         .post('/users')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .send(typedData)
       expect(response.statusCode).toBe(200)
       expect(
@@ -84,7 +74,7 @@ describe('user creation', () => {
 
       const response = await request(app)
         .post('/users')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .send(typedData)
 
       expect(response.statusCode).toBe(400)
@@ -110,7 +100,7 @@ describe('user creation', () => {
 
       const response = await request(app)
         .post('/users')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 
@@ -143,7 +133,7 @@ describe('user creation', () => {
 
       const response = await request(app)
         .post('/users')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .send(generateTypedData(message, 'user'))
       expect(response.statusCode).toBe(409)
     })

@@ -23,7 +23,7 @@ const SIZE_STYLES: SizeStyleProp = {
 export const IconButton = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
     const buttonClass = twMerge(
-      'border rounded hover:bg-gray-50',
+      'rounded hover:fill-brand-ui-primary',
       props.size ? SIZE_STYLES[props.size] : SIZE_STYLES['medium'],
       props.className
     )

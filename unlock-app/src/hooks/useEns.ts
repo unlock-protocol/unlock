@@ -3,15 +3,18 @@ import { useState, useEffect } from 'react'
 import configure from '../config'
 
 const config = configure()
-// @ts-expect-error (TODO: define type for config.networks)
-const publicProvider = config.networks[1].publicProvider
 
 export const getNameOrAddressForAddress = async (
-  address: string
+  _address: string
 ): Promise<string> => {
   try {
+    const address = _address.trim()
+    const isNotENS = ethers.utils.isAddress(address)
+    if (isNotENS) {
+      return address
+    }
     const result = await new ethers.providers.JsonRpcProvider(
-      publicProvider
+      config.networks[1].provider
     ).lookupAddress(address)
     if (result) {
       return result
@@ -19,20 +22,25 @@ export const getNameOrAddressForAddress = async (
     return address
   } catch (error) {
     // Resolution failed. So be it, we'll show the 0x address
-    console.error(`We could not resolve ENS for ${address}`)
-    return address
+    console.error(`We could not resolve ENS name for ${_address}`)
+    return _address
   }
 }
 
-export const getAddressForName = async (name: string): Promise<string> => {
+export const getAddressForName = async (_name: string): Promise<string> => {
   try {
+    const name = _name.trim()
+    const isAddress = name.split('.').pop()?.toLowerCase() !== 'eth'
+    if (isAddress) {
+      return name
+    }
     const result = await new ethers.providers.JsonRpcProvider(
-      publicProvider
+      config.networks[1].provider
     ).resolveName(name)
     return result || ''
   } catch (error) {
     // Resolution failed. So be it, we'll show the 0x address
-    console.error(`We could not resolve ENS for ${name}`)
+    console.error(`We could not resolve ENS address for ${name}`)
     return ''
   }
 }

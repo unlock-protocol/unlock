@@ -1,18 +1,31 @@
 const { ethers } = require('hardhat')
-const UniswapOracle = require('../../test/helpers/ABIs/UniswapOracle.json')
+const UniswapOracleV2 = require('../../test/helpers/ABIs/UniswapV2Oracle.json')
+
+const {
+  UNISWAP_FACTORY_ADDRESS: UNISWAPV3_FACTORY_ADDRESS,
+} = require('../../test/helpers')
 
 // TODO: check if oracle has already been deployed and skips if one already exists!
-async function main({ uniswapFactoryAddress }) {
-  if (!uniswapFactoryAddress) {
+async function main({
+  uniswapFactoryAddress = UNISWAPV3_FACTORY_ADDRESS,
+  uniswapVersion = 3,
+} = {}) {
+  if (uniswapVersion == 2 && !uniswapFactoryAddress) {
     // eslint-disable-next-line no-console
     throw new Error(
       'UNISWAP ORACLE > Missing Uniswap V2 Factory address... aborting.'
     )
   }
-  const Oracle = await ethers.getContractFactory(
-    UniswapOracle.abi,
-    UniswapOracle.bytecode
-  )
+  let Oracle
+  if (uniswapVersion == 2) {
+    Oracle = await ethers.getContractFactory(
+      UniswapOracleV2.abi,
+      UniswapOracleV2.bytecode
+    )
+  } else if (uniswapVersion == 3) {
+    Oracle = await ethers.getContractFactory('UniswapOracleV3')
+  }
+
   const oracle = await Oracle.deploy(uniswapFactoryAddress)
   await oracle.deployed()
 

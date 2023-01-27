@@ -1,9 +1,13 @@
-import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
+import {
+  WalletService,
+  LocksmithService,
+  LocksmithServiceConfiguration,
+} from '@unlock-protocol/unlock-js'
+
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
-import { Lock } from '../unlockTypes'
-import fetch, { RequestInit } from 'node-fetch'
+import fetch from 'node-fetch'
 import { APP_NAME } from '~/hooks/useAppStorage'
 
 // The goal of the success and failure objects is to act as a registry of events
@@ -12,10 +16,6 @@ import { APP_NAME } from '~/hooks/useAppStorage'
 // objects.
 export const success = {
   addPaymentMethod: 'addPaymentMethod.success',
-  storeTransaction: 'storeTransaction.success',
-  getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
-  getLockAddressesForUser: 'getLockAddressesForUser.success',
-  storeLockDetails: 'storeLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
@@ -23,16 +23,10 @@ export const success = {
   getCards: 'getCards.success',
   keyPurchase: 'keyPurchase.success',
   ejectUser: 'ejectUser.success',
-  getMetadataFor: 'getMetadataFor.success',
-  getBulkMetadataFor: 'getBulkMetadataFor.success',
 }
 
 export const failure = {
   addPaymentMethod: 'addPaymentMethod.failure',
-  storeTransaction: 'storeTransaction.failure',
-  getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
-  getLockAddressesForUser: 'getLockAddressesForUser.failure',
-  storeLockDetails: 'storeLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
@@ -40,8 +34,6 @@ export const failure = {
   getCards: 'getCards.failure',
   keyPurchase: 'keyPurchase.failure',
   ejectUser: 'ejectUser.failure',
-  getMetadataFor: 'getMetadataFor.failure',
-  getBulkMetadataFor: 'getBulkMetadataFor.failure',
 }
 
 interface GetSiweMessageProps {
@@ -63,16 +55,27 @@ export class StorageService extends EventEmitter {
   constructor(host: string) {
     super()
     this.host = host
-    this.locksmith = new LocksmithService({
-      host,
-    })
+    this.locksmith = new LocksmithService(
+      new LocksmithServiceConfiguration({
+        basePath: host,
+      })
+    )
   }
 
+  loginRequest = false
+
   async login(message: string, signature: string) {
-    const { refreshToken, accessToken } = await this.locksmith.login(
+    const response = await this.locksmith.login({
       message,
-      signature
-    )
+      signature,
+    })
+
+    if (response.status !== 200) {
+      throw new Error('login failed')
+    }
+
+    const { refreshToken, accessToken } = response.data
+
     this.refreshToken = refreshToken
     this.#accessToken = accessToken
   }
@@ -96,6 +99,10 @@ export class StorageService extends EventEmitter {
   }
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    if (this.loginRequest) {
+      return
+    }
+    this.loginRequest = true
     try {
       const refreshToken = this.refreshToken
       if (refreshToken) {
@@ -116,6 +123,7 @@ export class StorageService extends EventEmitter {
         console.error(err.message)
       }
     }
+    this.loginRequest = false
   }
 
   #accessToken: null | string = null
@@ -144,8 +152,11 @@ export class StorageService extends EventEmitter {
       throw new Error('User is not authenticated')
     }
     if (!this.#accessToken || isExpired(this.#accessToken)) {
-      const { accessToken } = await this.locksmith.refreshToken(refreshToken)
-      this.#accessToken = accessToken
+      const { data, status } = await this.locksmith.refreshToken(refreshToken)
+      if (status !== 200) {
+        throw new Error('Could not get access token')
+      }
+      this.#accessToken = data.accessToken
     }
     return this.#accessToken
   }
@@ -156,87 +167,15 @@ export class StorageService extends EventEmitter {
     version = '1',
   }: GetSiweMessageProps) {
     const siweMessage = LocksmithService.createSiweMessage({
-      domain: 'locksmith.unlock-protocol.com',
-      uri: this.host,
+      domain: window.location.hostname,
+      uri: window.location.origin,
       address,
       chainId,
       version,
-      statement: 'Authorize',
+      statement: '',
       nonce: generateNonce(),
     })
     return siweMessage.prepareMessage()
-  }
-
-  /**
-   * Stores transaction hashes and the sender
-   * @param {*} transactionHash
-   * @param {*} senderAddress
-   * @param {*} recipientAddress
-   * @param {*} chain
-   * @paran {*} data (input of transaction, optional)
-   */
-  async storeTransaction(
-    transactionHash: string,
-    senderAddress: string,
-    recipientAddress: string,
-    chain: number,
-    beneficiaryAddress: string /** Used in the context of key purchase *for* */,
-    data: any
-  ) {
-    const payload = {
-      transactionHash,
-      sender: senderAddress,
-      for: beneficiaryAddress || senderAddress,
-      recipient: recipientAddress,
-      data,
-      chain,
-    }
-
-    try {
-      await fetch(`${this.host}/transaction`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      this.emit(success.storeTransaction, transactionHash)
-    } catch (error) {
-      this.emit(failure.storeTransaction, error)
-    }
-  }
-
-  /**
-   * Gets all the transactions sent by a given address, in the last 24 hours
-   * Returns an empty array by default
-   * TODO: consider a more robust url building
-   * @param {*} senderAddress
-   */
-  async getRecentTransactionsHashesSentBy(senderAddress: string) {
-    let hashes = [] // TODO This is badly named! this returns full transactions
-    try {
-      const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
-      const response = await fetch(
-        `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`,
-        {
-          method: 'GET',
-        }
-      )
-      const data = await response.json()
-      if (data && data.transactions) {
-        hashes = data.transactions.map((t: any) => ({
-          hash: t.transactionHash,
-          network: t.chain,
-          to: t.recipient,
-          from: t.sender,
-        }))
-      }
-      this.emit(success.getTransactionHashesSentBy, { senderAddress, hashes })
-      return { senderAddress, hashes }
-    } catch (error) {
-      this.emit(failure.getTransactionHashesSentBy, error)
-      return { senderAddress, hashes } // TODO: consider if thos should be an error
-    }
   }
 
   genAuthorizationHeader(token: string) {
@@ -254,7 +193,7 @@ export class StorageService extends EventEmitter {
    * @returns {Promise<*>}
    */
 
-  async createUser(user: any) {
+  async createUser(user: any): Promise<any> {
     return fetch(`${this.host}/users/`, {
       method: 'POST',
       body: JSON.stringify(user),
@@ -438,34 +377,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Retrieves the list of known lock adresses for this user
-   * [Note: locksmith may not know of all the locks by a user at a given point as the lock may not be deployed yet, or the lock might have been transfered]
-   * @param {*} address
-   */
-  async getLockAddressesForUser(address: string) {
-    try {
-      const response = await fetch(`${this.host}/${address}/locks`, {
-        method: 'GET',
-      })
-      const data = await response.json()
-
-      if (data && data.locks) {
-        this.emit(
-          success.getLockAddressesForUser,
-          data.locks.map((lock: Lock) => lock.address)
-        )
-      } else {
-        this.emit(
-          failure.getLockAddressesForUser,
-          'We could not retrieve lock addresses for that user'
-        )
-      }
-    } catch (error) {
-      this.emit(failure.getLockAddressesForUser, error)
-    }
-  }
-
-  /**
    * Ejects a user
    *
    * @param {*} publicKey
@@ -488,54 +399,6 @@ export class StorageService extends EventEmitter {
       this.emit(success.ejectUser, { publicKey })
     } catch (error) {
       this.emit(failure.ejectUser, { publicKey })
-    }
-  }
-
-  /**
-   * Given a lock address and a typed data signature, get the metadata
-   * (public and protected) associated with each key on that lock.
-   * @param {string} lockAddress
-   * @param {string} signature
-   * @param {*} data
-   */
-  async getBulkMetadataFor(
-    lockAddress: string,
-    signature: string,
-    data: any,
-    network: number
-  ) {
-    const stringData = JSON.stringify(data)
-    const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
-      // No body allowed in GET, so these are passed as query params for this
-      // call.
-      params: {
-        data: stringData,
-        signature,
-      },
-    }
-    try {
-      const url = new URL(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`
-      )
-      url.searchParams.append('data', JSON.stringify(opts.params))
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          ...opts.headers,
-        },
-      })
-      const data = response.json()
-
-      this.emit(success.getBulkMetadataFor, lockAddress, data)
-      return data
-    } catch (error) {
-      this.emit(failure.getBulkMetadataFor, error)
     }
   }
 
@@ -589,7 +452,7 @@ export class StorageService extends EventEmitter {
         ...opts.headers,
       },
     })
-    return await response?.json()
+    return response.ok
   }
 
   /**
@@ -756,26 +619,6 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
-    const endpoint = `${this.host}${url}`
-    let params = options
-    const token = await this.getAccessToken()
-    if (withAuth) {
-      params = {
-        ...params,
-        headers: {
-          ...params.headers,
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    }
-    return fetch(endpoint, {
-      ...params,
-    }).then((res) => {
-      return res.json()
-    })
-  }
-
   async userExist(emailAddress: string) {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
@@ -810,178 +653,6 @@ export class StorageService extends EventEmitter {
     }
     const response = await fetch(url, opts)
     return response.json()
-  }
-
-  async updatetMetadata({
-    lockAddress,
-    userAddress,
-    network,
-    metadata,
-  }: {
-    lockAddress: string
-    userAddress: string
-    network: number
-    metadata: any
-  }) {
-    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
-    const token = await this.getAccessToken()
-    const formattedMetadata = {
-      metadata: {
-        protected: {
-          ...metadata,
-        },
-      },
-    }
-
-    const opts = {
-      method: 'PUT',
-      body: JSON.stringify(formattedMetadata),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-    return await fetch(url, opts)
-  }
-
-  async createtMetadata({
-    lockAddress,
-    userAddress,
-    network,
-    metadata,
-  }: {
-    lockAddress: string
-    userAddress: string
-    network: number
-    metadata: any
-  }) {
-    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
-    const token = await this.getAccessToken()
-    const formattedMetadata = {
-      metadata: {
-        protected: {
-          ...metadata,
-        },
-      },
-    }
-
-    const opts = {
-      method: 'POST',
-      body: JSON.stringify(formattedMetadata),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-    const response = await fetch(url, opts)
-    return response.json()
-  }
-
-  async markTicketAsCheckedIn({
-    lockAddress,
-    keyId,
-    network,
-  }: {
-    lockAddress: string
-    keyId: string
-    network: number
-  }) {
-    const token = await this.getAccessToken()
-    const endpoint = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
-    return fetch(endpoint, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  }
-
-  async getVerifierStatus({
-    viewer,
-    network,
-    lockAddress,
-  }: {
-    viewer: string
-    network: number
-    lockAddress: string
-  }): Promise<boolean> {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await this.getEndpoint(
-      `/v2/api/verifier/${network}/lock/${lockAddress}/address/${viewer}`,
-      options,
-      true
-    ).then((res: any) => {
-      if (res.message) {
-        return false
-      } else {
-        return res?.enabled ?? false
-      }
-    })
-  }
-
-  async getKeyMetadataValues({
-    lockAddress,
-    network,
-    keyId,
-  }: {
-    lockAddress: string
-    network: number
-    keyId: number
-  }): Promise<any> {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await this.getEndpoint(
-      `/v2/api/metadata/${network}/locks/${lockAddress}/keys/${keyId}`,
-      options,
-      true
-    )
-  }
-
-  async getKeysMetadata({
-    lockAddress,
-    network,
-    lock,
-  }: {
-    lockAddress: string
-    network: number
-    lock: any
-  }): Promise<any> {
-    const options = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(lock),
-    }
-    return await this.getEndpoint(
-      `/v2/api/metadata/${network}/locks/${lockAddress}/keys`,
-      options,
-      true
-    )
-  }
-
-  async sendKeyQrCodeViaEmail({
-    lockAddress,
-    tokenId,
-    network,
-  }: {
-    lockAddress: string
-    tokenId: string
-    network: number
-  }): Promise<any> {
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    return await this.getEndpoint(
-      `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`,
-      options,
-      true
-    )
   }
 
   async canClaimMembership({

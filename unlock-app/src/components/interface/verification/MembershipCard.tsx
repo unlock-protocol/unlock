@@ -3,7 +3,6 @@ import {
   Fallback as AvatarFallback,
   Root as Avatar,
 } from '@radix-ui/react-avatar'
-import { Lock } from '~/unlockTypes'
 import dayjs from 'dayjs'
 import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 import { addressMinify } from '~/utils/strings'
@@ -14,6 +13,7 @@ import {
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { Button } from '@unlock-protocol/ui'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -34,7 +34,10 @@ export interface MembershipData {
 
 interface Props {
   timestamp: number
-  lock: Lock
+  lock: {
+    name: string
+    address: string
+  }
   membershipData: MembershipData
   network: number
   invalid?: string
@@ -43,6 +46,7 @@ interface Props {
   keyId: string
   children?: ReactNode
   onClose?: () => void
+  showWarning?: boolean
 }
 
 export function MembershipCard({
@@ -62,20 +66,21 @@ export function MembershipCard({
   const config = useConfig()
 
   return (
-    <div className="w-full bg-white max-w-sm rounded-xl">
+    <div className="w-full max-w-sm bg-white rounded-xl">
       <div
         className={` ${
           invalid ? 'bg-red-500' : checkedInAt ? 'bg-amber-300' : 'bg-green-500'
         }   rounded-t-xl`}
       >
-        <div className="flex justify-end items-center">
+        <div className="flex items-center justify-end">
           {onClose && (
-            <button
+            <Button
+              variant="borderless"
               onClick={(event) => {
                 event.preventDefault()
                 onClose()
               }}
-              className="flex items-center justify-center p-2  rounded group"
+              className="flex items-center justify-center p-2 rounded group"
               aria-label="Close"
             >
               <CloseIcon
@@ -83,10 +88,10 @@ export function MembershipCard({
                 size={24}
                 key="close"
               />
-            </button>
+            </Button>
           )}
         </div>
-        <div className="text-center p-6">
+        <div className="p-6 text-center">
           <div className="inline-flex items-center justify-center">
             {invalid ? (
               <InvalidIcon size={54} className="fill-white" />
@@ -94,7 +99,7 @@ export function MembershipCard({
               <ValidIcon size={54} className="fill-white" />
             )}
           </div>
-          <p className="text-white font-bold text-xl">
+          <p className="text-xl font-bold text-white">
             {invalid
               ? invalid
               : checkedInAt
@@ -104,7 +109,7 @@ export function MembershipCard({
         </div>
       </div>
       <div className="p-6 space-y-6">
-        <div className="flex gap-6 items-center">
+        <div className="flex items-center gap-6">
           <Avatar>
             <AvatarImage
               className="flex items-center justify-center w-16 h-16 rounded-full"
@@ -113,7 +118,7 @@ export function MembershipCard({
               width={50}
               height={50}
             />
-            <AvatarFallback className="flex items-center uppercase justify-center w-20 h-20 rounded-full">
+            <AvatarFallback className="flex items-center justify-center w-20 h-20 uppercase rounded-full">
               {lock?.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
@@ -147,7 +152,7 @@ interface ItemProps {
 
 export function Item({ label, value }: ItemProps) {
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       <span className="text-gray-500"> {label}: </span>
       <span className="font-medium">{value}</span>
     </div>
@@ -170,20 +175,20 @@ export function MetadataItems({
 
 export function MembershipCardPlaceholder() {
   return (
-    <div className="w-full bg-white max-w-sm rounded-xl">
-      <div className="rounded-t-xl bg-gray-100 h-32"></div>
+    <div className="w-full max-w-sm bg-white rounded-xl">
+      <div className="h-32 bg-gray-100 rounded-t-xl"></div>
       <div className="p-6 space-y-6">
-        <div className="flex gap-6 items-center flex-wrap">
-          <div className="flex bg-gray-50 items-center animate-pulse uppercase justify-center w-20 h-20 rounded-full"></div>
+        <div className="flex flex-wrap items-center gap-6">
+          <div className="flex items-center justify-center w-20 h-20 uppercase rounded-full bg-gray-50 animate-pulse"></div>
         </div>
         <div className="grid gap-2">
-          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
-          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
-          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
-          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
-          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
+          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
+          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
+          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
+          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
         </div>
-        <div className="bg-gray-50 animate-pulse h-12 w-full rounded-full"></div>
+        <div className="w-full h-12 rounded-full bg-gray-50 animate-pulse"></div>
       </div>
     </div>
   )

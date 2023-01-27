@@ -1,59 +1,28 @@
 const { task } = require('hardhat/config')
 const { getNetworkName } = require('../helpers/network')
-const {
-  getProxyAddress,
-  getProxyAdminAddress,
-} = require('../helpers/deployments')
+const { getProxyAdminAddress } = require('../helpers/deployments')
 
-const getDeploymentInfo = async ({ ethers, contract }) => {
-  const contractName = contract.replace('contracts/', '').replace('.sol', '')
-
-  // chainId
-  let { chainId } = await ethers.provider.getNetwork()
-  if (process.env.RUN_MAINNET_FORK) {
-    chainId = 1
-  }
-  const networkName = getNetworkName(chainId)
-  const proxyAddress = getProxyAddress(chainId, contractName)
-
-  return {
-    contractName,
-    chainId,
-    networkName,
-    proxyAddress,
-  }
-}
-
-task('upgrade', 'Upgrade an existing contract with a new implementation')
+task('upgrade', 'Upgrade an existing contract with a new implementation (no multisig)')
   .addParam('contract', 'The contract path')
-  .setAction(async ({ contract }, { ethers, network }) => {
-    const { contractName, networkName, proxyAddress } = await getDeploymentInfo(
-      {
-        ethers,
-        contract,
-      }
-    )
+  .addParam('proxy', 'The proxy contract address')
+  .setAction(async ({ contract, proxy }, { ethers, network }) => {
+
+    const contractName = contract.split('/')[1].replace('.sol', '')
+    console.log(`Upgrading ${contractName} contract...`)
+
+    // show signer
+    const [signer] = await ethers.getSigners()
+    console.log(`Signer: ${signer.address}`)
+    
+    // fetch proxy admin
     const proxyAdminAddress = await getProxyAdminAddress({ network })
-
-    // eslint-disable-next-line no-console
-    console.log(
-      `Deploying new implementation of ${contractName} on ${networkName}...`
-    )
+    console.log(`proxyAdminAddress: ${proxyAdminAddress}`)
 
     // eslint-disable-next-line global-require
-    const prepareUpgrade = require('../scripts/upgrade/prepare')
-
-    const implementation = await prepareUpgrade({
-      proxyAddress,
+    const simpleUpgrade = require(`../scripts/upgrade/simple`)
+    await simpleUpgrade({
+      proxyAddress: proxy,
       contractName,
-    })
-
-    // eslint-disable-next-line global-require
-    const proposeUpgrade = require('../scripts/upgrade/propose')
-    await proposeUpgrade({
-      proxyAddress,
-      proxyAdminAddress,
-      implementation,
     })
   })
 
@@ -111,14 +80,9 @@ task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
 
 task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
   .addParam('contract', 'The contract path')
+  .addParam('proxyAddress', 'The proxy contract address')
   .addParam('implementation', 'The implementation contract path')
-  .setAction(async ({ contract, implementation }, { ethers, network }) => {
-    // get contract deployment info
-    const { proxyAddress } = getDeploymentInfo({
-      ethers,
-      contract,
-    })
-
+  .setAction(async ({ proxyAddress, implementation }, { network }) => {
     const proxyAdminAddress = await getProxyAdminAddress({ network })
 
     // eslint-disable-next-line global-require
@@ -135,8 +99,34 @@ task(
   'Send txs to multisig to add and set new PublicLock version'
 )
   .addOptionalParam('publicLockAddress', 'The deployed contract address')
-  .setAction(async ({ publicLockAddress }) => {
+  .addOptionalParam(
+    'publicLockVersion',
+    'Specify the template version to deploy (from contracts package)'
+  )
+  .setAction(async ({ publicLockAddress, publicLockVersion }) => {
     // eslint-disable-next-line global-require
     const prepareLockUpgrade = require('../scripts/upgrade/submitLockVersion')
-    await prepareLockUpgrade({ publicLockAddress })
+    await prepareLockUpgrade({ publicLockAddress, publicLockVersion })
   })
+
+task(
+  'proxy-admin',
+  'Retrieve the proxy admin address'
+)
+  .addOptionalParam('publicLockAddress', 'The deployed contract address')
+  .addOptionalParam(
+    'publicLockVersion',
+    'Specify the template version to deploy (from contracts package)'
+  )
+  .setAction(async (_, { ethers, network }) => {
+    // eslint-disable-next-line global-require
+    const { getProxyAdminAddress } = require('../helpers/deployments')
+    const proxyAdminAddress = await getProxyAdminAddress({ network })
+    const proxyAdmin = await ethers.getContractAt(
+      'TestProxyAdmin',
+      proxyAdminAddress
+    )
+    console.log(`ProxyAdmin at ${proxyAdminAddress} (owner: ${await proxyAdmin.owner()})`)
+  })
+
+  

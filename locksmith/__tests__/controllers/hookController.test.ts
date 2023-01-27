@@ -2,9 +2,8 @@ import { networks } from '@unlock-protocol/networks'
 import request from 'supertest'
 import { Hook } from '../../src/models'
 import { HookController } from '../../src/controllers/hookController'
-
-const app = require('../../src/app')
-
+import app from '../app'
+import { vi } from 'vitest'
 describe('HookController', () => {
   const controller = new HookController({
     leaseSeconds: {
@@ -63,7 +62,7 @@ describe('HookController', () => {
   describe('createHook', () => {
     it('should create a hook', async () => {
       expect.assertions(2)
-      const spyOn = jest.spyOn(controller, 'createHook')
+      const spyOn = vi.spyOn(controller, 'createHook')
       spyOn.mockReturnValue(Promise.resolve(new Hook()))
       const value = await controller.createHook({} as any, {})
       expect(value).toBeInstanceOf(Hook)
@@ -75,7 +74,7 @@ describe('HookController', () => {
     it("should update or create a hook if it doesn't exit", async () => {
       expect.assertions(7)
 
-      const spyOn = jest
+      const spyOn = vi
         .spyOn(controller, 'updateHook')
         .mockImplementation((hub, params) => {
           const hook = new Hook()
@@ -124,10 +123,10 @@ describe('HookController', () => {
       it('subscribe', async () => {
         expect.assertions(1)
         const response = await request(app)
-          .post('/api/hooks/4/locks')
+          .post('/api/hooks/1/locks')
           .type('form')
           .send({
-            'hub.topic': 'http://localhost:4000/api/hooks/4/locks',
+            'hub.topic': 'http://localhost:4000/api/hooks/1/locks',
             'hub.callback': 'http://localhost:4000/callback',
             'hub.mode': 'subscribe',
           })
@@ -152,7 +151,7 @@ describe('HookController', () => {
       it('subscription request should reject with wrong content type', async () => {
         expect.assertions(1)
         const response3 = await request(app)
-          .post('/api/hooks/4/locks')
+          .post('/api/hooks/1/locks')
           .type('json')
           .send({})
 
@@ -162,10 +161,10 @@ describe('HookController', () => {
       it('subscription request should fail with invalid form body', async () => {
         expect.assertions(1)
         const response2 = await request(app)
-          .post('/api/hooks/4/locks')
+          .post('/api/hooks/1/locks')
           .type('form')
           .send({
-            'hub.topic': 'http://localhost:4000/api/hooks/4/locks',
+            'hub.topic': 'http://localhost:4000/api/hooks/1/locks',
             'hub.mode': 'subscribe',
           })
         expect(response2.status).toBe(400)

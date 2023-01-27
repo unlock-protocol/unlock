@@ -1,19 +1,18 @@
 import request from 'supertest'
-
-const app = require('../../src/app')
+import app from '../../src/app'
 
 describe('HubPublisherController', () => {
   describe('Hook publisher endpoints', () => {
     it('Check if returning the hubs in a head request', async () => {
       expect.assertions(2)
-      const response = await request(app).head('/api/hooks/4/locks')
+      const response = await request(app).head('/api/hooks/1/locks')
       expect(response.status).toBe(200)
       expect(response.headers.link.split(',').length).toBe(2)
     })
 
     it('Check if returning the hubs in a get request', async () => {
       expect.assertions(3)
-      const response = await request(app).get('/api/hooks/4/locks')
+      const response = await request(app).get('/api/hooks/1/locks')
       expect(response.status).toBe(200)
       expect(response.headers.link.split(',').length).toBe(2)
       expect(response.headers['content-type']).toBe('text/html; charset=utf-8')

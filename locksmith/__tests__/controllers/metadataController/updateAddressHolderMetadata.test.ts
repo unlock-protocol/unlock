@@ -1,9 +1,9 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
+import * as Base64 from '../../../src/utils/base64'
+import app from '../../app'
+import { vi } from 'vitest'
 
 const keyHolder = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -14,28 +14,15 @@ const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([keyHolder[0]])
-  }),
-}
-
 // eslint-disable-next-line
 var mockWeb3Service = {
-  isLockManager: jest.fn(() => Promise.resolve(false)),
+  isLockManager: vi.fn(() => Promise.resolve(false)),
 }
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
-}))
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
 }))
 
 describe('updating address holder metadata', () => {

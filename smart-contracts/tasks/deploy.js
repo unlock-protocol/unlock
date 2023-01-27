@@ -114,7 +114,7 @@ task('deploy:uniswap', 'Deploy Uniswap V2 Factory and Router')
     return await uniswapDeployer({ wethAddress })
   })
 
-task('deploy:oracle', 'Deploy UDT <> WETH oracle contract')
+task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   .addOptionalParam(
     'uniswapFactoryAddress',
     'the address of an existing Uniswap V2 Factory contract'
@@ -146,3 +146,15 @@ task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
     return await govDeployer()
   }
 )
+
+task('deploy:keyManager', 'Deploy KeyManager contract')
+  .addOptionalParam('locksmiths', 'addresses for the locksmith signers, comma separated')
+  .setAction(
+    async ({ locksmiths }) => {
+      const locksmithsArray = !locksmiths ? [] : locksmiths.split(',')
+
+      // eslint-disable-next-line global-require
+      const keyManagerDeployer = require('../scripts/deployments/keyManager')
+      return await keyManagerDeployer(locksmithsArray)
+    }
+  )

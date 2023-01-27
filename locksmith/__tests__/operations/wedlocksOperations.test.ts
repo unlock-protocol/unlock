@@ -4,12 +4,14 @@ import {
   sendEmail,
   notifyNewKeyToWedlocks,
 } from '../../src/operations/wedlocksOperations'
+import { vi } from 'vitest'
+import normalizer from '../../src/utils/normalizer'
 
-jest.mock('node-fetch')
+vi.mock('node-fetch')
 
 describe('Wedlocks operations', () => {
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
   describe('notifyNewKeyToWedlocks', () => {
     it('should notify wedlocks if there is an email metadata', async () => {
@@ -34,12 +36,16 @@ describe('Wedlocks operations', () => {
           address: lockAddress,
           name: lockName,
         },
-        owner: {
-          address: ownerAddress,
-        },
+        owner: ownerAddress,
       })
+      const transferUrl = `${[
+        process.env.UNLOCK_ENV !== 'prod'
+          ? 'https://staging-app.unlock-protocol.com'
+          : 'https://app.unlock-protocol.com',
+      ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=`
+
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":""},"attachments":[]}',
+        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"","transferUrl":"${transferUrl}"},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
@@ -57,9 +63,7 @@ describe('Wedlocks operations', () => {
           address: lockAddress,
           name: lockName,
         },
-        owner: {
-          address: ownerAddress,
-        },
+        owner: ownerAddress,
       })
       expect(fetch).not.toHaveBeenCalled()
     })
@@ -87,9 +91,7 @@ describe('Wedlocks operations', () => {
           address: lockAddress,
           name: lockName,
         },
-        owner: {
-          address: ownerAddress,
-        },
+        owner: ownerAddress,
       })
       expect(fetch).not.toHaveBeenCalled()
     })

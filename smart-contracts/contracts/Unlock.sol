@@ -27,13 +27,16 @@ pragma solidity ^0.8.7;
  *  b. Keeping track of GNP
  */
 
-import '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
-import '@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol';
-import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
-import './utils/UnlockOwnable.sol';
-import './utils/UnlockInitializable.sol';
-import './interfaces/IPublicLock.sol';
-import './interfaces/IMintableERC20.sol';
+import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
+import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
+import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
+import "./utils/UnlockOwnable.sol";
+import "./utils/UnlockInitializable.sol";
+import "./interfaces/IPublicLock.sol";
+import "./interfaces/IMintableERC20.sol";
+import "./interfaces/IPermit2.sol";
 
 error Unlock__MANAGER_ONLY();   
 error Unlock__VERSION_TOO_HIGH();   
@@ -42,29 +45,30 @@ error Unlock__ALREADY_DEPLOYED();
 error Unlock__MISSING_PROXY_ADMIN();
 error Unlock__MISSING_LOCK_TEMPLATE();
 
+// TODO: prefix errors
+error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
+error LockDoesntExist(address lockAddress);
+error InsufficientBalance();
+error UnauthorizedBalanceChange();
+error LockCallFailed();
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract Unlock is
-  UnlockInitializable,
-  UnlockOwnable
-{
-
+contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
    * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,
    * which would be the same values when the lock is not set.
    */
-  struct LockBalances
-  {
+  struct LockBalances {
     bool deployed;
     uint totalSales; // This is in wei
     uint yieldedDiscountTokens;
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, 'ONLY_LOCKS');
+    require(locks[msg.sender].deployed, "ONLY_LOCKS");
     _;
   }
 
@@ -73,7 +77,7 @@ contract Unlock is
   uint public totalDiscountGranted;
 
   // We keep track of deployed locks to ensure that callers are all deployed locks.
-  mapping (address => LockBalances) public locks;
+  mapping(address => LockBalances) public locks;
 
   // global base token URI
   // Used by locks where the owner has not set a custom base URI.
@@ -88,7 +92,7 @@ contract Unlock is
 
   // Map token address to oracle contract address if the token is supported
   // Used for GDP calculations
-  mapping (address => IUniswapOracle) public uniswapOracles;
+  mapping(address => IUniswapOracle) public uniswapOracles;
 
   // The WETH token address, used for value calculations
   address public weth;
@@ -111,16 +115,16 @@ contract Unlock is
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
+  // required by Uniswap Universal Router
+  address public permit2;
+
   // Events
   event NewLock(
     address indexed lockOwner,
     address indexed newLockAddress
   );
 
-  event LockUpgraded(
-    address lockAddress,
-    uint16 version
-  );
+  event LockUpgraded(address lockAddress, uint16 version);
 
   event ConfigUnlock(
     address udt,
@@ -131,9 +135,7 @@ contract Unlock is
     uint chainId
   );
 
-  event SetLockTemplate(
-    address publicLockAddress
-  );
+  event SetLockTemplate(address publicLockAddress);
 
   event GNPChanged(
     uint grossNetworkProduct,
@@ -142,7 +144,7 @@ contract Unlock is
     uint value,
     address lockAddress
   );
-  
+
   event ResetTrackedValue(
     uint grossNetworkProduct,
     uint totalDiscountGranted
@@ -153,13 +155,16 @@ contract Unlock is
     uint16 indexed version
   );
 
+  event SwapCall(
+    address lock,
+    address tokenAddress,
+    uint amountSpent
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
     address _unlockOwner
-  )
-    public
-    initializer()
-  {
+  ) public initializer {
     // We must manually initialize Ownable
     UnlockOwnable.__initializeOwnable(_unlockOwner);
     // add a proxy admin on deployment
@@ -171,55 +176,63 @@ contract Unlock is
   }
 
   /**
-  * @dev Deploy the ProxyAdmin contract that will manage lock templates upgrades
-  * This deploys an instance of ProxyAdmin used by PublicLock transparent proxies.
-  */
-  function _deployProxyAdmin() private returns(address) {
+   * @dev Deploy the ProxyAdmin contract that will manage lock templates upgrades
+   * This deploys an instance of ProxyAdmin used by PublicLock transparent proxies.
+   */
+  function _deployProxyAdmin() private returns (address) {
     proxyAdmin = new ProxyAdmin();
     proxyAdminAddress = address(proxyAdmin);
     return address(proxyAdmin);
   }
 
   /**
-  * @dev Helper to get the version number of a template from his address
-  */
-  function publicLockVersions(address _impl) external view returns(uint16) {
+   * @dev Helper to get the version number of a template from his address
+   */
+  function publicLockVersions(
+    address _impl
+  ) external view returns (uint16) {
     return _publicLockVersions[_impl];
   }
 
   /**
-  * @dev Helper to get the address of a template based on its version number
-  */
-  function publicLockImpls(uint16 _version) external view returns(address) {
+   * @dev Helper to get the address of a template based on its version number
+   */
+  function publicLockImpls(
+    uint16 _version
+  ) external view returns (address) {
     return _publicLockImpls[_version];
   }
 
   /**
-  * @dev Registers a new PublicLock template immplementation
-  * The template is identified by a version number
-  * Once registered, the template can be used to upgrade an existing Lock
-  */
-  function addLockTemplate(address impl, uint16 version) public onlyOwner {
+   * @dev Registers a new PublicLock template immplementation
+   * The template is identified by a version number
+   * Once registered, the template can be used to upgrade an existing Lock
+   */
+  function addLockTemplate(
+    address impl,
+    uint16 version
+  ) public onlyOwner {
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
-    if (publicLockLatestVersion < version) publicLockLatestVersion = version;
+    if (publicLockLatestVersion < version)
+      publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
   }
 
   /**
-  * @notice Create lock (legacy)
-  * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _expirationDuration the duration of the lock (pass type(uint).max for unlimited duration)
-  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * @param _keyPrice the price of each key
-  * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
-  * @param _lockName the name of the lock
-  * param _salt [deprec] -- kept only for backwards copatibility
-  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
-  * to know the lock's address before the transaction is mined.
-  * @dev internally call `createUpgradeableLock`
-  */
+   * @notice Create lock (legacy)
+   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+   * @param _expirationDuration the duration of the lock (pass type(uint).max for unlimited duration)
+   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+   * @param _keyPrice the price of each key
+   * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
+   * @param _lockName the name of the lock
+   * param _salt [deprec] -- kept only for backwards copatibility
+   * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+   * to know the lock's address before the transaction is mined.
+   * @dev internally call `createUpgradeableLock`
+   */
   function createLock(
     uint _expirationDuration,
     address _tokenAddress,
@@ -227,10 +240,9 @@ contract Unlock is
     uint _maxNumberOfKeys,
     string calldata _lockName,
     bytes12 // _salt
-  ) public returns(address) {
-
+  ) public returns (address) {
     bytes memory data = abi.encodeWithSignature(
-      'initialize(address,uint256,address,uint256,uint256,string)',
+      "initialize(address,uint256,address,uint256,uint256,string)",
       msg.sender,
       _expirationDuration,
       _tokenAddress,
@@ -243,26 +255,28 @@ contract Unlock is
   }
 
   /**
-  * @notice Create upgradeable lock
-  * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param data bytes containing the call to initialize the lock template
-  * @dev this call is passed as encoded function - for instance:
-  *  bytes memory data = abi.encodeWithSignature(
-  *    'initialize(address,uint256,address,uint256,uint256,string)',
-  *    msg.sender,
-  *    _expirationDuration,
-  *    _tokenAddress,
-  *    _keyPrice,
-  *    _maxNumberOfKeys,
-  *    _lockName
-  *  );
-  * @return address of the create lock
-  */
+   * @notice Create upgradeable lock
+   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+   * @param data bytes containing the call to initialize the lock template
+   * @dev this call is passed as encoded function - for instance:
+   *  bytes memory data = abi.encodeWithSignature(
+   *    'initialize(address,uint256,address,uint256,uint256,string)',
+   *    msg.sender,
+   *    _expirationDuration,
+   *    _tokenAddress,
+   *    _keyPrice,
+   *    _maxNumberOfKeys,
+   *    _lockName
+   *  );
+   * @return address of the create lock
+   */
   function createUpgradeableLock(
     bytes memory data
-  ) public returns(address)
-  {
-    address newLock = createUpgradeableLockAtVersion(data, publicLockLatestVersion);
+  ) public returns (address) {
+    address newLock = createUpgradeableLockAtVersion(
+      data,
+      publicLockLatestVersion
+    );
     return newLock;
   }
 
@@ -271,24 +285,34 @@ contract Unlock is
    * @param data bytes containing the call to initialize the lock template
    * (refer to createUpgradeableLock for more details)
    * @param _lockVersion the version of the lock to use
-  */
+   */
   function createUpgradeableLockAtVersion(
     bytes memory data,
     uint16 _lockVersion
   ) public returns (address) {
-    if(proxyAdminAddress == address(0)){revert Unlock__MISSING_PROXY_ADMIN();}
+    if(proxyAdminAddress == address(0)){
+      revert Unlock__MISSING_PROXY_ADMIN();
+    }
 
     // get lock version
     address publicLockImpl = _publicLockImpls[_lockVersion];
-    if(publicLockImpl == address(0)){revert Unlock__MISSING_LOCK_TEMPLATE();}
+    if(publicLockImpl == address(0)){
+      revert Unlock__MISSING_LOCK_TEMPLATE();
+    }
 
     // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockImpl, proxyAdminAddress, data);
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+        publicLockImpl,
+        proxyAdminAddress,
+        data
+      );
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
     locks[newLock] = LockBalances({
-      deployed: true, totalSales: 0, yieldedDiscountTokens: 0
+      deployed: true,
+      totalSales: 0,
+      yieldedDiscountTokens: 0
     });
 
     // trigger event
@@ -301,35 +325,46 @@ contract Unlock is
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
    */
-  
- 
+
   function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
-    if(proxyAdminAddress == address(0)){revert Unlock__MISSING_PROXY_ADMIN();}
+    if(proxyAdminAddress == address(0)){
+      revert Unlock__MISSING_PROXY_ADMIN();
+    }
 
     // check perms
-    if(_isLockManager(lockAddress, msg.sender) != true){revert Unlock__MANAGER_ONLY();}
+    if(_isLockManager(lockAddress, msg.sender) != true){
+      revert Unlock__MANAGER_ONLY();
+    }
 
     // check version
     IPublicLock lock = IPublicLock(lockAddress);
     uint16 currentVersion = lock.publicLockVersion();
-    if(version != currentVersion + 1){revert Unlock__VERSION_TOO_HIGH();}
+
+    if(version != currentVersion + 1){
+      revert Unlock__VERSION_TOO_HIGH();
+    }
 
     // make our upgrade
     address impl = _publicLockImpls[version];
     if(impl == address(0)){revert Unlock__MISSING_TEMPLATE();}
 
-    TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
+    TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
+        lockAddress
+      );
     proxyAdmin.upgrade(proxy, impl);
 
     // let's upgrade the data schema
     // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
-    lock.migrate('0x');
+    lock.migrate("0x");
 
     emit LockUpgraded(lockAddress, version);
     return lockAddress;
   }
 
-  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
+  function _isLockManager(
+    address lockAddress,
+    address _sender
+  ) private view returns (bool isManager) {
     IPublicLock lock = IPublicLock(lockAddress);
     return lock.isLockManager(_sender);
   }
@@ -341,17 +376,13 @@ contract Unlock is
   function computeAvailableDiscountFor(
     address /* _purchaser */,
     uint /* _keyPrice */
-  )
-    public
-    pure
-    returns (uint discount, uint tokens)
-  {
+  ) public pure returns (uint discount, uint tokens) {
     return (0, 0);
   }
 
   /**
    * Helper to get the network mining basefee as introduced in EIP-1559
-   * @dev this helper can be wrapped in try/catch statement to avoid 
+   * @dev this helper can be wrapped in try/catch statement to avoid
    * revert in networks where EIP-1559 is not implemented
    */
   function networkBaseFee() external view returns (uint) {
@@ -369,21 +400,26 @@ contract Unlock is
   function recordKeyPurchase(
     uint _value,
     address _referrer
-  )
-    public
-    onlyFromDeployedLock()
-  {
-    if(_value > 0) {
+  ) public onlyFromDeployedLock {
+    if (_value > 0) {
       uint valueInETH;
-      address tokenAddress = IPublicLock(msg.sender).tokenAddress();
-      if(tokenAddress != address(0) && tokenAddress != weth) {
+      address tokenAddress = IPublicLock(msg.sender)
+        .tokenAddress();
+      if (
+        tokenAddress != address(0) && tokenAddress != weth
+      ) {
         // If priced in an ERC-20 token, find the supported uniswap oracle
-        IUniswapOracle oracle = uniswapOracles[tokenAddress];
-        if(address(oracle) != address(0)) {
-          valueInETH = oracle.updateAndConsult(tokenAddress, _value, weth);
+        IUniswapOracle oracle = uniswapOracles[
+          tokenAddress
+        ];
+        if (address(oracle) != address(0)) {
+          valueInETH = oracle.updateAndConsult(
+            tokenAddress,
+            _value,
+            weth
+          );
         }
-      }
-      else {
+      } else {
         // If priced in ETH (or value is 0), no conversion is required
         valueInETH = _value;
       }
@@ -398,20 +434,28 @@ contract Unlock is
       // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
 
-      // Mint UDT
-      if(_referrer != address(0))
-      {
+      // Distribute UDT
+      if (_referrer != address(0)) {
         IUniswapOracle udtOracle = uniswapOracles[udt];
-        if(address(udtOracle) != address(0))
-        {
+        if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
+          uint udtPrice = udtOracle.updateAndConsult(
+            udt,
+            10 ** 18,
+            weth
+          );
 
-          // base fee default to 100 GWEI for chains that does 
+          uint balance = IMintableERC20(udt).balanceOf(
+            address(this)
+          );
+
+          // base fee default to 100 GWEI for chains that does
           uint baseFee;
-          try this.networkBaseFee() returns (uint _basefee) {
+          try this.networkBaseFee() returns (
+            uint _basefee
+          ) {
             // no assigned value
-            if(_basefee == 0) {
+            if (_basefee == 0) {
               baseFee = 100;
             } else {
               baseFee = _basefee;
@@ -422,42 +466,37 @@ contract Unlock is
           }
 
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToDistribute = (estimatedGasForPurchase * baseFee) * (125 * 10 ** 18) / 100 / udtPrice;
+          uint tokensToDistribute = ((estimatedGasForPurchase *
+              baseFee) * (125 * 10 ** 18)) /
+              100 /
+              udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
-          uint maxTokens = 0;
-          if (chainId > 1)
-          {
-            // non mainnet: we distribute tokens using asymptotic curve between 0 and 0.5
-            // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));
-            maxTokens = IMintableERC20(udt).balanceOf(address(this)) * valueInETH / (2 + 2 * valueInETH / grossNetworkProduct) / grossNetworkProduct;
-          } else {
-            // Mainnet: we mint new token using log curve
-            maxTokens = IMintableERC20(udt).totalSupply() * valueInETH / 2 / grossNetworkProduct;
-          }
+          // we distribute tokens using asymptotic curve between 0 and 0.5
+          uint maxTokens = (balance * valueInETH) /
+            (2 + (2 * valueInETH) / grossNetworkProduct) /
+            grossNetworkProduct;
 
           // cap to GDP growth!
-          if(tokensToDistribute > maxTokens)
-          {
+          if (tokensToDistribute > maxTokens) {
             tokensToDistribute = maxTokens;
           }
 
-          if(tokensToDistribute > 0)
-          {
+          if (tokensToDistribute > 0) {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            uint devReward = tokensToDistribute * 20 / 100;
-            if (chainId > 1)
-            {
-              uint balance = IMintableERC20(udt).balanceOf(address(this));
-              if (balance > tokensToDistribute) {
-                // Only distribute if there are enough tokens
-                IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);
-                IMintableERC20(udt).transfer(owner(), devReward);
-              }
-            } else {
-              // No distribnution
-              IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);
-              IMintableERC20(udt).mint(owner(), devReward);
+            uint devReward = (tokensToDistribute * 20) / 100;
+            
+            
+            if (balance > tokensToDistribute) {
+              // Only distribute if there are enough tokens
+              IMintableERC20(udt).transfer(
+                _referrer,
+                tokensToDistribute - devReward
+              );
+              IMintableERC20(udt).transfer(
+                owner(),
+                devReward
+              );
             }
           }
         }
@@ -465,8 +504,124 @@ contract Unlock is
     }
   }
 
+  function getBalance(address token) internal view returns (uint) {
+    return token == address(0) ?
+      address(this).balance 
+      :
+      IMintableERC20(token).balanceOf(address(this));
+  }
+
+  // set permit2 address
+  function setPermit2(address _permit2) public onlyOwner {
+     permit2 = _permit2;
+  }
+
   /**
-   * Update the GNP by a new value. 
+   * Please refer to IUnlock.sol for documentation
+   */
+  function swapAndCall(
+    address lock,
+    address srcToken,
+    uint amountInMax,
+    address swapRouter,
+    bytes memory swapCalldata,
+    bytes memory callData
+  ) public payable returns(bytes memory) {
+    // check if lock exists
+    if(!locks[lock].deployed) {
+      revert LockDoesntExist(lock);
+    }
+
+    // get lock pricing 
+    address destToken = IPublicLock(lock).tokenAddress();
+
+    // get price in destToken from lock
+    uint keyPrice = IPublicLock(lock).keyPrice();
+
+    // get balances of Unlock before
+    // if payments in ETH, substract the value sent by user to get actual balance
+    uint balanceTokenDestBefore = destToken == address(0) ? 
+      getBalance(destToken) - msg.value 
+            :
+      getBalance(destToken);
+
+    uint balanceTokenSrcBefore = 
+        srcToken == address(0) ? 
+          getBalance(srcToken) - msg.value 
+          :
+          getBalance(srcToken);
+
+    if(srcToken != address(0)) {
+      // Transfer the specified amount of src ERC20 to this contract
+      TransferHelper.safeTransferFrom(srcToken, msg.sender, address(this), amountInMax);
+
+      // Approve the router to spend src ERC20
+      TransferHelper.safeApprove(srcToken, swapRouter, amountInMax);
+
+      // approve PERMIT2 to manipulate the token
+      IERC20(srcToken).approve(permit2, amountInMax);
+    }
+
+    // issue PERMIT2 Allowance
+    IPermit2(permit2).approve(
+      srcToken,
+      swapRouter,
+      uint160(amountInMax),
+      uint48(block.timestamp + 60) // expires after 1min
+    );
+
+    // executes the swap
+    (bool success, ) = swapRouter.call{ 
+      value: srcToken == address(0) ? msg.value : 0 
+    }(swapCalldata);
+
+    // make sure to catch Uniswap revert
+    if(success == false) {
+      revert SwapFailed(swapRouter, srcToken, destToken, amountInMax, swapCalldata);
+    }
+
+    // make sure balance is enough to buy key
+    if((
+      destToken == address(0) ? 
+      getBalance(destToken) - msg.value 
+            :
+      getBalance(destToken)
+    ) < balanceTokenDestBefore + keyPrice) {
+      revert InsufficientBalance();
+    }
+
+    // approve ERC20 to call the lock
+    if(destToken != address(0)) {
+      IMintableERC20(destToken).approve(lock, keyPrice);
+    }
+
+    // call the lock
+    (bool lockCallSuccess, bytes memory returnData) = lock.call{
+      value: destToken == address(0) ? keyPrice : 0
+    }(
+      callData
+    );
+
+    if(lockCallSuccess == false) {
+      revert LockCallFailed();
+    }
+
+    // check that Unlock didnt spent more than it received
+    if(
+      getBalance(srcToken) - balanceTokenSrcBefore < 0
+      ||
+      getBalance(destToken) - balanceTokenDestBefore < 0
+    ) {
+      // balance too low
+      revert UnauthorizedBalanceChange();
+    }
+
+    // returns whatever the lock returned
+    return returnData;
+  }
+
+  /**
+   * Update the GNP by a new value.
    * Emits an event to simply tracking
    */
   function updateGrossNetworkProduct(
@@ -494,19 +649,12 @@ contract Unlock is
   function recordConsumedDiscount(
     uint /* _discount */,
     uint /* _tokens */
-  )
-    public
-    view
-    onlyFromDeployedLock()
-  {
+  ) public view onlyFromDeployedLock {
     return;
   }
 
   // The version number of the current Unlock implementation on this network
-  function unlockVersion(
-  ) external pure
-    returns (uint16)
-  {
+  function unlockVersion() external pure returns (uint16) {
     return 11;
   }
 
@@ -520,9 +668,7 @@ contract Unlock is
     string calldata _symbol,
     string calldata _URI,
     uint _chainId
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     udt = _udt;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
@@ -532,7 +678,14 @@ contract Unlock is
 
     chainId = _chainId;
 
-    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI, _chainId);
+    emit ConfigUnlock(
+      _udt,
+      _weth,
+      _estimatedGasForPurchase,
+      _symbol,
+      _URI,
+      _chainId
+    );
   }
 
   /**
@@ -541,13 +694,16 @@ contract Unlock is
    */
   function setLockTemplate(
     address _publicLockAddress
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     // First claim the template so that no-one else could
     // this will revert if the template was already initialized.
     IPublicLock(_publicLockAddress).initialize(
-      address(this), 0, address(0), 0, 0, ''
+      address(this),
+      0,
+      address(0),
+      0,
+      0,
+      ""
     );
     IPublicLock(_publicLockAddress).renounceLockManager();
 
@@ -564,12 +720,15 @@ contract Unlock is
   function setOracle(
     address _tokenAddress,
     address _oracleAddress
-  ) external
-    onlyOwner
-  {
-    uniswapOracles[_tokenAddress] = IUniswapOracle(_oracleAddress);
-    if(_oracleAddress != address(0)) {
-      IUniswapOracle(_oracleAddress).update(_tokenAddress, weth);
+  ) external onlyOwner {
+    uniswapOracles[_tokenAddress] = IUniswapOracle(
+      _oracleAddress
+    );
+    if (_oracleAddress != address(0)) {
+      IUniswapOracle(_oracleAddress).update(
+        _tokenAddress,
+        weth
+      );
     }
   }
 
@@ -577,13 +736,14 @@ contract Unlock is
   function resetTrackedValue(
     uint _grossNetworkProduct,
     uint _totalDiscountGranted
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     grossNetworkProduct = _grossNetworkProduct;
     totalDiscountGranted = _totalDiscountGranted;
 
-    emit ResetTrackedValue(_grossNetworkProduct, _totalDiscountGranted);
+    emit ResetTrackedValue(
+      _grossNetworkProduct,
+      _totalDiscountGranted
+    );
   }
 
   /**
@@ -607,4 +767,7 @@ contract Unlock is
   {
     return globalTokenSymbol;
   }
+
+  // required to withdraw WETH
+  receive() external payable {}
 }

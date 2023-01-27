@@ -4,7 +4,7 @@ const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
 const { ADDRESS_ZERO } = require('../helpers/constants')
-const { createExchange } = require('../helpers')
+const { createUniswapV2Exchange } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const createLockHash = require('../helpers/createLockCalldata')
@@ -176,7 +176,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
-      const { oracle, weth } = await createExchange({
+      const { oracle, weth } = await createUniswapV2Exchange({
         protocolOwner: deployer,
         minter: deployer,
         udtAddress: udt.address,
@@ -211,13 +211,25 @@ contract('UnlockDiscountToken upgrade', async () => {
           }
         )
 
-      // allow multiiple keys per owner
-      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
+      // allow multiple keys per owner
+      await lock
+        .connect(lockOwner)
+        .updateLockConfig(
+          await lock.expirationDuration(),
+          await lock.maxNumberOfKeys(),
+          10
+        )
 
       rate = await oracle.consult(
         udt.address,
         ethers.utils.parseUnits('1', 'ether'),
         weth.address
+      )
+
+       // Give unlock contract some tokens
+      await udt.mint(
+        unlock.address,
+        ethers.utils.parseUnits('1000000', 'ether')
       )
     })
 
@@ -249,6 +261,9 @@ contract('UnlockDiscountToken upgrade', async () => {
             value: await lock.keyPrice(),
           }
         )
+        
+        assert.equal((await lock.balanceOf(keyBuyer.address)).toString(), '1')
+
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
         gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)

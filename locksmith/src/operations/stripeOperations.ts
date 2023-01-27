@@ -1,22 +1,19 @@
 import Stripe from 'stripe'
-
 import { StripeConnectLock } from '../models/stripeConnectLock'
 import { ethereumAddress } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
-
 import { StripeCustomer } from '../models/stripeCustomer'
-
-const Sequelize = require('sequelize')
+import Sequelize from 'sequelize'
+import config from '../config/config'
 
 const { Op } = Sequelize
-const config = require('../../config/config')
 
 export const createStripeCustomer = async (
-  stripeToken: string,
+  stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
   const customer = await stripe.customers.create({
@@ -62,6 +59,7 @@ export const saveStripeCustomerIdForAddress = async (
       StripeCustomerId: stripeCustomerId,
     })
   } catch (error) {
+    console.error(error)
     return false
   }
 }
@@ -94,6 +92,47 @@ export const deletePaymentDetailsForAddress = async (
 }
 
 /**
+ * Remove stripe account connected to a lock
+ */
+export const disconnectStripe = async ({
+  lockManager,
+  lockAddress: lock,
+  chain,
+}: {
+  lockManager: string
+  lockAddress: string
+  chain: number
+}) => {
+  const stripe = new Stripe(config.stripeSecret!, {
+    apiVersion: '2020-08-27',
+  })
+
+  const stripeConnectLockDetails = await StripeConnectLock.findOne({
+    where: { lock },
+  })
+
+  let deletedItems = 0
+  if (stripeConnectLockDetails) {
+    const account = await stripe.accounts.retrieve(
+      stripeConnectLockDetails.stripeAccount
+    )
+
+    // delete record from db to unlink stripe
+    const deletedLockConnect = await StripeConnectLock.destroy({
+      where: {
+        lock,
+        manager: lockManager,
+        stripeAccount: account.id,
+        chain,
+      },
+    })
+
+    deletedItems = deletedLockConnect
+  }
+  return deletedItems > 0
+}
+
+/**
  * Connects a Stripe account to a lock
  * Do we want to store this?
  */
@@ -103,7 +142,7 @@ export const connectStripe = async (
   chain: number,
   baseUrl: string
 ) => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
 
@@ -138,8 +177,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
+    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
     type: 'account_onboarding',
   })
 }
@@ -151,7 +190,7 @@ export const connectStripe = async (
  * Returns the stripeAccount if all fully enabled
  */
 export const getStripeConnectForLock = async (lock: string, chain: number) => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
@@ -179,4 +218,5 @@ export default {
   saveStripeCustomerIdForAddress,
   connectStripe,
   getStripeConnectForLock,
+  disconnectStripe,
 }

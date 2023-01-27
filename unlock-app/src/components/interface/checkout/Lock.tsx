@@ -1,110 +1,46 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { getLockProps } from '~/utils/lock'
-import * as LockVariations from './LockVariations'
-import { useLock } from '../../../hooks/useLock'
-import { ConfigContext } from '../../../utils/withConfig'
-
-interface LockProps {
-  lock: any
-  setHasKey: (state: boolean) => void
-  onSelected: ((lock: any) => void) | null
-  network: number
-  name: string
-  hasOptimisticKey: boolean
-  purchasePending: boolean
-  recipient?: string
-  onLoading?: (state: boolean) => void
-  numberOfRecipients?: number
+interface PricingProps {
+  isCardEnabled: boolean
+  usdPrice?: string
+  keyPrice?: string
 }
 
-export const Lock = ({
-  network,
-  lock,
-  setHasKey,
-  name,
-  onSelected,
-  hasOptimisticKey,
-  purchasePending,
-  recipient,
-  onLoading,
-  numberOfRecipients,
-}: LockProps) => {
-  const config = useContext(ConfigContext)
-  const [loading, setLoading] = useState(false)
-  const { getKeyForAccount } = useLock(lock, network)
-  const [hasValidKey, setHasValidKey] = useState(hasOptimisticKey)
-
-  const alreadyHasKey = (key: any) => {
-    const now = new Date().getTime() / 1000
-    const { expiration } = key ?? {}
-    const isKeyNotExpired = expiration > now || expiration === -1
-    const isKeyValid = !!(key && isKeyNotExpired)
-    setHasValidKey(isKeyValid)
-    setHasKey(key)
-  }
-
-  useEffect(() => {
-    if (typeof onLoading === 'function') {
-      onLoading(loading)
-    }
-  }, [loading])
-
-  useEffect(() => {
-    const getKey = async () => {
-      if (!recipient) return
-      setLoading(true)
-      alreadyHasKey(await getKeyForAccount(recipient))
-      setLoading(false)
-    }
-
-    if (recipient) {
-      getKey()
-    } else {
-      alreadyHasKey(null)
-    }
-  }, [recipient])
-
-  const onClick = async () => {
-    onSelected && onSelected(lock)
-  }
-
-  const lockProps = {
-    onClick,
-    ...getLockProps(
-      lock,
-      network,
-      config.networks[network].baseCurrencySymbol,
-      name,
-      numberOfRecipients || 1
-    ),
-    selectable: true, // by default!
-  }
-
-  if (loading) {
+export function Pricing({ usdPrice, keyPrice, isCardEnabled }: PricingProps) {
+  if (isCardEnabled && !usdPrice) {
     return (
-      <LockVariations.LoadingLock address={lock.address} network={network} />
+      <div className="grid text-right">
+        <span className="font-semibold">{keyPrice}</span>
+      </div>
     )
   }
-
-  if (lockProps.isSoldOut) {
-    return <LockVariations.SoldOutLock {...lockProps} />
+  if (isCardEnabled) {
+    return (
+      <div className="grid text-right">
+        <span className="font-semibold">{usdPrice}</span>
+        <span className="text-sm text-gray-500">{keyPrice} </span>
+      </div>
+    )
   }
-
-  if (hasValidKey || hasOptimisticKey) {
-    return <LockVariations.ConfirmedLock {...lockProps} selectable={false} />
-  }
-
-  if (purchasePending) {
-    return <LockVariations.ProcessingLock {...lockProps} />
-  }
-
   return (
-    <LockVariations.PurchaseableLock {...lockProps} selectable={!!onSelected} />
+    <div className="grid text-right">
+      <span className="font-semibold">{keyPrice} </span>
+      <span className="text-sm text-gray-500">{usdPrice}</span>
+    </div>
   )
 }
 
-Lock.defaultProps = {
-  recipient: '',
-  onLoading: () => undefined,
-  numberOfRecipients: 1,
+export const LockOptionPlaceholder = () => {
+  return (
+    <div className="relative flex flex-col items-center justify-between w-full gap-4 p-2 duration-150 border cursor-pointer ring-gray-200 animate-pulse rounded-xl">
+      <div className="inline-flex items-start justify-between w-full gap-x-4">
+        <div>
+          <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-gray-50" />
+        </div>
+        <div className="w-full h-6 duration-150 rounded-full bg-gray-50 animate-pulse" />
+      </div>
+      <div className="flex justify-start w-full gap-x-2">
+        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
+        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
+      </div>
+    </div>
+  )
 }

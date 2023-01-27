@@ -2,24 +2,42 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import verifierOperations from '../../../src/operations/verifierOperations'
+import logger from '../../../src/logger'
 
-const app = require('../../../src/app')
-
-jest.setTimeout(600000)
+import app from '../../app'
+import { vi } from 'vitest'
 
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const keyId = 100
 
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string, manager: string) =>
           lockAddress === lock || manager === lockManager,
         ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
           owner,
+      }
+    }),
+    SubgraphService: vi.fn().mockImplementation(() => {
+      return {
+        lock: (filter: any, opts: any) => {
+          return {
+            name: 'Test Lock',
+            address: lockAddress,
+          }
+        },
+        key: (filter: any, opts: any) => {
+          logger.info(filter, opts)
+          return {
+            owner,
+            expiration: 0,
+            tokenId: 1,
+          }
+        },
       }
     }),
   }
@@ -62,6 +80,46 @@ describe('Metadata v2 endpoints for locksmith', () => {
     })
   })
 
+  it('Add empty metadata and update it later', async () => {
+    expect.assertions(4)
+    const lockAddress = await ethers.Wallet.createRandom().getAddress()
+    const walletAddress = await ethers.Wallet.createRandom().getAddress()
+    const metadata = {
+      public: {},
+      protected: {},
+    }
+
+    const userMetadataResponse = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata })
+
+    expect(userMetadataResponse.status).toBe(201)
+    expect(userMetadataResponse.body).toStrictEqual({
+      userMetadata: metadata,
+    })
+
+    const metadata2 = {
+      public: {},
+      protected: {
+        email: 'test@gmail.com',
+      },
+    }
+
+    const userMetadataResponse2 = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata: metadata2 })
+
+    expect(userMetadataResponse2.body).toStrictEqual({
+      userMetadata: metadata2,
+    })
+
+    const userMetadataResponse3 = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata: metadata2 })
+
+    expect(userMetadataResponse3.status).toBe(409)
+  })
+
   it('Add invalid user metadata', async () => {
     expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
@@ -80,7 +138,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   it('Add metadata to users in bulk', async () => {
-    expect.assertions(2)
+    expect.assertions(3)
     const users = await Promise.all(
       Array(3)
         .fill(0)
@@ -94,11 +152,9 @@ describe('Metadata v2 endpoints for locksmith', () => {
             protected: {
               email: `${index}@example.com`,
             },
-          }
-          const keyId = String(index + 1)
+          } as const
           return {
             userAddress,
-            keyId,
             lockAddress,
             metadata,
           }
@@ -106,6 +162,11 @@ describe('Metadata v2 endpoints for locksmith', () => {
     )
 
     const userMetadataResponse = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users })
+
+    // next time, ignore the user and return an empty array since they are already saved
+    const userMetadataResponse2 = await request(app)
       .post('/v2/api/metadata/100/users')
       .send({ users })
 
@@ -117,6 +178,54 @@ describe('Metadata v2 endpoints for locksmith', () => {
     }))
     expect(userMetadataResponse.status).toBe(201)
     expect(usersMetadata).toStrictEqual(expectedUsersMetadata)
+    expect(userMetadataResponse2.body.result?.length).toBe(0)
+  })
+
+  it('Add empty users in bulk', async () => {
+    expect.assertions(3)
+    const users = await Promise.all(
+      Array(3)
+        .fill(0)
+        .map(async () => {
+          const lockAddress = await ethers.Wallet.createRandom().getAddress()
+          const userAddress = await ethers.Wallet.createRandom().getAddress()
+          const metadata: Record<
+            'public' | 'protected',
+            Record<string, any>
+          > = {
+            public: {},
+            protected: {},
+          }
+          return {
+            userAddress,
+            lockAddress,
+            metadata,
+          }
+        })
+    )
+
+    const userMetadataResponse = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users })
+
+    expect(userMetadataResponse.body.result.length).toBe(3)
+
+    const metadataAddedUsers = users.map((item, index) => {
+      item.metadata.protected.email = `${index}@gmail.com`
+      return item
+    })
+
+    const userMetadataResponse2 = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users: metadataAddedUsers })
+
+    expect(userMetadataResponse2.body.result.length).toBe(3)
+
+    const userMetadataResponse3 = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users: metadataAddedUsers })
+
+    expect(userMetadataResponse3.body.result.length).toBe(0)
   })
 
   it('Add bulk broken user metadata', async () => {
@@ -263,12 +372,18 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   it('Get lock metadata', async () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const lockMetadataResponse = await request(app).get(
       `/v2/api/metadata/100/locks/${lockAddress}`
     )
-    expect(lockMetadataResponse.status).toBe(404)
+    expect(lockMetadataResponse.status).toBe(200)
+    expect(lockMetadataResponse.body).toStrictEqual({
+      description:
+        'Test Lock is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+      image: `https://staging-locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
+      name: 'Test Lock',
+    })
   })
 
   it('Bulk lock metadata returns error without authentication', async () => {
@@ -278,7 +393,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const lockAddressMetadataResponse = await request(app).put(
       `/v2/api/metadata/4/locks/${lockAddress}/keys`
     )
-    expect(lockAddressMetadataResponse.status).toBe(403)
+    expect(lockAddressMetadataResponse.status).toBe(401)
   })
 
   it('Bulk lock metadata returns no error when authentication is present and user is lock manager', async () => {
@@ -306,7 +421,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(lockAddressMetadataResponse.status).toBe(401)
+    expect(lockAddressMetadataResponse.status).toBe(403)
   })
 
   it('Does return error when authentication is present and payload is wrong', async () => {

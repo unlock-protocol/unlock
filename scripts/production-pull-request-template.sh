@@ -11,7 +11,7 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 
 ## Creator Dashboard
 * [ ] Click on the \"Go to your Dashboard\" button and ensure that the dashboard loads as expected
-* [ ] Create a new Lock (rinkeby is the best option) and wait for it to confirm with the right values
+* [ ] Create a new Lock (using a test net is the best option) and wait for it to confirm with the right values
 * [ ] Update the price on this new lock or an older lock
 * [ ] Enable credit cards on one of your locks
 * [ ] Withdraw funds on one of the locks
@@ -25,8 +25,9 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 ## Purchase URL
 * [ ] From the dashboard, create a purchase URL (redirect URL does not matter)
 * [ ] In the purchase URL, configure metadata collection to collect an email address (\`\"metadataInputs\": [ { name: 'Name', type: 'text', required: true } ],\`)
-* [ ] By using a v10 lock, enable multiple purchase in the URL (\`\"maxRecipients\": 6\`)
+* [ ] By using a recent lock, enable multiple purchase in the URL (\`\"maxRecipients\": 6\`)
 * [ ] Go through the checkout flow and ensure that it works as expected (data is collected for 2 users + and 2 keys are minted)
+* [ ] Use a v9 lock and check if multiple purchase is successful for compatibility. Use lock address: `0xb77030a7e47a5eb942a4748000125e70be598632` on network `100` gnosis.
 
 ## Credit Card flow for Unlock User accounts
 * [ ] Open the demo for a lock that has credit card enabled
@@ -35,4 +36,8 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Connect to the keychain using your Unlock credentials
 * [ ] Ensure the key you just purchased is there
 
+## Verification 
+* [ ] Add a separate address as a verifier
+* [ ] Create QR code for one of the valid NFT you own and check-in using your phone or laptop camera
+* [ ] Check if metadata is displayed when you are a verifier and check-in is persistent from the members page.
 "

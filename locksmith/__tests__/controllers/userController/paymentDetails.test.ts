@@ -1,15 +1,10 @@
-import models = require('../../../src/models')
-import app = require('../../../src/app')
-
-const UserOperations = require('../../../src/operations/userOperations')
+import request from 'supertest'
+import app from '../../app'
+import { User, UserReference, StripeCustomer } from '../../../src/models'
+import UserOperations from '../../../src/operations/userOperations'
+import { vi } from 'vitest'
 
 beforeAll(() => {
-  jest.unmock('../../../src/operations/userOperations')
-
-  const { UserReference } = models
-  const { User } = models
-  const { StripeCustomer } = models
-
   return Promise.all([
     StripeCustomer.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
@@ -17,17 +12,11 @@ beforeAll(() => {
   ])
 })
 
-afterAll(() => {
-  jest.clearAllMocks()
-})
-
 describe('payment details', () => {
-  const request = require('supertest')
-
   describe("retrieving a user's card details ", () => {
     it("return the user's card details if available", async () => {
       expect.assertions(1)
-      UserOperations.getCards = jest.fn()
+      UserOperations.getCards = vi.fn()
 
       await request(app).get('/users/user@example.com/cards')
       expect(UserOperations.getCards).toHaveBeenCalledWith('user@example.com')
@@ -38,14 +27,14 @@ describe('payment details', () => {
     it('returns 202', async () => {
       expect.assertions(1)
 
-      UserOperations.updatePaymentDetails = jest
+      UserOperations.updatePaymentDetails = vi
         .fn()
         .mockReturnValueOnce(true)
         .mockReturnValueOnce(false)
 
       const response = await request(app)
         .put('/users/user@example.com/paymentdetails')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .send({
           message: {
             user: {
@@ -63,11 +52,11 @@ describe('payment details', () => {
     it('returns 400', async () => {
       expect.assertions(1)
 
-      UserOperations.updatePaymentDetails = jest.fn().mockReturnValueOnce(false)
+      UserOperations.updatePaymentDetails = vi.fn().mockReturnValueOnce(false)
 
       const response = await request(app)
         .put('/users/user@example.com/paymentdetails')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .send({
           message: {
             user: {
@@ -96,7 +85,7 @@ describe('payment details', () => {
 
       const response = await request(app)
         .put('/users/ejected_user@example.com/paymentdetails')
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .send({
           message: {
             user: {

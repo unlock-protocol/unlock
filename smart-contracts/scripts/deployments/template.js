@@ -1,5 +1,4 @@
 const { ethers, run } = require('hardhat')
-const { addDeployment } = require('../../helpers/deployments')
 const { getNetworkName } = require('../../helpers/network')
 const contracts = require('@unlock-protocol/contracts')
 
@@ -8,6 +7,9 @@ async function main({ publicLockVersion }) {
   const { chainId } = await ethers.provider.getNetwork()
   const networkName = getNetworkName(chainId)
   const isLocalNet = networkName === 'localhost'
+
+  const [signer] = await ethers.getSigners()
+  console.log(`Deploying lock template with signer ${signer.address}`)
 
   let PublicLock
   if (publicLockVersion) {
@@ -22,8 +24,7 @@ async function main({ publicLockVersion }) {
 
   // eslint-disable-next-line no-console
   console.log(
-    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${
-      publicLock.address
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLock.address
     } (tx: ${publicLock.deployTransaction.hash})`
   )
 
@@ -35,9 +36,6 @@ async function main({ publicLockVersion }) {
       console.log(error)
     }
   }
-
-  // save deployment info
-  await addDeployment('PublicLock', publicLock, false)
 
   return publicLock.address
 }

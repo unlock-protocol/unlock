@@ -4,7 +4,7 @@ subTitle: Showing a list of members has never been easier!
 authorName: Julien Genestoux
 publishDate: November 12, 2019
 description: Showing a list of members has never been easier!
-image: https://member-wall.unlock-protocol.com/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxWidth=1000
+image: https://member-wall.unlock-protocol.com/api/members?network=137&locks=0xb77030a7e47a5eb942a4748000125e70be598632&maxWidth=1000
 ---
 
 The Unlock team spent the week-end in Waterloo, Canada [hacking on Ethereum](https://unlock-protocol.com/blog/ethwaterloo-tickets/).
@@ -17,7 +17,7 @@ It's a very simple application which generates a large SVG image which lists all
 
 The great thing about using images is that they can be embedded on almost any webpage. For example, below is the list of all members to our lock and that image is dynamically refreshed when new members are added!
 
-<object data="https://member-wall.unlock-protocol.com/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxHeight=300" type="image/svg+xml"/>
+<object data="https://member-wall.unlock-protocol.com/api/members?network=137&locks=0xb77030a7e47a5eb942a4748000125e70be598632&maxHeight=300" type="image/svg+xml"/>
 
 Each of the members is clickable and will link to the corresponding page on [Etherscan](https://etherscan.io/)!
 
@@ -31,7 +31,7 @@ From there, we use [React](https://reactjs.org/) to generate a SVG image. This i
 
 The wall's size is "fixed" but can be customized and the size of each member is based on the number of members. Here's the list of our blog's members on a 30px height!
 
-![Members](https://member-wall.unlock-protocol.com/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxHeight=30)
+![Members](https://member-wall.unlock-protocol.com/api/members?network=137&locks=0xb77030a7e47a5eb942a4748000125e70be598632&maxHeight=30)
 
 Of couse, this is all [completely open source](https://github.com/unlock-protocol/member-wall), so you could easily run that on your own server, or maybe even host it on IPFS?
 

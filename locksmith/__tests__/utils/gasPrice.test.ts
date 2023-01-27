@@ -1,30 +1,41 @@
 import { BigNumber } from 'ethers'
 import GasPrice from '../../src/utils/gasPrice'
+import { vi } from 'vitest'
 // mock coinbase API
-jest.mock('isomorphic-fetch', () => async () => ({
-  json: async () => ({
-    data: { base: 'ETH', currency: 'USD', amount: '420000' },
-  }),
-}))
-
-jest.mock('@unlock-protocol/networks', () => ({
-  1: {},
-  31137: {},
-}))
-
-jest.mock('ethers', () => {
-  const original = jest.requireActual('ethers')
+vi.mock('isomorphic-fetch', () => {
   return {
+    default: async () => ({
+      json: async () => ({
+        data: { base: 'ETH', currency: 'USD', amount: '420000' },
+      }),
+      ok: true,
+    }),
+  }
+})
+
+vi.mock('@unlock-protocol/networks', () => {
+  return {
+    default: {
+      1: {},
+      31137: {},
+    },
+  }
+})
+
+vi.mock('ethers', async () => {
+  const original = await vi.importActual<any>('ethers')
+  const item = {
     ...original,
     ethers: {
       providers: {
-        JsonRpcProvider: jest.fn(() => ({
+        JsonRpcProvider: vi.fn(() => ({
           getGasPrice: () => Promise.resolve(BigNumber.from(1e12).toString()),
         })),
       },
-      Wallet: jest.fn(),
+      Wallet: vi.fn(),
     },
   }
+  return item
 })
 
 let gasPrice: any

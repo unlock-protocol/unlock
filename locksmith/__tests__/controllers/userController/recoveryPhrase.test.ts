@@ -1,11 +1,9 @@
-import app = require('../../../src/app')
-import UserOperations = require('../../../src/operations/userOperations')
-import models = require('../../../src/models')
+import request from 'supertest'
+import app from '../../app'
+import { User, UserReference } from '../../../src/models'
+import UserOperations from '../../../src/operations/userOperations'
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     User.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
@@ -13,8 +11,6 @@ beforeAll(() => {
 })
 
 describe("retrieving a user's recovery phrase", () => {
-  const request = require('supertest')
-
   describe('when the user exists', () => {
     it("returns the user's recovery phrase", async () => {
       expect.assertions(1)
