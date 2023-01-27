@@ -67,7 +67,7 @@ export class KeyManager {
     if (!this.networks[network]) {
       throw new Error(`Missing config for ${network}`)
     }
-    return new ethers.providers.JsonRpcProvider(
+    return new ethers.providers.JsonRpcBatchProvider(
       this.networks[network].provider,
       network
     )
