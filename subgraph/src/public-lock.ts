@@ -275,7 +275,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   if (key && key.owner) {
     createReceipt(event, key.owner, tokenId.value)
   } else {
-    createReceipt(event, Address.fromString(''), tokenId.value)
+    createReceipt(event, Bytes.empty(), tokenId.value)
   }
 }
 
@@ -390,7 +390,7 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
  */
 export function createReceipt(
   event: ethereum.Event,
-  owner: Address,
+  owner: Bytes,
   tokenId: BigInt
 ): void {
   const lockAddress = event.address.toHexString()
