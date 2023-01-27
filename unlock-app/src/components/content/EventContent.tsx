@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { selectProvider } from '~/hooks/useAuthenticate'
+
 import Head from 'next/head'
-import { Button, Tooltip } from '@unlock-protocol/ui'
+import { Button, Tooltip, Modal } from '@unlock-protocol/ui'
 import { pageTitle } from '../../constants'
 import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import { useMetadata } from '~/hooks/metadata'
 import LoadingIcon from '../interface/Loading'
 import { AddressLink } from '../interface/AddressLink'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
+import ReactMarkdown from 'react-markdown'
 import { FaCalendar, FaRegCalendarPlus, FaClock } from 'react-icons/fa'
 import { GoLocation } from 'react-icons/go'
 import { FiTwitter } from 'react-icons/fi'
 import Link from 'next/link'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useConfig } from '~/utils/withConfig'
+import { Checkout } from '../interface/checkout/main'
 
 const formatEventData = (metadata: any) => {
   const accentColor = metadata.background_color
@@ -87,7 +91,9 @@ interface EventDetailsProps {
 
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
+  const config = useConfig()
 
+  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
@@ -111,8 +117,26 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     alert('TT')
   }
 
+  const injectedProvider = selectProvider(config)
+
   return (
     <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
+      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+        <Checkout
+          injectedProvider={injectedProvider as any}
+          paywallConfig={
+            {
+              locks: {
+                [lockAddress]: {
+                  network,
+                },
+              },
+            } as any
+          }
+          handleClose={() => setCheckoutOpen(false)}
+        />
+      </Modal>
+
       <section className="">
         <h1 className="text-5xl md:text-7xl font-bold mb-4">
           {eventData.title}
@@ -189,6 +213,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             className="mt-8 w-full"
             style={{ backgroundColor: eventData.accentColor }}
+            onClick={() => setCheckoutOpen(true)}
           >
             Register
           </Button>
