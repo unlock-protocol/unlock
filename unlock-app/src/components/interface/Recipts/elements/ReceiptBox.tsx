@@ -1,4 +1,4 @@
-import { Button, Collapse, Disclosure } from '@unlock-protocol/ui'
+import { Button, Disclosure } from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
