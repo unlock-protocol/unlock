@@ -124,7 +124,6 @@ export function handleTransfer(event: TransferEvent): void {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
     const key = Key.load(keyID)
-
     if (key) {
       key.owner = event.params.to
       key.expiration = getKeyExpirationTimestampFor(
