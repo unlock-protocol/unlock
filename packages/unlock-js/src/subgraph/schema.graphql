@@ -59,5 +59,6 @@ query AllKeys(
     tokenURI
     createdAtBlock
     cancelled
+    transactionsHash
   }
 }

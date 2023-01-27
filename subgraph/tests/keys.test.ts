@@ -222,13 +222,12 @@ describe('Key is expired by lock manager', () => {
     // create a key
     const newExpireKeyEvent = createExpireKeyEvent(BigInt.fromU32(tokenId))
 
+    const hash = Address.fromBytes(
+      newExpireKeyEvent.transaction.hash
+    ).toHexString()
+
     // check for transactionHash
-    assert.fieldEquals(
-      'Key',
-      keyID,
-      'transactionsHash',
-      `[${newExpireKeyEvent.transaction.hash.toString()}]`
-    )
+    assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
   })
   test('should update the key expiration', () => {
@@ -284,13 +283,12 @@ describe('Key managers', () => {
 
     handleKeyManagerChanged(newKeyManagerChanged)
 
+    const hash = Address.fromBytes(
+      newKeyManagerChanged.transaction.hash
+    ).toHexString()
+
     // check for transactionHash
-    assert.fieldEquals(
-      'Key',
-      keyID,
-      'transactionsHash',
-      `[${newKeyManagerChanged.transaction.hash.toString()}]`
-    )
+    assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
   })
   test('key manager changed', () => {
@@ -343,14 +341,9 @@ describe('Cancel keys', () => {
 
     const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
     handleCancelKey(newCancelKey)
-
+    const hash = Address.fromBytes(newCancelKey.transaction.hash).toHexString()
     // check for transactionHash
-    assert.fieldEquals(
-      'Key',
-      keyID,
-      'transactionsHash',
-      `[${newCancelKey.transaction.hash.toString()}]`
-    )
+    assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
   })
   test('cancel a key', () => {
