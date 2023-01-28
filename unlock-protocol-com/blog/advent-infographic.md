@@ -1,5 +1,5 @@
 ---
-title: 200,000 NFTs Claimed in Unlock Protocol's "Advent Calendar" Campaign
+title: 200,000 NFTs Claimed in Unlock Protocol's Holiday Campaign
 authorName: Christopher Carfi
 publishDate: January 25, 2023
 description: The details on why over 200,000 membership NFTs were claimed during December from Unlock's Advent calendar activation.
