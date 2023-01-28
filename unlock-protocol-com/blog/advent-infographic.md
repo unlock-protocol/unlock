@@ -24,3 +24,4 @@ Check out the details...more experiences like this coming soon...
 
 ![Advent infographic](/images/blog/advent-infographic/advent-infographic-v2a.png)
 
+[PNG](/images/blog/advent-infographic/advent-infographic-v2a.png) [PDF](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/Advent%20Infographic%20v2.pdf)
