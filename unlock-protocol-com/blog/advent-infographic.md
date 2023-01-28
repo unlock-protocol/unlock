@@ -11,9 +11,13 @@ It's true! Unlock Protocol had over **200,000** membership NFTs claimed during D
 The key bits:
 
 🚀 Over 200k NFTs claimed
+
 🔶 Over 12k wallets
+
 💜 Deployed on Polygon
+
 🎲 Gamified experience
+
 🚫 Gas-free mint ⛽️
 
 Check out the details...more experiences like this coming soon...
