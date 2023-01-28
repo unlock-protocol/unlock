@@ -277,7 +277,7 @@ export function Confirm({
 
       const isTokenPayable =
         pricingData?.total &&
-        parseFloat(pricingData?.total) < parseFloat(balance)
+        parseFloat(pricingData?.total) <= parseFloat(balance)
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
 
       return {
