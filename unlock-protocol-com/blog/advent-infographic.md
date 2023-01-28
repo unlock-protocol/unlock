@@ -9,5 +9,5 @@ image: /images/blog/advent-infographic/advent-infographic-share.png
 
 advent-infographic
 
-![Advent infographic](/images/blog/advent-infographic/advent-infographic-v2.png)
+![Advent infographic](/images/blog/advent-infographic/advent-infographic-v2a.png)
 
