@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import { addMetadata } from '../../src/operations/userMetadataOperations'
 import {
   sendEmail,
@@ -6,8 +5,6 @@ import {
 } from '../../src/operations/wedlocksOperations'
 import { vi } from 'vitest'
 import normalizer from '../../src/utils/normalizer'
-
-vi.mock('node-fetch')
 
 describe('Wedlocks operations', () => {
   afterEach(() => {
