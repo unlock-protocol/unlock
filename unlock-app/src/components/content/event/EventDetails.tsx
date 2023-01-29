@@ -187,7 +187,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             className="h-12 w-full md:w-96"
             style={{
               backgroundColor: eventData.accentColor,
-              color: fontColorContrast(eventData.accentColor),
+              color: eventData.accentColor
+                ? fontColorContrast(eventData.accentColor)
+                : 'white',
             }}
             onClick={() => setCheckoutOpen(true)}
           >
