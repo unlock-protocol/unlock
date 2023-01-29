@@ -5619,21 +5619,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@morpho-labs/ethers-multicall@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@morpho-labs/ethers-multicall@npm:3.0.1"
-  dependencies:
-    dataloader: ^2.1.0
-    ethers: ^5.0.0
-    lodash: ^4.17.21
-  peerDependencies:
-    "@ethersproject/abi": ^5.0.0
-    "@ethersproject/providers": ^5.0.0
-    ethers: ^5.0.0
-  checksum: 295539d0e46bfecd38eb5610e084fd8ba53ebecc9056e823f2278fdf3ad615f5ac664af4e965b61b63c53ff281e9b7e60772322bcec9cb52ad3ee505042817f9
-  languageName: node
-  linkType: hard
-
 "@mrmlnc/readdir-enhanced@npm:^2.2.1":
   version: 2.2.1
   resolution: "@mrmlnc/readdir-enhanced@npm:2.2.1"
@@ -13376,17 +13361,14 @@ __metadata:
     "@graphql-codegen/typescript": 2.8.6
     "@graphql-codegen/typescript-graphql-request": 4.5.8
     "@graphql-codegen/typescript-operations": 2.5.11
-    "@morpho-labs/ethers-multicall": 3.0.1
     "@nomiclabs/hardhat-ethers": 2.2.1
     "@openapitools/openapi-generator-cli": 2.5.2
-    "@uniswap/v3-periphery": 1.4.3
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: 29.3.1
-    cross-fetch: 3.1.5
     eslint: 8.31.0
     graphql: 16.6.0
     graphql-request: 5.1.0
@@ -20379,15 +20361,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:3.1.5, cross-fetch@npm:^3.0.4, cross-fetch@npm:^3.0.6, cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
-  version: 3.1.5
-  resolution: "cross-fetch@npm:3.1.5"
-  dependencies:
-    node-fetch: 2.6.7
-  checksum: f6b8c6ee3ef993ace6277fd789c71b6acf1b504fd5f5c7128df4ef2f125a429e29cd62dc8c127523f04a5f2fa4771ed80e3f3d9695617f441425045f505cf3bb
-  languageName: node
-  linkType: hard
-
 "cross-fetch@npm:^2.1.0, cross-fetch@npm:^2.1.1":
   version: 2.2.5
   resolution: "cross-fetch@npm:2.2.5"
@@ -20395,6 +20368,15 @@ __metadata:
     node-fetch: 2.6.1
     whatwg-fetch: 2.0.4
   checksum: dc48ded8c8836db74107aee77c6e8eb751151beb8545ce0e044eb5befc4cb687d996cecb62fc12b19be80924fd72bcc851d90e785cfd3d6056cd45f43507a66d
+  languageName: node
+  linkType: hard
+
+"cross-fetch@npm:^3.0.4, cross-fetch@npm:^3.0.6, cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
+  version: 3.1.5
+  resolution: "cross-fetch@npm:3.1.5"
+  dependencies:
+    node-fetch: 2.6.7
+  checksum: f6b8c6ee3ef993ace6277fd789c71b6acf1b504fd5f5c7128df4ef2f125a429e29cd62dc8c127523f04a5f2fa4771ed80e3f3d9695617f441425045f505cf3bb
   languageName: node
   linkType: hard
 
@@ -21076,7 +21058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dataloader@npm:2.1.0, dataloader@npm:^2.1.0":
+"dataloader@npm:2.1.0":
   version: 2.1.0
   resolution: "dataloader@npm:2.1.0"
   checksum: bbd43496c41697766f8611f60ed3bae437b450985499140b9603a2447c10d45975d3a0661caaebaa9750bc1bc9fd154676a314423294916c8b8ca1a59a08d139
@@ -24855,7 +24837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.0.0, ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.3.1, ethers@npm:^5.4.7, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.3.1, ethers@npm:^5.4.7, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -27377,7 +27359,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 

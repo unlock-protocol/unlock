@@ -1,6 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const { getNetworkName } = require('../../helpers/network')
+const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 async function main(locksmiths) {
 
@@ -15,7 +16,9 @@ async function main(locksmiths) {
     initializer: 'initialize()',
   })
   await keyManager.deployed()
-  console.log(`> Deployed KeyManager on ${networkName} to ${keyManager.address}`)
+  const implementation = await getImplementationAddress(deployer.provider, keyManager.address)
+
+  console.log(`> Deployed KeyManager on ${networkName} to ${keyManager.address} (impl: ${implementation})`)
 
   // Add locksmiths
   for (const locksmith of locksmiths) {
