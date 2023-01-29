@@ -21,7 +21,7 @@ interface DashboardLayoutProps {
   showHeader?: boolean
 }
 
-export const WalletNotConnected = () => {
+const WalletNotConnected = () => {
   const [loginUrl, setLoginUrl] = useState<string>('')
   useEffect(() => {
     setLoginUrl(`/login?redirect=${encodeURIComponent(window.location.href)}`)
