@@ -1,9 +1,10 @@
 import { RequestHandler } from 'express'
-import Dispatcher from '../fulfillment/dispatcher'
+import Dispatcher from '../../fulfillment/dispatcher'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import normalizer from '../utils/normalizer'
-import { UserTokenMetadata } from '../models'
-import { sendEmail } from '../operations/wedlocksOperations'
+import normalizer from '../../utils/normalizer'
+import { UserTokenMetadata } from '../../models'
+import { sendEmail } from '../../operations/wedlocksOperations'
+import { z } from 'zod'
 
 export const createTransferCode: RequestHandler = async (request, response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
@@ -87,4 +88,61 @@ export const createTransferCode: RequestHandler = async (request, response) => {
   }
 
   return response.status(200).send(responseBody)
+}
+
+const TransferDoneBody = z.object({
+  transferSignature: z.string(),
+  deadline: z.number(),
+  token: z.string(),
+  lock: z.string().transform((item) => normalizer.ethereumAddress(item)),
+  network: z.number(),
+  owner: z.string().transform((item) => normalizer.ethereumAddress(item)),
+})
+
+export const transferDone: RequestHandler = async (request, response) => {
+  const userAddress = request.user!.walletAddress
+  const { transferSignature, deadline, owner, lock, token, network } =
+    await TransferDoneBody.parseAsync(request.body)
+  const dispatch = new Dispatcher()
+
+  const isTransferSignedByLocksmith = dispatch.isTransferSignedByLocksmith(
+    network,
+    {
+      owner,
+      deadline,
+      lock,
+      transferSignature,
+      token,
+    }
+  )
+
+  if (!isTransferSignedByLocksmith) {
+    return response.status(403).send({
+      message: 'Transfer signature is not valid',
+    })
+  }
+
+  const keyOwnerMetadata = await UserTokenMetadata.findOne({
+    where: {
+      tokenAddress: lock,
+      chain: network,
+      userAddress: owner,
+    },
+  })
+
+  await UserTokenMetadata.upsert(
+    {
+      tokenAddress: lock,
+      chain: network,
+      userAddress: userAddress,
+      data: keyOwnerMetadata?.data || {},
+    },
+    {
+      conflictFields: ['userAddress', 'tokenAddress'],
+    }
+  )
+
+  return response.status(200).send({
+    message: 'Transfer done',
+  })
 }

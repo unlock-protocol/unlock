@@ -30,7 +30,7 @@ export const getNameOrAddressForAddress = async (
 export const getAddressForName = async (_name: string): Promise<string> => {
   try {
     const name = _name.trim()
-    const isAddress = ethers.utils.isAddress(name)
+    const isAddress = name.split('.').pop()?.toLowerCase() !== 'eth'
     if (isAddress) {
       return name
     }
