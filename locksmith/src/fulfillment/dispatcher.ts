@@ -16,10 +16,13 @@ interface KeyToGrant {
   expiration?: number
 }
 export default class Dispatcher {
-  async getPurchaser(network: number) {
-    const provider = new ethers.providers.JsonRpcProvider(
+  getProviderForNetwork(network: number) {
+    return new ethers.providers.JsonRpcProvider(
       networks[network].publicProvider
     )
+  }
+  async getPurchaser(network: number) {
+    const provider = this.getProviderForNetwork(network)
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
     return {
       wallet,
@@ -31,9 +34,7 @@ export default class Dispatcher {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const provider = new ethers.providers.JsonRpcProvider(
-            network.publicProvider
-          )
+          const provider = this.getProviderForNetwork(network.id)
           const wallet = new ethers.Wallet(config.purchaserCredentials)
           const balance = await provider.getBalance(wallet.address)
           return [
@@ -86,9 +87,7 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
 
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
+    const provider = this.getProviderForNetwork(network)
 
     const walletWithProvider = new ethers.Wallet(
       config.purchaserCredentials,
@@ -128,9 +127,7 @@ export default class Dispatcher {
   }
 
   async hasFundsForTransaction(network: number) {
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
+    const provider = this.getProviderForNetwork(network)
 
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
 
@@ -165,9 +162,7 @@ export default class Dispatcher {
     const { network, lockAddress, owner, data } = options
     const walletService = new WalletService(networks)
 
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
+    const provider = this.getProviderForNetwork(network)
 
     const walletWithProvider = new ethers.Wallet(
       config.purchaserCredentials,
@@ -194,9 +189,7 @@ export default class Dispatcher {
     keyId: string
   ) {
     const walletService = new WalletService(networks)
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
+    const provider = this.getProviderForNetwork(network)
 
     const walletWithProvider = new ethers.Wallet(
       config.purchaserCredentials,
@@ -227,13 +220,17 @@ export default class Dispatcher {
    * @param tokenId
    * @returns [payload: string, signature: string]
    */
-  async signToken(network: number, lockAddress: string, tokenId: string) {
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
-    const web3Service = new Web3Service(networks)
-
-    const account = await web3Service.ownerOf(lockAddress, tokenId, network)
+  async signToken(
+    network: number,
+    lockAddress: string,
+    tokenId: string,
+    account?: string
+  ) {
+    const provider = this.getProviderForNetwork(network)
+    if (!account) {
+      const web3Service = new Web3Service(networks)
+      account = await web3Service.ownerOf(lockAddress, tokenId, network)
+    }
 
     const payload = JSON.stringify({
       network,
@@ -253,9 +250,7 @@ export default class Dispatcher {
     options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
     callback: (error: any, hash: string | null) => Promise<void> | void
   ) {
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
+    const provider = this.getProviderForNetwork(network)
     const signer = new ethers.Wallet(config.purchaserCredentials, provider)
     const walletService = new WalletService(networks)
     await walletService.connect(provider, signer)
@@ -274,9 +269,7 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
+    const provider = this.getProviderForNetwork(network)
     const signer = new ethers.Wallet(config.purchaserCredentials, provider)
     const keyManager = new KeyManager()
     const transferCode = await keyManager.createTransferSignature({
@@ -285,5 +278,26 @@ export default class Dispatcher {
       network,
     })
     return transferCode
+  }
+
+  isTransferSignedByLocksmith(
+    network: number,
+    params: Parameters<
+      InstanceType<typeof KeyManager>['getSignerForTransferSignature']
+    >[0]['params']
+  ) {
+    const provider = this.getProviderForNetwork(network)
+    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const signerAddress = signer.address
+    const keyManager = new KeyManager()
+    const transferSignerAddress = keyManager.getSignerForTransferSignature({
+      network,
+      params,
+    })
+    const isSignedByLocksmith =
+      transferSignerAddress.trim().toLowerCase() ===
+      signerAddress.trim().toLowerCase()
+
+    return isSignedByLocksmith
   }
 }
