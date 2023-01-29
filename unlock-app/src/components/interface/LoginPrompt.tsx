@@ -108,12 +108,7 @@ const LoginPrompt = ({
       {!walletToShow && (
         <>
           {showTitle && (
-            <p>
-              <h2 className="text-3xl font-semibold">Authenticate</h2>
-              <p className="py-5">
-                Select a wallet to authenticate or use an Unlock Account.
-              </p>
-            </p>
+            <h2 className="text-3xl font-semibold">Connect a wallet</h2>
           )}
 
           {children}
