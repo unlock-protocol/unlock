@@ -171,7 +171,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         )}
       </section>
       <section className="flex flex flex-col items-center">
-        <img alt={eventData.title} className="mb-5" src={eventData.image} />
+        <img
+          alt={eventData.title}
+          className="mb-5 aspect-auto	"
+          src={eventData.image}
+        />
         <ul className="flex justify-around w-1/2">
           <li className="bg-gray-200 rounded-full">
             <AddToCalendarButton event={eventData} />
