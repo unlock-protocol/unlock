@@ -13266,6 +13266,7 @@ __metadata:
     autoprefixer: 10.4.13
     axios: 1.2.1
     axios-auth-refresh: 3.3.4
+    calendar-link: 2.4.0
     csv: 6.2.5
     dayjs: 1.11.7
     deep-object-diff: 1.1.9
@@ -13273,6 +13274,7 @@ __metadata:
     eslint: 8.31.0
     ethers: 5.7.2
     file-saver: 2.0.5
+    font-color-contrast: 11.1.0
     graphql: 16.6.0
     lottie-react: 2.3.1
     next: 13.0.0
@@ -13295,7 +13297,7 @@ __metadata:
     react-icons: 4.7.1
     react-jazzicon: 1.0.4
     react-jwt: 1.1.7
-    react-markdown: ^8.0.5
+    react-markdown: 8.0.5
     react-test-renderer: 18.2.0
     react-use: 17.4.0
     react-use-clipboard: 1.0.9
@@ -18379,6 +18381,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"calendar-link@npm:2.4.0":
+  version: 2.4.0
+  resolution: "calendar-link@npm:2.4.0"
+  dependencies:
+    dayjs: ^1.9.3
+    query-string: ^6.13.6
+  checksum: 56be10967db80142acc698578568dc192610e0ba052563e574b535c001bb71d65697f936a54feb1cb19e6525560c0a80aae8eaac72907d8d0a32b2af58680e47
+  languageName: node
+  linkType: hard
+
 "call-bind@npm:^1.0.0, call-bind@npm:^1.0.2, call-bind@npm:~1.0.2":
   version: 1.0.2
   resolution: "call-bind@npm:1.0.2"
@@ -21094,7 +21106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.11.7":
+"dayjs@npm:1.11.7, dayjs@npm:^1.9.3":
   version: 1.11.7
   resolution: "dayjs@npm:1.11.7"
   checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
@@ -25867,6 +25879,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"filter-obj@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "filter-obj@npm:1.1.0"
+  checksum: cf2104a7c45ff48e7f505b78a3991c8f7f30f28bd8106ef582721f321f1c6277f7751aacd5d83026cb079d9d5091082f588d14a72e7c5d720ece79118fa61e10
+  languageName: node
+  linkType: hard
+
 "filter-obj@npm:^2.0.1":
   version: 2.0.2
   resolution: "filter-obj@npm:2.0.2"
@@ -26147,6 +26166,13 @@ __metadata:
     debug:
       optional: true
   checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
+  languageName: node
+  linkType: hard
+
+"font-color-contrast@npm:11.1.0":
+  version: 11.1.0
+  resolution: "font-color-contrast@npm:11.1.0"
+  checksum: 7c8af0690adc8ddfd8f3030bbce6d3345851fe78c0076fb5b3ab23568b241559fd2925f8923dc5e907faa4d49d79a03e5c04321b1551d04dbdd662a29857a968
   languageName: node
   linkType: hard
 
@@ -41229,6 +41255,18 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"query-string@npm:^6.13.6":
+  version: 6.14.1
+  resolution: "query-string@npm:6.14.1"
+  dependencies:
+    decode-uri-component: ^0.2.0
+    filter-obj: ^1.1.0
+    split-on-first: ^1.0.0
+    strict-uri-encode: ^2.0.0
+  checksum: f2c7347578fa0f3fd4eaace506470cb4e9dc52d409a7ddbd613f614b9a594d750877e193b5d5e843c7477b3b295b857ec328903c943957adc41a3efb6c929449
+  languageName: node
+  linkType: hard
+
 "querystring-es3@npm:^0.2.0, querystring-es3@npm:~0.2.0":
   version: 0.2.1
   resolution: "querystring-es3@npm:0.2.1"
@@ -41731,7 +41769,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-markdown@npm:^8.0.5":
+"react-markdown@npm:8.0.5":
   version: 8.0.5
   resolution: "react-markdown@npm:8.0.5"
   dependencies:
