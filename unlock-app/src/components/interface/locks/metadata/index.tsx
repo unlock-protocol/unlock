@@ -177,10 +177,6 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
     keyId: selected.keyId,
   })
 
-  console.log('______')
-  console.log(selected)
-  console.log(metadata)
-
   const defaultValues = useMemo(() => {
     return toFormData((metadata || {}) as Metadata)
   }, [metadata])
@@ -233,7 +229,6 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
   const isLockSelected = selected.lockAddress && selected.network
 
   const isTokenURIEditable = useMemo(() => {
-    return true
     if (!tokenURI || isTokenURILoading) {
       return false
     }
@@ -241,8 +236,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
       const tokenURL = new URL(tokenURI!)
       const locksmithURL = new URL(config.locksmithHost)
       return tokenURL.hostname === locksmithURL.hostname
-    } catch (error) {
-      console.log(error)
+    } catch {
       return false
     }
   }, [tokenURI, isTokenURILoading])
