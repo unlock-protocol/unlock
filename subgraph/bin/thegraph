@@ -55,8 +55,9 @@ const deploy = async (network, graphLabel) => {
   const graphNode = 'https://api.thegraph.com/deploy/'
   const ipfs = 'https://api.thegraph.com/ipfs/'
 
-  const subgraphName = `unlock-protocol/${network === 'xdai' ? 'gnosis' : network
-    }-v2`
+  const subgraphName = `unlock-protocol/${
+    network === 'xdai' ? 'gnosis' : network
+  }-v2`
   console.log(`Deploying subgraph ${subgraphName}`)
 
   const label = graphLabel ? `--version-label ${graphLabel}` : ''
@@ -65,7 +66,7 @@ const deploy = async (network, graphLabel) => {
 }
 
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'localhost'].includes(d)
+  (d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
