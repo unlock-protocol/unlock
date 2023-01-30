@@ -124,6 +124,31 @@ export const CreateLockForm = ({
     setValue('network', parseInt(`${network}`))
   }
 
+  let networkDescription = <></>
+  if (network === 5) {
+    networkDescription = (
+      <>
+        Need some Test ETH?{' '}
+        <a
+          className="underline"
+          target="_blank"
+          href="https://goerlifaucet.com/"
+          rel="noreferrer"
+        >
+          Check this faucet.
+        </a>
+      </>
+    )
+  } else if (network === 1) {
+    networkDescription = (
+      <>
+        Deploying to Ethereum mainnet is expensive in gas, and minting NFT
+        memberships will also be expensive. Please consider using networks like
+        Polygon, Gnosis Chain or Optimism
+      </>
+    )
+  }
+
   return (
     <>
       <SelectCurrencyModal
@@ -147,23 +172,7 @@ export const CreateLockForm = ({
               defaultValue={network}
               options={networkOptions}
               onChange={onChangeNetwork}
-              description={
-                network == 5 ? (
-                  <>
-                    Need some Test ETH?{' '}
-                    <a
-                      className="underline"
-                      target="_blank"
-                      href="https://goerlifaucet.com/"
-                      rel="noreferrer"
-                    >
-                      Check this faucet.
-                    </a>
-                  </>
-                ) : (
-                  ''
-                )
-              }
+              description={networkDescription}
             />
             <div className="relative">
               <Input
