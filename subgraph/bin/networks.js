@@ -6,13 +6,11 @@ const networksConfig = require('@unlock-protocol/networks')
 
 const networkFilePath = path.join(__dirname, '..', 'networks.json')
 
-// Some networks have a custom networkName
-const networkName = (n) => {
-  return networksConfig[n].subgraph.networkName || n
-}
+const networkName = (n) =>
+  n === 'polygon' ? 'matic' : n === 'arbitrum' ? 'arbitrum-one' : n
 
 const networks = Object.keys(networksConfig)
-  .filter((d) => !['networks', 'default', 'localhost'].includes(d))
+  .filter((d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d))
   .reduce((acc, chainName) => {
     const {
       startBlock,

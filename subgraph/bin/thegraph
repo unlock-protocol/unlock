@@ -74,7 +74,7 @@ const deploy = async (network, graphLabel) => {
 }
 
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'localhost'].includes(d)
+  (d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
