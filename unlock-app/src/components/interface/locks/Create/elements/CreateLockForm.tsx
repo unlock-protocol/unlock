@@ -142,9 +142,8 @@ export const CreateLockForm = ({
   } else if (network === 1) {
     networkDescription = (
       <>
-        Deploying to Ethereum mainnet is expensive in gas, and minting NFT
-        memberships will also be expensive. Please consider using networks like
-        Polygon, Gnosis Chain or Optimism
+        Gas fees on the <em>Ethereum mainnet are expensive</em>. Please consider
+        using another network like Polygon, Gnosis Chain or Optimism.
       </>
     )
   }
