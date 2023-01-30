@@ -1,21 +1,24 @@
 import { Tooltip } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { FiTwitter } from 'react-icons/fi'
-import { EventData } from './EventDetails'
+import { Metadata } from '~/components/interface/locks/metadata/utils'
+import { getEventDate } from './utils'
 
 interface TweetItButtonProps {
-  event: Partial<EventData>
+  event: Partial<Metadata>
 }
 
 export const TweetItButton = ({ event }: TweetItButtonProps) => {
-  if (!event.title || !event.date) {
+  const eventDate = getEventDate(event)
+
+  if (!event.name || !eventDate) {
     return null
   }
 
   const tweetIntent = new URL('https://twitter.com/intent/tweet')
   tweetIntent.searchParams.set(
     'text',
-    `🎉 I will be attending ${event.title} on ${event.date.toLocaleDateString(
+    `🎉 I will be attending ${event.title} on ${eventDate.toLocaleDateString(
       undefined,
       {
         weekday: 'long',

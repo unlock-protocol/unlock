@@ -12,58 +12,13 @@ import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
-import {
-  Attribute,
-  Metadata,
-} from '~/components/interface/locks/metadata/utils'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
-
-export interface EventData {
-  title: string
-  description: string
-  image: string
-  date: Date
-  time: string
-  address: string
-  accentColor?: string
-  url?: string
-}
-
-const formatEventData = (metadata: Partial<Metadata>): Partial<EventData> => {
-  const accentColor = metadata.background_color
-    ? `#${metadata.background_color}`
-    : 'bg-ui-secondary-200'
-
-  let date, time, address, url
-  if (metadata.attributes) {
-    metadata.attributes.forEach(({ trait_type, value }: Attribute) => {
-      if (trait_type === 'event_start_date') {
-        date = new Date(Date.parse(value.toString()))
-      } else if (trait_type === 'event_start_time') {
-        time = value
-      } else if (trait_type === 'event_address') {
-        address = value
-      } else if (trait_type === 'event_url') {
-        url = value
-      }
-    })
-  }
-
-  return {
-    title: metadata.name,
-    description: metadata.description, // in Markdown!
-    image: metadata.image,
-    date,
-    time,
-    address,
-    accentColor,
-    url,
-  }
-}
+import { getEventDate } from './utils'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -100,7 +55,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     return <p>Not an event!</p>
   }
 
-  const eventData = formatEventData(metadata)
+  const eventData = toFormData(metadata)
+  const eventDate = getEventDate(eventData)
 
   const injectedProvider = selectProvider(config)
 
@@ -125,7 +81,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
       <section className="">
         <h1 className="text-5xl md:text-7xl font-bold mb-4">
-          {eventData.title}
+          {eventData.name}
         </h1>
         <p className="flex flex-rows gap-2 mb-4">
           <span className="text-brand-gray">Ticket contract</span>
@@ -136,12 +92,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         </p>
         <ul
           className="bold text-xl md:text-2xl mb-6"
-          style={{ color: eventData.accentColor }}
+          style={{ color: `#${eventData.background_color}` }}
         >
-          {eventData.date && (
+          {eventDate && (
             <li className="mb-2">
               <FaCalendar className="inline mr-2" />
-              {eventData.date.toLocaleDateString(undefined, {
+              {eventDate.toLocaleDateString(undefined, {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
@@ -149,17 +105,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               })}
             </li>
           )}
-          <li className="mb-2">
-            <FaClock className="inline mr-2" />
-            {eventData.time}
-          </li>
+          {eventData.ticket.event_start_time && (
+            <li className="mb-2">
+              <FaClock className="inline mr-2" />
+              {eventData.ticket.event_start_time}
+            </li>
+          )}
           <li className="mb-2">
             <Link
               target="_blank"
-              href={`https://www.google.com/maps/search/?api=1&query=${eventData.address}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket.event_address}`}
             >
               <GoLocation className="inline mr-2" />
-              {eventData.address}
+              {eventData.ticket.event_address}
             </Link>
           </li>
         </ul>
@@ -190,9 +148,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             className="h-12 w-full md:w-96"
             style={{
-              backgroundColor: eventData.accentColor,
-              color: eventData.accentColor
-                ? fontColorContrast(eventData.accentColor)
+              backgroundColor: `#${eventData.background_color}`,
+              color: `#${eventData.background_color}`
+                ? fontColorContrast(`#${eventData.background_color}`)
                 : 'white',
             }}
             onClick={() => setCheckoutOpen(true)}

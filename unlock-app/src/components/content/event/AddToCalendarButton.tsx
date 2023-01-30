@@ -4,33 +4,36 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { BsCalendarDate } from 'react-icons/bs'
 import { FaRegCalendarPlus } from 'react-icons/fa'
+import { Metadata } from '~/components/interface/locks/metadata/utils'
+import { getEventDate } from './utils'
+
 import {
   SiGooglecalendar,
   SiMicrosoftoffice,
   SiMicrosoftoutlook,
   SiYahoo,
 } from 'react-icons/si'
-import { EventData } from './EventDetails'
 
 interface AddToCalendarButtonProps {
-  event: Partial<EventData>
+  event: Partial<Metadata>
 }
 
 export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
   const [isOpen, setOpen] = useState(false)
+  const eventDate = getEventDate(event)
 
-  // We can only add events with a date and title
-  if (!event.date || !event.title) {
+  // We can only add events with a date and name
+  if (!eventDate || !event.name) {
     return null
   }
 
   const [hours, minutes] = event.time
-    ? event.time.split(':').map((x) => parseInt(x, 10))
+    ? event.time.split(':').map((x: string) => parseInt(x, 10))
     : [0, 0]
 
   const calendarEvent = {
-    title: event.title,
-    start: event.date.setHours(hours, minutes),
+    title: event.name,
+    start: eventDate.setHours(hours, minutes),
     description: event.description || '',
     allDay: true, // default for now... change once we have metadata for it (or for end)
     // https://github.com/AnandChowdhary/calendar-link#options
