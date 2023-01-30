@@ -11,7 +11,7 @@ import {
 } from 'react-icons/ri'
 
 interface LocksByNetworkProps {
-  network: string
+  network: number
   isLoading: boolean
   locks?: any[]
 }
