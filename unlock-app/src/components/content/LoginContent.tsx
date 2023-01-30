@@ -20,7 +20,7 @@ export const LoginContent = () => {
   }, [account, redirect, router])
 
   return (
-    <AppLayout showLinks={false} authRequired={false} title="&nbsp;">
+    <AppLayout showLinks={false} authRequired={false} title="Login">
       <Head>
         <title>{pageTitle('Login')}</title>
       </Head>
