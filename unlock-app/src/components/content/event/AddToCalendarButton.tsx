@@ -11,7 +11,6 @@ import {
   SiGooglecalendar,
   SiMicrosoftoffice,
   SiMicrosoftoutlook,
-  SiYahoo,
 } from 'react-icons/si'
 
 interface AddToCalendarButtonProps {
@@ -66,13 +65,6 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
               href={office365(calendarEvent)}
             >
               <SiMicrosoftoffice className="w-8 h-8" />
-            </Link>
-            <Link
-              target="_blank"
-              className="p-4 hover:bg-blue-200 bg-blue-100 rounded border"
-              href={yahoo(calendarEvent)}
-            >
-              <SiYahoo className="w-8 h-8" />
             </Link>
             <Link
               target="_blank"
