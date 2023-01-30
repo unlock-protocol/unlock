@@ -13,6 +13,10 @@ import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
+import { useGetReceiptsPageUrl } from '~/hooks/receipts'
+import Link from 'next/link'
+import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+
 interface DetailProps {
   label: string
   children?: React.ReactNode
@@ -118,6 +122,13 @@ export const MetadataCard = ({
     lockAddress,
     network,
   })
+
+  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+    useGetReceiptsPageUrl({
+      lockAddress,
+      network,
+      tokenId: metadata.token,
+    })
 
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
@@ -250,7 +261,23 @@ export const MetadataCard = ({
             Add email
           </Button>
         )}
+        {receiptsPageUrl?.length && (
+          <Button
+            variant="outlined-primary"
+            size="small"
+            disabled={isLoadingUrl}
+            loading={isLoadingUrl}
+          >
+            <Link href={receiptsPageUrl}>
+              <div className="flex items-center gap-2">
+                <span>Show receipts</span>
+                <ReceiptIcon size={18} />
+              </div>
+            </Link>
+          </Button>
+        )}
       </div>
+
       <div className="pt-6">
         <div className="mt-6">
           {isCheckedIn && (
