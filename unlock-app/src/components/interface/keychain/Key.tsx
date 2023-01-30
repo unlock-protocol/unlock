@@ -43,6 +43,8 @@ import {
 } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
+import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+import { useGetReceiptsPageUrl } from '~/hooks/receipts'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -164,6 +166,20 @@ function Key({ ownedKey, account, network }: Props) {
   const wrongNetwork = network !== accountNetwork
 
   const networkName = networks[ownedKey.network]?.name
+
+  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+    useGetReceiptsPageUrl({
+      lockAddress: lock.address,
+      network,
+      tokenId,
+    })
+
+  const onReceiptsPage = () => {
+    if (!receiptsPageUrl) {
+      return
+    }
+    window.open(receiptsPageUrl, '_')
+  }
 
   return (
     <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
@@ -303,6 +319,18 @@ function Key({ ownedKey, account, network }: Props) {
                       >
                         <InfoIcon />
                         Show details
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active, disabled }) => (
+                      <MenuButton
+                        disabled={disabled || isLoadingUrl}
+                        active={active}
+                        onClick={onReceiptsPage}
+                      >
+                        <ReceiptIcon />
+                        Show receipts
                       </MenuButton>
                     )}
                   </Menu.Item>
