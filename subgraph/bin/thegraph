@@ -55,9 +55,17 @@ const deploy = async (network, graphLabel) => {
   const graphNode = 'https://api.thegraph.com/deploy/'
   const ipfs = 'https://api.thegraph.com/ipfs/'
 
-  const subgraphName = `unlock-protocol/${network === 'xdai' ? 'gnosis' : network
-    }-v2`
-  console.log(`Deploying subgraph ${subgraphName}`)
+  if (!networks[network]?.subgraph?.endpointV2) {
+    throw new Error(`Missing subgraph configuration for ${network}`)
+  }
+  const [, subgraphName] = networks[network].subgraph.endpointV2.match(
+    'https://api.thegraph.com/subgraphs/name/(.*)'
+  )
+  if (!subgraphName) {
+    throw new Error(
+      `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2})`
+    )
+  }
 
   const label = graphLabel ? `--version-label ${graphLabel}` : ''
   const cmd = `yarn graph deploy --product hosted-service --access-token ${process.env.SUBGRAPH_DEPLOY_KEY} --node ${graphNode} --ipfs ${ipfs} ${label} ${subgraphName}`
