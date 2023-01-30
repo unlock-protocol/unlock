@@ -322,18 +322,20 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  <Menu.Item>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled || isLoadingUrl}
-                        active={active}
-                        onClick={onReceiptsPage}
-                      >
-                        <ReceiptIcon />
-                        Show receipts
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
+                  {receiptsPageUrl?.length && (
+                    <Menu.Item>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled || isLoadingUrl}
+                          active={active}
+                          onClick={onReceiptsPage}
+                        >
+                          <ReceiptIcon />
+                          Show receipts
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  )}
                   <Menu.Item disabled={!isExtendable || wrongNetwork}>
                     {({ active, disabled }) => (
                       <MenuButton

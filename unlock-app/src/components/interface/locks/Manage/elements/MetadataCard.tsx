@@ -261,19 +261,21 @@ export const MetadataCard = ({
             Add email
           </Button>
         )}
-        <Button
-          variant="outlined-primary"
-          size="small"
-          disabled={isLoadingUrl}
-          loading={isLoadingUrl}
-        >
-          <Link href={receiptsPageUrl || '#'}>
-            <div className="flex items-center gap-2">
-              <span>Show receipts</span>
-              <ReceiptIcon size={18} />
-            </div>
-          </Link>
-        </Button>
+        {receiptsPageUrl?.length && (
+          <Button
+            variant="outlined-primary"
+            size="small"
+            disabled={isLoadingUrl}
+            loading={isLoadingUrl}
+          >
+            <Link href={receiptsPageUrl}>
+              <div className="flex items-center gap-2">
+                <span>Show receipts</span>
+                <ReceiptIcon size={18} />
+              </div>
+            </Link>
+          </Button>
+        )}
       </div>
 
       <div className="pt-6">
