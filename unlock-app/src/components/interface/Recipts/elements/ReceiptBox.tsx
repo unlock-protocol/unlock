@@ -1,4 +1,4 @@
-import { Button, Disclosure } from '@unlock-protocol/ui'
+import { Button, Disclosure, Placeholder } from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
@@ -11,7 +11,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
 import { useGetPrice } from '~/hooks/usePrice'
 
 interface ReceiptBoxProps {
@@ -64,12 +63,6 @@ const Address = ({
       )}
       <span className="text-base">{country}</span>
     </div>
-  )
-}
-
-const ReceiptBoxPlaceholder = () => {
-  return (
-    <div className="w-full max-w-lg rounded-xl bg-slate-200 animate-pulse h-[100px]"></div>
   )
 }
 
@@ -225,15 +218,16 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const componentRef = useRef<any>()
 
   if (isLoading) {
-    return <ReceiptBoxPlaceholder />
+    return (
+      <Placeholder.Root>
+        <Placeholder.Image className="h-[100px] md:w-[500px]" />
+      </Placeholder.Root>
+    )
   }
 
   if (!isManager && !isPurchaser) {
     return <NotAuthorizedBar />
   }
-
-  const transactionHashUrl =
-    networks[network].explorer?.urls.transaction(hash) || '#'
 
   return (
     <>
@@ -256,14 +250,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           <Disclosure
             label={`Date: ${transactionDate}`}
             description={
-              <div className="text-base">
+              <div className="text-base font-semibold text-brand-ui-primary ">
                 {`Transaction Hash:`}{' '}
-                <Link href={transactionHashUrl}>
-                  {' '}
-                  <span className="font-semibold text-brand-ui-primary">
-                    {addressMinify(hash)}
-                  </span>
-                </Link>
+                <span className="font-normal text-black">
+                  {addressMinify(hash)}
+                </span>
               </div>
             }
           >
