@@ -39,7 +39,9 @@ export const useGetReceiptsPageUrl = ({
       url.searchParams.append('address', lockAddress)
       url.searchParams.append('network', `${network}`)
 
-      key.transactionsHash.map((hash: string) => {
+      const hashes = key?.transactionsHash || []
+
+      hashes.map((hash: string) => {
         url.searchParams.append('hash', hash)
       })
 
