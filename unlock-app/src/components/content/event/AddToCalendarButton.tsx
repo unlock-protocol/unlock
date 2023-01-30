@@ -42,38 +42,50 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
   return (
     <>
       <Modal isOpen={isOpen} setIsOpen={setOpen}>
-        <div className="w-full mb-4">
-          <p className="mb-4">Select your calendar application:</p>
-          <div className="flex justify-between w-full">
-            <Link
-              target="_blank"
-              className="p-4 hover:bg-blue-200 bg-blue-100 rounded border"
-              href={google(calendarEvent)}
-            >
-              <SiGooglecalendar className="w-8 h-8" />
-            </Link>
-            <Link
-              target="_blank"
-              className="p-4 hover:bg-blue-200 bg-blue-100 rounded border"
-              href={outlook(calendarEvent)}
-            >
-              <SiMicrosoftoutlook className="w-8 h-8" />
-            </Link>
-            <Link
-              target="_blank"
-              className="p-4 hover:bg-blue-200 bg-blue-100 rounded border"
-              href={office365(calendarEvent)}
-            >
-              <SiMicrosoftoffice className="w-8 h-8" />
-            </Link>
-            <Link
-              target="_blank"
-              className="p-4 hover:bg-blue-200 bg-blue-100 rounded border"
-              href={ics(calendarEvent)}
-            >
-              <BsCalendarDate className="w-8 h-8" />
-            </Link>
-          </div>
+        <div className="w-full">
+          <p className="mb-2">Select your calendar application:</p>
+          <ul className="flex flex-col justify-between w-full">
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={google(calendarEvent)}
+              >
+                <SiGooglecalendar className="w-8 h-8 inline mr-3" />
+                Google Calendar
+              </Link>
+            </li>
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={outlook(calendarEvent)}
+              >
+                <SiMicrosoftoutlook className="w-8 h-8 inline mr-3" />
+                Microsoft Outlook
+              </Link>
+            </li>
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={office365(calendarEvent)}
+              >
+                <SiMicrosoftoffice className="w-8 h-8 inline mr-3" />
+                Microsoft Office 365
+              </Link>
+            </li>
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={ics(calendarEvent)}
+              >
+                <BsCalendarDate className="w-8 h-8 inline mr-3" />
+                ICS file
+              </Link>
+            </li>
+          </ul>
         </div>
       </Modal>
 
