@@ -1,5 +1,5 @@
 import { Modal, Tooltip } from '@unlock-protocol/ui'
-import { google, outlook, office365, yahoo, ics } from 'calendar-link'
+import { google, outlook, office365, ics } from 'calendar-link'
 import Link from 'next/link'
 import { useState } from 'react'
 import { BsCalendarDate } from 'react-icons/bs'
