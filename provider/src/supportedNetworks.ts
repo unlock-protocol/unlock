@@ -13,7 +13,6 @@ const supportedNetworks = (env: Env, networkId: string): string | undefined => {
     '42220': env.CELO_PROVIDER,
     '43114': env.AVALANCHE_PROVIDER,
     '80001': env.MUMBAI_PROVIDER,
-    '11297108109': env.PALM_PROVIDER,
   }[networkId]
 }
 
