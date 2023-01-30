@@ -1,11 +1,6 @@
-import { addressMinify } from '~/utils/strings'
 import { useConfig } from '~/utils/withConfig'
-import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { Button, Icon, Tooltip } from '@unlock-protocol/ui'
-import React, { useEffect, useState } from 'react'
-import { BiCopy as CopyIcon } from 'react-icons/bi'
-import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
+import { Icon, Tooltip } from '@unlock-protocol/ui'
+import React, { useState } from 'react'
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
 import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
@@ -21,10 +16,11 @@ import { ImFilePicture as PictureFile } from 'react-icons/im'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
+import { AddressLink } from '~/components/interface/AddressLink'
 
 interface LockCardProps {
   lock: any
-  network: string
+  network: number
 }
 
 interface DetailProps {
@@ -180,12 +176,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
   const web3service = useWeb3Service()
   const tokenAddress = lock?.tokenAddress
   const lockAddress = lock?.address
-  const [isCopied, setCopied] = useClipboard(lockAddress, {
-    successDuration: 2000,
-  })
-  const { explorer, baseCurrencySymbol } = networks?.[network] ?? {}
-
-  const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
+  const { baseCurrencySymbol } = networks?.[network] ?? {}
 
   const getBalance = async (
     address: string,
@@ -200,17 +191,11 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
   }
 
   const getSymbol = async () => {
-    return await web3service.getTokenSymbol(
-      tokenAddress,
-      parseInt(network!, 10)
-    )
+    return await web3service.getTokenSymbol(tokenAddress, network)
   }
 
   const getKeyPrice = async () => {
-    const decimals = await web3service.getTokenDecimals(
-      tokenAddress,
-      Number(network)
-    )
+    const decimals = await web3service.getTokenDecimals(tokenAddress, network)
     return ethers.utils.formatUnits(lock?.price, decimals)
   }
 
@@ -223,7 +208,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
       {
         queryKey: ['getBalance', lockAddress, network, tokenAddress],
         queryFn: async () =>
-          await getBalance(lockAddress, parseInt(network, 10), tokenAddress),
+          await getBalance(lockAddress, network, tokenAddress),
       },
       {
         queryKey: ['getSymbol', lockAddress, network, tokenAddress],
@@ -237,11 +222,6 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
   })
 
   const symbol = tokenSymbol ?? baseCurrencySymbol
-
-  useEffect(() => {
-    if (!isCopied) return
-    ToastHelper.success(`Lock address copied`)
-  }, [isCopied])
 
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
@@ -262,20 +242,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             <LockIcon lock={lock} />
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-bold">{lock.name}</span>
-              <div className="flex items-center gap-3">
-                <span>{addressMinify(lockAddress)}</span>
-                <Button variant="borderless" onClick={setCopied}>
-                  <CopyIcon size={20} />
-                </Button>
-                <a href={explorerUrl} target="_blank" rel="noreferrer">
-                  <Button variant="borderless">
-                    <ExternalLinkIcon
-                      size={20}
-                      className="text-brand-ui-primary"
-                    />
-                  </Button>
-                </a>
-              </div>
+              <AddressLink lockAddress={lock.address} network={network} />
             </div>
           </div>
           <div className="grid items-center grid-cols-4 gap-3 md:col-span-3 md:gap-14">
