@@ -80,19 +80,21 @@ export default class Web3Service extends UnlockService {
     network: number,
     tokenAddress?: string
   ) {
+    const provider = this.providerForNetwork(network)
     if (!tokenAddress) {
-      const balance = await this.providerForNetwork(network).getBalance(address)
+      const balance = await provider.getBalance(address)
       return utils.fromWei(balance, 'ether')
     } else {
-      const balance = await getErc20BalanceForAddress(
+      const balancePromise = getErc20BalanceForAddress(
         tokenAddress,
         address,
-        this.providerForNetwork(network)
+        provider
       )
-      const decimals = await getErc20Decimals(
-        tokenAddress,
-        this.providerForNetwork(network)
-      )
+      const decimalsPromise = getErc20Decimals(tokenAddress, provider)
+      const [balance, decimals] = await Promise.all([
+        balancePromise,
+        decimalsPromise,
+      ])
       return utils.fromDecimal(balance, decimals)
     }
   }
@@ -197,12 +199,19 @@ export default class Web3Service extends UnlockService {
     if ((await lockContract.publicLockVersion()) < 10) {
       throw new Error('Only available for Lock v10+')
     }
-    const expiration = await this.getKeyExpirationByTokenId(
+
+    const expirationPromise = this.getKeyExpirationByTokenId(
       lockAddress,
       tokenId,
       network
     )
-    const owner = await this.ownerOf(lockAddress, tokenId, network)
+    const ownerPromise = this.ownerOf(lockAddress, tokenId, network)
+
+    const [owner, expiration] = await Promise.all([
+      ownerPromise,
+      expirationPromise,
+    ])
+
     const keyPayload = {
       tokenId,
       lock: lockAddress,
@@ -269,16 +278,21 @@ export default class Web3Service extends UnlockService {
       tokenId: 0,
     }
 
-    keyPayload.tokenId = await this.getTokenIdForOwner(
+    const tokenIdPromise = this.getTokenIdForOwner(lockAddress, owner, network)
+
+    const expirationPromise = this.getKeyExpirationByLockForOwner(
       lockAddress,
       owner,
       network
     )
-    keyPayload.expiration = await this.getKeyExpirationByLockForOwner(
-      lockAddress,
-      owner,
-      network
-    )
+
+    const [tokenId, expiration] = await Promise.all([
+      tokenIdPromise,
+      expirationPromise,
+    ])
+
+    keyPayload.tokenId = tokenId
+    keyPayload.expiration = expiration
 
     return keyPayload
   }
@@ -376,15 +390,21 @@ export default class Web3Service extends UnlockService {
     userWalletAddress: string,
     network: number
   ) {
-    const balance = await getErc20BalanceForAddress(
+    const balancePromise = getErc20BalanceForAddress(
       contractAddress,
       userWalletAddress,
       this.providerForNetwork(network)
     )
-    const decimals = await getErc20Decimals(
+    const decimalsPromise = getErc20Decimals(
       contractAddress,
       this.providerForNetwork(network)
     )
+
+    const [balance, decimals] = await Promise.all([
+      balancePromise,
+      decimalsPromise,
+    ])
+
     return utils.fromDecimal(balance, decimals)
   }
 
@@ -565,8 +585,15 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-    const totalSupply = await lockContract.totalSupply()
-    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+
+    const totalSupplyPromise = lockContract.totalSupply()
+    const maxNumberOfKeysPromise = lockContract.maxNumberOfKeys()
+
+    const [totalSupply, maxNumberOfKeys] = await Promise.all([
+      totalSupplyPromise,
+      maxNumberOfKeysPromise,
+    ])
+
     return maxNumberOfKeys.sub(totalSupply)
   }
 

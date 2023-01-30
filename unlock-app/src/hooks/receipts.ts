@@ -8,6 +8,12 @@ interface ReceiptProps {
   hash: string
 }
 
+interface GetReceiptProps {
+  network: number
+  lockAddress: string
+  isManager: boolean
+}
+
 export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
   return useQuery(
     ['getReceiptsDetails', network, lockAddress, hash],
@@ -25,6 +31,23 @@ export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
     },
     {
       enabled: !!lockAddress && !!network,
+    }
+  )
+}
+
+export const useGetReceiptsBase = ({
+  network,
+  lockAddress,
+  isManager,
+}: GetReceiptProps) => {
+  return useQuery(
+    ['getReceiptsBase', network, lockAddress],
+    async (): Promise<Partial<any>> => {
+      const supplier = await storage.getReceiptsBase(network, lockAddress)
+      return supplier.data
+    },
+    {
+      enabled: !!lockAddress && !!network && isManager,
     }
   )
 }
@@ -52,6 +75,31 @@ export const useUpdateReceipt = ({
       } catch (error) {
         return {} as any
       }
+    }
+  )
+}
+
+export const useUpdateReceiptsBase = ({
+  network,
+  lockAddress,
+  isManager,
+}: GetReceiptProps) => {
+  return useMutation(
+    ['saveReceiptsBase', network, lockAddress],
+    async (supplier: any): Promise<Partial<any>> => {
+      if (isManager) {
+        const supplierResponse = await storage.saveReceiptsBase(
+          network,
+          lockAddress,
+          {
+            data: {
+              ...supplier,
+            },
+          }
+        )
+        return supplierResponse.data
+      }
+      return Promise<null>
     }
   )
 }
