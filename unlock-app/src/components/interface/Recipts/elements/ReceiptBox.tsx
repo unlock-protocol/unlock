@@ -155,14 +155,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       hash,
     })
 
-    const gasKey = `${hash}-hash`
-    const { data: gasTotal } = useGetPrice({
-      network,
-      amount: receiptDetails.gasTotal,
-      currencyContractAddress: receiptDetails?.tokenAddress,
-      hash: gasKey,
-    })
-
     return (
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
@@ -171,14 +163,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
             <span className="pt-4">Amount Paid:</span>
             <div className="flex flex-col">
               <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
-            </div>
-            <div className="grid text-right">
-              <span className="text-sm text-gray-500">
-                Total gas: {`$ ${gasTotal?.usd}`}
-              </span>
-              <span className="text-sm text-gray-500">
-                Total: {`$ ${receiptPrice?.usd}`}
-              </span>
             </div>
           </div>
         </div>
