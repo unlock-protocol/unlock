@@ -10,5 +10,4 @@ export interface Env {
   MUMBAI_PROVIDER: string
   OPTIMISM_PROVIDER: string
   POLYGON_PROVIDER: string
-  PALM_PROVIDER: string
 }
