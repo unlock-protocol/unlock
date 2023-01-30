@@ -8,8 +8,7 @@ import {
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
-import { UniswapService } from './uniswapService'
-import networks from '@unlock-protocol/networks'
+
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -81,19 +80,21 @@ export default class Web3Service extends UnlockService {
     network: number,
     tokenAddress?: string
   ) {
+    const provider = this.providerForNetwork(network)
     if (!tokenAddress) {
-      const balance = await this.providerForNetwork(network).getBalance(address)
+      const balance = await provider.getBalance(address)
       return utils.fromWei(balance, 'ether')
     } else {
-      const balance = await getErc20BalanceForAddress(
+      const balancePromise = getErc20BalanceForAddress(
         tokenAddress,
         address,
-        this.providerForNetwork(network)
+        provider
       )
-      const decimals = await getErc20Decimals(
-        tokenAddress,
-        this.providerForNetwork(network)
-      )
+      const decimalsPromise = getErc20Decimals(tokenAddress, provider)
+      const [balance, decimals] = await Promise.all([
+        balancePromise,
+        decimalsPromise,
+      ])
       return utils.fromDecimal(balance, decimals)
     }
   }
@@ -198,12 +199,19 @@ export default class Web3Service extends UnlockService {
     if ((await lockContract.publicLockVersion()) < 10) {
       throw new Error('Only available for Lock v10+')
     }
-    const expiration = await this.getKeyExpirationByTokenId(
+
+    const expirationPromise = this.getKeyExpirationByTokenId(
       lockAddress,
       tokenId,
       network
     )
-    const owner = await this.ownerOf(lockAddress, tokenId, network)
+    const ownerPromise = this.ownerOf(lockAddress, tokenId, network)
+
+    const [owner, expiration] = await Promise.all([
+      ownerPromise,
+      expirationPromise,
+    ])
+
     const keyPayload = {
       tokenId,
       lock: lockAddress,
@@ -270,16 +278,21 @@ export default class Web3Service extends UnlockService {
       tokenId: 0,
     }
 
-    keyPayload.tokenId = await this.getTokenIdForOwner(
+    const tokenIdPromise = this.getTokenIdForOwner(lockAddress, owner, network)
+
+    const expirationPromise = this.getKeyExpirationByLockForOwner(
       lockAddress,
       owner,
       network
     )
-    keyPayload.expiration = await this.getKeyExpirationByLockForOwner(
-      lockAddress,
-      owner,
-      network
-    )
+
+    const [tokenId, expiration] = await Promise.all([
+      tokenIdPromise,
+      expirationPromise,
+    ])
+
+    keyPayload.tokenId = tokenId
+    keyPayload.expiration = expiration
 
     return keyPayload
   }
@@ -377,15 +390,21 @@ export default class Web3Service extends UnlockService {
     userWalletAddress: string,
     network: number
   ) {
-    const balance = await getErc20BalanceForAddress(
+    const balancePromise = getErc20BalanceForAddress(
       contractAddress,
       userWalletAddress,
       this.providerForNetwork(network)
     )
-    const decimals = await getErc20Decimals(
+    const decimalsPromise = getErc20Decimals(
       contractAddress,
       this.providerForNetwork(network)
     )
+
+    const [balance, decimals] = await Promise.all([
+      balancePromise,
+      decimalsPromise,
+    ])
+
     return utils.fromDecimal(balance, decimals)
   }
 
@@ -566,8 +585,15 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-    const totalSupply = await lockContract.totalSupply()
-    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+
+    const totalSupplyPromise = lockContract.totalSupply()
+    const maxNumberOfKeysPromise = lockContract.maxNumberOfKeys()
+
+    const [totalSupply, maxNumberOfKeys] = await Promise.all([
+      totalSupplyPromise,
+      maxNumberOfKeysPromise,
+    ])
+
     return maxNumberOfKeys.sub(totalSupply)
   }
 
@@ -673,60 +699,6 @@ export default class Web3Service extends UnlockService {
       referrer,
       data
     )
-    return price
-  }
-
-  /**
-   * Get uniswap price in the out token.
-   * ```ts
-   * const web3Service = new Web3Service(networks)
-   * const price = await web3Service.consultUniswap({
-   *  network: 1,
-   *  tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-   *  tokenOutAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-   *  value: '1',
-   * })
-   *
-   * console.log(price)
-   * ```
-   */
-  async consultUniswap(options: {
-    tokenInAddress: string
-    tokenOutAddress?: string
-    amount: string
-    network?: number
-  }) {
-    const { network, tokenInAddress, amount } = options
-    const networkId = network || 1
-    const networkConfig = this.networks[networkId] // By default, use mainnet
-
-    if (!networkConfig.uniswapV3) {
-      throw new Error('No uniswap support on the network.')
-    }
-
-    const tokenOut = (networkConfig.tokens || []).find(
-      // By default, use USDC on each network
-      (item: any) => item.symbol === 'USDC'
-    )
-
-    let tokenOutAddress = options.tokenOutAddress
-
-    // If no tokenOutAddress provided, use USDC address.
-    if (!tokenOutAddress && tokenOut && tokenOut.address) {
-      tokenOutAddress = tokenOut.address
-    }
-
-    if (!tokenOutAddress) {
-      throw new Error('You need to provide a tokenOutAddress parameter. ')
-    }
-
-    const uniswapService = new UniswapService(this.networks)
-    const price = await uniswapService.price({
-      network,
-      baseToken: tokenInAddress,
-      quoteToken: tokenOutAddress,
-      amount,
-    })
     return price
   }
 
