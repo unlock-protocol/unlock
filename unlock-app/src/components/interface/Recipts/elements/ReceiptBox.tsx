@@ -12,6 +12,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useGetPrice } from '~/hooks/usePrice'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -145,27 +146,40 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   }
 
   const ReceiptDetails = () => {
-    const gasTotal: number =
-      receiptDetails && receiptDetails.gasTotal
-        ? Number(parseFloat(receiptDetails?.gasTotal).toFixed(2))
-        : 0
-    const amountPaid: number =
-      receiptDetails && receiptDetails.amountTransferred
-        ? Number(parseFloat(receiptDetails?.amountTransferred).toFixed(2))
-        : 0
-
-    const totalPaid = parseFloat(`${gasTotal + amountPaid}`).toFixed(2)
     const symbol = tokenSymbol || networks[network]?.nativeCurrency?.symbol
+
+    const { data: receiptPrice } = useGetPrice({
+      network,
+      amount: receiptDetails.amountTransferred,
+      currencyContractAddress: receiptDetails?.tokenAddress,
+      hash,
+    })
+
+    const gasKey = `${hash}-hash`
+    const { data: gasTotal } = useGetPrice({
+      network,
+      amount: receiptDetails.gasTotal,
+      currencyContractAddress: receiptDetails?.tokenAddress,
+      hash: gasKey,
+    })
 
     return (
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
-          <div className="mt-2">
-            <DetailLabel
-              label="Amount Paid:"
-              value={`${totalPaid} ${symbol}`}
-            />
+          <div className="flex flex-col mt-2 text-right">
+            <span className="pt-4">Amount Paid:</span>
+            <div className="flex flex-col">
+              <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
+            </div>
+            <div className="grid text-right">
+              <span className="text-sm text-gray-500">
+                Total gas: {`$ ${gasTotal?.usd}`}
+              </span>
+              <span className="text-sm text-gray-500">
+                Total: {`$ ${receiptPrice?.usd}`}
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-4">
