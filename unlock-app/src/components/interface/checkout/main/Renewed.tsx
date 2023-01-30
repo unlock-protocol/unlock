@@ -43,7 +43,7 @@ export function Renewed({
       try {
         const network = config.networks[lock!.network]
         if (network && transactionHash) {
-          const provider = new ethers.providers.JsonRpcProvider(
+          const provider = new ethers.providers.JsonRpcBatchProvider(
             network.provider
           )
           await provider.waitForTransaction(transactionHash)
