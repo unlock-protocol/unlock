@@ -26,6 +26,7 @@ interface Props {
   paywallConfig: PaywallConfig
   communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
+  handleClose?: (params: Record<string, string>) => void
 }
 
 export function Checkout({
@@ -33,6 +34,7 @@ export function Checkout({
   injectedProvider,
   communication,
   redirectURI,
+  handleClose,
 }: Props) {
   // @ts-expect-error - xstate extension type generation is buggy
   const checkoutService = useInterpret(checkoutMachine, {
@@ -67,7 +69,9 @@ export function Checkout({
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
-      if (redirectURI) {
+      if (handleClose) {
+        handleClose(params)
+      } else if (redirectURI) {
         if (mint && mint?.status === 'ERROR') {
           redirectURI.searchParams.append('error', 'access-denied')
         }
@@ -84,14 +88,14 @@ export function Checkout({
           redirectURI.searchParams.append(key, value)
         }
         return window.location.assign(redirectURI)
-      }
-      if (!communication?.insideIframe) {
+      } else if (!communication?.insideIframe) {
         window.history.back()
       } else {
         communication.emitCloseModal()
       }
     },
     [
+      handleClose,
       communication,
       redirectURI,
       mint,
