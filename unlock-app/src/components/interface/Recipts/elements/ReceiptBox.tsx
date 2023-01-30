@@ -52,7 +52,7 @@ const Address = ({
 }: any) => {
   const addressLine =
     city.length + state.length + zip.length > 0
-      ? [city, state, zip].join(', ')
+      ? [city, state, zip].filter(Boolean).join(', ')
       : ''
   return (
     <div className="flex flex-col gap-1">
@@ -85,6 +85,7 @@ const NotAuthorizedBar = () => {
 
 export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const { account } = useAuth()
+
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
   const web3Service = useWeb3Service()
   const { isManager } = useLockManager({
@@ -148,31 +149,31 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       receiptDetails && receiptDetails.gasTotal
         ? Number(parseFloat(receiptDetails?.gasTotal).toFixed(2))
         : 0
-    const amountPayed: number =
+    const amountPaid: number =
       receiptDetails && receiptDetails.amountTransferred
         ? Number(parseFloat(receiptDetails?.amountTransferred).toFixed(2))
         : 0
 
-    const totalPayed = parseFloat(`${gasTotal + amountPayed}`).toFixed(2)
+    const totalPaid = parseFloat(`${gasTotal + amountPaid}`).toFixed(2)
     const symbol = tokenSymbol || networks[network]?.nativeCurrency?.symbol
 
     return (
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
+          <div className="mt-2">
+            <DetailLabel
+              label="Amount Paid:"
+              value={`${totalPaid} ${symbol}`}
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <div className="col-span-2 md:col-span-1">
+            <div className="col-span-2">
               <DetailLabel
                 label="Service performed:"
                 value={supplier?.servicePerformed}
-              />
-            </div>
-            <div className="col-span-2 md:col-span-1">
-              <DetailLabel
-                label="Amount Paid:"
-                value={`${totalPayed} ${symbol}`}
               />
             </div>
           </div>
@@ -272,10 +273,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
               className="relative w-full print:px-6 print:py-10 "
               ref={componentRef}
             >
-              <div className="ml-auto md:absolute right-6 top-10">
+              <div className="flex justify-between">
+                <Supplier />
                 <PurchaseDetails />
               </div>
-              <Supplier />
               <Purchaser />
               <ReceiptDetails />
               <div className="mt-4">
