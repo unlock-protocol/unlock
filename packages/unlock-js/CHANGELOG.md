@@ -1,5 +1,13 @@
 # Changes
 
+# 0.33.1
+
+- Move to ethers.JsonRpcBatchProvider instead of ethers.JsonRpcProvider
+
+# 0.33.0
+
+- Remove subgraph service
+
 # 0.32.18
 
 - Add KeyManager for interacting with key manager contracts.
