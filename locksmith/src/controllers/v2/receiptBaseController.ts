@@ -16,6 +16,7 @@ export const SupplierBody = z.object({
   zip: z.string().optional().default(''),
   country: z.string().optional().default(''),
 })
+export type SupplierBodyProps = z.infer<typeof SupplierBody>
 
 export class ReceiptBaseController {
   // Get supplier details
@@ -45,8 +46,7 @@ export class ReceiptBaseController {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
 
     try {
-      const props = await SupplierBody.parseAsync(request.body)
-
+      const props = await SupplierBody.parseAsync(request.body || {})
       try {
         const [{ dataValues }] = await ReceiptBase.upsert(
           {
@@ -62,14 +62,15 @@ export class ReceiptBaseController {
         return response.status(200).json({
           ...dataValues,
         })
-      } catch (err) {
+      } catch (err: any) {
         logger.error(err.message)
         return response.status(500).json({
           message: 'Failed to save supplier details',
         })
       }
-    } catch (err) {
-      return response.send(500).json({
+    } catch (err: any) {
+      logger.error(err.message)
+      return response.status(500).json({
         message: 'Failed to save supplier details',
       })
     }
