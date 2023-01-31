@@ -12,6 +12,8 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
+import Link from 'next/link'
+import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -143,29 +145,29 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
     const { data: receiptPrice } = useGetPrice({
       network,
-      amount: receiptDetails.amountTransferred,
+      amount: receiptDetails?.amountTransferred || 0,
       currencyContractAddress: receiptDetails?.tokenAddress,
       hash,
     })
 
     return (
       <div className="grid gap-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center md:justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
-          <div className="flex flex-col mt-2 text-right">
-            <span className="pt-4">Amount Paid:</span>
-            <div className="flex flex-col">
-              <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
-            </div>
-          </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <div className="col-span-2">
+          <div className="grid grid-cols-4 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
+            <div className="col-span-4 md:col-span-3">
               <DetailLabel
                 label="Service performed:"
                 value={supplier?.servicePerformed}
               />
+            </div>
+            <div className="flex flex-col col-span-4 md:text-right md:col-span-1">
+              <span>Amount Paid:</span>
+              <div className="flex flex-col">
+                <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -193,6 +195,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         <div className="flex flex-col gap-1">
           <span className="text-lg font-semibold">
             {purchaser?.businessName}
+          </span>
+          <span className="text-base">
+            Wallet:{' '}
+            {receiptDetails?.payer?.length > 0
+              ? addressMinify(receiptDetails?.payer)
+              : ''}
           </span>
           <span className="text-base">{purchaser?.fullname}</span>
           <Address {...purchaser} />
@@ -229,6 +237,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     return <NotAuthorizedBar />
   }
 
+  const transactionUrl = hash?.length
+    ? networks[network].explorer?.urls.transaction(hash)
+    : ''
+
   return (
     <>
       {isPurchaser && (
@@ -250,19 +262,33 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           <Disclosure
             label={`Date: ${transactionDate}`}
             description={
-              <div className="text-base font-semibold text-brand-ui-primary ">
-                {`Transaction Hash:`}{' '}
-                <span className="font-normal text-black">
-                  {addressMinify(hash)}
-                </span>
-              </div>
+              transactionUrl?.length && (
+                <div
+                  onClick={(e: any) => {
+                    e?.stopPropagation()
+                  }}
+                >
+                  <Link href={transactionUrl}>
+                    <div className="flex items-center gap-2">
+                      <span>{`Transaction Hash:`} </span>
+                      <span className="font-semibold text-brand-ui-primary">
+                        {addressMinify(hash)}
+                      </span>
+                      <ExternalLinkIcon
+                        size={20}
+                        className="text-brand-ui-primary"
+                      />
+                    </div>
+                  </Link>
+                </div>
+              )
             }
           >
             <div
               className="relative w-full print:px-6 print:py-10 "
               ref={componentRef}
             >
-              <div className="flex justify-between">
+              <div className="flex flex-col-reverse gap-4 mb-4 md:flex-row md:mb-0 md:justify-between">
                 <Supplier />
                 <PurchaseDetails />
               </div>
