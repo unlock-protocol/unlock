@@ -13,6 +13,10 @@ import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
+import { useGetReceiptsPageUrl } from '~/hooks/receipts'
+import Link from 'next/link'
+import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
+
 interface DetailProps {
   label: string
   children?: React.ReactNode
@@ -33,6 +37,7 @@ const keysToIgnore = [
   'keyholderAddress',
   'lockAddress',
   'checkedInAt',
+  'email',
 ]
 
 const MetadataDetail = ({ label, children, append }: DetailProps) => {
@@ -119,6 +124,13 @@ export const MetadataCard = ({
     network,
   })
 
+  const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
+    useGetReceiptsPageUrl({
+      lockAddress,
+      network,
+      tokenId: metadata.token,
+    })
+
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
       Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
@@ -162,7 +174,9 @@ export const MetadataCard = ({
   }
 
   const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
-  const hasEmail = items.map(([key]) => key.toLowerCase()).includes('email')
+  const hasEmail = Object.entries(data || {})
+    .map(([key]) => key.toLowerCase())
+    .includes('email')
   const hasExtraData = items?.length > 0 || isCheckedIn
 
   const onEmailChange = (values: FieldValues) => {
@@ -219,38 +233,24 @@ export const MetadataCard = ({
             Mark as Checked-in
           </Button>
         )}
-        {hasEmail ? (
-          <>
-            <Button
-              size="small"
-              variant="outlined-primary"
-              onClick={onSendQrCode}
-              disabled={
-                sendEmailMutation.isLoading || sendEmailMutation.isSuccess
-              }
-            >
-              {sendEmailMutation.isSuccess
-                ? 'QR-code sent by email'
-                : 'Send QR-code by email'}
-            </Button>
-            <Button
-              size="small"
-              variant="outlined-primary"
-              onClick={() => setAddEmailModalOpen(true)}
-            >
-              Edit email
-            </Button>
-          </>
-        ) : (
+
+        {receiptsPageUrl?.length && (
           <Button
             variant="outlined-primary"
             size="small"
-            onClick={() => setAddEmailModalOpen(true)}
+            disabled={isLoadingUrl}
+            loading={isLoadingUrl}
           >
-            Add email
+            <Link href={receiptsPageUrl}>
+              <div className="flex items-center gap-2">
+                <span>Show receipts</span>
+                <ReceiptIcon size={18} />
+              </div>
+            </Link>
           </Button>
         )}
       </div>
+
       <div className="pt-6">
         <div className="mt-6">
           {isCheckedIn && (
@@ -269,7 +269,46 @@ export const MetadataCard = ({
                 {getCheckInTime()}
               </MetadataDetail>
             )}
-
+            <MetadataDetail
+              label="email"
+              append={
+                <>
+                  {hasEmail ? (
+                    <div className="flex gap-4">
+                      {data?.email}
+                      <Button
+                        size="tiny"
+                        variant="outlined-primary"
+                        onClick={() => setAddEmailModalOpen(true)}
+                      >
+                        Edit email
+                      </Button>
+                      <Button
+                        size="tiny"
+                        variant="outlined-primary"
+                        onClick={onSendQrCode}
+                        disabled={
+                          sendEmailMutation.isLoading ||
+                          sendEmailMutation.isSuccess
+                        }
+                      >
+                        {sendEmailMutation.isSuccess
+                          ? 'QR-code sent by email'
+                          : 'Send QR-code by email'}
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      variant="outlined-primary"
+                      size="tiny"
+                      onClick={() => setAddEmailModalOpen(true)}
+                    >
+                      Add email
+                    </Button>
+                  )}
+                </>
+              }
+            />
             {items?.map(([key, value]: any, index) => {
               return (
                 <MetadataDetail key={`${key}-${index}`} label={`${key}`}>
