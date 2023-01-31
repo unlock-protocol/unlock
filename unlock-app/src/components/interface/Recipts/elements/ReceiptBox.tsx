@@ -12,6 +12,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
+import Link from 'next/link'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -143,7 +144,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
     const { data: receiptPrice } = useGetPrice({
       network,
-      amount: receiptDetails.amountTransferred,
+      amount: receiptDetails?.amountTransferred || 0,
       currencyContractAddress: receiptDetails?.tokenAddress,
       hash,
     })
@@ -194,6 +195,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           <span className="text-lg font-semibold">
             {purchaser?.businessName}
           </span>
+          <span className="text-base">
+            Wallet:{' '}
+            {receiptDetails?.payer?.length > 0
+              ? addressMinify(receiptDetails?.payer)
+              : ''}
+          </span>
           <span className="text-base">{purchaser?.fullname}</span>
           <Address {...purchaser} />
         </div>
@@ -229,6 +236,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     return <NotAuthorizedBar />
   }
 
+  const transactionUrl = hash?.length
+    ? networks[network].explorer?.urls.transaction(hash)
+    : ''
+
   return (
     <>
       {isPurchaser && (
@@ -250,12 +261,20 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           <Disclosure
             label={`Date: ${transactionDate}`}
             description={
-              <div className="text-base font-semibold text-brand-ui-primary ">
-                {`Transaction Hash:`}{' '}
-                <span className="font-normal text-black">
-                  {addressMinify(hash)}
-                </span>
-              </div>
+              transactionUrl?.length && (
+                <div
+                  onClick={(e: any) => {
+                    e?.stopPropagation()
+                  }}
+                >
+                  <Link href={transactionUrl} className="text-base">
+                    {`Transaction Hash:`}{' '}
+                    <span className="font-semibold text-brand-ui-primary">
+                      {addressMinify(hash)}
+                    </span>
+                  </Link>
+                </div>
+              )
             }
           >
             <div
