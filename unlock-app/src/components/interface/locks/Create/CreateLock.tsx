@@ -76,7 +76,8 @@ export const CreateLockSteps = () => {
   }
 
   const onSummarySubmit = async (data: LockFormProps) => {
-    setLockAddress(await createLockMutation.mutateAsync(data))
+    const address = await createLockMutation.mutateAsync(data)
+    setLockAddress(address)
   }
 
   const createLockPromise = async (data: LockCreatePayloadProps) => {
