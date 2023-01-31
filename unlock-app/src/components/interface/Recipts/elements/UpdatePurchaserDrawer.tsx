@@ -54,7 +54,7 @@ export function UpdatePurchaserDrawer({
           <div className="col-span-2 div">
             <Input
               disabled={disabledInput}
-              label="Fullname"
+              label="Full name"
               {...register('fullname')}
             />
           </div>

@@ -7,7 +7,7 @@ import { useWalletService } from '~/utils/withWalletService'
 
 interface GetPriceProps {
   network: number
-  amount: string
+  amount: string | number
   currencyContractAddress?: string
   hash?: string
 }
