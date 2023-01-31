@@ -149,10 +149,12 @@ export const CreateLockFormSummary = ({
     // redirect to manage lock page once deployed!
     if (isDeployed) {
       setTimeout(() => {
-        router.push(nextUrl(lockAddress, network))
+        if ((lockAddress ?? '')?.length > 0 && network) {
+          router.push(nextUrl(lockAddress, network))
+        }
       }, 5000)
     }
-  }, [isDeployed, lockAddress, network, router])
+  }, [isDeployed, lockAddress, network, nextUrl, router])
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(
