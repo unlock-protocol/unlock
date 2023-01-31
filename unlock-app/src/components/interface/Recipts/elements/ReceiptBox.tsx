@@ -288,7 +288,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
               className="relative w-full print:px-6 print:py-10 "
               ref={componentRef}
             >
-              <div className="flex justify-between">
+              <div className="flex flex-col-reverse gap-4 mb-4 md:flex-row md:mb-0 md:justify-between">
                 <Supplier />
                 <PurchaseDetails />
               </div>
