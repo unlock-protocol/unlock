@@ -152,7 +152,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
     return (
       <div className="grid gap-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center md:justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
         </div>
         <div className="flex flex-col gap-4">
@@ -163,7 +163,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 value={supplier?.servicePerformed}
               />
             </div>
-            <div className="flex flex-col col-span-4 text-right md:col-span-1">
+            <div className="flex flex-col col-span-4 md:text-right md:col-span-1">
               <span>Amount Paid:</span>
               <div className="flex flex-col">
                 <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
