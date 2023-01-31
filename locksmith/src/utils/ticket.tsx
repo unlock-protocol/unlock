@@ -6,7 +6,6 @@ import { readFileSync } from 'fs'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import { Ticket } from '@unlock-protocol/ui'
-import fetch from 'node-fetch'
 import normalizer from './normalizer'
 import logger from '../logger'
 import lockIcon from './lockIcon'

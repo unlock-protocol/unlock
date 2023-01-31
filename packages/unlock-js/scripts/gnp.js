@@ -1,4 +1,3 @@
-const fetch = require('node-fetch')
 const ethers = require('ethers')
 const networks = require('@unlock-protocol/networks')
 
