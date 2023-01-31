@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import fetch from 'node-fetch'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { rewriteIpfsUrl } from '../utils/url'
 

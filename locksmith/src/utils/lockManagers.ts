@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 interface listManagersProps {
   lockAddress: string
   subgraphURI: string

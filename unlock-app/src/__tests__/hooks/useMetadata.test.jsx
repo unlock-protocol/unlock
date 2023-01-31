@@ -1,21 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks'
 import useMetadata from '../../hooks/useMetadata'
-import fetch from 'node-fetch'
 import { fetchJson } from 'ethers/lib/utils'
 import { vi } from 'vitest'
 
-const metadata = {
-  image: 'https://...',
-}
-vi.mock('node-fetch', () => {
-  return {
-    default: vi.fn(() => {
-      return Promise.resolve({
-        json: () => Promise.resolve(metadata),
-      })
-    }),
-  }
-})
+
 
 describe('useMetadata', () => {
   beforeEach(() => {
@@ -23,7 +11,7 @@ describe('useMetadata', () => {
   })
   it('should retrieve the default if there is no metadata uri', () => {
     expect.assertions(2)
-    vi.fn = vi.fn(() => {})
+    vi.fn = vi.fn(() => { })
     const tokenUri = ''
     const { result } = renderHook(() => useMetadata(tokenUri))
 
@@ -50,7 +38,7 @@ describe('useMetadata', () => {
   })
   it('should yield the default metadata for the token if metadata is not found', async () => {
     expect.assertions(1)
-    vi.fn = vi.fn(() => {})
+    vi.fn = vi.fn(() => { })
     const tokenUri = 'https://metadata'
     const { result } = renderHook(() => useMetadata(tokenUri))
     expect(result.current).toStrictEqual({
