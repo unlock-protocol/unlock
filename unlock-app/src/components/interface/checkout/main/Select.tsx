@@ -26,6 +26,7 @@ import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { minifyAddress } from '@unlock-protocol/ui'
 
 interface Props {
   injectedProvider: unknown
@@ -111,6 +112,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const config = useConfig()
   const { account, changeNetwork, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
+  const expectedAddress = paywallConfig.expectedAddress
+
+  const isNotExpectedAddress =
+    account &&
+    expectedAddress &&
+    expectedAddress.toLowerCase() !== account.toLowerCase()
 
   const { isInitialLoading: isMembershipsLoading, data: memberships } =
     useQuery(
@@ -151,7 +158,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     isMembershipsLoading ||
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
-    (lock?.isSoldOut && !(membership?.member || membership?.expired))
+    (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
+    isNotExpectedAddress
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -342,6 +350,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           injectedProvider={injectedProvider}
         >
           <div className="grid">
+            {isNotExpectedAddress && (
+              <p className="mb-2 text-sm text-center">
+                Switch to wallet address {minifyAddress(expectedAddress)} to
+                continue.
+              </p>
+            )}
             <Button
               disabled={isDisabled}
               onClick={async (event) => {
