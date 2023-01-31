@@ -13,6 +13,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
 import Link from 'next/link'
+import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -153,20 +154,20 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
-          <div className="flex flex-col mt-2 text-right">
-            <span className="pt-4">Amount Paid:</span>
-            <div className="flex flex-col">
-              <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
-            </div>
-          </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
-            <div className="col-span-2">
+          <div className="grid grid-cols-4 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
+            <div className="col-span-4 md:col-span-3">
               <DetailLabel
                 label="Service performed:"
                 value={supplier?.servicePerformed}
               />
+            </div>
+            <div className="flex flex-col col-span-4 text-right md:col-span-1">
+              <span>Amount Paid:</span>
+              <div className="flex flex-col">
+                <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -267,11 +268,17 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                     e?.stopPropagation()
                   }}
                 >
-                  <Link href={transactionUrl} className="text-base">
-                    {`Transaction Hash:`}{' '}
-                    <span className="font-semibold text-brand-ui-primary">
-                      {addressMinify(hash)}
-                    </span>
+                  <Link href={transactionUrl}>
+                    <div className="flex items-center gap-2">
+                      <span>{`Transaction Hash:`} </span>
+                      <span className="font-semibold text-brand-ui-primary">
+                        {addressMinify(hash)}
+                      </span>
+                      <ExternalLinkIcon
+                        size={20}
+                        className="text-brand-ui-primary"
+                      />
+                    </div>
                   </Link>
                 </div>
               )
