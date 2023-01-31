@@ -95,7 +95,7 @@ export const AppHeader = ({ showLinks = true }: AppHeaderProps) => {
       </Modal>
 
       <Container>
-        <div className="flex justify-between">
+        <div className="flex h-12 justify-between">
           <div className="flex items-center gap-10">
             <div className="flex gap-2">
               <button

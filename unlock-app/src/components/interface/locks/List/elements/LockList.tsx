@@ -9,9 +9,10 @@ import {
   RiArrowDropUpLine as UpIcon,
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 interface LocksByNetworkProps {
-  network: string
+  network: number
   isLoading: boolean
   locks?: any[]
 }
@@ -59,8 +60,8 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
 export const LockList = ({ owner }: LockListProps) => {
   const { networks } = useConfig()
 
-  const networkItems: any[] =
-    Object.entries(networks ?? {})
+  const networkItems: [string, NetworkConfig | unknown][] =
+    Object.entries(networks)
       // ignore localhost
       .filter(([network]) => network !== '31337') ?? []
 
@@ -113,7 +114,7 @@ export const LockList = ({ owner }: LockListProps) => {
           <LocksByNetwork
             isLoading={isLoading}
             key={network}
-            network={network}
+            network={Number(network)}
             locks={locksByNetwork}
           />
         )
