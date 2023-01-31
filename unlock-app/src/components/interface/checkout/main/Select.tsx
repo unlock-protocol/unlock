@@ -114,10 +114,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const web3Service = useWeb3Service()
   const expectedAddress = paywallConfig.expectedAddress
 
-  const isNotExpectedAddress =
+  const isNotExpectedAddress = !!(
     account &&
     expectedAddress &&
     expectedAddress.toLowerCase() !== account.toLowerCase()
+  )
 
   const { isInitialLoading: isMembershipsLoading, data: memberships } =
     useQuery(
