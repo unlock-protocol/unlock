@@ -16,6 +16,8 @@ export const PurchaserBody = z.object({
   country: z.string().optional().default(''),
 })
 
+export type PurchaserBodyProps = z.infer<typeof PurchaserBody>
+
 export class ReceiptController {
   // Get Receipts details by providing `network` / `lockAddress` / `hash`
   async getReceipt(request: Request, response: Response) {
