@@ -10795,6 +10795,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tw-classed/core@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@tw-classed/core@npm:1.4.0"
+  checksum: e2eb7dc745e3de055714e686fca54eb7e94d90c0a9b6a955cf3fc9135f4f606166e7489634fc2b77e9c0dfc4926a89fb25cf231dfb6a02772458247c6b624363
+  languageName: node
+  linkType: hard
+
 "@tw-classed/react@npm:1.3.2":
   version: 1.3.2
   resolution: "@tw-classed/react@npm:1.3.2"
@@ -10803,6 +10810,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: 52f3751e50b6093d38cb090461c199cab8de13a877fc6f47f515a42f7ed01b966c20ceb73278e9db9252d081ecce058bc25440c83044a9fe2e6b1bd0ea676577
+  languageName: node
+  linkType: hard
+
+"@tw-classed/react@npm:1.4.2":
+  version: 1.4.2
+  resolution: "@tw-classed/react@npm:1.4.2"
+  dependencies:
+    "@tw-classed/core": 1.4.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: b174410cce6d6ccfaf35d771656fc8f797d9f51103b0f8717b464571ee733529d59cfa0787e1ed71b2f109009f8bf05faa54d117e78b3659f5733e25cf7d4d90
   languageName: node
   linkType: hard
 
@@ -12993,14 +13011,13 @@ __metadata:
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
+    "@vitest/coverage-c8": 0.26.2
     babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.3
     eslint: 8.31.0
-    eslint-plugin-jest: 27.2.0
-    eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 13.0.0
     nodemon: 2.0.20
@@ -13014,6 +13031,7 @@ __metadata:
     style-loader: 3.3.1
     styled-components: 5.3.6
     typescript: 4.9.4
+    vitest: 0.26.2
   languageName: unknown
   linkType: soft
 
@@ -13157,7 +13175,7 @@ __metadata:
     "@tailwindcss/forms": 0.5.3
     "@tailwindcss/line-clamp": 0.4.2
     "@tailwindcss/typography": 0.5.8
-    "@tw-classed/react": 1.3.2
+    "@tw-classed/react": 1.4.2
     "@types/react": 18.0.25
     "@types/react-dom": 18.0.8
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -13171,7 +13189,7 @@ __metadata:
     react-icons: 4.7.1
     react-use-clipboard: 1.0.9
     storybook-builder-vite: 0.1.23
-    tailwind-merge: 1.8.1
+    tailwind-merge: 1.9.0
     tailwindcss: 3.2.4
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.5.0
@@ -46460,6 +46478,13 @@ resolve@~1.20.0:
   version: 1.8.1
   resolution: "tailwind-merge@npm:1.8.1"
   checksum: ec1320c07aab3803845b9e4df6e3e96c86ddeeb6ed00c13f6040e6612655c74c98f9275d7ae13c8110cc2c9f9a591d5e3d3225794aea465b6b8434c3bf654641
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:1.9.0":
+  version: 1.9.0
+  resolution: "tailwind-merge@npm:1.9.0"
+  checksum: 2e403f8651d729e995fc37da81330507ac6135c5bdf7410389629300db6e37fcf6ec1aa37b698985201d9fe27399e7dfd98df4e3a6ccf56802f3f47fc51a3c26
   languageName: node
   linkType: hard
 
