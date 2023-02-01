@@ -3,7 +3,6 @@ import {
   ForwardedRef,
   ReactNode,
   useState,
-  useEffect
 } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
@@ -23,7 +22,7 @@ export interface Props
   size?: Size
   description?: ReactNode
   withIcon?: boolean
-  isTruncated?: Boolean
+  isTruncated?: boolean
   web3Service?: any
   localForm: any;
   name: any,
@@ -99,30 +98,30 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
     const handleResolver = async (address: string) => {
       if (address.length) {
         setLoading(true)
+        setError('')
+        setSuccess('')
+        setAddressType('')
       }
       const result = await web3Service.resolveName(address)
-      if (result && result.type === 'address') {
+      if (result.name !== null && result.type === 'address') {
         setLoading(false)
         setAddressType(result.type)
         setSuccess(`It's a valid eth address`)
         setResolvedName(result.name)
         return result.address;
-      } else if (result && result.type === 'name') {
+      } else if (result.address !== null && result.type === 'name') {
         setLoading(false)
         setAddressType(result.type)
         setSuccess(`It's a valid ens name`)
         setResolvedAddress(result.address)
         return result.address;
-      } else {
+      } else if (result.address === null || result.name === null  && result.type === 'error'){
         setLoading(false)
-        setAddressType(result.type)
+        setAddressType('error')
         setError(`It's not a valid ens name or address`)
-        setSuccess('')
-        setResolvedAddress('')
         return result.error;
       }
     }
-
     return (
       <>
         <FieldLayout
@@ -167,7 +166,7 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
             <span className='text-gray-600'>
               {resolvedName}
             </span>
-          ) : addressType === 'error' && error !== '' && (
+          ) : addressType === 'error' && error && (
             <span className='text-rose-700'>Please enter a valid ens or address</span>
           )}
         </div>
