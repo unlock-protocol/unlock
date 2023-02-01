@@ -10,7 +10,7 @@ import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from '@tanstack/react-query'
-import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
+import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export interface LockFormProps {

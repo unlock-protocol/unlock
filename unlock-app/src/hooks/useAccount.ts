@@ -1,5 +1,4 @@
 import UnlockProvider from '../services/unlockProvider'
-import { useWeb3Service } from '../utils/withWeb3Service'
 import { useConfig } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
 import { useWalletService } from '../utils/withWalletService'
