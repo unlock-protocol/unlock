@@ -11799,16 +11799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.0.8":
-  version: 18.0.8
-  resolution: "@types/react-dom@npm:18.0.8"
-  dependencies:
-    "@types/react": "*"
-  checksum: 522e5e949d05f35c6037a2290838c9c7ff92a9d06f7d96b993c7c3f5a86d8f3a6337e059c94e6fb0920227f445e5d1ce10fbfe3d9bbd95fb82a5539249d90646
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:^18.0.0":
+"@types/react-dom@npm:18.0.10, @types/react-dom@npm:^18.0.0":
   version: 18.0.10
   resolution: "@types/react-dom@npm:18.0.10"
   dependencies:
@@ -13111,7 +13102,7 @@ __metadata:
     "@types/node": 18.11.18
     "@types/postmate": 1.5.2
     "@types/react": 18.0.25
-    "@types/react-dom": 18.0.8
+    "@types/react-dom": 18.0.10
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
@@ -13283,7 +13274,7 @@ __metadata:
     "@tailwindcss/typography": 0.5.8
     "@tw-classed/react": 1.3.2
     "@types/react": 18.0.25
-    "@types/react-dom": 18.0.8
+    "@types/react-dom": 18.0.10
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@vitejs/plugin-react": 2.2.0
