@@ -4122,9 +4122,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.37.1":
-  version: 0.37.1
-  resolution: "@graphprotocol/graph-cli@npm:0.37.1"
+"@graphprotocol/graph-cli@npm:0.37.7":
+  version: 0.37.7
+  resolution: "@graphprotocol/graph-cli@npm:0.37.7"
   dependencies:
     "@float-capital/float-subgraph-uncrashable": ^0.0.0-alpha.4
     assemblyscript: 0.19.23
@@ -4138,12 +4138,11 @@ __metadata:
     glob: 7.1.6
     gluegun: "git+https://github.com/edgeandnode/gluegun.git#v4.3.1-pin-colors-dep"
     graphql: 15.5.0
-    immutable: 3.8.2
+    immutable: 4.2.1
     ipfs-http-client: 34.0.0
     jayson: 3.6.6
     js-yaml: 3.13.1
     node-fetch: 2.6.0
-    pkginfo: 0.4.1
     prettier: 1.19.1
     request: 2.88.2
     semver: 7.3.5
@@ -4153,8 +4152,8 @@ __metadata:
     which: 2.0.2
     yaml: 1.9.2
   bin:
-    graph: bin/graph
-  checksum: 727dbd74250472f1c45690df7c6afa6492792b33a99f2c571945445772e1b0ee282bc51aace58302eaef8375e9f424d06f3a48559e4f77d725ede50b7e1aa17b
+    graph: dist/bin.js
+  checksum: f717d7570121c9dea277a51c973387605e473b05823cb05d130519705859ad0aef852878569d01a958b309d76ef917cde8300d0871585859306032d86b136369
   languageName: node
   linkType: hard
 
@@ -12993,14 +12992,13 @@ __metadata:
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
+    "@vitest/coverage-c8": 0.26.2
     babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.3
     eslint: 8.31.0
-    eslint-plugin-jest: 27.2.0
-    eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 13.0.0
     nodemon: 2.0.20
@@ -13014,6 +13012,7 @@ __metadata:
     style-loader: 3.3.1
     styled-components: 5.3.6
     typescript: 4.9.4
+    vitest: 0.26.2
   languageName: unknown
   linkType: soft
 
@@ -13109,7 +13108,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.37.1
+    "@graphprotocol/graph-cli": 0.37.7
     "@graphprotocol/graph-ts": 0.29.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
@@ -29011,10 +29010,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"immutable@npm:3.8.2":
-  version: 3.8.2
-  resolution: "immutable@npm:3.8.2"
-  checksum: 41909b386950ff84ca3cfca77c74cfc87d225a914e98e6c57996fa81a328da61a7c32216d6d5abad40f54747ffdc5c4b02b102e6ad1a504c1752efde8041f964
+"immutable@npm:4.2.1":
+  version: 4.2.1
+  resolution: "immutable@npm:4.2.1"
+  checksum: 525bd78c4b8550df1b5f12d3bc7eb8bb3daed24f97df4018ec99a16436fc2a03fcebfcb4d3d36c86c46039292a583ea9eceb8a55704932f70a0cc5f15695b42a
   languageName: node
   linkType: hard
 
@@ -38823,13 +38822,6 @@ fsevents@~2.1.1:
   dependencies:
     find-up: ^3.0.0
   checksum: 5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
-  languageName: node
-  linkType: hard
-
-"pkginfo@npm:0.4.1":
-  version: 0.4.1
-  resolution: "pkginfo@npm:0.4.1"
-  checksum: 0f13694f3682345647b7cb887fb6fe258df51b635f252324cd75eeb8181b4381cb8b9d91dc2d869849e857192b403bea65038d2f7c05b524eeae69ece5048209
   languageName: node
   linkType: hard
 
