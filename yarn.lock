@@ -12993,14 +12993,13 @@ __metadata:
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
+    "@vitest/coverage-c8": 0.26.2
     babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.3
     eslint: 8.31.0
-    eslint-plugin-jest: 27.2.0
-    eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 13.0.0
     nodemon: 2.0.20
@@ -13014,6 +13013,7 @@ __metadata:
     style-loader: 3.3.1
     styled-components: 5.3.6
     typescript: 4.9.4
+    vitest: 0.26.2
   languageName: unknown
   linkType: soft
 
@@ -13253,7 +13253,7 @@ __metadata:
     react-hot-toast: 2.4.0
     react-icons: 4.7.1
     react-jazzicon: 1.0.4
-    react-jwt: 1.1.7
+    react-jwt: 1.1.8
     react-markdown: 8.0.5
     react-test-renderer: 18.2.0
     react-use: 17.4.0
@@ -41608,9 +41608,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:1.1.7":
-  version: 1.1.7
-  resolution: "react-jwt@npm:1.1.7"
+"react-jwt@npm:1.1.8":
+  version: 1.1.8
+  resolution: "react-jwt@npm:1.1.8"
   dependencies:
     fsevents: ^2.3.2
   peerDependencies:
@@ -41618,7 +41618,7 @@ fsevents@~2.1.1:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: caa8b5f2348af407f1a408eb91b4335491d2062820483361c589f842f1f044deb57db8804c458a6ad15aa8740c1b58b3e05287324f28b9e27b66f2631151bcac
+  checksum: 4c0b71bec255c1b382d0ea7313cb885789edcfc5debaf27b8a74ff712e5e65bf1eb928ac15ec99b50075a00f2047912ec8ddcc7af5736d23f1e8862564fb28a4
   languageName: node
   linkType: hard
 
