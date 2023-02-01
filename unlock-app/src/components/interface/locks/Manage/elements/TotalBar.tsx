@@ -1,13 +1,12 @@
 import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useMutation, useQueries } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useQueries } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
 import { useLockManager } from '~/hooks/useLockManager'
+import { WithdrawFundModal } from './WithdrawFundModal'
 
 interface Action {
   title: string
@@ -86,8 +85,8 @@ const Total = ({
 
 export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const [showStats, setShowStats] = useState(false)
+  const [withdrawModal, setWithdrawModal] = useState(false)
   const web3Service = useWeb3Service()
-  const walletService = useWalletService()
   const { networks } = useConfig()
 
   const { isManager } = useLockManager({
@@ -105,30 +104,17 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
     return await web3Service.getLock(lockAddress, network)
   }
 
-  const withdrawFromLockPromise = async (): Promise<unknown> => {
-    return await walletService.withdrawFromLock({
-      lockAddress,
-    })
-  }
-
-  const withdrawMutation = useMutation(withdrawFromLockPromise)
-
   const [
     { isLoading, data: lock },
     { isLoading: isLoadingTotalMembers, data: numberOfOwners },
   ] = useQueries({
     queries: [
       {
-        queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
+        queryKey: ['getLock', lockAddress, network],
         queryFn: getLock,
       },
       {
-        queryKey: [
-          'totalMembers',
-          lockAddress,
-          network,
-          withdrawMutation.isSuccess,
-        ],
+        queryKey: ['totalMembers', lockAddress, network],
         queryFn: getNumberOfOwners,
       },
     ],
@@ -136,19 +122,9 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
 
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
 
-  const onWithDraw = async () => {
-    const promise = withdrawMutation.mutateAsync(balance)
-    await ToastHelper.promise(promise, {
-      success: 'Withdraw done',
-      error: `Withdraw can't be processed, please try again`,
-      loading: 'Withdrawing...',
-    })
-  }
-
   const loading = isLoading || isLoadingTotalMembers
 
-  const withdrawDisabled =
-    parseFloat(`${balance}`) === 0 || loading || withdrawMutation.isLoading
+  const withdrawDisabled = parseFloat(`${balance}`) === 0 || loading
 
   const formattedBalance = parseFloat(`${balance || 0}`)?.toFixed(3)
   const symbol = lock?.currencySymbol || baseCurrencySymbol
@@ -168,7 +144,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
               ? {
                   title: 'Withdraw',
                   disabled: withdrawDisabled,
-                  onClick: onWithDraw,
+                  onClick: () => setWithdrawModal(true),
                 }
               : undefined
           }
@@ -179,6 +155,11 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
 
   return (
     <div className="flex flex-col border border-gray-500 rounded-2xl">
+      <WithdrawFundModal
+        isOpen={withdrawModal}
+        setIsOpen={setWithdrawModal}
+        lockAddress={lockAddress}
+      />
       <div className="hidden md:block">
         <Stats />
       </div>
