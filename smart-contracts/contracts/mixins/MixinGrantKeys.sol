@@ -27,7 +27,7 @@ contract MixinGrantKeys is
   ) external returns (uint[] memory) {
     _lockIsUpToDate();
     if (
-      !isKeyGranter(msg.sender) &&
+      !hasRole(KEY_GRANTER_ROLE, msg.sender) &&
       !isLockManager(msg.sender)
     ) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
@@ -68,7 +68,7 @@ contract MixinGrantKeys is
     _lockIsUpToDate();
     _isKey(_tokenId);
     if (
-      !isKeyGranter(msg.sender) &&
+      !hasRole(KEY_GRANTER_ROLE, msg.sender) &&
       !isLockManager(msg.sender)
     ) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
