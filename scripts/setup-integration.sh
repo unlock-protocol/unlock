@@ -6,4 +6,4 @@ REPO_ROOT=$(dirname "$0")/..
 INTEGRATION_TESTS_FOLDER=$REPO_ROOT/tests
 EXTRA_ARGS=$*
 
-bash $INTEGRATION_TESTS_FOLDER/bin/tests.sh
+sh $INTEGRATION_TESTS_FOLDER/bin/tests.sh

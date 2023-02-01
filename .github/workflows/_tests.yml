@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Setup integration environment
         run: scripts/setup-integration.sh
-      - name: Log failing tests
+      - name: Log errors inside containers
         if: ${{ failure() }}
         run: ./scripts/docker-compose-log.sh
       - name: Running ${{ matrix.target }} tests
