@@ -12993,14 +12993,13 @@ __metadata:
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
+    "@vitest/coverage-c8": 0.26.2
     babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.3
     eslint: 8.31.0
-    eslint-plugin-jest: 27.2.0
-    eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 13.0.0
     nodemon: 2.0.20
@@ -13014,6 +13013,7 @@ __metadata:
     style-loader: 3.3.1
     styled-components: 5.3.6
     typescript: 4.9.4
+    vitest: 0.26.2
   languageName: unknown
   linkType: soft
 
@@ -13225,7 +13225,7 @@ __metadata:
     axios: 1.2.1
     axios-auth-refresh: 3.3.4
     calendar-link: 2.4.0
-    csv: 6.2.5
+    csv: 6.2.6
     dayjs: 1.11.7
     deep-object-diff: 1.1.9
     dotenv: 16.0.3
@@ -20877,10 +20877,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.3.3":
-  version: 5.3.3
-  resolution: "csv-parse@npm:5.3.3"
-  checksum: 9f16e2003ef47c901aab31d202e1c9edb70c00faa7777e17a50087314c9da6561233bc60542c15d71f7973c7a0e947c35515ea2689929881c9430a8af374089e
+"csv-parse@npm:^5.3.4":
+  version: 5.3.4
+  resolution: "csv-parse@npm:5.3.4"
+  checksum: 853648004d74dd02b06f51e45efff0cce79a4bbbd03eb344ae0f7e91733c90938b3fab424a9275d5b4cf7845c9d55acbdee90775a92bc8476a0d1d2cd335ec4e
   languageName: node
   linkType: hard
 
@@ -20891,15 +20891,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv@npm:6.2.5":
-  version: 6.2.5
-  resolution: "csv@npm:6.2.5"
+"csv@npm:6.2.6":
+  version: 6.2.6
+  resolution: "csv@npm:6.2.6"
   dependencies:
     csv-generate: ^4.2.1
-    csv-parse: ^5.3.3
+    csv-parse: ^5.3.4
     csv-stringify: ^6.2.3
     stream-transform: ^3.2.1
-  checksum: cc93984e3cfc6d2e309c8fec5230b5a3db687a38bdcc18a0efa583f2f9a8a8321b456a0ce8052112d7976274b3a45d6dfe798cae7198bf8d8fa851ffd55021c4
+  checksum: bc8830a1f166da0285080f305a1b91d5b086106a812cac6052969de453afc3a30ba5e15f59c57078e629d9fb709acfe37f9b2d1c17b73921febca3246fed37d7
   languageName: node
   linkType: hard
 
