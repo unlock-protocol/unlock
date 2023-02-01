@@ -311,4 +311,10 @@ interface IUnlock {
    * Can only be called by the current owner.
    */
   function transferOwnership(address newOwner) external;
+
+
+  /**
+   * Migrate an existing Lock to another instance of a Unlock contract
+   */
+  function postUpgrade() external;
 }

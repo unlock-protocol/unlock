@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./MixinLockCore.sol";
 import "./MixinErrors.sol";
+import "../interfaces/IUnlock.sol";
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -91,6 +92,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
 
+  // address of a previous deployment of Unlock contract
+  address private prevUnlock;
+
   /**
    * Ensure that the caller is the keyManager of the key
    * or that the caller has been approved
@@ -154,10 +158,35 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   /**
    * Migrate data from the previous single owner => key mapping to
    * the new data structure w multiple tokens.
-   * No data migration needed for v10 > v11
    */
-  function migrate(bytes calldata) public virtual {
+  function migrate(bytes calldata _calldata) public virtual {
     schemaVersion = publicLockVersion();
+
+    if(msg.sender != prevUnlock) {
+      // get new Unlock address
+      (address newUnlockAddress) = abi.decode(_calldata, (address));
+
+      // update unlock ref in this lock
+      setUnlockProtocol(newUnlockAddress);
+
+      // trigger migration from the new Unlock
+      IUnlock(newUnlockAddress).postUpgrade();
+    }
+  }
+
+  /**
+   * Helper to modify the address of the `unlockProtocol` when
+   * migrating from a different Unlock contract
+   */
+  function setUnlockProtocol(address _unlockAddress ) internal  {
+    unlockProtocol = IUnlock(_unlockAddress);
+  }
+  
+  /**
+   * Store the old (deprec) address of Unlock
+   */
+  function setPrevUnlock(address _unlockAddress ) internal  {
+    prevUnlock = _unlockAddress;
   }
 
   /**
@@ -661,5 +690,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
-  uint256[996] private __safe_upgrade_gap;
+  // decrease 996 to 995 when adding PrevUnlock in v13
+  uint256[995] private __safe_upgrade_gap;
 }

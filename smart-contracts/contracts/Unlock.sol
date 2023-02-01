@@ -643,6 +643,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
 
+  // TODO: perm/modifier for this
   function postUpgrade() public {
     // check if lock has been deployed here
     bool isDeployed = locks[msg.sender].deployed;
