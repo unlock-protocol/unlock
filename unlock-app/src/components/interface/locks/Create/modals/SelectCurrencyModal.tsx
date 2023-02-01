@@ -29,7 +29,7 @@ export const SelectCurrencyModal = ({
   const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
   const [query, setQuery] = useState('')
-  const defaultCurrency = networks[network].nativeCurrency
+  const defaultCurrency = networks[network]?.nativeCurrency ?? {}
 
   const [_isReady] = useDebounce(
     () => {
