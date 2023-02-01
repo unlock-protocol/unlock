@@ -42,13 +42,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup integration environment
-        run: scripts/setup_integration.sh
+        run: scripts/setup-integration.sh
       - name: Log failing tests
         if: ${{ failure() }}
         run: ./scripts/docker-compose-log.sh
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
-        shell: bash
 
   integration-tests:
     name: Integration Tests
