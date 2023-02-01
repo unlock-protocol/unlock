@@ -10,6 +10,7 @@ interface WithdrawFundModalProps {
   setIsOpen: (open: boolean) => void
   lockAddress: string
   dismiss?: () => void
+  balance: number
 }
 
 const withdrawForm = z.object({
@@ -31,13 +32,13 @@ export const WithdrawFundModal = ({
   isOpen,
   setIsOpen,
   lockAddress,
+  balance,
 }: WithdrawFundModalProps) => {
   const walletService = useWalletService()
   const {
     register,
     handleSubmit,
     formState: { errors },
-    trigger,
   } = useForm<WithdrawFormProps>({
     mode: 'onSubmit',
   })
@@ -51,9 +52,6 @@ export const WithdrawFundModal = ({
   const withdrawMutation = useMutation(withdrawFromLockPromise)
 
   const onWithDraw = async (form: WithdrawFormProps) => {
-    console.log('form', form, errors)
-    //const isFormValid = await trigger()
-    return
     const promise = withdrawMutation.mutateAsync()
     await ToastHelper.promise(promise, {
       success: 'Withdraw done',
@@ -73,9 +71,10 @@ export const WithdrawFundModal = ({
             Customize the address and the total balance you want to withdraw.
           </span>
         </div>
-        <form className="grid gap-2" onSubmit={handleSubmit(onWithDraw)}>
+        <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
           <Input
             label="Address"
+            size="small"
             {...register('address', {
               required: true,
               minLength: {
@@ -83,17 +82,23 @@ export const WithdrawFundModal = ({
                 message: 'Address should be 3 characters long at least.',
               },
             })}
-            error={errors?.address?.message}
+            error={errors?.address && 'This field is required'}
           />
           <Input
             label="Balance"
+            size="small"
+            type="numeric"
+            step={0.01}
             {...register('balance', {
               required: true,
               min: 0,
+              max: balance,
             })}
-            error={errors?.balance?.message}
+            error={errors?.balance && 'This field is required'}
           />
-          <Button type="submit">Withdraw</Button>
+          <Button type="submit" className="mt-2">
+            Withdraw
+          </Button>
         </form>
       </div>
     </Modal>

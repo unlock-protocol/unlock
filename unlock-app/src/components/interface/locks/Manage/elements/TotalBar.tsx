@@ -159,6 +159,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
         isOpen={withdrawModal}
         setIsOpen={setWithdrawModal}
         lockAddress={lockAddress}
+        balance={balance}
       />
       <div className="hidden md:block">
         <Stats />
