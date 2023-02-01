@@ -267,6 +267,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                   onClick={(e: any) => {
                     e?.stopPropagation()
                   }}
+                  className="flex"
                 >
                   <Link href={transactionUrl}>
                     <div className="flex items-center gap-2">
