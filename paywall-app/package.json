@@ -23,8 +23,8 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "copy-webpack-plugin": "11.0.0",
     "dotenv": "16.0.3",
-    "lint-staged": "13.0.3",
-    "next": "13.0.0",
+    "lint-staged": "13.1.0",
+    "next": "13.1.6",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
     "prop-types": "15.8.1",
@@ -40,15 +40,15 @@
     "@svgr/cli": "6.5.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitest/coverage-c8": "0.26.2",
+    "@vitest/coverage-c8": "0.28.3",
     "babel-loader": "9.1.0",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
-    "eslint": "8.31.0",
+    "eslint": "8.33.0",
     "nodemon": "2.0.20",
     "prettier": "2.8.1",
     "typescript": "4.9.4",
-    "vitest": "0.26.2"
+    "vitest": "0.28.3"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
