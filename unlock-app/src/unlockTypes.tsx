@@ -232,6 +232,11 @@ export const PaywallConfigSchema = z
       })
       .default(true)
       .optional(),
+    expectedAddress: z
+      .string({
+        description: 'Expected wallet address for user.',
+      })
+      .optional(),
   })
   .passthrough()
 
