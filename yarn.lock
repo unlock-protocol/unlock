@@ -13410,7 +13410,7 @@ __metadata:
     vitest-fetch-mock: 0.2.1
     vitest-localstorage-mock: 0.0.1
     walletlink: 2.5.0
-    xstate: 4.35.1
+    xstate: 4.35.4
     zod: 3.20.2
     zod-to-json-schema: 3.20.2
   languageName: unknown
@@ -54316,10 +54316,10 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"xstate@npm:4.35.1":
-  version: 4.35.1
-  resolution: "xstate@npm:4.35.1"
-  checksum: 7ea8f925be4388f6791b432399e983cca436a11012b76f739b10912dcdf13e96f9b54defc67cc8b7a029f5b08999df97377b9b60d216ddc4838e9a69f3c0428f
+"xstate@npm:4.35.4":
+  version: 4.35.4
+  resolution: "xstate@npm:4.35.4"
+  checksum: 92fcf15e80c9726002d24ef8f01595058e44b44d7ecad0cce933dc9f9ef89a73c57cba02af68817be42f504a80425daeb248f38158a80b5f12771f6fe408fca5
   languageName: node
   linkType: hard
 
