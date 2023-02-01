@@ -13531,7 +13531,7 @@ __metadata:
     react-dom: 18.2.0
     react-ga: 3.3.1
     react-gtm-module: 2.0.11
-    react-query: 3.39.2
+    react-query: 3.39.3
     react-showdown: 2.3.1
     react-test-renderer: 18.2.0
     remark: 14.0.2
@@ -42063,9 +42063,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-query@npm:3.39.2":
-  version: 3.39.2
-  resolution: "react-query@npm:3.39.2"
+"react-query@npm:3.39.3":
+  version: 3.39.3
+  resolution: "react-query@npm:3.39.3"
   dependencies:
     "@babel/runtime": ^7.5.5
     broadcast-channel: ^3.4.1
@@ -42077,7 +42077,7 @@ fsevents@~2.1.1:
       optional: true
     react-native:
       optional: true
-  checksum: 83b199e66af28ab67ec4d22e51da42f02447186623db926b75d27a1c09a3383da6ddc9e5b83d82578fac7abdba7e6f265aecbffdb91db61981950d3d59409346
+  checksum: d2de6a0992dbf039ff2de564de1ae6361f8ac7310159dae42ec16f833b79c05caedced187235c42373ac331cc5f2fe9e2b31b14ae75a815e86d86e30ca9887ad
   languageName: node
   linkType: hard
 
