@@ -13625,7 +13625,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@zeit/next-source-maps": 0.0.3
-    apexcharts: 3.36.0
+    apexcharts: 3.36.3
     autoprefixer: 10.4.13
     babel-eslint: 10.1.0
     babel-loader: 9.1.0
@@ -13802,50 +13802,6 @@ __metadata:
     std-env: ^3.3.1
     vitest: 0.28.3
   checksum: 1b652467f8bc202bc12e76826aafe8dcb611db46fe85bd921742bbef70f7d37b90d8dbed2fd877552de7bbc37e4c496dbeaf6c793fa03337c3f4eaa521431f94
-  languageName: node
-  linkType: hard
-
-"@vitest/expect@npm:0.28.3":
-  version: 0.28.3
-  resolution: "@vitest/expect@npm:0.28.3"
-  dependencies:
-    "@vitest/spy": 0.28.3
-    "@vitest/utils": 0.28.3
-    chai: ^4.3.7
-  checksum: 8c16543818c4482721185ff307d0ee541167a75f35fe34cdc9bfdf6e394374f1b37cf5624f9c3b6478ecdaa72970545953fb8a3bf1b59c32dcbbc52b6b7e09c8
-  languageName: node
-  linkType: hard
-
-"@vitest/runner@npm:0.28.3":
-  version: 0.28.3
-  resolution: "@vitest/runner@npm:0.28.3"
-  dependencies:
-    "@vitest/utils": 0.28.3
-    p-limit: ^4.0.0
-    pathe: ^1.1.0
-  checksum: 45ab3cf2621182160575e8e9af50170251118afbaee10f9f72d60db9a279a01da46a8d72a8628a905995ab65abe3b974baeacadc792c137ac3be25e5e9f6c72d
-  languageName: node
-  linkType: hard
-
-"@vitest/spy@npm:0.28.3":
-  version: 0.28.3
-  resolution: "@vitest/spy@npm:0.28.3"
-  dependencies:
-    tinyspy: ^1.0.2
-  checksum: 34d960d9867b027507d51acaf471c4e6640fdd59ec7b23c3190e7a2f842437bccc3f88f395edf302f96906d41de1d5801e7a1739a5e3778d34d8d064c77ad3a9
-  languageName: node
-  linkType: hard
-
-"@vitest/utils@npm:0.28.3":
-  version: 0.28.3
-  resolution: "@vitest/utils@npm:0.28.3"
-  dependencies:
-    cli-truncate: ^3.1.0
-    diff: ^5.1.0
-    loupe: ^2.3.6
-    picocolors: ^1.0.0
-    pretty-format: ^27.5.1
-  checksum: 10375b0d0c95c3e57cfcac83189261eab3512884d6caecc68e378c221cce473f2694fdd8cde217f6fae384d29c03bd399aae8aa6aa581872b7429020a05e111e
   languageName: node
   linkType: hard
 
@@ -15299,9 +15255,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:3.36.0":
-  version: 3.36.0
-  resolution: "apexcharts@npm:3.36.0"
+"apexcharts@npm:3.36.3":
+  version: 3.36.3
+  resolution: "apexcharts@npm:3.36.3"
   dependencies:
     svg.draggable.js: ^2.2.2
     svg.easing.js: ^2.0.0
@@ -15309,7 +15265,7 @@ __metadata:
     svg.pathmorphing.js: ^0.1.3
     svg.resize.js: ^1.4.3
     svg.select.js: ^3.0.1
-  checksum: 99ed3c1df728086a92bfa9c1a8e13771fd46b7dcd13445cc9275d3d04bea0efade3a4258467bbf6416c264458fd938ed37f62ba4bb3fa47eb253ec0aab1e82a6
+  checksum: 2b92f123cf3e52255d379d95411d12943c096a1575234ae90513d9dd9dd3f118fa1f08098b5acf142e1d119ac0c19a7ca2a62d3979cf7e333d361d582ec12daf
   languageName: node
   linkType: hard
 
@@ -50104,40 +50060,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite-node@npm:0.26.3":
-  version: 0.26.3
-  resolution: "vite-node@npm:0.26.3"
-  dependencies:
-    debug: ^4.3.4
-    mlly: ^1.0.0
-    pathe: ^0.2.0
-    source-map: ^0.6.1
-    source-map-support: ^0.5.21
-    vite: ^3.0.0 || ^4.0.0
-  bin:
-    vite-node: vite-node.mjs
-  checksum: ae290288cbd5e79580365a5128f7ba4cbe088c27dbb014bd1dab3e1c0955c04a6add13bed5db923ddb8fd4eb1d75394fdf0e72ebf270f1a1007dd3e9b7049387
-  languageName: node
-  linkType: hard
-
-"vite-node@npm:0.28.3":
-  version: 0.28.3
-  resolution: "vite-node@npm:0.28.3"
-  dependencies:
-    cac: ^6.7.14
-    debug: ^4.3.4
-    mlly: ^1.1.0
-    pathe: ^1.1.0
-    picocolors: ^1.0.0
-    source-map: ^0.6.1
-    source-map-support: ^0.5.21
-    vite: ^3.0.0 || ^4.0.0
-  bin:
-    vite-node: vite-node.mjs
-  checksum: 9a4d756388fc556314a98510308c3c26499fadaf5f99b76b65b6bb7404da74f6565b377e843e8d4f40f23aef13c52c8c0924ed63f866a42d674016e16eb936d6
-  languageName: node
-  linkType: hard
-
 "vite-node@npm:0.28.3":
   version: 0.28.3
   resolution: "vite-node@npm:0.28.3"
@@ -50410,99 +50332,6 @@ typescript@^3.8.3:
   bin:
     vitest: vitest.mjs
   checksum: 2adc5fcead5b8b942e87d2ea6b2183baf0dc4728136758646bb674441d10a809bb6ff5bd1dc8f6a6e019f133b8537ddef770c9a1705d4cc9714411083581ab6e
-  languageName: node
-  linkType: hard
-
-"vitest@npm:0.26.3":
-  version: 0.26.3
-  resolution: "vitest@npm:0.26.3"
-  dependencies:
-    "@types/chai": ^4.3.4
-    "@types/chai-subset": ^1.3.3
-    "@types/node": "*"
-    acorn: ^8.8.1
-    acorn-walk: ^8.2.0
-    chai: ^4.3.7
-    debug: ^4.3.4
-    local-pkg: ^0.4.2
-    source-map: ^0.6.1
-    strip-literal: ^1.0.0
-    tinybench: ^2.3.1
-    tinypool: ^0.3.0
-    tinyspy: ^1.0.2
-    vite: ^3.0.0 || ^4.0.0
-    vite-node: 0.26.3
-  peerDependencies:
-    "@edge-runtime/vm": "*"
-    "@vitest/browser": "*"
-    "@vitest/ui": "*"
-    happy-dom: "*"
-    jsdom: "*"
-  peerDependenciesMeta:
-    "@edge-runtime/vm":
-      optional: true
-    "@vitest/browser":
-      optional: true
-    "@vitest/ui":
-      optional: true
-    happy-dom:
-      optional: true
-    jsdom:
-      optional: true
-  bin:
-    vitest: vitest.mjs
-  checksum: b74c10444ab913c1d716005034308b347fa7341d26e3797eff17d1cc4903a30b6137d9e5da8b3f3c1047a7a645355c7a1b6601fcad94a29c44910289c5f12295
-  languageName: node
-  linkType: hard
-
-"vitest@npm:0.28.3":
-  version: 0.28.3
-  resolution: "vitest@npm:0.28.3"
-  dependencies:
-    "@types/chai": ^4.3.4
-    "@types/chai-subset": ^1.3.3
-    "@types/node": "*"
-    "@vitest/expect": 0.28.3
-    "@vitest/runner": 0.28.3
-    "@vitest/spy": 0.28.3
-    "@vitest/utils": 0.28.3
-    acorn: ^8.8.1
-    acorn-walk: ^8.2.0
-    cac: ^6.7.14
-    chai: ^4.3.7
-    debug: ^4.3.4
-    local-pkg: ^0.4.2
-    pathe: ^1.1.0
-    picocolors: ^1.0.0
-    source-map: ^0.6.1
-    std-env: ^3.3.1
-    strip-literal: ^1.0.0
-    tinybench: ^2.3.1
-    tinypool: ^0.3.1
-    tinyspy: ^1.0.2
-    vite: ^3.0.0 || ^4.0.0
-    vite-node: 0.28.3
-    why-is-node-running: ^2.2.2
-  peerDependencies:
-    "@edge-runtime/vm": "*"
-    "@vitest/browser": "*"
-    "@vitest/ui": "*"
-    happy-dom: "*"
-    jsdom: "*"
-  peerDependenciesMeta:
-    "@edge-runtime/vm":
-      optional: true
-    "@vitest/browser":
-      optional: true
-    "@vitest/ui":
-      optional: true
-    happy-dom:
-      optional: true
-    jsdom:
-      optional: true
-  bin:
-    vitest: vitest.mjs
-  checksum: 13ee3d8b7554cbe46516a1cc46082eb11443532d11b263c1ed2ad3187339bb71ec705669e9d3d59653a8bd230c21488e1f5caa69b2aa20acabd3ee2b283b805c
   languageName: node
   linkType: hard
 
