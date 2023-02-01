@@ -15,7 +15,6 @@ interface SelectCurrencyModalProps {
   setIsOpen: (status: boolean) => void
   network: number
   onSelect: (token: Token) => void
-  defaultCurrency: string
 }
 
 export const ZERO = ethers.constants.AddressZero
@@ -25,12 +24,13 @@ export const SelectCurrencyModal = ({
   setIsOpen,
   network,
   onSelect,
-  defaultCurrency,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
   const [query, setQuery] = useState('')
+  const defaultCurrency = networks[network]?.nativeCurrency ?? {}
+
   const [_isReady] = useDebounce(
     () => {
       setQuery(query)
@@ -57,10 +57,14 @@ export const SelectCurrencyModal = ({
 
   useEffect(() => {
     setTokens([
-      { name: defaultCurrency, symbol: defaultCurrency, address: ZERO },
+      {
+        name: defaultCurrency?.name,
+        symbol: defaultCurrency?.symbol,
+        address: ZERO,
+      },
       ...tokenItems,
     ])
-  }, [network])
+  }, [defaultCurrency?.name, defaultCurrency?.symbol, network, tokenItems])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
