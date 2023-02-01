@@ -92,9 +92,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
 
-  // address of a previous deployment of Unlock contract
-  address private prevUnlock;
-
   /**
    * Ensure that the caller is the keyManager of the key
    * or that the caller has been approved
@@ -160,34 +157,25 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * the new data structure w multiple tokens.
    */
   function migrate(bytes calldata _calldata) public virtual {
-    schemaVersion = publicLockVersion();
 
-    if(msg.sender != prevUnlock) {
-      // get new Unlock address
-      (address newUnlockAddress) = abi.decode(_calldata, (address));
+    // TODO: check if change Unlock address is needed
+    // if(msg.sender != prevUnlock) {
 
+    // get new Unlock address
+    (bool requireUpdate, address newUnlockAddress) = abi.decode(_calldata, (bool, address));
+
+    if(requireUpdate) {
       // update unlock ref in this lock
-      setUnlockProtocol(newUnlockAddress);
+      unlockProtocol = IUnlock(newUnlockAddress);
 
       // trigger migration from the new Unlock
       IUnlock(newUnlockAddress).postUpgrade();
     }
-  }
 
-  /**
-   * Helper to modify the address of the `unlockProtocol` when
-   * migrating from a different Unlock contract
-   */
-  function setUnlockProtocol(address _unlockAddress ) internal  {
-    unlockProtocol = IUnlock(_unlockAddress);
+    // update data version
+    schemaVersion = publicLockVersion();
   }
   
-  /**
-   * Store the old (deprec) address of Unlock
-   */
-  function setPrevUnlock(address _unlockAddress ) internal  {
-    prevUnlock = _unlockAddress;
-  }
 
   /**
    * Set the schema version to the latest
