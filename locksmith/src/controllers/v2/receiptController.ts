@@ -32,14 +32,7 @@ export class ReceiptController {
         hash,
       })
 
-      // return error when supplier and purchaser details are not present
-      if (!receiptDetails?.supplier && !receiptDetails?.purchaser) {
-        return response.status(404).json({
-          message: 'Impossible to retrieve receipt details.',
-        })
-      }
-
-      // Returns details for purchaser and supplier
+      // Returns receipts details
       return response.status(200).json(receiptDetails)
     } catch (err: any) {
       logger.error(err.message)
