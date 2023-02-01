@@ -213,8 +213,13 @@ export const LockManagerForm = ({
 }: LockManagerFormProps) => {
   const walletService = useWalletService()
 
+  const [managerAddress, setManagerAddress] = useState('')
+
   const localForm = useForm({
     mode: 'all',
+    defaultValues: {
+      manager: '',
+    },
   })
 
   const { handleSubmit, reset, watch } = localForm
@@ -267,16 +272,25 @@ export const LockManagerForm = ({
     }
   )
 
-  const onAddLockManager = async () => {
+  const getManagerAddress = async () => {
     const managerValue = await watch('manager')
-    await addLockManagerMutation.mutateAsync(managerValue)
+    if (managerValue) setManagerAddress(managerValue)
+  }
+  getManagerAddress()
+
+  const onAddLockManager = async () => {
+    await addLockManagerMutation.mutateAsync(managerAddress)
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
 
   const noManagers = managers?.length === 0
 
-  const disableInput = disabled || isLoading || addLockManagerMutation.isLoading
+  const disableInput =
+    disabled ||
+    isLoading ||
+    addLockManagerMutation.isLoading ||
+    managerAddress === ''
 
   return (
     <div className="relative">
