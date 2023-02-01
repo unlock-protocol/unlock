@@ -42,14 +42,9 @@ export const getAccountTokenBalance = async (
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  */
 export const useAccount = (address: string, network: number) => {
-  const web3Service = useWeb3Service()
   const config = useConfig()
   const walletService = useWalletService()
   const wedlockService = useWedlockService()
-
-  const getTokenBalance = (tokenAddress: string | null) => {
-    return getAccountTokenBalance(web3Service, address, tokenAddress, network)
-  }
 
   const connectStripeToLock = async (
     lockAddress: string,
@@ -327,7 +322,6 @@ export const useAccount = (address: string, network: number) => {
 
   return {
     setUserMetadataData,
-    getTokenBalance,
     getCards,
     chargeCard,
     captureChargeForCard,

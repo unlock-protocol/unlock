@@ -10,7 +10,8 @@ import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from '@tanstack/react-query'
-import useAccount from '~/hooks/useAccount'
+import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export interface LockFormProps {
   name: string
@@ -35,10 +36,10 @@ export const CreateLockForm = ({
   defaultValues,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
-  const { network, account, changeNetwork } = useAuth()
+  const web3Service = useWeb3Service()
+  const { network, changeNetwork, account } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const { getTokenBalance } = useAccount(account!, network!)
   const { baseCurrencySymbol } = networks[network!] ?? {}
 
   const [unlimitedDuration, setUnlimitedDuration] = useState(
@@ -70,7 +71,12 @@ export const CreateLockForm = ({
   })
 
   const getBalance = async () => {
-    const balance = await getTokenBalance('')
+    const balance = await getAccountTokenBalance(
+      web3Service,
+      account!,
+      null,
+      network || 1
+    )
     return parseFloat(balance)
   }
 
