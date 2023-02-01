@@ -41,13 +41,8 @@ jobs:
         target: ${{fromJson( inputs.changed )}}
     steps:
       - uses: actions/checkout@v3
-      - name: Run Integration Tests
-        run: scripts/integration-tests.sh
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: screenshots
-          path: /tmp/screenshots
+      - name: Setup integration environment
+        run: scripts/setup_integration.sh
       - name: Log failing tests
         if: ${{ failure() }}
         run: ./scripts/docker-compose-log.sh
