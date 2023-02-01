@@ -46,7 +46,7 @@ export function Renewed({
           const provider = new ethers.providers.JsonRpcProvider(
             network.provider
           )
-          await provider.waitForTransaction(transactionHash)
+          await provider.waitForTransaction(transactionHash, 2, 60000)
           communication?.emitTransactionInfo({
             hash: transactionHash,
             lock: lock?.address,
