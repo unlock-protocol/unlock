@@ -21,6 +21,7 @@ import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
@@ -44,6 +45,10 @@ export function Checkout({
   })
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
+  const { authenticateWithProvider } = useAuthenticate({
+    injectedProvider,
+  })
+
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
   const paywallConfigChanged = !isEqual(
@@ -259,6 +264,13 @@ export function Checkout({
       }
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
+
+  // Autoconnect
+  useEffect(() => {
+    console.log('AUTOCONNECT!')
+    authenticateWithProvider('METAMASK')
+    // Can we autoconnect? That'd be _really_ nice
+  }, [])
 
   return (
     <CheckoutTransition>
