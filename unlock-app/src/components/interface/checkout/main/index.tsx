@@ -262,7 +262,7 @@ export function Checkout({
 
   return (
     <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
+      <div className="bg-white z-10 max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
         <TopNavigation
           onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
           onBack={onBack}
