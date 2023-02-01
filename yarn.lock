@@ -3143,12 +3143,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connext/nxtp-txservice@npm:0.2.1-rc.19":
-  version: 0.2.1-rc.19
-  resolution: "@connext/nxtp-txservice@npm:0.2.1-rc.19"
+"@connext/nxtp-txservice@npm:0.2.1-rc.20":
+  version: 0.2.1-rc.20
+  resolution: "@connext/nxtp-txservice@npm:0.2.1-rc.20"
   dependencies:
-    "@connext/nxtp-utils": 0.2.1-rc.19
-    "@connext/smart-contracts": 0.2.1-rc.19
+    "@connext/nxtp-utils": 0.2.1-rc.20
+    "@connext/smart-contracts": 0.2.1-rc.20
     "@sinclair/typebox": 0.25.16
     "@typescript-eslint/eslint-plugin": 5.47.0
     ajv: 8.11.2
@@ -3157,7 +3157,7 @@ __metadata:
     evt: 2.4.13
     interval-promise: 1.4.0
     p-queue: 6.6.2
-  checksum: e6f45e0eaed283e9368782878df74ba75aa6b81e0d339413f8f87191ed9d07d48c02418958f95947c4edeab9e77e7cc441f09518787e2e9ba862f7d58670b71c
+  checksum: 7cc6d72b9571644079b0600850fcda26905d7ffd0f584c2f081d36b1e4d71686472af82838ae9a65479a233d699c59f57a4daff0ee5a35295ee17ffc6ec5c7aa
   languageName: node
   linkType: hard
 
@@ -3190,9 +3190,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connext/nxtp-utils@npm:0.2.1-rc.19":
-  version: 0.2.1-rc.19
-  resolution: "@connext/nxtp-utils@npm:0.2.1-rc.19"
+"@connext/nxtp-utils@npm:0.2.1-rc.20":
+  version: 0.2.1-rc.20
+  resolution: "@connext/nxtp-utils@npm:0.2.1-rc.20"
   dependencies:
     "@maticnetwork/maticjs": 3.5.0
     "@maticnetwork/maticjs-web3": 1.0.4
@@ -3215,30 +3215,30 @@ __metadata:
     secp256k1: 4.0.3
     sinon-chai: 3.7.0
     ts-natsutil: 1.1.1
-  checksum: eab1c2a89350beda55d2c3e8c2a278a66fba42268fc9a89290e0c67270f048ba81fa9135d25ff133cf1af7fe92e804daf513ce4aec99d418eed698b77ad9e704
+  checksum: 32a63234cccc67e272448da2379f84a0d2dc3d6253c20dbed05696e2513a54ef90e6b6730ee4d91f7159cd47db80a29d111a87016a8763fcc1ce01893818e1ea
   languageName: node
   linkType: hard
 
-"@connext/sdk@npm:0.2.1-rc.19":
-  version: 0.2.1-rc.19
-  resolution: "@connext/sdk@npm:0.2.1-rc.19"
+"@connext/sdk@npm:0.2.1-rc.20":
+  version: 0.2.1-rc.20
+  resolution: "@connext/sdk@npm:0.2.1-rc.20"
   dependencies:
-    "@connext/nxtp-txservice": 0.2.1-rc.19
-    "@connext/nxtp-utils": 0.2.1-rc.19
+    "@connext/nxtp-txservice": 0.2.1-rc.20
+    "@connext/nxtp-utils": 0.2.1-rc.20
     "@sinclair/typebox": 0.25.16
     ethers: 5.7.2
     isomorphic-fetch: ^3.0.0
     memoizee: 0.4.15
     typedoc: 0.23.23
-  checksum: 0b92545033ad293dc827f8955b9f3ddd3fb28f62d10c4faed681fa73f7a9bd4d7599b59e32cb913500cbad955d672590b2678daedfe3d2e1cc775a9fe6b27a20
+  checksum: bfec35a272495a24d53faa020f69877f076d93e98028b9e792eba2264a4d6ac611ae5f59abe342981003e6317349606ad541cf3c1ffe0b9cc7eaa6aff81ca8cf
   languageName: node
   linkType: hard
 
-"@connext/smart-contracts@npm:0.2.1-rc.19":
-  version: 0.2.1-rc.19
-  resolution: "@connext/smart-contracts@npm:0.2.1-rc.19"
+"@connext/smart-contracts@npm:0.2.1-rc.20":
+  version: 0.2.1-rc.20
+  resolution: "@connext/smart-contracts@npm:0.2.1-rc.20"
   dependencies:
-    "@connext/nxtp-utils": 0.2.1-rc.19
+    "@connext/nxtp-utils": 0.2.1-rc.20
     "@eth-optimism/sdk": 1.6.9
     "@gelatonetwork/relay-context": 2.1.0
     "@openzeppelin/hardhat-upgrades": 1.17.0
@@ -3251,7 +3251,7 @@ __metadata:
     hardhat-diamond-abi: 3.0.1
     hardhat-gas-reporter: 1.0.9
     typechain: 8.1.1
-  checksum: c027baa163f4378e80592ca69824142c6ed272df047c9ff1c36edc674d4c849a006d595a1c23a205fe5ad8bccd1a3b585c50ade0d5c21e13f67b927ab48f453a
+  checksum: e0636b62525ed90d60e70d5cec96320dd1d94e402e657b05171305861f2fc29a114383207637c67d8f82a32087c537ebf91730705227ca1a9f47f135e57ef696
   languageName: node
   linkType: hard
 
@@ -14233,7 +14233,7 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@connext/nxtp-contracts": 0.2.1-rc.16
-    "@connext/sdk": 0.2.1-rc.19
+    "@connext/sdk": 0.2.1-rc.20
     "@gnosis.pm/safe-core-sdk": 3.1.1
     "@gnosis.pm/safe-ethers-lib": 1.6.1
     "@gnosis.pm/safe-service-client": 1.3.1

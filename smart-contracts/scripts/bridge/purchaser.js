@@ -13,6 +13,7 @@ const WethABI = require('../../test/helpers/ABIs/weth.json')
 // const erc20ABI = require('../test/helpers/ABIs/erc20.json')
 const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
 const addresses = require('./_addresses')
+const estimateRelayerFee = require('./fee')
 
 const isERC20 = false
 
@@ -46,7 +47,7 @@ async function main() {
     : oneETH.mul('0.01') // 0.01 ETH in MATIC
 
   // fee should be zero for testnet
-  const relayerFee = ethers.BigNumber.from('0')
+  const relayerFee = await estimateRelayerFee()
   
   // in BPS
   const slippage = 300 
