@@ -17,7 +17,7 @@
     "@types/node": "18.11.18",
     "@types/postmate": "1.5.2",
     "@types/react": "18.0.25",
-    "@types/react-dom": "18.0.8",
+    "@types/react-dom": "18.0.10",
     "@types/styled-components": "5.1.26",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
     "@unlock-protocol/types": "workspace:./packages/types",
