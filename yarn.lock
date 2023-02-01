@@ -13065,7 +13065,7 @@ __metadata:
     parse-data-uri: 0.2.0
     path-to-regexp: 6.2.1
     pg: 8.8.0
-    random-words: 1.2.0
+    random-words: 1.2.1
     rate-limiter-flexible: 2.4.1
     react: 18.2.0
     request: 2.88.2
@@ -41630,10 +41630,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"random-words@npm:1.2.0":
-  version: 1.2.0
-  resolution: "random-words@npm:1.2.0"
-  checksum: e2222057c963d49acc872c0b89c852a6de8a21c8114c102cf193f6a00ab78d346c6fdd2fe33222e30e1958ddb98bbe57fafc32aa2f69c3c13ca7425268f88798
+"random-words@npm:1.2.1":
+  version: 1.2.1
+  resolution: "random-words@npm:1.2.1"
+  checksum: 3fbcffc7218ca84683f24133467d14068f1c760de733df4b2fa91926f0a5f0dd9c6ee22302ae5f7ff6b8918a144e5b2ef450519375114f3e99b0d953cfd8dcf1
   languageName: node
   linkType: hard
 
