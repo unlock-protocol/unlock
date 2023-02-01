@@ -11163,12 +11163,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:9.0.13":
-  version: 9.0.13
-  resolution: "@types/fs-extra@npm:9.0.13"
+"@types/fs-extra@npm:11.0.1":
+  version: 11.0.1
+  resolution: "@types/fs-extra@npm:11.0.1"
   dependencies:
+    "@types/jsonfile": "*"
     "@types/node": "*"
-  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
+  checksum: 3e930346e5d84f419deb8ced1c582beef8cb20d0bd8a0eb145a37d75bab0572a1895f0e48a0d681d386b3a58b9a992b2d2acecc464bcaec2548f53ea00718651
   languageName: node
   linkType: hard
 
@@ -11347,6 +11348,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/jsonfile@npm:*":
+  version: 6.1.1
+  resolution: "@types/jsonfile@npm:6.1.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 0f8fe0a9221a00e8413cffba723dfe16553868724b830237256fb0052ecd5cac96498189d1235a001cfa815f352008261c9ceb373f0aa58227f891e0c7a12c4d
   languageName: node
   linkType: hard
 
@@ -12839,7 +12849,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.2.1
     "@types/chai": 4.3.4
-    "@types/fs-extra": 9.0.13
+    "@types/fs-extra": 11.0.1
     "@types/mocha": 10.0.1
     "@types/node": 18.11.18
     "@unlock-protocol/contracts": 0.0.12
@@ -12993,14 +13003,13 @@ __metadata:
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
+    "@vitest/coverage-c8": 0.26.2
     babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.3
     eslint: 8.31.0
-    eslint-plugin-jest: 27.2.0
-    eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 13.0.0
     nodemon: 2.0.20
@@ -13014,6 +13023,7 @@ __metadata:
     style-loader: 3.3.1
     styled-components: 5.3.6
     typescript: 4.9.4
+    vitest: 0.26.2
   languageName: unknown
   linkType: soft
 
