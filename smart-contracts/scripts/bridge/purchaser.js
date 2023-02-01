@@ -28,12 +28,11 @@ async function main() {
 
   const { 
     purchaserAddress,
-    wethAddress,
     testERC20,
   } = addresses[chainId]
 
   // purchase info 
-  const tokenAddress = isERC20 ? testERC20 : wethAddress
+  const tokenAddress = isERC20 ? testERC20 : ZERO_ADDRESS
   
   // dest info 
   const lockAddress = addresses[destChainId][isERC20 ? 'testLockERC20' : 'testLockNative']
@@ -45,9 +44,9 @@ async function main() {
   let keyPrice = isERC20 ? ethers.utils.parseEther('10') // 10 TEST
     : chainId === 5 ? oneMATIC.mul('10')// 10 MaTIC in ETH
     : oneETH.mul('0.01') // 0.01 ETH in MATIC
-
+  
   // fee should be zero for testnet
-  const relayerFee = await estimateRelayerFee()
+  const relayerFee = ethers.BigNumber.from(await estimateRelayerFee())
   
   // in BPS
   const slippage = 300 
@@ -60,7 +59,7 @@ async function main() {
     isERC20,
     keyPrice: ethers.utils.formatEther(keyPrice),
     slippage,
-    relayerFee,
+    relayerFee: ethers.utils.formatUnits(relayerFee)
   })
 
   const purchaser = await ethers.getContractAt('UnlockCrossChainPurchaser', purchaserAddress)
