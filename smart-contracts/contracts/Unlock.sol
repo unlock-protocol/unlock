@@ -678,7 +678,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       previousUnlockAddress = _previousUnlockAddress;
     }
 
-  function _migrateLock(address lockAddress, LockBalances memory lock) public {
+  function _migrateLock(address lockAddress, LockBalances memory lock) internal {
     locks[lockAddress] = lock;
   }
 
