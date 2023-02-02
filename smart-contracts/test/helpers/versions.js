@@ -47,23 +47,7 @@ function getMatchingLockVersion(unlockVersion) {
   return publicLockVersions[unlockVersion]
 }
 
-const contractExists = (contractName, versionNumber) => {
-  // make sure contract exists
-  const contractVersion = `${contractName}V${versionNumber}`
-  if (!Object.keys(contracts).includes(contractVersion)) {
-    throw Error(
-      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
-    )
-  }
-}
 
-const getContractAbi = (contractName, versionNumber) => {
-  contractExists(contractName, versionNumber)
-  const contractVersion = `${contractName}V${versionNumber}`
-  // get bytecode
-  const { bytecode, abi } = contracts[contractVersion]
-  return { bytecode, abi }
-}
 
 async function getContractFactoryFromSolFiles(contractName, versionNumber) {
   // copy contract file
@@ -83,8 +67,17 @@ async function getContractFactoryFromSolFiles(contractName, versionNumber) {
 
 
 async function getContractFactoryAtVersion(contractName, versionNumber) {
-  // copy contract file
-  const { bytecode, abi } = getContractAbi(contractName, versionNumber)
+  const contractVersion = `${contractName}V${versionNumber}`
+  
+  // make sure contract exists
+  if (!Object.keys(contracts).includes(contractVersion)) {
+    throw Error(
+      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
+    )
+  }
+  
+  // get contract factory
+  const { bytecode, abi } = contracts[contractVersion]
   const factory = await ethers.getContractFactory(abi, bytecode)
   return factory
 }
@@ -177,5 +170,4 @@ module.exports = {
   cleanupPastContracts,
   deployUpgreadableContract,
   upgradeUpgreadableContract,
-  getContractAbi
 }
