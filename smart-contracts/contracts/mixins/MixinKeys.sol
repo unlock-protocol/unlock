@@ -158,25 +158,36 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function migrate(bytes calldata _calldata) public virtual {
 
-    // TODO: check if change Unlock address is needed
-    // if(msg.sender != prevUnlock) {
+    // make sure we have correct data version before migrating
+    require(
+      (
+        (schemaVersion == publicLockVersion() - 1)
+        ||
+        schemaVersion == 0
+      ),
+      'SCHEMA_VERSION_NOT_CORRECT'
+    );
 
-    // get new Unlock address
-    (bool requireUpdate, address newUnlockAddress) = abi.decode(_calldata, (bool, address));
+    // only for mainnet
+    if(block.chainid == 1) {
+      if(msg.sender == address(unlockProtocol) ) {
+        // do nothing if migration is triggered by Unlock
+      } else {
+        // work only if migration is triggered manually
+        (address newUnlockAddress) = abi.decode(_calldata, (address));
 
-    if(requireUpdate) {
-      // update unlock ref in this lock
-      unlockProtocol = IUnlock(newUnlockAddress);
+        // update unlock ref in this lock
+        unlockProtocol = IUnlock(newUnlockAddress);
 
-      // trigger migration from the new Unlock
-      IUnlock(newUnlockAddress).postUpgrade();
+        // trigger migration from the new Unlock
+        IUnlock(newUnlockAddress).postUpgrade();
+
+        // update data version
+        schemaVersion = publicLockVersion();
+      }
     }
-
-    // update data version
-    schemaVersion = publicLockVersion();
   }
   
-
   /**
    * Set the schema version to the latest
    * @notice only lock manager call call this

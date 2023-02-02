@@ -4,12 +4,13 @@ const { expect } = require('chai')
 const {
   UNLOCK_ADDRESS,
   impersonate,
-  deployLock
+  deployLock,
+  purchaseKey
 } = require('../helpers')
 const { getProxyAdminAddress } = require('../../helpers/deployments')
 
 
-let unlock, publicLock, unlockModified, lock
+let unlock, publicLock, unlockModified, lock, signer, keyOwner
 
 describe(`Unlock migration`, function() {
 
@@ -20,7 +21,7 @@ describe(`Unlock migration`, function() {
       this.skip()
     }
 
-    const [signer] = await ethers.getSigners()
+    ;[signer, keyOwner] = await ethers.getSigners()
 
     // get original Unlock contract
     unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
@@ -55,6 +56,9 @@ describe(`Unlock migration`, function() {
     // create a (v12) lock
     lock = await deployLock({ unlock, isEthers: true })
 
+    // purchase a key
+    await purchaseKey(lock, keyOwner.address)
+
     // set a new tempalte in old unlock
     await unlock.connect(oldUnlockOwner).addLockTemplate(publicLock.address, 13)
     await unlock.connect(oldUnlockOwner).setLockTemplate(publicLock.address)
@@ -84,6 +88,12 @@ describe(`Unlock migration`, function() {
     it('show previous unlock address', async () => {
       expect(await lock.unlockProtocol()).to.equals(unlock.address)
     })
+    it('unlock has lock info', async () => {
+      const lockBalance = await unlock.locks(lock.address)
+      expect(lockBalance.deployed).to.equals(true)
+      expect(lockBalance.totalSales.toString()).to.equals((await lock.keyPrice()).toString())
+      expect(lockBalance.yieldedDiscountTokens.toNumber()).to.equals(0)
+    })
   })
 
   describe('Migrate lock', () => {
@@ -95,8 +105,15 @@ describe(`Unlock migration`, function() {
         )
       await lock.migrate(calldata)
     })
-    it('show previous unlock address', async () => {
+    it('lock has updated unlock address', async () => {
       expect(await lock.unlockProtocol()).to.equals(unlockModified.address)
+    })
+    
+    it('new unlock has lock info', async () => {
+      const lockBalance = await unlockModified.locks(lock.address)
+      expect(lockBalance.deployed).to.equals(true)
+      expect(lockBalance.totalSales.toString()).to.equals((await lock.keyPrice()).toString())
+      expect(lockBalance.yieldedDiscountTokens.toNumber()).to.equals(0)
     })
   })
   
