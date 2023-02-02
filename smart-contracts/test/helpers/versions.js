@@ -1,7 +1,9 @@
-const { config, run, ethers } = require('hardhat')
+const contracts = require('@unlock-protocol/contracts')
+const { config, ethers } = require('hardhat')
 const path = require('path')
 const fs = require('fs-extra')
-const { TASK_COMPILE } = require('hardhat/builtin-tasks/task-names')
+const { abi : proxyAbi, bytecode: proxyBytecode } = require('./abis/TransparentUpgradeableProxy.json')
+const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./abis/ProxyAdmin.json')
 
 const { LATEST_UNLOCK_VERSION } = require('../helpers/constants')
 
@@ -44,22 +46,92 @@ function getMatchingLockVersion(unlockVersion) {
   return publicLockVersions[unlockVersion]
 }
 
+const contractExists = (contractName, versionNumber) => {
+  // make sure contract exists
+  const contractVersion = `${contractName}V${versionNumber}`
+  if (!Object.keys(contracts).includes(contractVersion)) {
+    throw Error(
+      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
+    )
+  }
+}
+
+const getContractAbi = (contractName, versionNumber) => {
+  contractExists(contractName, versionNumber)
+  const contractVersion = `${contractName}V${versionNumber}`
+  // get bytecode
+  const { bytecode, abi } = contracts[contractVersion]
+  return { bytecode, abi }
+}
+
 async function getContractFactoryAtVersion(contractName, versionNumber) {
   // copy contract file
-  await fs.copy(
-    require.resolve(
-      `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${versionNumber}.sol`
-    ),
-    path.resolve(CONTRACTS_PATH, `${contractName}V${versionNumber}.sol`)
+  const { bytecode, abi } = getContractAbi(contractName, versionNumber)
+  const factory = await ethers.getContractFactory(abi, bytecode)
+  return factory
+}
+
+async function deployUpgreadableContract(
+  Factory,
+  initializerArguments = [],
+  initializer = 'initialize'
+) {
+  // deploy implementation
+  const impl = await Factory.deploy()
+  await impl.deployTransaction.wait()
+  
+  // encode initializer data
+  const fragment = impl.interface.getFunction(initializer)
+  const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
+
+  // deploy proxyAdmin
+  const ProxyAdmin = await ethers.getContractFactory(
+    proxyAdminAbi,
+    proxyAdminBytecode
+  )
+  const proxyAdmin = await ProxyAdmin.deploy()
+  await proxyAdmin.deployTransaction.wait()
+
+  // deploy proxy
+  const TransparentUpgradeableProxy = await ethers.getContractFactory(
+    proxyAbi,
+    proxyBytecode
+  )
+  const proxy = await TransparentUpgradeableProxy.deploy(
+    impl.address, 
+    proxyAdmin.address, 
+    data
+  )
+  await proxy.deployTransaction.wait()
+
+  // wait for proxy deployment
+  const contract = await ethers.getContractAt(Factory.interface.format(ethers.utils.FormatTypes.full), proxy.address)
+  return {
+    proxyAdmin,
+    contract 
+  }
+}
+
+async function upgradeUpgreadableContract( 
+  proxyAddress,
+  proxyAdminAddress,
+  Factory,
+) {
+  // deploy implementation
+  const impl = await Factory.deploy()
+  await impl.deployTransaction.wait()
+
+  // get proxyAdmin
+  const proxyAdmin = await ethers.getContractAt(
+    proxyAdminAbi,
+    proxyAdminAddress
   )
 
-  // Recompile
-  await run(TASK_COMPILE, { quiet: true })
+  // do the upgrade
+  await proxyAdmin.upgrade(proxyAddress, impl.address)
 
-  // return factory
-  return await ethers.getContractFactory(
-    `contracts/past-versions/${contractName}V${versionNumber}.sol:${contractName}`
-  )
+  const upgraded = await ethers.getContractAt(Factory.interface.format(ethers.utils.FormatTypes.full), proxyAddress)
+  return upgraded
 }
 
 async function getContractAtVersion(
@@ -84,4 +156,7 @@ module.exports = {
   getMatchingLockVersion,
   getContractFactoryAtVersion,
   cleanupPastContracts,
+  deployUpgreadableContract,
+  upgradeUpgreadableContract,
+  getContractAbi
 }
