@@ -160,6 +160,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
         setIsOpen={setWithdrawModal}
         lockAddress={lockAddress}
         balance={balance}
+        symbol={symbol}
         dismiss={() => {
           refetch()
         }}

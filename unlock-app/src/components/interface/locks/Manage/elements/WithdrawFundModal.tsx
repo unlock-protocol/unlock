@@ -5,6 +5,7 @@ import { useWalletService } from '~/utils/withWalletService'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { ethers } from 'ethers'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -12,6 +13,7 @@ interface WithdrawFundModalProps {
   lockAddress: string
   dismiss?: () => void
   balance: number
+  symbol?: string
 }
 
 const withdrawForm = z.object({
@@ -20,9 +22,9 @@ const withdrawForm = z.object({
       description: 'Total amount to collect',
     })
     .default(0),
-  address: z
+  beneficiary: z
     .string({
-      description: 'Recipient for withdraw',
+      description: 'Beneficiary address for withdraw',
     })
     .default(''),
 })
@@ -35,20 +37,26 @@ export const WithdrawFundModal = ({
   lockAddress,
   balance,
   dismiss,
+  symbol,
 }: WithdrawFundModalProps) => {
   const walletService = useWalletService()
+  const { account } = useAuth()
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<WithdrawFormProps>({
-    mode: 'onSubmit',
+    mode: 'onChange',
+    defaultValues: {
+      beneficiary: account,
+    },
   })
 
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
   ): Promise<unknown> => {
-    const { address: beneficiary } = form ?? {}
+    const { beneficiary } = form ?? {}
 
     if (ethers.utils.isAddress(beneficiary)) {
       return await walletService.withdrawFromLock({
@@ -85,6 +93,8 @@ export const WithdrawFundModal = ({
     })
   }
 
+  const amountToTransfer = watch('amount', 0)
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col w-full gap-5">
@@ -101,23 +111,26 @@ export const WithdrawFundModal = ({
           <Input
             label="Address"
             size="small"
-            {...register('address', {
+            {...register('beneficiary', {
               required: {
                 value: true,
                 message: 'This field is required.',
               },
               minLength: {
                 value: 3,
-                message: 'Address should be 3 characters long at least.',
+                message:
+                  'Beneficiary address should be 3 characters long at least.',
               },
             })}
-            error={errors?.address?.message}
+            error={errors?.beneficiary?.message}
           />
           <Input
-            label="Balance"
+            label={`Balance to transfer: ${amountToTransfer} ${symbol}`}
             size="small"
-            type="numeric"
-            step={0.01}
+            type="range"
+            min={0}
+            max={balance}
+            step={0.001}
             {...register('amount', {
               required: {
                 value: true,
