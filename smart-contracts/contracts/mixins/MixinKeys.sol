@@ -144,8 +144,11 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     emit Transfer(_ownerOf[_tokenId], address(0), _tokenId);
 
-    // delete ownership and expire key
+    // expire key
     _cancelKey(_tokenId);
+
+    // delete owner
+    _ownerOf[_tokenId] = address(0);
   }
 
   /**
@@ -367,9 +370,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function _cancelKey(uint _tokenId) internal {
     // expire the key
     _keys[_tokenId].expirationTimestamp = block.timestamp;
-
-    // delete previous owner
-    _ownerOf[_tokenId] = address(0);
   }
 
   /**

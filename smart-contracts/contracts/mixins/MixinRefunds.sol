@@ -92,7 +92,7 @@ contract MixinRefunds is
   ) internal {
     address payable keyOwner = payable(ownerOf(_tokenId));
 
-    // delete ownership info and expire the key
+    // expire the key without affecting the ownership record
     _cancelKey(_tokenId);
 
     // emit event
