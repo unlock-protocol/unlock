@@ -122,6 +122,7 @@ export const WithdrawFundModal = ({
                   'Beneficiary address should be 3 characters long at least.',
               },
             })}
+            disabled={withdrawMutation.isLoading}
             error={errors?.beneficiary?.message}
           />
           <Input
@@ -131,6 +132,7 @@ export const WithdrawFundModal = ({
             min={0}
             max={balance}
             step={0.001}
+            disabled={withdrawMutation.isLoading}
             {...register('amount', {
               required: {
                 value: true,
