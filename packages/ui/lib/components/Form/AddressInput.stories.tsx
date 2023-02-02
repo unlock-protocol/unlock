@@ -1,60 +1,79 @@
-import { AddressInput } from './AddressInput'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { AddressInput as AddressInputComponent } from './AddressInput'
+import { ComponentMeta, StoryFn } from '@storybook/react'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
+import { useForm } from 'react-hook-form';
 
 export default {
-  component: AddressInput,
+  component: AddressInputComponent,
   title: 'AddressInput',
-} as ComponentMeta<typeof AddressInput>
+} as ComponentMeta<typeof AddressInputComponent>
 
-const Template: ComponentStory<typeof AddressInput> = (args) => <AddressInput {...args} />
+export const AddressInput: StoryFn<typeof AddressInputComponent> = () => {
+  const localForm = useForm();
 
-export const Normal = Template.bind({})
-
-Normal.args = {
-  withIcon: true,
-  label: 'Wallet address',
-  size: 'small',
-  value: '',
-  description:
-    'Enter your wallet address',
-  isTruncated: false
+  return (
+    <AddressInputComponent
+      withIcon={true}
+      label='Wallet address'
+      size='small'
+      description='Enter your wallet address'
+      isTruncated={false}
+      name='manager'
+      localForm={localForm}
+      web3Service={localForm}
+    />
+  );
 }
 
-function CustomizedIcon(props: IconBaseProps) {
-  return <WalletIcon {...props} className="fill-gray-500" />
-}
 
-export const Success = Template.bind({})
+// export const Normal = Template.bind({})
 
-Success.args = {
-  withIcon: true,
-  label: 'Wallet address',
-  size: 'small',
-  description: 'Enter a valid wallet address or ens',
-  value: 'souravinsights.eth',
-  isTruncated: false,
-}
+// Normal.args = {
+//   withIcon: true,
+//   label: 'Wallet address',
+//   size: 'small',
+//   value: '',
+//   description:
+//     'Enter your wallet address',
+//   isTruncated: false,
+//   name: 'manager',
+//   localForm: localForm
+// }
 
-export const Error = Template.bind({})
+// function CustomizedIcon(props: IconBaseProps) {
+//   return <WalletIcon {...props} className="fill-gray-500" />
+// }
 
-Error.args = {
-  withIcon: true,
-  label: 'Wallet address',
-  size: 'small',
-  value: 'souravinghts.eth',
-  description: 'Enter a valid wallet address or ens',
-  isTruncated: false,
-}
+// export const Success = Template.bind({})
 
-export const TruncatedAddress = Template.bind({})
+// Success.args = {
+//   withIcon: true,
+//   label: 'Wallet address',
+//   size: 'small',
+//   description: 'Enter a valid wallet address or ens',
+//   value: 'souravinsights.eth',
+//   isTruncated: false,
+// }
 
-TruncatedAddress.args = {
-  withIcon: true,
-  label: 'Wallet address',
-  size: 'small',
-  description: 'Enter your wallet address',
-  value: 'souravinsights.eth',
-  isTruncated: true,
-}
+// export const Error = Template.bind({})
+
+// Error.args = {
+//   withIcon: true,
+//   label: 'Wallet address',
+//   size: 'small',
+//   value: 'souravinghts.eth',
+//   description: 'Enter a valid wallet address or ens',
+//   isTruncated: false,
+// }
+
+// export const TruncatedAddress = Template.bind({})
+
+// TruncatedAddress.args = {
+//   withIcon: true,
+//   label: 'Wallet address',
+//   size: 'small',
+//   description: 'Enter your wallet address',
+//   value: 'souravinsights.eth',
+//   isTruncated: true,
+// }
