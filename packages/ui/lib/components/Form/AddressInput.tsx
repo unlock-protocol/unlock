@@ -23,9 +23,9 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  web3Service?: any
+  web3Service: any
   localForm: any;
-  name: any,
+  name: string,
 }
 
 const SIZE_STYLES: SizeStyleProp = {
