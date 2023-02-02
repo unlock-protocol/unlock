@@ -1,4 +1,4 @@
-const { ethers } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 
 const createLockHash = require('../helpers/createLockCalldata')
 const {
@@ -12,8 +12,6 @@ const {
   getUnlockVersionNumbers,
   getMatchingLockVersion,
   cleanupPastContracts,
-  deployUpgreadableContract,
-  upgradeUpgreadableContract
 } = require('../helpers/versions')
 
 const unlockVersions = getUnlockVersionNumbers()
@@ -37,7 +35,6 @@ contract('Unlock / upgrades', async (accounts) => {
       let PublicLockLatest
 
       let originalLockData
-      let proxyAdmin
 
       after(async () => await cleanupPastContracts())
 
@@ -62,7 +59,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
       beforeEach(async () => {
         // deploy a new Unlock instance
-        ;({ contract: unlock, proxyAdmin} = await deployUpgreadableContract(Unlock, [unlockOwner.address]))
+        unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address])
 
         // complete PublicLock configuration
         publicLock = await PublicLock.deploy()
@@ -207,10 +204,10 @@ contract('Unlock / upgrades', async (accounts) => {
           describe('Upgrade Unlock and PublicLock to latest version', () => {
             beforeEach(async () => {
               // upgrade proxy to latest
-              unlock = await upgradeUpgreadableContract(
+              unlock = await upgrades.upgradeProxy(
                 unlock.address,
-                proxyAdmin.address,
-                UnlockLatest
+                UnlockLatest,
+                { unsafeAllowRenames: true }
               )
 
               // lock template

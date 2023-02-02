@@ -5,7 +5,7 @@ const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const createLockHash = require('../../helpers/createLockCalldata')
 const {
-  getContractFactoryFromSolFiles,
+  getContractFactoryAtVersion,
   cleanupPastContracts,
   getContractAtVersion,
 } = require('../../helpers/versions')
@@ -70,12 +70,12 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    const PublicLockLatest = await getContractFactoryFromSolFiles('PublicLock', 10)
+    const PublicLockLatest = await getContractFactoryAtVersion('PublicLock', 10)
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
 
     // deploy past impl
-    const PublicLockPast = await getContractFactoryFromSolFiles('PublicLock', 9)
+    const PublicLockPast = await getContractFactoryAtVersion('PublicLock', 9)
     const publicLockPast = await PublicLockPast.deploy()
     await publicLockPast.deployed()
     pastVersion = await publicLockPast.publicLockVersion()
