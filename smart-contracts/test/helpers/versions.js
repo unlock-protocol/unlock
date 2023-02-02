@@ -1,5 +1,6 @@
 const contracts = require('@unlock-protocol/contracts')
-const { config, ethers } = require('hardhat')
+const { config, ethers, run } = require('hardhat')
+const { TASK_COMPILE } = require('hardhat/builtin-tasks/task-names')
 const path = require('path')
 const fs = require('fs-extra')
 const { abi : proxyAbi, bytecode: proxyBytecode } = require('./ABIs/TransparentUpgradeableProxy.json')
@@ -63,6 +64,23 @@ const getContractAbi = (contractName, versionNumber) => {
   const { bytecode, abi } = contracts[contractVersion]
   return { bytecode, abi }
 }
+
+async function getContractFactoryFromSolFiles(contractName, versionNumber) {
+  // copy contract file
+  await fs.copy(
+    require.resolve(
+      `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${versionNumber}.sol`
+    ),
+    path.resolve(CONTRACTS_PATH, `${contractName}V${versionNumber}.sol`)
+  )
+  // Recompile
+  await run(TASK_COMPILE, { quiet: true })
+  // return factory
+  return await ethers.getContractFactory(
+    `contracts/past-versions/${contractName}V${versionNumber}.sol:${contractName}`
+  )
+}
+
 
 async function getContractFactoryAtVersion(contractName, versionNumber) {
   // copy contract file
@@ -155,6 +173,7 @@ module.exports = {
   getUnlockVersionNumbers,
   getMatchingLockVersion,
   getContractFactoryAtVersion,
+  getContractFactoryFromSolFiles,
   cleanupPastContracts,
   deployUpgreadableContract,
   upgradeUpgreadableContract,
