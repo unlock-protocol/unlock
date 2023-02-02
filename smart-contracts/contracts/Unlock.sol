@@ -662,24 +662,17 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
       // record lock from old Unlock in this one
       if (deployed) {
-          _migrateLock(
-          msg.sender, 
-          LockBalances(
+          locks[msg.sender] = LockBalances(
             deployed, 
             totalSales, 
             yieldedDiscountTokens
-          )
-        );
+          );
       }
     }
   }
 
   function setPreviousUnlockAddress(address _previousUnlockAddress) public {
-      previousUnlockAddress = _previousUnlockAddress;
-    }
-
-  function _migrateLock(address lockAddress, LockBalances memory lock) internal {
-    locks[lockAddress] = lock;
+    previousUnlockAddress = _previousUnlockAddress;
   }
 
   // required to withdraw WETH
