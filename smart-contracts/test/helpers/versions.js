@@ -1,10 +1,9 @@
 const contracts = require('@unlock-protocol/contracts')
-const { config, ethers, run } = require('hardhat')
-const { TASK_COMPILE } = require('hardhat/builtin-tasks/task-names')
+const { config, ethers } = require('hardhat')
 const path = require('path')
 const fs = require('fs-extra')
-const { abi : proxyAbi, bytecode: proxyBytecode } = require('./ABIs/TransparentUpgradeableProxy.json')
-const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./ABIs/ProxyAdmin.json')
+const { abi : proxyAbi, bytecode: proxyBytecode } = require('./abis/TransparentUpgradeableProxy.json')
+const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./abis/ProxyAdmin.json')
 
 const { LATEST_UNLOCK_VERSION } = require('../helpers/constants')
 
@@ -47,37 +46,27 @@ function getMatchingLockVersion(unlockVersion) {
   return publicLockVersions[unlockVersion]
 }
 
-
-
-async function getContractFactoryFromSolFiles(contractName, versionNumber) {
-  // copy contract file
-  await fs.copy(
-    require.resolve(
-      `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${versionNumber}.sol`
-    ),
-    path.resolve(CONTRACTS_PATH, `${contractName}V${versionNumber}.sol`)
-  )
-  // Recompile
-  await run(TASK_COMPILE, { quiet: true })
-  // return factory
-  return await ethers.getContractFactory(
-    `contracts/past-versions/${contractName}V${versionNumber}.sol:${contractName}`
-  )
-}
-
-
-async function getContractFactoryAtVersion(contractName, versionNumber) {
-  const contractVersion = `${contractName}V${versionNumber}`
-  
+const contractExists = (contractName, versionNumber) => {
   // make sure contract exists
+  const contractVersion = `${contractName}V${versionNumber}`
   if (!Object.keys(contracts).includes(contractVersion)) {
     throw Error(
       `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
     )
   }
-  
-  // get contract factory
+}
+
+const getContractAbi = (contractName, versionNumber) => {
+  contractExists(contractName, versionNumber)
+  const contractVersion = `${contractName}V${versionNumber}`
+  // get bytecode
   const { bytecode, abi } = contracts[contractVersion]
+  return { bytecode, abi }
+}
+
+async function getContractFactoryAtVersion(contractName, versionNumber) {
+  // copy contract file
+  const { bytecode, abi } = getContractAbi(contractName, versionNumber)
   const factory = await ethers.getContractFactory(abi, bytecode)
   return factory
 }
@@ -145,6 +134,23 @@ async function upgradeUpgreadableContract(
   return upgraded
 }
 
+
+async function getContractFactoryFromSolFiles(contractName, versionNumber) {
+  const contractVersion = `${contractName}V${versionNumber}`
+  
+  // make sure contract exists
+  if (!Object.keys(contracts).includes(contractVersion)) {
+    throw Error(
+      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
+    )
+  }
+  
+  // get contract factory
+  const { bytecode, abi } = contracts[contractVersion]
+  const factory = await ethers.getContractFactory(abi, bytecode)
+  return factory
+}
+
 async function getContractAtVersion(
   contractName,
   versionNumber,
@@ -170,4 +176,5 @@ module.exports = {
   cleanupPastContracts,
   deployUpgreadableContract,
   upgradeUpgreadableContract,
+  getContractAbi
 }
