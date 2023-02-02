@@ -7,7 +7,7 @@ const {
 
 const keyPrice = ethers.utils.parseEther('0.01')
 const previousVersionNumber = 11
-const nextVersionNumber = previousVersionNumber + 1
+const nextVersionNumber = 12
 
 describe('PublicLock upgrade v11 > v12', () => {
   let lock
@@ -20,8 +20,9 @@ describe('PublicLock upgrade v11 > v12', () => {
     // make sure mocha doesnt time out
     this.timeout(200000)
 
-    PublicLockLatest = await ethers.getContractFactory(
-      'contracts/PublicLock.sol:PublicLock'
+    PublicLockLatest = await getContractFactoryAtVersion(
+      'PublicLock',
+      nextVersionNumber
     )
 
     // get latest version number
