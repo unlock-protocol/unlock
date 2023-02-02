@@ -95,7 +95,6 @@ export const CreateLockFormSummary = ({
   lockAddress,
 }: CreateLockFormSummaryProps) => {
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
-  const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
   const {
@@ -144,17 +143,6 @@ export const CreateLockFormSummary = ({
   const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]
   const symbol = formData?.symbol || baseCurrencySymbol
-
-  useEffect(() => {
-    // redirect to manage lock page once deployed!
-    if (isDeployed) {
-      setTimeout(() => {
-        if ((lockAddress ?? '')?.length > 0 && network) {
-          router.push(nextUrl(lockAddress, network))
-        }
-      }, 5000)
-    }
-  }, [isDeployed, lockAddress, network, nextUrl, router])
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(
