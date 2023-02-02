@@ -19,9 +19,9 @@
   "devDependencies": {
     "eslint": "8.31.0",
     "eslint-plugin-prettier": "latest",
-    "husky": "8.0.2",
+    "husky": "8.0.3",
     "lint-staged": "13.1.0",
-    "prettier": "2.8.1"
+    "prettier": "2.8.3"
   },
   "workspaces": [
     "packages/**",

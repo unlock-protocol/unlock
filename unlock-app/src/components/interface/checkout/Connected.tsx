@@ -185,11 +185,15 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const [state, send] = useActor(service)
+  const [state, send] = useActor<CheckoutService>(service as CheckoutService)
   const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
+
+  if (state.context.paywallConfig?.autoconnect) {
+    return <div className="space-y-2">{children}</div>
+  }
 
   const onDisconnect = () => {
     send('DISCONNECT')

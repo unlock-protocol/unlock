@@ -232,6 +232,18 @@ export const PaywallConfigSchema = z
       })
       .default(true)
       .optional(),
+    expectedAddress: z
+      .string({
+        description: 'Expected wallet address for user.',
+      })
+      .optional(),
+    autoconnect: z
+      .boolean({
+        description:
+          '(Advanced): forces the use the provider from the parent window when the checkout is embeded as an iframe.',
+      })
+      .default(false)
+      .optional(),
   })
   .passthrough()
 

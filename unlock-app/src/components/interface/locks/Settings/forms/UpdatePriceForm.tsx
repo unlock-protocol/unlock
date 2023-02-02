@@ -123,7 +123,6 @@ export const UpdatePriceForm = ({
         setIsOpen={setChangeCurrencyModal}
         network={network}
         onSelect={onSelectToken}
-        defaultCurrency={symbol}
       />
 
       <form
