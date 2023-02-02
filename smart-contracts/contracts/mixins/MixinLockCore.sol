@@ -140,7 +140,7 @@ contract MixinLockCore is
     pure
     returns (uint16)
   {
-    return 12;
+    return 13;
   }
 
   /**
