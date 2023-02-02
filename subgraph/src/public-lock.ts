@@ -33,6 +33,7 @@ function newKey(event: TransferEvent): void {
   key.tokenId = event.params.tokenId
   key.owner = event.params.to
   key.createdAtBlock = event.block.number
+  key.cancelled = false
 
   const lockContract = PublicLock.bind(event.address)
   const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
@@ -127,12 +128,13 @@ export function handleTransfer(event: TransferEvent): void {
     const key = Key.load(keyID)
     if (key) {
       key.owner = event.params.to
-      key.expiration = getKeyExpirationTimestampFor(
+      const expiration = getKeyExpirationTimestampFor(
         event.address,
         event.params.tokenId,
         event.params.to
       )
 
+      key.expiration = expiration
       const hash = event.transaction.hash.toHexString()
       const transactionsHash = key.transactionsHash
       // add transaction hash for transfer event
