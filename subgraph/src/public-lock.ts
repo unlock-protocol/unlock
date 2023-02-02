@@ -135,9 +135,6 @@ export function handleTransfer(event: TransferEvent): void {
       )
 
       key.expiration = expiration
-      // Mark as cancelled if the key has expired
-      key.cancelled = expiration.lt(event.block.timestamp)
-
       const hash = event.transaction.hash.toHexString()
       const transactionsHash = key.transactionsHash
       // add transaction hash for transfer event
