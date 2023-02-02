@@ -1,19 +1,7 @@
 import handlebars from 'handlebars'
+import { links } from './helpers/links'
 
-handlebars.registerHelper('links', function (txUrl, openSeaUrl) {
-  const hasTxUrl = txUrl?.length > 0
-  const hasOpenSeaUrl = openSeaUrl?.length > 0
-  let linksMessage = ''
-
-  if (hasTxUrl && hasOpenSeaUrl) {
-    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a> or even <a href="${openSeaUrl}">OpenSea</a>.</p>`
-  } else if (hasTxUrl) {
-    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a>.</p>`
-  } else if (hasOpenSeaUrl) {
-    linksMessage = `<p>You can also see it on <a href="${openSeaUrl}">OpenSea</a>.</p>`
-  }
-  return new handlebars.SafeString(linksMessage)
-})
+handlebars.registerHelper('links', links)
 
 export default {
   subject: 'A membership was added to your wallet!',
@@ -23,7 +11,7 @@ export default {
 
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 
-{{links txUrl openSeaUrl}}
+{{links txUrl openSeaUrl false}}
 
 `,
 }
