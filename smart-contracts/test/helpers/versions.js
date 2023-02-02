@@ -2,8 +2,8 @@ const contracts = require('@unlock-protocol/contracts')
 const { config, ethers } = require('hardhat')
 const path = require('path')
 const fs = require('fs-extra')
-const { abi : proxyAbi, bytecode: proxyBytecode } = require('./abis/TransparentUpgradeableProxy.json')
-const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./abis/ProxyAdmin.json')
+const { abi : proxyAbi, bytecode: proxyBytecode } = require('./ABIs/TransparentUpgradeableProxy.json')
+const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./ABIs/ProxyAdmin.json')
 
 const { LATEST_UNLOCK_VERSION } = require('../helpers/constants')
 
