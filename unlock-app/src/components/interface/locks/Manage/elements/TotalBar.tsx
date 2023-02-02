@@ -105,7 +105,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   }
 
   const [
-    { isLoading, data: lock },
+    { isLoading, data: lock, refetch },
     { isLoading: isLoadingTotalMembers, data: numberOfOwners },
   ] = useQueries({
     queries: [
@@ -160,6 +160,9 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
         setIsOpen={setWithdrawModal}
         lockAddress={lockAddress}
         balance={balance}
+        dismiss={() => {
+          refetch()
+        }}
       />
       <div className="hidden md:block">
         <Stats />

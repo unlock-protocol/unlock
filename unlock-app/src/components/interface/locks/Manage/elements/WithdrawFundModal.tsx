@@ -4,6 +4,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
+import { ethers } from 'ethers'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -14,9 +15,9 @@ interface WithdrawFundModalProps {
 }
 
 const withdrawForm = z.object({
-  balance: z
+  amount: z
     .number({
-      description: 'Total balance to collect',
+      description: 'Total amount to collect',
     })
     .default(0),
   address: z
@@ -33,6 +34,7 @@ export const WithdrawFundModal = ({
   setIsOpen,
   lockAddress,
   balance,
+  dismiss,
 }: WithdrawFundModalProps) => {
   const walletService = useWalletService()
   const {
@@ -43,16 +45,39 @@ export const WithdrawFundModal = ({
     mode: 'onSubmit',
   })
 
-  const withdrawFromLockPromise = async (): Promise<unknown> => {
-    return await walletService.withdrawFromLock({
-      lockAddress,
-    })
+  const withdrawFromLockPromise = async (
+    form: WithdrawFormProps
+  ): Promise<unknown> => {
+    const { address: beneficiary } = form ?? {}
+
+    if (ethers.utils.isAddress(beneficiary)) {
+      return await walletService.withdrawFromLock({
+        lockAddress,
+        beneficiary,
+        amount: form.amount.toString(),
+      })
+    }
   }
 
-  const withdrawMutation = useMutation(withdrawFromLockPromise)
+  const onDismiss = () => {
+    setIsOpen(false)
+    if (typeof dismiss === 'function') {
+      dismiss()
+    }
+  }
+
+  const withdrawMutation = useMutation(withdrawFromLockPromise, {
+    onSuccess: () => {
+      onDismiss()
+    },
+    onError: () => {
+      onDismiss()
+    },
+  })
 
   const onWithDraw = async (form: WithdrawFormProps) => {
-    const promise = withdrawMutation.mutateAsync()
+    const promise = withdrawMutation.mutateAsync(form)
+
     await ToastHelper.promise(promise, {
       success: 'Withdraw done',
       error: `Withdraw can't be processed, please try again`,
@@ -72,32 +97,50 @@ export const WithdrawFundModal = ({
           </span>
         </div>
         <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
+          {/* todo: replace with AddressInput component when ready */}
           <Input
             label="Address"
             size="small"
             {...register('address', {
-              required: true,
+              required: {
+                value: true,
+                message: 'This field is required.',
+              },
               minLength: {
                 value: 3,
                 message: 'Address should be 3 characters long at least.',
               },
             })}
-            error={errors?.address && 'This field is required'}
+            error={errors?.address?.message}
           />
           <Input
             label="Balance"
             size="small"
             type="numeric"
             step={0.01}
-            {...register('balance', {
-              required: true,
-              min: 0,
-              max: balance,
+            {...register('amount', {
+              required: {
+                value: true,
+                message: 'This field is required.',
+              },
+              min: {
+                value: 0,
+                message: 'Min amount should be greater than 0.',
+              },
+              max: {
+                value: balance,
+                message: `Max amount should be less then ${balance}.`,
+              },
             })}
-            error={errors?.balance && 'This field is required'}
+            error={errors?.amount?.message}
           />
-          <Button type="submit" className="mt-2">
-            Withdraw
+          <Button
+            type="submit"
+            className="mt-2"
+            loading={withdrawMutation.isLoading}
+            disabled={withdrawMutation.isLoading}
+          >
+            {!withdrawMutation.isLoading ? 'Withdraw' : 'Withdrawing...'}
           </Button>
         </form>
       </div>
