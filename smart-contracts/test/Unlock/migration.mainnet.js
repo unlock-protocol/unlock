@@ -4,7 +4,6 @@ const { expect } = require('chai')
 const {
   UNLOCK_ADDRESS,
   impersonate,
-  // deployContracts,
   deployLock
 } = require('../helpers')
 const { getProxyAdminAddress } = require('../../helpers/deployments')
@@ -25,7 +24,6 @@ describe(`Unlock migration`, function() {
 
     // get original Unlock contract
     unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
-    // ;({ unlockEthers: unlock } = await deployContracts()) 
 
     // impersonate old Unlock owner
     let oldUnlockOwner = await unlock.owner()
@@ -38,7 +36,7 @@ describe(`Unlock migration`, function() {
     await publicLock.deployed()
     console.log(`PublicLockV13 > deployed at ${publicLock.address}`)
     
-    // impersonate proxyAdmin owner
+    // // impersonate proxyAdmin owner
     const proxyAdminAddress = await getProxyAdminAddress({ network })
     const proxyAdmin = await ethers.getContractAt(['function owner() view returns (address)'], proxyAdminAddress)
     const proxyAdminOwner = await proxyAdmin.owner()
@@ -51,7 +49,6 @@ describe(`Unlock migration`, function() {
     //
     unlockModified = await upgrades.deployProxy(UnlockModified, [signer.address], {
       initializer: 'initialize(address)',
-      useDeployedImplementation: true
     })
     console.log(`UnlockModified > deployed at ${unlockModified.address}`)
 
