@@ -7,7 +7,13 @@ import { useRouter } from 'next/router'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker } from '~/components/interface/Picker'
 
-export type SettingTab = 'general' | 'terms' | 'payments' | 'roles' | 'advanced'
+export type SettingTab =
+  | 'general'
+  | 'terms'
+  | 'payments'
+  | 'roles'
+  | 'advanced'
+  | 'email'
 
 const Settings: NextPage = () => {
   const { query } = useRouter()

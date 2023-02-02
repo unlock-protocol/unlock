@@ -13,6 +13,7 @@ import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
 import { SettingPayments } from './elements/SettingPayments'
 import { SettingTab } from '~/pages/locks/settings'
+import { SettingEmail } from './elements/SettingEmail'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -209,6 +210,24 @@ const LockSettingsPage = ({
         <SidebarCard
           src="/images/illustrations/img-misc.svg"
           description="This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol."
+        />
+      ),
+    },
+    {
+      id: 'email',
+      label: 'Email',
+      children: (
+        <SettingEmail
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-misc.svg"
+          description="This section lets customize the email content."
         />
       ),
     },
