@@ -640,7 +640,4 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   {
     return globalTokenSymbol;
   }
-
-  // required to withdraw WETH
-  receive() external payable {}
 }

@@ -87,9 +87,6 @@ contract UnlockSwapPurchaser {
     // get lock pricing 
     address destToken = IPublicLock(lock).tokenAddress();
 
-    // get price in destToken from lock
-    uint keyPrice = IPublicLock(lock).keyPrice();
-
     // get balances of Unlock before
     // if payments in ETH, substract the value sent by user to get actual balance
     uint balanceTokenDestBefore = destToken == address(0) ? 
@@ -138,18 +135,18 @@ contract UnlockSwapPurchaser {
       getBalance(destToken) - msg.value 
             :
       getBalance(destToken)
-    ) < balanceTokenDestBefore + keyPrice) {
+    ) < balanceTokenDestBefore + IPublicLock(lock).keyPrice()) {
       revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
     if(destToken != address(0)) {
-      IMintableERC20(destToken).approve(lock, keyPrice);
+      IMintableERC20(destToken).approve(lock, IPublicLock(lock).keyPrice());
     }
 
     // call the lock
     (bool lockCallSuccess, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? keyPrice : 0
+      value: destToken == address(0) ? IPublicLock(lock).keyPrice() : 0
     }(
       callData
     );
@@ -171,4 +168,7 @@ contract UnlockSwapPurchaser {
     // returns whatever the lock returned
     return returnData;
   }
+
+  // required to withdraw WETH
+  receive() external payable {}
 }
