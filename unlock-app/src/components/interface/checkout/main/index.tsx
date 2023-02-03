@@ -267,10 +267,10 @@ export function Checkout({
 
   // Autoconnect
   useEffect(() => {
-    console.log('AUTOCONNECT!')
-    authenticateWithProvider('METAMASK')
-    // Can we autoconnect? That'd be _really_ nice
-  }, [])
+    if (paywallConfig?.autoconnect) {
+      authenticateWithProvider('METAMASK')
+    }
+  }, [paywallConfig?.autoconnect])
 
   return (
     <CheckoutTransition>

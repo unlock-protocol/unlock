@@ -92,6 +92,10 @@ export const injectProviderInfo = (
 ) => {
   const newConfig = { ...config }
 
+  if (newConfig.autoconnect) {
+    newConfig.useDelegatedProvider = provider
+  }
+
   // We want to inform the checkout iframe about the availability of a
   // delegated provider. However, we will not overwrite an existing
   // value in the config, in case the paywall owner has reason to
