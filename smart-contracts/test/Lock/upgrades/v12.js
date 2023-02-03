@@ -20,7 +20,7 @@ describe('PublicLock upgrade v11 > v12', () => {
     // make sure mocha doesnt time out
     this.timeout(200000)
 
-    PublicLockLatest = await getContractFactoryAtVersion(
+    PublicLockLatest = await getContractFactoryFromSolFiles(
       'PublicLock',
       nextVersionNumber
     )
