@@ -49,7 +49,7 @@ describe(`swapAndCall`, function() {
 
   
   it('unlock is set properly', async () => {
-    expect(await swapPurchaser.unlockAddress()).to.equal(PERMIT2_ADDRESS)
+    expect(await swapPurchaser.unlockAddress()).to.equal(UNLOCK_ADDRESS)
   })
   it('permit2 is set properly', async () => {
     expect(await swapPurchaser.permit2()).to.equal(PERMIT2_ADDRESS)
