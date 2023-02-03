@@ -2,7 +2,7 @@ const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 const {
-  getContractFactoryFromSolFiles,
+  getContractFactoryAtVersion,
   cleanupPastContracts,
 } = require('../../helpers/versions')
 
@@ -18,11 +18,11 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
   before(async function copyAndBuildContract() {
     this.timeout(200000)
-    PublicLockPast = await getContractFactoryFromSolFiles(
+    PublicLockPast = await getContractFactoryAtVersion(
       'PublicLock',
       versionNumber
     )
-    PublicLockLatest = await getContractFactoryFromSolFiles(
+    PublicLockLatest = await getContractFactoryAtVersion(
       'PublicLock',
       versionNumber + 1
     )
