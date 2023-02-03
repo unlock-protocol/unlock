@@ -19,23 +19,20 @@ interface AddToCalendarButtonProps {
 
 export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
   const [isOpen, setOpen] = useState(false)
-  const eventDate = getEventDate(event)
+  const eventDate = getEventDate(event.ticket)
 
   // We can only add events with a date and name
   if (!eventDate || !event.name) {
     return null
   }
 
-  const [hours, minutes] = event.time
-    ? event.time.split(':').map((x: string) => parseInt(x, 10))
-    : [0, 0]
-
   const calendarEvent = {
     title: event.name,
-    start: eventDate.setHours(hours, minutes),
+    start: eventDate,
     description: event.description || '',
-    allDay: true, // default for now... change once we have metadata for it (or for end)
     // https://github.com/AnandChowdhary/calendar-link#options
+    allDay: false, // default for now... change once we have metadata for it (or for end)
+    end: new Date(eventDate.getTime() + 1000 * 60 * 60),
     url: event.url,
   }
 

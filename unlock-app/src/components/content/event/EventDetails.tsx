@@ -56,7 +56,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   }
 
   const eventData = toFormData(metadata)
-  const eventDate = getEventDate(eventData)
+  const eventDate = getEventDate(eventData.ticket)
 
   const injectedProvider = selectProvider(config)
 
@@ -105,10 +105,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               })}
             </li>
           )}
-          {eventData.ticket.event_start_time && (
+          {eventDate && eventData.ticket.event_start_time && (
             <li className="mb-2">
               <FaClock className="inline mr-2" />
-              {eventData.ticket.event_start_time}
+              {eventDate.toLocaleTimeString()}
             </li>
           )}
           <li className="mb-2">
