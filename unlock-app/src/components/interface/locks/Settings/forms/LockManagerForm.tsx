@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { useWalletService } from '~/utils/withWalletService'
-import { getAddressForName } from '~/hooks/useEns'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -20,10 +20,6 @@ interface LockManagerCardProps {
   lockAddress: string
   manager: string
   hasMultipleManagers: boolean
-}
-
-interface FormProps {
-  manager: string
 }
 
 interface RenounceModalFormProps {
@@ -214,11 +210,18 @@ export const LockManagerForm = ({
   disabled,
 }: LockManagerFormProps) => {
   const walletService = useWalletService()
-  const { register, handleSubmit, reset } = useForm<FormProps>({
+  const web3Service = useWeb3Service()
+
+  const [managerAddress, setManagerAddress] = useState('')
+
+  const localForm = useForm({
+    mode: 'all',
     defaultValues: {
       manager: '',
     },
   })
+
+  const { handleSubmit, reset, watch } = localForm
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -235,12 +238,10 @@ export const LockManagerForm = ({
   }
 
   const addLockManager = async (address: string) => {
-    const resolvedAddress = await getAddressForName(address)
-
-    const managerAddress = addressMinify(resolvedAddress)
+    const managerAddress = addressMinify(address)
     const addManagerPromise = walletService.addLockManager({
       lockAddress,
-      userAddress: resolvedAddress,
+      userAddress: address,
     })
     await ToastHelper.promise(addManagerPromise, {
       loading: `Adding ${managerAddress} as Lock Manager.`,
@@ -268,15 +269,26 @@ export const LockManagerForm = ({
     }
   )
 
-  const onAddLockManager = async ({ manager }: FormProps) => {
-    await addLockManagerMutation.mutateAsync(manager)
+  const getManagerAddress = async () => {
+    const managerValue = await watch('manager')
+    if (managerValue) setManagerAddress(managerValue)
+  }
+  getManagerAddress()
+
+  const onAddLockManager = async () => {
+    if (managerAddress !== '')
+      await addLockManagerMutation.mutateAsync(managerAddress)
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
 
   const noManagers = managers?.length === 0
 
-  const disableInput = disabled || isLoading || addLockManagerMutation.isLoading
+  const disableInput =
+    disabled ||
+    isLoading ||
+    addLockManagerMutation.isLoading ||
+    managerAddress === ''
 
   return (
     <div className="relative">
@@ -304,10 +316,14 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <span className="text-base text-brand-dark">
-              Add manager, please enter the wallet address of theirs.
-            </span>
-            <Input disabled={disableInput} {...register('manager')} />
+            <AddressInput
+              withIcon
+              name="manager"
+              label="Add manager, please enter the wallet address of theirs."
+              description="Enter a wallet address or an ens name"
+              web3Service={web3Service}
+              localForm={localForm}
+            />
           </div>
           <Button
             className="w-full md:w-1/2"
