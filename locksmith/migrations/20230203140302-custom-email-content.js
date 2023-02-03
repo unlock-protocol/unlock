@@ -12,15 +12,19 @@ module.exports = {
       },
       lockAddress: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       network: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       template: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       content: {
         type: Sequelize.STRING,
+        allowNull: false,
         defaultValue: '',
       },
       createdAt: {

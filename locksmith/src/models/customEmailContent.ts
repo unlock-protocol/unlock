@@ -22,11 +22,9 @@ CustomEmailContent.init(
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
-      unique: 'id_unique',
     },
     lockAddress: {
       type: DataTypes.STRING,
-      unique: 'id_unique',
       allowNull: false,
     },
     network: {
@@ -35,9 +33,11 @@ CustomEmailContent.init(
     },
     template: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     content: {
       type: DataTypes.STRING,
+      allowNull: false,
       defaultValue: '',
     },
     createdAt: {

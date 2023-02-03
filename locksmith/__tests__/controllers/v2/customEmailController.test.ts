@@ -3,8 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi } from 'vitest'
 
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
-const lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
+let lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const template = 'keyMinded'
 
 const network = 5
@@ -15,10 +14,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
     Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string, manager: string) => {
-          return (
-            lockAddress.toLowerCase() === lock.toLowerCase() ||
-            manager === lockManager
-          )
+          return lockAddress.toLowerCase() === lock.toLowerCase()
         },
       }
     }),
@@ -63,11 +59,33 @@ describe('Email Controller v2', () => {
       })
 
     expect(response.status).toBe(200)
-    expect(response.body).toContain('Custom Email Content')
+    expect(response.body.content).toContain('Custom Email Content')
   })
 
-  it('Correctly save and get custom email content saved previously', async () => {
+  it('Get saved details from not lock manager fails', async () => {
     expect.assertions(2)
+    const { loginResponse, address } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    // save custom email content
+    await request(app)
+      .post(`/v2/email/${network}/locks/${lockAddress}/custom/${template}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        content: customEmailContent,
+      })
+
+    // get for non-lock manager should fail
+    lockAddress = address
+    const response = await request(app)
+      .get(`/v2/email/${network}/locks/${lockAddress}/custom/${template}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(404)
+  })
+
+  it('Correctly save and get custom email content saved for lock manager', async () => {
+    expect.assertions(3)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
@@ -85,6 +103,6 @@ describe('Email Controller v2', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(200)
-    expect(response.body).toContain('Custom Email Content')
+    expect(response.body.content).toContain('Custom Email Content')
   })
 })

@@ -31,12 +31,11 @@ export class CustomEmailController {
         },
         {
           returning: true,
-          conflictFields: ['lockAddress'],
+          conflictFields: ['id'],
         }
       )
-      return response.status(200).send(customEmail?.content)
+      return response.status(200).send(customEmail)
     } catch (err: any) {
-      console.log(err)
       logger.error(err.message)
       return response.status(500).send({
         message: 'Could not save custom email content.',
@@ -59,7 +58,7 @@ export class CustomEmailController {
       })
 
       if (customEmail) {
-        return response.status(200).send(customEmail?.content)
+        return response.status(200).send(customEmail)
       }
       return response.status(404).json({
         message: 'Custom email content not found for this template.',
@@ -67,7 +66,7 @@ export class CustomEmailController {
     } catch (err: any) {
       logger.error(err.message)
       return response.status(500).send({
-        message: 'Could get custom email content.',
+        message: 'Could not get custom email content.',
       })
     }
   }
