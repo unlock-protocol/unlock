@@ -7734,9 +7734,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-popper@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@radix-ui/react-popper@npm:1.0.1"
+"@radix-ui/react-popper@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@radix-ui/react-popper@npm:1.1.0"
   dependencies:
     "@babel/runtime": ^7.13.10
     "@floating-ui/react-dom": 0.7.2
@@ -7744,6 +7744,7 @@ __metadata:
     "@radix-ui/react-compose-refs": 1.0.0
     "@radix-ui/react-context": 1.0.0
     "@radix-ui/react-primitive": 1.0.1
+    "@radix-ui/react-use-callback-ref": 1.0.0
     "@radix-ui/react-use-layout-effect": 1.0.0
     "@radix-ui/react-use-rect": 1.0.0
     "@radix-ui/react-use-size": 1.0.0
@@ -7751,7 +7752,7 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: 8216f8fd5ee5de41206ec89a7c66152f55a8d6ba905f8a2575581f3d42e8a032c3dd66b1529c813f3addc9178e1d13d4262ac25296fd395f8361fcfb160590d4
+  checksum: 1e73fb1aa4337b0c9cb165e40b68716cfeae76490bc97ce3a75daafae1f1bbd54547c8dcae180fb7553032fc695b221c84cc19ae40020be216fb987ed6726dc9
   languageName: node
   linkType: hard
 
@@ -7807,9 +7808,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-tooltip@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@radix-ui/react-tooltip@npm:1.0.2"
+"@radix-ui/react-tooltip@npm:1.0.3":
+  version: 1.0.3
+  resolution: "@radix-ui/react-tooltip@npm:1.0.3"
   dependencies:
     "@babel/runtime": ^7.13.10
     "@radix-ui/primitive": 1.0.0
@@ -7817,7 +7818,7 @@ __metadata:
     "@radix-ui/react-context": 1.0.0
     "@radix-ui/react-dismissable-layer": 1.0.2
     "@radix-ui/react-id": 1.0.0
-    "@radix-ui/react-popper": 1.0.1
+    "@radix-ui/react-popper": 1.1.0
     "@radix-ui/react-portal": 1.0.1
     "@radix-ui/react-presence": 1.0.0
     "@radix-ui/react-primitive": 1.0.1
@@ -7827,7 +7828,7 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: b6d5201c88fc1f842da0af93da9aa0ab0a1b7a538c0d8a2bd59862a1b8f30a08ccce7ca8502012568b1f3c5f1663a7ff9eb307ed583d666d78a7544127e4e5d2
+  checksum: 683a30661363da7db9af72166ffca50545e6f16ff75eb6c07a9b811c2a338d8ba737d600004ff7fb9aab9423b31dd5fc87768f4260ac3984109e9e96e547a7a2
   languageName: node
   linkType: hard
 
@@ -13311,7 +13312,7 @@ __metadata:
     "@headlessui/react": 1.7.7
     "@mdx-js/preact": 2.2.1
     "@mdx-js/react": 2.2.1
-    "@radix-ui/react-tooltip": 1.0.2
+    "@radix-ui/react-tooltip": 1.0.3
     "@storybook/addon-actions": 6.5.15
     "@storybook/addon-docs": 6.5.15
     "@storybook/addon-essentials": 6.5.15
