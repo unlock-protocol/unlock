@@ -93,7 +93,7 @@ export const injectProviderInfo = (
   const newConfig = { ...config }
 
   if (newConfig.autoconnect) {
-    newConfig.useDelegatedProvider = provider
+    newConfig.useDelegatedProvider = !!provider
   }
 
   // We want to inform the checkout iframe about the availability of a
