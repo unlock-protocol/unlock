@@ -8,7 +8,6 @@ module.exports = {
     es6: true,
     node: true,
     browser: true,
-    jest: false,
   },
   root: true,
   plugins: [
