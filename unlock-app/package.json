@@ -75,7 +75,7 @@
     "@types/react-google-recaptcha": "2.1.5",
     "@types/react-gtm-module": "2.0.1",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitejs/plugin-react": "3.0.0",
+    "@vitejs/plugin-react": "3.0.1",
     "@vitest/coverage-c8": "0.26.2",
     "autoprefixer": "10.4.13",
     "postcss": "8.4.20",
