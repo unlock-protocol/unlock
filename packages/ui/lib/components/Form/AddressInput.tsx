@@ -141,6 +141,7 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
               <input
                 {...inputProps}
                 id={label}
+                ref={ref}
                 className={inputClass}
                 {...register(name, {
                   setValueAs: (value: string) => handleResolver(value),
