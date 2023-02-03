@@ -205,6 +205,7 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   const fallbackTimestamp = event.block.timestamp
+  const lockContract = PublicLock.bind(event.address)
   if (key) {
     // Due to a bug in v11, we need to check the version of the lock and fallback to the timestamp since expiration can be for a different key
     const lock = Lock.load(key.lock)
@@ -217,6 +218,8 @@ export function handleCancelKey(event: CancelKeyEvent): void {
         Address.fromBytes(key.owner)
       )
     }
+    const owner = lockContract.ownerOf(key.tokenId)
+    key.owner = owner
     key.cancelled = true
     key.save()
   }
