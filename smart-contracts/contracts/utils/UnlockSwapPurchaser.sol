@@ -13,9 +13,6 @@ contract UnlockSwapPurchaser {
   // Unlock address on current chain
   address public unlockAddress;
   
-  // The  Uniswap Universal Router
-  address public uniswapRouter;
-
   // required by Uniswap Universal Router
   address public permit2;
 
@@ -33,14 +30,21 @@ contract UnlockSwapPurchaser {
   error UnauthorizedBalanceChange();
   error LockCallFailed();
 
-
-  constructor(address _unlockAddress, address _uniswapRouter, address _permit2) {
+  /**
+   * Set the address of Uniswap Permit2 helper contract
+   * @param _unlockAddress the address of Unlock contract  
+   * @param _permit2Address the address of Uniswap PERMIT2 contract  
+   */
+  constructor(address _unlockAddress, address _permit2Address) {
     unlockAddress = _unlockAddress;
-    uniswapRouter = _uniswapRouter;
-    permit2 = _permit2;
+    permit2 = _permit2Address;
   }
 
 
+  /**
+   * Simple helper to retrieve balance in ERC20 or native tokens
+   * @param token the address of the token (address(0) for native token)
+   */
   function getBalance(address token) internal view returns (uint) {
     return token == address(0) ?
       address(this).balance 
@@ -49,12 +53,28 @@ contract UnlockSwapPurchaser {
   }
 
   /**
-   * Please refer to IUnlock.sol for documentation
+   * Swap tokens and call a function a lock contract.
+   * 
+   * Calling this function will 1) swap the token sent by the user into the token (ERCC20 or native) used by
+   * the lock contract using Uniswap Universal Router and 2) call the lock contract with the specified calldata
+   * 
+   * @param lock the address of the lock
+   * @param srcToken the address of the token sent by the user (ERC20 or address(0) for native)
+   * @param amountInMax the maximum amount the user want to spend in the swap
+   * @param uniswapRouter the address of the uniswap router
+   * @param swapCalldata the Uniswap quote calldata returned by the SDK, to be sent to the router contract
+   * @param callData the encoded instructions to be executed by the lock
+   *
+   * @return the bytes as returned by the execution on the lock
+   * 
+   * @notice If the actual amount spent is less than the specified maximum amount, the remaining tokens will 
+   * be held by the Unlock contract
    */
   function swapAndCall(
     address lock,
     address srcToken,
     uint amountInMax,
+    address uniswapRouter, 
     bytes memory swapCalldata,
     bytes memory callData
   ) public payable returns(bytes memory) {
