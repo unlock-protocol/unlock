@@ -31,7 +31,7 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     ticket?.event_address || 'Ethereum'
-  )}&key=AIzaSyD_mt4bpelB7Dlr7XzfUW9k7b9agbf_iSo`
+  )}&key=${config.googleMapsApiKey}`
 
   return (
     <div>
