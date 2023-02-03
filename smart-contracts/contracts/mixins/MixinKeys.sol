@@ -157,7 +157,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * the new data structure w multiple tokens.
    */
   function migrate(bytes calldata _calldata) public virtual {
-
     // make sure we have correct data version before migrating
     require(
       (
@@ -170,17 +169,22 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // only for mainnet
     if(block.chainid == 1) {
+
+      // TODO: hardcode mainnet Unlock address
+      address newUnlockAddress = address(0);
+
       if(msg.sender == address(unlockProtocol) ) {
         // do nothing if migration is triggered by Unlock
       } else {
-        // work only if migration is triggered manually
-        (address newUnlockAddress) = abi.decode(_calldata, (address));
+        // trigger migration from the new Unlock
+        IUnlock(newUnlockAddress).postLockUpgrade(
+          publicLockVersion(),
+          address(unlockProtocol)
+        );
 
         // update unlock ref in this lock
         unlockProtocol = IUnlock(newUnlockAddress);
-
-        // trigger migration from the new Unlock
-        IUnlock(newUnlockAddress).postUpgrade();
+        
 
         // update data version
         schemaVersion = publicLockVersion();

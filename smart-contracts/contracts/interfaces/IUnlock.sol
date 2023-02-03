@@ -316,5 +316,5 @@ interface IUnlock {
   /**
    * Migrate an existing Lock to another instance of a Unlock contract
    */
-  function postUpgrade() external;
+  function postLockUpgrade(uint16 version, address _previousUnlockAddress ) external;
 }

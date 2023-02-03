@@ -644,13 +644,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
 
   // TODO: perm/modifier for this
-  function postUpgrade() public {
+  function postLockUpgrade(uint16 version, address _previousUnlockAddress ) public {
     // check if lock has been deployed here
     bool isDeployed = locks[msg.sender].deployed;
 
     // the check if it was deployed previously
-    if (isDeployed == false) {
-      IUnlockV11 previousUnlock = IUnlockV11(previousUnlockAddress);
+    if (version == 13 && isDeployed == false) {
+      IUnlockV11 previousUnlock = IUnlockV11(_previousUnlockAddress);
       (
         bool deployed, 
         uint totalSales, 
@@ -669,10 +669,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           );
       }
     }
-  }
-
-  function setPreviousUnlockAddress(address _previousUnlockAddress) public {
-    previousUnlockAddress = _previousUnlockAddress;
   }
 
   // required to withdraw WETH
