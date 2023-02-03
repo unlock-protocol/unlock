@@ -8755,7 +8755,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.14.0, @solidity-parser/parser@npm:^0.14.1, @solidity-parser/parser@npm:^0.14.5":
+"@solidity-parser/parser@npm:^0.14.0, @solidity-parser/parser@npm:^0.14.5":
   version: 0.14.5
   resolution: "@solidity-parser/parser@npm:0.14.5"
   dependencies:
@@ -13264,7 +13264,7 @@ __metadata:
     prettier: 2.5.1
     prettier-plugin-solidity: 1.0.0
     prompt: 1.2.2
-    solhint: 3.3.7
+    solhint: 3.3.8
     solidity-coverage: 0.7.21
     web3: 1.7.5
     yesno: 0.4.0
@@ -45436,11 +45436,11 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"solhint@npm:3.3.7":
-  version: 3.3.7
-  resolution: "solhint@npm:3.3.7"
+"solhint@npm:3.3.8":
+  version: 3.3.8
+  resolution: "solhint@npm:3.3.8"
   dependencies:
-    "@solidity-parser/parser": ^0.14.1
+    "@solidity-parser/parser": ^0.14.5
     ajv: ^6.6.1
     antlr4: 4.7.1
     ast-parents: 0.0.1
@@ -45460,7 +45460,7 @@ resolve@~1.20.0:
       optional: true
   bin:
     solhint: solhint.js
-  checksum: 140a4660b691ea78aa7de19aca2123991fb4f9bc7be574e1573ae428b356e12919805df56c2892ddbdd031a4a4db477a81425ad85aac6672f3fb73f4887c2abb
+  checksum: 305434ecfbb5fd378dbce7b5027dffd06b55023022a70572f449d0d0393e0e0ab56503c2dd6afd450aa9b42b5782692f4781665c15bd335d7568a0eddc7cf19a
   languageName: node
   linkType: hard
 
