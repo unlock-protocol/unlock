@@ -214,12 +214,7 @@ export const LockManagerForm = ({
 
   const [managerAddress, setManagerAddress] = useState('')
 
-  const localForm = useForm({
-    mode: 'all',
-    defaultValues: {
-      manager: '',
-    },
-  })
+  const localForm = useForm()
 
   const { handleSubmit, reset, watch } = localForm
 

@@ -9,9 +9,11 @@ import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FieldLayout } from './FieldLayout'
 import { Icon } from '../Icon/Icon'
-import { FaWallet as WalletIcon } from 'react-icons/fa'
+import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
+import { UseFormReturn } from 'react-hook-form'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 
 export interface Props
   extends Omit<
@@ -23,8 +25,8 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  web3Service: any
-  localForm: any;
+  web3Service: Web3Service
+  localForm: UseFormReturn;
   name: string,
 }
 
@@ -41,7 +43,8 @@ const STATE_STYLES = {
     'border-green-500 hover:border-green-500 focus:border-green-500 focus:ring-green-500',
 }
 
-const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} className="fill-gray-500" />
+const WalletIcon = (props: IconBaseProps) => <FaWallet {...props} className="fill-gray-500" />
+const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="fill-gray-500" />
 
 /**
  * Primary Input component for React Hook Form
@@ -103,23 +106,22 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
         setAddressType('')
       }
       const result = await web3Service.resolveName(address)
-      if (result.name !== null && result.type === 'address') {
+      if (result && result.name !== null && result.type === 'address') {
         setLoading(false)
         setAddressType(result.type)
         setSuccess(`It's a valid eth address`)
         setResolvedName(result.name)
-        return result.address;
-      } else if (result.address !== null && result.type === 'name') {
+        return result.address
+      } else if (result && result.address !== null && result.type === 'name') {
         setLoading(false)
         setAddressType(result.type)
         setSuccess(`It's a valid ens name`)
         setResolvedAddress(result.address)
-        return result.address;
-      } else if (result.address === null || result.name === null  && result.type === 'error'){
+        return result.address
+      } else if (result && result.address === null || result && result.name === null  && result.type === 'error'){
         setLoading(false)
         setAddressType('error')
         setError(`It's not a valid ens name or address`)
-        return result.error;
       }
     }
     return (
@@ -135,13 +137,12 @@ const CustomizedIcon = (props: IconBaseProps) => <WalletIcon {...props} classNam
             <div className="relative">
               {withIcon && (
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Icon size={size} icon={CustomizedIcon} />
+                  {loadingResolvedAddress ? <Icon size={size} icon={LoadingIcon} /> : <Icon size={size} icon={WalletIcon} />}
                 </span>
               )}
               <input
                 {...inputProps}
                 id={label}
-                ref={ref}
                 className={inputClass}
                 {...register(name, {
                   setValueAs: (value: string) => handleResolver(value),
