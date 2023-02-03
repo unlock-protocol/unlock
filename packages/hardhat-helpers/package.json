@@ -10,7 +10,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "hardhat": "2.12.5"
+    "hardhat": "2.12.6"
   },
   "repository": {
     "type": "git",
