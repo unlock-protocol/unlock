@@ -3,6 +3,7 @@ export interface Ticket {
   event_start_time?: string
   event_address?: string
   event_url?: string
+  event_timezone?: string
 }
 export interface MetadataFormData {
   name: string
@@ -149,6 +150,13 @@ export const formDataToMetadata = ({
     metadata.attributes.push({
       trait_type: 'event_start_time',
       value: ticket.event_start_time,
+    })
+  }
+
+  if (ticket?.event_timezone) {
+    metadata.attributes.push({
+      trait_type: 'event_timezone',
+      value: ticket.event_timezone,
     })
   }
 

@@ -1,5 +1,5 @@
-import { Button, Input, Ticket, Disclosure } from '@unlock-protocol/ui'
-import { useFormContext, useWatch } from 'react-hook-form'
+import { Button, Input, Ticket, Disclosure, Select } from '@unlock-protocol/ui'
+import { useFormContext, useWatch, Controller } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import { Fragment, useState } from 'react'
 import { config } from '~/config/app'
@@ -107,6 +107,40 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
                 label="Time"
                 error={errors.ticket?.event_start_time?.message}
               />
+
+              <Controller
+                name="ticket.event_timezone"
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <Select
+                      onChange={(newValue) => {
+                        console.log({ newValue })
+                        onChange({
+                          target: {
+                            value: newValue,
+                          },
+                        })
+                      }}
+                      // @ts-expect-error supportedValuesOf
+                      options={Intl.supportedValuesOf('timeZone').map(
+                        (tz: string) => {
+                          return {
+                            value: tz,
+                            label: tz,
+                          }
+                        }
+                      )}
+                      label="Timezone"
+                      defaultValue={
+                        value ||
+                        Intl.DateTimeFormat().resolvedOptions().timeZone
+                      }
+                    />
+                  )
+                }}
+              />
+
               <Input
                 {...register('ticket.event_address')}
                 disabled={disabled}
