@@ -27,10 +27,7 @@ import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
-import {
-  getEventDate,
-  getEventDateTime,
-} from '~/components/content/event/utils'
+import { getEventDate } from '~/components/content/event/utils'
 
 dayjs.extend(relative)
 dayjs.extend(duration)
