@@ -191,7 +191,7 @@ export function Connected({
     injectedProvider,
   })
 
-  if (state.context.paywallConfig?.autoconnect) {
+  if (state.context?.paywallConfig?.autoconnect) {
     return <div className="space-y-2">{children}</div>
   }
 
