@@ -182,7 +182,7 @@ export const CreditCardForm = ({
         {isGranted ? (
           <SettingCardDetail
             title="Connect Stripe to Your Account"
-            description="In order to enable the credit card payment, please connect Stripe via your account."
+            description="In your application, please refrain from mentioning NFT, amd focus on your use case: subscriptions, tickets... etc"
           />
         ) : (
           <SettingCardDetail
