@@ -13540,7 +13540,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@zeit/next-source-maps": 0.0.3
-    apexcharts: 3.36.0
+    apexcharts: 3.36.3
     autoprefixer: 10.4.13
     babel-eslint: 10.1.0
     babel-loader: 9.1.0
@@ -15177,9 +15177,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:3.36.0":
-  version: 3.36.0
-  resolution: "apexcharts@npm:3.36.0"
+"apexcharts@npm:3.36.3":
+  version: 3.36.3
+  resolution: "apexcharts@npm:3.36.3"
   dependencies:
     svg.draggable.js: ^2.2.2
     svg.easing.js: ^2.0.0
@@ -15187,7 +15187,7 @@ __metadata:
     svg.pathmorphing.js: ^0.1.3
     svg.resize.js: ^1.4.3
     svg.select.js: ^3.0.1
-  checksum: 99ed3c1df728086a92bfa9c1a8e13771fd46b7dcd13445cc9275d3d04bea0efade3a4258467bbf6416c264458fd938ed37f62ba4bb3fa47eb253ec0aab1e82a6
+  checksum: 2b92f123cf3e52255d379d95411d12943c096a1575234ae90513d9dd9dd3f118fa1f08098b5acf142e1d119ac0c19a7ca2a62d3979cf7e333d361d582ec12daf
   languageName: node
   linkType: hard
 
