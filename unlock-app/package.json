@@ -23,7 +23,7 @@
     "@walletconnect/web3-provider": "1.8.0",
     "@xstate/react": "3.0.1",
     "axios": "1.2.1",
-    "axios-auth-refresh": "3.3.4",
+    "axios-auth-refresh": "3.3.6",
     "calendar-link": "2.4.0",
     "csv": "6.2.6",
     "dayjs": "1.11.7",
