@@ -17,12 +17,14 @@ export const EventContent = () => {
   const { lockAddress, network } = router.query
   const showDetails = lockAddress && network
 
+  const handleCreateEvent = () => {}
+
   return (
     <AppLayout showLinks={false} authRequired={false} title="">
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-      {!showDetails && <LandingPage />}
+      {!showDetails && <LandingPage handleCreateEvent={handleCreateEvent} />}
       {showDetails && (
         <div className="md:w-3/4 m-auto">
           <EventDetails

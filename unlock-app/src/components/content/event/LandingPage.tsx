@@ -28,7 +28,11 @@ const Accordeon = ({ title, children }: AccordeonProps) => {
   )
 }
 
-export const LandingPage = () => {
+interface LandingPage {
+  handleCreateEvent: () => void
+}
+
+export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
   return (
     <div>
       <section className="flex flex-col md:flex-row my-8">
@@ -61,7 +65,9 @@ export const LandingPage = () => {
             with a dedicated QR code. We got it covered.
           </p>
           <p className="flex justify-center md:justify-start">
-            <Button className="my-8">Create your event now</Button>
+            <Button onClick={handleCreateEvent} className="my-8">
+              Create your event now
+            </Button>
           </p>
         </div>
         <div className="flex justify-center justify-items-center">
@@ -128,7 +134,7 @@ export const LandingPage = () => {
         </ul>
       </section>
       <section className="flex flex-col mt-8 justify-items-center	justify-center content-center items-center">
-        <Button>Create your event now</Button>
+        <Button onClick={handleCreateEvent}>Create your event now</Button>
         <p className="md:w-1/3 mt-6 text-xs text-center">
           Psst, you can also Airdrop tickets to frens or have them stake. Just
           cherry on your sundae for other customization.
