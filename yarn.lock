@@ -13148,7 +13148,7 @@ __metadata:
     url-loader: 4.1.1
     vite: 4.0.4
     vite-plugin-svgr: 2.4.0
-    vite-tsconfig-paths: 4.0.3
+    vite-tsconfig-paths: 4.0.5
   peerDependencies:
     "@headlessui/react": 1.7.4
     react: 18.2.0
@@ -49537,16 +49537,14 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:4.0.3":
-  version: 4.0.3
-  resolution: "vite-tsconfig-paths@npm:4.0.3"
+"vite-tsconfig-paths@npm:4.0.5":
+  version: 4.0.5
+  resolution: "vite-tsconfig-paths@npm:4.0.5"
   dependencies:
     debug: ^4.1.1
     globrex: ^0.1.2
     tsconfck: ^2.0.1
-  peerDependencies:
-    vite: ">2.0.0-0"
-  checksum: 491bc977e1510ed8481d6492ffa06d3c6510e9fe6b418540b1d818539c91261e7c500a13f60ce2ed2b1435e00b45e62302a8257c365c8ce19a2784fb0f290652
+  checksum: 49b4064881343ef0b75e52eeb1d5cdfe1f26b32ded68e71efc84022e8e96bdb3d3f37f79f3678b43e935dca279cc24c5936942b5fdbaf1489b497e48572314d9
   languageName: node
   linkType: hard
 
