@@ -1039,13 +1039,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.1"
+"@nomiclabs/hardhat-ethers@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.2"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: 8cdbf7068f15ee993142ab600074938d05b42af73392a5b12c8eb607a5bca2fac977a6a85955e0b0285541415ad520626e7fb3d33ca7cc112d61ee928358e2f6
+  checksum: f7b880cbb3fbf809b5d01619112231be9ef8dc3c2880960d2382813fa19b783670ee2d982ebd43d8867281ad82854ca0d16626c013d0d834eb3b19a65dc0c851
   languageName: node
   linkType: hard
 
@@ -1357,7 +1357,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.2.1
+    "@nomiclabs/hardhat-ethers": 2.2.2
     "@unlock-protocol/hardhat-plugin": 0.0.18
     eslint: 8.31.0
     ethers: 5.7.2

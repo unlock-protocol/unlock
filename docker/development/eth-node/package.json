@@ -9,7 +9,7 @@
         "start": "hardhat node"
     },
     "dependencies": {
-        "@nomiclabs/hardhat-ethers": "2.2.1",
+        "@nomiclabs/hardhat-ethers": "2.2.2",
         "@unlock-protocol/hardhat-plugin": "0.0.18",
         "eslint": "8.31.0",
         "ethers": "5.7.2",

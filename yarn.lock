@@ -6889,17 +6889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.1"
-  peerDependencies:
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: 8cdbf7068f15ee993142ab600074938d05b42af73392a5b12c8eb607a5bca2fac977a6a85955e0b0285541415ad520626e7fb3d33ca7cc112d61ee928358e2f6
-  languageName: node
-  linkType: hard
-
-"@nomiclabs/hardhat-ethers@npm:^2.0.0, @nomiclabs/hardhat-ethers@npm:^2.2.1":
+"@nomiclabs/hardhat-ethers@npm:2.2.2, @nomiclabs/hardhat-ethers@npm:^2.0.0, @nomiclabs/hardhat-ethers@npm:^2.2.1":
   version: 2.2.2
   resolution: "@nomiclabs/hardhat-ethers@npm:2.2.2"
   peerDependencies:
@@ -12806,7 +12796,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.2.1
+    "@nomiclabs/hardhat-ethers": 2.2.2
     "@types/chai": 4.3.4
     "@types/fs-extra": 11.0.1
     "@types/mocha": 10.0.1
@@ -13302,7 +13292,7 @@ __metadata:
     "@graphql-codegen/typescript": 2.8.6
     "@graphql-codegen/typescript-graphql-request": 4.5.8
     "@graphql-codegen/typescript-operations": 2.5.11
-    "@nomiclabs/hardhat-ethers": 2.2.1
+    "@nomiclabs/hardhat-ethers": 2.2.2
     "@openapitools/openapi-generator-cli": 2.5.2
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
