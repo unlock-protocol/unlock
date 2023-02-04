@@ -120,7 +120,7 @@ export const LandingPage = () => {
               Check-ins at the venue are a breeze
             </h3>
             <p className="text-sm">
-              Volunteers or door staff can check attendees is with just a
+              Volunteers or door staff can check attendees in with just a
               smartphone, and ensure tickets aren’t transferred or reused once
               someone has come through the door.
             </p>
