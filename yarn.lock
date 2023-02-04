@@ -3251,7 +3251,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild-kit/cjs-loader@npm:^2.4.0":
+"@esbuild-kit/cjs-loader@npm:^2.4.1":
   version: 2.4.1
   resolution: "@esbuild-kit/cjs-loader@npm:2.4.1"
   dependencies:
@@ -3271,7 +3271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild-kit/esm-loader@npm:^2.5.0":
+"@esbuild-kit/esm-loader@npm:^2.5.4":
   version: 2.5.4
   resolution: "@esbuild-kit/esm-loader@npm:2.5.4"
   dependencies:
@@ -12923,7 +12923,7 @@ __metadata:
     siwe: 1.1.6
     stripe: 8.222.0
     supertest: 6.3.3
-    tsx: 3.12.1
+    tsx: 3.12.2
     typescript: 4.9.4
     unlock-abi-1-1: 1.1.1
     vitest: 0.25.6
@@ -47975,20 +47975,20 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"tsx@npm:3.12.1":
-  version: 3.12.1
-  resolution: "tsx@npm:3.12.1"
+"tsx@npm:3.12.2":
+  version: 3.12.2
+  resolution: "tsx@npm:3.12.2"
   dependencies:
-    "@esbuild-kit/cjs-loader": ^2.4.0
+    "@esbuild-kit/cjs-loader": ^2.4.1
     "@esbuild-kit/core-utils": ^3.0.0
-    "@esbuild-kit/esm-loader": ^2.5.0
+    "@esbuild-kit/esm-loader": ^2.5.4
     fsevents: ~2.3.2
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     tsx: dist/cli.js
-  checksum: 7251ad550b82cc95716599b5f4fc8825d3896722f30ee6abfff5e5dd63b9ba8ad1c41fefbf27657ff5375f71bb69fb2b001dfe87f1f81e5d017b55616e1691cb
+  checksum: c227512ed7b480bd295c5420c560ec8311a4827b92e8040b7ca519627c7e1d35d48c25b26b4b11277cc437bba98696149f5148a9a06334f37b48bbaa870bff64
   languageName: node
   linkType: hard
 
