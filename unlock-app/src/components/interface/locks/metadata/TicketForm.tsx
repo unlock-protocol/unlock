@@ -81,6 +81,7 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
           </div>
         </Dialog>
       </Transition.Root>
+
       <Disclosure label="Event ticketing">
         <>
           <p>
@@ -172,7 +173,6 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
                 error={errors.ticket?.event_address?.message}
               />
               <Input
-                disabled={disabled}
                 label="Meeting link (if any)"
                 placeholder="https://"
                 {...register('ticket.event_url')}

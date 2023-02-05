@@ -17,7 +17,9 @@ export const EventContent = () => {
   const { lockAddress, network } = router.query
   const showDetails = lockAddress && network
 
-  const handleCreateEvent = () => {}
+  const handleCreateEvent = () => {
+    router.push('/event/new')
+  }
 
   return (
     <AppLayout showLinks={false} authRequired={false} title="">
