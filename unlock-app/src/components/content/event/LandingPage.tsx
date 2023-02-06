@@ -129,8 +129,14 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
         </p>
         <ul className="grid md:grid-cols-[300px_300px_300px] gap-8 my-8">
           <li className="bg-red">
-            <div className="w-full h-48 bg-blue-200">IMG</div>
-            <h3 className="text-xl font-bold mb-4">
+            <Image
+              className="border border-1 rounded-lg border-[#BFB1F7]"
+              width="400"
+              height="300"
+              alt="No-code"
+              src="/images/illustrations/events/easy.svg"
+            ></Image>
+            <h3 className="text-xl font-bold mb-2 mt-2">
               No-code smart contract deployment
             </h3>
             <p className="text-sm">
@@ -141,8 +147,14 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
             </p>
           </li>
           <li className="">
-            <div className="w-full h-48 bg-blue-200">IMG</div>
-            <h3 className="text-xl font-bold mb-4">
+            <Image
+              className="border border-1 rounded-lg border-[#BFB1F7]"
+              width="400"
+              height="300"
+              alt="No-code"
+              src="/images/illustrations/events/qr.svg"
+            ></Image>
+            <h3 className="text-xl font-bold mb-2 mt-2">
               QR codes and proof of purchase ticketing
             </h3>
             <p className="text-sm">
@@ -152,8 +164,14 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
             </p>
           </li>
           <li className="bg-red">
-            <div className="w-full h-48 bg-blue-200">IMG</div>
-            <h3 className="text-xl font-bold mb-4">
+            <Image
+              className="border border-1 rounded-lg border-[#BFB1F7]"
+              width="400"
+              height="300"
+              alt="No-code"
+              src="/images/illustrations/events/verifier.svg"
+            ></Image>
+            <h3 className="text-xl font-bold mb-2 mt-2">
               Check-ins at the venue are a breeze
             </h3>
             <p className="text-sm">
@@ -180,6 +198,20 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
             No! Attendees do not need wallets, but they will need user accounts
             if they do not have their own wallets. Unlock accounts require an
             email and password.
+          </p>
+        </Accordeon>
+        <Accordeon title="What blockchain is this on?">
+          <p>
+            You can pick between{' '}
+            <Link
+              className="underline"
+              target="_blank"
+              href={`https://docs.unlock-protocol.com/core-protocol/unlock/networks`}
+            >
+              {' '}
+              all the networks on which the Unlock Protocol
+            </Link>
+            has been deployed: Polygon, Gnosis Chain, Optimism, ...
           </p>
         </Accordeon>
         <Accordeon title="Can I charge for the tickets?">
