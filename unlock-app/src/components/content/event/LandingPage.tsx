@@ -2,6 +2,8 @@ import { Disclosure } from '@headlessui/react'
 import { Button } from '@unlock-protocol/ui'
 import { BsPlusLg as PlusIcon } from 'react-icons/bs'
 import { Icon } from '@unlock-protocol/ui'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface AccordeonProps {
   title: string
@@ -70,21 +72,60 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
             </Button>
           </p>
         </div>
-        <div className="flex justify-center justify-items-center">
-          <div className="h-96 w-72	bg-blue-200">IMG!</div>
+        <div className="hidden md:flex justify-center justify-items-center">
+          <Image
+            className=""
+            width="769"
+            height="978"
+            alt="Out Metaverse"
+            src="/images/illustrations/events/outmetaverse.svg"
+          ></Image>
         </div>
       </section>
-      <section className="absolute left-0 justify-items-center	justify-center content-center items-center	text-white bg-black my-8 w-screen	flex flex-col py-8">
-        <h1>Used By</h1>
+      <div className="flex flex-col justify-items-center	justify-center content-center items-center">
+        <Image
+          alt="party"
+          width="1440"
+          height="320"
+          src="/images/illustrations/events/party.svg"
+        />
+      </div>
+
+      <section className="absolute left-0 justify-items-center justify-center content-center items-center	text-white bg-black w-screen	flex flex-col py-8">
+        <h1 className="text-xl font-semibold">Used by</h1>
         <ul className="flex flex-row my-8">
-          <li className="md:mx-8 mx-2 rounded-full text-center w-24 h-24 bg-blue-200">
-            EthCC
+          <li className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24">
+            <Link target="_blank" href="https://ethcc.io/">
+              <Image
+                width="100"
+                height="100"
+                alt="ethcc"
+                src="/images/illustrations/events/ethcc.svg"
+              ></Image>
+              <h4 className="mt-auto">EthCC</h4>
+            </Link>
           </li>
-          <li className="md:mx-8 mx-2 rounded-full text-center w-24 h-24 bg-blue-200">
-            Dappcon
+          <li className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24 ">
+            <Link target="_blank" href="https://www.dappcon.io/">
+              <Image
+                width="100"
+                height="100"
+                alt="dappcon"
+                src="/images/illustrations/events/dappcon.png"
+              ></Image>
+              <h4 className="mt-auto">DappCon</h4>
+            </Link>
           </li>
-          <li className="md:mx-8 mx-2 rounded-full text-center w-24 h-24 bg-blue-200">
-            MetaCartel
+          <li className="md:mx-12 mx-2 flex items-center	rounded-full text-center w-24 h-24">
+            <Link target="_blank" href="https://www.metacartel.org/">
+              <Image
+                width="100"
+                height="100"
+                alt="metacartel"
+                src="/images/illustrations/events/metacartel.png"
+              ></Image>
+              <h4 className="mt-auto">Metacartel</h4>
+            </Link>
           </li>
         </ul>
       </section>
