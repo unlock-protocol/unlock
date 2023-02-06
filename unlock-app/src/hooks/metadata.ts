@@ -29,7 +29,6 @@ export const useUpdateMetadata = ({
         )
         return keyResponse.data as Metadata
       } else {
-        console.log('ARE WE SAVING>')
         const lockResponse = await storage.updateLockMetadata(
           network!,
           lockAddress!,
@@ -37,7 +36,6 @@ export const useUpdateMetadata = ({
             metadata,
           }
         )
-        console.log(lockResponse)
         return lockResponse.data as Metadata
       }
     },

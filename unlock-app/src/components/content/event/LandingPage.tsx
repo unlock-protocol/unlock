@@ -41,17 +41,7 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
         {/* masthead */}
         <div className="flex flex-col py-0 md:pr-10">
           {/* left */}
-          <h1
-            className="uppercase 
-                        text-6xl          
-                      md:text-8xl 
-                      font-extrabold 
-                      text-transparent 
-                      bg-clip-text 
-                      bg-gradient-to-r 
-                      from-brand-ui-primary 
-                      to-[#F19077]"
-          >
+          <h1 className="uppercase text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-ui-primary to-[#F19077]">
             Web3 is
             <br />
             better in <br />
@@ -82,7 +72,7 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
           ></Image>
         </div>
       </section>
-      <div className="flex flex-col justify-items-center	justify-center content-center items-center">
+      <div className="flex flex-col justify-items-center justify-center content-center items-center">
         <Image
           alt="party"
           width="1440"
@@ -116,7 +106,7 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
               <h4 className="mt-auto">DappCon</h4>
             </Link>
           </li>
-          <li className="md:mx-12 mx-2 flex items-center	rounded-full text-center w-24 h-24">
+          <li className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24">
             <Link target="_blank" href="https://www.metacartel.org/">
               <Image
                 width="100"
