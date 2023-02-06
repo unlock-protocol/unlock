@@ -79,6 +79,6 @@
     "url-loader": "4.1.1",
     "vite": "4.0.4",
     "vite-plugin-svgr": "2.4.0",
-    "vite-tsconfig-paths": "4.0.3"
+    "vite-tsconfig-paths": "4.0.5"
   }
 }
