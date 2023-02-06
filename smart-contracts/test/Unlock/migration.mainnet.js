@@ -5,14 +5,14 @@
  * RUN_FORK=1 yarn hardhat node 
  * 
  * 2. deploy the new unlock
- * CHAIN_ID=1 yarn hardhat deploy:unlock --network localhost
+ * RUN_FORK=1 yarn hardhat deploy:unlock --network localhost
  * 
  * 3. copy/paste the newly deployed Unlock address in 2 places:
  * - below in  NEW_UNLOCK_ADDRESS
  * - in `contracts/mixins/MixinKeys.sol` in the `migrate()` (l. ~174)
  * 
  * 4. run this file against the node 
- * CHAIN_ID=1 yarn hardhat test test/Unlock/migration.mainnet.js --network localhost
+ * RUN_FORK=1 yarn hardhat test test/Unlock/migration.mainnet.js --network localhost
  */
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
@@ -26,11 +26,12 @@ const {
   addSomeETH,
   confirmMultisigTx,
   MULTISIG_ADDRESS_OWNER,
+  reverts,
 } = require('../helpers')
 
 const { submitTx } = require('../../scripts/multisig')
 
-const NEW_UNLOCK_ADDRESS = '0xBe51dc0408040B7f27525352D35ec57558B1dFEe'
+const NEW_UNLOCK_ADDRESS = '0x84d085898F6ae4ae8c4225f2601F29a10335F653'
 
 let unlock, publicLock, unlockModified, lock, signer, keyOwner
 
@@ -50,15 +51,6 @@ describe(`Unlock migration`, function() {
     // get original Unlock contract
     unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
 
-    // deploy new template
-    const PublicLockV13 = await ethers.getContractFactory('PublicLock')
-    publicLock = await PublicLockV13.deploy()
-    await publicLock.deployed()
-    console.log(`PublicLockV13 > deployed at ${publicLock.address}`)
-    
-    // redeploy new Unlock
-    unlockModified = await ethers.getContractAt('Unlock', NEW_UNLOCK_ADDRESS);
-    
     // create a (v12) lock
     lock = await deployLock({ unlock, isEthers: true })
     
@@ -67,7 +59,13 @@ describe(`Unlock migration`, function() {
 
     // impersonate one of the multisig owner
     const multisigSigner = await impersonate(MULTISIG_ADDRESS_OWNER);
-    
+
+    // deploy new template
+    const PublicLockV13 = await ethers.getContractFactory('PublicLock')
+    publicLock = await PublicLockV13.deploy()
+    await publicLock.deployed()
+    console.log(`PublicLockV13 > deployed at ${publicLock.address}`)
+
     // submit the new tempalte in old unlock (using multisig)
     const addLockTemplateTx = {
       contractName: 'Unlock',
@@ -75,13 +73,16 @@ describe(`Unlock migration`, function() {
       functionName: 'addLockTemplate',
       functionArgs: [publicLock.address, 13],
     }
-    const txId = await submitTx({
+
+    const txIdv13 = await submitTx({
       tx: addLockTemplateTx,
       safeAddress: UNLOCK_MULTISIG_ADDRESS,
       signer: multisigSigner,
     })
 
-    // set the new tempalte as default in old unlock (using multisig)
+    await confirmMultisigTx({ transactionId: txIdv13 })
+
+    // set the new v13 template as default in old unlock (using multisig)
     const setLockTemplateTx = {
       contractName: 'Unlock',
       contractAddress: UNLOCK_ADDRESS,
@@ -93,17 +94,25 @@ describe(`Unlock migration`, function() {
       safeAddress: UNLOCK_MULTISIG_ADDRESS,
       signer: multisigSigner,
     })
-
-    await confirmMultisigTx({ transactionId: txId })
+    
     await confirmMultisigTx({ transactionId: txId2 })
 
     console.log(`UNLOCK (old) > upgraded template to ${await unlock.publicLockLatestVersion()}`)
+
+    // get freshly redeployed new Unlock
+    unlockModified = await ethers.getContractAt('Unlock', NEW_UNLOCK_ADDRESS)
   })
 
-  describe('Old Unlock settings', () => {
+  describe('Unlock (old) settings', () => {
     it('correct v13 template', async () => {
       expect(await unlock.publicLockAddress()).to.equals(publicLock.address)
       expect(await unlock.publicLockLatestVersion()).to.equals(13)
+    })
+  })
+
+  describe('Lock before upgrade', () => {
+    it('show previous unlock address', async () => {
+      expect(await lock.unlockProtocol()).to.equals(unlock.address)
     })
   })
 
@@ -112,40 +121,36 @@ describe(`Unlock migration`, function() {
       expect(await lock.publicLockVersion()).to.equals(12)
       // upgrade the lock
       await unlock.upgradeLock(lock.address, 13)
-      console.log(`Unlock (old) > lock upgraded to v${13}`)
     })
     it('upgrade version correctly', async () => {
       expect(await lock.publicLockVersion()).to.equals(13)
     })
-    it('show previous unlock address', async () => {
-      expect(await lock.unlockProtocol()).to.equals(unlock.address)
+    it('show new unlock address', async () => {
+      expect(await lock.unlockProtocol()).to.equals(unlockModified.address)
     })
-    it('unlock has lock info', async () => {
-      const lockBalance = await unlock.locks(lock.address)
+    it('new unlock has lock info', async () => {
+      const lockBalance = await unlockModified.locks(lock.address)
       expect(lockBalance.deployed).to.equals(true)
       expect(lockBalance.totalSales.toString()).to.equals((await lock.keyPrice()).toString())
       expect(lockBalance.yieldedDiscountTokens.toNumber()).to.equals(0)
     })
   })
 
-  describe('Migrate lock', () => {
+  describe('Migrate lock (directly using migrate function)', () => {
+    let calldata
     before(async () => {
       // set new Unlock address in lock
-      const calldata = ethers.utils.defaultAbiCoder.encode(
+      calldata = ethers.utils.defaultAbiCoder.encode(
         ['address'],
         [unlockModified.address]
         )
-      await lock.migrate(calldata)
     })
-    it('lock has updated unlock address', async () => {
-      expect(await lock.unlockProtocol()).to.equals(unlockModified.address)
-    })
-    
-    it('new unlock has lock info', async () => {
-      const lockBalance = await unlockModified.locks(lock.address)
-      expect(lockBalance.deployed).to.equals(true)
-      expect(lockBalance.totalSales.toString()).to.equals((await lock.keyPrice()).toString())
-      expect(lockBalance.yieldedDiscountTokens.toNumber()).to.equals(0)
+
+    it('reverts if the lock has already been upgraded to 13', async () => {
+      await reverts(
+        lock.migrate(calldata),
+        'SCHEMA_VERSION_NOT_CORRECT'
+      )
     })
   })
   
