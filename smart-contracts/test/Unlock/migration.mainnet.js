@@ -1,35 +1,54 @@
-const { ethers, upgrades, network } = require('hardhat')
+/**
+ * To run this you will need to
+ * 
+ * 1. start a mainnet fork node 
+ * RUN_FORK=1 yarn hardhat node 
+ * 
+ * 2. deploy the new unlock
+ * CHAIN_ID=1 yarn hardhat deploy:unlock --network localhost
+ * 
+ * 3. copy/paste the newly deployed Unlock address in 2 places:
+ * - below in  NEW_UNLOCK_ADDRESS
+ * - in `contracts/mixins/MixinKeys.sol` in the `migrate()` (l. ~174)
+ * 
+ * 4. run this file against the node 
+ * CHAIN_ID=1 yarn hardhat test test/Unlock/migration.mainnet.js --network localhost
+ */
+const { ethers } = require('hardhat')
 const { expect } = require('chai')
 
 const {
   UNLOCK_ADDRESS,
+  UNLOCK_MULTISIG_ADDRESS,
   impersonate,
   deployLock,
-  purchaseKey
+  purchaseKey,
+  addSomeETH,
+  confirmMultisigTx,
+  MULTISIG_ADDRESS_OWNER,
 } = require('../helpers')
-const { getProxyAdminAddress } = require('../../helpers/deployments')
 
+const { submitTx } = require('../../scripts/multisig')
+
+const NEW_UNLOCK_ADDRESS = '0xBe51dc0408040B7f27525352D35ec57558B1dFEe'
 
 let unlock, publicLock, unlockModified, lock, signer, keyOwner
 
 describe(`Unlock migration`, function() {
 
-
   before(async function() {
-    if (!process.env.RUN_FORK) {
+    if (!(process.env.RUN_FORK)) {
       // all suite will be skipped
       this.skip()
     }
-
+    
+    // fund signers
     ;[signer, keyOwner] = await ethers.getSigners()
+    await addSomeETH(signer.address)
+    await addSomeETH(keyOwner.address)
 
     // get original Unlock contract
     unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
-
-    // impersonate old Unlock owner
-    let oldUnlockOwner = await unlock.owner()
-    await impersonate(oldUnlockOwner)
-    oldUnlockOwner = await ethers.getSigner(oldUnlockOwner)
 
     // deploy new template
     const PublicLockV13 = await ethers.getContractFactory('PublicLock')
@@ -37,35 +56,48 @@ describe(`Unlock migration`, function() {
     await publicLock.deployed()
     console.log(`PublicLockV13 > deployed at ${publicLock.address}`)
     
-    // // impersonate proxyAdmin owner
-    const proxyAdminAddress = await getProxyAdminAddress({ network })
-    const proxyAdmin = await ethers.getContractAt(['function owner() view returns (address)'], proxyAdminAddress)
-    const proxyAdminOwner = await proxyAdmin.owner()
-    // console.log(proxyAdminOwner)
-    await impersonate(proxyAdminOwner)
-
     // redeploy new Unlock
-    const UnlockModified = await ethers.getContractFactory('Unlock');
-
-    //
-    unlockModified = await upgrades.deployProxy(UnlockModified, [signer.address], {
-      initializer: 'initialize(address)',
-    })
-    console.log(`UnlockModified > deployed at ${unlockModified.address}`)
-
+    unlockModified = await ethers.getContractAt('Unlock', NEW_UNLOCK_ADDRESS);
+    
     // create a (v12) lock
     lock = await deployLock({ unlock, isEthers: true })
-
+    
     // purchase a key
     await purchaseKey(lock, keyOwner.address)
 
-    // set a new tempalte in old unlock
-    await unlock.connect(oldUnlockOwner).addLockTemplate(publicLock.address, 13)
-    await unlock.connect(oldUnlockOwner).setLockTemplate(publicLock.address)
-    console.log(`UNLOCK (old) > upgrade template to ${await unlock.publicLockLatestVersion()}`)
+    // impersonate one of the multisig owner
+    const multisigSigner = await impersonate(MULTISIG_ADDRESS_OWNER);
+    
+    // submit the new tempalte in old unlock (using multisig)
+    const addLockTemplateTx = {
+      contractName: 'Unlock',
+      contractAddress: UNLOCK_ADDRESS,
+      functionName: 'addLockTemplate',
+      functionArgs: [publicLock.address, 13],
+    }
+    const txId = await submitTx({
+      tx: addLockTemplateTx,
+      safeAddress: UNLOCK_MULTISIG_ADDRESS,
+      signer: multisigSigner,
+    })
 
-    // set old Unlock address in new Unlock
-    await unlockModified.setPreviousUnlockAddress(unlock.address)
+    // set the new tempalte as default in old unlock (using multisig)
+    const setLockTemplateTx = {
+      contractName: 'Unlock',
+      contractAddress: UNLOCK_ADDRESS,
+      functionName: 'setLockTemplate',
+      functionArgs: [publicLock.address],
+    }
+    const txId2 = await submitTx({
+      tx: setLockTemplateTx,
+      safeAddress: UNLOCK_MULTISIG_ADDRESS,
+      signer: multisigSigner,
+    })
+
+    await confirmMultisigTx({ transactionId: txId })
+    await confirmMultisigTx({ transactionId: txId2 })
+
+    console.log(`UNLOCK (old) > upgraded template to ${await unlock.publicLockLatestVersion()}`)
   })
 
   describe('Old Unlock settings', () => {
