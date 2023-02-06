@@ -24,7 +24,7 @@
     "directory": "packages/contracts"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-etherscan": "3.1.4",
+    "@nomiclabs/hardhat-etherscan": "3.1.5",
     "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
