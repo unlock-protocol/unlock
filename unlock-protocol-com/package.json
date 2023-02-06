@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.20.7",
-    "@headlessui/react": "1.7.7",
+    "@headlessui/react": "1.7.10",
     "@radix-ui/react-avatar": "1.0.1",
     "@testing-library/react": "13.4.0",
     "@types/next": "8.0.7",
