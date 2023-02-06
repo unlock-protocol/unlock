@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConfig } from '~/utils/withConfig'
@@ -14,7 +14,7 @@ export interface TransactionDetails {
 }
 
 export const NewEvent = () => {
-  const { changeNetwork, account } = useAuth()
+  const { changeNetwork } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
   const [transactionDetails, setTransactionDetails] =

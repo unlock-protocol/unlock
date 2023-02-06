@@ -19,6 +19,8 @@ import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { getEventDate } from './utils'
+import router from 'next/router'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -47,6 +49,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       }
     )
 
+  const { isManager: isLockManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
   if (isMetadataLoading || isHasValidKeyLoading) {
     return <LoadingIcon></LoadingIcon>
   }
@@ -67,6 +74,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         emailRequired: true,
       },
     },
+  }
+
+  const onEdit = () => {
+    return router.push(
+      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
+    )
   }
 
   return (
@@ -128,7 +141,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         )}
       </section>
-      <section className="flex flex flex-col items-center">
+
+      <section className="flex flex-col items-center">
         <img
           alt={eventData.title}
           className="mb-5 aspect-auto	"
@@ -143,10 +157,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </li>
         </ul>
       </section>
-      <section className="mb-8">
+      <section className="flex flex-col mb-8">
         {!hasValidKey && (
           <Button
-            className="h-12 w-full md:w-96"
+            variant="primary"
+            size="medium"
+            className="md:w-1/2"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`
@@ -166,6 +182,22 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             </Link>
             .
           </p>
+        )}
+        {isLockManager && (
+          <>
+            <p className="mt-12 mb-4 text-sm">
+              Want to change something? You can update anytime by accessing your
+              contract (Lock) on the Unlock Dashboard.
+            </p>
+            <Button
+              onClick={onEdit}
+              variant="black"
+              className="border md:w-1/2"
+              size="small"
+            >
+              Edit Details
+            </Button>
+          </>
         )}
       </section>
     </main>
