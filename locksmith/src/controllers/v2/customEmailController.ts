@@ -31,7 +31,7 @@ export class CustomEmailController {
         },
         {
           returning: true,
-          conflictFields: ['id'],
+          conflictFields: ['lockAddress', 'network', 'template'],
         }
       )
       return response.status(200).send(customEmail)

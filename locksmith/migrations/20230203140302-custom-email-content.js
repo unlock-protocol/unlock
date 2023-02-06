@@ -36,6 +36,11 @@ module.exports = {
         type: Sequelize.DATE,
       },
     })
+    await queryInterface.addIndex('CustomEmailContents', {
+      fields: ['lockAddress', 'network', 'template'],
+      unique: true,
+      name: 'lock_network_template_index',
+    })
   },
 
   async down(queryInterface, Sequelize) {
