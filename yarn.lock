@@ -4957,12 +4957,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:0.29.1":
-  version: 0.29.1
-  resolution: "@graphprotocol/graph-ts@npm:0.29.1"
+"@graphprotocol/graph-ts@npm:0.29.3":
+  version: 0.29.3
+  resolution: "@graphprotocol/graph-ts@npm:0.29.3"
   dependencies:
     assemblyscript: 0.19.10
-  checksum: 9ec6f62d28625495b69d813d5ea836f6ab020b0dbd0c56b09277a994626068a660ec91dd21c697213e6531bcf070a3898d72006f6d9270f346a08a4deb1ca4cb
+  checksum: 3f79e638e9c21f4dbfac6dfcf22b5a2272f19648ac161a33b11a107f95c05f4d2e67de5684382c6c7a526b2aaf0eb72b3f734b50a5db0da780aac60943b85228
   languageName: node
   linkType: hard
 
@@ -14112,7 +14112,7 @@ __metadata:
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
     "@graphprotocol/graph-cli": 0.37.1
-    "@graphprotocol/graph-ts": 0.29.1
+    "@graphprotocol/graph-ts": 0.29.3
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
     eslint: 8.33.0
