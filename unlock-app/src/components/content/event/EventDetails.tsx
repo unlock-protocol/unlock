@@ -105,7 +105,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               })}
             </li>
           )}
-          {eventDate && eventData.ticket.event_start_time && (
+          {eventDate && eventData.ticket?.event_start_time && (
             <li className="mb-2">
               <FaClock className="inline mr-2" />
               {eventDate.toLocaleTimeString()}
@@ -114,10 +114,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <li className="mb-2">
             <Link
               target="_blank"
-              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket.event_address}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
             >
               <GoLocation className="inline mr-2" />
-              {eventData.ticket.event_address}
+              {eventData.ticket?.event_address}
             </Link>
           </li>
         </ul>

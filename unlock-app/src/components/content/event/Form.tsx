@@ -1,6 +1,6 @@
 import { config } from '~/config/app'
 import { useState } from 'react'
-import { Token } from '@unlock-protocol/types'
+import { Lock, Token } from '@unlock-protocol/types'
 import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
 import { FormProvider, useForm, Controller, useWatch } from 'react-hook-form'
 import {
@@ -21,8 +21,15 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { CryptoIcon } from '~/components/interface/locks/elements/KeyPrice'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
+export interface NewEventForm {
+  network: number
+  lock: Partial<Lock>
+  currencySymbol: string
+  formData: Partial<MetadataFormData>
+}
+
 interface FormProps {
-  onSubmit: (formData: MetadataFormData) => void
+  onSubmit: (data: NewEventForm) => void
 }
 
 export const Form = ({ onSubmit }: FormProps) => {
@@ -33,21 +40,19 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const web3Service = useWeb3Service()
 
-  const methods = useForm<MetadataFormData>({
+  const methods = useForm<NewEventForm>({
     mode: 'onChange',
     shouldUnregister: false,
     defaultValues: {
       network,
       lock: {
-        name,
+        name: '',
         expirationDuration: UNLIMITED_KEYS_DURATION,
         maxNumberOfKeys: 100,
         currencyContractAddress: null,
-        keyPrice: 0,
+        keyPrice: '0',
       },
-      currency: {
-        symbol: networks[network!].baseCurrencySymbol,
-      },
+      currencySymbol: networks[network!].baseCurrencySymbol,
       formData: {
         description: '',
         ticket: {
@@ -118,7 +123,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     return (
       <p>
         This is the network on which your ticketing contract will be deployed.{' '}
-        {networkDescription(details.network)}
+        {details.network && <>{networkDescription(details.network)}</>}
       </p>
     )
   }
@@ -167,10 +172,10 @@ export const Form = ({ onSubmit }: FormProps) => {
 
               <Select
                 onChange={(newValue) => {
-                  setValue('network', newValue)
+                  setValue('network', Number(newValue))
                   setValue('lock.currencyContractAddress', null)
                   setValue(
-                    'currency.symbol',
+                    'currencySymbol',
                     networks[newValue].baseCurrencySymbol
                   )
                 }}
@@ -270,7 +275,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                     enabled={isFree}
                     setEnabled={setIsFree}
                     onChange={(enable: boolean) => {
-                      setValue('lock.keyPrice', enable ? 0 : undefined)
+                      if (enable) {
+                        setValue('lock.keyPrice', '0')
+                      }
                     }}
                   />
                 </div>
@@ -278,10 +285,10 @@ export const Form = ({ onSubmit }: FormProps) => {
                   <SelectCurrencyModal
                     isOpen={isCurrencyModalOpen}
                     setIsOpen={setCurrencyModalOpen}
-                    network={details.network}
+                    network={Number(details.network)}
                     onSelect={(token: Token) => {
                       setValue('lock.currencyContractAddress', token.address)
-                      setValue('currency.symbol', token.symbol)
+                      setValue('currencySymbol', token.symbol)
                     }}
                   />
                   <div className="grid grid-cols-2 gap-2 justify-items-stretch">
@@ -290,8 +297,8 @@ export const Form = ({ onSubmit }: FormProps) => {
                         onClick={() => setCurrencyModalOpen(true)}
                         className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                       >
-                        <CryptoIcon symbol={details.currency.symbol} />
-                        <span>{details.currency.symbol}</span>
+                        <CryptoIcon symbol={details.currencySymbol!} />
+                        <span>{details.currencySymbol}</span>
                       </div>
                       <div className="pl-1"></div>
                     </div>
