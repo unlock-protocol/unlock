@@ -87,7 +87,7 @@ contract UnlockSwapPurchaser {
     // get lock pricing 
     address destToken = IPublicLock(lock).tokenAddress();
 
-    // get balances of Unlock before
+    // get balances of UnlockSwapPurchaser before
     // if payments in ETH, substract the value sent by user to get actual balance
     uint balanceTokenDestBefore = destToken == address(0) ? 
       getBalance(destToken) - msg.value 
