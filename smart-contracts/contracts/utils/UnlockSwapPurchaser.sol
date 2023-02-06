@@ -155,7 +155,7 @@ contract UnlockSwapPurchaser {
       revert LockCallFailed();
     }
 
-    // check that Unlock didnt spent more than it received
+    // check that Unlock did not spend more than it received
     if(
       getBalance(srcToken) - balanceTokenSrcBefore < 0
       ||
