@@ -29,6 +29,7 @@ contract UnlockSwapPurchaser {
   error InsufficientBalance();
   error UnauthorizedBalanceChange();
   error LockCallFailed();
+  error WithdrawFailed();
 
   /**
    * Set the address of Uniswap Permit2 helper contract
@@ -169,6 +170,22 @@ contract UnlockSwapPurchaser {
     return returnData;
   }
 
+  /**
+   * This is used to send remaining tokens from swaps to the main unlock contract
+   * @param tokenAddress the ERC20 contract address of the token to withdraw
+   * or address(0) for native tokens
+   */
+  function withdrawToUnlock(address tokenAddress) public {
+    uint balance = getBalance(tokenAddress);
+    if(tokenAddress != address(0)) {
+      IERC20(tokenAddress).transfer(unlockAddress, balance);
+    } else {
+      (bool sent,) = payable(unlockAddress).call{value: balance}("");
+      if(sent == false) {
+        revert WithdrawFailed();
+      }
+    }
+  }
   // required to withdraw WETH
   receive() external payable {}
 }
