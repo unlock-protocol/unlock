@@ -39,6 +39,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     defaultValues: {
       network,
       lock: {
+        name,
         expirationDuration: UNLIMITED_KEYS_DURATION,
         maxNumberOfKeys: 100,
         currencyContractAddress: null,
@@ -48,7 +49,6 @@ export const Form = ({ onSubmit }: FormProps) => {
         symbol: networks[network!].baseCurrencySymbol,
       },
       formData: {
-        name,
         description: '',
         ticket: {
           event_start_date: '',
@@ -89,7 +89,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   )
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-    details.formData?.event?.event_address || 'Ethereum'
+    details.formData?.ticket?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
 
   const networkOptions = Object.values(networks || {})?.map(
@@ -133,7 +133,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             </p>
             <div className="grid gap-6">
               <Input
-                {...register('formData.name', {
+                {...register('lock.name', {
                   required: {
                     value: true,
                     message: 'Name is required',
