@@ -399,6 +399,14 @@ components:
       schema:
         type: string
 
+    TemplateId:
+      in: path
+      name: template
+      required: true
+      description: Template id for email
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -2057,6 +2065,92 @@ paths:
 
         500:
           description: Failed to update or create supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/email/{network}/locks/{lockAddress}/custom/{template}:
+    get:
+      operationId: getCustomEmailContent
+      security:
+        - User: []
+      description: Get custom email content for a specific template and lock details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/TemplateId'
+
+      responses:
+        200:
+          description: Successfully get custom template content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  template:
+                    type: string
+                  content:
+                    type: string
+
+        500:
+          description: Could not get custom email content.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Custom email content not found for this template.
+
+    post:
+      operationId: saveCustomEmailContent
+      security:
+        - User: []
+      description: Save custom email content for a specif lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/TemplateId'
+
+      responses:
+        200:
+          description: Custom email content successfully saved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  template:
+                    type: string
+                  content:
+                    type: string
+
+        500:
+          description: Could not save custom email content.
           content:
             application/json:
               schema:
