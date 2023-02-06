@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
 import { DefaultEditor } from 'react-simple-wysiwyg'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface EmailTemplatePreviewProps {
   header?: string
@@ -34,16 +35,26 @@ export const EmailTemplatePreview = ({
   const onSubmit = () => {}
 
   const onSaveCustomContent = async () => {
-    await storage.saveCustomEmailContent(network, lockAddress, template, {
-      data: {
-        content: customContent,
-      },
+    const saveEmailPromise = storage.saveCustomEmailContent(
+      network,
+      lockAddress,
+      template,
+      {
+        data: {
+          content: customContent,
+        },
+      }
+    )
+    await ToastHelper.promise(saveEmailPromise, {
+      loading: 'Updating custom email content...',
+      error: 'Could not update custom email content.',
+      success: 'Custom email content updated.',
     })
   }
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
-  const { isLoading } = useQuery(
+  useQuery(
     ['getCustomContent', network, lockAddress, network],
     async () => {
       const res = await storage.getCustomEmailContent(
@@ -51,17 +62,17 @@ export const EmailTemplatePreview = ({
         lockAddress,
         template
       )
-      return res.data?.content || ''
+      return res?.data?.content || ''
     },
     {
-      onSuccess: (content: string) => {
-        setCustomContent(content)
+      onSuccess: (content: any) => {
+        setCustomContent(content || '')
       },
       enabled: !disabled,
     }
   )
 
-  const loading = saveCustomContent.isLoading || isLoading
+  const loading = saveCustomContent.isLoading
 
   return (
     <>
@@ -356,7 +367,7 @@ export const EmailTemplatePreview = ({
                                         <div
                                           style={{
                                             background: '#f5f5f5',
-                                            padding: '5px 2px',
+                                            padding: '2px',
                                           }}
                                         >
                                           <div
