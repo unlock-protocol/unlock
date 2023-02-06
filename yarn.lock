@@ -10795,16 +10795,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:1.16.1":
-  version: 1.16.1
-  resolution: "@stripe/react-stripe-js@npm:1.16.1"
+"@stripe/react-stripe-js@npm:1.16.4":
+  version: 1.16.4
+  resolution: "@stripe/react-stripe-js@npm:1.16.4"
   dependencies:
     prop-types: ^15.7.2
   peerDependencies:
     "@stripe/stripe-js": ^1.44.1
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: edd829619c714eeafe3235b1de731d03165dfa7f88b2596c2533912121cfde418dc412c3778e0eef17af59929280ece08269516272fd49569d8545f4f267dd1d
+  checksum: e411ce91503398677eaf38016fb7e93315517407b81115b2e359fcd44610a786f1cd37b4c959c9fda8c6f35b1b4fe7dc2af29965168041fceff251cb5f40e74e
   languageName: node
   linkType: hard
 
@@ -14200,7 +14200,7 @@ __metadata:
     "@radix-ui/react-avatar": 1.0.1
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.28.1
-    "@stripe/react-stripe-js": 1.16.1
+    "@stripe/react-stripe-js": 1.16.4
     "@stripe/stripe-js": 1.46.0
     "@tanstack/react-query": 4.20.4
     "@testing-library/react": 13.4.0
