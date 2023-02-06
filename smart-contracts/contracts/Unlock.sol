@@ -642,23 +642,20 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return globalTokenSymbol;
   }
 
-
-  // TODO: perm/modifier for this
-  function postLockUpgrade(uint16 version, address _previousUnlockAddress ) public {
-    // check if lock has been deployed here
-    bool isDeployed = locks[msg.sender].deployed;
-
-    // the check if it was deployed previously
-    if (version == 13 && isDeployed == false) {
+  // TODO: maybe better to pass bytes here if we want to change it later?
+  function postLockUpgrade(address _previousUnlockAddress ) public {
+    // check if lock hasnot already been deployed here and version is correct
+    if (
+      locks[msg.sender].deployed == false
+      && 
+      IPublicLock(msg.sender).publicLockVersion() == 13 
+    ) {
       IUnlockV11 previousUnlock = IUnlockV11(_previousUnlockAddress);
       (
         bool deployed, 
         uint totalSales, 
         uint yieldedDiscountTokens
       ) = previousUnlock.locks(msg.sender);
-
-      // notify modifier
-      isDeployed = deployed;
 
       // record lock from old Unlock in this one
       if (deployed) {

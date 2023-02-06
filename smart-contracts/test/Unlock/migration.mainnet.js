@@ -31,7 +31,7 @@ const {
 
 const { submitTx } = require('../../scripts/multisig')
 
-const NEW_UNLOCK_ADDRESS = '0x84d085898F6ae4ae8c4225f2601F29a10335F653'
+const NEW_UNLOCK_ADDRESS = '0x7039d2BB4CfC5f5DA49E6b4b9c40400bccb0d1E8'
 
 let unlock, publicLock, unlockModified, lock, signer, keyOwner
 
