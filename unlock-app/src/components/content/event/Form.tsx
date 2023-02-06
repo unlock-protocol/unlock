@@ -19,11 +19,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '~/components/interface/locks/elements/KeyPrice'
+import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
 export const Form = () => {
   const { networks } = useConfig()
   const { network, account } = useAuth()
-  const [isFree, setIsFree] = useState(false)
+  const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
 
   const web3Service = useWeb3Service()
@@ -33,8 +34,25 @@ export const Form = () => {
     shouldUnregister: false,
     defaultValues: {
       network,
+      lock: {
+        expirationDuration: UNLIMITED_KEYS_DURATION,
+        maxNumberOfKeys: 100,
+        currencyContractAddress: null,
+        keyPrice: 0,
+      },
       currency: {
         symbol: networks[network!].baseCurrencySymbol,
+      },
+      formData: {
+        name,
+        description: '',
+        ticket: {
+          event_start_date: '',
+          event_start_time: '',
+          event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          event_address: '',
+        },
+        image: '',
       },
     },
   })
@@ -53,7 +71,6 @@ export const Form = () => {
   const details = useWatch({
     control,
   })
-  console.log(details)
 
   const errorFields = Object.keys(errors)
 
@@ -72,7 +89,7 @@ export const Form = () => {
   )
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-    details.event_address || 'Ethereum'
+    details.formData?.event?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
 
   const networkOptions = Object.values(networks || {})?.map(
@@ -117,13 +134,12 @@ export const Form = () => {
             </p>
             <div className="grid gap-6">
               <Input
-                {...register('name', {
+                {...register('formData.name', {
                   required: {
                     value: true,
                     message: 'Name is required',
                   },
                 })}
-                error={errors.name?.message}
                 type="text"
                 placeholder="Name"
                 label="Event Name"
@@ -133,17 +149,15 @@ export const Form = () => {
               />
 
               <TextBox
-                {...register('description')}
+                {...register('formData.description')}
                 label="Description"
                 placeholder="Write description here."
                 description={<DescDescription />}
-                error={errors.description?.message}
                 rows={4}
               />
 
               <Input
-                {...register('illustration', {})}
-                error={errors.illustration?.message?.toString()}
+                {...register('formData.image', {})}
                 type="url"
                 placeholder="Please enter an image URL"
                 label="Illustration"
@@ -155,7 +169,7 @@ export const Form = () => {
               <Select
                 onChange={(newValue) => {
                   setValue('network', newValue)
-                  setValue('currency.currencyContractAddress', null)
+                  setValue('lock.currencyContractAddress', null)
                   setValue(
                     'currency.symbol',
                     networks[newValue].baseCurrencySymbol
@@ -191,20 +205,18 @@ export const Form = () => {
                 </div>
                 <div className="flex flex-col self-start justify-top">
                   <Input
-                    {...register('event_start_date')}
+                    {...register('formData.ticket.event_start_date')}
                     type="date"
                     label="Date"
-                    error={errors.ticket?.event_start_date?.message}
                   />
                   <Input
-                    {...register('event_start_time')}
+                    {...register('formData.ticket.event_start_time')}
                     type="time"
                     label="Time"
-                    error={errors.ticket?.event_start_time?.message}
                   />
 
                   <Controller
-                    name="event_timezone"
+                    name="formData.ticket.event_timezone"
                     control={control}
                     render={({ field: { onChange, value } }) => {
                       return (
@@ -226,28 +238,17 @@ export const Form = () => {
                             }
                           )}
                           label="Timezone"
-                          defaultValue={
-                            value ||
-                            Intl.DateTimeFormat().resolvedOptions().timeZone
-                          }
+                          defaultValue={value}
                         />
                       )
                     }}
                   />
 
                   <Input
-                    {...register('event_address')}
+                    {...register('formData.ticket.event_address')}
                     type="text"
                     placeholder="123 1st street, 11217 Springfield, US"
                     label="Address for in person event"
-                    error={errors.ticket?.event_address?.message}
-                  />
-                  <Input
-                    label="Meeting link (if any)"
-                    placeholder="https://"
-                    {...register('event_url')}
-                    type="url"
-                    error={errors.ticket?.event_url?.message}
                   />
                 </div>
               </div>
@@ -270,10 +271,7 @@ export const Form = () => {
                     enabled={isFree}
                     setEnabled={setIsFree}
                     onChange={(enable: boolean) => {
-                      setValue('keyPrice', enable ? 0 : undefined)
-                      setValue('isFree', enable, {
-                        shouldValidate: true,
-                      })
+                      setValue('lock.keyPrice', enable ? 0 : undefined)
                     }}
                   />
                 </div>
@@ -283,10 +281,7 @@ export const Form = () => {
                     setIsOpen={setCurrencyModalOpen}
                     network={details.network}
                     onSelect={(token: Token) => {
-                      setValue(
-                        'currency.currencyContractAddress',
-                        token.address
-                      )
+                      setValue('lock.currencyContractAddress', token.address)
                       setValue('currency.symbol', token.symbol)
                     }}
                   />
@@ -308,21 +303,16 @@ export const Form = () => {
                       placeholder="0.00"
                       step={0.01}
                       disabled={isFree}
-                      {...register('keyPrice', {
+                      {...register('lock.keyPrice', {
                         required: !isFree,
                       })}
                     />
                   </div>
-                  {errors?.keyPrice && (
-                    <span className="absolute text-xs text-red-700 ">
-                      Please enter a positive number
-                    </span>
-                  )}
                 </div>
               </div>
 
               <Input
-                {...register('maxNumberOfKeys', {
+                {...register('lock.maxNumberOfKeys', {
                   min: 0,
                   required: {
                     value: true,
