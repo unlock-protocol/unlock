@@ -100,13 +100,12 @@ export default (opts = {}) => {
           border-color: #bfb1f7 !important;
         }
       }
-      p {
+      p, ul, ol, li {
         font-family: sans-serif;
         font-size: 18px;
-        font-weight: normal;
-        margin: 0;
-        margin-bottom: 16px;
+        font-weight: normal;       
       }
+    
       body: {
         font-family: sans-serif;
         font-size: 18px;

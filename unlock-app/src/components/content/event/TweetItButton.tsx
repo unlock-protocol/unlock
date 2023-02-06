@@ -9,7 +9,7 @@ interface TweetItButtonProps {
 }
 
 export const TweetItButton = ({ event }: TweetItButtonProps) => {
-  const eventDate = getEventDate(event)
+  const eventDate = getEventDate(event.ticket)
 
   if (!event.name || !eventDate) {
     return null
