@@ -145,23 +145,6 @@ async function upgradeUpgreadableContract(
   return upgraded
 }
 
-
-async function getContractFactoryFromSolFiles(contractName, versionNumber) {
-  const contractVersion = `${contractName}V${versionNumber}`
-  
-  // make sure contract exists
-  if (!Object.keys(contracts).includes(contractVersion)) {
-    throw Error(
-      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
-    )
-  }
-  
-  // get contract factory
-  const { bytecode, abi } = contracts[contractVersion]
-  const factory = await ethers.getContractFactory(abi, bytecode)
-  return factory
-}
-
 async function getContractAtVersion(
   contractName,
   versionNumber,
