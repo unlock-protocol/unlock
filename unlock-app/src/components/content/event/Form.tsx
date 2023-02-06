@@ -21,7 +21,11 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { CryptoIcon } from '~/components/interface/locks/elements/KeyPrice'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
-export const Form = () => {
+interface FormProps {
+  onSubmit: (formData: MetadataFormData) => void
+}
+
+export const Form = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
   const { network, account } = useAuth()
   const [isFree, setIsFree] = useState(true)
@@ -63,10 +67,6 @@ export const Form = () => {
     setValue,
     formState: { errors },
   } = methods
-
-  const onSubmit = async (formData: MetadataFormData) => {
-    console.log(formData)
-  }
 
   const details = useWatch({
     control,
@@ -129,8 +129,7 @@ export const Form = () => {
         <div className="grid gap-6">
           <Disclosure label="Basic Information" defaultOpen>
             <p className="mb-5">
-              Please complete the following details. All of these can also be
-              adjusted later.
+              All of these fields can also be adjusted later.
             </p>
             <div className="grid gap-6">
               <Input

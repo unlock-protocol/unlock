@@ -133,7 +133,6 @@ export const formDataToMetadata = ({
   stats,
   image,
 }: MetadataFormData) => {
-  console.trace()
   const metadata: Metadata & { attributes: Attribute[] } = {
     name,
     image,
