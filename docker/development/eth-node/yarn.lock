@@ -1361,7 +1361,7 @@ __metadata:
     "@unlock-protocol/hardhat-plugin": 0.0.18
     eslint: 8.31.0
     ethers: 5.7.2
-    hardhat: 2.12.5
+    hardhat: 2.12.6
     hardhat-erc1820: 0.1.0
     ts-node: 10.9.1
     typescript: 4.9.4
@@ -1799,6 +1799,15 @@ __metadata:
     base64-js: ^1.3.1
     ieee754: ^1.2.1
   checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
+  languageName: node
+  linkType: hard
+
+"busboy@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "busboy@npm:1.6.0"
+  dependencies:
+    streamsearch: ^1.1.0
+  checksum: 32801e2c0164e12106bf236291a00795c3c4e4b709ae02132883fe8478ba2ae23743b11c5735a0aae8afe65ac4b6ca4568b91f0d9fed1fdbc32ede824a73746e
   languageName: node
   linkType: hard
 
@@ -2913,9 +2922,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.12.5":
-  version: 2.12.5
-  resolution: "hardhat@npm:2.12.5"
+"hardhat@npm:2.12.6":
+  version: 2.12.6
+  resolution: "hardhat@npm:2.12.6"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -2964,7 +2973,7 @@ fsevents@~2.3.2:
     source-map-support: ^0.5.13
     stacktrace-parser: ^0.1.10
     tsort: 0.0.1
-    undici: ^5.4.0
+    undici: ^5.14.0
     uuid: ^8.3.2
     ws: ^7.4.6
   peerDependencies:
@@ -2977,7 +2986,7 @@ fsevents@~2.3.2:
       optional: true
   bin:
     hardhat: internal/cli/cli.js
-  checksum: 01afb4db4dd78068c7cfa95826297f727c1fc952cfaa4aea6b8235a1de051386c765c00c5fafb6377cac19df08944718d151aced4687e47c7d79bae0121a29a4
+  checksum: c97c5ed2336541e8b0a3034dc5c94319cffbf93fa1b6385091858f8eefb392129c6109cbaca0837fd4dff4d627b3e3ccb931706257a5d0bee71fc7f7fe90a536
   languageName: node
   linkType: hard
 
@@ -4595,6 +4604,13 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
+"streamsearch@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "streamsearch@npm:1.1.0"
+  checksum: 1cce16cea8405d7a233d32ca5e00a00169cc0e19fbc02aa839959985f267335d435c07f96e5e0edd0eadc6d39c98d5435fb5bbbdefc62c41834eadc5622ad942
+  languageName: node
+  linkType: hard
+
 "string-width@npm:^1.0.1":
   version: 1.0.2
   resolution: "string-width@npm:1.0.2"
@@ -4888,10 +4904,12 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-"undici@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "undici@npm:5.4.0"
-  checksum: 2852397ee1dbb2b3ad58166520ec30f4f0143895f6e7b157dbedfac4e43b522a710a3927be61a67b2ae791190973f206d30785564ece7675e08133427cebaaa1
+"undici@npm:^5.14.0":
+  version: 5.16.0
+  resolution: "undici@npm:5.16.0"
+  dependencies:
+    busboy: ^1.6.0
+  checksum: bc22e797cbf469351713c88af33e65e21952a75f431b78b0e75fb2411426ab38b888ec0761d4b81eadf8f6e8872ed23fb75641cc7319c6a7f08bd083899fa1cc
   languageName: node
   linkType: hard
 
