@@ -420,8 +420,6 @@ interface IPublicLock {
     view
     returns (address hookAddress);
 
-  function revokeKeyGranter(address _granter) external;
-
   function renounceLockManager() external;
 
   /**
