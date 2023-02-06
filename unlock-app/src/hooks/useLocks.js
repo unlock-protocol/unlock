@@ -128,7 +128,7 @@ export const createLock = async (
       owner,
       name,
       currencyContractAddress,
-      publicLockVersion: 12, // Current version that we deploy!
+      publicLockVersion: config.publicLockVersion,
     },
     {} /** transactionParams */,
     async (createLockError, transactionHash) => {

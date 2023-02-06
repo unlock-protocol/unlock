@@ -23,9 +23,9 @@ import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
 export interface NewEventForm {
   network: number
-  lock: Partial<Lock>
+  lock: Omit<Lock, 'address' | 'key'>
   currencySymbol: string
-  formData: Partial<MetadataFormData>
+  metadata: Partial<MetadataFormData>
 }
 
 interface FormProps {
@@ -53,7 +53,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         keyPrice: '0',
       },
       currencySymbol: networks[network!].baseCurrencySymbol,
-      formData: {
+      metadata: {
         description: '',
         ticket: {
           event_start_date: '',
@@ -94,7 +94,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   )
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-    details.formData?.ticket?.event_address || 'Ethereum'
+    details.metadata?.ticket?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
 
   const networkOptions = Object.values(networks || {})?.map(
@@ -153,7 +153,7 @@ export const Form = ({ onSubmit }: FormProps) => {
               />
 
               <TextBox
-                {...register('formData.description')}
+                {...register('metadata.description')}
                 label="Description"
                 placeholder="Write description here."
                 description={<DescDescription />}
@@ -161,7 +161,7 @@ export const Form = ({ onSubmit }: FormProps) => {
               />
 
               <Input
-                {...register('formData.image', {})}
+                {...register('metadata.image', {})}
                 type="url"
                 placeholder="Please enter an image URL"
                 label="Illustration"
@@ -209,18 +209,18 @@ export const Form = ({ onSubmit }: FormProps) => {
                 </div>
                 <div className="flex flex-col self-start justify-top">
                   <Input
-                    {...register('formData.ticket.event_start_date')}
+                    {...register('metadata.ticket.event_start_date')}
                     type="date"
                     label="Date"
                   />
                   <Input
-                    {...register('formData.ticket.event_start_time')}
+                    {...register('metadata.ticket.event_start_time')}
                     type="time"
                     label="Time"
                   />
 
                   <Controller
-                    name="formData.ticket.event_timezone"
+                    name="metadata.ticket.event_timezone"
                     control={control}
                     render={({ field: { onChange, value } }) => {
                       return (
@@ -249,7 +249,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   />
 
                   <Input
-                    {...register('formData.ticket.event_address')}
+                    {...register('metadata.ticket.event_address')}
                     type="text"
                     placeholder="123 1st street, 11217 Springfield, US"
                     label="Address for in person event"
