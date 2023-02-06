@@ -640,4 +640,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   {
     return globalTokenSymbol;
   }
+
+  // required to receive ETH
+  receive() external payable {}
 }

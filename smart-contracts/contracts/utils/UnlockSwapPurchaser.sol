@@ -186,6 +186,7 @@ contract UnlockSwapPurchaser {
       }
     }
   }
+
   // required to withdraw WETH
   receive() external payable {}
 }
