@@ -29,7 +29,7 @@
     "eslint": "^8.23.0",
     "ethers": "^5.4.7",
     "graphql": "^16.6.0",
-    "hardhat": "^2.11.0",
+    "hardhat": "2.12.6",
     "hardhat-gas-reporter": "^1.0.8",
     "isomorphic-fetch": "^3.0.0",
     "solidity-coverage": "^0.7.21",
