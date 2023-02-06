@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "glob": "8.1.0",
-    "ts-jest": "27.1.5"
+    "ts-jest": "29.0.5"
   },
   "peerDependencies": {
-    "jest": "^27.5.x"
+    "jest": "^27.5.x || ^29.0.0"
   },
   "repository": {
     "type": "git",
