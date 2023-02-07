@@ -5,12 +5,12 @@ import { Icon } from '@unlock-protocol/ui'
 import Image from 'next/image'
 import Link from 'next/link'
 
-interface AccordeonProps {
+interface AccordionProps {
   title: string
   children: React.ReactNode
 }
 
-const Accordeon = ({ title, children }: AccordeonProps) => {
+const Accordion = ({ title, children }: AccordionProps) => {
   return (
     <Disclosure>
       {() => (
@@ -193,14 +193,14 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
         <h3 className="text-center text-3xl font-bold my-12">
           Frequently Asked Questions
         </h3>
-        <Accordeon title="Will attendees need wallets?">
+        <Accordion title="Will attendees need wallets?">
           <p>
             No! Attendees do not need wallets, but they will need user accounts
             if they do not have their own wallets. Unlock accounts require an
             email and password.
           </p>
-        </Accordeon>
-        <Accordeon title="What blockchain is this on?">
+        </Accordion>
+        <Accordion title="What blockchain is this on?">
           <p>
             You can pick between{' '}
             <Link
@@ -213,13 +213,13 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
             </Link>
             has been deployed: Polygon, Gnosis Chain, Optimism, ...
           </p>
-        </Accordeon>
-        <Accordeon title="Can I charge for the tickets?">
+        </Accordion>
+        <Accordion title="Can I charge for the tickets?">
           <p>
             Yes, when deploying your contract you can pick a currency, as well
             as enable credit card, Apple Pay and Google Pay.
           </p>
-        </Accordeon>
+        </Accordion>
       </section>
     </div>
   )
