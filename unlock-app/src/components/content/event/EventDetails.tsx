@@ -58,8 +58,32 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     return <LoadingIcon></LoadingIcon>
   }
 
+  const onEdit = () => {
+    return router.push(
+      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
+    )
+  }
+
   if (!metadata?.attributes) {
-    return <p>Not an event!</p>
+    if (isLockManager) {
+      return (
+        <>
+          <p className="mb-2">
+            Your event details are not set. Please make sure you add a date,
+            time and location.
+          </p>
+          <Button
+            onClick={onEdit}
+            variant="black"
+            className="border w-32"
+            size="small"
+          >
+            Edit Details
+          </Button>
+        </>
+      )
+    }
+    return <p>This contract is not configured.</p>
   }
 
   const eventData = toFormData(metadata)
@@ -74,12 +98,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         emailRequired: true,
       },
     },
-  }
-
-  const onEdit = () => {
-    return router.push(
-      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-    )
   }
 
   return (
