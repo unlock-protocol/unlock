@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConfig } from '~/utils/withConfig'
 import { useWalletService } from '~/utils/withWalletService'
 import { Form, NewEventForm } from './Form'
@@ -16,7 +15,6 @@ export interface TransactionDetails {
 }
 
 export const NewEvent = () => {
-  const { changeNetwork } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
   const [transactionDetails, setTransactionDetails] =
@@ -24,9 +22,6 @@ export const NewEvent = () => {
   const [lockAddress, setLockAddress] = useState<string>()
 
   const onSubmit = async (formData: NewEventForm) => {
-    // prompt the user to change network if applicable
-    await changeNetwork(formData.network)
-
     let lockAddress
     try {
       lockAddress = await walletService.createLock(

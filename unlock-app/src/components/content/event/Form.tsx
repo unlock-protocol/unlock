@@ -35,7 +35,8 @@ interface FormProps {
 
 export const Form = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { network, account, changeNetwork } = useAuth()
+
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
 
@@ -178,6 +179,7 @@ export const Form = ({ onSubmit }: FormProps) => {
 
               <Select
                 onChange={(newValue) => {
+                  changeNetwork(networks[Number(newValue)])
                   setValue('network', Number(newValue))
                   setValue('lock.currencyContractAddress', null)
                   setValue(
