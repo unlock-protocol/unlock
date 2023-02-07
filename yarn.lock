@@ -3476,7 +3476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethereumjs/common@npm:^2.3.0, @ethereumjs/common@npm:^2.4.0, @ethereumjs/common@npm:^2.5.0, @ethereumjs/common@npm:^2.6.0":
+"@ethereumjs/common@npm:^2.3.0, @ethereumjs/common@npm:^2.5.0, @ethereumjs/common@npm:^2.6.0":
   version: 2.6.0
   resolution: "@ethereumjs/common@npm:2.6.0"
   dependencies:
@@ -3574,7 +3574,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/abi@npm:5.7.0, @ethersproject/abi@npm:^5.0.0-beta.146, @ethersproject/abi@npm:^5.0.12, @ethersproject/abi@npm:^5.1.2, @ethersproject/abi@npm:^5.4.0, @ethersproject/abi@npm:^5.4.7, @ethersproject/abi@npm:^5.5.0, @ethersproject/abi@npm:^5.6.3, @ethersproject/abi@npm:^5.7.0":
+"@ethersproject/abi@npm:5.7.0, @ethersproject/abi@npm:^5.0.0-beta.146, @ethersproject/abi@npm:^5.0.12, @ethersproject/abi@npm:^5.0.9, @ethersproject/abi@npm:^5.1.2, @ethersproject/abi@npm:^5.4.0, @ethersproject/abi@npm:^5.4.7, @ethersproject/abi@npm:^5.5.0, @ethersproject/abi@npm:^5.6.3, @ethersproject/abi@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/abi@npm:5.7.0"
   dependencies:
@@ -9376,7 +9376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.14.0, @solidity-parser/parser@npm:^0.14.5":
+"@solidity-parser/parser@npm:^0.14.0, @solidity-parser/parser@npm:^0.14.1, @solidity-parser/parser@npm:^0.14.5":
   version: 0.14.5
   resolution: "@solidity-parser/parser@npm:0.14.5"
   dependencies:
@@ -11633,7 +11633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/interface-adapter@npm:^0.5.2, @truffle/interface-adapter@npm:^0.5.21, @truffle/interface-adapter@npm:^0.5.5":
+"@truffle/interface-adapter@npm:^0.5.2, @truffle/interface-adapter@npm:^0.5.21":
   version: 0.5.26
   resolution: "@truffle/interface-adapter@npm:0.5.26"
   dependencies:
@@ -11641,17 +11641,6 @@ __metadata:
     ethers: ^4.0.32
     web3: 1.8.1
   checksum: 2c6a92e1eb3e7ed2d4df9f888a049062f41e8e8ed560c29bbbdbf3674be9c155c6bfc5d53647dcfd18fc2b3317f42bfa2afe2b159f42ba53c8a2afea8c0180e0
-  languageName: node
-  linkType: hard
-
-"@truffle/provider@npm:^0.2.24":
-  version: 0.2.39
-  resolution: "@truffle/provider@npm:0.2.39"
-  dependencies:
-    "@truffle/error": ^0.0.14
-    "@truffle/interface-adapter": ^0.5.5
-    web3: 1.5.2
-  checksum: 08c3939cda1719857db621dc1d5a312a6edd82e3b2a3e7f52f70e6992e3169bcc3a7035bcbb539f144a040ee4a7ea09b9cda76191005f7134144792f4fa3004c
   languageName: node
   linkType: hard
 
@@ -14008,7 +13997,7 @@ __metadata:
     prettier-plugin-solidity: 1.0.0
     prompt: 1.2.2
     solhint: 3.3.8
-    solidity-coverage: 0.7.21
+    solidity-coverage: ^0.8.2
     web3: 1.7.5
     yesno: 0.4.0
   languageName: unknown
@@ -22751,6 +22740,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"difflib@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "difflib@npm:0.2.4"
+  dependencies:
+    heap: ">= 0.2.0"
+  checksum: 4f4237b026263ce7471b77d9019b901c2f358a7da89401a80a84a8c3cdc1643a8e70b7495ccbe686cb4d95492eaf5dac119cd9ecbffe5f06bfc175fbe5c20a27
+  languageName: node
+  linkType: hard
+
 "dijkstrajs@npm:^1.0.1":
   version: 1.0.2
   resolution: "dijkstrajs@npm:1.0.2"
@@ -29330,6 +29328,13 @@ fsevents@~2.1.1:
   version: 0.2.6
   resolution: "heap@npm:0.2.6"
   checksum: 1291b9b9efb5090d01c6d04a89c91ca6e0e0eb7f3694d8254f7a5effcc5ab9249bc3d16767b276645ffe86d9b2bbd82ed977f8988f55375e9f2a2c80647ebbdc
+  languageName: node
+  linkType: hard
+
+"heap@npm:>= 0.2.0":
+  version: 0.2.7
+  resolution: "heap@npm:0.2.7"
+  checksum: b0f3963a799e02173f994c452921a777f2b895b710119df999736bfed7477235c2860c423d9aea18a9f3b3d065cb1114d605c208cfcb8d0ac550f97ec5d28cb0
   languageName: node
   linkType: hard
 
@@ -36434,6 +36439,41 @@ fsevents@~2.1.1:
     _mocha: bin/_mocha
     mocha: bin/mocha.js
   checksum: 406c45eab122ffd6ea2003c2f108b2bc35ba036225eee78e0c784b6fa2c7f34e2b13f1dbacef55a4fdf523255d76e4f22d1b5aacda2394bd11666febec17c719
+  languageName: node
+  linkType: hard
+
+"mocha@npm:7.1.2":
+  version: 7.1.2
+  resolution: "mocha@npm:7.1.2"
+  dependencies:
+    ansi-colors: 3.2.3
+    browser-stdout: 1.3.1
+    chokidar: 3.3.0
+    debug: 3.2.6
+    diff: 3.5.0
+    escape-string-regexp: 1.0.5
+    find-up: 3.0.0
+    glob: 7.1.3
+    growl: 1.10.5
+    he: 1.2.0
+    js-yaml: 3.13.1
+    log-symbols: 3.0.0
+    minimatch: 3.0.4
+    mkdirp: 0.5.5
+    ms: 2.1.1
+    node-environment-flags: 1.0.6
+    object.assign: 4.1.0
+    strip-json-comments: 2.0.1
+    supports-color: 6.0.0
+    which: 1.3.1
+    wide-align: 1.1.3
+    yargs: 13.3.2
+    yargs-parser: 13.1.2
+    yargs-unparser: 1.6.0
+  bin:
+    _mocha: bin/_mocha
+    mocha: bin/mocha
+  checksum: 0fc9ad0dd79e43a34de03441634f58e8a3d211af4cdbcd56de150ec99f7aff3b8678bd5aeb41f82115f7df4199a24f7bb372f65e5bcba133b41a5310dee908bd
   languageName: node
   linkType: hard
 
@@ -45556,31 +45596,35 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"solidity-coverage@npm:0.7.21, solidity-coverage@npm:^0.7.21":
-  version: 0.7.21
-  resolution: "solidity-coverage@npm:0.7.21"
+"solidity-coverage@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "solidity-coverage@npm:0.8.2"
   dependencies:
-    "@solidity-parser/parser": ^0.14.0
-    "@truffle/provider": ^0.2.24
+    "@ethersproject/abi": ^5.0.9
+    "@solidity-parser/parser": ^0.14.1
     chalk: ^2.4.2
     death: ^1.1.0
     detect-port: ^1.3.0
+    difflib: ^0.2.4
     fs-extra: ^8.1.0
     ghost-testrpc: ^0.0.2
     global-modules: ^2.0.0
     globby: ^10.0.1
     jsonschema: ^1.2.4
     lodash: ^4.17.15
+    mocha: 7.1.2
     node-emoji: ^1.10.0
     pify: ^4.0.1
     recursive-readdir: ^2.2.2
     sc-istanbul: ^0.4.5
     semver: ^7.3.4
     shelljs: ^0.8.3
-    web3-utils: ^1.3.0
+    web3-utils: ^1.3.6
+  peerDependencies:
+    hardhat: ^2.11.0
   bin:
     solidity-coverage: plugins/bin.js
-  checksum: a782a96bc2a1cb8120f3e401b09e7ba4b0a38e9198fc91b11c8dacac071f1142ecb2fc4c290675cf36ba80f52773065dd1a6225d0650dc8987a073072734984a
+  checksum: 489f73d56a1279f2394b7a14db315532884895baa00a4016e68a4e5be0eddca90a95cb3322e6a0b15e67f2d9003b9413ee24c1c61d78f558f5a2e1e233840825
   languageName: node
   linkType: hard
 
@@ -47702,7 +47746,7 @@ resolve@~1.20.0:
     hardhat: 2.12.6
     hardhat-gas-reporter: ^1.0.8
     isomorphic-fetch: ^3.0.0
-    solidity-coverage: ^0.7.21
+    solidity-coverage: ^0.8.2
     ts-node: ">=8.0.0"
     typechain: ^8.1.0
     typescript: ">=4.5.0"
@@ -50877,17 +50921,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-bzz@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-bzz@npm:1.5.2"
-  dependencies:
-    "@types/node": ^12.12.6
-    got: 9.6.0
-    swarm-js: ^0.1.40
-  checksum: 8f65ddb33579b2ca62d98f0f4002826bb020de6ec3823b3d02e0b89ed58440ace92e9413bf4369594f8ac14d84e3e5d02bfdae60b00b38453b3987bdb7bf0d44
-  languageName: node
-  linkType: hard
-
 "web3-bzz@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-bzz@npm:1.7.4"
@@ -50973,16 +51006,6 @@ typescript@^3.8.3:
     web3-eth-iban: 1.4.0
     web3-utils: 1.4.0
   checksum: 79b25353858722a29d947552802d2a36a6aa0645fe1880c347143e0d807d604f0d91b823746a88a908217e8decdaf9e99f567a95cbc3ae4897b8b64b6989377c
-  languageName: node
-  linkType: hard
-
-"web3-core-helpers@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-core-helpers@npm:1.5.2"
-  dependencies:
-    web3-eth-iban: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 7556e402a82969b8ea8b0dc9d90a4825801fd56eb0232b407d669b6ad17307bd930ee311d6a592441c1a14981c632c42f255ff5a429d14332ea0b65e3996cbc5
   languageName: node
   linkType: hard
 
@@ -51084,20 +51107,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-core-method@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-core-method@npm:1.5.2"
-  dependencies:
-    "@ethereumjs/common": ^2.4.0
-    "@ethersproject/transactions": ^5.0.0-beta.135
-    web3-core-helpers: 1.5.2
-    web3-core-promievent: 1.5.2
-    web3-core-subscriptions: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 9fc5939ffebb1c36d76dc288b00e8bebfdac4a86e0adc9b08e9e0b52d5113db0999acce64719d875851ff1afc612f620fe31855b5c403946530d50309536b26b
-  languageName: node
-  linkType: hard
-
 "web3-core-method@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-core-method@npm:1.7.4"
@@ -51181,15 +51190,6 @@ typescript@^3.8.3:
   dependencies:
     eventemitter3: 4.0.4
   checksum: 1bf5df6817502f546300c4919e6e9036eefe8430de702a3c168db2a9d7d9ab72356de5810dcbd83f8eba347c0fdb7175e861e3b6072cfb55b2465fe8b039c833
-  languageName: node
-  linkType: hard
-
-"web3-core-promievent@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-core-promievent@npm:1.5.2"
-  dependencies:
-    eventemitter3: 4.0.4
-  checksum: b19f1546e9ae4620c65a335cee2dac881684c0f0ab7d29384a950b384b42d9b156d85ed77a1fc3191d73bc8b1879507626525cf98c3bf17c5c973416ed4a64b4
   languageName: node
   linkType: hard
 
@@ -51287,19 +51287,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-core-requestmanager@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-core-requestmanager@npm:1.5.2"
-  dependencies:
-    util: ^0.12.0
-    web3-core-helpers: 1.5.2
-    web3-providers-http: 1.5.2
-    web3-providers-ipc: 1.5.2
-    web3-providers-ws: 1.5.2
-  checksum: 70c37c86d2f1f60fcf26ee04d3170ec70631bec846987252937d207a801c16b410f222cc4bbf23c7810304330fcc276426fe81c88a15ccc8c4b49aa308d6f6f8
-  languageName: node
-  linkType: hard
-
 "web3-core-requestmanager@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-core-requestmanager@npm:1.7.4"
@@ -51391,16 +51378,6 @@ typescript@^3.8.3:
     underscore: 1.12.1
     web3-core-helpers: 1.4.0
   checksum: 83d16f44311d71dc487f4b8b2b18b30a8849f1c4bbbebcefce351f3227322b6f9940e6e9a7a886994e4d17d930a23c230828e205aa217be155c51af0bfd86643
-  languageName: node
-  linkType: hard
-
-"web3-core-subscriptions@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-core-subscriptions@npm:1.5.2"
-  dependencies:
-    eventemitter3: 4.0.4
-    web3-core-helpers: 1.5.2
-  checksum: 95a8b02110ccd8701f09c1f7ab0beae27f06818ffef1388edd649556f8207bafeb83c334224cb3de31921bae10b251f212eaafd102b915f5f767736e6792eec7
   languageName: node
   linkType: hard
 
@@ -51505,21 +51482,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-core@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-core@npm:1.5.2"
-  dependencies:
-    "@types/bn.js": ^4.11.5
-    "@types/node": ^12.12.6
-    bignumber.js: ^9.0.0
-    web3-core-helpers: 1.5.2
-    web3-core-method: 1.5.2
-    web3-core-requestmanager: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 4a66de17fde13a3e94f3a6462d4db3231e1dae5568cd7a0f98436512448216e61e156b1e43b00cd813aedde0a8aaec3ed1882bda0eeed035d2ac864c9b0a956f
-  languageName: node
-  linkType: hard
-
 "web3-core@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-core@npm:1.7.4"
@@ -51617,16 +51579,6 @@ typescript@^3.8.3:
     underscore: 1.12.1
     web3-utils: 1.4.0
   checksum: e9bc1e74026f680f5e498da416c0d861fad922911311c6249be9c2e251827e489bff59732da745dcdbe3beae72b6869f62faf5e86a78e5af5b02306a8046b4b1
-  languageName: node
-  linkType: hard
-
-"web3-eth-abi@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth-abi@npm:1.5.2"
-  dependencies:
-    "@ethersproject/abi": 5.0.7
-    web3-utils: 1.5.2
-  checksum: 9209268c1b77b533f5a672fbc01d1f6f5d909268dcef902f1e04e228b6283bdaf4d37fe9860cf4d77c18717814a12adeabfbbe84bf06e4a80c3164e3deb4fd90
   languageName: node
   linkType: hard
 
@@ -51764,25 +51716,6 @@ typescript@^3.8.3:
     web3-core-method: 1.4.0
     web3-utils: 1.4.0
   checksum: 636b8968931191edd775c46c84356497acff290632c75df76fe97c9322ff5e989a0fca6673875f8e2ef905c6edaf39558ec346ea5a3b77c12ea981857709c8f1
-  languageName: node
-  linkType: hard
-
-"web3-eth-accounts@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth-accounts@npm:1.5.2"
-  dependencies:
-    "@ethereumjs/common": ^2.3.0
-    "@ethereumjs/tx": ^3.2.1
-    crypto-browserify: 3.12.0
-    eth-lib: 0.2.8
-    ethereumjs-util: ^7.0.10
-    scrypt-js: ^3.0.1
-    uuid: 3.3.2
-    web3-core: 1.5.2
-    web3-core-helpers: 1.5.2
-    web3-core-method: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 6fe091f1e138ca7450c38e50bc4f27de6e6b209196f2a93b03fd56a5bad5e61e207958a1c5bd8738947166ec6dca54c614040f6fe84f26dd1a6c64cc9d17586f
   languageName: node
   linkType: hard
 
@@ -51927,22 +51860,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-eth-contract@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth-contract@npm:1.5.2"
-  dependencies:
-    "@types/bn.js": ^4.11.5
-    web3-core: 1.5.2
-    web3-core-helpers: 1.5.2
-    web3-core-method: 1.5.2
-    web3-core-promievent: 1.5.2
-    web3-core-subscriptions: 1.5.2
-    web3-eth-abi: 1.5.2
-    web3-utils: 1.5.2
-  checksum: da6ee558bf849f51d6a2ad843c672cd36d7e3bee9e6bff7cd52df009536d24db2faf5af385ad014ebc782dae762506c0b3f956445a8401cfda28aa64c5440434
-  languageName: node
-  linkType: hard
-
 "web3-eth-contract@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-eth-contract@npm:1.7.4"
@@ -52074,22 +51991,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-eth-ens@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth-ens@npm:1.5.2"
-  dependencies:
-    content-hash: ^2.5.2
-    eth-ens-namehash: 2.0.8
-    web3-core: 1.5.2
-    web3-core-helpers: 1.5.2
-    web3-core-promievent: 1.5.2
-    web3-eth-abi: 1.5.2
-    web3-eth-contract: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 3ae9c923565c18938b74b3cb7515e092e412e414d069c1301aa612d98c2fe5581c21a7ead9d761a2c96aeee787bd2f503a182ab04bf89e6c72321dd647a639cc
-  languageName: node
-  linkType: hard
-
 "web3-eth-ens@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-eth-ens@npm:1.7.4"
@@ -52185,16 +52086,6 @@ typescript@^3.8.3:
     bn.js: ^4.11.9
     web3-utils: 1.4.0
   checksum: 56783584a03ee17a136f6e4ed153986c5995e3792ca1f480db66fefe5ea36d841423e879712f9e4d30986b7b32a61a0fe2aace18de0e77719c85fae0a8c9d1d6
-  languageName: node
-  linkType: hard
-
-"web3-eth-iban@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth-iban@npm:1.5.2"
-  dependencies:
-    bn.js: ^4.11.9
-    web3-utils: 1.5.2
-  checksum: 62a4646aa11206a7b230083027f286c8961df67bd076ae3b69edfbf8af7bf1c9ee125e7640bfcc5826c4b01b88f5e76ca569f39f29d25a5ca9e4e057852d53eb
   languageName: node
   linkType: hard
 
@@ -52294,20 +52185,6 @@ typescript@^3.8.3:
     web3-net: 1.4.0
     web3-utils: 1.4.0
   checksum: 37cb99f4c11400c965338de55a264bcd55d9792066549a53740dcfb6f2f6507a94e9b86e532e12db95cae58f04fe6eec9c0c37b946eec576b007faa13d541557
-  languageName: node
-  linkType: hard
-
-"web3-eth-personal@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth-personal@npm:1.5.2"
-  dependencies:
-    "@types/node": ^12.12.6
-    web3-core: 1.5.2
-    web3-core-helpers: 1.5.2
-    web3-core-method: 1.5.2
-    web3-net: 1.5.2
-    web3-utils: 1.5.2
-  checksum: c3ee286f82c342719a4b9396178066a44cea3be35b2cb4bb16ef3477befbec83e0d147fd6317e74cf5e7dcf827eaf467a621153e9ffe8c87a7684af2ce3087ad
   languageName: node
   linkType: hard
 
@@ -52458,26 +52335,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-eth@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-eth@npm:1.5.2"
-  dependencies:
-    web3-core: 1.5.2
-    web3-core-helpers: 1.5.2
-    web3-core-method: 1.5.2
-    web3-core-subscriptions: 1.5.2
-    web3-eth-abi: 1.5.2
-    web3-eth-accounts: 1.5.2
-    web3-eth-contract: 1.5.2
-    web3-eth-ens: 1.5.2
-    web3-eth-iban: 1.5.2
-    web3-eth-personal: 1.5.2
-    web3-net: 1.5.2
-    web3-utils: 1.5.2
-  checksum: fc61b3db91a9c4972a31d3e9dba8dcbea0abcbfeaa1f2af3e38e0cab00b03184e7db82dd14394706a4ba425d60ee43119d2b2aaac28127e42c942d9b291fc705
-  languageName: node
-  linkType: hard
-
 "web3-eth@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-eth@npm:1.7.4"
@@ -52590,17 +52447,6 @@ typescript@^3.8.3:
     web3-core-method: 1.4.0
     web3-utils: 1.4.0
   checksum: ffa5ff48a7ad9acb45caa5f29096d6859b61b9126c498f6129497aaa3b399cbb918350cce3718360dee7f13a00737ccec839bfd6da012a9afaa8911ac60ffdb5
-  languageName: node
-  linkType: hard
-
-"web3-net@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-net@npm:1.5.2"
-  dependencies:
-    web3-core: 1.5.2
-    web3-core-method: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 5619fc10b7114b4d64b3802ab6459de9e1caf3341719b718451c1f5585e075c87b3d1e45c917b6eccca2c6b16861eb7f4d3f539f5b280eb2a558406745a2a447
   languageName: node
   linkType: hard
 
@@ -52745,16 +52591,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-providers-http@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-providers-http@npm:1.5.2"
-  dependencies:
-    web3-core-helpers: 1.5.2
-    xhr2-cookies: 1.1.0
-  checksum: 0c124298a7668b024a581343258e88549b070d12ad34301c8bc110cfc2dd61147b1c86440e171e0b91a7679f137956aee0f0d6751827d203f88a8ed77435cc1c
-  languageName: node
-  linkType: hard
-
 "web3-providers-http@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-providers-http@npm:1.7.4"
@@ -52844,16 +52680,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-providers-ipc@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-providers-ipc@npm:1.5.2"
-  dependencies:
-    oboe: 2.1.5
-    web3-core-helpers: 1.5.2
-  checksum: 3e798bf6cceb2d24f9e12c9f0988d9bdbe97a012e913aa56cf53cf90d82305b39465e181c84b3a30ca14a7edd1489ffe5ea33501cdc845a5f17405a759c16bb9
-  languageName: node
-  linkType: hard
-
 "web3-providers-ipc@npm:1.7.4":
   version: 1.7.4
   resolution: "web3-providers-ipc@npm:1.7.4"
@@ -52939,17 +52765,6 @@ typescript@^3.8.3:
     web3-core-helpers: 1.4.0
     websocket: ^1.0.32
   checksum: c6e8a612a0a4da0daea1af9788007c2b365011a130198744203e0c0c9288da0220af8c94e2c75ea7f04db8fdc9c466331c2037ce68156a2fd2fd45b6abdb0311
-  languageName: node
-  linkType: hard
-
-"web3-providers-ws@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-providers-ws@npm:1.5.2"
-  dependencies:
-    eventemitter3: 4.0.4
-    web3-core-helpers: 1.5.2
-    websocket: ^1.0.32
-  checksum: 4761be2882fd2549505ff2e5d6bec9a235ac9dff933e1013a22b8ed23eaf3178f1824180ff841264a8f9947c9c02165bb52578edd1d3a7889c33f99a8f952bc8
   languageName: node
   linkType: hard
 
@@ -53043,18 +52858,6 @@ typescript@^3.8.3:
     web3-core-subscriptions: 1.4.0
     web3-net: 1.4.0
   checksum: 846084fad9f491cf9453b41e772672b5bd80954b49f4104936fb11a8095633ac2f9f099393466a3f8db66188fab1601b99f3af25650475fddba96486dd8289ad
-  languageName: node
-  linkType: hard
-
-"web3-shh@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3-shh@npm:1.5.2"
-  dependencies:
-    web3-core: 1.5.2
-    web3-core-method: 1.5.2
-    web3-core-subscriptions: 1.5.2
-    web3-net: 1.5.2
-  checksum: 0e1cda7a5dd8d145228745209d0428e42612989e9a63614798811d938a6af4ff0832633b29eefaf289a752a279a55957e5c98bc50ca09cc76ef74b039ebf3e28
   languageName: node
   linkType: hard
 
@@ -53265,7 +53068,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-utils@npm:1.8.1, web3-utils@npm:^1.0.0-beta.31, web3-utils@npm:^1.2.1, web3-utils@npm:^1.2.5, web3-utils@npm:^1.3.0, web3-utils@npm:^1.3.4, web3-utils@npm:^1.8.0":
+"web3-utils@npm:1.8.1, web3-utils@npm:^1.0.0-beta.31, web3-utils@npm:^1.2.1, web3-utils@npm:^1.2.5, web3-utils@npm:^1.3.4, web3-utils@npm:^1.8.0":
   version: 1.8.1
   resolution: "web3-utils@npm:1.8.1"
   dependencies:
@@ -53277,6 +53080,21 @@ typescript@^3.8.3:
     randombytes: ^2.1.0
     utf8: 3.0.0
   checksum: 08bb2df9cd19672f034bb82a27b857e0571b836a620f83de2214377457c6e52446e8dedcf916f8f10a13c86b5a02674dd4f45c60c45698b388368601cce9cf5e
+  languageName: node
+  linkType: hard
+
+"web3-utils@npm:^1.3.6":
+  version: 1.8.2
+  resolution: "web3-utils@npm:1.8.2"
+  dependencies:
+    bn.js: ^5.2.1
+    ethereum-bloom-filters: ^1.0.6
+    ethereumjs-util: ^7.1.0
+    ethjs-unit: 0.1.6
+    number-to-bn: 1.7.0
+    randombytes: ^2.1.0
+    utf8: 3.0.0
+  checksum: a6cda086d7bde4939fc55be8f1dc5040b4cacd9205ac2ac07f37d14305214679e030af7814a3e97f6fabf2901e3452cd0dc8ce7c1cdd8bce4d0d4bae72c50ad9
   languageName: node
   linkType: hard
 
@@ -53353,21 +53171,6 @@ typescript@^3.8.3:
     web3-shh: 1.4.0
     web3-utils: 1.4.0
   checksum: 3cfbc7ad416313b07bacfee75770c7596cb83df499e34c8e76003f8c2e6297283bd9c36989d63c1f067d2c1691610ee4f567be8ec34957bc992d94f1b49b970c
-  languageName: node
-  linkType: hard
-
-"web3@npm:1.5.2":
-  version: 1.5.2
-  resolution: "web3@npm:1.5.2"
-  dependencies:
-    web3-bzz: 1.5.2
-    web3-core: 1.5.2
-    web3-eth: 1.5.2
-    web3-eth-personal: 1.5.2
-    web3-net: 1.5.2
-    web3-shh: 1.5.2
-    web3-utils: 1.5.2
-  checksum: 50306149148815679566b51770789b7ba880cfc8c2f586f3a79f3a1e4dd89e0380cf9f4aa791a4a914fc1f5153dc512c546e6f8c591f8a731c019980af8990f6
   languageName: node
   linkType: hard
 
