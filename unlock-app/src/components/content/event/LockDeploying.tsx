@@ -35,15 +35,13 @@ export const LockDeploying = ({
     })
 
   useEffect(() => {
-    const save = async (lockAddress: string, metadata: MetadataFormData) => {
-      console.log('NOW WE HAEV A LOCK ADDRESS ', lockAddress)
+    const save = async (metadata: MetadataFormData) => {
       await updateMetadata(formDataToMetadata(metadata!))
-      console.log('DID WE UPDATE?')
     }
-    if (lockAddress && metadata) {
-      save(lockAddress, metadata)
+    if (metadata) {
+      save(metadata)
     }
-  }, [lockAddress, updateMetadata, metadata])
+  }, [updateMetadata, metadata])
 
   let status: DeployStatus = 'progress'
   let title = 'Waiting for your transaction to be mined'

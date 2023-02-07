@@ -119,7 +119,6 @@ export const createLock = async (
     currencyContractAddress,
     keyPrice,
   } = lock
-
   const lockAddress = await walletService.createLock(
     {
       expirationDuration,
