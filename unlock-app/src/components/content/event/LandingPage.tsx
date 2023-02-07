@@ -195,9 +195,8 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
               target="_blank"
               href={`https://docs.unlock-protocol.com/core-protocol/unlock/networks`}
             >
-              {' '}
               all the networks on which the Unlock Protocol
-            </Link>
+            </Link>{' '}
             has been deployed: Polygon, Gnosis Chain, Optimism, ...
           </p>
         </Accordion>
@@ -205,6 +204,16 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
           <p>
             Yes, when deploying your contract you can pick a currency, as well
             as enable credit card, Apple Pay and Google Pay.
+          </p>
+        </Accordion>
+        <Accordion title="Are attending receiving tickets?">
+          <p>
+            Yes they are! Once the blockchain transaction is completed, they
+            will receive an email that includes a ticket. On this ticket there
+            is a unique QR code that can be scanned by organizers to verify its
+            validity.Additionally, verifiers can &quot;redeem&quot; the QR code
+            so that if another attendee arrives with the same QR code, they will
+            be rejected!
           </p>
         </Accordion>
       </section>
