@@ -15,7 +15,7 @@ const Accordion = ({ title, children }: AccordionProps) => {
     <Disclosure>
       {() => (
         <>
-          <Disclosure.Button className="border-t flex w-full py-2 text-left border-gray-600">
+          <Disclosure.Button className="border-t flex w-full py-2 text-left border-gray-600 justify-between">
             <span className="text-xl font-semibold">{title}</span>
             <span className="place-self-end	mx-4">
               <Icon icon={PlusIcon} size={24} />
@@ -130,7 +130,7 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
         <ul className="grid md:grid-cols-[300px_300px_300px] gap-8 my-8">
           <li className="bg-red">
             <Image
-              className="border border-1 rounded-lg border-[#BFB1F7]"
+              className="border border-1 rounded-lg border-ui-main-100"
               width="400"
               height="300"
               alt="No-code"
@@ -148,7 +148,7 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
           </li>
           <li className="">
             <Image
-              className="border border-1 rounded-lg border-[#BFB1F7]"
+              className="border border-1 rounded-lg border-ui-main-100"
               width="400"
               height="300"
               alt="No-code"
@@ -165,7 +165,7 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
           </li>
           <li className="bg-red">
             <Image
-              className="border border-1 rounded-lg border-[#BFB1F7]"
+              className="border border-1 rounded-lg border-ui-main-100"
               width="400"
               height="300"
               alt="No-code"
