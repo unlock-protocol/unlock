@@ -1,9 +1,11 @@
 // @vitest-environment jsdom
 
-import confirmEmail from '../../templates/confirmEmail'
 import { prepareAll } from '../../templates/prepare'
 import { asHtml } from '../utils'
 import { expect, it, describe } from 'vitest'
+import { EmailTemplates } from '@unlock-protocol/email-templates'
+
+const { confirmEmail } = EmailTemplates
 
 describe('confirmEmail', () => {
   it('should have the right subject', () => {

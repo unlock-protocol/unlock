@@ -5,7 +5,7 @@ import keyMined from './templates/keyMined'
 import debug from './templates/debug'
 import transferCode from './templates/transferCode'
 import keyAirdropped from './templates/keyAirdropped'
-import LockTemplates from './templates/locks'
+import LockTemplatesList from './templates/locks'
 
 interface EmailTemplateProps {
   nowrap?: boolean
@@ -30,7 +30,11 @@ export const EmailTemplates: Record<Partial<Template>, EmailTemplateProps> = {
   debug,
   transferCode,
   keyAirdropped,
-  ...LockTemplates,
+}
+
+export const LockTemplates: Record<string, EmailTemplateProps> = {
+  ...LockTemplatesList,
 }
 
 export const getEmailTemplate = (template: Template) => EmailTemplates[template]
+export const getLockTemplate = (template: string) => LockTemplates[template]

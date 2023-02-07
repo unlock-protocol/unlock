@@ -1,9 +1,11 @@
 // @vitest-environment jsdom
 
 import { asHtml } from '../utils'
-import keyOwnership from '../../templates/keyOwnership'
 import { prepareAll } from '../../templates/prepare'
 import { expect, it, describe } from 'vitest'
+import { EmailTemplates } from '@unlock-protocol/email-templates'
+
+const { keyOwnership } = EmailTemplates
 
 describe('keyOwnership', () => {
   it('should have the right subject', () => {

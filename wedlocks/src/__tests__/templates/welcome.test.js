@@ -1,9 +1,11 @@
 // @vitest-environment jsdom
 
 import { asHtml } from '../utils'
-import welcome from '../../templates/welcome'
 import { prepareAll } from '../../templates/prepare'
 import { expect, it, describe } from 'vitest'
+import { EmailTemplates } from '@unlock-protocol/email-templates'
+
+const { welcome } = EmailTemplates
 
 describe('welcome', () => {
   it('should have the right subject', () => {

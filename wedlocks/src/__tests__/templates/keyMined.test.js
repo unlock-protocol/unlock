@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 
-import keyMined from '../../templates/keyMined'
 import { prepareAll } from '../../templates/prepare'
 import { asHtml } from '../utils'
 import { expect, it, describe } from 'vitest'
+import { EmailTemplates } from '@unlock-protocol/email-templates'
 
+const { keyMined } = EmailTemplates
 describe('keyMined', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
