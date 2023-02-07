@@ -18,7 +18,7 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
   const tweetIntent = new URL('https://twitter.com/intent/tweet')
   tweetIntent.searchParams.set(
     'text',
-    `🎉 I will be attending ${event.title} on ${eventDate.toLocaleDateString(
+    `🎉 I will be attending ${event.name} on ${eventDate.toLocaleDateString(
       undefined,
       {
         weekday: 'long',

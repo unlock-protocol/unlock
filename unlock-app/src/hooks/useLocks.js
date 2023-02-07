@@ -119,7 +119,6 @@ export const createLock = async (
     currencyContractAddress,
     keyPrice,
   } = lock
-
   const lockAddress = await walletService.createLock(
     {
       expirationDuration,
@@ -128,7 +127,7 @@ export const createLock = async (
       owner,
       name,
       currencyContractAddress,
-      publicLockVersion: 12, // Current version that we deploy!
+      publicLockVersion: config.publicLockVersion,
     },
     {} /** transactionParams */,
     async (createLockError, transactionHash) => {
