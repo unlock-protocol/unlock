@@ -2,7 +2,6 @@ import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { useUpdateMetadata } from '~/hooks/metadata'
 
 import {
   AnimationContent,
@@ -10,44 +9,25 @@ import {
 } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'
 import { useConfig } from '~/utils/withConfig'
 import { TransactionDetails } from './NewEvent'
-import { useEffect } from 'react'
-import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
-import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
   lockAddress?: string
-  metadata?: MetadataFormData
 }
 
 export const LockDeploying = ({
   transactionDetails,
   lockAddress,
-  metadata,
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
   const { hash: transactionHash, network } = transactionDetails
-  const { mutateAsync: updateMetadata, isLoading: isMetadataUpating } =
-    useUpdateMetadata({
-      lockAddress,
-      network,
-    })
-
-  useEffect(() => {
-    const save = async (metadata: MetadataFormData) => {
-      await updateMetadata(formDataToMetadata(metadata!))
-    }
-    if (metadata) {
-      save(metadata)
-    }
-  }, [updateMetadata, metadata])
 
   let status: DeployStatus = 'progress'
   let title = 'Waiting for your transaction to be mined'
   let message = 'Please do not close this window'
 
-  if (lockAddress && !isMetadataUpating) {
+  if (lockAddress) {
     status = 'deployed'
     title = '🚀​ Contract is successfully deployed'
     message =

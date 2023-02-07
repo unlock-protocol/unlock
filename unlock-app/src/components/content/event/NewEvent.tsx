@@ -6,7 +6,9 @@ import { useWalletService } from '~/utils/withWalletService'
 import { Form, NewEventForm } from './Form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { LockDeploying } from './LockDeploying'
-import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
+import { storage } from '~/config/storage'
+
+import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 
 export interface TransactionDetails {
   hash: string
@@ -20,15 +22,10 @@ export const NewEvent = () => {
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
   const [lockAddress, setLockAddress] = useState<string>()
-  const [metadata, setMetadata] = useState<MetadataFormData>()
 
   const onSubmit = async (formData: NewEventForm) => {
     // prompt the user to change network if applicable
     await changeNetwork(formData.network)
-    setMetadata({
-      name: formData.lock.name,
-      ...formData.metadata,
-    })
 
     let lockAddress
     try {
@@ -55,6 +52,20 @@ export const NewEvent = () => {
     }
 
     if (lockAddress) {
+      // Save this:
+      const lockResponse = await storage.updateLockMetadata(
+        formData.network,
+        lockAddress!,
+        {
+          metadata: formDataToMetadata({
+            name: formData.lock.name,
+            ...formData.metadata,
+          }),
+        }
+      )
+      console.log(lockResponse)
+
+      // Finally
       setLockAddress(lockAddress)
     }
   }
@@ -64,7 +75,6 @@ export const NewEvent = () => {
       <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
         {transactionDetails && (
           <LockDeploying
-            metadata={metadata}
             transactionDetails={transactionDetails}
             lockAddress={lockAddress}
           />
