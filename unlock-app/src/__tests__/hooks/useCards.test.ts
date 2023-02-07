@@ -33,14 +33,6 @@ const walletService = {
   signMessage: vi.fn(() => signature),
 }
 
-vi.mock('node-fetch', () => {
-  return {
-    mockResponseOnce: vi.fn(),
-    resetMocks: vi.fn(),
-    mock: {},
-  }
-})
-
 describe('UseCards', () => {
   beforeEach(() => {
     // @ts-ignore

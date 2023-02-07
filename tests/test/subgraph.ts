@@ -151,7 +151,7 @@ describe('key cancellation', function () {
     await awaitTimeout(2000)
     const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[1])
     expect(keyInGraph).to.not.be.null
-    expect(keyInGraph.cancelled).to.be.null
+    expect(keyInGraph.cancelled).to.be.false
 
     // cancel the 2nd one
     const keyOwner = await ethers.getSigner(keyOwners[1])

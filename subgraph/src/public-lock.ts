@@ -33,6 +33,7 @@ function newKey(event: TransferEvent): void {
   key.tokenId = event.params.tokenId
   key.owner = event.params.to
   key.createdAtBlock = event.block.number
+  key.cancelled = false
 
   const lockContract = PublicLock.bind(event.address)
   const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
@@ -127,12 +128,13 @@ export function handleTransfer(event: TransferEvent): void {
     const key = Key.load(keyID)
     if (key) {
       key.owner = event.params.to
-      key.expiration = getKeyExpirationTimestampFor(
+      const expiration = getKeyExpirationTimestampFor(
         event.address,
         event.params.tokenId,
         event.params.to
       )
 
+      key.expiration = expiration
       const hash = event.transaction.hash.toHexString()
       const transactionsHash = key.transactionsHash
       // add transaction hash for transfer event
@@ -203,6 +205,7 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   const fallbackTimestamp = event.block.timestamp
+  const lockContract = PublicLock.bind(event.address)
   if (key) {
     // Due to a bug in v11, we need to check the version of the lock and fallback to the timestamp since expiration can be for a different key
     const lock = Lock.load(key.lock)
@@ -215,6 +218,8 @@ export function handleCancelKey(event: CancelKeyEvent): void {
         Address.fromBytes(key.owner)
       )
     }
+    const owner = lockContract.ownerOf(key.tokenId)
+    key.owner = owner
     key.cancelled = true
     key.save()
   }
