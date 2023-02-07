@@ -14714,7 +14714,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
   dependencies:
+    "@babel/plugin-transform-runtime": 7.19.6
+    "@vitest/coverage-c8": 0.28.3
+    regenerator-runtime: 0.13.11
     typescript: 4.9.4
+    vitest: 0.28.3
   languageName: unknown
   linkType: soft
 
@@ -50030,7 +50034,7 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"typescript@>=4.5.0, typescript@^4.5.5, typescript@npm:^4.8.4":
+"typescript@>=4.5.0, typescript@^4.5.5, typescript@npm:4.9.4, typescript@npm:^4.8.4":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
   bin:
@@ -50060,6 +50064,16 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"typescript@patch:typescript@4.9.4#~builtin<compat/typescript>, typescript@patch:typescript@>=4.5.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
+  version: 4.9.4
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
@@ -50067,16 +50081,6 @@ typescript@^3.8.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@>=4.5.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
-  version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 
