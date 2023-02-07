@@ -43,7 +43,7 @@
     "eth-sig-util": "3.0.1",
     "ethers": "5.7.2",
     "fs-extra": "11.1.0",
-    "hardhat": "2.9.2",
+    "hardhat": "2.12.6",
     "hardhat-contract-sizer": "2.5.1",
     "hardhat-erc1820": "0.1.0",
     "hardhat-gas-reporter": "1.0.9",
@@ -56,7 +56,7 @@
     "prettier-plugin-solidity": "1.0.0",
     "prompt": "1.2.2",
     "solhint": "3.3.8",
-    "solidity-coverage": "0.7.21",
+    "solidity-coverage": "^0.8.2",
     "yesno": "0.4.0"
   },
   "devDependencies": {
