@@ -45364,10 +45364,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solidity-ast@npm:^0.4.15":
-  version: 0.4.46
-  resolution: "solidity-ast@npm:0.4.46"
-  checksum: 9c2ab90731fd23fdceef0e74ea626cc1810ec413daaa9b7d838f4fd9c342a63095fae0f0690ec0166db9f316ef6a06d7740a2c4f74cf5609831121389bf0cb7b
+"solidity-ast@npm:^0.4.45":
+  version: 0.4.45
+  resolution: "solidity-ast@npm:0.4.45"
+  checksum: a9d2908f8335c09b7c943c912281679236f43be0b4a679ac9310c55a36c189249a4cf26f90e26a694e3c5b7db5bdf1c3b72e367597c3e4a46bbca4973601b1d4
   languageName: node
   linkType: hard
 

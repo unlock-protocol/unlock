@@ -71,7 +71,8 @@
   },
   "resolutions": {
     "yargs": "17.7.1",
-    "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch"
+    "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch",
+    "solidity-ast": "^0.4.45"
   },
   "engines": {
     "node": ">=18.0.0"
