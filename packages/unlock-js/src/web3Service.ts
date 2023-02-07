@@ -946,8 +946,9 @@ export default class Web3Service extends UnlockService {
     const provider = this.providerForNetwork(1)
 
     try {
-      const code = await provider.getCode(address)
-      const count = await provider.getTransactionCount(address)
+      const codePromise = provider.getCode(address)
+      const countPromise = provider.getTransactionCount(address)
+      const [code, count] = await Promise.all([codePromise, countPromise])
       if (code === '0x' && count > 0) {
         return true
       } else {
