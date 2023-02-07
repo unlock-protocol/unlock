@@ -1,16 +1,13 @@
-const { ethers, upgrades } = require('hardhat')
+const { ethers } = require('hardhat')
 const { expect } = require('chai')
 const { 
-  impersonate, 
   getUniswapTokens, 
   getUniswapRoute,
   ADDRESS_ZERO, 
   deployLock, 
   purchaseKey,
   getBalance,
-  WETH,
   addERC20,
-  UNLOCK_PROXY_OWNER,
   UNLOCK_ADDRESS,
   PERMIT2_ADDRESS,
   CHAIN_ID,
@@ -32,7 +29,7 @@ const scenarios = [
 
 describe(`swapAndCall`, function() {
 
-  let unlock
+  let unlock, swapPurchaser
   before(async function() {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
@@ -41,34 +38,21 @@ describe(`swapAndCall`, function() {
 
     // get Unlock contract
     unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
-    
-    // upgrade Unlock with the modified version
-    await impersonate(UNLOCK_PROXY_OWNER)
-    const unlockProxyOwner = await ethers.getSigner(UNLOCK_PROXY_OWNER)
-    const Unlock = await ethers.getContractFactory('Unlock', unlockProxyOwner)
-    await upgrades.upgradeProxy(UNLOCK_ADDRESS, Unlock)
 
-    // get unlock owner
-    const unlockOwnerAddress = await unlock.owner()
-    await impersonate(unlockOwnerAddress)
-    const unlockOwner = await ethers.getSigner(unlockOwnerAddress)
-    
-    // config unlock
-    await unlock.connect(unlockOwner).configUnlock(
-      ADDRESS_ZERO, // udt
-      WETH,
-      16000, // gasEstimate
-      'KEY_SWAP',
-      'http://locksmith:8080/api/key/',
-      CHAIN_ID, // fork
+    // deploy swapper
+    const UnlockSwapPurchaser = await ethers.getContractFactory('UnlockSwapPurchaser')
+    swapPurchaser = await UnlockSwapPurchaser.deploy(
+      UNLOCK_ADDRESS,
+      PERMIT2_ADDRESS
     )
-
-    // config permit2
-    await unlock.connect(unlockOwner).setPermit2(PERMIT2_ADDRESS);
   })
 
+  
+  it('unlock is set properly', async () => {
+    expect(await swapPurchaser.unlockAddress()).to.equal(UNLOCK_ADDRESS)
+  })
   it('permit2 is set properly', async () => {
-    expect(await unlock.permit2()).to.equal(PERMIT2_ADDRESS)
+    expect(await swapPurchaser.permit2()).to.equal(PERMIT2_ADDRESS)
   })
 
   scenarios.forEach(([srcToken, lockToken]) => {
@@ -132,17 +116,17 @@ describe(`swapAndCall`, function() {
             tokenIn: srcToken,
             tokenOut: lockToken,
             amoutOut: keyPrice,
-            recipient: unlock.address,
+            recipient: swapPurchaser.address,
           }))
 
           // approve
           if(srcToken.isToken) {
             const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
-            await token.connect(keyOwner).approve(unlock.address, amountInMax)
+            await token.connect(keyOwner).approve(swapPurchaser.address, amountInMax)
           }
 
           // do the swap and call!
-          await unlock.connect(keyOwner)
+          await swapPurchaser.connect(keyOwner)
             .swapAndCall(
               lock.address,
               srcToken.address || ADDRESS_ZERO,
@@ -211,17 +195,17 @@ describe(`swapAndCall`, function() {
             tokenIn: srcToken,
             tokenOut: lockToken,
             amoutOut: keyPrice,
-            recipient: unlock.address,
+            recipient: swapPurchaser.address,
           }))
 
           // approve our src token that will be swapped
           if(srcToken.isToken) {
             const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
-            await token.connect(keyOwner).approve(unlock.address, amountInMax)
+            await token.connect(keyOwner).approve(swapPurchaser.address, amountInMax)
           }
           
           // do the swap and call
-          await unlock.connect(keyOwner)
+          await swapPurchaser.connect(keyOwner)
             .swapAndCall(
               lock.address,
               srcToken.address || ADDRESS_ZERO,
@@ -271,13 +255,13 @@ describe(`swapAndCall`, function() {
             tokenIn: srcToken,
             tokenOut: lockToken,
             amoutOut: keyPrice,
-            recipient: unlock.address,
+            recipient: swapPurchaser.address,
           }))
 
           // approve
           if(srcToken.isToken) {
             const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
-            await token.connect(keyOwner).approve(unlock.address, amountInMax)
+            await token.connect(keyOwner).approve(swapPurchaser.address, amountInMax)
           }
           
         })
@@ -286,7 +270,7 @@ describe(`swapAndCall`, function() {
           it('calldata is wrong', async () => {
             const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
             await reverts(
-              unlock.connect(keyOwner) 
+              swapPurchaser.connect(keyOwner) 
               .swapAndCall(
                 lock.address,
                 srcToken.address || ADDRESS_ZERO,
@@ -307,10 +291,10 @@ describe(`swapAndCall`, function() {
               const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
 
               // reset approval
-              await token.connect(keyOwner).approve(unlock.address, 0)
+              await token.connect(keyOwner).approve(swapPurchaser.address, 0)
   
               await reverts(
-                unlock.connect(keyOwner)
+                swapPurchaser.connect(keyOwner)
                 .swapAndCall(
                   lock.address,
                   srcToken.address || ADDRESS_ZERO,
@@ -330,7 +314,7 @@ describe(`swapAndCall`, function() {
           it('calldata is wrong', async () => {
             const corruptCallData = swapCalldata.replace('a', 'b').replace('1', '2')
             await reverts(
-              unlock.connect(keyOwner) 
+              swapPurchaser.connect(keyOwner) 
               .swapAndCall(
                 lock.address,
                 srcToken.address || ADDRESS_ZERO,
@@ -355,17 +339,17 @@ describe(`swapAndCall`, function() {
               tokenIn: srcToken,
               tokenOut: lockToken,
               amoutOut: keyPrice.div(2),
-              recipient: unlock.address,
+              recipient: swapPurchaser.address,
             }))
 
             // approve
             if(srcToken.isToken) {
               const token = await addERC20(srcToken.address, keyOwner.address, amountInMax)
-              await token.connect(keyOwner).approve(unlock.address, amountInMax)
+              await token.connect(keyOwner).approve(swapPurchaser.address, amountInMax)
             }
 
             await reverts(
-              unlock.connect(keyOwner) 
+              swapPurchaser.connect(keyOwner) 
               .swapAndCall(
                 lock.address,
                 srcToken.address || ADDRESS_ZERO,
