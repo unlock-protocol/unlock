@@ -8,7 +8,7 @@ image: /images/blog/events-by-unlock/events-subbrand-share.png
 
 Events and projects around the world have created their ticketing and membership infrastructure using Unlock Protocol. 
 
-Now, for events that rapidly want to get up and running, the Unlock Labs team has created a quickstart tool: **Events by Unlock**.
+Now, for events that want to get up and running rapidly, the Unlock Labs team has created a quickstart tool: **Events by Unlock**.
 
 Events by Unlock is a free and easy way to create tickets and share an event details page for 10-10000+ person events. Setting up an event takes less than a minute, and it works for both free and paid events.
 
