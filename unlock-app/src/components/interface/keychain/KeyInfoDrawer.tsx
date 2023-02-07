@@ -27,6 +27,7 @@ import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
+import { getEventDate } from '~/components/content/event/utils'
 
 dayjs.extend(relative)
 dayjs.extend(duration)
@@ -244,16 +245,14 @@ export const KeyInfo = ({
         <div>
           <h3 className="text-lg font-bold"> Event Information </h3>
           <div className="divide-y divide-brand-dark">
-            {!!ticket?.event_start_time && (
-              <KeyItem label="Event Time">
-                {dayjs(ticket.event_start_time, ['HH:mm', 'h:mm']).format(
-                  'h:mm A'
-                )}
+            {!!ticket?.event_start_date && (
+              <KeyItem label="Event Date">
+                {getEventDate(ticket)?.toLocaleDateString()}
               </KeyItem>
             )}
             {ticket?.event_start_date && (
-              <KeyItem label="Event Date">
-                {new Date(ticket.event_start_date).toDateString()}
+              <KeyItem label="Event Time">
+                {getEventDate(ticket)?.toLocaleTimeString()}
               </KeyItem>
             )}
             {ticket?.event_address && (

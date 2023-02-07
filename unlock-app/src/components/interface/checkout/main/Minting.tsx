@@ -13,6 +13,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { TransactionAnimation } from '../Shell'
+import Link from 'next/link'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -46,7 +47,9 @@ export function Minting({
           )
 
           const transaction = await provider.waitForTransaction(
-            mint!.transactionHash!
+            mint!.transactionHash!,
+            2,
+            60000
           )
 
           if (transaction.status !== 1) {
@@ -122,7 +125,7 @@ export function Minting({
             {content?.text}
           </p>
           {mint?.status === 'FINISHED' && (
-            <a
+            <Link
               href="/keychain"
               target="_blank"
               rel="noopener noreferrer"
@@ -130,7 +133,7 @@ export function Minting({
             >
               Open keychain
               <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
+            </Link>
           )}
           {mint?.transactionHash && (
             <a

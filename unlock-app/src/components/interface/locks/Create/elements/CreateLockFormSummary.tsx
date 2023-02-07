@@ -3,10 +3,8 @@ import { useConfig } from '~/utils/withConfig'
 import { LockFormProps } from './CreateLockForm'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { KeyPrice } from '../../elements/KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
@@ -95,7 +93,6 @@ export const CreateLockFormSummary = ({
   lockAddress,
 }: CreateLockFormSummaryProps) => {
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
-  const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
   const {
@@ -144,15 +141,6 @@ export const CreateLockFormSummary = ({
   const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]
   const symbol = formData?.symbol || baseCurrencySymbol
-
-  useEffect(() => {
-    // redirect to manage lock page once deployed!
-    if (isDeployed) {
-      setTimeout(() => {
-        router.push(nextUrl(lockAddress, network))
-      }, 5000)
-    }
-  }, [isDeployed, lockAddress, network, router])
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(

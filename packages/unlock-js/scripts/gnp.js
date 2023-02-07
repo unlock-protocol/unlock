@@ -1,4 +1,3 @@
-const fetch = require('node-fetch')
 const ethers = require('ethers')
 const networks = require('@unlock-protocol/networks')
 
@@ -61,7 +60,9 @@ const run = async () => {
         if (!network.unlockAddress) {
           return null
         }
-        const provider = new ethers.providers.JsonRpcProvider(network.provider)
+        const provider = new ethers.providers.JsonRpcBatchProvider(
+          network.provider
+        )
         const latestBlockNumber = await provider.getBlockNumber()
         const gdp = await getGdpForNetwork(provider, network, latestBlockNumber)
         // TODO: consider retrieving value "last week"...

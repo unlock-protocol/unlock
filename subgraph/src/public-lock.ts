@@ -1,5 +1,4 @@
-import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
-
+import { Address, BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -18,7 +17,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock, UnlockStats, LockStats } from '../generated/schema'
+import { Key, Lock, UnlockStats, LockStats, Receipt } from '../generated/schema'
 
 import {
   genKeyID,
@@ -34,6 +33,7 @@ function newKey(event: TransferEvent): void {
   key.tokenId = event.params.tokenId
   key.owner = event.params.to
   key.createdAtBlock = event.block.number
+  key.cancelled = false
 
   const lockContract = PublicLock.bind(event.address)
   const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
@@ -45,7 +45,22 @@ function newKey(event: TransferEvent): void {
     event.params.tokenId,
     event.params.to
   )
+
+  const hash = event.transaction.hash.toHexString()
+  const transactionsHash = key.transactionsHash
+  // add transaction hash for new key event
+  if (transactionsHash && transactionsHash.length) {
+    if (!transactionsHash.includes(hash)) {
+      transactionsHash.push(hash)
+    }
+  } else {
+    key.transactionsHash = [hash]
+  }
+
   key.save()
+
+  // create receipt
+  createReceipt(event)
 
   // update lock
   const lock = Lock.load(event.address.toHexString())
@@ -106,19 +121,33 @@ export function handleTransfer(event: TransferEvent): void {
       lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
       lock.save()
     }
+    createReceipt(event)
   } else {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
     const key = Key.load(keyID)
     if (key) {
       key.owner = event.params.to
-      key.expiration = getKeyExpirationTimestampFor(
+      const expiration = getKeyExpirationTimestampFor(
         event.address,
         event.params.tokenId,
         event.params.to
       )
+
+      key.expiration = expiration
+      const hash = event.transaction.hash.toHexString()
+      const transactionsHash = key.transactionsHash
+      // add transaction hash for transfer event
+      if (transactionsHash && transactionsHash.length) {
+        if (!transactionsHash.includes(hash)) {
+          transactionsHash.push(hash)
+        }
+      } else {
+        key.transactionsHash = [hash]
+      }
       key.save()
     }
+    createReceipt(event)
   }
 }
 
@@ -176,6 +205,7 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   const fallbackTimestamp = event.block.timestamp
+  const lockContract = PublicLock.bind(event.address)
   if (key) {
     // Due to a bug in v11, we need to check the version of the lock and fallback to the timestamp since expiration can be for a different key
     const lock = Lock.load(key.lock)
@@ -188,6 +218,8 @@ export function handleCancelKey(event: CancelKeyEvent): void {
         Address.fromBytes(key.owner)
       )
     }
+    const owner = lockContract.ownerOf(key.tokenId)
+    key.owner = owner
     key.cancelled = true
     key.save()
   }
@@ -197,9 +229,22 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
+    const hash = event.transaction.hash.toHexString()
+    const transactionsHash = key.transactionsHash
+    // add transaction hash for extend event
+    if (transactionsHash && transactionsHash.length) {
+      if (!transactionsHash.includes(hash)) {
+        transactionsHash.push(hash)
+      }
+    } else {
+      key.transactionsHash = [hash]
+    }
     key.expiration = event.params.newTimestamp
+    key.cancelled = false
     key.save()
   }
+  // create receipt
+  createReceipt(event)
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -213,9 +258,23 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const keyID = genKeyID(event.address, tokenId.value.toString())
   const key = Key.load(keyID)
   if (key) {
+    const hash = event.transaction.hash.toHexString()
+    const transactionsHash = key.transactionsHash
+    // add transaction hash for renew event
+    if (transactionsHash && transactionsHash.length) {
+      if (!transactionsHash.includes(hash)) {
+        transactionsHash.push(hash)
+      }
+    } else {
+      key.transactionsHash = [hash]
+    }
     key.expiration = event.params.newExpiration
+    key.cancelled = false
     key.save()
   }
+
+  // create receipt
+  createReceipt(event)
 }
 
 // NB: Up to PublicLock v8, we handle the addition of a new lock managers
@@ -319,4 +378,65 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
     // lock.symbol = event.params.symbol
     lock.save()
   }
+}
+
+/**
+ * Create Receipt object for subgraph for key 'purchase'/'extend'/'renewal'
+ * @param {String} keyID - key id
+ * @param {event} Object - Object event
+ * @return {void}
+ */
+export function createReceipt(event: ethereum.Event): void {
+  const lockAddress = event.address.toHexString()
+  const hash = event.transaction.hash.toHexString()
+
+  const receipt = new Receipt(hash)
+
+  const lock = Lock.load(lockAddress)
+
+  const tokenAddress =
+    lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
+
+  // TODO: compile from contract ABI
+  // WARNING : For some tokens it may be different. In that case we would move to a list!
+  const ERC20_TRANSFER_TOPIC0 =
+    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+
+  if (lock && tokenAddress.toString().length > 0) {
+    const txReceipt = event.receipt!
+    const logs: ethereum.Log[] = txReceipt.logs
+    if (logs) {
+      // If it is an ERC20 lock, there should be multiple events
+      // including one for the ERC20 transfer
+      for (let i = 0; i < logs.length; i++) {
+        const txLog = logs[i]
+        if (
+          txLog.address == tokenAddress &&
+          // Do we always have txLog.topics[0] ?
+          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
+        ) {
+          receipt.payer = ethereum
+            .decode('address', txLog.topics[1])!
+            .toAddress()
+            .toHexString()
+
+          receipt.amountTransferred = ethereum
+            .decode('uint256', txLog.data)!
+            .toBigInt()
+        }
+      }
+    }
+  } else {
+    receipt.payer = event.transaction.from.toHexString()
+    receipt.amountTransferred = event.transaction.value
+  }
+
+  const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
+
+  receipt.lockAddress = lockAddress
+  receipt.timestamp = event.block.timestamp
+  receipt.sender = event.transaction.from.toHexString()
+  receipt.tokenAddress = tokenAddress.toHexString()
+  receipt.gasTotal = BigInt.fromString(totalGas.toString())
+  receipt.save()
 }

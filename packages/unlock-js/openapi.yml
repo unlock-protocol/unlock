@@ -391,6 +391,22 @@ components:
       schema:
         type: string
 
+    Hash:
+      in: path
+      name: hash
+      required: true
+      description: Hash
+      schema:
+        type: string
+
+    TemplateId:
+      in: path
+      name: template
+      required: true
+      description: Template id for email
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -1692,7 +1708,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  /v2/airdrop/{network}/locks/{lockAddress}/keys/{keyId}/transfer:
+  /v2/transfer/{network}/locks/{lockAddress}/keys/{keyId}:
     post:
       operationId: createTransferCode
       security:
@@ -1743,7 +1759,76 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  /v2/receipts/{network}/{lockAddress}:
+  /v2/transfer/done:
+    post:
+      operationId: transferDone
+      security:
+        - User: []
+      description: Finalize the transfer of a key to a recipient. This is to copy over any locksmith related data to the recipient's account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'transferSignature'
+                - 'owner'
+                - 'lock'
+                - 'token'
+                - 'network'
+                - 'deadline'
+              properties:
+                transferSignature:
+                  type: string
+                  description: The signature of the transfer code sent to the recipient.
+                owner:
+                  type: string
+                lock:
+                  type: string
+                token:
+                  type: string
+                network:
+                  type: number
+                deadline:
+                  type: number
+      responses:
+        200:
+          description: Successfully transferred key to recipient.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        403:
+          description: Transfer not authorized by locksmith
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Key not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/receipts/{network}/{lockAddress}/{hash}:
     get:
       operationId: getReceipt
       security:
@@ -1752,6 +1837,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
 
       responses:
         200:
@@ -1801,6 +1887,25 @@ paths:
                         type: string
                       country:
                         type: string
+                  receipt:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      timestamp:
+                        type: number
+                      sender:
+                        type: string
+                      payer:
+                        type: string
+                      lockAddress:
+                        type: string
+                      tokenAddress:
+                        type: string
+                      gasTotal:
+                        type: number
+                      amountTransferred:
+                        type: number
 
         500:
           description: Failed to retrieve receipt details.
@@ -1827,6 +1932,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
 
       responses:
         200:
@@ -1959,6 +2065,92 @@ paths:
 
         500:
           description: Failed to update or create supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/email/{network}/locks/{lockAddress}/custom/{template}:
+    get:
+      operationId: getCustomEmailContent
+      security:
+        - User: []
+      description: Get custom email content for a specific template and lock details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/TemplateId'
+
+      responses:
+        200:
+          description: Successfully get custom template content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  template:
+                    type: string
+                  content:
+                    type: string
+
+        500:
+          description: Could not get custom email content.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Custom email content not found for this template.
+
+    post:
+      operationId: saveCustomEmailContent
+      security:
+        - User: []
+      description: Save custom email content for a specif lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/TemplateId'
+
+      responses:
+        200:
+          description: Custom email content successfully saved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  template:
+                    type: string
+                  content:
+                    type: string
+
+        500:
+          description: Could not save custom email content.
           content:
             application/json:
               schema:

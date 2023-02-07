@@ -44,8 +44,9 @@ export const config = {
   env,
   wedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY!,
   stripeApiKey: process.env.NEXT_PUBLIC_STRIPE_KEY!,
+  googleMapsApiKey: 'AIzaSyD_mt4bpelB7Dlr7XzfUW9k7b9agbf_iSo',
   httpProvider: process.env.NEXT_PUBLIC_HTTP_PROVIDER || 'localhost',
-  locksmithSigners: ['0x58b5CeDE554a39666091F96C8058920dF5906581'],
+  locksmithSigners: ['0x58b5CeDE554a39666091F96C8058920dF5906581'], // TODO: cleanup? We use config from networks package!
   networks: Object.keys(networksConfig).reduce<NetworkConfigs>(
     (networks, network) => {
       networks[network] = {

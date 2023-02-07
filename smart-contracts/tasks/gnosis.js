@@ -10,8 +10,8 @@ task('gnosis:create', 'Create a Gnosis safe from a list of owners')
   })
 
 task('gnosis:transfer', 'transfer the contract ownership to a multisig')
-  .addParam('safeAddress', 'the address of the multisig contract')
   .addParam('contractAddress', 'the address of the ownable contract')
+  .addOptionalParam('safeAddress', 'the address of the multisig contract')
   .setAction(async ({ safeAddress, contractAddress }) => {
     const transferOwnership = require('../scripts/multisig/transferOwnership')
     await transferOwnership({ safeAddress, contractAddress })

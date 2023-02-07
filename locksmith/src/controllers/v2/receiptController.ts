@@ -16,6 +16,8 @@ export const PurchaserBody = z.object({
   country: z.string().optional().default(''),
 })
 
+export type PurchaserBodyProps = z.infer<typeof PurchaserBody>
+
 export class ReceiptController {
   // Get Receipts details by providing `network` / `lockAddress` / `hash`
   async getReceipt(request: Request, response: Response) {
@@ -30,16 +32,9 @@ export class ReceiptController {
         hash,
       })
 
-      // return error when supplier and purchaser details are not present
-      if (!receiptDetails?.supplier && !receiptDetails?.purchaser) {
-        return response.status(404).json({
-          message: 'Impossible to retrieve receipt details.',
-        })
-      }
-
-      // Returns details for purchaser and supplier
+      // Returns receipts details
       return response.status(200).json(receiptDetails)
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err.message)
       return response.status(500).send({
         message: 'Impossible to retrieve receipt details.',
@@ -70,7 +65,7 @@ export class ReceiptController {
       return response.status(200).json({
         ...dataValues,
       })
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err.message)
       return response.status(500).json({
         message: 'Failed to save purchaser details.',
