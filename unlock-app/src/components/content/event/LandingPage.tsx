@@ -10,6 +10,45 @@ interface AccordionProps {
   children: React.ReactNode
 }
 
+const customers = [
+  {
+    link: 'https://ethcc.io/',
+    image: '/images/illustrations/events/ethcc.svg',
+    name: 'EthCC',
+  },
+  {
+    link: 'https://www.dappcon.io/',
+    image: '/images/illustrations/events/dappcon.png',
+    name: 'Dappcon',
+  },
+  {
+    link: 'https://www.metacartel.org/',
+    image: '/images/illustrations/events/metacartel.png',
+    name: 'Metacartel',
+  },
+]
+
+const features = [
+  {
+    image: '/images/illustrations/events/easy.svg',
+    name: 'No-code smart contract deployment',
+    description:
+      'Simply fill up the form and hit the deploy button. All the metadata information will automatically be included in the NFT tickets. You can always add and modify other properties at later date.',
+  },
+  {
+    image: '/images/illustrations/events/qr.svg',
+    name: 'QR codes and proof of purchase ticketing',
+    description:
+      'The easiest way to authenticate tickets. Once an attendee purchases a ticket, they will receive an email along with a QR code to check in at the venue.',
+  },
+  {
+    image: '/images/illustrations/events/verifier.svg',
+    name: 'Check-ins at the venue are a breeze',
+    description:
+      'Volunteers or door staff can check attendees in with just a smartphone, and ensure tickets aren’t transferred or reused once someone has come through the door.',
+  },
+]
+
 const Accordion = ({ title, children }: AccordionProps) => {
   return (
     <Disclosure>
@@ -84,39 +123,24 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
       <section className="absolute left-0 justify-items-center justify-center content-center items-center	text-white bg-black w-screen	flex flex-col py-8">
         <h1 className="text-xl font-semibold">Used by</h1>
         <ul className="flex flex-row my-8">
-          <li className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24">
-            <Link target="_blank" href="https://ethcc.io/">
-              <Image
-                width="100"
-                height="100"
-                alt="ethcc"
-                src="/images/illustrations/events/ethcc.svg"
-              ></Image>
-              <h4 className="mt-auto">EthCC</h4>
-            </Link>
-          </li>
-          <li className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24 ">
-            <Link target="_blank" href="https://www.dappcon.io/">
-              <Image
-                width="100"
-                height="100"
-                alt="dappcon"
-                src="/images/illustrations/events/dappcon.png"
-              ></Image>
-              <h4 className="mt-auto">DappCon</h4>
-            </Link>
-          </li>
-          <li className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24">
-            <Link target="_blank" href="https://www.metacartel.org/">
-              <Image
-                width="100"
-                height="100"
-                alt="metacartel"
-                src="/images/illustrations/events/metacartel.png"
-              ></Image>
-              <h4 className="mt-auto">Metacartel</h4>
-            </Link>
-          </li>
+          {customers.map(({ link, image, name }) => {
+            return (
+              <li
+                key={name}
+                className="md:mx-12 mx-2 flex items-center rounded-full text-center w-24 h-24"
+              >
+                <Link target="_blank" href={link}>
+                  <Image
+                    width="100"
+                    height="100"
+                    alt={name}
+                    src={image}
+                  ></Image>
+                  <h4 className="mt-auto">{name}</h4>
+                </Link>
+              </li>
+            )
+          })}
         </ul>
       </section>
       <section className="flex flex-col mt-96 justify-items-center	justify-center content-center items-center">
@@ -128,58 +152,21 @@ export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
           Unlock built the tools you need.
         </p>
         <ul className="grid md:grid-cols-[300px_300px_300px] gap-8 my-8">
-          <li className="bg-red">
-            <Image
-              className="border border-1 rounded-lg border-ui-main-100"
-              width="400"
-              height="300"
-              alt="No-code"
-              src="/images/illustrations/events/easy.svg"
-            ></Image>
-            <h3 className="text-xl font-bold mb-2 mt-2">
-              No-code smart contract deployment
-            </h3>
-            <p className="text-sm">
-              Simply fill up the form and hit the deploy button. All the
-              metadata information will automatically be included in the NFT
-              tickets. You can always add and modify other properties at later
-              date.
-            </p>
-          </li>
-          <li className="">
-            <Image
-              className="border border-1 rounded-lg border-ui-main-100"
-              width="400"
-              height="300"
-              alt="No-code"
-              src="/images/illustrations/events/qr.svg"
-            ></Image>
-            <h3 className="text-xl font-bold mb-2 mt-2">
-              QR codes and proof of purchase ticketing
-            </h3>
-            <p className="text-sm">
-              The easiest way to authenticate tickets. Once an attendee
-              purchases a ticket, they will receive an email along with a QR
-              code to check in at the venue.
-            </p>
-          </li>
-          <li className="bg-red">
-            <Image
-              className="border border-1 rounded-lg border-ui-main-100"
-              width="400"
-              height="300"
-              alt="No-code"
-              src="/images/illustrations/events/verifier.svg"
-            ></Image>
-            <h3 className="text-xl font-bold mb-2 mt-2">
-              Check-ins at the venue are a breeze
-            </h3>
-            <p className="text-sm">
-              Volunteers or door staff can check attendees in with just a
-              smartphone, and ensure tickets aren’t transferred or reused once
-              someone has come through the door.
-            </p>
-          </li>
+          {features.map(({ image, name, description }) => {
+            return (
+              <li key={name}>
+                <Image
+                  className="border border-1 rounded-lg border-ui-main-100"
+                  width="400"
+                  height="300"
+                  alt="No-code"
+                  src={image}
+                ></Image>
+                <h3 className="text-xl font-bold mb-2 mt-2">{name}</h3>
+                <p className="text-sm">{description}</p>
+              </li>
+            )
+          })}
         </ul>
       </section>
       <section className="flex flex-col mt-8 justify-items-center	justify-center content-center items-center">
