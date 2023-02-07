@@ -51,17 +51,19 @@ export const LockDeploying = ({
               {status === 'progress' ? 'In progress...' : 'Deployed'}
             </span>
           </div>
-          <Link
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 mt-3 text-lg font-bold lg:mt-auto lg:ml-auto text-brand-ui-primary"
-            href={config.networks[network].explorer.urls.transaction(
-              transactionHash
-            )}
-          >
-            View on block explorer
-            <ExternalLinkIcon size={20} />
-          </Link>{' '}
+          {config.networks[network].explorer?.urls?.transaction && (
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 mt-3 text-lg font-bold lg:mt-auto lg:ml-auto text-brand-ui-primary"
+              href={config.networks[network].explorer.urls.transaction(
+                transactionHash
+              )}
+            >
+              View on block explorer
+              <ExternalLinkIcon size={20} />
+            </Link>
+          )}
         </div>
       </div>
       <div className="flex flex-col items-center my-12 text-center">
