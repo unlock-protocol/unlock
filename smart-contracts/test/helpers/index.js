@@ -15,8 +15,8 @@ const math = require('./math')
 const fork = require('./fork')
 
 module.exports = {
-  getBalance,
   deployContracts,
+  ...getBalance,
   ...lock,
   ...constants,
   ...deployLocks,
