@@ -47,7 +47,9 @@ export function Minting({
           )
 
           const transaction = await provider.waitForTransaction(
-            mint!.transactionHash!
+            mint!.transactionHash!,
+            2,
+            60000
           )
 
           if (transaction.status !== 1) {
