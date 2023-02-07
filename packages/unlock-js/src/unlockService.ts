@@ -83,10 +83,10 @@ export default class UnlockService {
       ? 'PublicLock'
       : 'Unlock'
 
-    if (contractName === 'PublicLock') {
+    if (contractName === 'PublicLock' && PublicLockVersions[`v${version}`]) {
       return PublicLockVersions[`v${version}`]
     }
-    if (contractName === 'Unlock') {
+    if (contractName === 'Unlock' && UnlockVersions[`v${version}`]) {
       return UnlockVersions[`v${version}`]
     }
 
