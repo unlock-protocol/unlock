@@ -3,7 +3,7 @@ title: Unlock Protocol Cordially Invites You to Events by Unlock
 authorName: Christopher Carfi
 publishDate: February 7, 2023
 description: Creators have multiple options to airdrop memberships to their fans so they can become members and receive the NFT in their wallets
-image: /images/blog/events-by-unlock/events-cover.png
+image: /images/blog/events-by-unlock/events-subbrand-share.png
 ---
 
 Events and projects around the world have created their ticketing and membership infrastructure using Unlock Protocol. 
