@@ -21,6 +21,7 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { CryptoIcon } from '~/components/interface/locks/elements/KeyPrice'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
+// TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
   lock: Omit<Lock, 'address' | 'key'>
