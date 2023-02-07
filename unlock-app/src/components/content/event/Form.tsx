@@ -78,8 +78,6 @@ export const Form = ({ onSubmit }: FormProps) => {
     control,
   })
 
-  const errorFields = Object.keys(errors)
-
   const DescDescription = () => (
     <p>
       Enter a description for your event.{' '}
@@ -151,14 +149,21 @@ export const Form = ({ onSubmit }: FormProps) => {
                 description={
                   'Enter the name of your event. It will appear on the NFT tickets.'
                 }
+                error={errors.lock?.name?.message}
               />
 
               <TextBox
-                {...register('metadata.description')}
+                {...register('metadata.description', {
+                  required: {
+                    value: true,
+                    message: 'Please add a description for your event',
+                  },
+                })}
                 label="Description"
                 placeholder="Write description here."
                 description={<DescDescription />}
                 rows={4}
+                error={errors.metadata?.description?.message as string}
               />
 
               <Input
@@ -210,9 +215,18 @@ export const Form = ({ onSubmit }: FormProps) => {
                 </div>
                 <div className="flex flex-col self-start justify-top">
                   <Input
-                    {...register('metadata.ticket.event_start_date')}
+                    {...register('metadata.ticket.event_start_date', {
+                      required: {
+                        value: true,
+                        message: 'Add a date to your event',
+                      },
+                    })}
                     type="date"
                     label="Date"
+                    error={
+                      // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                      errors.metadata?.ticket?.event_start_date?.message || ''
+                    }
                   />
                   <Input
                     {...register('metadata.ticket.event_start_time')}
@@ -340,13 +354,15 @@ export const Form = ({ onSubmit }: FormProps) => {
           </Disclosure>
 
           <div className="flex flex-col justify-center gap-6">
-            {errorFields.length > 0 && (
+            {Object.keys(errors).length > 0 && (
               <div className="px-2 text-red-600">
-                You need fix the issues in the following fields before deploying
-                your contract: {errorFields.join(',')}
+                Please make sure you complete all the required fields.
               </div>
             )}
-            <Button disabled={errorFields.length > 0} className="w-full">
+            <Button
+              disabled={Object.keys(errors).length > 0}
+              className="w-full"
+            >
               Deploy your contract
             </Button>
           </div>
