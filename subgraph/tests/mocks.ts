@@ -157,7 +157,7 @@ createMockedFunction(
   .returns([ethereum.Value.fromString('My lock v8')])
 
 createMockedFunction(
-    Address.fromString(lockAddressV8),
+  Address.fromString(lockAddressV8),
   'tokenAddress',
   'tokenAddress():(address)'
 )
@@ -205,3 +205,15 @@ createMockedFunction(
     ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(0)),
   ])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'ownerOf',
+  'ownerOf(uint256):(address)'
+)
+  .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(tokenId))])
+  .returns([
+    ethereum.Value.fromAddress(
+      Address.fromString('0x0000000000000000000000000000000000000000')
+    ),
+  ])
