@@ -75,7 +75,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             onClick={onEdit}
             variant="black"
-            className="border w-32"
+            className="w-32 border"
             size="small"
           >
             Edit Details
@@ -111,10 +111,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       </Modal>
 
       <section className="">
-        <h1 className="text-5xl md:text-7xl font-bold mb-4">
+        <h1 className="mb-4 text-5xl font-bold md:text-7xl">
           {eventData.name}
         </h1>
-        <p className="flex flex-rows gap-2 mb-4">
+        <p className="flex gap-2 mb-4 flex-rows">
           <span className="text-brand-gray">Ticket contract</span>
           <AddressLink
             lockAddress={lockAddress}
@@ -122,7 +122,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           ></AddressLink>
         </p>
         <ul
-          className="bold text-xl md:text-2xl mb-6"
+          className="mb-6 text-xl bold md:text-2xl"
           style={{ color: `#${eventData.background_color}` }}
         >
           {eventDate && (
@@ -142,15 +142,17 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               {eventDate.toLocaleTimeString()}
             </li>
           )}
-          <li className="mb-2">
-            <Link
-              target="_blank"
-              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
-            >
-              <GoLocation className="inline mr-2" />
-              {eventData.ticket?.event_address}
-            </Link>
-          </li>
+          {(eventData?.ticket?.event_address || '')?.length > 0 && (
+            <li className="mb-2">
+              <Link
+                target="_blank"
+                href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
+              >
+                <GoLocation className="inline mr-2" />
+                {eventData.ticket?.event_address}
+              </Link>
+            </li>
+          )}
         </ul>
         {eventData.description && (
           <div className="markdown">
@@ -163,7 +165,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       <section className="flex flex-col items-center">
         <img
           alt={eventData.title}
-          className="mb-5 aspect-auto	"
+          className="mb-5 aspect-auto "
           src={eventData.image}
         />
         <ul className="flex justify-around w-1/2">
