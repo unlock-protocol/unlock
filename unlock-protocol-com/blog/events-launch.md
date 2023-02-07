@@ -2,7 +2,7 @@
 title: Unlock Protocol Cordially Invites You to Events by Unlock
 authorName: Christopher Carfi
 publishDate: February 7, 2023
-description: Creators have multiple options to airdrop memberships to their fans so they can become members and receive the NFT in their wallets
+description: Events by Unlock is a free and easy way to create tickets and share an event details page for 10-10000+ person events. Setting up an event takes less than a minute, and it works for both free and paid events.
 image: /images/blog/events-by-unlock/events-subbrand-share.png
 ---
 
