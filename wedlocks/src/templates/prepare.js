@@ -2,17 +2,16 @@ import handlebars from 'handlebars'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-export const prepareAll = (template: any, opts = {}) => {
+export const prepareAll = (template, opts = {}) => {
   const prepared = { attachments: [], ...template }
   Object.keys(template).forEach((format) => {
     if (['html', 'text', 'subject'].indexOf(format) > -1) {
       const [compiled, getImages] = prepare(template[format], opts)
 
-      prepared[format] = (args: any) => {
+      prepared[format] = (args) => {
         const content = compiled(args)
-        // @ts-expect-error
-        const images = getImages() as any
-        images?.forEach((image: any) => {
+        const images = getImages()
+        images?.forEach((image) => {
           prepared.attachments.push(image)
         })
         return content
@@ -22,12 +21,11 @@ export const prepareAll = (template: any, opts = {}) => {
   return prepared
 }
 
-export const prepare = (content: any, opts = {}) => {
-  const images: any[] = []
+export const prepare = (content, opts = {}) => {
+  const images = []
   handlebars.registerHelper('inlineImage', function (filename) {
     const path = join(__dirname, `/../../../static/attachments/${filename}`)
 
-    //@ts-ignore
     if (opts?.context === 'web') {
       // Read file as base64, serve1
       return `data:image/png;base64,${readFileSync(path, 'base64')}`
