@@ -306,7 +306,7 @@ const NotManagerBanner = () => {
 }
 
 export const ManageLockPage = () => {
-  const { network: walletNetwork, changeNetwork, account: owner } = useAuth()
+  const { account: owner } = useAuth()
   const { query } = useRouter()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(
@@ -319,28 +319,14 @@ export const ManageLockPage = () => {
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
-  // let's force to switch network based on the lockAddress
-  const switchToCurrentNetwork = async () => {
-    if (!lockNetwork) return
-    const differentNetwork = walletNetwork != parseInt(`${lockNetwork}`)
-
-    if (differentNetwork) {
-      await changeNetwork(parseInt(`${network}`))
-    }
-  }
-
   const withoutParams = !lockAddress && !lockNetwork
 
   const { isManager, isLoading: isLoadingLockManager } = useLockManager({
     lockAddress,
-    network: walletNetwork!,
+    network: lockNetwork!,
   })
 
   const showNotManagerBanner = !isLoadingLockManager && !isManager
-
-  useEffect(() => {
-    switchToCurrentNetwork()
-  }, [])
 
   const [filters, setFilters] = useState({
     query: '',
@@ -348,10 +334,6 @@ export const ManageLockPage = () => {
     expiration: ExpirationStatus.ALL,
   })
   const [page, setPage] = useState(1)
-
-  if (!walletNetwork) {
-    return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
-  }
 
   const toggleAirdropKeys = () => {
     setAirdropKeys(!airdropKeys)
