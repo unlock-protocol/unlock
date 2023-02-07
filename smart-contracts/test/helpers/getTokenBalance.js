@@ -2,18 +2,26 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('./constants')
 
-const Erc20Token = artifacts.require(
-  '@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20'
-)
 
-module.exports = async function getTokenBalance(account, tokenAddress) {
+async function getBalance(account, tokenAddress) {
+  const balance  = await getBalanceEthers(account, tokenAddress)
+  return new BigNumber(balance.toString())
+}
+
+async function getBalanceEthers(account, tokenAddress) {
+  let balance
   // ETH balance
   if (!tokenAddress || tokenAddress === ADDRESS_ZERO) {
-    const balanceETH = await ethers.provider.getBalance(account)
-    return new BigNumber(balanceETH.toString())
+    balance = await ethers.provider.getBalance(account)
+  } else {
+    // erc20 balance
+    const token = await ethers.getContractAt('@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20', tokenAddress)
+    balance = await token.balanceOf(account)
   }
-  // erc20 balance
-  const token = await Erc20Token.at(tokenAddress)
-  const balance = await token.balanceOf(account)
-  return new BigNumber(balance.toString())
+  return balance
+}
+
+module.exports = {
+  getBalance,
+  getBalanceEthers,
 }
