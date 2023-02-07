@@ -20,6 +20,8 @@ module.exports = async () => {
 
   const unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
     initializer: 'initialize(address)',
+    // required to silence warning, as we import TransparentUpgradeableProxy that uses a delegate call
+    // https://github.com/OpenZeppelin/openzeppelin-upgrades/issues/455
     unsafeAllow: ['delegatecall']
   })
   await unlock.deployed()
