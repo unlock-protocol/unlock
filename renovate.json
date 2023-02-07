@@ -130,5 +130,6 @@
       "matchPaths": ["subgraph/**"]
     }
   ],
-  "rebaseWhen": "never"
+  "rebaseWhen": "never",
+  "lockFileMaintenance": { "enabled": true }
 }
