@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "@unlock-protocol/email-templates",
+  "description": "List of email templates",
+  "files": [
+    "dist"
+  ],
+  "main": "dist",
+  "scripts": {
+    "build": "tsc -p .",
+    "tsc": "tsc",
+    "clean": "rm -rf build"
+  }
+}

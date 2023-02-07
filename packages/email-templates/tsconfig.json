@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+  
+    /* Modules */
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+  
+    /* JavaScript Support */
+    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+    "checkJs": false /* Enable error reporting in type-checked JavaScript files. */,
+    
+    // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
+    "outDir": "dist" /* Specify an output folder for all emitted files. */,
+
+    /* Interop Constraints */
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,
+    "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./src/__tests__"]
+}

@@ -14710,6 +14710,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/email-templates@workspace:packages/email-templates":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:^, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
