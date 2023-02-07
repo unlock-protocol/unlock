@@ -47,7 +47,7 @@
     "@storybook/react": "6.5.16",
     "@svgr/cli": "6.5.1",
     "babel-eslint": "10.1.0",
-    "babel-loader": "9.1.0",
+    "babel-loader": "9.1.2",
     "eslint": "8.33.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-config-standard": "17.0.0",
