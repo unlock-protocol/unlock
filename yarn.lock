@@ -14713,6 +14713,8 @@ __metadata:
 "@unlock-protocol/email-templates@workspace:packages/email-templates":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
+  dependencies:
+    typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
