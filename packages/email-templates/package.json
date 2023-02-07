@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "name": "@unlock-protocol/email-templates",
+  "description": "List of email templates",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "dist",
+  "devDependencies": {
+    "typescript": "4.9.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/email-templates"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "tsc": "tsc",
+    "clean": "rm -rf dist"
+  }
+}
