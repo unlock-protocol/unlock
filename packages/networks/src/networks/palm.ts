@@ -12,10 +12,10 @@ export const palm: NetworkConfig = {
   blockTime: 5000,
   subgraph: {
     endpoint:
-      'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet/graphql',
+      'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet',
     networkName: 'palm-mainnet',
     endpointV2:
-      'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet/graphql',
+      'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet',
   },
   explorer: {
     name: 'Palm Explorer',
