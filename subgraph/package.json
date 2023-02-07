@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.37.1",
-    "@graphprotocol/graph-ts": "0.29.1",
+    "@graphprotocol/graph-ts": "0.29.3",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
     "eslint": "8.33.0",
