@@ -9,6 +9,6 @@
   "scripts": {
     "build": "tsc -p .",
     "tsc": "tsc",
-    "clean": "rm -rf build"
+    "clean": "rm -rf dist"
   }
 }
