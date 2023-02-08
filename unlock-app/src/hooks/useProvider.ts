@@ -200,6 +200,19 @@ export const useProvider = (config: any) => {
       return _walletService
     } else {
       try {
+        const p = new ethers.providers.Web3Provider(provider.provider, 'any')
+        const waitForNetwork = (id: number) => {
+          return new Promise((resolve) => {
+            const handler = (current: any) => {
+              console.log(current)
+              if (current?.chainId === id) {
+                resolve(true)
+              }
+            }
+            p.on('network', handler)
+          })
+        }
+        const waitForChange = waitForNetwork(id)
         await provider.send(
           'wallet_switchEthereumChain',
           [
@@ -209,8 +222,9 @@ export const useProvider = (config: any) => {
           ],
           account
         )
-        const p = new ethers.providers.Web3Provider(provider.provider, 'any')
-        const { walletService: _walletService } = await getWalletService(p)
+        await waitForChange
+        const px = new ethers.providers.Web3Provider(provider.provider, id)
+        const { walletService: _walletService } = await getWalletService(px)
         return _walletService
       } catch (switchError: any) {
         if (switchError.code === 4902 || switchError.code === -32603) {
