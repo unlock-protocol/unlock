@@ -41,7 +41,7 @@ Object.keys(EmailTemplates).forEach((template: string) => {
   templates[template.toLowerCase()] = EmailTemplates[template as Template]
 })
 
-const getEmailTemplate = (template: Template) => templates[template]
+const getEmailTemplate = (template: Template | string) => templates[template]
 
 export default templates
 export { getEmailTemplate }
