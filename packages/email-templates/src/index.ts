@@ -6,6 +6,7 @@ import debug from './templates/debug'
 import transferCode from './templates/transferCode'
 import keyAirdropped from './templates/keyAirdropped'
 import LockTemplates from './templates/locks'
+import base from './templates/base'
 
 interface EmailTemplateProps {
   nowrap?: boolean
@@ -32,7 +33,7 @@ export const EmailTemplates: Record<Partial<Template>, EmailTemplateProps> = {
   keyAirdropped,
 }
 
-let templates: any = {}
+const templates = {}
 Object.keys(LockTemplates).forEach((template: any) => {
   // @ts-ignore
   templates[template.toLowerCase()] = LockTemplates[template]
@@ -43,8 +44,9 @@ Object.keys(EmailTemplates).forEach((template: string) => {
   templates[template.toLowerCase()] = EmailTemplates[template]
 })
 
-export const getEmailTemplate = (template: Template) => EmailTemplates[template]
+const getEmailTemplate = (template: Template) => EmailTemplates[template]
 // @ts-ignore
-export const getLockTemplate = (template: any) => LockTemplates[template]
+const getLockTemplate = (template: any) => LockTemplates[template]
 
 export default templates
+export { base, getEmailTemplate, getLockTemplate }
