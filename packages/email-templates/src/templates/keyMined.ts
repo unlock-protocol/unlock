@@ -1,3 +1,8 @@
+import handlebars from 'handlebars'
+import { links } from './helpers/links'
+
+handlebars.registerHelper('links', links)
+
 export default {
   subject: 'A membership was added to your wallet!',
   html: `<h1>A new Membership NFT in your wallet!</h1>
