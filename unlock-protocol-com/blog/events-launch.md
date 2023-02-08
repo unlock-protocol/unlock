@@ -12,7 +12,7 @@ Now, for events that want to get up and running rapidly, the Unlock Labs team ha
 
 <hr>
 
-**Join us for a workshop on February 9: On-Chain NFT Ticketing using Events by Unlock**
+**JOIN US FOR A WORKSHOP ON FEBRUARY 9: ON-CHAIN NFT TICKETING USING EVENTS BY UNLOCK**
 
 [Sign up here](https://us06web.zoom.us/webinar/register/6116678685484/WN_LKD0_WT7Rzi3kB288TUyew)
 
