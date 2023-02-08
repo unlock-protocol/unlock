@@ -6,7 +6,7 @@ import { MouseEventHandler } from 'react'
 
 export const AirdropMember = z
   .object({
-    recipient: z.string(),
+    wallet: z.string(),
     count: z.preprocess((item) => Number(item), z.number().default(1)),
     expiration: z.string().optional(),
     neverExpire: z.preprocess(
@@ -28,14 +28,14 @@ interface AirdropListItemProps {
 }
 
 export function AirdropListItem({
-  value: { recipient, count, email },
+  value: { wallet, count, email },
   onRemove,
 }: AirdropListItemProps) {
   return (
     <div className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow">
       <div className="space-x-2">
         <span>
-          {addressMinify(recipient)} {email ? `(${email})` : ''}{' '}
+          {addressMinify(wallet)} {email ? `(${email})` : ''}{' '}
         </span>
         <span> - </span>
         <span className="text-gray-500">
