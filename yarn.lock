@@ -8177,11 +8177,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.17.0":
-  version: 1.17.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.17.0"
+"@openzeppelin/hardhat-upgrades@npm:1.16.1":
+  version: 1.16.1
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.16.1"
   dependencies:
-    "@openzeppelin/upgrades-core": ^1.14.1
+    "@openzeppelin/upgrades-core": ^1.13.1
     chalk: ^4.1.0
     proper-lockfile: ^4.1.1
   peerDependencies:
@@ -8189,7 +8189,7 @@ __metadata:
     hardhat: ^2.0.2
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: edbfa0918023d880477f3bf86910fd71f99625cc0cb0c29a869899cf68a9f620b27302cd28ff5e3778728a0433df3090e91576e1cceb28b448a702daf686c032
+  checksum: e9fb526b9bd278dea5e0f86d0b85008499bf753598507826ac1b6bc704da9214888e68a4c40dddd12ce86e944ae5023a31ec173fc88a299c85a6518ab26c54da
   languageName: node
   linkType: hard
 
@@ -8249,9 +8249,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.14.1":
-  version: 1.14.1
-  resolution: "@openzeppelin/upgrades-core@npm:1.14.1"
+"@openzeppelin/upgrades-core@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.12.0"
   dependencies:
     bn.js: ^5.1.2
     cbor: ^8.0.0
@@ -8261,11 +8261,11 @@ __metadata:
     ethereumjs-util: ^7.0.3
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
-  checksum: b6dfb36bc7f83a85a5e072768e98649f5a9895971bd2f81d0c7405fb9a0200bc8ade406aea1ccc3108181be758629c676962c0714b567dc5dccd68536e42eb09
+  checksum: c1e3418921a10f68ceffed60b8c9c2882e59929ab8a9e6bfb097a778a39c4b176c542594f8284b3989872e372a843d8b4c2f4c553d9ce48f232ee34edb0e6458
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:^1.14.1":
+"@openzeppelin/upgrades-core@npm:^1.13.1":
   version: 1.22.0
   resolution: "@openzeppelin/upgrades-core@npm:1.22.0"
   dependencies:
@@ -13846,9 +13846,9 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.7.3
     "@openzeppelin/contracts-upgradeable": 4.7.3
-    "@openzeppelin/hardhat-upgrades": 1.17.0
+    "@openzeppelin/hardhat-upgrades": 1.16.1
     "@openzeppelin/test-helpers": 0.5.16
-    "@openzeppelin/upgrades-core": 1.14.1
+    "@openzeppelin/upgrades-core": 1.12.0
     "@uniswap/smart-order-router": 3.3.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
@@ -28246,7 +28246,7 @@ __metadata:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
+  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
   languageName: node
   linkType: hard
 
