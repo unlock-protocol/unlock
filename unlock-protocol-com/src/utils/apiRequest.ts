@@ -17,7 +17,9 @@ export async function getGNPs() {
         if (!network.unlockAddress) {
           return null
         }
-        const provider = new ethers.providers.JsonRpcProvider(network.provider)
+        const provider = new ethers.providers.JsonRpcBatchProvider(
+          network.provider
+        )
         const gdp = await getGdpForNetwork(provider, network)
         const total = parseFloat(ethers.utils.formatUnits(gdp, '18'))
         return { total, network }

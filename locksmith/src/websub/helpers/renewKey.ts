@@ -54,7 +54,7 @@ export const isWorthRenewing = async (
   keyId: string
 ): Promise<ShouldRenew> => {
   const web3Service = new Web3Service(networks)
-  const provider = new ethers.providers.JsonRpcProvider(
+  const provider = new ethers.providers.JsonRpcBatchProvider(
     networks[network].publicProvider
   )
 

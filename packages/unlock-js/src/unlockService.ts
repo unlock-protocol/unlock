@@ -1,4 +1,3 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 
@@ -53,7 +52,7 @@ export default class UnlockService {
     }
 
     let opCode = await (
-      this.providerForNetwork(network) as JsonRpcProvider
+      this.providerForNetwork(network) as ethers.providers.Provider
     ).getCode(this.networks[network].unlockAddress!)
     return opCode !== '0x'
   }

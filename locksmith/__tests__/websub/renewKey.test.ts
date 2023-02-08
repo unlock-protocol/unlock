@@ -76,6 +76,13 @@ vi.mock('@unlock-protocol/networks', () => {
 
 vi.mock('ethers', async () => {
   const original = await vi.importActual<any>('ethers')
+  const provider = vi.fn(() => ({
+    getFeeData: vi.fn(() => ({
+      maxFeePerGas: BigNumber.from(10),
+      maxPriorityFeePerGas: BigNumber.from(20),
+      catch: vi.fn(),
+    })),
+  }))
   return {
     ...original,
     Wallet: {
@@ -90,13 +97,8 @@ vi.mock('ethers', async () => {
     ethers: {
       ...original.ethers,
       providers: {
-        JsonRpcProvider: vi.fn(() => ({
-          getFeeData: vi.fn(() => ({
-            maxFeePerGas: BigNumber.from(10),
-            maxPriorityFeePerGas: BigNumber.from(20),
-            catch: vi.fn(),
-          })),
-        })),
+        JsonRpcProvider: provider,
+        JsonRpcBatchProvider: provider,
       },
       Wallet: vi.fn(),
       utils: {

@@ -42,7 +42,7 @@ export function Minting({
       try {
         const network = config.networks[lock!.network]
         if (network) {
-          const provider = new ethers.providers.JsonRpcProvider(
+          const provider = new ethers.providers.JsonRpcBatchProvider(
             network.provider
           )
 

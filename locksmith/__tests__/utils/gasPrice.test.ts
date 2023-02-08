@@ -24,13 +24,15 @@ vi.mock('@unlock-protocol/networks', () => {
 
 vi.mock('ethers', async () => {
   const original = await vi.importActual<any>('ethers')
+  const provider = vi.fn(() => ({
+    getGasPrice: () => Promise.resolve(BigNumber.from(1e12).toString()),
+  }))
   const item = {
     ...original,
     ethers: {
       providers: {
-        JsonRpcProvider: vi.fn(() => ({
-          getGasPrice: () => Promise.resolve(BigNumber.from(1e12).toString()),
-        })),
+        JsonRpcProvider: provider,
+        JsonRpcBatchProvider: provider,
       },
       Wallet: vi.fn(),
     },
