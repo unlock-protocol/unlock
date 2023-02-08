@@ -86,6 +86,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     )
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
       initializer: 'initialize(address)',
+      unsafeAllow: ['delegatecall']
     })
     await unlock.deployed()
 
