@@ -1,3 +1,8 @@
+import handlebars from 'handlebars'
+import { links } from '../templates/helpers/links'
+
+handlebars.registerHelper('links', links)
+
 export default {
   subject: 'A new Membership NFT was airdropped to you',
   html: `<h1>A new Membership NFT was airdropped to you</h1>
