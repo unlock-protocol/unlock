@@ -26,8 +26,8 @@ export interface Props
   withIcon?: boolean
   isTruncated?: boolean
   web3Service: Web3Service
-  localForm: UseFormReturn;
-  name: string,
+  localForm: UseFormReturn
+  name: string
 }
 
 const SIZE_STYLES: SizeStyleProp = {
