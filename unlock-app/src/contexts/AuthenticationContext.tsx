@@ -1,7 +1,8 @@
+import { WalletService } from '@unlock-protocol/unlock-js'
 import { createContext, useContext } from 'react'
 
 interface AuthenticationContextType {
-  changeNetwork: (network: any) => void
+  changeNetwork: (network: any) => Promise<WalletService>
   signMessage: (phrase: string) => string
   authenticate: (provider: any) => void
   deAuthenticate: () => void

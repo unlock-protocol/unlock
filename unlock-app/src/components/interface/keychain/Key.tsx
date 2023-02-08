@@ -357,7 +357,7 @@ function Key({ ownedKey, account, network }: Props) {
                   </Menu.Item>
                 </div>
                 <div className="p-1">
-                  <Menu.Item disabled={!isRefundable || wrongNetwork}>
+                  <Menu.Item disabled={!isRefundable}>
                     {({ active, disabled }) => (
                       <MenuButton
                         disabled={disabled}
@@ -368,9 +368,7 @@ function Key({ ownedKey, account, network }: Props) {
                         }}
                       >
                         <CancelIcon />
-                        {wrongNetwork
-                          ? `Switch to ${networks[network].name} to cancel`
-                          : 'Cancel and refund'}
+                        Cancel and refund
                       </MenuButton>
                     )}
                   </Menu.Item>

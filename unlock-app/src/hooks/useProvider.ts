@@ -48,15 +48,26 @@ export const useProvider = (config: any) => {
     }
   }, [account, network])
 
+  const getWalletService = async (provider: any) => {
+    const _walletService = new WalletService(config.networks)
+    const _network = await _walletService.connect(provider)
+    const _account = await _walletService.getAccount()
+    return {
+      walletService: _walletService,
+      network: _network,
+      account: _account,
+    }
+  }
   const resetProvider = async (provider: ethers.providers.Provider) => {
     try {
-      const _walletService = new WalletService(config.networks)
       setProvider(provider)
-      // @ts-expect-error TODO fix walletService signature
-      const _network = await _walletService.connect(provider)
+      const {
+        network: _network,
+        walletService: _walletService,
+        account: _account,
+      } = await getWalletService(provider)
       setNetwork(_network || undefined)
 
-      const _account = await _walletService.getAccount()
       setWalletService(_walletService)
       // @ts-expect-error
       if (!provider.isUnlock) {
@@ -173,19 +184,23 @@ export const useProvider = (config: any) => {
         ? config.networks[networkConf]
         : networkConf
 
-    const { id, name } = networkConfig
+    const { id } = networkConfig
 
     // don't change network if not needed
     if (id === network) {
-      return
+      return walletService
     }
 
     if (provider.isUnlock) {
       const newProvider = UnlockProvider.reconnect(provider, networkConfig)
-      resetProvider(newProvider)
+      const { walletService: _walletService } = await getWalletService(
+        newProvider
+      )
+      await resetProvider(newProvider)
+      return _walletService
     } else {
-      const changeNetworkRequest = provider
-        .send(
+      try {
+        await provider.send(
           'wallet_switchEthereumChain',
           [
             {
@@ -194,21 +209,16 @@ export const useProvider = (config: any) => {
           ],
           account
         )
-        .catch((switchError: any) => {
-          if (switchError.code === 4902 || switchError.code === -32603) {
-            return addNetworkToWallet(id)
-          } else {
-            throw switchError
-          }
-        })
-        .then(() => {
-          setNetwork(id)
-        })
-      ToastHelper.promise(changeNetworkRequest, {
-        loading: `Changing network to ${name}. Please approve in your wallet.`,
-        error: `We could not switch to ${name}. Try adding it manually in your wallet.`,
-        success: `Successfully changed network to ${name}.`,
-      })
+        const p = new ethers.providers.Web3Provider(provider.provider, 'any')
+        const { walletService: _walletService } = await getWalletService(p)
+        return _walletService
+      } catch (switchError: any) {
+        if (switchError.code === 4902 || switchError.code === -32603) {
+          return addNetworkToWallet(id)
+        } else {
+          throw switchError
+        }
+      }
     }
   }
 
