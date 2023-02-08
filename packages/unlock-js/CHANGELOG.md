@@ -8,6 +8,10 @@
 
 # 0.33.1
 
+- ensuring we return a contract or throw!
+
+# 0.33.1
+
 - Move to ethers.JsonRpcBatchProvider instead of ethers.JsonRpcProvider
 
 # 0.33.0

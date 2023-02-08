@@ -41,13 +41,13 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitest/coverage-c8": "0.28.3",
-    "babel-loader": "9.1.0",
+    "babel-loader": "9.1.2",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
     "eslint": "8.33.0",
     "nodemon": "2.0.20",
     "prettier": "2.8.3",
-    "typescript": "4.9.4",
+    "typescript": "4.9.5",
     "vitest": "0.28.3"
   },
   "lint-staged": {

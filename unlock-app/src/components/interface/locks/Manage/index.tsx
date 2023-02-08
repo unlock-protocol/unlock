@@ -20,12 +20,14 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { addressMinify } from '~/utils/strings'
 import Link from 'next/link'
 import { Popover, Transition } from '@headlessui/react'
-import { TbTools as ToolsIcon } from 'react-icons/tb'
+import {
+  TbTools as ToolsIcon,
+  TbSettings as SettingsIcon,
+} from 'react-icons/tb'
 import { CgWebsite as WebsiteIcon } from 'react-icons/cg'
 import { FaRegEdit as EditIcon } from 'react-icons/fa'
 import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
-import { RiSettingsLine as SettingIcon } from 'react-icons/ri'
 import { IconType } from 'react-icons'
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
@@ -175,7 +177,6 @@ const PopoverItem = ({
 const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
-  const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
   const verificationLink = `/verification`
@@ -246,13 +247,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                             icon={EditIcon}
                           />
                         </Link>
-                        <Link href={settingsPageUrl}>
-                          <PopoverItem
-                            label="Update Lock Settings"
-                            description="Update membership smart contract settings including price and duration"
-                            icon={SettingIcon}
-                          />
-                        </Link>
                       </>
                     )}
                     <Link href={verificationLink} className="text-left">
@@ -286,6 +280,19 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
           />
         </Button>
         <div className="flex gap-3">
+          <Button
+            onClick={() => {
+              router.push(
+                `/locks/settings?address=${lockAddress}&network=${network}`
+              )
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <Icon icon={SettingsIcon} size={20} />
+              <span>Settings</span>
+            </div>
+          </Button>
+
           <ToolsMenu lockAddress={lockAddress} network={network} />
         </div>
       </div>
