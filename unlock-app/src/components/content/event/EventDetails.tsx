@@ -19,6 +19,8 @@ import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { getEventDate } from './utils'
+import router from 'next/router'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -47,12 +49,41 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       }
     )
 
+  const { isManager: isLockManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
   if (isMetadataLoading || isHasValidKeyLoading) {
     return <LoadingIcon></LoadingIcon>
   }
 
+  const onEdit = () => {
+    return router.push(
+      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
+    )
+  }
+
   if (!metadata?.attributes) {
-    return <p>Not an event!</p>
+    if (isLockManager) {
+      return (
+        <>
+          <p className="mb-2">
+            Your event details are not set. Please make sure you add a date,
+            time and location.
+          </p>
+          <Button
+            onClick={onEdit}
+            variant="black"
+            className="w-32 border"
+            size="small"
+          >
+            Edit Details
+          </Button>
+        </>
+      )
+    }
+    return <p>This contract is not configured.</p>
   }
 
   const eventData = toFormData(metadata)
@@ -80,10 +111,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       </Modal>
 
       <section className="">
-        <h1 className="text-5xl md:text-7xl font-bold mb-4">
+        <h1 className="mb-4 text-5xl font-bold md:text-7xl">
           {eventData.name}
         </h1>
-        <p className="flex flex-rows gap-2 mb-4">
+        <p className="flex gap-2 mb-4 flex-rows">
           <span className="text-brand-gray">Ticket contract</span>
           <AddressLink
             lockAddress={lockAddress}
@@ -91,7 +122,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           ></AddressLink>
         </p>
         <ul
-          className="bold text-xl md:text-2xl mb-6"
+          className="mb-6 text-xl bold md:text-2xl"
           style={{ color: `#${eventData.background_color}` }}
         >
           {eventDate && (
@@ -105,21 +136,23 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               })}
             </li>
           )}
-          {eventDate && eventData.ticket.event_start_time && (
+          {eventDate && eventData.ticket?.event_start_time && (
             <li className="mb-2">
               <FaClock className="inline mr-2" />
               {eventDate.toLocaleTimeString()}
             </li>
           )}
-          <li className="mb-2">
-            <Link
-              target="_blank"
-              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket.event_address}`}
-            >
-              <GoLocation className="inline mr-2" />
-              {eventData.ticket.event_address}
-            </Link>
-          </li>
+          {(eventData?.ticket?.event_address || '')?.length > 0 && (
+            <li className="mb-2">
+              <Link
+                target="_blank"
+                href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
+              >
+                <GoLocation className="inline mr-2" />
+                {eventData.ticket?.event_address}
+              </Link>
+            </li>
+          )}
         </ul>
         {eventData.description && (
           <div className="markdown">
@@ -128,10 +161,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         )}
       </section>
-      <section className="flex flex flex-col items-center">
+
+      <section className="flex flex-col items-center">
         <img
           alt={eventData.title}
-          className="mb-5 aspect-auto	"
+          className="mb-5 aspect-auto "
           src={eventData.image}
         />
         <ul className="flex justify-around w-1/2">
@@ -143,10 +177,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </li>
         </ul>
       </section>
-      <section className="mb-8">
+      <section className="flex flex-col mb-8">
         {!hasValidKey && (
           <Button
-            className="h-12 w-full md:w-96"
+            variant="primary"
+            size="medium"
+            className="md:w-1/2"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`
@@ -166,6 +202,22 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             </Link>
             .
           </p>
+        )}
+        {isLockManager && (
+          <>
+            <p className="mt-12 mb-4 text-sm">
+              Want to change something? You can update anytime by accessing your
+              contract (Lock) on the Unlock Dashboard.
+            </p>
+            <Button
+              onClick={onEdit}
+              variant="black"
+              className="border md:w-1/2"
+              size="small"
+            >
+              Edit Details
+            </Button>
+          </>
         )}
       </section>
     </main>

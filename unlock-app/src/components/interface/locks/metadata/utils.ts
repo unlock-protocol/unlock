@@ -13,10 +13,10 @@ export interface MetadataFormData {
   youtube_url?: string
   animation_url?: string
   background_color?: string
-  ticket: Ticket
-  properties: Attribute[]
-  levels: Attribute[]
-  stats: Attribute[]
+  ticket?: Ticket
+  properties?: Attribute[]
+  levels?: Attribute[]
+  stats?: Attribute[]
   [key: string]: any
 }
 
