@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.33.1",
+  "version": "0.33.2",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -60,7 +60,7 @@
     "prettier": "2.8.3",
     "ts-jest": "29.0.3",
     "tsup": "6.5.0",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "dependencies": {
     "graphql": "16.6.0",
