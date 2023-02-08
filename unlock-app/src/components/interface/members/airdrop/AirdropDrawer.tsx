@@ -42,7 +42,7 @@ export function AirdropKeysDrawer({
 
   const handleConfirm = async (items: AirdropMember[]) => {
     // Create metadata
-    const users = items.map(({ recipient: userAddress, ...rest }) => {
+    const users = items.map(({ wallet: userAddress, ...rest }) => {
       const data = omit(rest, [
         'manager',
         'neverExpire',
@@ -104,7 +104,7 @@ export function AirdropKeysDrawer({
       }
 
       for (const _ of Array.from({ length: item.count })) {
-        prop.recipients.push(item.recipient)
+        prop.recipients.push(item.wallet)
         prop.expirations.push(expiration!)
         prop.keyManagers.push(item.manager || account!)
       }
