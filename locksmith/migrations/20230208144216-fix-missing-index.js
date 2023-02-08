@@ -30,5 +30,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+    await queryInterface.removeIndex('CustomEmailContents', 'lock_network_template_index')
   }
 };
