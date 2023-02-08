@@ -137,7 +137,13 @@ const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="f
             <div className="relative">
               {withIcon && (
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  {loadingResolvedAddress ? <Icon size={size} icon={LoadingIcon} /> : <Icon size={size} icon={WalletIcon} />}
+                  {loadingResolvedAddress ? (
+                    <div className="animate-spin">
+                      <Icon size={size} icon={LoadingIcon} />
+                    </div>
+                  ) : (
+                    <Icon size={size} icon={WalletIcon} />
+                  )}
                 </span>
               )}
               <input
@@ -152,24 +158,28 @@ const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="f
           </div>
         </FieldLayout>
         <div>
-          {loadingResolvedAddress ? (
-            <span className='text-gray-600'>
-              Loading resolved address or ens...
+          {!loadingResolvedAddress &&
+          resolvedAddress !== '' &&
+          addressType === 'name' ? (
+            <span className="text-gray-600">{resolvedAddress}</span>
+          ) : !loadingResolvedAddress &&
+            addressType === 'name' &&
+            resolvedAddress !== '' &&
+            isTruncated ? (
+            <span className="text-gray-600">
+              {minifyAddress(resolvedAddress)}
             </span>
-          ) : !loadingResolvedAddress && resolvedAddress !== '' && addressType === 'name'  ? (
-            <span className='text-gray-600'>
-              {resolvedAddress}
-            </span>
-          ) : !loadingResolvedAddress && addressType === 'name' && resolvedAddress !== '' && isTruncated ? (
-            <span className='text-gray-600'>
-             {minifyAddress(resolvedAddress)}
-            </span>
-          ) : !loadingResolvedAddress && addressType === 'address' && resolvedName !== '' ? (
-            <span className='text-gray-600'>
-              {resolvedName}
-            </span>
-          ) : addressType === 'error' && error && (
-            <span className='text-rose-700'>Please enter a valid ens or address</span>
+          ) : !loadingResolvedAddress &&
+            addressType === 'address' &&
+            resolvedName !== '' ? (
+            <span className="text-gray-600">{resolvedName}</span>
+          ) : (
+            addressType === 'error' &&
+            error && (
+              <span className="text-rose-700">
+                Please enter a valid ens or address
+              </span>
+            )
           )}
         </div>
       </>

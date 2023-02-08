@@ -266,7 +266,9 @@ export const LockManagerForm = ({
 
   const getManagerAddress = async () => {
     const managerValue = await watch('manager')
-    if (managerValue) setManagerAddress(managerValue)
+    if (managerValue !== '' && managerValue !== undefined) {
+      setManagerAddress(managerValue)
+    } else setManagerAddress('')
   }
   getManagerAddress()
 
