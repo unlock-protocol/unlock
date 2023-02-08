@@ -1,5 +1,5 @@
 import handlebars from 'handlebars'
-import { links } from '../templates/helpers/links'
+import { links } from './helpers/links'
 
 handlebars.registerHelper('links', links)
 
