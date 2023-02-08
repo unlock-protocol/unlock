@@ -7,6 +7,9 @@
     "dist"
   ],
   "main": "dist",
+  "dependencies": {
+    "handlebars": "4.7.7"
+  },
   "devDependencies": {
     "typescript": "4.9.4"
   },
