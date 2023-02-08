@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer'
-//import templates from './templates'
 import config from '../config'
 import encrypter from './encrypter'
 import wrap from './wrap'
