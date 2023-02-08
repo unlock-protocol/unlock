@@ -10,7 +10,7 @@ Events and projects around the world have created their ticketing and membership
 
 Now, for events that want to get up and running rapidly, the Unlock Labs team has created a quickstart tool: **Events by Unlock**.
 
-<hr>
+<blockquote>
 
 *JOIN US FOR A WORKSHOP ON FEBRUARY 9*
 
