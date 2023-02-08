@@ -1,4 +1,4 @@
-import { base } from '@unlock-protocol/email-templates'
+import base from './templates/base'
 
 /**
  * Function which wraps a template into the base stuff

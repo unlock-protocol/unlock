@@ -6,7 +6,6 @@ import debug from './templates/debug'
 import transferCode from './templates/transferCode'
 import keyAirdropped from './templates/keyAirdropped'
 import LockTemplates from './templates/locks'
-import base from './templates/base'
 
 interface EmailTemplateProps {
   nowrap?: boolean
@@ -49,4 +48,4 @@ const getEmailTemplate = (template: Template) => EmailTemplates[template]
 const getLockTemplate = (template: any) => LockTemplates[template]
 
 export default templates
-export { base, getEmailTemplate, getLockTemplate }
+export { getEmailTemplate, getLockTemplate }
