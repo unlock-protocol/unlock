@@ -3,7 +3,7 @@ const { impersonate } = require('./fork')
 
 const multisigABI = require('./ABIs/multisig.json')
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const MULTISIG_ADDRESS_OWNER = '0xF5C28ce24Acf47849988f147d5C75787c0103534'
+const MULTISIG_ADDRESS_OWNER = '0x4ce2dd8373ece0d7baaa16e559a5817cc875b16a'
 
 // test helper to reach concensus on multisig
 const confirmMultisigTx = async ({
@@ -14,9 +14,7 @@ const confirmMultisigTx = async ({
   const signers = await multisig.getOwners()
   const txs = await Promise.all(
     signers.slice(1, 4).map(async (signerAddress) => {
-      await impersonate(signerAddress)
-      const signer = await ethers.getSigner(signerAddress)
-
+      const signer = await impersonate(signerAddress)
       const m = multisig.connect(signer)
       const tx = await m.confirmTransaction(transactionId, {
         gasLimit: 1200000,
