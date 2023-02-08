@@ -29,11 +29,11 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
-// TODO: replace deps by Uniswap
-import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
-import '@unlock-protocol/contracts/dist/Unlock/IUnlockV11.sol';
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
+import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
+import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IMintableERC20.sol";
 
@@ -91,7 +91,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // Map token address to oracle contract address if the token is supported
   // Used for GDP calculations
-  mapping(address => IUniswapOracle) public uniswapOracles;
+  mapping(address => IUniswapOracleV3) public uniswapOracles;
 
   // The WETH token address, used for value calculations
   address public weth;
@@ -399,7 +399,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         tokenAddress != address(0) && tokenAddress != weth
       ) {
         // If priced in an ERC-20 token, find the supported uniswap oracle
-        IUniswapOracle oracle = uniswapOracles[
+        IUniswapOracleV3 oracle = uniswapOracles[
           tokenAddress
         ];
         if (address(oracle) != address(0)) {
@@ -426,7 +426,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
       // Distribute UDT
       if (_referrer != address(0)) {
-        IUniswapOracle udtOracle = uniswapOracles[udt];
+        IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(
@@ -595,11 +595,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address _tokenAddress,
     address _oracleAddress
   ) external onlyOwner {
-    uniswapOracles[_tokenAddress] = IUniswapOracle(
+    uniswapOracles[_tokenAddress] = IUniswapOracleV3(
       _oracleAddress
     );
     if (_oracleAddress != address(0)) {
-      IUniswapOracle(_oracleAddress).update(
+      IUniswapOracleV3(_oracleAddress).update(
         _tokenAddress,
         weth
       );
