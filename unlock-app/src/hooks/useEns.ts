@@ -13,7 +13,7 @@ export const getNameOrAddressForAddress = async (
     if (isNotENS) {
       return address
     }
-    const result = await new ethers.providers.JsonRpcProvider(
+    const result = await new ethers.providers.JsonRpcBatchProvider(
       config.networks[1].provider
     ).lookupAddress(address)
     if (result) {
@@ -34,7 +34,7 @@ export const getAddressForName = async (_name: string): Promise<string> => {
     if (isAddress) {
       return name
     }
-    const result = await new ethers.providers.JsonRpcProvider(
+    const result = await new ethers.providers.JsonRpcBatchProvider(
       config.networks[1].provider
     ).resolveName(name)
     return result || ''

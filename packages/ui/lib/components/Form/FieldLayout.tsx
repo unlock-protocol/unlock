@@ -59,9 +59,9 @@ export function FieldLayout(props: Props) {
 
     if (description) {
       return (
-        <p id={label} className={descriptionClass}>
+        <div id={label} className={descriptionClass}>
           {description}
-        </p>
+        </div>
       )
     }
 
