@@ -56,7 +56,7 @@ networks.hardhat = {
 // mainnet fork
 if (process.env.RUN_FORK) {
   const chainId = parseInt(process.env.RUN_FORK)
-  if(isNaN(chainId)) {
+  if (isNaN(chainId)) {
     throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
   }
   console.log(`Running a fork (chainId : ${chainId})...`)
@@ -66,7 +66,7 @@ if (process.env.RUN_FORK) {
       url: `https://rpc.unlock-protocol.com/${chainId}`,
     },
   }
-  
+
   // needed for Uniswap Router to compute routes on local forks
   networks.hardhat.blockGasLimit = 1_000_000_000
 
@@ -87,6 +87,7 @@ require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
 require('./tasks/release')
+require('./tasks/deploy-from-package')
 require('./tasks/gov')
 require('./tasks/utils')
 require('./tasks/lock')
