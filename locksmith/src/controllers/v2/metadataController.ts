@@ -251,19 +251,6 @@ export class MetadataController {
         network
       )
 
-      const userData = await UserTokenMetadata.findOne({
-        where: {
-          userAddress,
-          tokenAddress,
-        },
-      })
-
-      if (!userData) {
-        return response.status(404).send({
-          message: "User metadata doesn't exist.",
-        })
-      }
-
       if (!(isLockOwner || isUserMetadataOwner)) {
         return response.status(403).send({
           message:
@@ -271,8 +258,11 @@ export class MetadataController {
         })
       }
 
-      const [rows, updatedUserMetadata] = await UserTokenMetadata.update(
+      const [{ dataValues }] = await UserTokenMetadata.upsert(
         {
+          userAddress,
+          tokenAddress,
+          chain: network,
           data: {
             userMetadata: {
               ...metadata,
@@ -280,21 +270,11 @@ export class MetadataController {
           },
         },
         {
-          where: {
-            tokenAddress,
-            userAddress,
-            chain: network,
-          },
+          conflictFields: ['userAddress', 'tokenAddress'],
           returning: true,
         }
       )
-
-      if (!rows) {
-        return response.status(500).send({
-          message: 'Failed to update the user metadata.',
-        })
-      }
-      return response.status(204).send(updatedUserMetadata[0].data)
+      return response.status(204).send(dataValues?.data)
     } catch (error) {
       logger.error(error.message)
 
