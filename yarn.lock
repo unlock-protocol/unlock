@@ -8544,16 +8544,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.0.6":
-  version: 2.0.6
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.6"
-  peerDependencies:
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: 82319a2615804abae2ca70834a20bfc2874c742094fadeaea55e5c788e589794836a3a2eaaf19d8aecdadf1fd0bd7a4f9eac2c32bbda9ed081c8e2e3d4fe55cc
-  languageName: node
-  linkType: hard
-
 "@nomiclabs/hardhat-ethers@npm:2.2.2, @nomiclabs/hardhat-ethers@npm:^2.0.0, @nomiclabs/hardhat-ethers@npm:^2.2.1":
   version: 2.2.2
   resolution: "@nomiclabs/hardhat-ethers@npm:2.2.2"
@@ -14822,7 +14812,7 @@ __metadata:
     "@gnosis.pm/safe-core-sdk": 3.1.1
     "@gnosis.pm/safe-ethers-lib": 1.6.1
     "@gnosis.pm/safe-service-client": 1.3.1
-    "@nomiclabs/hardhat-ethers": 2.0.6
+    "@nomiclabs/hardhat-ethers": 2.2.2
     "@nomiclabs/hardhat-etherscan": 3.1.5
     "@nomiclabs/hardhat-truffle5": 2.0.7
     "@nomiclabs/hardhat-waffle": 2.0.3
@@ -14868,7 +14858,7 @@ __metadata:
     prettier-plugin-solidity: 1.0.0
     prompt: 1.2.2
     solhint: 3.3.8
-    solidity-coverage: ^0.8.2
+    solidity-coverage: 0.8.2
     web3: 1.7.5
     yesno: 0.4.0
   languageName: unknown
@@ -46384,7 +46374,7 @@ resolve@~1.20.0:
   languageName: node
   linkType: hard
 
-"solidity-coverage@npm:^0.8.2":
+"solidity-coverage@npm:0.8.2, solidity-coverage@npm:^0.8.2":
   version: 0.8.2
   resolution: "solidity-coverage@npm:0.8.2"
   dependencies:
