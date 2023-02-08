@@ -66,13 +66,18 @@ if (process.env.RUN_FORK) {
       url: `https://rpc.unlock-protocol.com/${chainId}`,
     },
   }
-
+  
   // needed for Uniswap Router to compute routes on local forks
   networks.hardhat.blockGasLimit = 1_000_000_000
+
+  // set the correct chainId to use with local node over RPC 
+  networks.localhost.chainId = chainId
 
   // replace localhost manifest by mainnet one
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
 }
+
+
 
 // tasks
 require('./tasks/accounts')

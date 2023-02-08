@@ -1,50 +1,50 @@
-const { ethers } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks')
-const multisigOldABI = require('../../test/helpers/ABIs/multisig.json')
+const { ethers } = require("hardhat");
+const { networks } = require("@unlock-protocol/networks");
+const multisigOldABI = require("../../test/helpers/ABIs/multisig.json");
 
 // get the correct provider if chainId is specified
 const getProvider = async (chainId) => {
-  let provider
+  let provider;
   if (chainId) {
-    const { publicProvider } = networks[chainId]
-    provider = new ethers.providers.JsonRpcProvider(publicProvider)
+    const { publicProvider } = networks[chainId];
+    provider = new ethers.providers.JsonRpcBatchProvider(publicProvider);
   } else {
-    ;({ provider } = ethers)
-    ;({ chainId } = await provider.getNetwork())
+    ({ provider } = ethers);
+    ({ chainId } = await provider.getNetwork());
   }
-  return { provider, chainId }
-}
+  return { provider, chainId };
+};
 
 // get safeAddress directly from unlock if needed
 const getSafeAddress = async (chainId) => {
-  const { multisig } = networks[chainId]
-  return multisig
-}
+  const { multisig } = networks[chainId];
+  return multisig;
+};
 
 const getSafeVersion = async (safeAddress) => {
   const abi = [
     {
       inputs: [],
-      name: 'VERSION',
+      name: "VERSION",
       outputs: [
         {
-          internalType: 'string',
-          name: '',
-          type: 'string',
+          internalType: "string",
+          name: "",
+          type: "string",
         },
       ],
-      stateMutability: 'view',
-      type: 'function',
+      stateMutability: "view",
+      type: "function",
     },
-  ]
-  const safe = await ethers.getContractAt(abi, safeAddress)
+  ];
+  const safe = await ethers.getContractAt(abi, safeAddress);
   try {
-    const version = await safe.VERSION()
-    return version
+    const version = await safe.VERSION();
+    return version;
   } catch (error) {
-    return 'old'
+    return "old";
   }
-}
+};
 
 // mainnet still uses older versions of the safe
 const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
@@ -56,46 +56,46 @@ const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
     functionArgs,
     calldata,
     value, // in ETH
-  } = tx
+  } = tx;
 
-  let encodedFunctionCall
+  let encodedFunctionCall;
   if (!calldata) {
-    const { interface } = await ethers.getContractFactory(contractName)
+    const { interface } = await ethers.getContractFactory(contractName);
     encodedFunctionCall = interface.encodeFunctionData(
       functionName,
       functionArgs
-    )
+    );
   } else {
-    encodedFunctionCall = calldata
+    encodedFunctionCall = calldata;
   }
 
   console.log(
     `Submitting ${functionName} to multisig ${safeAddress} (v: old)...`
-  )
-  console.log(functionArgs)
+  );
+  console.log(functionArgs);
 
-  const safe = new ethers.Contract(safeAddress, multisigOldABI, signer)
+  const safe = new ethers.Contract(safeAddress, multisigOldABI, signer);
   const txSubmitted = await safe.submitTransaction(
     contractAddress,
     value || 0, // ETH value
     encodedFunctionCall
-  )
+  );
 
   // submit to multisig
-  const receipt = await txSubmitted.wait()
-  const { transactionHash, events } = receipt
+  const receipt = await txSubmitted.wait();
+  const { transactionHash, events } = receipt;
   const nonce = events
-    .find(({ event }) => event === 'Submission')
-    .args.transactionId.toNumber()
+    .find(({ event }) => event === "Submission")
+    .args.transactionId.toNumber();
   console.log(
     `Tx submitted to multisig with id '${nonce}' (txid: ${transactionHash})`
-  )
-  return nonce
-}
+  );
+  return nonce;
+};
 
 module.exports = {
   getProvider,
   getSafeAddress,
   getSafeVersion,
   submitTxOldMultisig,
-}
+};

@@ -26,11 +26,26 @@ const addSomeETH = async (
 }
 
 const impersonate = async (address) => {
-  await network.provider.request({
-    method: 'hardhat_impersonateAccount',
-    params: [address],
-  })
+  // provider workaround for hardhat bug
+  // see https://github.com/NomicFoundation/hardhat/issues/1226#issuecomment-1181706467
+  let provider
+  if (network.config.url !== undefined) {
+    provider = new ethers.providers.JsonRpcProvider(
+      network.config.url
+    )
+  } else {
+    // if network.config.url is undefined, then this is the hardhat network
+    provider = ethers.provider
+  }
+
+  await provider.send(
+    'hardhat_impersonateAccount',
+    [address],
+  )
   await addSomeETH(address) // give some ETH just in case
+
+  // return signer
+  return provider.getSigner(address);
 }
 
 const stopImpersonate = async (address) => {
