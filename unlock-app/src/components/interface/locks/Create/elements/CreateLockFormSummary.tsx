@@ -29,7 +29,7 @@ interface CreateLockFormSummaryProps {
   lockAddress?: string
 }
 
-type DeployStatus = 'progress' | 'deployed' | 'txError'
+export type DeployStatus = 'progress' | 'deployed' | 'txError'
 
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
@@ -56,7 +56,7 @@ const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   },
 }
 
-function AnimationContent({ status }: { status: DeployStatus }) {
+export function AnimationContent({ status }: { status: DeployStatus }) {
   const animationClass = `h-60 md:h-96`
   switch (status) {
     case 'progress':
