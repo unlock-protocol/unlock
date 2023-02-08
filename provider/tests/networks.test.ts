@@ -14,7 +14,7 @@ describe('worker', () => {
   test('get network id', async () => {
     for (const id of Object.keys(networks)) {
       if (id !== '31337') {
-        const provider = new ethers.providers.JsonRpcProvider(
+        const provider = new ethers.providers.JsonRpcBatchProvider(
           `${process.env.ENDPOINT}/${id}`
         )
         const { chainId } = await provider.getNetwork()

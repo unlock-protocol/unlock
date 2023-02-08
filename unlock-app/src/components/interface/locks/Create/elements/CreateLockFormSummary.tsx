@@ -3,10 +3,8 @@ import { useConfig } from '~/utils/withConfig'
 import { LockFormProps } from './CreateLockForm'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { KeyPrice } from '../../elements/KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
@@ -31,7 +29,7 @@ interface CreateLockFormSummaryProps {
   lockAddress?: string
 }
 
-type DeployStatus = 'progress' | 'deployed' | 'txError'
+export type DeployStatus = 'progress' | 'deployed' | 'txError'
 
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
@@ -58,7 +56,7 @@ const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   },
 }
 
-function AnimationContent({ status }: { status: DeployStatus }) {
+export function AnimationContent({ status }: { status: DeployStatus }) {
   const animationClass = `h-60 md:h-96`
   switch (status) {
     case 'progress':
@@ -95,7 +93,6 @@ export const CreateLockFormSummary = ({
   lockAddress,
 }: CreateLockFormSummaryProps) => {
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
-  const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
   const {
@@ -144,17 +141,6 @@ export const CreateLockFormSummary = ({
   const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]
   const symbol = formData?.symbol || baseCurrencySymbol
-
-  useEffect(() => {
-    // redirect to manage lock page once deployed!
-    if (isDeployed) {
-      setTimeout(() => {
-        if ((lockAddress ?? '')?.length > 0 && network) {
-          router.push(nextUrl(lockAddress, network))
-        }
-      }, 5000)
-    }
-  }, [isDeployed, lockAddress, network, nextUrl, router])
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(

@@ -1039,13 +1039,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.1"
+"@nomiclabs/hardhat-ethers@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.2"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: 8cdbf7068f15ee993142ab600074938d05b42af73392a5b12c8eb607a5bca2fac977a6a85955e0b0285541415ad520626e7fb3d33ca7cc112d61ee928358e2f6
+  checksum: f7b880cbb3fbf809b5d01619112231be9ef8dc3c2880960d2382813fa19b783670ee2d982ebd43d8867281ad82854ca0d16626c013d0d834eb3b19a65dc0c851
   languageName: node
   linkType: hard
 
@@ -1357,14 +1357,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.2.1
+    "@nomiclabs/hardhat-ethers": 2.2.2
     "@unlock-protocol/hardhat-plugin": 0.0.18
-    eslint: 8.31.0
+    eslint: 8.33.0
     ethers: 5.7.2
-    hardhat: 2.12.5
+    hardhat: 2.12.6
     hardhat-erc1820: 0.1.0
     ts-node: 10.9.1
-    typescript: 4.9.4
+    typescript: 4.9.5
   languageName: unknown
   linkType: soft
 
@@ -1799,6 +1799,15 @@ __metadata:
     base64-js: ^1.3.1
     ieee754: ^1.2.1
   checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
+  languageName: node
+  linkType: hard
+
+"busboy@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "busboy@npm:1.6.0"
+  dependencies:
+    streamsearch: ^1.1.0
+  checksum: 32801e2c0164e12106bf236291a00795c3c4e4b709ae02132883fe8478ba2ae23743b11c5735a0aae8afe65ac4b6ca4568b91f0d9fed1fdbc32ede824a73746e
   languageName: node
   linkType: hard
 
@@ -2352,9 +2361,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.31.0":
-  version: 8.31.0
-  resolution: "eslint@npm:8.31.0"
+"eslint@npm:8.33.0":
+  version: 8.33.0
+  resolution: "eslint@npm:8.33.0"
   dependencies:
     "@eslint/eslintrc": ^1.4.1
     "@humanwhocodes/config-array": ^0.11.8
@@ -2397,7 +2406,7 @@ __metadata:
     text-table: ^0.2.0
   bin:
     eslint: bin/eslint.js
-  checksum: 5e5688bb864edc6b12d165849994812eefa67fb3fc44bb26f53659b63edcd8bcc68389d27cc6cc9e5b79ee22f24b6f311fa3ed047bddcafdec7d84c1b5561e4f
+  checksum: 727e63ab8b7acf281442323c5971f6afdd5b656fbcebc4476cf54e35af51b2f180617433fc5e1952f0449ca3f43a905527f9407ea4b8a7ea7562fc9c3f278d4c
   languageName: node
   linkType: hard
 
@@ -2913,9 +2922,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.12.5":
-  version: 2.12.5
-  resolution: "hardhat@npm:2.12.5"
+"hardhat@npm:2.12.6":
+  version: 2.12.6
+  resolution: "hardhat@npm:2.12.6"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -2964,7 +2973,7 @@ fsevents@~2.3.2:
     source-map-support: ^0.5.13
     stacktrace-parser: ^0.1.10
     tsort: 0.0.1
-    undici: ^5.4.0
+    undici: ^5.14.0
     uuid: ^8.3.2
     ws: ^7.4.6
   peerDependencies:
@@ -2977,7 +2986,7 @@ fsevents@~2.3.2:
       optional: true
   bin:
     hardhat: internal/cli/cli.js
-  checksum: 01afb4db4dd78068c7cfa95826297f727c1fc952cfaa4aea6b8235a1de051386c765c00c5fafb6377cac19df08944718d151aced4687e47c7d79bae0121a29a4
+  checksum: c97c5ed2336541e8b0a3034dc5c94319cffbf93fa1b6385091858f8eefb392129c6109cbaca0837fd4dff4d627b3e3ccb931706257a5d0bee71fc7f7fe90a536
   languageName: node
   linkType: hard
 
@@ -4595,6 +4604,13 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
+"streamsearch@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "streamsearch@npm:1.1.0"
+  checksum: 1cce16cea8405d7a233d32ca5e00a00169cc0e19fbc02aa839959985f267335d435c07f96e5e0edd0eadc6d39c98d5435fb5bbbdefc62c41834eadc5622ad942
+  languageName: node
+  linkType: hard
+
 "string-width@npm:^1.0.1":
   version: 1.0.2
   resolution: "string-width@npm:1.0.2"
@@ -4868,30 +4884,32 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.9.4":
-  version: 4.9.4
-  resolution: "typescript@npm:4.9.4"
+"typescript@npm:4.9.5":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: e782fb9e0031cb258a80000f6c13530288c6d63f1177ed43f770533fdc15740d271554cdae86701c1dd2c83b082cea808b07e97fd68b38a172a83dbf9e0d0ef9
+  checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.9.4#~builtin<compat/typescript>":
-  version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"
+"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>":
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 1caaea6cb7f813e64345190fddc4e6c924d0b698ab81189b503763c4a18f7f5501c69362979d36e19c042d89d936443e768a78b0675690b35eb663d19e0eae71
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 
-"undici@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "undici@npm:5.4.0"
-  checksum: 2852397ee1dbb2b3ad58166520ec30f4f0143895f6e7b157dbedfac4e43b522a710a3927be61a67b2ae791190973f206d30785564ece7675e08133427cebaaa1
+"undici@npm:^5.14.0":
+  version: 5.16.0
+  resolution: "undici@npm:5.16.0"
+  dependencies:
+    busboy: ^1.6.0
+  checksum: bc22e797cbf469351713c88af33e65e21952a75f431b78b0e75fb2411426ab38b888ec0761d4b81eadf8f6e8872ed23fb75641cc7319c6a7f08bd083899fa1cc
   languageName: node
   linkType: hard
 

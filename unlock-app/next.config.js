@@ -32,6 +32,9 @@ const config = {
     disableClientWebpackPlugin: true,
     hideSourceMaps: true,
   },
+  images: {
+    unoptimized: true,
+  },
 }
 
 module.exports = withSentryConfig(withTM(config))

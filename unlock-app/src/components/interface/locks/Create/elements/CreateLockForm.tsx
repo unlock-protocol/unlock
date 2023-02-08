@@ -10,7 +10,8 @@ import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from '@tanstack/react-query'
-import useAccount from '~/hooks/useAccount'
+import { getAccountTokenBalance } from '~/hooks/useAccount'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export interface LockFormProps {
   name: string
@@ -30,15 +31,40 @@ interface CreateLockFormProps {
   defaultValues: LockFormProps
 }
 
+export const networkDescription = (network: number) => {
+  if (network === 5) {
+    return (
+      <>
+        Need some Test ETH?{' '}
+        <a
+          className="underline"
+          target="_blank"
+          href="https://goerlifaucet.com/"
+          rel="noreferrer"
+        >
+          Check this faucet.
+        </a>
+      </>
+    )
+  } else if (network === 1) {
+    return (
+      <>
+        Gas fees on the <em>Ethereum mainnet are expensive</em>. Please consider
+        using another network like Polygon, Gnosis Chain or Optimism.
+      </>
+    )
+  }
+}
+
 export const CreateLockForm = ({
   onSubmit,
   defaultValues,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
-  const { network, account, changeNetwork } = useAuth()
+  const web3Service = useWeb3Service()
+  const { network, changeNetwork, account } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const { getTokenBalance } = useAccount(account!, network!)
   const { baseCurrencySymbol } = networks[network!] ?? {}
 
   const [unlimitedDuration, setUnlimitedDuration] = useState(
@@ -70,7 +96,12 @@ export const CreateLockForm = ({
   })
 
   const getBalance = async () => {
-    const balance = await getTokenBalance('')
+    const balance = await getAccountTokenBalance(
+      web3Service,
+      account!,
+      null,
+      network || 1
+    )
     return parseFloat(balance)
   }
 
@@ -124,30 +155,6 @@ export const CreateLockForm = ({
     setValue('network', parseInt(`${network}`))
   }
 
-  let networkDescription = <></>
-  if (network === 5) {
-    networkDescription = (
-      <>
-        Need some Test ETH?{' '}
-        <a
-          className="underline"
-          target="_blank"
-          href="https://goerlifaucet.com/"
-          rel="noreferrer"
-        >
-          Check this faucet.
-        </a>
-      </>
-    )
-  } else if (network === 1) {
-    networkDescription = (
-      <>
-        Gas fees on the <em>Ethereum mainnet are expensive</em>. Please consider
-        using another network like Polygon, Gnosis Chain or Optimism.
-      </>
-    )
-  }
-
   return (
     <>
       <SelectCurrencyModal
@@ -155,7 +162,6 @@ export const CreateLockForm = ({
         setIsOpen={setIsOpen}
         network={network!}
         onSelect={onSelectToken}
-        defaultCurrency={baseCurrencySymbol}
       />
       <div className="mb-4">
         {noBalance && <BalanceWarning network={network!} balance={balance!} />}
@@ -171,7 +177,7 @@ export const CreateLockForm = ({
               defaultValue={network}
               options={networkOptions}
               onChange={onChangeNetwork}
-              description={networkDescription}
+              description={networkDescription(Number(network))}
             />
             <div className="relative">
               <Input
@@ -266,6 +272,7 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
+
             <div className="relative flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
