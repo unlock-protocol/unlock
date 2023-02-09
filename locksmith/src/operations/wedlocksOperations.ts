@@ -6,6 +6,8 @@ import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
 import { KeyManager, LocksmithService } from '@unlock-protocol/unlock-js'
+import showdown from 'showdown'
+
 type Params = {
   [key: string]: string | number | undefined
   keyId: string
@@ -89,6 +91,29 @@ export const notifyNewKeysToWedlocks = async (
   for await (const key of keys) {
     notifyNewKeyToWedlocks(key, network, true)
   }
+}
+
+export const getCustomContent = async (
+  lockAddress: string,
+  network: number,
+  template: string
+): Promise<string | undefined> => {
+  let customContent = undefined
+  const locksmithService = new LocksmithService()
+  try {
+    const res = await locksmithService.getCustomEmailContent(
+      Number(network),
+      lockAddress,
+      template
+    )
+    console.log('res', res)
+    const converter = new showdown.Converter()
+    customContent = converter.makeHtml(res?.data?.content || '')
+  } catch (err: any) {
+    console.log('err', err)
+    console.warn('No custom email content present')
+  }
+  return customContent
 }
 
 /**
@@ -177,18 +202,8 @@ export const notifyNewKeyToWedlocks = async (
 
   // get custom email content
   const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
-  const locksmithService = new LocksmithService()
-  let customContent = undefined
-  try {
-    const res = await locksmithService.getCustomEmailContent(
-      Number(network),
-      lockAddress,
-      template
-    )
-    customContent = res.data.content || ''
-  } catch (err: any) {
-    console.warn('No custom email content present')
-  }
+
+  const customContent = await getCustomContent(lockAddress, network!, template)
 
   await sendEmail(
     templates[0],

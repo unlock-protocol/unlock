@@ -2,10 +2,27 @@ import { addMetadata } from '../../src/operations/userMetadataOperations'
 import {
   sendEmail,
   notifyNewKeyToWedlocks,
+  getCustomContent,
 } from '../../src/operations/wedlocksOperations'
 import { vi } from 'vitest'
 import normalizer from '../../src/utils/normalizer'
 
+vi.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    LocksmithService: vi.fn().mockImplementation(() => {
+      return {
+        getCustomEmailContent: (_lockAddress, _network, _template) => {
+          return {
+            // mock MARKDOWN
+            data: {
+              content: '## Test custom content markdown',
+            },
+          }
+        },
+      }
+    }),
+  }
+})
 describe('Wedlocks operations', () => {
   afterEach(() => {
     vi.clearAllMocks()
@@ -115,6 +132,14 @@ describe('Wedlocks operations', () => {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
+    })
+
+    it('Correctly converts Markdown to HTML', async () => {
+      expect.assertions(1)
+      const html = await getCustomContent('0x', 5, 'template')
+      expect(html).toBe(
+        '<h2 id="testcustomcontentmarkdown">Test custom content markdown</h2>'
+      )
     })
   })
 })

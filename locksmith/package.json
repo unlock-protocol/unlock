@@ -85,6 +85,7 @@
     "sequelize": "6.28.0",
     "sequelize-cli": "6.6.0",
     "setimmediate": "1.0.5",
+    "showdown": "2.1.0",
     "siwe": "1.1.6",
     "stripe": "8.222.0",
     "unlock-abi-1-1": "1.1.1",
