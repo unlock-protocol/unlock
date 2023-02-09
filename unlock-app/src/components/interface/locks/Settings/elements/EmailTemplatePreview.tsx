@@ -55,7 +55,7 @@ export const EmailTemplatePreview = ({
   const saveCustomContent = useMutation(onSaveCustomContent)
 
   useQuery(
-    ['getCustomContent', network, lockAddress, network],
+    ['getCustomContent', network, lockAddress, template],
     async () => {
       const res = await storage.getCustomEmailContent(
         network,
