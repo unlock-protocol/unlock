@@ -1,9 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input, Modal } from '@unlock-protocol/ui'
+import { Button, Input, Modal, TextBox } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
-import { DefaultEditor } from 'react-simple-wysiwyg'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface EmailTemplatePreviewProps {
@@ -24,16 +23,18 @@ export const EmailTemplatePreview = ({
   lockAddress,
 }: EmailTemplatePreviewProps) => {
   const [showPreview, setShowPreview] = useState(false)
-  const [customContent, setCustomContent] = useState('')
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ email: string }>()
+    watch,
+    setValue,
+  } = useForm<{ email: string; customContent: string }>()
 
   const onSubmit = () => {}
 
+  const customContent = watch('customContent', '')
   const onSaveCustomContent = async () => {
     const saveEmailPromise = storage.saveCustomEmailContent(
       network,
@@ -66,7 +67,8 @@ export const EmailTemplatePreview = ({
     },
     {
       onSuccess: (content: any) => {
-        setCustomContent(content || '')
+        console.log('content', content)
+        setValue('customContent', content || '')
       },
       enabled: !disabled,
     }
@@ -205,10 +207,12 @@ export const EmailTemplatePreview = ({
         `}
       </style>
       <div className="flex flex-col justify-start gap-3">
-        <DefaultEditor
-          value={customContent}
-          onChange={(e) => setCustomContent(e.target.value)}
-        />
+        <div className="pb-2">
+          <TextBox rows={8} {...register('customContent')} />
+          <div className="text-sm text-gray-700">
+            Markdown is supported for custom email content
+          </div>
+        </div>
         <div className="flex gap-2 ml-auto">
           <Button
             size="small"
