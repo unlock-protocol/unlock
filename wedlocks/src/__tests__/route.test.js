@@ -1,12 +1,12 @@
 import nodemailer from 'nodemailer'
 import { route } from '../route'
-import templates from '../templates'
 import encrypter from '../encrypter'
 import config from '../../config'
 import { vi } from 'vitest'
 
+import templates from '@unlock-protocol/email-templates'
+
 vi.mock('nodemailer')
-vi.mock('../templates')
 vi.mock('../encrypter')
 
 describe('route', () => {
@@ -136,7 +136,7 @@ describe('route', () => {
       })
     })
 
-    describe('when the email was not sent succesfuly', () => {
+    describe('when the email was not sent successfully', () => {
       it('should yield the error message', async () => {
         expect.assertions(2)
         templates.template = {
