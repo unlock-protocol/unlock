@@ -15,7 +15,7 @@ async function main({ publicLockVersion }) {
     console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for released version ${publicLockVersion} with signer ${signer.address}`)
     PublicLock = await ethers.getContractFactory(abi, bytecode)
   } else {
-    console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for development version ${publicLockVersion} with signer ${signer.address}`)
+    console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for development version with signer ${signer.address}`)
     PublicLock = await ethers.getContractFactory('PublicLock')
   }
 
