@@ -917,4 +917,50 @@ export default class Web3Service extends UnlockService {
     const baseTokenURI = tokenURI.substring(0, tokenURI.lastIndexOf('/') + 1)
     return baseTokenURI
   }
+
+  /**
+   * Returns an object the contains the resolved address or ens
+   * name of the input address with it's type
+   */
+  async resolveName(addressOrEns: string) {
+    const provider = this.providerForNetwork(1)
+
+    try {
+      const address = addressOrEns.trim()
+      const isNotENS = ethers.utils.isAddress(address)
+
+      if (isNotENS) {
+        // address is already valid and not an ENS
+        return {
+          input: address,
+          address,
+          name: address,
+          type: 'address',
+        }
+      } else {
+        // Address is ENS, need to resolved it
+        const name = address
+        const resolvedName = await provider.resolveName(address)
+
+        if (resolvedName) {
+          return {
+            input: address,
+            name,
+            address: resolvedName,
+            type: 'name',
+          }
+        } else {
+          return {
+            input: address,
+            name,
+            address: resolvedName,
+            type: 'error',
+          }
+        }
+      }
+    } catch (err: any) {
+      console.error(err)
+      return ''
+    }
+  }
 }

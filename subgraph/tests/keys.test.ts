@@ -355,7 +355,7 @@ describe('Cancel keys', () => {
     const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
     handleCancelKey(newCancelKey)
     assert.fieldEquals('Key', keyID, 'cancelled', 'true')
-
+    assert.fieldEquals('Key', keyID, 'owner', nullAddress)
     dataSourceMock.resetValues()
   })
 })
