@@ -4,7 +4,7 @@ export const palm: NetworkConfig = {
   publicProvider:
     'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/11297108109',
-  unlockAddress: '0x966630707B589539AAc436E176225ed0629074f3',
+  unlockAddress: '0x0314E34345C2327aC753C5Bf0D0751Cf6C1BfdE2',
   multisig: '0x',
   id: 11297108109,
   name: 'Palm',
