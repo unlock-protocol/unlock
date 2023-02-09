@@ -7,7 +7,6 @@ import { Icon } from '../Icon/Icon'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
-import { UseFormReturn } from 'react-hook-form'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 
 export interface Props
@@ -21,7 +20,7 @@ export interface Props
   withIcon?: boolean
   isTruncated?: boolean
   web3Service: Web3Service
-  localForm: UseFormReturn
+  localForm: any // todo: fix typing UseFormReturn<any, any>' is not assignable to type .UseFormReturn<any, any>'. Types of property 'setValue' are incompatible.
   name: string
 }
 
