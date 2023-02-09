@@ -30,7 +30,7 @@ async function main({
   const [deployer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
-  // get unlock instance
+  // get unlock instance (TODO: do not use code version but packaged version)
   const Unlock = await ethers.getContractFactory('Unlock')
   const unlock = Unlock.attach(unlockAddress)
 
