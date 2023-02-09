@@ -3,8 +3,6 @@ const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 const fs = require('fs-extra')
 const path = require('path')
 
-const CURRENT_VERSION = 10
-
 const contractsPath = path.resolve(
   __dirname,
   '..',
@@ -22,13 +20,13 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-async function main({ unlockVersion = 10 }) {
+async function main({ unlockVersion }) {
   const [deployer] = await ethers.getSigners()
   let Unlock
   // need to fetch previous unlock versions
-  if (unlockVersion < CURRENT_VERSION) {
+  if (unlockVersion) {
     // eslint-disable-next-line no-console
-    console.log(`UNLOCK SETUP > Setting up version ${unlockVersion}`)
+    console.log(`UNLOCK SETUP > Setting up version ${unlockVersion} from package`)
 
     // need to copy .sol for older versions in contracts repo
     const pastUnlockPath = require.resolve(
@@ -49,6 +47,7 @@ async function main({ unlockVersion = 10 }) {
       `contracts/past-versions/UnlockV${unlockVersion}.sol:Unlock`
     )
   } else {
+    console.log(`Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`)
     Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
   }
 
@@ -66,8 +65,8 @@ async function main({ unlockVersion = 10 }) {
     )}`
   )
 
-  // delete remaining artifact
-  if (unlockVersion < CURRENT_VERSION) {
+  // delete remaining artifact if using a packaged version
+  if (unlockVersion) {
     await fs.remove(artifactsPath)
   }
 
