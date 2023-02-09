@@ -10,6 +10,16 @@ Events and projects around the world have created their ticketing and membership
 
 Now, for events that want to get up and running rapidly, the Unlock Labs team has created a quickstart tool: **Events by Unlock**.
 
+<hr>
+
+*JOIN US FOR A WORKSHOP ON FEBRUARY 9*
+
+**ON-CHAIN NFT TICKETING USING EVENTS BY UNLOCK**
+
+[Sign up here](https://us06web.zoom.us/webinar/register/6116678685484/WN_LKD0_WT7Rzi3kB288TUyew)
+
+<hr>
+
 Events by Unlock is a free and easy way to create tickets and share an event details page for 10-10000+ person events. Setting up an event takes less than a minute, and it works for both free and paid events.
 
 ![events-share.png](/images/blog/events-by-unlock/events-share.png)
