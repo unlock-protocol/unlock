@@ -1,11 +1,13 @@
-import { Button, Input, Modal } from '@unlock-protocol/ui'
+import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
-import { ethers } from 'ethers'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -40,24 +42,28 @@ export const WithdrawFundModal = ({
   symbol,
 }: WithdrawFundModalProps) => {
   const walletService = useWalletService()
+  const web3Service = useWeb3Service()
+  const [beneficiary, setBeneficiary] = useState('')
   const { account } = useAuth()
+
+  const localForm = useForm<WithdrawFormProps>({
+    mode: 'onChange',
+    defaultValues: {
+      amount: 0,
+      beneficiary: `${account}`,
+    },
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<WithdrawFormProps>({
-    mode: 'onChange',
-    defaultValues: {
-      beneficiary: account,
-    },
-  })
+    reset,
+  } = localForm
 
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
   ): Promise<unknown> => {
-    const { beneficiary } = form ?? {}
-
     if (ethers.utils.isAddress(beneficiary)) {
       return await walletService.withdrawFromLock({
         lockAddress,
@@ -71,6 +77,7 @@ export const WithdrawFundModal = ({
     setIsOpen(false)
     if (typeof dismiss === 'function') {
       dismiss()
+      reset()
     }
   }
 
@@ -94,6 +101,17 @@ export const WithdrawFundModal = ({
     })
   }
 
+  const getBeneficiary = async () => {
+    const managerValue = await watch('beneficiary')
+    if (managerValue !== '' && managerValue !== undefined) {
+      setBeneficiary(managerValue)
+    } else setBeneficiary('')
+  }
+
+  useEffect(() => {
+    getBeneficiary()
+  }, [])
+
   const amountToTransfer = watch('amount', 0)
 
   return (
@@ -108,23 +126,15 @@ export const WithdrawFundModal = ({
           </span>
         </div>
         <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
-          {/* todo: replace with AddressInput component when ready */}
-          <Input
+          <AddressInput
+            withIcon
+            isTruncated
+            name="beneficiary"
             label="Address"
             size="small"
-            {...register('beneficiary', {
-              required: {
-                value: true,
-                message: 'This field is required.',
-              },
-              minLength: {
-                value: 3,
-                message:
-                  'Beneficiary address should be 3 characters long at least.',
-              },
-            })}
+            localForm={localForm!}
             disabled={withdrawMutation.isLoading}
-            error={errors?.beneficiary?.message}
+            web3Service={web3Service}
           />
           <Input
             label={`Balance to transfer: ${amountToTransfer} ${symbol}`}

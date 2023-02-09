@@ -155,16 +155,18 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
 
   return (
     <div className="flex flex-col border border-gray-500 rounded-2xl">
-      <WithdrawFundModal
-        isOpen={withdrawModal}
-        setIsOpen={setWithdrawModal}
-        lockAddress={lockAddress}
-        balance={balance}
-        symbol={symbol}
-        dismiss={() => {
-          refetch()
-        }}
-      />
+      {withdrawModal && (
+        <WithdrawFundModal
+          isOpen={withdrawModal}
+          setIsOpen={setWithdrawModal}
+          lockAddress={lockAddress}
+          balance={balance}
+          symbol={symbol}
+          dismiss={() => {
+            refetch()
+          }}
+        />
+      )}
       <div className="hidden md:block">
         <Stats />
       </div>
