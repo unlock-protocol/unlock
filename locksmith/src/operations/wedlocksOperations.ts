@@ -5,7 +5,7 @@ import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
-import { KeyManager } from '@unlock-protocol/unlock-js'
+import { KeyManager, LocksmithService } from '@unlock-protocol/unlock-js'
 type Params = {
   [key: string]: string | number | undefined
   keyId: string
@@ -174,6 +174,22 @@ export const notifyNewKeyToWedlocks = async (
     ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
     : [`keyMined${lockAddress.trim()}`, 'keyMined']
   // Lock address to find the specific template
+
+  // get custom email content
+  const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
+  const locksmithService = new LocksmithService()
+  let customContent = ''
+  try {
+    const res = await locksmithService.getCustomEmailContent(
+      Number(network),
+      lockAddress,
+      template
+    )
+    customContent = res.data.content || ''
+  } catch (err: any) {
+    console.warn('No custom email content present')
+  }
+
   await sendEmail(
     templates[0],
     templates[1],
@@ -185,6 +201,7 @@ export const notifyNewKeyToWedlocks = async (
       network: networks[network!]?.name ?? '',
       openSeaUrl,
       transferUrl: transferUrl.toString(),
+      customContent,
     },
     attachments
   )

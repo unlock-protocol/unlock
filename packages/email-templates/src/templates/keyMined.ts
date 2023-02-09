@@ -9,6 +9,10 @@ export default {
 
 <p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
+{{#if customContent}}
+  {{{customContent}}}
+{{/if}}
+
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 
 {{links txUrl openSeaUrl true}}
