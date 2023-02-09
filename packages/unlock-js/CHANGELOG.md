@@ -1,5 +1,11 @@
 # Changes
 
+# 0.33.2
+
+- add `getEthAddressType` to web3Service
+- add `isValidEOA` to web3Service
+- add `resolveName` to web3Service
+
 # 0.33.1
 
 - ensuring we return a contract or throw!
