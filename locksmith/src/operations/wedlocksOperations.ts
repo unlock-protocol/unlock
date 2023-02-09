@@ -178,7 +178,7 @@ export const notifyNewKeyToWedlocks = async (
   // get custom email content
   const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
   const locksmithService = new LocksmithService()
-  let customContent = ''
+  let customContent = undefined
   try {
     const res = await locksmithService.getCustomEmailContent(
       Number(network),
