@@ -67,14 +67,13 @@ const deploy = async (network, graphLabel) => {
     )
   }
 
-
   const label = graphLabel ? `--version-label ${graphLabel}` : ''
   const cmd = `yarn graph deploy --product hosted-service --access-token ${process.env.SUBGRAPH_DEPLOY_KEY} --node ${graphNode} --ipfs ${ipfs} ${label} ${subgraphName}`
   await executeCommand(cmd)
 }
 
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d)
+  (d) => !['networks', 'default', 'localhost'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
