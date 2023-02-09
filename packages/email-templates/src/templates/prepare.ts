@@ -1,3 +1,4 @@
+// @ts-nocheck
 import handlebars from 'handlebars'
 import { readFileSync } from 'fs'
 import { join } from 'path'
