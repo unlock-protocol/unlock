@@ -1,5 +1,11 @@
 # Changes
 
+# 0.33.3
+
+- remove `getEthAddressType` to web3Service
+- remove `isValidEOA` to web3Service
+- refactor `resolveName`
+
 # 0.33.2
 
 - add `getEthAddressType` to web3Service
