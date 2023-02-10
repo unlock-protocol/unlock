@@ -178,6 +178,7 @@ export interface PaywallConfig {
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
   network: number
+  autoconnect?: boolean
 }
 
 export enum KeyStatus {
