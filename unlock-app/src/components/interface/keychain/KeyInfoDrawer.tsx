@@ -1,4 +1,4 @@
-import { Disclosure, Drawer } from '@unlock-protocol/ui'
+import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
 import React, { ReactNode } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
 import { useQuery } from '@tanstack/react-query'
@@ -251,9 +251,21 @@ export const KeyInfo = ({
               </KeyItem>
             )}
             {ticket?.event_start_date && (
-              <KeyItem label="Event Time">
-                {getEventDate(ticket)?.toLocaleTimeString()}
-              </KeyItem>
+              <Tooltip
+                delay={0}
+                label={ticket.event_timezone}
+                tip={ticket.event_timezone}
+                side="bottom"
+              >
+                <KeyItem label="Event Time">
+                  {getEventDate(ticket)?.toLocaleTimeString(
+                    navigator.language || 'en-US',
+                    {
+                      timeZone: ticket.event_timezone,
+                    }
+                  )}
+                </KeyItem>
+              </Tooltip>
             )}
             {ticket?.event_address && (
               <KeyItem label="Event Address">{ticket.event_address}</KeyItem>
