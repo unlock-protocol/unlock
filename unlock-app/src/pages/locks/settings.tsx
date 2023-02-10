@@ -13,7 +13,7 @@ export type SettingTab =
   | 'payments'
   | 'roles'
   | 'advanced'
-  | 'email'
+  | 'emails'
 
 const Settings: NextPage = () => {
   const { query } = useRouter()
