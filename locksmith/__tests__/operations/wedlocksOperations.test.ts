@@ -137,9 +137,7 @@ describe('Wedlocks operations', () => {
     it('Correctly converts Markdown to HTML', async () => {
       expect.assertions(1)
       const html = await getCustomContent('0x', 5, 'template')
-      expect(html).toBe(
-        '<h2 id="testcustomcontentmarkdown">Test custom content markdown</h2>'
-      )
+      expect(html).toBe('<h2>Test custom content markdown</h2>')
     })
   })
 })

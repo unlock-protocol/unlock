@@ -6,7 +6,9 @@ import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
 import { KeyManager, LocksmithService } from '@unlock-protocol/unlock-js'
-import showdown from 'showdown'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
 
 type Params = {
   [key: string]: string | number | undefined
@@ -106,11 +108,15 @@ export const getCustomContent = async (
       lockAddress,
       template
     )
-    console.log('res', res)
-    const converter = new showdown.Converter()
-    customContent = converter.makeHtml(res?.data?.content || '')
+
+    // parse markdown to HTML
+    const parsedContent = await unified()
+      .use(remarkParse)
+      .use(remarkHtml)
+      .process(res?.data?.content || '')
+
+    customContent = (parsedContent || '')?.toString()
   } catch (err: any) {
-    console.log('err', err)
     console.warn('No custom email content present')
   }
   return customContent
