@@ -5,7 +5,8 @@
   "scripts": {
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
-    "test": "hardhat test",
+    "test": "yarn test:subgraph",
+    "test:subgraph": "hardhat test",
     "ci": "hardhat test --network 0.0.0.0"
   },
   "dependencies": {
