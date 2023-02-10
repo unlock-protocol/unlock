@@ -62,7 +62,7 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { network, changeNetwork, account } = useAuth()
+  const { network, account } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const { baseCurrencySymbol } = networks[network!] ?? {}
@@ -150,7 +150,6 @@ export const CreateLockForm = ({
   )
 
   const onChangeNetwork = (network: number | string) => {
-    changeNetwork(networks[parseInt(`${network}`)])
     setSelectedToken(null)
     setValue('network', parseInt(`${network}`))
   }
