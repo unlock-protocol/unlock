@@ -227,7 +227,7 @@ const LockSettingsPage = ({
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-misc.svg"
-          description="This section lets customize the email content."
+          description="Customize the emails sent to users when they purchase your lock's membership NFTs."
         />
       ),
     },
