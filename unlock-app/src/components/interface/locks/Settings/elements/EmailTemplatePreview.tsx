@@ -55,9 +55,9 @@ export const EmailTemplatePreview = ({
       }
     )
     await ToastHelper.promise(saveEmailPromise, {
-      loading: 'Updating custom email content...',
-      error: 'Could not update custom email content.',
-      success: 'Custom email content updated.',
+      loading: 'Updating the custom section of the email.',
+      error: 'We could not update the custom section of the email.',
+      success: 'The custom section of the email was updated successfully!',
     })
     reset({
       customContent: customContent || '',
