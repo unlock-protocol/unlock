@@ -127,13 +127,13 @@ export const base = `<!DOCTYPE html>
         padding: 0.125rem 0.25rem;
       }
 
-      section {
+      section.custom {
         padding: 5px;
         background: #F8FAFC; 
         font-family: monospace, sans-serif !important;
       }
 
-      section * {
+      section.custom * {
         font-family: monospace, sans-serif !important;
       }
     </style>

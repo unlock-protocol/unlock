@@ -10,7 +10,7 @@ export default {
 <p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just airdropped for you!</p>
 
 {{#if customContent}}
-  <section>{{{customContent}}}</section>
+  <section class="custom">{{{customContent}}}</section>
 {{/if}}
 
 <p> You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
