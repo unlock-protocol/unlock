@@ -13955,7 +13955,7 @@ __metadata:
     ethers: 5.7.2
     postcss: 8.4.21
     prism-react-renderer: 1.3.5
-    react-hook-form: 7.41.3
+    react-hook-form: 7.41.1
     react-icons: 4.7.1
     react-use-clipboard: 1.0.9
     storybook-builder-vite: 0.1.23
@@ -42295,12 +42295,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.41.3":
-  version: 7.41.3
-  resolution: "react-hook-form@npm:7.41.3"
+"react-hook-form@npm:7.41.1":
+  version: 7.41.1
+  resolution: "react-hook-form@npm:7.41.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 25223f3001cbd1b4e04e20144b1f71b090925feaf2f1996f268c2beb17b190562c8d80ad2a786c7feafb45eae7e1284fc42f5f886eaf7034a9532457cc9adacd
+  checksum: 30f7ea67e29c3527d25f87b9ea8789f6722780759adf0718a0dadc6160227ae763c68ddedf63d8311f0902e4ce27225eff37b93a82eac868fc5e0a0d00dbbd14
   languageName: node
   linkType: hard
 
