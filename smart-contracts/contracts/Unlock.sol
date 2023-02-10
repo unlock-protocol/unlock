@@ -643,15 +643,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return globalTokenSymbol;
   }
 
-  // TODO: maybe better to pass bytes here if we want to change it later?
-  function postLockUpgrade(address _previousUnlockAddress ) public {
+  function postLockUpgrade() public {
     // check if lock hasnot already been deployed here and version is correct
     if (
       locks[msg.sender].deployed == false
       && 
       IPublicLock(msg.sender).publicLockVersion() == 13 
     ) {
-      IUnlock previousUnlock = IUnlock(_previousUnlockAddress);
+      IUnlock previousUnlock = IUnlock(
+        IPublicLock(msg.sender).unlockProtocol()
+      );
 
       (
         bool deployed, 
