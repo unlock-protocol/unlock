@@ -378,27 +378,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function networkBaseFee() external view returns (uint) {
     return block.basefee;
   }
-
-  function recordKeyPurchaseAndPayFee(
-    uint _value,
-    address _referrer
-  ) public {
-    IPublicLock lock = IPublicLock(address(this));
-
-    // 1. read fee from local unlock
-    address unlockAddress = IPublicLock(address(this)).unlockProtocol();
-    uint fee = unlockAddress.fee();
-
-    // 2. pay fee from Lock (msg.sender/this) to Unlock
-    if (lock.tokenAddress()) {
-      IERC20(lock.tokenAddress()).transfer(_value, address(this));
-    } else {
-      address(this).call{value: _value}();
-    }
-
-    // 3. record key purchase
-    IUnlock(unlockAddress).recordKeyPurchase();
-  }
   
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
@@ -445,7 +424,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       locks[msg.sender].totalSales += valueInETH;
 
       // Distribute UDT
-      if (_referrer != address(0)) {
+      if (_referrer != address(0) && IPublicLock(msg.sender).publicLockVersion() <= 13) {
         IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH

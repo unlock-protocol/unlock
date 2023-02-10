@@ -114,7 +114,16 @@ contract MixinPurchase is
 
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
-      // TODO: turn this into delegatecall
+      // read fee from protocol
+      uint fee = unlockProtocol.fee();
+      
+      // pay fee to unock 
+      if (tokenAddress() != address(0)) {
+        IERC20(tokenAddress()).transfer(_keyPrice * fee, address(this));
+      } else {
+        address(this).call{value: _keyPrice * fee}();
+      }
+   
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try
