@@ -649,6 +649,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       locks[msg.sender].deployed == false
       && 
       IPublicLock(msg.sender).publicLockVersion() == 13 
+      && 
+      IPublicLock(msg.sender).unlockProtocol() != address(this)
     ) {
       IUnlock previousUnlock = IUnlock(
         IPublicLock(msg.sender).unlockProtocol()
