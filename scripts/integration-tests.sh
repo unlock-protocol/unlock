@@ -7,7 +7,7 @@ INTEGRATION_TESTS_FOLDER=$REPO_ROOT/tests
 EXTRA_ARGS=$*
 
 # run Unlock Protocol stack
-sh -c "./run-stack-dockerized.sh"
+sh -c "$REPO_ROOT/scripts/run-stack-dockerized.sh"
 
 # run the actual tests
 sh $INTEGRATION_TESTS_FOLDER/bin/tests.sh
