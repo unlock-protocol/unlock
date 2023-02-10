@@ -6,7 +6,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import useAccount from '~/hooks/useAccount'
 import useLock from '~/hooks/useLock'
 import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
@@ -45,8 +44,7 @@ export const CreditCardForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
-  const { account } = useAuth()
-  const walletService = useWalletService()
+  const { account, getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const { isStripeConnected, getCreditCardPricing } = useLock(
@@ -156,6 +154,7 @@ export const CreditCardForm = ({
     isLoadingPricing
 
   const grantKeyGrantorRole = async (): Promise<any> => {
+    const walletService = await getWalletService(network)
     return await walletService.addKeyGranter({
       lockAddress,
       keyGranter,

@@ -88,7 +88,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const [withdrawModal, setWithdrawModal] = useState(false)
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
-
   const { isManager } = useLockManager({
     lockAddress,
     network,
@@ -162,6 +161,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
           lockAddress={lockAddress}
           balance={balance}
           symbol={symbol}
+          network={network}
           dismiss={() => {
             refetch()
           }}

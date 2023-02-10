@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface UpdateReferralFeeProps {
@@ -27,8 +27,8 @@ export const UpdateReferralFee = ({
   disabled,
 }: UpdateReferralFeeProps) => {
   const [referralFee, setReferralFee] = useState(false)
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
+  const { getWalletService } = useAuth()
 
   const {
     register,
@@ -38,6 +38,7 @@ export const UpdateReferralFee = ({
   } = useForm<FormProps>()
 
   const setReferrerFee = async (fields: FormProps) => {
+    const walletService = await getWalletService(network)
     await walletService.setReferrerFee({
       lockAddress,
       address: ZERO,

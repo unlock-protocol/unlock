@@ -67,6 +67,7 @@ export const SettingTerms = ({
           maxNumberOfKeys={lock?.maxNumberOfKeys ?? 0}
           isManager={isManager}
           disabled={!isManager}
+          network={network}
         />
       ),
     },

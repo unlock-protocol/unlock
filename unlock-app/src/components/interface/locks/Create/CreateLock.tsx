@@ -8,7 +8,6 @@ import {
   UNLIMITED_KEYS_DURATION,
 } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import useLocks from '~/hooks/useLocks'
 import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
 import { CreateLockFormSummary } from './elements/CreateLockFormSummary'
 import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
@@ -16,13 +15,6 @@ import { useRouter } from 'next/router'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
-interface LockCreatePayloadProps {
-  name: string
-  expirationDuration?: number
-  maxNumberOfKeys?: number
-  currencyContractAddress?: string
-  keyPrice?: string | number
-}
 interface CreateLockSummaryProps {
   formData: LockFormProps
   network: number
@@ -55,10 +47,9 @@ const TITLE_BY_STATUS_MAPPING: Record<Step, StatusMappingProps> = {
 }
 
 export const CreateLockSteps = () => {
-  const { account: owner, network } = useAuth()
+  const { network, getWalletService } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
-  const { addLock } = useLocks(owner!, network!)
   const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined
@@ -80,18 +71,8 @@ export const CreateLockSteps = () => {
     setLockAddress(address)
   }
 
-  const createLockPromise = async (data: LockCreatePayloadProps) => {
-    return await addLock(data, (_: any, lock: any) => {
-      if (step !== 'deploy') {
-        const [transactionHash] = Object.keys(lock?.transactions ?? {})
-        changeStep('deploy', values)
-        setTransactionHash(transactionHash) // keep transaction hash to retrieve transaction details
-      }
-    })
-  }
-
   const createLockMutation = useMutation(
-    ({
+    async ({
       name,
       unlimitedDuration,
       unlimitedQuantity,
@@ -99,21 +80,37 @@ export const CreateLockSteps = () => {
       currencyContractAddress,
       maxNumberOfKeys,
       expirationDuration,
+      network,
     }: LockFormProps) => {
+      const walletService = await getWalletService(network)
       const expirationInSeconds =
         (expirationDuration as number) * ONE_DAY_IN_SECONDS
-      const payload: LockCreatePayloadProps = {
-        name,
-        expirationDuration: unlimitedDuration
-          ? UNLIMITED_KEYS_DURATION
-          : expirationInSeconds,
-        maxNumberOfKeys: unlimitedQuantity
-          ? UNLIMITED_KEYS_COUNT
-          : maxNumberOfKeys,
-        currencyContractAddress,
-        keyPrice: `${keyPrice}`, // must be a string
-      }
-      return createLockPromise(payload)
+      const lockAddress = await walletService.createLock(
+        {
+          name,
+          expirationDuration: unlimitedDuration
+            ? UNLIMITED_KEYS_DURATION
+            : expirationInSeconds,
+          maxNumberOfKeys: unlimitedQuantity
+            ? UNLIMITED_KEYS_COUNT
+            : maxNumberOfKeys,
+          currencyContractAddress,
+          keyPrice: keyPrice?.toString(),
+        },
+        {},
+        (error: any, transactionHash) => {
+          if (error) {
+            console.error(error)
+            ToastHelper.error(
+              'Unexpected issue on lock creation, please try again'
+            )
+          } else {
+            setTransactionHash(transactionHash!) // keep transaction hash to retrieve transaction details
+            changeStep('deploy', values)
+          }
+        }
+      )
+      return lockAddress
     },
     {
       onError: (error) => {

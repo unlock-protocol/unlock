@@ -3,9 +3,9 @@ import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingCardDetail } from '../elements/SettingCard'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface CancellationFormProps {
   lockAddress: string
@@ -54,9 +54,8 @@ export const CancellationForm = ({
 }: CancellationFormProps) => {
   const [allowTrial, setAllowTrial] = useState(false)
   const [cancelPenalty, setCancelPenalty] = useState(false)
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
-
+  const { getWalletService } = useAuth()
   const {
     register,
     handleSubmit,
@@ -69,6 +68,7 @@ export const CancellationForm = ({
     refundPenaltyPercentage = 0,
   }: FormProps) => {
     const refundPenaltyBasisPoints = refundPenaltyPercentage * 100 // convert to basis points
+    const walletService = await getWalletService(network)
     await walletService.updateRefundPenalty({
       lockAddress,
       freeTrialLength,

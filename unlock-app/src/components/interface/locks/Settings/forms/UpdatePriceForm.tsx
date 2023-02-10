@@ -6,10 +6,10 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useConfig } from '~/utils/withConfig'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '../../elements/KeyPrice'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   keyPrice?: string
@@ -39,7 +39,7 @@ export const UpdatePriceForm = ({
 
   const [isFree, setIsFree] = useState(isFreeKey)
   const { networks } = useConfig()
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const [changeCurrencyOpen, setChangeCurrencyModal] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
@@ -77,7 +77,7 @@ export const UpdatePriceForm = ({
       currencyContractAddress || lock?.currencyContractAddress || 0
 
     const price = isFree ? 0 : keyPrice
-
+    const walletService = await getWalletService(network)
     return await walletService.updateKeyPrice({
       lockAddress,
       keyPrice: `${price}`,

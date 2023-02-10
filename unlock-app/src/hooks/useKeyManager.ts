@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
-import { useWalletService } from '~/utils/withWalletService'
 import {
   EthersError,
   getParsedEthersError,
 } from '@enzoferey/ethers-error-parser'
+import { useAuth } from '~/contexts/AuthenticationContext'
 interface Options {
   transferObject: TransferObject
   transferSignature: string
@@ -19,7 +19,7 @@ export const useTransferPossible = ({
   network,
   enabled = true,
 }: Options) => {
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const config = useConfig()
   const keyManager = new KeyManager(config.networks)
   const {
@@ -29,6 +29,7 @@ export const useTransferPossible = ({
   } = useQuery(
     ['isTransferPossible', transferObject, transferSignature],
     async () => {
+      const walletService = await getWalletService(network)
       await keyManager.isTransferPossible({
         network,
         params: {

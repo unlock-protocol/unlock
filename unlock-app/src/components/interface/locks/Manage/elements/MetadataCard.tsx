@@ -5,7 +5,6 @@ import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
-import { useWalletService } from '~/utils/withWalletService'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
@@ -107,7 +106,6 @@ export const MetadataCard = ({
   network,
   expirationDuration,
 }: MetadataCardProps) => {
-  const walletService = useWalletService()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
@@ -164,8 +162,6 @@ export const MetadataCard = ({
 
   const onSendQrCode = async () => {
     if (!network) return
-    if (!walletService) return
-
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'QR-code sent by email',
       loading: 'Sending QR-code by email',

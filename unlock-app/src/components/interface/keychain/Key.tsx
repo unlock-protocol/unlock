@@ -19,7 +19,6 @@ import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
-import { useWalletService } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
 import { useAuth } from '../../../contexts/AuthenticationContext'
 import { useConfig } from '../../../utils/withConfig'
@@ -66,8 +65,7 @@ export interface Props {
 function Key({ ownedKey, account, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { network: accountNetwork } = useAuth()
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const { watchAsset } = useAuth()
@@ -103,6 +101,7 @@ function Key({ ownedKey, account, network }: Props) {
       timestamp: Date.now(),
       tokenId,
     })
+    const walletService = await getWalletService()
     const signature = await walletService.signMessage(payload, 'personal_sign')
     setSignature({
       payload,
@@ -155,15 +154,13 @@ function Key({ ownedKey, account, network }: Props) {
   const isAvailableOnOpenSea =
     networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
-  const baseSymbol = walletService.networks[network].baseCurrencySymbol!
+  const baseSymbol = config.networks[network].baseCurrencySymbol!
   const symbol =
     isLockDataLoading || !lockData
       ? baseSymbol
       : lockTickerSymbol(lockData, baseSymbol)
 
   const isRefundable = !isLockDataLoading && !isKeyExpired
-
-  const wrongNetwork = network !== accountNetwork
 
   const networkName = networks[ownedKey.network]?.name
 
@@ -336,7 +333,7 @@ function Key({ ownedKey, account, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  <Menu.Item disabled={!isExtendable || wrongNetwork}>
+                  <Menu.Item disabled={!isExtendable}>
                     {({ active, disabled }) => (
                       <MenuButton
                         disabled={disabled}
@@ -347,9 +344,7 @@ function Key({ ownedKey, account, network }: Props) {
                         }}
                       >
                         <ExtendMembershipIcon />
-                        {wrongNetwork
-                          ? `Switch to ${networks[network].name} to extend`
-                          : isRenewable && !isKeyExpired
+                        {isRenewable && !isKeyExpired
                           ? 'Renew membership'
                           : 'Extend membership'}
                       </MenuButton>
@@ -357,7 +352,7 @@ function Key({ ownedKey, account, network }: Props) {
                   </Menu.Item>
                 </div>
                 <div className="p-1">
-                  <Menu.Item disabled={!isRefundable || wrongNetwork}>
+                  <Menu.Item disabled={!isRefundable}>
                     {({ active, disabled }) => (
                       <MenuButton
                         disabled={disabled}
@@ -368,9 +363,7 @@ function Key({ ownedKey, account, network }: Props) {
                         }}
                       >
                         <CancelIcon />
-                        {wrongNetwork
-                          ? `Switch to ${networks[network].name} to cancel`
-                          : 'Cancel and refund'}
+                        Cancel and refund
                       </MenuButton>
                     )}
                   </Menu.Item>

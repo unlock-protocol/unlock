@@ -87,6 +87,7 @@ export const MemberCard = ({
     return (
       <>
         <ExpireAndRefundModal
+          network={network}
           isOpen={expireAndRefundOpen}
           setIsOpen={setExpireAndRefundOpen}
           lockAddress={lockAddress}
@@ -104,6 +105,7 @@ export const MemberCard = ({
               lockAddress,
               tokenId,
               expiration,
+              network,
             }!
           }
         />

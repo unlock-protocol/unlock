@@ -91,6 +91,7 @@ export const Authenticate = ({
     changeNetwork,
     watchAsset,
     providerSend,
+    getWalletService,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -120,6 +121,7 @@ export const Authenticate = ({
         deAuthenticate,
         changeNetwork,
         watchAsset,
+        getWalletService,
       }}
     >
       <WalletServiceContext.Provider value={walletService}>

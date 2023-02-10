@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface UpdateSymbolFormProps {
@@ -22,7 +22,7 @@ export const UpdateSymbolForm = ({
   lockAddress,
   network,
 }: UpdateSymbolFormProps) => {
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const {
     register,
@@ -41,6 +41,7 @@ export const UpdateSymbolForm = ({
   }
 
   const changeSymbol = async (symbol: string) => {
+    const walletService = await getWalletService(network)
     return await walletService.updateLockSymbol({
       lockAddress,
       symbol,

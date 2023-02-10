@@ -4,7 +4,6 @@ import { AirdropManualForm } from './AirdropManualForm'
 import { AirdropBulkForm } from './AirdropBulkForm'
 import { AirdropMember } from './AirdropElements'
 import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
 import { formatDate } from '~/utils/lock'
@@ -32,8 +31,7 @@ export function AirdropKeysDrawer({
   setIsOpen,
 }: Props) {
   const storageService = useStorageService()
-  const walletService = useWalletService()
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
 
   const { lock: lockData, isLockLoading: isLockDataLoading } = useLockData({
     lockAddress,
@@ -112,6 +110,7 @@ export function AirdropKeysDrawer({
       return prop
     }, initialValue)
 
+    const walletService = await getWalletService(network)
     // Grant keys
     await walletService
       .grantKeys(
