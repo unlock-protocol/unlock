@@ -194,7 +194,7 @@ const LockSettingsPage = ({
       ),
     },
     {
-      id: 'email',
+      id: 'emails',
       label: 'Email',
       children: (
         <SettingEmail
