@@ -115,7 +115,9 @@ export const getCustomContent = async (
       .use(remarkHtml)
       .process(res?.data?.content || '')
 
-    customContent = (parsedContent || '')?.toString()
+    if (parsedContent?.value?.length > 0) {
+      customContent = String(parsedContent?.value)
+    }
   } catch (err: any) {
     console.warn('No custom email content present')
   }
