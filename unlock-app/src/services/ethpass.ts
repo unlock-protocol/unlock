@@ -61,15 +61,21 @@ export const createWalletPass = async (props: any) => {
 
   const payload = {
     signature,
-    contractAddress,
-    tokenId,
     signatureMessage,
     pass,
-    chainId,
     platform,
+    chain: {
+      network: chainId,
+      name: "evm",
+    },
+    nft: {
+      contractAddress,
+      tokenId,
+    },
     barcode: {
-      message:
-        'Thanks for testing beta! This is currently only used as a placeholder.',
+      redirect: {
+        url: "" // URL used on QR Code,
+       },
     },
     // image,
   }
