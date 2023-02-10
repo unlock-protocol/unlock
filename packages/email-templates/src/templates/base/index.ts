@@ -126,6 +126,16 @@ export const base = `<!DOCTYPE html>
         background-color: rgb(241 245 249);
         padding: 0.125rem 0.25rem;
       }
+
+      section {
+        padding: 5px;
+        background: #F8FAFC; 
+        font-family: monospace, sans-serif !important;
+      }
+
+      section * {
+        font-family: monospace, sans-serif !important;
+      }
     </style>
   </head>
   <body style="
