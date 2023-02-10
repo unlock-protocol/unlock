@@ -1,7 +1,6 @@
 import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -15,6 +14,7 @@ interface WithdrawFundModalProps {
   lockAddress: string
   dismiss?: () => void
   balance: number
+  network: number
   symbol?: string
 }
 
@@ -40,11 +40,11 @@ export const WithdrawFundModal = ({
   balance,
   dismiss,
   symbol,
+  network,
 }: WithdrawFundModalProps) => {
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const [beneficiary, setBeneficiary] = useState('')
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
 
   const localForm = useForm<WithdrawFormProps>({
     mode: 'onChange',
@@ -65,6 +65,7 @@ export const WithdrawFundModal = ({
     form: WithdrawFormProps
   ): Promise<unknown> => {
     if (ethers.utils.isAddress(beneficiary)) {
+      const walletService = await getWalletService(network)
       return await walletService.withdrawFromLock({
         lockAddress,
         beneficiary,

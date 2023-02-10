@@ -7,7 +7,6 @@ import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { useWalletService } from '~/utils/withWalletService'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
@@ -85,8 +84,7 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network, isUnlockAccount, changeNetwork } = useAuth()
-  const walletService = useWalletService()
+  const { account, network, getWalletService } = useAuth()
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
@@ -98,7 +96,6 @@ export function Confirm({
   } = useAccount(account!, network!)
 
   const [isConfirming, setIsConfirming] = useState(false)
-  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
 
   const {
     lock,
@@ -119,10 +116,6 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
-
-  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
-
-  const networkConfig = config.networks[lockNetwork]
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -307,21 +300,6 @@ export function Confirm({
     quantity
   )
 
-  const SwitchNetwork = () => (
-    <Button
-      disabled={isSwitchingNetwork || isLoading}
-      loading={isSwitchingNetwork}
-      onClick={async (event) => {
-        setIsSwitchingNetwork(true)
-        event.preventDefault()
-        await changeNetwork(lockNetwork)
-        setIsSwitchingNetwork(false)
-      }}
-    >
-      Switch to {networkConfig.name}
-    </Button>
-  )
-
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
@@ -417,7 +395,8 @@ export function Confirm({
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
 
-      await walletService?.purchaseKeys(
+      const walletService = await getWalletService(lockNetwork)
+      await walletService.purchaseKeys(
         {
           lockAddress,
           keyPrices,
@@ -492,7 +471,8 @@ export function Confirm({
         superToken: lock!.currencyContractAddress!,
         flowRate: flowRate,
       })
-      const signer = web3Provider.getSigner()
+      const walletService = await getWalletService(lockNetwork)
+      const signer = walletService.signer
       await op.exec(signer)
       communication?.emitUserInfo({
         address: account,
@@ -587,38 +567,29 @@ export function Confirm({
 
         return (
           <div className="grid">
-            {isNetworkSwitchRequired && <SwitchNetwork />}
-            {!isNetworkSwitchRequired && (
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming || isLoading || !canAfford || isError}
+              onClick={async (event) => {
+                event.preventDefault()
+                onConfirmCrypto()
+              }}
+            >
+              {buttonLabel}
+            </Button>
+            {!isLoading && !isError && isPayable && (
               <>
-                <Button
-                  loading={isConfirming}
-                  disabled={isConfirming || isLoading || !canAfford || isError}
-                  onClick={async (event) => {
-                    event.preventDefault()
-                    if (isUnlockAccount) {
-                      await changeNetwork(lockNetwork)
-                    }
-                    onConfirmCrypto()
-                  }}
-                >
-                  {buttonLabel}
-                </Button>
-                {!isLoading && !isError && isPayable && (
-                  <>
-                    {!isPayable?.isTokenPayable && (
-                      <small className="text-center text-red-500">
-                        You do not have enough {symbol} to complete this
-                        purchase.
-                      </small>
-                    )}
-                    {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                      <small className="text-center text-red-500">
-                        You do not have enough{' '}
-                        {config.networks[lock!.network].baseCurrencySymbol} to
-                        pay transaction fees (gas).
-                      </small>
-                    )}
-                  </>
+                {!isPayable?.isTokenPayable && (
+                  <small className="text-center text-red-500">
+                    You do not have enough {symbol} to complete this purchase.
+                  </small>
+                )}
+                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                  <small className="text-center text-red-500">
+                    You do not have enough{' '}
+                    {config.networks[lock!.network].baseCurrencySymbol} to pay
+                    transaction fees (gas).
+                  </small>
                 )}
               </>
             )}
@@ -646,24 +617,18 @@ export function Confirm({
       case 'superfluid': {
         return (
           <div className="grid">
-            {isNetworkSwitchRequired && <SwitchNetwork />}
-            {!isNetworkSwitchRequired && (
-              <Button
-                loading={isConfirming}
-                disabled={isConfirming || isLoading}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  if (isUnlockAccount) {
-                    await changeNetwork(lockNetwork)
-                  }
-                  onConfirmSuperfluid()
-                }}
-              >
-                {isConfirming
-                  ? 'Paying using superfluid'
-                  : 'Pay using superfluid'}
-              </Button>
-            )}
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming || isLoading}
+              onClick={async (event) => {
+                event.preventDefault()
+                onConfirmSuperfluid()
+              }}
+            >
+              {isConfirming
+                ? 'Paying using superfluid'
+                : 'Pay using superfluid'}
+            </Button>
           </div>
         )
       }

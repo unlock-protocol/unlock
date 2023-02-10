@@ -48,7 +48,7 @@ export const useProvider = (config: any) => {
     }
   }, [account, network])
 
-  const getWalletService = async (provider: any) => {
+  const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
     const _network = await _walletService.connect(provider)
     const _account = await _walletService.getAccount()
@@ -58,6 +58,51 @@ export const useProvider = (config: any) => {
       account: _account,
     }
   }
+
+  const switchWeb3ProviderNetwork = async (id: number) => {
+    try {
+      await provider.send(
+        'wallet_switchEthereumChain',
+        [
+          {
+            chainId: `0x${id.toString(16)}`,
+          },
+        ],
+        account
+      )
+    } catch (switchError: any) {
+      if (switchError.code === 4902 || switchError.code === -32603) {
+        return addNetworkToWallet(id)
+      } else {
+        throw switchError
+      }
+    }
+  }
+
+  const getWalletService = async (networkId?: number) => {
+    const currentNetworkId = Number(network)
+    let walletServiceProvider: ethers.providers.Provider = provider
+    if (networkId && networkId !== currentNetworkId) {
+      const networkConfig = config.networks[networkId]
+      if (provider.isUnlock) {
+        walletServiceProvider = UnlockProvider.reconnect(
+          provider,
+          networkConfig
+        )
+      } else {
+        await switchWeb3ProviderNetwork(networkId)
+        walletServiceProvider = new ethers.providers.Web3Provider(
+          provider.provider,
+          networkId
+        )
+      }
+    }
+    const { walletService: _walletService } = await createWalletService(
+      walletServiceProvider
+    )
+    return _walletService
+  }
+
   const resetProvider = async (provider: ethers.providers.Provider) => {
     try {
       setProvider(provider)
@@ -65,7 +110,7 @@ export const useProvider = (config: any) => {
         network: _network,
         walletService: _walletService,
         account: _account,
-      } = await getWalletService(provider)
+      } = await createWalletService(provider)
       setNetwork(_network || undefined)
 
       setWalletService(_walletService)
@@ -188,51 +233,15 @@ export const useProvider = (config: any) => {
 
     // don't change network if not needed
     if (id === network) {
-      return walletService
+      return
     }
 
     if (provider.isUnlock) {
       const newProvider = UnlockProvider.reconnect(provider, networkConfig)
-      const { walletService: _walletService } = await getWalletService(
-        newProvider
-      )
       await resetProvider(newProvider)
-      return _walletService
     } else {
-      try {
-        const p = new ethers.providers.Web3Provider(provider.provider, 'any')
-        const waitForNetwork = (id: number) => {
-          return new Promise((resolve) => {
-            const handler = (current: any) => {
-              console.log(current)
-              if (current?.chainId === id) {
-                resolve(true)
-              }
-            }
-            p.on('network', handler)
-          })
-        }
-        const waitForChange = waitForNetwork(id)
-        await provider.send(
-          'wallet_switchEthereumChain',
-          [
-            {
-              chainId: `0x${id.toString(16)}`,
-            },
-          ],
-          account
-        )
-        await waitForChange
-        const px = new ethers.providers.Web3Provider(provider.provider, id)
-        const { walletService: _walletService } = await getWalletService(px)
-        return _walletService
-      } catch (switchError: any) {
-        if (switchError.code === 4902 || switchError.code === -32603) {
-          return addNetworkToWallet(id)
-        } else {
-          throw switchError
-        }
-      }
+      await switchWeb3ProviderNetwork(id)
+      setNetwork(id)
     }
   }
 
@@ -274,6 +283,7 @@ export const useProvider = (config: any) => {
     account,
     signMessage,
     email,
+    getWalletService,
     isUnlockAccount,
     encryptedPrivateKey,
     walletService,

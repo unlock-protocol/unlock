@@ -40,7 +40,7 @@ export const CancelAndRefundModal = ({
   network,
   onExpireAndRefund,
 }: CancelAndRefundProps) => {
-  const { changeNetwork } = useAuth()
+  const { getWalletService } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   const { getAmounts } = useKeychain({
@@ -73,7 +73,7 @@ export const CancelAndRefundModal = ({
       lockAddress,
       tokenId,
     }
-    const walletService = await changeNetwork(network)
+    const walletService = await getWalletService(network)
     return walletService.cancelAndRefund(
       params,
       {} /** transactionParams */,
