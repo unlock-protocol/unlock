@@ -643,6 +643,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return globalTokenSymbol;
   }
 
+  // for doc, see IUnlock.sol
   function postLockUpgrade() public {
     // check if lock hasnot already been deployed here and version is correct
     if (
