@@ -139,7 +139,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           {eventDate && eventData.ticket?.event_start_time && (
             <li className="mb-2">
               <FaClock className="inline mr-2" />
-              {eventDate.toLocaleTimeString()}
+              {eventDate.toLocaleTimeString(navigator.language || 'en-US', {
+                timeZone: eventData.ticket.event_timezone,
+              })}
             </li>
           )}
           {(eventData?.ticket?.event_address || '')?.length > 0 && (

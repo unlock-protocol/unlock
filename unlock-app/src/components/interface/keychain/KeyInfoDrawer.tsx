@@ -252,7 +252,12 @@ export const KeyInfo = ({
             )}
             {ticket?.event_start_date && (
               <KeyItem label="Event Time">
-                {getEventDate(ticket)?.toLocaleTimeString()}
+                {getEventDate(ticket)?.toLocaleTimeString(
+                  navigator.language || 'en-US',
+                  {
+                    timeZone: ticket.event_timezone,
+                  }
+                )}
               </KeyItem>
             )}
             {ticket?.event_address && (
