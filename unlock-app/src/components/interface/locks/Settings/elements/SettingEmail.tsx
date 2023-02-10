@@ -19,7 +19,7 @@ export const SettingEmail = ({
   return (
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
-        label="Key Minted Template"
+        label="Key Purchased template"
         description={`Add custom content to the email sent when a key is minted.`}
         isLoading={isLoading}
       >
