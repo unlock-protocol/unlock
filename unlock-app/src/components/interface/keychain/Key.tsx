@@ -162,8 +162,6 @@ function Key({ ownedKey, account, network }: Props) {
 
   const isRefundable = !isLockDataLoading && !isKeyExpired
 
-  const wrongNetwork = network !== accountNetwork
-
   const networkName = networks[ownedKey.network]?.name
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
@@ -335,7 +333,7 @@ function Key({ ownedKey, account, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  <Menu.Item disabled={!isExtendable || wrongNetwork}>
+                  <Menu.Item disabled={!isExtendable}>
                     {({ active, disabled }) => (
                       <MenuButton
                         disabled={disabled}
@@ -346,9 +344,7 @@ function Key({ ownedKey, account, network }: Props) {
                         }}
                       >
                         <ExtendMembershipIcon />
-                        {wrongNetwork
-                          ? `Switch to ${networks[network].name} to extend`
-                          : isRenewable && !isKeyExpired
+                        {isRenewable && !isKeyExpired
                           ? 'Renew membership'
                           : 'Extend membership'}
                       </MenuButton>
