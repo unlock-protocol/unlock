@@ -3,7 +3,7 @@ import { renewFiatKey } from '../helpers'
 import { logger } from '../../logger'
 import Normalizer from '../../utils/normalizer'
 
-const FETCH_LIMIT = 25
+const FETCH_LIMIT = 500
 
 export async function renewFiatKeys(network: number, within?: number) {
   let page = 0
@@ -31,30 +31,32 @@ export async function renewFiatKeys(network: number, within?: number) {
       keys: keys.map(({ id }) => [network, id]),
     })
 
-    // send all renewal txs
-    for (const { tokenId, lock, owner } of keys) {
-      try {
-        const renewal = await renewFiatKey({
-          keyId: Number(tokenId),
-          lockAddress: Normalizer.ethereumAddress(lock.address),
-          network,
-          userAddress: Normalizer.ethereumAddress(owner),
-        })
-        if (renewal.error) {
-          logger.info('Key renewal failed', {
-            renewal,
+    await Promise.allSettled(
+      keys.map(async ({ tokenId, lock, owner }) => {
+        try {
+          const renewal = await renewFiatKey({
+            keyId: Number(tokenId),
+            lockAddress: Normalizer.ethereumAddress(lock.address),
+            network,
+            userAddress: Normalizer.ethereumAddress(owner),
           })
-        } else {
-          logger.info('Key renewal succeed', {
-            renewal,
+          if (renewal.error) {
+            logger.info('Key renewal failed', {
+              renewal,
+            })
+          } else {
+            logger.info('Key renewal succeed', {
+              renewal,
+            })
+          }
+        } catch (error) {
+          logger.error('Renewing key failed', {
+            error,
           })
         }
-      } catch (error) {
-        logger.error('Renewing key failed', {
-          error,
-        })
-      }
-    }
+      })
+    )
+
     page += 1
   }
 }

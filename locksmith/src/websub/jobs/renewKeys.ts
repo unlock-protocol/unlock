@@ -30,29 +30,30 @@ export async function renewKeys(network: number, within?: number) {
       keys: keys.map(({ id }) => [network, id]),
     })
 
-    // send all renewal txs
-    for (const { tokenId, lock } of keys) {
-      try {
-        const renewal = await renewKey({
-          keyId: tokenId,
-          lockAddress: lock.address,
-          network,
-        })
-        if (renewal.error) {
-          logger.error('Key renewal failed with error', {
-            renewal,
+    await Promise.allSettled(
+      keys.map(async ({ tokenId, lock }) => {
+        try {
+          const renewal = await renewKey({
+            keyId: tokenId,
+            lockAddress: lock.address,
+            network,
           })
-        } else {
-          logger.info('Key renewal succeed', {
-            renewal,
+          if (renewal.error) {
+            logger.error('Key renewal failed with error', {
+              renewal,
+            })
+          } else {
+            logger.info('Key renewal succeed', {
+              renewal,
+            })
+          }
+        } catch (error) {
+          logger.error('Renewing key failed threw error', {
+            error,
           })
         }
-      } catch (error) {
-        logger.error('Renewing key failed threw error', {
-          error,
-        })
-      }
-    }
+      })
+    )
     page += 1
   }
 }
