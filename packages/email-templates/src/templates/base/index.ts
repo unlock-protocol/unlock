@@ -128,7 +128,7 @@ export const base = `<!DOCTYPE html>
       }
 
       section.custom {
-        padding: 5px;
+        padding: 5px 12px;
         background: #F8FAFC; 
         font-family: monospace, sans-serif !important;
       }

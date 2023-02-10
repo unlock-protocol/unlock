@@ -212,6 +212,8 @@ export const notifyNewKeyToWedlocks = async (
   const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
 
   const customContent = await getCustomContent(lockAddress, network!, template)
+  const withLockImage = (customContent || '')?.length > 0
+  const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
   await sendEmail(
     templates[0],
@@ -225,6 +227,7 @@ export const notifyNewKeyToWedlocks = async (
       openSeaUrl,
       transferUrl: transferUrl.toString(),
       customContent,
+      lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
     },
     attachments
   )

@@ -10,7 +10,10 @@ export default {
 <p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
 {{#if customContent}}
-  <section class="custom">{{{customContent}}}</section>
+  <section class="custom">
+    {{#if lockImage}}<img src="{{lockImage}}" style="max-height: 40px; margin-bottom: 10px; display: block;" />{{/if}}
+    {{{customContent}}}
+  </section>
 {{/if}}
 
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
