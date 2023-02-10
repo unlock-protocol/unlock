@@ -7,20 +7,14 @@ export function useAutoLogin() {
   const { getStorage } = useAppStorage()
   const { authenticateWithProvider } = useAuthenticate()
 
-  const getAutoLoginData = useCallback((): Promise<
-    [boolean, WalletProvider]
-  > => {
+  const getAutoLoginData = useCallback(() => {
     const storedProvider: WalletProvider | null = getStorage(
       'provider'
     ) as WalletProvider
 
     const canAutoLogin = storedProvider !== null
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([canAutoLogin, storedProvider])
-      }, 350)
-    })
+    return [canAutoLogin, storedProvider] as const
   }, [getStorage])
 
   const getAutoLoginEmail = (): string => {
