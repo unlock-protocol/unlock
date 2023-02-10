@@ -194,6 +194,24 @@ const LockSettingsPage = ({
       ),
     },
     {
+      id: 'email',
+      label: 'Email',
+      children: (
+        <SettingEmail
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-misc.svg"
+          description="Customize the emails sent to users when they purchase your lock's membership NFTs."
+        />
+      ),
+    },
+    {
       id: 'advanced',
       label: 'Advanced',
       children: (
@@ -210,24 +228,6 @@ const LockSettingsPage = ({
         <SidebarCard
           src="/images/illustrations/img-misc.svg"
           description="This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol."
-        />
-      ),
-    },
-    {
-      id: 'email',
-      label: 'Email',
-      children: (
-        <SettingEmail
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          isLoading={isLoading}
-        />
-      ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-misc.svg"
-          description="Customize the emails sent to users when they purchase your lock's membership NFTs."
         />
       ),
     },
