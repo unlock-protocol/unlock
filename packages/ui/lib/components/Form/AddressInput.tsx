@@ -1,9 +1,4 @@
-import {
-  InputHTMLAttributes,
-  ForwardedRef,
-  ReactNode,
-  useState,
-} from 'react'
+import { InputHTMLAttributes, ForwardedRef, ReactNode, useState } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -12,7 +7,6 @@ import { Icon } from '../Icon/Icon'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
-import { UseFormReturn } from 'react-hook-form'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 
 export interface Props
@@ -26,7 +20,7 @@ export interface Props
   withIcon?: boolean
   isTruncated?: boolean
   web3Service: Web3Service
-  localForm: UseFormReturn
+  localForm: any // todo: fix typing UseFormReturn<any, any>' is not assignable to type .UseFormReturn<any, any>'. Types of property 'setValue' are incompatible.
   name: string
 }
 
@@ -43,8 +37,12 @@ const STATE_STYLES = {
     'border-green-500 hover:border-green-500 focus:border-green-500 focus:ring-green-500',
 }
 
-const WalletIcon = (props: IconBaseProps) => <FaWallet {...props} className="fill-gray-500" />
-const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="fill-gray-500" />
+const WalletIcon = (props: IconBaseProps) => (
+  <FaWallet {...props} className="fill-gray-500" />
+)
+const LoadingIcon = (props: IconBaseProps) => (
+  <FaSpinner {...props} className="fill-gray-500" />
+)
 
 /**
  * Primary Input component for React Hook Form
@@ -56,7 +54,7 @@ const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="f
  * @returns Input component
  *
  */
- export const AddressInput = forwardRef(
+export const AddressInput = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
     const {
       size = 'medium',
@@ -72,9 +70,9 @@ const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="f
       ...inputProps
     } = props
 
-    if (!localForm) return null;
+    if (!localForm) return null
     const { register } = localForm
-  
+
     const [addressType, setAddressType] = useState('')
     const [resolvedAddress, setResolvedAddress] = useState('')
     const [resolvedName, setResolvedName] = useState('')
@@ -118,7 +116,10 @@ const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="f
         setSuccess(`It's a valid ens name`)
         setResolvedAddress(result.address)
         return result.address
-      } else if (result && result.address === null || result && result.name === null  && result.type === 'error'){
+      } else if (
+        (result && result.address === null) ||
+        (result && result.name === null && result.type === 'error')
+      ) {
         setLoading(false)
         setAddressType('error')
         setError(`It's not a valid ens name or address`)
@@ -157,31 +158,20 @@ const LoadingIcon = (props: IconBaseProps) => <FaSpinner {...props} className="f
             </div>
           </div>
         </FieldLayout>
-        <div>
-          {!loadingResolvedAddress &&
-          resolvedAddress !== '' &&
-          addressType === 'name' ? (
-            <span className="text-gray-600">{resolvedAddress}</span>
-          ) : !loadingResolvedAddress &&
-            addressType === 'name' &&
-            resolvedAddress !== '' &&
-            isTruncated ? (
-            <span className="text-gray-600">
-              {minifyAddress(resolvedAddress)}
-            </span>
-          ) : !loadingResolvedAddress &&
-            addressType === 'address' &&
-            resolvedName !== '' ? (
-            <span className="text-gray-600">{resolvedName}</span>
-          ) : (
-            addressType === 'error' &&
-            error && (
-              <span className="text-rose-700">
-                Please enter a valid ens or address
+        {!loadingResolvedAddress && (
+          <div>
+            {addressType === 'name' && resolvedAddress !== '' && (
+              <span className="text-gray-600">
+                {isTruncated ? minifyAddress(resolvedAddress) : resolvedAddress}
               </span>
-            )
-          )}
-        </div>
+            )}
+            {addressType === 'address' && resolvedName !== '' && (
+              <span className="text-gray-600">
+                {isTruncated ? minifyAddress(resolvedName) : resolvedName}
+              </span>
+            )}
+          </div>
+        )}
       </>
     )
   }

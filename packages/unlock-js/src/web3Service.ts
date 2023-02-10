@@ -919,93 +919,48 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * Returns the type of the input address
-   */
-  async getEthAddressType(address: string) {
-    const isValidEns = address.endsWith('.eth')
-    const isValidAddress = ethers.utils.isAddress(address)
-    const ETH_ADDRESS_TYPE = {
-      name: 'name',
-      address: 'address',
-      error: 'error',
-    }
-
-    if (!address) return ETH_ADDRESS_TYPE.error
-
-    if (isValidAddress) {
-      return ETH_ADDRESS_TYPE.address
-    } else if (isValidEns) {
-      return ETH_ADDRESS_TYPE.name
-    } else return ETH_ADDRESS_TYPE.error
-  }
-
-  /**
-   * Returns true if the address is a valid EOA
-   */
-  async isValidEOA(address: string) {
-    const provider = this.providerForNetwork(1)
-
-    try {
-      const codePromise = provider.getCode(address)
-      const countPromise = provider.getTransactionCount(address)
-      const [code, count] = await Promise.all([codePromise, countPromise])
-      if (code === '0x' && count > 0) {
-        return true
-      } else {
-        return false
-      }
-    } catch (error) {
-      return false
-    }
-  }
-
-  /**
    * Returns an object the contains the resolved address or ens
    * name of the input address with it's type
    */
-  async resolveName(address: string) {
+  async resolveName(addressOrEns: string) {
     const provider = this.providerForNetwork(1)
-    const isValidEOA = await this.isValidEOA(address)
-    const addressType = await this.getEthAddressType(address)
 
-    if (addressType === 'name') {
-      const resolvedAddress = await provider.resolveName(address)
-      if (isValidEOA && resolvedAddress !== 'null') {
-        return {
-          input: address,
-          address: resolvedAddress,
-          name: address,
-          type: 'name',
-        }
-      } else {
-        return {
-          input: address,
-          address: resolvedAddress,
-          name: address,
-          type: 'error',
-        }
-      }
-    }
+    try {
+      const address = addressOrEns.trim()
+      const isNotENS = ethers.utils.isAddress(address)
 
-    if (addressType === 'address') {
-      const resolvedName = await provider.lookupAddress(address)
-      if (isValidEOA && resolvedName !== 'null') {
+      if (isNotENS) {
+        // address is already valid and not an ENS
         return {
           input: address,
-          name: resolvedName,
-          address: address,
+          address,
+          name: address,
           type: 'address',
         }
       } else {
-        return {
-          input: address,
-          name: resolvedName,
-          address: address,
-          type: 'error',
+        // Address is ENS, need to resolved it
+        const name = address
+        const resolvedName = await provider.resolveName(address)
+
+        if (resolvedName) {
+          return {
+            input: address,
+            name,
+            address: resolvedName,
+            type: 'name',
+          }
+        } else {
+          return {
+            input: address,
+            name,
+            address: resolvedName,
+            type: 'error',
+          }
         }
       }
+    } catch (err: any) {
+      console.error(err)
+      return ''
     }
-
-    return ''
   }
 }
