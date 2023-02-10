@@ -38,7 +38,9 @@ export default class KeyPricer {
       network,
       { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
-    let symbol = networks[network]?.nativeCurrency?.symbol
+    let symbol =
+      networks[network]?.nativeCurrency?.coinbase ||
+      networks[network]?.nativeCurrency?.symbol
     if (lock?.currencyContractAddress !== ZERO && lock.currencySymbol) {
       symbol = lock.currencySymbol
     }

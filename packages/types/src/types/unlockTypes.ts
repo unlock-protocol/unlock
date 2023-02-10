@@ -34,6 +34,7 @@ export interface Token {
   symbol: string
   decimals: number
   coingecko?: string
+  coinbase?: string
   mainnetAddress?: string
 }
 export interface NetworkConfig {
