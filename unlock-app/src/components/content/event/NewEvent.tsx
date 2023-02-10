@@ -58,7 +58,6 @@ export const NewEvent = () => {
           }),
         }
       )
-      console.debug(lockResponse)
       // Finally
       setLockAddress(lockAddress)
     }
