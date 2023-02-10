@@ -124,7 +124,15 @@ export const EmailTemplatePreview = ({
             {...register('customContent')}
           />
           <div className="pb-2 text-sm text-gray-700">
-            Markdown is supported for custom email content
+            <a
+              href="https://www.markdownguide.org/cheat-sheet/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-brand-ui-primary"
+            >
+              Markdown
+            </a>{' '}
+            is supported for custom email content
           </div>
         </div>
         <div className="flex gap-2 ml-auto">
