@@ -24,7 +24,6 @@ jobs:
         "packages/paywall",
         "smart-contracts",
         "subgraph",
-        "tests",
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app"
