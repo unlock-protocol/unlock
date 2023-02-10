@@ -13,6 +13,8 @@ const WEEKLY_CRON_SCHEDULE = '0 0 * * 0' // every Sunday at midnight
 
 const DAY_CRON_SCHEDULE = '0 0 * * *' // every day at midnight
 
+const HOURLY_CRON_SCHEDULE = '0 * * * *' // every hour
+
 const FREQUENT_CRON_SCHEDULE = '*/5 * * * *' // every 5 minutes
 
 const run = async () => {
@@ -42,6 +44,15 @@ cron.schedule(FREQUENT_CRON_SCHEDULE, run)
 cron.schedule(FREQUENT_CRON_SCHEDULE, async () => {
   // An hour in seconds
   const within = 60 * 60
+  await Promise.allSettled([
+    runRenewal((network) => renewKeys(network, within)),
+    runRenewal((network) => renewFiatKeys(network, within)),
+  ])
+})
+
+cron.schedule(HOURLY_CRON_SCHEDULE, async () => {
+  // A day in seconds
+  const within = 86400
   await Promise.allSettled([
     runRenewal((network) => renewKeys(network, within)),
     runRenewal((network) => renewFiatKeys(network, within)),
