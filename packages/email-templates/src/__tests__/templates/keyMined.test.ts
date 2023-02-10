@@ -82,4 +82,19 @@ describe('keyMined', () => {
     )
     expect(asHtml(content).innerHTML).toContain('href="http://opensealurl.com"')
   })
+
+  it('should contains custom content', () => {
+    expect.assertions(2)
+    const content = prepareAll(keyMined).html({
+      keyId: '1337',
+      lockName: 'Ethereal NYC 202',
+      network: 'Polygon',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      openSeaUrl: 'http://opensealurl.com',
+      customContent: `<h1>Custom content here</h1>`,
+    })
+
+    expect(asHtml(content).textContent).toContain(`Custom content here`)
+    expect(asHtml(content).innerHTML).toContain('href="http://opensealurl.com"')
+  })
 })
