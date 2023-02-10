@@ -1,12 +1,14 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Modal, TextBox } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWedlockService } from '~/contexts/WedlocksContext'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import * as z from 'zod'
+import { useConfig } from '~/utils/withConfig'
+import React from 'react'
+import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 interface EmailTemplatePreviewProps {
   templateId: string
   disabled: boolean
@@ -27,15 +29,17 @@ export const EmailTemplatePreview = ({
   network,
   lockAddress,
 }: EmailTemplatePreviewProps) => {
+  const config = useConfig()
   const [showPreview, setShowPreview] = useState(false)
   const wedlocksService = useWedlockService()
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
     setValue,
+    reset,
   } = useForm<FormSchemaProps>()
 
   const customContent = watch('customContent', '')
@@ -55,34 +59,60 @@ export const EmailTemplatePreview = ({
       error: 'Could not update custom email content.',
       success: 'Custom email content updated.',
     })
+    reset({
+      customContent: customContent || '',
+      email: '',
+    })
   }
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
   const onSubmit = async (form: FormSchemaProps) => {
-    await saveCustomContent.mutateAsync() // save custom content
-    await wedlocksService.sendEmail(templateId as any, form.email)
+    const promise = wedlocksService.sendEmail(templateId as any, form.email)
+    await ToastHelper.promise(promise, {
+      loading: 'Sending email preview...',
+      success: 'Email preview sent.',
+      error: `Can't send email preview`,
+    })
+    setShowPreview(false) // close modal after email is sent
   }
 
-  useQuery(
-    ['getCustomContent', network, lockAddress, templateId],
-    async () => {
-      const res = await storage.getCustomEmailContent(
-        network,
-        lockAddress,
-        templateId
-      )
-      return res?.data?.content || ''
-    },
-    {
-      onSuccess: (content: any) => {
-        setValue('customContent', content || '')
+  const [_data, { data: emailHtmlPreview }] = useQueries({
+    queries: [
+      {
+        queryKey: ['getCustomContent', network, lockAddress, templateId],
+        queryFn: async () => {
+          const res = await storage.getCustomEmailContent(
+            network,
+            lockAddress,
+            templateId
+          )
+          return res?.data?.content || ''
+        },
+        onSuccess: (content: any) => {
+          setValue('customContent', content || '')
+        },
+        enabled: !disabled,
       },
-      enabled: !disabled,
-    }
-  )
+      {
+        queryKey: [
+          'getEmailPreview',
+          network,
+          lockAddress,
+          templateId,
+          saveCustomContent.isSuccess,
+        ],
+        queryFn: async () => {
+          const url = `${config.services.wedlocks.host}/preview/${templateId}`
+          const res = await (await fetch(url)).text()
+          return res
+        },
+      },
+    ],
+  })
 
   const loading = saveCustomContent.isLoading
+  const disableShowPreview = loading || saveCustomContent.isLoading || isDirty
 
   return (
     <>
@@ -93,50 +123,87 @@ export const EmailTemplatePreview = ({
             rows={8}
             {...register('customContent')}
           />
-          <div className="text-sm text-gray-700">
+          <div className="pb-2 text-sm text-gray-700">
             Markdown is supported for custom email content
           </div>
         </div>
         <div className="flex gap-2 ml-auto">
           <Button
             size="small"
-            variant="outlined-primary"
-            onClick={() => setShowPreview(!showPreview)}
+            onClick={async () => {
+              await saveCustomContent.mutateAsync()
+            }}
+            loading={saveCustomContent.isLoading}
             disabled={loading}
           >
-            Show preview
+            Save
+          </Button>
+          <Button
+            size="small"
+            variant="outlined-primary"
+            onClick={async () => {
+              setShowPreview(true)
+            }}
+            disabled={disableShowPreview}
+          >
+            Show email preview
           </Button>
         </div>
         {showPreview && (
-          <Modal isOpen={showPreview} setIsOpen={setShowPreview}>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col w-full gap-6 py-4"
-            >
-              <ReactMarkdown>{customContent}</ReactMarkdown>
-              <div className="text-sm text-gray-700">Send</div>
-              <div className="flex flex-col gap-2">
-                <Input
-                  placeholder="example@email.com"
-                  type="email"
-                  disabled={disabled}
-                  className="w-full"
-                  {...register('email', {
-                    required: {
-                      value: true,
-                      message: 'This field is required.',
-                    },
-                  })}
-                  error={errors?.email?.message}
-                />
-                <Button type="submit" disabled={disabled}>
-                  Save & send email Preview
-                </Button>
+          <Modal empty isOpen={showPreview} setIsOpen={setShowPreview}>
+            <div className="fixed inset-0 z-10 flex justify-center overflow-y-auto bg-white">
+              <div className="w-full max-w-xl mt-10">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-bold text-brand-ui-primary">
+                    Email Preview
+                  </h2>
+                  <div className="flex items-center justify-end">
+                    <button
+                      className="hover:fill-brand-ui-primary"
+                      aria-label="close"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setShowPreview(false)
+                      }}
+                    >
+                      <CloseIcon className="fill-inherit" size={24} />
+                    </button>
+                  </div>
+                </div>
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="flex flex-col w-full gap-6 py-4"
+                >
+                  <div
+                    dangerouslySetInnerHTML={{ __html: emailHtmlPreview || '' }}
+                    style={{ width: '200px' }}
+                  ></div>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      placeholder="example@email.com"
+                      type="email"
+                      disabled={disabled}
+                      className="w-full"
+                      {...register('email', {
+                        required: {
+                          value: true,
+                          message: 'This field is required.',
+                        },
+                      })}
+                      error={errors?.email?.message}
+                    />
+                    <Button type="submit" disabled={disabled}>
+                      Send email Preview
+                    </Button>
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
           </Modal>
         )}
       </div>
     </>
   )
 }
+
+export default EmailTemplatePreview
