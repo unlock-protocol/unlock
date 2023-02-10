@@ -156,7 +156,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Migrate data from the previous single owner => key mapping to
    * the new data structure w multiple tokens.
    */
-  function migrate(bytes calldata _calldata) public virtual {
+  function migrate(bytes calldata /*_calldata*/) public virtual {
     // make sure we have correct data version before migrating
     require(
       (

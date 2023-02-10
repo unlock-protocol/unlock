@@ -35,6 +35,7 @@ import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
+import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
 
 error Unlock__MANAGER_ONLY();   
@@ -650,7 +651,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       && 
       IPublicLock(msg.sender).publicLockVersion() == 13 
     ) {
-      IUnlockV11 previousUnlock = IUnlockV11(_previousUnlockAddress);
+      IUnlock previousUnlock = IUnlock(_previousUnlockAddress);
+
       (
         bool deployed, 
         uint totalSales, 
