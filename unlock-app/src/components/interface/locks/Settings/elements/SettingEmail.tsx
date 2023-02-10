@@ -33,7 +33,7 @@ export const SettingEmail = ({
 
       <SettingCard
         label="Key Airdropped Template"
-        description={`Add custom content to the email sent when a key is airdropped.`}
+        description={`Customize the content of the email sent when a new membership has been airdropped.`}
         isLoading={isLoading}
       >
         <EmailTemplatePreview
