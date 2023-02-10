@@ -111,8 +111,10 @@ contract MixinPurchase is
     uint _keyPrice,
     address _referrer
   ) internal {
+
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
+      // TODO: turn this into delegatecall
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try

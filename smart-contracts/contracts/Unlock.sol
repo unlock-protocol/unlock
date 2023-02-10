@@ -379,13 +379,33 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return block.basefee;
   }
 
+  function recordKeyPurchaseAndPayFee(
+    uint _value,
+    address _referrer
+  ) public {
+    IPublicLock lock = IPublicLock(address(this));
+
+    // 1. read fee from local unlock
+    address unlockAddress = IPublicLock(address(this)).unlockProtocol();
+    uint fee = unlockAddress.fee();
+
+    // 2. pay fee from Lock (msg.sender/this) to Unlock
+    if (lock.tokenAddress()) {
+      IERC20(lock.tokenAddress()).transfer(_value, address(this));
+    } else {
+      address(this).call{value: _value}();
+    }
+
+    // 3. record key purchase
+    IUnlock(unlockAddress).recordKeyPurchase();
+  }
+  
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
    * the current growth rate and the lock's discount token distribution rate
    * This function is invoked by a previously deployed lock only.
-   * TODO: actually implement
    */
   function recordKeyPurchase(
     uint _value,
@@ -475,7 +495,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           if (tokensToDistribute > 0) {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
             uint devReward = (tokensToDistribute * 20) / 100;
-            
             
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
