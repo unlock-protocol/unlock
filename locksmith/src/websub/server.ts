@@ -48,7 +48,7 @@ cron.schedule(FREQUENT_CRON_SCHEDULE, async () => {
   ])
 })
 
-cron.schedule(WEEKLY_CRON_SCHEDULE, async () => {
+cron.schedule(DAY_CRON_SCHEDULE, async () => {
   // Week in seconds
   const within = 86400 * 7
   await Promise.allSettled([
@@ -57,9 +57,9 @@ cron.schedule(WEEKLY_CRON_SCHEDULE, async () => {
   ])
 })
 
-cron.schedule(DAY_CRON_SCHEDULE, async () => {
-  // Month in seconds
-  const within = 86400 * 31
+cron.schedule(WEEKLY_CRON_SCHEDULE, async () => {
+  // A year in seconds
+  const within = 86400 * 365
   await Promise.allSettled([
     runRenewal((network) => renewKeys(network, within)),
     runRenewal((network) => renewFiatKeys(network, within)),
