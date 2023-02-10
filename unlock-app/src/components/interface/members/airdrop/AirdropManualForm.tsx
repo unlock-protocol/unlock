@@ -56,7 +56,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   const description = useEmail
     ? 'Enter the email address that will receive the membership NFT'
     : 'Enter the wallet address or an ENS that will receive the membership NFT'
-  const error = errors?.recipient?.message
+  const error = errors?.wallet?.message
   const placeholder = useEmail ? 'user@email.com' : '0x...'
   const inputClass = twMerge(
     'box-border flex-1 block w-full transition-all border pl-4 py-2 text-base border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none disabled:bg-gray-100',
@@ -68,9 +68,9 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   const web3Service = useWeb3Service()
   const networkConfig = config.networks[lock.network]
 
-  const onRecipientChange = useCallback(
+  const onWalletChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const recipient = event.target.value
+      const value = event.target.value
       if (useEmail && networkConfig.keyManagerAddress) {
         const keyManager = new KeyManager(config.networks)
         const address = keyManager.createTransferAddress({
@@ -79,19 +79,19 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
             lockAddress: lock!.address,
           },
         })
-        setValue('email', recipient)
+        setValue('email', value)
         setValue('manager', networkConfig.keyManagerAddress)
         return address
       }
-      return recipient
+      return value
     },
     [setValue, useEmail, lock, config.networks, networkConfig]
   )
 
   const onSubmitHandler = useCallback(
     async (member: AirdropMember) => {
-      const address = await getAddressForName(member.recipient)
-      member.recipient = address
+      const address = await getAddressForName(member.wallet)
+      member.wallet = address
       const parsed = AirdropMember.parse(member)
       add(parsed)
       reset()
@@ -102,7 +102,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)} className="grid gap-6">
       <Controller
-        name="recipient"
+        name="wallet"
         control={control}
         rules={{
           required,
@@ -152,7 +152,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                 id={label}
                 type={useEmail ? 'email' : 'text'}
                 onChange={(event) => {
-                  onChange(onRecipientChange(event))
+                  onChange(onWalletChange(event))
                 }}
                 ref={ref}
                 onBlur={onBlur}

@@ -1,6 +1,6 @@
-import templates from '../../templates'
+import templates from '../../index'
 import { prepareAll } from '../../templates/prepare'
-
+import { describe, test } from 'vitest'
 // Remove the default
 let templatesToTest = { ...templates }
 delete templatesToTest.default

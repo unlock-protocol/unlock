@@ -33,6 +33,7 @@ const mockConfig = {
       blockTime: 2,
     },
   },
+  publicLockVersion: 12,
 }
 
 const ownerAddress = '0xlockOwner'
@@ -86,8 +87,8 @@ describe('useLocks', () => {
       Promise.resolve(transaction)
     })
 
-    mockWalletService.connect = vi.fn(() => {})
-    mockWalletService.createLock = vi.fn(() => {})
+    mockWalletService.connect = vi.fn(() => { })
+    mockWalletService.createLock = vi.fn(() => { })
   })
 
   it.skip('should default to loading and an empty list', async () => {
@@ -204,12 +205,12 @@ describe('useLocks', () => {
     beforeEach(() => {
       addToLocks = vi.fn()
       setError = vi.fn()
-      mockWalletService.createLock = vi.fn(() => {})
+      mockWalletService.createLock = vi.fn(() => { })
     })
 
     it('should call createLock on walletService', async () => {
       expect.assertions(1)
-      mockWalletService.createLock = vi.fn(() => {})
+      mockWalletService.createLock = vi.fn(() => { })
       await createLock(
         mockWeb3Service,
         mockWalletService,
@@ -220,7 +221,7 @@ describe('useLocks', () => {
         network,
         addToLocks,
         setError,
-        () => {}
+        () => { }
       )
       expect(mockWalletService.createLock).toHaveBeenCalledWith(
         {
@@ -254,7 +255,7 @@ describe('useLocks', () => {
         network,
         addToLocks,
         setError,
-        () => {}
+        () => { }
       )
       expect(addToLocks).toHaveBeenCalledWith({
         address: lockAddress,

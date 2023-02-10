@@ -1,5 +1,3 @@
-import handlebars from 'handlebars'
-
 export default {
   subject: `Your proof of key ownership for "{{lockName}}"`,
   html: `<h1>QR Code</h1>

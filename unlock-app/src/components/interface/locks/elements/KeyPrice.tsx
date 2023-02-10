@@ -14,9 +14,11 @@ interface CryptoIconProps {
   symbol: string
   size?: number
 }
-export const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
-  <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
-)
+export const CryptoIconRaw = ({ symbol, size = 20 }: CryptoIconProps) => {
+  return <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
+}
+
+export const CryptoIcon = React.memo(CryptoIconRaw)
 
 export const KeyPrice = ({ price, symbol = '' }: KeyPriceProps) => {
   if (price == undefined) return null

@@ -14,7 +14,7 @@
     "@typescript-eslint/parser": "5.50.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.3.3",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "devDependencies": {
     "eslint": "8.33.0",
@@ -39,7 +39,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/jest-config,@unlock-protocol/jest-config,@unlock-protocol/express,@unlock-protocol/networks,@unlock-protocol/unlock-assets,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin}'",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/jest-config,@unlock-protocol/jest-config,@unlock-protocol/express,@unlock-protocol/networks,@unlock-protocol/unlock-assets,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin,@unlock-protocol/email-templates}'",
     "packages:clean": "yarn packages --parallel run clean",
     "packages:build": "yarn packages --topological-dev run build",
     "packages:publish": "yarn packages --parallel --verbose npm publish --tolerate-republish",
@@ -79,7 +79,7 @@
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.3.1",
+  "packageManager": "yarn@3.4.1",
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"

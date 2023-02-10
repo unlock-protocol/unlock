@@ -49,7 +49,7 @@ export default async function migrateLock(
     throw new Error(`Missing Unlock address for this chain: ${chainId}`)
   }
 
-  const rpc = new ethers.providers.JsonRpcProvider(provider)
+  const rpc = new ethers.providers.JsonRpcBatchProvider(provider)
   callback(null, {
     recordId,
     message: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,

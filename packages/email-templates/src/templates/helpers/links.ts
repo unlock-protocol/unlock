@@ -1,6 +1,6 @@
 import handlebars from 'handlebars'
 
-export function links(txUrl, openSeaUrl, airdropped) {
+export function links(txUrl: string, openSeaUrl: string, airdropped: boolean) {
   const hasTxUrl = txUrl?.length > 0
   const hasOpenSeaUrl = openSeaUrl?.length > 0
   let linksMessage = ''
