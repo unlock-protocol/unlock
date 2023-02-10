@@ -65,7 +65,7 @@ export interface Props {
 function Key({ ownedKey, account, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { network: accountNetwork, getWalletService } = useAuth()
+  const { getWalletService } = useAuth()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const { watchAsset } = useAuth()

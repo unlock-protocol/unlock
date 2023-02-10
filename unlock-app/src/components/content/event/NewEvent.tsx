@@ -27,6 +27,7 @@ export const NewEvent = () => {
       lockAddress = await walletService.createLock(
         {
           ...formData.lock,
+          name: formData.lock.name,
           publicLockVersion: config.publicLockVersion,
         },
         {} /** transactionParams */,
@@ -48,16 +49,12 @@ export const NewEvent = () => {
 
     if (lockAddress) {
       // Save this:
-      const lockResponse = await storage.updateLockMetadata(
-        formData.network,
-        lockAddress!,
-        {
-          metadata: formDataToMetadata({
-            name: formData.lock.name,
-            ...formData.metadata,
-          }),
-        }
-      )
+      await storage.updateLockMetadata(formData.network, lockAddress!, {
+        metadata: formDataToMetadata({
+          name: formData.lock.name,
+          ...formData.metadata,
+        }),
+      })
       // Finally
       setLockAddress(lockAddress)
     }

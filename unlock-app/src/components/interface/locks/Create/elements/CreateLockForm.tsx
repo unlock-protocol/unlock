@@ -62,10 +62,9 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { network, account } = useAuth()
+  const { account } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const { baseCurrencySymbol } = networks[network!] ?? {}
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     defaultValues?.unlimitedDuration ?? false
   )
@@ -97,6 +96,7 @@ export const CreateLockForm = ({
   const { network: selectedNetwork } = useWatch({
     control,
   })
+  const { baseCurrencySymbol } = networks[selectedNetwork!] ?? {}
 
   const getBalance = async () => {
     const balance = await getAccountTokenBalance(
@@ -136,8 +136,8 @@ export const CreateLockForm = ({
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
   const selectedCurrency = (
-    defaultValues?.symbol ||
     selectedToken?.symbol ||
+    defaultValues?.symbol ||
     baseCurrencySymbol
   )?.toLowerCase()
 
