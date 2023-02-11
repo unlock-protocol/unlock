@@ -93,7 +93,7 @@ export function Projects() {
           src="/images/svg/desktop-frame-5.svg"
         />
         <div className="flex items-center justify-between pl-1">
-          <h1 className="heading">Explore Active Projects</h1>
+          <h1 className="heading">Unlock in the news</h1>
           <div className="hidden gap-2 sm:flex">
             <button
               className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
