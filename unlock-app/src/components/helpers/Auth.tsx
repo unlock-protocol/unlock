@@ -6,7 +6,6 @@ import {
   login,
 } from '~/config/storage'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useWalletService } from '~/utils/withWalletService'
 import { useLocalStorage } from '@rehooks/local-storage'
 interface Props {
   children?: ReactNode
@@ -19,15 +18,13 @@ export const Auth = ({ children }: Props) => {
     false
   )
   const [createdRequest, setCreatedRequest] = useState(false)
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
   const useSIWE =
     !!account &&
     auth?.walletAddress !== account &&
     !isRefusedToSign &&
     !document.hidden &&
     !createdRequest
-
-  const walletService = useWalletService()
 
   useEffect(() => {
     const connect = async () => {
@@ -36,6 +33,7 @@ export const Auth = ({ children }: Props) => {
       }
       try {
         setCreatedRequest(true)
+        const walletService = await getWalletService()
         await login(walletService)
         setCreatedRequest(false)
       } catch (error) {
@@ -44,7 +42,7 @@ export const Auth = ({ children }: Props) => {
       }
     }
     connect()
-  }, [useSIWE, account, setIsRefusedToSign, walletService])
+  }, [useSIWE, account, setIsRefusedToSign, getWalletService])
 
   return <React.Fragment>{children}</React.Fragment>
 }

@@ -58,6 +58,7 @@ export const config = {
     },
     {}
   ),
+  defaultNetwork: 137,
   isServer: typeof window === 'undefined',
   tagManagerArgs: {
     gtmId: 'GTM-5XL2RNW',

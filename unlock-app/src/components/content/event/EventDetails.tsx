@@ -13,7 +13,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Modal } from '@unlock-protocol/ui'
+import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -139,7 +139,18 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           {eventDate && eventData.ticket?.event_start_time && (
             <li className="mb-2">
               <FaClock className="inline mr-2" />
-              {eventDate.toLocaleTimeString()}
+              <Tooltip
+                delay={0}
+                label={eventData.ticket.event_timezone}
+                tip={eventData.ticket.event_timezone}
+                side="bottom"
+              >
+                <span>
+                  {eventDate.toLocaleTimeString(navigator.language || 'en-US', {
+                    timeZone: eventData.ticket.event_timezone,
+                  })}
+                </span>
+              </Tooltip>
             </li>
           )}
           {(eventData?.ticket?.event_address || '')?.length > 0 && (

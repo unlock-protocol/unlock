@@ -110,7 +110,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   }, [lock, paywallConfig])
 
   const config = useConfig()
-  const { account, changeNetwork, isUnlockAccount } = useAuth()
+  const { account, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
   const expectedAddress = paywallConfig.expectedAddress
 
@@ -149,8 +149,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         enabled: !!account,
       }
     )
-
-  const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
 
@@ -361,10 +359,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
               disabled={isDisabled}
               onClick={async (event) => {
                 event.preventDefault()
-                // Silently change network to the correct one in the background
-                if (isUnlockAccount) {
-                  await changeNetwork(lockNetwork)
-                }
 
                 if (!lock) {
                   return
