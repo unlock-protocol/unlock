@@ -22,8 +22,7 @@ export const UNLOCK_PROJECTS = [
     published: 'May 2022',
     title: 'Wired',
     text: 'Inside the Web3 Revolution',
-    href: 'https://www.wired.com/story/web3-paradise-crypto-arcade/
-',
+    href: 'https://www.wired.com/story/web3-paradise-crypto-arcade/',
   },
   {
     coverClass:
@@ -31,8 +30,7 @@ export const UNLOCK_PROJECTS = [
     published: 'April 2022',
     title: 'Coindesk',
     text: 'NFT Subscriptions are Better Paywalls',
-    href: 'https://www.coindesk.com/layer2/paymentsweek/2022/04/28/nft-subscriptions-are-better-paywalls/
-',
+    href: 'https://www.coindesk.com/layer2/paymentsweek/2022/04/28/nft-subscriptions-are-better-paywalls/',
   },
   {
     coverClass:
@@ -40,8 +38,7 @@ export const UNLOCK_PROJECTS = [
     published: 'September 2021',
     title: 'TechCrunch',
     text: 'Guardian Owner Invests in Unlock',
-    href: 'https://techcrunch.com/2021/09/28/guardian-owner-invests-in-unlock-an-nft-protocol-designed-for-subscriptions-and-memberships/
-',
+    href: 'https://techcrunch.com/2021/09/28/guardian-owner-invests-in-unlock-an-nft-protocol-designed-for-subscriptions-and-memberships/',
   },
   {
     coverClass:
@@ -49,8 +46,7 @@ export const UNLOCK_PROJECTS = [
     published: 'December 2021',
     title: 'Forbes',
     text: 'Forbes Experiments With Paywall Solution Unlock Protocol',
-    href: 'https://cryptomode.com/forbes-experiments-with-crypto-paywall-solution-unlock-protocol/
-',
+    href: 'https://cryptomode.com/forbes-experiments-with-crypto-paywall-solution-unlock-protocol/',
   },
 ]
 
