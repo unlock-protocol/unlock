@@ -12531,14 +12531,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.0.25":
-  version: 18.0.25
-  resolution: "@types/react@npm:18.0.25"
+"@types/react@npm:18.0.28":
+  version: 18.0.28
+  resolution: "@types/react@npm:18.0.28"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 231d658c45abdef044a716b4502774f1585d8336d73b2f5bd68f181acbfc874b7a457686ecd29b415b43ed0922c309bab7e2cf96832d188a3f4f1b02f2af760a
+  checksum: e752df961105e5127652460504785897ca6e77259e0da8f233f694f9e8f451cde7fa0709d4456ade0ff600c8ce909cfe29f9b08b9c247fa9b734e126ec53edd7
   languageName: node
   linkType: hard
 
@@ -13775,7 +13775,7 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 18.11.18
     "@types/postmate": 1.5.2
-    "@types/react": 18.0.25
+    "@types/react": 18.0.28
     "@types/react-dom": 18.0.10
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -13947,7 +13947,7 @@ __metadata:
     "@tailwindcss/line-clamp": 0.4.2
     "@tailwindcss/typography": 0.5.9
     "@tw-classed/react": 1.4.2
-    "@types/react": 18.0.25
+    "@types/react": 18.0.28
     "@types/react-dom": 18.0.10
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
@@ -13998,7 +13998,7 @@ __metadata:
     "@types/file-saver": 2.0.5
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
-    "@types/react": 18.0.25
+    "@types/react": 18.0.28
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -14160,7 +14160,7 @@ __metadata:
     "@testing-library/react": 13.4.0
     "@types/next": 8.0.7
     "@types/node": 18.11.18
-    "@types/react": 18.0.25
+    "@types/react": 18.0.28
     "@types/styled-components": 5.1.26
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
