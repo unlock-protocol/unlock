@@ -57,7 +57,7 @@
     "directory": "packages/ui"
   },
   "devDependencies": {
-    "@babel/core": "7.20.7",
+    "@babel/core": "7.20.12",
     "@headlessui/react": "1.7.10",
     "@mdx-js/preact": "2.2.1",
     "@mdx-js/react": "2.2.1",
