@@ -115,7 +115,9 @@ export const EmailTemplatePreview = ({
           // parse markdown to HTML
           const parsedContent = await unified()
             .use(remarkParse)
-            .use(remarkHtml)
+            .use(remarkHtml, {
+              sanitize: true,
+            })
             .process(customContent || '')
 
           const customEmailHtml = parsedContent.value.toString()
