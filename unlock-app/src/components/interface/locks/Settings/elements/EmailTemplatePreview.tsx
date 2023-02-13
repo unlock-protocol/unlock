@@ -9,6 +9,10 @@ import * as z from 'zod'
 import { useConfig } from '~/utils/withConfig'
 import React from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
+
 interface EmailTemplatePreviewProps {
   templateId: string
   disabled: boolean
@@ -101,12 +105,28 @@ export const EmailTemplatePreview = ({
           lockAddress,
           templateId,
           saveCustomContent.isSuccess,
+          customContent,
         ],
         queryFn: async () => {
-          const url = `${config.services.wedlocks.host}/preview/${templateId}`
+          const url = new URL(
+            `${config.services.wedlocks.host}/preview/${templateId}`
+          )
+
+          // parse markdown to HTML
+          const parsedContent = await unified()
+            .use(remarkParse)
+            .use(remarkHtml)
+            .process(customContent || '')
+
+          const customEmailHtml = parsedContent.value.toString()
+          // add custom HTML
+          url.searchParams.append('customContent', customEmailHtml)
+
+          console.log(customEmailHtml)
           const res = await (await fetch(url)).text()
           return res
         },
+        enabled: (customContent || '')?.length > 0,
       },
     ],
   })

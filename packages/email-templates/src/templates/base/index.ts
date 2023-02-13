@@ -386,6 +386,7 @@ export const base = `<!DOCTYPE html>
                               ><img
                                 src="{{inlineImage 'twitter.png'}}"
                                 height="24"
+                                width="24"
                                 alt="Twitter"
                             /></a>
                           </td>
