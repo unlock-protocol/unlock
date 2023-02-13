@@ -140,7 +140,7 @@ contract MixinPurchase is
     }
 
     // get fee from Unlock 
-    uint protocolFee = _keyPrice * unlockProtocol.fee();
+    uint protocolFee = (_keyPrice * unlockProtocol.fee()) / BASIS_POINTS_DEN;
 
     // pay fee to Unlock
     _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
