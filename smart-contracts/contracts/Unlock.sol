@@ -47,7 +47,7 @@ error Unlock__MISSING_LOCK_TEMPLATE();
 
 // TODO: prefix errors
 error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
-error LockDoesntExist(address lockAddress);
+error LockDoesNotExist(address lockAddress);
 error InsufficientBalance();
 error UnauthorizedBalanceChange();
 error LockCallFailed();
@@ -670,6 +670,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             totalSales, 
             yieldedDiscountTokens
           );
+      } else {
+        revert LockDoesNotExist(msg.sender);
       }
     }
   }
