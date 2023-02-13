@@ -139,18 +139,11 @@ contract MixinPurchase is
       );
     }
 
-    // pay fee to unock 
+    // get fee from Unlock 
     uint protocolFee = _keyPrice * unlockProtocol.fee();
-    if (tokenAddress != address(0)) {
-      IERC20Upgradeable(tokenAddress).transfer(
-        address(unlockProtocol), protocolFee
-      );
-    } else {
-      (bool transfer,) = address(unlockProtocol).call{value: protocolFee}('');
-      if(!transfer) {
-        revert TransferFailed();
-      }
-    }
+
+    // pay fee to Unlock
+    _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
   }
 
   /**
