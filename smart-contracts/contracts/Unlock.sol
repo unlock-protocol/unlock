@@ -115,7 +115,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   uint16 public publicLockLatestVersion;
 
   // protocol fee
-  uint public fee;
+  uint public protocolFee;
 
   // Events
   event NewLock(
