@@ -539,7 +539,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @param _protocolFee fee in basic point
    */
   function setProtocolFee(uint _protocolFee) external onlyOwner {
-    fee = _protocolFee;
+    protocolFee = _protocolFee;
   }
 
   /**
