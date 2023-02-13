@@ -3,7 +3,7 @@ import { Input, Button } from '@unlock-protocol/ui'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface UpdateBaseTokenURIProps {
@@ -28,8 +28,7 @@ export const UpdateBaseTokenURI = ({
   isManager,
 }: UpdateBaseTokenURIProps) => {
   const web3Service = useWeb3Service()
-  const walletService = useWalletService()
-
+  const { getWalletService } = useAuth()
   const {
     handleSubmit,
     register,
@@ -46,6 +45,7 @@ export const UpdateBaseTokenURI = ({
   }
 
   const setBaseTokenURI = async (fields: FormProps) => {
+    const walletService = await getWalletService(network)
     await walletService.setBaseTokenURI({
       lockAddress,
       baseTokenURI: fields.baseTokenURI,

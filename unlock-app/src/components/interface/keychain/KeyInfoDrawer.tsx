@@ -1,6 +1,5 @@
-import { Disclosure, Drawer } from '@unlock-protocol/ui'
+import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
 import React, { ReactNode } from 'react'
-import { useWalletService } from '~/utils/withWalletService'
 import { useQuery } from '@tanstack/react-query'
 import { Property } from '../locks/metadata/custom/AddProperty'
 import { Level } from '../locks/metadata/custom/AddLevel'
@@ -28,6 +27,7 @@ import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { getEventDate } from '~/components/content/event/utils'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 dayjs.extend(relative)
 dayjs.extend(duration)
@@ -101,8 +101,8 @@ export const KeyInfo = ({
   expiration,
   imageURL,
 }: KeyInfoProps) => {
-  const walletService = useWalletService()
-  const provider = walletService.providerForNetwork(network)
+  const web3Service = useWeb3Service()
+  const provider = web3Service.providerForNetwork(network)
   const config = useConfig()
   const isERC20 =
     lock.tokenAddress &&
@@ -251,9 +251,21 @@ export const KeyInfo = ({
               </KeyItem>
             )}
             {ticket?.event_start_date && (
-              <KeyItem label="Event Time">
-                {getEventDate(ticket)?.toLocaleTimeString()}
-              </KeyItem>
+              <Tooltip
+                delay={0}
+                label={ticket.event_timezone}
+                tip={ticket.event_timezone}
+                side="bottom"
+              >
+                <KeyItem label="Event Time">
+                  {getEventDate(ticket)?.toLocaleTimeString(
+                    navigator.language || 'en-US',
+                    {
+                      timeZone: ticket.event_timezone,
+                    }
+                  )}
+                </KeyItem>
+              </Tooltip>
             )}
             {ticket?.event_address && (
               <KeyItem label="Event Address">{ticket.event_address}</KeyItem>

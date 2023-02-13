@@ -3,7 +3,7 @@ import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import { storage } from '~/config/storage'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { useWalletService } from '~/utils/withWalletService'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface GetPriceProps {
   network: number
@@ -19,8 +19,8 @@ export const useGetPrice = ({
   currencyContractAddress,
   hash,
 }: GetPriceProps) => {
-  const walletService = useWalletService()
-  const provider = walletService.providerForNetwork(network)
+  const web3Service = useWeb3Service()
+  const provider = web3Service.providerForNetwork(network)
 
   return useQuery(['getPrice', network, hash], async (): Promise<any> => {
     const tokenAddress =

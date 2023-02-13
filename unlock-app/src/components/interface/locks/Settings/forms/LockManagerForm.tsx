@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
@@ -20,6 +19,7 @@ interface LockManagerCardProps {
   lockAddress: string
   manager: string
   hasMultipleManagers: boolean
+  network: number
 }
 
 interface RenounceModalFormProps {
@@ -137,14 +137,15 @@ const LockManagerCard = ({
   lockAddress,
   manager,
   hasMultipleManagers,
+  network,
 }: LockManagerCardProps) => {
-  const walletService = useWalletService()
   const [renounceModal, setRenounceModal] = useState(false)
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
 
   const isLoggedUser = account?.toLowerCase() === manager?.toLowerCase()
 
   const renounceLockManager = async () => {
+    const walletService = await getWalletService(network)
     return await walletService.renounceLockManager({
       lockAddress,
     })
@@ -209,7 +210,6 @@ export const LockManagerForm = ({
   isManager,
   disabled,
 }: LockManagerFormProps) => {
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
 
   const [managerAddress, setManagerAddress] = useState('')
@@ -217,6 +217,7 @@ export const LockManagerForm = ({
   const localForm = useForm()
 
   const { handleSubmit, reset, watch } = localForm
+  const { getWalletService } = useAuth()
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -234,6 +235,7 @@ export const LockManagerForm = ({
 
   const addLockManager = async (address: string) => {
     const managerAddress = addressMinify(address)
+    const walletService = await getWalletService(network)
     const addManagerPromise = walletService.addLockManager({
       lockAddress,
       userAddress: address,
@@ -300,6 +302,7 @@ export const LockManagerForm = ({
             lockAddress={lockAddress}
             manager={manager}
             key={manager}
+            network={network}
             hasMultipleManagers={managers?.length > 1}
           />
         ))}

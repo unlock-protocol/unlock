@@ -34,6 +34,7 @@ export interface Token {
   symbol: string
   decimals: number
   coingecko?: string
+  coinbase?: string
   mainnetAddress?: string
 }
 export interface NetworkConfig {
@@ -178,6 +179,7 @@ export interface PaywallConfig {
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
   network: number
+  autoconnect?: boolean
 }
 
 export enum KeyStatus {

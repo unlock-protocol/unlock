@@ -192,7 +192,7 @@ export const PaywallConfigSchema = z
     hideSoldOut: z
       .boolean({
         description:
-          'When enabled, sold our locks are not shown to users when they load the checkout modal.',
+          'When enabled, sold out locks are not shown to users when they load the checkout modal.',
       })
       .optional(),
     password: z
@@ -236,6 +236,13 @@ export const PaywallConfigSchema = z
       .string({
         description: 'Expected wallet address for user.',
       })
+      .optional(),
+    autoconnect: z
+      .boolean({
+        description:
+          '(Advanced): forces the use the provider from the parent window when the checkout is embeded as an iframe.',
+      })
+      .default(false)
       .optional(),
   })
   .passthrough()
