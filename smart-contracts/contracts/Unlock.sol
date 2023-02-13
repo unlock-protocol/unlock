@@ -114,6 +114,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
+  // protocol fee
+  uint public fee;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -528,6 +531,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
     return 11;
+  }
+
+  /**
+   * Set the fee used by the protocol
+   * @param _protocolFee fee in basic point
+   */
+  function setProtocolFee(uint _protocolFee) external onlyOwner {
+    fee = _protocolFee;
   }
 
   /**

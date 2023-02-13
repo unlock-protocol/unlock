@@ -44,6 +44,8 @@ contract MixinPurchase is
 
   mapping(address => uint) public referrerFees;
 
+  error TransferFailed();
+
   /**
    * @dev Set the value/price to be refunded to the sender on purchase
    */
@@ -114,16 +116,7 @@ contract MixinPurchase is
 
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
-      // read fee from protocol
-      uint fee = unlockProtocol.fee();
       
-      // pay fee to unock 
-      if (tokenAddress() != address(0)) {
-        IERC20(tokenAddress()).transfer(_keyPrice * fee, address(this));
-      } else {
-        address(this).call{value: _keyPrice * fee}();
-      }
-   
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try
@@ -144,6 +137,19 @@ contract MixinPurchase is
         address(this),
         address(unlockProtocol)
       );
+    }
+
+    // pay fee to unock 
+    uint protocolFee = _keyPrice * unlockProtocol.fee();
+    if (tokenAddress != address(0)) {
+      IERC20Upgradeable(tokenAddress).transfer(
+        address(unlockProtocol), protocolFee
+      );
+    } else {
+      (bool transfer,) = address(unlockProtocol).call{value: protocolFee}('');
+      if(!transfer) {
+        revert TransferFailed();
+      }
     }
   }
 

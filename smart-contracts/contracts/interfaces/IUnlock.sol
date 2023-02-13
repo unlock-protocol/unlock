@@ -311,4 +311,8 @@ interface IUnlock {
    * Can only be called by the current owner.
    */
   function transferOwnership(address newOwner) external;
+
+  // TODO: document these
+  function setProtocolFee(uint _protocolFee) external;
+  function fee() external view returns (uint);
 }
