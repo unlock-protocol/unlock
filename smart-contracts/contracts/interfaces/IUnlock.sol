@@ -314,5 +314,5 @@ interface IUnlock {
 
   // TODO: document these
   function setProtocolFee(uint _protocolFee) external;
-  function fee() external view returns (uint);
+  function protocolFee() external view returns (uint);
 }
