@@ -35,7 +35,7 @@ interface FormProps {
 
 export const Form = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
-  const { network, account, changeNetwork } = useAuth()
+  const { network, account } = useAuth()
 
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
@@ -179,7 +179,6 @@ export const Form = ({ onSubmit }: FormProps) => {
 
               <Select
                 onChange={(newValue) => {
-                  changeNetwork(networks[Number(newValue)])
                   setValue('network', Number(newValue))
                   setValue('lock.currencyContractAddress', null)
                   setValue(
@@ -209,8 +208,8 @@ export const Form = ({ onSubmit }: FormProps) => {
                 This information will be public and included on each of the NFT
                 tickets. There again, it can be adjusted later.
               </p>
-              <div className="grid items-center align-top	gap-4 sm:grid-cols-2">
-                <div className="flex flex-col self-start justify-top gap-4">
+              <div className="grid items-center gap-4 align-top sm:grid-cols-2">
+                <div className="flex flex-col self-start gap-4 justify-top">
                   <div className="h-80">
                     <iframe width="100%" height="300" src={mapAddress}></iframe>
                   </div>
