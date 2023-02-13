@@ -106,6 +106,31 @@ contract MixinPurchase is
     }
   }
 
+  /** 
+   * @param _baseAmount the total amount to calculate the fee
+   * @dev internal function to execute the payments to referrers if any is set
+   */
+  function _payProtocol(uint _baseAmount) internal {
+
+    // get fee from Unlock 
+    uint protocolFee;
+    try unlockProtocol.protocolFee() {
+      // calculate fee to be paid
+      protocolFee = (_baseAmount * unlockProtocol.protocolFee()) / BASIS_POINTS_DEN;
+    
+      // pay fee to Unlock
+      if (protocolFee != 0) {
+        _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+      }
+    } catch {
+      // emit missing unlock
+      emit UnlockCallFailed(
+        address(this),
+        address(unlockProtocol)
+      );
+    }
+  }
+
   /**
    * @dev Helper to communicate with Unlock (record GNP and mint UDT tokens)
    */
@@ -138,26 +163,6 @@ contract MixinPurchase is
         address(unlockProtocol)
       );
     }
-
-    // get fee from Unlock 
-    uint protocolFee;
-    try unlockProtocol.protocolFee() {
-      // calculate fee to be paid
-      protocolFee = (_keyPrice * unlockProtocol.protocolFee()) / BASIS_POINTS_DEN;
-    
-      // pay fee to Unlock
-      if (protocolFee != 0) {
-        _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
-      }
-    } catch {
-      // emit missing unlock
-      emit UnlockCallFailed(
-        address(this),
-        address(unlockProtocol)
-      );
-    }
-    
-    
   }
 
   /**
@@ -264,6 +269,9 @@ contract MixinPurchase is
       revert INSUFFICIENT_VALUE();
     }
 
+    // pay protocol
+    _payProtocol(totalPriceToPay);
+
     // refund gas
     _refundGas();
 
@@ -341,6 +349,9 @@ contract MixinPurchase is
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(inMemoryKeyPrice);
   }
 
   /**
@@ -404,6 +415,9 @@ contract MixinPurchase is
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(keyPrice);
   }
 
   /**

@@ -80,7 +80,7 @@ contract('Unlock / protocolFee', async () => {
           if(isErc20) {
             await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(3))
           }
-          await purchaseKeys(lock, 3, isErc20)
+          await purchaseKeys(lock, 3, isErc20, keyOwner)
           const unlockBalanceAfter = await getBalanceEthers(unlock.address, tokenAddress)
           expect(unlockBalanceAfter.toString()).to.equals(
             unlockBalanceBefore.add(fee.mul(3)).toString()
@@ -90,7 +90,7 @@ contract('Unlock / protocolFee', async () => {
         it('extending a key', async () => {
           const unlockBalanceBefore = await getBalanceEthers(unlock.address, tokenAddress)
           if(isErc20) {
-            await dai.connect(keyOwner).approve(lock.address, keyPrice)
+            await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
           }
           const { tokenId } = await purchaseKey(lock, keyOwner.address, isErc20, keyPrice)
           await lock.connect(keyOwner).extend(
@@ -111,6 +111,8 @@ contract('Unlock / protocolFee', async () => {
         if(isErc20) {
           it('renewing a key', async () => {
             const unlockBalanceBefore = await getBalanceEthers(unlock.address, tokenAddress)
+            
+            await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
             const { tokenId } = await purchaseKey(lock, keyOwner.address, true)
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
             await time.increaseTo(expirationTs.toNumber())
