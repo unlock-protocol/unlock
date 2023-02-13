@@ -427,6 +427,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       locks[msg.sender].totalSales += valueInETH;
 
       // Distribute UDT
+      // version 13 is the first version for which locks can be paying the fee. Prior versions should not distribute UDT if they don't "pay" the fee.
       if (_referrer != address(0) && IPublicLock(msg.sender).publicLockVersion() <= 13) {
         IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
