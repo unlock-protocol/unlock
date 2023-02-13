@@ -122,7 +122,6 @@ export const EmailTemplatePreview = ({
           // add custom HTML
           url.searchParams.append('customContent', customEmailHtml)
 
-          console.log(customEmailHtml)
           const res = await (await fetch(url)).text()
           return res
         },
