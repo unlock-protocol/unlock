@@ -89,7 +89,6 @@ export const WithdrawFundModal = ({
   })
 
   const onWithDraw = async (form: WithdrawFormProps) => {
-    console.log('form', form)
     await withdrawMutation.mutateAsync(form, {
       onSuccess: () => {
         ToastHelper.success(`Withdraw done`)
