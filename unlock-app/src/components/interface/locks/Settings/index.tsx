@@ -206,7 +206,7 @@ const LockSettingsPage = ({
       ),
       sidebar: (
         <SidebarCard
-          src="/images/illustrations/img-misc.svg"
+          src="/images/illustrations/img-email.svg"
           description="Customize the emails sent to users when they purchase your lock's membership NFTs."
         />
       ),
