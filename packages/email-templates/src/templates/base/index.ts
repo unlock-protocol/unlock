@@ -128,6 +128,7 @@ export const base = `<!DOCTYPE html>
       }
 
       section.custom {
+        margin: 18px 0px;
         padding: 18px 18px 10px 18px;
         background: #F8FAFC; 
         font-family: monospace, sans-serif !important;
@@ -135,6 +136,10 @@ export const base = `<!DOCTYPE html>
 
       section.custom * {
         font-family: monospace, sans-serif !important;
+      }
+
+      section a {
+        color: #603deb !important;
       }
     </style>
   </head>
@@ -386,6 +391,7 @@ export const base = `<!DOCTYPE html>
                               ><img
                                 src="{{inlineImage 'twitter.png'}}"
                                 height="24"
+                                width="24"
                                 alt="Twitter"
                             /></a>
                           </td>
