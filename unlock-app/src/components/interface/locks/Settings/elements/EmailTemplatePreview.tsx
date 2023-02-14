@@ -127,7 +127,6 @@ export const EmailTemplatePreview = ({
           const res = await (await fetch(url)).text()
           return res
         },
-        enabled: (customContent || '')?.length > 0,
       },
     ],
   })
