@@ -63,7 +63,7 @@ export const AddressInput = forwardRef(
       description,
       label,
       withIcon = true,
-      isTruncated,
+      isTruncated = false, // show full resolved address by default
       web3Service,
       localForm,
       name,
@@ -78,7 +78,7 @@ export const AddressInput = forwardRef(
     const [resolvedName, setResolvedName] = useState('')
     const [loadingResolvedAddress, setLoading] = useState(false)
     const [error, setError] = useState<any>('')
-    const [success, setSuccess] = useState('')
+    const [success, setSuccess] = useState(false)
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
@@ -97,23 +97,24 @@ export const AddressInput = forwardRef(
     )
 
     const handleResolver = async (address: string) => {
+      if (address.length === 0) return
       if (address.length) {
         setLoading(true)
         setError('')
-        setSuccess('')
+        setSuccess(false)
         setAddressType('')
       }
       const result = await web3Service.resolveName(address)
       if (result && result.name !== null && result.type === 'address') {
         setLoading(false)
         setAddressType(result.type)
-        setSuccess(`It's a valid eth address`)
+        setSuccess(true)
         setResolvedName(result.name)
         return result.address
       } else if (result && result.address !== null && result.type === 'name') {
         setLoading(false)
         setAddressType(result.type)
-        setSuccess(`It's a valid ens name`)
+        setSuccess(true)
         setResolvedAddress(result.address)
         return result.address
       } else if (
@@ -130,7 +131,6 @@ export const AddressInput = forwardRef(
         <FieldLayout
           label={label}
           size={size}
-          success={success}
           error={error}
           description={description}
         >

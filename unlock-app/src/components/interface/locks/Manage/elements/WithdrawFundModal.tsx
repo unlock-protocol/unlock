@@ -129,7 +129,6 @@ export const WithdrawFundModal = ({
         <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
           <AddressInput
             withIcon
-            isTruncated
             name="beneficiary"
             label="Address"
             size="small"
