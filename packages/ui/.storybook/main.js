@@ -1,5 +1,4 @@
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-
 module.exports = {
   stories: ['../lib/**/*.stories.mdx', '../lib/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -15,28 +14,18 @@ module.exports = {
     },
   ],
   staticDirs: ['../public'],
-  framework: '@storybook/react',
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
+  },
   webpackFinal: async (config) => {
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),
       new TsconfigPathsPlugin(),
     ]
-
-    config.module.rules = [
-      ...config.module.rules.map((rule) => {
-        if (/svg/.test(rule.test)) {
-          // Silence the Storybook loaders for SVG files
-          return { ...rule, exclude: /\.svg$/i }
-        }
-        return rule
-      }),
-      // Add your custom SVG loader
-      {
-        test: /\.svg$/i,
-        use: ['@svgr/webpack', 'url-loader'],
-      },
-    ]
-
     return config
+  },
+  docs: {
+    autodocs: true,
   },
 }
