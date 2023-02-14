@@ -143,7 +143,7 @@ export const WithdrawFundModal = ({
             type="range"
             min={0}
             max={balance}
-            step={0.001}
+            step={balance / 100}
             disabled={withdrawMutation.isLoading}
             {...register('amount', {
               required: {
