@@ -27,6 +27,23 @@ const FormSchema = z.object({
 
 type FormSchemaProps = z.infer<typeof FormSchema>
 
+// parse markdown to HTML
+const markdownToHtml = async (content: string) => {
+  try {
+    const parsedContent = await unified()
+      .use(remarkParse)
+      .use(remarkHtml, {
+        sanitize: true,
+      })
+      .process(content || '')
+
+    return parsedContent?.value?.toString()
+  } catch (err: any) {
+    console.error(err)
+    return ''
+  }
+}
+
 export const EmailTemplatePreview = ({
   templateId,
   disabled,
@@ -72,7 +89,26 @@ export const EmailTemplatePreview = ({
   const saveCustomContent = useMutation(onSaveCustomContent)
 
   const onSubmit = async (form: FormSchemaProps) => {
-    const promise = wedlocksService.sendEmail(templateId as any, form.email)
+    const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
+    const customContentHtml: string = await markdownToHtml(customContent)
+
+    const params = {
+      lockName: 'Email Preview',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      tokenId: 5,
+      network,
+      openSeaUrl: '',
+      transferUrl: '',
+      lockImage,
+      customContent: customContentHtml,
+    }
+
+    const promise = wedlocksService.sendEmail(
+      templateId as any,
+      form.email,
+      params,
+      [] // attachments
+    )
     await ToastHelper.promise(promise, {
       loading: 'Sending email preview...',
       success: 'Email preview sent.',
@@ -112,15 +148,7 @@ export const EmailTemplatePreview = ({
             `${config.services.wedlocks.host}/preview/${templateId}`
           )
 
-          // parse markdown to HTML
-          const parsedContent = await unified()
-            .use(remarkParse)
-            .use(remarkHtml, {
-              sanitize: true,
-            })
-            .process(customContent || '')
-
-          const customEmailHtml = parsedContent.value.toString()
+          const customEmailHtml = await markdownToHtml(customContent || '')
           // add custom HTML
           url.searchParams.append('customContent', customEmailHtml)
 
