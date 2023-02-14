@@ -88,14 +88,14 @@ export const EmailTemplatePreview = ({
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
-  const onSubmit = async (form: FormSchemaProps) => {
-    const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
+  const emailPreviewData = async () => {
+    const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
     const customContentHtml: string = await markdownToHtml(customContent)
 
     const params = {
       lockName: 'Email Preview',
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
-      tokenId: 5,
+      keyId: 5,
       network,
       openSeaUrl: '',
       transferUrl: '',
@@ -103,6 +103,11 @@ export const EmailTemplatePreview = ({
       customContent: customContentHtml,
     }
 
+    return params
+  }
+
+  const onSubmit = async (form: FormSchemaProps) => {
+    const params = await emailPreviewData()
     const promise = wedlocksService.sendEmail(
       templateId as any,
       form.email,
@@ -148,9 +153,12 @@ export const EmailTemplatePreview = ({
             `${config.services.wedlocks.host}/preview/${templateId}`
           )
 
-          const customEmailHtml = await markdownToHtml(customContent || '')
-          // add custom HTML
-          url.searchParams.append('customContent', customEmailHtml)
+          const params = await emailPreviewData()
+
+          // add all params in URL
+          Object.entries(params).map(([key, value]) => {
+            url.searchParams.append(key, value.toString())
+          })
 
           const res = await (await fetch(url)).text()
           return res
