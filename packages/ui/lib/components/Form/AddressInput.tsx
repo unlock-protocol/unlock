@@ -106,6 +106,9 @@ export const AddressInput = forwardRef(
     }
 
     const resolveNameMutation = useMutation(resolveName, {
+      onMutate: () => {
+        onReset() // restore state when typing
+      },
       onSuccess: (res: any) => {
         const isError = res?.type === 'error'
 
