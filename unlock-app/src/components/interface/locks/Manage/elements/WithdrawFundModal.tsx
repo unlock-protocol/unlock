@@ -64,14 +64,12 @@ export const WithdrawFundModal = ({
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
   ): Promise<unknown> => {
-    if (ethers.utils.isAddress(beneficiary)) {
-      const walletService = await getWalletService(network)
-      return await walletService.withdrawFromLock({
-        lockAddress,
-        beneficiary,
-        amount: form.amount.toString(),
-      })
-    }
+    const walletService = await getWalletService(network)
+    return await walletService.withdrawFromLock({
+      lockAddress,
+      beneficiary,
+      amount: form.amount.toString(),
+    })
   }
 
   const onDismiss = () => {
@@ -129,7 +127,6 @@ export const WithdrawFundModal = ({
         <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
           <AddressInput
             withIcon
-            isTruncated
             name="beneficiary"
             label="Address"
             size="small"

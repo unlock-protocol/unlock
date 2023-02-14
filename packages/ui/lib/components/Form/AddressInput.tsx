@@ -78,6 +78,7 @@ export const AddressInput = forwardRef(
     const [resolvedName, setResolvedName] = useState('')
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState(false)
+    const [resolvedValue, setResolvedValue] = useState('')
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
@@ -119,15 +120,18 @@ export const AddressInput = forwardRef(
         if (res && (res?.type || '')?.length > 0) {
           if (res.type === 'address') {
             setResolvedName(res.name)
+            setResolvedValue(res.address)
             return res.address
           }
 
           if (res.type === 'name') {
             setResolvedAddress(res.address)
+            setResolvedValue(res.address)
             return res.address
           }
         }
 
+        setResolvedValue('')
         return '' // fallback when address  is not resolved
       },
     })
@@ -167,7 +171,11 @@ export const AddressInput = forwardRef(
                 id={label}
                 className={inputClass}
                 {...register(name, {
-                  setValueAs: (value: string) => handleResolver(value),
+                  required: true,
+                  onChange: async (e: any) => {
+                    await handleResolver(e.target.value)
+                  },
+                  setValueAs: () => resolvedValue,
                 })}
               />
             </div>
