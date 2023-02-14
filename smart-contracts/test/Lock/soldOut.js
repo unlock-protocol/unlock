@@ -5,7 +5,6 @@ let lock
 contract('Lock / soldOut', () => {
   beforeEach(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
   })
 
   it('should revert if we reached the max number of keys', async () => {

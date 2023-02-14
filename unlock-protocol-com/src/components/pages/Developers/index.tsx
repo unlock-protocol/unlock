@@ -110,7 +110,7 @@ export const UNLOCK_COMMUNITY_INTEGRATIONS = [
 export const UNLOCK_HOW_FOR_DEVELOPERS = [
   {
     Icon: LockIcon,
-    text: 'Create Locks through our dashboard or API and place them anywhere you want to check for memberships.',
+    text: 'Deploy Lock contracts through our dashboard or API and place them anywhere you want to check for memberships.',
   },
   {
     Icon: KeyIcon,
@@ -177,7 +177,7 @@ function RecipeSection() {
     <div className="space-y-4">
       <header className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold sm:text-3xl"> Recipes </h2>
+          <h2 className="text-xl font-semibold sm:text-3xl"> Tutorials </h2>
           <p className="text-lg text-brand-gray">
             Learn how to develop with Unlock.
           </p>

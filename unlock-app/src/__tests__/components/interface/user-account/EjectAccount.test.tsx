@@ -5,7 +5,8 @@ import {
   EjectionForm,
 } from '../../../../components/interface/user-account/EjectAccount'
 import { EncryptedPrivateKey } from '../../../../unlockTypes'
-
+import { vi } from 'vitest'
+import { describe, it } from 'vitest'
 const passwordEncryptedPrivateKey: EncryptedPrivateKey = {
   address: '51eb293d64dd50182a087583bf5c94455b323a83',
   id: '0bace22e-28c9-4e58-a89f-2fd85ca3dcaf',
@@ -38,11 +39,9 @@ const passwordEncryptedPrivateKey: EncryptedPrivateKey = {
   },
 }
 
-describe.skip('EjectAccount component', () => {
-  describe('EjectAccount', () => {
+describe('EjectAccount component', () => {
+  describe.skip('EjectAccount', () => {
     it('Should render the parent component, including the form', () => {
-      expect.assertions(0)
-
       const { getByText } = rtl.render(<EjectAccount />)
 
       // Section header
@@ -55,7 +54,7 @@ describe.skip('EjectAccount component', () => {
   describe('EjectionForm', () => {
     it('should prevent ejection unless the checkbox is checked', () => {
       expect.assertions(1)
-      const download = jest.fn()
+      const download = vi.fn()
       const { getByText } = rtl.render(
         <EjectionForm
           download={download}
@@ -69,7 +68,7 @@ describe.skip('EjectAccount component', () => {
 
     it('should allow ejection when the checkbox is checked', () => {
       expect.assertions(1)
-      const download = jest.fn()
+      const download = vi.fn()
       const { getByText, container } = rtl.render(
         <EjectionForm
           download={download}

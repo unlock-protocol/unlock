@@ -9,15 +9,14 @@
 ## all networks
 all_networks=(
    "goerli" 
-   "rinkeby" 
    "mumbai" 
    "polygon"
-   "xdai" 
+   "gnosis" 
    "bsc" 
    "optimism"
    "celo"
-   # "arbitrum"
-   # "avalanche"
+   "arbitrum"
+   "avalanche"
    "mainnet" 
 )
 

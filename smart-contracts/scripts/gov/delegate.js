@@ -1,8 +1,7 @@
 const { ethers } = require('hardhat')
 const { impersonate } = require('../../test/helpers/mainnet')
-const { getDeployment } = require('../../helpers/deployments')
 
-async function main({ holderAddress, delegateAddress }) {
+async function main({ holderAddress, delegateAddress, UDTAddress }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
@@ -24,8 +23,7 @@ async function main({ holderAddress, delegateAddress }) {
     ;[holder] = await ethers.getSigners()
   }
 
-  const { address, abi } = getDeployment(chainId, 'UnlockDiscountTokenV3')
-  const udt = await new ethers.Contract(address, abi, holder)
+  const udt = await new ethers.Contract('UnlockDiscountTokenV3', UDTAddress)
   const tx = await udt.delegate(delegateAddress)
 
   const { events, transactionHash } = await tx.wait()

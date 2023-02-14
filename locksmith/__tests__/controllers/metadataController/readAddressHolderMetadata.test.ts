@@ -2,9 +2,8 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
+import app from '../../app'
+import * as Base64 from '../../../src/utils/base64'
 
 const chain = 31337
 
@@ -16,19 +15,6 @@ const lockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
 const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
-
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([keyHolder[0]])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
 
 describe('reading address holder metadata', () => {
   beforeAll(async () => {

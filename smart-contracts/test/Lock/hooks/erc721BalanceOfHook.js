@@ -31,6 +31,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       ADDRESS_ZERO,
       hook.address,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
   })

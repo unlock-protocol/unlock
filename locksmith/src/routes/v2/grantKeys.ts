@@ -18,4 +18,4 @@ router.post(
   grantKeysController.grantKeys
 )
 
-module.exports = router
+export default router

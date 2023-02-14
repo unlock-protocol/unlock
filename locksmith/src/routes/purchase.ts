@@ -38,4 +38,4 @@ router.post('/capture', (req, res) =>
   purchaseController.capturePaymentIntent(req as SignedRequest, res)
 ) // No signature needed
 
-module.exports = router
+export default router

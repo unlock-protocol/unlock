@@ -77,4 +77,4 @@ router.put('/:address', MetadataController.updateDefaults)
 router.put('/:address/user/:userAddress', MetadataController.updateUserMetadata)
 router.get('/:address/user/:userAddress', MetadataController.readUserMetadata)
 
-module.exports = router
+export default router

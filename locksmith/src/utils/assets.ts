@@ -41,3 +41,12 @@ export const ticketsBannerImage = (data: ticketsBannerData) => {
   const fg = new Forage()
   return `${data.base}/${fg.ticketsBannerImage(data)}`
 }
+
+const Assets = {
+  ticketsBannerImage,
+  tokenCentricImage,
+  tokenMetadataDefaultImage,
+  exists,
+}
+
+export default Assets

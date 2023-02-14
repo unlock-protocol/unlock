@@ -21,27 +21,9 @@ However, in a lot of cases, creators may want to "give away" or **airdrop NFT me
 
 ## Using the Dashboard
 
-Once your lock is deployed, you can head out to the members page.
+We have created a comprehensive guide to [airdropping NFTs](https://unlock-protocol.com/guides/how-to-airdrop-memberships/) using Unlock Protocol using the Dashboard.
 
-![Dashboard](/images/blog/airdrop-nft-memberships/dashboard.png)
-
-On that page you will see the list of all the members on your lock. You can also see a button that lets you airdrop an NFT: click on it!
-
-![Members Page](/images/blog/airdrop-nft-memberships/members-page.png)
-
-A drawer will open and let you easily airdrop a membership to any address.
-
-- Make sure the lock is the correct one!
-
-- You need to enter the recipient's address. The field supports ENS names, in order to avoid making typos!
-
-- Next you can select when this airdropped membership is going to expire. By default, it is based on the duration of the lock, but can be customized. This flexibility means you can grant a key for a few minutes for trials!
-
-- Finally you can select a "key manager". At Unlock, we decouple the "owner" of an NFT from the account who has the ability to transfer said NFT. Most of the time, and by default, it is the same... but in some cases, it can be important to make sure that someone, even if they own an NFT is not able to transfer it. That's the case for credit card purchases. For security reasons, we want to make sure that NFT "bought" this way are not transferable. Similarly, granted keys can be "cancelled" by their owner, triggering a refund, by default. So it can be important to retain the key manager role.
-
-- Once ready, submit the transaction!
-
-![Airdrop](/images/blog/airdrop-nft-memberships/dashboard.gif)
+[![Airdrop](/images/blog/airdrop-nft-memberships/airdrop-guide-image.png)](https://unlock-protocol.com/guides/how-to-airdrop-memberships/)
 
 ## Using code
 
@@ -56,3 +38,5 @@ Then, on your code you would call the `grantKeys` function](https://docs.unlock-
 ---
 
 Airdropping memberships is a very important part of the Unlock protocol because it enables not only multiples types of memberships, but also new ways of rewarding or incentivizing community members!
+
+**Updated:** 9 January 2023

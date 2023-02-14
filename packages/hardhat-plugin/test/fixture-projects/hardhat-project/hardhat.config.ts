@@ -19,6 +19,9 @@ const config: HardhatUserConfig = {
   unlock: {
     31337: {
       name: 'Custom Localhost Name',
+      subgraph: {
+        endpoint: 'here goes a subgraph URI',
+      },
     },
     12345: {
       name: 'New Network',

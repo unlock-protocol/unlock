@@ -2,11 +2,10 @@
 pragma solidity ^0.8.0;
 
 /**
- * @title List of all error messages 
+ * @title List of all error messages
  * (replace string errors message to save on contract size)
  */
 contract MixinErrors {
-  
   // generic
   error OUT_OF_RANGE();
   error NULL_VALUE();
@@ -22,7 +21,6 @@ contract MixinErrors {
   error ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
   error ONLY_KEY_MANAGER_OR_APPROVED();
   error UNAUTHORIZED_KEY_MANAGER_UPDATE();
-  error ONLY_LOCK_MANAGER_OR_BENEFICIARY();
   error ONLY_LOCK_MANAGER();
 
   // single key status
@@ -48,7 +46,7 @@ contract MixinErrors {
   error TRANSFER_TO_SELF();
   error CANNOT_APPROVE_SELF();
 
-  // keys management 
+  // keys management
   error LOCK_SOLD_OUT();
 
   // purchase
@@ -66,5 +64,4 @@ contract MixinErrors {
   // hooks
   // NB: `hookIndex` designed the index of hook address in the params of `setEventHooks`
   error INVALID_HOOK(uint8 hookIndex);
-
 }

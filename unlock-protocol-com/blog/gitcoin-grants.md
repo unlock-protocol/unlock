@@ -13,6 +13,8 @@ We're incredibly excited to be part of [Gitcoin's GR 14](https://gitcoin.co/gran
 
 Unlock Labs will match up to $25,000 in UDT tokens for projects that get funding from their own communities. Did you have an idea to build a project that uses Unlock? Summer is a good time to get started and you should start by creating a Grant on Gitcoin!
 
+<blockquote>Interested in applying for a Gitcoin Grant? Check out <a href=https://unlock-protocol.com/guides/gitcoin-grants/>The Unofficial Guide to Gitcoin Grants</a>, which provides an introduction to the Gitcoin Grants program and tips for first-time applicants.</blockquote>
+
 Here are a few ideas of projects that we would love the community to build, but of course, feel free to bring your own ideas too.
 
 ### IoT x Unlock for Physical Spaces

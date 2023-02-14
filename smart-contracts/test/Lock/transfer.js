@@ -12,7 +12,6 @@ contract('Lock / transfer', (accounts) => {
 
   beforeEach(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       [singleKeyOwner, multipleKeyOwner, multipleKeyOwner],

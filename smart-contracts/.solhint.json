@@ -6,12 +6,13 @@
     "not-rely-on-time": "off",
     "compiler-version": [
       "warn",
-      "^0.5.4"
+      "^0.8.0"
     ],
     "comprehensive-interface" : "warn",
     "ordering": "warn",
     "private-vars-leading-underscore": "warn",
     "var-name-mixedcase": "warn",
-    "reason-string": "warn"
+    "reason-string": "warn",
+    "no-inline-assembly" : "off"
   }
 }

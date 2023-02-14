@@ -1,4 +1,6 @@
 const { deployLock, reverts } = require('../../helpers')
+const metadata = require('../../fixtures/metadata')
+
 let unnamedlock
 let namedLock
 
@@ -15,7 +17,7 @@ contract('Lock / erc721 / name', (accounts) => {
 
     it('should fail if someone other than the owner tries to set the name', async () => {
       await reverts(
-        unnamedlock.updateLockName('Hardly', {
+        unnamedlock.setLockMetadata(...Object.values(metadata), {
           from: accounts[1],
         }),
         'ONLY_LOCK_MANAGER'
@@ -23,7 +25,7 @@ contract('Lock / erc721 / name', (accounts) => {
     })
 
     it('should allow the owner to set a name', async () => {
-      await unnamedlock.updateLockName('Hardly', {
+      await unnamedlock.setLockMetadata(...Object.values(metadata), {
         from: accounts[0],
       })
     })
@@ -36,7 +38,7 @@ contract('Lock / erc721 / name', (accounts) => {
 
     it('should fail if someone other than the owner tries to change the name', async () => {
       await reverts(
-        namedLock.updateLockName('Difficult', {
+        namedLock.setLockMetadata(...Object.values(metadata), {
           from: accounts[1],
         })
       )
@@ -44,21 +46,24 @@ contract('Lock / erc721 / name', (accounts) => {
 
     describe('should allow the owner to set a name', () => {
       before(async () => {
-        await namedLock.updateLockName('Difficult', {
+        await namedLock.setLockMetadata(...Object.values(metadata), {
           from: accounts[0],
         })
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name(), 'Difficult')
+        assert.equal(await namedLock.name(), metadata.name)
       })
     })
 
     describe('should allow the owner to unset the name', () => {
       before(async () => {
-        await namedLock.updateLockName('', {
-          from: accounts[0],
-        })
+        await namedLock.setLockMetadata(
+          ...Object.values({ ...metadata, name: '' }),
+          {
+            from: accounts[0],
+          }
+        )
       })
 
       it('should return return the expected name', async () => {

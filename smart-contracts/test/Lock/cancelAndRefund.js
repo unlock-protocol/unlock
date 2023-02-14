@@ -34,7 +34,6 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
     lock = await deployLock()
     lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
@@ -128,6 +127,10 @@ contract('Lock / cancelAndRefund', (accounts) => {
       const isValid = await lock.getHasValidKey(keyOwners[0])
       assert.equal(isValid, false)
     })
+    
+    it('should retain ownership info', async () => {
+      assert.equal(await lock.ownerOf(tokenIds[0]), keyOwners[0])
+    })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
       const txHash = await ethers.provider.getTransaction(txObj.tx)
@@ -208,7 +211,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress(), 0, {
+      await lock.withdraw(await lock.tokenAddress(), lockCreator, 0, {
         from: lockCreator,
       })
       await reverts(

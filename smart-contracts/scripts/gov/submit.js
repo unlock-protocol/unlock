@@ -15,6 +15,7 @@ async function main({
   proposalName,
   proposalId: _proposalId,
   calldata,
+  govAddress,
 }) {
   if (_proposalId) {
     // eslint-disable-next-line no-console
@@ -79,7 +80,11 @@ async function main({
   }
   // eslint-disable-next-line no-console
   console.log(`GOV SUBMIT > Proposer: ${proposerAddress}`)
-  const proposalTx = await submitProposal({ proposerAddress, proposal })
+  const proposalTx = await submitProposal({
+    proposerAddress,
+    proposal,
+    govAddress,
+  })
 
   const { events, transactionHash } = await proposalTx.wait()
   const evt = events.find((v) => v.event === 'ProposalCreated')

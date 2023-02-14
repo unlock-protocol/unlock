@@ -1,4 +1,9 @@
-import { camelCaseToTitle, getValidNumber } from '../../utils/strings'
+import {
+  camelCaseToTitle,
+  getValidNumber,
+  addressMinify,
+  minifyEmail,
+} from '../../utils/strings'
 
 describe('camelCaseToTitle helper', () => {
   it('transforms itself', () => {
@@ -22,5 +27,21 @@ describe('getValidNumber helper', () => {
     expect(getValidNumber('0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff')).toBe(
       undefined
     )
+  })
+})
+
+describe('addressMinify helper', () => {
+  it('returns minified address', () => {
+    expect.assertions(1)
+    expect(addressMinify('0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff')).toEqual(
+      '0x4Ff5...18Ff'
+    )
+  })
+})
+
+describe('minifyEmail helper', () => {
+  it('returns minified email', () => {
+    expect.assertions(1)
+    expect(minifyEmail('example@gmail.com')).toEqual('ex..@g..l.com')
   })
 })

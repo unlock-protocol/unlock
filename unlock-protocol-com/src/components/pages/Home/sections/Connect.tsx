@@ -6,9 +6,10 @@ import { BulletPointIcon } from '../../../icons'
 import Autoplay from 'embla-carousel-autoplay'
 
 const UNLOCK_BENEFITS = [
-  'Create memberships and sell access NFTs in minutes',
+  'Create and manage your membership contracts',
+  'Airdrop or sell membership NFT in minutes',
   'Token-gating, memberships, ticketing, and more',
-  'Open-source, community governed',
+  'Open-source, community governed smart-contracts',
 ]
 
 interface FeaturedUser {
@@ -72,9 +73,10 @@ export function Connect() {
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
       <div className="w-full max-w-xl">
         <header className="space-y-4 break-words ">
-          <h1 className="heading">Connect with your 1000 true fans</h1>
+          <h1 className="heading">Memberships in minutes</h1>
           <p className="sub-heading">
-            For creative communities and the humans who build them
+            Unlock is a protocol for memberships as time-bound Non Fungible
+            Tokens
           </p>
         </header>
         <div className="py-6">
@@ -95,18 +97,23 @@ export function Connect() {
           </ul>
         </div>
 
-        <div className="flex items-center justify-center gap-4 sm:justify-start">
-          <Button href="#get-started" as={Link}>
-            Get Started
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-start">
+          <Button href="#get-started" className="text-center" as={Link}>
+            Join Community Membership
           </Button>
-          <Button as={Link} href={unlockConfig.appURL} variant="secondary">
-            Dashboard
+          <Button
+            as={Link}
+            className="text-center"
+            href={`${unlockConfig.appURL}/locks/create`}
+            variant="secondary"
+          >
+            Create Membership Contract
           </Button>
         </div>
       </div>
 
       <div
-        className="overflow-hidden cursor-move w-full pb-6 max-w-fit lg:max-w-md md:pb-0"
+        className="w-full pb-6 overflow-hidden cursor-move max-w-fit lg:max-w-md md:pb-0"
         ref={emblaRef}
       >
         <div className="flex">
@@ -130,16 +137,16 @@ export function Connect() {
                 >
                   <div className="w-full bg-white rounded-3xl shadow-transparent">
                     <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-                      <p className="font-bold text-xl">{title}</p>
+                      <p className="text-xl font-bold">{title}</p>
                     </header>
                     <img
-                      className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
+                      className="object-cover w-full h-96 rounded-t-xl sm:rounded-none"
                       alt={title}
                       src={illustration}
                     />
                     <div className="flex h-[100px] sm:h-[80px] items-center gap-4 px-6 py-4">
                       <div>
-                        <h4 className="font-bold block sm:hidden">{title}</h4>
+                        <h4 className="block font-bold sm:hidden">{title}</h4>
                         <p className="text-sm brand-gray">{quote}</p>
                       </div>
                     </div>

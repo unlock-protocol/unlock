@@ -26,8 +26,10 @@ export default async function (
     erc20Address,
     recurringPayments,
     decimals,
+    totalApproval, // explicit approval amount
     data: _data,
   },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -82,18 +84,22 @@ export default async function (
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer.address
+      this.signer.getAddress()
     )
 
-    // total amount to approve
-    const totalAmountToApprove = recurringPayments
-      ? keyPrices // for reccuring payments
-          .map((kp, i) => kp.mul(recurringPayments[i]))
-          .reduce(
-            (total, approval) => total.add(approval),
-            utils.bigNumberify(0)
-          )
-      : totalPrice
+    let totalAmountToApprove = totalApproval
+
+    if (!totalAmountToApprove) {
+      // total amount to approve
+      totalAmountToApprove = recurringPayments
+        ? keyPrices // for reccuring payments
+            .map((kp, i) => kp.mul(recurringPayments[i]))
+            .reduce(
+              (total, approval) => total.add(approval),
+              utils.bigNumberify(0)
+            )
+        : totalPrice
+    }
 
     if (
       !approvedAmount ||
@@ -113,24 +119,27 @@ export default async function (
   }
 
   // tx options
-  const purchaseForOptions = {}
   if (!erc20Address || erc20Address === ZERO) {
-    purchaseForOptions.value = totalPrice
+    transactionOptions.value = totalPrice
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
-  if (!purchaseForOptions.gasLimit) {
+  if (!transactionOptions.gasLimit) {
+    const preserveGasSettings =
+      transactionOptions.maxFeePerGas || transactionOptions.gasPrice
     try {
       // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
       // TODO remove once we move to use block.baseFee in UDT calculation
-      const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
-        await this.provider.getFeeData()
+      if (!preserveGasSettings) {
+        const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+          await this.provider.getFeeData()
 
-      if (maxFeePerGas && maxPriorityFeePerGas) {
-        purchaseForOptions.maxFeePerGas = maxFeePerGas
-        purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
-      } else {
-        purchaseForOptions.gasPrice = gasPrice
+        if (maxFeePerGas && maxPriorityFeePerGas) {
+          transactionOptions.maxFeePerGas = maxFeePerGas
+          transactionOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+        } else {
+          transactionOptions.gasPrice = gasPrice
+        }
       }
       const gasLimit = await lockContract.estimateGas.purchase(
         keyPrices,
@@ -138,31 +147,41 @@ export default async function (
         referrers,
         keyManagers,
         data,
-        purchaseForOptions
+        transactionOptions
       )
-      // Remove the gas prices settings for the actual transaction (the wallet will set them)
-      delete purchaseForOptions.maxFeePerGas
-      delete purchaseForOptions.maxPriorityFeePerGas
-      delete purchaseForOptions.gasPrice
-      purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
         error
       )
-      delete purchaseForOptions.maxFeePerGas
-      delete purchaseForOptions.maxPriorityFeePerGas
-      delete purchaseForOptions.gasPrice
+    }
+    if (!preserveGasSettings) {
+      delete transactionOptions.maxFeePerGas
+      delete transactionOptions.maxPriorityFeePerGas
+      delete transactionOptions.gasPrice
     }
   }
-  const transactionPromise = lockContract.purchase(
+
+  const transactionRequest = await lockContract.populateTransaction.purchase(
     keyPrices,
     owners,
     referrers,
     keyManagers,
     data,
-    purchaseForOptions
+    transactionOptions
   )
+
+  if (transactionOptions.runEstimate) {
+    const estimate = lockContract.signer.estimateGas(transactionRequest)
+    return {
+      transactionRequest,
+      estimate,
+    }
+  }
+
+  const transactionPromise =
+    lockContract.signer.sendTransaction(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
@@ -180,7 +199,7 @@ export default async function (
   const parser = lockContract.interface
   const transferEvents = receipt.logs
     .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {

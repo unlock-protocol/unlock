@@ -3,6 +3,7 @@ import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
 import setMaxNumberOfKeys from './setMaxNumberOfKeys'
 import setExpirationDuration from './setExpirationDuration'
+import setEventHooks from './setEventHooks'
 
 import v8 from '../v8'
 
@@ -24,6 +25,14 @@ const {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  updateTransferFee,
 } = v8
 
 export default {
@@ -51,4 +60,13 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 }

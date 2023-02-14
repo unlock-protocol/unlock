@@ -99,10 +99,9 @@ export const formattedKeyPrice = (
     return 'FREE'
   }
   const price = keyPrice ? parseFloat(keyPrice) * numberOfRecipients : null
-  return `${price?.toString().substring(0, 9)} ${lockTickerSymbol(
-    lock,
-    baseCurrencySymbol
-  )}`
+  return `${price
+    ?.toLocaleString() // language-sensitive representation of the price
+    ?.toString()} ${lockTickerSymbol(lock, baseCurrencySymbol)}`
 }
 
 /**

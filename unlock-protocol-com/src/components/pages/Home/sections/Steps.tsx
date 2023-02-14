@@ -52,7 +52,7 @@ export function Steps() {
         />
         <h1 className="heading">How Unlock works</h1>
         <p className="text-xl sm:text-2xl text-brand-gray">
-          Create your own membership program without code or chaos.
+          Create your own membership contract without code or chaos.
         </p>
       </div>
       <div className="flex flex-col justify-center">

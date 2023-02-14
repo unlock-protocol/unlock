@@ -22,6 +22,15 @@ const {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 } = v7
 
 export default {
@@ -47,4 +56,13 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 }

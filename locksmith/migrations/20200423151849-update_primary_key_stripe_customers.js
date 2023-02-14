@@ -4,14 +4,11 @@ const table = 'StripeCustomers'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addConstraint(
-      table,
-      ['publicKey', 'stripeConnectedAccountId'],
-      {
-        type: 'unique',
-        name: 'stripe_customers_pkey',
-      }
-    )
+    await queryInterface.addConstraint(table, {
+      type: 'unique',
+      fields: ['publicKey', 'stripeConnectedAccountId'],
+      name: 'stripe_customers_pkey',
+    })
   },
 
   down: async (queryInterface, Sequelize) => {

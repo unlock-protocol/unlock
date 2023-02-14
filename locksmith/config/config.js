@@ -1,16 +1,15 @@
-const urlParser = require('url')
+require('./envLoader')
 
 const config = {
   database: {
     logging: false,
-    dialect: 'postgres', // sequelize v4 needs this
+    dialect: 'postgres',
   },
   stripeSecret: process.env.STRIPE_SECRET,
   defaultNetwork: process.env.DEFAULT_NETWORK,
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
-  metadataHost: process.env.METADATA_HOST,
   unlockApp: process.env.UNLOCK_APP || 'https://app.unlock-protocol.com',
   logging: false,
   services: {
@@ -32,7 +31,7 @@ if (process.env.ON_HEROKU) {
 
 // Database URL
 if (process.env.DATABASE_URL) {
-  const databaseConfigUrl = new urlParser.URL(process.env.DATABASE_URL)
+  const databaseConfigUrl = new URL(process.env.DATABASE_URL)
   config.database.username = databaseConfigUrl.username
   config.database.password = databaseConfigUrl.password
   config.database.host = databaseConfigUrl.hostname

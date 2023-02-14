@@ -2,9 +2,9 @@ export const paywallConfig = {
   network: 1,
   pessimistic: true,
   locks: {
-    '0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894': {
+    '0xb77030a7e47a5eb942a4748000125e70be598632': {
       name: 'Unlock Community',
-      network: 100,
+      network: 137,
     },
   },
   icon: 'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/brand/1808-Unlock-Identity_Unlock-WordMark.svg',

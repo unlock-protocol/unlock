@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import './MixinKeys.sol';
-import './MixinLockCore.sol';
-import './MixinErrors.sol';
-import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
-
+import "./MixinKeys.sol";
+import "./MixinLockCore.sol";
+import "./MixinErrors.sol";
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 
 /**
  * @title Implements the ERC-721 Enumerable extension.
@@ -16,8 +15,7 @@ contract MixinERC721Enumerable is
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
-  function _initializeMixinERC721Enumerable() internal
-  {
+  function _initializeMixinERC721Enumerable() internal {
     /**
      * register the supported interface to conform to ERC721Enumerable via ERC165
      * 0x780e9d63 ===
@@ -35,27 +33,27 @@ contract MixinERC721Enumerable is
   ///  (sort order not specified)
   function tokenByIndex(
     uint256 _index
-  ) public view
-    returns (uint256)
-  {
-    if(_index >= _totalSupply) {
+  ) public view returns (uint256) {
+    if (_index >= _totalSupply) {
       revert OUT_OF_RANGE();
     }
     return _index;
   }
 
-  function supportsInterface(bytes4 interfaceId) 
-    public 
-    view 
-    virtual 
+  function supportsInterface(
+    bytes4 interfaceId
+  )
+    public
+    view
+    virtual
     override(
       AccessControlUpgradeable,
       ERC165StorageUpgradeable
-    ) 
-    returns (bool) 
-    {
+    )
+    returns (bool)
+  {
     return super.supportsInterface(interfaceId);
   }
-  
+
   uint256[1000] private __safe_upgrade_gap;
 }

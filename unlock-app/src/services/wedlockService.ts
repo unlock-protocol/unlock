@@ -1,5 +1,3 @@
-import fetch from 'node-fetch'
-
 export enum emailTemplate {
   signupConfirmation = 'confirmEmail',
   welcome = 'welcome',
@@ -34,14 +32,13 @@ export default class WedlockService {
         params,
         attachments,
       }
-      const result = await fetch(this.uri, {
+      return await fetch(this.uri, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       })
-      return await result?.json()
     } catch (error) {
       console.error('Failed to send email', error)
     }

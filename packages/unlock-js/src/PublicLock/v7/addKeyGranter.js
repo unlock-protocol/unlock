@@ -1,4 +1,8 @@
-export default async function ({ lockAddress, keyGranter }, callback) {
+export default async function (
+  { lockAddress, keyGranter },
+  transactionOptions = {},
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
   const transactionPromise = lockContract.addKeyGranter(keyGranter)
 

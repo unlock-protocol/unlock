@@ -2,16 +2,23 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const bsc: NetworkConfig = {
   publicProvider: 'https://bsc-dataseed.binance.org/',
-  provider: 'https://bsc-dataseed.binance.org/',
+  provider: 'https://rpc.unlock-protocol.com/56',
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
+  keyManagerAddress: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
   id: 56,
   name: 'Binance Smart Chain',
+  chain: 'bsc',
   blockTime: 1000,
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
+  },
   explorer: {
     name: 'BscScan',
     urls: {
+      base: `https://bscscan.com/`,
       address: (address) => `https://bscscan.com/address/${address}`,
       transaction: (hash) => `https://bscscan.com/tx/${hash}`,
       token: (address, holder) =>
@@ -29,6 +36,7 @@ export const bsc: NetworkConfig = {
     name: 'BNB',
     symbol: 'BNB',
     decimals: 18,
+    coingecko: 'binancecoin',
   },
   startBlock: 13079000, // 12368889,
   previousDeploys: [
@@ -39,7 +47,34 @@ export const bsc: NetworkConfig = {
   ],
   description: 'EVM compatible network. Cheaper transaction cost.',
   isTestNetwork: false,
+  maxFreeClaimCost: 1,
   teamMultisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
+  tokens: [
+    {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+      address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+    },
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 18,
+      address: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+    },
+    {
+      name: 'Tether',
+      symbol: 'USDT',
+      decimals: 18,
+      address: '0x55d398326f99059ff775485246999027b3197955',
+    },
+    {
+      name: 'Dai',
+      symbol: 'DAI',
+      decimals: 18,
+      address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
+    },
+  ],
 }
 
 export default bsc

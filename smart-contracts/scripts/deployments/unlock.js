@@ -3,8 +3,6 @@ const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 const fs = require('fs-extra')
 const path = require('path')
 
-const { addDeployment } = require('../../helpers/deployments')
-
 const CURRENT_VERSION = 10
 
 const contractsPath = path.resolve(
@@ -72,9 +70,6 @@ async function main({ unlockVersion = 10 }) {
   if (unlockVersion < CURRENT_VERSION) {
     await fs.remove(artifactsPath)
   }
-
-  // save deployment info
-  await addDeployment('Unlock', unlock, true)
 
   return unlock.address
 }

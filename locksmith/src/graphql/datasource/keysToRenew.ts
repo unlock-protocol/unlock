@@ -1,62 +1,50 @@
-import { gql } from 'apollo-server-express'
-import { GraphQLDataSource } from 'apollo-datasource-graphql'
-import networks from '@unlock-protocol/networks'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import logger from '../../logger'
 
-export class KeysToRenew extends GraphQLDataSource {
-  async getKeysToRenew(
-    start: number,
-    end: number,
-    network: number,
-    page: number
-  ): Promise<any[]> {
-    this.baseURL = networks[network].subgraphURI
-    const keysToRenewQuery = gql`
-      query Keys($start: Int!, $end: Int!, $skip: Int) {
-        keys(
-          skip: $skip
-          orderBy: expiration
-          orderDirection: desc
-          where: { expiration_gte: $start, expiration_lte: $end }
-        ) {
-          id
-          lock {
-            id
-            address
-            name
-            tokenAddress
-            price
-            expirationDuration
-            totalSupply
-            version
-          }
-          keyId
-          expiration
-          owner {
-            id
-            address
-          }
-        }
-      }
-    `
+interface Options {
+  limit: number
+  start?: number
+  end?: number
+  network: number
+  page: number
+  minimumLockVersion: number
+}
 
+export const getKeysToRenew = async ({
+  network,
+  start,
+  end,
+  page,
+  minimumLockVersion = 10,
+  limit = 500,
+}: Options) => {
+  try {
+    const subgraph = new SubgraphService()
     // Pagination starts at 0
-    const first = 100 // 100 by page
-    const skip = page * first
+    const skip = page * limit
+    const keys = await subgraph.keys(
+      {
+        skip,
+        first: limit,
+        where: {
+          expiration_gte: start,
+          expiration_lte: end,
+          cancelled: false,
+        },
+      },
+      {
+        networks: [network],
+      }
+    )
 
-    try {
-      const response = await this.query(keysToRenewQuery, {
-        variables: { start, end, first, skip },
-      })
-
-      // return only locks that support recurring memberships
-      const renewableLocks = response.data.keys.filter(
-        (key: any) =>
-          key.lock.version >= 10 &&
-          key.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
-      )
-      return renewableLocks
-    } catch (error) {
-      return []
-    }
+    const result = keys.filter(
+      (item) =>
+        item.lock.version >= minimumLockVersion &&
+        item.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+    )
+    return result
+  } catch (error) {
+    logger.error(error)
+    return []
   }
 }

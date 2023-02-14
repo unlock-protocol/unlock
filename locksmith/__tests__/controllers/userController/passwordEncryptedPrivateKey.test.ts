@@ -1,6 +1,9 @@
 import { ethers } from 'ethers'
-
-import models = require('../../../src/models')
+import UserOperations from '../../../src/operations/userOperations'
+import request from 'supertest'
+import app from '../../app'
+import { User, UserReference } from '../../../src/models'
+import * as Base64 from '../../../src/utils/base64'
 
 function generateTypedData(message: any, messageKey: string) {
   return {
@@ -22,9 +25,6 @@ function generateTypedData(message: any, messageKey: string) {
 }
 
 beforeAll(() => {
-  const { UserReference } = models
-  const { User } = models
-
   return Promise.all([
     UserReference.truncate({ cascade: true }),
     User.truncate({ cascade: true }),
@@ -32,14 +32,6 @@ beforeAll(() => {
 })
 
 describe("updating a user's password encrypted private key", () => {
-  const models = require('../../../src/models')
-  const { User } = models
-  const request = require('supertest')
-  const app = require('../../../src/app')
-
-  const UserOperations = require('../../../src/operations/userOperations')
-  const Base64 = require('../../../src/utils/base64')
-
   const wallet = new ethers.Wallet(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
@@ -76,7 +68,7 @@ describe("updating a user's password encrypted private key", () => {
         .put(
           '/users/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/passwordEncryptedPrivateKey'
         )
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 
@@ -84,7 +76,7 @@ describe("updating a user's password encrypted private key", () => {
         where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
       })
 
-      expect(user.passwordEncryptedPrivateKey).toEqual(
+      expect(user?.passwordEncryptedPrivateKey).toEqual(
         '{"data" : "New Encrypted Password"}'
       )
       expect(response.status).toBe(202)
@@ -115,7 +107,7 @@ describe("updating a user's password encrypted private key", () => {
 
       const response = await request(app)
         .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)
-        .set('Accept', /json/)
+        .set('Accept', 'json')
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 

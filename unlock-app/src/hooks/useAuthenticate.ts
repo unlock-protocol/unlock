@@ -6,7 +6,6 @@ import { useAppStorage } from './useAppStorage'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
-  web3?: any
 }
 
 interface RpcType {
@@ -33,11 +32,6 @@ export const selectProvider = (config: any) => {
     provider = `http://${config.httpProvider}:8545`
   } else if (ethereumWindow && ethereumWindow.ethereum) {
     provider = ethereumWindow.ethereum
-  } else if (ethereumWindow.web3) {
-    // Legacy web3 wallet/browser (should we keep supporting?)
-    provider = ethereumWindow.web3.currentProvider
-  } else {
-    // TODO: Let's let the user pick one up from the UI (including the unlock provider!)
   }
   return provider
 }

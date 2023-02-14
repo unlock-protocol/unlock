@@ -10,6 +10,8 @@ async function deployLock({
   from: deployer,
   tokenAddress = ADDRESS_ZERO,
   name = 'FIRST',
+  keyPrice,
+  isEthers,
 } = {}) {
   if (!unlock) {
     ;({ unlock } = await deployContracts())
@@ -19,13 +21,18 @@ async function deployLock({
     deployer = defaultDeployer.address
   }
 
-  const { expirationDuration, keyPrice, maxNumberOfKeys, lockName } =
-    Locks[name]
+  const {
+    expirationDuration,
+    keyPrice: price,
+    maxNumberOfKeys,
+    lockName,
+    maxKeysPerAddress,
+  } = Locks[name]
 
   const args = [
     name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration.toString(),
     tokenAddress,
-    keyPrice.toString(),
+    (keyPrice || price).toString(),
     maxNumberOfKeys.toString(),
     lockName,
   ]
@@ -43,7 +50,18 @@ async function deployLock({
   }
   const { newLockAddress } = evt.args
   const lock = await PublicLock.at(newLockAddress)
-  return lock
+
+  if (maxKeysPerAddress) {
+    await lock.updateLockConfig(
+      expirationDuration,
+      maxNumberOfKeys,
+      10, // default maxKeysPerAddress to 10 for tests
+      { from: deployer }
+    )
+  }
+  return isEthers
+    ? await ethers.getContractAt('PublicLock', lock.address)
+    : lock
 }
 
 async function deployAllLocks(unlock, from, tokenAddress = ADDRESS_ZERO) {

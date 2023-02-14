@@ -1,4 +1,4 @@
-import { providers } from 'ethers'
+import { ethers, providers } from 'ethers'
 
 export interface PurchaseKeyParams {
   lockAddress: string
@@ -50,3 +50,10 @@ export type WalletServiceCallback = (
   _hash: string | null,
   _transaction?: any | null
 ) => unknown
+
+export interface TransactionOptions {
+  gasLimit?: ethers.BigNumberish
+  maxFeePerGas?: ethers.BigNumberish
+  maxPriorityFeePerGas?: ethers.BigNumberish
+  runEstimate?: boolean
+}

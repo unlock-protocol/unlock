@@ -3,10 +3,8 @@ import {
   getAccountFromPrivateKey,
   reEncryptPrivateKey,
 } from '../../utils/accounts'
-
+import { vi } from 'vitest'
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
-
-jest.setTimeout(20000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
@@ -20,7 +18,7 @@ describe('account helpers', () => {
       expect(passwordEncryptedPrivateKey.address).toBe(
         address.substring(2).toLowerCase()
       )
-      expect(passwordEncryptedPrivateKey.Crypto.kdfparams.n).toBe(
+      expect(passwordEncryptedPrivateKey.crypto.kdfparams.n).toBe(
         WALLET_ENCRYPTION_OPTIONS.scrypt.N
       )
     })

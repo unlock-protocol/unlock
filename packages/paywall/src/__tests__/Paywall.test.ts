@@ -2,7 +2,6 @@ import 'jest-fetch-mock'
 import { Enabler } from '../utils/enableInjectedProvider'
 import * as isUnlockedUtil from '../utils/isUnlocked'
 import * as optimisticUnlockingUtils from '../utils/optimisticUnlocking'
-
 import { Paywall } from '../Paywall'
 import * as paywallScriptUtils from '../utils'
 import { networkConfigs } from '../networkConfigs'

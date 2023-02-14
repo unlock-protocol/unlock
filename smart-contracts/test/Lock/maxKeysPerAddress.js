@@ -8,43 +8,17 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
   let lock
 
   before(async () => {
-    lock = await deployLock()
-  })
-
-  it('default to 1', async () => {
-    assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1)
-  })
-
-  describe('set/get maxKeysPerAddress', () => {
-    it('can only be invaccounts[9]oked by lock manager', async () => {
-      await reverts(
-        lock.setMaxKeysPerAddress(10, {
-          from: accounts[5],
-        }),
-        'ONLY_LOCK_MANAGER'
-      )
-    })
-
-    it('could not be set to zero', async () => {
-      await reverts(lock.setMaxKeysPerAddress(0), 'NULL_VALUE')
-    })
-
-    it('update the maxKeysPerAddress correctly', async () => {
-      await lock.setMaxKeysPerAddress(10)
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 10)
-
-      await lock.setMaxKeysPerAddress(1234567890)
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1234567890)
-
-      await lock.setMaxKeysPerAddress(1)
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1)
-    })
+    lock = await deployLock({ name: 'NO_MAX_KEYS' })
   })
 
   describe('enforcing the number of keys per address', () => {
     let tokenId
     before(async () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    })
+
+    it('default to 1', async () => {
+      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1)
     })
 
     it('prevent users to purchase more keys than allowed', async () => {
@@ -63,9 +37,9 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
           [accounts[9], accounts[9]],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
-          [[]],
+          [[], []],
           {
-            value: ethers.utils.parseUnits('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.02', 'ether'),
           }
         ),
         'MAX_KEYS'

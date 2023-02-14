@@ -1,20 +1,16 @@
 const { ethers } = require('hardhat')
-const { getDeployment } = require('../../helpers/deployments')
 
-async function main({ account }) {
+async function main({ account, udtAddress }) {
   if (!account) {
     throw new Error('UDT BALANCE > Missing account.')
   }
 
-  const { chainId } = await ethers.provider.getNetwork()
-
   // contract instance etc
-  const { address, abi } = getDeployment(chainId, 'UnlockDiscountTokenV3')
-  const udt = await ethers.getContractAt(abi, address)
+  const udt = await ethers.getContractAt('UnlockDiscountTokenV3', udtAddress)
 
   // eslint-disable-next-line no-console
   console.log(
-    `Voting power: ${address}`,
+    `Voting power: ${udtAddress}`,
     ethers.utils.formatUnits(await udt.getVotes(account), 18)
   )
 }

@@ -9,9 +9,7 @@ export function HeaderTitle({ title }) {
   return (
     <Title forContent>
       <Link href="/">
-        <TitleLink>
-          <WordMarkLogo viewBox="0 0 1200 256" height="28px" name="Unlock" />
-        </TitleLink>
+        <WordMarkLogo viewBox="0 0 1200 256" height="28px" name="Unlock" />
       </Link>
       <TitleText>{title}</TitleText>
     </Title>
@@ -27,11 +25,6 @@ HeaderTitle.defaultProps = {
 }
 
 export default HeaderTitle
-
-const TitleLink = styled.a`
-  padding-bottom: 2px;
-  margin-right: -8px;
-`
 
 const Title = styled.h1`
   color: var(--darkgrey);

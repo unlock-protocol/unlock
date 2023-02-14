@@ -30,25 +30,26 @@ export async function generateFeed(posts: PostType[]) {
 
   for (const post of posts) {
     const url = new URL(`/blog/${post.slug}`, siteURL).toString()
-
-    feed.addItem({
-      title: post.frontMatter.title,
-      id: url,
-      link: url,
-      description: post.frontMatter.subTitle,
-      content: post.htmlContent,
-      author: [
-        {
-          name: post.frontMatter.authorName,
-        },
-      ],
-      contributor: [
-        {
-          name: post.frontMatter.authorName,
-        },
-      ],
-      date: new Date(post.frontMatter.publishDate),
-    })
+    if (post.frontMatter.publishDate) {
+      feed.addItem({
+        title: post.frontMatter.title,
+        id: url,
+        link: url,
+        description: post.frontMatter.subTitle,
+        content: post.htmlContent,
+        author: [
+          {
+            name: post.frontMatter.authorName,
+          },
+        ],
+        contributor: [
+          {
+            name: post.frontMatter.authorName,
+          },
+        ],
+        date: new Date(post.frontMatter.publishDate),
+      })
+    }
   }
 
   await writeFile(path.join('public', 'blog.rss'), feed.atom1())

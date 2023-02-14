@@ -7,14 +7,16 @@ import {
   createAccessToken,
   createRandomToken,
 } from '../../utils/middlewares/auth'
+import dayjs from 'dayjs'
 
 export class AuthController {
   async login(request: Request, response: Response) {
     try {
-      if (!request.body.message) {
+      if (!request.body?.message) {
         response.status(422).json({
           message: 'Expected message object as body.',
         })
+        return
       }
       const message = new SiweMessage(request.body.message)
       const fields = await message.validate(request.body.signature)
@@ -25,11 +27,13 @@ export class AuthController {
           nonce: fields.nonce,
         },
       })
+
       if (isNonceLoggedIn) {
         logger.info(`${fields.nonce} was already used for login.`)
         response.status(422).json({
           message: 'Invalid nonce',
         })
+        return
       }
 
       const accessToken = createAccessToken({
@@ -40,16 +44,12 @@ export class AuthController {
       const refreshTokenData = new RefreshToken()
 
       refreshTokenData.walletAddress = fields.address
-      refreshTokenData.token = createRandomToken()
       refreshTokenData.nonce = fields.nonce
+      refreshTokenData.token = createRandomToken()
 
       const { token: refreshToken } = await refreshTokenData.save()
 
       response
-        .cookie('refresh-token', refreshToken, {
-          expires: new Date(message.expirationTime!),
-          httpOnly: process.env.NODE_ENV === 'production',
-        })
         .setHeader('refresh-token', refreshToken)
         .setHeader('Authorization', `Bearer ${accessToken}`)
         .send({
@@ -79,21 +79,19 @@ export class AuthController {
   async token(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
-        request.headers['refresh-token']?.toString() ||
-        request.cookies['refresh-token']
+        request.body?.refreshToken ||
+        request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {
         return response.status(401).send({
           message: 'No refresh token provided in the header or body.',
         })
       }
-
       const refreshTokenData = await RefreshToken.findOne({
         where: {
           token: refreshToken,
           revoked: {
-            [Op.or]: [null, false],
+            [Op.or]: [false, null],
           },
         },
       })
@@ -104,10 +102,17 @@ export class AuthController {
         })
       }
 
-      // rotate refresh token
-      refreshTokenData.token = createRandomToken()
+      const lifeTime = dayjs(new Date()).diff(
+        dayjs(refreshTokenData.createdAt),
+        'days'
+      )
 
-      await refreshTokenData.save()
+      // if refresh token is older than 30 days
+      if (lifeTime > 30) {
+        return response.status(401).send({
+          message: 'Refresh token provided is invalid or revoked.',
+        })
+      }
 
       const accessToken = createAccessToken({
         walletAddress: refreshTokenData.walletAddress,
@@ -117,13 +122,8 @@ export class AuthController {
       return response
         .status(200)
         .setHeader('Authorization', `Bearer ${accessToken}`)
-        .cookie('refresh-token', refreshTokenData.token, {
-          httpOnly: process.env.NODE_ENV === 'production',
-        })
-        .setHeader('refresh-token', refreshTokenData.token)
         .send({
           walletAddress: refreshTokenData.walletAddress,
-          refreshToken: refreshTokenData.token,
           accessToken: accessToken,
         })
     } catch (error) {
@@ -161,7 +161,7 @@ export class AuthController {
   async revokeToken(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
+        request.body?.refreshToken ||
         request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {

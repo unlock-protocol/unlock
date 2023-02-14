@@ -23,4 +23,4 @@ router.post(
 router.post('/revoke', (req, res) => authController.revokeToken(req, res))
 router.post('/token', (req, res) => authController.token(req, res))
 
-module.exports = router
+export default router

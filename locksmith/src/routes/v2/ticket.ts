@@ -1,6 +1,9 @@
 import express from 'express'
 import networks from '@unlock-protocol/networks'
-import { TicketsController } from '../../controllers/v2/ticketsController'
+import {
+  TicketsController,
+  generateTicket,
+} from '../../controllers/v2/ticketsController'
 import { keyOwnerMiddleware } from '../../utils/middlewares/keyOwnerMiddleware'
 import {
   authenticatedMiddleware,
@@ -52,4 +55,10 @@ router.get(
   }
 )
 
-module.exports = router
+router.get(
+  '/:network/lock/:lockAddress/key/:keyId/generate',
+  authenticatedMiddleware,
+  generateTicket
+)
+
+export default router

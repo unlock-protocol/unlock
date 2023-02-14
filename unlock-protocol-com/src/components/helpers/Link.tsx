@@ -8,7 +8,7 @@ export function Link({ href, ...rest }: HTMLProps<HTMLAnchorElement>) {
 
   if (isInternalLink) {
     return (
-      <NextLink href={href}>
+      <NextLink href={href} legacyBehavior>
         <a {...rest} />
       </NextLink>
     )

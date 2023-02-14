@@ -1,5 +1,6 @@
 export default async function (
   { lockAddress, tokenId, recipient, duration },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -12,7 +13,6 @@ export default async function (
     duration = Math.floor(new Date().getTime() / 1000) - expiration.toNumber()
   }
 
-  const transactionOptions = {}
   const transactionPromise = lockContract.shareKey(
     recipient,
     tokenId,
@@ -36,7 +36,7 @@ export default async function (
   const parser = lockContract.interface
   const transferEvent = receipt.logs
     .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {

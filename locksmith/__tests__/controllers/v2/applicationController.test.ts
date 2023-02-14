@@ -1,9 +1,6 @@
 import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
-
-const app = require('../../../src/app')
-
-jest.setTimeout(10000)
+import app from '../../app'
 
 // eslint-disable-next-line
 var application: any
@@ -54,7 +51,7 @@ describe('Application endpoint', () => {
       .get('/v2/auth/user')
       .set('Authorization', `Api-key 24${application.key}`)
 
-    expect(applicationData.statusCode).toBe(403)
+    expect(applicationData.statusCode).toBe(401)
   })
 
   describe('list applications', () => {
@@ -62,7 +59,10 @@ describe('Application endpoint', () => {
       const refreshResponse = await request(app).post('/v2/auth/token').send({
         refreshToken: user.refreshToken,
       })
-      user = refreshResponse.body
+      user = {
+        ...refreshResponse.body,
+        refreshToken: user.refreshToken,
+      }
     })
 
     it('list applications with auth', async () => {
@@ -82,7 +82,7 @@ describe('Application endpoint', () => {
         .get('/v2/applications/list')
         .send()
 
-      expect(applicationList.statusCode).toBe(403)
+      expect(applicationList.statusCode).toBe(401)
     })
 
     it('list application with API KEY', async () => {
@@ -101,7 +101,10 @@ describe('Application endpoint', () => {
       const refreshResponse = await request(app).post('/v2/auth/token').send({
         refreshToken: user.refreshToken,
       })
-      user = refreshResponse.body
+      user = {
+        ...refreshResponse.body,
+        refreshToken: user.refreshToken,
+      }
     })
 
     it('update application with invalid body', async () => {
@@ -137,7 +140,10 @@ describe('Application endpoint', () => {
       const refreshResponse = await request(app).post('/v2/auth/token').send({
         refreshToken: user.refreshToken,
       })
-      user = refreshResponse.body
+      user = {
+        ...refreshResponse.body,
+        refreshToken: user.refreshToken,
+      }
     })
 
     it('delete non-existent app', async () => {
@@ -163,7 +169,7 @@ describe('Application endpoint', () => {
         .send()
 
       expect(deletedApplication.statusCode).toBe(200)
-      expect(userResponse.statusCode).toBe(403)
+      expect(userResponse.statusCode).toBe(401)
     })
   })
 })

@@ -8,7 +8,6 @@ contract('Lock / burn', (accounts) => {
 
   before(async () => {
     lock = await deployLock()
-    lock.setMaxKeysPerAddress(10)
   })
 
   beforeEach(async () => {

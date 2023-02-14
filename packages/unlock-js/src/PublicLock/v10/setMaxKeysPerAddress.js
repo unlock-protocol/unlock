@@ -5,7 +5,11 @@
  * - {number} maxKeysPerAddress of keys
  * @param {function} callback invoked with the transaction hash
  */
-export default async function ({ lockAddress, maxKeysPerAddress }, callback) {
+export default async function (
+  { lockAddress, maxKeysPerAddress },
+  transactionOptions = {},
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
   const transactionPromise =
     lockContract.setMaxKeysPerAddress(maxKeysPerAddress)

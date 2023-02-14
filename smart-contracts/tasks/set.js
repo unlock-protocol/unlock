@@ -61,11 +61,8 @@ task('set', 'Various setters for Unlock contracts')
   )
 
 task('set:template', 'Set PublicLock address in Unlock contract')
-  .addOptionalParam(
-    'unlockAddress',
-    'the address of an existing Unlock contract'
-  )
-  .addOptionalParam(
+  .addParam('unlockAddress', 'the address of an existing Unlock contract')
+  .addParam(
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )

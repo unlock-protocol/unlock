@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import { Heading, Description } from '../interface/SignupSuccess'
 import LoginPrompt from '../interface/LoginPrompt'
 import { useAuth } from '../../contexts/AuthenticationContext'
 import { useRouter } from 'next/router'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const LoginContent = () => {
   const { account } = useAuth()
@@ -21,24 +20,25 @@ export const LoginContent = () => {
   }, [account, redirect, router])
 
   return (
-    <Layout title="Login">
+    <AppLayout showLinks={false} authRequired={false} title="Login">
       <Head>
         <title>{pageTitle('Login')}</title>
       </Head>
       {!account && <LoginPrompt unlockUserAccount />}
       {account && (
         <>
-          <Heading>Login</Heading>
-          <Description>
+          <span className="text-base">
             You are now logged in.{' '}
-            <Link href={redirect || '/settings'}>
-              {redirect ? 'Go back' : 'Visit Settings'}
+            <Link className="" href={redirect || '/settings'}>
+              <span className="underline text-brand-ui-primary">
+                {redirect ? 'Go back' : 'Visit Settings'}
+              </span>
             </Link>
             .
-          </Description>
+          </span>
         </>
       )}
-    </Layout>
+    </AppLayout>
   )
 }
 

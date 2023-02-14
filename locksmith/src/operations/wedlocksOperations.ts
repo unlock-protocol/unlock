@@ -1,15 +1,19 @@
-import fetch from 'node-fetch'
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
-import config from '../../config/config'
+import config from '../config/config'
 import { logger } from '../logger'
-import { generateQrCode } from '../utils/qrcode'
 import networks from '@unlock-protocol/networks'
+import { createTicket } from '../utils/ticket'
+import resvg from '@resvg/resvg-js'
+import { KeyManager, LocksmithService } from '@unlock-protocol/unlock-js'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
 
 type Params = {
-  [key: string]: any
+  [key: string]: string | number | undefined
   keyId: string
-  keychainUrl: string
+  keychainUrl?: string
   lockName: string
   network: string
   txUrl?: string
@@ -25,9 +29,8 @@ interface Key {
     address: string
     name: string
   }
-  owner: {
-    address: string
-  }
+  tokenId?: string
+  owner: string
   keyId?: string
 }
 
@@ -55,6 +58,7 @@ export const sendEmail = async (
     params,
     attachments,
   }
+
   try {
     const response = await fetch(config.services.wedlocks, {
       method: 'POST',
@@ -84,11 +88,40 @@ export const notifyNewKeysToWedlocks = async (
   network?: number
 ) => {
   logger.info('Notifying following keys to wedlock', {
-    keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+    keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
-  for (const key of keys) {
-    await notifyNewKeyToWedlocks(key, network)
+  for await (const key of keys) {
+    notifyNewKeyToWedlocks(key, network, true)
   }
+}
+
+export const getCustomContent = async (
+  lockAddress: string,
+  network: number,
+  template: string
+): Promise<string | undefined> => {
+  let customContent = undefined
+  const locksmithService = new LocksmithService()
+  try {
+    const res = await locksmithService.getCustomEmailContent(
+      Number(network),
+      lockAddress,
+      template
+    )
+
+    // parse markdown to HTML
+    const parsedContent = await unified()
+      .use(remarkParse)
+      .use(remarkHtml)
+      .process(res?.data?.content || '')
+
+    if (parsedContent?.value?.length > 0) {
+      customContent = String(parsedContent?.value)
+    }
+  } catch (err: any) {
+    console.warn('No custom email content present')
+  }
+  return customContent
 }
 
 /**
@@ -101,14 +134,15 @@ export const notifyNewKeyToWedlocks = async (
   network?: number,
   includeQrCode = true
 ) => {
-  const lockAddress = key.lock.address
-  const ownerAddress = key.owner.address
-  const tokenId = key?.keyId
+  const keyManager = new KeyManager()
+  const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+  const ownerAddress = Normalizer.ethereumAddress(key.owner)
+  const tokenId = key?.tokenId
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
-      tokenAddress: Normalizer.ethereumAddress(lockAddress),
-      userAddress: Normalizer.ethereumAddress(ownerAddress),
+      tokenAddress: lockAddress,
+      userAddress: ownerAddress,
     },
   })
   logger.info(
@@ -122,43 +156,79 @@ export const notifyNewKeyToWedlocks = async (
 
   const recipient = protectedData?.email as string
 
+  if (!recipient) {
+    return
+  }
+
+  const airdroppedRecipient = keyManager.createTransferAddress({
+    params: {
+      email: recipient,
+      lockAddress,
+    },
+  })
+
+  const isAirdroppedRecipient =
+    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase()
+
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
-  if (recipient) {
-    logger.info('Notifying wedlock for new key', {
-      recipient,
-      lock: lockAddress,
-      keyId: tokenId,
+  logger.info('Notifying wedlock for new key', {
+    recipient,
+    lock: lockAddress,
+    keyId: tokenId,
+  })
+
+  const attachments: Attachment[] = []
+  if (includeQrCode && network && tokenId) {
+    const ticket = await createTicket({
+      lockAddress,
+      tokenId,
+      network,
+      owner: ownerAddress,
     })
-
-    const attachments: Attachment[] = []
-    if (includeQrCode && network && tokenId) {
-      const qrCode = await generateQrCode({
-        network,
-        lockAddress,
-        tokenId,
-      })
-      attachments.push({ path: qrCode })
-    }
-
-    const openSeaUrl =
-      networks[network!] && tokenId && lockAddress
-        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
-          undefined
-        : undefined
-    // Lock address to find the specific template
-    await sendEmail(
-      `keyMined${lockAddress}`,
-      'keyMined',
-      recipient,
-      {
-        lockName: key.lock.name,
-        keychainUrl: 'https://app.unlock-protocol.com/keychain',
-        keyId: tokenId ?? '',
-        network: networks[network!]?.name ?? '',
-        openSeaUrl,
-      },
-      attachments
-    )
+    const svg = new resvg.Resvg(ticket)
+    const pngData = svg.render()
+    const pngBuffer = pngData.asPng()
+    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+    attachments.push({ path: dataURI })
   }
+
+  const openSeaUrl =
+    networks[network!] && tokenId && lockAddress
+      ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ?? undefined
+      : undefined
+
+  const transferUrl = new URL('/transfer', config.unlockApp)
+  transferUrl.searchParams.set('lockAddress', lockAddress)
+  transferUrl.searchParams.set('keyId', tokenId ?? '')
+  transferUrl.searchParams.set('network', network?.toString() ?? '')
+
+  const templates = isAirdroppedRecipient
+    ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
+    : [`keyMined${lockAddress.trim()}`, 'keyMined']
+  // Lock address to find the specific template
+
+  // get custom email content
+  const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
+
+  const customContent = await getCustomContent(lockAddress, network!, template)
+  const withLockImage = (customContent || '')?.length > 0
+  const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
+
+  await sendEmail(
+    templates[0],
+    templates[1],
+    recipient,
+    {
+      lockName: key.lock.name,
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      keyId: tokenId ?? '',
+      network: networks[network!]?.name ?? '',
+      openSeaUrl,
+      transferUrl: transferUrl.toString(),
+      customContent,
+      lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
+    },
+    attachments
+  )
 }

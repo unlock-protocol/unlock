@@ -1,5 +1,4 @@
 import UnlockProvider from '../services/unlockProvider'
-import { useWeb3Service } from '../utils/withWeb3Service'
 import { useConfig } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
 import { useWalletService } from '../utils/withWalletService'
@@ -18,6 +17,8 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '../utils/accounts'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { storage } from '~/config/storage'
 
 interface ApiResponse {
   url: string
@@ -26,7 +27,7 @@ interface ApiResponse {
 export const getAccountTokenBalance = async (
   web3Service: any,
   accountAddress: string,
-  contractAddress: string,
+  contractAddress: string | null,
   network: number
 ) => {
   if (contractAddress) {
@@ -40,14 +41,9 @@ export const getAccountTokenBalance = async (
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  */
 export const useAccount = (address: string, network: number) => {
-  const web3Service = useWeb3Service()
   const config = useConfig()
   const walletService = useWalletService()
   const wedlockService = useWedlockService()
-
-  const getTokenBalance = (tokenAddress: string) => {
-    return getAccountTokenBalance(web3Service, address, tokenAddress, network)
-  }
 
   const connectStripeToLock = async (
     lockAddress: string,
@@ -83,6 +79,21 @@ export const useAccount = (address: string, network: number) => {
     }
   }
 
+  const disconnectStripeFromLock = async ({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) => {
+    try {
+      const response = await storage.disconnectStripe(network, lockAddress)
+      return response.status
+    } catch (error) {
+      return null
+    }
+  }
+
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
 
@@ -94,21 +105,27 @@ export const useAccount = (address: string, network: number) => {
     let recoveryKey
 
     try {
-      const response = await storageService.createUser(
+      const data = await storageService.createUser(
         UnlockUser.build({
           emailAddress,
           publicKey: address,
           passwordEncryptedPrivateKey,
         })
       )
-      const data = await response.json()
-      // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
-      recoveryKey = await reEncryptPrivateKey(
-        passwordEncryptedPrivateKey,
-        password,
-        data.recoveryPhrase
-      )
+      const result = await data.json()
+      if (!data.ok) {
+        ToastHelper.error(result[0]?.message ?? 'Ops, something went wrong')
+      } else {
+        // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
+        recoveryKey = await reEncryptPrivateKey(
+          passwordEncryptedPrivateKey,
+          password,
+          result.recoveryPhrase
+        )
+        ToastHelper.success('Account successfully created')
+      }
     } catch (error: any) {
+      console.error(error)
       const details = error?.response?.data[0]
       if (
         details?.validatorKey === 'not_unique' &&
@@ -210,7 +227,8 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    recipients: string[]
+    recipients: string[],
+    recurring = 0
   ) => {
     const response = await prepareCharge(
       config,
@@ -220,20 +238,28 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock,
       pricing,
-      recipients
+      recipients,
+      recurring
     )
     return response
   }
 
-  const claimMembershipFromLock = async (lock: any, network: number) => {
+  const claimMembershipFromLock = async (
+    lock: any,
+    network: number,
+    data?: string,
+    captcha?: string
+  ) => {
     const response = await claimMembership(
       config,
       walletService,
       address,
       network,
-      lock
+      lock,
+      data,
+      captcha
     )
-    return response.transactionHash
+    return response
   }
 
   const setUserMetadataData = async (
@@ -295,7 +321,6 @@ export const useAccount = (address: string, network: number) => {
 
   return {
     setUserMetadataData,
-    getTokenBalance,
     getCards,
     chargeCard,
     captureChargeForCard,
@@ -305,6 +330,7 @@ export const useAccount = (address: string, network: number) => {
     retrieveUserAccount,
     claimMembershipFromLock,
     updateLockIcon,
+    disconnectStripeFromLock,
   }
 }
 export default useAccount

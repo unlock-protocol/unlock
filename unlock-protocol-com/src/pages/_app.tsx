@@ -5,14 +5,35 @@ import '../styles/prose.css'
 import { DefaultSeo } from 'next-seo'
 import { DEFAULT_SEO } from '../config/seo'
 import { CookieBanner } from '../components/interface/CookieBanner'
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+  DehydratedState,
+} from 'react-query'
 
-function App({ Component, pageProps }: AppProps) {
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
+
+function App({
+  Component,
+  pageProps,
+}: AppProps<{ dehydratedState: DehydratedState }>) {
   return (
-    <Provider>
-      <CookieBanner />
-      <DefaultSeo {...DEFAULT_SEO} />
-      <Component {...pageProps} />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Provider>
+          <CookieBanner />
+          <DefaultSeo {...DEFAULT_SEO} />
+          <Component {...pageProps} />
+        </Provider>
+      </Hydrate>
+    </QueryClientProvider>
   )
 }
 

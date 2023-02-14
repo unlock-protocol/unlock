@@ -1,5 +1,5 @@
-import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react'
+import { createRoot } from 'react-dom/client'
 import { Button } from './..'
 import '../dist/style.css'
 
@@ -11,9 +11,6 @@ function App() {
   )
 }
 
-ReactDOM.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-  document.getElementById('root')
-)
+const container = document.getElementById('root')
+const root = createRoot(container!)
+root.render(<App />)

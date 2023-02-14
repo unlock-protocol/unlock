@@ -14,6 +14,7 @@ import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
  */
 export default async function (
   { lockAddress, owner, keyPrice, erc20Address, decimals },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -40,14 +41,12 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  const purchaseForOptions = {}
-
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer.address
+      this.signer.getAddress()
     )
     if (!approvedAmount || approvedAmount.lt(actualAmount)) {
       // We must wait for the transaction to pass if we want the next one to succeed!
@@ -62,10 +61,10 @@ export default async function (
       ).wait()
     }
   } else {
-    purchaseForOptions.value = actualAmount
+    transactionOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract.purchaseFor(owner, purchaseForOptions)
+  const transactionPromise = lockContract.purchaseFor(owner, transactionOptions)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
@@ -84,7 +83,7 @@ export default async function (
 
   const transferEvent = receipt.logs
     .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {

@@ -15,7 +15,7 @@ on:
           "packages/unlock-js",
           "packages/paywall",
           "smart-contracts",
-          "smart-contract-extensions",
+          "subgraph",
           "unlock-protocol-com",
           "wedlocks",
           "unlock-app"
@@ -29,6 +29,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+      BUILDKIT_STEP_LOG_MAX_SIZE: 50000000
       BLOCKTIME: 0
       # below env vars are just used by locksmith
       DB_USERNAME: locksmith_test
@@ -46,7 +47,6 @@ jobs:
 
   integration-tests:
     name: Integration Tests
-    needs: unit-tests
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1

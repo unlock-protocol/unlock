@@ -3,7 +3,7 @@
     "config:base",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
-    ":pinVersions",
+    ":pinAllExceptPeerDependencies",
     ":doNotPinPackage(node)"
   ],
   "timezone": "America/Los_Angeles",
@@ -107,12 +107,6 @@
     },
     {
       "minor": {
-        "groupName": "smart-contracts-extensions"
-      },
-      "matchPaths": ["smart-contract-extensions/**"]
-    },
-    {
-      "minor": {
         "groupName": "unlock-app"
       },
       "matchPaths": ["unlock-app/**"]
@@ -136,5 +130,6 @@
       "matchPaths": ["subgraph/**"]
     }
   ],
-  "rebaseWhen": "never"
+  "rebaseWhen": "never",
+  "lockFileMaintenance": { "enabled": true }
 }

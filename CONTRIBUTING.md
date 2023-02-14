@@ -44,6 +44,6 @@ Smart contracts are on a slow release cycle. We set a goal to deploy them once p
 
 The next step is to add this new ABI npm package to all of the other \(web and server if applicable\) apps and ensure that they all run with _both_ the old ABI and the new ABI \(the smart contract including versioning to make feature detection easier if needed\). Fixes are made to the applications if required.
 
-Once all apps are compatible with the new and old ABIs, they are deployed. We then proceed to updating the rinkeby deployed smart contracts for the staging environment. At that point, we should run an acceptance test suite \(TBD\). If everything works as expected, we can safely upgrade the main net smart contracts.
+Once all apps are compatible with the new and old ABIs, they are deployed. We then proceed to updating the goerli deployed smart contracts for the staging environment. At that point, we should run an acceptance test suite \(TBD\). If everything works as expected, we can safely upgrade the main net smart contracts.
 
 Once everything has been upgraded, we can start removing support for the old ABI from the multiple applications.

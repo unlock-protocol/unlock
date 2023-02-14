@@ -15,7 +15,6 @@ contract('Lock / purchaseFor', (accounts) => {
     anotherLock = await deployLock()
     lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
     lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('when the contract has a public key release', () => {
@@ -77,7 +76,7 @@ contract('Lock / purchaseFor', (accounts) => {
     })
 
     describe('when the user already owns an expired key', () => {
-      it('should expand the validity by the default key duration', async () => {
+      it('should create a new key', async () => {
         const tx = await anotherLock.purchase(
           [],
           [accounts[4]],
@@ -96,6 +95,7 @@ contract('Lock / purchaseFor', (accounts) => {
         await anotherLock.expireAndRefundFor(args.tokenId, 0)
         assert.equal(await anotherLock.getHasValidKey(accounts[4]), false)
         assert.equal(await anotherLock.balanceOf(accounts[4]), 0)
+        assert.equal(await anotherLock.totalKeys(accounts[4]), 1)
 
         // Purchase a new one
         await anotherLock.purchase(
@@ -110,6 +110,7 @@ contract('Lock / purchaseFor', (accounts) => {
         )
         assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
         assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
+        assert.equal(await anotherLock.totalKeys(accounts[4]), 2)
       })
     })
 

@@ -2,9 +2,8 @@
 import { EventEmitter } from 'events'
 import { BigNumber, Wallet } from 'ethers'
 import Dispatcher from '../../src/fulfillment/dispatcher'
-
-const config = require('../../config/config')
-
+import config from '../../src/config/config'
+import { vi } from 'vitest'
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
@@ -19,21 +18,21 @@ const standardLock = {
 }
 
 const mockWeb3Service = {
-  getLock: jest
+  getLock: vi
     .fn()
     .mockResolvedValue(standardLock)
     .mockResolvedValueOnce(standardLock),
 }
 
 class MockLockContract extends EventEmitter {
-  renewMembershipFor = jest.fn()
+  renewMembershipFor = vi.fn()
 }
 
 const mockLockContract = new MockLockContract()
 class MockWalletService extends EventEmitter {
-  connect = jest.fn()
+  connect = vi.fn()
 
-  purchaseKey = jest.fn(() => {
+  purchaseKey = vi.fn(() => {
     this.emit(
       'transaction.new',
       'a transaction hash',
@@ -43,16 +42,18 @@ class MockWalletService extends EventEmitter {
     )
   })
 
-  setUnlockAddress = jest.fn()
+  setUnlockAddress = vi.fn()
 
-  grantKeys = jest.fn()
+  grantKeys = vi.fn()
 
-  getLockContract = jest.fn(async () => mockLockContract)
+  getLockContract = vi.fn(async () => mockLockContract)
+
+  renewMembershipFor = vi.fn(async () => ({ hash: 'txhash' }))
 }
 
 const mockWalletService = new MockWalletService()
 
-jest.mock('@unlock-protocol/unlock-js', () => ({
+vi.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function Web3Service() {
     return mockWeb3Service
   },
@@ -61,8 +62,8 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-jest.mock('../../src/utils/gasSettings', () => ({
-  getGasSettings: jest.fn(() => {
+vi.mock('../../src/utils/gasSettings', () => ({
+  getGasSettings: vi.fn(() => {
     return {
       maxFeePerGas: BigNumber.from(40000000000),
       maxPriorityFeePerGas: BigNumber.from(40000000000),
@@ -75,7 +76,7 @@ describe('Dispatcher', () => {
     it('should call grant keys on the key granter', async () => {
       expect.assertions(1)
 
-      const callback = jest.fn()
+      const callback = vi.fn()
       await new Dispatcher().grantKeys(
         lockAddress,
         [{ recipient }],
@@ -88,28 +89,29 @@ describe('Dispatcher', () => {
           expirations: [],
           keyManagers: [],
           recipients: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
-          transactionOptions: {
-            maxFeePerGas: BigNumber.from(40000000000),
-            maxPriorityFeePerGas: BigNumber.from(40000000000),
-          },
+        },
+        {
+          maxFeePerGas: BigNumber.from(40000000000),
+          maxPriorityFeePerGas: BigNumber.from(40000000000),
         },
         callback
       )
     })
   })
   describe('renewMembershipFor', () => {
-    it('should call the function directly on lock contract', async () => {
-      expect.assertions(2)
-      const keyId = 1
-      // check contract is fetched correctly
-      await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
-      expect(mockWalletService.getLockContract).toBeCalledWith(lockAddress)
+    it('should call the function from walletService', async () => {
+      expect.assertions(1)
+      const keyId = '1'
 
-      // check contract call
+      await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
       const referrerWallet = new Wallet(config.purchaserCredentials)
-      expect(mockLockContract.renewMembershipFor).toBeCalledWith(
-        keyId,
-        referrerWallet.address,
+
+      expect(mockWalletService.renewMembershipFor).toBeCalledWith(
+        {
+          lockAddress,
+          referrer: referrerWallet.address,
+          tokenId: keyId,
+        },
         {
           maxFeePerGas: BigNumber.from(40000000000),
           maxPriorityFeePerGas: BigNumber.from(40000000000),

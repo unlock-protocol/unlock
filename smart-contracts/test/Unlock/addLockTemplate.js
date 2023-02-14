@@ -12,6 +12,7 @@ contract('PublicLock template versions', () => {
     const [unlockOwner] = await ethers.getSigners()
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
       initializer: 'initialize(address)',
+      unsafeAllow: ['delegatecall']
     })
     await unlock.deployed()
 

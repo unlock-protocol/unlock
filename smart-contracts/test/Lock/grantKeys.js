@@ -60,7 +60,7 @@ contract('Lock / grantKeys', (accounts) => {
               from: lockCreator,
             }
           ),
-          `reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)`
+          `panic code 0x32`
         )
       })
     })

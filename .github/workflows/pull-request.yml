@@ -4,16 +4,16 @@ on:
   pull_request:
 
 jobs:
-  # run all tests if PR contains the 'run-all-tests' tag
+  # deprec, keeping to avoid conflicts
   run-all-tests:
-    # name: "Run all tests"
     if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
-    uses: ./.github/workflows/_tests.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Deprec run-all-tests"
+        run: echo "skipping."
 
   # check which folder changed in the repo
   check-changes:
-    # name: "Check for changes in monorepo"
-    if: ${{ ! contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     uses: ./.github/workflows/_check.yml
     with:
       targets: '[
@@ -23,11 +23,13 @@ jobs:
         "packages/unlock-js",
         "packages/paywall",
         "smart-contracts",
-        "smart-contract-extensions",
+        "subgraph",
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app"
         ]'
+      # run all tests if PR contains the 'run-all-tests' tag
+      bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
 
   # run tests for folders that have changed
   run-tests:
@@ -56,7 +58,7 @@ jobs:
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
-      UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
+      NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
 
   deploy-paywall-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
@@ -79,5 +81,5 @@ jobs:
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
-      BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
-      STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
+      NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
+      NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}

@@ -33,7 +33,7 @@ describe('scripts / gnosis', () => {
 
   // all suite will be skipped if not on mainnet fork
   before(async function () {
-    if (!process.env.RUN_MAINNET_FORK) {
+    if (!process.env.RUN_FORK) {
       this.skip()
     }
     unlock = await ethers.getContractAt('Unlock', unlockAddress)

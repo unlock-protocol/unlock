@@ -1,8 +1,7 @@
 import express from 'express'
-
+import priceController from '../controllers/priceController'
 const router = express.Router({ mergeParams: true })
-const priceController = require('../controllers/priceController')
 
 router.get('/fiat/:lockAddress', priceController.fiatPrice)
 
-module.exports = router
+export default router

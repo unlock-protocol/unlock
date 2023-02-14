@@ -28,7 +28,7 @@ async function _getKeyPrice(lock, provider) {
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */
-export default async function (lock, callback) {
+export default async function (lock, transactionOptions = {}, callback) {
   const unlockContract = await this.getUnlockContract()
   let { maxNumberOfKeys, expirationDuration } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -55,7 +55,8 @@ export default async function (lock, callback) {
     decimalKeyPrice,
     maxNumberOfKeys,
     lockName,
-    salt
+    salt,
+    transactionOptions
   )
 
   const hash = await this._handleMethodCall(transactionPromise)

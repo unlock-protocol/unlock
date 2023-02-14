@@ -1,53 +1,113 @@
-type UnlockEntity @entity {
+type Lock @entity {
+  "Unique ID for the Lock object (uses the lock address)"
   id: ID!
-  count: BigInt!
-  lockOwner: Bytes! # address
-  newLockAddress: Bytes! # address
+  "Address of the lock"
+  address: Bytes!
+  "A descriptive name for a collection of NFTs in this contract"
+  name: String
+  "Token symbol"
+  symbol: String
+  "Duration is set the on the lock when you deploy and the expiration which is set on each key when they are minted"
+  expirationDuration: BigInt
+  "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
+  tokenAddress: Bytes!
+  "Price of the keys sold by the lock"
+  price: BigInt!
+  "An assigned role set on a Lock contract which gives the highest level of permissions to the wallet address set to that role"
+  lockManagers: [Bytes!]!
+  "Unlock Protocol version of a minting contract"
+  version: BigInt!
+  "Number of keys minted (expired or not)"
+  totalKeys: BigInt!
+  "Maximum number of keys for sale"
+  maxNumberOfKeys: BigInt
+  "The maximum number of keys allowed for a single address"
+  maxKeysPerAddress: BigInt
+  "Refer to key entity"
+  keys: [Key!] @derivedFrom(field: "lock")
+  "Which block the lock was created"
+  createdAtBlock: BigInt
+  "The timestamp of the block in which the last key was minted"
+  lastKeyMintedAt: BigInt
+  "Address of the lock deployer"
+  deployer: Bytes!
 }
 
 type Key @entity {
+  "Unique identifier for a key (combination of lock address and token id)"
   id: ID!
+  "In the Unlock ecosystem, a “Lock” is a smart contract that creates (or “mints”) NFTs"
   lock: Lock!
-  keyId: BigInt!
-  owner: KeyHolder!
-  expiration: BigInt!
-  tokenURI: String
-  createdAt: BigInt!
-}
-
-type KeyHolder @entity {
-  id: ID!
-  address: Bytes!
-  keys: [Key]! @derivedFrom(field: "owner")
-}
-
-type KeyPurchase @entity {
-  id: ID!
-  lock: Bytes!
-  purchaser: Bytes!
-  price: BigInt!
-  timestamp: BigInt!
-  tokenAddress: Bytes!
-}
-
-type LockManager @entity {
-  id: ID!
-  lock: Lock!
-  address: Bytes!
-}
-
-type Lock @entity {
-  id: ID! #lock address
-  address: Bytes!
-  name: String
-  tokenAddress: Bytes
-  creationBlock: BigInt
-  price: BigInt
-  expirationDuration: BigInt
-  totalSupply: BigInt
-  maxNumberOfKeys: BigInt
-  LockManagers: [LockManager!] @derivedFrom(field: "lock")
-  keys: [Key!] @derivedFrom(field: "lock")
+  "TokenId for a given key"
+  tokenId: BigInt!
+  "The address of the key owner"
   owner: Bytes!
-  version: BigInt
+  "An assigned title set on an Unlock key which gives a specific wallet address authorization to transfer, share or cancel"
+  manager: Bytes
+  "Time the key expires"
+  expiration: BigInt!
+  "The tokenURI on an NFT is a unique identifier"
+  tokenURI: String
+  "Block key was created"
+  createdAtBlock: BigInt!
+  "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key"
+  cancelled: Boolean
+  "list of transaction hashes for purchase/extensions of a specific token"
+  transactionsHash: [String!]
+}
+
+type UnlockDailyData @entity {
+  "Day identifier"
+  id: ID!
+  "Number of locks deployed on that day"
+  lockDeployed: BigInt!
+  "Total number of locks deployed"
+  totalLockDeployed: BigInt!
+  "Daily number of keys sold"
+  keysSold: BigInt!
+  "Total number of keys sold"
+  totalKeysSold: BigInt!
+  "Daily number of active locks (active locks have minted at least one membership in the last 30 days"
+  activeLocks: [Bytes!]
+  "Total value exchanged on the network"
+  grossNetworkProduct: BigInt!
+}
+
+type LockStats @entity {
+  "Transaction Hash"
+  id: ID!
+  "Total locks deployed"
+  totalLocksDeployed: BigInt!
+  "Total keys sold"
+  totalKeysSold: BigInt!
+}
+
+type UnlockStats @entity {
+  "Identifier"
+  id: ID!
+  "Total number of locks deployed"
+  totalLockDeployed: BigInt!
+  "Total number of keys sold"
+  totalKeysSold: BigInt!
+  "Total value exchanged on the network"
+  grossNetworkProduct: BigInt!
+}
+
+type Receipt @entity {
+  "Transaction Hash"
+  id: ID!
+  "Timestamp"
+  timestamp: BigInt
+  "Sender of the transaction"
+  sender: String
+  "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
+  payer: String
+  "Address of the Lock smart contract"
+  lockAddress: String
+  "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
+  tokenAddress: String
+  "amount"
+  amountTransferred: BigInt
+  "Total gas paid"
+  gasTotal: BigInt!
 }

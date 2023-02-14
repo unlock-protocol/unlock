@@ -13,5 +13,5 @@ export const Primary = Template.bind({})
 Primary.args = {
   isOpen: true,
   setIsOpen: () => {},
-  children: <div className="flex p-4"> Hello, this is modal! </div>,
+  children: <p> Hello, this is modal! </p>,
 }

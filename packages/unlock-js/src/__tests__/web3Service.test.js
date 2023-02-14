@@ -1,41 +1,26 @@
 import Web3Service from '../web3Service'
-
 import PublicLockVersions from '../PublicLock'
+import networks from '@unlock-protocol/networks'
 
-const host = process.env.CI ? 'eth-node' : '127.0.0.1'
-const port = 8545
-const provider = `http://${host}:${port}`
-
-const networks = {
-  31337: {
-    provider,
-    unlockAddress: '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F',
-  },
+var web3Service = new Web3Service(networks)
+const lock = {
+  address: '0xe6a85e67905d41a479a32ff59892861351c825e8',
+  network: 5,
 }
 
-let web3Service
-
-jest.mock('../erc20.ts', () => {
-  return {
-    getErc20Decimals: jest.fn(() => Promise.resolve(18)),
-    getErc20BalanceForAddress: jest.fn(() => Promise.resolve('0x0')),
-  }
-})
+jest.setTimeout(100000)
 
 describe('Web3Service', () => {
-  beforeEach(() => {
-    web3Service = new Web3Service(networks)
-  })
-
   describe('versions', () => {
     const versionSpecificLockMethods = ['getLock']
-
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
         expect.assertions(3)
-        const args = ['0xlock', 31337]
-        const result = {}
+        const args = [lock.address, lock.network]
+        const result = {
+          unlockContractAddress: networks[lock.network].unlockAddress,
+        }
         const version = {
           [method](_args) {
             // Needs to be a function because it is bound to web3Service
@@ -59,6 +44,27 @@ describe('Web3Service', () => {
         versionSpecificLockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
+      }
+    )
+  })
+
+  describe('Lock validation', () => {
+    it.each(Object.keys(PublicLockVersions))(
+      'getLock validation on public lock %s',
+      async () => {
+        expect.assertions(2)
+        const service = new Web3Service(networks)
+        const response = await service.getLock(lock.address, 5)
+        expect(response.address).toBe(lock.address)
+        const notFromUnlockFactoryContract = async () => {
+          // Fake generated address
+          const response = await service.getLock(
+            '0xAfC5356c67853fC8045586722fE6a253023039eB',
+            5
+          )
+          return response
+        }
+        await expect(notFromUnlockFactoryContract).rejects.toThrow()
       }
     )
   })

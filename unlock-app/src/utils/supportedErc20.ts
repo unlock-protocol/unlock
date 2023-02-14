@@ -11,10 +11,6 @@ export const mainnet = {
   bat: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
 }
 
-export const rinkeby = {
-  weenus: '0xaff4481d10270f50f203e0763e2597776068cbc5',
-}
-
 export const kovan = {
   weenus: '0x101848D5C5bBca18E6b4431eEdF6B95E9ADF82FA',
 }
@@ -26,7 +22,6 @@ export const localDev = {}
 
 const table: { [key: number]: { [key: string]: string } } = {
   1: mainnet,
-  4: rinkeby,
   42: kovan,
   1337: localDev,
 }

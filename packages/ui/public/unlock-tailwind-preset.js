@@ -14,12 +14,14 @@ module.exports = {
         mono: ['Roboto Mono', ...defaultTheme.fontFamily.mono],
       },
       colors: {
+        beige: {},
         brand: {
           dark: '#020207',
           gray: '#535353',
           primary: '#FFF7E8',
           secondary: '#FF6771',
           beige: '#FFFDF8',
+          yellow: '#F2C65E',
           ui: {
             primary: '#603DEB',
             secondary: '#020207',
@@ -37,6 +39,18 @@ module.exports = {
             700: '#4D31BC',
             800: '#432BA5',
             900: '#3A258D',
+          },
+          secondary: {
+            50: '#FFFDFA',
+            100: '#FFFDF8',
+            200: '#FFFCF6',
+            300: '#FFFAF1',
+            400: '#FFF9ED',
+            500: '#FFF7E8',
+            600: '#EBDABA',
+            700: '#D7BD8B',
+            800: '#C39F5D',
+            900: '#AF822E',
           },
         },
       },

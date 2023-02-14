@@ -126,7 +126,8 @@ export const prepareCharge = async (
   network: number,
   lock: string,
   pricing: any,
-  recipients: string[]
+  recipients: string[],
+  recurring = 0
 ) => {
   const typedData = generateTypedData(
     {
@@ -138,6 +139,7 @@ export const prepareCharge = async (
         pricing,
         lock,
         network,
+        recurring,
       },
     },
     'Charge Card'
@@ -195,7 +197,9 @@ export const claimMembership = async (
   walletService: any,
   address: string,
   network: number,
-  lock: string
+  lock: string,
+  data?: string,
+  captcha?: string
 ) => {
   const typedData = generateTypedData(
     {
@@ -203,6 +207,7 @@ export const claimMembership = async (
         publicKey: address,
         lock,
         network,
+        data,
       },
     },
     'Claim Membership'
@@ -217,6 +222,7 @@ export const claimMembership = async (
         'base64'
       )}`,
       'Content-Type': 'application/json',
+      captcha: captcha || '',
     },
     body: JSON.stringify(typedData),
   }
@@ -291,7 +297,8 @@ export const getCardsForAddress = async (
     )}/credit-cards?data=${JSON.stringify(typedData)}`,
     opts
   )
-  return response.json()
+  const json = await response.json()
+  return json.map((item: any) => item.card)
 }
 
 /**
@@ -324,13 +331,16 @@ export const deleteCardForAddress = async (
     },
   }
 
-  const response = fetch(
+  const response = await fetch(
     `${config.services.storage.host}/users/${encodeURIComponent(
       address!
     )}/credit-cards?data=${JSON.stringify(typedData)}`,
     opts
   )
-  return (await response).status === 202
+
+  const text = await response.text()
+
+  return response.status === 202 && text
 }
 
 /**

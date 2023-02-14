@@ -1,17 +1,17 @@
-import { CalendarEvent } from '../../../utils/calendar'
+import { CalendarItem } from '../../../utils/calendar'
 import { UpcomingEventBox } from './UpcomingEventBox'
 
 export type UpcomingEventsProps = {
-  upcomingEvents: CalendarEvent[]
-  pastEvents: CalendarEvent[]
-} & any
+  upcomingEvents: CalendarItem[]
+  pastEvents: CalendarItem[]
+}
 
 export function UpcomingEvents({
   upcomingEvents,
   pastEvents,
 }: UpcomingEventsProps) {
   return (
-    <div className="mx-auto max-w-7xl px-6">
+    <div className="px-6 mx-auto max-w-7xl">
       <header className="flex flex-col gap-2 pt-3">
         <h1 className="heading">Upcoming Events</h1>
         <p className="text-lg">

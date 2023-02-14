@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react'
-import 'cross-fetch/polyfill'
 import type { AppProps } from 'next/app'
 import TagManager from 'react-gtm-module'
 import { Toaster } from 'react-hot-toast'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import configure from '../config'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { config } from '~/config/app'
 import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
-
-const config = configure()
-
-const queryClient = new QueryClient()
+import { ErrorBoundary } from '@sentry/nextjs'
+import { ErrorFallback } from '~/components/interface/ErrorFallback'
+import { queryClient } from '~/config/queryClient'
+import { Auth } from '~/components/helpers/Auth'
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
@@ -24,7 +23,11 @@ const UnlockApp = ({ Component }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalWrapper>
-        <Component />
+        <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
+          <Auth>
+            <Component />
+          </Auth>
+        </ErrorBoundary>
         <Toaster />
       </GlobalWrapper>
     </QueryClientProvider>

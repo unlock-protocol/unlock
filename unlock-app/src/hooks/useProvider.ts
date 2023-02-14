@@ -6,7 +6,8 @@ import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import { StorageService } from '~/services/storageService'
+import { NetworkConfig } from '@unlock-protocol/types'
+import { signOut } from '~/config/storage'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -36,7 +37,6 @@ export const useProvider = (config: any) => {
   >(undefined)
   const { getStorage, setStorage, clearStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(account)
-  const storageService = new StorageService(config.services.storage.host)
 
   useEffect(() => {
     if (!getStorage('account') && account) {
@@ -48,15 +48,71 @@ export const useProvider = (config: any) => {
     }
   }, [account, network])
 
+  const createWalletService = async (provider: any) => {
+    const _walletService = new WalletService(config.networks)
+    const _network = await _walletService.connect(provider)
+    const _account = await _walletService.getAccount()
+    return {
+      walletService: _walletService,
+      network: _network,
+      account: _account,
+    }
+  }
+
+  const switchWeb3ProviderNetwork = async (id: number) => {
+    try {
+      await provider.send(
+        'wallet_switchEthereumChain',
+        [
+          {
+            chainId: `0x${id.toString(16)}`,
+          },
+        ],
+        account
+      )
+    } catch (switchError: any) {
+      if (switchError.code === 4902 || switchError.code === -32603) {
+        return addNetworkToWallet(id)
+      } else {
+        throw switchError
+      }
+    }
+  }
+
+  const getWalletService = async (networkId?: number) => {
+    const currentNetworkId = Number(network)
+    let walletServiceProvider: ethers.providers.Provider = provider
+    if (networkId && networkId !== currentNetworkId) {
+      const networkConfig = config.networks[networkId]
+      if (provider.isUnlock) {
+        walletServiceProvider = UnlockProvider.reconnect(
+          provider,
+          networkConfig
+        )
+      } else {
+        await switchWeb3ProviderNetwork(networkId)
+        walletServiceProvider = new ethers.providers.Web3Provider(
+          provider.provider,
+          networkId
+        )
+      }
+    }
+    const { walletService: _walletService } = await createWalletService(
+      walletServiceProvider
+    )
+    return _walletService
+  }
+
   const resetProvider = async (provider: ethers.providers.Provider) => {
     try {
-      const _walletService = new WalletService(config.networks)
       setProvider(provider)
-      // @ts-expect-error TODO fix walletService signature
-      const _network = await _walletService.connect(provider)
+      const {
+        network: _network,
+        walletService: _walletService,
+        account: _account,
+      } = await createWalletService(provider)
       setNetwork(_network || undefined)
 
-      const _account = await _walletService.getAccount()
       setWalletService(_walletService)
       // @ts-expect-error
       if (!provider.isUnlock) {
@@ -121,12 +177,11 @@ export const useProvider = (config: any) => {
 
       if (provider.on) {
         provider.on('accountsChanged', async () => {
-          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
+          await signOut()
         })
 
         provider.on('chainChanged', async () => {
-          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
@@ -148,8 +203,15 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      // unlock provider does not support removing listeners or closing.
+      if (provider?.isUnlock) {
+        return
+      }
       provider.provider.removeAllListeners()
-      await provider.provider.close()
+      // metamask does not support disconnect
+      if (provider?.connection?.url !== 'metamask') {
+        await provider.provider.close()
+      }
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
@@ -158,42 +220,28 @@ export const useProvider = (config: any) => {
     }
     setProvider(null)
     setLoading(false)
+    await signOut()
   }
 
-  const changeNetwork = async (network: any) => {
+  const changeNetwork = async (networkConf: NetworkConfig | number) => {
+    const networkConfig =
+      typeof networkConf === 'number'
+        ? config.networks[networkConf]
+        : networkConf
+
+    const { id } = networkConfig
+
+    // don't change network if not needed
+    if (id === network) {
+      return
+    }
+
     if (provider.isUnlock) {
-      const newProvider = UnlockProvider.reconnect(provider, network)
-      resetProvider(newProvider)
+      const newProvider = UnlockProvider.reconnect(provider, networkConfig)
+      await resetProvider(newProvider)
     } else {
-      try {
-        await ToastHelper.promise(
-          provider.send(
-            'wallet_switchEthereumChain',
-            [
-              {
-                chainId: `0x${network.id.toString(16)}`,
-              },
-            ],
-            account
-          ),
-          {
-            loading: `Changing network to ${network.name}. Please Approve on your wallet.`,
-            error: `Error in changing network to ${network.name}`,
-            success: `Successfully changed network to ${network.name}`,
-          }
-        )
-      } catch (switchError: any) {
-        // This error code indicates that the chain has not been added to the provider yet.
-        if (switchError.code === 4902) {
-          try {
-            await addNetworkToWallet(network.id)
-          } catch (addError) {
-            ToastHelper.error(
-              'Network could not be added. Please try manually adding it to your wallet'
-            )
-          }
-        }
-      }
+      await switchWeb3ProviderNetwork(id)
+      setNetwork(id)
     }
   }
 
@@ -213,6 +261,11 @@ export const useProvider = (config: any) => {
     })
   }
 
+  const providerSend = async (method: string, params: any) => {
+    return await provider.send(method, params)
+  }
+
+  // TODO: cleanup. Do we still use this? We should not,
   const signMessage = async (messageToSign: string) => {
     return ToastHelper.promise(
       walletService.signMessage(messageToSign, 'personal_sign'),
@@ -230,6 +283,7 @@ export const useProvider = (config: any) => {
     account,
     signMessage,
     email,
+    getWalletService,
     isUnlockAccount,
     encryptedPrivateKey,
     walletService,
@@ -237,5 +291,6 @@ export const useProvider = (config: any) => {
     disconnectProvider,
     watchAsset,
     changeNetwork,
+    providerSend,
   }
 }

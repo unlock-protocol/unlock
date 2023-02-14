@@ -7,7 +7,7 @@ export default class GasPrice {
   // gasCost is expressed in gas, returns cost in base currency (ether on mainnet...)
   async gasPriceETH(network: number, gasCost: number): Promise<number> {
     const providerUrl = networks[network].publicProvider
-    const provider = new ethers.providers.JsonRpcProvider(providerUrl)
+    const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
 
     const gasPrice: any = await provider.getGasPrice()
     const gasPriceETH = parseFloat(
@@ -29,6 +29,7 @@ export default class GasPrice {
     }
     // TODO: support more "native" currencies
     const priceConversion = new PriceConversion()
-    return priceConversion.convertToUSD(symbol, gasPrice)
+    const usdPrice = await priceConversion.convertToUSD(symbol, gasPrice)
+    return usdPrice
   }
 }

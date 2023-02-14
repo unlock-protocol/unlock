@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import '@nomiclabs/hardhat-ethers'
-import '@openzeppelin/hardhat-upgrades'
 import { task, extendEnvironment, extendConfig, types } from 'hardhat/config'
 import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
 import { lazyObject } from 'hardhat/plugins'
@@ -7,14 +7,49 @@ import './type-extensions'
 
 import { TASK_CREATE_LOCK, TASK_DEPLOY_PROTOCOL } from './constants'
 
-import { UnlockHRE, UnlockNetworkConfigs } from './Unlock'
 import { deployLockTask } from './tasks'
 import networks from './networks.json'
 
+// types
+import { UnlockNetworkConfigs } from './types'
+import type { CreateLockFunction } from './createLock'
+import type {
+  DeployProtocolFunction,
+  DeployAndSetTemplate,
+} from './deployProtocol'
+import type { GetLockVersionFunction } from './getLockVersion'
+import type { GetUnlockContractFunction } from './getUnlockContract'
+import type { GetLockContractFunction } from './getLockContract'
+
+export interface HardhatUnlockPlugin {
+  createLock: CreateLockFunction
+  getLockVersion: GetLockVersionFunction
+  deployProtocol: DeployProtocolFunction
+  getLockContract: GetLockContractFunction
+  deployAndSetTemplate: DeployAndSetTemplate
+  getUnlockContract: GetUnlockContractFunction
+  networks: UnlockNetworkConfigs
+}
+
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
-    const unlock = new UnlockHRE(hre)
-    return unlock
+    const { createLock } = require('./createLock')
+    const { deployProtocol, deployAndSetTemplate } = require('./deployProtocol')
+    const { getLockVersion } = require('./getLockVersion')
+    const { getUnlockContract } = require('./getUnlockContract')
+    const { getLockContract } = require('./getLockContract')
+    return {
+      networks,
+      createLock: (args) => createLock(hre, args),
+      deployProtocol: (unlockVersion, lockVersion, confirmations) =>
+        deployProtocol(hre, unlockVersion, lockVersion, confirmations),
+      deployAndSetTemplate: (version, confirmations) =>
+        deployAndSetTemplate(hre, version, confirmations),
+      getLockVersion: (lockAddress) => getLockVersion(hre, lockAddress),
+      getUnlockContract: (unlockAddress) =>
+        getUnlockContract(hre, unlockAddress),
+      getLockContract: (lockAddress) => getLockContract(hre, lockAddress),
+    }
   })
 })
 

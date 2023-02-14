@@ -1,0 +1,6 @@
+{
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types"]
+  }
+}

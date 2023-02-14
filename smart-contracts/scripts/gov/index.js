@@ -1,9 +1,8 @@
 const { run, ethers, network } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const { getDeployment } = require('../../helpers/deployments')
 const { addUDT, getDictator } = require('../../test/helpers/mainnet')
 
-async function main({ proposal }) {
+async function main({ proposal, govAddress, udtAddress }) {
   const [, holder, localDictator] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
@@ -16,10 +15,6 @@ async function main({ proposal }) {
   if (chainId === 31337 || process.env.RUN_MAINNET_FORK) {
     // eslint-disable-next-line no-console
     console.log('GOV (dev) > Dev mode ON')
-    const { address: govAddress } = getDeployment(
-      chainId,
-      'UnlockProtocolGovernor'
-    )
     // eslint-disable-next-line no-console
     console.log(`GOV (dev) > gov contract: ${govAddress}`)
 
@@ -38,11 +33,11 @@ async function main({ proposal }) {
     // eslint-disable-next-line no-console
     console.log(`GOV (dev) > added 30k UDT to account ${holder.address}`)
 
-    const { address: udtAddress, abi: udtAbi } = getDeployment(
-      chainId,
-      'UnlockDiscountTokenV3'
+    const udt = await new ethers.Contract(
+      udtAddress,
+      'UnlockDiscountTokenV3',
+      holder
     )
-    const udt = await new ethers.Contract(udtAddress, udtAbi, holder)
 
     // delegate 30k to voter
     const tx = await udt.delegate(dictator.address)
@@ -70,9 +65,9 @@ async function main({ proposal }) {
   }
 
   // Run the gov workflow
-  await run('gov:submit', { proposal })
-  await run('gov:vote', { proposal }) // no voter address enables authoritarian mode
-  await run('gov:votes', { proposal }) // show votes
+  await run('gov:submit', { proposal, govAddress })
+  await run('gov:vote', { proposal, govAddress }) // no voter address enables authoritarian mode
+  await run('gov:votes', { proposal, govAddress }) // show votes
   // await run('gov:queue', { proposal })
   // await run('gov:execute', { proposal })
 }

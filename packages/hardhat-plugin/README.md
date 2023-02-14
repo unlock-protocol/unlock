@@ -2,6 +2,7 @@
 
 _Unlock hardhat plugin provides a set of tasks and scripts to interact directly with the [Unlock Protocol](https://unlock-protocol.org)_
 
+**Check the [example repo](https://github.com/unlock-protocol/hardhat-plugin-example) for a working example.**
 
 ## Installation
 
@@ -12,13 +13,13 @@ yarn install @unlock-protocol/hardhat-plugin
 Import the plugin in your `hardhat.config.js`:
 
 ```js
-require("@unlock-protocol/hardhat-plugin");
+require('@unlock-protocol/hardhat-plugin')
 ```
 
 Or if you are using TypeScript, in your `hardhat.config.ts`:
 
 ```ts
-import "@unlock-protocol/hardhat-plugin";
+import '@unlock-protocol/hardhat-plugin'
 ```
 
 ## Configuration
@@ -27,10 +28,10 @@ import "@unlock-protocol/hardhat-plugin";
 
 Info about already deployed Unlock contracts (on mainnet, rinkeby, optimism, bsc,xdai/gnosis, etc.) are added to the `unlock` param of the hardhat config. You can pass custom info about your own Unlock deployments directly in `hardhat.config.js` - following the `NetworkConfig` type in `@unlock-protocol/types`.
 
-#### Config example 
+#### Config example
 
 ```js
-import "@unlock-protocol/hardhat-plugin";
+import '@unlock-protocol/hardhat-plugin'
 
 const config: HardhatUserConfig = {
   solidity: '0.8.7',
@@ -45,16 +46,6 @@ const config: HardhatUserConfig = {
   },
 }
 ```
-
-### Signer
-
-By default, the first hardhat accounts will be used.  
-You can also pass a private key as follow by exporting `WALLET_PRIVATE_KEY` to the environment
-
-```
-export WALLET_PRIVATE_KEY=xxx
-```
-
 
 ## Usage
 
@@ -81,7 +72,7 @@ const lockArgs = {
   currencyContractAddress: null, // null for ETH or erc20 address
   keyPrice: '100000000', // in wei
   maxNumberOfKeys: 10,
-  name: 'A Demo Lock'
+  name: 'A Demo Lock',
 }
 await unlock.createLock(lockArgs)
 ```

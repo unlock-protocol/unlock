@@ -3,9 +3,24 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-50;
+  @apply bg-ui-secondary-200;
 }
 
-#card-element {
-  @apply bg-white border p-[0.57rem] text-sm h-[2.30rem] border-gray-400 rounded-lg hover:border-gray-500;
+.markdown p {
+  margin-bottom: 1em;
+}
+
+.markdown a {
+  text-decoration: underline;
+}
+
+.markdown ul {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  list-style: disc outside none;
+}
+
+.markdown ul li {
+  margin-left: 2em;
+  display: list-item;
 }

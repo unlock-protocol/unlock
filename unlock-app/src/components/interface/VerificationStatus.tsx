@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useAuth } from '../../contexts/AuthenticationContext'
 import { useWeb3Service } from '../../utils/withWeb3Service'
-import { useQuery } from 'react-query'
-import { Lock } from '~/unlockTypes'
+import { useQuery } from '@tanstack/react-query'
 import {
   MembershipCard,
   MembershipCardPlaceholder,
@@ -16,6 +15,10 @@ import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
 import { useConfig } from '~/utils/withConfig'
+import { Dialog, Transition } from '@headlessui/react'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { storage } from '~/config/storage'
+import { AxiosError } from 'axios'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -36,6 +39,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const router = useRouter()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
   const { locksmithSigners } = useConfig()
+  const [showWarning, setShowWarning] = useState(false)
 
   const { isLoading: isKeyGranterLoading, data: keyGranter } = useQuery(
     [network],
@@ -48,20 +52,31 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   )
 
   const { isLoading: isLockLoading, data: lock } = useQuery(
-    [lockAddress, network],
+    ['lock', lockAddress, network],
     async () => {
-      const result: Lock = await web3Service.getLock(lockAddress, network)
-      return result
+      const service = new SubgraphService()
+      const result = await service.locks(
+        {
+          first: 1,
+          where: {
+            address: lockAddress,
+          },
+        },
+        {
+          networks: [network.toString()],
+        }
+      )
+      return result[0]
     },
     {
       refetchInterval: false,
     }
   )
 
-  const lockVersion = lock?.publicLockVersion
+  const lockVersion = Number(lock?.version)
 
-  const { isLoading: isKeyLoading, data: key } = useQuery(
-    [network, tokenId, lockAddress],
+  const { isInitialLoading: isKeyLoading, data: key } = useQuery(
+    ['key', lockAddress, tokenId, network],
     async () => {
       // Some older QR codes might have been generated without a tokenId in the payload. Clean up after January 2023
       if (lockVersion && lockVersion >= 10 && tokenId) {
@@ -80,15 +95,12 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const {
     data: membershipData,
     refetch: refetchMembershipData,
-    isLoading: isMembershipDataLoading,
+    isInitialLoading: isMembershipDataLoading,
   } = useQuery(
     [keyId, lockAddress, network],
-    (): Promise<MembershipData> => {
-      return storageService.getKeyMetadataValues({
-        lockAddress,
-        network,
-        keyId: Number(keyId),
-      })
+    async (): Promise<MembershipData> => {
+      const response = await storage.keyMetadata(network, lockAddress, keyId!)
+      return response.data as unknown as MembershipData
     },
     {
       refetchInterval: false,
@@ -96,17 +108,13 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     }
   )
 
-  const { data: isVerifier, isLoading: isVerifierLoading } = useQuery(
+  const { data: isVerifier, isInitialLoading: isVerifierLoading } = useQuery(
     [viewer, network, lockAddress],
-    () => {
-      return storageService.getVerifierStatus({
-        viewer: viewer!,
-        network,
-        lockAddress,
-      })
+    async () => {
+      const response = await storage.verifier(network, lockAddress, viewer!)
+      return !!response.data?.enabled
     },
     {
-      enabled: storageService.isAuthenticated,
       refetchInterval: false,
     }
   )
@@ -114,22 +122,18 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
-      const response = await storageService.markTicketAsCheckedIn({
-        lockAddress,
-        keyId: keyId!,
-        network,
-      })
-      if (!response.ok) {
-        if (response.status === 409) {
-          ToastHelper.error('Ticket already checked in')
-        } else {
-          throw new Error('Failed to check in')
-        }
-      }
+      await storage.checkTicket(network, lockAddress, keyId!)
       await refetchMembershipData()
       setIsCheckingIn(false)
+      setShowWarning(false)
     } catch (error) {
       console.error(error)
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          ToastHelper.error('Ticket already checked in')
+          return
+        }
+      }
       ToastHelper.error('Failed to check in')
     }
   }
@@ -169,10 +173,67 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
   const onClickVerified = () => {
-    if (typeof onVerified === 'function') {
+    if (!checkedInAt && !!isVerifier && !showWarning) {
+      setShowWarning(true)
+    } else if (typeof onVerified === 'function') {
       onVerified()
     }
   }
+
+  const WarningDialog = () => (
+    <Transition show appear as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={() => {
+          setShowWarning(false)
+        }}
+        open
+      >
+        <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
+        <Transition.Child
+          as={Fragment}
+          enter="transition ease-out duration-300"
+          enterFrom="opacity-0 translate-y-1"
+          enterTo="opacity-100"
+          leave="transition ease-in duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0 translate-y-1"
+        >
+          <div className="fixed inset-0 p-6 overflow-y-auto">
+            <div className="flex items-center justify-center min-h-full">
+              <Dialog.Panel className="w-full max-w-sm">
+                <div className="w-full max-w-sm bg-white rounded-xl">
+                  <div className="flex flex-col gap-3">
+                    <div className="p-2 text-center bg-amber-300 rounded-t-xl">
+                      <span className="text-lg">Warning</span>
+                    </div>
+                    <div className="flex flex-col w-full gap-3 p-4">
+                      <span>
+                        The current ticket has not been checked-in. Are you sure
+                        you want to scan the next one?
+                      </span>
+                      <Button onClick={() => setShowWarning(false)}>
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="outlined-primary"
+                        onClick={onClickVerified}
+                      >
+                        <div className="flex items-center">
+                          <span>Ok, continue</span>
+                        </div>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Transition.Child>
+      </Dialog>
+    </Transition>
+  )
 
   const CardActions = () => (
     <div className="grid w-full gap-2">
@@ -211,6 +272,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
 
   return (
     <div className="flex justify-center">
+      {showWarning && <WarningDialog />}
       <MembershipCard
         onClose={onClose}
         keyId={keyId!}
@@ -218,9 +280,13 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
         membershipData={membershipData!}
         invalid={invalid}
         timestamp={timestamp}
-        lock={lock!}
+        lock={{
+          name: lock!.name!,
+          address: lock!.address,
+        }}
         network={network}
         checkedInAt={checkedInAt}
+        showWarning={showWarning}
       >
         <CardActions />
       </MembershipCard>

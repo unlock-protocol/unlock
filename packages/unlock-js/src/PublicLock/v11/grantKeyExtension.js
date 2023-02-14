@@ -1,5 +1,6 @@
 export default async function (
   { lockAddress, tokenId, duration = 0 },
+  transactionOptions = {},
   callback
 ) {
   if (!tokenId) {

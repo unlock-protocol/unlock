@@ -11,6 +11,7 @@ import utils from '../../utils'
  */
 export default async function (
   { lockAddress, amount = '0', decimals = 18 },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -29,7 +30,7 @@ export default async function (
   const parser = lockContract.interface
   const withdrawalEvent = receipt.logs
     .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {

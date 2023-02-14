@@ -8,6 +8,7 @@ import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
+import setEventHooks from './setEventHooks'
 
 import v6 from '../v6'
 
@@ -21,6 +22,14 @@ const {
   getLock,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  updateTransferFee,
 } = v6
 
 export default {
@@ -45,4 +54,13 @@ export default {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
+  setEventHooks,
+  updateTransferFee,
 }

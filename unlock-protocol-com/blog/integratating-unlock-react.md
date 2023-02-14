@@ -8,7 +8,7 @@ image: /images/blog/react-integration/react-logo.png
 latestUpdateDate: April 6, 2020
 ---
 
-React is one of the main JavaScript front end frameworks. Unlock's JavaScript API provides an easy way for any creator to restrict access to content or features. For example, on this very blog (which [uses React](https://github.com/unlock-protocol/unlock/tree/master/unlock-protocol.com)), only the members (who own a key to the creator's lock) can leave comments.
+React is one of the main JavaScript front end frameworks. Unlock's JavaScript API provides an easy way for any creator to restrict access to content or features.
 
 Here is a tutorial on how to integrate Unlock in your react application. We will create an React application (using [create-react-app](https://github.com/facebook/create-react-app)) which will show the user whether they own a key (unlocked!), or if they need to purchase one (locked). The [code for the application is on Github](https://github.com/unlock-protocol/react-example); you can try it yourself directly on the [corresponding github page](https://unlock-protocol.github.io/react-example/).
 
@@ -32,21 +32,18 @@ Note: this loading technique is non blocking, which means this does not have any
 
 2. Add the configuration
 
-The snippet inserted above needs to know which lock are used on this page.  For this example, we will use a single lock, the one that is already being used on that blog.
+The snippet inserted above needs to know which lock are used on this page. For this example, we will use a single lock, the one that is already being used on that blog.
 
 ```
 <script>
   var unlockProtocolConfig = {
     locks: {
-      '0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F': {
+      '0xb77030a7e47a5eb942a4748000125e70be598632': {
         name: 'The Unlock Members lock',
+        network: 137,
       },
     },
-    icon: 'https://unlock-protocol.com/images/svg/unlock-word-mark.svg',
-    callToAction: {
-      default:
-        'Please Unlock things!',
-    },
+    icon: 'https://unlock-protocol.com/images/svg/unlock-word-mark.svg'
   }
 </script>
 ```
@@ -54,9 +51,10 @@ The snippet inserted above needs to know which lock are used on this page.  For 
 3. Writing the component which listens to Unlock
 
 React components can have their own local state (which can be passed down to their children components). Here, our state will likely include a `locked` key. The value associated with that key can be any of the 3 following:
-* `locked`
-* `unlocked`
-* `pending`
+
+- `locked`
+- `unlocked`
+- `pending`
 
 The `pending` state allows us to not show to the use a "flash" when toggling between the 2 other state. When the page loads, we do not know right away whether the state should be locked or unlocked. Fortunately though, the unlock JavaScript API is very fast (we cache a lot of data) to make sure that, in the vast majority of cases, the user will actually not witness the `pending` state.
 
@@ -120,10 +118,10 @@ checkout() {
 }
 ```
 
-
 Now that we have the state and ways to invoke a key purchase, we can easily render based on it. This is probably where your app's logic will likely diverge the most, but here is what we did for our demo application:
-* if the content is locked, we show a 🔒, anc clicking on it will open the checkout model.
-* if the content is unlocked, we show a 🗝!
+
+- if the content is locked, we show a 🔒, anc clicking on it will open the checkout model.
+- if the content is unlocked, we show a 🗝!
 
 ```
 render() {
@@ -155,7 +153,6 @@ render() {
 
 ## Conclusion
 
-Unlock's JavaScript API is very simple and will get out of the way to let you implement behaviors that your application requires. This blog only lets members comments, but also shows the status in the bottom bar...
+Unlock's JavaScript API is very simple and will get out of the way to let you implement behaviors that your application requires.
 
 If the status of the lock is re-used in several components, it might be a good idea to isolate that logic in a single one and pass the state as props to sub-components!
-

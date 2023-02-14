@@ -1,4 +1,4 @@
-name: Automatic Rebase
+name: "Pull requests comments"
 
 on:
   issue_comment:
@@ -21,18 +21,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.7
+        uses: cirrus-actions/rebase@1.8
         with:
           autosquash: ${{ contains(github.event.comment.body, '/autosquash') || contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  run-all-tests:
-    name: Run All Tests
-    if: >-
-      github.event.issue.pull_request != '' && 
-      (
-        contains(github.event.comment.body, '/run-all-tests')
-      )
-    uses: ./.github/workflows/_tests.yml
-      
-

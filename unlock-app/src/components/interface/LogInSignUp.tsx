@@ -26,7 +26,6 @@ export const LogInSignUp = ({
     <BrowserOnly>
       {!isSignup && (
         <>
-          <h1>Login</h1>
           <LogIn network={network} onCancel={onCancel} useWallet={useWallet} />
         </>
       )}
