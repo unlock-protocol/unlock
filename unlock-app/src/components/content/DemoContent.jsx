@@ -30,24 +30,26 @@ const usePaywall = () => {
       persistentCheckout: false,
       metadataInputs: useMetadataInputs
         ? [
-            {
-              name: 'First Name',
-              type: 'text',
-              required: true,
-              public: true,
-            },
-            {
-              name: 'Last Name',
-              type: 'text',
-              required: true,
-            },
-          ]
+          {
+            name: 'First Name',
+            type: 'text',
+            required: true,
+            public: true,
+          },
+          {
+            name: 'Last Name',
+            type: 'text',
+            required: true,
+          },
+        ]
         : undefined,
       locks: {
-        [url.searchParams.get('lock')]: {},
+        [url.searchParams.get('lock')]: {
+          network: parseInt(url.searchParams.get('network'), 10),
+          emailRequired: true,
+        },
       },
       referrer,
-      network: parseInt(url.searchParams.get('network'), 10),
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
         expired:
@@ -144,16 +146,14 @@ export const DemoContent = () => {
                         background:
                           'linear-gradient(rgba(253, 250, 247, 0), rgb(250, 250, 250) 70%)',
                       }}
-                      className={`absolute top-0 w-full h-full ${
-                        locked ? 'block' : 'hidden'
-                      }`}
+                      className={`absolute top-0 w-full h-full ${locked ? 'block' : 'hidden'
+                        }`}
                     />
                   </div>
 
                   <div
-                    className={`text-xl text-center mt-5 ${
-                      locked ? 'block' : 'hidden'
-                    } `}
+                    className={`text-xl text-center mt-5 ${locked ? 'block' : 'hidden'
+                      } `}
                   >
                     Support our work and read the rest of this article by
                     becoming a member today!
