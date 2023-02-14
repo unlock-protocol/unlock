@@ -6,7 +6,6 @@ import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -64,14 +63,12 @@ export const WithdrawFundModal = ({
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
   ): Promise<unknown> => {
-    if (ethers.utils.isAddress(beneficiary)) {
-      const walletService = await getWalletService(network)
-      return await walletService.withdrawFromLock({
-        lockAddress,
-        beneficiary,
-        amount: form.amount.toString(),
-      })
-    }
+    const walletService = await getWalletService(network)
+    return await walletService.withdrawFromLock({
+      lockAddress,
+      beneficiary,
+      amount: form.amount.toString(),
+    })
   }
 
   const onDismiss = () => {
@@ -92,6 +89,7 @@ export const WithdrawFundModal = ({
   })
 
   const onWithDraw = async (form: WithdrawFormProps) => {
+    console.log('form', form)
     await withdrawMutation.mutateAsync(form, {
       onSuccess: () => {
         ToastHelper.success(`Withdraw done`)
