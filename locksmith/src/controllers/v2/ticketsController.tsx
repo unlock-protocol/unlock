@@ -34,6 +34,7 @@ export class TicketsController {
     )
     response.status(200).send({ payload, signature })
   }
+
   /**
    * This will mark a ticket as check-in, this operation is only allowed for a lock verifier of a lock manager
    * @param {Request} request
