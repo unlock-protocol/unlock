@@ -6,7 +6,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
   lockAddress: string
@@ -212,10 +212,9 @@ export const LockManagerForm = ({
 }: LockManagerFormProps) => {
   const web3Service = useWeb3Service()
 
-  const [managerAddress, setManagerAddress] = useState('')
-
   const localForm = useForm()
 
+  const managerAddressRef = useRef<string>('')
   const { handleSubmit, reset, watch } = localForm
   const { getWalletService } = useAuth()
 
@@ -268,15 +267,13 @@ export const LockManagerForm = ({
 
   const getManagerAddress = async () => {
     const managerValue = await watch('manager')
-    if (managerValue !== '' && managerValue !== undefined) {
-      setManagerAddress(managerValue)
-    } else setManagerAddress('')
+    managerAddressRef.current = managerValue?.address || ''
   }
   getManagerAddress()
 
   const onAddLockManager = async () => {
-    if (managerAddress !== '')
-      await addLockManagerMutation.mutateAsync(managerAddress)
+    const address = managerAddressRef.current
+    if (address !== '') await addLockManagerMutation.mutateAsync(address)
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
@@ -287,7 +284,7 @@ export const LockManagerForm = ({
     disabled ||
     isLoading ||
     addLockManagerMutation.isLoading ||
-    managerAddress === ''
+    managerAddressRef.current === ''
 
   return (
     <div className="relative">
