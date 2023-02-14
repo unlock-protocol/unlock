@@ -1,22 +1,26 @@
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
+import { storage } from '~/config/storage'
 
 export enum Platform {
   APPLE = 'apple',
   GOOGLE = 'google',
 }
 
-export const createWalletPass = async (props: any) => {
-  const {
-    signature,
-    contractAddress,
-    tokenId,
-    signatureMessage,
-    chainId,
-    platform,
-    image,
-  } = props
+export const isEthPassSupported = (network: number) => {
+  // Check `chain` param on https://docs.ethpass.xyz/api-reference#tag/passes
+  return [1, 5, 137, 80001, 10, 69, 42161, 421611].indexOf(network) > -1
+}
 
+export const createWalletPass = async ({
+  signature,
+  lockAddress,
+  tokenId,
+  signatureMessage,
+  network,
+  platform,
+  image,
+}: any) => {
   let pass = {}
   if (platform === Platform.APPLE) {
     pass = {
@@ -34,8 +38,8 @@ export const createWalletPass = async (props: any) => {
         {
           key: 'secondary1',
           label: 'Lock Address',
-          value: `${contractAddress.slice(0, 6)}...${contractAddress.slice(
-            contractAddress.length - 4
+          value: `${lockAddress.slice(0, 6)}...${lockAddress.slice(
+            lockAddress.length - 4
           )}`,
           textAlignment: 'PKTextAlignmentLeft',
         },
@@ -48,7 +52,7 @@ export const createWalletPass = async (props: any) => {
         {
           key: 'secondary3',
           label: 'Network',
-          value: networks[chainId].name,
+          value: networks[network].name,
           textAlignment: 'PKTextAlignmentNatural',
         },
       ],
@@ -59,14 +63,18 @@ export const createWalletPass = async (props: any) => {
     }
   }
 
+  // Get signed QR Code for verification!
+  const keyResponse = await storage.ticketQRCode(network, lockAddress, tokenId)
+  console.log(keyResponse)
+
   const payload = {
     signature,
     signatureMessage,
-    pass,
+    pass, // customize me?
     platform,
     chain: {
-      network: chainId,
-      name: "evm",
+      network: network,
+      name: 'evm',
     },
     nft: {
       contractAddress,
@@ -74,10 +82,10 @@ export const createWalletPass = async (props: any) => {
     },
     barcode: {
       redirect: {
-        url: "" // URL used on QR Code,
-       },
+        url: '', // URL used on QR Code,
+      },
     },
-    // image,
+    image: 'https://app.unlock-protocol.com/images/unlock.png', // Placeholder until EthPass supports SVGs
   }
 
   try {
@@ -86,10 +94,11 @@ export const createWalletPass = async (props: any) => {
       payload,
       {
         headers: {
-          'X-API-KEY': process.env.ETHPASS_API_KEY || '',
+          'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
         },
       }
     )
+    console.log(response)
 
     if (response.status === 200) {
       const { id, fileURL, buffer } = response.data

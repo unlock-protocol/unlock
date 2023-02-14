@@ -1,6 +1,11 @@
 import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
 import useClipboard from 'react-use-clipboard'
 import {
+  createWalletPass,
+  isEthPassSupported,
+  Platform,
+} from '../../../services/ethpass'
+import {
   AvatarImage,
   Root as Avatar,
   Fallback as AvatarFallback,
@@ -15,6 +20,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
+import { DiAndroid as AndroidIcon } from 'react-icons/di'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
@@ -44,7 +50,6 @@ import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/receipts'
-import { createWalletPass, Platform } from '../../../services/ethpass'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -90,7 +95,7 @@ function Key({ ownedKey, account, network }: Props) {
     successDuration: 2000,
   })
 
-  const handleSignature: MouseEventHandler<HTMLButtonElement> = async (
+  const handleQRCodeSignature: MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
     event.preventDefault()
@@ -119,23 +124,26 @@ function Key({ ownedKey, account, network }: Props) {
     })
   }
 
-  const generateWalletPass = async (platform: Platform) => {
-    const signatureMessage =
-      'Sign this message to generate your mobile wallet pass'
-    const signature = await walletService.signMessage(
-      signatureMessage,
-      'personal_sign'
-    )
+  const addToPhoneWallet = (platform: Platform) => {
+    return async () => {
+      const walletService = await getWalletService(network)
 
-    await createWalletPass({
-      contractAddress: lock.address,
-      tokenId: ownedKey.keyId,
-      chainId: network,
-      signatureMessage,
-      signature,
-      image: metadata.image,
-      platform,
-    })
+      const signatureMessage = `Sign this message to generate your mobile wallet pass for ${lock.address}}`
+      const signature = await walletService.signMessage(
+        signatureMessage,
+        'personal_sign'
+      )
+
+      await createWalletPass({
+        lockAddress: lock.address,
+        tokenId,
+        network,
+        signatureMessage,
+        signature,
+        image: metadata.image,
+        platform,
+      })
+    }
   }
 
   const onExploreLock = () => {
@@ -263,7 +271,7 @@ function Key({ ownedKey, account, network }: Props) {
             aria-label="QR Code"
             className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
             type="button"
-            onClick={handleSignature}
+            onClick={handleQRCodeSignature}
           >
             <QrCodeIcon size={18} />
           </button>
@@ -320,10 +328,24 @@ function Key({ ownedKey, account, network }: Props) {
                         onClick={addToWallet}
                       >
                         <WalletIcon />
-                        Add to my wallet
+                        Add to my crypto wallet
                       </MenuButton>
                     )}
                   </Menu.Item>
+                  {isEthPassSupported(network) && (
+                    <Menu.Item>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled}
+                          active={active}
+                          onClick={addToPhoneWallet(Platform.GOOGLE)}
+                        >
+                          <AndroidIcon />
+                          Add to my Android Phone
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  )}
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton
@@ -447,28 +469,6 @@ function Key({ ownedKey, account, network }: Props) {
             <span className="font-bold">{networkName}</span>
           </div>
         )}
-      </div>
-      <div className="grid gap-2 pt-4">
-        <div className="flex items-center gap-2">
-          <Tooltip label="Add to Apple Wallet" tip="Add to Apple Wallet">
-            <button
-              className={iconButtonClass}
-              type="button"
-              onClick={() => generateWalletPass(Platform.APPLE)}
-            >
-              <WalletIcon />
-            </button>
-          </Tooltip>
-          <Tooltip label="Add to Google Pay" tip="Add to Google Pay">
-            <button
-              className={iconButtonClass}
-              type="button"
-              onClick={() => generateWalletPass(Platform.GOOGLE)}
-            >
-              <WalletIcon />
-            </button>
-          </Tooltip>
-        </div>
       </div>
     </div>
   )
