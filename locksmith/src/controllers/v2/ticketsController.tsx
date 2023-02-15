@@ -182,7 +182,7 @@ export class TicketsController {
       const network = Number(request.params.network)
       const tokenId = request.params.keyId.toLowerCase()
 
-      const verificationUrl = generateQrCodeUrl({
+      const verificationUrl = await generateQrCodeUrl({
         network,
         lockAddress,
         tokenId,
