@@ -11,7 +11,7 @@ export default {
 
 {{#if customContent}}
   <section style="margin: 18px 0px; padding: 18px 18px 10px 18px; background: #F8FAFC; font-family: monospace, sans-serif;" class="custom">
-    {{#if lockImage}}<img src="{{inlineImage lockImage}}" style="max-height: 40px; float: left; margin-right: 5px;" >{{/if}}
+    {{#if lockImage}}<img src="{{ lockImage}}" style="max-height: 40px; float: left; margin-right: 5px;" >{{/if}}
     {{{customContent}}}
   </section>
 {{/if}}
