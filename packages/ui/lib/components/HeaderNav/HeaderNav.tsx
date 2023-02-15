@@ -204,7 +204,10 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
     : 'px-10 py-8'
 
   const Title = ({ title, open }: any) => {
-    const isActive = window.location.pathname === url
+    const [isActive, setActive] = useState(false)
+    useEffect(() => {
+      setActive(window && window?.location?.pathname === url)
+    }, [])
 
     return (
       <span
