@@ -43,13 +43,12 @@ export const WithdrawFundModal = ({
 }: WithdrawFundModalProps) => {
   const web3Service = useWeb3Service()
   const [beneficiary, setBeneficiary] = useState('')
-  const { getWalletService } = useAuth()
+  const { account, getWalletService } = useAuth()
 
   const localForm = useForm<WithdrawFormProps>({
     mode: 'onChange',
     defaultValues: {
       amount: 0,
-      // beneficiary: `${account}`, // todo: need fix on AddressInput to support default values
     },
   })
   const {
@@ -58,7 +57,16 @@ export const WithdrawFundModal = ({
     formState: { errors },
     watch,
     reset,
+    setValue,
+    trigger,
   } = localForm
+
+  useEffect(() => {
+    // todo: need fix on AddressInput to support default values
+    reset({
+      beneficiary: account,
+    })
+  }, [account, reset, setValue, trigger])
 
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
