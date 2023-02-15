@@ -10,9 +10,15 @@
 const allNetworks = require("@unlock-protocol/networks");
 const { execSync } = require("child_process");
 
-const networks = Object.keys(allNetworks).filter(
-  (n) => !["localhost", "default", "networks"].includes(n)
-);
+// if any network is present this array, only these will be executed
+const only = [];
+
+// these networks will be excluded from run
+const toExclude = ["localhost", "default", "networks"];
+
+const networks = only.length
+  ? only
+  : Object.keys(allNetworks).filter((n) => !toExclude.includes(n));
 
 console.log(`Running task for the following networks: ${networks.toString()}`);
 
