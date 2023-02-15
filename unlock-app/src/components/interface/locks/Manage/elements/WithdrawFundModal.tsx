@@ -43,13 +43,13 @@ export const WithdrawFundModal = ({
 }: WithdrawFundModalProps) => {
   const web3Service = useWeb3Service()
   const [beneficiary, setBeneficiary] = useState('')
-  const { account, getWalletService } = useAuth()
+  const { getWalletService } = useAuth()
 
   const localForm = useForm<WithdrawFormProps>({
     mode: 'onChange',
     defaultValues: {
       amount: 0,
-      beneficiary: `${account}`,
+      // beneficiary: `${account}`, // todo: need fix on AddressInput to support default values
     },
   })
   const {
