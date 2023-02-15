@@ -1,11 +1,9 @@
-import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
+import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useEffect, useState } from 'react'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -41,8 +39,6 @@ export const WithdrawFundModal = ({
   symbol,
   network,
 }: WithdrawFundModalProps) => {
-  const web3Service = useWeb3Service()
-  const [beneficiary, setBeneficiary] = useState('')
   const { account, getWalletService } = useAuth()
 
   const localForm = useForm<WithdrawFormProps>({
@@ -57,16 +53,7 @@ export const WithdrawFundModal = ({
     formState: { errors },
     watch,
     reset,
-    setValue,
-    trigger,
   } = localForm
-
-  useEffect(() => {
-    // todo: need fix on AddressInput to support default values
-    reset({
-      beneficiary: account,
-    })
-  }, [account, reset, setValue, trigger])
 
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
@@ -74,7 +61,7 @@ export const WithdrawFundModal = ({
     const walletService = await getWalletService(network)
     return await walletService.withdrawFromLock({
       lockAddress,
-      beneficiary,
+      beneficiary: account, // todo: replace with custom beneficiary when AddressInput is fixed
       amount: form.amount.toString(),
     })
   }
@@ -107,17 +94,6 @@ export const WithdrawFundModal = ({
     })
   }
 
-  const getBeneficiary = async () => {
-    const managerValue = await watch('beneficiary')
-    if (managerValue !== '' && managerValue !== undefined) {
-      setBeneficiary(managerValue)
-    } else setBeneficiary('')
-  }
-
-  useEffect(() => {
-    getBeneficiary()
-  }, [])
-
   const amountToTransfer = watch('amount', 0)
 
   return (
@@ -132,7 +108,8 @@ export const WithdrawFundModal = ({
           </span>
         </div>
         <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
-          <AddressInput
+          <span>{`Balance will be withdraw to ${account}`}</span>
+          {/* <AddressInput
             withIcon
             isTruncated
             name="beneficiary"
@@ -141,7 +118,8 @@ export const WithdrawFundModal = ({
             localForm={localForm!}
             disabled={withdrawMutation.isLoading}
             web3Service={web3Service}
-          />
+          />*/}
+
           <Input
             label={`Balance to transfer: ${amountToTransfer} ${symbol}`}
             size="small"
