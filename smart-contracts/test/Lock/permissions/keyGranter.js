@@ -1,4 +1,4 @@
-const { deployLock, reverts } = require('../../helpers')
+const { deployLock, reverts, KEY_GRANTER_ROLE, LOCK_MANAGER_ROLE } = require('../../helpers')
 
 let lock
 let result
@@ -17,17 +17,17 @@ contract('Permissions / KeyGranter', (accounts) => {
 
   describe('default permissions on a new lock', () => {
     it('should add the lock creator to the keyGranter role', async () => {
-      let result = await lock.isKeyGranter(lockCreator)
-      assert.equal(result, true)
+      assert.equal(await lock.hasRole(KEY_GRANTER_ROLE, lockCreator), true)
+      // lock creator is also added to the LockManager role by default
+      assert.equal(await lock.hasRole(LOCK_MANAGER_ROLE, lockCreator),true)
     })
   })
   describe('modifying permissions on an existing lock', () => {
-    // lock creator is also added to the LockManager role by default
     it('should allow a lockManager to add a KeyGranter', async () => {
       result = await lock.isLockManager(lockCreator)
       assert.equal(result, true)
-      await lock.addKeyGranter(newKeyGranter, { from: lockCreator })
-      result = await lock.isKeyGranter(newKeyGranter)
+      await lock.grantRole(KEY_GRANTER_ROLE, newKeyGranter, { from: lockCreator })
+      result = await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter)
       assert.equal(result, true)
     })
 
@@ -35,18 +35,18 @@ contract('Permissions / KeyGranter', (accounts) => {
       result = await lock.isLockManager(notAuthorized)
       assert.equal(result, false)
       await reverts(
-        lock.addKeyGranter(accounts[5], { from: notAuthorized }),
-        'ONLY_LOCK_MANAGER'
+        lock.grantRole(KEY_GRANTER_ROLE, accounts[5], { from: notAuthorized }),
+        `is missing role ${LOCK_MANAGER_ROLE}`
       )
     })
 
     it('should only allow a lockManager to remove a KeyGranter', async () => {
       await reverts(
-        lock.revokeKeyGranter(newKeyGranter, { from: notAuthorized }),
-        'ONLY_LOCK_MANAGER'
+        lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter, { from: notAuthorized }),
+        `is missing role ${LOCK_MANAGER_ROLE}`
       )
-      await lock.revokeKeyGranter(newKeyGranter, { from: lockCreator })
-      result = await lock.isKeyGranter(newKeyGranter)
+      await lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter, { from: lockCreator })
+      result = await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter)
       assert.equal(result, false)
     })
   })

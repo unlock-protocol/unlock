@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const ZERO = ethers.constants.AddressZero
@@ -36,8 +36,8 @@ export const UpdateHooksForm = ({
   disabled,
   version,
 }: UpdateHooksFormProps) => {
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
+  const { getWalletService } = useAuth()
   const [enabledFields, setEnabledFields] = useState<Record<string, boolean>>({
     keyPurchase: false,
     keyCancel: false,
@@ -61,6 +61,7 @@ export const UpdateHooksForm = ({
   }
 
   const setEventsHooks = async (fields: FormProps) => {
+    const walletService = await getWalletService(network)
     return await walletService.setEventHooks({
       lockAddress,
       ...fields,

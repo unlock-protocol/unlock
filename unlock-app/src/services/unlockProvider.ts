@@ -12,7 +12,8 @@ interface UnlockProviderOptions {
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
-export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
+export default class UnlockProvider extends ethers.providers
+  .JsonRpcBatchProvider {
   public wallet: ethers.Wallet | null
 
   public emailAddress: string | null

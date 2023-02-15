@@ -9,13 +9,15 @@ vi.mock('ethers')
 
 describe('getNameOrAddressForAddress', () => {
   beforeAll(() => {
-    ethers.providers.JsonRpcProvider = vi.fn(() => {
+    const fn = vi.fn(() => {
       return {
         lookupAddress: () => {
           return 'julien51.eth'
         },
       }
     })
+    ethers.providers.JsonRpcProvider = fn
+    ethers.providers.JsonRpcBatchProvider = fn
   })
 
   it('should yield the name if there is one', async () => {
@@ -29,13 +31,16 @@ describe('getNameOrAddressForAddress', () => {
 
 describe('getAddressForName', () => {
   beforeAll(() => {
-    ethers.providers.JsonRpcProvider = vi.fn(() => {
+    const fn = vi.fn(() => {
       return {
         resolveName: () => {
           return '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'
         },
       }
     })
+
+    ethers.providers.JsonRpcProvider = fn
+    ethers.providers.JsonRpcBatchProvider = fn
   })
 
   it('should yield the name if there is one', async () => {

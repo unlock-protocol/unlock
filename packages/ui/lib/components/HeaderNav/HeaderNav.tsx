@@ -1,5 +1,5 @@
 import { Popover, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, ReactNode, useEffect, useState } from 'react'
 import { Button } from '../Button/Button'
 import { SOCIAL_LINKS } from '../constants'
 import { Icon } from '../Icon/Icon'
@@ -55,11 +55,15 @@ type MenuSectionProps =
       url: string
     }
 
-interface ActionsProps {
-  title: string
-  url: string
-  icon?: IconType
-}
+type ActionsProps =
+  | {
+      title: string
+      url: string
+      icon?: IconType
+    }
+  | {
+      content: ReactNode
+    }
 interface NavbarProps {
   menuSections: MenuSectionProps[]
   actions: ActionsProps[]
@@ -71,6 +75,7 @@ interface NavbarProps {
     mobile?: string
     desktop?: string
   }
+  showSocialIcons?: boolean
 }
 
 const POPOVER_CLASSES: SizeStyleProp = {
@@ -199,10 +204,15 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
     : 'px-10 py-8'
 
   const Title = ({ title, open }: any) => {
+    const [isActive, setActive] = useState(false)
+    useEffect(() => {
+      setActive(window && window?.location?.pathname === url)
+    }, [])
+
     return (
       <span
         className={`text-lg duration-200  hover:text-brand-ui-primary md:p-4 ${
-          open ? 'text-brand-ui-primary' : 'text-gray-700'
+          open || isActive ? 'text-brand-ui-primary' : 'text-gray-700'
         }`}
       >
         {title}
@@ -374,6 +384,7 @@ export const HeaderNav = ({
   actions,
   logo,
   extraClass,
+  showSocialIcons = true, // show social icons by default
 }: NavbarProps) => {
   const [menuExpanded, setMenuExpanded] = useState(false)
   const logoUrl = logo.url || '#'
@@ -415,29 +426,37 @@ export const HeaderNav = ({
           </div>
         </div>
         <div className="flex items-center justify-end gap-4">
-          <div className="hidden lg:block">
-            <SocialIcons />
-          </div>
+          {showSocialIcons && (
+            <div className="hidden lg:block">
+              <SocialIcons />
+            </div>
+          )}
           <div className="flex gap-2">
-            {actions?.map(({ title, url, icon }, index) => {
-              return (
-                <Link href={url} key={index}>
-                  <Button variant="outlined-primary" size="small">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold lg:text-base text-brand-ui-primary">
-                        {title}
-                      </span>
-                      {icon && (
-                        <Icon
-                          className="text-brand-ui-primary"
-                          icon={icon}
-                          size={25}
-                        />
-                      )}
-                    </div>
-                  </Button>
-                </Link>
-              )
+            {actions?.map((action: ActionsProps, index) => {
+              if ('title' in action) {
+                const { title, url, icon } = action
+                return (
+                  <Link href={url} key={index}>
+                    <Button variant="outlined-primary" size="small">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold lg:text-base text-brand-ui-primary">
+                          {title}
+                        </span>
+                        {icon && (
+                          <Icon
+                            className="text-brand-ui-primary"
+                            icon={icon}
+                            size={25}
+                          />
+                        )}
+                      </div>
+                    </Button>
+                  </Link>
+                )
+              } else if ('content' in action) {
+                return action.content
+              }
+              return null
             })}
           </div>
         </div>
@@ -452,7 +471,7 @@ export const HeaderNav = ({
         >
           <div className="flex flex-col gap-10">
             <NavSectionMobile menuSections={menuSections} />
-            <SocialIcons />
+            {showSocialIcons && <SocialIcons />}
           </div>
         </div>
       )}
