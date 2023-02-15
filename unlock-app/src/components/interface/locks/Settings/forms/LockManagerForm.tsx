@@ -212,11 +212,9 @@ export const LockManagerForm = ({
 }: LockManagerFormProps) => {
   const web3Service = useWeb3Service()
 
-  const [managerAddress, setManagerAddress] = useState('')
+  const localForm = useForm<{ manager: string }>()
 
-  const localForm = useForm()
-
-  const { handleSubmit, reset, watch } = localForm
+  const { handleSubmit, reset } = localForm
   const { getWalletService } = useAuth()
 
   const getLock = async () => {
@@ -266,28 +264,15 @@ export const LockManagerForm = ({
     }
   )
 
-  const getManagerAddress = async () => {
-    const managerValue = await watch('manager')
-    if (managerValue !== '' && managerValue !== undefined) {
-      setManagerAddress(managerValue)
-    } else setManagerAddress('')
-  }
-  getManagerAddress()
-
-  const onAddLockManager = async () => {
-    if (managerAddress !== '')
-      await addLockManagerMutation.mutateAsync(managerAddress)
+  const onAddLockManager = async ({ manager = '' }: any) => {
+    if (manager !== '') await addLockManagerMutation.mutateAsync(manager)
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
 
   const noManagers = managers?.length === 0
 
-  const disableInput =
-    disabled ||
-    isLoading ||
-    addLockManagerMutation.isLoading ||
-    managerAddress === ''
+  const disableInput = disabled || isLoading || addLockManagerMutation.isLoading
 
   return (
     <div className="relative">

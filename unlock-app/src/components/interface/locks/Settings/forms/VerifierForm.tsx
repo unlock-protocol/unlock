@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { AddressInput, Button } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -7,6 +7,7 @@ import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { addressMinify } from '~/utils/strings'
 import { storage } from '~/config/storage'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface VerifierProps {
   address: string
@@ -87,11 +88,15 @@ export const VerifierForm = ({
 }: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
 
-  const { register, handleSubmit, reset } = useForm<VerifierFormDataProps>({
+  const localForm = useForm<VerifierFormDataProps>({
     defaultValues: {
       verifier: '',
     },
   })
+
+  const web3Service = useWeb3Service()
+
+  const { handleSubmit, reset } = localForm
 
   const getVerifiers = async () => {
     const response = await storage.verifiers(network, lockAddress)
@@ -207,13 +212,14 @@ export const VerifierForm = ({
           onSubmit={handleSubmit(onAddVerifier)}
         >
           <div className="flex flex-col gap-2">
-            <span className="text-base text-brand-dark">
-              Add verifier, please enter the wallet address of theirs.
-            </span>
-            <Input
+            <AddressInput
+              withIcon
               disabled={disabled}
-              {...register('verifier')}
+              label="Add verifier, please enter the wallet address of theirs."
+              name="verifier"
               autoComplete="off"
+              localForm={localForm}
+              web3Service={web3Service}
             />
           </div>
           <Button
