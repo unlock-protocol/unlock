@@ -42,7 +42,6 @@ export const gnosis: NetworkConfig = {
     coinbase: 'DAI',
   },
   startBlock: 19338700,
-  swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   previousDeploys: [
     {
       unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',

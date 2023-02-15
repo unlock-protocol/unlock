@@ -38,7 +38,6 @@ export const bsc: NetworkConfig = {
     decimals: 18,
     coingecko: 'binancecoin',
   },
-  swapPurchaser: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   startBlock: 13079000, // 12368889,
   previousDeploys: [
     {
