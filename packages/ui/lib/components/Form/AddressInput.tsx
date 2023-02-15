@@ -8,7 +8,7 @@ import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-
+import { useMutation } from '@tanstack/react-query'
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -76,9 +76,8 @@ export const AddressInput = forwardRef(
     const [addressType, setAddressType] = useState('')
     const [resolvedAddress, setResolvedAddress] = useState('')
     const [resolvedName, setResolvedName] = useState('')
-    const [loadingResolvedAddress, setLoading] = useState(false)
     const [error, setError] = useState<any>('')
-    const [success, setSuccess] = useState('')
+    const [success, setSuccess] = useState(false)
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
@@ -96,41 +95,57 @@ export const AddressInput = forwardRef(
       withIcon ? 'pl-10' : undefined
     )
 
+    const resolveName = async (address: string) => {
+      if (address.length === 0) return
+      return await web3Service.resolveName(address)
+    }
+
+    const onReset = () => {
+      setError('')
+      setSuccess(false)
+    }
+
+    const resolveNameMutation = useMutation(resolveName, {
+      onMutate: () => {
+        onReset() // restore state when typing
+      },
+      onSuccess: (res: any) => {
+        const isError = res?.type === 'error'
+
+        setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
+        setAddressType(isError ? 'error' : res.type) // set address type if not an error
+        setSuccess(!isError)
+
+        if (res && (res?.type || '')?.length > 0) {
+          if (res.type === 'address') {
+            setResolvedName(res.name)
+            return res.address
+          }
+
+          if (res.type === 'name') {
+            setResolvedAddress(res.address)
+            return res.address
+          }
+        }
+
+        return '' // fallback when address  is not resolved
+      },
+    })
+
     const handleResolver = async (address: string) => {
-      if (address.length) {
-        setLoading(true)
-        setError('')
-        setSuccess('')
-        setAddressType('')
-      }
-      const result = await web3Service.resolveName(address)
-      if (result && result.name !== null && result.type === 'address') {
-        setLoading(false)
-        setAddressType(result.type)
-        setSuccess(`It's a valid eth address`)
-        setResolvedName(result.name)
-        return result.address
-      } else if (result && result.address !== null && result.type === 'name') {
-        setLoading(false)
-        setAddressType(result.type)
-        setSuccess(`It's a valid ens name`)
-        setResolvedAddress(result.address)
-        return result.address
-      } else if (
-        (result && result.address === null) ||
-        (result && result.name === null && result.type === 'error')
-      ) {
-        setLoading(false)
-        setAddressType('error')
-        setError(`It's not a valid ens name or address`)
+      if (address.length > 0) {
+        return await resolveNameMutation.mutateAsync(address)
+      } else {
+        onReset()
+        return ''
       }
     }
+
     return (
       <>
         <FieldLayout
           label={label}
           size={size}
-          success={success}
           error={error}
           description={description}
         >
@@ -138,7 +153,7 @@ export const AddressInput = forwardRef(
             <div className="relative">
               {withIcon && (
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  {loadingResolvedAddress ? (
+                  {resolveNameMutation.isLoading ? (
                     <div className="animate-spin">
                       <Icon size={size} icon={LoadingIcon} />
                     </div>
@@ -158,7 +173,7 @@ export const AddressInput = forwardRef(
             </div>
           </div>
         </FieldLayout>
-        {!loadingResolvedAddress && (
+        {!resolveNameMutation.isLoading && (
           <div>
             {addressType === 'name' && resolvedAddress !== '' && (
               <span className="text-gray-600">

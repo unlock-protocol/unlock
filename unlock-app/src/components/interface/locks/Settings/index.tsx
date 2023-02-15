@@ -13,6 +13,7 @@ import { SettingGeneral } from './elements/SettingGeneral'
 import { SettingMisc } from './elements/SettingMisc'
 import { SettingPayments } from './elements/SettingPayments'
 import { SettingTab } from '~/pages/locks/settings'
+import { SettingEmail } from './elements/SettingEmail'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -189,6 +190,24 @@ const LockSettingsPage = ({
         <SidebarCard
           src="/images/illustrations/img-roles.svg"
           description={`Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`}
+        />
+      ),
+    },
+    {
+      id: 'emails',
+      label: 'Email',
+      children: (
+        <SettingEmail
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+        />
+      ),
+      sidebar: (
+        <SidebarCard
+          src="/images/illustrations/img-email.svg"
+          description="Customize the emails sent to users when they purchase your lock's membership NFTs."
         />
       ),
     },

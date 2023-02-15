@@ -2,37 +2,37 @@
 
 This folder contains tests to make sure that the different parts of the Unlock Protocol plays nicely together (i.e. contracts, subgraph, server, ui, etc...).
 
-## Run the entire test suite
+## Run the tests
+
+For subgraph test
 
 ```
-sh ./bin/tests.sh run
+yarn test
 ```
 
 ## Development
 
-For development, you will need to first launch an ETH node, deploy the Unlock contracts and subgraph.
+For development, you need a fully provisioned ETH node (with the Unlock contracts deployed and set correctly) and a subgraph indexing correctly. You can use scripts from our [`scripts`](../scripts) folder (at the root of the repo) to kickstart a fully configured instance of the protocol, either dockerized or directly from your local repo.
 
-The ETH node [provisioning script](../docker/development/eth-node/scripts/provision.ts) deploy a fresh instance of the Unlock contract, create a few locks and purchase some keys.
+NB: the ETH node [provisioning script](../docker/development/eth-node/scripts/provision.ts) will create a few locks and purchase some keys.
 
-### Boostrap e2e env using Docker (for CI)
-
-Run everything containerized (mimick the CI context)
-
-```
-sh ./bin/tests.sh
-```
-
-### Boostrap e2e env locally
+#### Boostrap dev env locally
 
 Run deployment and provisioning from your local machine (usually faster)
 
 ```shell
-sh ./bin/tests-local.sh run
+sh ../scripts/run-stack-local.sh
 ```
 
-### Run the tests
+#### Boostrap dev env dockerized
 
-Then run the tests against the local instance of the protocol
+```shell
+sh ../scripts/run-stack-dockerized.sh
+```
+
+#### Run test suite for development
+
+Run the tests against the newly deployed instance of the protocol
 
 ```
 yarn test --network localhost

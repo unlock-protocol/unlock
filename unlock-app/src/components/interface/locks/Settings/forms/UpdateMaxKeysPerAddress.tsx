@@ -3,7 +3,7 @@ import { ToggleSwitch, Input, Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface UpdateMaxKeysPerAddressProps {
   lockAddress: string
@@ -28,7 +28,7 @@ export const UpdateMaxKeysPerAddress = ({
   maxKeysPerAddress: maxKeysPerAddressValue,
 }: UpdateMaxKeysPerAddressProps) => {
   const [maxKeysPerAddress, setMaxKeysPerAddress] = useState(false)
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
 
   const {
     register,
@@ -51,7 +51,7 @@ export const UpdateMaxKeysPerAddress = ({
   const updateMaxKeysPerAddress = async (): Promise<any> => {
     if (!isManager) return
     const { maxKeysPerAddress = 1 } = getValues()
-
+    const walletService = await getWalletService(network)
     return await walletService.setMaxKeysPerAddress({
       lockAddress,
       maxKeysPerAddress: maxKeysPerAddress.toString(),

@@ -5,7 +5,11 @@ import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
-import { KeyManager } from '@unlock-protocol/unlock-js'
+import { KeyManager, LocksmithService } from '@unlock-protocol/unlock-js'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
+
 type Params = {
   [key: string]: string | number | undefined
   keyId: string
@@ -91,6 +95,35 @@ export const notifyNewKeysToWedlocks = async (
   }
 }
 
+export const getCustomContent = async (
+  lockAddress: string,
+  network: number,
+  template: string
+): Promise<string | undefined> => {
+  let customContent = undefined
+  const locksmithService = new LocksmithService()
+  try {
+    const res = await locksmithService.getCustomEmailContent(
+      Number(network),
+      lockAddress,
+      template
+    )
+
+    // parse markdown to HTML
+    const parsedContent = await unified()
+      .use(remarkParse)
+      .use(remarkHtml)
+      .process(res?.data?.content || '')
+
+    if (parsedContent?.value?.length > 0) {
+      customContent = String(parsedContent?.value)
+    }
+  } catch (err: any) {
+    console.warn('No custom email content present')
+  }
+  return customContent
+}
+
 /**
  * Check if there are metadata with an email address for a key and sends
  * and email based on the lock's template if applicable
@@ -174,6 +207,14 @@ export const notifyNewKeyToWedlocks = async (
     ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
     : [`keyMined${lockAddress.trim()}`, 'keyMined']
   // Lock address to find the specific template
+
+  // get custom email content
+  const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
+
+  const customContent = await getCustomContent(lockAddress, network!, template)
+  const withLockImage = (customContent || '')?.length > 0
+  const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
+
   await sendEmail(
     templates[0],
     templates[1],
@@ -185,6 +226,8 @@ export const notifyNewKeyToWedlocks = async (
       network: networks[network!]?.name ?? '',
       openSeaUrl,
       transferUrl: transferUrl.toString(),
+      customContent,
+      lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
     },
     attachments
   )
