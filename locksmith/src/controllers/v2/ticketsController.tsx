@@ -193,7 +193,7 @@ export class TicketsController {
       })
     } catch (err) {
       logger.error(err)
-      return response.sendStatus(500).send({
+      return response.status(500).send({
         message: 'Failed to generate QR code',
       })
     }

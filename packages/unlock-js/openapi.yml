@@ -989,6 +989,10 @@ paths:
               schema:
                 nullable: false
                 type: object
+                properties: 
+                  verificationUrl:
+                    type: string
+                    nullable: false
 
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'

@@ -38,7 +38,7 @@ export const generateQrCode = async ({
   tokenId,
   account,
 }: GenerateQrCodeProps) => {
-  const url = generateQrCodeUrl({
+  const url = await generateQrCodeUrl({
     network,
     lockAddress,
     tokenId,
