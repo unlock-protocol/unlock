@@ -1,4 +1,4 @@
-const { ethers, unlock } = require("hardhat");
+const { ethers, unlock, run } = require("hardhat");
 const { PERMIT2_ADDRESS } = require("@uniswap/universal-router-sdk");
 
 async function main() {
@@ -9,7 +9,7 @@ async function main() {
   const { unlockAddress } = unlock.networks[chainId];
 
   console.log(
-    `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}) `
+    `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}) `
   );
   const UnlockSwapPurchaser = await ethers.getContractFactory(
     "UnlockSwapPurchaser"
@@ -19,8 +19,21 @@ async function main() {
     unlockAddress,
     PERMIT2_ADDRESS
   );
+  
 
   console.log(`  swapper deployed at ${swapper.address}`);
+  
+  console.log(`   waiting for tx to be mined for contract verification...`)
+  await swapper.deployTransaction.wait(5)
+  
+  await run('verify:verify', {
+    address: swapper.address,
+    constructorArguments: [
+      unlockAddress,
+      PERMIT2_ADDRESS
+    ]
+  })
+  
 }
 
 // execute as standalone
