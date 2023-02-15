@@ -27,17 +27,12 @@ export const lockManagerOrKeyOwnerMiddleware: RequestHandler = async (
 
   const web3Service = new Web3Service(networks)
 
-  const isLockManager = await web3Service.isLockManager(
-    lockAddress,
-    userAddress,
-    network
-  )
+  const [isLockManager, keyOwner] = await Promise.all([
+    web3Service.isLockManager(lockAddress, userAddress, network),
+    web3Service.ownerOf(lockAddress, tokenId, network),
+  ])
 
-  const keyOwner = Normalizer.ethereumAddress(
-    await web3Service.ownerOf(lockAddress, tokenId, network)
-  )
-
-  if (!isLockManager && keyOwner !== userAddress) {
+  if (!isLockManager && Normalizer.ethereumAddress(keyOwner) !== userAddress) {
     return res.status(401).send({
       message: `${userAddress} is not a lock manager or the key owner of ${tokenId} for ${lockAddress} on ${network}`,
     })
