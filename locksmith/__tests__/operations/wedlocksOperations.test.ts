@@ -2,29 +2,21 @@ import { addMetadata } from '../../src/operations/userMetadataOperations'
 import {
   sendEmail,
   notifyNewKeyToWedlocks,
-  getCustomContent,
 } from '../../src/operations/wedlocksOperations'
 import { vi } from 'vitest'
-import normalizer from '../../src/utils/normalizer'
-const lockAddressMock = '0x'
+import app from '../app'
+import request from 'supertest'
+import { loginRandomUser } from '../test-helpers/utils'
+
+const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
 
 vi.mock('@unlock-protocol/unlock-js', async () => {
   const actual: any = await vi.importActual('@unlock-protocol/unlock-js')
   return {
     ...actual,
-    LocksmithService: vi.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
-        getCustomEmailContent: (_network, lockAddress, _template) => {
-          if (lockAddressMock === lockAddress) {
-            return {
-              // mock MARKDOWN
-              data: {
-                content: '## Test custom content markdown',
-              },
-            }
-          }
-          return undefined
-        },
+        isLockManager: (lock: string) => lockAddressMock === lock,
       }
     }),
   }
@@ -140,10 +132,47 @@ describe('Wedlocks operations', () => {
       })
     })
 
-    it('Correctly converts Markdown to HTML', async () => {
-      expect.assertions(1)
-      const html = await getCustomContent('0x', 5, 'template')
-      expect(html).toContain('<h2>Test custom content markdown</h2>')
+    it('Correctly save and retrieve', async () => {
+      expect.assertions(2)
+      const network = 5
+      const template = 'keyMined'
+
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+
+      const url = `/v2/email/${network}/locks/${lockAddressMock}/custom/${template}`
+
+      // save custom content
+      const res = await request(app)
+        .post(url)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+        .send({ content: '## Test custom content markdown' })
+
+      // check that custom content exists
+      const customContent = await request(app)
+        .get(url)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(customContent.body.content).toBe('## Test custom content markdown')
+    })
+
+    it('Custom content can not be retrieved when is not stored', async () => {
+      expect.assertions(3)
+      const network = 5
+      const template = 'RandomTemplate'
+
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+
+      const url = `/v2/email/${network}/locks/${lockAddressMock}/custom/${template}`
+
+      // check that custom content exists
+      const customContent = await request(app)
+        .get(url)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(customContent.status).toBe(404)
+      expect(customContent.body.content).toBe(undefined)
     })
   })
 })
