@@ -16,10 +16,10 @@ export const createWalletPass = async ({
   signature,
   lockAddress,
   tokenId,
+  // image, ethPass does not support SVG for now...
   signatureMessage,
   network,
   platform,
-  image,
 }: any) => {
   let pass = {}
   if (platform === Platform.APPLE) {
@@ -65,7 +65,11 @@ export const createWalletPass = async ({
 
   // Get signed QR Code for verification!
   const keyResponse = await storage.ticketQRCode(network, lockAddress, tokenId)
-  console.log(keyResponse)
+  if (!keyResponse.verificationUrl) {
+    throw new Error('Failed to retrieve verification URL')
+  }
+  const verificationUrl =
+    'https://staging-app.unlock-protocol.com/verification?data=%7B%22network%22%3A5%2C%22account%22%3A%220x61be315032235Ac365e39705c11c47fdaee698Ee%22%2C%22lockAddress%22%3A%220xD87a6C61C322019CAdbf70E616f5940B027eC895%22%2C%22tokenId%22%3A%221%22%2C%22timestamp%22%3A1676479583463%7D&sig=0x38e67ee865d9e4c71099d702d0521c42b771163b3759494b01b8d3795c2aaf1a050d9d39ced758ebf9c085c8f47c2f2df8bfc115cae352d60b05324448a7506c1c'
 
   const payload = {
     signature,
@@ -77,36 +81,30 @@ export const createWalletPass = async ({
       name: 'evm',
     },
     nft: {
-      contractAddress,
+      contractAddress: lockAddress,
       tokenId,
     },
     barcode: {
       redirect: {
-        url: '', // URL used on QR Code,
+        url: verificationUrl,
       },
     },
     image: 'https://app.unlock-protocol.com/images/unlock.png', // Placeholder until EthPass supports SVGs
   }
 
-  try {
-    const response = await axios.post(
-      'https://api.ethpass.xyz/api/v0/passes',
-      payload,
-      {
-        headers: {
-          'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
-        },
-      }
-    )
-    console.log(response)
-
-    if (response.status === 200) {
-      const { id, fileURL, buffer } = response.data
-      console.log(buffer)
-    } else {
-      console.log('## Bad request', response)
+  const response = await axios.post(
+    'https://api.ethpass.xyz/api/v0/passes',
+    payload,
+    {
+      headers: {
+        'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
+      },
     }
-  } catch (err) {
-    console.log('## Error', err)
+  )
+
+  if (response.status === 200) {
+    return response.data?.fileURL
+  } else {
+    throw new Error('EthPass pass generation failed!')
   }
 }

@@ -20,7 +20,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
-import { DiAndroid as AndroidIcon } from 'react-icons/di'
+import { DiAndroid as AndroidIcon, DiApple as AppleIcon } from 'react-icons/di'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
@@ -126,23 +126,31 @@ function Key({ ownedKey, account, network }: Props) {
 
   const addToPhoneWallet = (platform: Platform) => {
     return async () => {
-      const walletService = await getWalletService(network)
+      const generatePromise = async () => {
+        const walletService = await getWalletService(network)
+        const signatureMessage = `Sign this message to generate your mobile wallet pass for ${lock.address}}`
+        const signature = await walletService.signMessage(
+          signatureMessage,
+          'personal_sign'
+        )
 
-      const signatureMessage = `Sign this message to generate your mobile wallet pass for ${lock.address}}`
-      const signature = await walletService.signMessage(
-        signatureMessage,
-        'personal_sign'
-      )
+        return createWalletPass({
+          lockAddress: lock.address,
+          tokenId,
+          network,
+          signatureMessage,
+          signature,
+          image: metadata.image,
+          platform,
+        })
+      }
 
-      await createWalletPass({
-        lockAddress: lock.address,
-        tokenId,
-        network,
-        signatureMessage,
-        signature,
-        image: metadata.image,
-        platform,
+      const passUrl = await ToastHelper.promise(generatePromise(), {
+        loading: 'Generating the pass!',
+        success: 'Successfully generated!',
+        error: `The pass could not generated. Please try again.`,
       })
+      console.log({ passUrl })
     }
   }
 
@@ -333,18 +341,32 @@ function Key({ ownedKey, account, network }: Props) {
                     )}
                   </Menu.Item>
                   {isEthPassSupported(network) && (
-                    <Menu.Item>
-                      {({ active, disabled }) => (
-                        <MenuButton
-                          disabled={disabled}
-                          active={active}
-                          onClick={addToPhoneWallet(Platform.GOOGLE)}
-                        >
-                          <AndroidIcon />
-                          Add to my Android Phone
-                        </MenuButton>
-                      )}
-                    </Menu.Item>
+                    <>
+                      <Menu.Item>
+                        {({ active, disabled }) => (
+                          <MenuButton
+                            disabled={disabled}
+                            active={active}
+                            onClick={addToPhoneWallet(Platform.GOOGLE)}
+                          >
+                            <AndroidIcon />
+                            Add to my Android Device
+                          </MenuButton>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active, disabled }) => (
+                          <MenuButton
+                            disabled={disabled}
+                            active={active}
+                            onClick={addToPhoneWallet(Platform.APPLE)}
+                          >
+                            <AppleIcon />
+                            Add to my iOS device
+                          </MenuButton>
+                        )}
+                      </Menu.Item>
+                    </>
                   )}
                   <Menu.Item>
                     {({ active, disabled }) => (
