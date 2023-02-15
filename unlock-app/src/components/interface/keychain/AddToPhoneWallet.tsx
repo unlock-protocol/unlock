@@ -38,9 +38,6 @@ interface AddToWalletProps {
   lockAddress: string
   tokenId: string
   image: string
-  disabled: boolean
-  active: boolean
-  render: (onClick: () => void, children: JSX.Element) => void
 }
 
 export const AddToAppleWallet = ({
@@ -48,9 +45,6 @@ export const AddToAppleWallet = ({
   tokenId,
   network,
   image,
-  disabled,
-  active,
-  render,
 }: AddToWalletProps) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false)
   const [passUrl, setPassUrl] = useState<string>()
@@ -69,25 +63,18 @@ export const AddToAppleWallet = ({
     )
     setPassUrl(_passUrl)
   }
-  console.log({ disabled, active })
-
   return (
     <>
-      {render(
-        handleClick,
-        disabled,
-        active,
-        <>
-          <Modal isOpen={isModalOpen} setIsOpen={setModalOpen}>
-            <div className="flex flex-col gap-3">
-              {passUrl && <QRCode value={passUrl} size={256} includeMargin />}
-              {!passUrl && <>Generating your pass...</>}
-            </div>
-          </Modal>
-          <AppleIcon />
-          Add to my Apple device
-        </>
-      )}
+      <Modal isOpen={isModalOpen} setIsOpen={setModalOpen}>
+        <div className="flex flex-col gap-3">
+          {passUrl && <QRCode value={passUrl} size={256} includeMargin />}
+          {!passUrl && <>Generating your pass...</>}
+        </div>
+      </Modal>
+      <div onClick={handleClick}>
+        <AppleIcon />
+        Add to my Apple device
+      </div>
     </>
   )
 }
@@ -97,7 +84,6 @@ export const AddToGoogleWallet = ({
   tokenId,
   network,
   image,
-  render,
 }: AddToWalletProps) => {
   const { getWalletService } = useAuth()
 
@@ -123,14 +109,9 @@ export const AddToGoogleWallet = ({
   }
 
   return (
-    <>
-      {render(
-        handleClick,
-        <>
-          <AndroidIcon />
-          Add to my Google device
-        </>
-      )}
-    </>
+    <div onClick={handleClick}>
+      <AndroidIcon />
+      Add to my Google device
+    </div>
   )
 }

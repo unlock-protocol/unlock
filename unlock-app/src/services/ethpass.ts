@@ -69,11 +69,11 @@ export const createWalletPass = async ({
     lockAddress,
     tokenId
   )
-  if (false && !verificationResponse.data.verificationUrl) {
+  if (!verificationResponse.data.verificationUrl) {
     throw new Error('Failed to retrieve verification URL')
   }
-  const verificationUrl =
-    'https://staging-app.unlock-protocol.com/verification?data=%7B%22network%22%3A5%2C%22account%22%3A%220x61be315032235Ac365e39705c11c47fdaee698Ee%22%2C%22lockAddress%22%3A%220xD87a6C61C322019CAdbf70E616f5940B027eC895%22%2C%22tokenId%22%3A%221%22%2C%22timestamp%22%3A1676479583463%7D&sig=0x38e67ee865d9e4c71099d702d0521c42b771163b3759494b01b8d3795c2aaf1a050d9d39ced758ebf9c085c8f47c2f2df8bfc115cae352d60b05324448a7506c1c'
+  console.log(verificationResponse)
+  const verificationUrl = verificationResponse.data.verificationUrl
 
   const payload = {
     signature,

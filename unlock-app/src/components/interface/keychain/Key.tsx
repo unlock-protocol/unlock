@@ -310,49 +310,27 @@ function Key({ ownedKey, account, network }: Props) {
                     <>
                       <Menu.Item>
                         {({ active, disabled }) => (
-                          <AddToGoogleWallet
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                            image={metadata.image}
-                            render={(onClick, children) => {
-                              return (
-                                <MenuButton
-                                  onClick={onClick}
-                                  disabled={disabled}
-                                  active={active}
-                                >
-                                  {children}
-                                </MenuButton>
-                              )
-                            }}
-                          />
+                          <MenuButton disabled={disabled} active={active}>
+                            <AddToGoogleWallet
+                              network={network}
+                              lockAddress={lock.address}
+                              tokenId={tokenId}
+                              image={metadata.image}
+                            />
+                          </MenuButton>
                         )}
                       </Menu.Item>
                       <Menu.Item>
-                        {({ active, disabled }) => {
-                          return (
+                        {({ active, disabled }) => (
+                          <MenuButton disabled={disabled} active={active}>
                             <AddToAppleWallet
                               network={network}
                               lockAddress={lock.address}
                               tokenId={tokenId}
                               image={metadata.image}
-                              disabled={disabled}
-                              active={active}
-                              render={(onClick, children) => {
-                                return (
-                                  <MenuButton
-                                    onClick={onClick}
-                                    disabled={disabled}
-                                    active={active}
-                                  >
-                                    {children}
-                                  </MenuButton>
-                                )
-                              }}
                             />
-                          )
-                        }}
+                          </MenuButton>
+                        )}
                       </Menu.Item>
                     </>
                   )}
