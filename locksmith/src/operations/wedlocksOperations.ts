@@ -109,6 +109,7 @@ export const getCustomContent = async (
       template,
     })
 
+    // parse markdown to HTML
     if (res) {
       const parsedContent = await unified()
         .use(remarkParse)
@@ -119,7 +120,6 @@ export const getCustomContent = async (
         customContent = String(parsedContent?.value)
       }
     }
-    // parse markdown to HTML
   } catch (err: any) {
     console.warn('No custom email content present')
   }
