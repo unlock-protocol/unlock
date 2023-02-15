@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+/**
+ *
+ * Just a small util to run a hardhat script for all networks
+ *
+ * Usage: scripts/all_networks run scripts/etc...
+ * Usage: scripts/all_networks unlock:info
+ */
+
+const allNetworks = require("@unlock-protocol/networks");
+const { execSync } = require("child_process");
+
+const networks = Object.keys(allNetworks).filter(
+  (n) => !["localhost", "default", "networks"].includes(n)
+);
+
+console.log(`Running task for the following networks: ${networks.toString()}`);
+
+for (let i = 0; i < networks.length; i++) {
+  const cmd = `yarn hardhat`;
+  const args = ["--network", networks[i], ...process.argv.slice(2)];
+
+  console.log(cmd, args);
+  execSync(`${cmd} ${args.join(" ")}`, {
+    stdio: "inherit",
+  });
+}
