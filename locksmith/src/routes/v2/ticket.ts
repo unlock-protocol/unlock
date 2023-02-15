@@ -5,13 +5,11 @@ import {
   generateTicket,
 } from '../../controllers/v2/ticketsController'
 import { keyOwnerMiddleware } from '../../utils/middlewares/keyOwnerMiddleware'
-import {
-  authenticatedMiddleware,
-  applicationOnlyMiddleware,
-} from '../../utils/middlewares/auth'
+import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { isVerifierMiddleware } from '../../utils/middlewares/isVerifierMiddleware'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { lockManagerMiddleware } from './../../utils/middlewares/lockManager'
+import { lockManagerOrKeyOwnerMiddleware } from '../../utils/middlewares/lockManagerOrKeyOwner'
 
 const router = express.Router({ mergeParams: true })
 
@@ -48,8 +46,7 @@ router.post(
 router.get(
   '/:network/:lockAddress/:keyId/qr',
   authenticatedMiddleware,
-  applicationOnlyMiddleware,
-  lockManagerMiddleware,
+  lockManagerOrKeyOwnerMiddleware,
   (req, res) => {
     ticketsController.getQrCode(req, res)
   }
