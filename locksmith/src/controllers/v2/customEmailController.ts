@@ -3,6 +3,7 @@ import * as z from 'zod'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import { CustomEmailContent } from '../../models/customEmailContent'
+import * as emailOperations from '../../operations/emailOperations'
 
 const CustomEmail = z.object({
   content: z
@@ -49,12 +50,10 @@ export class CustomEmailController {
       const network = Number(request.params.network)
       const template = request.params.template?.toUpperCase()
 
-      const customEmail = await CustomEmailContent.findOne({
-        where: {
-          lockAddress,
-          network,
-          template,
-        },
+      const customEmail = await emailOperations.getCustomTemplateContent({
+        lockAddress,
+        network,
+        template,
       })
 
       if (customEmail) {
