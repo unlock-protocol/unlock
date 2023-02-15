@@ -27,6 +27,23 @@ const FormSchema = z.object({
 
 type FormSchemaProps = z.infer<typeof FormSchema>
 
+// parse markdown to HTML
+const markdownToHtml = async (content: string) => {
+  try {
+    const parsedContent = await unified()
+      .use(remarkParse)
+      .use(remarkHtml, {
+        sanitize: true,
+      })
+      .process(content || '')
+
+    return parsedContent?.value?.toString()
+  } catch (err: any) {
+    console.error(err)
+    return ''
+  }
+}
+
 export const EmailTemplatePreview = ({
   templateId,
   disabled,
@@ -71,8 +88,32 @@ export const EmailTemplatePreview = ({
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
+  const emailPreviewData = async () => {
+    const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
+    const customContentHtml: string = await markdownToHtml(customContent)
+
+    const params = {
+      lockName: 'Email Preview',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      keyId: 5,
+      network,
+      openSeaUrl: '',
+      transferUrl: '',
+      lockImage,
+      customContent: customContentHtml,
+    }
+
+    return params
+  }
+
   const onSubmit = async (form: FormSchemaProps) => {
-    const promise = wedlocksService.sendEmail(templateId as any, form.email)
+    const params = await emailPreviewData()
+    const promise = wedlocksService.sendEmail(
+      templateId as any,
+      form.email,
+      params,
+      [] // attachments
+    )
     await ToastHelper.promise(promise, {
       loading: 'Sending email preview...',
       success: 'Email preview sent.',
@@ -112,17 +153,12 @@ export const EmailTemplatePreview = ({
             `${config.services.wedlocks.host}/preview/${templateId}`
           )
 
-          // parse markdown to HTML
-          const parsedContent = await unified()
-            .use(remarkParse)
-            .use(remarkHtml, {
-              sanitize: true,
-            })
-            .process(customContent || '')
+          const params = await emailPreviewData()
 
-          const customEmailHtml = parsedContent.value.toString()
-          // add custom HTML
-          url.searchParams.append('customContent', customEmailHtml)
+          // add all params in URL
+          Object.entries(params).map(([key, value]) => {
+            url.searchParams.append(key, value.toString())
+          })
 
           const res = await (await fetch(url)).text()
           return res
