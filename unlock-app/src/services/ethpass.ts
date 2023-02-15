@@ -64,8 +64,13 @@ export const createWalletPass = async ({
   }
 
   // Get signed QR Code for verification!
-  const keyResponse = await storage.ticketQRCode(network, lockAddress, tokenId)
-  if (!keyResponse.verificationUrl) {
+  const verificationResponse = await storage.ticketQRCode(
+    network,
+    lockAddress,
+    tokenId
+  )
+  console.log(verificationResponse)
+  if (false && !verificationResponse.data.verificationUrl) {
     throw new Error('Failed to retrieve verification URL')
   }
   const verificationUrl =
