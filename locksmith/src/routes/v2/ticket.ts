@@ -53,6 +53,15 @@ router.get(
 )
 
 router.get(
+  '/:network/:lockAddress/:keyId/verification',
+  authenticatedMiddleware,
+  lockManagerOrKeyOwnerMiddleware,
+  (req, res) => {
+    ticketsController.getVerificationUrl(req, res)
+  }
+)
+
+router.get(
   '/:network/lock/:lockAddress/key/:keyId/generate',
   authenticatedMiddleware,
   generateTicket
