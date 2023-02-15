@@ -320,29 +320,39 @@ export function Select({ checkoutService, injectedProvider }: Props) {
             onChange={setLock}
           >
             {locksGroupedByNetwork &&
-              Object.entries(locksGroupedByNetwork).map(([network, locks]) => (
-                <section key={network} className="space-y-2">
-                  {Object.keys(locksGroupedByNetwork).length > 1 && (
-                    <p className="text-lg font-bold text-brand-ui-primary">
-                      {config?.networks[network]?.name}
-                    </p>
-                  )}
-                  {locks.map((lock) => {
-                    const disabled = lock.isSoldOut && !lock.isMember
-                    const isMember = memberships?.find(
-                      (m) => m.lock === lock.address
-                    )?.member
-                    lock.isMember = lock.isMember ?? isMember
-                    return (
-                      <LockOption
-                        key={lock.address}
-                        lock={lock}
-                        disabled={disabled}
-                      />
-                    )
-                  })}
-                </section>
-              ))}
+              Object.entries(locksGroupedByNetwork).map(([network, locks]) => {
+                const showNetworkSection =
+                  Object.keys(locksGroupedByNetwork).length > 1
+
+                return (
+                  <section
+                    key={network}
+                    className={
+                      showNetworkSection ? 'grid gap-4' : 'grid gap-4 pt-2'
+                    }
+                  >
+                    {showNetworkSection && (
+                      <p className="text-lg font-bold text-brand-ui-primary">
+                        {config?.networks[network]?.name}
+                      </p>
+                    )}
+                    {locks.map((lock) => {
+                      const disabled = lock.isSoldOut && !lock.isMember
+                      const isMember = memberships?.find(
+                        (m) => m.lock === lock.address
+                      )?.member
+                      lock.isMember = lock.isMember ?? isMember
+                      return (
+                        <LockOption
+                          key={lock.address}
+                          lock={lock}
+                          disabled={disabled}
+                        />
+                      )
+                    })}
+                  </section>
+                )
+              })}
           </RadioGroup>
         )}
       </main>
