@@ -311,4 +311,13 @@ interface IUnlock {
    * Can only be called by the current owner.
    */
   function transferOwnership(address newOwner) external;
+
+
+  /**
+   * Call executed by a lock after its version upgrade triggred by `upgradeLock`
+   * - PublicLock v12 > v13 (mainnet): migrate an existing Lock to another instance 
+   * of the Unlock contract
+   * @dev The `msg.sender` will be the upgraded lock
+   */
+  function postLockUpgrade() external;
 }
