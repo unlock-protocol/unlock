@@ -69,7 +69,7 @@ export const AddressInput = forwardRef(
       description,
       label,
       withIcon = true,
-      isTruncated,
+      isTruncated = false, // address not truncated by default
       web3Service,
       localForm,
       name,
