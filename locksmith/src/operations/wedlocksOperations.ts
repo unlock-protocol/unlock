@@ -5,10 +5,11 @@ import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
 import resvg from '@resvg/resvg-js'
-import { KeyManager, LocksmithService } from '@unlock-protocol/unlock-js'
+import { KeyManager } from '@unlock-protocol/unlock-js'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
+import * as emailOperations from './emailOperations'
 
 type Params = {
   [key: string]: string | number | undefined
@@ -101,23 +102,24 @@ export const getCustomContent = async (
   template: string
 ): Promise<string | undefined> => {
   let customContent = undefined
-  const locksmithService = new LocksmithService()
   try {
-    const res = await locksmithService.getCustomEmailContent(
-      Number(network),
+    const res = await emailOperations.getCustomTemplateContent({
+      network: Number(network),
       lockAddress,
-      template
-    )
+      template,
+    })
 
-    // parse markdown to HTML
-    const parsedContent = await unified()
-      .use(remarkParse)
-      .use(remarkHtml)
-      .process(res?.data?.content || '')
+    if (res) {
+      const parsedContent = await unified()
+        .use(remarkParse)
+        .use(remarkHtml)
+        .process(res?.content || '')
 
-    if (parsedContent?.value?.length > 0) {
-      customContent = String(parsedContent?.value)
+      if (parsedContent?.value?.length > 0) {
+        customContent = String(parsedContent?.value)
+      }
     }
+    // parse markdown to HTML
   } catch (err: any) {
     console.warn('No custom email content present')
   }
