@@ -10,7 +10,7 @@ export const lockManagerOrKeyOwnerMiddleware: RequestHandler = async (
 ) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const network = Number(req.params.network)
-  const userAddress = Normalizer.ethereumAddress(req.user!.walletAddress!)
+  const userAddress = req.user!.walletAddress
   const tokenId = req.params.keyId.toLowerCase()
 
   if (!lockAddress) {
