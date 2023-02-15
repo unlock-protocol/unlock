@@ -4,7 +4,7 @@ import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
-import { generateQrCode } from '../../utils/qrcode'
+import { generateQrCode, generateQrCodeUrl } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { Lock } from '@unlock-protocol/types'
 import { createTicket } from '../../utils/ticket'
@@ -162,6 +162,35 @@ export class TicketsController {
         'Content-Type': 'image/gif',
       })
       return response.end(img)
+    } catch (err) {
+      logger.error(err)
+      return response.sendStatus(500).send({
+        message: 'Failed to generate QR code',
+      })
+    }
+  }
+
+  /**
+   * gets the URL for the verification (which can also be rendered as QR code)
+   * @param request
+   * @param response
+   * @returns
+   */
+  async getVerificationUrl(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const tokenId = request.params.keyId.toLowerCase()
+
+      const verificationUrl = generateQrCodeUrl({
+        network,
+        lockAddress,
+        tokenId,
+      })
+
+      return response.status(200).send({
+        verificationUrl,
+      })
     } catch (err) {
       logger.error(err)
       return response.sendStatus(500).send({
