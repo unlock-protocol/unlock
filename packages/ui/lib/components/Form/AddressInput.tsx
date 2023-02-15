@@ -1,4 +1,10 @@
-import { InputHTMLAttributes, ForwardedRef, ReactNode, useState } from 'react'
+import {
+  InputHTMLAttributes,
+  ForwardedRef,
+  ReactNode,
+  useState,
+  useEffect,
+} from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -71,13 +77,17 @@ export const AddressInput = forwardRef(
     } = props
 
     if (!localForm) return null
-    const { register } = localForm
+    const { register, watch, trigger } = localForm
 
     const [addressType, setAddressType] = useState('')
     const [resolvedAddress, setResolvedAddress] = useState('')
     const [resolvedName, setResolvedName] = useState('')
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState(false)
+
+    const [inputValue, setInputValue] = useState('')
+
+    const inputValueWatch = watch(name, '')
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
@@ -103,13 +113,15 @@ export const AddressInput = forwardRef(
     const onReset = () => {
       setError('')
       setSuccess(false)
+      setInputValue('')
+      setAddressType('')
     }
 
     const resolveNameMutation = useMutation(resolveName, {
       onMutate: () => {
         onReset() // restore state when typing
       },
-      onSuccess: (res: any) => {
+      onSuccess: async (res: any) => {
         const isError = res?.type === 'error'
 
         setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
@@ -127,6 +139,7 @@ export const AddressInput = forwardRef(
             return res.address
           }
         }
+        await trigger(name)
 
         return '' // fallback when address  is not resolved
       },
@@ -140,6 +153,32 @@ export const AddressInput = forwardRef(
         return ''
       }
     }
+
+    useEffect(() => {
+      const ValueMapping: Record<string, string> = {
+        address: resolvedName,
+        name: resolvedAddress,
+      }
+
+      setInputValue(ValueMapping?.[addressType] || '')
+    }, [addressType])
+
+    // resolve ens/address when default value is present
+    useEffect(() => {
+      const onLoad = async () => {
+        if (inputValueWatch.length > 0) {
+          await handleResolver(inputValueWatch)
+        }
+      }
+      onLoad()
+    }, [inputValueWatch])
+
+    // reset when value is reset/form submitted
+    useEffect(() => {
+      if (inputValue.length === 0) {
+        onReset()
+      }
+    }, [inputValue])
 
     return (
       <>
@@ -167,7 +206,15 @@ export const AddressInput = forwardRef(
                 id={label}
                 className={inputClass}
                 {...register(name, {
-                  setValueAs: (value: string) => handleResolver(value),
+                  min: 0,
+                  required: true,
+                  onChange: async (e: any) => {
+                    await handleResolver(e.target.value)
+                  },
+                  setValueAs: () => inputValue,
+                  validate: () => {
+                    return inputValue?.length > 0
+                  },
                 })}
               />
             </div>
