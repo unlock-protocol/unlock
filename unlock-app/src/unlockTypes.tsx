@@ -192,7 +192,7 @@ export const PaywallConfigSchema = z
     hideSoldOut: z
       .boolean({
         description:
-          'When enabled, sold our locks are not shown to users when they load the checkout modal.',
+          'When enabled, sold out locks are not shown to users when they load the checkout modal.',
       })
       .optional(),
     password: z

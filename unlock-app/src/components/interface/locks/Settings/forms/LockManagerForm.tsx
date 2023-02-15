@@ -1,12 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
-import { useWalletService } from '~/utils/withWalletService'
-import { getAddressForName } from '~/hooks/useEns'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -20,10 +19,7 @@ interface LockManagerCardProps {
   lockAddress: string
   manager: string
   hasMultipleManagers: boolean
-}
-
-interface FormProps {
-  manager: string
+  network: number
 }
 
 interface RenounceModalFormProps {
@@ -141,14 +137,15 @@ const LockManagerCard = ({
   lockAddress,
   manager,
   hasMultipleManagers,
+  network,
 }: LockManagerCardProps) => {
-  const walletService = useWalletService()
   const [renounceModal, setRenounceModal] = useState(false)
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
 
   const isLoggedUser = account?.toLowerCase() === manager?.toLowerCase()
 
   const renounceLockManager = async () => {
+    const walletService = await getWalletService(network)
     return await walletService.renounceLockManager({
       lockAddress,
     })
@@ -213,12 +210,12 @@ export const LockManagerForm = ({
   isManager,
   disabled,
 }: LockManagerFormProps) => {
-  const walletService = useWalletService()
-  const { register, handleSubmit, reset } = useForm<FormProps>({
-    defaultValues: {
-      manager: '',
-    },
-  })
+  const web3Service = useWeb3Service()
+
+  const localForm = useForm<{ manager: string }>()
+
+  const { handleSubmit, reset } = localForm
+  const { getWalletService } = useAuth()
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -235,12 +232,11 @@ export const LockManagerForm = ({
   }
 
   const addLockManager = async (address: string) => {
-    const resolvedAddress = await getAddressForName(address)
-
-    const managerAddress = addressMinify(resolvedAddress)
+    const managerAddress = addressMinify(address)
+    const walletService = await getWalletService(network)
     const addManagerPromise = walletService.addLockManager({
       lockAddress,
-      userAddress: resolvedAddress,
+      userAddress: address,
     })
     await ToastHelper.promise(addManagerPromise, {
       loading: `Adding ${managerAddress} as Lock Manager.`,
@@ -268,8 +264,8 @@ export const LockManagerForm = ({
     }
   )
 
-  const onAddLockManager = async ({ manager }: FormProps) => {
-    await addLockManagerMutation.mutateAsync(manager)
+  const onAddLockManager = async ({ manager = '' }: any) => {
+    if (manager !== '') await addLockManagerMutation.mutateAsync(manager)
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
@@ -291,6 +287,7 @@ export const LockManagerForm = ({
             lockAddress={lockAddress}
             manager={manager}
             key={manager}
+            network={network}
             hasMultipleManagers={managers?.length > 1}
           />
         ))}
@@ -304,10 +301,14 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <span className="text-base text-brand-dark">
-              Add manager, please enter the wallet address of theirs.
-            </span>
-            <Input disabled={disableInput} {...register('manager')} />
+            <AddressInput
+              withIcon
+              name="manager"
+              label="Add manager, please enter the wallet address of theirs."
+              description="Enter a wallet address or an ens name"
+              web3Service={web3Service}
+              localForm={localForm}
+            />
           </div>
           <Button
             className="w-full md:w-1/2"

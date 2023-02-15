@@ -23,7 +23,7 @@ export default class WalletService extends UnlockService {
   /**
    * This needs to be called with a ethers.providers which includes a signer or with a signer
    */
-  async connect(provider: ethers.providers.Provider, signer: ethers.Signer) {
+  async connect(provider: ethers.providers.Provider, signer?: ethers.Signer) {
     this.provider = provider
     if (signer) {
       this.signer = signer

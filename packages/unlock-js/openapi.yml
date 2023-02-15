@@ -949,7 +949,7 @@ paths:
     get:
       operationId: ticketQRCode
       security:
-        - Application: ['lockManager']
+        - User: ['user', 'lockManager']
       description: Get QR code for the key.
       parameters:
         - $ref: '#/components/parameters/Network'

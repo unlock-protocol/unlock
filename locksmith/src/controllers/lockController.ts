@@ -6,6 +6,7 @@ import { LockIcons } from '../models'
 import { Request, Response } from 'express'
 import logger from '../logger'
 import lockIconUtils from '../utils/lockIcon'
+import { LockMetadata } from '../models/lockMetadata'
 
 export const connectStripe = async (req: Request, res: Response) => {
   const { message } = JSON.parse(decodeURIComponent(req.query.data!.toString()))
@@ -67,8 +68,18 @@ export const stripeConnected = async (req: Request, res: Response) => {
  * @param {*} res
  */
 export const lockIcon = async (req: Request, res: Response) => {
-  const { lockAddress } = req.params
+  const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const { original } = req.query
+  const metadata = await LockMetadata.findOne({
+    where: {
+      address: lockAddress,
+    },
+  })
+
+  if (metadata?.data.image) {
+    return res.redirect(metadata.data.image)
+  }
+
   let lockIcon
 
   const renderDefaultForLock = () => {
@@ -80,7 +91,7 @@ export const lockIcon = async (req: Request, res: Response) => {
   try {
     if (original !== '1') {
       lockIcon = await LockIcons.findOne({
-        where: { lock: Normalizer.ethereumAddress(lockAddress) },
+        where: { lock: lockAddress },
       })
     }
 
