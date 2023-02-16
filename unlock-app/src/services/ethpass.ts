@@ -1,4 +1,5 @@
 import { networks } from '@unlock-protocol/networks'
+import { minifyAddress } from '@unlock-protocol/ui'
 import { storage } from '~/config/storage'
 
 export enum Platform {
@@ -11,51 +12,59 @@ export const isEthPassSupported = (network: number) => {
   return [1, 5, 137, 80001, 10, 69, 42161, 421611].indexOf(network) > -1
 }
 
+export const applePass = (
+  name: string,
+  lockAddress: string,
+  tokenId: string,
+  network: number
+) => {
+  return {
+    description: 'ETHPass Sample Pass',
+    auxiliaryFields: [],
+    backFields: [],
+    headerFields: [
+      {
+        key: 'header',
+        value: name,
+      },
+    ],
+    primaryFields: [],
+    secondaryFields: [
+      {
+        key: 'secondary1',
+        label: 'Lock Address',
+        value: minifyAddress(lockAddress),
+        textAlignment: 'PKTextAlignmentLeft',
+      },
+      {
+        key: 'secondary2',
+        label: 'Key ID',
+        value: tokenId,
+        textAlignment: 'PKTextAlignmentNatural',
+      },
+      {
+        key: 'secondary3',
+        label: 'Network',
+        value: networks[network].name,
+        textAlignment: 'PKTextAlignmentNatural',
+      },
+    ],
+  }
+}
+
 export const createWalletPass = async ({
   signature,
   lockAddress,
   tokenId,
-  // image, ethPass does not support SVG for now...
+  name,
+  image,
   signatureMessage,
   network,
   platform,
 }: any) => {
   let pass = {}
   if (platform === Platform.APPLE) {
-    pass = {
-      description: 'ETHPass Sample Pass',
-      auxiliaryFields: [],
-      backFields: [],
-      headerFields: [
-        {
-          key: 'header',
-          value: 'DEMO PASS',
-        },
-      ],
-      primaryFields: [],
-      secondaryFields: [
-        {
-          key: 'secondary1',
-          label: 'Lock Address',
-          value: `${lockAddress.slice(0, 6)}...${lockAddress.slice(
-            lockAddress.length - 4
-          )}`,
-          textAlignment: 'PKTextAlignmentLeft',
-        },
-        {
-          key: 'secondary2',
-          label: 'Key ID',
-          value: tokenId,
-          textAlignment: 'PKTextAlignmentNatural',
-        },
-        {
-          key: 'secondary3',
-          label: 'Network',
-          value: networks[network].name,
-          textAlignment: 'PKTextAlignmentNatural',
-        },
-      ],
-    }
+    pass = applePass(name, lockAddress, tokenId, network)
   } else {
     pass = {
       messages: [],
@@ -68,10 +77,11 @@ export const createWalletPass = async ({
     lockAddress,
     tokenId
   )
-  if (!verificationResponse.data.verificationUrl) {
+  const verificationUrl = verificationResponse.data?.verificationUrl
+
+  if (!verificationUrl) {
     throw new Error('Failed to retrieve verification URL')
   }
-  const verificationUrl = verificationResponse.data.verificationUrl
 
   const body = JSON.stringify({
     signature,
@@ -91,7 +101,7 @@ export const createWalletPass = async ({
         url: verificationUrl,
       },
     },
-    image: 'https://app.unlock-protocol.com/images/unlock.png', // Placeholder until EthPass supports SVGs
+    image,
   })
 
   const opts = {
@@ -103,7 +113,7 @@ export const createWalletPass = async ({
     body,
   }
   const response = await fetch('https://api.ethpass.xyz/api/v0/passes', opts)
-  if (response.status === 200) {
+  if (response.ok) {
     const { fileURL } = await response.json()
     return fileURL
   } else {

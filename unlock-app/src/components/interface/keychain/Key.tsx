@@ -1,6 +1,7 @@
 import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
 import useClipboard from 'react-use-clipboard'
-import { isEthPassSupported } from '../../../services/ethpass'
+import { DiAndroid as AndroidIcon, DiApple as AppleIcon } from 'react-icons/di'
+import { isEthPassSupported, Platform } from '../../../services/ethpass'
 import {
   AvatarImage,
   Root as Avatar,
@@ -45,11 +46,8 @@ import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/receipts'
-import {
-  AddToAppleWallet,
-  AddToGoogleWallet,
-  ApplePassModal,
-} from './AddToPhoneWallet'
+import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
+import { isIOS } from 'react-device-detect'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -321,30 +319,51 @@ function Key({ ownedKey, account, network }: Props) {
                     <>
                       <Menu.Item>
                         {({ active, disabled }) => (
-                          <MenuButton disabled={disabled} active={active}>
-                            <AddToGoogleWallet
-                              network={network}
-                              lockAddress={lock.address}
-                              tokenId={tokenId}
-                              image={metadata.image}
-                            />
-                          </MenuButton>
+                          <AddToDeviceWallet
+                            platform={Platform.GOOGLE}
+                            disabled={disabled}
+                            active={active}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            image={metadata.image}
+                            name={metadata.name}
+                            handlePassUrl={(url: string) => {
+                              window.open(url, '_')
+                            }}
+                          >
+                            <AndroidIcon />
+                            Add to my Google device
+                          </AddToDeviceWallet>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active, disabled }) => (
-                          <MenuButton disabled={disabled} active={active}>
-                            <AddToAppleWallet
-                              network={network}
-                              lockAddress={lock.address}
-                              tokenId={tokenId}
-                              image={metadata.image}
-                              setPassUrl={(url) => {
+                          <AddToDeviceWallet
+                            platform={Platform.APPLE}
+                            disabled={disabled}
+                            active={active}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            image={metadata.image}
+                            name={metadata.name}
+                            handlePassUrl={(url: string) => {
+                              if (isIOS) {
+                                // Download
+                                window.open(url, '_')
+                              } else if (setPassUrl) {
+                                // Show the modal
                                 setPassUrl(url)
                                 setShowApplePassModal(true)
-                              }}
-                            />
-                          </MenuButton>
+                              }
+                            }}
+                          >
+                            <AppleIcon />
+                            Add to my Apple device
+                          </AddToDeviceWallet>
                         )}
                       </Menu.Item>
                     </>
