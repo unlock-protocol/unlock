@@ -2,11 +2,12 @@ import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useProvider } from '~/hooks/useProvider'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -33,6 +34,15 @@ const withdrawForm = z.object({
 
 type WithdrawFormProps = z.infer<typeof withdrawForm>
 
+const Detail = ({ label, value, ...props }: any) => {
+  return (
+    <div className="flex flex-col gap-1" {...props}>
+      <span className="text-base">{label}</span>
+      <span className="text-base font-bold text-black">{value || ''}</span>
+    </div>
+  )
+}
+
 export const WithdrawFundModal = ({
   isOpen,
   setIsOpen,
@@ -45,6 +55,7 @@ export const WithdrawFundModal = ({
   const web3Service = useWeb3Service()
   const { account, getWalletService } = useAuth()
   const [preview, setPreview] = useState(false)
+  const provider = web3Service.providerForNetwork(network)
 
   const localForm = useForm<WithdrawFormProps>({
     mode: 'onChange',
@@ -104,6 +115,25 @@ export const WithdrawFundModal = ({
   const amountToTransfer = watch('amount', 0)
   const beneficiary = watch('beneficiary', '')
 
+  const [{ data: isContract }] = useQueries({
+    queries: [
+      {
+        queryKey: ['getCode', lockAddress, network],
+        queryFn: async () => {
+          try {
+            const code = await provider.getCode(beneficiary)
+            return code !== '0x' // is a contract address
+          } catch (_err) {
+            return false
+          }
+        },
+        enabled: beneficiary?.length > 0,
+      },
+    ],
+  })
+
+  console.log('data', isContract)
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col w-full gap-5">
@@ -121,11 +151,16 @@ export const WithdrawFundModal = ({
           {preview ? (
             <>
               <div className="flex flex-col gap-2 leading-tight text-md text-brand-dark">
-                <span>- Network: {`${networks[network]?.name}`}</span>
-                <span>
-                  - Amount to transfer: {`${amountToTransfer} ${symbol}`}
+                <Detail label="Network:" value={networks[network]?.name} />
+                <Detail
+                  label="Amount to transfer:"
+                  value={`${amountToTransfer} ${symbol}`}
+                />
+                <Detail label="Beneficiary" value={beneficiary} />
+                <span className="text-red-500">
+                  - This is a contract address, please make sure this contract
+                  can handle the funds, or they will be lost
                 </span>
-                <span>- Beneficiary: {`${beneficiary}`}</span>
               </div>
               <span className="mt-4 text-center">Do you want to proceed?</span>
             </>
@@ -173,7 +208,13 @@ export const WithdrawFundModal = ({
                 type="button"
                 variant="outlined-primary"
                 disabled={withdrawMutation.isLoading}
-                onClick={() => setPreview(false)}
+                onClick={() => {
+                  setPreview(false)
+                  reset({
+                    beneficiary: beneficiary || '',
+                    amount: Number(amountToTransfer),
+                  })
+                }}
                 size="medium"
               >
                 Edit
