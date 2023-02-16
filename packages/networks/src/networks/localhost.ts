@@ -9,7 +9,7 @@ export const localhost: NetworkConfig = {
   publicProvider: 'http://127.0.0.1:8545',
   subgraph: {
     endpoint: 'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
-    endpointV2: 'http://localhost:8000/subgraphs/name/testgraph/graphql',
+    endpointV2: 'http://localhost:8000/subgraphs/name/testgraph',
   },
   nativeCurrency: {
     name: 'ETH',
