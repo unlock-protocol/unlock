@@ -102,7 +102,7 @@ export const base = `<!DOCTYPE html>
         margin-bottom: 8px;       
       }
     
-      body: {
+      body {
         font-family: sans-serif;
         font-size: 16px;
         font-weight: normal;
