@@ -45,7 +45,11 @@ import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/receipts'
-import { AddToAppleWallet, AddToGoogleWallet } from './AddToPhoneWallet'
+import {
+  AddToAppleWallet,
+  AddToGoogleWallet,
+  ApplePassModal,
+} from './AddToPhoneWallet'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -78,6 +82,8 @@ function Key({ ownedKey, account, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
+  const [showApplePassModal, setShowApplePassModal] = useState(false)
+  const [applePassUrl, setPassUrl] = useState<string>()
   const isKeyExpired = isExpired || expireAndRefunded
 
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
@@ -220,6 +226,11 @@ function Key({ ownedKey, account, network }: Props) {
         network={network}
         ownedKey={ownedKey}
       />
+      <ApplePassModal
+        isOpen={showApplePassModal}
+        setIsOpen={setShowApplePassModal}
+        applePassUrl={applePassUrl}
+      />
       <div className="flex items-center justify-between">
         <div>
           {isKeyExpired ? (
@@ -328,6 +339,10 @@ function Key({ ownedKey, account, network }: Props) {
                               lockAddress={lock.address}
                               tokenId={tokenId}
                               image={metadata.image}
+                              setPassUrl={(url) => {
+                                setPassUrl(url)
+                                setShowApplePassModal(true)
+                              }}
                             />
                           </MenuButton>
                         )}

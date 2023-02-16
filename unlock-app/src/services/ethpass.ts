@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { storage } from '~/config/storage'
 
@@ -72,10 +71,9 @@ export const createWalletPass = async ({
   if (!verificationResponse.data.verificationUrl) {
     throw new Error('Failed to retrieve verification URL')
   }
-  console.log(verificationResponse)
   const verificationUrl = verificationResponse.data.verificationUrl
 
-  const payload = {
+  const body = JSON.stringify({
     signature,
     signatureMessage,
     pass, // customize me?
@@ -94,20 +92,20 @@ export const createWalletPass = async ({
       },
     },
     image: 'https://app.unlock-protocol.com/images/unlock.png', // Placeholder until EthPass supports SVGs
+  })
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
+      'Content-Type': 'application/json',
+    },
+    body,
   }
-
-  const response = await axios.post(
-    'https://api.ethpass.xyz/api/v0/passes',
-    payload,
-    {
-      headers: {
-        'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
-      },
-    }
-  )
-
+  const response = await fetch('https://api.ethpass.xyz/api/v0/passes', opts)
   if (response.status === 200) {
-    return response.data?.fileURL
+    const { fileURL } = await response.json()
+    return fileURL
   } else {
     throw new Error('EthPass pass generation failed!')
   }
