@@ -19,7 +19,6 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  name: string
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -49,7 +48,6 @@ export const AddressInput = forwardRef(
       label,
       withIcon = true,
       isTruncated = false, // address not truncated by default
-      name,
       onChange,
       ...inputProps
     } = props
