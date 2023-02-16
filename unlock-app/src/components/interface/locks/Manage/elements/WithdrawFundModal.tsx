@@ -6,8 +6,7 @@ import { useMutation, useQueries } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
-import { useEffect, useState } from 'react'
-import { useProvider } from '~/hooks/useProvider'
+import { useState } from 'react'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -115,7 +114,7 @@ export const WithdrawFundModal = ({
   const amountToTransfer = watch('amount', 0)
   const beneficiary = watch('beneficiary', '')
 
-  const [{ data: isContract }] = useQueries({
+  const [{ data: isContract }, { data: addressBalance }] = useQueries({
     queries: [
       {
         queryKey: ['getCode', lockAddress, network],
@@ -129,10 +128,17 @@ export const WithdrawFundModal = ({
         },
         enabled: beneficiary?.length > 0,
       },
+      {
+        queryKey: ['getAddressBalance', lockAddress, network],
+        queryFn: async () =>
+          await web3Service.getAddressBalance(beneficiary, network),
+        enabled: beneficiary?.length > 0,
+      },
     ],
   })
 
-  console.log('data', isContract)
+  const noBalance = parseFloat(addressBalance ?? '0') === 0
+  const networkName = networks[network]?.name
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -151,16 +157,25 @@ export const WithdrawFundModal = ({
           {preview ? (
             <>
               <div className="flex flex-col gap-2 leading-tight text-md text-brand-dark">
-                <Detail label="Network:" value={networks[network]?.name} />
+                <Detail label="Network:" value={networkName} />
                 <Detail
                   label="Amount to transfer:"
                   value={`${amountToTransfer} ${symbol}`}
                 />
                 <Detail label="Beneficiary" value={beneficiary} />
-                <span className="text-red-500">
-                  - This is a contract address, please make sure this contract
-                  can handle the funds, or they will be lost
-                </span>
+                {isContract && (
+                  <span className="text-red-500">
+                    - This is a contract address, please make sure this contract
+                    can handle the funds, or they will be lost.
+                  </span>
+                )}
+                {!isContract && noBalance && (
+                  <span className="text-red-500">
+                    This address does not seem to have been used on{' '}
+                    {`${networkName}`}
+                    before, please ensure it is correct or funds will be lost.
+                  </span>
+                )}
               </div>
               <span className="mt-4 text-center">Do you want to proceed?</span>
             </>
