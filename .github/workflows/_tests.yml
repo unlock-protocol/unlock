@@ -41,8 +41,8 @@ jobs:
         target: ${{fromJson( inputs.changed )}}
     steps:
       - uses: actions/checkout@v3
-      - name: Setup integration environment
-        run: scripts/setup-integration.sh
+      - name: Setup local environment stack
+        run: scripts/run-stack-dockerized.sh
       - name: Log errors inside containers
         if: ${{ failure() }}
         run: ./scripts/docker-compose-log.sh
