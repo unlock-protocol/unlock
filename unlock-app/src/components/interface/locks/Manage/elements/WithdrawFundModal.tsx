@@ -218,7 +218,7 @@ export const WithdrawFundModal = ({
             </>
           )}
           {preview ? (
-            <div className="grid w-full grid-cols-2 gap-2">
+            <div className="grid w-full grid-cols-2 gap-2 mt-4">
               <Button
                 type="button"
                 variant="outlined-primary"
