@@ -109,6 +109,7 @@ export const base = `<!DOCTYPE html>
         margin: 0;
         margin-bottom: 16px;
       }
+
       h1 {
         font-family: sans-serif;
         font-size: 28px;
@@ -117,6 +118,7 @@ export const base = `<!DOCTYPE html>
         margin: 0;
         margin-bottom: 16px;
       }
+      
       code {
         border-radius: 0.375rem;
         font-weight: 500;
@@ -125,17 +127,6 @@ export const base = `<!DOCTYPE html>
         border-color: rgb(203 213 225);
         background-color: rgb(241 245 249);
         padding: 0.125rem 0.25rem;
-      }
-
-      section.custom {
-        margin: 18px 0px;
-        padding: 18px 18px 10px 18px;
-        background: #F8FAFC; 
-        font-family: monospace, sans-serif !important;
-      }
-
-      section.custom * {
-        font-family: monospace, sans-serif !important;
       }
 
       section a {
