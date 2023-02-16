@@ -19,7 +19,6 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  onChange?: (string: string) => Promise<unknown> | unknown
   name: string
 }
 
