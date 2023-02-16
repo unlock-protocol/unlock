@@ -334,7 +334,7 @@ function Key({ ownedKey, account, network }: Props) {
                             }}
                           >
                             <AndroidIcon />
-                            Add to my Google device
+                            Add to my Google wallet
                           </AddToDeviceWallet>
                         )}
                       </Menu.Item>
@@ -362,7 +362,7 @@ function Key({ ownedKey, account, network }: Props) {
                             }}
                           >
                             <AppleIcon />
-                            Add to my Apple device
+                            Add to my Apple wallet
                           </AddToDeviceWallet>
                         )}
                       </Menu.Item>

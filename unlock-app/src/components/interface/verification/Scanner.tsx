@@ -48,6 +48,18 @@ export function Scanner() {
       {
         preferredCamera: 'environment',
         highlightScanRegion: true,
+        calculateScanRegion: (v) => {
+          const smallestDimension = Math.min(v.videoWidth, v.videoHeight)
+          const scanRegionSize = Math.round((1 / 3) * smallestDimension)
+
+          const region: QrScanner.ScanRegion = {
+            x: Math.round((v.videoWidth - scanRegionSize) / 2),
+            y: Math.round((v.videoHeight - scanRegionSize) / 2),
+            width: scanRegionSize,
+            height: scanRegionSize,
+          }
+          return region
+        },
       }
     )
     if (!membershipVerificationConfig) {
