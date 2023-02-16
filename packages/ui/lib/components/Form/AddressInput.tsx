@@ -185,6 +185,9 @@ export const AddressInput = forwardRef(
           await handleResolver(inputValueWatch)
           reset({
             keepValues: true,
+            values: {
+              ...formState?.defaultValues,
+            },
           })
           firstRender.current = true
         }
