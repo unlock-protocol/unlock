@@ -70,6 +70,7 @@ export const WithdrawFundModal = ({
     watch,
     reset,
     trigger,
+    setValue,
   } = localForm
 
   const withdrawFromLockPromise = async (
@@ -164,17 +165,21 @@ export const WithdrawFundModal = ({
                 />
                 <Detail label="Beneficiary" value={beneficiary} />
                 {isContract && (
-                  <span className="text-red-500">
-                    - This is a contract address, please make sure this contract
-                    can handle the funds, or they will be lost.
-                  </span>
+                  <ul>
+                    <li className="text-red-500">
+                      This is a contract address, please make sure this contract
+                      can handle the funds, or they will be lost.
+                    </li>
+                  </ul>
                 )}
                 {!isContract && noBalance && (
-                  <span className="text-red-500">
-                    This address does not seem to have been used on{' '}
-                    {`${networkName}`}
-                    before, please ensure it is correct or funds will be lost.
-                  </span>
+                  <ul>
+                    <li className="text-red-500">
+                      This address does not seem to have been used on{' '}
+                      {`${networkName}`}
+                      before, please ensure it is correct or funds will be lost.
+                    </li>
+                  </ul>
                 )}
               </div>
               <span className="mt-4 text-center">Do you want to proceed?</span>
@@ -225,10 +230,15 @@ export const WithdrawFundModal = ({
                 disabled={withdrawMutation.isLoading}
                 onClick={() => {
                   setPreview(false)
+                  console.table({
+                    beneficiary,
+                    amountToTransfer,
+                  })
                   reset({
                     beneficiary: beneficiary || '',
                     amount: Number(amountToTransfer),
                   })
+                  trigger()
                 }}
                 size="medium"
               >
