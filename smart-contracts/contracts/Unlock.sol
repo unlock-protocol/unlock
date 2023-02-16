@@ -51,6 +51,7 @@ error LockDoesNotExist(address lockAddress);
 error InsufficientBalance();
 error UnauthorizedBalanceChange();
 error LockCallFailed();
+error UnsupportedToken(address tokenAddress);
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -684,6 +685,48 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         revert LockDoesNotExist(msg.sender);
       }
     }
+  }
+
+  // 
+  function swapAndBurnUDT(address _tokenAddress, uint _amount) public returns (uint256 amountOut) {
+    
+    uint poolFee = 3000;
+    
+    // TODO: pass this address elsewhere
+    // https://docs.uniswap.org/contracts/v3/reference/deployments
+    address swapRouter = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
+
+
+    if(_tokenAddress == udt) {
+      revert UnsupportedToken(_tokenAddress);
+    }
+
+    // Transfer `amountIn` of DAI to this contract.
+    TransferHelper.safeTransferFrom(_tokenAddress, msg.sender, address(this), _amount);
+
+    // Approve the router to spend DAI.
+    TransferHelper.safeApprove(_tokenAddress, address(swapRouter), _amount);
+
+    // Multiple pool swaps are encoded through bytes called a `path`. A path is a sequence of token addresses and poolFees that define the pools used in the swaps.
+    // The format for pool encoding is (tokenIn, fee, tokenOut/tokenIn, fee, tokenOut) where tokenIn/tokenOut parameter is the shared token across the pools.
+    // Since we are swapping DAI to USDC and then USDC to WETH9 the path encoding is (DAI, 0.3%, USDC, 0.3%, WETH9).
+    ISwapRouter.ExactInputParams memory params =
+        ISwapRouter.ExactInputParams({
+            path: abi.encodePacked(_tokenAddress, poolFee, USDC, poolFee, udt),
+            recipient: msg.sender,
+            deadline: block.timestamp,
+            amountIn: _amount,
+            amountOutMinimum: 0
+        });
+
+    // Executes the swap.
+    amountOut = swapRouter.exactInput(params);
+
+    IMintableERC20(udt).balanceOf(address(this));
+
+    // burn UDT
+    IMintableERC20(udt).burn()
+    
   }
 
   // required to withdraw WETH
