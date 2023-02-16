@@ -1,8 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { AddressInput } from './AddressInput'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import {
   QueryCache,
   QueryClient,
@@ -21,12 +19,15 @@ const Template: ComponentStory<typeof AddressInput> = () => {
       address: 'demo.eth',
     },
   })
-  const { handleSubmit } = localForm
-  const web3Service = new Web3Service(networks)
+  const { handleSubmit, control } = localForm
 
   const queryCache = new QueryCache()
   const queryClient = new QueryClient({
     queryCache,
+  })
+
+  useWatch({
+    control,
   })
 
   const onSubmit = (form: any) => {
@@ -48,8 +49,7 @@ const Template: ComponentStory<typeof AddressInput> = () => {
           label="Manager address or ens"
           name="address"
           description="Address of the manager"
-          localForm={localForm}
-          web3Service={web3Service}
+          control={control}
         />
         <Button type="submit">Send</Button>
       </form>

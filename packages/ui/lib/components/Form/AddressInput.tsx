@@ -1,23 +1,15 @@
-import {
-  InputHTMLAttributes,
-  ForwardedRef,
-  ReactNode,
-  useState,
-  useEffect,
-  useRef,
-} from 'react'
-import type { Size, SizeStyleProp } from '../../types'
+import { InputHTMLAttributes, ForwardedRef, ReactNode, useState } from 'react'
+import type { Size } from '../../types'
 import { forwardRef } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { FieldLayout } from './FieldLayout'
-import { Icon } from '../Icon/Icon'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useMutation } from '@tanstack/react-query'
-import { useDebounce } from 'react-use'
 import { ethers } from 'ethers'
+import networks from '@unlock-protocol/networks'
+import { Controller } from 'react-hook-form'
+import { Input } from './Input'
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -28,22 +20,9 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  web3Service: Web3Service
-  localForm: any // todo: fix typing UseFormReturn<any, any>' is not assignable to type .UseFormReturn<any, any>'. Types of property 'setValue' are incompatible.
+  control: any
+  onChange?: (string: string) => Promise<unknown> | unknown
   name: string
-}
-
-const SIZE_STYLES: SizeStyleProp = {
-  small: 'pl-2.5 py-1.5 text-sm',
-  medium: 'pl-4 py-2 text-base',
-  large: 'pl-4 py-2.5',
-}
-
-const STATE_STYLES = {
-  error:
-    'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary',
-  success:
-    'border-green-500 hover:border-green-500 focus:border-green-500 focus:ring-green-500',
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -73,28 +52,16 @@ export const AddressInput = forwardRef(
       label,
       withIcon = true,
       isTruncated = false, // address not truncated by default
-      web3Service,
-      localForm,
+      control,
       name,
       ...inputProps
     } = props
 
-    if (!localForm) return null
-    const firstRender = useRef(false)
-    const { register, watch, reset, formState } = localForm
+    const web3Service = new Web3Service(networks)
 
-    const [addressType, setAddressType] = useState('')
-    const [resolvedAddress, setResolvedAddress] = useState('')
-    const [resolvedName, setResolvedName] = useState('')
     const [error, setError] = useState<any>('')
-    const [success, setSuccess] = useState(false)
-
-    const [inputValue, setInputValue] = useState('')
-    const [inputValueRaw, setInputValueRaw] = useState('')
-
-    const defaultValue = formState?.defaultValues?.[name] || ''
-
-    const inputValueWatch = watch(name, defaultValue)
+    const [success, setSuccess] = useState('')
+    const [address, setAddress] = useState('')
 
     const isAddressOrEns = (address = '') => {
       return (
@@ -103,31 +70,6 @@ export const AddressInput = forwardRef(
       )
     }
 
-    // use debounce to call query just when typing is done
-    const [_isReady] = useDebounce(
-      async () => {
-        await handleResolver(inputValueRaw)
-      },
-      500,
-      [inputValueRaw]
-    )
-
-    const inputSizeStyle = SIZE_STYLES[size]
-    let inputStateStyles = ''
-
-    if (error) {
-      inputStateStyles = STATE_STYLES.error
-    } else if (success) {
-      inputStateStyles = STATE_STYLES.success
-    }
-
-    const inputClass = twMerge(
-      'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100',
-      inputSizeStyle,
-      inputStateStyles,
-      withIcon ? 'pl-10' : undefined
-    )
-
     const resolveName = async (address: string) => {
       if (address.length === 0) return
       return await web3Service.resolveName(address)
@@ -135,122 +77,76 @@ export const AddressInput = forwardRef(
 
     const onReset = () => {
       setError('')
-      setSuccess(false)
-      setInputValue('')
-      setAddressType('')
+      setSuccess('')
     }
 
     const resolveNameMutation = useMutation(resolveName, {
       onMutate: () => {
         onReset() // restore state when typing
       },
-      onSuccess: async (res: any) => {
-        if (res) {
-          const isError = res?.type === 'error'
-
-          setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
-          setAddressType(isError ? 'error' : res.type) // set address type if not an error
-          setSuccess(!isError)
-
-          if (res && (res?.type || '')?.length > 0) {
-            if (res.type === 'address') {
-              setResolvedName(res.name)
-            }
-
-            if (res.type === 'name') {
-              setResolvedAddress(res.address)
-            }
-          }
-
-          setInputValue(res.address)
-        } else {
-          onReset()
-        }
-      },
     })
 
     const handleResolver = async (address: string) => {
       if (isAddressOrEns(address) || address.length === 0) {
-        await resolveNameMutation.mutateAsync(address)
+        const res: any = await resolveNameMutation.mutateAsync(address)
+        if (res) {
+          const isError = res?.type === 'error'
+
+          setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
+
+          if (res && (res?.type || '')?.length > 0) {
+            if (res.type === 'address') {
+              setSuccess(res.name)
+            }
+
+            if (res.type === 'name') {
+              setSuccess(res.address)
+            }
+          }
+
+          return res.address
+        }
+        return ''
       } else {
         onReset()
         setError(`It's not a valid ens name or address`)
+        return ''
       }
     }
 
-    useEffect(() => {
-      // handle default value
-      const onload = async () => {
-        if (inputValueWatch.length > 0 && !firstRender.current) {
-          await handleResolver(inputValueWatch)
-          reset({
-            keepValues: true,
-            values: {
-              ...formState?.defaultValues,
-            },
-          })
-          firstRender.current = true
-        }
-      }
-      onload()
-    }, [inputValueWatch])
-
     return (
       <>
-        <FieldLayout
-          label={label}
-          size={size}
-          error={error}
-          description={description}
-        >
-          <div className="flex flex-col">
-            <div className="relative">
-              {withIcon && (
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  {resolveNameMutation.isLoading ? (
-                    <div className="animate-spin">
-                      <Icon size={size} icon={LoadingIcon} />
-                    </div>
-                  ) : (
-                    <Icon size={size} icon={WalletIcon} />
-                  )}
-                </span>
-              )}
-              <input
-                {...inputProps}
-                id={label}
-                className={inputClass}
-                {...register(name, {
-                  min: 0,
-                  required: {
-                    value: true,
-                  },
-                  onChange: async (e: any) => {
-                    setInputValueRaw(e.target.value)
-                  },
-                  setValueAs: () => inputValue || '',
-                  validate: {
-                    isAddress: (value: string) => isAddressOrEns(value),
-                  },
-                })}
-              />
-            </div>
-          </div>
-        </FieldLayout>
-        {!resolveNameMutation.isLoading && (
-          <div>
-            {addressType === 'name' && resolvedAddress !== '' && (
-              <span className="text-gray-600">
-                {isTruncated ? minifyAddress(resolvedAddress) : resolvedAddress}
-              </span>
-            )}
-            {addressType === 'address' && resolvedName !== '' && (
-              <span className="text-gray-600">
-                {isTruncated ? minifyAddress(resolvedName) : resolvedName}
-              </span>
-            )}
-          </div>
-        )}
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { onChange } }) => {
+            return (
+              <>
+                <Input
+                  {...inputProps}
+                  value={address}
+                  label={label}
+                  error={error}
+                  success={isTruncated ? minifyAddress(success) : success}
+                  description={description}
+                  iconClass={
+                    resolveNameMutation.isLoading ? 'animate-spin' : ''
+                  }
+                  icon={
+                    resolveNameMutation.isLoading ? LoadingIcon : WalletIcon
+                  }
+                  onChange={async (e: any) => {
+                    console.log('default value', e.target.value)
+                    const value = e?.target?.value || ''
+                    setAddress(value)
+                    const res = await handleResolver(value)
+                    onChange(res)
+                  }}
+                />
+              </>
+            )
+          }}
+        />
       </>
     )
   }
