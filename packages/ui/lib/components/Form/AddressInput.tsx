@@ -4,6 +4,7 @@ import {
   ReactNode,
   useState,
   useEffect,
+  useRef,
 } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
@@ -15,6 +16,8 @@ import { IconBaseProps } from 'react-icons'
 import { minifyAddress } from '../../utils'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useMutation } from '@tanstack/react-query'
+import { useDebounce } from 'react-use'
+import { ethers } from 'ethers'
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -77,7 +80,8 @@ export const AddressInput = forwardRef(
     } = props
 
     if (!localForm) return null
-    const { register, watch, trigger } = localForm
+    const firstRender = useRef(false)
+    const { register, watch, reset, formState } = localForm
 
     const [addressType, setAddressType] = useState('')
     const [resolvedAddress, setResolvedAddress] = useState('')
@@ -86,8 +90,27 @@ export const AddressInput = forwardRef(
     const [success, setSuccess] = useState(false)
 
     const [inputValue, setInputValue] = useState('')
+    const [inputValueRaw, setInputValueRaw] = useState('')
 
-    const inputValueWatch = watch(name, '')
+    const defaultValue = formState?.defaultValues?.[name] || ''
+
+    const inputValueWatch = watch(name, defaultValue)
+
+    const isAddressOrEns = (address = '') => {
+      return (
+        address?.toLowerCase()?.includes('.eth') ||
+        ethers.utils.isAddress(address)
+      )
+    }
+
+    // use debounce to call query just when typing is done
+    const [_isReady] = useDebounce(
+      async () => {
+        await handleResolver(inputValueRaw)
+      },
+      500,
+      [inputValueRaw]
+    )
 
     const inputSizeStyle = SIZE_STYLES[size]
     let inputStateStyles = ''
@@ -122,63 +145,52 @@ export const AddressInput = forwardRef(
         onReset() // restore state when typing
       },
       onSuccess: async (res: any) => {
-        const isError = res?.type === 'error'
+        if (res) {
+          const isError = res?.type === 'error'
 
-        setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
-        setAddressType(isError ? 'error' : res.type) // set address type if not an error
-        setSuccess(!isError)
+          setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
+          setAddressType(isError ? 'error' : res.type) // set address type if not an error
+          setSuccess(!isError)
 
-        if (res && (res?.type || '')?.length > 0) {
-          if (res.type === 'address') {
-            setResolvedName(res.name)
-            return res.address
+          if (res && (res?.type || '')?.length > 0) {
+            if (res.type === 'address') {
+              setResolvedName(res.name)
+            }
+
+            if (res.type === 'name') {
+              setResolvedAddress(res.address)
+            }
           }
 
-          if (res.type === 'name') {
-            setResolvedAddress(res.address)
-            return res.address
-          }
+          setInputValue(res.address)
+        } else {
+          onReset()
         }
-        await trigger(name)
-
-        return '' // fallback when address  is not resolved
       },
     })
 
     const handleResolver = async (address: string) => {
-      if (address.length > 0) {
-        return await resolveNameMutation.mutateAsync(address)
+      if (isAddressOrEns(address) || address.length === 0) {
+        await resolveNameMutation.mutateAsync(address)
       } else {
         onReset()
-        return ''
+        setError(`It's not a valid ens name or address`)
       }
     }
 
     useEffect(() => {
-      const ValueMapping: Record<string, string> = {
-        address: resolvedName,
-        name: resolvedAddress,
-      }
-
-      setInputValue(ValueMapping?.[addressType] || '')
-    }, [addressType])
-
-    // resolve ens/address when default value is present
-    useEffect(() => {
-      const onLoad = async () => {
-        if (inputValueWatch.length > 0) {
+      // handle default value
+      const onload = async () => {
+        if (inputValueWatch.length > 0 && !firstRender.current) {
           await handleResolver(inputValueWatch)
+          reset({
+            keepValues: true,
+          })
+          firstRender.current = true
         }
       }
-      onLoad()
+      onload()
     }, [inputValueWatch])
-
-    // reset when value is reset/form submitted
-    useEffect(() => {
-      if (inputValue.length === 0) {
-        onReset()
-      }
-    }, [inputValue])
 
     return (
       <>
@@ -207,13 +219,15 @@ export const AddressInput = forwardRef(
                 className={inputClass}
                 {...register(name, {
                   min: 0,
-                  required: true,
-                  onChange: async (e: any) => {
-                    await handleResolver(e.target.value)
+                  required: {
+                    value: true,
                   },
-                  setValueAs: () => inputValue,
-                  validate: () => {
-                    return inputValue?.length > 0
+                  onChange: async (e: any) => {
+                    setInputValueRaw(e.target.value)
+                  },
+                  setValueAs: () => inputValue || '',
+                  validate: {
+                    isAddress: (value: string) => isAddressOrEns(value),
                   },
                 })}
               />

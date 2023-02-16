@@ -8,6 +8,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { Button } from '../Button/Button'
 
 export default {
   component: AddressInput,
@@ -15,7 +16,12 @@ export default {
 } as ComponentMeta<typeof AddressInput>
 
 const Template: ComponentStory<typeof AddressInput> = () => {
-  const localForm = useForm()
+  const localForm = useForm({
+    defaultValues: {
+      address: 'demo.eth',
+    },
+  })
+  const { handleSubmit } = localForm
   const web3Service = new Web3Service(networks)
 
   const queryCache = new QueryCache()
@@ -23,16 +29,30 @@ const Template: ComponentStory<typeof AddressInput> = () => {
     queryCache,
   })
 
+  const onSubmit = (form: any) => {
+    console.log('form values', form)
+  }
+
+  const onError = (error: any) => {
+    console.log('error value', error)
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
-      <AddressInput
-        withIcon
-        label="Manager address or ens"
-        name="address"
-        description="Address of the manager"
-        localForm={localForm}
-        web3Service={web3Service}
-      />
+      <form
+        className="flex flex-col gap-3"
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
+        <AddressInput
+          withIcon
+          label="Manager address or ens"
+          name="address"
+          description="Address of the manager"
+          localForm={localForm}
+          web3Service={web3Service}
+        />
+        <Button type="submit">Send</Button>
+      </form>
     </QueryClientProvider>
   )
 }
