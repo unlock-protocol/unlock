@@ -165,21 +165,17 @@ export const WithdrawFundModal = ({
                 />
                 <Detail label="Beneficiary" value={beneficiary} />
                 {isContract && (
-                  <ul>
-                    <li className="text-red-500">
-                      This is a contract address, please make sure this contract
-                      can handle the funds, or they will be lost.
-                    </li>
-                  </ul>
+                  <p className="text-red-500">
+                    This is a contract address, please make sure this contract
+                    can handle the funds, or they will be lost.
+                  </p>
                 )}
                 {!isContract && noBalance && (
-                  <ul>
-                    <li className="text-red-500">
-                      This address does not seem to have been used on{' '}
-                      {`${networkName}`}
-                      before, please ensure it is correct or funds will be lost.
-                    </li>
-                  </ul>
+                  <p className="text-red-500">
+                    This address does not seem to have been used on{' '}
+                    {`${networkName}`}
+                    before, please ensure it is correct or funds will be lost.
+                  </p>
                 )}
               </div>
               <span className="mt-4 text-center">Do you want to proceed?</span>
