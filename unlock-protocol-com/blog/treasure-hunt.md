@@ -12,7 +12,7 @@ Are you ready to join our brave hero, Spork, on their mission to collect all the
 
 You'll help Spork traverse through the five different locations, each of which has its own unique challenge to overcome before being able to collect the prizes. This is no easy feat, but the rewards are worth it!
 
-Along the way, Spork will meet five different frens that will join them on their journey. These frens will provide guidance and support, sharing their knowledge and expertise so that Spork can complete the quests and claim their rewards. Are you up for the challenge? Ready to embark on this epic adventure? Join Spork today and become part of the ETHDenver Treasure Hunt!
+Along the way, Spork will meet new frens that will join them on their journey. These frens will provide guidance and support, sharing their knowledge and expertise so that Spork can complete the quests and claim their rewards. Are you up for the challenge? Ready to embark on this epic adventure? Join Spork today and become part of the ETHDenver Treasure Hunt!
 
 **How to play**
 
