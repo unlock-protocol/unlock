@@ -64,6 +64,7 @@ export interface NetworkConfig {
     quoterAddress: string
     oracle?: string
   }>
+  swapPurchaser?: string
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string

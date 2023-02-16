@@ -50,6 +50,7 @@ export const celo: NetworkConfig = {
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
+  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
   wrappedNativeCurrency: {
     name: 'Celo native asset',
     symbol: 'CELO',

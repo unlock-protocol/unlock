@@ -49,6 +49,7 @@ export const mumbai: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
+  swapPurchaser: '0xFAE21e3fab3bfb74029b785DaC27E8f9f14964c6',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
