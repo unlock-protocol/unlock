@@ -949,7 +949,7 @@ paths:
     get:
       operationId: ticketQRCode
       security:
-        - Application: ['lockManager']
+        - User: ['user', 'lockManager']
       description: Get QR code for the key.
       parameters:
         - $ref: '#/components/parameters/Network'
@@ -962,6 +962,38 @@ paths:
             'image/gif':
               schema:
                 nullable: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/verification:
+    get:
+      operationId: ticketVerificationUrl
+      security:
+        - User: ['user', 'lockManager']
+      description: Get the verification URL for the key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: JSON object containing the verification url
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties: 
+                  verificationUrl:
+                    type: string
+                    nullable: false
+
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 

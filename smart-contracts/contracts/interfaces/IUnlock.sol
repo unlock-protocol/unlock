@@ -324,4 +324,12 @@ interface IUnlock {
    * @return the protocol fee in basic point
    */
   function protocolFee() external view returns (uint);
+
+  /**
+   * Call executed by a lock after its version upgrade triggred by `upgradeLock`
+   * - PublicLock v12 > v13 (mainnet): migrate an existing Lock to another instance 
+   * of the Unlock contract
+   * @dev The `msg.sender` will be the upgraded lock
+   */
+  function postLockUpgrade() external;
 }
