@@ -97,26 +97,33 @@ export const base = `<!DOCTYPE html>
         }
       }
       p, ul, ol, li {
-        font-family: sans-serif;
-        font-size: 18px;
-        font-weight: normal;       
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 8px;       
       }
     
       body: {
         font-family: sans-serif;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: normal;
         margin: 0;
         margin-bottom: 16px;
       }
 
       h1 {
-        font-family: sans-serif;
-        font-size: 28px;
-        line-height: 40px;
+        font-size: 24px;
+        line-height: 32px;
         font-weight: bold;
         margin: 0;
         margin-bottom: 16px;
+      }
+
+      h2 {
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: bold;
+        margin: 0;
+        margin-bottom: 12px;
       }
       
       code {
@@ -330,7 +337,7 @@ export const base = `<!DOCTYPE html>
                       padding-bottom: 10px;
                       padding-top: 10px;
                       color: #999999;
-                      font-size: 12px;
+                      font-size: 16px;
                       text-align: center;
                     "
                     valign="top"
