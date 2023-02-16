@@ -1,4 +1,5 @@
 import handlebars from 'handlebars'
+import { customContentStyle } from './helpers/customContentStyle'
 import { links } from './helpers/links'
 
 handlebars.registerHelper('links', links)
@@ -10,7 +11,7 @@ export default {
 <p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just airdropped for you!</p>
 
 {{#if customContent}}
-  <section style="margin: 18px 0px; padding: 18px 18px 10px 18px; background: #F8FAFC; font-family: monospace, sans-serif;" class="custom">
+  <section style="${customContentStyle}">
     {{{customContent}}}
   </section>
 {{/if}}
