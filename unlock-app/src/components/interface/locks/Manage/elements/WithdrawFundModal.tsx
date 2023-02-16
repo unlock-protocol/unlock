@@ -178,7 +178,6 @@ export const WithdrawFundModal = ({
                   </p>
                 )}
               </div>
-              <span className="mt-4 text-center">Do you want to proceed?</span>
             </>
           ) : (
             <>
