@@ -115,6 +115,7 @@ export const AddressInput = forwardRef(
       <>
         <Input
           {...inputProps}
+          value={value}
           label={label}
           error={error}
           success={isTruncated ? minifyAddress(success) : success}
