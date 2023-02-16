@@ -8,7 +8,6 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useMutation } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
-import { Controller } from 'react-hook-form'
 import { Input } from './Input'
 export interface Props
   extends Omit<
@@ -20,7 +19,6 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  control: any
   onChange?: (string: string) => Promise<unknown> | unknown
   name: string
 }
@@ -52,8 +50,8 @@ export const AddressInput = forwardRef(
       label,
       withIcon = true,
       isTruncated = false, // address not truncated by default
-      control,
       name,
+      onChange,
       ...inputProps
     } = props
 
@@ -61,7 +59,6 @@ export const AddressInput = forwardRef(
 
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
-    const [address, setAddress] = useState('')
 
     const isAddressOrEns = (address = '') => {
       return (
@@ -116,35 +113,20 @@ export const AddressInput = forwardRef(
 
     return (
       <>
-        <Controller
-          control={control}
-          name={name}
-          render={({ field: { onChange } }) => {
-            return (
-              <>
-                <Input
-                  {...inputProps}
-                  value={address}
-                  label={label}
-                  error={error}
-                  success={isTruncated ? minifyAddress(success) : success}
-                  description={description}
-                  iconClass={
-                    resolveNameMutation.isLoading ? 'animate-spin' : ''
-                  }
-                  icon={
-                    resolveNameMutation.isLoading ? LoadingIcon : WalletIcon
-                  }
-                  onChange={async (e: any) => {
-                    console.log('default value', e.target.value)
-                    const value = e?.target?.value || ''
-                    setAddress(value)
-                    const res = await handleResolver(value)
-                    onChange(res)
-                  }}
-                />
-              </>
-            )
+        <Input
+          {...inputProps}
+          label={label}
+          error={error}
+          success={isTruncated ? minifyAddress(success) : success}
+          description={description}
+          iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
+          icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
+          onChange={async (e: any) => {
+            const value = e?.target?.value || ''
+            const res = await handleResolver(value)
+            if (typeof onChange === 'function') {
+              onChange(res)
+            }
           }}
         />
       </>

@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { AddressInput } from './AddressInput'
-import { useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import {
   QueryCache,
   QueryClient,
@@ -44,13 +44,24 @@ const Template: ComponentStory<typeof AddressInput> = () => {
         className="flex flex-col gap-3"
         onSubmit={handleSubmit(onSubmit, onError)}
       >
-        <AddressInput
-          withIcon
-          label="Manager address or ens"
-          name="address"
-          description="Address of the manager"
+        <Controller
           control={control}
+          name="address"
+          render={({ field: { onChange } }) => {
+            return (
+              <>
+                <AddressInput
+                  withIcon
+                  label="Manager address or ens"
+                  name="address"
+                  description="Address of the manager"
+                  onChange={onChange}
+                />
+              </>
+            )
+          }}
         />
+
         <Button type="submit">Send</Button>
       </form>
     </QueryClientProvider>
