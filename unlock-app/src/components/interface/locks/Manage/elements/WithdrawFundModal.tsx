@@ -1,9 +1,12 @@
-import { Button, Input, Modal } from '@unlock-protocol/ui'
+import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import networks from '@unlock-protocol/networks'
+import { useState } from 'react'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -39,12 +42,15 @@ export const WithdrawFundModal = ({
   symbol,
   network,
 }: WithdrawFundModalProps) => {
+  const web3Service = useWeb3Service()
   const { account, getWalletService } = useAuth()
+  const [preview, setPreview] = useState(false)
 
   const localForm = useForm<WithdrawFormProps>({
     mode: 'onChange',
     defaultValues: {
       amount: 0,
+      beneficiary: account,
     },
   })
   const {
@@ -53,6 +59,7 @@ export const WithdrawFundModal = ({
     formState: { errors },
     watch,
     reset,
+    trigger,
   } = localForm
 
   const withdrawFromLockPromise = async (
@@ -95,63 +102,105 @@ export const WithdrawFundModal = ({
   }
 
   const amountToTransfer = watch('amount', 0)
+  const beneficiary = watch('beneficiary', '')
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col w-full gap-5">
         <div className="text-left">
           <h3 className="text-xl font-semibold text-left text-black-500">
-            Withdraw
+            {preview ? 'Withdraw details:' : 'Withdraw'}
           </h3>
-          <span className="text-sm leading-tight text-gray-500">
-            Customize the address and the total balance you want to withdraw.
-          </span>
+          {!preview && (
+            <span className="text-sm leading-tight text-gray-500">
+              Customize the address and the total balance you want to withdraw.
+            </span>
+          )}
         </div>
-        <form className="grid gap-3" onSubmit={handleSubmit(onWithDraw)}>
-          <span>{`Balance will be withdraw to ${account}`}</span>
-          {/* <AddressInput
-            withIcon
-            isTruncated
-            name="beneficiary"
-            label="Address"
-            size="small"
-            localForm={localForm!}
-            disabled={withdrawMutation.isLoading}
-            web3Service={web3Service}
-          />*/}
+        <form className="grid w-full gap-3" onSubmit={handleSubmit(onWithDraw)}>
+          {preview ? (
+            <>
+              <div className="flex flex-col gap-2 leading-tight text-md text-brand-dark">
+                <span>- Network: {`${networks[network]?.name}`}</span>
+                <span>
+                  - Amount to transfer: {`${amountToTransfer} ${symbol}`}
+                </span>
+                <span>- Beneficiary: {`${beneficiary}`}</span>
+              </div>
+              <span className="mt-4 text-center">Do you want to proceed?</span>
+            </>
+          ) : (
+            <>
+              <AddressInput
+                withIcon
+                name="beneficiary"
+                label="Address"
+                size="small"
+                localForm={localForm!}
+                disabled={withdrawMutation.isLoading}
+                web3Service={web3Service}
+              />
 
-          <Input
-            label={`Balance to transfer: ${amountToTransfer} ${symbol}`}
-            size="small"
-            type="range"
-            min={0}
-            max={balance}
-            step={balance / 100}
-            disabled={withdrawMutation.isLoading}
-            {...register('amount', {
-              required: {
-                value: true,
-                message: 'This field is required.',
-              },
-              min: {
-                value: 0,
-                message: 'Min amount should be greater than 0.',
-              },
-              max: {
-                value: balance,
-                message: `Max amount should be less then ${balance}.`,
-              },
-            })}
-            error={errors?.amount?.message}
-          />
-          <Button
-            type="submit"
-            className="mt-2"
-            loading={withdrawMutation.isLoading}
-            disabled={withdrawMutation.isLoading}
-          >
-            {!withdrawMutation.isLoading ? 'Withdraw' : 'Withdrawing...'}
-          </Button>
+              <Input
+                label={`Balance to transfer: ${amountToTransfer} ${symbol}`}
+                size="small"
+                type="range"
+                min={0}
+                max={balance}
+                step={balance / 100}
+                disabled={withdrawMutation.isLoading}
+                {...register('amount', {
+                  required: {
+                    value: true,
+                    message: 'This field is required.',
+                  },
+                  min: {
+                    value: 0,
+                    message: 'Min amount should be greater than 0.',
+                  },
+                  max: {
+                    value: balance,
+                    message: `Max amount should be less then ${balance}.`,
+                  },
+                })}
+                error={errors?.amount?.message}
+              />
+            </>
+          )}
+          {preview ? (
+            <div className="grid w-full grid-cols-2 gap-2">
+              <Button
+                type="button"
+                variant="outlined-primary"
+                disabled={withdrawMutation.isLoading}
+                onClick={() => setPreview(false)}
+                size="medium"
+              >
+                Edit
+              </Button>
+              <Button
+                type="submit"
+                loading={withdrawMutation.isLoading}
+                disabled={withdrawMutation.isLoading}
+                size="medium"
+              >
+                {!withdrawMutation.isLoading ? 'Confirm' : 'Withdrawing...'}
+              </Button>
+            </div>
+          ) : (
+            <Button
+              type="button"
+              onClick={async () => {
+                const formValid = await trigger()
+                if (formValid) {
+                  setPreview(true)
+                }
+              }}
+              size="medium"
+            >
+              Next
+            </Button>
+          )}
         </form>
       </div>
     </Modal>
