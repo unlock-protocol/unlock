@@ -195,7 +195,7 @@ const LockSettingsPage = ({
     },
     {
       id: 'emails',
-      label: 'Email',
+      label: 'Emails',
       children: (
         <SettingEmail
           lockAddress={lockAddress}
@@ -207,7 +207,7 @@ const LockSettingsPage = ({
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-email.svg"
-          description="Customize the emails sent to users when they purchase your lock's membership NFTs."
+          description="Customize the emails sent to users when they purchase your lock's membership NFTs. "
         />
       ),
     },
