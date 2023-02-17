@@ -194,7 +194,7 @@ export const WithdrawFundModal = ({
                         withIcon
                         value={beneficiary}
                         label="Address"
-                        onChange={(value: string) => {
+                        onChange={(value: any) => {
                           setValue('beneficiary', value)
                         }}
                       />
