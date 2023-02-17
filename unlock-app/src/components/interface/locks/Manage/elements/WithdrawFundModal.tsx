@@ -1,5 +1,5 @@
 import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
 import { useMutation, useQueries } from '@tanstack/react-query'
@@ -67,12 +67,15 @@ export const WithdrawFundModal = ({
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
     trigger,
     setValue,
+    control,
   } = localForm
 
+  const { beneficiary = '', amount: amountToTransfer = 0 } = useWatch({
+    control,
+  })
   const withdrawFromLockPromise = async (
     form: WithdrawFormProps
   ): Promise<unknown> => {
@@ -111,9 +114,6 @@ export const WithdrawFundModal = ({
       },
     })
   }
-
-  const amountToTransfer = watch('amount', 0)
-  const beneficiary = watch('beneficiary', '')
 
   const [{ data: isContract }, { data: addressBalance }] = useQueries({
     queries: [
@@ -181,14 +181,26 @@ export const WithdrawFundModal = ({
             </>
           ) : (
             <>
-              <AddressInput
-                withIcon
+              <Controller
                 name="beneficiary"
-                label="Address"
-                size="small"
-                localForm={localForm!}
-                disabled={withdrawMutation.isLoading}
-                web3Service={web3Service}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={() => {
+                  return (
+                    <>
+                      <AddressInput
+                        withIcon
+                        value={beneficiary}
+                        label="Address"
+                        onChange={(value: string) => {
+                          setValue('beneficiary', value)
+                        }}
+                      />
+                    </>
+                  )
+                }}
               />
 
               <Input
@@ -225,10 +237,6 @@ export const WithdrawFundModal = ({
                 disabled={withdrawMutation.isLoading}
                 onClick={() => {
                   setPreview(false)
-                  console.table({
-                    beneficiary,
-                    amountToTransfer,
-                  })
                   reset({
                     beneficiary: beneficiary || '',
                     amount: Number(amountToTransfer),
