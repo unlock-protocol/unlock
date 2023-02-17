@@ -67,47 +67,47 @@ export const createWalletPass = async ({
     pass = applePass(name, lockAddress, tokenId, network)
   } else {
     pass = {
-      "logo": {
-        "sourceUri": {
-          "uri": "https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/logo/%C9%84nlock-Logo-monogram-black.png"
-        }
+      logo: {
+        sourceUri: {
+          uri: 'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/logo/%C9%84nlock-Logo-monogram-black.png',
+        },
       },
-      "hexBackgroundColor": "#FFF7E8",
-      "cardTitle": {
-        "defaultValue": {
-          "language": "en",
-          "value": "Unlock"
-        }
+      hexBackgroundColor: '#FFF7E8',
+      cardTitle: {
+        defaultValue: {
+          language: 'en',
+          value: 'Unlock',
+        },
       },
-      "subheader": {
-        "defaultValue": {
-          "language": "en",
-          "value": "Name"
-        }
+      subheader: {
+        defaultValue: {
+          language: 'en',
+          value: 'Name',
+        },
       },
-      "header": {
-        "defaultValue": {
-          "language": "en",
-          "value": name
-        }
+      header: {
+        defaultValue: {
+          language: 'en',
+          value: name,
+        },
       },
-      "textModulesData": [
+      textModulesData: [
         {
-          "id": "oneLeft",
-          "header": "Lock Address",
-          "body": minifyAddress(lockAddress)
+          id: 'oneLeft',
+          header: 'Lock Address',
+          body: minifyAddress(lockAddress),
         },
         {
-          "id": "oneMiddle",
-          "header": "Key ID",
-          "body": tokenId
+          id: 'oneMiddle',
+          header: 'Key ID',
+          body: tokenId,
         },
         {
-          "id": "oneRight",
-          "header": "Network",
-          "body": networks[network].name
+          id: 'oneRight',
+          header: 'Network',
+          body: networks[network].name,
         },
-      ]
+      ],
     }
   }
 
