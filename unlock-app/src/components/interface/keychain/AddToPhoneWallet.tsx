@@ -1,4 +1,4 @@
-import { Box, Modal } from '@unlock-protocol/ui'
+import { Box, Modal, Size } from '@unlock-protocol/ui'
 import QRCode from 'qrcode.react'
 import { createWalletPass, Platform } from '../../../services/ethpass'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -80,6 +80,10 @@ interface AddToWalletProps {
   disabled?: boolean
   active?: boolean
   name: string
+  iconLeft?: JSX.Element
+  size?: Size
+  variant?: string
+  className?: string
 }
 
 export const AddToDeviceWallet = ({

@@ -1,10 +1,11 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { DiAndroid as AndroidIcon, DiApple as AppleIcon } from 'react-icons/di'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { Fragment, useEffect, useMemo } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -14,6 +15,10 @@ import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
+import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
+import { Platform } from '~/services/ethpass'
+import { isAndroid, isIOS } from 'react-device-detect'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -30,9 +35,29 @@ export function Minting({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
+  const web3Service = useWeb3Service()
+  const [tokenId, setTokenId] = useState()
   const { mint, lock, messageToSign } = state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
+
+  useEffect(() => {
+    const getTokenId = async () => {
+      // Note: we only get the token id for the connected user.
+      // If they purchased for someone else (or multiple folks), we only
+      // want them to be able to install _their_ pass.
+      const userTokenId = await web3Service.getTokenIdForOwner(
+        lock!.address,
+        account!,
+        lock!.network
+      )
+      setTokenId(userTokenId)
+    }
+    if (mint?.status !== 'FINISHED' || !account || !lock || !web3Service) {
+      return
+    }
+    getTokenId()
+  }, [mint, account, lock, web3Service])
 
   useEffect(() => {
     if (mint?.status !== 'PROCESSING') {
@@ -48,8 +73,7 @@ export function Minting({
 
           const transaction = await provider.waitForTransaction(
             mint!.transactionHash!,
-            2,
-            60000
+            2
           )
 
           if (transaction.status !== 1) {
@@ -124,7 +148,7 @@ export function Minting({
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
-          {mint?.status === 'FINISHED' && (
+          {mint?.status === 'FINISHED' && tokenId && (
             <Link
               href="/keychain"
               target="_blank"
@@ -147,6 +171,58 @@ export function Minting({
               See in the block explorer
               <Icon icon={ExternalLinkIcon} size="small" />
             </a>
+          )}
+          {tokenId && (
+            <ul className="grid gap-2">
+              {!isIOS && (
+                <li className="">
+                  <AddToDeviceWallet
+                    className="w-full"
+                    iconLeft={<AndroidIcon />}
+                    size="small"
+                    variant="secondary"
+                    platform={Platform.GOOGLE}
+                    as={Button}
+                    network={lock!.network}
+                    lockAddress={lock!.address}
+                    tokenId={tokenId}
+                    image={`${config.services.storage.host}/lock/${
+                      lock!.address
+                    }/icon`}
+                    name={lock!.name}
+                    handlePassUrl={(url: string) => {
+                      window.open(url, '_')
+                    }}
+                  >
+                    Add to Google wallet
+                  </AddToDeviceWallet>
+                </li>
+              )}
+              {!isAndroid && (
+                <li className="">
+                  <AddToDeviceWallet
+                    className="w-full"
+                    platform={Platform.APPLE}
+                    size="small"
+                    variant="secondary"
+                    as={Button}
+                    iconLeft={<AppleIcon />}
+                    network={lock!.network}
+                    lockAddress={lock!.address}
+                    tokenId={tokenId}
+                    image={`${config.services.storage.host}/lock/${
+                      lock!.address
+                    }/icon`}
+                    name={lock!.name}
+                    handlePassUrl={(url: string) => {
+                      window.open(url, '_')
+                    }}
+                  >
+                    Add to Apple wallet
+                  </AddToDeviceWallet>
+                </li>
+              )}
+            </ul>
           )}
         </div>
       </main>
