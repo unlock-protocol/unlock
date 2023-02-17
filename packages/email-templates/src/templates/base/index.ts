@@ -97,26 +97,35 @@ export const base = `<!DOCTYPE html>
         }
       }
       p, ul, ol, li {
-        font-family: sans-serif;
-        font-size: 18px;
-        font-weight: normal;       
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 8px;       
       }
     
-      body: {
+      body {
         font-family: sans-serif;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: normal;
         margin: 0;
         margin-bottom: 16px;
       }
+
       h1 {
-        font-family: sans-serif;
-        font-size: 28px;
-        line-height: 40px;
+        font-size: 24px;
+        line-height: 32px;
         font-weight: bold;
         margin: 0;
         margin-bottom: 16px;
       }
+
+      h2 {
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: bold;
+        margin: 0;
+        margin-bottom: 12px;
+      }
+      
       code {
         border-radius: 0.375rem;
         font-weight: 500;
@@ -125,17 +134,6 @@ export const base = `<!DOCTYPE html>
         border-color: rgb(203 213 225);
         background-color: rgb(241 245 249);
         padding: 0.125rem 0.25rem;
-      }
-
-      section.custom {
-        margin: 18px 0px;
-        padding: 18px 18px 10px 18px;
-        background: #F8FAFC; 
-        font-family: monospace, sans-serif !important;
-      }
-
-      section.custom * {
-        font-family: monospace, sans-serif !important;
       }
 
       section a {
@@ -339,7 +337,7 @@ export const base = `<!DOCTYPE html>
                       padding-bottom: 10px;
                       padding-top: 10px;
                       color: #999999;
-                      font-size: 12px;
+                      font-size: 16px;
                       text-align: center;
                     "
                     valign="top"
