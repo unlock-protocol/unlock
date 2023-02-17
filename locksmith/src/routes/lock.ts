@@ -19,6 +19,11 @@ const changeLockIconConfiguration = {
 
 router.get('/lock/:lockAddress/icon', lockController.lockIcon)
 
+router.get(
+  '/image/:network/:lockAddress/:keyId?',
+  lockController.getTokenURIImage
+)
+
 router.post(
   '/lock/:lockAddress/icon',
   signatureValidationMiddleware.generateProcessor(changeLockIconConfiguration)
