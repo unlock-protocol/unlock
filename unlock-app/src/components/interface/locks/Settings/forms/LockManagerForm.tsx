@@ -316,7 +316,7 @@ export const LockManagerForm = ({
                       value={manager}
                       label="Add manager, please enter the wallet address of theirs."
                       description="Enter a wallet address or an ens name"
-                      onChange={(value: string) => {
+                      onChange={(value: any) => {
                         setValue('manager', value)
                       }}
                     />
