@@ -7,7 +7,6 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { Button } from '../Button/Button'
-import { useEffect } from 'react'
 
 export default {
   component: AddressInput,
@@ -20,23 +19,21 @@ const Template: ComponentStory<typeof AddressInput> = () => {
       address: '0xfC43f5F9dd45258b3AFf31Bdbe6561D97e8B71de',
     },
   })
-  const { handleSubmit, control, setValue } = localForm
+  const { handleSubmit, control, reset, setValue } = localForm
 
   const queryCache = new QueryCache()
   const queryClient = new QueryClient({
     queryCache,
   })
 
-  useWatch({
+  const { address } = useWatch({
     control,
   })
 
-  useEffect(() => {
-    setValue('address', 'demo.eth')
-  }, [])
-
-  const onSubmit = (form: any) => {
-    console.log('form values', form)
+  const onSubmit = (form: any, e: any) => {
+    reset({
+      address: '',
+    })
   }
 
   const onError = (error: any) => {
@@ -52,15 +49,21 @@ const Template: ComponentStory<typeof AddressInput> = () => {
         <Controller
           control={control}
           name="address"
-          render={({ field: { onChange } }) => {
+          rules={{
+            required: true,
+          }}
+          render={({ field: { value } }) => {
             return (
               <>
                 <AddressInput
                   withIcon
+                  value={address}
                   label="Manager address or ens"
-                  name="address"
                   description="Address of the manager"
-                  onChange={onChange}
+                  defaultValue={value}
+                  onChange={(value: any) => {
+                    setValue('address', value)
+                  }}
                 />
               </>
             )
