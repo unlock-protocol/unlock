@@ -121,7 +121,6 @@ export const lockIcon = async (req: Request, res: Response) => {
   if (lockIcon.isURL) {
     return res.redirect(lockIcon.icon)
   } else {
-    console.log(lockIcon)
     res.setHeader('Content-Type', lockIcon.type)
     return res.send(lockIcon.icon)
   }
