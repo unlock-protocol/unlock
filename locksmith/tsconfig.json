@@ -6,9 +6,6 @@
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
     "jsx": "react-jsx",
-    "lib": [
-      "dom"
-    ]
   },
   "exclude": [
     "build",
