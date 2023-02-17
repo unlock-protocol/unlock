@@ -1,6 +1,5 @@
 import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
 import useClipboard from 'react-use-clipboard'
-import { DiAndroid as AndroidIcon, DiApple as AppleIcon } from 'react-icons/di'
 import { isEthPassSupported, Platform } from '../../../services/ethpass'
 import {
   AvatarImage,
@@ -48,6 +47,7 @@ import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/receipts'
 import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
 import { isIOS } from 'react-device-detect'
+import Image from 'next/image'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -333,8 +333,13 @@ function Key({ ownedKey, account, network }: Props) {
                               window.open(url, '_')
                             }}
                           >
-                            <AndroidIcon />
-                            Add to my Google wallet
+                            <Image
+                              width="16"
+                              height="16"
+                              alt="Google Wallet"
+                              src={`/images/illustrations/google-wallet.svg`}
+                            />
+                            Add to my Google Wallet
                           </AddToDeviceWallet>
                         )}
                       </Menu.Item>
@@ -361,8 +366,13 @@ function Key({ ownedKey, account, network }: Props) {
                               }
                             }}
                           >
-                            <AppleIcon />
-                            Add to my Apple wallet
+                            <Image
+                              width="16"
+                              height="16"
+                              alt="Apple Wallet"
+                              src={`/images/illustrations/apple-wallet.svg`}
+                            />
+                            Add to my Apple Wallet
                           </AddToDeviceWallet>
                         )}
                       </Menu.Item>
