@@ -16,7 +16,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ __tests__/",
     "db:migrate": "yarn sequelize db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",
-    "ci": "yarn lint && yarn test",
+    "ci": "yarn lint && yarn test && yarn build",
     "build": "tsc -p .",
     "tsc": "tsc",
     "clean": "rm -rf build",
