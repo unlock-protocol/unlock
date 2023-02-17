@@ -1,4 +1,10 @@
-import { InputHTMLAttributes, ForwardedRef, ReactNode, useState } from 'react'
+import {
+  InputHTMLAttributes,
+  ForwardedRef,
+  ReactNode,
+  useState,
+  useEffect,
+} from 'react'
 import type { Size } from '../../types'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
@@ -43,6 +49,7 @@ export const AddressInput = forwardRef(
     const {
       size = 'medium',
       value,
+      defaultValue,
       className,
       description,
       label,
@@ -56,6 +63,7 @@ export const AddressInput = forwardRef(
 
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
+    const [address, setAddress] = useState<string>(value as string)
 
     const isAddressOrEns = (address = '') => {
       return (
@@ -81,7 +89,7 @@ export const AddressInput = forwardRef(
     })
 
     const handleResolver = async (address: string) => {
-      if (isAddressOrEns(address) || address.length === 0) {
+      try {
         const res: any = await resolveNameMutation.mutateAsync(address)
         if (res) {
           const isError = res?.type === 'error'
@@ -97,33 +105,53 @@ export const AddressInput = forwardRef(
               setSuccess(res.address)
             }
           }
-
           return res.address
         }
         return ''
-      } else {
+      } catch (err) {
         onReset()
         setError(`It's not a valid ens name or address`)
         return ''
       }
     }
 
+    useEffect(() => {
+      if (
+        (typeof defaultValue === 'string' && defaultValue.length === 0) ||
+        (typeof value === 'string' && value === '')
+      ) {
+        setAddress('')
+        onReset()
+      }
+    }, [defaultValue, value])
+
     return (
       <>
         <Input
           {...inputProps}
-          value={value}
+          value={address}
           label={label}
           error={error}
           success={isTruncated ? minifyAddress(success) : success}
           description={description}
           iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
           icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
-          onChange={async (e: any) => {
-            const value = e?.target?.value || ''
-            const res = await handleResolver(value)
-            if (typeof onChange === 'function') {
-              onChange(res)
+          onChange={async (e) => {
+            const value = e.target.value
+            setAddress(value)
+
+            if (isAddressOrEns(value)) {
+              try {
+                const res = await handleResolver(value)
+                if (typeof onChange === 'function' && res) {
+                  onChange(res)
+                }
+              } catch (_err) {}
+            } else {
+              setError(`It's not a valid ens name or address`)
+              if (typeof onChange === 'function') {
+                onChange('' as any)
+              }
             }
           }}
         />
