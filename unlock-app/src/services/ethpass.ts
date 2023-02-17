@@ -67,7 +67,47 @@ export const createWalletPass = async ({
     pass = applePass(name, lockAddress, tokenId, network)
   } else {
     pass = {
-      messages: [],
+      "logo": {
+        "sourceUri": {
+          "uri": "https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/logo/%C9%84nlock-Logo-monogram-black.png"
+        }
+      },
+      "hexBackgroundColor": "#FFF7E8",
+      "cardTitle": {
+        "defaultValue": {
+          "language": "en",
+          "value": "Unlock"
+        }
+      },
+      "subheader": {
+        "defaultValue": {
+          "language": "en",
+          "value": "Name"
+        }
+      },
+      "header": {
+        "defaultValue": {
+          "language": "en",
+          "value": name
+        }
+      },
+      "textModulesData": [
+        {
+          "id": "oneLeft",
+          "header": "Lock Address",
+          "body": minifyAddress(lockAddress)
+        },
+        {
+          "id": "oneMiddle",
+          "header": "Key ID",
+          "body": tokenId
+        },
+        {
+          "id": "oneRight",
+          "header": "Network",
+          "body": networks[network].name
+        },
+      ]
     }
   }
 
@@ -88,6 +128,7 @@ export const createWalletPass = async ({
     signatureMessage,
     pass, // customize me?
     platform,
+    templateId: '3923259c-0d1c-4f45-9a42-cf6e995a963d',
     chain: {
       network: network,
       name: 'evm',
