@@ -18,6 +18,7 @@ describe('useMetadata', () => {
     expect(fetch).not.toHaveBeenCalled()
     expect(result.current).toStrictEqual({
       image: '/images/svg/default-lock-logo.svg',
+      name: 'NFT Membership',
     })
   })
 
@@ -43,6 +44,7 @@ describe('useMetadata', () => {
     const { result } = renderHook(() => useMetadata(tokenUri))
     expect(result.current).toStrictEqual({
       image: '/images/svg/default-lock-logo.svg',
+      name: 'NFT Membership',
     })
   })
 })
