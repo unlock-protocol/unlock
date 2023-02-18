@@ -2,7 +2,7 @@ import { createSignature } from '../../src/websub/helpers'
 import { Request } from 'express'
 
 export const handler = (req: Request) => {
-  const signature = req.get('x-hub-signature')
+  const signature = req.headers['x-hub-signature']?.toString()
 
   if (!signature) {
     return {
