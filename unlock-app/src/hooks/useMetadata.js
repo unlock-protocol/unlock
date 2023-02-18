@@ -1,9 +1,11 @@
+import { stringifier } from 'csv/sync'
 import { useState, useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { rewriteIpfsUrl } from '../utils/url'
 
 const defaultMetadata = {
   image: '/images/svg/default-lock-logo.svg',
+  name: 'NFT Membership',
 }
 
 /**
