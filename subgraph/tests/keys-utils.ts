@@ -249,9 +249,7 @@ export function createKeyExtendedEvent(
   const keyExtendedEvent = changetype<KeyExtended>(newMockEvent())
 
   keyExtendedEvent.address = dataSource.address()
-
   keyExtendedEvent.parameters = []
-
   keyExtendedEvent.parameters.push(
     new ethereum.EventParam(
       'tokenId',

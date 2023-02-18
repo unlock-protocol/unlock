@@ -6,6 +6,7 @@ export const gnosis: NetworkConfig = {
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
   serializerAddress: '0x646E373EAf8a4AEc31Bf62B7Fd6fB59296d6CdA9',
   multisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
+  keyManagerAddress: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
   id: 100,
   name: 'Gnosis Chain',
   blockTime: 5000,
@@ -32,12 +33,13 @@ export const gnosis: NetworkConfig = {
   },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
-  baseCurrencySymbol: 'DAI',
+  baseCurrencySymbol: 'xDAI',
   nativeCurrency: {
-    name: 'DAI',
-    symbol: 'DAI',
+    name: 'xDAI',
+    symbol: 'xDAI',
     decimals: 18,
     coingecko: 'xdai',
+    coinbase: 'DAI',
   },
   startBlock: 19338700,
   previousDeploys: [

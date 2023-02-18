@@ -119,15 +119,15 @@ const LogIn = ({
       </form>
       <p className="mt-2">
         {onCancel && (
-          <a className="underline cursor-pointer" onClick={onCancel}>
+          <button className="underline cursor-pointer" onClick={onCancel}>
             Cancel
-          </a>
+          </button>
         )}
         {useWallet && (
           <p>
-            <a className="underline cursor-pointer" onClick={useWallet}>
+            <button className="underline cursor-pointer" onClick={useWallet}>
               Use crypto wallet
-            </a>
+            </button>
           </p>
         )}
       </p>

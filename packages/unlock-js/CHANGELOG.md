@@ -1,5 +1,29 @@
 # Changes
 
+# 0.33.3
+
+- remove `getEthAddressType` to web3Service
+- remove `isValidEOA` to web3Service
+- refactor `resolveName`
+
+# 0.33.2
+
+- add `getEthAddressType` to web3Service
+- add `isValidEOA` to web3Service
+- add `resolveName` to web3Service
+
+# 0.33.1
+
+- ensuring we return a contract or throw!
+
+# 0.33.1
+
+- Move to ethers.JsonRpcBatchProvider instead of ethers.JsonRpcProvider
+
+# 0.33.0
+
+- Remove subgraph service
+
 # 0.32.18
 
 - Add KeyManager for interacting with key manager contracts.

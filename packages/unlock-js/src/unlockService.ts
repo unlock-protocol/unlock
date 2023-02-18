@@ -1,4 +1,3 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 
@@ -33,9 +32,10 @@ export default class UnlockService {
 
     // for convenience, pass directly an ethers provider in the `networks` contructor
     if (this.networks[networkId].ethersProvider) {
-      return this.networks[networkId].ethersProvider as JsonRpcProvider
+      return this.networks[networkId]
+        .ethersProvider as ethers.providers.Provider
     }
-    return new ethers.providers.JsonRpcProvider(
+    return new ethers.providers.JsonRpcBatchProvider(
       this.networks[networkId].provider,
       networkId
     )
@@ -52,7 +52,7 @@ export default class UnlockService {
     }
 
     let opCode = await (
-      this.providerForNetwork(network) as JsonRpcProvider
+      this.providerForNetwork(network) as ethers.providers.Provider
     ).getCode(this.networks[network].unlockAddress!)
     return opCode !== '0x'
   }
@@ -82,15 +82,17 @@ export default class UnlockService {
       ? 'PublicLock'
       : 'Unlock'
 
-    if (contractName === 'PublicLock') {
+    if (contractName === 'PublicLock' && PublicLockVersions[`v${version}`]) {
       return PublicLockVersions[`v${version}`]
     }
-    if (contractName === 'Unlock') {
+    if (contractName === 'Unlock' && UnlockVersions[`v${version}`]) {
       return UnlockVersions[`v${version}`]
     }
 
     throw new Error(
-      `Contract ${address} not deployed, or unknown version ${version}`
+      `Contract ${address} not deployed, or unknown version ${version} with provider ${JSON.stringify(
+        provider
+      )}`
     )
   }
 

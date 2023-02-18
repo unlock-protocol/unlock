@@ -16,7 +16,6 @@ export const SignupContent = () => {
         network={1} // TODO: figure out what/if network is really needed.
         embedded={false}
         signup={false}
-        onCancel={() => {}}
       />
     </AppLayout>
   )

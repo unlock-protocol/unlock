@@ -6,6 +6,7 @@ export const polygon: NetworkConfig = {
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
   multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   serializerAddress: '0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9',
+  keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
   id: 137,
   name: 'Polygon',
   blockTime: 1000,
@@ -59,6 +60,7 @@ export const polygon: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
   },
+  swapPurchaser: '0x073C188bFFC8DE384eee702Cd590fB22a7BaE67B',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',

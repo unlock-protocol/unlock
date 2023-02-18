@@ -7,7 +7,6 @@ import {
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
-import fetch from 'node-fetch'
 import { APP_NAME } from '~/hooks/useAppStorage'
 
 // The goal of the success and failure objects is to act as a registry of events

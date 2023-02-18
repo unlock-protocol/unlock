@@ -13,10 +13,11 @@ const uniswapV2 = require('./uniswapV2')
 const uniswapV3 = require('./uniswapV3')
 const math = require('./math')
 const fork = require('./fork')
+const roles = require('./roles')
 
 module.exports = {
-  getBalance,
   deployContracts,
+  ...getBalance,
   ...lock,
   ...constants,
   ...deployLocks,
@@ -30,4 +31,5 @@ module.exports = {
   ...uniswapV3,
   ...math,
   ...fork,
+  ...roles,
 }

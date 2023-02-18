@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const { addDeployment } = require('../../helpers/deployments')
 
 async function main() {
   const LockSerializer = await ethers.getContractFactory('LockSerializer')
@@ -10,9 +9,6 @@ async function main() {
   console.log(
     `SERIALIZER > deployed to : ${serializer.address} (tx: ${serializer.deployTransaction.hash})`
   )
-
-  // save deployment info
-  await addDeployment('LockSerializer', serializer, false)
 
   return serializer.address
 }

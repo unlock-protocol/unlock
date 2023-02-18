@@ -1,9 +1,9 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useKeychain } from '~/hooks/useKeychain'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 export interface CancelAndRefundProps {
   isOpen: boolean
@@ -40,7 +40,7 @@ export const CancelAndRefundModal = ({
   network,
   onExpireAndRefund,
 }: CancelAndRefundProps) => {
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   const { getAmounts } = useKeychain({
@@ -73,6 +73,7 @@ export const CancelAndRefundModal = ({
       lockAddress,
       tokenId,
     }
+    const walletService = await getWalletService(network)
     return walletService.cancelAndRefund(
       params,
       {} /** transactionParams */,

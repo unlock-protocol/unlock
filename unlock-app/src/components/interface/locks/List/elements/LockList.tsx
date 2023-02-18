@@ -11,7 +11,7 @@ import {
 } from 'react-icons/ri'
 
 interface LocksByNetworkProps {
-  network: string
+  network: number
   isLoading: boolean
   locks?: any[]
 }
@@ -57,12 +57,18 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
 }
 
 export const LockList = ({ owner }: LockListProps) => {
-  const { networks } = useConfig()
-
-  const networkItems: any[] =
-    Object.entries(networks ?? {})
-      // ignore localhost
-      .filter(([network]) => network !== '31337') ?? []
+  const { networks, defaultNetwork } = useConfig()
+  const networkEntries = Object.entries(networks)
+  // Sort networks so that default and preferred networks are first.
+  const networkItems = [
+    ...networkEntries.filter(([network]) =>
+      [defaultNetwork.toString()].includes(network)
+    ),
+    ...networkEntries.filter(
+      ([network]) =>
+        network && !['31337', defaultNetwork.toString()].includes(network)
+    ),
+  ]
 
   const getLocksByNetwork = async ({ account: owner, network }: any) => {
     const service = new SubgraphService()
@@ -113,7 +119,7 @@ export const LockList = ({ owner }: LockListProps) => {
           <LocksByNetwork
             isLoading={isLoading}
             key={network}
-            network={network}
+            network={Number(network)}
             locks={locksByNetwork}
           />
         )

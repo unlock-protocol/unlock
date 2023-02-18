@@ -1,5 +1,3 @@
-import fetch from 'node-fetch'
-
 export enum emailTemplate {
   signupConfirmation = 'confirmEmail',
   welcome = 'welcome',

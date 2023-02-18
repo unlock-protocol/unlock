@@ -37,6 +37,9 @@ async function main() {
 
   const [deployer, holder] = await ethers.getSigners()
 
+  // Making sure these 2 get some ERC20 tokens
+  users.push(...[deployer.address, holder.address])
+
   /**
    * 1. Transfer some ETH to users
    */
@@ -109,7 +112,10 @@ async function main() {
 
       log(`LOCK "${await lockParams.name}" DEPLOYED TO ${lock.address}`)
 
-      if (lockParams.tokenAddress && process.env.LOCKSMITH_PURCHASER_ADDRESS) {
+      if (
+        lockParams.currencyContractAddress &&
+        process.env.LOCKSMITH_PURCHASER_ADDRESS
+      ) {
         const purchaser = await ethers.getSigner(
           process.env.LOCKSMITH_PURCHASER_ADDRESS
         )

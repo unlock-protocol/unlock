@@ -1,11 +1,11 @@
-import parseDataUri from 'parse-data-uri'
 import stripeOperations from '../operations/stripeOperations'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
 import { LockIcons } from '../models'
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import logger from '../logger'
-import lockIconUtils from '../utils/lockIcon'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { getGeneratedLockIcon, getLockIcon } from '../operations/lockOperations'
 
 export const connectStripe = async (req: Request, res: Response) => {
   const { message } = JSON.parse(decodeURIComponent(req.query.data!.toString()))
@@ -67,38 +67,69 @@ export const stripeConnected = async (req: Request, res: Response) => {
  * @param {*} res
  */
 export const lockIcon = async (req: Request, res: Response) => {
-  const { lockAddress } = req.params
+  const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const { original } = req.query
-  let lockIcon
+  const lockIcon = await getLockIcon({
+    lockAddress,
+    original: original === '1',
+    requestUrl: Normalizer.getRequestURL(req).toString(),
+  })
 
-  const renderDefaultForLock = () => {
-    const svg = lockIconUtils.lockIcon(lockAddress)
-    res.setHeader('Content-Type', 'image/svg+xml')
-    return res.send(svg)
+  if (lockIcon.isURL) {
+    return res.redirect(lockIcon.icon)
+  } else {
+    res.setHeader('Content-Type', lockIcon.type)
+    return res.send(lockIcon.icon)
   }
+}
 
+export const getTokenURIImage: RequestHandler<{
+  network: string
+  lockAddress: string
+  keyId?: string
+}> = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const keyId = request.params.keyId
+  const network = Number(request.params.network)
   try {
-    if (original !== '1') {
-      lockIcon = await LockIcons.findOne({
-        where: { lock: Normalizer.ethereumAddress(lockAddress) },
-      })
+    // If we have a keyId, we can try to get the tokenURI from the subgraph
+    if (keyId) {
+      const subgraph = new SubgraphService()
+      const key = await subgraph.key(
+        {
+          where: {
+            tokenId: keyId,
+            lock: lockAddress.toLowerCase(),
+          },
+        },
+        {
+          network,
+        }
+      )
+      // If we have a tokenURI, we can fetch the image from the metadata
+      if (key.tokenURI) {
+        const metadata = await fetch(key.tokenURI)
+        const json = await metadata.json()
+        return response.redirect(json?.image)
+      }
     }
 
-    if (lockIcon) {
-      if (lockIcon.icon.startsWith('data:')) {
-        const parsedDataUri = parseDataUri(lockIcon.icon)
-        res.setHeader('Content-Type', parsedDataUri.mimeType)
-        return res.send(parsedDataUri.data)
-      } else {
-        // This is just a regular URL redirect
-        return res.redirect(lockIcon.icon)
-      }
+    // If we don't have a keyId or a tokenURI, fetch the lock icon
+    const lockIcon = await getLockIcon({
+      lockAddress,
+      requestUrl: Normalizer.getRequestURL(request).toString(),
+    })
+
+    if (lockIcon.isURL) {
+      return response.redirect(lockIcon.icon)
     } else {
-      return renderDefaultForLock()
+      response.setHeader('Content-Type', lockIcon.type)
+      return response.send(lockIcon.icon)
     }
-  } catch (e) {
-    logger.error(`Could not serve icon for ${lockAddress}`, e)
-    return renderDefaultForLock()
+  } catch (error) {
+    logger.error(error)
+    const svg = getGeneratedLockIcon(lockAddress)
+    return response.setHeader('Content-Type', 'image/svg+xml').send(svg)
   }
 }
 
@@ -166,6 +197,7 @@ export const disconnectStripe = async (req: Request, res: Response) => {
 
 const lockController = {
   lockIcon,
+  getTokenURIImage,
   connectStripe,
   stripeConnected,
   changeLockIcon,

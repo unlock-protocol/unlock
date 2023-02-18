@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import configure from '../config'
 
 const config = configure()
-const publicProvider = config.networks[1].publicProvider
 
 export const getNameOrAddressForAddress = async (
   _address: string
@@ -14,8 +13,8 @@ export const getNameOrAddressForAddress = async (
     if (isNotENS) {
       return address
     }
-    const result = await new ethers.providers.JsonRpcProvider(
-      publicProvider
+    const result = await new ethers.providers.JsonRpcBatchProvider(
+      config.networks[1].provider
     ).lookupAddress(address)
     if (result) {
       return result
@@ -31,12 +30,12 @@ export const getNameOrAddressForAddress = async (
 export const getAddressForName = async (_name: string): Promise<string> => {
   try {
     const name = _name.trim()
-    const isAddress = ethers.utils.isAddress(name)
+    const isAddress = name.split('.').pop()?.toLowerCase() !== 'eth'
     if (isAddress) {
       return name
     }
-    const result = await new ethers.providers.JsonRpcProvider(
-      publicProvider
+    const result = await new ethers.providers.JsonRpcBatchProvider(
+      config.networks[1].provider
     ).resolveName(name)
     return result || ''
   } catch (error) {

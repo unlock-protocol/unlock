@@ -7,10 +7,8 @@ import networks from '@unlock-protocol/networks'
 import { Verifier } from '../models/verifier'
 import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
-import * as Asset from '../utils/assets'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
-const baseURIFragement = 'https://assets.unlock-protocol.com'
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -51,13 +49,12 @@ export const generateKeyMetadata = async (
     return {}
   }
 
-  const userMetadata = onChainKeyMetadata.owner
-    ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
-    : {}
-
-  const [keyCentricData, baseTokenData] = await Promise.all([
+  const [keyCentricData, baseTokenData, userMetadata] = await Promise.all([
     getKeyCentricData(address, keyId),
     getBaseTokenData(address, host, keyId),
+    onChainKeyMetadata.owner
+      ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
+      : {},
   ])
 
   const attributes: Attribute[] = []
@@ -108,15 +105,6 @@ export const getBaseTokenData = async (
     ...(persistedBasedMetadata?.data || {}),
   }
 
-  const assetLocation = Asset.tokenMetadataDefaultImage({
-    base: baseURIFragement,
-    address,
-  })
-
-  if (await Asset.exists(assetLocation)) {
-    result.image = assetLocation
-  }
-
   return result
 }
 
@@ -128,17 +116,7 @@ export const getKeyCentricData = async (address: string, tokenId: string) => {
     },
   })
 
-  const assetLocation = Asset.tokenCentricImage({
-    base: baseURIFragement,
-    address,
-    tokenId,
-  })
-
   const result: Record<string, any> = keyCentricData ? keyCentricData.data : {}
-
-  if (await Asset.exists(assetLocation)) {
-    result.image = assetLocation
-  }
 
   return result
 }

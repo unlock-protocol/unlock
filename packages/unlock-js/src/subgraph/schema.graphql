@@ -59,5 +59,31 @@ query AllKeys(
     tokenURI
     createdAtBlock
     cancelled
+    transactionsHash
+  }
+}
+
+query AllReceipts(
+  $first: Int = 100
+  $skip: Int
+  $where: Receipt_filter
+  $orderBy: Receipt_orderBy
+  $orderDirection: OrderDirection
+) {
+  receipts(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    timestamp
+    sender
+    payer
+    lockAddress
+    tokenAddress
+    gasTotal
+    amountTransferred
   }
 }

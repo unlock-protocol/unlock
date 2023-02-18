@@ -3,7 +3,8 @@ import { BigNumber, Contract } from 'ethers'
 import { unlock, ethers } from 'hardhat'
 import { lockParams } from './helpers/fixtures'
 import * as subgraph from './helpers/subgraph'
-import { purchaseKeys } from './helpers/keys'
+import { purchaseKeys, purchaseKey } from './helpers/keys'
+import ERC20ABI from './helpers/ERC20.abi'
 
 const awaitTimeout = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay))
@@ -132,7 +133,7 @@ describe('Upgrade a lock', function () {
   })
 })
 
-describe('(v11) key cancellation bug', function () {
+describe('key cancellation', function () {
   let lock: Contract
   let lockAddress: string
   let tokenIds: any
@@ -149,7 +150,7 @@ describe('(v11) key cancellation bug', function () {
     await awaitTimeout(2000)
     const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[1])
     expect(keyInGraph).to.not.be.null
-    expect(keyInGraph.cancelled).to.be.null
+    expect(keyInGraph.cancelled).to.be.false
 
     // cancel the 2nd one
     const keyOwner = await ethers.getSigner(keyOwners[1])
@@ -161,7 +162,7 @@ describe('(v11) key cancellation bug', function () {
       lockAddress,
       tokenIds[1]
     )
-    expect(keyInGraphAfterCancellation).to.be.null
+    expect(keyInGraphAfterCancellation.cancelled).to.be.true
   })
 })
 
@@ -277,5 +278,74 @@ describe('Keep track of changes in metadata', function () {
         )
       }
     })
+  })
+})
+
+describe('Receipts', function () {
+  it('created the receipt successfully for a native currency lock', async () => {
+    const locks = await subgraph.getLocks()
+    const lockAddress = locks.find(
+      (lock: any) =>
+        lock.tokenAddress === '0x0000000000000000000000000000000000000000'
+    ).address
+    const lock = await unlock.getLockContract(lockAddress)
+
+    // purchase a key
+    const [payer] = await ethers.getSigners()
+    const { transactionHash } = await purchaseKey(
+      lockAddress,
+      ethers.Wallet.createRandom().address
+    )
+    // wait for subgraph to index
+    await awaitTimeout(2000)
+    const receiptInGraph = await subgraph.getReceipt(transactionHash)
+
+    expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
+    expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
+      await lock.address.toLocaleLowerCase()
+    )
+    expect(receiptInGraph.sender).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.payer).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.amountTransferred).to.equal(await lock.keyPrice()) // assuming price paid was keyPrice
+    expect(parseInt(receiptInGraph.gasTotal, 10)).to.greaterThan(0)
+  })
+
+  it('created the receipt successfully for an ERC20 currency lock', async () => {
+    const locks = await subgraph.getLocks()
+    const lockAddress = locks.find(
+      (lock: any) =>
+        lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
+    ).address
+    const lock = await unlock.getLockContract(lockAddress)
+
+    // purchase a key
+    const [payer] = await ethers.getSigners()
+
+    // Check the balance!
+    const erc20 = new ethers.Contract(
+      await lock.tokenAddress(),
+      ERC20ABI,
+      payer
+    )
+    // Approve ERC20
+    await erc20.approve(lockAddress, ethers.constants.MaxUint256)
+    const { transactionHash } = await purchaseKey(
+      lockAddress,
+      ethers.Wallet.createRandom().address // buying for someone else!
+    )
+    // wait for subgraph to index
+    await awaitTimeout(2000)
+    const receiptInGraph = await subgraph.getReceipt(transactionHash)
+
+    expect(receiptInGraph.tokenAddress.toLocaleLowerCase()).to.equals(
+      (await lock.tokenAddress()).toLocaleLowerCase()
+    )
+    expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
+      await lock.address.toLocaleLowerCase()
+    )
+    expect(receiptInGraph.sender).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.payer).to.equal(payer.address.toLocaleLowerCase())
+    expect(receiptInGraph.amountTransferred).to.equal(await lock.keyPrice()) // assuming price paid was keyPrice
+    expect(parseInt(receiptInGraph.gasTotal, 10)).to.greaterThan(0)
   })
 })

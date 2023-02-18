@@ -29,11 +29,28 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
-import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
+import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
+import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
+import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
+
+error Unlock__MANAGER_ONLY();   
+error Unlock__VERSION_TOO_HIGH();   
+error Unlock__MISSING_TEMPLATE();  
+error Unlock__ALREADY_DEPLOYED();
+error Unlock__MISSING_PROXY_ADMIN();
+error Unlock__MISSING_LOCK_TEMPLATE();
+
+// TODO: prefix errors
+error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
+error LockDoesNotExist(address lockAddress);
+error InsufficientBalance();
+error UnauthorizedBalanceChange();
+error LockCallFailed();
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -75,7 +92,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // Map token address to oracle contract address if the token is supported
   // Used for GDP calculations
-  mapping(address => IUniswapOracle) public uniswapOracles;
+  mapping(address => IUniswapOracleV3) public uniswapOracles;
 
   // The WETH token address, used for value calculations
   address public weth;
@@ -144,12 +161,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // add a proxy admin on deployment
     _deployProxyAdmin();
   }
-
   function initializeProxyAdmin() public onlyOwner {
-    require(
-      proxyAdminAddress == address(0),
-      "ALREADY_DEPLOYED"
-    );
+    if(proxyAdminAddress != address(0)){revert Unlock__ALREADY_DEPLOYED();}
     _deployProxyAdmin();
   }
 
@@ -268,17 +281,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes memory data,
     uint16 _lockVersion
   ) public returns (address) {
-    require(
-      proxyAdminAddress != address(0),
-      "MISSING_PROXY_ADMIN"
-    );
+    if(proxyAdminAddress == address(0)){
+      revert Unlock__MISSING_PROXY_ADMIN();
+    }
 
     // get lock version
     address publicLockImpl = _publicLockImpls[_lockVersion];
-    require(
-      publicLockImpl != address(0),
-      "MISSING_LOCK_TEMPLATE"
-    );
+    if(publicLockImpl == address(0)){
+      revert Unlock__MISSING_LOCK_TEMPLATE();
+    }
 
     // deploy a proxy pointing to impl
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
@@ -305,32 +316,28 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
    */
-  function upgradeLock(
-    address payable lockAddress,
-    uint16 version
-  ) external returns (address) {
-    require(
-      proxyAdminAddress != address(0),
-      "MISSING_PROXY_ADMIN"
-    );
+
+  function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
+    if(proxyAdminAddress == address(0)){
+      revert Unlock__MISSING_PROXY_ADMIN();
+    }
 
     // check perms
-    require(
-      _isLockManager(lockAddress, msg.sender) == true,
-      "MANAGER_ONLY"
-    );
+    if(_isLockManager(lockAddress, msg.sender) != true){
+      revert Unlock__MANAGER_ONLY();
+    }
 
     // check version
     IPublicLock lock = IPublicLock(lockAddress);
     uint16 currentVersion = lock.publicLockVersion();
-    require(
-      version == currentVersion + 1,
-      "VERSION_TOO_HIGH"
-    );
+
+    if(version != currentVersion + 1){
+      revert Unlock__VERSION_TOO_HIGH();
+    }
 
     // make our upgrade
     address impl = _publicLockImpls[version];
-    require(impl != address(0), "MISSING_TEMPLATE");
+    if(impl == address(0)){revert Unlock__MISSING_TEMPLATE();}
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
         lockAddress
@@ -393,7 +400,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         tokenAddress != address(0) && tokenAddress != weth
       ) {
         // If priced in an ERC-20 token, find the supported uniswap oracle
-        IUniswapOracle oracle = uniswapOracles[
+        IUniswapOracleV3 oracle = uniswapOracles[
           tokenAddress
         ];
         if (address(oracle) != address(0)) {
@@ -420,7 +427,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
       // Distribute UDT
       if (_referrer != address(0)) {
-        IUniswapOracle udtOracle = uniswapOracles[udt];
+        IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(
@@ -589,11 +596,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address _tokenAddress,
     address _oracleAddress
   ) external onlyOwner {
-    uniswapOracles[_tokenAddress] = IUniswapOracle(
+    uniswapOracles[_tokenAddress] = IUniswapOracleV3(
       _oracleAddress
     );
     if (_oracleAddress != address(0)) {
-      IUniswapOracle(_oracleAddress).update(
+      IUniswapOracleV3(_oracleAddress).update(
         _tokenAddress,
         weth
       );
@@ -635,4 +642,40 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   {
     return globalTokenSymbol;
   }
+
+  // for doc, see IUnlock.sol
+  function postLockUpgrade() public {
+    // check if lock hasnot already been deployed here and version is correct
+    if (
+      locks[msg.sender].deployed == false
+      && 
+      IPublicLock(msg.sender).publicLockVersion() == 13 
+      && 
+      IPublicLock(msg.sender).unlockProtocol() != address(this)
+    ) {
+      IUnlock previousUnlock = IUnlock(
+        IPublicLock(msg.sender).unlockProtocol()
+      );
+
+      (
+        bool deployed, 
+        uint totalSales, 
+        uint yieldedDiscountTokens
+      ) = previousUnlock.locks(msg.sender);
+
+      // record lock from old Unlock in this one
+      if (deployed) {
+          locks[msg.sender] = LockBalances(
+            deployed, 
+            totalSales, 
+            yieldedDiscountTokens
+          );
+      } else {
+        revert LockDoesNotExist(msg.sender);
+      }
+    }
+  }
+
+  // required to withdraw WETH
+  receive() external payable {}
 }

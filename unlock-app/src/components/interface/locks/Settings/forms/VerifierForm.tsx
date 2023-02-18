@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
+import { AddressInput, Button } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -87,11 +87,13 @@ export const VerifierForm = ({
 }: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
 
-  const { register, handleSubmit, reset } = useForm<VerifierFormDataProps>({
+  const localForm = useForm<VerifierFormDataProps>({
     defaultValues: {
       verifier: '',
     },
   })
+
+  const { handleSubmit, reset } = localForm
 
   const getVerifiers = async () => {
     const response = await storage.verifiers(network, lockAddress)
@@ -207,12 +209,11 @@ export const VerifierForm = ({
           onSubmit={handleSubmit(onAddVerifier)}
         >
           <div className="flex flex-col gap-2">
-            <span className="text-base text-brand-dark">
-              Add verifier, please enter the wallet address of theirs.
-            </span>
-            <Input
+            <AddressInput
+              withIcon
               disabled={disabled}
-              {...register('verifier')}
+              label="Add verifier, please enter the wallet address of theirs."
+              name="verifier"
               autoComplete="off"
             />
           </div>

@@ -4,7 +4,13 @@ if in the future we need to change toast functionality/library
 we can do it from here without change everything from around the codebase
 */
 
-import { Renderable, toast, Toast, ToastOptions } from 'react-hot-toast'
+import {
+  Renderable,
+  toast,
+  Toast,
+  ToastOptions,
+  ValueOrFunction,
+} from 'react-hot-toast'
 
 interface ToastHelperProps {
   success: (message: string) => void
@@ -13,8 +19,8 @@ interface ToastHelperProps {
     promise: Promise<any>,
     msgs: {
       loading: Renderable
-      success: string
-      error: string
+      success: ValueOrFunction<Renderable, any>
+      error: ValueOrFunction<Renderable, any>
     },
     opts?:
       | Partial<

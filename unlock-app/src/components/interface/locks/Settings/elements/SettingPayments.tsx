@@ -1,5 +1,6 @@
 import { Lock } from '~/unlockTypes'
 import { CreditCardForm } from '../forms/CreditCardForm'
+import { ReceiptBaseForm } from '../forms/ReceiptBaseForm'
 import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { SettingCard } from './SettingCard'
@@ -29,7 +30,7 @@ export const SettingPayments = ({
         <UpdatePriceForm
           lockAddress={lockAddress}
           network={network}
-          price={parseInt(lock?.keyPrice ?? '0', 10) ?? 0}
+          price={parseFloat(lock?.keyPrice ?? '0')}
           isManager={isManager}
           disabled={!isManager}
         />
@@ -59,6 +60,19 @@ export const SettingPayments = ({
           isManager={isManager}
           disabled={!isManager}
           lock={lock}
+        />
+      </SettingCard>
+
+      <SettingCard
+        label="Receipts"
+        description="Update the supplier information to be shown on receipts."
+        isLoading={isLoading}
+      >
+        <ReceiptBaseForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
         />
       </SettingCard>
     </div>

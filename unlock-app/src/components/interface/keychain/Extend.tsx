@@ -1,7 +1,6 @@
 import { Button, Input, Modal } from '@unlock-protocol/ui'
 import React, { useMemo, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import {
   getErc20BalanceForAddress,
@@ -11,8 +10,6 @@ import {
   approveTransfer,
 } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
-import type { KeyProps } from './Key'
-import dayjs from 'dayjs'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { ToggleSwitch } from '@unlock-protocol/ui'
@@ -20,16 +17,21 @@ import { durationAsText } from '~/utils/durations'
 import { KeyItem } from './KeyInfoDrawer'
 import { config } from '~/config/app'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { Placeholder } from '@unlock-protocol/ui'
+import { Key } from '~/hooks/useKeys'
 
 const ExtendMembershipPlaceholder = () => {
   return (
-    <div data-testid="placeholder" className="flex flex-col w-full gap-5 p-4">
+    <Placeholder.Root
+      data-testid="placeholder"
+      className="flex flex-col w-full gap-5 p-4"
+    >
       <div className="flex flex-col gap-2">
-        <div className="h-[24px] w-2/3 bg-slate-200 animate-pulse"></div>
-        <div className="h-[14px] w-1/2 bg-slate-200 animate-pulse"></div>
+        <Placeholder.Line />
+        <Placeholder.Line />
       </div>
-      <div className="h-[50px] w-full rounded-full bg-slate-200 animate-pulse"></div>
-    </div>
+      <Placeholder.Line size="lg" />
+    </Placeholder.Root>
   )
 }
 
@@ -41,7 +43,7 @@ export interface Props {
   currency: string
   tokenId: string
   network: number
-  ownedKey: KeyProps
+  ownedKey: Key
 }
 
 export const ExtendMembershipModal = ({
@@ -52,14 +54,13 @@ export const ExtendMembershipModal = ({
   network,
   ownedKey,
 }: Props) => {
-  const walletService = useWalletService()
-  const provider = walletService.providerForNetwork(network)
-  const { account } = useAuth()
+  const web3Service = useWeb3Service()
+  const provider = web3Service.providerForNetwork(network)
+  const { account, getWalletService } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
   const [renewalAmount, setRenewalAmount] = useState(0)
   const [unlimited, setUnlimited] = useState(false)
-  const web3Service = useWeb3Service()
-
+  const { isRenewable, isExpired: isKeyExpired, isERC20 } = ownedKey
   const {
     data: lockExpirationDuration,
     isLoading: isLockExpirationDurationLoading,
@@ -104,19 +105,8 @@ export const ExtendMembershipModal = ({
     }
   )
 
-  const isKeyExpired =
-    ownedKey.expiration !== MAX_UINT
-      ? dayjs.unix(parseInt(ownedKey.expiration)).isBefore(dayjs())
-      : false
-
-  const isERC20 =
-    ownedKey.lock.tokenAddress &&
-    ownedKey.lock.tokenAddress !== ethers.constants.AddressZero
-
-  const isRenewable =
-    ownedKey.lock.version >= 11 && ownedKey.expiration !== MAX_UINT && isERC20
-
   const extendMembership = async (renewal?: number) => {
+    const walletService = await getWalletService(network)
     if (isERC20 && isRenewable && !isKeyExpired && (!!renewal || unlimited)) {
       await approveTransfer(
         ownedKey.lock.tokenAddress,

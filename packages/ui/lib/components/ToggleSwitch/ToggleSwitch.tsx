@@ -1,8 +1,7 @@
-import { Switch as SwitchComponent } from '@headlessui/react'
 import { ReactNode, useEffect } from 'react'
-import { twMerge } from 'tailwind-merge'
 import { Size } from '~/types'
 import { FieldLayout } from '../Form'
+import { Toggle } from '../Toggle/Toggle'
 
 interface ToggleSwitchProps {
   enabled: boolean
@@ -23,16 +22,6 @@ export const ToggleSwitch = ({
   disabled = false,
   size = 'medium',
 }: ToggleSwitchProps) => {
-  const switchClass = twMerge(
-    enabled ? 'bg-brand-ui-primary' : 'bg-gray-400',
-    'disabled:opacity-50 relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
-  )
-
-  const buttonClass = twMerge(
-    enabled ? 'translate-x-6' : 'translate-x-0',
-    'pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition duration-100'
-  )
-
   useEffect(() => {
     if (typeof onChange === 'function') {
       onChange(enabled)
@@ -43,16 +32,14 @@ export const ToggleSwitch = ({
     <FieldLayout description={description} size={size}>
       <div className="flex items-center gap-4">
         {title?.length > 0 && (
-          <span className="text-sm font-semibold">{title}</span>
+          <span className="text-base semibold">{title}</span>
         )}
-        <SwitchComponent
-          checked={enabled}
-          onChange={setEnabled}
-          className={switchClass}
+        <Toggle
           disabled={disabled}
-        >
-          <span aria-hidden="true" className={buttonClass} />
-        </SwitchComponent>
+          onChange={setEnabled}
+          value={enabled}
+          size={size as Extract<Size, 'small' | 'medium'>}
+        />
       </div>
     </FieldLayout>
   )

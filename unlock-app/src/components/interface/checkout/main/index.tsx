@@ -21,11 +21,13 @@ import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
   communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
+  handleClose?: (params: Record<string, string>) => void
 }
 
 export function Checkout({
@@ -33,7 +35,9 @@ export function Checkout({
   injectedProvider,
   communication,
   redirectURI,
+  handleClose,
 }: Props) {
+  // @ts-expect-error - xstate extension type generation is buggy
   const checkoutService = useInterpret(checkoutMachine, {
     context: {
       paywallConfig,
@@ -41,6 +45,10 @@ export function Checkout({
   })
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
+  const { authenticateWithProvider } = useAuthenticate({
+    injectedProvider,
+  })
+
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
   const paywallConfigChanged = !isEqual(
@@ -66,7 +74,9 @@ export function Checkout({
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
-      if (redirectURI) {
+      if (handleClose) {
+        handleClose(params)
+      } else if (redirectURI) {
         if (mint && mint?.status === 'ERROR') {
           redirectURI.searchParams.append('error', 'access-denied')
         }
@@ -83,14 +93,14 @@ export function Checkout({
           redirectURI.searchParams.append(key, value)
         }
         return window.location.assign(redirectURI)
-      }
-      if (!communication?.insideIframe) {
+      } else if (!communication?.insideIframe) {
         window.history.back()
       } else {
         communication.emitCloseModal()
       }
     },
     [
+      handleClose,
       communication,
       redirectURI,
       mint,
@@ -255,9 +265,16 @@ export function Checkout({
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
 
+  // Autoconnect
+  useEffect(() => {
+    if (paywallConfig?.autoconnect) {
+      authenticateWithProvider('METAMASK')
+    }
+  }, [paywallConfig?.autoconnect])
+
   return (
     <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
+      <div className="bg-white z-10 max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
         <TopNavigation
           onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
           onBack={onBack}

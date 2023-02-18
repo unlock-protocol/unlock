@@ -15,7 +15,6 @@ import {
   RiExternalLinkLine as ExternalLinkIcon,
   RiTimer2Line as DurationIcon,
 } from 'react-icons/ri'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
@@ -35,9 +34,8 @@ export function Renew({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, signMessage } = useAuth()
+  const { account, getWalletService } = useAuth()
   const config = useConfig()
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const [isSigningMessage, setIsSigningMessage] = useState(false)
   const [isRenewing, setIsRenewing] = useState(false)
@@ -51,11 +49,6 @@ export function Renew({
   const { messageToSign, referrer } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
-  const { network, isUnlockAccount, changeNetwork } = useAuth()
-  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
-  const networkConfig = config.networks[lockNetwork]
-  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
-
   const { isLoading: isFiatPricingLoading, data: fiatPricing } = useQuery(
     ['lockFiatPricing', lockAddress, lockNetwork],
     async () => {
@@ -100,6 +93,7 @@ export function Renew({
         hash: string | null
       ) => {
         setIsRenewing(false)
+
         if (error) {
           send({
             type: 'CONFIRM_RENEW',
@@ -124,6 +118,7 @@ export function Renew({
           })
         }
       }
+      const walletService = await getWalletService(lockNetwork)
       if (lock.publicLockVersion! <= 9) {
         await walletService.purchaseKeys(
           {
@@ -161,7 +156,11 @@ export function Renew({
   const onSign = async () => {
     setIsSigningMessage(true)
     try {
-      const signature = await signMessage(messageToSign!)
+      const walletService = await getWalletService()
+      const signature = await walletService.signMessage(
+        messageToSign!,
+        'personal_sign'
+      )
       setIsSigningMessage(false)
       send({
         type: 'SIGN_MESSAGE',
@@ -175,21 +174,6 @@ export function Renew({
       setIsSigningMessage(false)
     }
   }
-
-  const SwitchNetwork = () => (
-    <Button
-      disabled={isSwitchingNetwork}
-      loading={isSwitchingNetwork}
-      onClick={async (event) => {
-        setIsSwitchingNetwork(true)
-        event.preventDefault()
-        await changeNetwork(lockNetwork)
-        setIsSwitchingNetwork(false)
-      }}
-    >
-      Switch to {networkConfig.name}
-    </Button>
-  )
 
   const stepItems: StepItem[] = useCheckoutSteps(checkoutService, true)
 
@@ -248,8 +232,7 @@ export function Renew({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          {isNetworkSwitchRequired && <SwitchNetwork />}
-          {!isNetworkSwitchRequired && hasMessageToSign ? (
+          {hasMessageToSign ? (
             <Button
               disabled={isSigningMessage}
               loading={isSigningMessage}
@@ -264,9 +247,6 @@ export function Renew({
               loading={isRenewing}
               onClick={async (event) => {
                 event.preventDefault()
-                if (isUnlockAccount) {
-                  await changeNetwork(network)
-                }
                 onRenew()
               }}
               className="w-full"

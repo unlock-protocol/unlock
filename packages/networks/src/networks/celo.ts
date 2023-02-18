@@ -5,6 +5,7 @@ export const celo: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/42220',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   multisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
+  keyManagerAddress: '0xF6963D3c395A7914De77f771C2fC44b47B8379AC',
   id: 42220,
   name: 'Celo',
   chain: 'celo',
@@ -49,6 +50,7 @@ export const celo: NetworkConfig = {
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
+  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
   wrappedNativeCurrency: {
     name: 'Celo native asset',
     symbol: 'CELO',

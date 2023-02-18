@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./MixinLockCore.sol";
 import "./MixinErrors.sol";
+import "../interfaces/IUnlock.sol";
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -144,19 +145,46 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     emit Transfer(_ownerOf[_tokenId], address(0), _tokenId);
 
-    // delete ownership and expire key
+    // expire key
     _cancelKey(_tokenId);
+
+    // delete owner
+    _ownerOf[_tokenId] = address(0);
   }
 
   /**
    * Migrate data from the previous single owner => key mapping to
    * the new data structure w multiple tokens.
-   * No data migration needed for v10 > v11
    */
-  function migrate(bytes calldata) public virtual {
-    schemaVersion = publicLockVersion();
-  }
+  function migrate(bytes calldata /*_calldata*/) public virtual {
+    // make sure we have correct data version before migrating
+    require(
+      (
+        (schemaVersion == publicLockVersion() - 1)
+        ||
+        schemaVersion == 0
+      ),
+      'SCHEMA_VERSION_NOT_CORRECT'
+    );
 
+    // only for mainnet
+    if(block.chainid == 1) {
+
+      // TODO !
+      // Hardcoding mainnet Unlock address
+      address newUnlockAddress = 0x84d085898F6ae4ae8c4225f2601F29a10335F653;
+
+      // trigger migration from the new Unlock
+      IUnlock(newUnlockAddress).postLockUpgrade();
+
+      // update unlock ref in this lock
+      unlockProtocol = IUnlock(newUnlockAddress);
+      
+      // update data version
+      schemaVersion = publicLockVersion();
+    }
+  }
+  
   /**
    * Set the schema version to the latest
    * @notice only lock manager call call this
@@ -367,9 +395,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function _cancelKey(uint _tokenId) internal {
     // expire the key
     _keys[_tokenId].expirationTimestamp = block.timestamp;
-
-    // delete previous owner
-    _ownerOf[_tokenId] = address(0);
   }
 
   /**
@@ -661,5 +686,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
-  uint256[996] private __safe_upgrade_gap;
+  // decrease 996 to 995 when adding PrevUnlock in v13
+  uint256[995] private __safe_upgrade_gap;
 }

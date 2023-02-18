@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer'
-import templates from './templates'
 import config from '../config'
 import encrypter from './encrypter'
 import wrap from './wrap'
-import prepare, { prepareAll } from './templates/prepare'
+import templates from '@unlock-protocol/email-templates'
+
+import { prepareAll } from './templates/prepare'
 
 /**
  * Builds the template and params

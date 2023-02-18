@@ -1,34 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { WalletNotConnected } from '../../layouts/AppLayout'
 import { ImageBar } from '../Manage/elements/ImageBar'
 import { LockList } from './elements/LockList'
-
-const WalletNotConnected = () => {
-  const [loginUrl, setLoginUrl] = useState<string>('')
-  useEffect(() => {
-    setLoginUrl(`/login?redirect=${encodeURIComponent(window.location.href)}`)
-  }, [])
-
-  return (
-    <ImageBar
-      src="/images/illustrations/wallet-not-connected.svg"
-      description={
-        <>
-          <span>
-            Wallet is not connected yet.{' '}
-            <Link href={loginUrl}>
-              <span className="cursor-pointer text-brand-ui-primary">
-                Connect it now
-              </span>
-            </Link>
-          </span>
-        </>
-      }
-    />
-  )
-}
 
 const NoItems = () => {
   return (

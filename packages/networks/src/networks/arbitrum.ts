@@ -5,6 +5,7 @@ export const arbitrum: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/42161',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
+  keyManagerAddress: '0x520294E736167303efa038205D4391b58261BC9c',
   id: 42161,
   name: 'Arbitrum',
   chain: 'arbitrum',
@@ -51,6 +52,7 @@ export const arbitrum: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
   },
+  swapPurchaser: '0x36f1Ff99c094F313BE647649F82B19A83e766d2B',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',

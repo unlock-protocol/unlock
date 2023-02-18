@@ -8,11 +8,7 @@ export const SignupSuccess = () => (
     <span className="text-base">
       You are now signed up! We sent you a{' '}
       <strong>very important recovery email</strong>, please do not delete it!
-      Visit{' '}
-      <Link href="/settings">
-        <a className="cursor-pointer">your settings page</a>
-      </Link>
-      .
+      Visit <Link href="/settings">your settings page</Link>.
     </span>
   </div>
 )

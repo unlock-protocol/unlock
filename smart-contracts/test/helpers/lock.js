@@ -3,7 +3,7 @@ const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
 
-const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
+const purchaseKey = async (lock, keyOwner, isErc20 = false, keyPrice = DEFAULT_KEY_PRICE) => {
   // make sure we got ethers lock
   lock = await ethers.getContractAt(
     'contracts/PublicLock.sol:PublicLock',
@@ -16,13 +16,13 @@ const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
   const tx = await lock
     .connect(keyOwner)
     .purchase(
-      isErc20 ? [DEFAULT_KEY_PRICE] : [],
+      isErc20 ? [keyPrice] : [],
       [keyOwner.address],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
       [[]],
       {
-        value: isErc20 ? 0 : DEFAULT_KEY_PRICE,
+        value: isErc20 ? 0 : keyPrice,
       }
     )
 

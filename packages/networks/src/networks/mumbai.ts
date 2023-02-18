@@ -5,6 +5,7 @@ export const mumbai: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/80001',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   multisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
+  keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
   id: 80001,
   name: 'Mumbai (Polygon)',
   blockTime: 1000,
@@ -41,13 +42,14 @@ export const mumbai: NetworkConfig = {
   previousDeploys: [],
   description: 'Polygon test network. Do not use for production',
   isTestNetwork: true,
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 500,
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
+  swapPurchaser: '0xFAE21e3fab3bfb74029b785DaC27E8f9f14964c6',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',

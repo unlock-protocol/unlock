@@ -104,10 +104,7 @@ export const RestoreAccount = ({
         <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
         <span className="mt-1 text-sm font-thin">
           Your password was successfuly changed. Visit{' '}
-          <Link href="/settings">
-            <a>your settings page</a>
-          </Link>
-          .
+          <Link href="/settings">your settings page</Link>.
         </span>
       </div>
     )

@@ -6,6 +6,7 @@ export const mainnet: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/1',
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
+  keyManagerAddress: '0x9A1f43090307034DBFBE2ba20320Ce815ff046D4',
   name: 'Ethereum',
   chain: 'ethereum',
   blockTime: 8000,
@@ -55,6 +56,7 @@ export const mainnet: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
   },
+  swapPurchaser: '0x84d085898F6ae4ae8c4225f2601F29a10335F653',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',

@@ -5,6 +5,7 @@ export const avalanche: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/43114',
   unlockAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
   multisig: '0xEc7777C51327917fd2170c62873272ea168120Cb',
+  keyManagerAddress: '0x8e0B46ec3B95c81355175693dA0083b00fCc1326',
   id: 43114,
   name: 'Avalanche (C-Chain)',
   chain: 'avax',
