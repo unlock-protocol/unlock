@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AddressInput, Button } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
@@ -87,13 +87,13 @@ export const VerifierForm = ({
 }: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
 
-  const localForm = useForm<VerifierFormDataProps>({
-    defaultValues: {
-      verifier: '',
-    },
-  })
+  const localForm = useForm<VerifierFormDataProps>()
 
-  const { handleSubmit, reset } = localForm
+  const { handleSubmit, control, setValue } = localForm
+
+  const { verifier } = useWatch({
+    control,
+  })
 
   const getVerifiers = async () => {
     const response = await storage.verifiers(network, lockAddress)
@@ -121,7 +121,7 @@ export const VerifierForm = ({
         ToastHelper.error(res?.message)
       } else {
         ToastHelper.success(`Verifier added to list`)
-        reset()
+        setValue('verifier', '')
       }
     },
     onError: (err: any) => {
@@ -209,12 +209,28 @@ export const VerifierForm = ({
           onSubmit={handleSubmit(onAddVerifier)}
         >
           <div className="flex flex-col gap-2">
-            <AddressInput
-              withIcon
-              disabled={disabled}
-              label="Add verifier, please enter the wallet address of theirs."
+            <Controller
               name="verifier"
-              autoComplete="off"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      withIcon
+                      value={verifier}
+                      disabled={disabled}
+                      label="Add verifier, please enter the wallet address of theirs."
+                      autoComplete="off"
+                      onChange={(value: any) => {
+                        setValue('verifier', value)
+                      }}
+                    />
+                  </>
+                )
+              }}
             />
           </div>
           <Button
