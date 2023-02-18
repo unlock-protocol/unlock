@@ -224,7 +224,7 @@ export const VerifierForm = ({
                       disabled={disabled}
                       label="Add verifier, please enter the wallet address of theirs."
                       autoComplete="off"
-                      onChange={(value: string) => {
+                      onChange={(value: any) => {
                         setValue('verifier', value)
                       }}
                     />
