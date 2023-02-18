@@ -40,7 +40,6 @@ const LoadingIcon = (props: IconBaseProps) => (
  * @param label - Label for the input
  * @param name - Name of the input
  * @param type - Type of the input
- * @param localForm - React Hook Form object
  * @returns Input component
  *
  */

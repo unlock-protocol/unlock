@@ -115,9 +115,7 @@ export const WithdrawFundModal = ({
             name="beneficiary"
             label="Address"
             size="small"
-            localForm={localForm!}
             disabled={withdrawMutation.isLoading}
-            web3Service={web3Service}
           />*/}
 
           <Input

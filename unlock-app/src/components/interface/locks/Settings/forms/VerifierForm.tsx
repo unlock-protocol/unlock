@@ -7,7 +7,6 @@ import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { addressMinify } from '~/utils/strings'
 import { storage } from '~/config/storage'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface VerifierProps {
   address: string
@@ -93,8 +92,6 @@ export const VerifierForm = ({
       verifier: '',
     },
   })
-
-  const web3Service = useWeb3Service()
 
   const { handleSubmit, reset } = localForm
 
@@ -218,8 +215,6 @@ export const VerifierForm = ({
               label="Add verifier, please enter the wallet address of theirs."
               name="verifier"
               autoComplete="off"
-              localForm={localForm}
-              web3Service={web3Service}
             />
           </div>
           <Button

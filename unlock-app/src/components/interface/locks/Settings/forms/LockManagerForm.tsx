@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -210,8 +209,6 @@ export const LockManagerForm = ({
   isManager,
   disabled,
 }: LockManagerFormProps) => {
-  const web3Service = useWeb3Service()
-
   const localForm = useForm<{ manager: string }>()
 
   const { handleSubmit, reset } = localForm
@@ -306,8 +303,6 @@ export const LockManagerForm = ({
               name="manager"
               label="Add manager, please enter the wallet address of theirs."
               description="Enter a wallet address or an ens name"
-              web3Service={web3Service}
-              localForm={localForm}
             />
           </div>
           <Button
