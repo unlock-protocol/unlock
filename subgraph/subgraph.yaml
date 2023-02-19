@@ -2,6 +2,7 @@ specVersion: 0.0.4
 description: Unlock Protocol & Associated contracts
 features:
   - nonFatalErrors
+  - grafting
 graft:
   base: QmTCfzZQiChSDbb8Sxn1gn4FJfDkHsTLYxwdDFnZamjegy
   block: 39430000
