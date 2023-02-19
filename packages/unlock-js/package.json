@@ -19,7 +19,7 @@
     "build:abis": "node ./scripts/compressAbi.js",
     "build": "yarn clean && yarn generate && yarn build:abis && yarn build:lib",
     "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
-    "ci": "yarn test && yarn lint",
+    "ci": "yarn test && yarn lint && yarn build",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
     "generate:locksmith": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client",

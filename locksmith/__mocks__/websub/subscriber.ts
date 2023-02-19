@@ -1,7 +1,10 @@
 import { createSignature } from '../../src/websub/helpers'
+import { Request } from 'express'
 
-export const handler = (req) => {
-  const signature = req.headers.get('x-hub-signature')
+export const handler = (req: Request) => {
+  // @ts-expect-error  Argument of type 'IncomingHttpHeaders' is not assignable to parameter of type 'Iterable<readonly [PropertyKey, any]>'.
+  const headers = Object.fromEntries(req.headers)
+  const signature = headers['x-hub-signature']
 
   if (!signature) {
     return {
