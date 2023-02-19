@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, AddressInput } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
@@ -211,8 +211,12 @@ export const LockManagerForm = ({
 }: LockManagerFormProps) => {
   const localForm = useForm<{ manager: string }>()
 
-  const { handleSubmit, reset } = localForm
+  const { handleSubmit, control, setValue } = localForm
   const { getWalletService } = useAuth()
+
+  const { manager } = useWatch({
+    control,
+  })
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -244,7 +248,7 @@ export const LockManagerForm = ({
 
   const addLockManagerMutation = useMutation(addLockManager, {
     onSuccess: () => {
-      reset()
+      setValue('manager', '')
     },
   })
 
@@ -298,11 +302,27 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <AddressInput
-              withIcon
+            <Controller
               name="manager"
-              label="Add manager, please enter the wallet address of theirs."
-              description="Enter a wallet address or an ens name"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      withIcon
+                      value={manager}
+                      label="Add manager, please enter the wallet address of theirs."
+                      description="Enter a wallet address or an ens name"
+                      onChange={(value: any) => {
+                        setValue('manager', value)
+                      }}
+                    />
+                  </>
+                )
+              }}
             />
           </div>
           <Button
