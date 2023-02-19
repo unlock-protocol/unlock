@@ -110,6 +110,11 @@ export function handleLockConfig(event: LockConfigEvent): void {
 }
 
 export function handleTransfer(event: TransferEvent): void {
+  // Seeing an unexpected issue on block 39438407
+  // In order to avoid failing, continue
+  if (event.block.number === BigInt.fromI32(39438407)) {
+    return
+  }
   const zeroAddress = '0x0000000000000000000000000000000000000000'
   if (event.params.from.toHex() == zeroAddress) {
     // create key

@@ -53,7 +53,7 @@ const deploy = async (network, graphLabel) => {
   }
 
   const graphNode = 'https://api.thegraph.com/deploy/'
-  const ipfs = 'http://0.0.0.0:5001/'
+  const ipfs = 'https://api.thegraph.com/ipfs/'
 
   if (!networks[network]?.subgraph?.endpointV2) {
     throw new Error(`Missing subgraph configuration for ${network}`)
