@@ -111,8 +111,13 @@ export function handleLockConfig(event: LockConfigEvent): void {
 
 export function handleTransfer(event: TransferEvent): void {
   // Seeing an unexpected issue on block 39438407
+  // for contract 0x470bc03443bcc9c349a7d9c45a11f5cfbb81094e
   // In order to avoid failing, continue
-  if (event.block.number === BigInt.fromI32(39438407)) {
+  if (
+    event.block.number === BigInt.fromI32(39438407) ||
+    event.params.to.toHexString().toLowerCase() ===
+      '0x470bc03443bcc9c349a7d9c45a11f5cfbb81094e'.toLowerCase()
+  ) {
     return
   }
   const zeroAddress = '0x0000000000000000000000000000000000000000'
