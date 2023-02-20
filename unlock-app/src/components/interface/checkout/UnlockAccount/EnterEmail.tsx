@@ -1,5 +1,4 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -76,8 +75,8 @@ export function EnterEmail({ unlockAccountService }: Props) {
           </Link>
           . If you already have a crypto wallet, please connect it.
         </p>
-        <section className="ml-0.5 text-sm mt-auto	">
-          <p>💡 Did you know?</p>
+        <section className="ml-0.5 text-sm mt-auto text-gray-500">
+          <p className="font-bold">💡 Did you know?</p>
           <p>
             {' '}
             You can pay by credit card card even if you logged-in with your
