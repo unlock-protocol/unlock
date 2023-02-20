@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -11,16 +11,14 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import {
-  RiExternalLinkLine as ExternalLinkIcon,
-  RiTimer2Line as DurationIcon,
-} from 'react-icons/ri'
+import { RiTimer2Line as DurationIcon } from 'react-icons/ri'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
+import { ViewContract } from '../ViewContract'
 
 interface Props {
   injectedProvider: unknown
@@ -208,16 +206,7 @@ export function Renew({
                   value={formattedData.formattedDuration}
                 />
               </ul>
-              <a
-                href={config.networks[lockNetwork].explorer.urls.address(
-                  lockAddress
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
+              <ViewContract network={lockNetwork} lockAddress={lockAddress} />
             </div>
           ) : (
             <div className="py-1.5 space-y-2 items-center">
