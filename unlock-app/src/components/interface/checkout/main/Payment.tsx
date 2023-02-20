@@ -170,8 +170,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()}){' '}
-                    {parseFloat(walletInfo?.balance).toFixed(6)}{' '}
+                    Your balance of {symbol.toUpperCase()} on{' '}
+                    {networkConfig.name}:{' ~'}
+                    {parseFloat(walletInfo?.balance).toFixed(3)}{' '}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -263,8 +264,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full gap-2">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()})
+                    Your balance of {symbol.toUpperCase()} on{' '}
+                    {networkConfig.name}:
                     <p className="w-20 ml-2 font-medium truncate">
+                      {' ~'}
                       {walletInfo?.balance?.toString()}
                     </p>
                   </div>
