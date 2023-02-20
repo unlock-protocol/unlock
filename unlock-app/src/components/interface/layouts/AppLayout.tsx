@@ -156,6 +156,9 @@ export const AppLayout = ({
   const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
 
   const MENU = {
+    extraClass: {
+      mobile: 'bg-ui-secondary-200 px-6',
+    },
     showSocialIcons: false,
     logo: { url: '/images/svg/unlock-logo.svg' },
     menuSections: showLinks
@@ -196,7 +199,7 @@ export const AppLayout = ({
             <span className="text-xl font-bold">
               Are you sure to disconnect?
             </span>
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4 md:flex-row">
               <Button onClick={() => setDisconnectModal(false)}>
                 Never mind
               </Button>
