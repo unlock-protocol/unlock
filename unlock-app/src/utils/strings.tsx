@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-
 /**
  * Applied to itself, yields "Camel Case To Title"
  */
