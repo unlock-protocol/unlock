@@ -1,4 +1,10 @@
-import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
+import {
+  AddressInput,
+  Button,
+  Input,
+  Modal,
+  isAddressOrEns,
+} from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
@@ -7,7 +13,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import { useState } from 'react'
-import { isAddressOrEns } from '~/utils/strings'
 
 interface WithdrawFundModalProps {
   isOpen: boolean

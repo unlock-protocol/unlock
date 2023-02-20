@@ -1,10 +1,15 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input, AddressInput } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  AddressInput,
+  isAddressOrEns,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { addressMinify, isAddressOrEns } from '~/utils/strings'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -156,8 +161,8 @@ const LockManagerCard = ({
     const renounceLockManagerPromise = renounceLockManagerMutation.mutateAsync()
     await ToastHelper.promise(renounceLockManagerPromise, {
       loading: `Removing Lock Manager status.`,
-      success: `Lock manager renounced for ${addressMinify(manager)}.`,
-      error: `Can't renounce Lock manager for ${addressMinify(manager)}`,
+      success: `Lock manager renounced for ${minifyAddress(manager)}.`,
+      error: `Can't renounce Lock manager for ${minifyAddress(manager)}`,
     })
   }
 
@@ -233,7 +238,7 @@ export const LockManagerForm = ({
   }
 
   const addLockManager = async (address: string) => {
-    const managerAddress = addressMinify(address)
+    const managerAddress = minifyAddress(address)
     const walletService = await getWalletService(network)
     const addManagerPromise = walletService.addLockManager({
       lockAddress,

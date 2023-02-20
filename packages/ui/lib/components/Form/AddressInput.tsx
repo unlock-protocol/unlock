@@ -9,10 +9,9 @@ import type { Size } from '../../types'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { minifyAddress } from '../../utils'
+import { isAddressOrEns, minifyAddress } from '../../utils'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useMutation } from '@tanstack/react-query'
-import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
 import { Input } from './Input'
 export interface Props
@@ -63,13 +62,6 @@ export const AddressInput = forwardRef(
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
     const [address, setAddress] = useState<string>(value as string)
-
-    const isAddressOrEns = (address = '') => {
-      return (
-        address?.toLowerCase()?.includes('.eth') ||
-        ethers.utils.isAddress(address)
-      )
-    }
 
     const resolveName = async (address: string) => {
       if (address.length === 0) return

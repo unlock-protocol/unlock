@@ -1,11 +1,15 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { AddressInput, Button } from '@unlock-protocol/ui'
+import {
+  AddressInput,
+  Button,
+  isAddressOrEns,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
-import { addressMinify, isAddressOrEns } from '~/utils/strings'
 import { storage } from '~/config/storage'
 
 interface VerifierProps {
@@ -137,7 +141,7 @@ export const VerifierForm = ({
       if (res?.message) {
         ToastHelper.error(res?.message)
       } else {
-        ToastHelper.success(`${addressMinify(verifier)} deleted from list`)
+        ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
       }
     },
   })
