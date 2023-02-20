@@ -4,7 +4,7 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { addressMinify } from '~/utils/strings'
+import { addressMinify, isAddressOrEns } from '~/utils/strings'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -307,6 +307,7 @@ export const LockManagerForm = ({
               control={control}
               rules={{
                 required: true,
+                validate: isAddressOrEns,
               }}
               render={() => {
                 return (

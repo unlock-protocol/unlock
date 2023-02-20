@@ -7,6 +7,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import { useState } from 'react'
+import { isAddressOrEns } from '~/utils/strings'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -186,6 +187,7 @@ export const WithdrawFundModal = ({
                 control={control}
                 rules={{
                   required: true,
+                  validate: isAddressOrEns,
                 }}
                 render={() => {
                   return (

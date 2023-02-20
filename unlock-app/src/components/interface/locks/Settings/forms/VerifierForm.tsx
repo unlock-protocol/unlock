@@ -5,7 +5,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
-import { addressMinify } from '~/utils/strings'
+import { addressMinify, isAddressOrEns } from '~/utils/strings'
 import { storage } from '~/config/storage'
 
 interface VerifierProps {
@@ -214,6 +214,7 @@ export const VerifierForm = ({
               control={control}
               rules={{
                 required: true,
+                validate: isAddressOrEns,
               }}
               render={() => {
                 return (

@@ -7,6 +7,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { Button } from '../Button/Button'
+import { ethers } from 'ethers'
 
 export default {
   component: AddressInput,
@@ -31,6 +32,7 @@ const Template: ComponentStory<typeof AddressInput> = () => {
   })
 
   const onSubmit = (form: any, e: any) => {
+    console.log('form')
     reset({
       address: '',
     })
@@ -38,6 +40,13 @@ const Template: ComponentStory<typeof AddressInput> = () => {
 
   const onError = (error: any) => {
     console.log('error value', error)
+  }
+
+  const isAddressOrEns = (address = '') => {
+    return (
+      address?.toLowerCase()?.includes('.eth') ||
+      ethers.utils.isAddress(address)
+    )
   }
 
   return (
@@ -51,6 +60,7 @@ const Template: ComponentStory<typeof AddressInput> = () => {
           name="address"
           rules={{
             required: true,
+            validate: isAddressOrEns,
           }}
           render={({ field: { value } }) => {
             return (

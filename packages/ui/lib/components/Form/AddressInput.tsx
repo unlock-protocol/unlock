@@ -136,7 +136,8 @@ export const AddressInput = forwardRef(
           iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
           icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
           onChange={async (e) => {
-            const value = e.target.value
+            const value: string = e.target.value
+            await resolveNameMutation.reset() // reset mutation
             setAddress(value)
 
             if (isAddressOrEns(value)) {
@@ -149,7 +150,7 @@ export const AddressInput = forwardRef(
             } else {
               setError(`It's not a valid ens name or address`)
               if (typeof onChange === 'function') {
-                onChange('' as any)
+                onChange(value as any)
               }
             }
           }}

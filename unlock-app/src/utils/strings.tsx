@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 /**
  * Applied to itself, yields "Camel Case To Title"
  */
@@ -36,4 +38,12 @@ export const getValidNumber = (value: string | number): number | undefined => {
   return reg.test(`${value}`) && !isNaN(parseInt(`${value}`))
     ? parseInt(`${value}`)
     : undefined
+}
+
+/** Check if string is an address or ens */
+
+export const isAddressOrEns = (address = '') => {
+  return (
+    address?.toLowerCase()?.includes('.eth') || ethers.utils.isAddress(address)
+  )
 }
