@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
+import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -29,6 +29,7 @@ import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
 import { useStorageService } from '~/utils/withStorageService'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+import { ViewContract } from '../ViewContract'
 
 interface Props {
   injectedProvider: unknown
@@ -656,16 +657,7 @@ export function Confirm({
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <a
-              href={config.networks[lockNetwork].explorer.urls.address(
-                lockAddress
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-brand-ui-primary hover:opacity-75"
-            >
-              View Contract <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
+            <ViewContract lockAddress={lock!.address} network={network!} />
           </div>
           {isError && (
             // TODO: use actual error from simulation
@@ -742,7 +734,11 @@ export function Confirm({
                           pricingData?.total
                         )?.toLocaleString()} ${symbol}`
                   }
-                  usdPrice={`~$${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`}
+                  usdPrice={
+                    pricingData?.usdPrice?.priceInAmount
+                      ? `~${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`
+                      : ''
+                  }
                   isCardEnabled={formattedData.cardEnabled}
                 />
               </>

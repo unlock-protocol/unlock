@@ -64,14 +64,12 @@ interface SignedOutProps {
   ): Promise<void>
   onUnlockAccount(): void
   injectedProvider: any
-  title?: string
 }
 
 export function SignedOut({
   onUnlockAccount,
   authenticateWithProvider,
   injectedProvider,
-  title = 'Have a crypto wallet?',
 }: SignedOutProps) {
   const iconButtonClass =
     'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
@@ -123,7 +121,7 @@ export function SignedOut({
   return (
     <div className="grid w-full grid-flow-col grid-cols-11">
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm">{title}</h4>
+        <h4 className="text-sm"> Have a crypto wallet? </h4>
         <DownloadWallet
           isOpen={isDownloadWallet}
           setIsOpen={setIsDownloadWallet}
@@ -159,7 +157,7 @@ export function SignedOut({
         <div className="h-full border-l"></div>
       </div>
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm">No crypto wallet?</h4>
+        <h4 className="text-sm"> Don&apos;t have a crypto wallet? </h4>
         <Button
           onClick={(event) => {
             event.preventDefault()
@@ -219,7 +217,6 @@ export function Connected({
           send('UNLOCK_ACCOUNT')
         }}
         authenticateWithProvider={authenticateWithProvider}
-        title="Have a crypto wallet?"
       />
     </div>
   )
