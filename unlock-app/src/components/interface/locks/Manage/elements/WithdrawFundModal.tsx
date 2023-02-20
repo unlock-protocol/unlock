@@ -219,17 +219,18 @@ export const WithdrawFundModal = ({
                 step={balance / 100}
                 disabled={withdrawMutation.isLoading}
                 {...register('amount', {
-                  required: {
-                    value: true,
-                    message: 'This field is required.',
-                  },
-                  min: {
-                    value: 0,
-                    message: 'Min amount should be greater than 0.',
-                  },
-                  max: {
-                    value: balance,
-                    message: `Max amount should be less then ${balance}.`,
+                  validate: (value) => {
+                    const formattedValue = parseFloat(`${value}`)
+
+                    if (formattedValue === 0) {
+                      return 'The amount to withdraw should be greater than 0.'
+                    }
+
+                    if (formattedValue > balance) {
+                      return `The amount should be less then the current balance of ${balance}.`
+                    }
+
+                    return formattedValue > 0
                   },
                 })}
                 error={errors?.amount?.message}
