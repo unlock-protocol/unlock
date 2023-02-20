@@ -7,7 +7,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { Button } from '../Button/Button'
-import { ethers } from 'ethers'
+import { isAddressOrEns } from '~/utils'
 
 export default {
   component: AddressInput,
@@ -40,13 +40,6 @@ const Template: ComponentStory<typeof AddressInput> = () => {
 
   const onError = (error: any) => {
     console.log('error value', error)
-  }
-
-  const isAddressOrEns = (address = '') => {
-    return (
-      address?.toLowerCase()?.includes('.eth') ||
-      ethers.utils.isAddress(address)
-    )
   }
 
   return (
