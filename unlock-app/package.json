@@ -7,6 +7,7 @@
     "@headlessui/react": "1.7.10",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "2.9.10",
+    "@next/bundle-analyzer": "^13.1.6",
     "@radix-ui/react-avatar": "1.0.1",
     "@rehooks/local-storage": "2.4.4",
     "@sentry/nextjs": "7.36.0",

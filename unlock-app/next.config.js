@@ -38,4 +38,8 @@ const config = {
   },
 }
 
-module.exports = withSentryConfig(withTM(config))
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer(withSentryConfig(withTM(config)))

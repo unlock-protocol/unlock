@@ -6,7 +6,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const copyFile = promisify(fs.copyFile)
 
-module.exports = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer({
   webpack: (config) => {
     // Despite being mostly Typescript-configured by default, Next
     // will fail to resolve .ts{x} files if we don't set the
@@ -58,4 +62,4 @@ module.exports = {
       '/': { page: '/home' },
     }
   },
-}
+})
