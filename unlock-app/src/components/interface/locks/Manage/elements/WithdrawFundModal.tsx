@@ -216,11 +216,11 @@ export const WithdrawFundModal = ({
                     const formattedValue = parseFloat(`${value}`)
 
                     if (formattedValue === 0) {
-                      return 'Min amount should be greater than 0.'
+                      return 'The amount to withdraw should be greater than 0.'
                     }
 
                     if (formattedValue > balance) {
-                      return `Max amount should be less then ${balance}.`
+                      return `The amount should be less then the current balance of ${balance}.`
                     }
 
                     return formattedValue > 0
