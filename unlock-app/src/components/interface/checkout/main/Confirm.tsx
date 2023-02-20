@@ -15,9 +15,7 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { Framework } from '@superfluid-finance/sdk-core'
-import { ethers, BigNumber } from 'ethers'
-import { selectProvider } from '~/hooks/useAuthenticate'
+import { ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
@@ -442,53 +440,6 @@ export function Confirm({
     }
   }
 
-  const onConfirmSuperfluid = async () => {
-    try {
-      if (payment.method !== 'superfluid') {
-        return
-      }
-      setIsConfirming(true)
-      const provider = selectProvider(config)
-      const web3Provider = new ethers.providers.Web3Provider(provider)
-      const sf = await Framework.create({
-        chainId: lock!.network,
-        provider: web3Provider,
-      })
-      const expiration = BigNumber.from(lock!.expirationDuration)
-      const decimals = await web3Service.getTokenDecimals(
-        lock!.currencyContractAddress!,
-        lock!.network
-      )
-
-      const mul = BigNumber.from(10).pow(decimals)
-
-      const flowRate = BigNumber.from(lock!.keyPrice)
-        .mul(mul)
-        .div(expiration)
-        .toString()
-      const op = sf.cfaV1.createFlow({
-        sender: provider.address,
-        receiver: lock!.address,
-        superToken: lock!.currencyContractAddress!,
-        flowRate: flowRate,
-      })
-      const walletService = await getWalletService(lockNetwork)
-      const signer = walletService.signer
-      await op.exec(signer)
-      communication?.emitUserInfo({
-        address: account,
-      })
-      send({
-        type: 'CONFIRM_MINT',
-        status: 'FINISHED',
-      })
-      setIsConfirming(false)
-    } catch (error: any) {
-      setIsConfirming(false)
-      ToastHelper.error(error?.error?.message || error.message)
-    }
-  }
-
   const onConfirmClaim = async () => {
     try {
       setIsConfirming(true)
@@ -611,24 +562,6 @@ export function Confirm({
               {isConfirming
                 ? 'Claiming your membership'
                 : 'Claim your membership'}
-            </Button>
-          </div>
-        )
-      }
-      case 'superfluid': {
-        return (
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading}
-              onClick={async (event) => {
-                event.preventDefault()
-                onConfirmSuperfluid()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using superfluid'
-                : 'Pay using superfluid'}
             </Button>
           </div>
         )
