@@ -5,7 +5,7 @@ import {
   Toggle,
   AddressInput,
 } from '@unlock-protocol/ui'
-import { useForm, Controller, useWatch, Validate } from 'react-hook-form'
+import { useForm, Controller, useWatch } from 'react-hook-form'
 import { getAddressForName } from '~/hooks/useEns'
 import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
