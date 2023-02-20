@@ -39,11 +39,3 @@ export const getValidNumber = (value: string | number): number | undefined => {
     ? parseInt(`${value}`)
     : undefined
 }
-
-/** Check if string is an address or ens */
-
-export const isAddressOrEns = (address = '') => {
-  return (
-    address?.toLowerCase()?.includes('.eth') || ethers.utils.isAddress(address)
-  )
-}
