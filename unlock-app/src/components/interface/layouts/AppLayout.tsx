@@ -1,16 +1,16 @@
 import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
 import Loading from '../Loading'
-import { Button, Footer, Modal } from '@unlock-protocol/ui'
-import { AppHeader } from '../AppHeader'
+import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
-import React from 'react'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
+import { addressMinify } from '~/utils/strings'
+import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 
 interface DashboardLayoutProps {
   title?: string
@@ -142,7 +142,8 @@ export const AppLayout = ({
   showLinks = true,
   showHeader = true,
 }: DashboardLayoutProps) => {
-  const { account } = useAuth()
+  const { account, deAuthenticate } = useAuth()
+  const [disconnectModal, setDisconnectModal] = useState(false)
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
 
@@ -152,70 +153,157 @@ export const AppLayout = ({
 
   const showLogin = authRequired && !account
 
+  const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
+
+  const MENU = {
+    extraClass: {
+      mobile: 'bg-ui-secondary-200 px-6',
+    },
+    showSocialIcons: false,
+    logo: { url: '/images/svg/unlock-logo.svg' },
+    menuSections: showLinks
+      ? [
+          {
+            title: 'Locks',
+            url: '/locks',
+          },
+          {
+            title: 'Keys',
+            url: '/keychain',
+          },
+          {
+            title: 'Settings',
+            url: '/settings',
+          },
+        ]
+      : [],
+  }
+
+  const onDisconnect = () => {
+    deAuthenticate()
+    setDisconnectModal(false)
+  }
+
   return (
-    <div className="bg-ui-secondary-200">
-      <Modal
-        isOpen={!termsAccepted}
-        setIsOpen={() => {
-          saveTermsAccepted()
-        }}
-      >
-        <div className="flex flex-col justify-center gap-4 bg-white">
-          <span className="text-base">
-            No account required{' '}
-            <span role="img" aria-label="stars">
-              ✨
+    <>
+      <Modal isOpen={disconnectModal} setIsOpen={setDisconnectModal}>
+        <div className="flex flex-col gap-10">
+          <div className="flex">
+            <img
+              src="/images/illustrations/disconnect-wallet.svg"
+              className="object-cover w-full h-24"
+              alt="disconnect wallet"
+            />
+          </div>
+          <div className="flex flex-col gap-4 mx-auto">
+            <span className="text-xl font-bold">
+              Are you sure to disconnect?
             </span>
-            , but you need to agree to our{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/terms`}
-            >
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/privacy`}
-            >
-              Privacy Policy
-            </a>
-            .
-          </span>
-          <Button onClick={saveTermsAccepted}>I agree</Button>
-        </div>
-      </Modal>
-      <div className="w-full">
-        {showHeader && <AppHeader showLinks={showLinks} />}
-        <div className="min-w-full min-h-screen">
-          <div className="pt-8">
-            <Container>
-              <div className="flex flex-col gap-10">
-                {(title || description) && (
-                  <div className="flex flex-col gap-4">
-                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
-                    {description && (
-                      <div className="w-full text-base text-gray-700">
-                        {description}
-                      </div>
-                    )}
-                  </div>
-                )}
-                {showLogin ? (
-                  <div className="flex justify-center">
-                    <WalletNotConnected />
-                  </div>
-                ) : (
-                  <div>{children}</div>
-                )}
-              </div>
-            </Container>
+            <div className="flex flex-col gap-4 md:flex-row">
+              <Button onClick={() => setDisconnectModal(false)}>
+                Never mind
+              </Button>
+              <Button variant="outlined-primary" onClick={onDisconnect}>
+                Yes, Disconnect
+              </Button>
+            </div>
           </div>
         </div>
-        <div className="px-4 mx-auto lg:container">
-          <Footer {...FOOTER} />
+      </Modal>
+
+      <div className="bg-ui-secondary-200">
+        <Modal
+          isOpen={!termsAccepted}
+          setIsOpen={() => {
+            saveTermsAccepted()
+          }}
+        >
+          <div className="flex flex-col justify-center gap-4 bg-white">
+            <span className="text-base">
+              No account required{' '}
+              <span role="img" aria-label="stars">
+                ✨
+              </span>
+              , but you need to agree to our{' '}
+              <a
+                className="outline-none text-brand-ui-primary"
+                href={`${config.unlockStaticUrl}/terms`}
+              >
+                Terms of Service
+              </a>{' '}
+              and{' '}
+              <a
+                className="outline-none text-brand-ui-primary"
+                href={`${config.unlockStaticUrl}/privacy`}
+              >
+                Privacy Policy
+              </a>
+              .
+            </span>
+            <Button onClick={saveTermsAccepted}>I agree</Button>
+          </div>
+        </Modal>
+        <div className="w-full">
+          {showHeader && (
+            <div className="px-4 mx-auto lg:container">
+              <HeaderNav
+                {...MENU}
+                actions={[
+                  {
+                    content: account ? (
+                      <div className="flex gap-2">
+                        <button onClick={() => setDisconnectModal(true)}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-brand-ui-primary">
+                              {addressMinify(account)}
+                            </span>
+                            <DisconnectIcon
+                              className="text-brand-ui-primary"
+                              size={20}
+                            />
+                          </div>
+                        </button>
+                      </div>
+                    ) : (
+                      <Link href={loginUrl}>
+                        <Button>Connect</Button>
+                      </Link>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          )}
+          <div className="min-w-full min-h-screen">
+            <div className="pt-8">
+              <Container>
+                <div className="flex flex-col gap-10">
+                  {(title || description) && (
+                    <div className="flex flex-col gap-4">
+                      {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                      {description && (
+                        <div className="w-full text-base text-gray-700">
+                          {description}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {showLogin ? (
+                    <div className="flex justify-center">
+                      <WalletNotConnected />
+                    </div>
+                  ) : (
+                    <div>{children}</div>
+                  )}
+                </div>
+              </Container>
+            </div>
+          </div>
+          <div className="px-4 mx-auto lg:container">
+            <Footer {...FOOTER} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
