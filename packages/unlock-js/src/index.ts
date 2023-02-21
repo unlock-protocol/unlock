@@ -7,6 +7,7 @@ export {
   LocksmithService,
   LocksmithServiceConfiguration,
 } from './locksmithService'
+export * from './locksmithService'
 export * from './subgraph'
 export * from './erc20'
 export * from './erc20abi'

@@ -11,3 +11,4 @@ export class LocksmithService extends DefaultApi {
 }
 
 export { Configuration as LocksmithServiceConfiguration } from './@generated/client'
+export * from './@generated/client'
