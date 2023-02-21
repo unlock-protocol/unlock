@@ -31,15 +31,14 @@ const Template: ComponentStory<typeof AddressInput> = () => {
     control,
   })
 
-  const onSubmit = (form: any, e: any) => {
-    console.log('form')
+  const onSubmit = (_form: any, _e: any) => {
     reset({
       address: '',
     })
   }
 
-  const onError = (error: any) => {
-    console.log('error value', error)
+  const onError = (_error: any) => {
+    // on error code
   }
 
   return (
