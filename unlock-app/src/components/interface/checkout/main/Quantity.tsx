@@ -3,9 +3,8 @@ import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import {
-  RiExternalLinkLine as ExternalLinkIcon,
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
@@ -16,6 +15,7 @@ import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { Pricing } from '../Lock'
+import { ViewContract } from '../ViewContract'
 
 interface Props {
   injectedProvider: unknown
@@ -87,16 +87,10 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                   }
                 />
               </div>
-              <a
-                href={config.networks[lock!.network].explorer.urls.address(
-                  lock!.address
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
+              <ViewContract
+                network={lock!.network}
+                lockAddress={lock!.address}
+              />
             </div>
             <div>
               <input
