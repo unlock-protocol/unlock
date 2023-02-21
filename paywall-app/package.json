@@ -10,7 +10,7 @@
     "start": "yarn run build && NODE_ENV=production node src/server.js",
     "test": "UNLOCK_ENV=test vitest run --environment=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "ci": "yarn test && yarn lint"
+    "ci": "yarn test && yarn lint && yarn build"
   },
   "dependencies": {
     "@types/next": "8.0.7",
