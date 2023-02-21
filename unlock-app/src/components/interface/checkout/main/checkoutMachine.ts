@@ -148,9 +148,6 @@ type Payment =
       method: 'crypto'
     }
   | {
-      method: 'superfluid'
-    }
-  | {
       method: 'claim'
     }
 export interface Transaction {

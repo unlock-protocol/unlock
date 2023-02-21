@@ -90,12 +90,6 @@ export const PaywallConfigLockSchema = z.object({
     .int()
     .positive()
     .optional(),
-  superfluid: z
-    .boolean({
-      description:
-        'When set to true, superfluid will be enabled as payment method for the lock.',
-    })
-    .optional(),
   default: z.boolean().optional(),
   dataBuilder: z
     .string({
@@ -182,12 +176,6 @@ export const PaywallConfigSchema = z
         description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
       })
       .int()
-      .optional(),
-    superfluid: z
-      .boolean({
-        description:
-          'When set to true, superfluid will be enabled as payment method for the lock.',
-      })
       .optional(),
     hideSoldOut: z
       .boolean({

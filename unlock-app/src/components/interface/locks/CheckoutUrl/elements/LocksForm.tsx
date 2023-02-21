@@ -410,7 +410,6 @@ export const LocksForm = ({
                   schema={LockSchema.omit({
                     metadataInputs: true,
                     minRecipients: true, // This option is confusing. Let's not add it by default.
-                    superfluid: true,
                     default: true,
                     recurringPayments: true, // Managed separately to get Unlimited recurring
                   })}
