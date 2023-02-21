@@ -118,7 +118,7 @@ export const WithdrawFundModal = ({
   const [{ data: isContract }, { data: addressBalance }] = useQueries({
     queries: [
       {
-        queryKey: ['getCode', lockAddress, network],
+        queryKey: ['getCode', lockAddress, network, beneficiary],
         queryFn: async () => {
           try {
             const code = await provider.getCode(beneficiary)
@@ -130,7 +130,7 @@ export const WithdrawFundModal = ({
         enabled: beneficiary?.length > 0,
       },
       {
-        queryKey: ['getAddressBalance', lockAddress, network],
+        queryKey: ['getAddressBalance', lockAddress, network, beneficiary],
         queryFn: async () =>
           await web3Service.getAddressBalance(beneficiary, network),
         enabled: beneficiary?.length > 0,
