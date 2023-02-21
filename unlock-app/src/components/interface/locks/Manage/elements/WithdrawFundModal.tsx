@@ -1,4 +1,10 @@
-import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
+import {
+  AddressInput,
+  Button,
+  Input,
+  Modal,
+  isAddressOrEns,
+} from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
@@ -186,6 +192,7 @@ export const WithdrawFundModal = ({
                 control={control}
                 rules={{
                   required: true,
+                  validate: isAddressOrEns,
                 }}
                 render={() => {
                   return (

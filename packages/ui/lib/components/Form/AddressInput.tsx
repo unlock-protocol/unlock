@@ -9,10 +9,9 @@ import type { Size } from '../../types'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { minifyAddress } from '../../utils'
+import { isAddressOrEns, minifyAddress } from '../../utils'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useMutation } from '@tanstack/react-query'
-import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
 import { Input } from './Input'
 export interface Props
@@ -63,13 +62,6 @@ export const AddressInput = forwardRef(
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
     const [address, setAddress] = useState<string>(value as string)
-
-    const isAddressOrEns = (address = '') => {
-      return (
-        address?.toLowerCase()?.includes('.eth') ||
-        ethers.utils.isAddress(address)
-      )
-    }
 
     const resolveName = async (address: string) => {
       if (address.length === 0) return
@@ -136,7 +128,8 @@ export const AddressInput = forwardRef(
           iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
           icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
           onChange={async (e) => {
-            const value = e.target.value
+            const value: string = e.target.value
+            await resolveNameMutation.reset() // reset mutation
             setAddress(value)
 
             if (isAddressOrEns(value)) {
@@ -149,7 +142,7 @@ export const AddressInput = forwardRef(
             } else {
               setError(`It's not a valid ens name or address`)
               if (typeof onChange === 'function') {
-                onChange('' as any)
+                onChange(value as any)
               }
             }
           }}
