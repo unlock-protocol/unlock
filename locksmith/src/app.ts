@@ -10,6 +10,9 @@ import router from './routes'
 
 const app = express()
 
+// Enable proxy support
+app.enable('trust proxy')
+
 // Enable extended query parser
 app.set('query parser', 'extended')
 

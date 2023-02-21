@@ -17,7 +17,6 @@ import {
   RiCheckboxCircleFill as CheckIcon,
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
-  RiExternalLinkLine as ExternalLinkIcon,
   RiRepeatFill as RecurringIcon,
   RiCheckboxCircleFill as CheckMarkIcon,
 } from 'react-icons/ri'
@@ -27,6 +26,7 @@ import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { minifyAddress } from '@unlock-protocol/ui'
+import { ViewContract } from '../ViewContract'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -78,17 +78,10 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   >
                     {lock.name}
                   </RadioGroup.Label>
-                  <a
-                    href={config.networks[lock.network].explorer.urls.address(
-                      lock.address
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm cursor-pointer text-brand-ui-primary hover:opacity-75"
-                  >
-                    View Contract
-                    <Icon icon={ExternalLinkIcon} size="small" />
-                  </a>
+                  <ViewContract
+                    network={lock.network}
+                    lockAddress={lock.address}
+                  />
                 </div>
 
                 <Pricing
