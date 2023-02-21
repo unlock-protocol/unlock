@@ -1,5 +1,11 @@
-import { Button, Input, ToggleSwitch, Toggle } from '@unlock-protocol/ui'
-import { useForm, Controller } from 'react-hook-form'
+import {
+  Button,
+  Input,
+  ToggleSwitch,
+  Toggle,
+  AddressInput,
+} from '@unlock-protocol/ui'
+import { useForm, Controller, useWatch } from 'react-hook-form'
 import { getAddressForName } from '~/hooks/useEns'
 import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
@@ -37,6 +43,9 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   })
 
   const formValues = watch()
+  const { wallet } = useWatch({
+    control,
+  })
 
   const addressFieldChanged = (name: keyof AirdropMember) => {
     return async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,8 +104,9 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
       const parsed = AirdropMember.parse(member)
       add(parsed)
       reset()
+      setValue('wallet', '')
     },
-    [add, reset]
+    [add, reset, setValue]
   )
 
   return (
@@ -107,12 +117,12 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
         rules={{
           required,
           validate: {
-            max_keys: async (value) => {
-              if (!value) {
+            max_keys: async (address: string) => {
+              if (!address) {
                 return true
               }
+
               try {
-                const address = await getAddressForName(value)
                 const numberOfMemberships = await web3Service.balanceOf(
                   lock!.address,
                   address,
@@ -123,7 +133,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                   : 'Address already holds the maximum number of memberships.'
               } catch (error) {
                 console.error(error)
-                return 'There is a problem with using this address. Try another.'
+                return '' // error already handle by the component
               }
             },
           },
@@ -139,24 +149,49 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                   <div className="text-base">No wallet address?</div>
                   <Toggle
                     value={useEmail}
-                    onChange={(value) => {
+                    onChange={(value: boolean) => {
                       setUseEmail(value)
                     }}
                   />
                 </div>
               </div>
-              <input
-                className={inputClass}
-                placeholder={placeholder}
-                name={label}
-                id={label}
-                type={useEmail ? 'email' : 'text'}
-                onChange={(event) => {
-                  onChange(onWalletChange(event))
-                }}
-                ref={ref}
-                onBlur={onBlur}
-              />
+              {useEmail ? (
+                <input
+                  className={inputClass}
+                  placeholder={placeholder}
+                  name={label}
+                  id={label}
+                  type="email"
+                  onChange={(event) => {
+                    onChange(onWalletChange(event))
+                  }}
+                  ref={ref}
+                  onBlur={onBlur}
+                />
+              ) : (
+                <Controller
+                  name="wallet"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={() => {
+                    return (
+                      <>
+                        <AddressInput
+                          withIcon
+                          value={wallet}
+                          label="Address"
+                          onChange={(value: any) => {
+                            setValue('wallet', value)
+                          }}
+                        />
+                      </>
+                    )
+                  }}
+                />
+              )}
+
               {description && !error && (
                 <p className="text-sm text-gray-600"> {description} </p>
               )}
@@ -205,7 +240,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
           <ToggleSwitch
             enabled={formValues.neverExpire}
             setEnabled={() => setValue('neverExpire', !formValues.neverExpire)}
-            onChange={(enabled) => {
+            onChange={(enabled: boolean) => {
               if (enabled) {
                 setValue('expiration', undefined)
               }
@@ -286,7 +321,7 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
           <Button
             loading={isConfirming}
             disabled={isConfirming}
-            onClick={async (event) => {
+            onClick={async (event: any) => {
               event.preventDefault()
               setIsConfirming(true)
               try {
