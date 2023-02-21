@@ -7,6 +7,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { Button } from '../Button/Button'
+import { isAddressOrEns } from '~/utils'
 
 export default {
   component: AddressInput,
@@ -30,14 +31,14 @@ const Template: ComponentStory<typeof AddressInput> = () => {
     control,
   })
 
-  const onSubmit = (form: any, e: any) => {
+  const onSubmit = (_form: any, _e: any) => {
     reset({
       address: '',
     })
   }
 
-  const onError = (error: any) => {
-    console.log('error value', error)
+  const onError = (_error: any) => {
+    // on error code
   }
 
   return (
@@ -51,6 +52,7 @@ const Template: ComponentStory<typeof AddressInput> = () => {
           name="address"
           rules={{
             required: true,
+            validate: isAddressOrEns,
           }}
           render={({ field: { value } }) => {
             return (
