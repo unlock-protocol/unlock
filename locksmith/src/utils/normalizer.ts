@@ -23,12 +23,16 @@ export const getValidNumber = (value: string | number): number | undefined => {
 }
 
 export const url = (value: string) => {
-  const trimmed = value.trim()
+  const trimmed = value.toLowerCase().trim()
   return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed
 }
 
 export const getRequestURL = (req: Request) => {
-  return new URL(req.path, `${req.protocol}://${req.get('host')}`)
+  const requestURL = new URL(
+    req.originalUrl,
+    `${req.protocol}://${req.get('host')}`
+  )
+  return requestURL
 }
 
 export default {
