@@ -146,14 +146,12 @@ export const AppLayout = ({
   const [disconnectModal, setDisconnectModal] = useState(false)
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
-
+  const { setOpenConnectModal } = useAuth()
   if (termsLoading) {
     return <Loading />
   }
 
   const showLogin = authRequired && !account
-
-  const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
 
   const MENU = {
     extraClass: {
@@ -265,9 +263,14 @@ export const AppLayout = ({
                         </button>
                       </div>
                     ) : (
-                      <Link href={loginUrl}>
-                        <Button>Connect</Button>
-                      </Link>
+                      <Button
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setOpenConnectModal(true)
+                        }}
+                      >
+                        Connect
+                      </Button>
                     ),
                   },
                 ]}

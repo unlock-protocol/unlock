@@ -20,6 +20,7 @@ import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
+import { ConnectModal } from './connect/ConnectModal'
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -91,7 +92,10 @@ export const Authenticate = ({
     changeNetwork,
     watchAsset,
     providerSend,
+    setOpenConnectModal,
+    openConnectModal,
     getWalletService,
+    isConnected,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -117,11 +121,14 @@ export const Authenticate = ({
         email,
         encryptedPrivateKey,
         authenticate,
+        setOpenConnectModal,
+        openConnectModal,
         isUnlockAccount,
         deAuthenticate,
         changeNetwork,
         watchAsset,
         getWalletService,
+        isConnected,
       }}
     >
       <WalletServiceContext.Provider value={walletService}>
@@ -134,6 +141,7 @@ export const Authenticate = ({
           authenticate={authenticate}
         >
           {children}
+          <ConnectModal open={openConnectModal} setOpen={setOpenConnectModal} />
         </Providers>
       </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>
