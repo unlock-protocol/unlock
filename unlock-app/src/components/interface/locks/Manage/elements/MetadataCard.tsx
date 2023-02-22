@@ -182,6 +182,8 @@ export const MetadataCard = ({
     })
   }
 
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
+
   const onMarkAsCheckIn = async () => {
     const { lockAddress, token: keyId } = data
     return storage.checkTicket(network, lockAddress, keyId)
@@ -245,6 +247,9 @@ export const MetadataCard = ({
             </Link>
           </Button>
         )}
+        <Button variant="outlined-primary" size="small">
+          <Link href={metadataPageUrl}>Edit Metadata</Link>
+        </Button>
       </div>
 
       <div className="pt-6">
