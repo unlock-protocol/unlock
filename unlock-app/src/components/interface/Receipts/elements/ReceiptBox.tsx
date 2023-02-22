@@ -111,8 +111,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const PurchaseDetails = () => {
     return (
       <div className="grid gap-2">
-        <Detail label="Transaction Date" value={transactionDate} />
-        <Detail label="Transaction Hash" value={addressMinify(hash)} />
+        <Detail label="Transaction Date">{transactionDate}</Detail>
+        <Detail label="Transaction Hash">{addressMinify(hash)}</Detail>
       </div>
     )
   }
@@ -135,10 +135,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-4 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
             <div className="col-span-4 md:col-span-3">
-              <Detail
-                label="Service performed:"
-                value={supplier?.servicePerformed}
-              />
+              <Detail label="Service performed:">
+                {supplier?.servicePerformed}
+              </Detail>
             </div>
             <div className="flex flex-col col-span-4 md:text-right md:col-span-1">
               <span>Amount Paid:</span>

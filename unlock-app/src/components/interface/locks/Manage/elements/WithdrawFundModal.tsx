@@ -156,12 +156,9 @@ export const WithdrawFundModal = ({
           {preview ? (
             <>
               <div className="flex flex-col gap-2 leading-tight text-md text-brand-dark">
-                <Detail label="Network:" value={networkName} />
-                <Detail
-                  label="Amount to transfer:"
-                  value={`${amountToTransfer} ${symbol}`}
-                />
-                <Detail label="Beneficiary:" value={beneficiary} />
+                <Detail label="Network:">{networkName}</Detail>
+                <Detail label="Amount to transfer:">{`${amountToTransfer} ${symbol}`}</Detail>
+                <Detail label="Beneficiary:">{beneficiary}</Detail>
                 {isContract && (
                   <p className="text-red-500">
                     This is a contract address, please make sure this contract

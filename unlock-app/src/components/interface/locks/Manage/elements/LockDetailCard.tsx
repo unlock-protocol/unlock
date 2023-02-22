@@ -209,60 +209,38 @@ export const LockDetailCard = ({
           )}
           <div className="flex flex-col mt-6 divide-y divide-black">
             <div className="py-2">
-              <Detail
-                label="Network"
-                value={networkName}
-                loading={loading}
-                inline
-              />
+              <Detail label="Network" loading={loading} inline>
+                {networkName}
+              </Detail>
             </div>
             <div className="py-2">
               {' '}
-              <Detail
-                label="Key Duration"
-                value={duration}
-                loading={loading}
-                inline
-              />
+              <Detail label="Key Duration" loading={loading} inline>
+                {duration}
+              </Detail>
             </div>
             <div className="py-2">
-              <Detail
-                label="Key Quantity"
-                value={numbersOfKeys}
-                loading={loading}
-                inline
-              />
+              <Detail label="Key Quantity" loading={loading} inline>
+                {numbersOfKeys}
+              </Detail>
             </div>
             <div className="py-2">
-              <Detail
-                label="Price"
-                value={
-                  <>
-                    <div className="flex items-center gap-2">
-                      <CryptoIcon symbol={symbol} size={22} />
-                      <span>{priceLabel}</span>
-                    </div>
-                  </>
-                }
-                loading={loading}
-                inline
-              />
+              <Detail label="Price" loading={loading} inline>
+                <div className="flex items-center gap-2">
+                  <CryptoIcon symbol={symbol} size={22} />
+                  <span>{priceLabel}</span>
+                </div>
+              </Detail>
             </div>
             <div className="py-2">
-              <Detail
-                label="Recurring"
-                value={isRecurring ? 'YES' : 'NO'}
-                loading={loading}
-                inline
-              />
+              <Detail label="Recurring" loading={loading} inline>
+                {isRecurring ? 'YES' : 'NO'}
+              </Detail>
             </div>
             <div className="py-2">
-              <Detail
-                label="Credit Card Payment"
-                value={isConnected === 1 ? 'YES' : 'NO'}
-                loading={loading}
-                inline
-              />
+              <Detail label="Credit Card Payment" loading={loading} inline>
+                {isConnected === 1 ? 'YES' : 'NO'}
+              </Detail>
             </div>
           </div>
           <div className="mt-8">

@@ -67,20 +67,14 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
       <>
         <div className="grid w-full grid-cols-3 divide-y md:p-8 md:divide-y-0 md:divide-x divide-x-gray-500">
           <div className={wrapperClass}>
-            <Detail
-              label="Total members"
-              value={numberOfOwners}
-              loading={loading}
-              valueSize="large"
-            />
+            <Detail label="Total members" loading={loading} valueSize="large">
+              {numberOfOwners}
+            </Detail>
           </div>
           <div className={wrapperClass}>
-            <Detail
-              label="Key Sold"
-              value={keySold}
-              loading={loading}
-              valueSize="large"
-            />
+            <Detail label="Key Sold" loading={loading} valueSize="large">
+              {keySold}
+            </Detail>
           </div>
           <div className={wrapperClass}>
             <Detail
@@ -101,15 +95,14 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
                   )}
                 </div>
               }
-              value={
-                <div className="flex items-center gap-2">
-                  <CryptoIcon symbol={symbol} size={36} />
-                  <span>{formattedBalance}</span>
-                </div>
-              }
               valueSize="large"
               loading={loading}
-            />
+            >
+              <div className="flex items-center gap-2">
+                <CryptoIcon symbol={symbol} size={36} />
+                <span>{formattedBalance}</span>
+              </div>
+            </Detail>
           </div>
         </div>
       </>

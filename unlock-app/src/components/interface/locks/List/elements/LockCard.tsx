@@ -208,48 +208,49 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
           <div className="grid items-center grid-cols-2 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">
             <Detail
               label="Price"
-              value={
-                <div className="flex items-center gap-2">
-                  <CryptoIcon symbol={symbol} size={25} />
-                  <span>{keyPrice}</span>
-                </div>
-              }
               icon={TagIcon}
               loading={isLoading}
               labelSize="tiny"
               valueSize="medium"
               truncate
-            />
+            >
+              <div className="flex items-center gap-2">
+                <CryptoIcon symbol={symbol} size={25} />
+                <span>{keyPrice}</span>
+              </div>
+            </Detail>
+
             <Detail
               label="Balance"
-              value={
-                <div className="flex items-center gap-2">
-                  <CryptoIcon symbol={symbol} size={25} />
-                  <span>{balance}</span>
-                </div>
-              }
               icon={TagIcon}
               loading={isLoading}
               valueSize="medium"
               labelSize="tiny"
               truncate
-            />
+            >
+              <div className="flex items-center gap-2">
+                <CryptoIcon symbol={symbol} size={25} />
+                <span>{balance}</span>
+              </div>
+            </Detail>
             <Detail
               label="Key Duration"
-              value={duration}
               icon={TimeIcon}
               labelSize="tiny"
               valueSize="medium"
               truncate
-            />
+            >
+              {duration}
+            </Detail>
             <Detail
               label="Key Sold"
-              value={lock?.totalKeys}
               icon={KeyIcon}
               labelSize="tiny"
               valueSize="medium"
               truncate
-            />
+            >
+              {lock?.totalKeys}
+            </Detail>
           </div>
           <div className="md:ml-auto md:col-span-1">
             <Link href={lockUrl} aria-label="arrow right">
