@@ -1,7 +1,7 @@
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button, Tooltip } from '@unlock-protocol/ui'
+import { Button, Detail, Tooltip } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import React, { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -21,14 +21,6 @@ interface LockDetailCardProps {
   lockAddress: string
 }
 
-interface DetailProps {
-  label: string
-  value?: React.ReactNode
-  prepend?: React.ReactNode
-  append?: React.ReactNode
-  loading?: boolean
-}
-
 interface LockInfoCardProps {
   name: string
   lockAddress: string
@@ -45,27 +37,6 @@ const LockInfoCardPlaceholder = () => {
         <div className="w-40 h-4 animate-pulse bg-slate-200"></div>
         <div className="w-5 h-4 animate-pulse bg-slate-200"></div>
       </div>
-    </div>
-  )
-}
-
-const DetailValuePlaceholder = () => {
-  return <div className="w-10 h-5 animate-pulse bg-slate-200"></div>
-}
-
-const Detail = ({ label, value, prepend, loading, append }: DetailProps) => {
-  return (
-    <div className="flex justify-between py-2 border-b border-black last-of-type:border-0">
-      <span className="text-base">{label}</span>
-      {loading ? (
-        <DetailValuePlaceholder />
-      ) : (
-        <div className="flex items-center gap-2 text-right">
-          {prepend && <>{prepend}</>}
-          <span className="text-base font-bold text-black">{value ?? '-'}</span>
-          {append && <>{append}</>}
-        </div>
-      )}
     </div>
   )
 }
@@ -236,30 +207,63 @@ export const LockDetailCard = ({
               )}
             </div>
           )}
-          <div className="flex flex-col mt-6">
-            <Detail label="Network" value={networkName} loading={loading} />
-            <Detail label="Key Duration" value={duration} loading={loading} />
-            <Detail
-              label="Key Quantity"
-              value={numbersOfKeys}
-              loading={loading}
-            />
-            <Detail
-              label="Price"
-              value={priceLabel}
-              prepend={<CryptoIcon symbol={symbol} size={22} />}
-              loading={loading}
-            />
-            <Detail
-              label="Recurring"
-              value={isRecurring ? 'YES' : 'NO'}
-              loading={loading}
-            />
-            <Detail
-              label="Credit Card Payment"
-              value={isConnected === 1 ? 'YES' : 'NO'}
-              loading={loading}
-            />
+          <div className="flex flex-col mt-6 divide-y divide-black">
+            <div className="py-2">
+              <Detail
+                label="Network"
+                value={networkName}
+                loading={loading}
+                inline
+              />
+            </div>
+            <div className="py-2">
+              {' '}
+              <Detail
+                label="Key Duration"
+                value={duration}
+                loading={loading}
+                inline
+              />
+            </div>
+            <div className="py-2">
+              <Detail
+                label="Key Quantity"
+                value={numbersOfKeys}
+                loading={loading}
+                inline
+              />
+            </div>
+            <div className="py-2">
+              <Detail
+                label="Price"
+                value={
+                  <>
+                    <div className="flex items-center gap-2">
+                      <CryptoIcon symbol={symbol} size={22} />
+                      <span>{priceLabel}</span>
+                    </div>
+                  </>
+                }
+                loading={loading}
+                inline
+              />
+            </div>
+            <div className="py-2">
+              <Detail
+                label="Recurring"
+                value={isRecurring ? 'YES' : 'NO'}
+                loading={loading}
+                inline
+              />
+            </div>
+            <div className="py-2">
+              <Detail
+                label="Credit Card Payment"
+                value={isConnected === 1 ? 'YES' : 'NO'}
+                loading={loading}
+                inline
+              />
+            </div>
           </div>
           <div className="mt-8">
             <span className="text-sm leading-tight text-gray-500">

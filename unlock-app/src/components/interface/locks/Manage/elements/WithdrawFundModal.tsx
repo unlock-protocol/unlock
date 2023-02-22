@@ -4,6 +4,7 @@ import {
   Input,
   Modal,
   isAddressOrEns,
+  Detail,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -38,15 +39,6 @@ const withdrawForm = z.object({
 })
 
 type WithdrawFormProps = z.infer<typeof withdrawForm>
-
-const Detail = ({ label, value, ...props }: any) => {
-  return (
-    <div className="flex flex-col gap-1" {...props}>
-      <span className="text-base">{label}</span>
-      <span className="text-base font-bold text-black">{value || ''}</span>
-    </div>
-  )
-}
 
 export const WithdrawFundModal = ({
   isOpen,
@@ -169,7 +161,7 @@ export const WithdrawFundModal = ({
                   label="Amount to transfer:"
                   value={`${amountToTransfer} ${symbol}`}
                 />
-                <Detail label="Beneficiary" value={beneficiary} />
+                <Detail label="Beneficiary:" value={beneficiary} />
                 {isContract && (
                   <p className="text-red-500">
                     This is a contract address, please make sure this contract

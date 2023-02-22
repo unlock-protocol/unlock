@@ -1,4 +1,4 @@
-import { Button, Disclosure, Placeholder } from '@unlock-protocol/ui'
+import { Button, Disclosure, Placeholder, Detail } from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
@@ -21,29 +21,6 @@ interface ReceiptBoxProps {
   hash: string
 }
 
-interface DetailLabelProps {
-  label: string
-  value: string
-  inline?: boolean
-}
-
-export const DetailLabel = ({
-  label,
-  value,
-  inline = false,
-}: DetailLabelProps) => {
-  return (
-    <div className={`flex ${inline ? 'gap-2' : 'flex-col'}`}>
-      <span className="text-base">{label}</span>
-      <div className="flex items-center">
-        <span className="block text-base font-bold break-words md:inline-block">
-          {value || '-'}
-        </span>
-      </div>
-    </div>
-  )
-}
-
 const Address = ({
   addressLine1 = '',
   addressLine2 = '',
@@ -51,7 +28,7 @@ const Address = ({
   zip = '',
   country = '',
   state = '',
-}: any) => {
+}: Record<string, string>) => {
   const addressLine =
     city.length + state.length + zip.length > 0
       ? [city, state, zip].filter(Boolean).join(', ')
@@ -134,8 +111,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const PurchaseDetails = () => {
     return (
       <div className="grid gap-2">
-        <DetailLabel label="Transaction Date" value={transactionDate} />
-        <DetailLabel label="Transaction Hash" value={addressMinify(hash)} />
+        <Detail label="Transaction Date" value={transactionDate} />
+        <Detail label="Transaction Hash" value={addressMinify(hash)} />
       </div>
     )
   }
@@ -158,7 +135,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-4 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
             <div className="col-span-4 md:col-span-3">
-              <DetailLabel
+              <Detail
                 label="Service performed:"
                 value={supplier?.servicePerformed}
               />
