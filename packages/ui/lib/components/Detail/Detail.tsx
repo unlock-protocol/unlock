@@ -18,10 +18,6 @@ export interface DetailProps {
   truncate?: boolean
 }
 
-const DetailValuePlaceholder = () => {
-  return <div className="w-10 h-5 animate-pulse bg-slate-200"></div>
-}
-
 export const Detail = ({
   label,
   value,
@@ -35,12 +31,13 @@ export const Detail = ({
   inline = false,
   truncate = false,
 }: DetailProps) => {
-  const LABEL_STYLES: SizeStyleProp = {
-    tiny: 'text-xs',
-    small: 'text-base',
-    medium: 'text-lg',
-    large: 'text-2xl',
+  const LOADING_STYLES: SizeStyleProp = {
+    tiny: 'w-10 h-3',
+    small: 'w-10 h-5',
+    medium: 'w-10 h-5',
+    large: 'w-24 h-10',
   }
+  const LABEL_STYLES: SizeStyleProp = {}
 
   const VALUE_STYLES: SizeStyleProp = {
     tiny: 'text-base',
@@ -55,6 +52,10 @@ export const Detail = ({
     truncate ? 'truncate' : '',
     VALUE_STYLES[valueSize]
   )
+  const loadingClass = twMerge(
+    'animate-pulse bg-slate-200',
+    LOADING_STYLES[valueSize]
+  )
 
   return (
     <div className={`flex ${inline ? 'justify-between' : 'flex-col gap-1'}`}>
@@ -63,7 +64,7 @@ export const Detail = ({
         <span className={labelClass}>{label}</span>
       </div>
       {loading ? (
-        <DetailValuePlaceholder />
+        <div className={loadingClass}></div>
       ) : (
         <Tooltip tip={value} label={label} side="bottom">
           <div className="flex items-center gap-2 text-right">
