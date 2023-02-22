@@ -28,11 +28,11 @@ export const Detail = ({
   inline = false,
   truncate = false,
 }: DetailProps) => {
-  const LOADING_STYLES: SizeStyleProp = {
-    tiny: 'w-10 h-3',
-    small: 'w-10 h-5',
-    medium: 'w-10 h-5',
-    large: 'w-24 h-10',
+  const SizeMapping: SizeStyleProp = {
+    tiny: 'sm',
+    small: 'sm',
+    medium: 'md',
+    large: 'lg',
   }
 
   const Value = classed.div(
@@ -66,6 +66,8 @@ export const Detail = ({
     },
   })
 
+  const placeHolderSize = SizeMapping?.[valueSize] ?? 'md'
+
   return (
     <div className={`flex ${inline ? 'justify-between' : 'flex-col gap-1'}`}>
       <div className="flex items-center gap-1">
@@ -73,7 +75,14 @@ export const Detail = ({
         <Label size={labelSize}>{label}</Label>
       </div>
       {loading ? (
-        <Placeholder.Image className={LOADING_STYLES[valueSize]} />
+        <Placeholder.Line
+          size={placeHolderSize as any}
+          width="sm"
+          style={{
+            borderRadius: '0',
+            maxWidth: '150px',
+          }}
+        />
       ) : (
         <Tooltip tip={value} label={label} side="bottom">
           <div className="flex items-center gap-2 text-right">
