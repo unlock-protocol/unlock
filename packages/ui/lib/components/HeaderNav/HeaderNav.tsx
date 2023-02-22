@@ -6,7 +6,7 @@ import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
 import { HTMLProps } from 'react'
 import { IconType } from 'react-icons'
-import LogoUrl from './../../assets/unlock-footer-logo.svg'
+import DefaultLogo from './../../assets/unlock-footer-logo.svg'
 import {
   FiMenu as MenuIcon,
   FiPlus as PlusIcon,
@@ -387,8 +387,8 @@ export const HeaderNav = ({
   showSocialIcons = true, // show social icons by default
 }: NavbarProps) => {
   const [menuExpanded, setMenuExpanded] = useState(false)
-  const logoUrl = logo.url || '#'
-  const logoImageSrc = logo.src || LogoUrl
+  const logoUrl = logo.url || '/'
+  const logoImageSrc = logo.src || DefaultLogo
 
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!
