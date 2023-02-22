@@ -20,7 +20,7 @@ interface Props extends PickerState {
   userAddress: string
   onChange(state: PickerState): void
   collect?: Partial<Record<CollectionItem, boolean>>
-  customOption: boolean
+  customOption?: boolean
 }
 
 export function Picker({
