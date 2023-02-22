@@ -165,10 +165,10 @@ export const WithdrawFundModal = ({
                 <Detail label="Amount to transfer:">{`${amountToTransfer} ${symbol}`}</Detail>
                 <Detail label="Beneficiary">{beneficiary}</Detail>
                 {isLoading ? (
-                  <>
+                  <Placeholder.Root>
                     <Placeholder.Line />
                     <Placeholder.Line />
-                  </>
+                  </Placeholder.Root>
                 ) : (
                   <>
                     {isContract && (
