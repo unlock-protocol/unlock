@@ -86,11 +86,7 @@ export const Detail = ({
       ) : (
         <Tooltip tip={value} label={label} side="bottom">
           <div className="flex items-center gap-2 text-right">
-            {typeof value === 'string' || typeof value === 'number' ? (
-              <Value size={valueSize}>{value ?? '-'}</Value>
-            ) : (
-              value || '-'
-            )}
+            <Value size={valueSize}>{value ?? '-'}</Value>
           </div>
         </Tooltip>
       )}
