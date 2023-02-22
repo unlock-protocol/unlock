@@ -17,13 +17,6 @@ export const Standard = {
   },
 } satisfies Story
 
-export const DetailInline = {
-  args: {
-    ...Standard.args,
-    inline: false,
-  },
-} satisfies Story
-
 export const DetailLoading = {
   args: {
     ...Standard.args,
