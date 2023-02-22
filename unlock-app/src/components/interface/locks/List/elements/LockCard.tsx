@@ -1,11 +1,9 @@
 import { useConfig } from '~/utils/withConfig'
-import { Icon, Tooltip } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
 import { AiOutlineTag as TagIcon } from 'react-icons/ai'
 import { IoMdTime as TimeIcon } from 'react-icons/io'
 import { FiKey as KeyIcon } from 'react-icons/fi'
-import { IconType } from 'react-icons'
 import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
 import { DEFAULT_USER_ACCOUNT_ADDRESS, MAX_UINT } from '~/constants'
@@ -17,53 +15,15 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
+import { Detail, Icon } from '@unlock-protocol/ui'
 
 interface LockCardProps {
   lock: any
   network: number
 }
 
-interface DetailProps {
-  label: string
-  value?: string | React.ReactNode
-  prepend?: React.ReactNode
-  icon?: IconType
-  isLoading?: boolean
-}
-
 interface LockIconProps {
   lock: Lock
-}
-
-const DetailPlaceholder = () => {
-  return <div className="w-8 h-4 animate-pulse bg-slate-200"></div>
-}
-
-const Detail = ({
-  label,
-  prepend,
-  icon,
-  value = '-',
-  isLoading,
-}: DetailProps) => {
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-1">
-        {icon && <Icon icon={icon} size={10} />}
-        <span className="text-xs">{label}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        {prepend && <div>{prepend}</div>}
-        <Tooltip tip={value} label={label} side="bottom">
-          {isLoading ? (
-            <DetailPlaceholder />
-          ) : (
-            <span className="text-lg font-bold truncate">{value}</span>
-          )}
-        </Tooltip>
-      </div>
-    </div>
-  )
 }
 
 export const LocksByNetworkPlaceholder = ({
@@ -245,23 +205,68 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               <AddressLink lockAddress={lock.address} network={network} />
             </div>
           </div>
-          <div className="grid items-center grid-cols-4 gap-3 md:col-span-3 md:gap-14">
+          <div className="grid items-center grid-cols-2 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">
             <Detail
-              label="Price"
-              value={keyPrice}
-              icon={TagIcon}
-              prepend={<CryptoIcon symbol={symbol} size={25} />}
-              isLoading={isLoading}
-            />
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TagIcon} />
+                  <span>Price</span>
+                </div>
+              }
+              loading={isLoading}
+              labelSize="tiny"
+              valueSize="medium"
+              truncate
+            >
+              <div className="flex items-center gap-2">
+                <CryptoIcon symbol={symbol} size={25} />
+                <span>{keyPrice}</span>
+              </div>
+            </Detail>
+
             <Detail
-              label="Balance"
-              value={balance}
-              icon={TagIcon}
-              prepend={<CryptoIcon symbol={symbol} size={25} />}
-              isLoading={isLoading}
-            />
-            <Detail label="Key Duration" value={duration} icon={TimeIcon} />
-            <Detail label="Key Sold" value={lock?.totalKeys} icon={KeyIcon} />
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TagIcon} />
+                  <span>Balance</span>
+                </div>
+              }
+              loading={isLoading}
+              valueSize="medium"
+              labelSize="tiny"
+              truncate
+            >
+              <div className="flex items-center gap-2">
+                <CryptoIcon symbol={symbol} size={25} />
+                <span>{balance}</span>
+              </div>
+            </Detail>
+            <Detail
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TimeIcon} />
+                  <span>Key Duration</span>
+                </div>
+              }
+              labelSize="tiny"
+              valueSize="medium"
+              truncate
+            >
+              {duration}
+            </Detail>
+            <Detail
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={KeyIcon} />
+                  <span>Key Sold</span>
+                </div>
+              }
+              labelSize="tiny"
+              valueSize="medium"
+              truncate
+            >
+              {lock?.totalKeys}
+            </Detail>
           </div>
           <div className="md:ml-auto md:col-span-1">
             <Link href={lockUrl} aria-label="arrow right">
