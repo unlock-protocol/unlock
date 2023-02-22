@@ -338,6 +338,7 @@ export const LocksForm = ({
                     onChange={(state) => {
                       onChangeLock(state.lockAddress, state.network, state.name)
                     }}
+                    customOption={true}
                   />
                   <Button
                     className="w-full"
@@ -359,7 +360,7 @@ export const LocksForm = ({
               <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
                 Settings
               </h2>
-              <div className="flex whitespace-nowrap text-sm mb-5">
+              <div className="flex mb-5 text-sm whitespace-nowrap">
                 Address: <pre className="ml-3">{lockAddress}</pre>
               </div>
               <div className="flex flex-col gap-1">
