@@ -6,7 +6,7 @@ import { Placeholder } from '../Placeholder'
 import { classed } from '@tw-classed/react'
 
 export interface DetailProps {
-  label: string
+  label: React.ReactNode
   icon?: IconType
   iconSize?: number
   value?: React.ReactNode
@@ -36,7 +36,9 @@ export const Detail = ({
   }
 
   const Value = classed.span(
-    `cursor-pointer font-bold text-black ${truncate ? 'truncate' : ''}`,
+    `relative cursor-pointer font-bold text-black ${
+      truncate ? 'truncate' : ''
+    }`,
     {
       variants: {
         size: {
@@ -52,7 +54,7 @@ export const Detail = ({
     }
   )
 
-  const Label = classed.span('text-gray-700', {
+  const Label = classed.span('relative text-gray-700', {
     variants: {
       size: {
         tiny: 'text-xs',
@@ -69,11 +71,7 @@ export const Detail = ({
   const placeHolderSize = SizeMapping?.[valueSize] ?? 'md'
 
   return (
-    <div
-      className={`relative flex ${
-        inline ? 'justify-between' : 'flex-col gap-1'
-      }`}
-    >
+    <div className={`flex ${inline ? 'justify-between' : 'flex-col gap-1'}`}>
       <div className="flex items-center gap-1">
         {icon && <Icon icon={icon} size={iconSize} />}
         <Label size={labelSize}>{label}</Label>
@@ -87,12 +85,16 @@ export const Detail = ({
             maxWidth: '150px',
           }}
         />
-      ) : (
+      ) : typeof label === 'string' ? (
         <Tooltip tip={value} label={label} side="bottom">
           <div className="flex items-center gap-2 text-right">
             <Value size={valueSize}>{value ?? '-'}</Value>
           </div>
         </Tooltip>
+      ) : (
+        <div className="flex items-center gap-2 text-right">
+          <Value size={valueSize}>{value ?? '-'}</Value>
+        </div>
       )}
     </div>
   )
