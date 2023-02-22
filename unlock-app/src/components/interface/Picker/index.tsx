@@ -6,6 +6,9 @@ import { subgraph } from '~/config/subgraph'
 import { LockImage } from '../locks/Manage/elements/LockPicker'
 import LoadingIcon from '../Loading'
 import Link from 'next/link'
+import networks from '@unlock-protocol/networks'
+import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+
 export interface PickerState {
   network?: number
   lockAddress?: string
@@ -82,6 +85,15 @@ export function Picker({
     return <LoadingIcon />
   }
 
+  const { collectionUrl, tokenUrl } = networks[network]?.opensea ?? {}
+
+  const openSeaCollectionUrl =
+    lockAddress && collectionUrl ? collectionUrl(lockAddress) : ''
+  const openSeaTokenUrl =
+    state.keyId && lockAddress && tokenUrl
+      ? tokenUrl(lockAddress, state.keyId)
+      : ''
+
   return (
     <div className="grid gap-4">
       {collect.network && (
@@ -133,7 +145,27 @@ export function Picker({
           className="w-full"
           pattern="\d+"
           label="Key ID"
-          description="Enter the key ID you want to use. This can be an existing key ID or a new one which doesn't exist yet."
+          description={
+            <>
+              <span>
+                {`Enter the key ID you want to use. This can be an existing key ID
+                or a new one which doesn't exist yet.`}
+              </span>
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={state.keyId ? openSeaTokenUrl! : openSeaCollectionUrl!}
+                className="font-semibold text-brand-ui-primary"
+              >
+                <div className="flex gap-2">
+                  <span>
+                    {state.keyId ? 'See NFT on OpenSea' : ' See NFT Collection'}
+                  </span>
+                  <ExternalLinkIcon size={20} />
+                </div>
+              </Link>
+            </>
+          }
           value={state.keyId}
           onChange={(event) => {
             event.preventDefault()
@@ -145,6 +177,7 @@ export function Picker({
           }}
         />
       )}
+      <span className=""></span>
     </div>
   )
 }

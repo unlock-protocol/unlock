@@ -30,6 +30,8 @@ export const arbitrum: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) =>
       `https://opensea.io/assets/arbitrum/${_lockAddress}/${_tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/arbitrum/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,

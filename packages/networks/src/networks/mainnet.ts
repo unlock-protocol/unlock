@@ -28,6 +28,7 @@ export const mainnet: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) => `https://opensea.io/assets/${lockAddress}`,
   },
   erc20: {
     symbol: 'DAI',
