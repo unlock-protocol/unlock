@@ -4,6 +4,7 @@ import {
   Input,
   Modal,
   isAddressOrEns,
+  Placeholder,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -121,7 +122,10 @@ export const WithdrawFundModal = ({
     })
   }
 
-  const [{ data: isContract }, { data: addressBalance }] = useQueries({
+  const [
+    { data: isContract, isLoading: isLoadingContract },
+    { data: addressBalance, isLoading: isLoadingBalance },
+  ] = useQueries({
     queries: [
       {
         queryKey: ['getCode', lockAddress, network, beneficiary],
@@ -144,6 +148,7 @@ export const WithdrawFundModal = ({
     ],
   })
 
+  const isLoading = isLoadingContract || isLoadingBalance
   const noBalance = parseFloat(addressBalance ?? '0') === 0
   const networkName = networks[network]?.name
 
@@ -170,18 +175,28 @@ export const WithdrawFundModal = ({
                   value={`${amountToTransfer} ${symbol}`}
                 />
                 <Detail label="Beneficiary" value={beneficiary} />
-                {isContract && (
-                  <p className="text-red-500">
-                    This is a contract address, please make sure this contract
-                    can handle the funds, or they will be lost.
-                  </p>
-                )}
-                {!isContract && noBalance && (
-                  <p className="text-red-500">
-                    This address does not seem to have been used on{' '}
-                    {`${networkName}`}
-                    before, please ensure it is correct or funds will be lost.
-                  </p>
+                {isLoading ? (
+                  <>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </>
+                ) : (
+                  <>
+                    {isContract && (
+                      <p className="text-red-500">
+                        This is a contract address, please make sure this
+                        contract can handle the funds, or they will be lost.
+                      </p>
+                    )}
+                    {!isContract && noBalance && (
+                      <p className="text-red-500">
+                        This address does not seem to have been used on{' '}
+                        {`${networkName}`}
+                        before, please ensure it is correct or funds will be
+                        lost.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             </>
