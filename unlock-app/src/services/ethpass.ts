@@ -19,7 +19,7 @@ export const applePass = (
   network: number
 ) => {
   return {
-    description: 'ETHPass Sample Pass',
+    description: 'Unlock Protocol',
     auxiliaryFields: [],
     backFields: [],
     headerFields: [
