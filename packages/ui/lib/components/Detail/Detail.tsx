@@ -69,7 +69,11 @@ export const Detail = ({
   const placeHolderSize = SizeMapping?.[valueSize] ?? 'md'
 
   return (
-    <div className={`flex ${inline ? 'justify-between' : 'flex-col gap-1'}`}>
+    <div
+      className={`relative flex ${
+        inline ? 'justify-between' : 'flex-col gap-1'
+      }`}
+    >
       <div className="flex items-center gap-1">
         {icon && <Icon icon={icon} size={iconSize} />}
         <Label size={labelSize}>{label}</Label>
