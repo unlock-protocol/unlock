@@ -214,7 +214,6 @@ export const LockDetailCard = ({
               </Detail>
             </div>
             <div className="py-2">
-              {' '}
               <Detail label="Key Duration" loading={loading} inline>
                 {duration}
               </Detail>

@@ -15,7 +15,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
-import { Detail } from '@unlock-protocol/ui'
+import { Detail, Icon } from '@unlock-protocol/ui'
 
 interface LockCardProps {
   lock: any
@@ -207,8 +207,12 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
           </div>
           <div className="grid items-center grid-cols-2 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">
             <Detail
-              label="Price"
-              icon={TagIcon}
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TagIcon} />
+                  <span>Price</span>
+                </div>
+              }
               loading={isLoading}
               labelSize="tiny"
               valueSize="medium"
@@ -221,8 +225,12 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             </Detail>
 
             <Detail
-              label="Balance"
-              icon={TagIcon}
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TagIcon} />
+                  <span>Balance</span>
+                </div>
+              }
               loading={isLoading}
               valueSize="medium"
               labelSize="tiny"
@@ -234,8 +242,12 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               </div>
             </Detail>
             <Detail
-              label="Key Duration"
-              icon={TimeIcon}
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={TimeIcon} />
+                  <span>Key Duration</span>
+                </div>
+              }
               labelSize="tiny"
               valueSize="medium"
               truncate
@@ -243,8 +255,12 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               {duration}
             </Detail>
             <Detail
-              label="Key Sold"
-              icon={KeyIcon}
+              label={
+                <div className="flex items-center gap-1">
+                  <Icon size={10} icon={KeyIcon} />
+                  <span>Key Sold</span>
+                </div>
+              }
               labelSize="tiny"
               valueSize="medium"
               truncate
