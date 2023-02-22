@@ -35,7 +35,7 @@ export const Detail = ({
     large: 'lg',
   }
 
-  const Value = classed.div(
+  const Value = classed.span(
     `cursor-pointer font-bold text-black ${truncate ? 'truncate' : ''}`,
     {
       variants: {
