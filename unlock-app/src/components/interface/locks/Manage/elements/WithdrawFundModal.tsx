@@ -4,6 +4,7 @@ import {
   Input,
   Modal,
   isAddressOrEns,
+  Placeholder,
   Detail,
 } from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
@@ -113,7 +114,10 @@ export const WithdrawFundModal = ({
     })
   }
 
-  const [{ data: isContract }, { data: addressBalance }] = useQueries({
+  const [
+    { data: isContract, isLoading: isLoadingContract },
+    { data: addressBalance, isLoading: isLoadingBalance },
+  ] = useQueries({
     queries: [
       {
         queryKey: ['getCode', lockAddress, network, beneficiary],
@@ -136,6 +140,7 @@ export const WithdrawFundModal = ({
     ],
   })
 
+  const isLoading = isLoadingContract || isLoadingBalance
   const noBalance = parseFloat(addressBalance ?? '0') === 0
   const networkName = networks[network]?.name
 
@@ -158,19 +163,29 @@ export const WithdrawFundModal = ({
               <div className="flex flex-col gap-2 leading-tight text-md text-brand-dark">
                 <Detail label="Network:">{networkName}</Detail>
                 <Detail label="Amount to transfer:">{`${amountToTransfer} ${symbol}`}</Detail>
-                <Detail label="Beneficiary:">{beneficiary}</Detail>
-                {isContract && (
-                  <p className="text-red-500">
-                    This is a contract address, please make sure this contract
-                    can handle the funds, or they will be lost.
-                  </p>
-                )}
-                {!isContract && noBalance && (
-                  <p className="text-red-500">
-                    This address does not seem to have been used on{' '}
-                    {`${networkName}`}
-                    before, please ensure it is correct or funds will be lost.
-                  </p>
+                <Detail label="Beneficiary">{beneficiary}</Detail>
+                {isLoading ? (
+                  <Placeholder.Root>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Root>
+                ) : (
+                  <>
+                    {isContract && (
+                      <p className="text-red-500">
+                        This is a contract address, please make sure this
+                        contract can handle the funds, or they will be lost.
+                      </p>
+                    )}
+                    {!isContract && noBalance && (
+                      <p className="text-red-500">
+                        This address does not seem to have been used on{' '}
+                        {`${networkName}`}
+                        before, please ensure it is correct or funds will be
+                        lost.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             </>
@@ -247,7 +262,7 @@ export const WithdrawFundModal = ({
               <Button
                 type="submit"
                 loading={withdrawMutation.isLoading}
-                disabled={withdrawMutation.isLoading}
+                disabled={withdrawMutation.isLoading || isLoading}
                 size="medium"
               >
                 {!withdrawMutation.isLoading ? 'Confirm' : 'Withdrawing...'}
