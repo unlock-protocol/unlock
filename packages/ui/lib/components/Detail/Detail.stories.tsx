@@ -1,6 +1,5 @@
 import { Detail } from './Detail'
 import { Meta, StoryObj } from '@storybook/react'
-import { MdShare } from 'react-icons/md'
 
 const meta = {
   title: 'Detail',
@@ -14,13 +13,7 @@ type Story = StoryObj<typeof meta>
 export const Standard = {
   args: {
     label: 'Title',
-    value: 100,
-  },
-} satisfies Story
-
-export const DetailSimple = {
-  args: {
-    ...Standard.args,
+    children: 100,
   },
 } satisfies Story
 
@@ -28,14 +21,6 @@ export const DetailInline = {
   args: {
     ...Standard.args,
     inline: false,
-  },
-} satisfies Story
-
-export const DetailWithIcon = {
-  args: {
-    ...Standard.args,
-    inline: false,
-    icon: MdShare,
   },
 } satisfies Story
 
@@ -57,9 +42,15 @@ export const DetailLoadingNotInline = {
 export const DetailWithReactNode = {
   args: {
     ...Standard.args,
-    value: (
+    label: (
+      <div className="flex flex-col gap-2">
+        <div className="text-red-500 font-xl">Custom label</div>
+        <span>subtitle</span>
+      </div>
+    ),
+    children: (
       <div className="flex items-center gap-2">
-        <span className="text-xs">append value</span>
+        <span className="text-xs font-normal">append value</span>
         <span className="font-bold">value</span>
         <span className="text-xs">prepend value</span>
       </div>
@@ -71,7 +62,7 @@ export const DetailWithReactNodeInline = {
   args: {
     ...Standard.args,
     inline: true,
-    value: (
+    children: (
       <div className="flex items-center gap-2">
         <span className="text-xs">append value</span>
         <span className="font-bold">value</span>
