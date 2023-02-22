@@ -273,7 +273,7 @@ export const WithdrawFundModal = ({
               <Button
                 type="submit"
                 loading={withdrawMutation.isLoading}
-                disabled={withdrawMutation.isLoading}
+                disabled={withdrawMutation.isLoading || isLoading}
                 size="medium"
               >
                 {!withdrawMutation.isLoading ? 'Confirm' : 'Withdrawing...'}
