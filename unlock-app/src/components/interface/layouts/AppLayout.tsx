@@ -160,7 +160,7 @@ export const AppLayout = ({
       mobile: 'bg-ui-secondary-200 px-6',
     },
     showSocialIcons: false,
-    logo: { url: '/images/svg/unlock-logo.svg' },
+    logo: { url: '/locks', src: '/images/svg/unlock-logo.svg' },
     menuSections: showLinks
       ? [
           {
