@@ -2,8 +2,10 @@ import { Tooltip } from '../Tooltip/Tooltip'
 import { Size, SizeStyleProp } from '~/types'
 import { Placeholder } from '../Placeholder'
 import { classed } from '@tw-classed/react'
+import { BaseHTMLAttributes } from 'react'
 
-export interface DetailProps {
+export interface DetailProps
+  extends Omit<BaseHTMLAttributes<HTMLInputElement>, 'size' | 'children'> {
   label: React.ReactNode
   children?: React.ReactNode
   loading?: boolean
@@ -12,7 +14,24 @@ export interface DetailProps {
   valueSize?: Size
   truncate?: boolean
   tooltip?: boolean
+  justify?: boolean
 }
+
+const Wrapper = classed.div('flex gap-1', {
+  variants: {
+    inline: {
+      false: 'flex-col',
+      true: 'md:items-center',
+    },
+    justify: {
+      true: 'justify-between',
+    },
+  },
+  defaultVariants: {
+    inline: false,
+    justify: true,
+  },
+})
 
 const Label = classed.span('relative text-gray-700', {
   variants: {
@@ -54,6 +73,8 @@ export const Detail = ({
   inline = false,
   truncate = false,
   tooltip = false,
+  justify = true,
+  className,
 }: DetailProps) => {
   const SizeMapping: SizeStyleProp = {
     tiny: 'sm',
@@ -65,10 +86,8 @@ export const Detail = ({
   const placeHolderSize = SizeMapping?.[valueSize] ?? 'md'
 
   return (
-    <div className={`flex ${inline ? 'justify-between' : 'flex-col gap-1'}`}>
-      <div className="flex items-center gap-1">
-        <Label size={labelSize}>{label}</Label>
-      </div>
+    <Wrapper inline={inline} justify={justify} className={className}>
+      <Label size={labelSize}>{label}</Label>
       {loading ? (
         <Placeholder.Line
           size={placeHolderSize as any}
@@ -78,21 +97,24 @@ export const Detail = ({
             maxWidth: '150px',
           }}
         />
-      ) : typeof label === 'string' && tooltip ? (
-        <Tooltip tip={children} label={label} side="bottom">
+      ) : (
+        children &&
+        (typeof label === 'string' && tooltip ? (
+          <Tooltip tip={children} label={label} side="bottom">
+            <div className="flex items-center gap-2 text-right">
+              <Value truncate={truncate} size={valueSize}>
+                {children}
+              </Value>
+            </div>
+          </Tooltip>
+        ) : (
           <div className="flex items-center gap-2 text-right">
             <Value truncate={truncate} size={valueSize}>
-              {children ?? '-'}
+              {children}
             </Value>
           </div>
-        </Tooltip>
-      ) : (
-        <div className="flex items-center gap-2 text-right">
-          <Value truncate={truncate} size={valueSize}>
-            {children ?? '-'}
-          </Value>
-        </div>
+        ))
       )}
-    </div>
+    </Wrapper>
   )
 }
