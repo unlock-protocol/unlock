@@ -14663,7 +14663,7 @@ __metadata:
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
     satori: 0.2.2
-    sequelize: 6.28.0
+    sequelize: 6.28.1
     sequelize-cli: 6.6.0
     setimmediate: 1.0.5
     siwe: 1.1.6
@@ -37366,7 +37366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:^0.5.34":
+"moment-timezone@npm:^0.5.35":
   version: 0.5.40
   resolution: "moment-timezone@npm:0.5.40"
   dependencies:
@@ -45604,9 +45604,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:6.28.0":
-  version: 6.28.0
-  resolution: "sequelize@npm:6.28.0"
+"sequelize@npm:6.28.1":
+  version: 6.28.1
+  resolution: "sequelize@npm:6.28.1"
   dependencies:
     "@types/debug": ^4.1.7
     "@types/validator": ^13.7.1
@@ -45615,7 +45615,7 @@ __metadata:
     inflection: ^1.13.2
     lodash: ^4.17.21
     moment: ^2.29.1
-    moment-timezone: ^0.5.34
+    moment-timezone: ^0.5.35
     pg-connection-string: ^2.5.0
     retry-as-promised: ^7.0.3
     semver: ^7.3.5
@@ -45643,7 +45643,7 @@ __metadata:
       optional: true
     tedious:
       optional: true
-  checksum: 7e10ba4ebabab1ed54d6769fa73cac86dd3df88415ee32dd82f01ade6e1ebd9f6672288b601bd12507eae9eb2480ba905f74c93b1e380eb335430bf43ed757e9
+  checksum: 2235bf9b6a8fa324885149d07039ca6a6bd99a1aa030c071c02e1b60af381e4e4a0dcdbd8487d14cf289c9b9147c34c2f6fe6a5e4b25a7a0995e9869fabd46b5
   languageName: node
   linkType: hard
 
