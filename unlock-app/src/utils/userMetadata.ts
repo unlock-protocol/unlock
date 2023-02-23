@@ -1,6 +1,7 @@
-import { UserMetadata, MetadataInput } from '../unlockTypes'
+import { UserMetadata } from '../unlockTypes'
+import { MetadataInputType } from '@unlock-protocol/core'
 
-export function getPublicInputs(inputs: MetadataInput[]): {
+export function getPublicInputs(inputs: MetadataInputType[]): {
   [name: string]: boolean
 } {
   const result: { [key: string]: boolean } = {}
@@ -10,7 +11,7 @@ export function getPublicInputs(inputs: MetadataInput[]): {
 
 export function formResultToMetadata(
   formResult: { [key: string]: string },
-  inputs: MetadataInput[]
+  inputs: MetadataInputType[]
 ): UserMetadata {
   const result: UserMetadata = {
     publicData: {},
