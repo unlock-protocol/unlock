@@ -1,5 +1,5 @@
 ---
-title: Metadata editor now support uploading images for building rich NFT collections
+title: Uploading NFT images
 subTitle: You can now upload images for for your NFT collection in advance before minting.
 authorName: searchableguy
 publishDate: 23 Feburary, 2023
