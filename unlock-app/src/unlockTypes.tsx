@@ -90,12 +90,6 @@ export const PaywallConfigLockSchema = z.object({
     .int()
     .positive()
     .optional(),
-  superfluid: z
-    .boolean({
-      description:
-        'When set to true, superfluid will be enabled as payment method for the lock.',
-    })
-    .optional(),
   default: z.boolean().optional(),
   dataBuilder: z
     .string({
@@ -183,16 +177,10 @@ export const PaywallConfigSchema = z
       })
       .int()
       .optional(),
-    superfluid: z
-      .boolean({
-        description:
-          'When set to true, superfluid will be enabled as payment method for the lock.',
-      })
-      .optional(),
     hideSoldOut: z
       .boolean({
         description:
-          'When enabled, sold our locks are not shown to users when they load the checkout modal.',
+          'When enabled, sold out locks are not shown to users when they load the checkout modal.',
       })
       .optional(),
     password: z
@@ -236,6 +224,13 @@ export const PaywallConfigSchema = z
       .string({
         description: 'Expected wallet address for user.',
       })
+      .optional(),
+    autoconnect: z
+      .boolean({
+        description:
+          '(Advanced): forces the use the provider from the parent window when the checkout is embeded as an iframe.',
+      })
+      .default(false)
       .optional(),
   })
   .passthrough()

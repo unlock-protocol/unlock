@@ -5,9 +5,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
+import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { useWalletService } from '~/utils/withWalletService'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
@@ -16,9 +15,7 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { Framework } from '@superfluid-finance/sdk-core'
-import { ethers, BigNumber } from 'ethers'
-import { selectProvider } from '~/hooks/useAuthenticate'
+import { ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
@@ -30,6 +27,7 @@ import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
 import { useStorageService } from '~/utils/withStorageService'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+import { ViewContract } from '../ViewContract'
 
 interface Props {
   injectedProvider: unknown
@@ -85,8 +83,7 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network, isUnlockAccount, changeNetwork } = useAuth()
-  const walletService = useWalletService()
+  const { account, network, getWalletService } = useAuth()
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
@@ -98,7 +95,6 @@ export function Confirm({
   } = useAccount(account!, network!)
 
   const [isConfirming, setIsConfirming] = useState(false)
-  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
 
   const {
     lock,
@@ -119,10 +115,6 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
-
-  const isNetworkSwitchRequired = lockNetwork !== network && !isUnlockAccount
-
-  const networkConfig = config.networks[lockNetwork]
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -307,21 +299,6 @@ export function Confirm({
     quantity
   )
 
-  const SwitchNetwork = () => (
-    <Button
-      disabled={isSwitchingNetwork || isLoading}
-      loading={isSwitchingNetwork}
-      onClick={async (event) => {
-        setIsSwitchingNetwork(true)
-        event.preventDefault()
-        await changeNetwork(lockNetwork)
-        setIsSwitchingNetwork(false)
-      }}
-    >
-      Switch to {networkConfig.name}
-    </Button>
-  )
-
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
@@ -417,7 +394,8 @@ export function Confirm({
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
 
-      await walletService?.purchaseKeys(
+      const walletService = await getWalletService(lockNetwork)
+      await walletService.purchaseKeys(
         {
           lockAddress,
           keyPrices,
@@ -456,52 +434,6 @@ export function Confirm({
           }
         }
       )
-    } catch (error: any) {
-      setIsConfirming(false)
-      ToastHelper.error(error?.error?.message || error.message)
-    }
-  }
-
-  const onConfirmSuperfluid = async () => {
-    try {
-      if (payment.method !== 'superfluid') {
-        return
-      }
-      setIsConfirming(true)
-      const provider = selectProvider(config)
-      const web3Provider = new ethers.providers.Web3Provider(provider)
-      const sf = await Framework.create({
-        chainId: lock!.network,
-        provider: web3Provider,
-      })
-      const expiration = BigNumber.from(lock!.expirationDuration)
-      const decimals = await web3Service.getTokenDecimals(
-        lock!.currencyContractAddress!,
-        lock!.network
-      )
-
-      const mul = BigNumber.from(10).pow(decimals)
-
-      const flowRate = BigNumber.from(lock!.keyPrice)
-        .mul(mul)
-        .div(expiration)
-        .toString()
-      const op = sf.cfaV1.createFlow({
-        sender: provider.address,
-        receiver: lock!.address,
-        superToken: lock!.currencyContractAddress!,
-        flowRate: flowRate,
-      })
-      const signer = web3Provider.getSigner()
-      await op.exec(signer)
-      communication?.emitUserInfo({
-        address: account,
-      })
-      send({
-        type: 'CONFIRM_MINT',
-        status: 'FINISHED',
-      })
-      setIsConfirming(false)
     } catch (error: any) {
       setIsConfirming(false)
       ToastHelper.error(error?.error?.message || error.message)
@@ -587,38 +519,29 @@ export function Confirm({
 
         return (
           <div className="grid">
-            {isNetworkSwitchRequired && <SwitchNetwork />}
-            {!isNetworkSwitchRequired && (
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming || isLoading || !canAfford || isError}
+              onClick={async (event) => {
+                event.preventDefault()
+                onConfirmCrypto()
+              }}
+            >
+              {buttonLabel}
+            </Button>
+            {!isLoading && !isError && isPayable && (
               <>
-                <Button
-                  loading={isConfirming}
-                  disabled={isConfirming || isLoading || !canAfford || isError}
-                  onClick={async (event) => {
-                    event.preventDefault()
-                    if (isUnlockAccount) {
-                      await changeNetwork(lockNetwork)
-                    }
-                    onConfirmCrypto()
-                  }}
-                >
-                  {buttonLabel}
-                </Button>
-                {!isLoading && !isError && isPayable && (
-                  <>
-                    {!isPayable?.isTokenPayable && (
-                      <small className="text-center text-red-500">
-                        You do not have enough {symbol} to complete this
-                        purchase.
-                      </small>
-                    )}
-                    {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                      <small className="text-center text-red-500">
-                        You do not have enough{' '}
-                        {config.networks[lock!.network].baseCurrencySymbol} to
-                        pay transaction fees (gas).
-                      </small>
-                    )}
-                  </>
+                {!isPayable?.isTokenPayable && (
+                  <small className="text-center text-red-500">
+                    You do not have enough {symbol} to complete this purchase.
+                  </small>
+                )}
+                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                  <small className="text-center text-red-500">
+                    You do not have enough{' '}
+                    {config.networks[lock!.network].baseCurrencySymbol} to pay
+                    transaction fees (gas).
+                  </small>
                 )}
               </>
             )}
@@ -640,30 +563,6 @@ export function Confirm({
                 ? 'Claiming your membership'
                 : 'Claim your membership'}
             </Button>
-          </div>
-        )
-      }
-      case 'superfluid': {
-        return (
-          <div className="grid">
-            {isNetworkSwitchRequired && <SwitchNetwork />}
-            {!isNetworkSwitchRequired && (
-              <Button
-                loading={isConfirming}
-                disabled={isConfirming || isLoading}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  if (isUnlockAccount) {
-                    await changeNetwork(lockNetwork)
-                  }
-                  onConfirmSuperfluid()
-                }}
-              >
-                {isConfirming
-                  ? 'Paying using superfluid'
-                  : 'Pay using superfluid'}
-              </Button>
-            )}
           </div>
         )
       }
@@ -691,16 +590,7 @@ export function Confirm({
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <a
-              href={config.networks[lockNetwork].explorer.urls.address(
-                lockAddress
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-brand-ui-primary hover:opacity-75"
-            >
-              View Contract <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
+            <ViewContract lockAddress={lock!.address} network={network!} />
           </div>
           {isError && (
             // TODO: use actual error from simulation
@@ -777,7 +667,11 @@ export function Confirm({
                           pricingData?.total
                         )?.toLocaleString()} ${symbol}`
                   }
-                  usdPrice={`~$${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`}
+                  usdPrice={
+                    pricingData?.usdPrice?.priceInAmount
+                      ? `~${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`
+                      : ''
+                  }
                   isCardEnabled={formattedData.cardEnabled}
                 />
               </>

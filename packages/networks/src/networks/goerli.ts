@@ -29,6 +29,8 @@ export const goerli: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://testnets.opensea.io/assets/goerli/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://testnets.opensea.io/assets/goerli/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -50,6 +52,7 @@ export const goerli: NetworkConfig = {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
   },
+  swapPurchaser: '0x627118a4fB747016911e5cDA82e2E77C531e8206',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -79,6 +82,14 @@ export const goerli: NetworkConfig = {
       mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
+      },
+    ],
+  },
 }
 
 export default goerli

@@ -33,12 +33,13 @@ export const gnosis: NetworkConfig = {
   },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
-  baseCurrencySymbol: 'DAI',
+  baseCurrencySymbol: 'xDAI',
   nativeCurrency: {
-    name: 'DAI',
-    symbol: 'DAI',
+    name: 'xDAI',
+    symbol: 'xDAI',
     decimals: 18,
     coingecko: 'xdai',
+    coinbase: 'DAI',
   },
   startBlock: 19338700,
   previousDeploys: [
@@ -66,5 +67,13 @@ export const gnosis: NetworkConfig = {
       symbol: 'USDT',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x927D68eAE936Ec0111f01Fc4Ddd9cC57DB3f0Af2',
+      },
+    ],
+  },
 }
 export default gnosis

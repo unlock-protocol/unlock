@@ -49,6 +49,7 @@ export const mumbai: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
+  swapPurchaser: '0xFAE21e3fab3bfb74029b785DaC27E8f9f14964c6',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
@@ -85,6 +86,14 @@ export const mumbai: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
+      },
+    ],
+  },
 }
 
 export default mumbai

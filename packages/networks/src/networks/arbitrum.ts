@@ -30,6 +30,8 @@ export const arbitrum: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) =>
       `https://opensea.io/assets/arbitrum/${_lockAddress}/${_tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/arbitrum/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -52,6 +54,7 @@ export const arbitrum: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
   },
+  swapPurchaser: '0x36f1Ff99c094F313BE647649F82B19A83e766d2B',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -90,6 +93,14 @@ export const arbitrum: NetworkConfig = {
       address: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0xd0b14797b9D08493392865647384974470202A78',
+      },
+    ],
+  },
 }
 
 export default arbitrum

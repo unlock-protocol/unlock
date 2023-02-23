@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "dependencies": {
     "@babel/cli": "7.20.7",
-    "@babel/core": "7.20.7",
+    "@babel/core": "7.20.12",
     "@babel/node": "7.20.7",
     "@babel/preset-env": "7.20.2",
     "@typescript-eslint/parser": "5.50.0",

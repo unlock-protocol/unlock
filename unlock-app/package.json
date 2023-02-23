@@ -44,6 +44,7 @@
     "qrcode.react": "3.1.0",
     "react": "18.2.0",
     "react-crypto-icons": "1.0.5",
+    "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
     "react-google-recaptcha": "2.1.0",
@@ -71,7 +72,7 @@
     "@types/file-saver": "2.0.5",
     "@types/postmate": "1.5.2",
     "@types/qrcode.react": "1.0.2",
-    "@types/react": "18.0.25",
+    "@types/react": "18.0.28",
     "@types/react-google-recaptcha": "2.1.5",
     "@types/react-gtm-module": "2.0.1",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
@@ -94,7 +95,7 @@
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "ci": "yarn test && yarn lint"
+    "ci": "yarn test && yarn lint && yarn build"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

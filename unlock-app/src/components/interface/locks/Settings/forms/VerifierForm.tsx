@@ -1,11 +1,15 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
+import {
+  AddressInput,
+  Button,
+  isAddressOrEns,
+  minifyAddress,
+} from '@unlock-protocol/ui'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
-import { addressMinify } from '~/utils/strings'
 import { storage } from '~/config/storage'
 
 interface VerifierProps {
@@ -87,10 +91,12 @@ export const VerifierForm = ({
 }: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
 
-  const { register, handleSubmit, reset } = useForm<VerifierFormDataProps>({
-    defaultValues: {
-      verifier: '',
-    },
+  const localForm = useForm<VerifierFormDataProps>()
+
+  const { handleSubmit, control, setValue } = localForm
+
+  const { verifier } = useWatch({
+    control,
   })
 
   const getVerifiers = async () => {
@@ -119,7 +125,7 @@ export const VerifierForm = ({
         ToastHelper.error(res?.message)
       } else {
         ToastHelper.success(`Verifier added to list`)
-        reset()
+        setValue('verifier', '')
       }
     },
     onError: (err: any) => {
@@ -135,7 +141,7 @@ export const VerifierForm = ({
       if (res?.message) {
         ToastHelper.error(res?.message)
       } else {
-        ToastHelper.success(`${addressMinify(verifier)} deleted from list`)
+        ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
       }
     },
   })
@@ -207,13 +213,29 @@ export const VerifierForm = ({
           onSubmit={handleSubmit(onAddVerifier)}
         >
           <div className="flex flex-col gap-2">
-            <span className="text-base text-brand-dark">
-              Add verifier, please enter the wallet address of theirs.
-            </span>
-            <Input
-              disabled={disabled}
-              {...register('verifier')}
-              autoComplete="off"
+            <Controller
+              name="verifier"
+              control={control}
+              rules={{
+                required: true,
+                validate: isAddressOrEns,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      withIcon
+                      value={verifier}
+                      disabled={disabled}
+                      label="Add verifier, please enter the wallet address of theirs."
+                      autoComplete="off"
+                      onChange={(value: any) => {
+                        setValue('verifier', value)
+                      }}
+                    />
+                  </>
+                )
+              }}
             />
           </div>
           <Button
