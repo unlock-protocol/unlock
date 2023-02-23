@@ -30,6 +30,8 @@ export const polygon: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/matic/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/matic/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
