@@ -37,6 +37,22 @@ export interface Token {
   coinbase?: string
   mainnetAddress?: string
 }
+
+type HookName =
+  | 'onKeyPurchaseHook'
+  | 'onKeyCancelHook'
+  | 'onValidKeyHook'
+  | 'onTokenURIHook'
+  | 'onKeyTransferHook'
+  | 'onKeyExtendHook'
+  | 'onKeyGrantHook'
+
+export interface Hook {
+  name: string
+  address: string
+  description?: string
+}
+
 export interface NetworkConfig {
   id: number
   name: string
@@ -94,6 +110,7 @@ export interface NetworkConfig {
   description?: string
   teamMultisig?: string
   tokens?: Token[]
+  hooks?: Partial<Record<HookName, Hook[]>>
 }
 
 export interface NetworkConfigs {
