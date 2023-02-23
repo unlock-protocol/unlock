@@ -82,7 +82,7 @@ export const WithdrawFundModal = ({
     const walletService = await getWalletService(network)
     return await walletService.withdrawFromLock({
       lockAddress,
-      beneficiary: account, // todo: replace with custom beneficiary when AddressInput is fixed
+      beneficiary,
       amount: form.amount.toString(),
     })
   }
