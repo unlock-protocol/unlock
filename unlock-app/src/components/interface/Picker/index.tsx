@@ -177,7 +177,6 @@ export function Picker({
           }}
         />
       )}
-      <span className=""></span>
     </div>
   )
 }
