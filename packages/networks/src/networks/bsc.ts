@@ -75,6 +75,14 @@ export const bsc: NetworkConfig = {
       address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
+      },
+    ],
+  },
 }
 
 export default bsc
