@@ -67,5 +67,13 @@ export const gnosis: NetworkConfig = {
       symbol: 'USDT',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x927D68eAE936Ec0111f01Fc4Ddd9cC57DB3f0Af2',
+      },
+    ],
+  },
 }
 export default gnosis

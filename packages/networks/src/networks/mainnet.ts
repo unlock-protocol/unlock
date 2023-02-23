@@ -108,6 +108,14 @@ export const mainnet: NetworkConfig = {
       decimals: 18,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+      },
+    ],
+  },
 }
 
 export default mainnet
