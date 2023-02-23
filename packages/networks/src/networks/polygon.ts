@@ -100,6 +100,14 @@ export const polygon: NetworkConfig = {
       decimals: 8,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
+      },
+    ],
+  },
 }
 
 export default polygon

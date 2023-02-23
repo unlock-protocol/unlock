@@ -82,6 +82,14 @@ export const optimism: NetworkConfig = {
       address: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
+      },
+    ],
+  },
 }
 
 export default optimism

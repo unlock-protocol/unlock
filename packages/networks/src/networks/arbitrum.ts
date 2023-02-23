@@ -91,6 +91,14 @@ export const arbitrum: NetworkConfig = {
       address: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0xd0b14797b9D08493392865647384974470202A78',
+      },
+    ],
+  },
 }
 
 export default arbitrum
