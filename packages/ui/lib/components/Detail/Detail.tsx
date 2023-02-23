@@ -5,7 +5,7 @@ import { classed } from '@tw-classed/react'
 import { BaseHTMLAttributes } from 'react'
 
 export interface DetailProps
-  extends Pick<BaseHTMLAttributes<HTMLInputElement>, 'className'> {
+  extends Pick<BaseHTMLAttributes<HTMLDivElement>, 'className'> {
   label: React.ReactNode
   children?: React.ReactNode
   loading?: boolean
