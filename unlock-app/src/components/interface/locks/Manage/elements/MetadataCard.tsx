@@ -248,7 +248,7 @@ export const MetadataCard = ({
           </Button>
         )}
         <Button variant="outlined-primary" size="small">
-          <Link href={metadataPageUrl}>Edit Metadata</Link>
+          <Link href={metadataPageUrl}>Edit token metadata</Link>
         </Button>
       </div>
 
