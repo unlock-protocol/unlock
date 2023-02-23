@@ -77,6 +77,7 @@ export interface NetworkConfig {
   }
   opensea?: {
     tokenUrl: (lockAddress: string, tokenId: string) => string | null
+    collectionUrl?: (lockAddress: string) => string
   }
   isTestNetwork?: boolean
   erc20?: {
