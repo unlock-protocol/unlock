@@ -89,18 +89,27 @@ export function Picker({
     return <LoadingIcon />
   }
 
+  const onChangeFn = (lockAddress: string) => {
+    setState((state) => ({
+      network: state.network,
+      lockAddress: lockAddress.toString(),
+      name: locksOptions.find(
+        (item) =>
+          item.value?.toLowerCase() === lockAddress.toString().toLowerCase()
+      )?.label,
+    }))
+  }
+
   const handleOnChange = (lockAddress: string) => {
-    if (ethers.utils.isAddress(lockAddress)) {
-      setState((state) => ({
-        network: state.network,
-        lockAddress: lockAddress.toString(),
-        name: locksOptions.find(
-          (item) =>
-            item.value?.toLowerCase() === lockAddress.toString().toLowerCase()
-        )?.label,
-      }))
+    // check that lockAddress is valid when collected
+    if (collect.lockAddress) {
+      if (ethers.utils.isAddress(lockAddress)) {
+        onChangeFn(lockAddress)
+      } else {
+        ToastHelper.error('Lock address is not valid, please check the value')
+      }
     } else {
-      ToastHelper.error('Lock address is not valid, please check the value')
+      onChangeFn(lockAddress)
     }
   }
   const { collectionUrl, tokenUrl } = networks[network]?.opensea ?? {}
