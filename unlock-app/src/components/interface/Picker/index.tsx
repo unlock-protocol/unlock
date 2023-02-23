@@ -101,15 +101,18 @@ export function Picker({
   }
 
   const handleOnChange = (lockAddress: string) => {
-    // check that lockAddress is valid when collected
-    if (collect.lockAddress) {
-      if (ethers.utils.isAddress(lockAddress)) {
-        onChangeFn(lockAddress)
-      } else {
-        ToastHelper.error('Lock address is not valid, please check the value')
-      }
-    } else {
+    const addressIsValid = collect.lockAddress
+      ? ethers.utils.isAddress(lockAddress)
+      : true
+
+    if (addressIsValid) {
       onChangeFn(lockAddress)
+    } else {
+      ToastHelper.error('Lock address is not valid, please check the value')
+      setState((state) => ({
+        ...state,
+        lockAddress, // reset lockAddress because is not valid
+      }))
     }
   }
   const { collectionUrl, tokenUrl } = networks[network]?.opensea ?? {}
