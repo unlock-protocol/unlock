@@ -58,7 +58,6 @@ export const ToastHelper: ToastHelperProps = {
     }
     return result
   },
-  // TODO: we need to provide an errors pages 404/500
   redirectErrorPage: (page) => {
     const redirectPage = `/${page}`
     window.location.href = redirectPage
