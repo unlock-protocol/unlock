@@ -39,7 +39,7 @@ interface HookValueProps {
 const HookMapping: Record<FormPropsKey, HookValueProps> = {
   keyPurchase: {
     label: 'Key purchase hook',
-    version: 7,
+    fromPublicLockVersion: 7,
     hookName: 'onKeyPurchaseHook',
   },
   keyCancel: {
