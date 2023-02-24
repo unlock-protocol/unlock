@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import type { OAuthConfig, PaywallConfig } from '~/unlockTypes'
+import type { OAuthConfig } from '~/unlockTypes'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { ConfirmConnect } from './Confirm'
 import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
