@@ -44,6 +44,7 @@
     "@sentry/tracing": "7.36.0",
     "@types/random-words": "1.1.2",
     "@unlock-protocol/contracts": "workspace:^",
+    "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:^",
     "@unlock-protocol/ui": "workspace:^",
