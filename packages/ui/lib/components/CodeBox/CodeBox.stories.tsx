@@ -1,14 +1,13 @@
 import { CodeBox } from './CodeBox'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
-export default {
+const meta = {
   component: CodeBox,
   title: 'Codebox',
-} as ComponentMeta<typeof CodeBox>
+} satisfies Meta<typeof CodeBox>
 
-const Template: ComponentStory<typeof CodeBox> = (args) => <CodeBox {...args} />
-
-export const PaywallCodeExample = Template.bind({})
+export default meta
+type Story = StoryObj<typeof meta>
 
 const PaywallCode = `
 <script>
@@ -26,7 +25,9 @@ const unlockProtocolConfig = {
 </script>
 `.trim()
 
-PaywallCodeExample.args = {
-  code: PaywallCode,
-  lang: 'javascript',
-}
+export const PaywallCodeExample = {
+  args: {
+    code: PaywallCode,
+    lang: 'javascript',
+  },
+} satisfies Story
