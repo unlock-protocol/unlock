@@ -55,18 +55,17 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     ['lock', lockAddress, network],
     async () => {
       const service = new SubgraphService()
-      const result = await service.locks(
+      const result = await service.lock(
         {
-          first: 1,
           where: {
             address: lockAddress,
           },
         },
         {
-          networks: [network.toString()],
+          network,
         }
       )
-      return result[0]
+      return result
     },
     {
       refetchInterval: false,
@@ -78,12 +77,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { isInitialLoading: isKeyLoading, data: key } = useQuery(
     ['key', lockAddress, tokenId, network],
     async () => {
-      // Some older QR codes might have been generated without a tokenId in the payload. Clean up after January 2023
-      if (lockVersion && lockVersion >= 10 && tokenId) {
-        return web3Service.getKeyByTokenId(lockAddress, tokenId, network)
-      } else {
-        return web3Service.getKeyByLockForOwner(lockAddress, account, network)
-      }
+      return web3Service.getKeyByTokenId(lockAddress, tokenId!, network)
     },
     {
       enabled: !!lockVersion,
