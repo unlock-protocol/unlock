@@ -338,6 +338,7 @@ export const LocksForm = ({
                     onChange={(state) => {
                       onChangeLock(state.lockAddress, state.network, state.name)
                     }}
+                    customOption={true}
                   />
                   <Button
                     className="w-full"
