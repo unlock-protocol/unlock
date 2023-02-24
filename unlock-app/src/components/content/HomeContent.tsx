@@ -3,12 +3,10 @@ import Head from 'next/head'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
-import withConfig from '../../utils/withConfig'
 import Loading from '../interface/Loading'
-import UnlockPropTypes from '../../propTypes'
 import { AppLayout } from '../interface/layouts/AppLayout'
 
-export const HomeContent = ({ config }) => {
+export const HomeContent = ({ config }: any) => {
   useEffect(() => {
     // In dev, redirect to dashboard, otherwise to static site!
     if (
@@ -21,7 +19,7 @@ export const HomeContent = ({ config }) => {
     }
   })
   return (
-    <AppLayout forContent authRequired={false} showLinks={false}>
+    <AppLayout authRequired={false} showLinks={false}>
       <Head>
         <title>{pageTitle()}</title>
         <TwitterTags />
@@ -31,9 +29,3 @@ export const HomeContent = ({ config }) => {
     </AppLayout>
   )
 }
-
-HomeContent.propTypes = {
-  config: UnlockPropTypes.configuration.isRequired,
-}
-
-export default withConfig(HomeContent)

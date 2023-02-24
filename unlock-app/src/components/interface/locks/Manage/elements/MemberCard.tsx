@@ -152,6 +152,7 @@ export const MemberCard = ({
                   variant="outlined-primary"
                   size="small"
                   onClick={() => setExtendKeysOpen(true)}
+                  className="mt-1"
                 >
                   Extend
                 </Button>

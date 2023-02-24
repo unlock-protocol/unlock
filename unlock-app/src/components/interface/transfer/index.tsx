@@ -22,7 +22,7 @@ interface SendTransferFormProps {
   ) => void
 }
 
-export const SendTransferForm = ({
+const SendTransferForm = ({
   isLoading,
   createTransferCode,
   onTransferCodeReceived,
