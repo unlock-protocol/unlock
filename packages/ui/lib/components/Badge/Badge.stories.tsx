@@ -38,7 +38,7 @@ export const GreenBadge = {
     size: 'tiny',
     iconRight: <CheckIcon size={11} />,
   },
-}
+} satisfies Story
 
 export const LoadingBadge = {
   args: {
@@ -48,4 +48,4 @@ export const LoadingBadge = {
       <SpinnerIcon className="animate-spin motion-reduce:invisible" size={18} />
     ),
   },
-}
+} satisfies Story
