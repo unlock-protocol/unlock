@@ -3,14 +3,15 @@ import Head from 'next/head'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
 
+declare const window: any
 const usePaywall = () => {
   const config = useContext(ConfigContext)
   const [loading, setLoading] = useState(true)
   const [locked, setLocked] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
   const unlock = () => {
-    window.unlockProtocol.loadCheckoutModal()
+    window?.unlockProtocol?.loadCheckoutModal()
   }
 
   useEffect(() => {
@@ -30,18 +31,18 @@ const usePaywall = () => {
       persistentCheckout: false,
       metadataInputs: useMetadataInputs
         ? [
-          {
-            name: 'First Name',
-            type: 'text',
-            required: true,
-            public: true,
-          },
-          {
-            name: 'Last Name',
-            type: 'text',
-            required: true,
-          },
-        ]
+            {
+              name: 'First Name',
+              type: 'text',
+              required: true,
+              public: true,
+            },
+            {
+              name: 'Last Name',
+              type: 'text',
+              required: true,
+            },
+          ]
         : undefined,
       locks: {
         [url.searchParams.get('lock')]: {
@@ -68,8 +69,8 @@ const usePaywall = () => {
     localStorage.removeItem('userInfo')
 
     // Event handler
-    const handler = window.addEventListener('unlockProtocol', (e) => {
-      if (e.detail === 'unlocked') {
+    const handler = window.addEventListener('unlockProtocol', (e: any) => {
+      if (e?.detail === 'unlocked') {
         setLocked(false)
       } else {
         setLocked(true)
@@ -146,14 +147,16 @@ export const DemoContent = () => {
                         background:
                           'linear-gradient(rgba(253, 250, 247, 0), rgb(250, 250, 250) 70%)',
                       }}
-                      className={`absolute top-0 w-full h-full ${locked ? 'block' : 'hidden'
-                        }`}
+                      className={`absolute top-0 w-full h-full ${
+                        locked ? 'block' : 'hidden'
+                      }`}
                     />
                   </div>
 
                   <div
-                    className={`text-xl text-center mt-5 ${locked ? 'block' : 'hidden'
-                      } `}
+                    className={`text-xl text-center mt-5 ${
+                      locked ? 'block' : 'hidden'
+                    } `}
                   >
                     Support our work and read the rest of this article by
                     becoming a member today!
