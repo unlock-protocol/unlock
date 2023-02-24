@@ -1,0 +1,16 @@
+{
+  "name": "@unlock-protocol/core",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+    "typescript": "4.9.5"
+  },
+  "peerDependencies": {
+    "zod": "3.20.6"
+  }
+}

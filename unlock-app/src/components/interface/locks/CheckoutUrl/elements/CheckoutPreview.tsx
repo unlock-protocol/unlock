@@ -2,11 +2,11 @@ import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import { PaywallConfig } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import FileSaver from 'file-saver'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 
 interface CheckoutPreviewProps {
   paywallConfig?: PaywallConfig

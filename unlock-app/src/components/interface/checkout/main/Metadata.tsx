@@ -28,11 +28,11 @@ import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { Lock, MetadataInput } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
-
+import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService

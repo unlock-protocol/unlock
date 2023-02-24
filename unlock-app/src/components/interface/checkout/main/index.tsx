@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
-import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
 import { Select } from './Select'
@@ -22,6 +21,7 @@ import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig

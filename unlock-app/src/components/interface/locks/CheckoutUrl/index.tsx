@@ -1,7 +1,7 @@
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { PaywallConfig } from '~/unlockTypes'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'

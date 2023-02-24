@@ -8,19 +8,19 @@ export interface Typegen0 {
   invokeSrcNameMap: {}
   missingImplementations: {
     actions: never
-    services: never
-    guards: never
     delays: never
+    guards: never
+    services: never
   }
   eventsCausingActions: {
     submitUser: 'SUBMIT_USER'
   }
-  eventsCausingServices: {}
+  eventsCausingDelays: {}
   eventsCausingGuards: {
     isExistingUser: 'CONTINUE'
     isNotExistingUser: 'CONTINUE'
   }
-  eventsCausingDelays: {}
+  eventsCausingServices: {}
   matchesStates: 'ENTER_EMAIL' | 'EXIT' | 'SIGN_IN' | 'SIGN_UP'
   tags: never
 }
