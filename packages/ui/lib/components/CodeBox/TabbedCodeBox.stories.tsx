@@ -1,16 +1,13 @@
 import { TabbedCodeBox } from './TabbedCodeBox'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
-export default {
+const meta = {
   component: TabbedCodeBox,
   title: 'TabbedCodeBox',
-} as ComponentMeta<typeof TabbedCodeBox>
+} satisfies Meta<typeof TabbedCodeBox>
 
-const Template: ComponentStory<typeof TabbedCodeBox> = (args) => (
-  <TabbedCodeBox {...args} />
-)
-
-export const PaywallCodeExample = Template.bind({})
+export default meta
+type Story = StoryObj<typeof meta>
 
 const JavascriptCode = `
 <script>
@@ -39,29 +36,31 @@ def index(req, res);
 
 `.trim()
 
-PaywallCodeExample.args = {
-  blocks: [
-    {
-      name: 'javascript',
-      code: JavascriptCode,
-      lang: 'javascript',
-    },
-    {
-      name: 'python',
-      code: PythonCode,
-      lang: 'python',
-    },
-  ],
-}
+export const PaywallCodeExample = {
+  args: {
+    blocks: [
+      {
+        name: 'javascript',
+        code: JavascriptCode,
+        lang: 'javascript',
+      },
+      {
+        name: 'python',
+        code: PythonCode,
+        lang: 'python',
+      },
+    ],
+  },
+} satisfies Story
 
-export const SingleBlockExample = Template.bind({})
-
-SingleBlockExample.args = {
-  blocks: [
-    {
-      name: 'javascript',
-      code: JavascriptCode,
-      lang: 'javascript',
-    },
-  ],
-}
+export const SingleBlockExample = {
+  args: {
+    blocks: [
+      {
+        name: 'javascript',
+        code: JavascriptCode,
+        lang: 'javascript',
+      },
+    ],
+  },
+} satisfies Story

@@ -1,17 +1,19 @@
 import { TextBox } from './TextBox'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
-export default {
+import { Meta, StoryObj } from '@storybook/react'
+
+const meta = {
   component: TextBox,
   title: 'TextBox',
-} as ComponentMeta<typeof TextBox>
+} satisfies Meta<typeof TextBox>
 
-const Template: ComponentStory<typeof TextBox> = (args) => <TextBox {...args} />
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const Normal = Template.bind({})
-
-Normal.args = {
-  label: 'Lock description',
-  size: 'medium',
-  value: 'hello this is a description',
-  description: 'this is a description box',
-}
+export const Normal = {
+  args: {
+    label: 'Lock description',
+    size: 'medium',
+    value: 'hello this is a description',
+    description: 'this is a description box',
+  },
+} satisfies Story

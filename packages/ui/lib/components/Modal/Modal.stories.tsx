@@ -1,17 +1,18 @@
 import { Modal } from './Modal'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
-export default {
+const meta = {
   component: Modal,
   title: 'Modal',
-} as ComponentMeta<typeof Modal>
+} satisfies Meta<typeof Modal>
 
-const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const Primary = Template.bind({})
-
-Primary.args = {
-  isOpen: true,
-  setIsOpen: () => {},
-  children: <p> Hello, this is modal! </p>,
-}
+export const Primary = {
+  args: {
+    isOpen: true,
+    setIsOpen: () => {},
+    children: <p> Hello, this is modal! </p>,
+  },
+} satisfies Story

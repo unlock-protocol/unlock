@@ -1,21 +1,22 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { Toggle } from './Toggle'
 
-export default {
+const meta = {
   component: Toggle,
   title: 'Toggle',
-} as ComponentMeta<typeof Toggle>
+  args: {
+    value: false,
+    onChange: () => {},
+    size: 'medium',
+  },
+} satisfies Meta<typeof Toggle>
 
-const Template: ComponentStory<typeof Toggle> = (args) => (
-  <div className="grid items-center justify-center h-screen bg-gray-50">
-    <Toggle {...args} />
-  </div>
-)
+export default meta
 
-export const Default = Template.bind({})
-
-Default.args = {
-  value: true,
-  onChange: () => {},
-  size: 'medium',
+export const Default: StoryFn<typeof Toggle> = (args) => {
+  return (
+    <div className="grid items-center justify-center h-screen bg-gray-50">
+      <Toggle {...args} />
+    </div>
+  )
 }

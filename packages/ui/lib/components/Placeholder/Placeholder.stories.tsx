@@ -1,12 +1,14 @@
 import { Placeholder } from '.'
-import { ComponentStory } from '@storybook/react'
+import { StoryFn } from '@storybook/react'
 
-export default {
+const meta = {
   component: Placeholder,
   title: 'Placeholder',
 }
 
-const Template: ComponentStory<any> = (args) => (
+export default meta
+
+export const Template: StoryFn<typeof meta> = (args) => (
   <Placeholder.Root>
     <Placeholder.Image rounded="full" size="sm" />
     <Placeholder.Line />
@@ -14,5 +16,3 @@ const Template: ComponentStory<any> = (args) => (
     <Placeholder.Line />
   </Placeholder.Root>
 )
-
-export const Profile = Template.bind({})
