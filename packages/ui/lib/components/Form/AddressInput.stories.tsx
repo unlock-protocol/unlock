@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { AddressInput } from './AddressInput'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import {
@@ -9,12 +9,14 @@ import {
 import { Button } from '../Button/Button'
 import { isAddressOrEns } from '~/utils'
 
-export default {
+const meta = {
   component: AddressInput,
   title: 'AddressInput',
-} as ComponentMeta<typeof AddressInput>
+} satisfies Meta<typeof AddressInput>
 
-const Template: ComponentStory<typeof AddressInput> = () => {
+export default meta
+
+export const Default: StoryFn<typeof meta> = () => {
   const localForm = useForm({
     defaultValues: {
       address: '0xfC43f5F9dd45258b3AFf31Bdbe6561D97e8B71de',
@@ -77,5 +79,3 @@ const Template: ComponentStory<typeof AddressInput> = () => {
     </QueryClientProvider>
   )
 }
-
-export const Normal = Template.bind({})
