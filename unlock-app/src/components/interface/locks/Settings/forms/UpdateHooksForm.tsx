@@ -32,7 +32,7 @@ interface FormProps {
 type FormPropsKey = keyof FormProps
 interface HookValueProps {
   label: string
-  version: number
+  fromPublicLockVersion: number
   hookName: HookName
 }
 
@@ -44,32 +44,32 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
   },
   keyCancel: {
     label: 'Key purchase hook',
-    version: 7,
+    fromPublicLockVersion: 7,
     hookName: 'onKeyCancelHook',
   },
   validKey: {
     label: 'Valid key hook',
-    version: 9,
+    fromPublicLockVersion: 9,
     hookName: 'onValidKeyHook',
   },
   tokenURI: {
     label: 'Token URI hook',
-    version: 9,
+    fromPublicLockVersion: 9,
     hookName: 'onTokenURIHook',
   },
   keyTransfer: {
     label: 'Key transfer hook',
-    version: 11,
+    fromPublicLockVersion: 11,
     hookName: 'onKeyTransferHook',
   },
   keyExtend: {
     label: 'Key extend hook',
-    version: 12,
+    fromPublicLockVersion: 12,
     hookName: 'onKeyExtendHook',
   },
   keyGrant: {
     label: 'Key grant hook',
-    version: 12,
+    fromPublicLockVersion: 12,
     hookName: 'onKeyGrantHook',
   },
 }
@@ -119,9 +119,9 @@ export const UpdateHooksForm = ({
   const queries = useQueries({
     queries: [
       ...Object.entries(HookMapping).map(
-        ([fieldName, { hookName, version: hookRequiredVersion = 0 }]) => {
+        ([fieldName, { hookName, fromPublicLockVersion = 0 }]) => {
           const hasRequiredVersion: boolean =
-            (version ?? 0) >= hookRequiredVersion ?? false
+            (version ?? 0) >= fromPublicLockVersion ?? false
 
           return {
             queryKey: [hookName, lockAddress, network],
@@ -175,9 +175,9 @@ export const UpdateHooksForm = ({
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
       {Object.entries(HookMapping)?.map(
-        ([field, { label, version: hookRequiredVersion, hookName }]) => {
+        ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
           const fieldName = field as FormPropsKey
-          const hasRequiredVersion = version && version >= hookRequiredVersion
+          const hasRequiredVersion = version && version >= fromPublicLockVersion
           const enabled: boolean = enabledFields[fieldName] ?? false
           const hasError = errors?.[hookName as FormPropsKey]
 
