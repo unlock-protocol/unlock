@@ -30,6 +30,8 @@ export const arbitrum: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) =>
       `https://opensea.io/assets/arbitrum/${_lockAddress}/${_tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/arbitrum/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -44,7 +46,7 @@ export const arbitrum: NetworkConfig = {
   startBlock: 17429533,
   previousDeploys: [],
   isTestNetwork: false,
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
   uniswapV3: {
@@ -91,6 +93,14 @@ export const arbitrum: NetworkConfig = {
       address: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0xd0b14797b9D08493392865647384974470202A78',
+      },
+    ],
+  },
 }
 
 export default arbitrum

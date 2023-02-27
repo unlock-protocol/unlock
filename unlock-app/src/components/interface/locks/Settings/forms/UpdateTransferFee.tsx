@@ -77,14 +77,13 @@ export const UpdateTransferFee = ({
     async () => getTransferFeeBasisPoints()
   )
 
+  const transferFeePercentage = (transferFeeBasisPoints ?? 0) / 100
+  const isTransferAllowed = transferFeePercentage < 100
+
   useEffect(() => {
-    setValue('transferFeePercentage', (transferFeeBasisPoints ?? 0) / 100)
-    if (transferFeeBasisPoints === undefined) {
-      setAllowTransfer(false)
-    } else {
-      setAllowTransfer(transferFeeBasisPoints < 100)
-    }
-  }, [transferFeeBasisPoints])
+    setValue('transferFeePercentage', transferFeePercentage)
+    setAllowTransfer(isTransferAllowed)
+  }, [isTransferAllowed, setValue, transferFeePercentage])
 
   const disabledInput =
     disabled || isLoading || updateTransferFeeMutation.isLoading

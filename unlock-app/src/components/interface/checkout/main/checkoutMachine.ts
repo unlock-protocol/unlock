@@ -1,4 +1,8 @@
-import { Lock, PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
+import {
+  PaywallConfigType as PaywallConfig,
+  PaywallLockConfigType as PaywallConfigLock,
+} from '@unlock-protocol/core'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
@@ -146,9 +150,6 @@ type Payment =
     }
   | {
       method: 'crypto'
-    }
-  | {
-      method: 'superfluid'
     }
   | {
       method: 'claim'

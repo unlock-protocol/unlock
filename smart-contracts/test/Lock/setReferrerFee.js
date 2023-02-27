@@ -65,8 +65,9 @@ contract('Lock / setReferrerFee', (accounts) => {
 
       describe('setting 5% fee for a specific address', () => {
         let balanceBefore
+        let tx
         beforeEach(async () => {
-          await lock.setReferrerFee(referrer, 500)
+          tx = await lock.setReferrerFee(referrer, 500)
           balanceBefore = await getBalance(referrer)
           await lock.purchase(
             isErc20 ? [keyPrice] : [],
@@ -86,6 +87,12 @@ contract('Lock / setReferrerFee', (accounts) => {
           assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.05)
         })
 
+        it('emits an event', async () => {
+          const { args } = tx.logs.find((v) => v.event === 'ReferrerFee')
+          assert.equal(args.fee, 500)
+          assert.equal(args.referrer, referrer)
+        })
+
         it('transfer correctly 5% of the price', async () => {
           const balanceAfter = await getBalance(referrer)
           assert.equal(
@@ -95,14 +102,16 @@ contract('Lock / setReferrerFee', (accounts) => {
               .toFixed()
           )
         })
+
+        
       })
 
       describe('setting 20% fee for a specific address', () => {
-        let balanceBefore
+        let balanceBefore, tx
 
         before(async () => {
           // setting 20% fee
-          await lock.setReferrerFee(referrer, 2000)
+          tx = await lock.setReferrerFee(referrer, 2000)
 
           balanceBefore = await getBalance(referrer)
           await lock.purchase(
@@ -123,6 +132,12 @@ contract('Lock / setReferrerFee', (accounts) => {
           assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.2)
         })
 
+        it('emits an event', async () => {
+          const { args } = tx.logs.find((v) => v.event === 'ReferrerFee')
+          assert.equal(args.fee, 2000)
+          assert.equal(args.referrer, referrer)
+        })
+
         it('transfer correctly 20% of the tokens', async () => {
           const balanceAfter = await getBalance(referrer)
           assert.equal(
@@ -135,9 +150,9 @@ contract('Lock / setReferrerFee', (accounts) => {
       })
 
       describe('setting 20% general fee for all addresses', () => {
-        let balanceBefore
+        let balanceBefore, tx
         before(async () => {
-          await lock.setReferrerFee(ZERO_ADDRESS, 2000)
+          tx = await lock.setReferrerFee(ZERO_ADDRESS, 2000)
           balanceBefore = await getBalance(referrer)
           await lock.purchase(
             isErc20 ? [keyPrice] : [],
@@ -156,6 +171,12 @@ contract('Lock / setReferrerFee', (accounts) => {
           assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.2)
         })
 
+        it('emits an event', async () => {
+          const { args } = tx.logs.find((v) => v.event === 'ReferrerFee')
+          assert.equal(args.fee.toNumber(), 2000)
+          assert.equal(args.referrer, ZERO_ADDRESS)
+        })
+
         it('transfer correctly 5% of the price', async () => {
           const balanceAfter = await getBalance(referrer)
           assert.equal(
@@ -172,14 +193,20 @@ contract('Lock / setReferrerFee', (accounts) => {
           await lock.setReferrerFee(referrer, 500)
         })
         it('fee can cancelled', async () => {
-          await lock.setReferrerFee(referrer, 0)
+          const tx = await lock.setReferrerFee(referrer, 0)
           const fee = new BigNumber(await lock.referrerFees(referrer))
           assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toNumber(), 0)
+          const { args } = tx.logs.find((v) => v.event === 'ReferrerFee')
+          assert.equal(args.fee, 0)
+          assert.equal(args.referrer, referrer)
         })
         it('fee can updated correctly', async () => {
-          await lock.setReferrerFee(referrer, 7000)
+          const tx = await lock.setReferrerFee(referrer, 7000)
           const fee = new BigNumber(await lock.referrerFees(referrer))
           assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.7)
+          const { args } = tx.logs.find((v) => v.event === 'ReferrerFee')
+          assert.equal(args.fee.toNumber(), 7000)
+          assert.equal(args.referrer, referrer)
         })
       })
 
@@ -217,6 +244,35 @@ contract('Lock / setReferrerFee', (accounts) => {
             balanceBefore
               .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR)
               .toFixed()
+          )
+        })
+      })
+
+      describe('doesnt revert if no referrer is specified', async () => {
+        let balanceBefore
+        before(async () => {
+          await lock.setReferrerFee(ZERO_ADDRESS, 2000)
+          balanceBefore = await getBalance(referrer)
+          await lock.purchase(
+            isErc20 ? [keyPrice] : [],
+            [keyOwner],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
+            {
+              value: isErc20 ? 0 : keyPrice,
+              from: keyOwner,
+            }
+          )
+        })
+        it('store fee correctly', async () => {
+          const fee = new BigNumber(await lock.referrerFees(ZERO_ADDRESS))
+          assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.2)
+        })
+        it('referrer balance didnt change', async () => {
+          assert.equal(
+            balanceBefore.toString(),
+            (await getBalance(referrer)).toString()
           )
         })
       })

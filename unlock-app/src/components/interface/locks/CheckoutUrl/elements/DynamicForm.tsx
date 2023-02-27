@@ -33,7 +33,6 @@ export const LabelMapping: Record<string, string> = {
   promo: 'Promo Codes',
   captcha: 'Captcha',
   emailRequired: 'Collect email address',
-  superfluid: 'Enable Superfluid',
   default: 'Default',
   dataBuilder: 'Data builder',
   redirectUri: 'Redirect URL',

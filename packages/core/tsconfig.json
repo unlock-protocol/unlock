@@ -1,0 +1,13 @@
+{
+    "extends": "@unlock-protocol/tsconfig",
+    "compilerOptions": {
+        "declaration": true,
+        "outDir": "dist",
+        "forceConsistentCasingInFileNames": true,
+        "declarationDir": "dist"
+    },
+    "exclude": [
+        "dist",
+        "node_modules"
+    ]
+}
