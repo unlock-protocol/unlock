@@ -1,0 +1,11 @@
+Hi there! We're helping to build the payments layer for the web. And we would love your help.
+
+We're building Unlock in public from our open source community at https://github.com/unlock-protocol/unlock.
+
+If you're looking to get started, here are some good first open issues: https://github.com/unlock-protocol/unlock/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
+
+Not a coder? Have questions? You can always reach out to us at hello@unlock-protocol.com. We would love to talk.
+
+/* TEAM */
+
+See https://unlock-protocol.com/about/ for a breakdown of the Unlock team.

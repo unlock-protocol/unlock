@@ -1,5 +1,6 @@
 import App from 'next/app'
 import React from 'react'
+import '../theme/globalStyle.css'
 
 class UnlockApp extends App {
   render() {
