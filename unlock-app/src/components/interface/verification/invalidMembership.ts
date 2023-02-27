@@ -26,9 +26,7 @@ export function invalidMembership({
   }
 
   if (owner.toLowerCase().trim() !== account.toLowerCase().trim()) {
-    return (
-      'The owner of this key does not match the QR code'
-    )
+    return 'The owner of this key does not match the QR code'
   }
 
   if (expiration != -1 && expiration < new Date().getTime() / 1000) {
