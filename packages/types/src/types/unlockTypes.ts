@@ -38,14 +38,17 @@ export interface Token {
   mainnetAddress?: string
 }
 
-type HookName =
-  | 'onKeyPurchaseHook'
-  | 'onKeyCancelHook'
-  | 'onValidKeyHook'
-  | 'onTokenURIHook'
-  | 'onKeyTransferHook'
-  | 'onKeyExtendHook'
-  | 'onKeyGrantHook'
+export const HooksName = [
+  'onKeyPurchaseHook',
+  'onKeyCancelHook',
+  'onValidKeyHook',
+  'onTokenURIHook',
+  'onKeyTransferHook',
+  'onKeyExtendHook',
+  'onKeyGrantHook',
+] as const
+
+export type HookName = (typeof HooksName)[number]
 
 export interface Hook {
   name: string
