@@ -46,7 +46,7 @@ export const arbitrum: NetworkConfig = {
   startBlock: 17429533,
   previousDeploys: [],
   isTestNetwork: false,
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
   uniswapV3: {
