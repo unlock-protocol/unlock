@@ -72,6 +72,7 @@ export const config = {
       host: app.wedlocksUri,
     },
   },
+  rpcURL: 'https://rpc.unlock-protocol.com',
   recaptchaKey:
     process.env.NEXT_PUBLIC_CAPTCHA_KEY ||
     '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir',
