@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import {
   FaLock as LockIcon,
   FaExclamation as DangerIcon,
@@ -6,44 +6,46 @@ import {
 } from 'react-icons/fa'
 import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 import { Badge } from './Badge'
-export default {
+
+const meta = {
   component: Badge,
   title: 'Badge',
-} as ComponentMeta<typeof Badge>
+} satisfies Meta<typeof Badge>
 
-const Template: ComponentStory<typeof Badge> = (args) => <Badge {...args} />
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const Default = Template.bind({})
+export const Default = {
+  args: {
+    children: 'Locked',
+    iconLeft: <LockIcon size={12} />,
+  },
+} satisfies Story
 
-Default.args = {
-  children: 'Locked',
-  iconLeft: <LockIcon size={12} />,
-}
+export const RedBadge = {
+  args: {
+    children: 'Invalid Key',
+    size: 'large',
+    variant: 'red',
+    iconRight: <DangerIcon size={14} />,
+  },
+} satisfies Story
 
-export const RedBadge = Template.bind({})
+export const GreenBadge = {
+  args: {
+    children: 'Success',
+    variant: 'green',
+    size: 'tiny',
+    iconRight: <CheckIcon size={11} />,
+  },
+} satisfies Story
 
-RedBadge.args = {
-  children: 'Invalid Key',
-  size: 'large',
-  variant: 'red',
-  iconRight: <DangerIcon size={14} />,
-}
-
-export const GreenBadge = Template.bind({})
-
-GreenBadge.args = {
-  children: 'Success',
-  variant: 'green',
-  size: 'tiny',
-  iconRight: <CheckIcon size={11} />,
-}
-
-export const LoadingBadge = Template.bind({})
-
-LoadingBadge.args = {
-  children: 'Loading Locks...',
-  variant: 'blue',
-  iconRight: (
-    <SpinnerIcon className="animate-spin motion-reduce:invisible" size={18} />
-  ),
-}
+export const LoadingBadge = {
+  args: {
+    children: 'Loading Locks...',
+    variant: 'blue',
+    iconRight: (
+      <SpinnerIcon className="animate-spin motion-reduce:invisible" size={18} />
+    ),
+  },
+} satisfies Story

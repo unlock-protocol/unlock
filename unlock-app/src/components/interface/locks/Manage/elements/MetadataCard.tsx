@@ -1,4 +1,4 @@
-import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
+import { Button, Badge, Input, Modal, Detail } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
@@ -15,12 +15,7 @@ import { AxiosError } from 'axios'
 import { useGetReceiptsPageUrl } from '~/hooks/receipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-
-interface DetailProps {
-  label: string
-  children?: React.ReactNode
-  append?: React.ReactNode
-}
+import { addressMinify } from '~/utils/strings'
 
 interface MetadataCardProps {
   metadata: any
@@ -39,22 +34,6 @@ const keysToIgnore = [
   'email',
 ]
 
-const MetadataDetail = ({ label, children, append }: DetailProps) => {
-  return (
-    <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
-      <div className="flex items-center gap-2">
-        <span className="text-base">{label}: </span>
-        <div className="flex items-center gap-2">
-          <span className="block text-base font-bold break-words md:inline-block">
-            {children}
-          </span>
-          {append && <div>{append}</div>}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 interface KeyRenewalProps {
   possibleRenewals: string
   approvedRenewals: string
@@ -71,33 +50,41 @@ const MembershipRenewal = ({
 
   if (possible.lte(0)) {
     return (
-      <MetadataDetail label="Renewals">
+      <Detail className="py-2" label="Renewals" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
-      </MetadataDetail>
+      </Detail>
     )
   }
 
   if (approved.lte(0)) {
     return (
-      <MetadataDetail label="Renewals">No renewals approved</MetadataDetail>
+      <Detail className="py-2" label="Renewals" inline justify={false}>
+        No renewals approved
+      </Detail>
     )
   }
 
   if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
     return (
-      <MetadataDetail label="Renewals">
+      <Detail className="py-2" label="Renewals" inline justify={false}>
         {approved.toString()} times
-      </MetadataDetail>
+      </Detail>
     )
   }
 
   if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
     return (
-      <MetadataDetail label="Renewals">Renews unlimited times</MetadataDetail>
+      <Detail className="py-2" label="Renewals" inline justify={false}>
+        Renews unlimited times
+      </Detail>
     )
   }
 
-  return <MetadataDetail label="Renewals">-</MetadataDetail>
+  return (
+    <Detail className="py-2" label="Renewals" inline justify={false}>
+      -
+    </Detail>
+  )
 }
 
 export const MetadataCard = ({
@@ -182,6 +169,8 @@ export const MetadataCard = ({
     })
   }
 
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
+
   const onMarkAsCheckIn = async () => {
     const { lockAddress, token: keyId } = data
     return storage.checkTicket(network, lockAddress, keyId)
@@ -245,6 +234,9 @@ export const MetadataCard = ({
             </Link>
           </Button>
         )}
+        <Button variant="outlined-primary" size="small">
+          <Link href={metadataPageUrl}>Edit token metadata</Link>
+        </Button>
       </div>
 
       <div className="pt-6">
@@ -259,19 +251,27 @@ export const MetadataCard = ({
               <span className="text-sm font-semibold">Checked-in</span>
             </Badge>
           )}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col divide-y divide-gray-400">
             {isCheckedIn && (
-              <MetadataDetail label="Checked-in at">
+              <Detail
+                className="py-2"
+                inline
+                justify={false}
+                label="Checked-in at:"
+              >
                 {getCheckInTime()}
-              </MetadataDetail>
+              </Detail>
             )}
-            <MetadataDetail
-              label="email"
-              append={
-                <>
+            <Detail
+              className="py-2"
+              label={
+                <div className="flex flex-col w-full gap-2 md:items-center md:flex-row">
+                  <span>Email:</span>
                   {hasEmail ? (
-                    <div className="flex gap-4">
-                      {data?.email}
+                    <div className="flex flex-col w-full gap-3 md:flex-row">
+                      <span className="block font-semibold text-black ">
+                        {data?.email}
+                      </span>
                       <Button
                         size="tiny"
                         variant="outlined-primary"
@@ -302,22 +302,37 @@ export const MetadataCard = ({
                       Add email
                     </Button>
                   )}
-                </>
+                </div>
               }
             />
             {items?.map(([key, value]: any, index) => {
               return (
-                <MetadataDetail key={`${key}-${index}`} label={`${key}`}>
+                <Detail
+                  className="py-2"
+                  key={`${key}-${index}`}
+                  label={`${key}: `}
+                  inline
+                  justify={false}
+                >
                   {value || null}
-                </MetadataDetail>
+                </Detail>
               )
             })}
-            <MetadataDetail
-              label="Key Holder"
-              append={
-                <>
+            <Detail
+              className="py-2"
+              label={
+                <div className="flex items-center gap-2">
+                  <span>Key Holder:</span>
+                  {/* show full address on desktop */}
+                  <div className="text-base font-bold break-words">
+                    <span className="hidden md:block">{owner}</span>
+                    {/* show minified address on mobile */}
+                    <span className="block md:hidden">
+                      {addressMinify(owner)}
+                    </span>
+                  </div>
                   <Button
-                    className="p-0 text-brand-ui-primary"
+                    className="p-0 outline-none text-brand-ui-primary ring-0"
                     variant="transparent"
                     aria-label="blockscan link"
                   >
@@ -329,26 +344,34 @@ export const MetadataCard = ({
                       <ExternalLinkIcon size={20} />
                     </a>
                   </Button>
-                </>
+                </div>
               }
-            >
-              {owner}
-            </MetadataDetail>
+            />
             {isSubscriptionLoading && <LoadingIcon />}
             {!isSubscriptionLoading && subscription && (
               <>
-                <MetadataDetail label="User Balance">
+                <Detail
+                  className="py-2"
+                  label="User Balance:"
+                  inline
+                  justify={false}
+                >
                   {subscription.balance?.amount} {subscription.balance?.symbol}
-                </MetadataDetail>
+                </Detail>
                 <MembershipRenewal
                   possibleRenewals={subscription.possibleRenewals!}
                   approvedRenewals={subscription.approvedRenewals!}
                   balance={subscription.balance as any}
                 />
                 {expirationDuration && expirationDuration !== MAX_UINT && (
-                  <MetadataDetail label="Renewal duration">
+                  <Detail
+                    className="py-2"
+                    label="Renewal duration:"
+                    inline
+                    justify={false}
+                  >
                     {durationAsText(expirationDuration)}
-                  </MetadataDetail>
+                  </Detail>
                 )}
               </>
             )}

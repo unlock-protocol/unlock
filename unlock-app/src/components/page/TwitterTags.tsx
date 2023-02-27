@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import {
   pageTitle,
@@ -6,7 +5,17 @@ import {
   PAGE_DEFAULT_IMAGE,
 } from '../../constants'
 
-export const TwitterTags = ({ title, description, image }) => {
+interface TwitterTagsProps {
+  title?: string
+  description?: string
+  image?: string
+}
+
+export const TwitterTags = ({
+  title = pageTitle(),
+  description = PAGE_DESCRIPTION,
+  image = PAGE_DEFAULT_IMAGE,
+}: TwitterTagsProps) => {
   if (!title) title = pageTitle()
   if (!description) description = PAGE_DESCRIPTION
   if (!image) image = PAGE_DEFAULT_IMAGE
@@ -20,18 +29,6 @@ export const TwitterTags = ({ title, description, image }) => {
       <meta name="twitter:image" content={image} />
     </>
   )
-}
-
-TwitterTags.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  image: PropTypes.string,
-}
-
-TwitterTags.defaultProps = {
-  title: pageTitle(),
-  description: PAGE_DESCRIPTION,
-  image: PAGE_DEFAULT_IMAGE,
 }
 
 export default TwitterTags

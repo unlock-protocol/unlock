@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
+import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -15,9 +15,7 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { Framework } from '@superfluid-finance/sdk-core'
-import { ethers, BigNumber } from 'ethers'
-import { selectProvider } from '~/hooks/useAuthenticate'
+import { ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
@@ -29,6 +27,7 @@ import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
 import { useStorageService } from '~/utils/withStorageService'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+import { ViewContract } from '../ViewContract'
 
 interface Props {
   injectedProvider: unknown
@@ -441,53 +440,6 @@ export function Confirm({
     }
   }
 
-  const onConfirmSuperfluid = async () => {
-    try {
-      if (payment.method !== 'superfluid') {
-        return
-      }
-      setIsConfirming(true)
-      const provider = selectProvider(config)
-      const web3Provider = new ethers.providers.Web3Provider(provider)
-      const sf = await Framework.create({
-        chainId: lock!.network,
-        provider: web3Provider,
-      })
-      const expiration = BigNumber.from(lock!.expirationDuration)
-      const decimals = await web3Service.getTokenDecimals(
-        lock!.currencyContractAddress!,
-        lock!.network
-      )
-
-      const mul = BigNumber.from(10).pow(decimals)
-
-      const flowRate = BigNumber.from(lock!.keyPrice)
-        .mul(mul)
-        .div(expiration)
-        .toString()
-      const op = sf.cfaV1.createFlow({
-        sender: provider.address,
-        receiver: lock!.address,
-        superToken: lock!.currencyContractAddress!,
-        flowRate: flowRate,
-      })
-      const walletService = await getWalletService(lockNetwork)
-      const signer = walletService.signer
-      await op.exec(signer)
-      communication?.emitUserInfo({
-        address: account,
-      })
-      send({
-        type: 'CONFIRM_MINT',
-        status: 'FINISHED',
-      })
-      setIsConfirming(false)
-    } catch (error: any) {
-      setIsConfirming(false)
-      ToastHelper.error(error?.error?.message || error.message)
-    }
-  }
-
   const onConfirmClaim = async () => {
     try {
       setIsConfirming(true)
@@ -614,24 +566,6 @@ export function Confirm({
           </div>
         )
       }
-      case 'superfluid': {
-        return (
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading}
-              onClick={async (event) => {
-                event.preventDefault()
-                onConfirmSuperfluid()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using superfluid'
-                : 'Pay using superfluid'}
-            </Button>
-          </div>
-        )
-      }
       default: {
         return null
       }
@@ -656,16 +590,7 @@ export function Confirm({
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <a
-              href={config.networks[lockNetwork].explorer.urls.address(
-                lockAddress
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-brand-ui-primary hover:opacity-75"
-            >
-              View Contract <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
+            <ViewContract lockAddress={lock!.address} network={network!} />
           </div>
           {isError && (
             // TODO: use actual error from simulation
@@ -742,7 +667,11 @@ export function Confirm({
                           pricingData?.total
                         )?.toLocaleString()} ${symbol}`
                   }
-                  usdPrice={`~$${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`}
+                  usdPrice={
+                    pricingData?.usdPrice?.priceInAmount
+                      ? `~${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`
+                      : ''
+                  }
                   isCardEnabled={formattedData.cardEnabled}
                 />
               </>

@@ -14,6 +14,7 @@
     "@stripe/stripe-js": "1.46.0",
     "@tanstack/react-query": "4.24.4",
     "@tw-classed/react": "1.4.2",
+    "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/ui": "workspace:./packages/ui",
@@ -44,6 +45,7 @@
     "qrcode.react": "3.1.0",
     "react": "18.2.0",
     "react-crypto-icons": "1.0.5",
+    "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
     "react-google-recaptcha": "2.1.0",
@@ -94,7 +96,7 @@
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "ci": "yarn test && yarn lint"
+    "ci": "yarn test && yarn lint && yarn build"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

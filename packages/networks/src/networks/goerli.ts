@@ -29,6 +29,8 @@ export const goerli: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://testnets.opensea.io/assets/goerli/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://testnets.opensea.io/assets/goerli/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -80,6 +82,14 @@ export const goerli: NetworkConfig = {
       mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
+      },
+    ],
+  },
 }
 
 export default goerli
