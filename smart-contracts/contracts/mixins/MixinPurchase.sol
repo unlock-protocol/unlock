@@ -30,6 +30,11 @@ contract MixinPurchase is
     address unlockAddress
   );
 
+  event ReferrerFee(
+    address indexed referrer,
+    uint fee
+  );
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -72,7 +77,7 @@ contract MixinPurchase is
    * @param _referrer the address of the referrer. If set to the 0x address, any referrer will receive the fee.
    * @param _feeBasisPoint the percentage of the price to be used for this
    * specific referrer (in basis points)
-   * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+   * @dev To send a fixed percentage of the key price to all referrers, set a percentage to `address(0)`
    */
   function setReferrerFee(
     address _referrer,
@@ -80,6 +85,7 @@ contract MixinPurchase is
   ) public {
     _onlyLockManager();
     referrerFees[_referrer] = _feeBasisPoint;
+    emit ReferrerFee(_referrer, _feeBasisPoint);
   }
 
   /** 
