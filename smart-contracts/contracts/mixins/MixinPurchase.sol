@@ -142,7 +142,7 @@ contract MixinPurchase is
    * @notice stores values are used to prevent renewal if a key has settings 
    * has changed
    */
-  function _recordTokenInfo(
+  function _recordTokenTerms(
     uint _tokenId,
     uint _keyPrice
   ) internal {
@@ -157,6 +157,19 @@ contract MixinPurchase is
     if (_originalTokens[_tokenId] != tokenAddress) {
       _originalTokens[_tokenId] = tokenAddress;
     }
+  }
+
+  /**
+   * @dev helper to check if the pricing or duration of the lock have been modified 
+   * since the key was bought
+   * @return true if the terms has changed
+   */
+  function _tokenTermsChanged(uint _tokenId, address _referrer) internal view returns (bool) {
+    return (
+      _originalPrices[_tokenId] != purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalDurations[_tokenId] != expirationDuration ||
+      _originalTokens[_tokenId] != tokenAddress
+    );
   }
 
   /**
@@ -217,7 +230,7 @@ contract MixinPurchase is
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       // store values at purchase time
-      _recordTokenInfo(tokenIds[i], inMemoryKeyPrice);
+      _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
       if (
         tokenAddress != address(0) &&
@@ -321,7 +334,7 @@ contract MixinPurchase is
     }
 
     // if key params have changed, then update them
-    _recordTokenInfo(_tokenId, inMemoryKeyPrice);
+    _recordTokenTerms(_tokenId, inMemoryKeyPrice);
 
     // refund gas (if applicable)
     _refundGas();
@@ -351,17 +364,8 @@ contract MixinPurchase is
       revert NON_RENEWABLE_LOCK();
     }
 
-    // make sure duration and pricing havent changed
-    uint keyPrice = purchasePriceFor(
-      ownerOf(_tokenId),
-      _referrer,
-      ""
-    );
-    if (
-      _originalPrices[_tokenId] != keyPrice ||
-      _originalDurations[_tokenId] != expirationDuration ||
-      _originalTokens[_tokenId] != tokenAddress
-    ) {
+    // make sure key duration and pricing havent changed
+    if (_tokenTermsChanged(_tokenId, _referrer)) {
       revert LOCK_HAS_CHANGED();
     }
 
