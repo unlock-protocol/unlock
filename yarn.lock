@@ -14674,7 +14674,7 @@ __metadata:
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
     satori: 0.2.2
-    sequelize: 6.28.1
+    sequelize: 6.29.0
     sequelize-cli: 6.6.0
     setimmediate: 1.0.5
     siwe: 1.1.6
@@ -45616,9 +45616,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:6.28.1":
-  version: 6.28.1
-  resolution: "sequelize@npm:6.28.1"
+"sequelize@npm:6.29.0":
+  version: 6.29.0
+  resolution: "sequelize@npm:6.29.0"
   dependencies:
     "@types/debug": ^4.1.7
     "@types/validator": ^13.7.1
@@ -45655,7 +45655,7 @@ __metadata:
       optional: true
     tedious:
       optional: true
-  checksum: 2235bf9b6a8fa324885149d07039ca6a6bd99a1aa030c071c02e1b60af381e4e4a0dcdbd8487d14cf289c9b9147c34c2f6fe6a5e4b25a7a0995e9869fabd46b5
+  checksum: 3b25ef91cdf828f987deca28d5b46a5771b225687485b2f34c7a0e85269952fb7bf26cf689d1e32c94908238d6968fbab4694350407f56820f879769339c62b6
   languageName: node
   linkType: hard
 
