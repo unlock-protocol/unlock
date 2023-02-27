@@ -1,0 +1,62 @@
+.unlock.start {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  border: 0;
+  z-index: -2147483647;
+}
+.unlock.show {
+  display: block;
+  z-index: 2147483647;
+}
+.unlock.hide {
+  right: 0;
+  top: initial;
+  left: initial;
+  bottom: 105px;
+  width: 134px;
+  height: 160px;
+  margin-right: -104px;
+  overflow: hidden;
+  transition: margin-right 0.4s ease-in;
+  animation: 2400ms slideout;
+}
+.unlock.optimism {
+  margin-right: 0;
+  animation: none;
+  transition: none;
+}
+.unlock.hide:hover {
+  margin-right: 0px;
+  width: 256px;
+}
+@keyframes slideout {
+  0% {
+    margin-right: 0px;
+  }
+  80% {
+    margin-right: 0px;
+  }
+  100% {
+    margin-right: -104px;
+  }
+}
+@media only screen and (max-width: 763px) {
+  .unlock.hide {
+    margin-right: 0;
+    display: flex;
+    bottom: 0;
+    width: 100vw;
+    height: 60px;
+    animation: none;
+    transition: none;
+    margin-right: 0;
+  }
+  .unlock.hide:hover {
+    margin-right: 0;
+    width: 100vw;
+  }
+}
