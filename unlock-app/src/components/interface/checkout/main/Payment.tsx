@@ -119,11 +119,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCrypto = !isUnlockAccount || !!walletInfo?.isPayable
 
+  const forceClaim = lock.network === 42161
+
   const enableClaim =
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !walletInfo?.isPayable
+    (!walletInfo?.isPayable || forceClaim)
 
   const stepItems = useCheckoutSteps(checkoutService)
 
