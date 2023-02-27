@@ -166,6 +166,29 @@ contract MixinPurchase is
   }
 
   /**
+   * @dev helper to keep track of price and duration settings of a key
+   * at purchase / extend time 
+   * @notice stores values are used to prevent renewal if a key has settings 
+   * has changed
+   */
+  function _recordTokenInfo(
+    uint _tokenId,
+    uint _keyPrice
+  ) internal {
+    if (_originalPrices[_tokenId] != _keyPrice) {
+      _originalPrices[_tokenId] = _keyPrice;
+    }
+    if (
+      _originalDurations[_tokenId] != expirationDuration
+    ) {
+      _originalDurations[_tokenId] = expirationDuration;
+    }
+    if (_originalTokens[_tokenId] != tokenAddress) {
+      _originalTokens[_tokenId] = tokenAddress;
+    }
+  }
+
+  /**
    * @dev Purchase function
    * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
    * (_values is ignored when using ETH)
@@ -223,9 +246,7 @@ contract MixinPurchase is
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       // store values at purchase time
-      _originalPrices[tokenIds[i]] = inMemoryKeyPrice;
-      _originalDurations[tokenIds[i]] = expirationDuration;
-      _originalTokens[tokenIds[i]] = tokenAddress;
+      _recordTokenInfo(tokenIds[i], inMemoryKeyPrice);
 
       if (
         tokenAddress != address(0) &&
@@ -331,18 +352,8 @@ contract MixinPurchase is
       revert INSUFFICIENT_VALUE();
     }
 
-    // if params have changed, then update them
-    if (_originalPrices[_tokenId] != inMemoryKeyPrice) {
-      _originalPrices[_tokenId] = inMemoryKeyPrice;
-    }
-    if (
-      _originalDurations[_tokenId] != expirationDuration
-    ) {
-      _originalDurations[_tokenId] = expirationDuration;
-    }
-    if (_originalTokens[_tokenId] != tokenAddress) {
-      _originalTokens[_tokenId] = tokenAddress;
-    }
+    // if key params have changed, then update them
+    _recordTokenInfo(_tokenId, inMemoryKeyPrice);
 
     // refund gas (if applicable)
     _refundGas();
