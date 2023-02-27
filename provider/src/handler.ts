@@ -18,10 +18,21 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   const url = new URL(request.url)
   const { pathname } = url
-  const dataURL = url.searchParams.get('url')
+  const queryURL = url.searchParams.get('url')
 
-  if (pathname === '/data' && dataURL) {
-    const endpoint = new URL(dataURL)
+  if (pathname === '/resolve-redirect' && queryURL) {
+    const endpoint = new URL(queryURL)
+    const result = await fetch(endpoint.toString(), {
+      method: 'HEAD',
+      redirect: 'follow',
+      signal: AbortSignal.timeout(5000), // 5 seconds timeout
+    })
+    return new Response(JSON.stringify({ url: result.url }), {
+      status: 200,
+    })
+  }
+  if (pathname === '/data' && queryURL) {
+    const endpoint = new URL(queryURL)
     // Proxy the request
     const response = await fetch(endpoint.toString(), {
       method: 'GET',
