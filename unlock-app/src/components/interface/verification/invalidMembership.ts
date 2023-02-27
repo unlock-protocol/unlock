@@ -27,7 +27,7 @@ export function invalidMembership({
 
   if (owner.toLowerCase().trim() !== account.toLowerCase().trim()) {
     return (
-      'The owner of this key does not match the QR code' + owner + ' ' + account
+      'The owner of this key does not match the QR code'
     )
   }
 
