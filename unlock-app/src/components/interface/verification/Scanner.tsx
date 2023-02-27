@@ -50,7 +50,7 @@ export function Scanner() {
         highlightScanRegion: true,
         calculateScanRegion: (v) => {
           const smallestDimension = Math.min(v.videoWidth, v.videoHeight)
-          const scanRegionSize = Math.round((1 / 3) * smallestDimension)
+          const scanRegionSize = Math.round((1 / 1.5) * smallestDimension)
 
           const region: QrScanner.ScanRegion = {
             x: Math.round((v.videoWidth - scanRegionSize) / 2),

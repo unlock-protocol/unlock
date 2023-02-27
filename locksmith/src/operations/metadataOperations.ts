@@ -59,16 +59,14 @@ export const generateKeyMetadata = async (
 
   const attributes: Attribute[] = []
 
-  // Check if key metadata exists. If it does, we don't want to include the base token data.
-  const keyMetadataExists =
-    Object.keys(keyCentricData).filter((item) => !['image'].includes(item))
-      .length > 0
+  // Check if key attributes exists. If it does, we don't want to include the base token data.
+  const keyAttributesExist = keyCentricData?.attributes?.length > 0
 
   if (Array.isArray(onChainKeyMetadata?.attributes)) {
     attributes.push(...onChainKeyMetadata.attributes)
   }
 
-  if (Array.isArray(baseTokenData?.attributes) && !keyMetadataExists) {
+  if (Array.isArray(baseTokenData?.attributes) && !keyAttributesExist) {
     attributes.push(...baseTokenData.attributes)
   }
 
@@ -77,7 +75,7 @@ export const generateKeyMetadata = async (
   }
 
   const data = {
-    ...(keyMetadataExists ? {} : baseTokenData),
+    ...(keyAttributesExist ? {} : baseTokenData),
     ...keyCentricData,
     ...onChainKeyMetadata,
     ...userMetadata,
