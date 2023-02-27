@@ -1,7 +1,6 @@
+import Link from 'next/link'
 import React from 'react'
 
-import HomeContent from '../components/content/HomeContent'
-
 export default function Home() {
-  return <HomeContent />
+  return <Link href="https://docs.unlock-protocol.com/tools/paywall">Docs</Link>
 }
