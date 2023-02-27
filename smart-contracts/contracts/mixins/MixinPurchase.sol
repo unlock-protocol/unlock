@@ -86,21 +86,23 @@ contract MixinPurchase is
   @dev internal function to execute the payments to referrers if any is set
   */
   function _payReferrer(address _referrer) internal {
-    // get default value
-    uint basisPointsToPay = referrerFees[address(0)];
+    if(_referrer != address(0)) {
+      // get default value
+      uint basisPointsToPay = referrerFees[address(0)];
 
-    // get value for the referrer
-    if (referrerFees[_referrer] != 0) {
-      basisPointsToPay = referrerFees[_referrer];
-    }
+      // get value for the referrer
+      if (referrerFees[_referrer] != 0) {
+        basisPointsToPay = referrerFees[_referrer];
+      }
 
-    // pay the referrer if necessary
-    if (basisPointsToPay != 0) {
-      _transfer(
-        tokenAddress,
-        payable(_referrer),
-        (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
-      );
+      // pay the referrer if necessary
+      if (basisPointsToPay != 0) {
+        _transfer(
+          tokenAddress,
+          payable(_referrer),
+          (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
+        );
+      }
     }
   }
 
