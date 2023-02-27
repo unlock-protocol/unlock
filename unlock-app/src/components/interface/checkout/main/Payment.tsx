@@ -77,7 +77,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
+  const { data: walletInfo } = useQuery(
     ['balance', account, lock.address],
     async () => {
       const [balance, networkBalance] = await Promise.all([
@@ -107,7 +107,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
+  const isWaiting = isLoading || isClaimableLoading
 
   const networkConfig = config.networks[lock.network]
 
@@ -120,10 +120,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const enableCrypto = !isUnlockAccount || !!walletInfo?.isPayable
 
   const enableClaim =
-    !!isClaimable &&
-    !isClaimableLoading &&
-    isReceiverAccountOnly &&
-    !walletInfo?.isPayable
+    !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
 
   const stepItems = useCheckoutSteps(checkoutService)
 
