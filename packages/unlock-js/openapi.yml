@@ -96,6 +96,21 @@ components:
           type: string
           nullable: false
 
+    CheckoutConfig:
+      type: object
+      required:
+        - 'id'
+        - 'by'
+        - 'config'
+      properties:
+        id:
+          type: string
+        by:
+          type: string
+        config:
+          type: object
+          additionalProperties: true
+
     Verifier:
       type: object
       nullable: false
@@ -989,7 +1004,7 @@ paths:
               schema:
                 nullable: false
                 type: object
-                properties: 
+                properties:
                   verificationUrl:
                     type: string
                     nullable: false
@@ -2192,5 +2207,83 @@ paths:
                 properties:
                   message:
                     type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/{id}:
+    get:
+      operationId: getCheckoutConfig
+      security:
+        - User: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config for the given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    put:
+      operationId: saveCheckoutConfig
+      security:
+        - User: []
+      description: A new checkout config is created or updated if it already exists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            nullable: true
+            type: string
+          description: This is optional. If you don't pass an ID, a new config will be created. If you pass an ID, the config will be created.
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                config:
+                  type: object
+                  additionalProperties: true
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/list:
+    get:
+      security:
+        - User: []
+      description: A list of all checkout configs created by the user
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CheckoutConfig'
+
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
