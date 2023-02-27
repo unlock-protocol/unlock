@@ -409,20 +409,9 @@ contract MixinPurchase is
    */
   function _refundGas() internal {
     if (_gasRefundValue != 0) {
-      if (tokenAddress != address(0)) {
-        IERC20Upgradeable token = IERC20Upgradeable(
-          tokenAddress
-        );
-        // send tokens to refun gas
-        token.transfer(msg.sender, _gasRefundValue);
-      } else {
-        (bool success, ) = msg.sender.call{
-          value: _gasRefundValue
-        }("");
-        if (!success) {
-          revert GAS_REFUND_FAILED();
-        }
-      }
+
+      _transfer(tokenAddress, payable(msg.sender), _gasRefundValue);
+
       emit GasRefunded(
         msg.sender,
         _gasRefundValue,
