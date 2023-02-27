@@ -221,6 +221,35 @@ contract('Lock / setReferrerFee', (accounts) => {
         })
       })
 
+      describe('doesnt revert if no referrer is specified', async () => {
+        let balanceBefore
+        before(async () => {
+          await lock.setReferrerFee(ZERO_ADDRESS, 2000)
+          balanceBefore = await getBalance(referrer)
+          await lock.purchase(
+            isErc20 ? [keyPrice] : [],
+            [keyOwner],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
+            {
+              value: isErc20 ? 0 : keyPrice,
+              from: keyOwner,
+            }
+          )
+        })
+        it('store fee correctly', async () => {
+          const fee = new BigNumber(await lock.referrerFees(ZERO_ADDRESS))
+          assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.2)
+        })
+        it('referrer balance didnt change', async () => {
+          assert.equal(
+            balanceBefore.toString(),
+            (await getBalance(referrer)).toString()
+          )
+        })
+      })
+
       if (isErc20) {
         describe('renewMembershipFor() also pays the referrer', () => {
           let balanceBefore
