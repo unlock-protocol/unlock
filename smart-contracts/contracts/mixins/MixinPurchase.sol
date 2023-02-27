@@ -137,6 +137,42 @@ contract MixinPurchase is
   }
 
   /**
+   * @dev helper to keep track of price and duration settings of a key
+   * at purchase / extend time 
+   * @notice stores values are used to prevent renewal if a key has settings 
+   * has changed
+   */
+  function _recordTokenTerms(
+    uint _tokenId,
+    uint _keyPrice
+  ) internal {
+    if (_originalPrices[_tokenId] != _keyPrice) {
+      _originalPrices[_tokenId] = _keyPrice;
+    }
+    if (
+      _originalDurations[_tokenId] != expirationDuration
+    ) {
+      _originalDurations[_tokenId] = expirationDuration;
+    }
+    if (_originalTokens[_tokenId] != tokenAddress) {
+      _originalTokens[_tokenId] = tokenAddress;
+    }
+  }
+
+  /**
+   * @dev helper to check if the pricing or duration of the lock have been modified 
+   * since the key was bought
+   * @return true if the terms has changed
+   */
+  function _tokenTermsChanged(uint _tokenId, address _referrer) internal view returns (bool) {
+    return (
+      _originalPrices[_tokenId] != purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalDurations[_tokenId] != expirationDuration ||
+      _originalTokens[_tokenId] != tokenAddress
+    );
+  }
+
+  /**
    * @dev Purchase function
    * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
    * (_values is ignored when using ETH)
@@ -194,9 +230,7 @@ contract MixinPurchase is
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       // store values at purchase time
-      _originalPrices[tokenIds[i]] = inMemoryKeyPrice;
-      _originalDurations[tokenIds[i]] = expirationDuration;
-      _originalTokens[tokenIds[i]] = tokenAddress;
+      _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
       if (
         tokenAddress != address(0) &&
@@ -299,18 +333,8 @@ contract MixinPurchase is
       revert INSUFFICIENT_VALUE();
     }
 
-    // if params have changed, then update them
-    if (_originalPrices[_tokenId] != inMemoryKeyPrice) {
-      _originalPrices[_tokenId] = inMemoryKeyPrice;
-    }
-    if (
-      _originalDurations[_tokenId] != expirationDuration
-    ) {
-      _originalDurations[_tokenId] = expirationDuration;
-    }
-    if (_originalTokens[_tokenId] != tokenAddress) {
-      _originalTokens[_tokenId] = tokenAddress;
-    }
+    // if key params have changed, then update them
+    _recordTokenTerms(_tokenId, inMemoryKeyPrice);
 
     // refund gas (if applicable)
     _refundGas();
@@ -340,17 +364,8 @@ contract MixinPurchase is
       revert NON_RENEWABLE_LOCK();
     }
 
-    // make sure duration and pricing havent changed
-    uint keyPrice = purchasePriceFor(
-      ownerOf(_tokenId),
-      _referrer,
-      ""
-    );
-    if (
-      _originalPrices[_tokenId] != keyPrice ||
-      _originalDurations[_tokenId] != expirationDuration ||
-      _originalTokens[_tokenId] != tokenAddress
-    ) {
+    // make sure key duration and pricing havent changed
+    if (_tokenTermsChanged(_tokenId, _referrer)) {
       revert LOCK_HAS_CHANGED();
     }
 
@@ -409,20 +424,9 @@ contract MixinPurchase is
    */
   function _refundGas() internal {
     if (_gasRefundValue != 0) {
-      if (tokenAddress != address(0)) {
-        IERC20Upgradeable token = IERC20Upgradeable(
-          tokenAddress
-        );
-        // send tokens to refun gas
-        token.transfer(msg.sender, _gasRefundValue);
-      } else {
-        (bool success, ) = msg.sender.call{
-          value: _gasRefundValue
-        }("");
-        if (!success) {
-          revert GAS_REFUND_FAILED();
-        }
-      }
+
+      _transfer(tokenAddress, payable(msg.sender), _gasRefundValue);
+
       emit GasRefunded(
         msg.sender,
         _gasRefundValue,
