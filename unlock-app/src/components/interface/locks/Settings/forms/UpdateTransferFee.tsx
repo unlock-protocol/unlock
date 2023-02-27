@@ -82,9 +82,9 @@ export const UpdateTransferFee = ({
     if (transferFeeBasisPoints === undefined) {
       setAllowTransfer(false)
     } else {
-      setAllowTransfer(transferFeeBasisPoints < 100)
+      setAllowTransfer(transferFeeBasisPoints / 100 < 100)
     }
-  }, [transferFeeBasisPoints])
+  }, [setValue, transferFeeBasisPoints])
 
   const disabledInput =
     disabled || isLoading || updateTransferFeeMutation.isLoading
