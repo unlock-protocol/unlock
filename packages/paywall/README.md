@@ -14,10 +14,10 @@ The `@unlock-protocol/paywall` module exports an object called `Paywall` that ma
 Usage is simple:
 
 ```javascript
-import { Paywall } from '@unlock-protocol/paywall';
+import { Paywall } from '@unlock-protocol/paywall'
 
 // See https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
-const paywallConfig = {};
+const paywallConfig = {}
 
 // Configure networks to use
 const networkConfigs = {
@@ -30,6 +30,13 @@ const networkConfigs = {
   // etc
 }
 
-new Paywall(paywallConfig, networkConfigs);
+// Optional 3rd argument: an RPC provider (similar to window.ethereum)
+new Paywall(paywallConfig, networkConfigs)
 // from this point onward, it behaves exactly as if you had loaded the script in the <head> of your page.
 ```
+
+## Changelog
+
+### 0.2.1
+
+Changed tooling to remove `webpack` and replace with `tsup` (consistency across the monorepo).
