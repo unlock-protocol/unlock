@@ -6,20 +6,40 @@ import {
 } from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
 import QrScanner from 'qr-scanner'
+import { useDropzone } from 'react-dropzone'
+import { getURL } from '~/utils/url'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { config as AppConfig } from '~/config/app'
+import { parseDomain } from 'parse-domain'
+import { Button } from '@unlock-protocol/ui'
 
-function getVerificatioConfigFromURL(text?: string) {
+const getVerificationConfigFromURL = async (content?: string) => {
   try {
-    if (!text) {
+    if (!content) {
       return
     }
-    const url = new URL(text)
-    const data = url.searchParams.get('data')
-    const sig = url.searchParams.get('sig')
-    const config = getMembershipVerificationConfig({
+    let endpoint = new URL(content)
+    const domain = parseDomain(endpoint.hostname).hostname
+    // If the domain is not the same as the unlock static url, we need to resolve the redirect.
+    if (domain !== new URL(AppConfig.unlockStaticUrl).hostname) {
+      const redirectResolveEndpoint = new URL(
+        '/resolve-redirect',
+        AppConfig.rpcURL
+      )
+      redirectResolveEndpoint.searchParams.append('url', endpoint!.toString())
+      const response = await fetch(redirectResolveEndpoint.toString(), {
+        method: 'GET',
+      })
+      const json = await response.json()
+      endpoint = new URL(json.url)
+    }
+    const data = endpoint.searchParams.get('data')
+    const sig = endpoint.searchParams.get('sig')
+    const ticketConfig = getMembershipVerificationConfig({
       data,
       sig,
     })
-    return config
+    return ticketConfig
   } catch (error) {
     return
   }
@@ -29,7 +49,38 @@ export function Scanner() {
   const [membershipVerificationConfig, setMembershipVerificationConfig] =
     useState<MembershipVerificationConfig | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-
+  const [isProcessing, setIsProcessing] = useState(false)
+  const { getInputProps, getRootProps } = useDropzone({
+    accept: {
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpeg', '.jpg'],
+      'image/svg': ['.svg'],
+    },
+    async onDropAccepted(files) {
+      setIsProcessing(true)
+      try {
+        const file = files[0]
+        const scanned = await QrScanner.scanImage(file, {
+          scanRegion: {},
+        })
+        const endpoint = getURL(scanned.data)
+        if (!endpoint) {
+          throw new Error('Invalid URL in QR code')
+        }
+        const membershipConfig = await getVerificationConfigFromURL(
+          endpoint.toString()
+        )
+        if (!membershipConfig) {
+          throw new Error('Invalid ticket config')
+        }
+        setMembershipVerificationConfig(membershipConfig)
+      } catch (error) {
+        console.error(error)
+        ToastHelper.error('Invalid Ticket QR code')
+      }
+      setIsProcessing(false)
+    },
+  })
   useEffect(() => {
     const videoElement = videoRef.current
     if (!videoElement) {
@@ -37,8 +88,8 @@ export function Scanner() {
     }
     const qrScanner = new QrScanner(
       videoElement,
-      (result) => {
-        const config = getVerificatioConfigFromURL(result.data)
+      async (result) => {
+        const config = await getVerificationConfigFromURL(result.data)
         if (!config) {
           return
         }
@@ -50,7 +101,7 @@ export function Scanner() {
         highlightScanRegion: true,
         calculateScanRegion: (v) => {
           const smallestDimension = Math.min(v.videoWidth, v.videoHeight)
-          const scanRegionSize = Math.round((1 / 3) * smallestDimension)
+          const scanRegionSize = Math.round((1 / 1.5) * smallestDimension)
 
           const region: QrScanner.ScanRegion = {
             x: Math.round((v.videoWidth - scanRegionSize) / 2),
@@ -71,18 +122,29 @@ export function Scanner() {
   return (
     <>
       <div className="grid justify-center w-full">
-        <div>
-          <div className="mb-6 text-center">
+        <div className="grid gap-6">
+          <div className="space-y-2 text-center ">
             <h3 className="font-medium">Scan to check in ticket</h3>
+            {!membershipVerificationConfig && (
+              <video
+                ref={videoRef}
+                className="object-cover shadow-lg rounded-xl w-80 h-80"
+                muted
+                id="scanner"
+              />
+            )}
           </div>
-          {!membershipVerificationConfig && (
-            <video
-              ref={videoRef}
-              className="object-cover shadow-lg rounded-xl w-80 h-80"
-              muted
-              id="scanner"
-            />
-          )}
+          <div className="grid">
+            <input disabled={isProcessing} {...getInputProps()} />
+            <Button
+              size="small"
+              variant="outlined-primary"
+              loading={isProcessing}
+              {...getRootProps()}
+            >
+              <span>Select Ticket QR code image</span>
+            </Button>
+          </div>
         </div>
       </div>
       {membershipVerificationConfig && (

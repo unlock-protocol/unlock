@@ -30,6 +30,11 @@ contract MixinPurchase is
     address unlockAddress
   );
 
+  event ReferrerFee(
+    address indexed referrer,
+    uint fee
+  );
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -74,7 +79,7 @@ contract MixinPurchase is
    * @param _referrer the address of the referrer. If set to the 0x address, any referrer will receive the fee.
    * @param _feeBasisPoint the percentage of the price to be used for this
    * specific referrer (in basis points)
-   * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+   * @dev To send a fixed percentage of the key price to all referrers, set a percentage to `address(0)`
    */
   function setReferrerFee(
     address _referrer,
@@ -82,27 +87,30 @@ contract MixinPurchase is
   ) public {
     _onlyLockManager();
     referrerFees[_referrer] = _feeBasisPoint;
+    emit ReferrerFee(_referrer, _feeBasisPoint);
   }
 
   /** 
   @dev internal function to execute the payments to referrers if any is set
   */
   function _payReferrer(address _referrer) internal {
-    // get default value
-    uint basisPointsToPay = referrerFees[address(0)];
+    if(_referrer != address(0)) {
+      // get default value
+      uint basisPointsToPay = referrerFees[address(0)];
 
-    // get value for the referrer
-    if (referrerFees[_referrer] != 0) {
-      basisPointsToPay = referrerFees[_referrer];
-    }
+      // get value for the referrer
+      if (referrerFees[_referrer] != 0) {
+        basisPointsToPay = referrerFees[_referrer];
+      }
 
-    // pay the referrer if necessary
-    if (basisPointsToPay != 0) {
-      _transfer(
-        tokenAddress,
-        payable(_referrer),
-        (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
-      );
+      // pay the referrer if necessary
+      if (basisPointsToPay != 0) {
+        _transfer(
+          tokenAddress,
+          payable(_referrer),
+          (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
+        );
+      }
     }
   }
 
