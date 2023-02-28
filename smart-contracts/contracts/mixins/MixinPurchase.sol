@@ -215,7 +215,25 @@ contract MixinPurchase is
   }
 
   /**
+   * @dev helper to pay ERC20 tokens
+   */
+  function _checkAndTransferValue(uint _priceToPay) private {
+    if (tokenAddress != address(0)) {
+      // if (_declaredValue < _priceToPay) {
+      //   revert INSUFFICIENT_ERC20_VALUE();
+      // }
+      IERC20Upgradeable(tokenAddress).transferFrom(
+        msg.sender,
+        address(this),
+        _priceToPay
+      );
+    } else if (msg.value < _priceToPay) {
+      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+      revert INSUFFICIENT_VALUE();
+    }
+  }
 
+  /**
    * @dev Purchase function
    * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
    * (_values is ignored when using ETH)
@@ -303,19 +321,7 @@ contract MixinPurchase is
     }
 
     // transfer the ERC20 tokens
-    if (tokenAddress != address(0)) {
-      IERC20Upgradeable token = IERC20Upgradeable(
-        tokenAddress
-      );
-      token.transferFrom(
-        msg.sender,
-        address(this),
-        totalPriceToPay
-      );
-    } else if (msg.value < totalPriceToPay) {
-      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      revert INSUFFICIENT_VALUE();
-    }
+    _checkAndTransferValue(totalPriceToPay);
 
     // pay protocol
     _payProtocol(totalPriceToPay);
@@ -359,25 +365,15 @@ contract MixinPurchase is
       _data
     );
 
+    if (tokenAddress != address(0) && _value < inMemoryKeyPrice) {
+        revert INSUFFICIENT_ERC20_VALUE();
+    }
+
     // process in unlock
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
-    if (tokenAddress != address(0)) {
-      if (_value < inMemoryKeyPrice) {
-        revert INSUFFICIENT_ERC20_VALUE();
-      }
-      IERC20Upgradeable token = IERC20Upgradeable(
-        tokenAddress
-      );
-      token.transferFrom(
-        msg.sender,
-        address(this),
-        inMemoryKeyPrice
-      );
-    } else if (msg.value < inMemoryKeyPrice) {
-      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      revert INSUFFICIENT_VALUE();
-    }
+    // pay value in ERC20
+    _checkAndTransferValue(inMemoryKeyPrice);
 
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, inMemoryKeyPrice);
