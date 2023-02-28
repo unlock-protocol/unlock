@@ -20,7 +20,7 @@ interface ILockValidKeyHook {
     address lockAddress,
     address operator,
     uint tokenId,
-    uint256 expirationTimestamp,
+    uint expirationTimestamp,
     address keyOwner,
     bool isValidKey
   ) external view returns (bool);
