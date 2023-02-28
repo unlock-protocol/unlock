@@ -10,12 +10,12 @@ import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
-import { useConfig } from '~/utils/withConfig'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
 import { useLocksmithGranterAddress, useTicket } from '~/hooks/useTicket'
 import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
+import { config as AppConfig } from '~/config/app'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -106,7 +106,6 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { account: viewer } = useAuth()
   const router = useRouter()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
-  const { locksmithSigners } = useConfig()
   const [showWarning, setShowWarning] = useState(false)
 
   const { isLoading: isKeyGranterLoading, data: keyGranter } =
@@ -149,11 +148,14 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     )
   }
 
-  const isSignatureValid = isSignatureValidForAddress(sig, raw, account, [
-    locksmithSigners,
-    ticket!.owner,
-    keyGranter,
-  ])
+  const isSignatureValid = isSignatureValidForAddress(
+    sig,
+    raw,
+    account,
+    [...AppConfig.locksmithSigners, ticket!.owner, keyGranter!].filter(
+      (item) => !!item
+    )
+  )
 
   const invalid = invalidMembership({
     keyId: ticket!.keyId,

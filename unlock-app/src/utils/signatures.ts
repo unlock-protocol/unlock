@@ -13,12 +13,13 @@ export const isSignatureValidForAddress = (
   locksmithSigners?: string[]
 ) => {
   try {
-    const signer = utils.verifyMessage(data, sig).toLowerCase()
-
+    const signer = utils.verifyMessage(data, sig).toLowerCase().trim()
     return !!(
       signer === address.toLowerCase() ||
       (locksmithSigners &&
-        locksmithSigners?.map((item) => item.toLowerCase()).includes(signer))
+        locksmithSigners
+          ?.map((item) => item.toLowerCase().trim())
+          .includes(signer))
     )
   } catch (error) {
     console.error(error)
