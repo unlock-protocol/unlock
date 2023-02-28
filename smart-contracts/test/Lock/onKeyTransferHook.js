@@ -5,6 +5,7 @@ const { assert } = require('chai')
 
 let lock
 let testEventHooks
+let tx
 
 contract('Lock / onKeyTransfer hook', (accounts) => {
   const keyOwner = accounts[1]
@@ -15,7 +16,7 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
   before(async () => {
     lock = await deployLock()
     testEventHooks = await TestEventHooks.new()
-    await lock.setEventHooks(
+    tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -25,6 +26,17 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
+  })
+
+  it('emit the correct event', async () => {
+    const { args } = tx.logs.find(({event}) => event === 'EventHooksUpdated')
+    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
+    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
+    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyTransferHook, testEventHooks.address)
+    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
   })
 
   beforeEach(async () => {

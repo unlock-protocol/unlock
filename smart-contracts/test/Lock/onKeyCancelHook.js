@@ -3,6 +3,7 @@ const { deployLock, ADDRESS_ZERO, purchaseKey, reverts } = require('../helpers')
 
 let lock
 let testEventHooks
+let tx
 
 contract('Lock / onKeyCancelHook', (accounts) => {
   const to = accounts[2]
@@ -10,7 +11,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
   before(async () => {
     lock = await deployLock()
     testEventHooks = await TestEventHooks.new()
-    await lock.setEventHooks(
+    tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       testEventHooks.address,
       ADDRESS_ZERO,
@@ -21,6 +22,17 @@ contract('Lock / onKeyCancelHook', (accounts) => {
     )
     const { tokenId } = await purchaseKey(lock, to)
     await lock.cancelAndRefund(tokenId, { from: to })
+  })
+
+  it('emit the correct event', async () => {
+    const { args } = tx.logs.find(({event}) => event === 'EventHooksUpdated')
+    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyCancelHook, testEventHooks.address)
+    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
+    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
   })
 
   it('key cancels should log the hook event', async () => {

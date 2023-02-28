@@ -6,6 +6,7 @@ const TestEventHooks = artifacts.require('TestEventHooks.sol')
 
 let lock
 let testEventHooks
+let tx
 
 contract('Lock / onKeyPurchaseHook', (accounts) => {
   const from = accounts[1]
@@ -17,7 +18,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   beforeEach(async () => {
     lock = await deployLock()
     testEventHooks = await TestEventHooks.new()
-    await lock.setEventHooks(
+    tx = await lock.setEventHooks(
       testEventHooks.address,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -27,6 +28,17 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       ADDRESS_ZERO
     )
     keyPrice = new BigNumber(await lock.keyPrice())
+  })
+
+  it('emit the correct event', async () => {
+    const { args } = tx.logs.find(({event}) => event === 'EventHooksUpdated')
+    assert.equal(args.onKeyPurchaseHook, testEventHooks.address)
+    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
+    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
+    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
   })
 
   it('can block purchases', async () => {

@@ -19,6 +19,7 @@ contract('Lock / onKeyExtendHook', (accounts) => {
   let lockOwner
   let testEventHooks
   let expirationDuration
+  let tx
 
   before(async () => {
     ;[lockOwner, keyOwner] = await ethers.getSigners()
@@ -42,7 +43,7 @@ contract('Lock / onKeyExtendHook', (accounts) => {
     await testEventHooks.deployed()
 
     // set events in lock
-    await lock.setEventHooks(
+    tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -52,6 +53,18 @@ contract('Lock / onKeyExtendHook', (accounts) => {
       ADDRESS_ZERO
     )
     expirationDuration = await lock.expirationDuration()
+  })
+
+  it('emit the correct event', async () => {
+    const { events } = await tx.wait()
+    const { args } = events.find(({event}) => event === 'EventHooksUpdated')
+    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
+    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
+    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
+    assert.equal(args.onKeyExtendHook, testEventHooks.address)
+    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
   })
 
   describe('extend', () => {
