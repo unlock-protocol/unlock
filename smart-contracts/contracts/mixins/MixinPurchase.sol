@@ -34,6 +34,10 @@ contract MixinPurchase is
     address indexed referrer,
     uint fee
   );
+  
+  event GasRefundValue(
+    uint refundValue
+  );
 
   // default to 0
   uint256 internal _gasRefundValue;
@@ -58,6 +62,7 @@ contract MixinPurchase is
   ) external {
     _onlyLockManager();
     _gasRefundValue = _refundValue;
+    emit GasRefundValue(_refundValue);
   }
 
   /**
