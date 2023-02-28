@@ -38,6 +38,13 @@ contract MixinTransfer is
   // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
   uint public transferFeeBasisPoints;
 
+
+  function _transferNotDisabled() internal view {
+    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
+      revert KEY_TRANSFERS_DISABLED();
+    }
+  }
+
   /**
    * @notice Allows the key owner to safely transfer a portion of the remaining time
    * from their key to a new key
@@ -56,9 +63,7 @@ contract MixinTransfer is
     }
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
-    }
+    _transferNotDisabled();
 
     address keyOwner = _ownerOf[_tokenIdFrom];
 
@@ -184,15 +189,13 @@ contract MixinTransfer is
     uint _tokenId
   ) private {
     _isValidKey(_tokenId);
+    _transferNotDisabled();
 
     // incorrect _from field
     if (ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
 
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
-    }
     if (_recipient == address(0)) {
       revert INVALID_ADDRESS();
     }
@@ -297,11 +300,9 @@ contract MixinTransfer is
     address _to,
     bool _approved
   ) public {
+    _transferNotDisabled();
     if (_to == msg.sender) {
       revert CANNOT_APPROVE_SELF();
-    }
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
     }
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
