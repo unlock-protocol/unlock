@@ -8,15 +8,20 @@ pragma solidity >=0.5.17 <0.9.0;
 interface ILockValidKeyHook {
   /**
    * @notice If the lock owner has registered an implementer then this hook
-   * is called every time `getHasValidKey` is called
+   * is called every time `isValidKey` is called (which affects `getHasValidKey` and `balanceOf`)
    * @param lockAddress the address of the current lock
-   * @param keyOwner the potential owner of the key for which we are retrieving the `balanceof`
+   * @param operator the address that is calling the function (`msg.sender`)
+   * @param tokenId the id of the token to check
    * @param expirationTimestamp the key expiration timestamp
+   * @param keyOwner the owner of the key 
+   * @param isValidKey the actual validity of the key
    */
-  function hasValidKey(
+  function isValidKey(
     address lockAddress,
-    address keyOwner,
+    address operator,
+    uint tokenId,
     uint256 expirationTimestamp,
+    address keyOwner,
     bool isValidKey
   ) external view returns (bool);
 }

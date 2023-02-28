@@ -435,6 +435,18 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   ) public view returns (bool) {
     bool isValid = _keys[_tokenId].expirationTimestamp >
       block.timestamp;
+
+    // use hook if it exists
+    if (address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.isValidKey(
+        address(this),
+        msg.sender,
+        _tokenId,
+        _keys[_tokenId].expirationTimestamp,
+        _ownerOf[_tokenId],
+        isValid
+      );
+    }
     return isValid;
   }
 
@@ -446,19 +458,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     address _keyOwner
   ) public view returns (bool isValid) {
     // `balanceOf` returns only valid keys
-    isValid = balanceOf(_keyOwner) > 0;
-
-    // use hook if it exists
-    if (address(onValidKeyHook) != address(0)) {
-      isValid = onValidKeyHook.hasValidKey(
-        address(this),
-        _keyOwner,
-        0, // no timestamp needed (we use tokenId)
-        isValid
-      );
-    }
-
-    return isValid;
+    return balanceOf(_keyOwner) > 0;
   }
 
   /**
