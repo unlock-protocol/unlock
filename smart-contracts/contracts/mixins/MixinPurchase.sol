@@ -200,9 +200,6 @@ contract MixinPurchase is
    */
   function _transferValue(uint _priceToPay) private {
     if (tokenAddress != address(0)) {
-      // if (_declaredValue < _priceToPay) {
-      //   revert INSUFFICIENT_ERC20_VALUE();
-      // }
       IERC20Upgradeable(tokenAddress).transferFrom(
         msg.sender,
         address(this),
@@ -396,14 +393,7 @@ contract MixinPurchase is
     _recordKeyPurchase(keyPrice, _referrer);
 
     // transfer the tokens
-    IERC20Upgradeable token = IERC20Upgradeable(
-      tokenAddress
-    );
-    token.transferFrom(
-      ownerOf(_tokenId),
-      address(this),
-      keyPrice
-    );
+    _transferValue(keyPrice);
 
     // refund gas if applicable
     _refundGas();
