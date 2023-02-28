@@ -173,16 +173,27 @@ export const LockDetailCard = ({
     )
 
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
-
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   return (
     <>
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
-          <LockIcon
-            lockAddress={lockAddress}
-            network={network}
-            loading={loading}
-          />
+          <div className="grid gap-2">
+            <LockIcon
+              lockAddress={lockAddress}
+              network={network}
+              loading={loading}
+            />
+            <p className="p-2 text-sm leading-tight text-gray-500 ">
+              Need to update the icon? Use the{' '}
+              <Link
+                href={metadataPageUrl}
+                className="capitalize text-brand-ui-primary hover:underline"
+              >
+                Metadata Editor
+              </Link>
+            </p>
+          </div>
           <LockInfoCard
             lockAddress={lockAddress}
             network={network}
