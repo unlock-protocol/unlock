@@ -86,6 +86,14 @@ export const mumbai: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
+      },
+    ],
+  },
 }
 
 export default mumbai

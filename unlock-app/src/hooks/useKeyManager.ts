@@ -13,6 +13,7 @@ interface Options {
   enabled?: boolean
 }
 
+// todo: remove? not used anywhere
 export const useTransferPossible = ({
   transferObject,
   transferSignature,

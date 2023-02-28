@@ -37,6 +37,25 @@ export interface Token {
   coinbase?: string
   mainnetAddress?: string
 }
+
+export const HooksName = [
+  'onKeyPurchaseHook',
+  'onKeyCancelHook',
+  'onValidKeyHook',
+  'onTokenURIHook',
+  'onKeyTransferHook',
+  'onKeyExtendHook',
+  'onKeyGrantHook',
+] as const
+
+export type HookName = (typeof HooksName)[number]
+
+export interface Hook {
+  name: string
+  address: string
+  description?: string
+}
+
 export interface NetworkConfig {
   id: number
   name: string
@@ -77,6 +96,7 @@ export interface NetworkConfig {
   }
   opensea?: {
     tokenUrl: (lockAddress: string, tokenId: string) => string | null
+    collectionUrl?: (lockAddress: string) => string
   }
   isTestNetwork?: boolean
   erc20?: {
@@ -93,6 +113,7 @@ export interface NetworkConfig {
   description?: string
   teamMultisig?: string
   tokens?: Token[]
+  hooks?: Partial<Record<HookName, Hook[]>>
 }
 
 export interface NetworkConfigs {
