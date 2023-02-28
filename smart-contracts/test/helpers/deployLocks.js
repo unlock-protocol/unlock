@@ -60,7 +60,7 @@ async function deployLock({
     )
   }
   return isEthers
-    ? await ethers.getContractAt('PublicLock', lock.address)
+    ? await ethers.getContractAt('contracts/PublicLock.sol:PublicLock', lock.address)
     : lock
 }
 

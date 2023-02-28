@@ -53,6 +53,8 @@ contract MixinPurchase is
 
   mapping(address => uint) public referrerFees;
 
+  error TransferFailed();
+
   /**
    * @dev Set the value/price to be refunded to the sender on purchase
    */
@@ -117,6 +119,31 @@ contract MixinPurchase is
     }
   }
 
+  /** 
+   * @param _baseAmount the total amount to calculate the fee
+   * @dev internal function to execute the payments to referrers if any is set
+   */
+  function _payProtocol(uint _baseAmount) internal {
+
+    // get fee from Unlock 
+    uint protocolFee;
+    try unlockProtocol.protocolFee() {
+      // calculate fee to be paid
+      protocolFee = (_baseAmount * unlockProtocol.protocolFee()) / BASIS_POINTS_DEN;
+    
+      // pay fee to Unlock
+      if (protocolFee != 0) {
+        _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+      }
+    } catch {
+      // emit missing unlock
+      emit UnlockCallFailed(
+        address(this),
+        address(unlockProtocol)
+      );
+    }
+  }
+
   /**
    * @dev Helper to communicate with Unlock (record GNP and mint UDT tokens)
    */
@@ -124,8 +151,10 @@ contract MixinPurchase is
     uint _keyPrice,
     address _referrer
   ) internal {
+
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
+      
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try
@@ -183,6 +212,25 @@ contract MixinPurchase is
       _originalDurations[_tokenId] != expirationDuration ||
       _originalTokens[_tokenId] != tokenAddress
     );
+  }
+
+  /**
+   * @dev helper to pay ERC20 tokens
+   */
+  function _checkAndTransferValue(uint _priceToPay) private {
+    if (tokenAddress != address(0)) {
+      // if (_declaredValue < _priceToPay) {
+      //   revert INSUFFICIENT_ERC20_VALUE();
+      // }
+      IERC20Upgradeable(tokenAddress).transferFrom(
+        msg.sender,
+        address(this),
+        _priceToPay
+      );
+    } else if (msg.value < _priceToPay) {
+      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+      revert INSUFFICIENT_VALUE();
+    }
   }
 
   /**
@@ -273,19 +321,10 @@ contract MixinPurchase is
     }
 
     // transfer the ERC20 tokens
-    if (tokenAddress != address(0)) {
-      IERC20Upgradeable token = IERC20Upgradeable(
-        tokenAddress
-      );
-      token.transferFrom(
-        msg.sender,
-        address(this),
-        totalPriceToPay
-      );
-    } else if (msg.value < totalPriceToPay) {
-      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      revert INSUFFICIENT_VALUE();
-    }
+    _checkAndTransferValue(totalPriceToPay);
+
+    // pay protocol
+    _payProtocol(totalPriceToPay);
 
     // refund gas
     _refundGas();
@@ -326,25 +365,15 @@ contract MixinPurchase is
       _data
     );
 
+    if (tokenAddress != address(0) && _value < inMemoryKeyPrice) {
+        revert INSUFFICIENT_ERC20_VALUE();
+    }
+
     // process in unlock
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
-    if (tokenAddress != address(0)) {
-      if (_value < inMemoryKeyPrice) {
-        revert INSUFFICIENT_ERC20_VALUE();
-      }
-      IERC20Upgradeable token = IERC20Upgradeable(
-        tokenAddress
-      );
-      token.transferFrom(
-        msg.sender,
-        address(this),
-        inMemoryKeyPrice
-      );
-    } else if (msg.value < inMemoryKeyPrice) {
-      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      revert INSUFFICIENT_VALUE();
-    }
+    // pay value in ERC20
+    _checkAndTransferValue(inMemoryKeyPrice);
 
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, inMemoryKeyPrice);
@@ -354,6 +383,9 @@ contract MixinPurchase is
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(inMemoryKeyPrice);
   }
 
   /**
@@ -408,6 +440,9 @@ contract MixinPurchase is
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(keyPrice);
   }
 
   /**

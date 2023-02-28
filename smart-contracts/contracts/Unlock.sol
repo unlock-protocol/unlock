@@ -115,6 +115,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
+  // protocol fee
+  uint public protocolFee;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -379,14 +382,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function networkBaseFee() external view returns (uint) {
     return block.basefee;
   }
-
+  
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
    * the current growth rate and the lock's discount token distribution rate
    * This function is invoked by a previously deployed lock only.
-   * TODO: actually implement
    */
   function recordKeyPurchase(
     uint _value,
@@ -426,7 +428,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       locks[msg.sender].totalSales += valueInETH;
 
       // Distribute UDT
-      if (_referrer != address(0)) {
+      // version 13 is the first version for which locks can be paying the fee. Prior versions should not distribute UDT if they don't "pay" the fee.
+      if (_referrer != address(0) && IPublicLock(msg.sender).publicLockVersion() <= 13) {
         IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
@@ -476,7 +479,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           if (tokensToDistribute > 0) {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
             uint devReward = (tokensToDistribute * 20) / 100;
-            
             
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
@@ -531,6 +533,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
     return 11;
+  }
+
+  /**
+   * Set the fee used by the protocol
+   * @param _protocolFee fee in basic point
+   */
+  function setProtocolFee(uint _protocolFee) external onlyOwner {
+    protocolFee = _protocolFee;
   }
 
   /**
