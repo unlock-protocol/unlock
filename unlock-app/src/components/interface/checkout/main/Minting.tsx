@@ -134,7 +134,7 @@ export function Minting({
     lock!.address
   }/icon?id=${tokenId}`
 
-  const hasTokenId = tokenId !== undefined
+  const hasTokenId = !!tokenId
 
   return (
     <Fragment>
