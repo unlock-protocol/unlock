@@ -68,7 +68,7 @@ contract('Lock / GasRefund', (accounts) => {
         
         it('emits an event', async () => {
           const tx = await lock.setGasRefundValue(gasRefundAmount)
-          const { args } = tx.logs.find(({event}) => event === 'GasRefundValue')
+          const { args } = tx.logs.find(({event}) => event === 'GasRefundValueChanged')
           assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
           assert.equal((args.refundValue).eq(gasRefundAmount), true)
         })
