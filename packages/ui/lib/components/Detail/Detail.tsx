@@ -98,7 +98,7 @@ export const Detail = ({
           }}
         />
       ) : (
-        children &&
+        children !== undefined &&
         (typeof label === 'string' && tooltip ? (
           <Tooltip tip={children} label={label} side="bottom">
             <div className="flex items-center gap-2 text-right">
