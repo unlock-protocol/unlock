@@ -38,7 +38,9 @@ contract MixinTransfer is
   // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
   uint public transferFeeBasisPoints;
 
-
+  /**
+   * @dev helper to check if transfer have been disabled
+   */
   function _transferNotDisabled() internal view {
     if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
@@ -125,7 +127,6 @@ contract MixinTransfer is
     address _recipient,
     uint _tokenId
   ) public {
-    _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
 
     // reset key manager to address zero
@@ -171,8 +172,6 @@ contract MixinTransfer is
     address _recipient,
     uint _tokenId
   ) public {
-    _isValidKey(_tokenId);
-
     if (msg.sender != keyManagerOf[_tokenId]) {
       revert UNAUTHORIZED();
     }
