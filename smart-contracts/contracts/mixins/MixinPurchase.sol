@@ -186,9 +186,19 @@ contract MixinPurchase is
   }
 
   /**
+   * @dev simple helper to check the amount of ERC20 tokens declared
+   * by user is enough to cover the actual price
+   */
+  function _checkValue(uint _declared, uint _actual) private {
+    if (tokenAddress != address(0) && _declared < _actual) {
+      revert INSUFFICIENT_ERC20_VALUE();
+    }
+  }
+  
+  /**
    * @dev helper to pay ERC20 tokens
    */
-  function _checkAndTransferValue(uint _priceToPay) private {
+  function _transferValue(uint _priceToPay) private {
     if (tokenAddress != address(0)) {
       // if (_declaredValue < _priceToPay) {
       //   revert INSUFFICIENT_ERC20_VALUE();
@@ -264,12 +274,8 @@ contract MixinPurchase is
       // store values at purchase time
       _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
-      if (
-        tokenAddress != address(0) &&
-        _values[i] < inMemoryKeyPrice
-      ) {
-        revert INSUFFICIENT_ERC20_VALUE();
-      }
+      // make sure erc20 price is correct
+      _checkValue(_values[i], inMemoryKeyPrice);
 
       // store in unlock
       _recordKeyPurchase(inMemoryKeyPrice, _referrers[i]);
@@ -292,7 +298,7 @@ contract MixinPurchase is
     }
 
     // transfer the ERC20 tokens
-    _checkAndTransferValue(totalPriceToPay);
+    _transferValue(totalPriceToPay);
 
     // refund gas
     _refundGas();
@@ -333,15 +339,14 @@ contract MixinPurchase is
       _data
     );
 
-    if (tokenAddress != address(0) && _value < inMemoryKeyPrice) {
-        revert INSUFFICIENT_ERC20_VALUE();
-    }
+    // make sure erc20 price is correct
+    _checkValue(_value, inMemoryKeyPrice);
 
     // process in unlock
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
     // pay value in ERC20
-    _checkAndTransferValue(inMemoryKeyPrice);
+    _transferValue(inMemoryKeyPrice);
 
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, inMemoryKeyPrice);
