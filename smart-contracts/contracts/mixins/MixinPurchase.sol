@@ -53,6 +53,8 @@ contract MixinPurchase is
 
   mapping(address => uint) public referrerFees;
 
+  error TransferFailed();
+
   /**
    * @dev Set the value/price to be refunded to the sender on purchase
    */
@@ -117,6 +119,31 @@ contract MixinPurchase is
     }
   }
 
+  /** 
+   * @param _baseAmount the total amount to calculate the fee
+   * @dev internal function to execute the payments to referrers if any is set
+   */
+  function _payProtocol(uint _baseAmount) internal {
+
+    // get fee from Unlock 
+    uint protocolFee;
+    try unlockProtocol.protocolFee() {
+      // calculate fee to be paid
+      protocolFee = (_baseAmount * unlockProtocol.protocolFee()) / BASIS_POINTS_DEN;
+    
+      // pay fee to Unlock
+      if (protocolFee != 0) {
+        _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+      }
+    } catch {
+      // emit missing unlock
+      emit UnlockCallFailed(
+        address(this),
+        address(unlockProtocol)
+      );
+    }
+  }
+
   /**
    * @dev Helper to communicate with Unlock (record GNP and mint UDT tokens)
    */
@@ -124,8 +151,10 @@ contract MixinPurchase is
     uint _keyPrice,
     address _referrer
   ) internal {
+
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
+      
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try
@@ -297,6 +326,9 @@ contract MixinPurchase is
     // transfer the ERC20 tokens
     _transferValue(totalPriceToPay);
 
+    // pay protocol
+    _payProtocol(totalPriceToPay);
+
     // refund gas
     _refundGas();
 
@@ -353,6 +385,9 @@ contract MixinPurchase is
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(inMemoryKeyPrice);
   }
 
   /**
@@ -400,6 +435,9 @@ contract MixinPurchase is
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(keyPrice);
   }
 
   /**
