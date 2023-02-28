@@ -62,7 +62,7 @@ contract MixinPurchase is
   ) external {
     _onlyLockManager();
     _gasRefundValue = _refundValue;
-    emit GasRefundValue(_refundValue);
+    emit GasRefundValueChanged(_refundValue);
   }
 
   /**
