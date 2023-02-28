@@ -46,13 +46,13 @@ export const Form = ({
     shouldUnregister: false,
   })
 
-  const {
-    formState: { errors },
-  } = methods
-
   const image = `${config.locksmithHost}/lock/${lockAddress}/icon${
     keyId ? `?id=${keyId}` : ''
   }`
+
+  const {
+    formState: { errors },
+  } = methods
 
   useEffect(() => {
     methods.reset()
