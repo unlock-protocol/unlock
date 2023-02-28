@@ -35,7 +35,7 @@ contract MixinPurchase is
     uint fee
   );
   
-  event GasRefundValue(
+  event GasRefundValueChanged(
     uint refundValue
   );
 
