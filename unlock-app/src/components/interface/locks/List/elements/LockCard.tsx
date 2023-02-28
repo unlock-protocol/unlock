@@ -9,7 +9,6 @@ import { Lock } from '~/unlockTypes'
 import { DEFAULT_USER_ACCOUNT_ADDRESS, MAX_UINT } from '~/constants'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { ImFilePicture as PictureFile } from 'react-icons/im'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
@@ -85,7 +84,6 @@ export const LocksByNetworkPlaceholder = ({
 
 const LockIcon = ({ lock }: LockIconProps) => {
   const config = useConfig()
-  const [isOpen, setIsOpen] = useState(false)
   const [imageSrc, setImageSrc] = useState(
     lock.address
       ? `${config.services.storage.host}/lock/${lock.address}/icon`

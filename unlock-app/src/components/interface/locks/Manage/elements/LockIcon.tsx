@@ -1,10 +1,4 @@
-import React, { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
-import { Button, Input } from '@unlock-protocol/ui'
-import { Transition, Dialog, Tab } from '@headlessui/react'
-import useAccount from '~/hooks/useAccount'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { MdOutlineClose as CloseIcon } from 'react-icons/md'
 
 interface LockIconProps {
   lockAddress: string
