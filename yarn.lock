@@ -5,6 +5,13 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@adraffy/ens-normalize@npm:1.8.9":
+  version: 1.8.9
+  resolution: "@adraffy/ens-normalize@npm:1.8.9"
+  checksum: 17791dce03a4320a88c377136c48d0c16ac3e5b07aad321d028c8342fcf821b95c0082cd269cddd488472d1273e8157ae101f2e4e7f9e6be42667ed7ab9614d9
+  languageName: node
+  linkType: hard
+
 "@ampproject/remapping@npm:^2.1.0":
   version: 2.2.0
   resolution: "@ampproject/remapping@npm:2.2.0"
@@ -7396,6 +7403,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@noble/hashes@npm:1.1.2"
+  checksum: 3c2a8cb7c2e053811032f242155d870c5eb98844d924d69702244d48804cb03b42d4a666c49c2b71164420d8229cb9a6f242b972d50d5bb2f1d673b98b041de2
+  languageName: node
+  linkType: hard
+
 "@noble/hashes@npm:1.2.0, @noble/hashes@npm:~1.2.0":
   version: 1.2.0
   resolution: "@noble/hashes@npm:1.2.0"
@@ -14585,7 +14599,7 @@ __metadata:
     tslint-plugin-prettier: 2.3.0
     typescript: 4.9.5
   peerDependencies:
-    ethers: ^5.7.x
+    ethers: ^5.7.x || ^6.0.0
     hardhat: ^2.12.x
   languageName: unknown
   linkType: soft
@@ -14644,7 +14658,7 @@ __metadata:
     dotenv: 16.0.3
     eslint: 8.33.0
     eslint-config-standard: 17.0.0
-    ethers: 5.7.2
+    ethers: 6.0.8
     express: 5.0.0-beta.1
     express-jwt: 8.4.0
     express-winston: 4.2.0
@@ -14797,7 +14811,7 @@ __metadata:
     eslint-plugin-mocha: 10.0.5
     eth-gas-reporter: 0.2.25
     eth-sig-util: 3.0.1
-    ethers: 5.7.2
+    ethers: 6.0.8
     fs-extra: 11.1.0
     hardhat: 2.12.6
     hardhat-contract-sizer: 2.5.1
@@ -14846,7 +14860,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    ethers: 5.7.2
+    ethers: 6.0.8
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
@@ -14884,7 +14898,7 @@ __metadata:
     "@vitejs/plugin-react": 3.0.1
     autoprefixer: 10.4.13
     babel-loader: 9.1.2
-    ethers: 5.7.2
+    ethers: 6.0.8
     postcss: 8.4.21
     prism-react-renderer: 1.3.5
     react: 18.2.0
@@ -14954,7 +14968,7 @@ __metadata:
     deep-object-diff: 1.1.9
     dotenv: 16.0.3
     eslint: 8.33.0
-    ethers: 5.7.2
+    ethers: 6.0.8
     file-saver: 2.0.5
     font-color-contrast: 11.1.0
     graphql: 16.6.0
@@ -15040,7 +15054,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     eslint: 8.33.0
-    ethers: 5.7.2
+    ethers: 6.0.8
     passport-custom: 1.1.1
     prettier: 2.8.3
   peerDependencies:
@@ -15081,7 +15095,7 @@ __metadata:
     typescript: 4.9.5
   peerDependencies:
     axios: 1.3.2
-    ethers: ^5.7.x
+    ethers: ^5.7.x || ^6.0.0
   languageName: unknown
   linkType: soft
 
@@ -15116,7 +15130,7 @@ __metadata:
     eslint-config-next: 13.1.6
     eslint-plugin-jest: ^27.2.1
     eslint-plugin-mocha: 10.1.0
-    ethers: 5.7.2
+    ethers: 6.0.8
     feed: 4.2.2
     gray-matter: 4.0.3
     lint-staged: 13.1.0
@@ -16335,6 +16349,13 @@ __metadata:
   version: 3.0.0
   resolution: "aes-js@npm:3.0.0"
   checksum: 251e26d533cd1a915b44896b17d5ed68c24a02484cfdd2e74ec700a309267db96651ea4eb657bf20aac32a3baa61f6e34edf8e2fec2de440a655da9942d334b8
+  languageName: node
+  linkType: hard
+
+"aes-js@npm:4.0.0-beta.3":
+  version: 4.0.0-beta.3
+  resolution: "aes-js@npm:4.0.0-beta.3"
+  checksum: 2336feee1e4a7722f5b6ede192b0a22881fd6f9310b36ec10e62b6f015f9fddf812c1d8a61b9743ab710811fd0b0d7aad844178f11e7cb1439bbc14246c6c93e
   languageName: node
   linkType: hard
 
@@ -26474,7 +26495,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.3.1, ethers@npm:^5.4.7, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:6.0.8":
+  version: 6.0.8
+  resolution: "ethers@npm:6.0.8"
+  dependencies:
+    "@adraffy/ens-normalize": 1.8.9
+    "@noble/hashes": 1.1.2
+    "@noble/secp256k1": 1.7.1
+    aes-js: 4.0.0-beta.3
+    tslib: 2.4.0
+    ws: 8.5.0
+  checksum: acd7eae0f73fce37585c723729a3e0e2fdab24e045ac88eeee9b28a9e465764f80462630a6251f753d74857a0809b2cdd47ec0585f7153ee2edac9a09964853f
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^4.0.0-beta.1, ethers@npm:^4.0.20, ethers@npm:^4.0.32, ethers@npm:^4.0.40":
+  version: 4.0.49
+  resolution: "ethers@npm:4.0.49"
+  dependencies:
+    aes-js: 3.0.0
+    bn.js: ^4.11.9
+    elliptic: 6.5.4
+    hash.js: 1.1.3
+    js-sha3: 0.5.7
+    scrypt-js: 2.0.4
+    setimmediate: 1.0.4
+    uuid: 2.0.1
+    xmlhttprequest: 1.8.0
+  checksum: 357115348a5f1484c7745fae1d852876788216c7d94c072c80132192f1800c4d388433ea2456750856641d6d4eed8a3b41847eb44f5e1c42139963864e3bcc38
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.3.1, ethers@npm:^5.4.7, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -26509,23 +26561,6 @@ __metadata:
     "@ethersproject/web": 5.7.1
     "@ethersproject/wordlists": 5.7.0
   checksum: b7c08cf3e257185a7946117dbbf764433b7ba0e77c27298dec6088b3bc871aff711462b0621930c56880ff0a7ceb8b1d3a361ffa259f93377b48e34107f62553
-  languageName: node
-  linkType: hard
-
-"ethers@npm:^4.0.0-beta.1, ethers@npm:^4.0.20, ethers@npm:^4.0.32, ethers@npm:^4.0.40":
-  version: 4.0.49
-  resolution: "ethers@npm:4.0.49"
-  dependencies:
-    aes-js: 3.0.0
-    bn.js: ^4.11.9
-    elliptic: 6.5.4
-    hash.js: 1.1.3
-    js-sha3: 0.5.7
-    scrypt-js: 2.0.4
-    setimmediate: 1.0.4
-    uuid: 2.0.1
-    xmlhttprequest: 1.8.0
-  checksum: 357115348a5f1484c7745fae1d852876788216c7d94c072c80132192f1800c4d388433ea2456750856641d6d4eed8a3b41847eb44f5e1c42139963864e3bcc38
   languageName: node
   linkType: hard
 
@@ -42337,7 +42372,7 @@ __metadata:
     "@cloudflare/workers-types": 4.20230115.0
     "@types/node": 18.11.18
     "@unlock-protocol/networks": "workspace:^"
-    ethers: 5.7.2
+    ethers: 6.0.8
     toucan-js: 3.1.0
     typescript: 4.9.5
     vitest: 0.28.3
@@ -49305,6 +49340,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.4.0":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.5.0, tslib@npm:~2.5.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
@@ -54508,6 +54550,21 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 818ff3f8749c172a95a114cceb8b89cedd27e43a82d65c7ad0f7882b1e96a2ee6709e3746a903c3fa88beec0c8bae9a9fcd75f20858b32a166dfb7519316a5d7
+  languageName: node
+  linkType: hard
+
+"ws@npm:8.5.0":
+  version: 8.5.0
+  resolution: "ws@npm:8.5.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 76f2f90e40344bf18fd544194e7067812fb1372b2a37865678d8f12afe4b478ff2ebc0c7c0aff82cd5e6b66fc43d889eec0f1865c2365d8f7a66d92da7744a77
   languageName: node
   linkType: hard
 

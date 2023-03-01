@@ -41,7 +41,7 @@
     "eslint-plugin-mocha": "10.0.5",
     "eth-gas-reporter": "0.2.25",
     "eth-sig-util": "3.0.1",
-    "ethers": "5.7.2",
+    "ethers": "6.0.8",
     "fs-extra": "11.1.0",
     "hardhat": "2.12.6",
     "hardhat-contract-sizer": "2.5.1",
