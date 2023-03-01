@@ -4,7 +4,7 @@ import Loading from '../Loading'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import React, { useState } from 'react'
+import React from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
@@ -141,8 +141,7 @@ export const AppLayout = ({
   showLinks = true,
   showHeader = true,
 }: DashboardLayoutProps) => {
-  const { account, deAuthenticate } = useAuth()
-  const [disconnectModal, setDisconnectModal] = useState(false)
+  const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
   const { setOpenConnectModal } = useAuth()
@@ -174,11 +173,6 @@ export const AppLayout = ({
           },
         ]
       : [],
-  }
-
-  const onDisconnect = () => {
-    deAuthenticate()
-    setDisconnectModal(false)
   }
 
   return (
