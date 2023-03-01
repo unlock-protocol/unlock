@@ -4,8 +4,7 @@ import Loading from '../Loading'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
@@ -22,11 +21,7 @@ interface DashboardLayoutProps {
 }
 
 export const WalletNotConnected = () => {
-  const [loginUrl, setLoginUrl] = useState<string>('')
-  useEffect(() => {
-    setLoginUrl(`/login?redirect=${encodeURIComponent(window.location.href)}`)
-  }, [])
-
+  const { setOpenConnectModal } = useAuth()
   return (
     <ImageBar
       src="/images/illustrations/wallet-not-connected.svg"
@@ -34,11 +29,15 @@ export const WalletNotConnected = () => {
         <>
           <span>
             Wallet is not connected yet.{' '}
-            <Link href={loginUrl}>
-              <span className="cursor-pointer text-brand-ui-primary">
-                Connect it now
-              </span>
-            </Link>
+            <button
+              onClick={(event) => {
+                event.preventDefault()
+                setOpenConnectModal(true)
+              }}
+              className="cursor-pointer text-brand-ui-primary"
+            >
+              Connect it now
+            </button>
           </span>
         </>
       }
@@ -184,31 +183,6 @@ export const AppLayout = ({
 
   return (
     <>
-      <Modal isOpen={disconnectModal} setIsOpen={setDisconnectModal}>
-        <div className="flex flex-col gap-10">
-          <div className="flex">
-            <img
-              src="/images/illustrations/disconnect-wallet.svg"
-              className="object-cover w-full h-24"
-              alt="disconnect wallet"
-            />
-          </div>
-          <div className="flex flex-col gap-4 mx-auto">
-            <span className="text-xl font-bold">
-              Are you sure to disconnect?
-            </span>
-            <div className="flex flex-col gap-4 md:flex-row">
-              <Button onClick={() => setDisconnectModal(false)}>
-                Never mind
-              </Button>
-              <Button variant="outlined-primary" onClick={onDisconnect}>
-                Yes, Disconnect
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Modal>
-
       <div className="bg-ui-secondary-200">
         <Modal
           isOpen={!termsAccepted}
@@ -250,7 +224,12 @@ export const AppLayout = ({
                   {
                     content: account ? (
                       <div className="flex gap-2">
-                        <button onClick={() => setDisconnectModal(true)}>
+                        <button
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setOpenConnectModal(true)
+                          }}
+                        >
                           <div className="flex items-center gap-2">
                             <span className="text-brand-ui-primary">
                               {addressMinify(account)}

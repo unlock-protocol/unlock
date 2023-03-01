@@ -18,7 +18,6 @@ import Loading from './Loading'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
-import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
 import { ConnectModal } from './connect/ConnectModal'
 

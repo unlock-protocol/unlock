@@ -21,13 +21,25 @@ export const UnlockAccountSignIn = ({
   const {
     register,
     handleSubmit,
+    setError,
     formState: { isSubmitting, errors },
   } = useForm<UserDetails>()
   const onSubmit = async (data: UserDetails) => {
     try {
       await signIn(data)
     } catch (error) {
-      console.error(error)
+      if (error instanceof Error) {
+        setError(
+          'password',
+          {
+            type: 'value',
+            message: error.message,
+          },
+          {
+            shouldFocus: true,
+          }
+        )
+      }
     }
   }
   return (
@@ -104,6 +116,7 @@ export const UnlockAccountSignUp = ({
     register,
     getValues,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>()
 
@@ -111,7 +124,18 @@ export const UnlockAccountSignUp = ({
     try {
       await signUp({ email, password })
     } catch (error) {
-      console.error(error)
+      if (error instanceof Error) {
+        setError(
+          'confirmPassword',
+          {
+            type: 'value',
+            message: error.message,
+          },
+          {
+            shouldFocus: true,
+          }
+        )
+      }
     }
   }
   return (
