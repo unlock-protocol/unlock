@@ -14995,7 +14995,7 @@ __metadata:
     walletlink: 2.5.0
     xstate: 4.35.4
     zod: 3.20.2
-    zod-to-json-schema: 3.20.2
+    zod-to-json-schema: 3.20.4
   languageName: unknown
   linkType: soft
 
@@ -54942,12 +54942,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-to-json-schema@npm:3.20.2":
-  version: 3.20.2
-  resolution: "zod-to-json-schema@npm:3.20.2"
+"zod-to-json-schema@npm:3.20.4":
+  version: 3.20.4
+  resolution: "zod-to-json-schema@npm:3.20.4"
   peerDependencies:
     zod: ^3.20.0
-  checksum: ddc65aac7412a72b8e24adb57bc80713f4cf13759c258ec2b6b72e3a2e670201b430a67c8a0ae1f17edd7eaa10f4ae966eb35e334eb7abd83f309d987b7193e3
+  checksum: 55bc649dbc82ce25fbfbfdd42ca530d883d83be5d02cb81e89f6401d54bca151fc6b8cc57999c75eb6a3dcaa3f000697315fbd4f505637472621570ed52784d8
   languageName: node
   linkType: hard
 
