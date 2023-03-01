@@ -99,7 +99,7 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
 
   return (
     <ConnectForm>
-      {({ register, getValues, setValue, formState: { errors } }: any) => {
+      {({ register, getValues, formState: { errors } }: any) => {
         const value = getValues(name)
         const showInput =
           (value?.length > 0 && value !== ZERO) ||
@@ -107,20 +107,13 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
 
         const hasError = errors?.[name] ?? false
 
-        const handleChange = (type: string | number) => {
-          setSelectedOption(`${value}`)
-          if (type === HookType.CUSTOM_ADDRESS && value === ZERO) {
-            setValue(name, '')
-          }
-        }
-
         return (
           <div className="flex flex-col gap-1">
             <Select
               options={OPTIONS}
               label={label}
               onChange={(value) => {
-                handleChange(`${value}`)
+                setSelectedOption(`${value}`)
               }}
               defaultValue={showInput ? OPTIONS[0].value : ''}
             />
