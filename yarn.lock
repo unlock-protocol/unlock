@@ -15177,7 +15177,7 @@ __metadata:
     eslint-config-standard: 17.0.0
     ethers: 5.7.2
     express: 5.0.0-beta.1
-    express-jwt: 8.4.0
+    express-jwt: 8.4.1
     express-winston: 4.2.0
     fuse.js: 6.6.2
     geoip-country: 4.1.46
@@ -27548,14 +27548,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-jwt@npm:8.4.0":
-  version: 8.4.0
-  resolution: "express-jwt@npm:8.4.0"
+"express-jwt@npm:8.4.1":
+  version: 8.4.1
+  resolution: "express-jwt@npm:8.4.1"
   dependencies:
     "@types/jsonwebtoken": ^9
     express-unless: ^2.1.3
     jsonwebtoken: ^9.0.0
-  checksum: 9a453b64c05625f73afb09b599fdcea086067c7e24d51ca5e63e9ec070f1883e1453b78f1556d14f2071e202103f9989eb4ce43d59321c5c42a34d313c7be200
+  checksum: a8670a8f8f5501a89a876f49f5dcbab488cc675a16447c5260b5c55e58be579363e00bafb0f06ff55524e895b8c6e3c962d6048378cef445291634632b21e42c
   languageName: node
   linkType: hard
 
