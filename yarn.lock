@@ -15477,7 +15477,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-assets@workspace:packages/unlock-assets"
   dependencies:
-    "@babel/core": 7.20.12
+    "@babel/core": 7.21.0
     "@storybook/addon-actions": 6.5.16
     "@storybook/addon-essentials": 6.5.16
     "@storybook/addon-links": 6.5.16
@@ -15485,7 +15485,7 @@ __metadata:
     "@svgr/cli": 6.5.1
     babel-eslint: 10.1.0
     babel-loader: 9.1.2
-    eslint: 8.33.0
+    eslint: 8.35.0
     eslint-config-prettier: 8.6.0
     eslint-config-standard: 17.0.0
     eslint-config-standard-react: 13.0.0
@@ -15502,7 +15502,7 @@ __metadata:
     react-dom: 18.2.0
     react-scripts: 5.0.1
     styled-components: 5.3.6
-    tsup: 6.5.0
+    tsup: 6.6.3
   peerDependencies:
     react: 18.2.0
   languageName: unknown
