@@ -8,7 +8,7 @@
     "@radix-ui/react-avatar": "1.0.1",
     "@testing-library/react": "13.4.0",
     "@types/next": "8.0.7",
-    "@types/node": "18.11.18",
+    "@types/node": "18.14.2",
     "@types/react": "18.0.28",
     "@types/styled-components": "5.1.26",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
