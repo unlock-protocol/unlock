@@ -1,7 +1,7 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Select } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -43,10 +43,51 @@ const isValidAddress = (address?: string) => {
   return address?.length ? ethers.utils.isAddress(address) : true
 }
 
-const OPTIONS = [
+interface CustomContractHookProps {
+  name: string
+  disabled: boolean
+  selectedOption?: string
+}
+
+const CustomContractHook = ({
+  name,
+  disabled,
+  selectedOption,
+}: CustomContractHookProps) => {
+  return (
+    <ConnectForm>
+      {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
+        const hasError = errors?.[name] ?? false
+        const value = getValues(name)
+        const isFieldDirty = dirtyFields[name]
+
+        const showInput =
+          (value?.length > 0 && value !== ZERO) ||
+          (selectedOption ?? '')?.length > 0 ||
+          isFieldDirty
+
+        return (
+          showInput && (
+            <Input
+              {...register(name, {
+                validate: isValidAddress,
+              })}
+              disabled={disabled}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={hasError && 'Enter a valid address'}
+            />
+          )
+        )
+      }}
+    </ConnectForm>
+  )
+}
+
+const OPTIONS: { label: string; value: HookType; component: any }[] = [
   {
     label: 'Custom Contract',
     value: HookType.CUSTOM_ADDRESS,
+    component: CustomContractHook,
   },
 ]
 
@@ -99,16 +140,8 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
 
   return (
     <ConnectForm>
-      {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
-        const value = getValues(name)
-        const isFieldDirty = dirtyFields[name]
-
-        const showInput =
-          (value?.length > 0 && value !== ZERO) ||
-          (selectedOption ?? '')?.length > 0 ||
-          isFieldDirty
-
-        const hasError = errors?.[name] ?? false
+      {() => {
+        const Option = OPTIONS.find((option) => option.value === selectedOption)
 
         return (
           <div className="flex flex-col gap-1">
@@ -118,16 +151,12 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
               onChange={(value) => {
                 setSelectedOption(`${value}`)
               }}
-              defaultValue={showInput ? OPTIONS[0].value : ''}
             />
-            {showInput && (
-              <Input
-                {...register(name, {
-                  validate: isValidAddress,
-                })}
+            {Option?.component && (
+              <Option.component
+                name={name}
                 disabled={disabled}
-                placeholder="Contract address, for ex: 0x00000000000000000"
-                error={hasError && 'Enter a valid address'}
+                selectedOption={selectedOption}
               />
             )}
           </div>
@@ -161,7 +190,7 @@ export const UpdateHooksForm = ({
   const methods = useForm<Partial<Record<FormPropsKey, string>>>()
   const {
     setValue,
-    formState: { isValid, dirtyFields },
+    formState: { isValid },
   } = methods
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
