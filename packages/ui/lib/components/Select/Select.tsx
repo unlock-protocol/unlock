@@ -109,6 +109,9 @@ export const Select = <T extends unknown>({
       }
     } else {
       setCustom(true)
+      if (typeof onChange === 'function') {
+        onChange('', true)
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
@@ -93,7 +93,7 @@ const CustomHookSelect = ({
   const hooksByName = networks[network!].hooks?.[hookName!]
   const [hookValue, setHookValue] = useState('')
   const [hookAddress, setHookAddress] = useState(defaultValue)
-  const [isCustom, setIsCustom] = useState(false)
+  const [isCustom, setIsCustom] = useState<boolean>(false)
 
   const options = Object.values(hooksByName ?? {}).map(({ name, address }) => {
     return {
@@ -101,6 +101,10 @@ const CustomHookSelect = ({
       label: name,
     }
   })
+
+  useEffect(() => {
+    setHookAddress(defaultValue)
+  }, [defaultValue])
 
   const onSelectChange = (value: string | number, isCustom?: boolean) => {
     setHookAddress(`${value}`)
@@ -117,15 +121,17 @@ const CustomHookSelect = ({
       />
       {!isCustom && (
         <>
+          {hookAddress !== ZERO && (
+            <Input
+              label="Hook value"
+              onChange={(e: any) => setHookValue(e?.target?.value)}
+            />
+          )}
           <Input
             value={hookAddress}
             label="Hook address"
-            onChange={(e) => setHookAddress(e?.target?.value)}
+            onChange={(e: any) => setHookAddress(e?.target?.value)}
             disabled={!isCustom}
-          />
-          <Input
-            label="Hook value"
-            onChange={(e) => setHookValue(e?.target?.value)}
           />
         </>
       )}
