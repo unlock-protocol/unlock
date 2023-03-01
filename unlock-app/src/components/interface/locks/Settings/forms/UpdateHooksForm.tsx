@@ -99,11 +99,14 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
 
   return (
     <ConnectForm>
-      {({ register, getValues, formState: { errors } }: any) => {
+      {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
         const value = getValues(name)
+        const isFieldDirty = dirtyFields[name]
+
         const showInput =
           (value?.length > 0 && value !== ZERO) ||
-          (selectedOption ?? '')?.length > 0
+          (selectedOption ?? '')?.length > 0 ||
+          isFieldDirty
 
         const hasError = errors?.[name] ?? false
 
@@ -158,7 +161,7 @@ export const UpdateHooksForm = ({
   const methods = useForm<Partial<Record<FormPropsKey, string>>>()
   const {
     setValue,
-    formState: { isValid },
+    formState: { isValid, dirtyFields },
   } = methods
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
