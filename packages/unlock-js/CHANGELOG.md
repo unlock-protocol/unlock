@@ -1,5 +1,9 @@
 # Changes
 
+# 0.33.4
+
+Add PasswordHook for interacting with the contract.
+
 # 0.33.3
 
 - remove `getEthAddressType` to web3Service
