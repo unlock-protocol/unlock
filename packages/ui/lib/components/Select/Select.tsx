@@ -105,10 +105,11 @@ export const Select = <T extends unknown>({
       const currentItem = options?.find((option) => option.value == value)
       setSelected(currentItem || null)
       if (currentItem && typeof onChange === 'function') {
-        onChange(currentItem?.value, custom)
+        onChange(currentItem?.value, false)
       }
     } else {
       setCustom(true)
+      // reset value when custom value is selected
       if (typeof onChange === 'function') {
         onChange('', true)
       }
