@@ -101,9 +101,21 @@ const CustomHookSelect = ({
 }: CustomHookSelectProps) => {
   const hooksByName = networks[network!].hooks?.[hookName!]
   const [hookValue, setHookValue] = useState('')
+  const [signer, setSigner] = useState('')
   const [hookAddress, setHookAddress] = useState(defaultValue)
   const [isCustom, setIsCustom] = useState<boolean>(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (hookValue.length === 0) return
+    const encoded = ethers.utils.defaultAbiCoder.encode(
+      ['bytes32'],
+      [ethers.utils.id(hookValue)]
+    )
+    const privateKey = ethers.utils.keccak256(encoded)
+    const privateKeyAccount = new ethers.Wallet(privateKey)
+    setSigner(privateKeyAccount.address)
+  }, [hookValue])
 
   const options = Object.values(hooksByName ?? {}).map(({ name, address }) => {
     return {
@@ -159,6 +171,16 @@ const CustomHookSelect = ({
                     label="Hook value"
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setHookValue(e?.target?.value)
+                    }
+                    description={
+                      hookValue && (
+                        <>
+                          <span>The signer corresponding to hook is </span>
+                          <span className="font-semibold text-brand-ui-primary">
+                            {signer}
+                          </span>
+                        </>
+                      )
                     }
                     disabled={disabled}
                   />
