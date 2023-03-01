@@ -2278,7 +2278,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.20.12, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.1, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.16.0, @babel/core@npm:^7.19.6, @babel/core@npm:^7.20.12, @babel/core@npm:^7.20.2, @babel/core@npm:^7.20.7, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.0, @babel/core@npm:^7.8.7":
+"@babel/core@npm:7.20.12, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.1, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.16.0, @babel/core@npm:^7.19.6, @babel/core@npm:^7.20.12, @babel/core@npm:^7.20.2, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.0, @babel/core@npm:^7.8.7":
   version: 7.20.12
   resolution: "@babel/core@npm:7.20.12"
   dependencies:
@@ -2413,6 +2413,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-create-class-features-plugin@npm:^7.21.0":
+  version: 7.21.0
+  resolution: "@babel/helper-create-class-features-plugin@npm:7.21.0"
+  dependencies:
+    "@babel/helper-annotate-as-pure": ^7.18.6
+    "@babel/helper-environment-visitor": ^7.18.9
+    "@babel/helper-function-name": ^7.21.0
+    "@babel/helper-member-expression-to-functions": ^7.21.0
+    "@babel/helper-optimise-call-expression": ^7.18.6
+    "@babel/helper-replace-supers": ^7.20.7
+    "@babel/helper-skip-transparent-expression-wrappers": ^7.20.0
+    "@babel/helper-split-export-declaration": ^7.18.6
+  peerDependencies:
+    "@babel/core": ^7.0.0
+  checksum: 3e781d91d1056ea9b3a0395f3017492594a8b86899119b4a1645227c31727b8bec9bc8f6b72e86b1c5cf2dd6690893d2e8c5baff4974c429e616ead089552a21
+  languageName: node
+  linkType: hard
+
 "@babel/helper-create-regexp-features-plugin@npm:^7.18.6, @babel/helper-create-regexp-features-plugin@npm:^7.20.5":
   version: 7.20.5
   resolution: "@babel/helper-create-regexp-features-plugin@npm:7.20.5"
@@ -2510,6 +2528,15 @@ __metadata:
   dependencies:
     "@babel/types": ^7.20.7
   checksum: cec17aab7e964830b0146e575bd141127032319f26ed864a65b35abd75ad618d264d3e11449b9b4e29cfd95bb1a7e774afddd4884fdcc29c36ac9cbd2b66359f
+  languageName: node
+  linkType: hard
+
+"@babel/helper-member-expression-to-functions@npm:^7.21.0":
+  version: 7.21.0
+  resolution: "@babel/helper-member-expression-to-functions@npm:7.21.0"
+  dependencies:
+    "@babel/types": ^7.21.0
+  checksum: 49cbb865098195fe82ba22da3a8fe630cde30dcd8ebf8ad5f9a24a2b685150c6711419879cf9d99b94dad24cff9244d8c2a890d3d7ec75502cd01fe58cff5b5d
   languageName: node
   linkType: hard
 
@@ -2650,6 +2677,13 @@ __metadata:
   version: 7.18.6
   resolution: "@babel/helper-validator-option@npm:7.18.6"
   checksum: f9cc6eb7cc5d759c5abf006402180f8d5e4251e9198197428a97e05d65eb2f8ae5a0ce73b1dfd2d35af41d0eb780627a64edf98a4e71f064eeeacef8de58f2cf
+  languageName: node
+  linkType: hard
+
+"@babel/helper-validator-option@npm:^7.21.0":
+  version: 7.21.0
+  resolution: "@babel/helper-validator-option@npm:7.21.0"
+  checksum: 8ece4c78ffa5461fd8ab6b6e57cc51afad59df08192ed5d84b475af4a7193fc1cb794b59e3e7be64f3cdc4df7ac78bf3dbb20c129d7757ae078e6279ff8c2f07
   languageName: node
   linkType: hard
 
@@ -3740,6 +3774,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-typescript@npm:^7.21.0":
+  version: 7.21.0
+  resolution: "@babel/plugin-transform-typescript@npm:7.21.0"
+  dependencies:
+    "@babel/helper-create-class-features-plugin": ^7.21.0
+    "@babel/helper-plugin-utils": ^7.20.2
+    "@babel/plugin-syntax-typescript": ^7.20.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 091931118eb515738a4bc8245875f985fc9759d3f85cdf08ee641779b41520241b369404e2bb86fc81907ad827678fdb704e8e5a995352def5dd3051ea2cd870
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-unicode-escapes@npm:^7.18.10":
   version: 7.18.10
   resolution: "@babel/plugin-transform-unicode-escapes@npm:7.18.10"
@@ -3892,7 +3939,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:7.18.6, @babel/preset-typescript@npm:^7.12.7, @babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.16.0":
+"@babel/preset-typescript@npm:7.21.0":
+  version: 7.21.0
+  resolution: "@babel/preset-typescript@npm:7.21.0"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.20.2
+    "@babel/helper-validator-option": ^7.21.0
+    "@babel/plugin-transform-typescript": ^7.21.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 6e1f4d7294de2678fbaf36035e98847b2be432f40fe7a1204e5e45b8b05bcbe22902fe0d726e16af14de5bc08987fae28a7899871503fd661050d85f58755af6
+  languageName: node
+  linkType: hard
+
+"@babel/preset-typescript@npm:^7.12.7, @babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.16.0":
   version: 7.18.6
   resolution: "@babel/preset-typescript@npm:7.18.6"
   dependencies:
@@ -6877,26 +6937,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/preact@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@mdx-js/preact@npm:2.2.1"
+"@mdx-js/preact@npm:2.3.0":
+  version: 2.3.0
+  resolution: "@mdx-js/preact@npm:2.3.0"
   dependencies:
     "@types/mdx": ^2.0.0
   peerDependencies:
     preact: ">=10.0.0"
-  checksum: 884793a936c45be828c64fa61512f0e6dff0998faed15d998bea2e2d4e8286d225290a3567521c411cdbc20229baef7c024ca4b56e7990f2dc75ee872daedba3
+  checksum: ec5a315b94980b7a960e69b93b80a53482969c80c547648ff738cd2bd807f6e98782fbbfefdd8fc8c924cbad551fe682124350062a7c8edcb9795216f081fd45
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:2.2.1":
-  version: 2.2.1
-  resolution: "@mdx-js/react@npm:2.2.1"
+"@mdx-js/react@npm:2.3.0, @mdx-js/react@npm:^2.1.5":
+  version: 2.3.0
+  resolution: "@mdx-js/react@npm:2.3.0"
   dependencies:
     "@types/mdx": ^2.0.0
     "@types/react": ">=16"
   peerDependencies:
     react: ">=16"
-  checksum: 4462dad1d7d658bda1c2eabc3960fb843fdbcb5788ce5f863b674752e4db1b7048b5587aa85661283b5196e4641385e6b594205c2482202446ecb5f5433c975b
+  checksum: f45fe779556e6cd9a787f711274480e0638b63c460f192ebdcd77cc07ffa61e23c98cb46dd46e577093e1cb4997a232a848d1fb0ba850ae204422cf603add524
   languageName: node
   linkType: hard
 
@@ -6906,18 +6966,6 @@ __metadata:
   peerDependencies:
     react: ^16.13.1 || ^17.0.0
   checksum: bc84bd514bc127f898819a0c6f1a6915d9541011bd8aefa1fcc1c9bea8939f31051409e546bdec92babfa5b56092a16d05ef6d318304ac029299df5181dc94c8
-  languageName: node
-  linkType: hard
-
-"@mdx-js/react@npm:^2.1.5":
-  version: 2.3.0
-  resolution: "@mdx-js/react@npm:2.3.0"
-  dependencies:
-    "@types/mdx": ^2.0.0
-    "@types/react": ">=16"
-  peerDependencies:
-    react: ">=16"
-  checksum: f45fe779556e6cd9a787f711274480e0638b63c460f192ebdcd77cc07ffa61e23c98cb46dd46e577093e1cb4997a232a848d1fb0ba850ae204422cf603add524
   languageName: node
   linkType: hard
 
@@ -15329,13 +15377,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@babel/core": 7.20.12
+    "@babel/core": 7.21.0
     "@babel/preset-env": 7.20.2
     "@babel/preset-react": 7.18.6
-    "@babel/preset-typescript": 7.18.6
+    "@babel/preset-typescript": 7.21.0
     "@headlessui/react": 1.7.10
-    "@mdx-js/preact": 2.2.1
-    "@mdx-js/react": 2.2.1
+    "@mdx-js/preact": 2.3.0
+    "@mdx-js/react": 2.3.0
     "@radix-ui/react-tooltip": 1.0.3
     "@storybook/addon-actions": 7.0.0-beta.47
     "@storybook/addon-docs": 7.0.0-beta.47
@@ -15355,7 +15403,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
-    "@vitejs/plugin-react": 3.0.1
+    "@vitejs/plugin-react": 3.1.0
     autoprefixer: 10.4.13
     babel-loader: 9.1.2
     ethers: 5.7.2
@@ -15364,17 +15412,17 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-dropzone: 14.2.3
-    react-hook-form: 7.41.1
+    react-hook-form: 7.43.3
     react-icons: 4.7.1
     react-use-clipboard: 1.0.9
     storybook: 7.0.0-beta.47
-    tailwind-merge: 1.9.0
+    tailwind-merge: 1.10.0
     tailwindcss: 3.2.4
     tsconfig-paths-webpack-plugin: 4.0.0
-    tsup: 6.5.0
+    tsup: 6.6.3
     typescript: 4.9.5
     url-loader: 4.1.1
-    vite: 4.0.4
+    vite: 4.1.4
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: 4.0.5
   peerDependencies:
@@ -15673,21 +15721,6 @@ __metadata:
   bin:
     nft: out/cli.js
   checksum: 03ab38477ca7006b3d5568a716128a5abb13a425205ea5cb23eed86967334a6c7fc9d36c58154e1ccd4e349e3ec0d725aa7496ef4159bf232ad706d842d85c29
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-react@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@vitejs/plugin-react@npm:3.0.1"
-  dependencies:
-    "@babel/core": ^7.20.7
-    "@babel/plugin-transform-react-jsx-self": ^7.18.6
-    "@babel/plugin-transform-react-jsx-source": ^7.19.6
-    magic-string: ^0.27.0
-    react-refresh: ^0.14.0
-  peerDependencies:
-    vite: ^4.0.0
-  checksum: fde9dd4d3a3387d3a93ea164f58b71a40786842d66b072e75b10ef3c1c1f30cbe545367c4adb980d15f310a70c3ca24f8bf36ea5e896d0fcae0adc926172ca58
   languageName: node
   linkType: hard
 
@@ -25460,7 +25493,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.16.14, esbuild@npm:^0.16.3, esbuild@npm:^0.16.4":
+"esbuild@npm:^0.16.14, esbuild@npm:^0.16.4":
   version: 0.16.17
   resolution: "esbuild@npm:0.16.17"
   dependencies:
@@ -42559,7 +42592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.21, postcss@npm:^8.3.5, postcss@npm:^8.4.12, postcss@npm:^8.4.18, postcss@npm:^8.4.19, postcss@npm:^8.4.20, postcss@npm:^8.4.21, postcss@npm:^8.4.4":
+"postcss@npm:8.4.21, postcss@npm:^8.3.5, postcss@npm:^8.4.12, postcss@npm:^8.4.18, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.4":
   version: 8.4.21
   resolution: "postcss@npm:8.4.21"
   dependencies:
@@ -43917,21 +43950,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.41.1":
-  version: 7.41.1
-  resolution: "react-hook-form@npm:7.41.1"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 30f7ea67e29c3527d25f87b9ea8789f6722780759adf0718a0dadc6160227ae763c68ddedf63d8311f0902e4ce27225eff37b93a82eac868fc5e0a0d00dbbd14
-  languageName: node
-  linkType: hard
-
 "react-hook-form@npm:7.43.1":
   version: 7.43.1
   resolution: "react-hook-form@npm:7.43.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
   checksum: a15b672885cf9bb43c6691bf544b3ead59860bb8c6298c7607b8b82952707ec8dd9fd9d1346310abb8696e99319b1f78f6023941d129154815811ee64d750461
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:7.43.3":
+  version: 7.43.3
+  resolution: "react-hook-form@npm:7.43.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 16e03e42d07f696e36d67c0d60671df6d0bc73b9e48876ea99b85cf3aaa4cf40acb0c0e2870169d4a22504c7111c0f658b0b17a4f3fd191ef69c7eea70785a9d
   languageName: node
   linkType: hard
 
@@ -45685,7 +45718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^3.10.0, rollup@npm:^3.2.5, rollup@npm:^3.7.0":
+"rollup@npm:^3.10.0, rollup@npm:^3.2.5":
   version: 3.14.0
   resolution: "rollup@npm:3.14.0"
   dependencies:
@@ -51848,15 +51881,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.0.4":
-  version: 4.0.4
-  resolution: "vite@npm:4.0.4"
+"vite@npm:4.1.4":
+  version: 4.1.4
+  resolution: "vite@npm:4.1.4"
   dependencies:
-    esbuild: ^0.16.3
+    esbuild: ^0.16.14
     fsevents: ~2.3.2
-    postcss: ^8.4.20
+    postcss: ^8.4.21
     resolve: ^1.22.1
-    rollup: ^3.7.0
+    rollup: ^3.10.0
   peerDependencies:
     "@types/node": ">= 14"
     less: "*"
@@ -51882,7 +51915,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: eb86c8cdfe8dcb6644005486b31cb60bc596f2aa683cb194abb5c0afca7c2a5dfdb02bbc7f83f419ad170227ac9c3b898f4406a6d1433105fb61d79d78e47d52
+  checksum: 50a9a1f2e29e0ee8fefdec60314d38fb9b746df0bb6ae5a8114014b5bfd95e0fc9b29c0d5e73939361ba53af7eb66c7d20c5656bbe53a783e96540bd3b907c47
   languageName: node
   linkType: hard
 
