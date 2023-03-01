@@ -227,10 +227,10 @@ contract MixinPurchase is
   /**
    * @dev helper to pay ERC20 tokens
    */
-  function _transferValue(uint _priceToPay) private {
+  function _transferValue(address _payer, uint _priceToPay) private {
     if (tokenAddress != address(0)) {
       IERC20Upgradeable(tokenAddress).transferFrom(
-        msg.sender,
+        _payer,
         address(this),
         _priceToPay
       );
@@ -326,7 +326,7 @@ contract MixinPurchase is
     }
 
     // transfer the ERC20 tokens
-    _transferValue(totalPriceToPay);
+    _transferValue(msg.sender, totalPriceToPay);
 
     // pay protocol
     _payProtocol(totalPriceToPay);
@@ -379,7 +379,7 @@ contract MixinPurchase is
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
     // pay value in ERC20
-    _transferValue(inMemoryKeyPrice);
+    _transferValue(msg.sender, inMemoryKeyPrice);
 
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, inMemoryKeyPrice);
@@ -432,7 +432,7 @@ contract MixinPurchase is
     _recordKeyPurchase(keyPrice, _referrer);
 
     // transfer the tokens
-    _transferValue(keyPrice);
+    _transferValue(ownerOf(_tokenId), keyPrice);
 
     // refund gas if applicable
     _refundGas();
