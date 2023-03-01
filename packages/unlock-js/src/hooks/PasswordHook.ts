@@ -4,6 +4,7 @@ import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 export const passwordHookAbi = [
   'function setSigner(address lockAddress, address signer)',
+  'function getSigner(string message, bytes signature)',
 ]
 
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
@@ -12,6 +13,16 @@ export interface SetSignerProps {
   params: {
     address: string
     signerAddress: string
+  }
+  network: number
+  signer: Signer
+}
+
+export interface GetSignerProps {
+  params: {
+    message: string
+    address: string
+    signature: ethers.utils.Bytes | any
   }
   network: number
   signer: Signer
@@ -64,6 +75,21 @@ export class PasswordHook {
     const PasswordHookContract = this.getContract({ network, signer, address })
 
     const tx = await PasswordHookContract.setSigner(address, signerAddress)
+
+    return tx
+  }
+
+  /**
+   * This function returns the "Password Hook" signature value
+   */
+  async getSigner({
+    network,
+    params: { message, signature, address },
+    signer,
+  }: GetSignerProps) {
+    const PasswordHookContract = this.getContract({ network, signer, address })
+
+    const tx = await PasswordHookContract.getSigner(message, signature)
 
     return tx
   }
