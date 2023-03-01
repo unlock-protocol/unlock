@@ -15088,13 +15088,13 @@ __metadata:
     "@types/chai": 4.3.4
     "@types/fs-extra": 11.0.1
     "@types/mocha": 10.0.1
-    "@types/node": 18.11.18
+    "@types/node": 18.14.2
     "@unlock-protocol/contracts": 0.0.12
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.7
-    eslint: 8.33.0
+    eslint: 8.35.0
     eslint-plugin-jest: 27.2.0
     eslint-plugin-mocha: 10.1.0
     hardhat: 2.12.6
