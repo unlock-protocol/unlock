@@ -137,7 +137,7 @@ export const useAccount = (address: string, network: number) => {
       }
     }
 
-    wedlockService.welcomeEmail(
+    await wedlockService.welcomeEmail(
       emailAddress,
       `${origin}/recover/?email=${encodeURIComponent(
         emailAddress

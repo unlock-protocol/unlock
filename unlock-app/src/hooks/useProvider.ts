@@ -26,6 +26,7 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
+  const [openConnectModal, setOpenConnectModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
@@ -81,6 +82,11 @@ export const useProvider = (config: any) => {
 
   const getWalletService = async (networkId?: number) => {
     const currentNetworkId = Number(network)
+    // If the user is not connected, we open the connect modal
+    if (!isConnected) {
+      setOpenConnectModal(true)
+      return
+    }
     let walletServiceProvider: ethers.providers.Provider = provider
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
@@ -277,6 +283,9 @@ export const useProvider = (config: any) => {
     )
   }
 
+  // For now, we use account as a proxy for isConnected
+  const isConnected = !!account
+
   return {
     loading,
     network,
@@ -292,5 +301,8 @@ export const useProvider = (config: any) => {
     watchAsset,
     changeNetwork,
     providerSend,
+    isConnected,
+    openConnectModal,
+    setOpenConnectModal,
   }
 }
