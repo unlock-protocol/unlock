@@ -121,18 +121,18 @@ const CustomHookSelect = ({
       />
       {!isCustom && (
         <>
-          {hookAddress !== ZERO && (
-            <Input
-              label="Hook value"
-              onChange={(e: any) => setHookValue(e?.target?.value)}
-            />
-          )}
           <Input
             value={hookAddress}
             label="Hook address"
             onChange={(e: any) => setHookAddress(e?.target?.value)}
             disabled={!isCustom}
           />
+          {hookAddress !== ZERO && (
+            <Input
+              label="Hook value"
+              onChange={(e: any) => setHookValue(e?.target?.value)}
+            />
+          )}
         </>
       )}
     </div>
