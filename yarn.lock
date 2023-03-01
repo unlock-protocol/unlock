@@ -5132,15 +5132,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:^0.27.0":
-  version: 0.27.0
-  resolution: "@graphprotocol/graph-ts@npm:0.27.0"
-  dependencies:
-    assemblyscript: 0.19.10
-  checksum: d2916b9d0a8063ed3f00486012fd625301332fced8c9407f57908b43f0724d512c56b89b1c40e1cb67eca2ced9b1d437e237b04ab588b1d962573c301848a31a
-  languageName: node
-  linkType: hard
-
 "@graphql-codegen/cli@npm:2.16.5":
   version: 2.16.5
   resolution: "@graphql-codegen/cli@npm:2.16.5"
@@ -14830,7 +14821,7 @@ __metadata:
     fs-extra: 11.1.0
     handlebars: 4.7.7
     lint-staged: 13.1.0
-    matchstick-as: 0.5.0
+    matchstick-as: 0.5.1
     yargs: 17.6.2
   languageName: unknown
   linkType: soft
@@ -17369,7 +17360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assemblyscript@npm:0.19.23, assemblyscript@npm:^0.19.20":
+"assemblyscript@npm:0.19.23":
   version: 0.19.23
   resolution: "assemblyscript@npm:0.19.23"
   dependencies:
@@ -36024,14 +36015,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"matchstick-as@npm:0.5.0":
-  version: 0.5.0
-  resolution: "matchstick-as@npm:0.5.0"
+"matchstick-as@npm:0.5.1":
+  version: 0.5.1
+  resolution: "matchstick-as@npm:0.5.1"
   dependencies:
-    "@graphprotocol/graph-ts": ^0.27.0
-    assemblyscript: ^0.19.20
     wabt: 1.0.24
-  checksum: 299c66c3990dc0379d7172ddad6878e657b2e23ab39ff98eab315f3a55144882d3f3911ab6135ff2725293835acea17ec83fe169459d157ecacfc6f41d15b6cc
+  checksum: cd5b60e0021b3691544262f199980a581ba7798e4dc6a2f20a079c265cec64e3910a8b714cd1e654eab6d7e490df8482de99a5d94c90e0af0348c3545b67a173
   languageName: node
   linkType: hard
 
