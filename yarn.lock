@@ -7721,6 +7721,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/eslint-plugin-next@npm:13.2.3":
+  version: 13.2.3
+  resolution: "@next/eslint-plugin-next@npm:13.2.3"
+  dependencies:
+    glob: 7.1.7
+  checksum: d79674900f60d76ab01ad18f35a84d4dbefb4276df88d757d681c35be04004cd561628ededb68c0d7815cb2da794db4d5dde31b95dfc3124e5106ddd5096009c
+  languageName: node
+  linkType: hard
+
 "@next/swc-android-arm-eabi@npm:13.1.6":
   version: 13.1.6
   resolution: "@next/swc-android-arm-eabi@npm:13.1.6"
@@ -15635,14 +15644,14 @@ __metadata:
     embla-carousel-autoplay: 7.0.9
     embla-carousel-react: 7.0.9
     eslint: 8.33.0
-    eslint-config-next: 13.1.6
+    eslint-config-next: 13.2.3
     eslint-plugin-jest: ^27.2.1
     eslint-plugin-mocha: 10.1.0
     ethers: 5.7.2
     feed: 4.2.2
     gray-matter: 4.0.3
     lint-staged: 13.1.0
-    next: 13.1.6
+    next: 13.2.3
     next-seo: 5.15.0
     next-transpile-modules: 10.0.0
     numeral: 2.0.6
@@ -25754,6 +25763,29 @@ __metadata:
     typescript:
       optional: true
   checksum: 864b29060f87086802eeb6ea5922dd10764120aba814a1e67103ae9ebed667bc927a4c389217ce51c7b92981a8754f5607deaa2d3676e4716493ce8cc0878522
+  languageName: node
+  linkType: hard
+
+"eslint-config-next@npm:13.2.3":
+  version: 13.2.3
+  resolution: "eslint-config-next@npm:13.2.3"
+  dependencies:
+    "@next/eslint-plugin-next": 13.2.3
+    "@rushstack/eslint-patch": ^1.1.3
+    "@typescript-eslint/parser": ^5.42.0
+    eslint-import-resolver-node: ^0.3.6
+    eslint-import-resolver-typescript: ^3.5.2
+    eslint-plugin-import: ^2.26.0
+    eslint-plugin-jsx-a11y: ^6.5.1
+    eslint-plugin-react: ^7.31.7
+    eslint-plugin-react-hooks: ^4.5.0
+  peerDependencies:
+    eslint: ^7.23.0 || ^8.0.0
+    typescript: ">=3.3.1"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 9c265c6eeba4118b95f2d3c84284ee671e2a0acbee7281a6b35877d6b91aa6312d7fc812d98769329719f7df97e251baa04c9f2168586840a906e591e2872325
   languageName: node
   linkType: hard
 
