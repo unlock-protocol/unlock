@@ -371,7 +371,9 @@ contract MixinPurchase is
     );
 
     // make sure erc20 price is correct
-    _checkValue(_value, inMemoryKeyPrice);
+    if(tokenAddress != address(0)) {
+      _checkValue(_value, inMemoryKeyPrice);
+    }
 
     // process in unlock
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
