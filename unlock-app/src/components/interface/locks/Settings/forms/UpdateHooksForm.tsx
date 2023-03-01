@@ -45,7 +45,7 @@ const isValidAddress = (address?: string) => {
 
 const OPTIONS = [
   {
-    label: 'Custom address',
+    label: 'Custom Contract',
     value: HookType.CUSTOM_ADDRESS,
   },
 ]
