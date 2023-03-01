@@ -1,13 +1,9 @@
 import {
-  WalletService,
   LocksmithService,
   LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
-import { isExpired } from 'react-jwt'
-import { generateNonce } from 'siwe'
-import { APP_NAME } from '~/hooks/useAppStorage'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -35,17 +31,6 @@ export const failure = {
   ejectUser: 'ejectUser.failure',
 }
 
-interface GetSiweMessageProps {
-  address: string
-  chainId: number
-  version?: string
-}
-
-interface LoginPromptProps {
-  address: string
-  chainId: number
-  walletService: WalletService
-}
 export class StorageService extends EventEmitter {
   public host: string
 
@@ -59,122 +44,6 @@ export class StorageService extends EventEmitter {
         basePath: host,
       })
     )
-  }
-
-  loginRequest = false
-
-  async login(message: string, signature: string) {
-    const response = await this.locksmith.login({
-      message,
-      signature,
-    })
-
-    if (response.status !== 200) {
-      throw new Error('login failed')
-    }
-
-    const { refreshToken, accessToken } = response.data
-
-    this.refreshToken = refreshToken
-    this.#accessToken = accessToken
-  }
-
-  async signOut() {
-    try {
-      const endpoint = `${this.host}/v2/auth/revoke`
-      await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'refresh-token': this.refreshToken!,
-        },
-      })
-      this.#accessToken = null
-      this.refreshToken = null
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      }
-    }
-  }
-
-  async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
-    if (this.loginRequest) {
-      return
-    }
-    this.loginRequest = true
-    try {
-      const refreshToken = this.refreshToken
-      if (refreshToken) {
-        await this.getAccessToken()
-      } else {
-        const message = await this.getSiweMessage({
-          address,
-          chainId,
-        })
-        const signature = await walletService.signMessage(
-          message,
-          'personal_sign'
-        )
-        await this.login(message, signature)
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err.message)
-      }
-    }
-    this.loginRequest = false
-  }
-
-  #accessToken: null | string = null
-
-  get refreshToken() {
-    return localStorage.getItem(`${APP_NAME}.refresh-token`)
-  }
-
-  set refreshToken(refreshToken: string | null) {
-    if (refreshToken) {
-      localStorage.setItem(`${APP_NAME}.refresh-token`, refreshToken)
-    } else {
-      localStorage.removeItem(`${APP_NAME}.refresh-token`)
-    }
-  }
-
-  get isAuthenticated() {
-    const accessToken = this.#accessToken
-    const refreshToken = this.refreshToken
-    return Boolean(accessToken && refreshToken && !isExpired(accessToken))
-  }
-
-  async getAccessToken() {
-    const refreshToken = this.refreshToken
-    if (!refreshToken) {
-      throw new Error('User is not authenticated')
-    }
-    if (!this.#accessToken || isExpired(this.#accessToken)) {
-      const { data, status } = await this.locksmith.refreshToken(refreshToken)
-      if (status !== 200) {
-        throw new Error('Could not get access token')
-      }
-      this.#accessToken = data.accessToken
-    }
-    return this.#accessToken
-  }
-
-  async getSiweMessage({
-    address,
-    chainId,
-    version = '1',
-  }: GetSiweMessageProps) {
-    const siweMessage = LocksmithService.createSiweMessage({
-      domain: window.location.hostname,
-      uri: window.location.origin,
-      address,
-      chainId,
-      version,
-      statement: '',
-      nonce: generateNonce(),
-    })
-    return siweMessage.prepareMessage()
   }
 
   genAuthorizationHeader(token: string) {
