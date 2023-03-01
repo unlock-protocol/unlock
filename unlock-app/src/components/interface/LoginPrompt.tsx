@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react'
 import SvgComponents from './svg'
-import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import LogInSignUp from './LogInSignUp'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../interface/DownloadWallet'
 import { Button } from '@unlock-protocol/ui'
+import { detectInjectedProvider } from '~/utils/wallet'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -44,30 +44,10 @@ const LoginPrompt = ({
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
       frame: <SvgComponents.Frame width={30} />,
       status: <SvgComponents.Status width={32} />,
-      default: <WalletIcon size={20} className="m-1.5" />,
     }
-
-    if (window.ethereum?.isMetaMask) {
-      return walletIcons.metamask
-    }
-
-    // @ts-expect-error no typing
-    if (window.ethereum?.isBraveWallet) {
-      return walletIcons.brave
-    }
-
-    // @ts-expect-error no typing
-    if (window.ethereum?.isFrame) {
-      return walletIcons.frame
-    }
-
-    // @ts-expect-error no typing
-    if (window.ethereum?.isStatus) {
-      return walletIcons.status
-    }
-
-    return walletIcons.default
-  }, [])
+    const detected = detectInjectedProvider(injectedProvider)
+    return walletIcons[detected]
+  }, [injectedProvider])
 
   const onInjectedHandler = () => {
     if (window.ethereum) {
