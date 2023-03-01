@@ -15138,7 +15138,7 @@ __metadata:
     react-showdown: 2.3.1
     react-test-renderer: 18.2.0
     remark: 14.0.2
-    remark-html: 15.0.1
+    remark-html: 15.0.2
     rss: 1.2.2
     showdown-highlight: 3.1.0
     styled-components: 5.3.6
@@ -44002,19 +44002,6 @@ __metadata:
   version: 2.0.0
   resolution: "remark-footnotes@npm:2.0.0"
   checksum: f2f87ffd6fe25892373c7164d6584a7cb03ab0ea4f186af493a73df519e24b72998a556e7f16cb996f18426cdb80556b95ff252769e252cf3ccba0fd2ca20621
-  languageName: node
-  linkType: hard
-
-"remark-html@npm:15.0.1":
-  version: 15.0.1
-  resolution: "remark-html@npm:15.0.1"
-  dependencies:
-    "@types/mdast": ^3.0.0
-    hast-util-sanitize: ^4.0.0
-    hast-util-to-html: ^8.0.0
-    mdast-util-to-hast: ^12.0.0
-    unified: ^10.0.0
-  checksum: da9a7ee71b470d21d4d74eb841fd6c340396ebe3e7488fc70d5471bf25bcaf2cb0a25a5d034ead1f1ac9612df2f703705acfd16e6f6b60696f40b788abf2b174
   languageName: node
   linkType: hard
 
