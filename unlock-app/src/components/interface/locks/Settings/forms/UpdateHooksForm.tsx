@@ -1,16 +1,19 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, Select } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { HookName } from '@unlock-protocol/types'
+import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 
 const ZERO = ethers.constants.AddressZero
 
+enum HookType {
+  CUSTOM_ADDRESS = 'CUSTOM_ADDRESS',
+}
 interface UpdateHooksFormProps {
   lockAddress: string
   network: number
@@ -36,6 +39,17 @@ interface HookValueProps {
   hookName: HookName
 }
 
+const isValidAddress = (address?: string) => {
+  return address?.length ? ethers.utils.isAddress(address) : true
+}
+
+const OPTIONS = [
+  {
+    label: 'Custom address',
+    value: HookType.CUSTOM_ADDRESS,
+  },
+]
+
 const HookMapping: Record<FormPropsKey, HookValueProps> = {
   keyPurchase: {
     label: 'Key purchase hook',
@@ -43,7 +57,7 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
     hookName: 'onKeyPurchaseHook',
   },
   keyCancel: {
-    label: 'Key purchase hook',
+    label: 'Key cancel hook',
     fromPublicLockVersion: 7,
     hookName: 'onKeyCancelHook',
   },
@@ -74,6 +88,59 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
   },
 }
 
+interface HookSelectProps {
+  label: string
+  name: string
+  disabled: boolean
+}
+
+const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+
+  return (
+    <ConnectForm>
+      {({ register, getValues, setValue, formState: { errors } }: any) => {
+        const value = getValues(name)
+        const showInput =
+          (value?.length > 0 && value !== ZERO) ||
+          (selectedOption ?? '')?.length > 0
+
+        const hasError = errors?.[name] ?? false
+
+        const handleChange = (type: string | number) => {
+          setSelectedOption(`${value}`)
+          if (type === HookType.CUSTOM_ADDRESS && value === ZERO) {
+            setValue(name, '')
+          }
+        }
+
+        return (
+          <div className="flex flex-col gap-1">
+            <Select
+              options={OPTIONS}
+              label={label}
+              onChange={(value) => {
+                handleChange(`${value}`)
+              }}
+              defaultValue={showInput ? OPTIONS[0].value : ''}
+            />
+            {showInput && (
+              <Input
+                {...register(name, {
+                  validate: isValidAddress,
+                })}
+                disabled={disabled}
+                placeholder="Contract address, for ex: 0x00000000000000000"
+                error={hasError && 'Enter a valid address'}
+              />
+            )}
+          </div>
+        )
+      }}
+    </ConnectForm>
+  )
+}
+
 export const UpdateHooksForm = ({
   lockAddress,
   network,
@@ -95,16 +162,11 @@ export const UpdateHooksForm = ({
     keyExtend: false,
     keyGrant: false,
   })
+  const methods = useForm<Partial<Record<FormPropsKey, string>>>()
   const {
-    register,
-    handleSubmit,
     setValue,
-    formState: { isValid, errors },
-  } = useForm<Partial<Record<FormPropsKey, string>>>()
-
-  const isValidAddress = (address?: string) => {
-    return address?.length ? ethers.utils.isAddress(address) : true
-  }
+    formState: { isValid },
+  } = methods
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
     const walletService = await getWalletService(network)
@@ -131,6 +193,7 @@ export const UpdateHooksForm = ({
             enabled: hasRequiredVersion && lockAddress?.length > 0,
             onSuccess: (value: string) => {
               setValue(fieldName as FormPropsKey, value ?? ZERO)
+
               setEnabledFields({
                 ...enabledFields,
                 [fieldName]: value !== ZERO,
@@ -157,61 +220,46 @@ export const UpdateHooksForm = ({
     }
   }
 
-  const toggleField = (field: FormPropsKey) => {
-    const fieldStatus = enabledFields[field]
-    setEnabledFields({
-      ...enabledFields,
-      [field]: !fieldStatus,
-    })
-
-    if (fieldStatus) {
-      setValue(field, DEFAULT_USER_ACCOUNT_ADDRESS)
-    }
-  }
-
   const disabledInput =
     disabled || setEventsHooksMutation.isLoading || isLoading
 
   return (
-    <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-      {Object.entries(HookMapping)?.map(
-        ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
-          const fieldName = field as FormPropsKey
-          const hasRequiredVersion = version && version >= fromPublicLockVersion
-          const enabled: boolean = enabledFields[fieldName] ?? false
-          const hasError = errors?.[hookName as FormPropsKey]
+    <FormProvider {...methods}>
+      <form
+        className="grid gap-6"
+        onSubmit={methods.handleSubmit(onSubmit)}
+        onChange={() => {
+          methods.trigger()
+        }}
+      >
+        {Object.entries(HookMapping)?.map(
+          ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
+            const fieldName = field as FormPropsKey
+            const hasRequiredVersion =
+              version && version >= fromPublicLockVersion
 
-          return (
-            hasRequiredVersion && (
-              <div key={hookName}>
-                <ToggleSwitch
-                  title={label}
-                  enabled={enabled}
-                  setEnabled={() => toggleField(fieldName)}
-                  disabled={disabledInput}
-                />
-                <Input
-                  {...register(fieldName, {
-                    validate: isValidAddress,
-                  })}
-                  disabled={disabledInput || !enabled}
-                  placeholder="Contract address, for ex: 0x00000000000000000"
-                  error={hasError && 'Enter a valid address'}
-                />
-              </div>
+            if (!hasRequiredVersion) return null
+
+            return (
+              <HookSelect
+                key={hookName}
+                label={label}
+                name={fieldName}
+                disabled={disabledInput}
+              />
             )
-          )
-        }
-      )}
-      {isManager && (
-        <Button
-          className="w-full md:w-1/3"
-          type="submit"
-          loading={setEventsHooksMutation.isLoading}
-        >
-          Apply
-        </Button>
-      )}
-    </form>
+          }
+        )}
+        {isManager && (
+          <Button
+            className="w-full md:w-1/3"
+            type="submit"
+            loading={setEventsHooksMutation.isLoading}
+          >
+            Apply
+          </Button>
+        )}
+      </form>
+    </FormProvider>
   )
 }
