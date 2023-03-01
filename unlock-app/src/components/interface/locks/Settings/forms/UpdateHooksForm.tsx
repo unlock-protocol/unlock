@@ -1,7 +1,7 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Select } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -43,7 +43,7 @@ const isValidAddress = (address?: string) => {
   return address?.length ? ethers.utils.isAddress(address) : true
 }
 
-interface CustomContractHookProps {
+interface CustomComponentProps {
   name: string
   disabled: boolean
   selectedOption?: string
@@ -53,7 +53,7 @@ const CustomContractHook = ({
   name,
   disabled,
   selectedOption,
-}: CustomContractHookProps) => {
+}: CustomComponentProps) => {
   return (
     <ConnectForm>
       {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
@@ -83,11 +83,15 @@ const CustomContractHook = ({
   )
 }
 
-const OPTIONS: { label: string; value: HookType; component: any }[] = [
+const OPTIONS: {
+  label: string
+  value: HookType
+  component: (args: CustomComponentProps) => JSX.Element
+}[] = [
   {
     label: 'Custom Contract',
     value: HookType.CUSTOM_ADDRESS,
-    component: CustomContractHook,
+    component: (args) => <CustomContractHook {...args} />,
   },
 ]
 
@@ -152,13 +156,11 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
                 setSelectedOption(`${value}`)
               }}
             />
-            {Option?.component && (
-              <Option.component
-                name={name}
-                disabled={disabled}
-                selectedOption={selectedOption}
-              />
-            )}
+            {Option?.component({
+              name,
+              disabled,
+              selectedOption: selectedOption ?? '',
+            })}
           </div>
         )
       }}
