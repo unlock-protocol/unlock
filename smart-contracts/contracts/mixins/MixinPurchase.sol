@@ -218,8 +218,8 @@ contract MixinPurchase is
    * @dev simple helper to check the amount of ERC20 tokens declared
    * by user is enough to cover the actual price
    */
-  function _checkValue(uint _declared, uint _actual) private {
-    if (tokenAddress != address(0) && _declared < _actual) {
+  function _checkValue(uint _declared, uint _actual) private pure {
+    if (_declared < _actual) {
       revert INSUFFICIENT_ERC20_VALUE();
     }
   }
@@ -301,7 +301,9 @@ contract MixinPurchase is
       _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
       // make sure erc20 price is correct
-      _checkValue(_values[i], inMemoryKeyPrice);
+      if(tokenAddress != address(0)) {
+        _checkValue(_values[i], inMemoryKeyPrice);
+      }
 
       // store in unlock
       _recordKeyPurchase(inMemoryKeyPrice, _referrers[i]);
