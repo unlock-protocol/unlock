@@ -1,14 +1,16 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { HookName } from '@unlock-protocol/types'
+import { HookName, HooksName } from '@unlock-protocol/types'
 import networks from '@unlock-protocol/networks'
+import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
+import { FieldLayout } from '@unlock-protocol/ui'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -44,7 +46,7 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
     hookName: 'onKeyPurchaseHook',
   },
   keyCancel: {
-    label: 'Key purchase hook',
+    label: 'Key cancel hook',
     fromPublicLockVersion: 7,
     hookName: 'onKeyCancelHook',
   },
@@ -82,6 +84,11 @@ interface CustomHookSelectProps {
   network: number
   hookName?: HookName
   defaultValue?: string
+  disabled?: boolean
+}
+
+const isValidAddress = (address = '') => {
+  return address?.length > 0 ? ethers.utils.isAddress(address) : true
 }
 
 const CustomHookSelect = ({
@@ -89,11 +96,14 @@ const CustomHookSelect = ({
   network,
   hookName,
   defaultValue = '',
+  disabled,
+  name,
 }: CustomHookSelectProps) => {
   const hooksByName = networks[network!].hooks?.[hookName!]
   const [hookValue, setHookValue] = useState('')
   const [hookAddress, setHookAddress] = useState(defaultValue)
   const [isCustom, setIsCustom] = useState<boolean>(false)
+  const [error, setError] = useState('')
 
   const options = Object.values(hooksByName ?? {}).map(({ name, address }) => {
     return {
@@ -106,35 +116,58 @@ const CustomHookSelect = ({
     setHookAddress(defaultValue)
   }, [defaultValue])
 
-  const onSelectChange = (value: string | number, isCustom?: boolean) => {
-    setHookAddress(`${value}`)
-    setIsCustom(isCustom!)
+  const handleChange = (value: string | number, isCustom?: boolean) => {
+    if (isValidAddress(`${value}`)) {
+      setHookAddress(`${value}`)
+      setIsCustom(isCustom!)
+      setError('')
+    } else {
+      setError('Enter a valid address')
+    }
   }
 
   return (
     <div className="flex flex-col w-full gap-2 p-4 bg-white border border-gray-200 rounded-2xl">
-      <Select
-        label={label}
-        options={options}
-        customOption={true}
-        onChange={onSelectChange}
-      />
-      {!isCustom && (
-        <>
-          <Input
-            value={hookAddress}
-            label="Hook address"
-            onChange={(e: any) => setHookAddress(e?.target?.value)}
-            disabled={!isCustom}
-          />
-          {hookAddress !== ZERO && (
-            <Input
-              label="Hook value"
-              onChange={(e: any) => setHookValue(e?.target?.value)}
-            />
-          )}
-        </>
-      )}
+      <ConnectForm>
+        {({ setValue, register }: any) => (
+          <>
+            <FieldLayout error={error}>
+              <Select
+                label={label}
+                options={options}
+                customOption={true}
+                defaultValue={defaultValue}
+                onChange={(value: string | number, isCustom?: boolean) => {
+                  handleChange(`${value}`, isCustom!)
+                  setValue(name, value)
+                }}
+              />
+            </FieldLayout>
+
+            {!isCustom && (
+              <>
+                <Input
+                  value={hookAddress}
+                  label="Hook address"
+                  {...register(name, {
+                    validate: isValidAddress,
+                  })}
+                  disabled={!isCustom || disabled}
+                />
+                {hookAddress !== ZERO && (
+                  <Input
+                    label="Hook value"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setHookValue(e?.target?.value)
+                    }
+                    disabled={disabled}
+                  />
+                )}
+              </>
+            )}
+          </>
+        )}
+      </ConnectForm>
     </div>
   )
 }
@@ -160,17 +193,12 @@ export const UpdateHooksForm = ({
     keyExtend: false,
     keyGrant: false,
   })
+  const methods = useForm<Partial<Record<FormPropsKey, string>>>()
   const {
     register,
-    handleSubmit,
     setValue,
     formState: { isValid, errors },
-    getValues,
-  } = useForm<Partial<Record<FormPropsKey, string>>>()
-
-  const isValidAddress = (address?: string) => {
-    return address?.length ? ethers.utils.isAddress(address) : true
-  }
+  } = methods
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
     const walletService = await getWalletService(network)
@@ -238,68 +266,72 @@ export const UpdateHooksForm = ({
   const disabledInput =
     disabled || setEventsHooksMutation.isLoading || isLoading
 
-  const hookNames: HookName[] = Object.keys(
-    networks[network].hooks ?? {}
-  ) as HookName[]
-
   return (
-    <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-      {Object.entries(HookMapping)?.map(
-        ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
-          const fieldName = field as FormPropsKey
-          const hasRequiredVersion = version && version >= fromPublicLockVersion
-          const enabled: boolean = enabledFields[fieldName] ?? false
-          const hasError = errors?.[hookName as FormPropsKey]
+    <FormProvider {...methods}>
+      <form
+        className="grid gap-6"
+        onSubmit={methods.handleSubmit(onSubmit)}
+        onChange={() => {
+          methods.trigger()
+        }}
+      >
+        {Object.entries(HookMapping)?.map(
+          ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
+            const fieldName = field as FormPropsKey
+            const hasRequiredVersion =
+              version && version >= fromPublicLockVersion
+            const enabled: boolean = enabledFields[fieldName] ?? false
+            const hasError = errors?.[fieldName] ?? false
 
-          const hasCustomHookFromNetwork = hookNames.includes(hookName)
+            const hasCustomHook = networks[network]?.hooks?.[hookName] ?? false
 
-          if (!hasRequiredVersion) return null
+            if (!hasRequiredVersion) return null
 
-          if (hasCustomHookFromNetwork) {
-            const defaultValue = getValues(field as any)
-            return (
-              <CustomHookSelect
-                key={hookName}
-                label={label}
-                name={field}
-                network={network}
-                hookName={hookName}
-                defaultValue={defaultValue}
-              />
-            )
-          }
-
-          return (
-            hasRequiredVersion && (
-              <div key={hookName}>
-                <ToggleSwitch
-                  title={label}
-                  enabled={enabled}
-                  setEnabled={() => toggleField(fieldName)}
+            if (hasCustomHook) {
+              const defaultValue = methods.getValues(field as any)
+              return (
+                <CustomHookSelect
+                  key={hookName}
+                  label={label}
+                  name={field}
+                  network={network}
+                  hookName={hookName}
+                  defaultValue={defaultValue}
                   disabled={disabledInput}
                 />
-                <Input
-                  {...register(fieldName, {
-                    validate: isValidAddress,
-                  })}
-                  disabled={disabledInput || !enabled}
-                  placeholder="Contract address, for ex: 0x00000000000000000"
-                  error={hasError && 'Enter a valid address'}
-                />
-              </div>
-            )
-          )
-        }
-      )}
-      {isManager && (
-        <Button
-          className="w-full md:w-1/3"
-          type="submit"
-          loading={setEventsHooksMutation.isLoading}
-        >
-          Apply
-        </Button>
-      )}
-    </form>
+              )
+            } else {
+              return (
+                <div key={hookName}>
+                  <ToggleSwitch
+                    title={label}
+                    enabled={enabled}
+                    setEnabled={() => toggleField(fieldName)}
+                    disabled={disabledInput}
+                  />
+                  <Input
+                    {...register(fieldName, {
+                      validate: isValidAddress,
+                    })}
+                    disabled={disabledInput || !enabled}
+                    placeholder="Contract address, for ex: 0x00000000000000000"
+                    error={hasError && 'Enter a valid address'}
+                  />
+                </div>
+              )
+            }
+          }
+        )}
+        {isManager && (
+          <Button
+            className="w-full md:w-1/3"
+            type="submit"
+            loading={setEventsHooksMutation.isLoading}
+          >
+            Apply
+          </Button>
+        )}
+      </form>
+    </FormProvider>
   )
 }
