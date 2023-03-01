@@ -2,12 +2,12 @@ import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { HookName, HooksName } from '@unlock-protocol/types'
+import { HookName } from '@unlock-protocol/types'
 import networks from '@unlock-protocol/networks'
 import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 import { FieldLayout } from '@unlock-protocol/ui'
@@ -315,7 +315,7 @@ export const UpdateHooksForm = ({
                     })}
                     disabled={disabledInput || !enabled}
                     placeholder="Contract address, for ex: 0x00000000000000000"
-                    error={hasError && 'Enter a valid address'}
+                    error={hasError ? 'Enter a valid address' : ''}
                   />
                 </div>
               )
