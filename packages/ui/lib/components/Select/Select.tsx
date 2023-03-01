@@ -20,7 +20,7 @@ interface SelectProps<T> {
   description?: ReactNode
   options: Option[]
   size?: Size
-  onChange?: (value: string | number) => void
+  onChange?: (value: string | number, isCustom?: boolean) => void
   defaultValue?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
@@ -105,7 +105,7 @@ export const Select = <T extends unknown>({
       const currentItem = options?.find((option) => option.value == value)
       setSelected(currentItem || null)
       if (currentItem && typeof onChange === 'function') {
-        onChange(currentItem?.value)
+        onChange(currentItem?.value, custom)
       }
     } else {
       setCustom(true)
@@ -115,7 +115,7 @@ export const Select = <T extends unknown>({
   const onChangeCustomValue = () => {
     setCustomValue(customValue)
     if (customValue && typeof onChange === 'function') {
-      onChange(customValue)
+      onChange(customValue, custom)
       setEnableCustomConfirm(false)
     }
   }

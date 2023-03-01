@@ -1,5 +1,5 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -8,6 +8,7 @@ import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { HookName } from '@unlock-protocol/types'
+import networks from '@unlock-protocol/networks'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -74,6 +75,64 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
   },
 }
 
+interface CustomHookSelectProps {
+  label: string
+  description?: string
+  name: string
+  network: number
+  hookName?: HookName
+  defaultValue?: string
+}
+
+const CustomHookSelect = ({
+  label,
+  network,
+  hookName,
+  defaultValue = '',
+}: CustomHookSelectProps) => {
+  const hooksByName = networks[network!].hooks?.[hookName!]
+  const [hookValue, setHookValue] = useState('')
+  const [hookAddress, setHookAddress] = useState(defaultValue)
+  const [isCustom, setIsCustom] = useState(false)
+
+  const options = Object.values(hooksByName ?? {}).map(({ name, address }) => {
+    return {
+      value: address,
+      label: name,
+    }
+  })
+
+  const onSelectChange = (value: string | number, isCustom?: boolean) => {
+    setHookAddress(`${value}`)
+    setIsCustom(isCustom!)
+  }
+
+  return (
+    <div className="flex flex-col w-full gap-2 p-4 bg-white border border-gray-200 rounded-2xl">
+      <Select
+        label={label}
+        options={options}
+        customOption={true}
+        onChange={onSelectChange}
+      />
+      {!isCustom && (
+        <>
+          <Input
+            value={hookAddress}
+            label="Hook address"
+            onChange={(e) => setHookAddress(e?.target?.value)}
+            disabled={!isCustom}
+          />
+          <Input
+            label="Hook value"
+            onChange={(e) => setHookValue(e?.target?.value)}
+          />
+        </>
+      )}
+    </div>
+  )
+}
+
 export const UpdateHooksForm = ({
   lockAddress,
   network,
@@ -100,6 +159,7 @@ export const UpdateHooksForm = ({
     handleSubmit,
     setValue,
     formState: { isValid, errors },
+    getValues,
   } = useForm<Partial<Record<FormPropsKey, string>>>()
 
   const isValidAddress = (address?: string) => {
@@ -172,6 +232,10 @@ export const UpdateHooksForm = ({
   const disabledInput =
     disabled || setEventsHooksMutation.isLoading || isLoading
 
+  const hookNames: HookName[] = Object.keys(
+    networks[network].hooks ?? {}
+  ) as HookName[]
+
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
       {Object.entries(HookMapping)?.map(
@@ -180,6 +244,24 @@ export const UpdateHooksForm = ({
           const hasRequiredVersion = version && version >= fromPublicLockVersion
           const enabled: boolean = enabledFields[fieldName] ?? false
           const hasError = errors?.[hookName as FormPropsKey]
+
+          const hasCustomHookFromNetwork = hookNames.includes(hookName)
+
+          if (!hasRequiredVersion) return null
+
+          if (hasCustomHookFromNetwork) {
+            const defaultValue = getValues(field as any)
+            return (
+              <CustomHookSelect
+                key={hookName}
+                label={label}
+                name={field}
+                network={network}
+                hookName={hookName}
+                defaultValue={defaultValue}
+              />
+            )
+          }
 
           return (
             hasRequiredVersion && (
