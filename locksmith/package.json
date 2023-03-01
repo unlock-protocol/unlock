@@ -91,7 +91,7 @@
     "stripe": "8.222.0",
     "unified": "10.1.2",
     "unlock-abi-1-1": "1.1.1",
-    "vitest-fetch-mock": "0.2.1",
+    "vitest-fetch-mock": "0.2.2",
     "winston": "3.8.2",
     "winston-transport-sentry-node": "2.7.0",
     "yargs": "17.6.2",

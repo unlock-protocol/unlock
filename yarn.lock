@@ -14686,7 +14686,7 @@ __metadata:
     unified: 10.1.2
     unlock-abi-1-1: 1.1.1
     vitest: 0.28.4
-    vitest-fetch-mock: 0.2.1
+    vitest-fetch-mock: 0.2.2
     winston: 3.8.2
     winston-transport-sentry-node: 2.7.0
     yargs: 17.6.2
@@ -14990,7 +14990,7 @@ __metadata:
     typescript: 4.9.5
     validator: 13.9.0
     vitest: 0.28.4
-    vitest-fetch-mock: 0.2.1
+    vitest-fetch-mock: 0.2.2
     vitest-localstorage-mock: 0.0.1
     walletlink: 2.5.0
     xstate: 4.35.4
@@ -51092,14 +51092,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest-fetch-mock@npm:0.2.1":
-  version: 0.2.1
-  resolution: "vitest-fetch-mock@npm:0.2.1"
+"vitest-fetch-mock@npm:0.2.2":
+  version: 0.2.2
+  resolution: "vitest-fetch-mock@npm:0.2.2"
   dependencies:
     cross-fetch: ^3.0.6
   peerDependencies:
     vitest: ">=0.16.0"
-  checksum: e5f876686ae7579e38f41498d71769502cda481d46d2e979f202740255855ae1420497bdddeb1b0bdb13b6636172c39b750a85eeb7f7351948a12d529189bf18
+  checksum: fa160f301171cd45dbf7d782880b6b6063fc74b9dd1965ef9206545e812ca8696e6be76662afbac822c6bf850fbb66cf8fb066af646e0e159f5a87ab25c97a02
   languageName: node
   linkType: hard
 
