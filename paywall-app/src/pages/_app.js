@@ -4,6 +4,7 @@ import React from 'react'
 class UnlockApp extends App {
   render() {
     const { Component, pageProps } = this.props
+
     return (
       <>
         <Component {...pageProps} />
