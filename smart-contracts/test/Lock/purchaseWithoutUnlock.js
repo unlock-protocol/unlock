@@ -2,9 +2,8 @@ const { ethers, network } = require('hardhat')
 const { Manifest } = require('@openzeppelin/upgrades-core')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
 
-const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 let pastImpl
@@ -27,6 +26,8 @@ contract('Lock / purchaseWithoutUnlock', () => {
 
   // setup proxy admin etc
   before(async () => {
+    ;({ unlockEthers: unlock } = await deployContracts())
+
     // deploy a random contract to break Unlock implementation
     const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
     const broken = await BrokenUnlock.deploy()
@@ -44,9 +45,6 @@ contract('Lock / purchaseWithoutUnlock', () => {
       admin.address,
       unlockOwner
     )
-
-    const deployments = await deployContracts()
-    unlock = deployments.unlockEthers
   })
 
   describe('purchase with a lock while Unlock is broken', () => {
