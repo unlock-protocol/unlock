@@ -71,29 +71,29 @@ export const ConnectForm = ({ children }: any) => {
   return children({ ...methods })
 }
 
-const TextInput = ({ props, type, errors, ...rest }: FieldProps) => {
+const TextInput = ({ props, name, type, ...rest }: FieldProps) => {
   const { enum: enumList = [] } = props ?? {}
   const hasOptions = enumList?.length
   const isNumericField =
-    (Array.isArray(props.type) && props.type.includes('number')) ||
-    type === 'number'
+    (Array.isArray(type) && props.type.includes('number')) || type === 'number'
   const inputType = isNumericField ? 'number' : type
-
-  const error = errors?.[rest.name] ? errors?.[rest.name]?.message : ''
 
   if (!hasOptions) {
     return (
       <ConnectForm>
-        {({ register }: any) => (
-          <Input
-            type={inputType}
-            {...register(rest.name, {
-              valueAsNumber: isNumericField,
-            })}
-            {...rest}
-            error={error}
-          />
-        )}
+        {({ register, formState: { errors } }: any) => {
+          const error = errors?.[name]?.message ?? ''
+          return (
+            <Input
+              type={inputType}
+              {...register(name, {
+                valueAsNumber: isNumericField,
+              })}
+              {...rest}
+              error={error}
+            />
+          )
+        }}
       </ConnectForm>
     )
   }
@@ -109,7 +109,7 @@ const TextInput = ({ props, type, errors, ...rest }: FieldProps) => {
         {({ register }: any) => (
           <select
             className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100 pl-2.5 py-1.5 text-sm"
-            {...register(rest.name)}
+            {...register(name)}
             {...rest}
           >
             {options?.map(({ label, value }: any) => (
@@ -196,8 +196,6 @@ export const DynamicForm = ({
     resolver: zodResolver(schema),
   })
 
-  const { errors } = methods.formState
-
   const onSubmit = (fields: z.infer<typeof schema>) => {
     if (typeof onSubmitCb === 'function') {
       onSubmitCb(fields)
@@ -256,8 +254,6 @@ export const DynamicForm = ({
                             name={name}
                             description={description}
                             props={fieldProps}
-                            schema={schema}
-                            errors={errors}
                           />
                         </>
                       )
@@ -279,8 +275,6 @@ export const DynamicForm = ({
                   required={fieldRequired}
                   description={description}
                   size="small"
-                  schema={schema}
-                  errors={errors}
                 />
               </div>
             )
