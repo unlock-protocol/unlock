@@ -1682,6 +1682,79 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}:
+    get:
+      operationId: getTicket
+      security:
+        - User: []
+      description: get a ticket for a key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully retrieved the ticket.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                required:
+                  - name
+                  - lockAddress
+                  - keyId
+                  - publicLockVersion
+                  - userMetadata
+                  - isVerifier
+                  - attributes
+                  - image
+                  - description
+                  - owner
+                  - expiration
+
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  lockAddress:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+                  checkedInAt:
+                    type: number
+                  userMetadata:
+                    type: object
+                    additionalProperties: true
+                  expiration:
+                    type: string
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - 'value'
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          type: string
+                        display_type:
+                          type: string
+                  publicLockVersion:
+                    type: string
+                  isVerifier:
+                    description: Whether the user who requested the ticket can verify the ticket.
+                    type: boolean
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
   /{network}/lock/{lockAddress}/stripe:
     delete:
       operationId: disconnectStripe

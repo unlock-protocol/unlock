@@ -6,9 +6,9 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   if (request.method === 'OPTIONS') {
     return new Response('', {
       headers: {
-        'access-control-allow-methods': 'POST',
+        'access-control-allow-methods': 'POST, GET, OPTIONS',
         'access-control-allow-headers': 'content-type',
-        'access-control-max-age': '1800',
+        'access-control-max-age': '86400',
         'access-control-allow-origin': '*',
         vary: 'Origin',
         'access-control-allow-credentials': 'true',
@@ -18,10 +18,27 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   const url = new URL(request.url)
   const { pathname } = url
-  const dataURL = url.searchParams.get('url')
-
-  if (pathname === '/data' && dataURL) {
-    const endpoint = new URL(dataURL)
+  const queryURL = url.searchParams.get('url')
+  const headers = {
+    'access-control-allow-origin': '*',
+  }
+  if (pathname === '/resolve-redirect' && queryURL) {
+    const endpoint = new URL(queryURL)
+    const result = await fetch(endpoint.toString(), {
+      method: 'HEAD',
+      redirect: 'follow',
+      signal: AbortSignal.timeout(5000), // 5 seconds timeout
+    })
+    return Response.json(
+      { url: result.url },
+      {
+        status: 200,
+        headers,
+      }
+    )
+  }
+  if (pathname === '/data' && queryURL) {
+    const endpoint = new URL(queryURL)
     // Proxy the request
     const response = await fetch(endpoint.toString(), {
       method: 'GET',
@@ -36,38 +53,31 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     const json: { data?: string } = await response.json()
 
     if (!json?.data) {
-      return new Response(
-        JSON.stringify({
+      return Response.json(
+        {
           message: 'No data input found in the result.',
-        }),
+        },
         {
           status: 400,
-          headers: {
-            'content-type': 'application/json',
-          },
+          headers,
         }
       )
     }
 
-    return new Response(JSON.stringify(json), {
+    return Response.json(json, {
       status: 200,
-      headers: {
-        'content-type': 'application/json',
-        'access-control-allow-origin': '*',
-      },
+      headers,
     })
   }
 
   // Reject requests that are not POST
   if (request.method !== 'POST') {
     console.error(`Method ${request.method} not supported`)
-    return new Response(
-      JSON.stringify({ message: `Method ${request.method} not supported` }),
+    return Response.json(
+      { message: `Method ${request.method} not supported` },
       {
         status: 400,
-        headers: {
-          'content-type': 'application/json',
-        },
+        headers,
       }
     )
   }
@@ -77,13 +87,11 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   // Missing network
   if (!matched) {
     console.error('Bad Request, missing chain id')
-    return new Response(
-      JSON.stringify({ message: 'Bad Request, missing chain id' }),
+    return Response.json(
+      { message: 'Bad Request, missing chain id' },
       {
-        headers: {
-          'content-type': 'application/json',
-        },
         status: 400,
+        headers,
       }
     )
   }
@@ -95,13 +103,11 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   // Network not supported
   if (!supportedNetwork) {
     console.error(`Unsupported network ID: ${networkId}`)
-    return new Response(
-      JSON.stringify({ message: `Unsupported network ID: ${networkId}` }),
+    return Response.json(
+      { message: `Unsupported network ID: ${networkId}` },
       {
-        headers: {
-          'content-type': 'application/json',
-        },
         status: 404,
+        headers,
       }
     )
   }
@@ -118,11 +124,8 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   const json = await response.json()
 
-  return new Response(JSON.stringify(json), {
-    headers: {
-      'content-type': 'application/json',
-      'access-control-allow-origin': '*',
-    },
+  return Response.json(json, {
+    headers,
   })
 }
 
