@@ -1,4 +1,4 @@
-name: "Pull requests comments"
+name: 'Pull requests comments'
 
 on:
   issue_comment:
@@ -7,7 +7,7 @@ on:
 jobs:
   rebase:
     name: Rebase
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: >-
       github.event.issue.pull_request != '' && 
       (

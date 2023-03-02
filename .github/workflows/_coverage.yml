@@ -4,14 +4,14 @@ on:
   workflow_call:
     inputs:
       service:
-        description: "The service/app where to run coverage task"
+        description: 'The service/app where to run coverage task'
         type: string
         required: true
 
 jobs:
   coverage:
     name: Run test coverage for ${{ inputs.service }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain

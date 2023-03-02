@@ -8,10 +8,9 @@ on:
       DOCKERHUB_TOKEN:
         required: true
 
-
 jobs:
   cache_docker_deps_layer:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Prepare
@@ -42,5 +41,5 @@ jobs:
           build-args: BUILDKIT_INLINE_CACHE=1
           # Build only desired target
           target: deps
-          push: true 
+          push: true
           tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest }}
