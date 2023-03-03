@@ -14783,7 +14783,7 @@ __metadata:
     react-use-clipboard: 1.0.9
     storybook: 7.0.0-beta.47
     tailwind-merge: 1.10.0
-    tailwindcss: 3.2.4
+    tailwindcss: 3.2.7
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.6.3
     typescript: 4.9.5
@@ -14874,7 +14874,7 @@ __metadata:
     react-use-clipboard: 1.0.9
     siwe: 1.1.6
     tailwind-merge: 1.9.1
-    tailwindcss: 3.2.4
+    tailwindcss: 3.2.7
     typescript: 4.9.5
     validator: 13.9.0
     vitest: 0.28.4
@@ -15031,7 +15031,7 @@ __metadata:
     showdown-highlight: 3.1.0
     styled-components: 5.3.6
     tailwind-merge: 1.10.0
-    tailwindcss: 3.2.4
+    tailwindcss: 3.2.7
     typescript: 4.9.5
     use-local-storage: 2.3.6
     vitest: 0.29.2
@@ -41647,7 +41647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.21, postcss@npm:^8.0.9, postcss@npm:^8.3.5, postcss@npm:^8.4.12, postcss@npm:^8.4.18, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.4":
+"postcss@npm:8.4.21, postcss@npm:^8.0.9, postcss@npm:^8.3.5, postcss@npm:^8.4.12, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.4":
   version: 8.4.21
   resolution: "postcss@npm:8.4.21"
   dependencies:
@@ -47913,43 +47913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.2.4":
-  version: 3.2.4
-  resolution: "tailwindcss@npm:3.2.4"
-  dependencies:
-    arg: ^5.0.2
-    chokidar: ^3.5.3
-    color-name: ^1.1.4
-    detective: ^5.2.1
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.2.12
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    lilconfig: ^2.0.6
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    object-hash: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.18
-    postcss-import: ^14.1.0
-    postcss-js: ^4.0.0
-    postcss-load-config: ^3.1.4
-    postcss-nested: 6.0.0
-    postcss-selector-parser: ^6.0.10
-    postcss-value-parser: ^4.2.0
-    quick-lru: ^5.1.1
-    resolve: ^1.22.1
-  peerDependencies:
-    postcss: ^8.0.9
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: ec187d180c722ec4f57537f2216c7b21269b525f12aaf353cea464d939c3e6286a1221eb3e1206e45d1f015f296171309ad4d9952899b0245cd07d9500a9401f
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:^3.0.2":
+"tailwindcss@npm:3.2.7, tailwindcss@npm:^3.0.2":
   version: 3.2.7
   resolution: "tailwindcss@npm:3.2.7"
   dependencies:
