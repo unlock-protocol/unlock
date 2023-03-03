@@ -295,8 +295,6 @@ export const DynamicForm = ({
                     required={fieldRequired}
                     description={description}
                     size="small"
-                    schema={schema}
-                    errors={errors}
                   />
                 </>
               )
