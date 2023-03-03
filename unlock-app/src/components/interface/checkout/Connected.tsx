@@ -7,9 +7,9 @@ import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
-import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../DownloadWallet'
+import { detectInjectedProvider } from '~/utils/wallet'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -83,26 +83,9 @@ export function SignedOut({
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
       frame: <SvgComponents.Frame width={24} />,
       status: <SvgComponents.Status width={32} />,
-      default: <WalletIcon size={20} className="m-1.5" />,
     }
-
-    if (injectedProvider?.isMetaMask) {
-      return walletIcons.metamask
-    }
-
-    if (injectedProvider?.isBraveWallet) {
-      return walletIcons.brave
-    }
-
-    if (injectedProvider?.isFrame) {
-      return walletIcons.frame
-    }
-
-    if (injectedProvider?.isStatus) {
-      return walletIcons.status
-    }
-
-    return walletIcons.default
+    const detected = detectInjectedProvider(injectedProvider)
+    return walletIcons[detected]
   }, [injectedProvider])
 
   const onInjectedHandler = () => {
