@@ -1,5 +1,5 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Input, Select } from '@unlock-protocol/ui'
+import { Button, Select } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -8,6 +8,8 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { HookName } from '@unlock-protocol/types'
 import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
+import { CustomContractHook } from './hooksComponents/CustomContractHook'
+import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -39,59 +41,26 @@ interface HookValueProps {
   hookName: HookName
 }
 
-const isValidAddress = (address?: string) => {
-  return address?.length ? ethers.utils.isAddress(address) : true
-}
-
-interface CustomComponentProps {
+export interface CustomComponentProps {
   name: string
   disabled: boolean
   selectedOption?: string
 }
 
-const CustomContractHook = ({
-  name,
-  disabled,
-  selectedOption,
-}: CustomComponentProps) => {
-  return (
-    <ConnectForm>
-      {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
-        const hasError = errors?.[name] ?? false
-        const value = getValues(name)
-        const isFieldDirty = dirtyFields[name]
-
-        const showInput =
-          (value?.length > 0 && value !== ZERO) ||
-          (selectedOption ?? '')?.length > 0 ||
-          isFieldDirty
-
-        return (
-          showInput && (
-            <Input
-              {...register(name, {
-                validate: isValidAddress,
-              })}
-              disabled={disabled}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={hasError && 'Enter a valid address'}
-            />
-          )
-        )
-      }}
-    </ConnectForm>
-  )
-}
-
 const OPTIONS: {
   label: string
-  value: HookType
+  value: HookType | string
   component: (args: CustomComponentProps) => JSX.Element
 }[] = [
   {
     label: 'Custom Contract',
     value: HookType.CUSTOM_ADDRESS,
     component: (args) => <CustomContractHook {...args} />,
+  },
+  {
+    label: 'Password',
+    value: 'password',
+    component: (args) => <PasswordContractHook {...args} />,
   },
 ]
 
@@ -156,11 +125,15 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
                 setSelectedOption(`${value}`)
               }}
             />
-            {Option?.component({
-              name,
-              disabled,
-              selectedOption: selectedOption ?? '',
-            })}
+            {Option?.component && (
+              <div className="w-full p-4 border border-gray-500 rounded-lg">
+                {Option.component({
+                  name,
+                  disabled,
+                  selectedOption: selectedOption ?? '',
+                })}
+              </div>
+            )}
           </div>
         )
       }}
