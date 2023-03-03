@@ -14977,7 +14977,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
-    "@babel/core": 7.20.12
+    "@babel/core": 7.21.0
     "@headlessui/react": 1.7.10
     "@radix-ui/react-avatar": 1.0.1
     "@testing-library/react": 13.4.0
@@ -50189,7 +50189,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
   dependencies:
-    "@babel/core": 7.20.12
+    "@babel/core": 7.21.0
     "@typescript-eslint/eslint-plugin": 5.54.0
     "@typescript-eslint/parser": 5.54.0
     babel-eslint: 10.1.0
