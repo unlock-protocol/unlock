@@ -14692,7 +14692,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: 1.0.0-alpha.6
+    hardhat-tracer: 2.1.2
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     lint-staged: 13.0.4
@@ -26284,7 +26284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.0.13, ethers@npm:^5.0.24, ethers@npm:^5.3.1, ethers@npm:^5.4.7, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.0.13, ethers@npm:^5.3.1, ethers@npm:^5.4.7, ethers@npm:^5.6.1, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -29393,16 +29393,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:1.0.0-alpha.6":
-  version: 1.0.0-alpha.6
-  resolution: "hardhat-tracer@npm:1.0.0-alpha.6"
+"hardhat-tracer@npm:2.1.2":
+  version: 2.1.2
+  resolution: "hardhat-tracer@npm:2.1.2"
   dependencies:
-    ethers: ^5.0.24
+    ethers: ^5.6.1
   peerDependencies:
-    chalk: ^4.1.0
-    ethers: ^5.0.24
-    hardhat: ^2.0.0
-  checksum: 0e3f5085bab210748cc9f327a8734f25cb80edfe66044b99edc7ba60134c36eef4a27f23ed7dcdfafc2167970f484a11533831992bbd80efb730bdcfed2e86be
+    chai: 4.x
+    chalk: 4.x
+    ethers: 5.x
+    hardhat: 2.x
+  checksum: b888f926d3ea2fc1654c443003c40c4b4c20112e05c2816b2060e6af5d32dc5ce6e987df8c047d0cb3db5bb4a2e6ee5868802247358b8f7b1d31194fd737163a
   languageName: node
   linkType: hard
 
