@@ -17,9 +17,7 @@ export const PasswordContractHook = ({
   network,
 }: CustomComponentProps) => {
   const { getWalletService } = useAuth()
-
   const customContractHook = new CustomHookService(networks)
-  const [hookAddress, setHookAddress] = useState('')
   const [hookValue, setHookValue] = useState('')
   const [signer, setSigner] = useState('')
 
@@ -54,7 +52,7 @@ export const PasswordContractHook = ({
 
   return (
     <ConnectForm>
-      {({ register, getValues, formState: { dirtyFields } }: any) => {
+      {({ getValues, formState: { dirtyFields } }: any) => {
         const value = getValues(name)
 
         const isFieldDirty = dirtyFields[name]
@@ -68,36 +66,24 @@ export const PasswordContractHook = ({
           showInput && (
             <div className="flex flex-col gap-2">
               <Input
-                label="Contract address"
-                {...register(name, {
-                  validate: ethers.utils.isAddress,
-                })}
+                label="Password"
+                type="password"
+                value={hookValue}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setHookAddress(e?.target?.value)
+                  setHookValue(e?.target?.value)
+                }
+                description={
+                  hookValue && (
+                    <>
+                      <span>The signer corresponding to hook is </span>
+                      <span className="font-semibold text-brand-ui-primary">
+                        {signer}
+                      </span>
+                    </>
+                  )
                 }
                 disabled={disabled}
               />
-              {hookAddress !== DEFAULT_USER_ACCOUNT_ADDRESS && (
-                <Input
-                  label="Password"
-                  type="password"
-                  value={hookValue}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setHookValue(e?.target?.value)
-                  }
-                  description={
-                    hookValue && (
-                      <>
-                        <span>The signer corresponding to hook is </span>
-                        <span className="font-semibold text-brand-ui-primary">
-                          {signer}
-                        </span>
-                      </>
-                    )
-                  }
-                  disabled={disabled}
-                />
-              )}
               <div className="ml-auto">
                 <Button
                   type="button"
