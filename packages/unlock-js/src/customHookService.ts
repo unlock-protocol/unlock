@@ -59,6 +59,6 @@ export class CustomHookService {
       signer,
       abi: passwordHookAbi,
     })
-    return contract.setContractHookSigner(lockAddress, signerAddress)
+    return contract.setSigner(lockAddress, signerAddress)
   }
 }
