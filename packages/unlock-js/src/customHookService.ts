@@ -53,7 +53,7 @@ export class CustomHookService {
     signer: Signer
   ) {
     const { lockAddress, signerAddress, network } = params ?? {}
-    const contract = await this.getContract({
+    const contract = this.getContract({
       network,
       address: signerAddress,
       signer,
