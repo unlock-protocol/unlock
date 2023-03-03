@@ -4,26 +4,26 @@ on:
   workflow_call:
     inputs:
       targets:
-        description: "The list of services/sub-repositories concerned (as a stringified array)"
+        description: 'The list of services/sub-repositories concerned (as a stringified array)'
         type: string
         required: true
-      bypass: 
-        description: "The check will always return true"
+      bypass:
+        description: 'The check will always return true'
         type: boolean
     outputs:
       changed:
-        description: "The list of services that have changed"
+        description: 'The list of services that have changed'
         value: ${{ jobs.check_changes.outputs.changed }}
       target_env:
-        description: "The target environment (staging/prod)"
+        description: 'The target environment (staging/prod)'
         value: ${{ jobs.check_changes.outputs.target_env }}
       is_forked:
-        description: "Check if repo is a fork"
+        description: 'Check if repo is a fork'
         value: ${{ jobs.check_changes.outputs.is_forked }}
 
 jobs:
   check_changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: 'Check for changes in monorepo'
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}

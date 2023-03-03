@@ -555,7 +555,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading}
+              disabled={isConfirming || isLoading || isError}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmClaim()
