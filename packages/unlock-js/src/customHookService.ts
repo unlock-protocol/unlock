@@ -8,7 +8,7 @@ export const passwordHookAbi = [
   'function getSigner(string message, bytes signature)',
 ]
 
-export interface PasswordHooksProps {
+export interface ContractHooksProps {
   network: number
   address: string
   abi: ethers.ContractInterface
@@ -25,10 +25,10 @@ export default class CustomHookService {
   /**
    * This function returns the "Password Hook" contract for a given network.
    */
-  getContract({ network, address, signer, abi }: PasswordHooksProps) {
+  getContract({ network, address, signer, abi }: ContractHooksProps) {
     const provider = this.providerForNetwork(network)
-    const passwordHookContract = new ethers.Contract(address, abi, provider)
-    return passwordHookContract.connect(signer)
+    const contract = new ethers.Contract(address, abi, provider)
+    return contract.connect(signer)
   }
 
   providerForNetwork(network: number) {
