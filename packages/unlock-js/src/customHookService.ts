@@ -44,7 +44,7 @@ export default class CustomHookService {
   /**
    * Set signer for `Password hook contract`
    */
-  async setContractHookSigner(
+  async setPasswordHookSigner(
     params: {
       lockAddress: string
       signerAddress: string
