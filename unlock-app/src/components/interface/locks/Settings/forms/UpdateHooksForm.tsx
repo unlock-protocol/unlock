@@ -45,6 +45,8 @@ export interface CustomComponentProps {
   name: string
   disabled: boolean
   selectedOption?: string
+  lockAddress: string
+  network: number
 }
 
 const OPTIONS: {
@@ -107,9 +109,17 @@ interface HookSelectProps {
   label: string
   name: string
   disabled: boolean
+  network: number
+  lockAddress: string
 }
 
-const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
+const HookSelect = ({
+  name,
+  label,
+  disabled,
+  lockAddress,
+  network,
+}: HookSelectProps) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
 
   return (
@@ -132,6 +142,8 @@ const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
                   name,
                   disabled,
                   selectedOption: selectedOption ?? '',
+                  lockAddress,
+                  network,
                 })}
               </div>
             )}
@@ -247,6 +259,8 @@ export const UpdateHooksForm = ({
                 label={label}
                 name={fieldName}
                 disabled={disabledInput}
+                lockAddress={lockAddress}
+                network={network}
               />
             )
           }
