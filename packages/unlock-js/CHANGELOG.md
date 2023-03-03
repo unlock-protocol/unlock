@@ -2,7 +2,7 @@
 
 # 0.33.4
 
-Add PasswordHook for interacting with the contract.
+- add `customHookService`
 
 # 0.33.3
 
