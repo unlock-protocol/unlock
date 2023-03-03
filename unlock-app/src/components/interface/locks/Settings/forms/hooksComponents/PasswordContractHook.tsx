@@ -80,6 +80,7 @@ export const PasswordContractHook = ({
               {hookAddress !== DEFAULT_USER_ACCOUNT_ADDRESS && (
                 <Input
                   label="Password"
+                  type="password"
                   value={hookValue}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setHookValue(e?.target?.value)
