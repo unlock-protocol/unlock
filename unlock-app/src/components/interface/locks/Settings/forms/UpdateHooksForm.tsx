@@ -57,6 +57,7 @@ const OPTIONS: {
     value: HookType.CUSTOM_ADDRESS,
     component: (args) => <CustomContractHook {...args} />,
   },
+  // todo: show only for match of `hooks` from `networks`
   {
     label: 'Password',
     value: 'password',
