@@ -14863,7 +14863,7 @@ __metadata:
     react-dropzone: 14.2.3
     react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
-    react-hook-form: 7.43.1
+    react-hook-form: 7.43.3
     react-hot-toast: 2.4.0
     react-icons: 4.7.1
     react-jazzicon: 1.0.4
@@ -43014,15 +43014,6 @@ __metadata:
   version: 2.0.11
   resolution: "react-gtm-module@npm:2.0.11"
   checksum: 93b4659f0d10248f59113a3eb488ea8848712cab2e28b7c45d080b373d6736a96b9855d637c4447819493366bf25185c3f88e6b4107a8f06d8ab2a39f7a725b9
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:7.43.1":
-  version: 7.43.1
-  resolution: "react-hook-form@npm:7.43.1"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: a15b672885cf9bb43c6691bf544b3ead59860bb8c6298c7607b8b82952707ec8dd9fd9d1346310abb8696e99319b1f78f6023941d129154815811ee64d750461
   languageName: node
   linkType: hard
 
