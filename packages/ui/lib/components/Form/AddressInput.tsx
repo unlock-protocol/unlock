@@ -120,6 +120,7 @@ export const AddressInput = forwardRef(
       <>
         <Input
           {...inputProps}
+          type="address"
           value={address}
           label={label}
           error={error}
