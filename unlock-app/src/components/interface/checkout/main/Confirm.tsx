@@ -21,7 +21,7 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../Lock'
-import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
@@ -203,11 +203,13 @@ export function Confirm({
     async () => {
       const prices = await Promise.all(
         recipients.map(async (recipient, index) => {
+          const referrer = getReferrer(recipient, paywallConfig)
+
           const options = {
             lockAddress: lockAddress,
             network: lockNetwork,
             userAddress: recipient,
-            referrer: paywallConfig.referrer || recipient,
+            referrer,
             data: purchaseData?.[index] || '0x',
           }
           const price = await web3Service.purchasePriceFor(options)
@@ -390,9 +392,9 @@ export function Confirm({
         pricingData?.prices.map((item) => item.amount.toString()) ||
         new Array(recipients!.length).fill(keyPrice)
 
-      const referrers: string[] | undefined = paywallConfig.referrer
-        ? new Array(recipients!.length).fill(paywallConfig.referrer)
-        : undefined
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig)
+      })
 
       const walletService = await getWalletService(lockNetwork)
       await walletService.purchaseKeys(
@@ -553,7 +555,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading}
+              disabled={isConfirming || isLoading || isError}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmClaim()

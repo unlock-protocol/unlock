@@ -8,16 +8,14 @@ export interface Typegen0 {
   invokeSrcNameMap: {}
   missingImplementations: {
     actions: never
-    delays: never
+    services: never
     guards: never
-    services: 'unlockAccount'
+    delays: never
   }
   eventsCausingActions: {}
-  eventsCausingDelays: {}
+  eventsCausingServices: {}
   eventsCausingGuards: {}
-  eventsCausingServices: {
-    unlockAccount: 'UNLOCK_ACCOUNT'
-  }
+  eventsCausingDelays: {}
   matchesStates: 'CONNECT' | 'SIGN_IN'
   tags: never
 }

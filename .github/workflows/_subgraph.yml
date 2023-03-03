@@ -9,7 +9,7 @@ on:
 jobs:
   coverage:
     name: Redeploy all existing subgraphs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
