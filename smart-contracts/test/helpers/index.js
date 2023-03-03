@@ -14,6 +14,7 @@ const uniswapV3 = require('./uniswapV3')
 const math = require('./math')
 const fork = require('./fork')
 const roles = require('./roles')
+const upgrades = require('./upgrades')
 
 module.exports = {
   deployContracts,
@@ -32,4 +33,5 @@ module.exports = {
   ...math,
   ...fork,
   ...roles,
+  ...upgrades,
 }
