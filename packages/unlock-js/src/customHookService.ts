@@ -15,7 +15,7 @@ export interface ContractHooksProps {
   signer: Signer
 }
 
-export default class CustomHookService {
+export class CustomHookService {
   public networks: NetworkConfigs
 
   constructor(networks: NetworkConfigs) {
