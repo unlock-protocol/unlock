@@ -39,6 +39,15 @@ contract MixinTransfer is
   uint public transferFeeBasisPoints;
 
   /**
+   * @dev helper to check if transfer have been disabled
+   */
+  function _transferNotDisabled() internal view {
+    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
+      revert KEY_TRANSFERS_DISABLED();
+    }
+  }
+
+  /**
    * @notice Allows the key owner to safely transfer a portion of the remaining time
    * from their key to a new key
    * @param _tokenIdFrom the key to share
@@ -56,9 +65,7 @@ contract MixinTransfer is
     }
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
-    }
+    _transferNotDisabled();
 
     address keyOwner = _ownerOf[_tokenIdFrom];
 
@@ -120,7 +127,6 @@ contract MixinTransfer is
     address _recipient,
     uint _tokenId
   ) public {
-    _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
 
     // reset key manager to address zero
@@ -166,8 +172,6 @@ contract MixinTransfer is
     address _recipient,
     uint _tokenId
   ) public {
-    _isValidKey(_tokenId);
-
     if (msg.sender != keyManagerOf[_tokenId]) {
       revert UNAUTHORIZED();
     }
@@ -184,15 +188,13 @@ contract MixinTransfer is
     uint _tokenId
   ) private {
     _isValidKey(_tokenId);
+    _transferNotDisabled();
 
     // incorrect _from field
     if (ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
 
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
-    }
     if (_recipient == address(0)) {
       revert INVALID_ADDRESS();
     }
@@ -297,11 +299,9 @@ contract MixinTransfer is
     address _to,
     bool _approved
   ) public {
+    _transferNotDisabled();
     if (_to == msg.sender) {
       revert CANNOT_APPROVE_SELF();
-    }
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
     }
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
