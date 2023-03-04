@@ -215,15 +215,22 @@ contract MixinPurchase is
   }
 
   /**
+   * @dev simple helper to check the amount of ERC20 tokens declared
+   * by user is enough to cover the actual price
+   */
+  function _checkValue(uint _declared, uint _actual) private pure {
+    if (_declared < _actual) {
+      revert INSUFFICIENT_ERC20_VALUE();
+    }
+  }
+  
+  /**
    * @dev helper to pay ERC20 tokens
    */
-  function _checkAndTransferValue(uint _priceToPay) private {
+  function _transferValue(address _payer, uint _priceToPay) private {
     if (tokenAddress != address(0)) {
-      // if (_declaredValue < _priceToPay) {
-      //   revert INSUFFICIENT_ERC20_VALUE();
-      // }
       IERC20Upgradeable(tokenAddress).transferFrom(
-        msg.sender,
+        _payer,
         address(this),
         _priceToPay
       );
@@ -293,11 +300,9 @@ contract MixinPurchase is
       // store values at purchase time
       _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
-      if (
-        tokenAddress != address(0) &&
-        _values[i] < inMemoryKeyPrice
-      ) {
-        revert INSUFFICIENT_ERC20_VALUE();
+      // make sure erc20 price is correct
+      if(tokenAddress != address(0)) {
+        _checkValue(_values[i], inMemoryKeyPrice);
       }
 
       // store in unlock
@@ -321,7 +326,7 @@ contract MixinPurchase is
     }
 
     // transfer the ERC20 tokens
-    _checkAndTransferValue(totalPriceToPay);
+    _transferValue(msg.sender, totalPriceToPay);
 
     // pay protocol
     _payProtocol(totalPriceToPay);
@@ -365,15 +370,16 @@ contract MixinPurchase is
       _data
     );
 
-    if (tokenAddress != address(0) && _value < inMemoryKeyPrice) {
-        revert INSUFFICIENT_ERC20_VALUE();
+    // make sure erc20 price is correct
+    if(tokenAddress != address(0)) {
+      _checkValue(_value, inMemoryKeyPrice);
     }
 
     // process in unlock
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
     // pay value in ERC20
-    _checkAndTransferValue(inMemoryKeyPrice);
+    _transferValue(msg.sender, inMemoryKeyPrice);
 
     // if key params have changed, then update them
     _recordTokenTerms(_tokenId, inMemoryKeyPrice);
@@ -426,14 +432,7 @@ contract MixinPurchase is
     _recordKeyPurchase(keyPrice, _referrer);
 
     // transfer the tokens
-    IERC20Upgradeable token = IERC20Upgradeable(
-      tokenAddress
-    );
-    token.transferFrom(
-      ownerOf(_tokenId),
-      address(this),
-      keyPrice
-    );
+    _transferValue(ownerOf(_tokenId), keyPrice);
 
     // refund gas if applicable
     _refundGas();
