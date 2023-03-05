@@ -1,15 +1,19 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, Select } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { HookName } from '@unlock-protocol/types'
+import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 
 const ZERO = ethers.constants.AddressZero
 
+enum HookType {
+  CUSTOM_ADDRESS = 'CUSTOM_ADDRESS',
+}
 interface UpdateHooksFormProps {
   lockAddress: string
   network: number
@@ -17,6 +21,7 @@ interface UpdateHooksFormProps {
   disabled: boolean
   version?: number
 }
+
 interface FormProps {
   keyPurchase: string
   keyCancel: string
@@ -27,7 +32,141 @@ interface FormProps {
   keyGrant?: string
 }
 
-type FormPropsKeys = keyof FormProps
+type FormPropsKey = keyof FormProps
+interface HookValueProps {
+  label: string
+  fromPublicLockVersion: number
+  hookName: HookName
+}
+
+const isValidAddress = (address?: string) => {
+  return address?.length ? ethers.utils.isAddress(address) : true
+}
+
+interface CustomComponentProps {
+  name: string
+  disabled: boolean
+  selectedOption?: string
+}
+
+const CustomContractHook = ({
+  name,
+  disabled,
+  selectedOption,
+}: CustomComponentProps) => {
+  return (
+    <ConnectForm>
+      {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
+        const hasError = errors?.[name] ?? false
+        const value = getValues(name)
+        const isFieldDirty = dirtyFields[name]
+
+        const showInput =
+          (value?.length > 0 && value !== ZERO) ||
+          (selectedOption ?? '')?.length > 0 ||
+          isFieldDirty
+
+        return (
+          showInput && (
+            <Input
+              {...register(name, {
+                validate: isValidAddress,
+              })}
+              disabled={disabled}
+              placeholder="Contract address, for ex: 0x00000000000000000"
+              error={hasError && 'Enter a valid address'}
+            />
+          )
+        )
+      }}
+    </ConnectForm>
+  )
+}
+
+const OPTIONS: {
+  label: string
+  value: HookType
+  component: (args: CustomComponentProps) => JSX.Element
+}[] = [
+  {
+    label: 'Custom Contract',
+    value: HookType.CUSTOM_ADDRESS,
+    component: (args) => <CustomContractHook {...args} />,
+  },
+]
+
+const HookMapping: Record<FormPropsKey, HookValueProps> = {
+  keyPurchase: {
+    label: 'Key purchase hook',
+    fromPublicLockVersion: 7,
+    hookName: 'onKeyPurchaseHook',
+  },
+  keyCancel: {
+    label: 'Key cancel hook',
+    fromPublicLockVersion: 7,
+    hookName: 'onKeyCancelHook',
+  },
+  validKey: {
+    label: 'Valid key hook',
+    fromPublicLockVersion: 9,
+    hookName: 'onValidKeyHook',
+  },
+  tokenURI: {
+    label: 'Token URI hook',
+    fromPublicLockVersion: 9,
+    hookName: 'onTokenURIHook',
+  },
+  keyTransfer: {
+    label: 'Key transfer hook',
+    fromPublicLockVersion: 11,
+    hookName: 'onKeyTransferHook',
+  },
+  keyExtend: {
+    label: 'Key extend hook',
+    fromPublicLockVersion: 12,
+    hookName: 'onKeyExtendHook',
+  },
+  keyGrant: {
+    label: 'Key grant hook',
+    fromPublicLockVersion: 12,
+    hookName: 'onKeyGrantHook',
+  },
+}
+
+interface HookSelectProps {
+  label: string
+  name: string
+  disabled: boolean
+}
+
+const HookSelect = ({ name, label, disabled }: HookSelectProps) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+
+  return (
+    <ConnectForm>
+      {() => {
+        const Option = OPTIONS.find((option) => option.value === selectedOption)
+
+        return (
+          <div className="flex flex-col gap-1">
+            <Select
+              options={OPTIONS}
+              label={label}
+              onChange={(value) => {
+                setSelectedOption(`${value}`)
+              }}
+            />
+            {Option?.component({
+              name,
+              disabled,
+              selectedOption: selectedOption ?? '',
+            })}
+          </div>
+        )
+      }}
+    </ConnectForm>
+  )
+}
 
 export const UpdateHooksForm = ({
   lockAddress,
@@ -36,9 +175,12 @@ export const UpdateHooksForm = ({
   disabled,
   version,
 }: UpdateHooksFormProps) => {
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
-  const [enabledFields, setEnabledFields] = useState<Record<string, boolean>>({
+  const { getWalletService } = useAuth()
+
+  const [enabledFields, setEnabledFields] = useState<
+    Record<FormPropsKey, boolean>
+  >({
     keyPurchase: false,
     keyCancel: false,
     validKey: false,
@@ -47,20 +189,14 @@ export const UpdateHooksForm = ({
     keyExtend: false,
     keyGrant: false,
   })
+  const methods = useForm<Partial<Record<FormPropsKey, string>>>()
   const {
-    register,
-    handleSubmit,
     setValue,
-    formState: { isValid, errors },
-  } = useForm<FormProps>({
-    defaultValues: {},
-  })
+    formState: { isValid },
+  } = methods
 
-  const isValidAddress = (address?: string) => {
-    return address?.length ? ethers.utils.isAddress(address) : true
-  }
-
-  const setEventsHooks = async (fields: FormProps) => {
+  const setEventsHooks = async (fields: Partial<FormProps>) => {
+    const walletService = await getWalletService(network)
     return await walletService.setEventHooks({
       lockAddress,
       ...fields,
@@ -69,186 +205,36 @@ export const UpdateHooksForm = ({
 
   const setEventsHooksMutation = useMutation(setEventsHooks)
 
-  const res = useQueries({
+  const queries = useQueries({
     queries: [
-      {
-        queryKey: [
-          'onKeyPurchaseHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onKeyPurchaseHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 7 ?? false,
-      },
-      {
-        queryKey: [
-          'onKeyCancelHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onKeyCancelHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 7 ?? false,
-      },
-      {
-        queryKey: [
-          'onValidKeyHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onValidKeyHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 9 ?? false,
-      },
-      {
-        queryKey: [
-          'onTokenURIHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onTokenURIHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 9 ?? false,
-      },
-      {
-        queryKey: [
-          'onKeyTransferHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onKeyTransferHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 11 ?? false,
-      },
-      {
-        queryKey: [
-          'onKeyExtendHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onKeyExtendHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 12 ?? false,
-      },
-      {
-        queryKey: [
-          'onKeyGrantHook',
-          lockAddress,
-          network,
-          setEventsHooksMutation.isSuccess,
-        ],
-        queryFn: async () =>
-          await web3Service.onKeyGrantHook({
-            lockAddress,
-            network,
-          }),
-        enabled: (version ?? 0) >= 12 ?? false,
-      },
+      ...Object.entries(HookMapping).map(
+        ([fieldName, { hookName, fromPublicLockVersion = 0 }]) => {
+          const hasRequiredVersion: boolean =
+            (version ?? 0) >= fromPublicLockVersion ?? false
+
+          return {
+            queryKey: [hookName, lockAddress, network],
+            queryFn: async () => {
+              return await web3Service[hookName]({ lockAddress, network })
+            },
+            enabled: hasRequiredVersion && lockAddress?.length > 0,
+            onSuccess: (value: string) => {
+              setValue(fieldName as FormPropsKey, value ?? ZERO)
+
+              setEnabledFields({
+                ...enabledFields,
+                [fieldName]: value !== ZERO,
+              })
+            },
+          }
+        }
+      ),
     ],
   })
 
-  const [
-    { data: keyPurchase },
-    { data: keyCancel },
-    { data: validKey },
-    { data: tokenURI },
-    { data: keyTransfer },
-    { data: keyExtend },
-    { data: keyGrant },
-  ] = res ?? []
+  const isLoading = queries?.some(({ isLoading }) => isLoading)
 
-  const isLoading = res?.some(({ isLoading }) => isLoading)
-  const isSuccess = res?.some(({ isSuccess }) => isSuccess)
-
-  useEffect(() => {
-    if (!keyPurchase) return
-    setValue('keyPurchase', keyPurchase ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      keyPurchase: keyPurchase !== ZERO,
-    })
-  }, [keyPurchase, isSuccess])
-
-  useEffect(() => {
-    if (!keyCancel) return
-    setValue('keyCancel', keyCancel ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      keyCancel: keyCancel !== ZERO,
-    })
-  }, [keyCancel, isSuccess])
-
-  useEffect(() => {
-    if (!validKey) return
-    setValue('validKey', validKey ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      validKey: validKey !== ZERO,
-    })
-  }, [validKey, isSuccess])
-
-  useEffect(() => {
-    if (!tokenURI) return
-    setValue('tokenURI', tokenURI ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      tokenURI: tokenURI !== ZERO,
-    })
-  }, [tokenURI, isSuccess])
-
-  useEffect(() => {
-    if (!keyTransfer) return
-    setValue('keyTransfer', keyTransfer ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      keyTransfer: keyTransfer !== ZERO,
-    })
-  }, [keyTransfer, isSuccess])
-
-  useEffect(() => {
-    if (!keyExtend) return
-    setValue('keyExtend', keyExtend ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      keyExtend: keyExtend !== ZERO,
-    })
-  }, [keyExtend, isSuccess])
-
-  useEffect(() => {
-    if (!keyGrant) return
-    setValue('keyGrant', keyGrant ?? ZERO)
-    setEnabledFields({
-      ...enabledFields,
-      keyGrant: keyGrant !== ZERO,
-    })
-  }, [keyGrant])
-
-  const onSubmit = async (fields: FormProps) => {
+  const onSubmit = async (fields: Partial<FormProps>) => {
     if (isValid) {
       const setEventsHooksPromise = setEventsHooksMutation.mutateAsync(fields)
       await ToastHelper.promise(setEventsHooksPromise, {
@@ -261,161 +247,46 @@ export const UpdateHooksForm = ({
     }
   }
 
-  const toggleField = (field: FormPropsKeys) => {
-    const fieldStatus = enabledFields[field]
-    setEnabledFields({
-      ...enabledFields,
-      [field]: !fieldStatus,
-    })
-
-    if (fieldStatus) {
-      setValue(field, DEFAULT_USER_ACCOUNT_ADDRESS)
-    }
-  }
-
   const disabledInput =
     disabled || setEventsHooksMutation.isLoading || isLoading
 
   return (
-    <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-      {version && version >= 7 && (
-        <>
-          <div>
-            <ToggleSwitch
-              title="Key purchase hook"
-              enabled={enabledFields?.keyPurchase}
-              setEnabled={() => toggleField('keyPurchase')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('keyPurchase', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.keyPurchase}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.keyPurchase && 'Enter a valid address'}
-            />
-          </div>
+    <FormProvider {...methods}>
+      <form
+        className="grid gap-6"
+        onSubmit={methods.handleSubmit(onSubmit)}
+        onChange={() => {
+          methods.trigger()
+        }}
+      >
+        {Object.entries(HookMapping)?.map(
+          ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
+            const fieldName = field as FormPropsKey
+            const hasRequiredVersion =
+              version && version >= fromPublicLockVersion
 
-          <div>
-            <ToggleSwitch
-              title="Key cancel hook"
-              enabled={enabledFields?.keyCancel}
-              setEnabled={() => toggleField('keyCancel')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('keyCancel', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.keyCancel}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.keyCancel && 'Enter a valid address'}
-            />
-          </div>
-        </>
-      )}
-      {version && version >= 9 && (
-        <>
-          <div>
-            <ToggleSwitch
-              title="Valid key hook"
-              enabled={enabledFields?.validKey}
-              setEnabled={() => toggleField('validKey')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('validKey', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.validKey}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.validKey && 'Enter a valid address'}
-            />
-          </div>
-          <div>
-            <ToggleSwitch
-              title="Token URI hook"
-              enabled={enabledFields?.tokenURI}
-              setEnabled={() => toggleField('tokenURI')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('tokenURI', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.tokenURI}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.tokenURI && 'Enter a valid address'}
-            />
-          </div>
-        </>
-      )}
-      {version && version >= 11 && (
-        <>
-          <div>
-            <ToggleSwitch
-              title="Key transfer hook"
-              enabled={enabledFields?.keyTransfer}
-              setEnabled={() => toggleField('keyTransfer')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('keyTransfer', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.keyTransfer}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.keyTransfer && 'Enter a valid address'}
-            />
-          </div>
-        </>
-      )}
-      {version && version >= 12 && (
-        <>
-          <div>
-            <ToggleSwitch
-              title="Key extend hook"
-              enabled={enabledFields?.keyExtend}
-              setEnabled={() => toggleField('keyExtend')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('keyExtend', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.keyExtend}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.keyExtend && 'Enter a valid address'}
-            />
-          </div>
-          <div>
-            <ToggleSwitch
-              title="Key grant hook"
-              enabled={enabledFields?.keyGrant}
-              setEnabled={() => toggleField('keyGrant')}
-              disabled={disabledInput}
-            />
-            <Input
-              {...register('keyGrant', {
-                validate: isValidAddress,
-              })}
-              disabled={disabledInput || !enabledFields?.keyGrant}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={errors?.keyGrant && 'Enter a valid address'}
-            />
-          </div>
-        </>
-      )}
-      {isManager && (
-        <Button
-          className="w-full md:w-1/3"
-          type="submit"
-          loading={setEventsHooksMutation.isLoading}
-        >
-          Apply
-        </Button>
-      )}
-    </form>
+            if (!hasRequiredVersion) return null
+
+            return (
+              <HookSelect
+                key={hookName}
+                label={label}
+                name={fieldName}
+                disabled={disabledInput}
+              />
+            )
+          }
+        )}
+        {isManager && (
+          <Button
+            className="w-full md:w-1/3"
+            type="submit"
+            loading={setEventsHooksMutation.isLoading}
+          >
+            Apply
+          </Button>
+        )}
+      </form>
+    </FormProvider>
   )
 }

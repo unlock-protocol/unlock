@@ -26,6 +26,7 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
+  const [openConnectModal, setOpenConnectModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
@@ -48,15 +49,76 @@ export const useProvider = (config: any) => {
     }
   }, [account, network])
 
+  const createWalletService = async (provider: any) => {
+    const _walletService = new WalletService(config.networks)
+    const _network = await _walletService.connect(provider)
+    const _account = await _walletService.getAccount()
+    return {
+      walletService: _walletService,
+      network: _network,
+      account: _account,
+    }
+  }
+
+  const switchWeb3ProviderNetwork = async (id: number) => {
+    try {
+      await provider.send(
+        'wallet_switchEthereumChain',
+        [
+          {
+            chainId: `0x${id.toString(16)}`,
+          },
+        ],
+        account
+      )
+    } catch (switchError: any) {
+      if (switchError.code === 4902 || switchError.code === -32603) {
+        return addNetworkToWallet(id)
+      } else {
+        throw switchError
+      }
+    }
+  }
+
+  const getWalletService = async (networkId?: number) => {
+    const currentNetworkId = Number(network)
+    // If the user is not connected, we open the connect modal
+    if (!isConnected) {
+      setOpenConnectModal(true)
+      return
+    }
+    let walletServiceProvider: ethers.providers.Provider = provider
+    if (networkId && networkId !== currentNetworkId) {
+      const networkConfig = config.networks[networkId]
+      if (provider.isUnlock) {
+        walletServiceProvider = UnlockProvider.reconnect(
+          provider,
+          networkConfig
+        )
+      } else {
+        await switchWeb3ProviderNetwork(networkId)
+        walletServiceProvider = new ethers.providers.Web3Provider(
+          provider.provider,
+          networkId
+        )
+      }
+    }
+    const { walletService: _walletService } = await createWalletService(
+      walletServiceProvider
+    )
+    return _walletService
+  }
+
   const resetProvider = async (provider: ethers.providers.Provider) => {
     try {
-      const _walletService = new WalletService(config.networks)
       setProvider(provider)
-      // @ts-expect-error TODO fix walletService signature
-      const _network = await _walletService.connect(provider)
+      const {
+        network: _network,
+        walletService: _walletService,
+        account: _account,
+      } = await createWalletService(provider)
       setNetwork(_network || undefined)
 
-      const _account = await _walletService.getAccount()
       setWalletService(_walletService)
       // @ts-expect-error
       if (!provider.isUnlock) {
@@ -173,7 +235,7 @@ export const useProvider = (config: any) => {
         ? config.networks[networkConf]
         : networkConf
 
-    const { id, name } = networkConfig
+    const { id } = networkConfig
 
     // don't change network if not needed
     if (id === network) {
@@ -182,33 +244,10 @@ export const useProvider = (config: any) => {
 
     if (provider.isUnlock) {
       const newProvider = UnlockProvider.reconnect(provider, networkConfig)
-      resetProvider(newProvider)
+      await resetProvider(newProvider)
     } else {
-      const changeNetworkRequest = provider
-        .send(
-          'wallet_switchEthereumChain',
-          [
-            {
-              chainId: `0x${id.toString(16)}`,
-            },
-          ],
-          account
-        )
-        .catch((switchError: any) => {
-          if (switchError.code === 4902 || switchError.code === -32603) {
-            return addNetworkToWallet(id)
-          } else {
-            throw switchError
-          }
-        })
-        .then(() => {
-          setNetwork(id)
-        })
-      ToastHelper.promise(changeNetworkRequest, {
-        loading: `Changing network to ${name}. Please approve in your wallet.`,
-        error: `We could not switch to ${name}. Try adding it manually in your wallet.`,
-        success: `Successfully changed network to ${name}.`,
-      })
+      await switchWeb3ProviderNetwork(id)
+      setNetwork(id)
     }
   }
 
@@ -244,12 +283,16 @@ export const useProvider = (config: any) => {
     )
   }
 
+  // For now, we use account as a proxy for isConnected
+  const isConnected = !!account
+
   return {
     loading,
     network,
     account,
     signMessage,
     email,
+    getWalletService,
     isUnlockAccount,
     encryptedPrivateKey,
     walletService,
@@ -258,5 +301,8 @@ export const useProvider = (config: any) => {
     watchAsset,
     changeNetwork,
     providerSend,
+    isConnected,
+    openConnectModal,
+    setOpenConnectModal,
   }
 }

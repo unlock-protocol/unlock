@@ -28,6 +28,7 @@ export const mainnet: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) => `https://opensea.io/assets/${lockAddress}`,
   },
   erc20: {
     symbol: 'DAI',
@@ -56,6 +57,7 @@ export const mainnet: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
   },
+  swapPurchaser: '0x84d085898F6ae4ae8c4225f2601F29a10335F653',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -106,6 +108,14 @@ export const mainnet: NetworkConfig = {
       decimals: 18,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+      },
+    ],
+  },
 }
 
 export default mainnet

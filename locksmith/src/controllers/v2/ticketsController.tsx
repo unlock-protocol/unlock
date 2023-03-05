@@ -4,10 +4,13 @@ import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
-import { generateQrCode } from '../../utils/qrcode'
+import { generateQrCode, generateQrCodeUrl } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { Lock } from '@unlock-protocol/types'
 import { createTicket } from '../../utils/ticket'
+import { generateKeyMetadata } from '../../operations/metadataOperations'
+import config from '../../config/config'
+import { getVerifiersList } from '../../operations/verifierOperations'
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -34,6 +37,7 @@ export class TicketsController {
     )
     response.status(200).send({ payload, signature })
   }
+
   /**
    * This will mark a ticket as check-in, this operation is only allowed for a lock verifier of a lock manager
    * @param {Request} request
@@ -168,6 +172,35 @@ export class TicketsController {
       })
     }
   }
+
+  /**
+   * gets the URL for the verification (which can also be rendered as QR code)
+   * @param request
+   * @param response
+   * @returns
+   */
+  async getVerificationUrl(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const tokenId = request.params.keyId.toLowerCase()
+
+      const verificationUrl = await generateQrCodeUrl({
+        network,
+        lockAddress,
+        tokenId,
+      })
+
+      return response.status(200).send({
+        verificationUrl,
+      })
+    } catch (err) {
+      logger.error(err)
+      return response.status(500).send({
+        message: 'Failed to generate QR code',
+      })
+    }
+  }
 }
 
 export const generateTicket: RequestHandler = async (request, response) => {
@@ -207,4 +240,105 @@ export const generateTicket: RequestHandler = async (request, response) => {
   })
 
   return response.end(ticket)
+}
+
+export const getTicket: RequestHandler = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const tokenId = request.params.keyId.toLowerCase().trim()
+  const userAdress = request.user?.walletAddress
+  const subgraph = new SubgraphService()
+  const [key, verifiers] = await Promise.all([
+    subgraph.key(
+      {
+        where: {
+          tokenId,
+          lock: lockAddress.toLowerCase().trim(),
+        },
+      },
+      {
+        network,
+      }
+    ),
+    getVerifiersList(lockAddress, network),
+  ])
+
+  if (!key) {
+    return response.status(404).send({
+      message: 'Key not found',
+    })
+  }
+
+  const baseTicket = {
+    keyId: key.tokenId,
+    lockAddress: key.lock.address,
+    owner: key.owner,
+    publicLockVersion: key.lock.version,
+  }
+
+  if (!userAdress) {
+    const keyData = await generateKeyMetadata(
+      lockAddress,
+      tokenId,
+      false,
+      config.services.locksmith,
+      network
+    )
+    return response.status(200).send({
+      ...baseTicket,
+      name:
+        keyData.name?.replace(/ +/, '')?.trim()?.toLowerCase() === 'unlockkey'
+          ? key.lock.name
+          : keyData.name,
+      image: keyData.image,
+      description: keyData.description,
+      checkedInAt: keyData?.metadata?.checkedInAt,
+      attributes: keyData.attributes,
+      expiration: key.expiration,
+      userMetadata: {
+        public: {},
+        protected: {},
+      },
+      isVerifier: false,
+    })
+  }
+
+  const isManager = key.lock.lockManagers
+    .map((item: string) => item.toLowerCase().trim())
+    .includes(userAdress.toLowerCase().trim())
+
+  const isVerifier = verifiers
+    ?.map((item) => item.address.toLowerCase().trim())
+    .includes(userAdress.toLowerCase().trim())
+
+  const includeProtected =
+    isManager ||
+    isVerifier ||
+    key.owner.toLowerCase() === userAdress.toLowerCase().trim()
+
+  const keyData = await generateKeyMetadata(
+    lockAddress,
+    tokenId,
+    includeProtected,
+    config.services.locksmith,
+    network
+  )
+
+  return response.status(200).send({
+    ...baseTicket,
+    name:
+      keyData.name?.replace(/ +/, '')?.trim()?.toLowerCase() === 'unlockkey'
+        ? key.lock.name
+        : keyData.name,
+    image: keyData.image,
+    description: keyData.description,
+    checkedInAt: keyData?.metadata?.checkedInAt,
+    attributes: keyData.attributes,
+    expiration: key.expiration,
+    userMetadata: {
+      public: keyData?.userMetadata?.public || {},
+      protected: keyData?.userMetadata?.protected || {},
+    },
+    isVerifier: isVerifier || isManager,
+  })
 }

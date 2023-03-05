@@ -7,9 +7,9 @@ import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
-import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../DownloadWallet'
+import { detectInjectedProvider } from '~/utils/wallet'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -64,12 +64,14 @@ interface SignedOutProps {
   ): Promise<void>
   onUnlockAccount(): void
   injectedProvider: any
+  title?: string
 }
 
 export function SignedOut({
   onUnlockAccount,
   authenticateWithProvider,
   injectedProvider,
+  title = 'Have a crypto wallet?',
 }: SignedOutProps) {
   const iconButtonClass =
     'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
@@ -81,26 +83,9 @@ export function SignedOut({
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
       frame: <SvgComponents.Frame width={24} />,
       status: <SvgComponents.Status width={32} />,
-      default: <WalletIcon size={20} className="m-1.5" />,
     }
-
-    if (injectedProvider?.isMetaMask) {
-      return walletIcons.metamask
-    }
-
-    if (injectedProvider?.isBraveWallet) {
-      return walletIcons.brave
-    }
-
-    if (injectedProvider?.isFrame) {
-      return walletIcons.frame
-    }
-
-    if (injectedProvider?.isStatus) {
-      return walletIcons.status
-    }
-
-    return walletIcons.default
+    const detected = detectInjectedProvider(injectedProvider)
+    return walletIcons[detected]
   }, [injectedProvider])
 
   const onInjectedHandler = () => {
@@ -121,7 +106,7 @@ export function SignedOut({
   return (
     <div className="grid w-full grid-flow-col grid-cols-11">
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm"> Have a crypto wallet? </h4>
+        <h4 className="text-sm">{title}</h4>
         <DownloadWallet
           isOpen={isDownloadWallet}
           setIsOpen={setIsDownloadWallet}
@@ -157,7 +142,7 @@ export function SignedOut({
         <div className="h-full border-l"></div>
       </div>
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm"> Don&apos;t have a crypto wallet? </h4>
+        <h4 className="text-sm">No crypto wallet?</h4>
         <Button
           onClick={(event) => {
             event.preventDefault()
@@ -185,11 +170,15 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const [state, send] = useActor(service)
+  const [state, send] = useActor<CheckoutService>(service as CheckoutService)
   const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
+
+  if (state.context?.paywallConfig?.autoconnect) {
+    return <div className="space-y-2">{children}</div>
+  }
 
   const onDisconnect = () => {
     send('DISCONNECT')
@@ -213,6 +202,7 @@ export function Connected({
           send('UNLOCK_ACCOUNT')
         }}
         authenticateWithProvider={authenticateWithProvider}
+        title="Have a crypto wallet?"
       />
     </div>
   )

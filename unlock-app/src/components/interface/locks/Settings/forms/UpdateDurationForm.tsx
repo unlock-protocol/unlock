@@ -8,7 +8,7 @@ import {
   ONE_DAY_IN_SECONDS,
   MAX_UINT,
 } from '~/constants'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface UpdateDurationFormProps {
   lockAddress: string
@@ -22,14 +22,16 @@ export const UpdateDurationForm = ({
   duration,
   isManager,
   disabled,
+  network,
 }: UpdateDurationFormProps) => {
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     duration === UNLIMITED_KEYS_DURATION
   )
-  const walletService = useWalletService()
   const durationInDays = Math.round(
     parseInt(`${duration ?? 0}`, 10) / ONE_DAY_IN_SECONDS
   )
+
+  const { getWalletService } = useAuth()
 
   const {
     register,
@@ -54,6 +56,7 @@ export const UpdateDurationForm = ({
       ? MAX_UINT
       : expirationInSeconds
 
+    const walletService = await getWalletService(network)
     return await walletService.setExpirationDuration({
       lockAddress,
       expirationDuration: expirationDuration!,

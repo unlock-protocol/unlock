@@ -17,18 +17,8 @@ interface IPublicLock {
     string calldata _lockName
   ) external;
 
-  // roles
+  // default role from OpenZeppelin
   function DEFAULT_ADMIN_ROLE()
-    external
-    view
-    returns (bytes32 role);
-
-  function KEY_GRANTER_ROLE()
-    external
-    view
-    returns (bytes32 role);
-
-  function LOCK_MANAGER_ROLE()
     external
     view
     returns (bytes32 role);
@@ -361,13 +351,7 @@ interface IPublicLock {
     uint _tokenId
   ) external view returns (uint refund);
 
-  function addKeyGranter(address account) external;
-
   function addLockManager(address account) external;
-
-  function isKeyGranter(
-    address account
-  ) external view returns (bool);
 
   function isLockManager(
     address account
@@ -435,8 +419,6 @@ interface IPublicLock {
     external
     view
     returns (address hookAddress);
-
-  function revokeKeyGranter(address _granter) external;
 
   function renounceLockManager() external;
 

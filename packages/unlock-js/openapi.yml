@@ -96,6 +96,21 @@ components:
           type: string
           nullable: false
 
+    CheckoutConfig:
+      type: object
+      required:
+        - 'id'
+        - 'by'
+        - 'config'
+      properties:
+        id:
+          type: string
+        by:
+          type: string
+        config:
+          type: object
+          additionalProperties: true
+
     Verifier:
       type: object
       nullable: false
@@ -949,7 +964,7 @@ paths:
     get:
       operationId: ticketQRCode
       security:
-        - Application: ['lockManager']
+        - User: ['user', 'lockManager']
       description: Get QR code for the key.
       parameters:
         - $ref: '#/components/parameters/Network'
@@ -962,6 +977,38 @@ paths:
             'image/gif':
               schema:
                 nullable: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/verification:
+    get:
+      operationId: ticketVerificationUrl
+      security:
+        - User: ['user', 'lockManager']
+      description: Get the verification URL for the key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: JSON object containing the verification url
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  verificationUrl:
+                    type: string
+                    nullable: false
+
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 
@@ -1635,6 +1682,79 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}:
+    get:
+      operationId: getTicket
+      security:
+        - User: []
+      description: get a ticket for a key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully retrieved the ticket.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                required:
+                  - name
+                  - lockAddress
+                  - keyId
+                  - publicLockVersion
+                  - userMetadata
+                  - isVerifier
+                  - attributes
+                  - image
+                  - description
+                  - owner
+                  - expiration
+
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  lockAddress:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+                  checkedInAt:
+                    type: number
+                  userMetadata:
+                    type: object
+                    additionalProperties: true
+                  expiration:
+                    type: string
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - 'value'
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          type: string
+                        display_type:
+                          type: string
+                  publicLockVersion:
+                    type: string
+                  isVerifier:
+                    description: Whether the user who requested the ticket can verify the ticket.
+                    type: boolean
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
   /{network}/lock/{lockAddress}/stripe:
     delete:
       operationId: disconnectStripe
@@ -2160,5 +2280,83 @@ paths:
                 properties:
                   message:
                     type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/{id}:
+    get:
+      operationId: getCheckoutConfig
+      security:
+        - User: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config for the given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    put:
+      operationId: saveCheckoutConfig
+      security:
+        - User: []
+      description: A new checkout config is created or updated if it already exists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            nullable: true
+            type: string
+          description: This is optional. If you don't pass an ID, a new config will be created. If you pass an ID, the config will be created.
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                config:
+                  type: object
+                  additionalProperties: true
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/list:
+    get:
+      security:
+        - User: []
+      description: A list of all checkout configs created by the user
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CheckoutConfig'
+
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

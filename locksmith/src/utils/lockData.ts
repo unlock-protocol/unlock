@@ -1,10 +1,10 @@
 import { ethers } from 'ethers'
 
 export default class LockData {
-  provider: ethers.providers.JsonRpcProvider
+  provider: ethers.providers.Provider
 
   constructor(provider: string) {
-    this.provider = new ethers.providers.JsonRpcProvider(provider)
+    this.provider = new ethers.providers.JsonRpcBatchProvider(provider)
   }
 
   async getHasValidKey(lockAddress: string, keyHolder: string) {

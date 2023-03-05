@@ -30,6 +30,8 @@ export const polygon: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/matic/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/matic/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -60,6 +62,7 @@ export const polygon: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
   },
+  swapPurchaser: '0x073C188bFFC8DE384eee702Cd590fB22a7BaE67B',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
@@ -99,6 +102,14 @@ export const polygon: NetworkConfig = {
       decimals: 8,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        name: 'Password required',
+        address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
+      },
+    ],
+  },
 }
 
 export default polygon

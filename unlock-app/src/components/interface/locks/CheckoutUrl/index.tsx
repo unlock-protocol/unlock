@@ -1,8 +1,10 @@
+import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { PaywallConfig } from '~/unlockTypes'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
+import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 
 const Header = () => {
   return (
@@ -17,7 +19,8 @@ const Header = () => {
 }
 
 export const CheckoutUrlPage = () => {
-  const { query } = useRouter()
+  const router = useRouter()
+  const query = router.query
 
   const { lock: lockAddress, network } = query ?? {}
 
@@ -70,19 +73,34 @@ export const CheckoutUrlPage = () => {
     addDefaultLockFromQuery()
   }, [])
 
-  return (
-    <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
-      <div className="md:w-1/2">
-        <CheckoutPreview paywallConfig={paywallConfig} />
-      </div>
-      <div className="flex flex-col gap-4 md:w-1/2">
-        <Header />
-        <CheckoutForm
-          onAddLocks={onAddLocks}
-          onBasicConfigChange={onBasicConfigChange}
-          paywallConfig={paywallConfig}
+  const TopBar = () => {
+    return (
+      <Button variant="borderless" aria-label="arrow back">
+        <ArrowBackIcon
+          size={20}
+          className="cursor-pointer"
+          onClick={() => router.back()}
         />
+      </Button>
+    )
+  }
+
+  return (
+    <>
+      <TopBar />
+      <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
+        <div className="md:w-1/2">
+          <CheckoutPreview paywallConfig={paywallConfig} />
+        </div>
+        <div className="flex flex-col gap-4 md:w-1/2">
+          <Header />
+          <CheckoutForm
+            onAddLocks={onAddLocks}
+            onBasicConfigChange={onBasicConfigChange}
+            paywallConfig={paywallConfig}
+          />
+        </div>
       </div>
-    </div>
+    </>
   )
 }

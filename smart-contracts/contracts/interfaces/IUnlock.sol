@@ -311,4 +311,25 @@ interface IUnlock {
    * Can only be called by the current owner.
    */
   function transferOwnership(address newOwner) external;
+
+  /**
+   * Set the fee collected by the protocol
+   * @param _protocolFee fee (in basis points)
+   */
+  function setProtocolFee(uint _protocolFee) external;
+
+  /**
+   * The fee (in basis points) collected by the protocol on each purchase / 
+   extension / renewal of a key
+   * @return the protocol fee in basic point
+   */
+  function protocolFee() external view returns (uint);
+
+  /**
+   * Call executed by a lock after its version upgrade triggred by `upgradeLock`
+   * - PublicLock v12 > v13 (mainnet): migrate an existing Lock to another instance 
+   * of the Unlock contract
+   * @dev The `msg.sender` will be the upgraded lock
+   */
+  function postLockUpgrade() external;
 }

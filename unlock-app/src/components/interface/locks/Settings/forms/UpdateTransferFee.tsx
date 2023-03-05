@@ -3,7 +3,7 @@ import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface UpdateTransferFeeProps {
@@ -24,7 +24,7 @@ export const UpdateTransferFee = ({
   disabled,
 }: UpdateTransferFeeProps) => {
   const web3Service = useWeb3Service()
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const [allowTransfer, setAllowTransfer] = useState(false)
 
   const {
@@ -43,6 +43,7 @@ export const UpdateTransferFee = ({
   }
 
   const updateTransferFee = async (fields: FormProps) => {
+    const walletService = await getWalletService(network)
     await walletService.updateTransferFee({
       lockAddress,
       transferFeeBasisPoints: fields?.transferFeePercentage * 100,
@@ -76,14 +77,13 @@ export const UpdateTransferFee = ({
     async () => getTransferFeeBasisPoints()
   )
 
+  const transferFeePercentage = (transferFeeBasisPoints ?? 0) / 100
+  const isTransferAllowed = transferFeePercentage < 100
+
   useEffect(() => {
-    setValue('transferFeePercentage', (transferFeeBasisPoints ?? 0) / 100)
-    if (transferFeeBasisPoints === undefined) {
-      setAllowTransfer(false)
-    } else {
-      setAllowTransfer(transferFeeBasisPoints < 100)
-    }
-  }, [transferFeeBasisPoints])
+    setValue('transferFeePercentage', transferFeePercentage)
+    setAllowTransfer(isTransferAllowed)
+  }, [isTransferAllowed, setValue, transferFeePercentage])
 
   const disabledInput =
     disabled || isLoading || updateTransferFeeMutation.isLoading

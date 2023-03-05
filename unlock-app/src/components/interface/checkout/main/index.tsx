@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
-import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
 import { Select } from './Select'
@@ -21,6 +20,8 @@ import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
@@ -44,6 +45,10 @@ export function Checkout({
   })
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
+  const { authenticateWithProvider } = useAuthenticate({
+    injectedProvider,
+  })
+
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
   const paywallConfigChanged = !isEqual(
@@ -259,6 +264,13 @@ export function Checkout({
       }
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
+
+  // Autoconnect
+  useEffect(() => {
+    if (paywallConfig?.autoconnect) {
+      authenticateWithProvider('METAMASK')
+    }
+  }, [paywallConfig?.autoconnect])
 
   return (
     <CheckoutTransition>

@@ -17,8 +17,12 @@ export function genKeyID(lockAddress: Address, tokenId: string): string {
 
 export function getVersion(lockAddress: Address): BigInt {
   const lockContract = PublicLockV11.bind(lockAddress)
-  const version = lockContract.publicLockVersion()
-  return BigInt.fromI32(version)
+  const response = lockContract.try_publicLockVersion()
+  if (!response.reverted) {
+    return BigInt.fromI32(response.value)
+  }
+  // Use v11 as default
+  return BigInt.fromI32(11)
 }
 
 export function getKeyExpirationTimestampFor(
@@ -29,11 +33,18 @@ export function getKeyExpirationTimestampFor(
   const version = getVersion(lockAddress)
   if (version.ge(BigInt.fromI32(10))) {
     const lockContract = PublicLockV11.bind(lockAddress)
-    return lockContract.keyExpirationTimestampFor(tokenId)
+    const response = lockContract.try_keyExpirationTimestampFor(tokenId)
+    if (!response.reverted) {
+      return response.value
+    }
   } else {
     const lockContract = PublicLockV7.bind(lockAddress)
-    return lockContract.keyExpirationTimestampFor(ownerAddress)
+    const response = lockContract.try_keyExpirationTimestampFor(ownerAddress)
+    if (!response.reverted) {
+      return response.value
+    }
   }
+  return BigInt.fromI32(0)
 }
 
 export function loadOrCreateUnlockDailyData(

@@ -5,15 +5,14 @@ import { MouseEventHandler, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTransferCode, useTransferDone } from '~/hooks/useTransfer'
 import { useConfig } from '~/utils/withConfig'
-import { useWalletService } from '~/utils/withWalletService'
 import ReCaptcha from 'react-google-recaptcha'
 import {
   EthersError,
   getParsedEthersError,
 } from '@enzoferey/ethers-error-parser'
-import { SwitchNetwork } from '~/components/helpers/SwitchNetwork'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -23,7 +22,7 @@ interface SendTransferFormProps {
   ) => void
 }
 
-export const SendTransferForm = ({
+const SendTransferForm = ({
   isLoading,
   createTransferCode,
   onTransferCodeReceived,
@@ -96,8 +95,8 @@ interface Props {
 export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const config = useConfig()
   const router = useRouter()
-  const walletService = useWalletService()
   const manager = new KeyManager(config.networks)
+  const { getWalletService } = useAuth()
   const {
     handleSubmit,
     register,
@@ -137,6 +136,7 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
       }
     )
 
+    const walletService = await getWalletService()
     const signer = walletService.signer
     try {
       const tx = await manager.transfer({
@@ -198,23 +198,9 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
           disabled={isSubmitting}
         />
         <div className="flex items-center justify-end">
-          <SwitchNetwork requiredNetwork={network}>
-            {({ isOnRequiredNetwork, onNetworkChangeHandler }) => {
-              return isOnRequiredNetwork ? (
-                <Button
-                  loading={isSubmitting}
-                  disabled={!isValid}
-                  type="submit"
-                >
-                  Confirm Transfer
-                </Button>
-              ) : (
-                <Button onClick={onNetworkChangeHandler} disabled={!isValid}>
-                  Switch Network to Confirm Transfer
-                </Button>
-              )
-            }}
-          </SwitchNetwork>
+          <Button loading={isSubmitting} disabled={!isValid} type="submit">
+            Confirm Transfer
+          </Button>
         </div>
       </form>
     </div>
