@@ -5674,15 +5674,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.7.10":
-  version: 1.7.10
-  resolution: "@headlessui/react@npm:1.7.10"
+"@headlessui/react@npm:1.7.13":
+  version: 1.7.13
+  resolution: "@headlessui/react@npm:1.7.13"
   dependencies:
     client-only: ^0.0.1
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
-  checksum: 39b50fb07bd5482611720d292f1db6ca79a52ccea304aa24a21fdca693d983e212d7493c52ece8921581222206f9cbb8f1a91485efa17cc36a7a9a44d8df1547
+  checksum: 132e5fce86978b9a6fd9d669fb556acec783debcd8f510c99226b3b3229dad50a13aeed69fc9af66465fc7029487ecfc46e6226f14218b760d5a309e08c0d059
   languageName: node
   linkType: hard
 
@@ -14796,7 +14796,7 @@ __metadata:
     "@babel/preset-env": 7.20.2
     "@babel/preset-react": 7.18.6
     "@babel/preset-typescript": 7.21.0
-    "@headlessui/react": 1.7.10
+    "@headlessui/react": 1.7.13
     "@mdx-js/preact": 2.3.0
     "@mdx-js/react": 2.3.0
     "@radix-ui/react-tooltip": 1.0.4
@@ -14841,7 +14841,7 @@ __metadata:
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: 4.0.5
   peerDependencies:
-    "@headlessui/react": 1.7.10
+    "@headlessui/react": 1.7.13
     react: 18.2.0
     react-dom: 18.2.0
   languageName: unknown
@@ -14852,7 +14852,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
     "@enzoferey/ethers-error-parser": 0.2.3
-    "@headlessui/react": 1.7.10
+    "@headlessui/react": 1.7.13
     "@hookform/error-message": 2.0.1
     "@hookform/resolvers": 2.9.11
     "@radix-ui/react-avatar": 1.0.1
@@ -15027,7 +15027,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": 7.21.0
-    "@headlessui/react": 1.7.10
+    "@headlessui/react": 1.7.13
     "@radix-ui/react-avatar": 1.0.1
     "@testing-library/react": 14.0.0
     "@types/next": 8.0.7
