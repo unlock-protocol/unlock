@@ -2,13 +2,20 @@
   "name": "@unlock-protocol/networks",
   "version": "0.0.9",
   "main": "dist/index.js",
+  "module" : "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "description": "Unlock Protocol's contract addressess for various networks",
   "scripts": {
     "start": "tsc --watch",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
-    "build": "tsc",
+    "build": "tsup src/index.ts --dts --format esm,cjs",
     "clean": "rm -rf ./dist",
     "prepublish": "yarn build",
     "doc": "node ./bin/doc.js",
@@ -23,6 +30,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.35.0",
+    "tsup": "6.6.3",
     "typescript": "4.9.5"
   },
   "files": [
