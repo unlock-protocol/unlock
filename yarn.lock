@@ -14644,6 +14644,7 @@ __metadata:
     isomorphic-fetch: 3.0.0
     jsonwebtoken: 9.0.0
     lodash.isequal: 4.5.0
+    memory-cache-node: 1.4.0
     multer: 1.4.5-lts.1
     multer-s3: 3.0.1
     nock: 13.3.0
@@ -36295,6 +36296,13 @@ __metadata:
   dependencies:
     map-or-similar: ^1.5.0
   checksum: d51bdc3ed8c39b4b73845c90eb62d243ddf21899914352d0c303f5e1d477abcb192f4c605e008caa4a31d823225eeb22a99ba5ee825fb88d0c33382db3aee95a
+  languageName: node
+  linkType: hard
+
+"memory-cache-node@npm:1.4.0":
+  version: 1.4.0
+  resolution: "memory-cache-node@npm:1.4.0"
+  checksum: 538938d866500afd0805aeac8ab56d02444d8fe73b084ed499c3b8c4e4260d2b2f4bcbda6d2adbe2cea17834d50be7a7195dc67eda7b8e491e2786c996cc6531
   languageName: node
   linkType: hard
 
