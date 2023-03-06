@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const arbitrum: NetworkConfig = {
   publicProvider: 'https://arb1.arbitrum.io/rpc',
@@ -96,6 +96,7 @@ export const arbitrum: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0xd0b14797b9D08493392865647384974470202A78',
       },

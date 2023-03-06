@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const goerli: NetworkConfig = {
   publicProvider:
@@ -85,6 +85,7 @@ export const goerli: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
       },
