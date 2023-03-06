@@ -41,8 +41,8 @@
     "ts-loader": "9.4.2",
     "typescript": "4.9.5",
     "vite": "4.1.4",
-    "vitest": "^0.29.2",
-    "vitest-fetch-mock": "^0.2.2"
+    "vitest": "0.29.2",
+    "vitest-fetch-mock": "0.2.2"
   },
   "dependencies": {
     "babel-plugin-require-context-hook": "1.0.0",
