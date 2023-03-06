@@ -1,4 +1,4 @@
-import { RequestHandler, Response } from 'express'
+import { RequestHandler } from 'express'
 import { MemoryCache } from 'memory-cache-node'
 
 export interface Options {
