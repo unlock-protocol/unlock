@@ -9,6 +9,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
+import Link from 'next/link'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -186,7 +187,31 @@ export const CreditCardForm = ({
         ) : (
           <SettingCardDetail
             title="Enable Contract to Accept Credit Card"
-            description="Please accept Unlock Protocol will be processing this for you. Service & credit card processing fee will apply on your member’s purchase."
+            description={
+              <div className="flex flex-col gap-2">
+                <span>
+                  Please accept Unlock Protocol will be processing this for you.
+                  Service & credit card processing fee will apply on your
+                  member’s purchase.
+                </span>
+                <span>
+                  If you enable credit card payments for your lock, your members
+                  will usually be charged a higher amount than the amount for
+                  your lock. We use Stripe Connect and we add 10% of the price
+                  in order to cover the costs of Stripe, gas and our own
+                  developments costs.
+                </span>
+                <span>
+                  For more details see{' '}
+                  <Link
+                    className="font-semibold  text-brand-ui-primary"
+                    href="https://unlock-protocol.com/guides/enabling-credit-cards/"
+                  >
+                    Enabling Credit Cards guide
+                  </Link>
+                </span>
+              </div>
+            }
           />
         )}
 
