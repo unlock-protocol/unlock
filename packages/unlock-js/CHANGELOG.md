@@ -2,6 +2,11 @@
 
 # 0.33.4
 
+- refactor `customHookService`
+- add `getPasswordHookSigners`
+
+# 0.33.4
+
 - add `customHookService`
 
 # 0.33.3
