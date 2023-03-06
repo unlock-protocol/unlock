@@ -204,8 +204,10 @@ export const CreditCardForm = ({
                 <span>
                   For more details see{' '}
                   <Link
-                    className="font-semibold  text-brand-ui-primary"
+                    className="font-semibold text-brand-ui-primary"
                     href="https://unlock-protocol.com/guides/enabling-credit-cards/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Enabling Credit Cards guide
                   </Link>
