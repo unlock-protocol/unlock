@@ -229,28 +229,6 @@ export const useProvider = (config: any) => {
     await signOut()
   }
 
-  const changeNetwork = async (networkConf: NetworkConfig | number) => {
-    const networkConfig =
-      typeof networkConf === 'number'
-        ? config.networks[networkConf]
-        : networkConf
-
-    const { id } = networkConfig
-
-    // don't change network if not needed
-    if (id === network) {
-      return
-    }
-
-    if (provider.isUnlock) {
-      const newProvider = UnlockProvider.reconnect(provider, networkConfig)
-      await resetProvider(newProvider)
-    } else {
-      await switchWeb3ProviderNetwork(id)
-      setNetwork(id)
-    }
-  }
-
   const watchAsset = async ({
     address,
     symbol,
@@ -299,7 +277,6 @@ export const useProvider = (config: any) => {
     connectProvider,
     disconnectProvider,
     watchAsset,
-    changeNetwork,
     providerSend,
     isConnected,
     openConnectModal,
