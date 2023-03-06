@@ -88,6 +88,8 @@ export const PasswordContractHook = ({
                 <Button
                   type="button"
                   size="small"
+                  disabled={savePasswordMutation.isLoading}
+                  loading={savePasswordMutation.isLoading}
                   onClick={() => savePasswordMutation.mutateAsync()}
                 >
                   Save password
