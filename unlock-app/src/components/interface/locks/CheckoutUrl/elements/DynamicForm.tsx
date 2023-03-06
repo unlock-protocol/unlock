@@ -1,4 +1,9 @@
-import { Button, Input } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  AddressInput,
+  isAddressOrEns,
+} from '@unlock-protocol/ui'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import {
@@ -71,29 +76,29 @@ export const ConnectForm = ({ children }: any) => {
   return children({ ...methods })
 }
 
-const TextInput = ({ props, type, errors, ...rest }: FieldProps) => {
+const TextInput = ({ props, name, type, ...rest }: FieldProps) => {
   const { enum: enumList = [] } = props ?? {}
   const hasOptions = enumList?.length
   const isNumericField =
-    (Array.isArray(props.type) && props.type.includes('number')) ||
-    type === 'number'
+    (Array.isArray(type) && props.type.includes('number')) || type === 'number'
   const inputType = isNumericField ? 'number' : type
-
-  const error = errors?.[rest.name] ? errors?.[rest.name]?.message : ''
 
   if (!hasOptions) {
     return (
       <ConnectForm>
-        {({ register }: any) => (
-          <Input
-            type={inputType}
-            {...register(rest.name, {
-              valueAsNumber: isNumericField,
-            })}
-            {...rest}
-            error={error}
-          />
-        )}
+        {({ register, formState: { errors } }: any) => {
+          const error = errors?.[name]?.message ?? ''
+          return (
+            <Input
+              type={inputType}
+              {...register(name, {
+                valueAsNumber: isNumericField,
+              })}
+              {...rest}
+              error={error}
+            />
+          )
+        }}
       </ConnectForm>
     )
   }
@@ -109,7 +114,7 @@ const TextInput = ({ props, type, errors, ...rest }: FieldProps) => {
         {({ register }: any) => (
           <select
             className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100 pl-2.5 py-1.5 text-sm"
-            {...register(rest.name)}
+            {...register(name)}
             {...rest}
           >
             {options?.map(({ label, value }: any) => (
@@ -155,10 +160,55 @@ const BooleanInput = ({ props, name, label, ...rest }: any) => {
   )
 }
 
+const AddressInputComponent = ({
+  name,
+  label,
+  description,
+  size,
+  onChange,
+}: any) => {
+  return (
+    <ConnectForm>
+      {({ register, watch }: any) => {
+        const value = watch(name) ?? ''
+
+        const fields = watch()
+        return (
+          <div className="flex flex-col gap-1">
+            <AddressInput
+              name={name}
+              label={label}
+              size={size}
+              autoComplete="off"
+              value={value}
+              {...register(name)}
+              onChange={(address: any) => {
+                const isValid = isAddressOrEns(address)
+                onChange({
+                  ...fields,
+                  [name]: isValid ? address : '',
+                })
+              }}
+            />
+            {description && (
+              <span className="text-xs text-gray-600 ">{description}</span>
+            )}
+          </div>
+        )
+      }}
+    </ConnectForm>
+  )
+}
+
 const ComponentByTypeMap: ComponentByTypeMapProps = {
   string: TextInput,
   integer: TextInput,
   boolean: BooleanInput,
+  address: AddressInputComponent,
+}
+
+const NameMap: Record<string, string> = {
+  referrer: 'address',
 }
 
 const TypeMap: Record<string, string> = {
@@ -196,8 +246,6 @@ export const DynamicForm = ({
     resolver: zodResolver(schema),
   })
 
-  const { errors } = methods.formState
-
   const onSubmit = (fields: z.infer<typeof schema>) => {
     if (typeof onSubmitCb === 'function') {
       onSubmitCb(fields)
@@ -216,8 +264,9 @@ export const DynamicForm = ({
         <form
           className="flex flex-col gap-3 outline-none"
           onSubmit={methods.handleSubmit(onSubmit)}
-          onChange={() => {
-            onChange(methods.getValues())
+          onChange={async () => {
+            const values = await methods.getValues()
+            onChange(values)
           }}
         >
           {Object.entries(properties ?? {}).map(([fieldName, props], index) => {
@@ -229,6 +278,27 @@ export const DynamicForm = ({
             const isUnionType =
               Array.isArray(type) &&
               (type.includes('string') || type.includes('number'))
+
+            // custom field by field name
+            const hasCustomNameMap = NameMap?.[fieldName]
+            if (hasCustomNameMap) {
+              Component = ComponentByTypeMap[NameMap[fieldName]]
+              return (
+                <>
+                  <Component
+                    key={index}
+                    control={methods.control}
+                    name={fieldName}
+                    onChange={onChange}
+                    props={props}
+                    label={getFieldLabel(fieldName, fieldRequired)}
+                    required={fieldRequired}
+                    description={description}
+                    size="small"
+                  />
+                </>
+              )
+            }
 
             if (isUnionType) {
               inputType = TypeMap.string
@@ -256,8 +326,6 @@ export const DynamicForm = ({
                             name={name}
                             description={description}
                             props={fieldProps}
-                            schema={schema}
-                            errors={errors}
                           />
                         </>
                       )
@@ -279,8 +347,6 @@ export const DynamicForm = ({
                   required={fieldRequired}
                   description={description}
                   size="small"
-                  schema={schema}
-                  errors={errors}
                 />
               </div>
             )

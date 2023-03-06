@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const gnosis: NetworkConfig = {
   publicProvider: 'https://rpc.gnosischain.com',
@@ -70,6 +70,7 @@ export const gnosis: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x927D68eAE936Ec0111f01Fc4Ddd9cC57DB3f0Af2',
       },
