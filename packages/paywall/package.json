@@ -47,6 +47,7 @@
   "dependencies": {
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.7",
-    "postmate": "1.5.2"
+    "postmate": "1.5.2",
+    "vite-plugin-css-injected-by-js": "^3.0.1"
   }
 }
