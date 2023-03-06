@@ -18,7 +18,7 @@ export async function defiLammaPrice({
   network,
   address,
   amount = 1,
-}: Options) {
+}: Options): Promise<Partial<Price & { priceInAmount: number }>> {
   const networkConfig = networks[network]
   if (!network) {
     return {}

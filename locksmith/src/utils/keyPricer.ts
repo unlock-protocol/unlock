@@ -1,17 +1,13 @@
-import { ethers } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-import logger from '../logger'
-
 import * as Normalizer from './normalizer'
 import { ItemizedKeyPrice } from '../types'
-import PriceConversion from './priceConversion'
 import GasPrice from './gasPrice'
+import { defiLammaPrice } from './pricing'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
 const stripePercentage = 0.029
-const ZERO = ethers.constants.AddressZero
 export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
 
 export const GAS_COST_TO_GRANT = 250000
@@ -36,26 +32,18 @@ export default class KeyPricer {
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
       network,
-      { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
+      { fields: ['currencyContractAddress', 'keyPrice'] }
     )
-    let symbol =
-      networks[network]?.nativeCurrency?.coinbase ||
-      networks[network]?.nativeCurrency?.symbol
-    if (lock?.currencyContractAddress !== ZERO && lock.currencySymbol) {
-      symbol = lock.currencySymbol
+
+    const pricing = await defiLammaPrice({
+      network,
+      address: lock.currencyContractAddress,
+      amount: parseFloat(lock.keyPrice),
+    })
+    if (!pricing?.priceInAmount) {
+      throw new Error('Could not get pricing for lock')
     }
-    if (!symbol) {
-      logger.info(
-        `We could not determine currency symbol for ${lockAddress} on ${network}`
-      )
-      throw new Error(`Missing currency`)
-    }
-    const priceConversion = new PriceConversion()
-    const usdPrice = await priceConversion.convertToUSD(
-      symbol.toUpperCase(),
-      lock.keyPrice
-    )
-    return usdPrice
+    return pricing.priceInAmount * 100 // convert to cents
   }
 
   // Fee denominated in cents by default. multiply base to get more accurate
@@ -66,8 +54,8 @@ export default class KeyPricer {
 
     const gasPrice = new GasPrice()
     // Price of gas
-    const gasCost = (await gasPrice.gasPriceUSD(network, GAS_COST)) * base
-    return gasCost
+    const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST)
+    return gasCost * base
   }
 
   // Fee denominated in cents
@@ -89,9 +77,11 @@ export default class KeyPricer {
     quantity = 1
   ): Promise<ItemizedKeyPrice> {
     // Here we need to get the conversion as well!
-    const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
+    const [usdKeyPrice, gasFee] = await Promise.all([
+      this.keyPriceUSD(lockAddress, network),
+      this.gasFee(network),
+    ])
     const usdKeyPricing = usdKeyPrice * quantity
-    const gasFee = await this.gasFee(network)
     let unlockServiceFee = gasFee
 
     //  Temporary : for some locks, Unlock labs does not take credit card fees (only gas)

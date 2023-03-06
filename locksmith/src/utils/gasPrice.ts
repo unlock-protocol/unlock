@@ -1,7 +1,6 @@
 import { ethers, utils, BigNumber } from 'ethers'
 import networks from '@unlock-protocol/networks'
-
-import PriceConversion from './priceConversion'
+import { defiLammaPrice } from './pricing'
 
 export default class GasPrice {
   // gasCost is expressed in gas, returns cost in base currency (ether on mainnet...)
@@ -19,17 +18,14 @@ export default class GasPrice {
   // Gas price denominated in cents
   async gasPriceUSD(network: number, gasCost: number): Promise<number> {
     const gasPrice = await this.gasPriceETH(network, gasCost)
-    // Cost in currency
-    let symbol = 'ETH'
-    if (network === 100) {
-      symbol = 'DAI'
+    const pricing = await defiLammaPrice({
+      network,
+      amount: gasPrice,
+    })
+
+    if (!pricing) {
+      throw new Error(`Missing pricing for network ${network}`)
     }
-    if (network === 137) {
-      symbol = 'MATIC'
-    }
-    // TODO: support more "native" currencies
-    const priceConversion = new PriceConversion()
-    const usdPrice = await priceConversion.convertToUSD(symbol, gasPrice)
-    return usdPrice
+    return pricing.priceInAmount! * 100
   }
 }
