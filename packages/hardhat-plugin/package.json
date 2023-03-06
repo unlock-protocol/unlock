@@ -39,7 +39,7 @@
     "@types/chai": "4.3.4",
     "@types/fs-extra": "11.0.1",
     "@types/mocha": "10.0.1",
-    "@types/node": "18.14.2",
+    "@types/node": "18.14.4",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
