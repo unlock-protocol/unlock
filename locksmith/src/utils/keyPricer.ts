@@ -33,6 +33,7 @@ export default class KeyPricer {
   }
 
   async keyPriceUSD(lockAddress: string, network: number) {
+    // can we reduce load here?
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
       network,
