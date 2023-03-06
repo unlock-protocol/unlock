@@ -12,7 +12,7 @@
     "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
-    "test": "NODE_ENV=test vitest run",
+    "test": "NODE_ENV=test vitest run --coverage",
     "clean": "rm -rf build dist coverage",
     "ci": "yarn test && yarn build"
   },
