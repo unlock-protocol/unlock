@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
   id: 1,
@@ -111,6 +111,7 @@ export const mainnet: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
       },
