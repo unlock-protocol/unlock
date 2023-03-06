@@ -86,13 +86,11 @@ export class StaticJsonRpcBatchProvider extends ethers.providers
       network = await super.detectNetwork()
 
       if (!network) {
-        if (!network) {
-          ethers.logger.throwError(
-            'no network detected',
-            ethers.utils.Logger.errors.UNKNOWN_ERROR,
-            {}
-          )
-        }
+        ethers.logger.throwError(
+          'no network detected',
+          ethers.utils.Logger.errors.UNKNOWN_ERROR,
+          {}
+        )
       }
 
       // If still not set, set it
