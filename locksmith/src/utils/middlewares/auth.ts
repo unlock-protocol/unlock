@@ -25,6 +25,9 @@ declare global {
       signee: string
       chain: number
     }
+    interface Response {
+      sendResponse: any
+    }
   }
 }
 
