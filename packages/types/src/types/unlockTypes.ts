@@ -38,6 +38,10 @@ export interface Token {
   mainnetAddress?: string
 }
 
+export enum HookType {
+  PASSWORD = 'PASSWORD',
+}
+
 export const HooksName = [
   'onKeyPurchaseHook',
   'onKeyCancelHook',
@@ -51,6 +55,7 @@ export const HooksName = [
 export type HookName = (typeof HooksName)[number]
 
 export interface Hook {
+  id: HookType
   name: string
   address: string
   description?: string

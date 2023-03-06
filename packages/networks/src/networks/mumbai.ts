@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mumbai: NetworkConfig = {
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
@@ -89,6 +89,7 @@ export const mumbai: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
       },

@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const polygon: NetworkConfig = {
   publicProvider: 'https://polygon-rpc.com/',
@@ -105,6 +105,7 @@ export const polygon: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
       },
