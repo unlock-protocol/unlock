@@ -21,12 +21,15 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     }
     const key = (req.originalUrl || req.url).trim().toLowerCase()
     const cached = cache.retrieveItemValue(key)
-    if (cached) {
-      return res.send(cached)
-    }
     res.sendResponse = res.send
+    if (cached) {
+      return res.sendResponse(cached)
+    }
     res.send = (body) => {
-      cache.storeExpiringItem(key, body, ttl)
+      // Only cache 200 responses
+      if ([200].includes(res.statusCode)) {
+        cache.storeExpiringItem(key, body, ttl)
+      }
       return res.sendResponse(body)
     }
     return next()

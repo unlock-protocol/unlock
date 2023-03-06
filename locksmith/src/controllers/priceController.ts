@@ -17,22 +17,19 @@ export const fiatPrice = async (
   const quantity = Number(req.query.quantity || 1)
   try {
     const fulfillmentDispatcher = new Dispatcher()
-
-    const hasEnoughToPayForGas =
-      await fulfillmentDispatcher.hasFundsForTransaction(req.chain)
-
-    // check that we have a Stripe key for this lock!
-    const stripeConnected = await getStripeConnectForLock(
-      lockAddress,
-      req.chain
-    )
-
     const pricer = new KeyPricer()
-    const pricing = await pricer.generate(lockAddress, req.chain, quantity)
 
-    // let's see if the lock was authorized for credit card payments
-    const isAuthorizedForCreditCard =
-      await AuthorizedLockOperations.hasAuthorization(lockAddress, req.chain)
+    const [
+      hasEnoughToPayForGas,
+      stripeConnected,
+      pricing,
+      isAuthorizedForCreditCard,
+    ] = await Promise.all([
+      fulfillmentDispatcher.hasFundsForTransaction(req.chain),
+      getStripeConnectForLock(lockAddress, req.chain),
+      pricer.generate(lockAddress, req.chain, quantity),
+      AuthorizedLockOperations.hasAuthorization(lockAddress, req.chain),
+    ])
 
     // Let's check that the price is larger than 50cts
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
@@ -55,8 +52,8 @@ export const fiatPrice = async (
     })
   } catch (error) {
     logger.error('PriceController.fiatPrice', error)
-    // Not caching this response as it is not a static response
-    return res.sendResponse({})
+    // TODO: return a 500 error - work around for now to avoid breaking compatibility - response won't be cached
+    return res.status(201).send({})
   }
 }
 
