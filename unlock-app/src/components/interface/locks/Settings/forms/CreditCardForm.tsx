@@ -190,13 +190,16 @@ export const CreditCardForm = ({
             description={
               <div className="flex flex-col gap-2">
                 <span>
-                  Credit card processing is not part of the core protocol. Unlock Labs processes non-crypto payments via
-                  our Stripe integration and includes fees that are applied on top of your lock's key price.
+                  {`Credit card processing is not part of the core protocol.
+                  Unlock Labs processes non-crypto payments via our Stripe
+                  integration and includes fees that are applied on top of your
+                  lock's key price.`}
                 </span>
                 <span>
                   If you enable credit card payments for your lock, your members
                   will usually be charged a higher amount than the amount for
-                  your lock. The Unlock Labs fee is 10%, which must be added to the Stripe fees and gas costs.
+                  your lock. The Unlock Labs fee is 10%, which must be added to
+                  the Stripe fees and gas costs.
                 </span>
                 <span>
                   For more details see{' '}
