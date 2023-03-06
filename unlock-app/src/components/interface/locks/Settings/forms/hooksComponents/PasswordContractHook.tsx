@@ -8,6 +8,7 @@ import { CustomComponentProps } from '../UpdateHooksForm'
 import { CustomHookService } from '@unlock-protocol/unlock-js'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation } from '@tanstack/react-query'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export const PasswordContractHook = ({
   name,
@@ -20,6 +21,7 @@ export const PasswordContractHook = ({
   const customContractHook = new CustomHookService(networks)
   const [hookValue, setHookValue] = useState('')
   const [signer, setSigner] = useState('')
+  const [hasSigner] = useState(false)
 
   useEffect(() => {
     if (hookValue.length === 0) return
@@ -44,15 +46,21 @@ export const PasswordContractHook = ({
     )
   }
 
-  const savePasswordMutation = useMutation(onSavePassword, {
-    onSuccess: () => {
-      // todo: save hooks value
-    },
-  })
+  const savePasswordMutation = useMutation(onSavePassword)
+
+  const handleSavePassword = async () => {
+    const promise = savePasswordMutation.mutateAsync()
+
+    await ToastHelper.promise(promise, {
+      loading: 'Updating password...',
+      success: 'Password is set for the lock.',
+      error: 'There is an issue with password update.',
+    })
+  }
 
   return (
     <ConnectForm>
-      {({ getValues, formState: { dirtyFields } }: any) => {
+      {({ getValues, formState: { dirtyFields }, setValue }: any) => {
         const value = getValues(name)
 
         const isFieldDirty = dirtyFields[name]
@@ -73,13 +81,10 @@ export const PasswordContractHook = ({
                   setHookValue(e?.target?.value)
                 }
                 description={
-                  hookValue && (
-                    <>
-                      <span>The signer corresponding to hook is </span>
-                      <span className="font-semibold text-brand-ui-primary">
-                        {signer}
-                      </span>
-                    </>
+                  hasSigner && (
+                    <span>
+                      Password already set, set and save a new one to update.{' '}
+                    </span>
                   )
                 }
                 disabled={disabled}
@@ -90,7 +95,10 @@ export const PasswordContractHook = ({
                   size="small"
                   disabled={savePasswordMutation.isLoading}
                   loading={savePasswordMutation.isLoading}
-                  onClick={() => savePasswordMutation.mutateAsync()}
+                  onClick={async () => {
+                    await handleSavePassword()
+                    setValue(name, value)
+                  }}
                 >
                   Save password
                 </Button>
