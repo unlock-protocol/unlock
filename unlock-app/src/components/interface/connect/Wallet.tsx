@@ -40,10 +40,8 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
         <ConnectButton
           icon={<SvgComponents.WalletConnect width={40} height={40} />}
           highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
-          onClick={(event) => {
-            event.preventDefault()
-            authenticateWithProvider('WALLET_CONNECT')
-          }}
+          loading={isConnecting === 'WALLET_CONNECT'}
+          onClick={createOnConnectHandler('WALLET_CONNECT')}
         >
           WalletConnect
         </ConnectButton>
@@ -51,7 +49,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
           icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
           highlight={recentlyUsedProvider === 'COINBASE'}
           loading={isConnecting === 'COINBASE'}
-          onClick={createOnConnectHandler('METAMASK')}
+          onClick={createOnConnectHandler('COINBASE')}
         >
           Coinbase Wallet
         </ConnectButton>
@@ -72,6 +70,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
         <ConnectButton
           icon={<SvgComponents.Unlock width={40} height={40} />}
           highlight={recentlyUsedProvider === 'UNLOCK'}
+          loading={isConnecting === 'UNLOCK'}
           onClick={(event) => {
             event.preventDefault()
             onUnlockAccount()
