@@ -14638,6 +14638,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     eslint: 8.35.0
+    tsup: 6.6.3
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
