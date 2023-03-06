@@ -9,12 +9,14 @@ import logger from '../logger'
 import { GAS_COST } from '../utils/keyPricer'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
+import executeAndRetry from './retries'
 
 interface KeyToGrant {
   recipient: string
   manager?: string
   expiration?: number
 }
+
 export default class Dispatcher {
   /**
    * Helper function to return a provider for a network id
@@ -193,14 +195,16 @@ export default class Dispatcher {
 
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
-    return await walletService.purchaseKey(
-      {
-        lockAddress,
-        owner,
-        data,
-      },
-      { maxFeePerGas, maxPriorityFeePerGas },
-      cb
+    return executeAndRetry(
+      walletService.purchaseKey(
+        {
+          lockAddress,
+          owner,
+          data,
+        },
+        { maxFeePerGas, maxPriorityFeePerGas },
+        cb
+      )
     )
   }
 
@@ -219,13 +223,15 @@ export default class Dispatcher {
     const referrer = networks[network]?.teamMultisig
 
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-    return walletService.renewMembershipFor(
-      {
-        lockAddress,
-        referrer: referrer!,
-        tokenId: keyId,
-      },
-      { maxFeePerGas, maxPriorityFeePerGas }
+    return executeAndRetry(
+      walletService.renewMembershipFor(
+        {
+          lockAddress,
+          referrer: referrer!,
+          tokenId: keyId,
+        },
+        { maxFeePerGas, maxPriorityFeePerGas }
+      )
     )
   }
 
@@ -245,14 +251,16 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
     const { wallet, provider } = await this.getPurchaser(network)
     await walletService.connect(provider, wallet)
-    await walletService.grantKeyExtension(
-      {
-        lockAddress,
-        tokenId: keyId.toString(),
-        duration: 0,
-      },
-      {} /** TransactionOptions */,
-      callback
+    return executeAndRetry(
+      walletService.grantKeyExtension(
+        {
+          lockAddress,
+          tokenId: keyId.toString(),
+          duration: 0,
+        },
+        {} /** TransactionOptions */,
+        callback
+      )
     )
   }
 
@@ -289,15 +297,17 @@ export default class Dispatcher {
     })
 
     await walletService.connect(provider, wallet)
-    return walletService.grantKeys(
-      {
-        lockAddress,
-        recipients,
-        keyManagers,
-        expirations,
-      },
-      transactionOptions,
-      cb
+    return executeAndRetry(
+      walletService.grantKeys(
+        {
+          lockAddress,
+          recipients,
+          keyManagers,
+          expirations,
+        },
+        transactionOptions,
+        cb
+      )
     )
   }
 
@@ -312,10 +322,12 @@ export default class Dispatcher {
     await walletService.connect(provider, wallet)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
-    return walletService.createLock(
-      options,
-      { maxFeePerGas, maxPriorityFeePerGas },
-      callback
+    return executeAndRetry(
+      walletService.createLock(
+        options,
+        { maxFeePerGas, maxPriorityFeePerGas },
+        callback
+      )
     )
   }
 }
