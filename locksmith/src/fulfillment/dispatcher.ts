@@ -23,6 +23,11 @@ export default class Dispatcher {
     )
   }
 
+  /**
+   * function that yields a provider and connected wallet based on the config
+   * @param network
+   * @returns
+   */
   async getPurchaser(network: number) {
     const provider = this.getProviderForNetwork(network)
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
