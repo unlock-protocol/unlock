@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.20.12",
+    "@babel/core": "7.21.0",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "@typescript-eslint/parser": "5.54.0",
     "babel-eslint": "10.1.0",
@@ -16,10 +16,10 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "eslint": "8.33.0",
+    "eslint": "8.35.0",
     "eslint-plugin-prettier": "latest",
     "husky": "8.0.3",
-    "lint-staged": "13.1.0",
+    "lint-staged": "13.1.2",
     "prettier": "2.8.3"
   },
   "workspaces": [

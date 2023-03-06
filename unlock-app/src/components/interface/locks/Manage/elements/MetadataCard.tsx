@@ -160,7 +160,6 @@ export const MetadataCard = ({
   const hasEmail = Object.entries(data || {})
     .map(([key]) => key.toLowerCase())
     .includes('email')
-  const hasExtraData = items?.length > 0 || isCheckedIn
 
   const onEmailChange = (values: FieldValues) => {
     setData({
@@ -201,7 +200,6 @@ export const MetadataCard = ({
         userAddress={owner}
         lockAddress={lockAddress}
         network={network!}
-        hasExtraData={hasExtraData}
         hasEmail={hasEmail}
         extraDataItems={items as any}
         onEmailChange={onEmailChange}
@@ -389,7 +387,6 @@ const UpdateEmailModal = ({
   userAddress,
   lockAddress,
   network,
-  hasExtraData,
   hasEmail,
   extraDataItems,
   onEmailChange,
@@ -399,7 +396,6 @@ const UpdateEmailModal = ({
   userAddress: string
   lockAddress: string
   network: number
-  hasExtraData: boolean
   hasEmail: boolean
   extraDataItems: [string, string | number][]
   setIsOpen: (status: boolean) => void
@@ -418,33 +414,6 @@ const UpdateEmailModal = ({
     setIsOpen(false)
     if (typeof onEmailChange === 'function') {
       onEmailChange(formFields)
-    }
-  }
-
-  const createMetadata = async (params: any, callback?: () => void) => {
-    try {
-      const createMetadataPromise = storage.createUserMetadata(
-        network,
-        lockAddress,
-        userAddress,
-        {
-          metadata: {
-            protected: params.metadata,
-          },
-        }
-      )
-      await ToastHelper.promise(createMetadataPromise, {
-        loading: 'Saving email address',
-        success: 'Email successfully added to member',
-        error: 'We could not save the email address.',
-      })
-      if (typeof callback === 'function') {
-        callback()
-      }
-    } catch (err: any) {
-      ToastHelper.error(
-        err?.message || `Can't update metadata, please try again.`
-      )
     }
   }
 
@@ -498,15 +467,9 @@ const UpdateEmailModal = ({
         metadata,
       }
 
-      if (hasExtraData) {
-        updateMetadata(params, () => {
-          updateData(formFields)
-        })
-      } else {
-        createMetadata(params, () => {
-          updateData(formFields)
-        })
-      }
+      updateMetadata(params, () => {
+        updateData(formFields)
+      })
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }
