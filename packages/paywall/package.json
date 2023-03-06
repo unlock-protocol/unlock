@@ -1,8 +1,14 @@
 {
   "name": "@unlock-protocol/paywall",
   "version": "0.2.0",
-  "exports": "./dist/unlock.latest.min.js",
-  "main": "./dist/unlock.latest.min.js",
+  "main": "./dist/unlock.latest.umd.js",
+  "module": "./dist/unlock.latest.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/unlock.latest.es.js",
+      "require": "./dist/unlock.latest.umd.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/unlock-protocol/unlock.git",
@@ -10,7 +16,7 @@
   },
   "scripts": {
     "build:tsc": "tsc",
-    "build": "webpack --mode=production --config webpack.config.js",
+    "build": "vite build",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "test": "NODE_ENV=test vitest run --coverage",
     "clean": "rm -rf build dist coverage",

@@ -1,4 +1,4 @@
-import networks from '@unlock-protocol/networks'
+import * as networks from '@unlock-protocol/networks'
 import { NetworkConfigs } from '@unlock-protocol/types'
 
 export const networkConfigs: NetworkConfigs = {}

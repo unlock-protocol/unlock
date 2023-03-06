@@ -1,6 +1,22 @@
+import path from 'path'
 import { defineConfig } from 'vitest/config'
+import { dependencies } from './package.json'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
+  build: {
+    target: ['es2020', 'esnext'],
+    lib: {
+      entry: 'src/index.ts',
+      name: '@unlock-protocol/paywall',
+      fileName: (format) => `unlock.latest.${format}.js`,
+    },
+    rollupOptions: {
+      external: [...Object.keys(dependencies)],
+      plugins: [tsconfigPaths()],
+    },
+    sourcemap: true,
+  },
   test: {
     globals: true,
     environment: 'jsdom',
