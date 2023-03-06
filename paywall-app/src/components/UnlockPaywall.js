@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import { setupUnlockProtocolVariable } from '../utils'
-import { networkConfigs, Paywall } from '@unlock-protocol/paywall'
+import {
+  networkConfigs,
+  Paywall,
+  setupUnlockProtocolVariable,
+} from '@unlock-protocol/paywall'
 
 export default function UnlockPaywall() {
   useEffect(() => {
