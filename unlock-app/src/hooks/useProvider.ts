@@ -6,7 +6,6 @@ import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import { NetworkConfig } from '@unlock-protocol/types'
 import { signOut } from '~/config/storage'
 
 export interface EthereumWindow extends Window {
