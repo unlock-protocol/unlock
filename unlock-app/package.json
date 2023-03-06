@@ -69,7 +69,7 @@
     "zod-to-json-schema": "3.20.4"
   },
   "devDependencies": {
-    "@testing-library/react": "13.4.0",
+    "@testing-library/react": "14.0.0",
     "@testing-library/react-hooks": "8.0.1",
     "@types/file-saver": "2.0.5",
     "@types/postmate": "1.5.2",
