@@ -6,16 +6,13 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { HookName } from '@unlock-protocol/types'
+import { HookName, HookType } from '@unlock-protocol/types'
 import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
 
 const ZERO = ethers.constants.AddressZero
 
-enum HookType {
-  CUSTOM_ADDRESS = 'CUSTOM_ADDRESS',
-}
 interface UpdateHooksFormProps {
   lockAddress: string
   network: number
@@ -35,10 +32,17 @@ interface FormProps {
 }
 
 type FormPropsKey = keyof FormProps
+
+interface OptionProps {
+  label: string
+  value: HookType | string
+  component: (args: CustomComponentProps) => JSX.Element
+}
 interface HookValueProps {
   label: string
   fromPublicLockVersion: number
   hookName: HookName
+  options?: OptionProps[]
 }
 
 export interface CustomComponentProps {
@@ -49,21 +53,11 @@ export interface CustomComponentProps {
   network: number
 }
 
-const OPTIONS: {
-  label: string
-  value: HookType | string
-  component: (args: CustomComponentProps) => JSX.Element
-}[] = [
+const GENERAL_OPTIONS: OptionProps[] = [
   {
     label: 'Custom Contract',
     value: HookType.CUSTOM_ADDRESS,
     component: (args) => <CustomContractHook {...args} />,
-  },
-  // todo: show only for match of `hooks` from `networks`
-  {
-    label: 'Password',
-    value: 'password',
-    component: (args) => <PasswordContractHook {...args} />,
   },
 ]
 
@@ -72,6 +66,13 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
     label: 'Key purchase hook',
     fromPublicLockVersion: 7,
     hookName: 'onKeyPurchaseHook',
+    options: [
+      {
+        label: 'Password',
+        value: HookType.PASSWORD,
+        component: (args) => <PasswordContractHook {...args} />,
+      },
+    ],
   },
   keyCancel: {
     label: 'Key cancel hook',
@@ -107,7 +108,7 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
 
 interface HookSelectProps {
   label: string
-  name: string
+  name: FormPropsKey
   disabled: boolean
   network: number
   lockAddress: string
@@ -121,16 +122,17 @@ const HookSelect = ({
   network,
 }: HookSelectProps) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
-
   return (
     <ConnectForm>
       {() => {
-        const Option = OPTIONS.find((option) => option.value === selectedOption)
+        const hookOptionsByName = HookMapping[name]?.options ?? []
+        const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
+        const Option = options.find((option) => option.value === selectedOption)
 
         return (
           <div className="flex flex-col gap-1">
             <Select
-              options={OPTIONS}
+              options={options}
               label={label}
               onChange={(value) => {
                 setSelectedOption(`${value}`)
