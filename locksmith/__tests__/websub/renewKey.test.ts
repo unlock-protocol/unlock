@@ -99,7 +99,6 @@ vi.mock('ethers', async () => {
       providers: {
         JsonRpcProvider: provider,
         JsonRpcBatchProvider: provider,
-        StaticJsonRpcProvider: provider,
       },
       Wallet: vi.fn(),
       utils: {

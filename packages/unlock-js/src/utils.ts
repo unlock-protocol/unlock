@@ -77,30 +77,3 @@ export class FetchError extends Error {
     this.data = data || { message }
   }
 }
-
-export class StaticJsonRpcBatchProvider extends ethers.providers
-  .JsonRpcBatchProvider {
-  async detectNetwork(): Promise<ethers.providers.Network> {
-    let network = this.network
-    if (network == null) {
-      network = await super.detectNetwork()
-
-      if (!network) {
-        ethers.logger.throwError(
-          'no network detected',
-          ethers.utils.Logger.errors.UNKNOWN_ERROR,
-          {}
-        )
-      }
-
-      // If still not set, set it
-      if (this._network == null) {
-        // A static network does not support "any"
-        ethers.utils.defineReadOnly(this, '_network', network)
-
-        this.emit('network', network, null)
-      }
-    }
-    return network
-  }
-}

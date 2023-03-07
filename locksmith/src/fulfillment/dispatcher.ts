@@ -17,9 +17,8 @@ interface KeyToGrant {
 }
 export default class Dispatcher {
   getProviderForNetwork(network: number) {
-    return new ethers.providers.StaticJsonRpcProvider(
-      networks[network].publicProvider,
-      network
+    return new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
     )
   }
   async getPurchaser(network: number) {

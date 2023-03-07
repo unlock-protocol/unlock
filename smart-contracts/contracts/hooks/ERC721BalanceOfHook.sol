@@ -31,13 +31,15 @@ contract ERC721BalanceOfHook {
     nftAddresses[_lockAddress] = _nftAddress;
   }
 
-  function hasValidKey(
+  function isValidKey(
     address _lockAddress,
+    address, // operator
+    uint, //tokenId
+    uint, // _expirationTimestamp,
     address _keyOwner,
-    uint256, // _expirationTimestamp,
-    bool isValidKey
-  ) external view returns (bool) {
-    if (isValidKey) return true;
+    bool _isValidKey
+  ) public view returns (bool) {
+    if (_isValidKey) return true;
 
     // get nft contract
     address nftAddress = nftAddresses[_lockAddress];
