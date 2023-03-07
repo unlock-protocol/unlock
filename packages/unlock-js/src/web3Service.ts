@@ -972,18 +972,21 @@ export default class Web3Service extends UnlockService {
     params: {
       lockAddress: string
       signerAddress: string
+      contractAddress: string
       network: number
     },
     signer: ethers.Wallet | ethers.providers.JsonRpcSigner
   ) {
-    const { lockAddress, signerAddress, network } = params ?? {}
+    const { lockAddress, signerAddress, contractAddress, network } =
+      params ?? {}
     const contract = await this.getHookContract({
       network,
-      address: signerAddress,
+      address: contractAddress,
       abi: passwordHookAbi,
       signer,
     })
-    return contract.setSigner(lockAddress, signerAddress)
+    const tx = await contract.setSigner(lockAddress, signerAddress)
+    return tx
   }
 
   /**
@@ -997,18 +1000,10 @@ export default class Web3Service extends UnlockService {
     },
     signer: ethers.Wallet | ethers.providers.JsonRpcSigner
   ) {
-    const { lockAddress, network } = params ?? {}
-
-    const lockContract = await this.getLockContract(
-      lockAddress,
-      this.providerForNetwork(network)
-    )
-    const address = await lockContract.onTokenURIHook({ lockAddress, network })
-    console.log('address', address)
-
+    const { lockAddress, contractAddress, network } = params ?? {}
     const contract = await this.getHookContract({
       network,
-      address,
+      address: contractAddress,
       abi: passwordHookAbi,
       signer,
     })
