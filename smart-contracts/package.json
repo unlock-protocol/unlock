@@ -49,7 +49,6 @@
     "hardhat-gas-reporter": "1.0.9",
     "hardhat-storage-layout": "0.1.7",
     "hardhat-tracer": "2.1.2",
-    "hardlydifficult-eth": "1.1.4",
     "lint-staged": "13.0.4",
     "prettier": "2.6.1",
     "prettier-plugin-solidity": "1.0.0",
