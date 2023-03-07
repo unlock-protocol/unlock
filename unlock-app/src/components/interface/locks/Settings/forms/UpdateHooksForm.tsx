@@ -261,7 +261,6 @@ export const UpdateHooksForm = ({
         className="grid gap-6"
         onSubmit={methods.handleSubmit(onSubmit)}
         onChange={() => {
-          console.log(methods.getValues())
           methods.trigger()
         }}
       >
