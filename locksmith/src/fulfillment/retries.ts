@@ -1,4 +1,4 @@
-const MAX_RETRIES = 2
+const MAX_RETRIES = 1
 const RETRY_DELAY = 500
 
 /** Retry transaction */
