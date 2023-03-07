@@ -358,22 +358,27 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
     const baseTokenURI = lockContract.try_tokenURI(BigInt.fromI32(0))
 
     // update only if baseTokenURI has changed
-    if (
-      !baseTokenURI.reverted &&
-      baseTokenURI.value !== event.params.baseTokenURI
-    ) {
-      for (let i = 0; i < totalKeys.toI32(); i++) {
-        const keyID = genKeyID(event.address, `${i + 1}`)
-        const key = Key.load(keyID)
-        if (key) {
-          const tokenURI = lockContract.try_tokenURI(key.tokenId)
-          if (!tokenURI.reverted) {
-            key.tokenURI = tokenURI.value
-            key.save()
-          }
-        }
-      }
-    }
+    // Unfortunately, this does not scale well.
+    // On large collections this times out which then breaks indexing on the subgraph.
+    // Relevant links:
+    // - discord message: https://discord.com/channels/438038660412342282/438070183794573313/1082786404691628112
+    // - github issue: https://github.com/graphprotocol/graph-node/issues/3576
+    // if (
+    //   !baseTokenURI.reverted &&
+    //   baseTokenURI.value !== event.params.baseTokenURI
+    // ) {
+    //   for (let i = 0; i < totalKeys.toI32(); i++) {
+    //     const keyID = genKeyID(event.address, `${i + 1}`)
+    //     const key = Key.load(keyID)
+    //     if (key) {
+    //       const tokenURI = lockContract.try_tokenURI(key.tokenId)
+    //       if (!tokenURI.reverted) {
+    //         key.tokenURI = tokenURI.value
+    //         key.save()
+    //       }
+    //     }
+    //   }
+    // }
 
     // lock.symbol = event.params.symbol
     lock.save()
