@@ -58,7 +58,7 @@ export interface CustomComponentProps {
 const GENERAL_OPTIONS: OptionProps[] = [
   {
     label: 'Custom Contract',
-    value: HookType.CUSTOM_ADDRESS,
+    value: HookType.CUSTOM_CONTRACT,
     component: (args) => <CustomContractHook {...args} />,
   },
 ]
