@@ -8,7 +8,7 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
-import { CryptoIcon } from '../../elements/KeyPrice'
+import { CryptoIcon } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
@@ -159,7 +159,7 @@ export const UpdatePriceForm = ({
                   disabled ? 'bg-gray-100' : 'bg-white'
                 } box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none`}
               >
-                <CryptoIcon symbol={symbol} />
+                <CryptoIcon id={symbol} />
                 <span>{symbol}</span>
               </div>
               <div className="pl-1"></div>

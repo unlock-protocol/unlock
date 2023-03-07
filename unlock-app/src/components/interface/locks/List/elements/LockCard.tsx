@@ -8,13 +8,11 @@ import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
 import { DEFAULT_USER_ACCOUNT_ADDRESS, MAX_UINT } from '~/constants'
 import Duration from '~/components/helpers/Duration'
-import { CryptoIcon } from '../../elements/KeyPrice'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
-import { Detail, Icon } from '@unlock-protocol/ui'
-
+import { Detail, Icon, CryptoIcon } from '@unlock-protocol/ui'
 interface LockCardProps {
   lock: any
   network: number
@@ -194,7 +192,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} size={25} />
+                <CryptoIcon id={symbol} />
                 <span>{keyPrice}</span>
               </div>
             </Detail>
@@ -212,7 +210,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} size={25} />
+                <CryptoIcon id={symbol} />
                 <span>{balance}</span>
               </div>
             </Detail>

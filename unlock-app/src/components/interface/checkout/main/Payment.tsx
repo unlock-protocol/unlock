@@ -10,7 +10,6 @@ import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import dynamic from 'next/dynamic'
 import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
@@ -20,11 +19,7 @@ import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-
-const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
-  ssr: false,
-})
-
+import { CryptoIcon } from '@unlock-protocol/ui'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -39,7 +34,7 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
       {amount + ' '} {symbol.toUpperCase()}
-      <CryptoIcon name={symbol.toLowerCase()} size={18} />
+      <CryptoIcon id={symbol.toLowerCase()} />
     </div>
   )
 }
