@@ -40,7 +40,7 @@ export const getAccountTokenBalance = async (
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  */
-export const useAccount = (address: string, network: number) => {
+export const useAccount = (address: string) => {
   const config = useConfig()
   const walletService = useWalletService()
   const wedlockService = useWedlockService()

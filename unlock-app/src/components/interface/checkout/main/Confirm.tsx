@@ -92,7 +92,7 @@ export function Confirm({
     prepareChargeForCard,
     captureChargeForCard,
     claimMembershipFromLock,
-  } = useAccount(account!, network!)
+  } = useAccount(account!)
 
   const [isConfirming, setIsConfirming] = useState(false)
 
@@ -592,7 +592,7 @@ export function Confirm({
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={network!} />
+            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
           </div>
           {isError && (
             // TODO: use actual error from simulation
