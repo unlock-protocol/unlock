@@ -21,6 +21,12 @@ export default class Dispatcher {
       networks[network].publicProvider
     )
   }
+
+  /**
+   * function that yields a provider and connected wallet based on the config
+   * @param network
+   * @returns
+   */
   async getPurchaser(network: number) {
     const provider = this.getProviderForNetwork(network)
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
@@ -34,8 +40,7 @@ export default class Dispatcher {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const provider = this.getProviderForNetwork(network.id)
-          const wallet = new ethers.Wallet(config.purchaserCredentials)
+          const { wallet, provider } = await this.getPurchaser(network.id)
           const balance = await provider.getBalance(wallet.address)
           return [
             network.id,
@@ -87,12 +92,7 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
 
-    const provider = this.getProviderForNetwork(network)
-
-    const walletWithProvider = new ethers.Wallet(
-      config.purchaserCredentials,
-      provider
-    )
+    const { wallet, provider } = await this.getPurchaser(network)
 
     const transactionOptions = await getGasSettings(network)
 
@@ -113,7 +113,7 @@ export default class Dispatcher {
       }
     })
 
-    await walletService.connect(provider, walletWithProvider)
+    await walletService.connect(provider, wallet)
     return walletService.grantKeys(
       {
         lockAddress,
@@ -127,9 +127,7 @@ export default class Dispatcher {
   }
 
   async hasFundsForTransaction(network: number) {
-    const provider = this.getProviderForNetwork(network)
-
-    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+    const { wallet, provider } = await this.getPurchaser(network)
 
     const gasPrice = await provider.getGasPrice()
 
@@ -162,13 +160,9 @@ export default class Dispatcher {
     const { network, lockAddress, owner, data } = options
     const walletService = new WalletService(networks)
 
-    const provider = this.getProviderForNetwork(network)
+    const { wallet, provider } = await this.getPurchaser(network)
 
-    const walletWithProvider = new ethers.Wallet(
-      config.purchaserCredentials,
-      provider
-    )
-    await walletService.connect(provider, walletWithProvider)
+    await walletService.connect(provider, wallet)
 
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
@@ -189,24 +183,18 @@ export default class Dispatcher {
     keyId: string
   ) {
     const walletService = new WalletService(networks)
-    const provider = this.getProviderForNetwork(network)
 
-    const walletWithProvider = new ethers.Wallet(
-      config.purchaserCredentials,
-      provider
-    )
+    const { wallet, provider } = await this.getPurchaser(network)
 
-    await walletService.connect(provider, walletWithProvider)
+    await walletService.connect(provider, wallet)
 
-    // TODO: use team multisig here (based on network config) instead of purchaser address!
-    const referrer = walletWithProvider.address
+    const referrer = networks[network]?.teamMultisig
 
-    // send tx with custom gas (Polygon estimates are too often wrong...)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
     return walletService.renewMembershipFor(
       {
         lockAddress,
-        referrer,
+        referrer: referrer!,
         tokenId: keyId,
       },
       { maxFeePerGas, maxPriorityFeePerGas }
@@ -226,7 +214,6 @@ export default class Dispatcher {
     tokenId: string,
     account?: string
   ) {
-    const provider = this.getProviderForNetwork(network)
     if (!account) {
       const web3Service = new Web3Service(networks)
       account = await web3Service.ownerOf(lockAddress, tokenId, network)
@@ -240,7 +227,7 @@ export default class Dispatcher {
       timestamp: Date.now(),
     })
 
-    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+    const { wallet } = await this.getPurchaser(network)
 
     return [payload, await wallet.signMessage(payload)]
   }
@@ -250,10 +237,9 @@ export default class Dispatcher {
     options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
     callback: (error: any, hash: string | null) => Promise<void> | void
   ) {
-    const provider = this.getProviderForNetwork(network)
-    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const { wallet, provider } = await this.getPurchaser(network)
     const walletService = new WalletService(networks)
-    await walletService.connect(provider, signer)
+    await walletService.connect(provider, wallet)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
     return walletService.createLock(
@@ -269,26 +255,24 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
-    const provider = this.getProviderForNetwork(network)
-    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const { wallet } = await this.getPurchaser(network)
     const keyManager = new KeyManager()
     const transferCode = await keyManager.createTransferSignature({
       params,
-      signer,
+      signer: wallet,
       network,
     })
     return transferCode
   }
 
-  isTransferSignedByLocksmith(
+  async isTransferSignedByLocksmith(
     network: number,
     params: Parameters<
       InstanceType<typeof KeyManager>['getSignerForTransferSignature']
     >[0]['params']
   ) {
-    const provider = this.getProviderForNetwork(network)
-    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
-    const signerAddress = signer.address
+    const { wallet } = await this.getPurchaser(network)
+
     const keyManager = new KeyManager()
     const transferSignerAddress = keyManager.getSignerForTransferSignature({
       network,
@@ -296,7 +280,7 @@ export default class Dispatcher {
     })
     const isSignedByLocksmith =
       transferSignerAddress.trim().toLowerCase() ===
-      signerAddress.trim().toLowerCase()
+      wallet.address.trim().toLowerCase()
 
     return isSignedByLocksmith
   }
