@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
+const FAKE_PWD = 'fakepwd'
 export const PasswordContractHook = ({
   name,
   disabled,
@@ -21,6 +22,8 @@ export const PasswordContractHook = ({
   const web3Service = useWeb3Service()
   const [hookValue, setHookValue] = useState('')
   const [signer, setSigner] = useState('')
+  const [hasPassword, setHasPassword] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
 
   useEffect(() => {
     if (hookValue.length === 0) return
@@ -49,7 +52,7 @@ export const PasswordContractHook = ({
 
   const getSigners = async () => {
     const walletService = await getWalletService(network)
-    return await web3Service.getPasswordHookSigners(
+    return await walletService.getPasswordHookSigners(
       {
         lockAddress,
         contractAddress: address,
@@ -63,6 +66,14 @@ export const PasswordContractHook = ({
     ['getSigners', lockAddress, network],
     async () => {
       return getSigners()
+    },
+    {
+      onSuccess: (signers: string) => {
+        if (signers && signers !== DEFAULT_USER_ACCOUNT_ADDRESS) {
+          setHookValue(FAKE_PWD)
+          setHasPassword(true)
+        }
+      },
     }
   )
 
@@ -80,6 +91,9 @@ export const PasswordContractHook = ({
       error: 'There is an issue with password update.',
     })
   }
+
+  const disabledInput =
+    disabled || savePasswordMutation.isLoading || (hasPassword && !isEdit)
 
   return (
     <ConnectForm>
@@ -123,20 +137,37 @@ export const PasswordContractHook = ({
                     </span>
                   )
                 }
-                disabled={disabled || savePasswordMutation.isLoading}
+                disabled={disabledInput}
               />
               <div className="ml-auto">
-                <Button
-                  type="button"
-                  size="small"
-                  disabled={disabled || savePasswordMutation.isLoading}
-                  onClick={async () => {
-                    await handleSavePassword()
-                    setValue(name, value)
-                  }}
-                >
-                  {hasSigner ? 'Update password' : 'Set password'}
-                </Button>
+                {hasPassword && !isEdit ? (
+                  <Button
+                    size="small"
+                    type="button"
+                    onClick={() => {
+                      setIsEdit(true)
+                      setHookValue('') // reset hook value
+                    }}
+                  >
+                    Edit password
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    size="small"
+                    disabled={
+                      disabled ||
+                      savePasswordMutation.isLoading ||
+                      hookValue.length === 0
+                    }
+                    onClick={async () => {
+                      await handleSavePassword()
+                      setValue(name, value)
+                    }}
+                  >
+                    {hasSigner ? 'Update password' : 'Set password'}
+                  </Button>
+                )}
               </div>
             </div>
           )
