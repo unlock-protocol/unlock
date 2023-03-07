@@ -88,7 +88,6 @@ export const Authenticate = ({
     connectProvider,
     disconnectProvider,
     isUnlockAccount,
-    changeNetwork,
     watchAsset,
     providerSend,
     setOpenConnectModal,
@@ -124,7 +123,6 @@ export const Authenticate = ({
         openConnectModal,
         isUnlockAccount,
         deAuthenticate,
-        changeNetwork,
         watchAsset,
         getWalletService,
         isConnected,
@@ -165,7 +163,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => {},
+  onAuthenticated: () => { },
   providerAdapter: null,
 }
 
