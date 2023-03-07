@@ -83,7 +83,7 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network, getWalletService } = useAuth()
+  const { account, getWalletService } = useAuth()
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()

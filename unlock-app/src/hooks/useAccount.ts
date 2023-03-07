@@ -153,7 +153,7 @@ export const useAccount = (address: string) => {
   const retrieveUserAccount = async (email: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
     const encryptedKey = await storageService.getUserPrivateKey(email)
-    const unlockProvider = new UnlockProvider(config.networks[network])
+    const unlockProvider = new UnlockProvider(config.networks[1])
 
     await unlockProvider.connect({
       key: encryptedKey,

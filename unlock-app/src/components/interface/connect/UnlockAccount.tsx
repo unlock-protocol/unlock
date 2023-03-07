@@ -223,7 +223,7 @@ export interface Props {
 
 export const ConnectUnlockAccount = ({ onExit }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
-  const { retrieveUserAccount, createUserAccount } = useAccount('', 1)
+  const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const config = useConfig()
 
