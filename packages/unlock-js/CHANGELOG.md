@@ -2,8 +2,8 @@
 
 # 0.33.4
 
-- refactor `customHookService`
-- add `getPasswordHookSigners`
+- move `customHookService` to web3Service
+- add `getPasswordHookSigners` to web3Service
 
 # 0.33.4
 

@@ -8,6 +8,7 @@ import {
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
+import { passwordHookAbi } from './abis/passwordHookAbi'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -962,5 +963,55 @@ export default class Web3Service extends UnlockService {
       console.error(err)
       return ''
     }
+  }
+
+  /**
+   * Set signer for `Password hook contract`
+   */
+  async setPasswordHookSigner(
+    params: {
+      lockAddress: string
+      signerAddress: string
+      network: number
+    },
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  ) {
+    const { lockAddress, signerAddress, network } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: signerAddress,
+      abi: passwordHookAbi,
+      signer,
+    })
+    return contract.setSigner(lockAddress, signerAddress)
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getPasswordHookSigners(
+    params: {
+      lockAddress: string
+      contractAddress: string
+      network: number
+    },
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  ) {
+    const { lockAddress, network } = params ?? {}
+
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const address = await lockContract.onTokenURIHook({ lockAddress, network })
+    console.log('address', address)
+
+    const contract = await this.getHookContract({
+      network,
+      address,
+      abi: passwordHookAbi,
+      signer,
+    })
+    return contract.signers(lockAddress)
   }
 }
