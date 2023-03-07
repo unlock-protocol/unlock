@@ -80,7 +80,12 @@ export const PasswordContractHook = ({
   const hasSigner =
     signers?.toLowerCase() !== DEFAULT_USER_ACCOUNT_ADDRESS?.toLowerCase()
 
-  const savePasswordMutation = useMutation(onSavePassword)
+  const savePasswordMutation = useMutation(onSavePassword, {
+    onSuccess: () => {
+      setHasPassword(true)
+      setHookValue(FAKE_PWD)
+    },
+  })
 
   const handleSavePassword = async () => {
     const promise = savePasswordMutation.mutateAsync()
