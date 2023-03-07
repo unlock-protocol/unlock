@@ -24,9 +24,8 @@ export default class Dispatcher {
    * @returns
    */
   getProviderForNetwork(network: number) {
-    return new ethers.providers.StaticJsonRpcProvider(
-      networks[network].publicProvider,
-      network
+    return new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
     )
   }
 

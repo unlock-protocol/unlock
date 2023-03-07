@@ -3,7 +3,6 @@ import { ethers } from 'ethers'
 
 import PublicLockVersions from './PublicLock/index'
 import UnlockVersions from './Unlock/index'
-import { StaticJsonRpcBatchProvider } from './utils'
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -36,7 +35,7 @@ export default class UnlockService {
       return this.networks[networkId]
         .ethersProvider as ethers.providers.Provider
     }
-    return new StaticJsonRpcBatchProvider(
+    return new ethers.providers.JsonRpcBatchProvider(
       this.networks[networkId].provider,
       networkId
     )
