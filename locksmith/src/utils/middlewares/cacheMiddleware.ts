@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express'
+import { OutgoingHttpHeaders } from 'http'
 import { MemoryCache } from 'memory-cache-node'
 
 export interface Options {
@@ -13,7 +14,13 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     maxItems: 5000,
     checkInterval: 10,
   })
-  const cache = new MemoryCache(checkInterval, maxItems)
+  const cache = new MemoryCache<
+    string,
+    {
+      body: any
+      headers: OutgoingHttpHeaders
+    }
+  >(checkInterval, maxItems)
   const handler: RequestHandler = (req, res, next) => {
     // Only cache GET requests
     if (req.method !== 'GET') {
@@ -23,12 +30,20 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     const cached = cache.retrieveItemValue(key)
     res.sendResponse = res.send
     if (cached) {
-      return res.sendResponse(cached)
+      return res.header(cached.headers).sendResponse(cached.body)
     }
+
     res.send = (body) => {
       // Only cache 200 responses
       if ([200].includes(res.statusCode)) {
-        cache.storeExpiringItem(key, body, ttl)
+        cache.storeExpiringItem(
+          key,
+          {
+            body,
+            headers: res.getHeaders(),
+          },
+          ttl
+        )
       }
       return res.sendResponse(body)
     }
