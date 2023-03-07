@@ -2,6 +2,12 @@
 
 # 0.33.4
 
+- move `customHookService` to web3Service
+- add `getPasswordHookSigners` to web3Service
+- move `setPasswordHookSigner` to walletService
+
+# 0.33.4
+
 - add `customHookService`
 
 # 0.33.3
