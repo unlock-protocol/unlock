@@ -51,6 +51,7 @@ const config = {
       process.env.STORAGE_PUBLIC_HOST || defaultConfig.storage.publicHost,
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
+  logtailSourceToken: process.env.RECAPTCHA_SECRET,
 }
 
 if (process.env.ON_HEROKU) {
