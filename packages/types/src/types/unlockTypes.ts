@@ -39,7 +39,7 @@ export interface Token {
 }
 
 export enum HookType {
-  CUSTOM_ADDRESS = 'CUSTOM_ADDRESS',
+  CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
 }
 
