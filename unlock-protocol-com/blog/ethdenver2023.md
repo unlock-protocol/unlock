@@ -3,10 +3,8 @@ title: ETHDenver 2023 — The Year Unlock Protocol was Everywhere
 authorName: Christopher Carfi
 publishDate: March 7, 2023
 description: ETHDenver brings together developers, builders, and other members of the Ethereum community to collaborate and build decentralized applications and features talks, workshops, and hackathons. Here are some of the highlights…
-image: /images/blog/ethdenver2023/treasure-hunt-share.png
+image: /images/blog/ethdenver2023/ethdenver-unlock-share.png
 ---
-
-![treasure hunt](/images/blog/ethdenver2023/treasure-hunt-share.png)
 
 ETHDenver is an annual event that brings together developers, builders, and other members of the Ethereum community to collaborate and build decentralized applications and features talks, workshops, and hackathons. (And it’s a ***huge*** event — this year’s ETHDenver attracted over 30,000 attendees from around the world.) 
 
