@@ -52,6 +52,7 @@ export interface CustomComponentProps {
   selectedOption?: string
   lockAddress: string
   network: number
+  address: string
 }
 
 const GENERAL_OPTIONS: OptionProps[] = [
@@ -125,7 +126,8 @@ const HookSelect = ({
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   return (
     <ConnectForm>
-      {({ setValue }: any) => {
+      {({ setValue, getValues }: any) => {
+        const value = getValues(name)
         const hookOptionsByName = HookMapping[name]?.options ?? []
         const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
         const Option = options.find((option) => option.value === selectedOption)
@@ -163,6 +165,7 @@ const HookSelect = ({
                   selectedOption: selectedOption ?? '',
                   lockAddress,
                   network,
+                  address: value,
                 })}
               </div>
             )}
