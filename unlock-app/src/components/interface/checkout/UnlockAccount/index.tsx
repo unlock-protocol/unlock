@@ -19,7 +19,7 @@ export function UnlockAccount({
 }: Props) {
   const config = useConfig()
   const [state] = useActor(unlockAccountService)
-  const { retrieveUserAccount, createUserAccount } = useAccount('', 1)
+  const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })

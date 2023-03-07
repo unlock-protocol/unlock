@@ -52,10 +52,7 @@ export const CreditCardForm = ({
     { address: lockAddress },
     network
   )
-  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(
-    account!,
-    network!
-  )
+  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(account!)
 
   const [hasRole, setHasRole] = useState(false)
 
