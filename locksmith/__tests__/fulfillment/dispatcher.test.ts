@@ -104,12 +104,11 @@ describe('Dispatcher', () => {
       const keyId = '1'
 
       await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
-      const referrerWallet = new Wallet(config.purchaserCredentials)
 
       expect(mockWalletService.renewMembershipFor).toBeCalledWith(
         {
           lockAddress,
-          referrer: referrerWallet.address,
+          referrer: undefined,
           tokenId: keyId,
         },
         {
