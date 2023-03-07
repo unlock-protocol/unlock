@@ -6,10 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { HookName, HookType } from '@unlock-protocol/types'
+import { Hook, HookName, HookType } from '@unlock-protocol/types'
 import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
+import { networks } from '@unlock-protocol/networks'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -124,10 +125,26 @@ const HookSelect = ({
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   return (
     <ConnectForm>
-      {() => {
+      {({ setValue }: any) => {
         const hookOptionsByName = HookMapping[name]?.options ?? []
         const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
         const Option = options.find((option) => option.value === selectedOption)
+
+        const { hookName } = HookMapping[name]
+
+        const handleSelectChange = (id: string) => {
+          const hooksByName =
+            networks?.[network]?.hooks?.[hookName as HookName] ?? []
+
+          const address = hooksByName.find((hook: Hook) => {
+            return hook.id === id
+          })?.address
+
+          setSelectedOption(`${id}`)
+          setValue(name, address, {
+            shouldValidate: true,
+          })
+        }
 
         return (
           <div className="flex flex-col gap-1">
@@ -135,7 +152,7 @@ const HookSelect = ({
               options={options}
               label={label}
               onChange={(value) => {
-                setSelectedOption(`${value}`)
+                handleSelectChange(`${value}`)
               }}
             />
             {Option?.component && (
@@ -244,6 +261,7 @@ export const UpdateHooksForm = ({
         className="grid gap-6"
         onSubmit={methods.handleSubmit(onSubmit)}
         onChange={() => {
+          console.log(methods.getValues())
           methods.trigger()
         }}
       >
