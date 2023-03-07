@@ -2,6 +2,7 @@
 import * as OptimisticUnlocking from '../../utils/optimisticUnlocking'
 import * as TransactionUtil from '../../utils/getTransaction'
 import * as Keys from '../../utils/hasValidKey'
+import { describe, it, vi } from 'vitest'
 
 const user = '0xuser'
 const lock = '0xlock'
@@ -26,13 +27,14 @@ const savedTransactions = [
 describe('optimisticUnlocking', () => {
   it('should yield true if any transaction is optimistic', async () => {
     expect.assertions(4)
-    jest
-      .spyOn(OptimisticUnlocking, 'getTransactionsForUserAndLocks')
-      .mockImplementationOnce(() => {
-        return savedTransactions
-      })
+    vi.spyOn(
+      OptimisticUnlocking,
+      'getTransactionsForUserAndLocks'
+    ).mockImplementationOnce(() => {
+      return savedTransactions
+    })
 
-    jest.spyOn(OptimisticUnlocking, 'willUnlock').mockImplementationOnce(() => {
+    vi.spyOn(OptimisticUnlocking, 'willUnlock').mockImplementationOnce(() => {
       return true
     })
 
@@ -83,7 +85,7 @@ describe('getTransactionsForUserAndLocks', () => {
 describe('willUnlock', () => {
   describe('when the transaction does not exist', () => {
     beforeEach(() => {
-      TransactionUtil.getTransaction = jest.fn(() => {
+      TransactionUtil.getTransaction = vi.fn(() => {
         return Promise.resolve(null)
       })
     })
@@ -113,7 +115,7 @@ describe('willUnlock', () => {
   describe('when the transaction exists', () => {
     it('should return true if the transaction has not been mined', async () => {
       expect.assertions(1)
-      TransactionUtil.getTransaction = jest.fn(() => {
+      TransactionUtil.getTransaction = vi.fn(() => {
         return Promise.resolve({
           blockNumber: null,
         })
@@ -134,9 +136,9 @@ describe('willUnlock', () => {
       it('should return false if the transaction has been mined and no key was created', async () => {
         expect.assertions(1)
 
-        Keys.hasValidKey = jest.fn(() => Promise.resolve(false))
+        Keys.hasValidKey = vi.fn(() => Promise.resolve(false))
 
-        TransactionUtil.getTransaction = jest.fn(() => {
+        TransactionUtil.getTransaction = vi.fn(() => {
           return Promise.resolve({
             blockNumber: 1337,
           })
@@ -156,9 +158,9 @@ describe('willUnlock', () => {
       it('should return true if the transaction has been mined and a key was created', async () => {
         expect.assertions(1)
 
-        Keys.hasValidKey = jest.fn(() => true)
+        Keys.hasValidKey = vi.fn(() => true)
 
-        TransactionUtil.getTransaction = jest.fn(() => {
+        TransactionUtil.getTransaction = vi.fn(() => {
           return Promise.resolve({
             blockNumber: 1337,
           })
