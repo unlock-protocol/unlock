@@ -63,6 +63,9 @@ contract('ERC721BalanceOfHook', (accounts) => {
   })
 
   describe('mapping is not set', () => {
+    it('mapping not set', async () => {
+      assert.notEqual(await hook.nftAddresses(lock.address), nft.address)
+    })
     it('with no valid key', async () => {
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
@@ -85,10 +88,13 @@ contract('ERC721BalanceOfHook', (accounts) => {
     it('with an expired key', async () => {
       // buy a key
       const { tokenId } = await purchaseKey(lock, keyOwner)
+      assert.equal(await lock.isValidKey(tokenId), true)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
+      assert.equal(await lock.isValidKey(tokenId), false)
+      assert.equal(await lock.balanceOf(keyOwner), 0)
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
   })
@@ -97,25 +103,44 @@ contract('ERC721BalanceOfHook', (accounts) => {
     beforeEach(async () => {
       // mint one token
       await nft.mint(nftOwner)
-      // create mapping
-      await hook.createMapping(lock.address, nft.address)
     })
 
     it('with no valid key', async () => {
+      assert.equal(await lock.getHasValidKey(nftOwner), false)
+      assert.equal(await lock.balanceOf(nftOwner), 0)
+      // create mapping
+      await hook.createMapping(lock.address, nft.address)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
     it('with a valid key', async () => {
+      assert.equal(await lock.getHasValidKey(nftOwner), false)
+
       // buy a key
-      await purchaseKey(lock, keyOwner)
+      await purchaseKey(lock, nftOwner)
+      assert.equal(await lock.balanceOf(nftOwner), 1)
+      assert.equal(await lock.getHasValidKey(nftOwner), true)
+      
+      // create mapping
+      await hook.createMapping(lock.address, nft.address)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
     it('with an expired key', async () => {
+      assert.equal(await lock.getHasValidKey(nftOwner), false)
+
       // buy a key
-      const { tokenId } = await purchaseKey(lock, keyOwner)
+      const { tokenId } = await purchaseKey(lock, nftOwner)
+      assert.equal(await lock.balanceOf(nftOwner), 1)
+      assert.equal(await lock.isValidKey(tokenId), true)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
+      assert.equal(await lock.isValidKey(tokenId), false)
+      assert.equal(await lock.balanceOf(nftOwner), 0)
+      assert.equal(await lock.getHasValidKey(nftOwner), false)
+
+      await hook.createMapping(lock.address, nft.address)
+      assert.equal(await lock.isValidKey(tokenId), true)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
   })

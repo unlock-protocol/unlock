@@ -175,10 +175,12 @@ contract TestEventHooks is
     specialMembers[_lockAddress] = _specialMember;
   }
 
-  function hasValidKey(
+  function isValidKey(
     address _lockAddress,
+    address, // operator
+    uint, // tokenId
+    uint, // 
     address _from,
-    uint, // removed var name to silence "unused" warning
     bool _hasValidKey
   ) external view returns (bool isValidKey) {
     // special members should always have access to content, even when the key is expired or they don't have one
