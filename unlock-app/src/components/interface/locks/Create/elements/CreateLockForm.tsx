@@ -122,7 +122,6 @@ export const CreateLockForm = ({
   }, [defaultValues, reset])
 
   const onHandleSubmit = (values: LockFormProps) => {
-    console.log({ values }, { selectedNetwork, network })
     if (isValid) {
       if (typeof onSubmit === 'function') {
         onSubmit(values)
