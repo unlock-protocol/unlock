@@ -1,7 +1,6 @@
 import 'jest-fetch-mock'
 import { Enabler } from '../utils/enableInjectedProvider'
 import * as isUnlockedUtil from '../utils/isUnlocked'
-import * as optimisticUnlockingUtils from '../utils/optimisticUnlocking'
 import { Paywall } from '../Paywall'
 import * as paywallScriptUtils from '../utils'
 import { networkConfigs } from '../networkConfigs'
@@ -26,19 +25,6 @@ const paywallConfig = {
 }
 
 const testLock = Object.keys(paywallConfig.locks)[0]
-const now = new Date().toDateString()
-const savedTransactions = [
-  {
-    recipient: testLock,
-    transactionHash: '0xtransaction',
-    createdAt: now,
-    updatedAt: now,
-    chain: 0,
-    sender: '0xuser',
-    for: '0xfor',
-    data: '0xdata',
-  },
-]
 
 describe('Paywall object', () => {
   let paywall: Paywall
@@ -144,9 +130,6 @@ describe('Paywall object', () => {
       expect.assertions(2)
       paywall.userAccountAddress = '0xUser'
       jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([testLock])
-      jest
-        .spyOn(optimisticUnlockingUtils, 'getTransactionsForUserAndLocks')
-        .mockImplementationOnce(() => Promise.resolve(savedTransactions))
 
       await paywall.checkKeysAndLock()
       expect(paywall.unlockPage).toHaveBeenCalledWith([testLock])
@@ -166,12 +149,8 @@ describe('Paywall object', () => {
 
   describe('transactionInfo', () => {
     it('should try to optimistically unlock', async () => {
-      expect.assertions(2)
+      expect.assertions(1)
       paywall.userAccountAddress = '0xtheaddress'
-
-      jest
-        .spyOn(optimisticUnlockingUtils, 'willUnlock')
-        .mockResolvedValueOnce(true)
 
       paywall.unlockPage = jest.fn()
 
@@ -179,13 +158,7 @@ describe('Paywall object', () => {
         hash: '0xhash',
         lock: '0xlock',
       })
-      expect(optimisticUnlockingUtils.willUnlock).toHaveBeenCalledWith(
-        'http://127.0.0.1:8545',
-        '0xtheaddress',
-        '0xlock',
-        '0xhash',
-        true
-      )
+
       expect(paywall.unlockPage).toHaveBeenCalled()
     })
 
@@ -207,27 +180,6 @@ describe('Paywall object', () => {
           lock: '0xlock',
         }
       )
-    })
-
-    it('should not try to optimistically unlock if the config has a pessimistic field', async () => {
-      expect.assertions(1)
-      const pessimisticConfig = {
-        ...paywallConfig,
-        pessimistic: true,
-      }
-      const paywall = new Paywall(pessimisticConfig, networkConfigs)
-
-      jest
-        .spyOn(optimisticUnlockingUtils, 'willUnlock')
-        .mockResolvedValueOnce(true)
-
-      paywall.lockPage = jest.fn()
-
-      await paywall.handleTransactionInfoEvent({
-        hash: '0xhash',
-        lock: '0xlock',
-      })
-      expect(optimisticUnlockingUtils.willUnlock).not.toHaveBeenCalled()
     })
   })
 
