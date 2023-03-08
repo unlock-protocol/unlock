@@ -12,6 +12,8 @@ import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import Link from 'next/link'
+import { networks } from '@unlock-protocol/networks'
 
 export interface LockFormProps {
   name: string
@@ -53,6 +55,8 @@ export const networkDescription = (network: number) => {
         using another network like Polygon, Gnosis Chain or Optimism.
       </>
     )
+  } else {
+    return <>{networks[network!].description}</>
   }
 }
 
@@ -189,11 +193,28 @@ export const CreateLockForm = ({
       <div className="overflow-hidden bg-white rounded-xl">
         <div className="px-3 py-8 md:py-4">
           <form
-            className="flex flex-col w-full gap-10"
+            className="flex flex-col w-full gap-6"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
             <Select
               label="Network:"
+              tooltip={
+                <>
+                  Unlock supports{' '}
+                  <Link
+                    target="_blank"
+                    className="underline"
+                    href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
+                  >
+                    {Object.keys(networks).length} networks
+                  </Link>
+                  .
+                  <br />
+                  If yours is not in the list below, switch your wallet to it{' '}
+                  <br />
+                  and you will be able to deploy your contract on it.
+                </>
+              }
               defaultValue={selectedNetwork}
               options={networkOptions}
               onChange={onChangeNetwork}
@@ -215,7 +236,7 @@ export const CreateLockForm = ({
                 </span>
               )}
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
                   Memberships duration (days):
@@ -254,7 +275,7 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
                   Number of memberships for sale:
@@ -293,7 +314,7 @@ export const CreateLockForm = ({
               </div>
             </div>
 
-            <div className="relative flex flex-col gap-4">
+            <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
                   Currency & Price:
