@@ -11,11 +11,10 @@ import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
-import { CryptoIcon } from '../../elements/KeyPrice'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
 import { storage } from '~/config/storage'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
@@ -237,7 +236,7 @@ export const LockDetailCard = ({
             <div className="py-2">
               <Detail label="Price" loading={loading} inline>
                 <div className="flex items-center gap-2">
-                  <CryptoIcon symbol={symbol} size={22} />
+                  <CryptoIcon symbol={symbol} />
                   <span>{priceLabel}</span>
                 </div>
               </Detail>
