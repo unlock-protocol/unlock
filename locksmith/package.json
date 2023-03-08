@@ -38,6 +38,8 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "3.272.0",
+    "@logtail/node": "0.3.1",
+    "@logtail/winston": "0.3.1",
     "@nuintun/qrcode": "3.3.0",
     "@resvg/resvg-js": "2.3.1",
     "@sentry/node": "7.36.0",
