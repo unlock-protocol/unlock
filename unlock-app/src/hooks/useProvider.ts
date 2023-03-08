@@ -28,7 +28,7 @@ export const useProvider = (config: any) => {
   const [openConnectModal, setOpenConnectModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
-  const [network, setNetwork] = useState<string | undefined>(undefined)
+  const [network, setNetwork] = useState<number | undefined>(undefined)
   const [account, setAccount] = useState<string | undefined>(undefined)
   const [email, setEmail] = useState<string | undefined>(undefined)
   const [isUnlockAccount, setIsUnlockAccount] = useState<boolean>(false)
