@@ -252,12 +252,11 @@ export function Layout({ children }: Props) {
           },
           {
             label: 'Events By Unlock',
-            description: 'Ticketing events with Unlock is simple.',
+            url: 'https://events.unlock-protocol.com/',
           },
           {
             label: 'Flocker',
-            description:
-              'Connect with your fans and followers nearly anywhere.',
+            url: 'https://flocker.app/',
           },
         ],
       },
