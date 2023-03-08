@@ -5,22 +5,13 @@ import numeral from 'numeral'
 import { useQuery } from 'react-query'
 import dynamic from 'next/dynamic'
 import { networks } from '@unlock-protocol/networks'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { getGNPs } from '../../../utils/apiRequest'
 import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
 import { IconBaseProps } from 'react-icons'
 import { utils } from 'ethers'
 
-const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
-  ssr: false,
-})
-
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
-
-interface CryptoIconProps {
-  symbol: string
-  size?: number
-}
 
 type IOverView = {
   Icon: (props: IconBaseProps) => JSX.Element
@@ -55,10 +46,6 @@ type IGNPSum = {
   name: string
   gnpSum: number
 }
-
-const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
-  <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
-)
 
 const filters = ['7D', '1M', '1Y', 'All']
 
@@ -172,7 +159,7 @@ function DateFilter({
   setFilter: (value: string) => void
 }) {
   return (
-    <div className="gap-4 flex flex-row items-center justify-center rounded-md bg-white p-2">
+    <div className="flex flex-row items-center justify-center gap-4 p-2 bg-white rounded-md">
       {filters.map((item, index) => (
         <div
           className="cursor-pointer"
@@ -344,7 +331,7 @@ export function State() {
         },
       ])
     }
-  }, [selectedNetworkSubgraphData])
+  }, [selectedNetworkSubgraphData, filter])
 
   useEffect(() => {
     const run = async () => {
@@ -407,7 +394,7 @@ export function State() {
       }
     }
     run()
-  }, [selectedNetwork, filter, subgraphData])
+  }, [selectedNetwork, filter, subgraphData, currentDay])
 
   useEffect(() => {
     const gnpPercentageByNetworks = subgraphData.map((networkData) => {
@@ -441,7 +428,7 @@ export function State() {
       }
     })
     setGNPPByNetworks(gnpPercentageByNetworks)
-  }, [filter])
+  }, [filter, currentDay, subgraphData, gnpTotalValueByNetwork])
 
   useEffect(() => {
     const run = async () => {
@@ -459,7 +446,7 @@ export function State() {
       setSubgraphData(subgraphData.filter((item) => item))
     }
     run()
-  }, [networks])
+  }, [currentDay])
 
   useEffect(() => {
     if (subgraphData !== undefined && subgraphData.length > 0) {
@@ -512,27 +499,27 @@ export function State() {
     <div className="p-6">
       <div className="mx-auto max-w-7xl">
         <div className="space-y-4">
-          <h1 className="heading text-center space-y-8"> State of Unlock </h1>
+          <h1 className="space-y-8 text-center heading"> State of Unlock </h1>
           <div className="space-y-4">
             <div className="space-y-2">
-              <p className="text-2xl space-y-1 font-bold">Overview</p>
-              <div className="grid gap-1 md:gap-4 grid-cols-1 md:grid-cols-3">
+              <p className="space-y-1 text-2xl font-bold">Overview</p>
+              <div className="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-3">
                 {overViewData &&
                   overViewData.map(
                     ({ value, title, description, Icon }, index) => (
                       <div
                         key={index}
-                        className="w-full p-8 trans-pane rounded-md"
+                        className="w-full p-8 rounded-md trans-pane"
                       >
-                        <h2 className="heading-small space-y-4">
+                        <h2 className="space-y-4 heading-small">
                           {numeral(value).format('0,0')}
                         </h2>
-                        <p className="py-2 text-lg sm:text-xl lg:text-2xl text-black max-w-prose font-bold">
+                        <p className="py-2 text-lg font-bold text-black sm:text-xl lg:text-2xl max-w-prose">
                           {title}
                         </p>
                         <div className="flex justify-between">
                           <span>{description}</span>
-                          <Icon className="self-center w-7 h-7 not-sr-only" />
+                          <Icon className="self-center not-sr-only w-7 h-7" />
                         </div>
                       </div>
                     )
@@ -540,11 +527,11 @@ export function State() {
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-2xl space-y-1 font-bold">Activity over time</p>
-              <div className="flex justify-between flex-wrap gap-2">
+              <p className="space-y-1 text-2xl font-bold">Activity over time</p>
+              <div className="flex flex-wrap justify-between gap-2">
                 <select
                   id="network"
-                  className="w-96	 bg-white text-black rounded-md border-none px-4"
+                  className="px-4 text-black bg-white border-none rounded-md w-96"
                   value={selectedNetwork}
                   onChange={(e) => {
                     setSelectedNetwork(e.target.value)
@@ -572,11 +559,11 @@ export function State() {
               <RenderChart series={series} xaxis={xaxis} />
             </div>
             <div className="space-y-2">
-              <p className="text-2xl space-y-1 font-bold">
+              <p className="space-y-1 text-2xl font-bold">
                 Gross Network Product
               </p>
               {!isLoading && (
-                <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-4 md:grid-cols-2 grid-cols-1">
+                <div className="grid grid-cols-1 gap-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2">
                   {gnpValues
                     .filter((item) => !item.network.isTestNetwork)
                     .map(({ total, network }, index) => (
@@ -589,16 +576,16 @@ export function State() {
                             symbol={network.baseCurrencySymbol}
                             size={40}
                           />
-                          <p className="heading-small pr-2 self-center">
+                          <p className="self-center pr-2 heading-small">
                             {numeral(total).format('0,0.000')}{' '}
                           </p>
-                          <p className="heading-small pr-2 self-center">
+                          <p className="self-center pr-2 heading-small">
                             {network.baseCurrencySymbol.toUpperCase()}
                           </p>
                         </div>
                         <div className="flex justify-between pt-4">
-                          <p className="font-bold text-xl">{network.name}</p>
-                          <p className="font-bold text-xl">
+                          <p className="text-xl font-bold">{network.name}</p>
+                          <p className="text-xl font-bold">
                             +
                             {numeral(
                               gnpPByNetworks.filter(
