@@ -5,7 +5,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
 import { ethers, utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
-import { CryptoIcon } from '@unlock-protocol/ui'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { addressMinify } from '~/utils/strings'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -194,7 +194,7 @@ export const SelectCurrencyModal = ({
                             onClick={() => onSelectToken(token)}
                             className="inline-flex items-center gap-3 cursor-pointer"
                           >
-                            <CryptoIcon id={token.symbol} />
+                            <CryptoIcon symbol={token.symbol} />
                             <span className="font-bold">
                               {token.symbol.toUpperCase()}
                             </span>

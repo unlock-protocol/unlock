@@ -14,7 +14,7 @@ import Duration from '~/components/helpers/Duration'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
 import { storage } from '~/config/storage'
-import { CryptoIcon } from '@unlock-protocol/ui'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
@@ -236,7 +236,7 @@ export const LockDetailCard = ({
             <div className="py-2">
               <Detail label="Price" loading={loading} inline>
                 <div className="flex items-center gap-2">
-                  <CryptoIcon id={symbol} />
+                  <CryptoIcon symbol={symbol} />
                   <span>{priceLabel}</span>
                 </div>
               </Detail>

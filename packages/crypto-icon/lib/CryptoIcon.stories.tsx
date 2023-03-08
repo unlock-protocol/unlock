@@ -1,4 +1,4 @@
-import { CryptoIcon } from './CustomIcon'
+import { CryptoIcon } from './CryptoIcon'
 import { Meta, StoryObj } from '@storybook/react'
 
 const meta = {
@@ -12,14 +12,14 @@ type Story = StoryObj<typeof meta>
 
 export const CryptoIconComponent = {
   args: {
-    id: 'eth',
+    symbol: 'eth',
     size: 24,
   },
 } as Story
 
 export const CryptoIconFallbackComponent = {
   args: {
-    id: 'unknown',
+    symbol: 'unknown',
     size: 24,
   },
 } as Story

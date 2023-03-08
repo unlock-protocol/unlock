@@ -1,5 +1,5 @@
 import React from 'react'
-import { CryptoIcon } from '@unlock-protocol/ui'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface KeyPriceProps {
   price?: number
   symbol?: string
@@ -13,7 +13,7 @@ export const KeyPrice = ({ price, symbol = '' }: KeyPriceProps) => {
 
   return (
     <div className="flex items-center gap-2">
-      <CryptoIcon id={symbol} />
+      <CryptoIcon symbol={symbol} />
       <span className="text-xl font-bold">{isFree ? 'FREE' : keyPrice}</span>
     </div>
   )

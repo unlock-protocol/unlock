@@ -1,13 +1,12 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Detail } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { CryptoIcon } from '@unlock-protocol/ui'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
 import { useLockManager } from '~/hooks/useLockManager'
 import { WithdrawFundModal } from './WithdrawFundModal'
-import { Detail } from '@unlock-protocol/ui'
 
 interface TotalsProps {
   lockAddress: string
@@ -99,7 +98,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
               loading={loading}
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon id={symbol} size={36} />
+                <CryptoIcon symbol={symbol} size={36} />
                 <span>{formattedBalance}</span>
               </div>
             </Detail>

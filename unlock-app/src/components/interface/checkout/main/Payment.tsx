@@ -19,7 +19,7 @@ import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { CryptoIcon } from '@unlock-protocol/ui'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -34,7 +34,7 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
       {amount + ' '} {symbol.toUpperCase()}
-      <CryptoIcon id={symbol.toLowerCase()} />
+      <CryptoIcon symbol={symbol} />
     </div>
   )
 }

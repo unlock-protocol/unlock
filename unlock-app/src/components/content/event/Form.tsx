@@ -10,7 +10,6 @@ import {
   TextBox,
   Select,
   ToggleSwitch,
-  CryptoIcon,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -20,7 +19,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
@@ -313,7 +312,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                         onClick={() => setCurrencyModalOpen(true)}
                         className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                       >
-                        <CryptoIcon id={details.currencySymbol!} />
+                        <CryptoIcon symbol={details.currencySymbol!} />
                         <span>{details.currencySymbol}</span>
                       </div>
                       <div className="pl-1"></div>

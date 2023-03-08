@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { SvgIcon } from '~/icons'
+import { Icons } from '~/@generated/icons'
 import { getIconName } from '~/utils'
 
 interface Props extends React.SVGProps<SVGSVGElement> {
@@ -15,7 +15,7 @@ export const CustomIcon = ({
   ...props
 }: Props) => {
   const Icon = useMemo(() => {
-    const SvgIcons = SvgIcon as unknown as Record<
+    const IconComponents = Icons as unknown as Record<
       string,
       React.FunctionComponent<
         React.SVGProps<SVGSVGElement> & {
@@ -25,8 +25,8 @@ export const CustomIcon = ({
     >
     const name = getIconName(id)
     const fallbackName = getIconName(fallbackId)
-    const IdIcon = SvgIcons[name]
-    const FallbackIcon = SvgIcons[fallbackName]
+    const IdIcon = IconComponents[name]
+    const FallbackIcon = IconComponents[fallbackName]
     return IdIcon || FallbackIcon
   }, [id])
 
@@ -36,6 +36,10 @@ export const CustomIcon = ({
   return <Icon height={size} width={size} {...props} />
 }
 
-export const CryptoIcon = ({ id, size, ...props }: Props) => {
-  return <CustomIcon id={id} size={size} fallbackId="crypto" {...props} />
+export const CryptoIcon = ({
+  symbol,
+  size,
+  ...props
+}: Omit<Props, 'id'> & { symbol: string }) => {
+  return <CustomIcon id={symbol} size={size} fallbackId="crypto" {...props} />
 }

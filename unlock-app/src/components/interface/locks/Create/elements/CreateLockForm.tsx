@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Input,
-  Select,
-  ToggleSwitch,
-  CryptoIcon,
-} from '@unlock-protocol/ui'
+import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -17,7 +11,7 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 export interface LockFormProps {
   name: string
   keyPrice?: number
@@ -306,7 +300,7 @@ export const CreateLockForm = ({
                       onClick={() => setIsOpen(true)}
                       className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                     >
-                      <CryptoIcon id={symbol} />
+                      <CryptoIcon symbol={symbol} />
                       <span>{symbol}</span>
                     </div>
                     <div className="pl-1"></div>

@@ -12,7 +12,8 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
-import { Detail, Icon, CryptoIcon } from '@unlock-protocol/ui'
+import { Detail, Icon } from '@unlock-protocol/ui'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockCardProps {
   lock: any
   network: number
@@ -192,7 +193,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon id={symbol} />
+                <CryptoIcon symbol={symbol} />
                 <span>{keyPrice}</span>
               </div>
             </Detail>
@@ -210,7 +211,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon id={symbol} />
+                <CryptoIcon symbol={symbol} />
                 <span>{balance}</span>
               </div>
             </Detail>
