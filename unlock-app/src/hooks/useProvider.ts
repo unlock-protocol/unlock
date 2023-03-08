@@ -149,9 +149,8 @@ export const useProvider = (config: any) => {
       }
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
-        ToastHelper.error(
-          `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
-        )
+        // We actually do not care :D
+        // The user will be promped to switch networks when they perform a transaction
       } else if (error.message.includes('could not detect network')) {
         ToastHelper.error(
           'We could not detect the network to which your wallet is connected. Please try another wallet. (This issue happens often with the Frame Wallet)' // TODO: remove when Frame is fixed
