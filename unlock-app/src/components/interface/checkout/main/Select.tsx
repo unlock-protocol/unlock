@@ -27,6 +27,7 @@ import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { ViewContract } from '../ViewContract'
+import { useHook } from './useHook'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -276,6 +277,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
+  const { isLoading: isLoadingHook } = useHook(checkoutService)
 
   const isDisabled =
     isLocksLoading ||
@@ -283,7 +285,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
-    isNotExpectedAddress
+    isNotExpectedAddress ||
+    isLoadingHook
 
   const stepItems = useCheckoutSteps(checkoutService)
 
