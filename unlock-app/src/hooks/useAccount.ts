@@ -3,12 +3,9 @@ import { useConfig } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
 import { useWalletService } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
-import { generateKeyHolderMetadataPayload } from '../structured_data/keyHolderMetadata'
 import { useWedlockService } from '../contexts/WedlocksContext'
 import {
   generateTypedData,
-  getCardsForAddress,
-  chargeAndSaveCard,
   claimMembership,
   prepareCharge,
   captureCharge,
@@ -45,6 +42,7 @@ export const useAccount = (address: string) => {
   const walletService = useWalletService()
   const wedlockService = useWedlockService()
 
+  // TODO: move to new API with auth token instead of signature
   const connectStripeToLock = async (
     lockAddress: string,
     network: number,
@@ -163,30 +161,6 @@ export const useAccount = (address: string) => {
     return unlockProvider
   }
 
-  const getCards = () => {
-    return getCardsForAddress(config, walletService, address)
-  }
-
-  const chargeCard = async (
-    token: string,
-    lock: any,
-    network: number,
-    pricing: any,
-    recipients: string[]
-  ) => {
-    const response = await chargeAndSaveCard(
-      config,
-      walletService,
-      address,
-      token,
-      network,
-      lock,
-      pricing,
-      recipients
-    )
-    return response.transactionHash
-  }
-
   /**
    * Prepares a charge on the backend
    * @param token
@@ -262,74 +236,13 @@ export const useAccount = (address: string) => {
     return response
   }
 
-  const setUserMetadataData = async (
-    lockAddress: string,
-    metadata: any,
-    network: number
-  ) => {
-    const payload = generateKeyHolderMetadataPayload(address, metadata)
-    // TODO prevent replays by adding timestamp?
-    const message = `I am signing the metadata for the lock at ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
-
-    const storageService = new StorageService(config.services.storage.host)
-
-    const response = await storageService.setUserMetadataData(
-      lockAddress,
-      address,
-      payload,
-      signature,
-      network
-    )
-    return response
-  }
-
-  /**
-   * Updates the icon on a lock
-   * @param lockAddress
-   * @param network
-   * @param icon
-   * @returns
-   */
-  const updateLockIcon = async (
-    lockAddress: string,
-    network: number,
-    icon: string
-  ) => {
-    const storageService = new StorageService(config.services.storage.host)
-    const typedData = generateTypedData(
-      {
-        'Update Icon': {
-          lockAddress,
-          chain: network,
-          lockManager: address,
-        },
-      },
-      'Update Icon'
-    )
-
-    const message = `I want to change the image for ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
-
-    return storageService.updateLockIcon(
-      lockAddress,
-      signature,
-      typedData,
-      icon
-    )
-  }
-
   return {
-    setUserMetadataData,
-    getCards,
-    chargeCard,
     captureChargeForCard,
     prepareChargeForCard,
     connectStripeToLock,
     createUserAccount,
     retrieveUserAccount,
     claimMembershipFromLock,
-    updateLockIcon,
     disconnectStripeFromLock,
   }
 }
