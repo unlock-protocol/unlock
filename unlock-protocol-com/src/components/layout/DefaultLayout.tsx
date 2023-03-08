@@ -124,9 +124,29 @@ const MENU = {
       ],
     },
     {
-      title: 'Showcase',
-      url: 'https://showcase.unlock-protocol.com/',
+      title: 'Products',
+      options: [
+        {
+          title: 'Membership Dashboard',
+          src: '/images/marketing/dashboard.png',
+          description: 'Deploy your membership contract with few clicks.',
+          url: 'https://app.unlock-protocol.com/locks',
+        },
+        {
+          title: 'Events By Unlock',
+          src: '/images/marketing/events.png',
+          url: 'https://events.unlock-protocol.com/',
+          description: 'Ticketing events with Unlock is simple.',
+        },
+        {
+          title: 'Flocker',
+          src: '/images/marketing/flocker.png',
+          url: 'https://flocker.app/',
+          description: 'Connect with your fans and followers nearly anywhere.',
+        },
+      ],
     },
+
     {
       title: 'Blog',
       url: 'https://unlock-protocol.com/blog',
@@ -139,10 +159,13 @@ const MENU = {
           title: '',
           options: [
             {
+              title: 'Showcase',
+              url: 'https://showcase.unlock-protocol.com/',
+            },
+            {
               title: 'State of Unlock',
               url: '/state',
             },
-
             {
               title: 'Unlock DAO',
               url: 'https://unlock-protocol.com/blog/unlock-dao',
@@ -220,6 +243,24 @@ export function Layout({ children }: Props) {
       },
     ],
     menuSections: [
+      {
+        title: 'Products',
+        options: [
+          {
+            label: 'Membership Dashboard',
+            url: 'https://app.unlock-protocol.com/locks',
+          },
+          {
+            label: 'Events By Unlock',
+            description: 'Ticketing events with Unlock is simple.',
+          },
+          {
+            label: 'Flocker',
+            description:
+              'Connect with your fans and followers nearly anywhere.',
+          },
+        ],
+      },
       {
         title: 'About',
         options: [
