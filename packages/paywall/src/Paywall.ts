@@ -4,7 +4,6 @@ import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from './utils/localStorage'
 import { isUnlocked } from './utils/isUnlocked'
-import { willUnlock } from './utils/optimisticUnlocking'
 import {
   Enabler,
   getProvider,
@@ -174,23 +173,9 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const network =
-      this.paywallConfig.locks[lock]?.network || this.paywallConfig.network
-
-    const { provider } =
-      this.networkConfigs[network.toString()] || this.networkConfigs[network]
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
     if (!this.paywallConfig.pessimistic) {
-      const optimistic = await willUnlock(
-        provider,
-        this.userAccountAddress!,
-        lock,
-        hash,
-        true // Optimistic if missing
-      )
-      if (optimistic) {
-        this.unlockPage([lock])
-      }
+      this.unlockPage([lock])
     }
   }
 

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { PaywallConfig } from '@unlock-protocol/types'
 import { Enabler } from './enableInjectedProvider'
 
@@ -43,7 +42,7 @@ export const unlockEvents = {
 export const setupUnlockProtocolVariable = (properties: {
   [name: string]: any
 }) => {
-  const unlockProtocol: Object = {}
+  const unlockProtocol: Record<string, any> = {}
 
   const immutable = {
     writable: false,
