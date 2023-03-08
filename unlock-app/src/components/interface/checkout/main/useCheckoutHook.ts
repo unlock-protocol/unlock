@@ -18,6 +18,8 @@ export function useCheckoutHook(service: CheckoutService) {
         string,
         {
           isPassword: boolean
+          isPromo: boolean
+          isCaptcha: boolean
         }
       > = {}
       await Promise.all(
@@ -39,11 +41,27 @@ export function useCheckoutHook(service: CheckoutService) {
               (hookValue ?? '')?.length > 0 &&
               onPurchaseHooks?.find(({ address }) => address === hookValue)?.id
 
+            const isPassword = hookMatchId === HookType.PASSWORD ?? false
+
+            // todo: replace when custom hook is present in settings
+            const isCaptcha =
+              paywallConfig.locks[lockAddress]?.captcha ||
+              paywallConfig.captcha ||
+              false
+
+            // todo: replace when custom hook is present in settings
+            const isPromo =
+              paywallConfig.locks[lockAddress]?.promo ||
+              paywallConfig.promo ||
+              false
+
             // add state for hooks
             hooks = {
               ...hooks,
               [lockAddress]: {
-                isPassword: hookMatchId === HookType.PASSWORD ?? false,
+                isPassword,
+                isPromo,
+                isCaptcha,
               },
             }
           }
