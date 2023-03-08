@@ -8,7 +8,7 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
-import { CryptoIcon } from '../../elements/KeyPrice'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
