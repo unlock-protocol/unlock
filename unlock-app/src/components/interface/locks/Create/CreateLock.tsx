@@ -17,7 +17,6 @@ export type Step = 'data' | 'summary' | 'deploy'
 
 interface CreateLockSummaryProps {
   formData: LockFormProps
-  network: number
   setStep: (step: Step, data: LockFormProps) => void
   onSubmit: (data: LockFormProps) => void
 }
@@ -139,7 +138,6 @@ export const CreateLockSteps = () => {
           <CreateLockSummary
             setStep={setStep}
             formData={values!}
-            network={network!}
             onSubmit={onSummarySubmit}
           />
         )
@@ -209,7 +207,6 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
 
 const CreateLockSummary = ({
   formData,
-  network,
   setStep,
   onSubmit,
 }: CreateLockSummaryProps) => {
@@ -235,7 +232,7 @@ const CreateLockSummary = ({
           />
         </div>
         <div className="md:max-w-lg">
-          <CreateLockFormSummary formData={formData} network={network} />
+          <CreateLockFormSummary formData={formData} />
           <div className="flex flex-col justify-between w-full gap-4 mt-8 md:mt-12 md:px-12">
             <Button onClick={onHandleSubmit}>Looks good to me</Button>
             <Button

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
-import { Token } from '@unlock-protocol/types'
+import { Token, NetworkConfig } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -62,7 +62,7 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account, network } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const [unlimitedDuration, setUnlimitedDuration] = useState(
@@ -72,7 +72,6 @@ export const CreateLockForm = ({
     defaultValues?.unlimitedQuantity
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
-  const config = useConfig()
   const {
     register,
     handleSubmit,
@@ -84,7 +83,7 @@ export const CreateLockForm = ({
     mode: 'onChange',
     defaultValues: {
       name: '',
-      network: config.defaultNetwork,
+      network,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
@@ -96,6 +95,7 @@ export const CreateLockForm = ({
   const { network: selectedNetwork } = useWatch({
     control,
   })
+
   const { baseCurrencySymbol } = networks[selectedNetwork!] ?? {}
 
   const getBalance = async () => {
@@ -118,6 +118,7 @@ export const CreateLockForm = ({
   }, [defaultValues, reset])
 
   const onHandleSubmit = (values: LockFormProps) => {
+    console.log({ values }, { selectedNetwork, network })
     if (isValid) {
       if (typeof onSubmit === 'function') {
         onSubmit(values)
@@ -143,19 +144,34 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
 
-  const networkOptions = Object.values(networks || {})?.map(
-    ({ name, id }: any) => {
+  const networkOptions = Object.values(networks || {})
+    ?.filter(({ featured }: NetworkConfig) => featured)
+    .map(({ name, id }: NetworkConfig) => {
       return {
         label: name,
         value: id,
       }
-    }
+    })
+  if (networks[network!] && !networks[network!].featured) {
+    networkOptions.push({
+      label: networks[network!].name,
+      value: networks[network!].id,
+    })
+  }
+
+  const onChangeNetwork = useCallback(
+    (network: number | string) => {
+      setSelectedToken(null)
+      setValue('network', parseInt(`${network}`))
+    },
+    [setValue, setSelectedToken]
   )
 
-  const onChangeNetwork = (network: number | string) => {
-    setSelectedToken(null)
-    setValue('network', parseInt(`${network}`))
-  }
+  useEffect(() => {
+    if (network) {
+      onChangeNetwork(network)
+    }
+  }, [onChangeNetwork, network])
 
   return (
     <>
@@ -178,7 +194,7 @@ export const CreateLockForm = ({
           >
             <Select
               label="Network:"
-              defaultValue={config.defaultNetwork}
+              defaultValue={selectedNetwork}
               options={networkOptions}
               onChange={onChangeNetwork}
               description={networkDescription(selectedNetwork!)}
