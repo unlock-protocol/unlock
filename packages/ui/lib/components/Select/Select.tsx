@@ -138,9 +138,7 @@ export const Select = <T extends unknown>({
 
   // Set default value if present
   useEffect(() => {
-    const defaultSelection =
-      options?.find((option) => option.value == `${defaultValue}`) || null
-    setSelected(defaultSelection)
+    onChangeOption(defaultValue as string)
   }, [defaultValue])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
