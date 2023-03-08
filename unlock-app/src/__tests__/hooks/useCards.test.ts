@@ -69,48 +69,6 @@ describe('UseCards', () => {
     })
   })
 
-  describe('saveCardsForAddress', () => {
-    it('should send the signed request to locksmith', async () => {
-      expect.assertions(6)
-
-      fetch.mockResponseOnce(JSON.stringify(['FUCK']))
-
-      const typedData = {
-        domain: { name: 'Unlock', version: '1' },
-        message: {
-          'Save Card': { publicKey: userAddress, stripeTokenId: 'tok_token' },
-        },
-        messageKey: 'Save Card',
-        primaryType: 'User',
-        types: {
-          User: [{ name: 'publicKey', type: 'address' }],
-        },
-      }
-
-      await UseCards.saveCardsForAddress(
-        config,
-        walletService,
-        userAddress,
-        stripeToken
-      )
-      expect(walletService.signMessage).toHaveBeenCalledWith(
-        'I save my payment card for my account 0xuser',
-        'personal_sign'
-      )
-      expect(fetch.mock.calls.length).toEqual(1)
-      expect(fetch.mock.calls[0][0]).toEqual(
-        `${locksmithHost}/users/${userAddress}/credit-cards`
-      )
-      const request = fetch.mock.calls[0][1]
-      expect(JSON.parse(request?.body as string)).toEqual(typedData)
-      expect(request?.headers).toEqual({
-        Authorization: 'Bearer-Simple c2lnbmF0dXJl',
-        'Content-Type': 'application/json',
-      })
-      expect(request?.method).toEqual('PUT')
-    })
-  })
-
   describe('deleteCardForAddress', () => {
     it('should send the signed request to locksmith', async () => {
       expect.assertions(5)

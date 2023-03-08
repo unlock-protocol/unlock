@@ -143,6 +143,7 @@ export class PurchaseController {
       normalizedRecipients.length
     )
     if (soldOut) {
+      // TODO: Cancel authorization
       return response.status(400).send({
         error: 'Lock is sold out.',
       })
