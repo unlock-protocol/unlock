@@ -46,7 +46,7 @@ const TITLE_BY_STATUS_MAPPING: Record<Step, StatusMappingProps> = {
 }
 
 export const CreateLockSteps = () => {
-  const { network, getWalletService } = useAuth()
+  const { getWalletService } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
@@ -147,7 +147,6 @@ export const CreateLockSteps = () => {
         return (
           <CreateLockFormSummary
             formData={values!}
-            network={network!}
             lockAddress={lockAddress}
             transactionHash={transactionHash}
             showStatus

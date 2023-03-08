@@ -148,8 +148,8 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
 
-  const networkOptions = Object.values(networks || {})
-    ?.filter(({ featured }: NetworkConfig) => featured)
+  const networkOptions = Object.values<NetworkConfig>(networks || {})
+    ?.filter(({ featured }: NetworkConfig) => !!featured)
     .map(({ name, id }: NetworkConfig) => {
       return {
         label: name,
