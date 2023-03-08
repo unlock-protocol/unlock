@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
+  featured: true,
   id: 1,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   provider: 'https://rpc.unlock-protocol.com/1',
