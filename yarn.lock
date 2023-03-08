@@ -6401,6 +6401,64 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@logtail/core@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@logtail/core@npm:0.3.0"
+  dependencies:
+    "@logtail/tools": ^0.3.0
+    "@logtail/types": ^0.3.0
+  checksum: 70dff6b30dbae39356a7a49495871457e5884377024297fa83c370b05569baed4cba4fbe6c5bd56274b95df15d3046fe23ef444dec508c70ef89046b594e33a7
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:0.3.1":
+  version: 0.3.1
+  resolution: "@logtail/node@npm:0.3.1"
+  dependencies:
+    "@logtail/core": ^0.3.0
+    "@logtail/types": ^0.3.0
+    "@msgpack/msgpack": ^2.5.1
+    "@types/babel__core": 7.0.4
+    "@types/babel__traverse": 7.0.4
+    "@types/stack-trace": ^0.0.29
+    cross-fetch: ^3.0.4
+    minimatch: ^3.0.4
+    stack-trace: ^0.0.10
+  checksum: 2a91a2ed27ed7b2f3acd9be38eae4d38af5c33775ff04c37e9ca6a033d4b0fc8c2b7e6652d4c2b0b1be373ed5fa5865c79980e2579f21e9b668ed970e3dd6ae6
+  languageName: node
+  linkType: hard
+
+"@logtail/tools@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@logtail/tools@npm:0.3.0"
+  dependencies:
+    "@logtail/types": ^0.3.0
+  checksum: fc694e8bf27bd5f29f7fbf825820e2c1e6e21b1092f28e032c847527aab9afb7b4f2fae77a83da35a9d490615d6701506678972411a067400f10210668c849b9
+  languageName: node
+  linkType: hard
+
+"@logtail/types@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@logtail/types@npm:0.3.0"
+  dependencies:
+    js: ^0.1.0
+  checksum: 2823130bdc870f4a84dbd02c5943898d778e3e3f10590789be3af1608e906804e45f5c5c5a4091af5d735685d3dfafaac5e648932ca030165955a790554f5cc8
+  languageName: node
+  linkType: hard
+
+"@logtail/winston@npm:0.3.1":
+  version: 0.3.1
+  resolution: "@logtail/winston@npm:0.3.1"
+  dependencies:
+    "@logtail/types": ^0.3.0
+    winston-transport: ^4.3.0
+  peerDependencies:
+    "@logtail/node": ^0.2.0
+    winston: ">=3.2.1"
+  checksum: dc3d68155c2f97233e4bfcf4899e683a91402855370df535216c4aeca0a98d274737f5a49d03bb7dabd07d8858da39ee5c3155248fc62b401e0e11e7400c0c43
+  languageName: node
+  linkType: hard
+
 "@lukeed/ms@npm:^2.0.1":
   version: 2.0.1
   resolution: "@lukeed/ms@npm:2.0.1"
@@ -6539,6 +6597,13 @@ __metadata:
     call-me-maybe: ^1.0.1
     glob-to-regexp: ^0.3.0
   checksum: d3b82b29368821154ce8e10bef5ccdbfd070d3e9601643c99ea4607e56f3daeaa4e755dd6d2355da20762c695c1b0570543d9f84b48f70c211ec09c4aaada2e1
+  languageName: node
+  linkType: hard
+
+"@msgpack/msgpack@npm:^2.5.1":
+  version: 2.8.0
+  resolution: "@msgpack/msgpack@npm:2.8.0"
+  checksum: bead9393f57239007a2fe455df5277cbc03b125f14f310162a652b81471dcf3ab6780eaa24b36e20aa742998910a6840147d08b7267063b8e2de5d40c624360e
   languageName: node
   linkType: hard
 
@@ -12271,6 +12336,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/babel__core@npm:7.0.4":
+  version: 7.0.4
+  resolution: "@types/babel__core@npm:7.0.4"
+  dependencies:
+    "@babel/parser": ^7.1.0
+    "@babel/types": ^7.0.0
+  checksum: 54f0c908f1a8a750e75af34e9c1faa082ddfb1fa8bcbb7c4b47d9157e15553b75b8985ad5358e8191f1f24ccc048a9d9651720b6d7c9c283df9d00b8f0ab1c99
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.0.0, @types/babel__core@npm:^7.1.14":
   version: 7.20.0
   resolution: "@types/babel__core@npm:7.20.0"
@@ -12309,6 +12384,15 @@ __metadata:
   dependencies:
     "@babel/types": ^7.3.0
   checksum: d20953338b2f012ab7750932ece0a78e7d1645b0a6ff42d49be90f55e9998085da1374a9786a7da252df89555c6586695ba4d1d4b4e88ab2b9f306bcd35e00d3
+  languageName: node
+  linkType: hard
+
+"@types/babel__traverse@npm:7.0.4":
+  version: 7.0.4
+  resolution: "@types/babel__traverse@npm:7.0.4"
+  dependencies:
+    "@babel/types": ^7.0.0
+  checksum: b824293ca5478452336cd6665a5991cf8ac9130bdf726cc0ab31ada81a0fa937d10a36b1bdc053b96f89d6b1713612cf5a92956139eb13c46a8bf20938d53bf2
   languageName: node
   linkType: hard
 
@@ -13297,6 +13381,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/stack-trace@npm:^0.0.29":
+  version: 0.0.29
+  resolution: "@types/stack-trace@npm:0.0.29"
+  checksum: 2dcfdf8f10e250a76e43efe6d3e05a463b4e22ca290dbb423ec14fa21f57f94ef0cc8ba19ed3394c448218d9ddd9f7cd9adea131fb6572aa2d484b1cf7f043aa
+  languageName: node
+  linkType: hard
+
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
@@ -14243,6 +14334,8 @@ __metadata:
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
     "@aws-sdk/client-s3": 3.272.0
+    "@logtail/node": 0.3.1
+    "@logtail/winston": 0.3.1
     "@nuintun/qrcode": 3.3.0
     "@resvg/resvg-js": 2.3.1
     "@sentry/node": 7.36.0
@@ -20482,6 +20575,15 @@ __metadata:
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: c7a3e27aa59e913b54a1bafd366b88650bc41d6651f0cbe258d4ff09d43d6a7394232a4dadd0bf518b3e696fdf595db1028a0d82c785b88bd61f8a440cecfade
+  languageName: node
+  linkType: hard
+
+"commander@npm:~1.1.1":
+  version: 1.1.1
+  resolution: "commander@npm:1.1.1"
+  dependencies:
+    keypress: 0.1.x
+  checksum: a27db3772327d1d8a8abaa7d3834c2b4f14067bc9467a113de96834fd6bfcabd0e3a18ca64aa6b4560804d4923c2424b5471409cc85bd929f2a28f8738760d19
   languageName: node
   linkType: hard
 
@@ -32463,6 +32565,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "js@npm:0.1.0"
+  dependencies:
+    commander: ~1.1.1
+  bin:
+    js: ./bin/js
+  checksum: c2967be06de24caace5044d7cd6d9571034cdaae3da5a0a19602a2791d0654e9c87c53fed00283ae861a055c1db82ff0bda26ad9381aa915f3f06205c3f91c7c
+  languageName: node
+  linkType: hard
+
 "jsbi@npm:^3.1.4":
   version: 3.2.5
   resolution: "jsbi@npm:3.2.5"
@@ -32916,6 +33029,13 @@ __metadata:
   version: 1.0.4
   resolution: "keypair@npm:1.0.4"
   checksum: 7c91627416ac43ce81013310cdf8a8f92b17a22b64066b21db96446da62414563783ebbfa822ead74de380ee9e7885d267f5f8c31528127ca8437ef690a5cdba
+  languageName: node
+  linkType: hard
+
+"keypress@npm:0.1.x":
+  version: 0.1.0
+  resolution: "keypress@npm:0.1.0"
+  checksum: 3a7e9dc0354dc6e5cfd4a507263dee4d736381d1bf40b59b73ed9972aef9b5e5be3ce6df24ca67d1530c9fe9cf90b913c6d2cc49f610b4077af379933a2968a5
   languageName: node
   linkType: hard
 
@@ -44908,7 +45028,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stack-trace@npm:0.0.x":
+"stack-trace@npm:0.0.x, stack-trace@npm:^0.0.10":
   version: 0.0.10
   resolution: "stack-trace@npm:0.0.10"
   checksum: 473036ad32f8c00e889613153d6454f9be0536d430eb2358ca51cad6b95cea08a3cc33cc0e34de66b0dad221582b08ed2e61ef8e13f4087ab690f388362d6610
@@ -50523,7 +50643,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston-transport@npm:^4.4.0, winston-transport@npm:^4.5.0":
+"winston-transport@npm:^4.3.0, winston-transport@npm:^4.4.0, winston-transport@npm:^4.5.0":
   version: 4.5.0
   resolution: "winston-transport@npm:4.5.0"
   dependencies:
