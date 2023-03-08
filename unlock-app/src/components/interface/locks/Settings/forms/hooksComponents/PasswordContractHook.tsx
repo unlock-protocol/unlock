@@ -38,7 +38,7 @@ export const PasswordContractHook = ({
 
   const onSavePassword = async () => {
     const walletService = await getWalletService(network)
-    const tx = await web3Service.setPasswordHookSigner(
+    const tx = await walletService.setPasswordHookSigner(
       {
         lockAddress,
         contractAddress: address,
@@ -52,7 +52,7 @@ export const PasswordContractHook = ({
 
   const getSigners = async () => {
     const walletService = await getWalletService(network)
-    return await walletService.getPasswordHookSigners(
+    return await web3Service.getPasswordHookSigners(
       {
         lockAddress,
         contractAddress: address,
