@@ -40,7 +40,7 @@ export const getAccountTokenBalance = async (
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  */
-export const useAccount = (address: string, network: number) => {
+export const useAccount = (address: string) => {
   const config = useConfig()
   const walletService = useWalletService()
   const wedlockService = useWedlockService()
@@ -153,7 +153,7 @@ export const useAccount = (address: string, network: number) => {
   const retrieveUserAccount = async (email: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
     const encryptedKey = await storageService.getUserPrivateKey(email)
-    const unlockProvider = new UnlockProvider(config.networks[network])
+    const unlockProvider = new UnlockProvider(config.networks[1])
 
     await unlockProvider.connect({
       key: encryptedKey,
