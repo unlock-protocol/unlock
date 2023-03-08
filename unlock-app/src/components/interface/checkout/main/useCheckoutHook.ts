@@ -14,7 +14,13 @@ export function useCheckoutHook(service: CheckoutService) {
   const { isLoading, data: hookMappingState } = useQuery(
     ['getKeyPurchaseHook'],
     async () => {
-      const hooks = await Promise.all(
+      let hooks: Record<
+        string,
+        {
+          isPassword: boolean
+        }
+      > = {}
+      await Promise.all(
         Object.entries(paywallConfig.locks).map(
           async ([lockAddress, props]) => {
             const lockNetwork = props.network || paywallConfig.network || 1
@@ -33,7 +39,8 @@ export function useCheckoutHook(service: CheckoutService) {
               (hookValue ?? '')?.length > 0 &&
               onPurchaseHooks?.find(({ address }) => address === hookValue)?.id
 
-            return {
+            hooks = {
+              ...hooks,
               [lockAddress]: {
                 isPassword: hookMatchId === HookType.PASSWORD ?? false,
               },

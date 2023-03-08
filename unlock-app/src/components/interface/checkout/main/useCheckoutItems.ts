@@ -16,8 +16,8 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
     paywallConfig.locks[lockAddress]?.captcha || paywallConfig.captcha
 
   const isPassword =
-    (hookMappingState && hookMappingState?.[`${lockAddress}`]?.isPassword) ??
-    false
+    (hookMappingState && hookMappingState?.[lockAddress]?.isPassword) ?? false
+
   const isPromo = paywallConfig.locks[lockAddress]?.promo || paywallConfig.promo
 
   const checkoutItems: StepItem[] = [
