@@ -12084,23 +12084,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/contract-schema@npm:^3.4.13":
+"@truffle/contract-schema@npm:^3.4.13, @truffle/contract-schema@npm:^3.4.7":
   version: 3.4.13
   resolution: "@truffle/contract-schema@npm:3.4.13"
   dependencies:
     ajv: ^6.10.0
     debug: ^4.3.1
   checksum: 095abbc72689ce70b1e13f02f60cd3c043fcd7054e5ecf1bf23edc241dbb11476db864fffc300c206671dfb91fac99fc3dd24a3fc71eb861315817e354457bed
-  languageName: node
-  linkType: hard
-
-"@truffle/contract-schema@npm:^3.4.7":
-  version: 3.4.12
-  resolution: "@truffle/contract-schema@npm:3.4.12"
-  dependencies:
-    ajv: ^6.10.0
-    debug: ^4.3.1
-  checksum: da34cbeedbe7f4e8c3cc72fc83a5e524f5eb90900851ecbf888500b89997df15da22a699da80de1b29524d9629b4f77bf03ec98c269fc58670e44cbcc9bd47fb
   languageName: node
   linkType: hard
 
@@ -19376,9 +19366,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001426, caniuse-lite@npm:^1.0.30001449":
-  version: 1.0.30001458
-  resolution: "caniuse-lite@npm:1.0.30001458"
-  checksum: 258cc5a25babbbfe483bf788c6f321a19400ff80b2bf156b360bac09a6f9f4da44516350d187a30395667cb142c682d9ea96577ea0df236d35f76234b07ccb41
+  version: 1.0.30001462
+  resolution: "caniuse-lite@npm:1.0.30001462"
+  checksum: e4a57d7851eec65e7c9b6c11c4bbcecdc49d87b1b01bff3c15ea27efb05f959891b4c70ac169842067c134d6fa126d9ad5a91d0f85c7387c5bd912eaf41ea647
   languageName: node
   linkType: hard
 
@@ -23175,9 +23165,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.284":
-  version: 1.4.315
-  resolution: "electron-to-chromium@npm:1.4.315"
-  checksum: 9b1e9a43afe086aaed9af2a60076a409c0d6a0d9a9f4d0a293131763329c48c86198bda4020155c7ce53d2569840d49d51e8ce2405b6cd90000a77c1bd650ea5
+  version: 1.4.324
+  resolution: "electron-to-chromium@npm:1.4.324"
+  checksum: 06d0d8d27cbf8320fad6ba100bfffae2f48cd176eb30765cc179d199406a2fda395af00f86c9ca182add1f1b9fe0b8b6965ab4a6e5306ef3a163198b775d8fdf
   languageName: node
   linkType: hard
 
