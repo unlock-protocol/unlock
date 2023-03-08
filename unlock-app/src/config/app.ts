@@ -8,7 +8,7 @@ const staging = {
   locksmithHost: 'https://staging-locksmith.unlock-protocol.com',
   unlockStaticUrl: 'https://staging.unlock-protocol.com',
   wedlocksUri:
-    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+    'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
 
 const dev = {

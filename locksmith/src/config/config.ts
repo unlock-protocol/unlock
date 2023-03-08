@@ -7,7 +7,8 @@ const stagingConfig = {
   },
   unlockApp: 'https://staging-app.unlock-protocol.com',
   services: {
-    wedlocks: 'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+    wedlocks:
+      'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler',
     locksmith: 'https://staging-locksmith.unlock-protocol.com',
   },
 }
@@ -79,9 +80,12 @@ if (process.env.DATABASE_URL) {
   config.database.host = process.env.DB_HOSTNAME
 }
 
-if (process.env.UNLOCK_ENV === 'prod' || process.env.UNLOCK_ENV === 'staging') {
+if (process.env.UNLOCK_ENV === 'prod') {
   config.services.wedlocks =
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
+} else if (process.env.UNLOCK_ENV === 'staging') {
+  config.services.wedlocks =
+    'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler'
 }
 
 export default config
