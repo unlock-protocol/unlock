@@ -39,6 +39,7 @@ export function useCheckoutHook(service: CheckoutService) {
               (hookValue ?? '')?.length > 0 &&
               onPurchaseHooks?.find(({ address }) => address === hookValue)?.id
 
+            // add state for hooks
             hooks = {
               ...hooks,
               [lockAddress]: {
