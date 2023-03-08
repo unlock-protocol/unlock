@@ -14,7 +14,7 @@ module.exports = {
     config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
 
     // output the js lib
-    const unlockJSFile = require.resolve('@unlock-protocol/paywall')
+    const unlockJSFile = '../dist/unlock.latest.min.js'
     config.plugins.push(
       new CopyWebpackPlugin({
         patterns: [
