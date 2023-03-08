@@ -1,7 +1,7 @@
 import { useActor } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import { CheckoutService } from './checkoutMachine'
-import { useHook } from './useHook'
+import { useCheckoutHook } from './useCheckoutHook'
 
 export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const [state] = useActor(service)
@@ -10,7 +10,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
 
   const lockAddress = lock?.address || ''
 
-  const { hookMappingState } = useHook(service)
+  const { hookMappingState } = useCheckoutHook(service)
 
   const isCaptcha =
     paywallConfig.locks[lockAddress]?.captcha || paywallConfig.captcha

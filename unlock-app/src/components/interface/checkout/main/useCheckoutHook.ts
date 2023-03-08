@@ -5,7 +5,7 @@ import { useActor } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CheckoutService } from './checkoutMachine'
 
-export function useHook(service: CheckoutService) {
+export function useCheckoutHook(service: CheckoutService) {
   const [state] = useActor(service)
   const web3Service = useWeb3Service()
 
