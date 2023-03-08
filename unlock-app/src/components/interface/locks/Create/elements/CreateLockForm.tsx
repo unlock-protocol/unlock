@@ -8,12 +8,12 @@ import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 
 export interface LockFormProps {
   name: string
