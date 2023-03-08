@@ -14,7 +14,7 @@ const MENU = {
     mobile: 'bg-brand-primary px-6',
   },
   logo: {
-    url: 'https://unlock-protocol.com/',
+    url: '/',
   },
   menuSections: [
     {
@@ -63,15 +63,15 @@ const MENU = {
             },
             {
               title: 'Discourse',
-              url: 'https://unlock-protocol.com/guides/unlock-discourse-plugin/',
+              url: '/guides/unlock-discourse-plugin/',
             },
             {
               title: 'Guild.xyz',
-              url: 'https://unlock-protocol.com/guides/guild-xyz/',
+              url: '/guides/guild-xyz/',
             },
             {
               title: 'Wordpress',
-              url: 'https://unlock-protocol.com/guides/guide-to-the-unlock-protocol-wordpress-plugin/',
+              url: '/guides/guide-to-the-unlock-protocol-wordpress-plugin/',
             },
           ],
         },
@@ -88,36 +88,36 @@ const MENU = {
         {
           title: 'Create Digital Collectibles with Unlock Protocol',
           src: '/images/marketing/collectible.png',
-          url: 'https://unlock-protocol.com/guides/how-to-use-different-images/',
+          url: '/guides/how-to-use-different-images/',
         },
         {
           title: 'How to Sell NFT Tickets for an Event',
           src: '/images/marketing/event.png',
-          url: 'https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/',
+          url: '/guides/how-to-sell-nft-tickets-for-an-event/',
         },
         {
           title: 'Recurring Memberships',
           src: '/images/marketing/recurring.png',
-          url: 'https://unlock-protocol.com/guides/recurring-memberships/',
+          url: '/guides/recurring-memberships/',
         },
         {
           title: 'Articles for you',
           options: [
             {
               title: 'How to sell membership NFT',
-              url: 'https://unlock-protocol.com/guides/how-to-sell-membership-nfts/',
+              url: '/guides/how-to-sell-membership-nfts/',
             },
             {
               title: 'Customizing Locks on OpenSea',
-              url: 'https://unlock-protocol.com/guides/customizing-locks-on-opensea/',
+              url: '/guides/customizing-locks-on-opensea/',
             },
             {
               title: 'How to airdrop memberships',
-              url: 'https://unlock-protocol.com/guides/how-to-airdrop-memberships/',
+              url: '/guides/how-to-airdrop-memberships/',
             },
             {
               title: 'View all',
-              url: 'https://unlock-protocol.com/guides',
+              url: '/guides',
             },
           ],
         },
@@ -149,7 +149,7 @@ const MENU = {
 
     {
       title: 'Blog',
-      url: 'https://unlock-protocol.com/blog',
+      url: '/blog',
     },
     {
       title: 'More',
@@ -168,7 +168,7 @@ const MENU = {
             },
             {
               title: 'Unlock DAO',
-              url: 'https://unlock-protocol.com/blog/unlock-dao',
+              url: '/blog/unlock-dao',
             },
             {
               title: 'Roadmap',
@@ -176,11 +176,11 @@ const MENU = {
             },
             {
               title: 'Upcoming Events',
-              url: 'https://unlock-protocol.com/upcoming-events',
+              url: '/upcoming-events',
             },
             {
               title: 'Grants Program',
-              url: 'https://unlock-protocol.com/grants',
+              url: '/grants',
             },
           ],
         },
@@ -226,7 +226,7 @@ export function Layout({ children }: Props) {
       },
     },
     logo: {
-      url: 'https://unlock-protocol.com/',
+      url: '/',
     },
     privacyUrl: '/privacy',
     termsUrl: '/terms',
@@ -280,7 +280,7 @@ export function Layout({ children }: Props) {
         options: [
           {
             label: 'Unlock DAO',
-            url: 'https://unlock-protocol.com/blog/unlock-dao',
+            url: '/blog/unlock-dao',
           },
           { label: 'Forum', url: 'https://unlock.community/' },
           {
