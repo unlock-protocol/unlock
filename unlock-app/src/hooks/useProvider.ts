@@ -50,7 +50,13 @@ export const useProvider = (config: any) => {
 
   const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
-    const _network = await _walletService.connect(provider)
+    let _network = 1 // default
+    try {
+      _network = await _walletService.connect(provider)
+    } catch (error) {
+      console.log(error)
+    }
+
     const _account = await _walletService.getAccount()
     return {
       walletService: _walletService,
