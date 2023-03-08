@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'lib/cdn.js'),
       fileName: 'unlock.latest.min',
-      formats: ['cjs'],
+      formats: ['umd'],
     },
   },
 })
