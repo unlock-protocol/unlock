@@ -17,6 +17,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
 import config from '../config/config'
+import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 
 export class PurchaseController {
   // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.
@@ -142,6 +143,7 @@ export class PurchaseController {
       normalizedRecipients.length
     )
     if (soldOut) {
+      // TODO: Cancel authorization
       return response.status(400).send({
         error: 'Lock is sold out.',
       })
@@ -292,6 +294,12 @@ export class PurchaseController {
       const fulfillmentDispatcher = new Dispatcher()
       const lock = await web3Service.getLock(lockAddress, network)
       const keyPrice = parseFloat(lock.keyPrice)
+
+      if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
+        return response.status(400).send({
+          message: 'Claim disabled for this lock',
+        })
+      }
 
       if (keyPrice > 0) {
         return response.status(400).send({

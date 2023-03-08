@@ -8,7 +8,7 @@ const ClaimBody = z.object({
   data: z.string().optional(),
 })
 
-const LOCKS_WITH_DISABLED_CLAIMS = [
+export const LOCKS_WITH_DISABLED_CLAIMS = [
   '0xafcfff71f3e717fcdb0b6a1bf20026304fd41bee',
 ]
 
