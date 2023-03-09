@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
-import { Token } from '@unlock-protocol/types'
+import { Token, NetworkConfig } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -11,7 +11,10 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import Link from 'next/link'
+import { networks } from '@unlock-protocol/networks'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+
 export interface LockFormProps {
   name: string
   keyPrice?: number
@@ -52,6 +55,8 @@ export const networkDescription = (network: number) => {
         using another network like Polygon, Gnosis Chain or Optimism.
       </>
     )
+  } else {
+    return <>{networks[network!].description}</>
   }
 }
 
@@ -61,7 +66,7 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { account } = useAuth()
+  const { account, network } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const [unlimitedDuration, setUnlimitedDuration] = useState(
@@ -71,7 +76,6 @@ export const CreateLockForm = ({
     defaultValues?.unlimitedQuantity
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
-  const config = useConfig()
   const {
     register,
     handleSubmit,
@@ -83,7 +87,7 @@ export const CreateLockForm = ({
     mode: 'onChange',
     defaultValues: {
       name: '',
-      network: config.defaultNetwork,
+      network,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
@@ -95,6 +99,7 @@ export const CreateLockForm = ({
   const { network: selectedNetwork } = useWatch({
     control,
   })
+
   const { baseCurrencySymbol } = networks[selectedNetwork!] ?? {}
 
   const getBalance = async () => {
@@ -142,19 +147,34 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
 
-  const networkOptions = Object.values(networks || {})?.map(
-    ({ name, id }: any) => {
+  const networkOptions = Object.values<NetworkConfig>(networks || {})
+    ?.filter(({ featured }: NetworkConfig) => !!featured)
+    .map(({ name, id }: NetworkConfig) => {
       return {
         label: name,
         value: id,
       }
-    }
+    })
+  if (networks[network!] && !networks[network!].featured) {
+    networkOptions.push({
+      label: networks[network!].name,
+      value: networks[network!].id,
+    })
+  }
+
+  const onChangeNetwork = useCallback(
+    (network: number | string) => {
+      setSelectedToken(null)
+      setValue('network', parseInt(`${network}`))
+    },
+    [setValue, setSelectedToken]
   )
 
-  const onChangeNetwork = (network: number | string) => {
-    setSelectedToken(null)
-    setValue('network', parseInt(`${network}`))
-  }
+  useEffect(() => {
+    if (network) {
+      onChangeNetwork(network)
+    }
+  }, [onChangeNetwork, network])
 
   return (
     <>
@@ -172,12 +192,29 @@ export const CreateLockForm = ({
       <div className="overflow-hidden bg-white rounded-xl">
         <div className="px-3 py-8 md:py-4">
           <form
-            className="flex flex-col w-full gap-10"
+            className="flex flex-col w-full gap-6"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
             <Select
               label="Network:"
-              defaultValue={config.defaultNetwork}
+              tooltip={
+                <>
+                  Unlock supports{' '}
+                  <Link
+                    target="_blank"
+                    className="underline"
+                    href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
+                  >
+                    {Object.keys(networks).length} networks
+                  </Link>
+                  .
+                  <br />
+                  If yours is not in the list below, switch your wallet to it{' '}
+                  <br />
+                  and you will be able to deploy your contract on it.
+                </>
+              }
+              defaultValue={selectedNetwork}
               options={networkOptions}
               onChange={onChangeNetwork}
               description={networkDescription(selectedNetwork!)}
@@ -198,7 +235,7 @@ export const CreateLockForm = ({
                 </span>
               )}
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
                   Memberships duration (days):
@@ -237,7 +274,7 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
                   Number of memberships for sale:
@@ -276,7 +313,7 @@ export const CreateLockForm = ({
               </div>
             </div>
 
-            <div className="relative flex flex-col gap-4">
+            <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
                   Currency & Price:
