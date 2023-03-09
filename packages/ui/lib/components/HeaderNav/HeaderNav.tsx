@@ -25,11 +25,13 @@ interface NavbarImageProps {
   src: string
   url: string
   alt?: string
+  description?: string
 }
 
 interface NavLinkProps {
   title: string
   url: string
+  description?: string
 }
 
 interface NavEmbedProps {
@@ -86,13 +88,17 @@ const POPOVER_CLASSES: SizeStyleProp = {
 const NavSectionTitle = ({
   title,
   className,
-}: { title: string } & HTMLProps<HTMLAnchorElement>) => {
+  description,
+}: { title: string; description?: string } & HTMLProps<HTMLAnchorElement>) => {
   if (!title?.length) return null
   return (
-    <div
-      className={`text-xl font-bold duration-200 text-brand-dark ${className}`}
-    >
-      {title}
+    <div>
+      <h3
+        className={`text-xl font-bold duration-200 text-brand-dark ${className}`}
+      >
+        {title}
+      </h3>
+      {description && <p className="pt-2">{description}</p>}
     </div>
   )
 }
@@ -115,7 +121,13 @@ const SocialIcons = () => {
   )
 }
 
-const NavImageItem = ({ title, src, alt, url }: NavbarImageProps) => {
+const NavImageItem = ({
+  title,
+  src,
+  alt,
+  url,
+  description,
+}: NavbarImageProps) => {
   return (
     <Link href={url} className="flex flex-col gap-4 group">
       <div
@@ -128,6 +140,7 @@ const NavImageItem = ({ title, src, alt, url }: NavbarImageProps) => {
       <NavSectionTitle
         title={title}
         className="group-hover:text-brand-ui-primary"
+        description={description}
       />
     </Link>
   )
@@ -194,14 +207,11 @@ const NavSectionDesktop = (section: MenuSectionProps) => {
   const url: string = 'url' in section ? section?.url : ''
   const hasEmbed = 'embed' in section ? section.embed : null
   const size = (section.small ? 'small' : 'medium') as Size
-
   const classBySize = POPOVER_CLASSES[size]
   const navbarClassBySize = ['medium', 'large'].includes(size)
     ? 'grid justify-between grid-cols-4 gap-10'
     : 'grid justify-between grid-cols-1 gap-10'
-  const popoverNavWrapperClass = ['medium', 'large'].includes(size)
-    ? 'px-10 pt-8 pb-14'
-    : 'px-10 py-8'
+  const popoverNavWrapperClass = 'px-10 py-8'
 
   const Title = ({ title, open }: any) => {
     const [isActive, setActive] = useState(false)
@@ -336,6 +346,7 @@ const NavSectionMobile = ({
                 return 'url' in option && option.url ? (
                   <Link href={option.url} key={index}>
                     <div className="font-bold">{option.title}</div>
+                    <p className="pt-1">{option.description}</p>
                   </Link>
                 ) : (
                   <div className="font-bold" key={index}>
