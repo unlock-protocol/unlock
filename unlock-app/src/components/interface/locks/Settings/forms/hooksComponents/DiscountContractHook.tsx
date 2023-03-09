@@ -18,7 +18,7 @@ export const DiscountContractHook = ({
   const { getWalletService } = useAuth()
   const [discountCode, setDiscountCode] = useState('')
   const [signer, setSigner] = useState('')
-  const [hasDiscountCode, setHadDiscountCode] = useState(false)
+  const [hasDiscountCode, setHasDiscountCode] = useState(false)
   const [discountPercentage, setDiscountPercentage] = useState<
     number | undefined
   >(undefined)
@@ -43,12 +43,10 @@ export const DiscountContractHook = ({
     },
     {
       onSuccess: (discount: number | string) => {
-        setHadDiscountCode(Number(discount) > 0)
+        setHasDiscountCode(Number(discount) > 0)
       },
     }
   )
-
-  console.log('hasDiscountCode', hasDiscountCode, isLoading)
 
   const onSaveDiscountCode = async () => {
     const walletService = await getWalletService(network)
@@ -132,7 +130,9 @@ export const DiscountContractHook = ({
                   setValue(name, value)
                 }}
               >
-                Save discount code
+                {hasDiscountCode
+                  ? 'Update discount code'
+                  : 'Save discount code'}
               </Button>
             </div>
           </div>
