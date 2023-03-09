@@ -367,7 +367,7 @@ const NavSectionMobile = ({
                             href={url}
                             className="duration-200 hover:text-brand-ui-primary"
                           >
-                            {title} 12
+                            {title}
                           </Link>
                         )
                       })}
