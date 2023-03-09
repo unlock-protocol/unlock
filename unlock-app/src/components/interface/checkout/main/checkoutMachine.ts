@@ -251,7 +251,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
-                const isPassword = ctx.hook?.isPassword ?? false
+                const isPassword = ctx.hook?.isPassword
                 return !!isPassword && event.expiredMember
               },
             },
@@ -259,7 +259,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PROMO',
               cond: (ctx, event) => {
-                const isPromo = ctx.hook?.isPromo ?? false
+                const isPromo = ctx.hook?.isPromo
                 return !!isPromo && event.expiredMember
               },
             },
@@ -267,7 +267,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'CAPTCHA',
               cond: (ctx, event) => {
-                const isCaptcha = ctx.hook?.isCaptcha ?? false
+                const isCaptcha = ctx.hook?.isCaptcha
                 return !!isCaptcha && event.expiredMember
               },
             },
