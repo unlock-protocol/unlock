@@ -1,5 +1,5 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Placeholder, Select } from '@unlock-protocol/ui'
+import { Button, Select } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
