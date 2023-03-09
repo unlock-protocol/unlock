@@ -1,21 +1,8 @@
-import dynamic from 'next/dynamic'
 import React from 'react'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface KeyPriceProps {
   price?: number
   symbol?: string
-}
-
-const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
-  ssr: false,
-})
-
-interface CryptoIconProps {
-  symbol: string
-  size?: number
-}
-export const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => {
-  return <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
 }
 
 export const KeyPrice = ({ price, symbol = '' }: KeyPriceProps) => {

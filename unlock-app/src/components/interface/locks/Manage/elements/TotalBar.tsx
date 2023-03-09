@@ -1,13 +1,12 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Detail } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { CryptoIcon } from '../../elements/KeyPrice'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
 import { useLockManager } from '~/hooks/useLockManager'
 import { WithdrawFundModal } from './WithdrawFundModal'
-import { Detail } from '@unlock-protocol/ui'
 
 interface TotalsProps {
   lockAddress: string
