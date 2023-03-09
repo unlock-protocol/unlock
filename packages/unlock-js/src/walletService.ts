@@ -3,6 +3,7 @@ import { Lock, WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -994,7 +995,7 @@ export default class WalletService extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: discountCodeHook,
+      abi: discountCodeHookAbi,
       signer,
     })
 
