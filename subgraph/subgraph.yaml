@@ -3,9 +3,6 @@ description: Unlock Protocol & Associated contracts
 features:
   - nonFatalErrors
   - grafting
-graft:
-  base: QmZVK5VQ6LMm95nySe6opamptTCVVAG2yB3mFyCC1U2PrL
-  block: 40081900
 schema:
   file: ./schema.graphql
 dataSources:
@@ -13,7 +10,7 @@ dataSources:
     name: Unlock
     source:
       abi: Unlock
-      address: "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f"
+      address: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f'
       startBlock: 21986688
     mapping:
       kind: ethereum/events
