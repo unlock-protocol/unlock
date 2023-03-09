@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const arbitrum: NetworkConfig = {
+  featured: true,
   publicProvider: 'https://arb1.arbitrum.io/rpc',
   provider: 'https://rpc.unlock-protocol.com/42161',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
