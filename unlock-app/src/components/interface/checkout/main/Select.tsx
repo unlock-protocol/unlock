@@ -277,7 +277,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
-  const { isLoading: isLoadingHook } = useCheckoutHook(checkoutService)
+  const { isLoading: isLoadingHook, hookMappingState } =
+    useCheckoutHook(checkoutService)
 
   const isDisabled =
     isLocksLoading ||
@@ -373,6 +374,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
+                const { isCaptcha, isPassword, isPromo } =
+                  hookMappingState?.[lock.address] ?? {}
+
                 send({
                   type: 'SELECT_LOCK',
                   lock,
@@ -384,6 +388,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     ? false
                     : !!membership?.expired,
                   recipients: account ? [account] : [],
+                  hook: {
+                    isCaptcha,
+                    isPassword,
+                    isPromo,
+                  },
                 })
               }}
             >

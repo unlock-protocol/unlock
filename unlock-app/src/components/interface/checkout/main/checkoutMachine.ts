@@ -47,6 +47,11 @@ export interface SelectLockEvent {
   skipRecipient?: boolean
   recipients?: string[]
   keyManagers?: string[]
+  hook?: {
+    isCaptcha?: boolean
+    isPassword?: boolean
+    isPromo?: boolean
+  }
 }
 
 export interface SignMessageEvent {
@@ -178,6 +183,11 @@ interface CheckoutMachineContext {
   password?: string[]
   promo?: string[]
   data?: string[]
+  hook?: {
+    isCaptcha?: boolean
+    isPassword?: boolean
+    isPromo?: boolean
+  }
   renew: boolean
 }
 
@@ -206,6 +216,11 @@ export const checkoutMachine = createMachine(
       keyManagers: [],
       skipQuantity: false,
       renew: false,
+      hook: {
+        isCaptcha: false,
+        isPassword: false,
+        isPromo: false,
+      },
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -236,9 +251,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
-                const isPassword =
-                  ctx.paywallConfig.password ||
-                  ctx.paywallConfig.locks?.[event.lock.address].password
+                const isPassword = ctx.hook?.isPassword ?? false
                 return !!isPassword && event.expiredMember
               },
             },
@@ -246,9 +259,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PROMO',
               cond: (ctx, event) => {
-                const isPromo =
-                  ctx.paywallConfig.promo ||
-                  ctx.paywallConfig.locks?.[event.lock.address].promo
+                const isPromo = ctx.hook?.isPromo ?? false
                 return !!isPromo && event.expiredMember
               },
             },
@@ -256,9 +267,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'CAPTCHA',
               cond: (ctx, event) => {
-                const isCaptcha =
-                  ctx.paywallConfig.captcha ||
-                  ctx.paywallConfig.locks?.[event.lock.address].captcha
+                const isCaptcha = ctx.hook?.isCaptcha ?? false
                 return !!isCaptcha && event.expiredMember
               },
             },
@@ -553,11 +562,11 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'PASSWORD',
-              cond: (ctx) => !!ctx.paywallConfig.password,
+              cond: (ctx) => !!ctx.hook?.isPassword,
             },
             {
               target: 'CAPTCHA',
-              cond: (ctx) => !!ctx.paywallConfig.captcha,
+              cond: (ctx) => !!ctx.hook?.isCaptcha,
             },
             {
               target: 'MESSAGE_TO_SIGN',
@@ -753,26 +762,20 @@ export const checkoutMachine = createMachine(
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {
         return (
-          !!(
-            context.paywallConfig.captcha ||
-            context.paywallConfig.locks?.[context.lock!.address]?.captcha
-          ) && ['crypto', 'claim'].includes(context.payment.method)
+          (context.hook?.isCaptcha ?? false) &&
+          ['crypto', 'claim'].includes(context.payment.method)
         )
       },
-      requirePassword: (context) => {
+      requirePassword: (context, event) => {
         return (
-          !!(
-            context.paywallConfig.password ||
-            context.paywallConfig.locks?.[context.lock!.address]?.password
-          ) && ['crypto', 'claim'].includes(context.payment.method)
+          (context.hook?.isPassword ?? false) &&
+          ['crypto', 'claim'].includes(context.payment.method)
         )
       },
       requirePromo: (context) => {
         return (
-          !!(
-            context.paywallConfig.promo ||
-            context.paywallConfig.locks?.[context.lock!.address]?.promo
-          ) && ['crypto', 'claim'].includes(context.payment.method)
+          (context.hook?.isPromo ?? false) &&
+          ['crypto', 'claim'].includes(context.payment.method)
         )
       },
     },

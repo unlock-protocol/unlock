@@ -5,7 +5,7 @@ import { useCheckoutHook } from './useCheckoutHook'
 
 export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const [state] = useActor(service)
-  const { paywallConfig, skipQuantity, payment, lock, skipRecipient } =
+  const { paywallConfig, skipQuantity, payment, lock, skipRecipient, hook } =
     state.context
 
   const lockAddress = lock?.address || ''
