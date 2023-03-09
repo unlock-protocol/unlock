@@ -1,22 +1,13 @@
 import { useActor } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import { CheckoutService } from './checkoutMachine'
-import { useCheckoutHook } from './useCheckoutHook'
 
 export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const [state] = useActor(service)
-  const { paywallConfig, skipQuantity, payment, lock, skipRecipient, hook } =
+  const { paywallConfig, skipQuantity, payment, skipRecipient, hook } =
     state.context
 
-  const lockAddress = lock?.address || ''
-
-  const { hookMappingState } = useCheckoutHook(service)
-
-  const {
-    isCaptcha = false,
-    isPassword = false,
-    isPromo = false,
-  } = hookMappingState?.[lockAddress] ?? {}
+  const { isCaptcha = false, isPassword = false, isPromo = false } = hook ?? {}
 
   const checkoutItems: StepItem[] = [
     {

@@ -666,6 +666,9 @@ export const checkoutMachine = createMachine(
           skipRecipient: event.skipRecipient,
           recipients: event.recipients,
           keyManagers: event.keyManagers,
+          hook: {
+            ...event.hook,
+          },
         }
       }),
       selectQuantity: assign({
@@ -719,6 +722,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       updatePaywallConfig: assign((_, event) => {
+        console.log('event', event)
         return {
           paywallConfig: event.config,
           lock: undefined,
@@ -735,6 +739,7 @@ export const checkoutMachine = createMachine(
           renew: false,
           skipRecipient: true,
           keyManagers: [],
+          hook: {},
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
