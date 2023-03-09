@@ -168,26 +168,4 @@ describe('PaymentProcessor', () => {
       })
     })
   })
-  describe('chargeUserForConnectedAccount', () => {
-    const accountId = 'acct_1GXsNrL9eCzn3mEi'
-    describe('when the user can be charged', () => {
-      it.skip('returns a charge', async () => {
-        expect.assertions(1)
-        const { nockDone } = await nockBack(
-          'connected_account_charged_user.json'
-        )
-        const charge = await paymentProcessor.chargeUserForConnectedAccount(
-          '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
-          accountId,
-          lockAddress,
-          accountId,
-          31337,
-          1.85
-        )
-
-        expect(charge).not.toBeNull()
-        nockDone()
-      })
-    })
-  })
 })

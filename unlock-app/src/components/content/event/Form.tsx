@@ -18,9 +18,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { CryptoIcon } from '~/components/interface/locks/elements/KeyPrice'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number

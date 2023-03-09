@@ -39,6 +39,7 @@ export interface Token {
 }
 
 export enum HookType {
+  CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
 }
 
@@ -63,6 +64,7 @@ export interface Hook {
 
 export interface NetworkConfig {
   id: number
+  featured?: boolean
   name: string
   chain?: string
   provider: string

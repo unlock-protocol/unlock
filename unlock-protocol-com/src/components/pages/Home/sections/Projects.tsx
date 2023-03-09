@@ -10,6 +10,22 @@ import { twMerge } from 'tailwind-merge'
 export const UNLOCK_PROJECTS = [
   {
     coverClass:
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cointelegraph.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cointelegraph.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'March 2023',
+    title: 'Cointelegraph',
+    text: "Why Didn't Crypto Walk the Walk at ETHDenver?",
+    href: 'https://cointelegraph.com/news/why-didn-t-crypto-walk-the-walk-at-ethdenver/',
+  },
+  {
+    coverClass:
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/torquelogo.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/torquelogo.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'March 2023',
+    title: 'Torque Magazine',
+    text: 'What is the Creator Economy (And How Can You Join It?)',
+    href: 'https://torquemag.io/2023/03/creator-economy/',
+  },
+  {
+    coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/socialmediaexaminer.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/socialmediaexaminer.jpg)] [background-blend-mode:normal,screen,normal]',
     published: 'January 2023',
     title: 'Social Media Examiner',

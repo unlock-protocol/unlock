@@ -6,7 +6,8 @@ import { twMerge } from 'tailwind-merge'
 import { Size, SizeStyleProp } from '~/types'
 import { Button } from '../Button/Button'
 import { FieldLayout, Input } from '../Form'
-
+import { Tooltip } from '../Tooltip/Tooltip'
+import { HiQuestionMarkCircle as QuestionMark } from 'react-icons/hi'
 export interface Option {
   label: string
   value: string | number
@@ -18,6 +19,7 @@ export interface Option {
 interface SelectProps<T> {
   label?: string
   description?: ReactNode
+  tooltip?: ReactNode
   options: Option[]
   size?: Size
   onChange?: (value: string | number, isCustom?: boolean) => void
@@ -89,6 +91,7 @@ export const Select = <T extends unknown>({
   options,
   onChange,
   label = '',
+  tooltip = '',
   description = '',
   size = 'medium',
   defaultValue,
@@ -138,9 +141,7 @@ export const Select = <T extends unknown>({
 
   // Set default value if present
   useEffect(() => {
-    const defaultSelection =
-      options?.find((option) => option.value == `${defaultValue}`) || null
-    setSelected(defaultSelection)
+    onChangeOption(defaultValue as string)
   }, [defaultValue])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
@@ -180,7 +181,14 @@ export const Select = <T extends unknown>({
         <div className="relative">
           {label?.length > 0 && (
             <label className="block px-1 mb-1 text-base" htmlFor="">
-              {label}
+              {tooltip && (
+                <Tooltip delay={0} tip={tooltip} side="top" theme="dark">
+                  <span>
+                    {label} <QuestionMark className="inline" />
+                  </span>
+                </Tooltip>
+              )}
+              {!tooltip && <span>{label}</span>}
             </label>
           )}
           {custom ? (

@@ -1,5 +1,5 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 
 import PublicLockVersions from './PublicLock/index'
 import UnlockVersions from './Unlock/index'
@@ -203,5 +203,21 @@ export default class UnlockService {
   ) {
     const version = await this.unlockContractAbiVersion(unlockAddress, provider)
     return this.getContract(unlockAddress, version.Unlock, provider)
+  }
+
+  async getHookContract({
+    network,
+    address,
+    signer,
+    abi,
+  }: {
+    network: number
+    address: string
+    abi: ContractInterface
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  }) {
+    const provider = this.providerForNetwork(network)
+    const contract = new ethers.Contract(address, abi, provider)
+    return contract.connect(signer)
   }
 }
