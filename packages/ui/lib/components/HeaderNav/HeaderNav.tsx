@@ -346,6 +346,7 @@ const NavSectionMobile = ({
                 return 'url' in option && option.url ? (
                   <Link href={option.url} key={index}>
                     <div className="font-bold">{option.title}</div>
+                    <p className="pt-1">{option.description}</p>
                   </Link>
                 ) : (
                   <div className="font-bold" key={index}>
@@ -366,7 +367,7 @@ const NavSectionMobile = ({
                             href={url}
                             className="duration-200 hover:text-brand-ui-primary"
                           >
-                            {title}
+                            {title} 12
                           </Link>
                         )
                       })}
