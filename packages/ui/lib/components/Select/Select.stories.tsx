@@ -12,6 +12,12 @@ type Story = StoryObj<typeof meta>
 export const SelectComponent = {
   args: {
     label: 'Select your option',
+    tooltip: (
+      <>
+        <p>There is a tooltip.</p>
+        <p> This is a vary long one to see wghat we can do!</p>
+      </>
+    ),
     description: <>description example</>,
     customOption: true,
     options: [

@@ -12,6 +12,7 @@ import deployingAnimation from '~/animations/deploying.json'
 import deployErrorAnimation from '~/animations/deploy-error.json'
 import { durationsAsTextFromSeconds } from '~/utils/durations'
 import { ONE_DAY_IN_SECONDS } from '~/constants'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface DeployStatusProps {
   title: string
@@ -23,7 +24,6 @@ interface DeployStatusProps {
 
 interface CreateLockFormSummaryProps {
   formData: LockFormProps
-  network: number
   showStatus?: boolean
   transactionHash?: string
   lockAddress?: string
@@ -87,35 +87,29 @@ export function AnimationContent({ status }: { status: DeployStatus }) {
 
 export const CreateLockFormSummary = ({
   formData,
-  network,
   showStatus = false,
   transactionHash,
   lockAddress,
 }: CreateLockFormSummaryProps) => {
+  const { network } = useAuth()
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
-  const {
-    unlimitedDuration = false,
-    unlimitedQuantity = false,
-    network: lockNetwork,
-  } = formData ?? {}
-
-  // when lock is deploying use form network to avoid error when user switch network
-  const defaultNetwork = showStatus ? lockNetwork : network
+  const { unlimitedDuration = false, unlimitedQuantity = false } =
+    formData ?? {}
 
   const {
     name: networkName,
     explorer,
     baseCurrencySymbol,
-  } = networks[defaultNetwork!] ?? {}
+  } = networks[formData.network!] ?? {}
 
   const transactionDetailUrl = transactionHash
     ? explorer?.urls?.transaction(transactionHash)
     : null
 
   const getTransactionDetails = async (hash: string) => {
-    return await web3Service.getTransaction(hash, defaultNetwork)
+    return await web3Service.getTransaction(hash, formData.network)
   }
 
   const { data, isError } = useQuery(
