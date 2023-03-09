@@ -64,6 +64,7 @@ export interface Hook {
 
 export interface NetworkConfig {
   id: number
+  featured?: boolean
   name: string
   chain?: string
   provider: string

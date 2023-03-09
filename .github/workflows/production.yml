@@ -1,4 +1,4 @@
-name: "Production Branch"
+name: 'Production Branch'
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
       bypass_diff_check: bypass
       service: locksmith-websub
       build-dir: locksmith
-      command: "yarn websub:prod"
+      command: 'yarn websub:prod'
       container-type: worker
       app-name: locksmith-websub-production
     secrets:
@@ -55,6 +55,22 @@ jobs:
     secrets:
       SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_AUTH_TOKEN }}
+
+  deploy-wedlocks:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    needs: run-all-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: wedlocks
+      target-env: prod
+      bypass_diff_check: bypass
+    secrets:
+      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_PROD_AUTH_TOKEN }}
+      SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_HOST }}
+      SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_PASSWORD }}
+      BASE64_WEDLOCKS_PRIVATE_KEY: ${{ secrets.WEDLOCKS_NETLIFY_PROD_BASE64_WEDLOCKS_PRIVATE_KEY }}
 
   deploy-unlock-app-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
