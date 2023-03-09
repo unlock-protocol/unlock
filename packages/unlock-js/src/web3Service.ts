@@ -995,16 +995,22 @@ export default class Web3Service extends UnlockService {
       lockAddress: string
       contractAddress: string
       network: number
+      signerAddress: string
     },
     signer: ethers.Wallet | ethers.providers.JsonRpcSigner
   ) {
-    const { lockAddress, contractAddress, network } = params ?? {}
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
       abi: discountCodeHookAbi,
       signer,
     })
-    return contract.discounts(lockAddress)
+    const discountForSigner = await contract.discounts(
+      lockAddress,
+      signerAddress
+    )
+    return ethers.BigNumber.from(discountForSigner).toNumber()
   }
 }
