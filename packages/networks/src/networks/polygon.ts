@@ -110,6 +110,11 @@ export const polygon: NetworkConfig = {
         name: 'Password required',
         address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
       },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x93E160838c529873cB7565106bBb79a3226FE07A',
+      },
     ],
   },
 }

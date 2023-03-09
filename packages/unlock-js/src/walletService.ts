@@ -970,4 +970,40 @@ export default class WalletService extends UnlockService {
     const tx = await contract.setSigner(lockAddress, signerAddress)
     return tx
   }
+
+  /**
+   * Set signer for `Discount code` hook contract
+   */
+  async setDiscountCodeHookSigner(
+    params: {
+      lockAddress: string
+      signerAddress: string
+      contractAddress: string
+      network: number
+      discountPercentage: number
+    },
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  ) {
+    const {
+      lockAddress,
+      signerAddress,
+      contractAddress,
+      network,
+      discountPercentage = 0,
+    } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeHook,
+      signer,
+    })
+
+    const discountBasisPoints = discountPercentage * 100
+    const tx = await contract.setDiscountForLock(
+      lockAddress,
+      signerAddress,
+      discountBasisPoints
+    )
+    return tx
+  }
 }

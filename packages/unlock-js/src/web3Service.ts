@@ -9,6 +9,7 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -984,5 +985,26 @@ export default class Web3Service extends UnlockService {
       signer,
     })
     return contract.signers(lockAddress)
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getDiscountHookValues(
+    params: {
+      lockAddress: string
+      contractAddress: string
+      network: number
+    },
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  ) {
+    const { lockAddress, contractAddress, network } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeHookAbi,
+      signer,
+    })
+    return contract.discounts(lockAddress)
   }
 }

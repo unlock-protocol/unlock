@@ -1,5 +1,10 @@
 # Changes
 
+# 0.33.5
+
+- add `getDiscountHookValues` to web3Service
+- add `setDiscountCodeHookSigner` to walletService
+
 # 0.33.4
 
 - move `customHookService` to web3Service

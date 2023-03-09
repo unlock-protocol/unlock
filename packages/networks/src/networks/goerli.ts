@@ -90,6 +90,11 @@ export const goerli: NetworkConfig = {
         name: 'Password required',
         address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
       },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x850c015A6A88756a59Dc025fca988494fF90DBB7',
+      },
     ],
   },
 }

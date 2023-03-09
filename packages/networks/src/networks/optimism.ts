@@ -92,6 +92,11 @@ export const optimism: NetworkConfig = {
         name: 'Password required',
         address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
       },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x8e0B46ec3B95c81355175693dA0083b00fCc1326',
+      },
     ],
   },
 }
