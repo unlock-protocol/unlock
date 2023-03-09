@@ -374,7 +374,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
-                //
                 const hookType =
                   lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ??
                   undefined
