@@ -16,6 +16,7 @@ const config = {
     wedlocks: 'http://localhost:1337',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
+  logtailSourceToken: process.env.LOGTAIL,
 }
 
 if (process.env.ON_HEROKU) {
