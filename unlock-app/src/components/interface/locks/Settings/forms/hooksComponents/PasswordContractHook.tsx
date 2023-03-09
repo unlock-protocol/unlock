@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
-import { CustomComponentProps } from '../UpdateHooksForm'
+import { CustomComponentProps, getSignatureForValue } from '../UpdateHooksForm'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -27,13 +27,8 @@ export const PasswordContractHook = ({
 
   useEffect(() => {
     if (hookValue.length === 0) return
-    const encoded = ethers.utils.defaultAbiCoder.encode(
-      ['bytes32'],
-      [ethers.utils.id(hookValue)]
-    )
-    const privateKey = ethers.utils.keccak256(encoded)
-    const privateKeyAccount = new ethers.Wallet(privateKey)
-    setSigner(privateKeyAccount.address)
+    const signature = getSignatureForValue(hookValue)
+    setSigner(signature)
   }, [hookValue])
 
   const onSavePassword = async () => {

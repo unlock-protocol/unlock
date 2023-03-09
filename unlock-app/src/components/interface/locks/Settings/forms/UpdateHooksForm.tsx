@@ -12,6 +12,7 @@ import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
+import { DiscountContractHook } from './hooksComponents/DiscountContractHook'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -47,6 +48,16 @@ interface HookValueProps {
   options?: OptionProps[]
 }
 
+export const getSignatureForValue = (value: string) => {
+  const encoded = ethers.utils.defaultAbiCoder.encode(
+    ['bytes32'],
+    [ethers.utils.id(value)]
+  )
+  const privateKey = ethers.utils.keccak256(encoded)
+  const privateKeyAccount = new ethers.Wallet(privateKey)
+  return privateKeyAccount.address
+}
+
 export interface CustomComponentProps {
   name: string
   disabled: boolean
@@ -74,6 +85,11 @@ const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Password',
         value: HookType.PASSWORD,
         component: (args) => <PasswordContractHook {...args} />,
+      },
+      {
+        label: 'Discount code',
+        value: HookType.PROMOCODE,
+        component: (args) => <DiscountContractHook {...args} />,
       },
     ],
   },
