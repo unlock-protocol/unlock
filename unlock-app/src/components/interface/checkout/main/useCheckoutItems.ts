@@ -7,7 +7,9 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const { paywallConfig, skipQuantity, payment, skipRecipient, hook } =
     state.context
 
-  const { isCaptcha = false, isPassword = false, isPromo = false } = hook ?? {}
+  const isPassword = hook === 'password'
+  const isCaptcha = hook === 'captcha'
+  const isPromo = hook === 'promocode'
 
   const checkoutItems: StepItem[] = [
     {

@@ -32,6 +32,8 @@ export interface FiatPricing {
   }
 }
 
+export type CheckoutHookType = 'password' | 'promocode' | 'captcha'
+
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
   isMember: boolean
@@ -47,11 +49,7 @@ export interface SelectLockEvent {
   skipRecipient?: boolean
   recipients?: string[]
   keyManagers?: string[]
-  hook?: {
-    isCaptcha?: boolean
-    isPassword?: boolean
-    isPromo?: boolean
-  }
+  hook?: CheckoutHookType
 }
 
 export interface SignMessageEvent {
@@ -183,11 +181,7 @@ interface CheckoutMachineContext {
   password?: string[]
   promo?: string[]
   data?: string[]
-  hook?: {
-    isCaptcha?: boolean
-    isPassword?: boolean
-    isPromo?: boolean
-  }
+  hook?: CheckoutHookType
   renew: boolean
 }
 
@@ -216,11 +210,7 @@ export const checkoutMachine = createMachine(
       keyManagers: [],
       skipQuantity: false,
       renew: false,
-      hook: {
-        isCaptcha: false,
-        isPassword: false,
-        isPromo: false,
-      },
+      hook: undefined,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -251,7 +241,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
-                const isPassword = ctx.hook?.isPassword
+                const isPassword = ctx?.hook === 'password'
                 return !!isPassword && event.expiredMember
               },
             },
@@ -259,7 +249,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PROMO',
               cond: (ctx, event) => {
-                const isPromo = ctx.hook?.isPromo
+                const isPromo = ctx?.hook === 'promocode'
                 return !!isPromo && event.expiredMember
               },
             },
@@ -267,7 +257,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'CAPTCHA',
               cond: (ctx, event) => {
-                const isCaptcha = ctx.hook?.isCaptcha
+                const isCaptcha = ctx?.hook === 'captcha'
                 return !!isCaptcha && event.expiredMember
               },
             },
@@ -562,11 +552,11 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'PASSWORD',
-              cond: (ctx) => !!ctx.hook?.isPassword,
+              cond: (ctx) => ctx.hook === 'password',
             },
             {
               target: 'CAPTCHA',
-              cond: (ctx) => !!ctx.hook?.isCaptcha,
+              cond: (ctx) => ctx.hook === 'captcha',
             },
             {
               target: 'MESSAGE_TO_SIGN',
@@ -666,9 +656,7 @@ export const checkoutMachine = createMachine(
           skipRecipient: event.skipRecipient,
           recipients: event.recipients,
           keyManagers: event.keyManagers,
-          hook: {
-            ...event.hook,
-          },
+          hook: event.hook,
         }
       }),
       selectQuantity: assign({
@@ -765,19 +753,19 @@ export const checkoutMachine = createMachine(
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {
         return (
-          (context.hook?.isCaptcha ?? false) &&
+          context?.hook === 'captcha' &&
           ['crypto', 'claim'].includes(context.payment.method)
         )
       },
-      requirePassword: (context, event) => {
+      requirePassword: (context) => {
         return (
-          (context.hook?.isPassword ?? false) &&
+          context?.hook === 'password' &&
           ['crypto', 'claim'].includes(context.payment.method)
         )
       },
       requirePromo: (context) => {
         return (
-          (context.hook?.isPromo ?? false) &&
+          context?.hook === 'promocode' &&
           ['crypto', 'claim'].includes(context.payment.method)
         )
       },

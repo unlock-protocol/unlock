@@ -1,78 +1,88 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { networks } from '@unlock-protocol/networks'
 import { HookType } from '@unlock-protocol/types'
 import { useActor } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { CheckoutService } from './checkoutMachine'
+import { CheckoutHookType, CheckoutService } from './checkoutMachine'
+
+type LockHookProps = Record<string, CheckoutHookType | undefined>
+const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
+  PASSWORD: 'password',
+}
 
 export function useCheckoutHook(service: CheckoutService) {
   const [state] = useActor(service)
   const web3Service = useWeb3Service()
 
+  let lockHookMapping: LockHookProps = {}
   const { paywallConfig } = state.context
 
-  const { isLoading, data: hookMappingState } = useQuery(
-    ['getKeyPurchaseHook'],
-    async () => {
-      let hooks: Record<
-        string,
-        {
-          isPassword: boolean
-          isPromo: boolean
-          isCaptcha: boolean
-        }
-      > = {}
-      await Promise.all(
-        Object.entries(paywallConfig.locks).map(
-          async ([lockAddress, props]) => {
-            const lockNetwork = props.network || paywallConfig.network || 1
-            const onPurchaseHooks = lockNetwork
-              ? networks[lockNetwork!].hooks?.onKeyPurchaseHook
-              : []
+  const queries = useQueries({
+    queries: [
+      ...Object.entries(paywallConfig.locks).map(
+        ([lockAddress, { network = 1 }]) => {
+          return {
+            queryKey: ['getKeyPurchaseHook', lockAddress, network],
+            queryFn: async (): Promise<LockHookProps> => {
+              const onPurchaseHooks = network
+                ? networks[network!].hooks?.onKeyPurchaseHook
+                : []
 
-            // get hook value
-            const hookValue = await web3Service.onKeyPurchaseHook({
-              lockAddress,
-              network: lockNetwork!,
-            })
+              // get hook value
+              const hookValue = await web3Service.onKeyPurchaseHook({
+                lockAddress,
+                network,
+              })
 
-            // check for match in networks
-            const hookMatchId =
-              (hookValue ?? '')?.length > 0 &&
-              onPurchaseHooks?.find(({ address }) => address === hookValue)?.id
+              // check for match for hook value
+              const match = onPurchaseHooks?.find(
+                ({ address }) =>
+                  address?.trim()?.toLowerCase() ===
+                  hookValue?.trim()?.toLowerCase()
+              )
 
-            const isPassword = hookMatchId === HookType.PASSWORD ?? false
+              let hookType: CheckoutHookType | undefined = match?.id
+                ? HookIdMapping?.[match?.id]
+                : undefined
 
-            // todo: replace when custom hook is present in settings
-            const isCaptcha =
-              paywallConfig.locks[lockAddress]?.captcha ||
-              paywallConfig.captcha ||
-              false
+              // TODO: remove when we handle 'promo' & 'captcha' in settings page
+              if (!hookType) {
+                const lockByAddress = paywallConfig.locks[lockAddress]
 
-            // todo: replace when custom hook is present in settings
-            const isPromo =
-              paywallConfig.locks[lockAddress]?.promo ||
-              paywallConfig.promo ||
-              false
+                const isCaptcha =
+                  lockByAddress?.captcha || paywallConfig.captcha || false
 
-            // add state for hooks
-            hooks = {
-              ...hooks,
-              [lockAddress]: {
-                isPassword,
-                isPromo,
-                isCaptcha,
-              },
-            }
+                const isPromo =
+                  lockByAddress?.promo || paywallConfig.promo || false
+
+                if (isCaptcha) {
+                  hookType = 'captcha'
+                } else if (isPromo) {
+                  hookType = 'promocode'
+                }
+              }
+              return {
+                [lockAddress?.toLowerCase()]: hookType,
+              }
+            },
           }
-        )
-      )
-      return hooks
+        }
+      ),
+    ],
+  })
+
+  const isLoading = queries.some(({ isLoading }) => isLoading)
+
+  Object.values(queries).map(({ data, isSuccess }) => {
+    if (!isSuccess) return // lets skip this one because is failed
+    lockHookMapping = {
+      ...lockHookMapping,
+      ...data,
     }
-  )
+  })
 
   return {
     isLoading,
-    hookMappingState, // mapping lock address and hook state by type
+    lockHookMapping, // mapping lock address and hook state by type
   }
 }
