@@ -88,9 +88,10 @@ export const Normal = {
         title: 'Creator',
         options: [
           {
-            title: 'Create Digital Collectibles with Unlock Protocol',
+            title: 'Digital Collectibles',
             src: '/images/marketing/collectible.png',
             url: 'https://unlock-protocol.com/guides/how-to-use-different-images/',
+            description: 'Create Digital Collectibles with Unlock Protocol',
           },
           {
             title: 'How to Sell NFT Tickets for an Event',
