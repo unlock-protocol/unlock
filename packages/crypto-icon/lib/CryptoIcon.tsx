@@ -12,6 +12,7 @@ export const CustomIcon = ({
   id,
   size = 24,
   fallbackId = '',
+  style,
   ...props
 }: Props) => {
   const Icon = useMemo(() => {
@@ -33,7 +34,17 @@ export const CustomIcon = ({
   if (!Icon) {
     return null
   }
-  return <Icon height={size} width={size} {...props} />
+  return (
+    <Icon
+      height={size}
+      width={size}
+      style={{
+        flexShrink: 0,
+        ...style,
+      }}
+      {...props}
+    />
+  )
 }
 
 export const CryptoIcon = ({
