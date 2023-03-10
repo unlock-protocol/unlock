@@ -74,6 +74,32 @@ describe('Key transfers (v8)', () => {
   })
 })
 
+describe('Burn a key', () => {
+  beforeAll(() => {
+    mockDataSourceV11()
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+  })
+
+  afterAll(() => {
+    clearStore()
+  })
+
+  test('key is removed from graph', () => {
+    const burnEvent = createTransferEvent(
+      Address.fromString(keyOwnerAddress),
+      Address.fromString(nullAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(burnEvent)
+    assert.notInStore('Key', keyID)
+  })
+})
+
 describe('Key transfers', () => {
   beforeAll(() => {
     mockDataSourceV11()
@@ -97,15 +123,6 @@ describe('Key transfers', () => {
     assert.fieldEquals('Key', keyID, 'tokenURI', `${tokenURI}`)
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration}`)
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
-  })
-
-  test('Burn of a key', () => {
-    const burnEvent = createTransferEvent(
-      Address.fromString(keyOwnerAddress),
-      Address.fromString(nullAddress),
-      BigInt.fromU32(tokenId)
-    )
-    handleTransfer(burnEvent)
   })
 
   test('Transfer of an existing key', () => {
