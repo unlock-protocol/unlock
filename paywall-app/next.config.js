@@ -14,13 +14,13 @@ module.exports = {
     config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
 
     // output the js lib
-    const unlockJSFile = '../dist/unlock.latest.min.js'
+    const unlockJSFile = join(__dirname, 'dist', 'unlock.latest.min.js')
     config.plugins.push(
       new CopyWebpackPlugin({
         patterns: [
           {
             from: unlockJSFile,
-            to: join(__dirname, 'src/static/unlock.latest.min.js'),
+            to: join(__dirname, 'public', 'static', 'unlock.latest.min.js'),
           },
         ],
       })
@@ -32,13 +32,18 @@ module.exports = {
     // Export robots.txt in non-dev environments
     if (!dev && outDir) {
       await copyFile(
-        join(dir, 'static', 'robots.txt'),
+        join(dir, '..', 'public', 'static', 'unlock.latest.min.js'),
+        join(outDir, 'static', 'unlock.latest.min.js')
+      )
+
+      await copyFile(
+        join(dir, '..', 'public', 'robots.txt'),
         join(outDir, 'robots.txt')
       )
 
       // Export _redirects which is used by netlify for URL rewrites
       await copyFile(
-        join(dir, 'static', '_redirects'),
+        join(dir, '..', 'public', '_redirects'),
         join(outDir, '_redirects')
       )
     }

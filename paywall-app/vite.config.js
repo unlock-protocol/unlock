@@ -4,8 +4,10 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
+    copyPublicDir: false,
+    outDir: 'public/static',
     lib: {
-      entry: resolve(__dirname, 'lib/cdn.js'),
+      entry: resolve('lib/cdn.js'),
       fileName: () => 'unlock.latest.min.js',
       name: '@unlock-protocol/paywall',
       formats: ['umd'],
