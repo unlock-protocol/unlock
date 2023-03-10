@@ -120,7 +120,7 @@ export class Paywall {
   }
 
   // Will lock or unlock the page based on the current state
-  checkKeysAndLock = async () => {
+  async checkKeysAndLock() {
     // For each lock.
 
     if (!this.userAccountAddress) {
@@ -174,7 +174,7 @@ export class Paywall {
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
-    if (!this.paywallConfig.pessimistic) {
+    if (!this.paywallConfig.pessimistic && hash && lock) {
       this.unlockPage([lock])
     }
   }
