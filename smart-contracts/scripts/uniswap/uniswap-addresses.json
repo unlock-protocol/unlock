@@ -1,67 +1,56 @@
 {
-  "421613" : [
-    {
-      "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
-      "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B"
-    }
-  ],
-  "42161": [
-    {
-      "UniversalRouter": "0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5",
-      "UnsupportedProtocol": "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B"
-    }
-  ],
-  "56": [
-    {
-      "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
-      "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B"
-    }
-  ],
-  "44787": [
-    {
-      "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
-      "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B"
-    }
-  ],
-  "42220": [
-    {
-      "UniversalRouter": "0xC73d61d192FB994157168Fb56730FdEc64C9Cb8F",
-      "UnsupportedProtocol": "0x5Dc88340E1c5c6366864Ee415d6034cadd1A9897"
-    }
-  ],
-  "5": [
-    {
-      "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
-      "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B"
-    }
-  ],
-  "1": [
-    {
-      "UniversalRouter": "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B"
-    }
-  ],
-  "420": [
-    {
-      "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
-      "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B"
-    }
-  ],
-  "10": [
-    {
-      "UniversalRouter": "0xb555edF5dcF85f42cEeF1f3630a52A108E55A654",
-      "UnsupportedProtocol": "0x40d51104Da22E3e77b683894E7e3E12e8FC61E65"
-    }
-  ],
-  "80001": [
-    {
-      "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
-      "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B"
-    }
-  ],
-  "137": [
-    {
-      "UniversalRouter": "0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5",
-      "UnsupportedProtocol": "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B"
-    }
-  ]
+  "421613": {
+    "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
+    "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "42161": {
+    "UniversalRouter": "0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5",
+    "UnsupportedProtocol": "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "56": {
+    "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
+    "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "44787": {
+    "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
+    "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "42220": {
+    "UniversalRouter": "0xC73d61d192FB994157168Fb56730FdEc64C9Cb8F",
+    "UnsupportedProtocol": "0x5Dc88340E1c5c6366864Ee415d6034cadd1A9897",
+    "SwapRouter02": "0x5615CDAb10dc425a742d643d949a7F474C01abc4"
+  },
+  "5": {
+    "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
+    "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "1": {
+    "UniversalRouter": "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "420": {
+    "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
+    "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "10": {
+    "UniversalRouter": "0xb555edF5dcF85f42cEeF1f3630a52A108E55A654",
+    "UnsupportedProtocol": "0x40d51104Da22E3e77b683894E7e3E12e8FC61E65",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "80001": {
+    "UniversalRouter": "0x4648a43B2C14Da09FdF82B161150d3F634f40491",
+    "UnsupportedProtocol": "0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  },
+  "137": {
+    "UniversalRouter": "0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5",
+    "UnsupportedProtocol": "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B",
+    "SwapRouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+  }
 }
