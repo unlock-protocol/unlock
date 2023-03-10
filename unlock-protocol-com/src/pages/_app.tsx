@@ -11,6 +11,8 @@ import {
   QueryClientProvider,
   DehydratedState,
 } from 'react-query'
+import { UnlockUIProvider } from '@unlock-protocol/ui'
+import NextLink from 'next/link'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,21 +21,22 @@ const queryClient = new QueryClient({
     },
   },
 })
-
 function App({
   Component,
   pageProps,
 }: AppProps<{ dehydratedState: DehydratedState }>) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <Provider>
-          <CookieBanner />
-          <DefaultSeo {...DEFAULT_SEO} />
-          <Component {...pageProps} />
-        </Provider>
-      </Hydrate>
-    </QueryClientProvider>
+    <UnlockUIProvider Link={NextLink}>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Provider>
+            <CookieBanner />
+            <DefaultSeo {...DEFAULT_SEO} />
+            <Component {...pageProps} />
+          </Provider>
+        </Hydrate>
+      </QueryClientProvider>
+    </UnlockUIProvider>
   )
 }
 
