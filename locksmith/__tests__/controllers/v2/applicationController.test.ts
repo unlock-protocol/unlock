@@ -36,7 +36,6 @@ describe('Application endpoint', () => {
 
   it('application can access its user data', async () => {
     expect.assertions(2)
-
     const applicationData = await request(app)
       .get('/v2/auth/user')
       .set('Authorization', `Api-key ${application.key}`)
@@ -55,16 +54,6 @@ describe('Application endpoint', () => {
   })
 
   describe('list applications', () => {
-    beforeAll(async () => {
-      const refreshResponse = await request(app).post('/v2/auth/token').send({
-        refreshToken: user.refreshToken,
-      })
-      user = {
-        ...refreshResponse.body,
-        refreshToken: user.refreshToken,
-      }
-    })
-
     it('list applications with auth', async () => {
       expect.assertions(2)
       const applicationList = await request(app)
@@ -97,16 +86,6 @@ describe('Application endpoint', () => {
   })
 
   describe('Update application', () => {
-    beforeAll(async () => {
-      const refreshResponse = await request(app).post('/v2/auth/token').send({
-        refreshToken: user.refreshToken,
-      })
-      user = {
-        ...refreshResponse.body,
-        refreshToken: user.refreshToken,
-      }
-    })
-
     it('update application with invalid body', async () => {
       expect.assertions(2)
 
@@ -136,16 +115,6 @@ describe('Application endpoint', () => {
   })
 
   describe('Delete application', () => {
-    beforeAll(async () => {
-      const refreshResponse = await request(app).post('/v2/auth/token').send({
-        refreshToken: user.refreshToken,
-      })
-      user = {
-        ...refreshResponse.body,
-        refreshToken: user.refreshToken,
-      }
-    })
-
     it('delete non-existent app', async () => {
       expect.assertions(1)
       const deletedApplication = await request(app)
