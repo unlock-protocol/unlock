@@ -93,6 +93,11 @@ export const mumbai: NetworkConfig = {
         name: 'Password required',
         address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x639143cbf90F27eA5Ce4b3A7D869d4D7878009A5',
+      },
     ],
   },
 }

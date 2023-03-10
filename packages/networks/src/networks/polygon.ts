@@ -110,6 +110,11 @@ export const polygon: NetworkConfig = {
         name: 'Password required',
         address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xA0863a0B58457A86c937e91533e3F6B8dA27cf4b',
+      },
     ],
   },
 }

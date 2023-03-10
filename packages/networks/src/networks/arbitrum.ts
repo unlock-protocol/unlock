@@ -101,6 +101,11 @@ export const arbitrum: NetworkConfig = {
         name: 'Password required',
         address: '0xd0b14797b9D08493392865647384974470202A78',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xF6963D3c395A7914De77f771C2fC44b47B8379AC',
+      },
     ],
   },
 }
