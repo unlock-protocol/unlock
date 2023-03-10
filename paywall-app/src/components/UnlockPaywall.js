@@ -54,5 +54,5 @@ export default function UnlockPaywall() {
     }
   }, [])
 
-  return <p>Hello world</p>
+  return <div />
 }
