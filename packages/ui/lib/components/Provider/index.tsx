@@ -1,15 +1,16 @@
-import { ReactElement, ReactNode, createContext, useContext } from 'react'
+import { ReactNode, createContext, useContext } from 'react'
 import { Provider as TooltipProvider } from '@radix-ui/react-tooltip'
 
-type Link = (props: any) => ReactElement
+// TODO: add better type for Link
+type Link = any
 
 interface Props {
   children: ReactNode
-  Link: Link
+  Link?: Link | null
 }
 
 interface UIProviderContext {
-  Link?: Link
+  Link?: Link | null
 }
 
 export const UnlocUIContext = createContext<UIProviderContext>({
