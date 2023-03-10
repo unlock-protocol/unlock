@@ -4,14 +4,6 @@ on:
   pull_request:
 
 jobs:
-  # deprec, keeping to avoid conflicts
-  run-all-tests:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
-    runs-on: ubuntu-22.04
-    steps:
-      - name: 'Deprec run-all-tests'
-        run: echo "skipping."
-
   # check which folder changed in the repo
   check-changes:
     uses: ./.github/workflows/_check.yml
