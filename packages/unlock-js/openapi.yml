@@ -26,25 +26,18 @@ components:
 
   schemas:
     Auth:
+      required:
+        - 'walletAddress'
       type: object
       properties:
-        type:
-          type: string
-          default: user
-          nullable: false
-
         walletAddress:
           type: string
           nullable: false
 
-        id:
-          type: string
-          nullable: true
-
     AuthResult:
       required:
         - 'accessToken'
-        - 'refreshToken'
+        - 'walletAddress'
 
       type: object
       properties:
@@ -53,10 +46,6 @@ components:
           nullable: true
 
         accessToken:
-          type: string
-          nullable: false
-
-        refreshToken:
           type: string
           nullable: false
 
@@ -95,6 +84,21 @@ components:
         walletAddress:
           type: string
           nullable: false
+
+    CheckoutConfig:
+      type: object
+      required:
+        - 'id'
+        - 'by'
+        - 'config'
+      properties:
+        id:
+          type: string
+        by:
+          type: string
+        config:
+          type: object
+          additionalProperties: true
 
     Verifier:
       type: object
@@ -510,53 +514,12 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/auth/token:
-    post:
-      operationId: refreshToken
-      description: Refresh access token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
-      responses:
-        200:
-          description: New creditionals.
-          content:
-            application/json:
-              schema:
-                required:
-                  - 'walletAddress'
-                  - 'accessToken'
-                type: object
-                properties:
-                  walletAddress:
-                    type: string
-
-                  accessToken:
-                    type: string
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
   /v2/auth/logout:
     post:
       operationId: logout
       security:
         - User: []
-      description: Logout from locksmith. This will invalidate all your refresh tokens.
+      description: Logout from locksmith. This will invalidate all your session tokens.
 
       responses:
         200:
@@ -568,24 +531,9 @@ paths:
   /v2/auth/revoke:
     post:
       operationId: revoke
-      description: Invalidate a refresh token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
+      security:
+        - User: []
+      description: Invalidate a session.
       responses:
         200:
           $ref: '#/components/responses/200.GenericSuccess'
@@ -989,7 +937,7 @@ paths:
               schema:
                 nullable: false
                 type: object
-                properties: 
+                properties:
                   verificationUrl:
                     type: string
                     nullable: false
@@ -1667,6 +1615,79 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}:
+    get:
+      operationId: getTicket
+      security:
+        - User: []
+      description: get a ticket for a key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully retrieved the ticket.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                required:
+                  - name
+                  - lockAddress
+                  - keyId
+                  - publicLockVersion
+                  - userMetadata
+                  - isVerifier
+                  - attributes
+                  - image
+                  - description
+                  - owner
+                  - expiration
+
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  lockAddress:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+                  checkedInAt:
+                    type: number
+                  userMetadata:
+                    type: object
+                    additionalProperties: true
+                  expiration:
+                    type: string
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - 'value'
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          type: string
+                        display_type:
+                          type: string
+                  publicLockVersion:
+                    type: string
+                  isVerifier:
+                    description: Whether the user who requested the ticket can verify the ticket.
+                    type: boolean
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
   /{network}/lock/{lockAddress}/stripe:
     delete:
       operationId: disconnectStripe
@@ -2192,5 +2213,83 @@ paths:
                 properties:
                   message:
                     type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/{id}:
+    get:
+      operationId: getCheckoutConfig
+      security:
+        - User: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config for the given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    put:
+      operationId: saveCheckoutConfig
+      security:
+        - User: []
+      description: A new checkout config is created or updated if it already exists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            nullable: true
+            type: string
+          description: This is optional. If you don't pass an ID, a new config will be created. If you pass an ID, the config will be created.
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                config:
+                  type: object
+                  additionalProperties: true
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/list:
+    get:
+      security:
+        - User: []
+      description: A list of all checkout configs created by the user
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CheckoutConfig'
+
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

@@ -1,4 +1,11 @@
-import { Address, BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigInt,
+  log,
+  Bytes,
+  ethereum,
+  store,
+} from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -121,6 +128,14 @@ export function handleTransfer(event: TransferEvent): void {
       lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
       lock.save()
     }
+
+    // delete record of burned key
+    const keyID = genKeyID(event.address, event.params.tokenId.toString())
+    const key = Key.load(keyID)
+    if (key) {
+      store.remove('Key', keyID)
+    }
+
     createReceipt(event)
   } else {
     // existing key has been transferred
@@ -358,11 +373,18 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
     const baseTokenURI = lockContract.try_tokenURI(BigInt.fromI32(0))
 
     // update only if baseTokenURI has changed
+    // Unfortunately, this does not scale well.
+    // For now we cap at 100 keys.
+    // On large collections this times out which then breaks indexing on the subgraph.
+    // Relevant links:
+    // - discord message: https://discord.com/channels/438038660412342282/438070183794573313/1082786404691628112
+    // - github issue: https://github.com/graphprotocol/graph-node/issues/3576
+    const keysToMigrate = Math.min(100, totalKeys.toI32())
     if (
       !baseTokenURI.reverted &&
       baseTokenURI.value !== event.params.baseTokenURI
     ) {
-      for (let i = 0; i < totalKeys.toI32(); i++) {
+      for (let i = 0; i < keysToMigrate; i++) {
         const keyID = genKeyID(event.address, `${i + 1}`)
         const key = Key.load(keyID)
         if (key) {

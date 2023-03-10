@@ -6,6 +6,7 @@ import { UpdateMaxKeysPerAddress } from '../forms/UpdateMaxKeysPerAddress'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { UpdateTransferFee } from '../forms/UpdateTransferFee'
 import { SettingCard } from './SettingCard'
+import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
 interface SettingTermsProps {
   lockAddress: string
@@ -20,6 +21,7 @@ interface SettingProps {
   label: string
   description?: string
   children: ReactNode
+  active?: boolean
 }
 
 export const SettingTerms = ({
@@ -30,6 +32,8 @@ export const SettingTerms = ({
   isLoading,
   publicLockVersion,
 }: SettingTermsProps) => {
+  const unlimitedDuration = lock?.expirationDuration === UNLIMITED_KEYS_DURATION
+
   const settings: SettingProps[] = [
     {
       label: 'Transfers',
@@ -41,6 +45,7 @@ export const SettingTerms = ({
           network={network}
           isManager={isManager}
           disabled={!isManager}
+          unlimitedDuration={unlimitedDuration}
         />
       ),
     },
@@ -103,18 +108,21 @@ export const SettingTerms = ({
 
   return (
     <div className="grid grid-cols-1 gap-6">
-      {settings?.map(({ label, description, children }, index) => {
-        return (
-          <SettingCard
-            key={index}
-            label={label}
-            description={description}
-            isLoading={isLoading}
-          >
-            {children}
-          </SettingCard>
-        )
-      })}
+      {settings?.map(
+        ({ label, description, children, active = true }, index) => {
+          if (!active) return null
+          return (
+            <SettingCard
+              key={index}
+              label={label}
+              description={description}
+              isLoading={isLoading}
+            >
+              {children}
+            </SettingCard>
+          )
+        }
+      )}
     </div>
   )
 }

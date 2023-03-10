@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const goerli: NetworkConfig = {
+  featured: true,
   publicProvider:
     'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/5',
@@ -29,6 +30,8 @@ export const goerli: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://testnets.opensea.io/assets/goerli/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://testnets.opensea.io/assets/goerli/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -80,6 +83,20 @@ export const goerli: NetworkConfig = {
       mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.PASSWORD,
+        name: 'Password required',
+        address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
+      },
+    ],
+  },
 }
 
 export default goerli

@@ -1,13 +1,9 @@
 import {
-  WalletService,
   LocksmithService,
   LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
-import { isExpired } from 'react-jwt'
-import { generateNonce } from 'siwe'
-import { APP_NAME } from '~/hooks/useAppStorage'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -35,17 +31,6 @@ export const failure = {
   ejectUser: 'ejectUser.failure',
 }
 
-interface GetSiweMessageProps {
-  address: string
-  chainId: number
-  version?: string
-}
-
-interface LoginPromptProps {
-  address: string
-  chainId: number
-  walletService: WalletService
-}
 export class StorageService extends EventEmitter {
   public host: string
 
@@ -59,122 +44,6 @@ export class StorageService extends EventEmitter {
         basePath: host,
       })
     )
-  }
-
-  loginRequest = false
-
-  async login(message: string, signature: string) {
-    const response = await this.locksmith.login({
-      message,
-      signature,
-    })
-
-    if (response.status !== 200) {
-      throw new Error('login failed')
-    }
-
-    const { refreshToken, accessToken } = response.data
-
-    this.refreshToken = refreshToken
-    this.#accessToken = accessToken
-  }
-
-  async signOut() {
-    try {
-      const endpoint = `${this.host}/v2/auth/revoke`
-      await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'refresh-token': this.refreshToken!,
-        },
-      })
-      this.#accessToken = null
-      this.refreshToken = null
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      }
-    }
-  }
-
-  async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
-    if (this.loginRequest) {
-      return
-    }
-    this.loginRequest = true
-    try {
-      const refreshToken = this.refreshToken
-      if (refreshToken) {
-        await this.getAccessToken()
-      } else {
-        const message = await this.getSiweMessage({
-          address,
-          chainId,
-        })
-        const signature = await walletService.signMessage(
-          message,
-          'personal_sign'
-        )
-        await this.login(message, signature)
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err.message)
-      }
-    }
-    this.loginRequest = false
-  }
-
-  #accessToken: null | string = null
-
-  get refreshToken() {
-    return localStorage.getItem(`${APP_NAME}.refresh-token`)
-  }
-
-  set refreshToken(refreshToken: string | null) {
-    if (refreshToken) {
-      localStorage.setItem(`${APP_NAME}.refresh-token`, refreshToken)
-    } else {
-      localStorage.removeItem(`${APP_NAME}.refresh-token`)
-    }
-  }
-
-  get isAuthenticated() {
-    const accessToken = this.#accessToken
-    const refreshToken = this.refreshToken
-    return Boolean(accessToken && refreshToken && !isExpired(accessToken))
-  }
-
-  async getAccessToken() {
-    const refreshToken = this.refreshToken
-    if (!refreshToken) {
-      throw new Error('User is not authenticated')
-    }
-    if (!this.#accessToken || isExpired(this.#accessToken)) {
-      const { data, status } = await this.locksmith.refreshToken(refreshToken)
-      if (status !== 200) {
-        throw new Error('Could not get access token')
-      }
-      this.#accessToken = data.accessToken
-    }
-    return this.#accessToken
-  }
-
-  async getSiweMessage({
-    address,
-    chainId,
-    version = '1',
-  }: GetSiweMessageProps) {
-    const siweMessage = LocksmithService.createSiweMessage({
-      domain: window.location.hostname,
-      uri: window.location.origin,
-      address,
-      chainId,
-      version,
-      statement: '',
-      nonce: generateNonce(),
-    })
-    return siweMessage.prepareMessage()
   }
 
   genAuthorizationHeader(token: string) {
@@ -428,140 +297,6 @@ export class StorageService extends EventEmitter {
       },
     })
     return response.json()
-  }
-
-  async updateLockIcon(
-    lockAddress: string,
-    signature: string,
-    data: any,
-    icon: any
-  ) {
-    const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
-    }
-    const response = await fetch(`${this.host}/lock/${lockAddress}/icon`, {
-      method: 'POST',
-      body: JSON.stringify({ ...data, icon }),
-      headers: {
-        ...opts.headers,
-      },
-    })
-    return response.ok
-  }
-
-  /**
-   * Saves a user metadata for a lock
-   * @param {*} lockAddress
-   * @param {*} userAddress
-   * @param {*} payload
-   * @param {*} signature
-   * @param {*} network
-   * @returns
-   */
-  async setUserMetadataData(
-    lockAddress: string,
-    userAddress: string,
-    payload: any,
-    signature: string,
-    network: number
-  ) {
-    let url = `${this.host}/api/key/${lockAddress}/user/${userAddress}`
-    if (network) {
-      url = `${url}?chain=${network}`
-    }
-
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-  }
-
-  /**
-   * Saves a key metadata for a lock
-   * @param {*} lockAddress
-   * @param {*} userAddress
-   * @param {*} payload
-   * @param {*} signature
-   * @param {*} network
-   * @returns
-   */
-  async setKeyMetadata(
-    lockAddress: string,
-    keyId: string,
-    payload: any,
-    signature: string,
-    network: number
-  ) {
-    let url = `${this.host}/api/key/${lockAddress}/${keyId}`
-    if (network) {
-      url = `${url}?chain=${network}`
-    }
-
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-  }
-
-  /**
-   *
-   * @param {*} lockAddress
-   * @param {*} keyId
-   * @param {*} payload
-   * @param {*} signature
-   * @param {*} network
-   * @returns
-   */
-  async getKeyMetadata(
-    lockAddress: string,
-    keyId: string,
-    // @ts-ignore
-    payload: any,
-    signature: string,
-    network: number
-  ) {
-    try {
-      let url = `${this.host}/api/key/${lockAddress}/${keyId}`
-      if (network) {
-        url = `${url}?chain=${network}`
-      }
-
-      const options: { headers: Record<string, string> } = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      if (signature) {
-        options.headers.Authorization = `Bearer ${Buffer.from(
-          signature
-        ).toString('base64')}`
-      }
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: options.headers,
-      })
-
-      const json = await response.json()
-      return json
-    } catch (error) {
-      console.error(error)
-      return {}
-    }
   }
 
   async getDataForRecipientsAndCaptcha(

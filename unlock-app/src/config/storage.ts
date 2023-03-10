@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios'
-import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import {
   LocksmithService,
   LocksmithServiceConfiguration,
@@ -7,14 +6,13 @@ import {
 } from '@unlock-protocol/unlock-js'
 import { config } from './app'
 import { SiweMessage, generateNonce } from 'siwe'
-import { writeStorage, deleteFromStorage } from '@rehooks/local-storage'
+import { writeStorage } from '@rehooks/local-storage'
 import { APP_NAME } from '~/hooks/useAppStorage'
 import { queryClient } from './queryClient'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export interface SessionAuth {
   accessToken: string
-  refreshToken: string
   walletAddress: string
 }
 
@@ -40,7 +38,6 @@ export const getAuth = (): SessionAuth | undefined => {
 export const clearAuth = () => {
   writeStorage(AUTH_SESSION_KEY, null)
   writeStorage(IS_REFUSED_TO_SIGN_KEY, false)
-  deleteFromStorage(`${APP_NAME}.refresh-token`)
 }
 
 export const signOut = async () => {
@@ -64,38 +61,16 @@ storageClient.interceptors.request.use((request) => {
   return request
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const refreshAuthLogic = async (failedRequest: any) => {
-  try {
-    const session = getAuth()
-    const refreshToken = session?.refreshToken
-    if (!refreshToken) {
+storageClient.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error: AxiosError) => {
+    if (error.status === 401) {
       clearAuth()
-      return Promise.reject('No refresh token available')
     }
-    const response = await service.refreshToken(refreshToken)
-    const { accessToken, walletAddress } = response.data
-    saveAuth({
-      accessToken,
-      refreshToken,
-      walletAddress,
-    })
-    failedRequest.response.config.headers[
-      'Authorization'
-    ] = `Bearer ${accessToken}`
-    return Promise.resolve()
-  } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      if (error.response?.status === 401) {
-        clearAuth()
-        return Promise.reject('Invalid or expired refresh token')
-      }
-    }
-    return Promise.reject('Failed to refresh token')
   }
-}
-
-createAuthRefreshInterceptor(storageClient, refreshAuthLogic)
+)
 
 export const storage = new LocksmithService(
   new LocksmithServiceConfiguration(),
@@ -130,10 +105,9 @@ export const login = async (walletService: WalletService) => {
     message,
     signature,
   })
-  const { accessToken, refreshToken, walletAddress } = response.data
+  const { accessToken, walletAddress } = response.data
   saveAuth({
     accessToken,
-    refreshToken,
     walletAddress: walletAddress!,
   })
 }

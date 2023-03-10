@@ -43,7 +43,7 @@ contract('Lock / unlendKey', (accounts) => {
 
   describe('failures', () => {
     it('should abort when there is no key to lend', async () => {
-      await reverts(lock.unlendKey(receiver, 999), 'KEY_NOT_VALID')
+      await reverts(lock.unlendKey(receiver, 999), 'UNAUTHORIZED')
     })
 
     it('should abort when caller is not a key manager', async () => {

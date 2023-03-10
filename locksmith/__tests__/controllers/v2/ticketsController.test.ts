@@ -63,7 +63,7 @@ describe('tickets endpoint', () => {
       .get(`/v2/api/ticket/${network}/${lockAddress}/${wrongTokenId}/sign`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(403)
   })
 
   it('returns the signed message if the owner is the sender of the transaction', async () => {
@@ -253,7 +253,7 @@ describe('tickets endpoint', () => {
         .get(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/qr`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-      expect(response.status).toBe(401)
+      expect(response.status).toBe(403)
     })
 
     it('returns the image as QR code when using an HTTP Header', async () => {

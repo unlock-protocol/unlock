@@ -143,6 +143,7 @@ export class PurchaseController {
       normalizedRecipients.length
     )
     if (soldOut) {
+      // TODO: Cancel authorization
       return response.status(400).send({
         error: 'Lock is sold out.',
       })
@@ -250,7 +251,7 @@ export class PurchaseController {
     const fulfillmentDispatcher = new Dispatcher()
 
     if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-      return res.status(500).send('Lock is not free')
+      return res.status(400).send('Lock is not free')
     }
 
     const hasEnoughToPayForGas =

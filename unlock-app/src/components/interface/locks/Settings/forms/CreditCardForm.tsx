@@ -9,6 +9,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
+import Link from 'next/link'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -51,10 +52,7 @@ export const CreditCardForm = ({
     { address: lockAddress },
     network
   )
-  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(
-    account!,
-    network!
-  )
+  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(account!)
 
   const [hasRole, setHasRole] = useState(false)
 
@@ -186,7 +184,33 @@ export const CreditCardForm = ({
         ) : (
           <SettingCardDetail
             title="Enable Contract to Accept Credit Card"
-            description="Please accept Unlock Protocol will be processing this for you. Service & credit card processing fee will apply on your member’s purchase."
+            description={
+              <div className="flex flex-col gap-2">
+                <span>
+                  {`Credit card processing is not part of the core protocol.
+                  Unlock Labs processes non-crypto payments via our Stripe
+                  integration and includes fees that are applied on top of your
+                  lock's key price.`}
+                </span>
+                <span>
+                  If you enable credit card payments for your lock, your members
+                  will usually be charged a higher amount than the amount for
+                  your lock. The Unlock Labs fee is 10%, which must be added to
+                  the Stripe fees and gas costs.
+                </span>
+                <span>
+                  For more details see{' '}
+                  <Link
+                    className="font-semibold text-brand-ui-primary"
+                    href="https://unlock-protocol.com/guides/enabling-credit-cards/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Enabling Credit Cards guide
+                  </Link>
+                </span>
+              </div>
+            }
           />
         )}
 
