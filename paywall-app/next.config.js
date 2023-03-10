@@ -13,19 +13,6 @@ module.exports = {
     // resolvers.
     config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
 
-    // output the js lib
-    const unlockJSFile = join(__dirname, 'dist', 'unlock.latest.min.js')
-    config.plugins.push(
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: unlockJSFile,
-            to: join(__dirname, 'public', 'static', 'unlock.latest.min.js'),
-          },
-        ],
-      })
-    )
-
     return config
   },
   exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {

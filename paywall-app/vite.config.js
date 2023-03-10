@@ -1,4 +1,5 @@
 // vite is only used to compile the `lib/cdn.js` file
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
@@ -13,4 +14,10 @@ export default defineConfig({
       formats: ['umd'],
     },
   },
+  plugins: [
+    nodePolyfills({
+      // Whether to polyfill `node:` protocol imports.
+      protocolImports: true,
+    }),
+  ],
 })
