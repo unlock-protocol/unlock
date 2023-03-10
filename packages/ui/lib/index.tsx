@@ -24,3 +24,8 @@ export { Detail } from '~/components/Detail/Detail'
 export * from './types'
 export { ImageUpload } from '~/components/ImageUpload/ImageUpload'
 export * from './utils'
+export {
+  UnlockUIProvider,
+  useUnlockUI,
+  UnlocUIContext,
+} from '~/components/Provider'

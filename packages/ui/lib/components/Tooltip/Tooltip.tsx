@@ -1,10 +1,10 @@
 import {
-  Root,
   TooltipTrigger,
   Content,
   TooltipArrow,
+  Portal,
   TooltipContentProps,
-  Provider,
+  Root,
 } from '@radix-ui/react-tooltip'
 import { ReactNode } from 'react'
 
@@ -18,7 +18,6 @@ interface Props extends Pick<TooltipContentProps, 'side' | 'sideOffset'> {
 
 export function Tooltip({
   children,
-  delay = 600,
   tip,
   label,
   side,
@@ -29,11 +28,11 @@ export function Tooltip({
     theme === 'clear' ? 'text-brand-dark bg-white' : 'text-white bg-brand-dark'
   const arrowColor = theme === 'clear' ? 'fill-white' : 'fill-brand-dark'
   return (
-    <Provider>
-      <Root delayDuration={delay}>
-        <TooltipTrigger className="cursor-pointer" aria-label={label} asChild>
-          {children}
-        </TooltipTrigger>
+    <Root>
+      <TooltipTrigger className="cursor-pointer" aria-label={label} asChild>
+        {children}
+      </TooltipTrigger>
+      <Portal>
         <Content
           side={side}
           sideOffset={sideOffset}
@@ -42,7 +41,7 @@ export function Tooltip({
           <TooltipArrow className={`${arrowColor}`} />
           {tip}
         </Content>
-      </Root>
-    </Provider>
+      </Portal>
+    </Root>
   )
 }

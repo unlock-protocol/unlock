@@ -146,7 +146,7 @@ export const Authenticate = ({
 }
 
 Authenticate.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   unlockUserAccount: PropTypes.bool,
   requiredNetwork: PropTypes.string,
   optional: PropTypes.bool,
@@ -163,7 +163,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => { },
+  onAuthenticated: () => {},
   providerAdapter: null,
 }
 
