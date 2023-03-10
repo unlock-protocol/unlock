@@ -1,4 +1,11 @@
-import { Address, BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigInt,
+  log,
+  Bytes,
+  ethereum,
+  store,
+} from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
   ExpirationChanged as ExpirationChangedUntilV11Event,
@@ -121,6 +128,14 @@ export function handleTransfer(event: TransferEvent): void {
       lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
       lock.save()
     }
+
+    // delete record of burned key
+    const keyID = genKeyID(event.address, event.params.tokenId.toString())
+    const key = Key.load(keyID)
+    if (key) {
+      store.remove('Key', keyID)
+    }
+
     createReceipt(event)
   } else {
     // existing key has been transferred
