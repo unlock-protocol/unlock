@@ -1,7 +1,7 @@
 # Settings in the [build] context are global and are applied to
 # all contexts unless otherwise overridden by more specific contexts.
 
-[context.production]
+[build]
   command = "node config-builder.js > config.js"
 
 [functions]
