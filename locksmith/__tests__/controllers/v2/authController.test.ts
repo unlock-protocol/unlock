@@ -2,6 +2,7 @@ import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi } from 'vitest'
+import config from '../../../src/config/config'
 
 beforeAll(() => {
   vi.useFakeTimers()
@@ -48,7 +49,7 @@ describe('Auth login endpoints for locksmith', () => {
     expect(userResponse.status).toBe(200)
     expect(userResponse.body.walletAddress).toBe(walletAddress)
 
-    vi.setSystemTime(Date.now() + 1000 * 60 * 60)
+    vi.setSystemTime(Date.now() + config.sessionDuration * 1000 + 1000)
 
     const userResponse2 = await request(app)
       .get('/v2/auth/user')
@@ -59,26 +60,6 @@ describe('Auth login endpoints for locksmith', () => {
     const userResponse3 = await request(app).get('/v2/auth/user')
 
     expect(userResponse3.status).toBe(401)
-  })
-
-  it('Refresh token can be used to get new access token', async () => {
-    expect.assertions(2)
-    const { message, signedMessage } = await getWalletInput()
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
-
-    vi.setSystemTime(Date.now() + 1000 * 60 * 60)
-
-    const tokenResponse = await request(app)
-      .post('/v2/auth/token')
-      .set('refresh-token', loginResponse.body.refreshToken)
-      .send()
-    expect(tokenResponse.status).toBe(200)
-    expect(tokenResponse.body.accessToken).not.toBe(
-      loginResponse.body.accessToken
-    )
   })
 
   it('Same nonce or message is rejected on login if already logged in once', async () => {
@@ -97,7 +78,6 @@ describe('Auth login endpoints for locksmith', () => {
     expect(loginResponse.status).toBe(200)
     expect(loginResponse2.status).toBe(422)
   })
-
   it('Revoke refresh token', async () => {
     expect.assertions(3)
     const { message, signedMessage } = await getWalletInput()
@@ -108,16 +88,16 @@ describe('Auth login endpoints for locksmith', () => {
 
     const revokeResponse = await request(app)
       .post('/v2/auth/revoke')
-      .set('refresh-token', loginResponse.body.refreshToken)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send()
 
     const tokenResponse = await request(app)
-      .post('/v2/auth/token')
-      .set('refresh-token', loginResponse.body.refreshToken)
+      .get('/v2/auth/user')
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send()
 
     expect(revokeResponse.status).toBe(200)
-    expect(revokeResponse.body.message).toBe('Revoked')
+    expect(revokeResponse.body.message).toBe('Successfully revoked')
     expect(tokenResponse.status).toBe(401)
   })
 })

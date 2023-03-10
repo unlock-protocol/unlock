@@ -12882,15 +12882,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:9.0.1, @types/jsonwebtoken@npm:^9":
-  version: 9.0.1
-  resolution: "@types/jsonwebtoken@npm:9.0.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: a7f0925e9a42ad3ae970364c63c5986d40da5c83d51d3f4e624eb0f064a380376f9e3fb3f2f837390a9ab80143f5d75fd51866da30e110f6b486a3379e1c768f
-  languageName: node
-  linkType: hard
-
 "@types/keyv@npm:^3.1.1, @types/keyv@npm:^3.1.4":
   version: 3.1.4
   resolution: "@types/keyv@npm:3.1.4"
@@ -14344,7 +14335,6 @@ __metadata:
     "@types/cors": 2.8.13
     "@types/geoip-country": 4.0.0
     "@types/isomorphic-fetch": 0.0.36
-    "@types/jsonwebtoken": 9.0.1
     "@types/multer": 1.4.7
     "@types/multer-s3": 3.0.0
     "@types/nock": 10.0.3
@@ -14376,7 +14366,6 @@ __metadata:
     eslint-config-standard: 17.0.0
     ethers: 5.7.2
     express: 5.0.0-beta.1
-    express-jwt: 8.4.1
     express-winston: 4.2.0
     fuse.js: 6.6.2
     geoip-country: 4.1.46
@@ -14384,7 +14373,6 @@ __metadata:
     graphql-tag: 2.12.6
     html-template-tag: 4.0.1
     isomorphic-fetch: 3.0.0
-    jsonwebtoken: 9.0.0
     lodash.isequal: 4.5.0
     memory-cache-node: 1.4.0
     multer: 1.4.5-lts.1
@@ -14673,7 +14661,6 @@ __metadata:
     "@xstate/react": 3.1.2
     autoprefixer: 10.4.13
     axios: 1.3.4
-    axios-auth-refresh: 3.3.6
     calendar-link: 2.4.0
     csv: 6.2.7
     dayjs: 1.11.7
@@ -17430,15 +17417,6 @@ __metadata:
   version: 4.6.3
   resolution: "axe-core@npm:4.6.3"
   checksum: d0c46be92b9707c48b88a53cd5f471b155a2bfc8bf6beffb514ecd14e30b4863e340b5fc4f496d82a3c562048088c1f3ff5b93b9b3b026cb9c3bfacfd535da10
-  languageName: node
-  linkType: hard
-
-"axios-auth-refresh@npm:3.3.6":
-  version: 3.3.6
-  resolution: "axios-auth-refresh@npm:3.3.6"
-  peerDependencies:
-    axios: ">= 0.18 < 0.19.0 || >= 0.19.1"
-  checksum: 74206569065a4ece84830210d4f21900aa9690259c3c21743efb195309bcbcb6c3f5e59ce973ea8fe5d9155f5b241001c35448e527da9f32d7ee37d030d51544
   languageName: node
   linkType: hard
 
@@ -25462,17 +25440,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-jwt@npm:8.4.1":
-  version: 8.4.1
-  resolution: "express-jwt@npm:8.4.1"
-  dependencies:
-    "@types/jsonwebtoken": ^9
-    express-unless: ^2.1.3
-    jsonwebtoken: ^9.0.0
-  checksum: a8670a8f8f5501a89a876f49f5dcbab488cc675a16447c5260b5c55e58be579363e00bafb0f06ff55524e895b8c6e3c962d6048378cef445291634632b21e42c
-  languageName: node
-  linkType: hard
-
 "express-logging@npm:^1.1.1":
   version: 1.1.1
   resolution: "express-logging@npm:1.1.1"
@@ -25495,13 +25462,6 @@ __metadata:
     safe-buffer: 5.2.1
     uid-safe: ~2.1.5
   checksum: 1021a793433cbc6a1b32c803fcb2daa1e03a8f50dd907e8745ae57994370315a5cfde5b6ef7b062d9a9a0754ff268844bda211c08240b3a0e01014dcf1073ec5
-  languageName: node
-  linkType: hard
-
-"express-unless@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "express-unless@npm:2.1.3"
-  checksum: 14bec87e84266180bd8ad71f43a8d1d70d1c3905be7ca89944a86ae0d31f07a3f98418b619673aa8dd417333bbc7bb0a24172ff806a2e0ef1ee9b6221a4bf056
   languageName: node
   linkType: hard
 
@@ -27753,7 +27713,7 @@ __metadata:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 
@@ -32914,7 +32874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.0, jsonwebtoken@npm:^9.0.0":
+"jsonwebtoken@npm:^9.0.0":
   version: 9.0.0
   resolution: "jsonwebtoken@npm:9.0.0"
   dependencies:

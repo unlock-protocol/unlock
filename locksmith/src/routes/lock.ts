@@ -1,6 +1,9 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
-import { authMiddleware } from '../utils/middlewares/auth'
+import {
+  authMiddleware,
+  authenticatedMiddleware,
+} from '../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../utils/middlewares/lockManager'
 import lockController from '../controllers/lockController'
 const router = express.Router({ mergeParams: true })
@@ -41,6 +44,7 @@ router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
 router.delete(
   '/:network/lock/:lockAddress/stripe',
   authMiddleware,
+  authenticatedMiddleware,
   lockManagerMiddleware,
   lockController.disconnectStripe
 )
