@@ -44,7 +44,7 @@ components:
     AuthResult:
       required:
         - 'accessToken'
-        - 'refreshToken'
+        - 'walletAddress'
 
       type: object
       properties:
@@ -53,10 +53,6 @@ components:
           nullable: true
 
         accessToken:
-          type: string
-          nullable: false
-
-        refreshToken:
           type: string
           nullable: false
 
@@ -525,53 +521,12 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/auth/token:
-    post:
-      operationId: refreshToken
-      description: Refresh access token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
-      responses:
-        200:
-          description: New creditionals.
-          content:
-            application/json:
-              schema:
-                required:
-                  - 'walletAddress'
-                  - 'accessToken'
-                type: object
-                properties:
-                  walletAddress:
-                    type: string
-
-                  accessToken:
-                    type: string
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
   /v2/auth/logout:
     post:
       operationId: logout
       security:
         - User: []
-      description: Logout from locksmith. This will invalidate all your refresh tokens.
+      description: Logout from locksmith. This will invalidate all your session tokens.
 
       responses:
         200:
@@ -583,24 +538,9 @@ paths:
   /v2/auth/revoke:
     post:
       operationId: revoke
-      description: Invalidate a refresh token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
+      security:
+        - User: []
+      description: Invalidate a session.
       responses:
         200:
           $ref: '#/components/responses/200.GenericSuccess'
