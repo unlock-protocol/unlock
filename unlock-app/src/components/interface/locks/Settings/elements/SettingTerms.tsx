@@ -45,9 +45,9 @@ export const SettingTerms = ({
           network={network}
           isManager={isManager}
           disabled={!isManager}
+          unlimitedDuration={unlimitedDuration}
         />
       ),
-      active: !unlimitedDuration,
     },
     {
       label: 'Duration',
