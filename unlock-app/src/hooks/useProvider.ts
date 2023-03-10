@@ -28,7 +28,7 @@ export const useProvider = (config: any) => {
   const [openConnectModal, setOpenConnectModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
-  const [network, setNetwork] = useState<string | undefined>(undefined)
+  const [network, setNetwork] = useState<number | undefined>(undefined)
   const [account, setAccount] = useState<string | undefined>(undefined)
   const [email, setEmail] = useState<string | undefined>(undefined)
   const [isUnlockAccount, setIsUnlockAccount] = useState<boolean>(false)
@@ -50,7 +50,13 @@ export const useProvider = (config: any) => {
 
   const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
-    const _network = await _walletService.connect(provider)
+    let _network = 1 // default
+    try {
+      _network = await _walletService.connect(provider)
+    } catch (error) {
+      console.log(error)
+    }
+
     const _account = await _walletService.getAccount()
     return {
       walletService: _walletService,
@@ -149,9 +155,8 @@ export const useProvider = (config: any) => {
       }
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
-        ToastHelper.error(
-          `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
-        )
+        // We actually do not care :D
+        // The user will be promped to switch networks when they perform a transaction
       } else if (error.message.includes('could not detect network')) {
         ToastHelper.error(
           'We could not detect the network to which your wallet is connected. Please try another wallet. (This issue happens often with the Frame Wallet)' // TODO: remove when Frame is fixed

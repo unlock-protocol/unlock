@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import { Lock, WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
+import { passwordHookAbi } from './abis/passwordHookAbi'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -944,5 +945,29 @@ export default class WalletService extends UnlockService {
       transactionOptions,
       callback
     )
+  }
+
+  /**
+   * Set signer for `Password hook contract`
+   */
+  async setPasswordHookSigner(
+    params: {
+      lockAddress: string
+      signerAddress: string
+      contractAddress: string
+      network: number
+    },
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  ) {
+    const { lockAddress, signerAddress, contractAddress, network } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: passwordHookAbi,
+      signer,
+    })
+    const tx = await contract.setSigner(lockAddress, signerAddress)
+    return tx
   }
 }
