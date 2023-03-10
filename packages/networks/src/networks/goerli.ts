@@ -90,6 +90,11 @@ export const goerli: NetworkConfig = {
         name: 'Password required',
         address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
+      },
     ],
   },
 }

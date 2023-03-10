@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
@@ -73,6 +73,15 @@ export const celo: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x80E085D7591C61153D876b5171dc25756a7A3254',
+      },
+    ],
+  },
 }
 
 export default celo
