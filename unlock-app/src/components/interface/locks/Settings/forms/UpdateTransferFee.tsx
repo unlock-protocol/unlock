@@ -11,6 +11,7 @@ interface UpdateTransferFeeProps {
   network: number
   isManager: boolean
   disabled: boolean
+  unlimitedDuration: boolean
 }
 
 interface FormProps {
@@ -22,6 +23,7 @@ export const UpdateTransferFee = ({
   network,
   isManager,
   disabled,
+  unlimitedDuration,
 }: UpdateTransferFeeProps) => {
   const web3Service = useWeb3Service()
   const { getWalletService } = useAuth()
@@ -107,7 +109,7 @@ export const UpdateTransferFee = ({
         }
         disabled={disabledInput}
       />
-      {allowTransfer && (
+      {allowTransfer && !unlimitedDuration && (
         <>
           <Input
             label="Transfer fee (%)"
