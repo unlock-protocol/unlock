@@ -119,7 +119,7 @@ export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
 
 export const userOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type === 'application') {
-    return res.status(401).send({
+    return res.status(403).send({
       message: 'Applications are not authorized to use this endpoint.',
     })
   }
@@ -128,7 +128,7 @@ export const userOnlyMiddleware: RequestHandler = (req, res, next) => {
 
 export const applicationOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type !== 'application') {
-    return res.status(401).send({
+    return res.status(403).send({
       message: 'Only applications are authorized to use this endpoint.',
     })
   }
