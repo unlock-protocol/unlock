@@ -1,19 +1,22 @@
 import crypto from 'crypto'
-import jwt from 'jsonwebtoken'
 import { RequestHandler, response } from 'express'
 import { Application } from '../../models/application'
 import { logger } from '../../logger'
 import normalizer from '../normalizer'
+import { Session } from '../../models'
+import { Op } from 'sequelize'
 
 export type User =
   | {
       type: 'user'
       walletAddress: string
+      session: string
     }
   | {
+      id: number
       type: 'application'
       walletAddress: string
-      id: number
+      session?: string
     }
 
 declare global {
@@ -31,20 +34,23 @@ declare global {
   }
 }
 
-export const jwtConfig = {
-  tokenSecret: process.env.JWT_TOKEN_SECRET ?? 'access-token-secret',
-  expire: process.env.JWT_EXPIRE ?? '30m',
+interface Options {
+  walletAddress: string
+  nonce: string
+  expireAt: Date
 }
-
-export function createRandomToken() {
-  return crypto.randomBytes(64).toString('hex')
-}
-
-export function createAccessToken(user: User) {
-  return jwt.sign(user, jwtConfig.tokenSecret, {
-    expiresIn: jwtConfig.expire,
-    algorithm: 'HS256',
-  })
+export const createAccessToken = async ({
+  walletAddress,
+  nonce,
+  expireAt,
+}: Options) => {
+  const session = new Session()
+  session.walletAddress = walletAddress
+  session.nonce = nonce
+  session.expireAt = expireAt
+  session.id = crypto.randomBytes(64).toString('hex')
+  await session.save()
+  return session
 }
 
 export const authenticateWithApiKey = async (req: any, token: string) => {
@@ -62,54 +68,61 @@ export const authenticateWithApiKey = async (req: any, token: string) => {
     type: 'application',
     walletAddress: normalizer.ethereumAddress(app.walletAddress),
     id: app.id,
+    session: token,
   }
 }
 
 export const authMiddleware: RequestHandler = async (req, _, next) => {
   try {
-    if (req.query['api-key']) {
-      if (Array.isArray(req.query['api-key'])) {
-        await authenticateWithApiKey(req, req.query['api-key'][0] as string)
-      } else {
-        await authenticateWithApiKey(req, req.query['api-key'] as string)
-      }
+    const apiKey = req.query['api-key']
+    if (apiKey) {
+      const apiKeyValue = Array.isArray(apiKey) ? apiKey[0] : apiKey
+      await authenticateWithApiKey(req, apiKeyValue.toString())
       return next()
     }
-
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
       return next()
     }
 
-    const [type, token] = authHeader.split(' ')
+    const [type, token] = authHeader.split(/ +/)
     const tokenType = type.toLowerCase()
-
-    if (tokenType === 'bearer') {
-      const user = jwt.verify(token, jwtConfig.tokenSecret) as User
-      req.user = {
-        ...user,
-        walletAddress: normalizer.ethereumAddress(user.walletAddress),
-      }
-      return next()
-    }
-
     if (tokenType === 'api-key') {
       await authenticateWithApiKey(req, token)
       return next()
     }
+    if (tokenType === 'bearer') {
+      const session = await Session.findOne({
+        where: {
+          id: token,
+          expireAt: {
+            [Op.gt]: new Date(),
+          },
+        },
+      })
 
-    return response.status(401).send({
+      if (!session) {
+        return next()
+      }
+      req.user = {
+        type: 'user',
+        session: session.id,
+        walletAddress: normalizer.ethereumAddress(session.walletAddress),
+      }
+      return next()
+    }
+    return response.status(400).send({
       message: 'Unsupported authorization type',
     })
   } catch (error) {
-    logger.error(error.message)
+    logger.info(error.message)
     return next()
   }
 }
 
 export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
-  if (!req.user) {
+  if (!req.user?.walletAddress) {
     return res.status(401).send({
       message: 'You are not authenticated.',
     })
@@ -119,7 +132,7 @@ export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
 
 export const userOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type === 'application') {
-    return res.status(401).send({
+    return res.status(403).send({
       message: 'Applications are not authorized to use this endpoint.',
     })
   }
@@ -128,7 +141,7 @@ export const userOnlyMiddleware: RequestHandler = (req, res, next) => {
 
 export const applicationOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type !== 'application') {
-    return res.status(401).send({
+    return res.status(403).send({
       message: 'Only applications are authorized to use this endpoint.',
     })
   }

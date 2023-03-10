@@ -35,18 +35,17 @@ export const useProvider = (config: any) => {
   const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
     any | undefined
   >(undefined)
-  const { getStorage, setStorage, clearStorage } = useAppStorage()
+  const { setStorage, clearStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(account)
 
   useEffect(() => {
-    if (!getStorage('account') && account) {
+    if (account) {
       setStorage('account', account)
     }
-
-    if (!getStorage('network') && network) {
+    if (network) {
       setStorage('network', network)
     }
-  }, [account, network])
+  }, [account, network, setStorage])
 
   const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
