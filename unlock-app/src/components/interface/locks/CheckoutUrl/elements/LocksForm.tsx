@@ -413,6 +413,8 @@ export const LocksForm = ({
                     minRecipients: true, // This option is confusing. Let's not add it by default.
                     default: true,
                     recurringPayments: true, // Managed separately to get Unlimited recurring
+                    // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
+                    password: true,
                   })}
                   onChange={(fields: any) =>
                     onAddLock(lockAddress, network, undefined, fields)
