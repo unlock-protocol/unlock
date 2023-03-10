@@ -26,20 +26,13 @@ components:
 
   schemas:
     Auth:
+      required:
+        - 'walletAddress'
       type: object
       properties:
-        type:
-          type: string
-          default: user
-          nullable: false
-
         walletAddress:
           type: string
           nullable: false
-
-        id:
-          type: string
-          nullable: true
 
     AuthResult:
       required:

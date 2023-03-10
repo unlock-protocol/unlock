@@ -35,13 +35,11 @@ describe('Application endpoint', () => {
   })
 
   it('application can access its user data', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
     const applicationData = await request(app)
       .get('/v2/auth/user')
       .set('Authorization', `Api-key ${application.key}`)
-
-    expect(applicationData.body.id).toBe(application.id)
-    expect(applicationData.body.type).toBe('application')
+    expect(applicationData.body.walletAddress).toBe(application.walletAddress)
   })
 
   it('application cannot access user data without authentication', async () => {
