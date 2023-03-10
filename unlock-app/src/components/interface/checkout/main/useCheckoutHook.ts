@@ -45,17 +45,24 @@ export function useCheckoutHook(service: CheckoutService) {
                 ? HookIdMapping?.[match?.id]
                 : undefined
 
-              // TODO: remove when we handle 'promo' & 'captcha' in settings page
+              // Get hook type from paywall config as fallback
               if (!hookType) {
-                const lockByAddress = paywallConfig.locks[lockAddress]
+                const {
+                  password = false,
+                  promo = false,
+                  captcha = false,
+                } = paywallConfig.locks?.[lockAddress] ?? {}
 
-                const isCaptcha =
-                  lockByAddress?.captcha || paywallConfig.captcha || false
+                const hookStatePaywall: Record<string, boolean> = {
+                  isPromo: !!(promo || paywallConfig?.password),
+                  isPassword: !!(password || paywallConfig?.password),
+                  isCaptcha: !!(captcha || paywallConfig?.password),
+                }
 
-                const isPromo =
-                  lockByAddress?.promo || paywallConfig.promo || false
-
-                if (isCaptcha) {
+                const { isCaptcha, isPromo, isPassword } = hookStatePaywall
+                if (isPassword) {
+                  hookType = 'password'
+                } else if (isCaptcha) {
                   hookType = 'captcha'
                 } else if (isPromo) {
                   hookType = 'promocode'
