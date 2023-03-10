@@ -92,7 +92,7 @@ describe('Application endpoint', () => {
         .set('Authorization', `Api-key ${application.key}`)
         .send()
 
-      expect(applicationList.statusCode).toBe(401)
+      expect(applicationList.statusCode).toBe(403)
     })
   })
 

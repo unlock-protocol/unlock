@@ -139,7 +139,7 @@ describe('Receipt v2', () => {
     expect(receiptResponse.body.purchaser).toContain(purchaser)
   })
 
-  it('Get receipt fails when user is lock manager', async () => {
+  it('Get receipt fails when user is not lock manager', async () => {
     expect.assertions(2)
     const { loginResponse, address } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
@@ -162,6 +162,6 @@ describe('Receipt v2', () => {
       .get(`/v2/receipts/${network}/${lockAddress}/${hash}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(receiptResponse.status).toBe(401)
+    expect(receiptResponse.status).toBe(403)
   })
 })

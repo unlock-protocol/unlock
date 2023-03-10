@@ -33,7 +33,7 @@ export const lockManagerOrKeyOwnerMiddleware: RequestHandler = async (
   ])
 
   if (!isLockManager && Normalizer.ethereumAddress(keyOwner) !== userAddress) {
-    return res.status(401).send({
+    return res.status(403).send({
       message: `${userAddress} is not a lock manager or the key owner of ${tokenId} for ${lockAddress} on ${network}`,
     })
   }
