@@ -30,13 +30,20 @@ export const isVerifierAlreadyExits = async (
 export const getVerifiersList = async (
   lockAddress: string,
   network: number
-): Promise<Verifier[] | null> => {
-  return Verifier.findAll({
+): Promise<any[]> => {
+  const response = await Verifier.findAll({
     where: {
       lockAddress,
       network,
     },
   })
+
+  const verifiers =
+    response.map((verifier: Verifier) => ({
+      ...verifier.toJSON(),
+    })) || []
+
+  return verifiers
 }
 
 /**
