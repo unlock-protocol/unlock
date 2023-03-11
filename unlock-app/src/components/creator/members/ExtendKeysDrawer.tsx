@@ -1,7 +1,5 @@
 import React from 'react'
-import Drawer from '../../interface/Drawer'
-
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useMutation } from '@tanstack/react-query'
 import { addressMinify } from '~/utils/strings'
 import { ToastHelper } from '~/components/helpers/toast.helper'

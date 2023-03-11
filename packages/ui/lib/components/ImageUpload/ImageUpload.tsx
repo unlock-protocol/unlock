@@ -38,22 +38,24 @@ export const ImageUpload = ({
   })
   return (
     <div className="grid max-w-sm gap-6 p-2 bg-white rounded-xl">
-      <div className="border border-dashed rounded-3xl">
-        <div className="flex flex-col object-fill gap-4 aspect-1">
-          {isUploading && (
-            <div className="flex flex-col items-center justify-center">
-              <SpinnerIcon
-                title="loading"
-                className="text-gray-400 animate-spin"
-              />
-            </div>
-          )}
-          {!isUploading && (
-            <img className="rounded-xl" src={preview} alt="NFT" />
-          )}
-        </div>
+      <div className="flex flex-col items-center justify-center p-1 border border-dashed rounded-lg aspect-1">
+        {isUploading && (
+          <div className="flex flex-col items-center justify-center h-full">
+            <SpinnerIcon
+              size={24}
+              title="loading"
+              className="text-brand-ui-primary animate-spin"
+            />
+          </div>
+        )}
+        {!isUploading && (
+          <img
+            className="object-cover w-full h-full rounded-xl"
+            src={preview}
+            alt="NFT"
+          />
+        )}
       </div>
-
       <Tab.Group>
         <div className="grid gap-4">
           {description && (
@@ -93,6 +95,7 @@ export const ImageUpload = ({
                   const fileUrl = event.target.value
                   onChange(fileUrl)
                 }}
+                value={preview}
                 size="small"
                 type="url"
                 placeholder="https://"

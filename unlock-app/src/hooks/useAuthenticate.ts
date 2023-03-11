@@ -12,6 +12,8 @@ interface RpcType {
   [network: string]: string
 }
 
+export const RECENTLY_USED_PROVIDER = 'recently_used_provider'
+
 export const rpcForWalletConnect = (config: any) => {
   const rpc: RpcType = {}
   Object.keys(config.networks).forEach((key) => {
@@ -109,6 +111,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       } else {
         removeKey('email')
       }
+      localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
       setStorage('provider', providerType)
     })
     return connectedProvider

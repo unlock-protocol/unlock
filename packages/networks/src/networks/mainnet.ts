@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
+  featured: true,
   id: 1,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   provider: 'https://rpc.unlock-protocol.com/1',
@@ -28,6 +29,7 @@ export const mainnet: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) => `https://opensea.io/assets/${lockAddress}`,
   },
   erc20: {
     symbol: 'DAI',
@@ -107,6 +109,20 @@ export const mainnet: NetworkConfig = {
       decimals: 18,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.PASSWORD,
+        name: 'Password required',
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x0959482CbFB3c3C85ECd7bf690a0cde808eE8471',
+      },
+    ],
+  },
 }
 
 export default mainnet

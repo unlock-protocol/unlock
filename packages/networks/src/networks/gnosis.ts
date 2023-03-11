@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const gnosis: NetworkConfig = {
+  featured: true,
   publicProvider: 'https://rpc.gnosischain.com',
   provider: 'https://rpc.unlock-protocol.com/100',
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
@@ -67,5 +68,19 @@ export const gnosis: NetworkConfig = {
       symbol: 'USDT',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.PASSWORD,
+        name: 'Password required',
+        address: '0x927D68eAE936Ec0111f01Fc4Ddd9cC57DB3f0Af2',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x6E422f8eDCE3586e8c384f7e602D3b5706463e12',
+      },
+    ],
+  },
 }
 export default gnosis

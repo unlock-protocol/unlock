@@ -35,13 +35,15 @@ contract ERC20BalanceOfHook {
     minAmounts[_lockAddress] = _minAmount;
   }
 
-  function hasValidKey(
+  function isValidKey(
     address _lockAddress,
+    address, // operator
+    uint, //tokenId
+    uint, // _expirationTimestamp,
     address _keyOwner,
-    uint256, // _expirationTimestamp,
-    bool isValidKey
+    bool _isValidKey
   ) external view returns (bool) {
-    if (isValidKey) return true;
+    if (_isValidKey) return true;
 
     // get token contract
     address tokenAddress = tokenAddresses[_lockAddress];

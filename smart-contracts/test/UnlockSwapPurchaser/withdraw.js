@@ -5,6 +5,7 @@ const {
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
   deployContracts,
+  CHAIN_ID,
 } = require('../helpers')
 
 const someTokens = ethers.utils.parseUnits('10', 'ether')
@@ -12,6 +13,7 @@ const scenarios = [true, false]
 const isEthersJs = true
 
 let swapper, unlock, tokenAddress, testToken, owner, unlockBalanceBefore, swapperBalanceBefore
+const uniswapRouterAddresses = require('../../scripts/uniswap/routerAddresses.json')
 
 contract('UnlockSwapPurchaser / withdraw', () => {
   
@@ -23,7 +25,9 @@ contract('UnlockSwapPurchaser / withdraw', () => {
         ;({ unlockEthers: unlock } = await deployContracts())
 
         const UnlockSwapPurchaser = await ethers.getContractFactory('UnlockSwapPurchaser')
-        swapper = await UnlockSwapPurchaser.deploy(unlock.address, PERMIT2_ADDRESS)
+        const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[CHAIN_ID]
+        const routers = [UniversalRouter, SwapRouter02]
+        swapper = await UnlockSwapPurchaser.deploy(unlock.address, PERMIT2_ADDRESS, routers)
 
         swapperBalanceBefore = await getBalanceEthers(swapper.address, tokenAddress)
         unlockBalanceBefore = await getBalanceEthers(unlock.address, tokenAddress)

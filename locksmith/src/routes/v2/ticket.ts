@@ -3,6 +3,7 @@ import networks from '@unlock-protocol/networks'
 import {
   TicketsController,
   generateTicket,
+  getTicket,
 } from '../../controllers/v2/ticketsController'
 import { keyOwnerMiddleware } from '../../utils/middlewares/keyOwnerMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
@@ -66,5 +67,7 @@ router.get(
   authenticatedMiddleware,
   generateTicket
 )
+
+router.get('/:network/lock/:lockAddress/key/:keyId', getTicket)
 
 export default router

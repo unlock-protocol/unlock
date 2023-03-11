@@ -39,7 +39,7 @@ export const lockManagerOrKeyGranterMiddleware: RequestHandler = async (
   )
 
   if (!isLockManager && !isKeyGranter) {
-    return res.status(401).send({
+    return res.status(403).send({
       message: `${userAddress} is not a lock manager or key granter for ${lockAddress} on ${network}`,
     })
   }

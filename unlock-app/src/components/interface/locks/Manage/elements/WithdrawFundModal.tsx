@@ -1,4 +1,12 @@
-import { AddressInput, Button, Input, Modal } from '@unlock-protocol/ui'
+import {
+  AddressInput,
+  Button,
+  Input,
+  Modal,
+  isAddressOrEns,
+  Placeholder,
+  Detail,
+} from '@unlock-protocol/ui'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { z } from 'zod'
@@ -32,15 +40,6 @@ const withdrawForm = z.object({
 })
 
 type WithdrawFormProps = z.infer<typeof withdrawForm>
-
-const Detail = ({ label, value, ...props }: any) => {
-  return (
-    <div className="flex flex-col gap-1" {...props}>
-      <span className="text-base">{label}</span>
-      <span className="text-base font-bold text-black">{value || ''}</span>
-    </div>
-  )
-}
 
 export const WithdrawFundModal = ({
   isOpen,
@@ -115,7 +114,10 @@ export const WithdrawFundModal = ({
     })
   }
 
-  const [{ data: isContract }, { data: addressBalance }] = useQueries({
+  const [
+    { data: isContract, isLoading: isLoadingContract },
+    { data: addressBalance, isLoading: isLoadingBalance },
+  ] = useQueries({
     queries: [
       {
         queryKey: ['getCode', lockAddress, network, beneficiary],
@@ -138,6 +140,7 @@ export const WithdrawFundModal = ({
     ],
   })
 
+  const isLoading = isLoadingContract || isLoadingBalance
   const noBalance = parseFloat(addressBalance ?? '0') === 0
   const networkName = networks[network]?.name
 
@@ -158,24 +161,31 @@ export const WithdrawFundModal = ({
           {preview ? (
             <>
               <div className="flex flex-col gap-2 leading-tight text-md text-brand-dark">
-                <Detail label="Network:" value={networkName} />
-                <Detail
-                  label="Amount to transfer:"
-                  value={`${amountToTransfer} ${symbol}`}
-                />
-                <Detail label="Beneficiary" value={beneficiary} />
-                {isContract && (
-                  <p className="text-red-500">
-                    This is a contract address, please make sure this contract
-                    can handle the funds, or they will be lost.
-                  </p>
-                )}
-                {!isContract && noBalance && (
-                  <p className="text-red-500">
-                    This address does not seem to have been used on{' '}
-                    {`${networkName}`}
-                    before, please ensure it is correct or funds will be lost.
-                  </p>
+                <Detail label="Network:">{networkName}</Detail>
+                <Detail label="Amount to transfer:">{`${amountToTransfer} ${symbol}`}</Detail>
+                <Detail label="Beneficiary">{beneficiary}</Detail>
+                {isLoading ? (
+                  <Placeholder.Root>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Root>
+                ) : (
+                  <>
+                    {isContract && (
+                      <p className="text-red-500">
+                        This is a contract address, please make sure this
+                        contract can handle the funds, or they will be lost.
+                      </p>
+                    )}
+                    {!isContract && noBalance && (
+                      <p className="text-red-500">
+                        This address does not seem to have been used on{' '}
+                        {`${networkName}`}
+                        before, please ensure it is correct or funds will be
+                        lost.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             </>
@@ -186,6 +196,7 @@ export const WithdrawFundModal = ({
                 control={control}
                 rules={{
                   required: true,
+                  validate: isAddressOrEns,
                 }}
                 render={() => {
                   return (
@@ -251,7 +262,7 @@ export const WithdrawFundModal = ({
               <Button
                 type="submit"
                 loading={withdrawMutation.isLoading}
-                disabled={withdrawMutation.isLoading}
+                disabled={withdrawMutation.isLoading || isLoading}
                 size="medium"
               >
                 {!withdrawMutation.isLoading ? 'Confirm' : 'Withdrawing...'}
