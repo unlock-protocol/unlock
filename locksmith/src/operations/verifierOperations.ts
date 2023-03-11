@@ -39,7 +39,7 @@ export const getVerifiersList = async (
   })
 
   const verifiers =
-    response.map((verifier: Verifier) => ({
+    response?.map((verifier: Verifier) => ({
       ...verifier.toJSON(),
     })) || []
 
