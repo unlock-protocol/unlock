@@ -246,8 +246,9 @@ export const getTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const tokenId = request.params.keyId.toLowerCase().trim()
-  const userAdress = request.user?.walletAddress
+  const userAddress = request.user?.walletAddress
   const subgraph = new SubgraphService()
+
   const [key, verifiers] = await Promise.all([
     subgraph.key(
       {
@@ -276,7 +277,7 @@ export const getTicket: RequestHandler = async (request, response) => {
     publicLockVersion: key.lock.version,
   }
 
-  if (!userAdress) {
+  if (!userAddress) {
     const keyData = await generateKeyMetadata(
       lockAddress,
       tokenId,
@@ -305,16 +306,16 @@ export const getTicket: RequestHandler = async (request, response) => {
 
   const isManager = key.lock.lockManagers
     .map((item: string) => item.toLowerCase().trim())
-    .includes(userAdress.toLowerCase().trim())
+    .includes(userAddress.toLowerCase().trim())
 
   const isVerifier = verifiers
     ?.map((item) => item.address.toLowerCase().trim())
-    .includes(userAdress.toLowerCase().trim())
+    .includes(userAddress.toLowerCase().trim())
 
   const includeProtected =
     isManager ||
     isVerifier ||
-    key.owner.toLowerCase() === userAdress.toLowerCase().trim()
+    key.owner.toLowerCase() === userAddress.toLowerCase().trim()
 
   const keyData = await generateKeyMetadata(
     lockAddress,
