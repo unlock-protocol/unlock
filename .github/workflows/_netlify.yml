@@ -33,6 +33,8 @@ on:
         required: false
       NEXT_PUBLIC_STRIPE_KEY:
         required: false
+      NEXT_PUBLIC_ETHPASS_KEY:
+        required: false
       NEXT_PUBLIC_UNLOCK_GA_ID:
         required: false
       # wedlocks only
