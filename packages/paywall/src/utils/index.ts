@@ -38,7 +38,7 @@ export const unlockEvents = {
 export const setupUnlockProtocolVariable = (properties: {
   [name: string]: any
 }) => {
-  const unlockProtocol: Object = {}
+  const unlockProtocol: any = {}
 
   const immutable = {
     writable: false,
