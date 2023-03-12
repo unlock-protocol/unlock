@@ -16,7 +16,7 @@ describe('enableInjectedProvider utils', () => {
 
       const window = {
         ethereum: {
-          enable: jest.fn(),
+          enable: vi.fn(),
         },
       }
 
@@ -29,7 +29,7 @@ describe('enableInjectedProvider utils', () => {
       const window = {
         web3: {
           currentProvider: {
-            enable: jest.fn(),
+            enable: vi.fn(),
           },
         },
       }
@@ -51,7 +51,7 @@ describe('enableInjectedProvider utils', () => {
       expect.assertions(1)
 
       const provider = {
-        enable: jest
+        enable: vi
           .fn()
           .mockRejectedValue(new Error('User did not allow wallet to connect')),
       }
@@ -65,7 +65,7 @@ describe('enableInjectedProvider utils', () => {
       expect.assertions(1)
 
       const provider = {
-        enable: jest.fn().mockResolvedValue(undefined),
+        enable: vi.fn().mockResolvedValue(undefined),
       }
 
       expect(enableInjectedProvider(provider)).resolves.toBeUndefined()

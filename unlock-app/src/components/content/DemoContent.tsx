@@ -69,13 +69,16 @@ const usePaywall = () => {
     localStorage.removeItem('userInfo')
 
     // Event handler
-    const handler = window.addEventListener('unlockProtocol', (e: any) => {
-      if (e?.detail === 'unlocked') {
-        setLocked(false)
-      } else {
-        setLocked(true)
+    const handler = window.addEventListener(
+      'unlockProtocol.status',
+      (e: any) => {
+        if (e?.detail === 'unlocked') {
+          setLocked(false)
+        } else {
+          setLocked(true)
+        }
       }
-    })
+    )
 
     // Load unlock script
     const script = document.createElement('script')

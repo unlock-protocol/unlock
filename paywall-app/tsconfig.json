@@ -1,4 +1,4 @@
-/* This file is a combination of the automatically generated config produced by `tsc --init` and the recommended config suggested by zeit for next-typescript */{
+/* This file is a combination of the automatically generated config produced by `tsc --init` and the recommended config suggested by zeit for next-typescript */ {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     /* Basic Options */
@@ -10,13 +10,12 @@
     ] /* Specify library files to be included in the compilation. */,
     "jsx": "preserve" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "sourceMap": true /* Generates corresponding '.map' file. */,
-    "outDir": "./dist" /* Redirect output structure to the directory. */,
     "removeComments": false /* Do not emit comments to output. */,
     /* Additional Checks */
     "moduleResolution": "node",
-    "noImplicitReturns": false, /* Report error when not all code paths in function return a value. */
-    "noFallthroughCasesInSwitch": false, /* Report errors for fallthrough cases in switch statement. */
-    "experimentalDecorators": false, /* Enables experimental support for ES7 decorators. */
+    "noImplicitReturns": false /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": false /* Report errors for fallthrough cases in switch statement. */,
+    "experimentalDecorators": false /* Enables experimental support for ES7 decorators. */,
     "emitDecoratorMetadata": false /* Enables experimental support for emitting type metadata for decorators. */,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -24,7 +23,5 @@
     "isolatedModules": true,
     "incremental": true
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }
