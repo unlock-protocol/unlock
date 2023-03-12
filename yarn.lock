@@ -14445,25 +14445,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/paywall-app@workspace:paywall-app"
   dependencies:
-    "@babel/core": 7.21.0
     "@types/next": 8.0.7
-    "@types/react": 18.0.28
-    "@types/react-dom": 18.0.11
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    babel-loader: 9.1.2
-    copy-webpack-plugin: 11.0.0
     eslint: 8.35.0
     lint-staged: 13.1.2
     next: 13.2.3
     prettier: 2.8.4
-    react: 18.2.0
-    react-dom: 18.2.0
     typescript: 4.9.5
     vite: 4.1.3
-    vite-plugin-node-polyfills: ^0.7.0
-    vitest: 0.29.2
+    vite-plugin-node-polyfills: 0.7.0
   languageName: unknown
   linkType: soft
 
@@ -20999,22 +20991,6 @@ __metadata:
   dependencies:
     toggle-selection: ^1.0.6
   checksum: e0a325e39b7615108e6c1c8ac110ae7b829cdc4ee3278b1df6a0e4228c490442cc86444cd643e2da344fbc424b3aab8909e2fec82f8bc75e7e5b190b7c24eecf
-  languageName: node
-  linkType: hard
-
-"copy-webpack-plugin@npm:11.0.0":
-  version: 11.0.0
-  resolution: "copy-webpack-plugin@npm:11.0.0"
-  dependencies:
-    fast-glob: ^3.2.11
-    glob-parent: ^6.0.1
-    globby: ^13.1.1
-    normalize-path: ^3.0.0
-    schema-utils: ^4.0.0
-    serialize-javascript: ^6.0.0
-  peerDependencies:
-    webpack: ^5.1.0
-  checksum: df4f8743f003a29ee7dd3d9b1789998a3a99051c92afb2ba2203d3dacfa696f4e757b275560fafb8f206e520a0aa78af34b990324a0e36c2326cefdeef3ca82e
   languageName: node
   linkType: hard
 
@@ -27656,7 +27632,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^13.0.0, globby@npm:^13.1.1, globby@npm:^13.1.2":
+"globby@npm:^13.0.0, globby@npm:^13.1.2":
   version: 13.1.3
   resolution: "globby@npm:13.1.3"
   dependencies:
@@ -49084,7 +49060,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-node-polyfills@npm:^0.7.0":
+"vite-plugin-node-polyfills@npm:0.7.0":
   version: 0.7.0
   resolution: "vite-plugin-node-polyfills@npm:0.7.0"
   dependencies:
