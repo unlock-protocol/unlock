@@ -34,7 +34,7 @@ export function Returning({
   const web3Service = useWeb3Service()
 
   const { paywallConfig, lock, messageToSign: signedMessage } = state.context
-  const { account, signMessage } = useAuth()
+  const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
   )
@@ -43,7 +43,11 @@ export function Returning({
   const onSign = async () => {
     try {
       setIsSigningMessage(true)
-      const signature = await signMessage(paywallConfig.messageToSign!)
+      const walletService = await getWalletService()
+      const signature = await walletService.signMessage(
+        paywallConfig.messageToSign!,
+        'personal_sign'
+      )
       setIsSigningMessage(false)
       send({
         type: 'SIGN_MESSAGE',
@@ -113,7 +117,7 @@ export function Returning({
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
           {isEthPassSupported(lock!.network) && (
-            <ul className="grid grid-cols-2 gap-3 pt-4 h-12">
+            <ul className="grid h-12 grid-cols-2 gap-3 pt-4">
               {!isIOS && tokenId && (
                 <li className="">
                   <AddToDeviceWallet
