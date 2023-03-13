@@ -54,9 +54,9 @@ export function useCheckoutHook(service: CheckoutService) {
                 } = paywallConfig.locks?.[lockAddress] ?? {}
 
                 const hookStatePaywall: Record<string, boolean> = {
-                  isPromo: !!(promo || paywallConfig?.password),
+                  isPromo: !!(promo || paywallConfig?.promo),
                   isPassword: !!(password || paywallConfig?.password),
-                  isCaptcha: !!(captcha || paywallConfig?.password),
+                  isCaptcha: !!(captcha || paywallConfig?.captcha),
                 }
 
                 const { isCaptcha, isPromo, isPassword } = hookStatePaywall
