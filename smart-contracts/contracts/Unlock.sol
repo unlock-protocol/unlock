@@ -344,7 +344,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
         lockAddress
-      );
+    );
+    /// @custom:oz-upgrades-unsafe-allow-reachable delegatecall
     proxyAdmin.upgrade(proxy, impl);
 
     // let's upgrade the data schema
