@@ -140,7 +140,7 @@ contract UnlockProtocolGovernor is Initializable,
 
 // OpenZeppelin Contracts v4.4.1 (utils/Strings.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.13;
 
 /**
  * @dev String operations.
