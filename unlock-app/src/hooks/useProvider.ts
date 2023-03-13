@@ -103,7 +103,7 @@ export const useProvider = (config: any) => {
         await switchWeb3ProviderNetwork(networkId)
         walletServiceProvider = new ethers.providers.Web3Provider(
           provider.provider,
-          networkId
+          'any'
         )
       }
     }
@@ -252,18 +252,6 @@ export const useProvider = (config: any) => {
     return await provider.send(method, params)
   }
 
-  // TODO: cleanup. Do we still use this? We should not,
-  const signMessage = async (messageToSign: string) => {
-    return ToastHelper.promise(
-      walletService.signMessage(messageToSign, 'personal_sign'),
-      {
-        loading: 'Please sign the message from your wallet',
-        success: 'Successfully signed the message',
-        error: 'There was an error in signing the message',
-      }
-    )
-  }
-
   // For now, we use account as a proxy for isConnected
   const isConnected = !!account
 
@@ -271,7 +259,6 @@ export const useProvider = (config: any) => {
     loading,
     network,
     account,
-    signMessage,
     email,
     getWalletService,
     isUnlockAccount,
