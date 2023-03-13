@@ -72,6 +72,7 @@ contract UnlockManager {
    * SETTERS
    */
 
+  // TODO: add ownable modifier
   /**
    * @param _unlockAddresses addresses of the Unlock contract on all chains
    * @param _chainIds ID of the chain where the corresponding Unlock contract is deployed
@@ -81,7 +82,7 @@ contract UnlockManager {
     address[] calldata _unlockAddresses,
     uint[] calldata _chainIds, 
     uint32[] calldata _domains
-  ) internal {
+  ) public {
     if( _unlockAddresses.length != _chainIds.length || _chainIds.length != _domains.length ){
       revert LengthMismatch();
     }
