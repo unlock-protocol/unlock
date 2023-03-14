@@ -46,6 +46,7 @@ export function useCheckoutHook(service: CheckoutService) {
                 : undefined
 
               // Get hook type from paywall config as fallback
+
               if (!hookType) {
                 const {
                   password = false,
