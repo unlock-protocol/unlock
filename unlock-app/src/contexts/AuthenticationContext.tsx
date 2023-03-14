@@ -3,7 +3,6 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { createContext, useContext } from 'react'
 
 interface AuthenticationContextType {
-  signMessage(phrase: string): string
   authenticate(provider: any): void
   deAuthenticate(): void
   watchAsset(asset: any): void
@@ -20,7 +19,6 @@ interface AuthenticationContextType {
 }
 
 export const defaultValues = {
-  signMessage: (_phrase: string) => '',
   authenticate: () => {},
   deAuthenticate: () => {},
   watchAsset: () => {},
