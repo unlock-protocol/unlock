@@ -72,7 +72,7 @@ const usePaywall = () => {
     const handler = window.addEventListener(
       'unlockProtocol.status',
       (e: any) => {
-        if (e?.detail === 'unlocked') {
+        if (e?.detail?.state === 'unlocked') {
           setLocked(false)
         } else {
           setLocked(true)
@@ -94,7 +94,7 @@ const usePaywall = () => {
       script.remove()
       window.removeEventListener('unlockProtocol', handler)
     }
-  }, [])
+  }, [config])
   return { loading, locked, error, unlock }
 }
 
