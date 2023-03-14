@@ -178,7 +178,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
-                  onChange={async (fileOrFileUrl) => {
+                  onChange={async (fileOrFileUrl: any) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue('metadata.image', fileOrFileUrl)
                     } else {
