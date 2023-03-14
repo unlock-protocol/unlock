@@ -415,6 +415,7 @@ export const LocksForm = ({
                     recurringPayments: true, // Managed separately to get Unlimited recurring
                     // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
                     password: true,
+                    promo: true,
                   })}
                   onChange={(fields: any) =>
                     onAddLock(lockAddress, network, undefined, fields)
