@@ -19,7 +19,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           <link rel="shortcut icon" href="/favicon.ico" />
-          {this.props.styleTags}
+          {this.props?.styleTags}
         </Head>
         <body>
           <Main />

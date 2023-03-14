@@ -1,6 +1,7 @@
 import * as rtl from '@testing-library/react'
 // Note, we use name import to import the non connected version of the component for testing
 import { Duration } from '../../../components/helpers/Duration'
+import { expect, describe, it } from 'vitest'
 
 describe('Duration Component', () => {
   const seconds = 10000000

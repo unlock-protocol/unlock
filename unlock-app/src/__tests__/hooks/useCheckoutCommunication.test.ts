@@ -6,7 +6,7 @@ import {
   waitingMethodCalls,
   resolveMethodCall,
 } from '../../hooks/useCheckoutCommunication'
-import { vi } from 'vitest'
+import { vi, expect, beforeEach, it, describe } from 'vitest'
 
 let emit = vi.fn()
 

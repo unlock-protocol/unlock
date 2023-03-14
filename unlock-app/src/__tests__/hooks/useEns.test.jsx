@@ -3,7 +3,7 @@ import {
   getNameOrAddressForAddress,
   getAddressForName,
 } from '../../hooks/useEns'
-import { vi } from 'vitest'
+import { vi, it, describe, beforeAll } from 'vitest'
 
 vi.mock('ethers')
 

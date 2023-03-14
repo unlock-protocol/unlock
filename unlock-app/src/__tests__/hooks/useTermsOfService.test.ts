@@ -4,7 +4,7 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import useTermsOfService, {
   localStorageKey,
 } from '../../hooks/useTermsOfService'
-import { vi } from 'vitest'
+import { it, expect, describe } from 'vitest'
 
 describe('useTermsOfService', () => {
   it('should default to false if no value is set in localtorage', async () => {

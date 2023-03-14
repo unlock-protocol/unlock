@@ -1,4 +1,3 @@
-import { stringifier } from 'csv/sync'
 import { useState, useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { rewriteIpfsUrl } from '../utils/url'
@@ -12,7 +11,11 @@ const defaultMetadata = {
  * This hook retrieves metadata for a token
  * @param {*} address
  */
-export const useMetadata = (lockAddress, tokenId, network) => {
+export const useMetadata = (
+  lockAddress: string,
+  tokenId?: string,
+  network?: number
+) => {
   const [metadata, setMetadata] = useState(defaultMetadata)
   const web3Service = useWeb3Service()
 
@@ -22,8 +25,8 @@ export const useMetadata = (lockAddress, tokenId, network) => {
       try {
         const tokenURI = await web3Service.tokenURI(
           lockAddress,
-          tokenId,
-          network
+          tokenId!,
+          network!
         )
         tokenMetadata = await fetch(rewriteIpfsUrl(tokenURI)).then((response) =>
           response.json()

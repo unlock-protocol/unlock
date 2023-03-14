@@ -106,24 +106,5 @@ describe('useLock', () => {
         networkId
       )
     })
-
-    it.skip('should callback', async () => {
-      expect.assertions(1)
-      mockWalletService.updateKeyPrice = vi.fn(
-        (params, transactionParams, callback) => {
-          return callback(null, hash)
-        }
-      )
-      await updateKeyPriceOnLock(
-        mockWeb3Service,
-        mockWalletService,
-        config,
-        lock,
-        newKeyPrice,
-        setLock,
-        callback
-      )
-      expect(callback).toHaveBeenCalledWith()
-    })
   })
 })
