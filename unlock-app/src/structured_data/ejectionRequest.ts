@@ -1,15 +1,10 @@
-// Example usage:
-//
-// let message = {
-//   user: {
-//     publicKey: '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-//   },
-// }
-//
-// let typedData = EjectionRequest.build(message)
-
+interface EjectionRequestProps {
+  user: {
+    publicKey: string
+  }
+}
 export default class EjectionRequest {
-  static build(message: any) {
+  static build(message: EjectionRequestProps) {
     return {
       types: {
         User: [{ name: 'publicKey', type: 'address' }],
