@@ -1,5 +1,6 @@
 export default class UnlockPurchaseRequest {
-  static build(input) {
+  static build(input: any) {
+    // @ts-ignore todo: not used
     const domain = [
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
