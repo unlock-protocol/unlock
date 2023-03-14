@@ -8,6 +8,12 @@ import { Enabler } from './enableInjectedProvider'
  */
 export const dispatchEvent = (eventName: string, params: any) => {
   let event: any
+
+  // Keep because it will break legacy integrations
+  if (eventName === unlockEvents.status) {
+    dispatchEvent('unlockProtocol', params.state)
+  }
+
   try {
     event = new window.CustomEvent(eventName, { detail: params })
   } catch (e) {
