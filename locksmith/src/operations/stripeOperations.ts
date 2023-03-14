@@ -65,6 +65,7 @@ export const saveStripeCustomerIdForAddress = async (
 }
 
 /**
+ * @deprecated
  * Method which delets the stripe customer id for an address
  */
 export const deletePaymentDetailsForAddress = async (
@@ -133,6 +134,7 @@ export const disconnectStripe = async ({
 }
 
 /**
+ * @deprecated
  * Connects a Stripe account to a lock
  * Do we want to store this?
  */

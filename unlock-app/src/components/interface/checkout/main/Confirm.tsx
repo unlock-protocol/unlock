@@ -28,6 +28,8 @@ import ReCaptcha from 'react-google-recaptcha'
 import { useStorageService } from '~/utils/withStorageService'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../ViewContract'
+import { useClaim } from '~/hooks/useClaim'
+import { usePurchase } from '~/hooks/usePurchase'
 
 interface Props {
   injectedProvider: unknown
@@ -88,11 +90,7 @@ export function Confirm({
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
   const storage = useStorageService()
-  const {
-    prepareChargeForCard,
-    captureChargeForCard,
-    claimMembershipFromLock,
-  } = useAccount(account!)
+  const { captureChargeForCard } = useAccount(account!)
 
   const [isConfirming, setIsConfirming] = useState(false)
 
@@ -133,6 +131,16 @@ export function Confirm({
   const recurringPayments: number[] | undefined = recurringPaymentAmount
     ? new Array(recipients.length).fill(recurringPaymentAmount)
     : undefined
+
+  const { mutateAsync: claim } = useClaim({
+    lockAddress,
+    network: lockNetwork,
+  })
+
+  const { mutateAsync: createPurchaseIntent } = usePurchase({
+    lockAddress,
+    network: lockNetwork,
+  })
 
   const { isInitialLoading: isFiatPriceLoading, data: fiatPricing } = useQuery(
     [quantity, lockAddress, lockNetwork],
@@ -309,18 +317,18 @@ export function Confirm({
         return
       }
 
-      const stripeIntent = await prepareChargeForCard(
-        payment.cardId!,
-        lockAddress,
-        lockNetwork,
-        formattedData.formattedKeyPrice,
-        recipients,
-        recurringPaymentAmount || 0
-      )
+      const pricing =
+        Object.values(fiatPricing.usd).reduce<number>(
+          (t, amount) => t + Number(amount),
+          0
+        ) / 100
 
-      if (stripeIntent?.error) {
-        throw new Error(stripeIntent.error)
-      }
+      const stripeIntent = await createPurchaseIntent({
+        pricing,
+        stripeTokenId: payment.cardId!,
+        recipients,
+        recurring: recurringPaymentAmount || 0,
+      })
       if (!stripeIntent?.clientSecret) {
         throw new Error('Creating payment intent failed')
       }
@@ -451,15 +459,12 @@ export function Confirm({
 
       const captcha = await recaptchaRef.current?.executeAsync()
 
-      const response = await claimMembershipFromLock(
-        lockAddress,
-        lockNetwork,
-        purchaseData?.[0],
-        captcha
-      )
+      const hash = await claim({
+        data: purchaseData?.[0],
+        captcha,
+      })
 
-      const { transactionHash: hash, error } = response
-      if (hash && !error) {
+      if (hash) {
         communication?.emitTransactionInfo({
           hash,
           lock: lockAddress,
@@ -470,12 +475,13 @@ export function Confirm({
           transactionHash: hash,
         })
       } else {
-        throw new Error('Failed to claim the membership. Try again')
+        new Error('No transaction hash returned')
       }
       setIsConfirming(false)
     } catch (error: any) {
       setIsConfirming(false)
-      ToastHelper.error(error?.error?.message || error.message)
+      console.error(error)
+      ToastHelper.error('Failed to claim the membership. Try again')
     }
   }
 

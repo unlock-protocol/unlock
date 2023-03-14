@@ -1378,7 +1378,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/purchase/intent/{network}/locks/{lockAdddress}:
+  /v2/purchase/intent/{network}/locks/{lockAddress}:
     post:
       operationId: purchase
       security:
@@ -1393,6 +1393,11 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - recipients
+                - stripeTokenId
+                - pricing
+
               type: object
               properties:
                 recipients:
@@ -1532,6 +1537,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -2291,5 +2302,73 @@ paths:
                 items:
                   $ref: '#/components/schemas/CheckoutConfig'
 
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/payment-methods:
+    delete:
+      operationId: removePaymentMethods
+      security:
+        - User: []
+      description: Remove all payment methods for a user
+      responses:
+        200:
+          description: Successfully removed all payment methods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/stripe/connect/{network}/locks/{lockAddress}:
+    post:
+      operationId: connectStripeAccount
+      security:
+        - User: []
+      description: Connect a stripe account to a lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - baseUrl
+              type: object
+              properties:
+                baseUrl:
+                  type: string
+      responses:
+        200:
+          description: Successfully connected stripe account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  # stripe account links
+                  url: # The url to redirect the user to
+                    type: string
+                  created:
+                    type: number
+                  expiresAt:
+                    type: number
+                  object:
+                    type: string
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

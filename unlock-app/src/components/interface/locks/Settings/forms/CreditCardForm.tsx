@@ -3,13 +3,13 @@ import { Button, Badge } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import useAccount from '~/hooks/useAccount'
 import useLock from '~/hooks/useLock'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
 import Link from 'next/link'
+import { useStripeConnect, useStripeDisconnect } from '~/hooks/useStripeConnect'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -45,14 +45,13 @@ export const CreditCardForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
-  const { account, getWalletService } = useAuth()
+  const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const { isStripeConnected, getCreditCardPricing } = useLock(
     { address: lockAddress },
     network
   )
-  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(account!)
 
   const [hasRole, setHasRole] = useState(false)
 
@@ -64,33 +63,13 @@ export const CreditCardForm = ({
     return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
   }
 
-  const connectStripe = async (): Promise<any> => {
-    return await connectStripeToLock(
-      lockAddress,
-      network,
-      window.location.origin
-    )
-  }
-
-  const disconnectStipeMutation = useMutation(disconnectStripeFromLock, {
-    onSuccess: (res: any) => {
-      if (res.ok) {
-        ToastHelper.success('Stripe disconnected')
-      } else {
-        ToastHelper.error(`Can't disconnect Stripe, please try again`)
-      }
-    },
+  const disconnectStipeMutation = useStripeDisconnect({
+    lockAddress,
+    network,
   })
-
-  const connectStripeMutation = useMutation(connectStripe, {
-    onSuccess: (redirectUrl?: string) => {
-      if (!redirectUrl) {
-        return ToastHelper.error(
-          'We could not connect your lock to a Stripe account. Please try again later.'
-        )
-      }
-      window.location.href = redirectUrl
-    },
+  const connectStripeMutation = useStripeConnect({
+    lockAddress,
+    network,
   })
 
   const [
@@ -221,7 +200,20 @@ export const CreditCardForm = ({
                 variant="outlined-primary"
                 size="small"
                 className="w-full md:w-1/3"
-                onClick={() => connectStripeMutation.mutate()}
+                loading={connectStripeMutation.isLoading}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  connectStripeMutation.mutate(undefined, {
+                    onSuccess: (connect) => {
+                      if (connect?.url) {
+                        window.location.assign(connect.url)
+                      }
+                    },
+                    onError: () => {
+                      ToastHelper.error('Stripe connection failed')
+                    },
+                  })
+                }}
                 disabled={disabled}
               >
                 Connect
@@ -232,7 +224,7 @@ export const CreditCardForm = ({
                 variant="outlined-primary"
                 className="w-full md:w-1/3"
                 onClick={onGrantKeyRole}
-                disabled={grantKeyGrantorRoleMutation.isLoading || disabled}
+                loading={grantKeyGrantorRoleMutation.isLoading}
               >
                 Accept
               </Button>
@@ -265,12 +257,17 @@ export const CreditCardForm = ({
               variant="borderless"
               className="text-brand-ui-primary"
               disabled={disconnectStipeMutation.isLoading || disabled}
-              onClick={() =>
-                disconnectStipeMutation.mutate({
-                  lockAddress,
-                  network,
+              onClick={(event) => {
+                event.preventDefault()
+                disconnectStipeMutation.mutate(undefined, {
+                  onSuccess: () => {
+                    ToastHelper.success('Stripe disconnected')
+                  },
+                  onError: () => {
+                    ToastHelper.error('Stripe disconnection failed')
+                  },
                 })
-              }
+              }}
             >
               Disconnect Stripe
             </Button>

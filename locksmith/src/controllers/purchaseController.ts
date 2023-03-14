@@ -30,6 +30,7 @@ export class PurchaseController {
    * Creates a payment intent that will be passed to the front-end for confirmation with the Stripe API.
    * Once confirmed, the payment will need to be captured
    * This flow supports 3D Secure.
+   *  @deprecated
    */
   async createPaymentIntent(req: SignedRequest, res: Response) {
     const {

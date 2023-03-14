@@ -35,6 +35,14 @@ export const getRequestURL = (req: Request) => {
   return requestURL
 }
 
+export const getURL = (text: string) => {
+  try {
+    return new URL(text)
+  } catch {
+    return
+  }
+}
+
 export default {
   emailAddress,
   ethereumAddress,

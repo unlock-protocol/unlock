@@ -331,6 +331,16 @@ export class PaymentProcessor {
       charge,
     }
   }
+
+  async removePaymentMethods({ customerId }: { customerId: string }) {
+    const methods = await this.stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
+    })
+    for (const method of methods.data) {
+      await this.stripe.paymentMethods.detach(method.id)
+    }
+  }
 }
 
 export default PaymentProcessor
