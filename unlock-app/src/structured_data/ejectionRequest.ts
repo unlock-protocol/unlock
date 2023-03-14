@@ -9,7 +9,7 @@
 // let typedData = EjectionRequest.build(message)
 
 export default class EjectionRequest {
-  static build(message) {
+  static build(message: string) {
     return {
       types: {
         User: [{ name: 'publicKey', type: 'address' }],
