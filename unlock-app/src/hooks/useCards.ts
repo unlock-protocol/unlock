@@ -49,56 +49,6 @@ export const getSignature = async (
 }
 
 /**
- * @param walletService
- * @param address
- */
-export const prepareCharge = async (
-  config: any,
-  walletService: any,
-  address: string,
-  stripeTokenId: string,
-  network: number,
-  lock: string,
-  pricing: any,
-  recipients: string[],
-  recurring = 0
-) => {
-  const typedData = generateTypedData(
-    {
-      'Charge Card': {
-        publicKey: address,
-        userAddress: address,
-        stripeTokenId,
-        recipients,
-        pricing,
-        lock,
-        network,
-        recurring,
-      },
-    },
-    'Charge Card'
-  )
-
-  const signature = await getSignature(walletService, typedData, address)
-
-  const opts = {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-        'base64'
-      )}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(typedData),
-  }
-  const response = await fetch(
-    `${config.services.storage.host}/purchase/prepare`,
-    opts
-  )
-  return response.json()
-}
-
-/**
  * @param config
  * @param lock
  * @param network

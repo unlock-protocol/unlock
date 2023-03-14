@@ -1,10 +1,9 @@
 import UnlockProvider from '../services/unlockProvider'
 import { useConfig } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
-import { useWalletService } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
 import { useWedlockService } from '../contexts/WedlocksContext'
-import { prepareCharge, captureCharge } from './useCards'
+import { captureCharge } from './useCards'
 import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
@@ -29,7 +28,6 @@ export const getAccountTokenBalance = async (
  */
 export const useAccount = (address: string) => {
   const config = useConfig()
-  const walletService = useWalletService()
   const wedlockService = useWedlockService()
 
   const createUserAccount = async (emailAddress: string, password: string) => {
@@ -127,40 +125,8 @@ export const useAccount = (address: string) => {
     return response
   }
 
-  /**
-   * Prepares a charge on the backend
-   * @param token
-   * @param lock
-   * @param network
-   * @param pricing
-   * @param recipient
-   * @returns
-   */
-  const prepareChargeForCard = async (
-    token: string,
-    lock: any,
-    network: number,
-    pricing: any,
-    recipients: string[],
-    recurring = 0
-  ) => {
-    const response = await prepareCharge(
-      config,
-      walletService,
-      address,
-      token,
-      network,
-      lock,
-      pricing,
-      recipients,
-      recurring
-    )
-    return response
-  }
-
   return {
     captureChargeForCard,
-    prepareChargeForCard,
     createUserAccount,
     retrieveUserAccount,
   }
