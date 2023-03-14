@@ -1,11 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Select } from '@unlock-protocol/ui'
-import { ethers } from 'ethers'
 import { useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
 import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
@@ -13,8 +11,7 @@ import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
-
-const ZERO = ethers.constants.AddressZero
+import { useCustomHook } from '~/hooks/useCustomHooks'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -66,7 +63,7 @@ const GENERAL_OPTIONS: OptionProps[] = [
   },
 ]
 
-const HookMapping: Record<FormPropsKey, HookValueProps> = {
+export const HookMapping: Record<FormPropsKey, HookValueProps> = {
   keyPurchase: {
     label: 'Key purchase hook',
     fromPublicLockVersion: 7,
@@ -232,32 +229,14 @@ export const UpdateHooksForm = ({
   disabled,
   version,
 }: UpdateHooksFormProps) => {
-  const web3Service = useWeb3Service()
   const { getWalletService } = useAuth()
   const [defaultValues, setDefaultValues] = useState<HooksFormProps>()
 
-  const getHookValues = async () => {
-    let values = {}
-    await Promise.all([
-      ...Object.entries(HookMapping).map(
-        async ([fieldName, { hookName, fromPublicLockVersion = 0 }]) => {
-          const hasRequiredVersion: boolean =
-            (version ?? 0) >= fromPublicLockVersion ?? false
-          if (hasRequiredVersion) {
-            const hookValue = await web3Service[hookName]({
-              lockAddress,
-              network,
-            })
-            values = {
-              ...values,
-              [fieldName]: hookValue || ZERO,
-            }
-          }
-        }
-      ),
-    ])
-    return values
-  }
+  const { isLoading, refetch, getHookValues } = useCustomHook({
+    lockAddress,
+    network,
+    version,
+  })
 
   const methods = useForm<HooksFormProps>({
     defaultValues: async () => {
@@ -279,14 +258,6 @@ export const UpdateHooksForm = ({
       ...fields,
     })
   }
-
-  const { isLoading, refetch } = useQuery(
-    ['getHookValues', lockAddress, network],
-    async () => await getHookValues(),
-    {
-      enabled: lockAddress?.length > 0,
-    }
-  )
 
   const setEventsHooksMutation = useMutation(setEventsHooks, {
     onSuccess: async () => {
