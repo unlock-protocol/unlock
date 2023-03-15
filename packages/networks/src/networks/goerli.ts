@@ -53,7 +53,7 @@ export const goerli: NetworkConfig = {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
   },
-  swapPurchaser: '0x627118a4fB747016911e5cDA82e2E77C531e8206',
+  swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',

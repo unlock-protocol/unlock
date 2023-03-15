@@ -9,6 +9,10 @@ async function main() {
   const chainId = await deployer.getChainId();
   const { unlockAddress } = unlock.networks[chainId];
 
+  if (!uniswapRouterAddresses[chainId]) {
+    console.log('Uniswap undefined for this network')
+    return
+  }
   const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[chainId]
   const routers = [UniversalRouter, SwapRouter02]
 

@@ -52,7 +52,7 @@ export const optimism: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   },
-  swapPurchaser: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+  swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
