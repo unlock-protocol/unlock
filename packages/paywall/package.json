@@ -1,8 +1,14 @@
 {
   "name": "@unlock-protocol/paywall",
   "version": "0.2.0",
-  "exports": "./dist/unlock.latest.min.js",
-  "main": "./dist/unlock.latest.min.js",
+  "main": "./dist/unlock.latest.umd.js",
+  "module": "./dist/unlock.latest.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/unlock.latest.es.js",
+      "require": "./dist/unlock.latest.umd.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/unlock-protocol/unlock.git",
@@ -10,37 +16,27 @@
   },
   "scripts": {
     "build:tsc": "tsc",
-    "build": "webpack --mode=production --config webpack.config.js",
+    "build": "vite build",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
-    "test": "UNLOCK_ENV=test jest --env=jsdom",
+    "test": "NODE_ENV=test vitest run --coverage",
     "clean": "rm -rf build dist coverage",
     "ci": "yarn test && yarn build"
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "babel-jest": "28.1.3",
-    "css-loader": "6.7.3",
-    "dotenv": "16.0.3",
     "eslint": "8.35.0",
-    "jest": "27.5.1",
-    "jest-fetch-mock": "3.0.3",
-    "style-loader": "3.3.1",
-    "ts-jest": "27.1.5",
-    "ts-loader": "9.4.2",
     "typescript": "4.9.5",
-    "webpack": "5.75.0",
-    "webpack-cli": "5.0.1"
+    "vite": "4.1.3",
+    "vitest": "0.29.2",
+    "vitest-fetch-mock": "0.2.2"
   },
   "dependencies": {
-    "babel-plugin-require-context-hook": "1.0.0",
-    "babel-plugin-styled-components": "2.0.7",
-    "postmate": "1.5.2"
+    "postmate": "1.5.2",
+    "vite-plugin-css-injected-by-js": "3.0.1"
   }
 }

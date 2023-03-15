@@ -16,7 +16,7 @@ export const PasswordContractHook = ({
   selectedOption,
   lockAddress,
   network,
-  address,
+  hookAddress,
 }: CustomComponentProps) => {
   const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
@@ -41,7 +41,7 @@ export const PasswordContractHook = ({
     const tx = await walletService.setPasswordHookSigner(
       {
         lockAddress,
-        contractAddress: address,
+        contractAddress: hookAddress,
         signerAddress: signer,
         network,
       },
@@ -55,7 +55,7 @@ export const PasswordContractHook = ({
     return await web3Service.getPasswordHookSigners(
       {
         lockAddress,
-        contractAddress: address,
+        contractAddress: hookAddress,
         network,
       },
       walletService.signer

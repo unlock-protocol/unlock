@@ -5,6 +5,7 @@ import {
   formattedKeyPrice,
   convertedKeyPrice,
 } from '../../utils/checkoutLockUtils'
+import { it, describe, expect } from 'vitest'
 
 describe('Checkout Lock Utils', () => {
   describe('lockKeysAvailable', () => {
