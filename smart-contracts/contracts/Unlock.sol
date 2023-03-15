@@ -56,6 +56,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     _;
   }
 
+  // modifier 
+  modifier onlyGov() {
+    require(isOwner(), "ONLY_OWNER");
+    if(unlockManager != address(0)) {
+      require(_msgSender() == unlockManager, "ONLY_MANAGER");
+    }
+    _;
+  }
+
   uint public grossNetworkProduct;
 
   uint public totalDiscountGranted;
@@ -102,15 +111,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // protocol fee
   uint public protocolFee;
 
-  // errors
-  error Unlock__MANAGER_ONLY();
-  error Unlock__VERSION_TOO_HIGH();
-  error Unlock__MISSING_TEMPLATE();
-  error Unlock__ALREADY_DEPLOYED();
-  error Unlock__MISSING_PROXY_ADMIN();
-  error Unlock__MISSING_LOCK_TEMPLATE();
-  error Unlock__MISSING_LOCK(address lockAddress);
-  error Unlock__INVALID_AMOUNT();
+  // address 
+  address public unlockManager;
 
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
@@ -147,11 +149,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // add a proxy admin on deployment
     _deployProxyAdmin();
   }
-
-  function initializeProxyAdmin() public onlyOwner {
-    if (proxyAdminAddress != address(0)) {
-      revert Unlock__ALREADY_DEPLOYED();
-    }
+  function initializeProxyAdmin() public onlyGov {
+    if(proxyAdminAddress != address(0)){revert Unlock__ALREADY_DEPLOYED();}
     _deployProxyAdmin();
   }
 
@@ -173,6 +172,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
+   * Set the `UnlockManager` instance that is capable of performing admin tasks
+   * on Unlock
+   * @param _unlockManager address of the UnlockManager contract instance on
+   * current network 
+   */
+  function setUnlockManager(address _unlockManager) external {
+    unlockManager = _unlockManager;
+  }
+
+  /**
    * @dev Helper to get the address of a template based on its version number
    */
   function publicLockImpls(uint16 _version) external view returns (address) {
@@ -185,12 +194,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Once registered, the template can be used to upgrade an existing Lock
    * @dev This will initialize the template and revokeOwnership.
    */
-  function addLockTemplate(address impl, uint16 version) public onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "");
-    IPublicLock(impl).renounceLockManager();
-
+  function addLockTemplate(
+    address impl,
+    uint16 version
+  ) public onlyGov {
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
 
@@ -510,7 +517,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Set the fee used by the protocol
    * @param _protocolFee fee in basic point
    */
-  function setProtocolFee(uint _protocolFee) external onlyOwner {
+  function setProtocolFee(uint _protocolFee) external onlyGov {
     protocolFee = _protocolFee;
   }
 
@@ -524,7 +531,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     string calldata _symbol,
     string calldata _URI,
     uint _chainId
-  ) external onlyOwner {
+  ) external onlyGov {
     udt = _udt;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
@@ -547,13 +554,21 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * @notice Set the default PublicLock template to use when creating locks
    */
-  function setLockTemplate(address _publicLockAddress) external onlyOwner {
-    if (_publicLockVersions[_publicLockAddress] == 0) {
-      revert Unlock__MISSING_LOCK_TEMPLATE();
-    }
-    // set latest version
-    publicLockLatestVersion = _publicLockVersions[_publicLockAddress];
-    // set corresponding template
+  function setLockTemplate(
+    address _publicLockAddress
+  ) external onlyGov {
+    // First claim the template so that no-one else could
+    // this will revert if the template was already initialized.
+    IPublicLock(_publicLockAddress).initialize(
+      address(this),
+      0,
+      address(0),
+      0,
+      0,
+      ""
+    );
+    IPublicLock(_publicLockAddress).renounceLockManager();
+
     publicLockAddress = _publicLockAddress;
     emit SetLockTemplate(_publicLockAddress);
   }
@@ -566,8 +581,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function setOracle(
     address _tokenAddress,
     address _oracleAddress
-  ) external onlyOwner {
-    uniswapOracles[_tokenAddress] = IUniswapOracleV3(_oracleAddress);
+  ) external onlyGov {
+    uniswapOracles[_tokenAddress] = IUniswapOracleV3(
+      _oracleAddress
+    );
     if (_oracleAddress != address(0)) {
       IUniswapOracleV3(_oracleAddress).update(_tokenAddress, weth);
     }
@@ -577,7 +594,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function resetTrackedValue(
     uint _grossNetworkProduct,
     uint _totalDiscountGranted
-  ) external onlyOwner {
+  ) external onlyGov {
     grossNetworkProduct = _grossNetworkProduct;
     totalDiscountGranted = _totalDiscountGranted;
 
