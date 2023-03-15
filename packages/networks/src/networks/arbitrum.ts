@@ -55,7 +55,7 @@ export const arbitrum: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
   },
-  swapPurchaser: '0x36f1Ff99c094F313BE647649F82B19A83e766d2B',
+  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',

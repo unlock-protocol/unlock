@@ -63,7 +63,7 @@ export const polygon: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
   },
-  swapPurchaser: '0x073C188bFFC8DE384eee702Cd590fB22a7BaE67B',
+  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
