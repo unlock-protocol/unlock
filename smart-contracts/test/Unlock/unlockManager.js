@@ -32,7 +32,7 @@ const destDomainId = 1734439522;
 const gasEstimate = 16000;
 const url = `http://locksmith:8080/api/key/`;
 
-contract("Unlock / bridge", () => {
+contract("Unlock / bridged governance", () => {
   before(async () => {
     [unlockOwner, keyOwner] = await ethers.getSigners();
 
@@ -147,7 +147,6 @@ contract("Unlock / bridge", () => {
   });
 
   describe("setUnlockManager", () => {
-
     it("default to zero", async () => {
       assert.equal(await unlockSrc.unlockManager(), ADDRESS_ZERO);
     })
@@ -167,4 +166,41 @@ contract("Unlock / bridge", () => {
       );
     });
   });
+
+  describe("unlockManager", () => {
+    let calldata
+    const slippage = 30
+    it('can receive and execute a call from the bridge', async () => {
+      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const template = await PublicLock.deploy()
+      const args = [
+        template.address,
+        14
+      ]
+
+      const { interface } = unlockDest
+      calldata = interface.encodeFunctionData('addLockTemplate', args)
+      console.log(calldata)
+
+      assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
+      assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
+
+      // send call to the bridge
+      await connext.xcall(
+        destDomainId, // domainID
+        managerDest.address,
+        ADDRESS_ZERO, // currency
+        ADDRESS_ZERO,
+        0, // amount
+        slippage,
+        calldata
+      )
+
+      // make sure thihgs
+      assert.equal(await unlockDest.publicLockVersions(args[1]), args[0]);
+      assert.equal(await unlockDest.publicLockImpls(args[0]), args[1]);
+
+    })
+
+  })
 });

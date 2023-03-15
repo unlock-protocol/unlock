@@ -11,6 +11,7 @@ pragma solidity ^0.8.7;
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
 import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
 import '../interfaces/IUnlock.sol';
+import 'hardhat/console.sol';
 
 contract UnlockManager {
 
@@ -31,6 +32,12 @@ contract UnlockManager {
   error InsufficientApproval(uint requiredAmount);
   error InsufficientBalance();
 
+  event BridgeCallReceived(
+    uint originChainId,
+    address indexed unlockAddress, 
+    bytes32 transferID
+  );
+
   constructor (address _bridgeAddress) {
     bridgeAddress = _bridgeAddress;
   }
@@ -39,22 +46,6 @@ contract UnlockManager {
    * MODIFIERS
    */
   
-  // Make sure sender is an existing Unlock contract on another chain
-  function _isUnlock(
-    address _originSender,
-    uint32 _originDomain
-  ) internal view returns (bool) {
-    if(
-        _chainIsSet(chainIds[_originDomain]) || // domain is set
-        _originSender != unlockAddresses[chainIds[_originDomain]] ||
-        msg.sender != bridgeAddress
-    ) {
-      revert OnlyUnlock();
-    }
-    return true;
-  }
-
-
   // Check is sender is current chain Unlock multisig address
   function _isUnlockOwner() internal view returns (bool) {    
     return IUnlock(unlockAddresses[block.chainid]).owner() == msg.sender;
@@ -105,20 +96,37 @@ contract UnlockManager {
     uint32 origin, // 	Domain ID of the origin chain
     bytes memory callData
   ) external returns (bytes memory) {
-    
-    if(
-      ! _isUnlock(originSender, origin) 
-      && 
-      ! _isUnlockOwner()
-      ) {
-        revert Unauthorized(msg.sender);
-      }
 
-    // emit BridgeCallReceived(
-    //   chainIds[origin],
-    //   lockAddress, 
-    //   uint(transferId)
-    // );
+    // make sure domain is set
+    if(! _chainIsSet(chainIds[origin]) || msg.sender != bridgeAddress) {
+      revert Unauthorized(msg.sender);
+    }
+
+    // make sure unlock
+    address unlockAddress = unlockAddresses[block.chainid];
+
+    // TODO: parse msg.value properly
+    uint valueToSend = currency != address(0) ? amount: 0;
+
+    // forward the call to unlock
+    (bool success, ) = unlockAddress.call{value: valueToSend}(callData);
+
+    // catch revert reason
+    if (success == false) {
+      // TODO: potentially refund if the lock call failed
+      assembly {
+        let ptr := mload(0x40)
+        let size := returndatasize()
+        returndatacopy(ptr, 0, size)
+        revert(ptr, size)
+      }
+    }
+
+    emit BridgeCallReceived(
+      chainIds[origin],
+      unlockAddress, 
+      transferId
+    );
   }
 
 }
