@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
 import { Badge, Button, ToggleSwitch } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { MAX_UINT } from '~/constants'
 import useLock from '~/hooks/useLock'
-import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useLockSettings } from '~/hooks/useLockSettings'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -21,10 +20,14 @@ export const SubscriptionForm = ({
   disabled,
   lock,
 }: SubscriptionFormProps) => {
-  const web3Service = useWeb3Service()
   const [isLoading, setLoading] = useState(false)
   const [recurring, setRecurring] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
+
+  const { isRecurringPossible, refund, isLoadingRefund } = useLockSettings({
+    lockAddress,
+    network,
+  })
 
   const { updateSelfAllowance } = useLock(
     {
@@ -34,25 +37,7 @@ export const SubscriptionForm = ({
     network
   )
 
-  const getRefundPenaltyBasisPoints = async () => {
-    return await web3Service.refundPenaltyBasisPoints({
-      lockAddress,
-      network,
-    })
-  }
-
-  const { isLoading: isLoadingRefund, data: refund = 0 } = useQuery(
-    ['getRefundPenaltyBasisPoints', lockAddress, network],
-    async () => {
-      return await getRefundPenaltyBasisPoints()
-    }
-  )
-
-  const recurringPossible =
-    lock?.expirationDuration != -1 &&
-    lock?.publicLockVersion >= 10 &&
-    lock?.currencyContractAddress?.length > 0 &&
-    refund > 0
+  const recurringPossible = isRecurringPossible(lock)
 
   useEffect(() => {
     setRecurring(isRecurring)
