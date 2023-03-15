@@ -26,6 +26,8 @@ export const SubscriptionForm = ({
   const [recurring, setRecurring] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
 
+  console.log('lock', lock)
+
   const { updateSelfAllowance } = useLock(
     {
       address: lockAddress,
@@ -91,7 +93,6 @@ export const SubscriptionForm = ({
 
   const RecurringDescription = () => {
     const termsSettingsUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=terms`
-    const generalSettingsUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=general`
 
     if (recurringPossible) return null
 
@@ -132,14 +133,8 @@ export const SubscriptionForm = ({
             {(lock?.currencyContractAddress ?? '')?.length === 0 && (
               <li>
                 <span className="text-red-500">
-                  This lock does not have a custom contract address. You can
-                  change it from{' '}
-                  <Link
-                    href={generalSettingsUrl}
-                    className="font-semibold text-brand-ui-primary hover:underline"
-                  >
-                    General settings.
-                  </Link>
+                  {`This lock does not have a custom ERC20 contract address. You
+                  can change it from "Price" tab.`}
                 </span>
               </li>
             )}
