@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface LockSettingsProps {
