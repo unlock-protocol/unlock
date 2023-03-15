@@ -1,7 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import { Badge, Button, ToggleSwitch } from '@unlock-protocol/ui'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { MAX_UINT } from '~/constants'
 import useLock from '~/hooks/useLock'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -18,6 +21,7 @@ export const SubscriptionForm = ({
   disabled,
   lock,
 }: SubscriptionFormProps) => {
+  const web3Service = useWeb3Service()
   const [isLoading, setLoading] = useState(false)
   const [recurring, setRecurring] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
@@ -30,10 +34,25 @@ export const SubscriptionForm = ({
     network
   )
 
+  const getRefundPenaltyBasisPoints = async () => {
+    return await web3Service.refundPenaltyBasisPoints({
+      lockAddress,
+      network,
+    })
+  }
+
+  const { isLoading: isLoadingRefund, data: refund = 0 } = useQuery(
+    ['getRefundPenaltyBasisPoints', lockAddress, network],
+    async () => {
+      return await getRefundPenaltyBasisPoints()
+    }
+  )
+
   const recurringPossible =
     lock?.expirationDuration != -1 &&
     lock?.publicLockVersion >= 10 &&
-    lock?.currencyContractAddress?.length > 0
+    lock?.currencyContractAddress?.length > 0 &&
+    refund > 0
 
   useEffect(() => {
     setRecurring(isRecurring)
@@ -71,17 +90,73 @@ export const SubscriptionForm = ({
   }
 
   const RecurringDescription = () => {
+    const termsSettingsUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=terms`
+    const generalSettingsUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=general`
+
     if (recurringPossible) return null
-    return (
-      <small className="text-sm text-brand-dark">
-        Recurring memberships are only available for locks that are using and
-        ERC20 currency and that have expirations.
-      </small>
-    )
+
+    if (lock?.publicLockVersion >= 10) {
+      return (
+        <div className="grid  gap-1.5">
+          <small className="text-sm text-brand-dark">
+            Recurring memberships are only available for locks that are using
+            and ERC20 currency and that have expirations and a refund value.
+          </small>
+          <ul className="ml-2 list-disc">
+            {refund === 0 && (
+              <li>
+                <span className="text-red-500">
+                  Refund value is not set. You can change it from{' '}
+                  <Link
+                    href={termsSettingsUrl}
+                    className="font-semibold text-brand-ui-primary hover:underline"
+                  >
+                    Membership terms settings.
+                  </Link>{' '}
+                </span>
+              </li>
+            )}
+            {lock?.expirationDuration == -1 && (
+              <li>
+                <span className="text-red-500">
+                  This lock does not have an expiration. You can change it from{' '}
+                  <Link
+                    href={termsSettingsUrl}
+                    className="font-semibold text-brand-ui-primary hover:underline"
+                  >
+                    Membership terms settings.
+                  </Link>
+                </span>
+              </li>
+            )}
+            {(lock?.currencyContractAddress ?? '')?.length === 0 && (
+              <li>
+                <span className="text-red-500">
+                  This lock does not have a custom contract address. You can
+                  change it from{' '}
+                  <Link
+                    href={generalSettingsUrl}
+                    className="font-semibold text-brand-ui-primary hover:underline"
+                  >
+                    General settings.
+                  </Link>
+                </span>
+              </li>
+            )}
+          </ul>
+        </div>
+      )
+    }
+
+    return null
   }
 
   const disabledInput =
-    isRecurring || !recurringPossible || disabled || isLoading
+    isRecurring ||
+    !recurringPossible ||
+    disabled ||
+    isLoading ||
+    isLoadingRefund
 
   return (
     <div className="flex flex-col gap-6">
@@ -97,7 +172,7 @@ export const SubscriptionForm = ({
           disabled={disabledInput}
           className="w-full md:w-1/2"
           onClick={handleApproveRecurring}
-          loading={isLoading}
+          loading={isLoading || isLoadingRefund}
         >
           Apply
         </Button>
