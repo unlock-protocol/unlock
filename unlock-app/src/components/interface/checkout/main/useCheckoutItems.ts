@@ -4,16 +4,12 @@ import { CheckoutService } from './checkoutMachine'
 
 export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const [state] = useActor(service)
-  const { paywallConfig, skipQuantity, payment, lock, skipRecipient } =
+  const { paywallConfig, skipQuantity, payment, skipRecipient, hook } =
     state.context
 
-  const lockAddress = lock?.address || ''
-
-  const isCaptcha =
-    paywallConfig.locks[lockAddress]?.captcha || paywallConfig.captcha
-  const isPassword =
-    paywallConfig.locks[lockAddress]?.password || paywallConfig.password
-  const isPromo = paywallConfig.locks[lockAddress]?.promo || paywallConfig.promo
+  const isPassword = hook === 'password'
+  const isCaptcha = hook === 'captcha'
+  const isPromo = hook === 'promocode'
 
   const checkoutItems: StepItem[] = [
     {

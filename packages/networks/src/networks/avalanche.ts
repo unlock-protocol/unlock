@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const avalanche: NetworkConfig = {
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
@@ -77,6 +77,15 @@ export const avalanche: NetworkConfig = {
       address: '0x50b7545627a5162f82a992c33b87adc75187b218',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x2499D94880B30fA505543550ac8a1e24cfFeFe78',
+      },
+    ],
+  },
 }
 
 export default avalanche

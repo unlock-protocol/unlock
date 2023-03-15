@@ -82,6 +82,11 @@ export const bsc: NetworkConfig = {
         name: 'Password required',
         address: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x88ed81de2d62849B337c3f31cd84D041bF26A38C',
+      },
     ],
   },
 }

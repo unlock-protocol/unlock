@@ -116,6 +116,11 @@ export const mainnet: NetworkConfig = {
         name: 'Password required',
         address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x0959482CbFB3c3C85ECd7bf690a0cde808eE8471',
+      },
     ],
   },
 }

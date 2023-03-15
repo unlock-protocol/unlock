@@ -75,6 +75,11 @@ export const gnosis: NetworkConfig = {
         name: 'Password required',
         address: '0x927D68eAE936Ec0111f01Fc4Ddd9cC57DB3f0Af2',
       },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x6E422f8eDCE3586e8c384f7e602D3b5706463e12',
+      },
     ],
   },
 }

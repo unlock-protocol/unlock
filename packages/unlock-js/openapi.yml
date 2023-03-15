@@ -26,25 +26,18 @@ components:
 
   schemas:
     Auth:
+      required:
+        - 'walletAddress'
       type: object
       properties:
-        type:
-          type: string
-          default: user
-          nullable: false
-
         walletAddress:
           type: string
           nullable: false
 
-        id:
-          type: string
-          nullable: true
-
     AuthResult:
       required:
         - 'accessToken'
-        - 'refreshToken'
+        - 'walletAddress'
 
       type: object
       properties:
@@ -53,10 +46,6 @@ components:
           nullable: true
 
         accessToken:
-          type: string
-          nullable: false
-
-        refreshToken:
           type: string
           nullable: false
 
@@ -525,53 +514,12 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/auth/token:
-    post:
-      operationId: refreshToken
-      description: Refresh access token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
-      responses:
-        200:
-          description: New creditionals.
-          content:
-            application/json:
-              schema:
-                required:
-                  - 'walletAddress'
-                  - 'accessToken'
-                type: object
-                properties:
-                  walletAddress:
-                    type: string
-
-                  accessToken:
-                    type: string
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
   /v2/auth/logout:
     post:
       operationId: logout
       security:
         - User: []
-      description: Logout from locksmith. This will invalidate all your refresh tokens.
+      description: Logout from locksmith. This will invalidate all your session tokens.
 
       responses:
         200:
@@ -583,24 +531,9 @@ paths:
   /v2/auth/revoke:
     post:
       operationId: revoke
-      description: Invalidate a refresh token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
+      security:
+        - User: []
+      description: Invalidate a session.
       responses:
         200:
           $ref: '#/components/responses/200.GenericSuccess'
@@ -1445,7 +1378,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/purchase/intent/{network}/locks/{lockAdddress}:
+  /v2/purchase/intent/{network}/locks/{lockAddress}:
     post:
       operationId: purchase
       security:
@@ -1460,6 +1393,11 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - recipients
+                - stripeTokenId
+                - pricing
+
               type: object
               properties:
                 recipients:
@@ -1599,6 +1537,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -2358,5 +2302,73 @@ paths:
                 items:
                   $ref: '#/components/schemas/CheckoutConfig'
 
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/payment-methods:
+    delete:
+      operationId: removePaymentMethods
+      security:
+        - User: []
+      description: Remove all payment methods for a user
+      responses:
+        200:
+          description: Successfully removed all payment methods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/stripe/connect/{network}/locks/{lockAddress}:
+    post:
+      operationId: connectStripeAccount
+      security:
+        - User: []
+      description: Connect a stripe account to a lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - baseUrl
+              type: object
+              properties:
+                baseUrl:
+                  type: string
+      responses:
+        200:
+          description: Successfully connected stripe account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  # stripe account links
+                  url: # The url to redirect the user to
+                    type: string
+                  created:
+                    type: number
+                  expiresAt:
+                    type: number
+                  object:
+                    type: string
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'

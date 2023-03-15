@@ -47,7 +47,7 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
-  maxFreeClaimCost: 5000,
+  maxFreeClaimCost: 10000,
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
@@ -89,6 +89,11 @@ export const goerli: NetworkConfig = {
         id: HookType.PASSWORD,
         name: 'Password required',
         address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
       },
     ],
   },

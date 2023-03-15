@@ -28,29 +28,34 @@ export const useProvider = (config: any) => {
   const [openConnectModal, setOpenConnectModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
-  const [network, setNetwork] = useState<string | undefined>(undefined)
+  const [network, setNetwork] = useState<number | undefined>(undefined)
   const [account, setAccount] = useState<string | undefined>(undefined)
   const [email, setEmail] = useState<string | undefined>(undefined)
   const [isUnlockAccount, setIsUnlockAccount] = useState<boolean>(false)
   const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
     any | undefined
   >(undefined)
-  const { getStorage, setStorage, clearStorage } = useAppStorage()
+  const { setStorage, clearStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(account)
 
   useEffect(() => {
-    if (!getStorage('account') && account) {
+    if (account) {
       setStorage('account', account)
     }
-
-    if (!getStorage('network') && network) {
+    if (network) {
       setStorage('network', network)
     }
-  }, [account, network])
+  }, [account, network, setStorage])
 
   const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
-    const _network = await _walletService.connect(provider)
+    let _network = 1 // default
+    try {
+      _network = await _walletService.connect(provider)
+    } catch (error) {
+      console.log(error)
+    }
+
     const _account = await _walletService.getAccount()
     return {
       walletService: _walletService,
@@ -98,7 +103,7 @@ export const useProvider = (config: any) => {
         await switchWeb3ProviderNetwork(networkId)
         walletServiceProvider = new ethers.providers.Web3Provider(
           provider.provider,
-          networkId
+          'any'
         )
       }
     }
@@ -247,18 +252,6 @@ export const useProvider = (config: any) => {
     return await provider.send(method, params)
   }
 
-  // TODO: cleanup. Do we still use this? We should not,
-  const signMessage = async (messageToSign: string) => {
-    return ToastHelper.promise(
-      walletService.signMessage(messageToSign, 'personal_sign'),
-      {
-        loading: 'Please sign the message from your wallet',
-        success: 'Successfully signed the message',
-        error: 'There was an error in signing the message',
-      }
-    )
-  }
-
   // For now, we use account as a proxy for isConnected
   const isConnected = !!account
 
@@ -266,7 +259,6 @@ export const useProvider = (config: any) => {
     loading,
     network,
     account,
-    signMessage,
     email,
     getWalletService,
     isUnlockAccount,

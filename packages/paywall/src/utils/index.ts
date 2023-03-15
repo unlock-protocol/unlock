@@ -7,11 +7,13 @@ import { Enabler } from './enableInjectedProvider'
  * @param params
  */
 export const dispatchEvent = (eventName: string, params: any) => {
+  let event: any
+
+  // Keep because it will break legacy integrations
   if (eventName === unlockEvents.status) {
-    // Supporting legacy unlockProtocol event
     dispatchEvent('unlockProtocol', params.state)
   }
-  let event: any
+
   try {
     event = new window.CustomEvent(eventName, { detail: params })
   } catch (e) {
@@ -42,7 +44,7 @@ export const unlockEvents = {
 export const setupUnlockProtocolVariable = (properties: {
   [name: string]: any
 }) => {
-  const unlockProtocol: Record<string, any> = {}
+  const unlockProtocol: any = {}
 
   const immutable = {
     writable: false,

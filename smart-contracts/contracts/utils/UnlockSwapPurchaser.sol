@@ -16,6 +16,8 @@ contract UnlockSwapPurchaser {
   // required by Uniswap Universal Router
   address public permit2;
 
+  mapping (address => bool) uniswapRouters;
+
   // events
   event SwapCall(
     address lock,
@@ -30,15 +32,19 @@ contract UnlockSwapPurchaser {
   error UnauthorizedBalanceChange();
   error LockCallFailed();
   error WithdrawFailed();
+  error UnautorizedRouter(address routerAddress);
 
   /**
    * Set the address of Uniswap Permit2 helper contract
    * @param _unlockAddress the address of Unlock contract  
    * @param _permit2Address the address of Uniswap PERMIT2 contract  
    */
-  constructor(address _unlockAddress, address _permit2Address) {
+  constructor(address _unlockAddress, address _permit2Address, address[] memory _uniswapRouters) {
     unlockAddress = _unlockAddress;
     permit2 = _permit2Address;
+    for (uint i = 0; i < _uniswapRouters.length; i++) {
+     uniswapRouters[_uniswapRouters[i]] = true;
+    }
   }
 
 
@@ -83,6 +89,11 @@ contract UnlockSwapPurchaser {
     (bool lockExists,,) = IUnlock(unlockAddress).locks(lock);
     if(!lockExists) {
       revert LockDoesntExist(lock);
+    }
+
+    // make sure 
+    if(uniswapRouters[uniswapRouter] != true) {
+      revert UnautorizedRouter(uniswapRouter);
     }
 
     // get lock pricing 
