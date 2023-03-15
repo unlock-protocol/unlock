@@ -26,8 +26,6 @@ export const SubscriptionForm = ({
   const [recurring, setRecurring] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
 
-  console.log('lock', lock)
-
   const { updateSelfAllowance } = useLock(
     {
       address: lockAddress,
