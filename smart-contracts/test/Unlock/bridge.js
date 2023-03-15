@@ -145,4 +145,26 @@ contract("Unlock / bridge", () => {
       );
     });
   });
+
+  describe("setUnlockManager", () => {
+
+    it("default to zero", async () => {
+      assert.equal(await unlockSrc.unlockManager(), ADDRESS_ZERO);
+    })
+    it("sets unlock manager address correctly", async () => {
+      await unlockSrc.setUnlockManager(managerSrc.address)
+      assert.equal(await unlockSrc.unlockManager(), managerSrc.address);
+
+      await unlockDest.setUnlockManager(managerDest.address)
+      assert.equal(await unlockDest.unlockManager(), managerDest.address);
+    });
+    it("only unlock owner can call", async () => {
+      reverts(
+        unlockSrc
+          .connect(keyOwner)
+          .setUnlockManager(managerDest.address),
+        "ONLY_OWNER"
+      );
+    });
+  });
 });
