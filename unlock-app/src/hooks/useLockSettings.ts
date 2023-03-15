@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface LockSettingsProps {
@@ -6,45 +7,31 @@ interface LockSettingsProps {
   network: number
 }
 
-/** Hooks for Lock settings functions */
-export const useGetRefundPenaltyBasisPoints = ({
-  lockAddress,
-  network,
-}: LockSettingsProps) => {
+export function useLockSettings() {
   const web3Service = useWeb3Service()
-  const { isLoading: isLoadingRefund, data: refund = 0 } = useQuery(
-    ['getRefundPenaltyBasisPoints', lockAddress, network],
-    async () => {
-      return await await web3Service.refundPenaltyBasisPoints({
-        lockAddress,
-        network,
-      })
-    }
-  )
 
-  return {
-    isLoadingRefund,
-    refund,
-  }
-}
-export function useLockSettings({ lockAddress, network }: LockSettingsProps) {
-  const { refund, isLoadingRefund } = useGetRefundPenaltyBasisPoints({
+  const getIsRecurringPossible = async ({
     lockAddress,
     network,
-  })
-
-  const isRecurringPossible = (lock: any): boolean => {
-    return (
+  }: LockSettingsProps) => {
+    const lock = await web3Service.getLock(lockAddress, network)
+    const refund = await await web3Service.refundPenaltyBasisPoints({
+      lockAddress,
+      network,
+    })
+    const isRecurringPossible =
       lock?.expirationDuration != -1 &&
       lock?.publicLockVersion >= 10 &&
       lock?.currencyContractAddress?.length > 0 &&
       refund > 0
-    )
+
+    return {
+      refund,
+      isRecurringPossible,
+    }
   }
 
   return {
-    isLoadingRefund,
-    isRecurringPossible,
-    refund,
+    getIsRecurringPossible,
   }
 }

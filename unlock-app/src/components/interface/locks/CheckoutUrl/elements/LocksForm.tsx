@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import {
   MetadataInput,
@@ -305,6 +305,15 @@ export const LocksForm = ({
     onRemoveFromList(lockAddress)
     onAddLock(lockAddress, network!, name)
   }
+
+  useEffect(() => {
+    const recurringPayments = locks[lockAddress]?.recurringPayments ?? ''
+    if (recurringPayments) {
+      setRecurring(recurringPayments)
+    } else {
+      setRecurring('')
+    }
+  }, [lockAddress, locks])
 
   return (
     <div className="flex flex-col gap-2">

@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { Badge, Button, ToggleSwitch } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -24,10 +25,20 @@ export const SubscriptionForm = ({
   const [recurring, setRecurring] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
 
-  const { isRecurringPossible, refund, isLoadingRefund } = useLockSettings({
-    lockAddress,
-    network,
-  })
+  const { getIsRecurringPossible } = useLockSettings()
+
+  const {
+    data: { refund = 0, isRecurringPossible = false } = {},
+    isLoading: isLoadingRefund,
+  } = useQuery(
+    ['getIsRecurringPossible', lockAddress, network],
+    async () => {
+      return await getIsRecurringPossible({ lockAddress, network })
+    },
+    {
+      enabled: lockAddress?.length > 0 && network != null,
+    }
+  )
 
   const { updateSelfAllowance } = useLock(
     {
@@ -37,8 +48,6 @@ export const SubscriptionForm = ({
     network
   )
 
-  const recurringPossible = isRecurringPossible(lock)
-
   useEffect(() => {
     setRecurring(isRecurring)
   }, [isRecurring])
@@ -46,11 +55,11 @@ export const SubscriptionForm = ({
   useEffect(() => {
     if (lock?.publicLockVersion >= 11) {
       // TODO: check gas refund
-      setIsRecurring(recurringPossible)
+      setIsRecurring(isRecurringPossible)
     } else {
-      setIsRecurring(recurringPossible && lock?.selfAllowance !== '0')
+      setIsRecurring(isRecurringPossible && lock?.selfAllowance !== '0')
     }
-  }, [lock?.publicLockVersion, lock?.selfAllowance, recurringPossible])
+  }, [lock?.publicLockVersion, lock?.selfAllowance, isRecurringPossible])
 
   const handleApproveRecurring = () => {
     if (!isManager) return null
@@ -77,7 +86,8 @@ export const SubscriptionForm = ({
   const RecurringDescription = () => {
     const termsSettingsUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=terms`
 
-    if (recurringPossible) return null
+    if (isLoading) return null
+    if (isRecurringPossible) return null
 
     if (lock?.publicLockVersion >= 10) {
       return (
@@ -131,7 +141,7 @@ export const SubscriptionForm = ({
 
   const disabledInput =
     isRecurring ||
-    !recurringPossible ||
+    !isRecurringPossible ||
     disabled ||
     isLoading ||
     isLoadingRefund
