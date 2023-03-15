@@ -4130,7 +4130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connext/nxtp-contracts@npm:0.2.1-rc.16, @connext/nxtp-contracts@npm:^0.2.1-rc.16":
+"@connext/nxtp-contracts@npm:0.2.1-rc.16":
   version: 0.2.1-rc.16
   resolution: "@connext/nxtp-contracts@npm:0.2.1-rc.16"
   dependencies:
@@ -4226,7 +4226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connext/sdk@npm:^1.0.3-alpha.0":
+"@connext/sdk@npm:1.0.3-alpha.0":
   version: 1.0.3-alpha.0
   resolution: "@connext/sdk@npm:1.0.3-alpha.0"
   dependencies:
@@ -16384,6 +16384,7 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@connext/nxtp-contracts": 0.2.1-rc.16
+    "@connext/sdk": 1.0.3-alpha.0
     "@nomiclabs/hardhat-ethers": 2.2.2
     "@nomiclabs/hardhat-etherscan": 3.1.7
     "@nomiclabs/hardhat-truffle5": 2.0.7
@@ -52542,8 +52543,6 @@ __metadata:
   resolution: "unlock@workspace:."
   dependencies:
     "@babel/core": 7.21.5
-    "@connext/nxtp-contracts": ^0.2.1-rc.16
-    "@connext/sdk": ^1.0.3-alpha.0
     "@typescript-eslint/eslint-plugin": 5.59.1
     "@typescript-eslint/parser": 5.59.1
     babel-eslint: 10.1.0
