@@ -25,7 +25,6 @@ import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
-  communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
   handleClose?: (params: Record<string, string>) => void
 }
@@ -33,7 +32,6 @@ interface Props {
 export function Checkout({
   paywallConfig,
   injectedProvider,
-  communication,
   redirectURI,
   handleClose,
 }: Props) {
@@ -43,6 +41,7 @@ export function Checkout({
       paywallConfig,
     },
   })
+  const communication = useCheckoutCommunication()
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
   const { authenticateWithProvider } = useAuthenticate({
@@ -171,7 +170,6 @@ export function Checkout({
           <Confirm
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
-            communication={communication}
           />
         )
       }
@@ -189,7 +187,6 @@ export function Checkout({
             onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
-            communication={communication}
           />
         )
       }
@@ -254,7 +251,6 @@ export function Checkout({
             onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
-            communication={communication}
           />
         )
       }
@@ -270,7 +266,7 @@ export function Checkout({
     if (paywallConfig?.autoconnect) {
       authenticateWithProvider('METAMASK')
     }
-  }, [paywallConfig?.autoconnect])
+  }, [paywallConfig?.autoconnect, authenticateWithProvider])
 
   return (
     <CheckoutTransition>

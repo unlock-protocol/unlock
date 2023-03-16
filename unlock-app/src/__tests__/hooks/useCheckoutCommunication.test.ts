@@ -1,7 +1,7 @@
 import Postmate from 'postmate'
 import { renderHook, act } from '@testing-library/react-hooks'
 import {
-  useCheckoutCommunication,
+  CheckoutCommunicationProvider,
   CheckoutEvents,
   waitingMethodCalls,
   resolveMethodCall,
@@ -19,7 +19,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a userInfo event when emitUserInfo is called', async () => {
     expect.assertions(1)
 
-    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() =>
+      CheckoutCommunicationProvider()
+    )
 
     await waitFor(() => result.current.ready)
 
@@ -32,7 +34,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a closeModal event when emitCloseModal is called', async () => {
     expect.assertions(1)
 
-    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() =>
+      CheckoutCommunicationProvider()
+    )
 
     await waitFor(() => result.current.ready)
 
@@ -48,7 +52,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a transactionInfo event when emitTransactionInfo is called', async () => {
     expect.assertions(1)
 
-    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() =>
+      CheckoutCommunicationProvider()
+    )
 
     await waitFor(() => result.current.ready)
 
@@ -64,7 +70,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a methodCall event when emitMethodCall is called', async () => {
     expect.assertions(1)
 
-    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() =>
+      CheckoutCommunicationProvider()
+    )
 
     await waitFor(() => result.current.ready)
 
@@ -77,7 +85,9 @@ describe('useCheckoutCommunication', () => {
   it('buffers an arbitrary number of events before the emitter is ready', async () => {
     expect.assertions(4)
 
-    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() =>
+      CheckoutCommunicationProvider()
+    )
 
     const userInfo = { address: '0xmyaddress' }
     act(() => result.current.emitUserInfo(userInfo))

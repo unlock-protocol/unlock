@@ -8,6 +8,7 @@ import { CONSOLE_MESSAGE } from '../../constants'
 import { config } from '~/config/app'
 import { UnlockUIProvider } from '@unlock-protocol/ui'
 import NextLink from 'next/link'
+import { CheckoutCommunicationProvider } from '~/hooks/useCheckoutCommunication'
 const wedlockService = new WedlockService(config.services.wedlocks.host)
 interface GlobalWrapperProps {
   children: ReactNode
@@ -26,7 +27,9 @@ export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
       <ConfigContext.Provider value={config}>
         <WedlockServiceContext.Provider value={wedlockService}>
           <ProviderContext.Provider value={{ provider, setProvider }}>
-            <Authenticate>{children}</Authenticate>
+            <CheckoutCommunicationProvider>
+              <Authenticate>{children}</Authenticate>
+            </CheckoutCommunicationProvider>
           </ProviderContext.Provider>
         </WedlockServiceContext.Provider>
       </ConfigContext.Provider>

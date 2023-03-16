@@ -8,7 +8,7 @@ import { Fragment, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
@@ -19,22 +19,16 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
-  communication?: CheckoutCommunication
 }
 
-export function Renewed({
-  injectedProvider,
-  onClose,
-  checkoutService,
-  communication,
-}: Props) {
+export function Renewed({ injectedProvider, onClose, checkoutService }: Props) {
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
   const { renewed, lock, messageToSign } = state.context
   const { status: renewStatus, transactionHash } = renewed!
   const processing = renewStatus === 'PROCESSING'
-
+  const communication = useCheckoutCommunication()
   useEffect(() => {
     if (renewStatus !== 'PROCESSING') {
       return

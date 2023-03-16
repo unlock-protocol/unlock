@@ -1,4 +1,10 @@
-import { useState, useEffect } from 'react'
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  ReactNode,
+} from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 export interface UserInfo {
@@ -92,13 +98,32 @@ export const resolveOnEvent = (name: string) => {
   }
 }
 
-// This is just a convenience hook that wraps the `emit` function
-// provided by the parent around some communication helpers. If any
-// events are called before the handshake completes, they go into a
-// buffer. After that, once the handle to the parent is available, all
-// the buffered events are emitted and future events are emitted
-// directly.
+export interface CheckoutCommunicationContextType {
+  emitUserInfo: (info: UserInfo) => void
+  emitCloseModal: () => void
+  emitTransactionInfo: (info: TransactionInfo) => void
+  emitMethodCall: (call: MethodCall) => void
+  providerAdapter: AsyncSendable | undefined
+  insideIframe: boolean
+  ready: boolean
+  paywallConfig?: PaywallConfig
+}
+
+const CheckoutCommunicationContext =
+  createContext<CheckoutCommunicationContextType>({
+    ready: false,
+    insideIframe: false,
+  } as CheckoutCommunicationContextType)
+
 export const useCheckoutCommunication = () => {
+  return useContext(CheckoutCommunicationContext)
+}
+
+interface Props {
+  children: ReactNode
+}
+
+export const CheckoutCommunicationProvider = ({ children }: Props) => {
   const [providerAdapter, setProviderAdapter] = useState<
     AsyncSendable | undefined
   >(undefined)
@@ -114,7 +139,12 @@ export const useCheckoutCommunication = () => {
     resolveOnEnable,
   })
 
-  let insideIframe = false
+  const insideIframe =
+    typeof window !== 'undefined' &&
+    window &&
+    window.parent &&
+    window.self &&
+    window.parent !== window.self
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
     if (!parent) {
@@ -163,11 +193,6 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.onEvent, eventName)
   }
 
-  // If the page is not inside an iframe, window and window.top will be identical
-  if (typeof window !== 'undefined') {
-    insideIframe = window.top !== window
-  }
-
   if (config && config.useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
       enable: () => {
@@ -189,7 +214,7 @@ export const useCheckoutCommunication = () => {
     })
   }
 
-  return {
+  const value = {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
@@ -201,6 +226,12 @@ export const useCheckoutCommunication = () => {
     // implementation.
     ready: !!parent,
   }
+
+  return (
+    <CheckoutCommunicationContext.Provider value={value}>
+      {children}
+    </CheckoutCommunicationContext.Provider>
+  )
 }
 
-export type CheckoutCommunication = ReturnType<typeof useCheckoutCommunication>
+export type CheckoutCommunication = CheckoutCommunicationContextType

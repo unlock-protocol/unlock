@@ -12,7 +12,10 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import {
+  CheckoutCommunication,
+  useCheckoutCommunication,
+} from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
@@ -34,7 +37,6 @@ import { usePurchase } from '~/hooks/usePurchase'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication?: CheckoutCommunication
 }
 
 export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
@@ -79,11 +81,7 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
   )
 }
 
-export function Confirm({
-  injectedProvider,
-  checkoutService,
-  communication,
-}: Props) {
+export function Confirm({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, getWalletService } = useAuth()
   const config = useConfig()
@@ -91,7 +89,7 @@ export function Confirm({
   const recaptchaRef = useRef<any>()
   const storage = useStorageService()
   const { captureChargeForCard } = useAccount(account!)
-
+  const communication = useCheckoutCommunication()
   const [isConfirming, setIsConfirming] = useState(false)
 
   const {

@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { ConfirmConnect } from './Confirm'
@@ -12,7 +11,6 @@ interface Props {
   paywallConfig?: PaywallConfig
   oauthConfig: OAuthConfig
   injectedProvider: unknown
-  communication: ReturnType<typeof useCheckoutCommunication>
 }
 
 export function Connect({
@@ -75,7 +73,14 @@ export function Connect({
         return null
       }
     }
-  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
+  }, [
+    matched,
+    onClose,
+    connectService,
+    injectedProvider,
+    oauthConfig,
+    paywallConfig,
+  ])
 
   return (
     <CheckoutTransition>

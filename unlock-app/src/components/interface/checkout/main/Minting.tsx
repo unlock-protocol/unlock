@@ -8,7 +8,7 @@ import { Fragment, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
@@ -24,15 +24,9 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
-  communication?: CheckoutCommunication
 }
 
-export function Minting({
-  injectedProvider,
-  onClose,
-  checkoutService,
-  communication,
-}: Props) {
+export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
@@ -40,6 +34,7 @@ export function Minting({
   const { mint, lock, messageToSign } = state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
+  const communication = useCheckoutCommunication()
 
   const { data: tokenId } = useQuery(
     ['userTokenId', mint, account, lock, web3Service],
