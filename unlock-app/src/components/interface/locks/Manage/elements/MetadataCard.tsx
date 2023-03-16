@@ -25,8 +25,8 @@ import { useGetReceiptsPageUrl } from '~/hooks/receipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
-import { useKeyManager } from '~/hooks/useKeyManager'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useKeys } from '~/hooks/useKeys'
 
 interface MetadataCardProps {
   metadata: any
@@ -103,11 +103,13 @@ const ChangeManagerModal = ({
   network,
   manager,
   tokenId,
+  onChange,
 }: {
   lockAddress: string
   network: number
   manager: string
   tokenId: string
+  onChange?: any
 }) => {
   const { getWalletService } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
@@ -139,6 +141,9 @@ const ChangeManagerModal = ({
 
   const changeManagerMutation = useMutation(setKeyManagerForKey, {
     onSuccess: () => {
+      if (typeof onChange === 'function') {
+        onChange()
+      }
       ToastHelper.success('Key Manager updated')
       setIsOpen(false)
     },
@@ -241,11 +246,17 @@ export const MetadataCard = ({
     network,
   })
 
-  const { manager, isLoading: isLoadingKeyManager } = useKeyManager({
+  const { keys, isKeysLoading, refetchUseKeys } = useKeys({
     lockAddress,
-    network,
+    owner,
+    networks: [network],
     tokenId,
   })
+
+  const key = keys?.[0]
+
+  // defaults to the onwer when the manager is not set
+  const manager = key?.manager ?? key?.owner
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
@@ -516,7 +527,7 @@ export const MetadataCard = ({
                 className="py-2"
                 label={
                   <>
-                    {isLoadingKeyManager ? (
+                    {isKeysLoading ? (
                       <Placeholder.Line />
                     ) : (
                       <div className="flex items-center justify-between">
@@ -549,6 +560,7 @@ export const MetadataCard = ({
                           network={network}
                           manager={manager}
                           tokenId={tokenId}
+                          onChange={refetchUseKeys}
                         />
                       </div>
                     )}
