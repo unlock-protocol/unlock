@@ -8,10 +8,11 @@ export class CheckoutConfig extends Model<
   InferCreationAttributes<CheckoutConfig>
 > {
   declare id: string
+  declare name: string
   declare config: PaywallConfigType
   declare createdBy: string
-  declare createdAt?: CreationOptional<Date>
-  declare updatedAt?: CreationOptional<Date>
+  declare createdAt: CreationOptional<Date>
+  declare updatedAt: CreationOptional<Date>
 }
 
 CheckoutConfig.init(
@@ -20,6 +21,10 @@ CheckoutConfig.init(
       allowNull: false,
       type: DataTypes.STRING,
       primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     config: {
       type: DataTypes.JSONB,
