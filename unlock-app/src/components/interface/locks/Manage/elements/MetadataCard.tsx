@@ -1,10 +1,17 @@
-import { Button, Badge, Input, Modal, Detail } from '@unlock-protocol/ui'
+import {
+  Button,
+  Badge,
+  Input,
+  Modal,
+  Detail,
+  Placeholder,
+} from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useLockManager } from '~/hooks/useLockManager'
+import { useLockManager, useLockManagers } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
@@ -16,6 +23,7 @@ import { useGetReceiptsPageUrl } from '~/hooks/receipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface MetadataCardProps {
   metadata: any
@@ -93,6 +101,7 @@ export const MetadataCard = ({
   network,
   expirationDuration,
 }: MetadataCardProps) => {
+  const { account } = useAuth()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
@@ -104,9 +113,15 @@ export const MetadataCard = ({
 
   const { lockAddress, token: tokenId } = data ?? {}
 
-  const { isManager: isLockManager } = useLockManager({
+  const { isManager: isLockManager, getManagers } = useLockManager({
     lockAddress,
     network,
+  })
+
+  const { isLoading: isLoadingManagers, managers } = useLockManagers({
+    lockAddress,
+    network,
+    tokenId,
   })
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
@@ -135,7 +150,7 @@ export const MetadataCard = ({
       return response.data.subscriptions?.[0] ?? null
     },
     {
-      onError(error) {
+      onError(error: any) {
         console.error(error)
       },
     }
@@ -373,6 +388,54 @@ export const MetadataCard = ({
                 )}
               </>
             )}
+            <div className="w-full">
+              <Detail
+                className="py-2"
+                label={
+                  <div className="grid grid-cols-1 gap-1">
+                    <span>Managers</span>
+                    <div className="grid gap-1">
+                      {isLoadingManagers && (
+                        <Placeholder.Root spaced="sm">
+                          <Placeholder.Line> </Placeholder.Line>
+                          <Placeholder.Line> </Placeholder.Line>
+                        </Placeholder.Root>
+                      )}
+                      {!isLoadingManagers &&
+                        managers?.map((manager: string) => {
+                          const isLoggedUser =
+                            manager?.toLowerCase() === account?.toLowerCase()
+
+                          return (
+                            <div
+                              key={manager}
+                              className="flex items-center justify-between w-full px-3 py-2 border border-gray-200 rounded-lg"
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className="text-base break-words text-brand-dark">
+                                  {/* show full address on desktop */}
+                                  <span className="hidden md:block">
+                                    {manager}
+                                  </span>
+                                  {/* show minified address on mobile */}
+                                  <span className="block md:hidden">
+                                    {addressMinify(manager)}
+                                  </span>
+                                </span>
+                                {isLoggedUser && (
+                                  <span className="text-sm font-semibold text-brand-ui-primary">
+                                    {`That's you`}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
+                    </div>
+                  </div>
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
