@@ -29,26 +29,9 @@ export const useLockManager = ({
     async () => getLockManagerStatus()
   )
 
-  const getManagers = async (tokenId: string): Promise<any> => {
-    const subgraph = new SubgraphService()
-    const result = await subgraph.key(
-      {
-        where: {
-          lock: lockAddress,
-          tokenId,
-        },
-      },
-      {
-        network,
-      }
-    )
-    return result?.lock?.lockManagers ?? []
-  }
-
   return {
     isManager,
     isLoading,
-    getManagers,
   }
 }
 
