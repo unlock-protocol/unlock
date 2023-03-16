@@ -35,7 +35,7 @@ export const useLockManager = ({
   }
 }
 
-export const useLockManagers = ({
+export const useLockManagerByKey = ({
   lockAddress,
   network,
   tokenId,

@@ -11,7 +11,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useLockManager, useLockManagers } from '~/hooks/useLockManager'
+import { useLockManager, useLockManagerByKey } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
@@ -113,12 +113,12 @@ export const MetadataCard = ({
 
   const { lockAddress, token: tokenId } = data ?? {}
 
-  const { isManager: isLockManager, getManagers } = useLockManager({
+  const { isManager: isLockManager } = useLockManager({
     lockAddress,
     network,
   })
 
-  const { isLoading: isLoadingManagers, managers } = useLockManagers({
+  const { isLoading: isLoadingManagers, managers } = useLockManagerByKey({
     lockAddress,
     network,
     tokenId,
