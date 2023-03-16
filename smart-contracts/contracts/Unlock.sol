@@ -58,9 +58,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // modifier 
   modifier onlyGov() {
-    require(isOwner(), "ONLY_OWNER");
     if(unlockManager != address(0)) {
-      require(_msgSender() == unlockManager, "ONLY_MANAGER");
+      require(
+        _msgSender() == unlockManager
+        || 
+        isOwner()
+        , 
+        "ONLY_MANAGER"
+      );
+    } else {
+      require(isOwner(), "ONLY_OWNER");
     }
     _;
   }

@@ -24,8 +24,8 @@ let managerDest,
   wethDest;
 
 //
-const srcChainId = 31337;
-const destChainId = 4;
+const srcChainId = 4;
+const destChainId = 31337;
 const srcDomainId = 1735353714;
 const destDomainId = 1734439522;
 
@@ -180,12 +180,11 @@ contract("Unlock / bridged governance", () => {
 
       const { interface } = unlockDest
       calldata = interface.encodeFunctionData('addLockTemplate', args)
-      console.log(calldata)
 
       assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
-      // send call to the bridge
+      // send call to the manager through the bridge
       await connext.xcall(
         destDomainId, // domainID
         managerDest.address,
@@ -196,11 +195,9 @@ contract("Unlock / bridged governance", () => {
         calldata
       )
 
-      // make sure thihgs
-      assert.equal(await unlockDest.publicLockVersions(args[1]), args[0]);
-      assert.equal(await unlockDest.publicLockImpls(args[0]), args[1]);
-
+      // make sure things have worked correctly
+      assert.equal(await unlockDest.publicLockVersions(args[0]), args[1]);
+      assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
     })
-
   })
 });
