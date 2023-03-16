@@ -7167,6 +7167,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ledgerhq/iframe-provider@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "@ledgerhq/iframe-provider@npm:0.4.3"
+  dependencies:
+    eventemitter3: ^4.0.0
+  checksum: 7dd6cd241c532993c9d37e788ce8b756580d277624fffec220372d6693366527206743985b14e66fe14bc1d843dbf17ef084ea4725501fa408e91bed66ff80f2
+  languageName: node
+  linkType: hard
+
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.4
   resolution: "@leichtgewicht/ip-codec@npm:2.0.4"
@@ -15781,6 +15790,7 @@ __metadata:
     "@headlessui/react": 1.7.13
     "@hookform/error-message": 2.0.1
     "@hookform/resolvers": 2.9.11
+    "@ledgerhq/iframe-provider": ^0.4.3
     "@radix-ui/react-avatar": 1.0.1
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.36.0

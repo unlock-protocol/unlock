@@ -172,6 +172,7 @@ export const useProvider = (config: any) => {
   const connectProvider = async (provider: any) => {
     setLoading(true)
     let auth
+    console.log(provider.enabled, 'test')
     if (provider instanceof ethers.providers.Provider) {
       auth = await resetProvider(provider)
     } else {

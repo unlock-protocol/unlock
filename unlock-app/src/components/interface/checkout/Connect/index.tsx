@@ -75,7 +75,14 @@ export function Connect({
         return null
       }
     }
-  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
+  }, [
+    matched,
+    onClose,
+    connectService,
+    injectedProvider,
+    paywallConfig,
+    oauthConfig,
+  ])
 
   return (
     <CheckoutTransition>

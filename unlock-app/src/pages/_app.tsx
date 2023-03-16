@@ -10,6 +10,7 @@ import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
 import { Auth } from '~/components/helpers/Auth'
+import '../utils/shim'
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {

@@ -7,6 +7,7 @@
     "@headlessui/react": "1.7.13",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "2.9.11",
+    "@ledgerhq/iframe-provider": "0.4.3",
     "@radix-ui/react-avatar": "1.0.1",
     "@rehooks/local-storage": "2.4.4",
     "@sentry/nextjs": "7.36.0",

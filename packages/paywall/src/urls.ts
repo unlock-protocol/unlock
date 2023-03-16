@@ -18,6 +18,7 @@ if (typeof window !== 'undefined') {
       [
         'paywall.unlock-protocol.com',
         'staging-paywall.unlock-protocol.com',
+        'localhost',
       ].includes(paywallUrl.hostname)
     ) {
       baseUrl = paywallUrl.toString()

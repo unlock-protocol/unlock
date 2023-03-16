@@ -63,14 +63,12 @@ interface SignedOutProps {
     provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
   ): Promise<void>
   onUnlockAccount(): void
-  injectedProvider: any
   title?: string
 }
 
 export function SignedOut({
   onUnlockAccount,
   authenticateWithProvider,
-  injectedProvider,
   title = 'Have a crypto wallet?',
 }: SignedOutProps) {
   const iconButtonClass =
@@ -84,23 +82,18 @@ export function SignedOut({
       frame: <SvgComponents.Frame width={24} />,
       status: <SvgComponents.Status width={32} />,
     }
-    const detected = detectInjectedProvider(injectedProvider)
+    const detected = detectInjectedProvider(window.ethereum)
     return walletIcons[detected]
-  }, [injectedProvider])
+  }, [])
 
   const onInjectedHandler = () => {
-    if (injectedProvider) {
-      return authenticateWithProvider('METAMASK')
-    }
-
     if (
       navigator.userAgent.match(/Android/i) ||
       navigator.userAgent.match(/iPhone/i)
     ) {
       return authenticateWithProvider('WALLET_CONNECT')
     }
-
-    setIsDownloadWallet(true)
+    return authenticateWithProvider('METAMASK')
   }
 
   return (
@@ -165,15 +158,11 @@ interface ConnectedCheckoutProps {
   children?: ReactNode
 }
 
-export function Connected({
-  service,
-  injectedProvider,
-  children,
-}: ConnectedCheckoutProps) {
+export function Connected({ service, children }: ConnectedCheckoutProps) {
   const [state, send] = useActor<CheckoutService>(service as CheckoutService)
   const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticate({
-    injectedProvider,
+    injectedProvider: window.ethereum,
   })
 
   if (state.context?.paywallConfig?.autoconnect) {
@@ -197,7 +186,6 @@ export function Connected({
   ) : (
     <div>
       <SignedOut
-        injectedProvider={injectedProvider}
         onUnlockAccount={() => {
           send('UNLOCK_ACCOUNT')
         }}
