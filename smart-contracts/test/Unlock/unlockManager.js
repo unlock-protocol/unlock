@@ -171,7 +171,7 @@ contract("Unlock / bridged governance", () => {
     let calldata
     const slippage = 30
     it('can receive and execute a call from the bridge', async () => {
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory('TestPublicLockUpgraded')
       const template = await PublicLock.deploy()
       const args = [
         template.address,
