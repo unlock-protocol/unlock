@@ -33,6 +33,7 @@ const {
   renounceLockManager,
   updateRefundPenalty,
   updateTransferFee,
+  setKeyManagerOf,
 } = v8
 
 export default {
@@ -69,4 +70,5 @@ export default {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
 }

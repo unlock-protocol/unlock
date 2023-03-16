@@ -4,14 +4,16 @@ import {
   Input,
   Modal,
   Detail,
+  AddressInput,
+  isAddressOrEns,
   Placeholder,
 } from '@unlock-protocol/ui'
-import { useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useLockManager, useLockManagerByKey } from '~/hooks/useLockManager'
+import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
@@ -23,6 +25,7 @@ import { useGetReceiptsPageUrl } from '~/hooks/receipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
+import { useKeyManager } from '~/hooks/useKeyManager'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface MetadataCardProps {
@@ -95,13 +98,133 @@ const MembershipRenewal = ({
   )
 }
 
+const ChangeManagerModal = ({
+  lockAddress,
+  network,
+  manager,
+  tokenId,
+}: {
+  lockAddress: string
+  network: number
+  manager: string
+  tokenId: string
+}) => {
+  const { getWalletService } = useAuth()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const {
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { isValid },
+    control,
+  } = useForm<{
+    newManager: string
+  }>({
+    defaultValues: {
+      newManager: '',
+    },
+  })
+
+  const newManager = watch('newManager', manager)
+
+  const setKeyManagerForKey = async (newManager: string) => {
+    const walletService = await getWalletService(network)
+    return walletService.setKeyManagerOf({
+      lockAddress,
+      managerAddress: newManager,
+      tokenId,
+    })
+  }
+
+  const changeManagerMutation = useMutation(setKeyManagerForKey, {
+    onSuccess: () => {
+      ToastHelper.success('Key Manager updated')
+      setIsOpen(false)
+    },
+  })
+
+  const onSubmit = async ({ newManager }: any) => {
+    await changeManagerMutation.mutateAsync(newManager)
+  }
+
+  const recipientIsManager =
+    newManager?.toLowerCase() === manager?.toLowerCase()
+
+  const fieldDisabled =
+    recipientIsManager || changeManagerMutation.isLoading || !isValid
+
+  useEffect(() => {
+    if (isOpen) {
+      setValue('newManager', '') // reset when modal opens
+    }
+  }, [isOpen, setValue])
+
+  return (
+    <>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <div className="flex flex-col w-full gap-5">
+          <div className="text-left">
+            <h3 className="text-xl font-semibold text-left text-black-500">
+              Change Key Manager
+            </h3>
+            <span className="text-sm leading-tight text-gray-500">
+              Update the address of the Key Manager.
+            </span>
+          </div>
+          <form className="grid w-full gap-3" onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="newManager"
+              control={control}
+              rules={{
+                required: true,
+                validate: isAddressOrEns,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      label="New Manager"
+                      value={newManager}
+                      disabled={changeManagerMutation.isLoading}
+                      onChange={(value: any) => {
+                        setValue('newManager', value, {
+                          shouldValidate: true,
+                        })
+                      }}
+                    />
+                    {recipientIsManager && (
+                      <span className="text-sm text-red-500">
+                        This recipient is the current Key Manager.
+                      </span>
+                    )}
+                  </>
+                )
+              }}
+            />
+
+            <Button
+              disabled={fieldDisabled}
+              type="submit"
+              loading={changeManagerMutation.isLoading}
+            >
+              Update
+            </Button>
+          </form>
+        </div>
+      </Modal>
+      <Button size="small" onClick={() => setIsOpen(true)}>
+        Change
+      </Button>
+    </>
+  )
+}
 export const MetadataCard = ({
   metadata,
   owner,
   network,
   expirationDuration,
 }: MetadataCardProps) => {
-  const { account } = useAuth()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
@@ -118,7 +241,7 @@ export const MetadataCard = ({
     network,
   })
 
-  const { isLoading: isLoadingManagers, managers } = useLockManagerByKey({
+  const { manager, isLoading: isLoadingKeyManager } = useKeyManager({
     lockAddress,
     network,
     tokenId,
@@ -392,47 +515,44 @@ export const MetadataCard = ({
               <Detail
                 className="py-2"
                 label={
-                  <div className="grid grid-cols-1 gap-1">
-                    <span>Managers</span>
-                    <div className="grid gap-1">
-                      {isLoadingManagers && (
-                        <Placeholder.Root spaced="sm">
-                          <Placeholder.Line> </Placeholder.Line>
-                          <Placeholder.Line> </Placeholder.Line>
-                        </Placeholder.Root>
-                      )}
-                      {!isLoadingManagers &&
-                        managers?.map((manager: string) => {
-                          const isLoggedUser =
-                            manager?.toLowerCase() === account?.toLowerCase()
-
-                          return (
-                            <div
-                              key={manager}
-                              className="flex items-center justify-between w-full px-3 py-2 border border-gray-200 rounded-lg"
+                  <>
+                    {isLoadingKeyManager ? (
+                      <Placeholder.Line />
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span>Key Manager:</span>
+                          {/* show full address on desktop */}
+                          <div className="text-base font-bold break-words">
+                            <span className="hidden md:block">{manager}</span>
+                            {/* show minified address on mobile */}
+                            <span className="block md:hidden">
+                              {addressMinify(manager)}
+                            </span>
+                          </div>
+                          <Button
+                            className="p-0 outline-none text-brand-ui-primary ring-0"
+                            variant="transparent"
+                            aria-label="blockscan link"
+                          >
+                            <a
+                              href={`https://blockscan.com/address/${manager}`}
+                              target="_blank"
+                              rel="noreferrer"
                             >
-                              <div className="flex items-center gap-2">
-                                <span className="text-base break-words text-brand-dark">
-                                  {/* show full address on desktop */}
-                                  <span className="hidden md:block">
-                                    {manager}
-                                  </span>
-                                  {/* show minified address on mobile */}
-                                  <span className="block md:hidden">
-                                    {addressMinify(manager)}
-                                  </span>
-                                </span>
-                                {isLoggedUser && (
-                                  <span className="text-sm font-semibold text-brand-ui-primary">
-                                    {`That's you`}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
+                              <ExternalLinkIcon size={20} />
+                            </a>
+                          </Button>
+                        </div>
+                        <ChangeManagerModal
+                          lockAddress={lockAddress}
+                          network={network}
+                          manager={manager}
+                          tokenId={tokenId}
+                        />
+                      </div>
+                    )}
+                  </>
                 }
               />
             </div>

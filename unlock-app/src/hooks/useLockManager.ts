@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -32,39 +31,5 @@ export const useLockManager = ({
   return {
     isManager,
     isLoading,
-  }
-}
-
-export const useLockManagerByKey = ({
-  lockAddress,
-  network,
-  tokenId,
-}: {
-  lockAddress: string
-  network: number
-  tokenId: string
-}) => {
-  const { isLoading, data: managers = [] } = useQuery(
-    ['getManagers', lockAddress, network, tokenId],
-    async () => {
-      const subgraph = new SubgraphService()
-      const result = await subgraph.key(
-        {
-          where: {
-            lock: lockAddress,
-            tokenId,
-          },
-        },
-        {
-          network,
-        }
-      )
-      return result?.lock?.lockManagers ?? []
-    }
-  )
-
-  return {
-    isLoading,
-    managers,
   }
 }

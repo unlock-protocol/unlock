@@ -1,5 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import { KeyManager, TransferObject } from '@unlock-protocol/unlock-js'
+import {
+  KeyManager,
+  SubgraphService,
+  TransferObject,
+} from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import {
   EthersError,
@@ -11,6 +15,44 @@ interface Options {
   transferSignature: string
   network: number
   enabled?: boolean
+}
+
+interface KeyManagerProps {
+  lockAddress: string
+  network: number
+  tokenId: string
+}
+
+export const useKeyManager = ({
+  lockAddress,
+  network,
+  tokenId,
+}: KeyManagerProps) => {
+  const { isLoading, data: manager = null } = useQuery(
+    ['getManagers', lockAddress, network, tokenId],
+    async () => {
+      const subgraph = new SubgraphService()
+      const result = await subgraph.key(
+        {
+          where: {
+            lock: lockAddress,
+            tokenId,
+          },
+        },
+        {
+          network,
+        }
+      )
+
+      // defaults to the onwer when the manager is not set
+      return result?.manager ?? result?.owner ?? ''
+    }
+  )
+
+  return {
+    isLoading,
+    manager,
+  }
 }
 
 // todo: remove? not used anywhere
