@@ -83,6 +83,7 @@ const usePaywall = () => {
     // Load unlock script
     const script = document.createElement('script')
     script.src = `${config.paywallUrl}/static/unlock.latest.min.js`
+    console.log(script.src)
     script.async = true
     document.body.appendChild(script)
 

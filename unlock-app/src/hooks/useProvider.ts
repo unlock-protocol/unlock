@@ -172,13 +172,15 @@ export const useProvider = (config: any) => {
   const connectProvider = async (provider: any) => {
     setLoading(true)
     let auth
-    console.log(provider.enabled, 'test')
     if (provider instanceof ethers.providers.Provider) {
       auth = await resetProvider(provider)
     } else {
       if (provider.enable) {
         try {
-          await provider.enable()
+          console.log('DO IT!')
+          const x = await provider.enable()
+          console.log(x)
+          console.log('SO FAR SO FOOD')
         } catch {
           console.error('Please check your wallet and try again to connect.')
         }
@@ -195,6 +197,8 @@ export const useProvider = (config: any) => {
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
+      console.log('OK GREAT NOW!')
+      console.log(ethersProvider)
       auth = await resetProvider(ethersProvider)
     }
 

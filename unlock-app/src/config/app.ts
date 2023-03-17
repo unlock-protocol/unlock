@@ -18,6 +18,7 @@ const dev = {
     process.env.NEXT_PUBLIC_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
   wedlocksUri: process.env.NEXT_PUBLIC_WEDLOCKS_URI || staging.wedlocksUri,
 }
+console.log(dev)
 
 const production = {
   locksmithHost: 'https://locksmith.unlock-protocol.com',

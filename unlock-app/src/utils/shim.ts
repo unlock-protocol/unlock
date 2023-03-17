@@ -14,7 +14,9 @@ export function isEmbeddedInIFrame(): boolean {
 }
 
 if (isEmbeddedInIFrame()) {
+  console.log('in iframe')
   const target = window as any
+  target.ethereum = new IFrameEthereumProvider()
 }
 
 if (typeof window !== 'undefined') {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
-import Postmate from 'postmate'
+
 export interface UserInfo {
   address?: string
   signedMessage?: string
@@ -93,15 +93,6 @@ export const resolveOnEvent = (name: string) => {
   }
 }
 
-const parent = new Postmate.Model({
-  setConfig: (config: PaywallConfig) => {
-    setConfig(config)
-  },
-  resolveMethodCall,
-  resolveOnEvent,
-  resolveOnEnable,
-})
-
 // This is just a convenience hook that wraps the `emit` function
 // provided by the parent around some communication helpers. If any
 // events are called before the handshake completes, they go into a
@@ -115,6 +106,14 @@ export const useCheckoutCommunication = () => {
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
   const [user, setUser] = useState<string | undefined>(undefined)
+  const parent = usePostmateParent({
+    setConfig: (config: PaywallConfig) => {
+      setConfig(config)
+    },
+    resolveMethodCall,
+    resolveOnEvent,
+    resolveOnEnable,
+  })
 
   let insideIframe = false
 
@@ -179,10 +178,11 @@ export const useCheckoutCommunication = () => {
         })
       },
       sendAsync: (request: MethodCall, callback) => {
-        waitingMethodCalls[request.id] = (error: any, response: any) => {
-          callback(error, response)
-        }
-        emitMethodCall(request)
+        console.log('WE SHOULD NOT BE USING THIS!')
+        // waitingMethodCalls[request.id] = (error: any, response: any) => {
+        //   callback(error, response)
+        // }
+        // emitMethodCall(request)
       },
       on: (event: string, callback: any) => {
         eventHandlers[event] = callback
