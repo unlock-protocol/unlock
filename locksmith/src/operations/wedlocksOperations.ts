@@ -1,3 +1,6 @@
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../config/config'
@@ -10,6 +13,9 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
+import * as metadataOperations from './metadataOperations'
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type Params = {
   [key: string]: string | number | undefined
@@ -94,6 +100,81 @@ export const notifyNewKeysToWedlocks = async (
   for await (const key of keys) {
     notifyNewKeyToWedlocks(key, network, true)
   }
+}
+
+interface AttributeProps {
+  value: string
+  trait_type: string
+}
+interface EventProps {
+  eventDescription: string
+  eventDate: string
+  eventTime: string
+  eventAddress: string
+}
+export const getEventDetail = async (
+  lockAddress: string,
+  network: number
+): Promise<Partial<EventProps> | undefined> => {
+  let eventDetail = undefined
+  const lockMetadata = await metadataOperations.getLockMetadata({
+    lockAddress,
+    network: network!,
+  })
+
+  const attributes: AttributeProps[] = lockMetadata?.attributes
+
+  const getAttribute = (name: string): string | undefined => {
+    return (
+      attributes?.find(({ trait_type }: AttributeProps) => trait_type === name)
+        ?.value || undefined
+    )
+  }
+
+  const getEventDate = (
+    startDate?: string,
+    startTime?: string,
+    timezone?: string
+  ): Date | null => {
+    if (startDate && startTime) {
+      const timestamp = `${startDate} ${startTime}`
+      const dayjsLocal = dayjs.tz(timestamp, timezone)
+      return dayjsLocal.toDate()
+    }
+
+    return null
+  }
+
+  // This is an event, collect event information
+  if (attributes) {
+    const timeZone = getAttribute('event_timezone')
+    const date = getEventDate(
+      getAttribute('event_start_date'),
+      getAttribute('event_start_time'),
+      timeZone
+    )
+    const eventAddress = getAttribute('event_address')
+
+    const eventDate = date?.toLocaleDateString(undefined, {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+
+    const eventTime = date?.toLocaleTimeString('en-US', {
+      timeZone,
+    })
+
+    eventDetail = {
+      eventDescription: lockMetadata?.description,
+      eventDate,
+      eventTime,
+      eventAddress,
+    }
+  }
+
+  return eventDetail
 }
 
 export const getCustomContent = async (
@@ -217,6 +298,8 @@ export const notifyNewKeyToWedlocks = async (
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
+  const eventDetail = await getEventDetail(lockAddress, network!)
+
   await sendEmail(
     templates[0],
     templates[1],
@@ -230,6 +313,7 @@ export const notifyNewKeyToWedlocks = async (
       transferUrl: transferUrl.toString(),
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
+      ...eventDetail, // add event details props
     },
     attachments
   )

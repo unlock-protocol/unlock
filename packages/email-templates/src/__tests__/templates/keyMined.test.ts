@@ -97,4 +97,44 @@ describe('keyMined', () => {
     expect(asHtml(content).textContent).toContain(`Custom content here`)
     expect(asHtml(content).innerHTML).toContain('href="http://opensealurl.com"')
   })
+
+  it('should contains event details', () => {
+    expect.assertions(4)
+    const content = prepareAll(keyMined).html({
+      keyId: '1337',
+      lockName: 'Ethereal NYC 202',
+      network: 'Polygon',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      openSeaUrl: 'http://opensealurl.com',
+      customContent: `<h1>Custom content here</h1>`,
+      eventAddress: 'Event address',
+      eventDescription: 'Straw Hat Party',
+      eventDate: '15 September 2023',
+    })
+
+    expect(asHtml(content).textContent).toContain(`Event details`)
+    expect(asHtml(content).textContent).toContain(`Event address`)
+    expect(asHtml(content).textContent).toContain(`Straw Hat Party`)
+    expect(asHtml(content).textContent).toContain(`15 September 2023`)
+  })
+
+  it('should not contains event details', () => {
+    expect.assertions(4)
+    const content = prepareAll(keyMined).html({
+      keyId: '1337',
+      lockName: 'Ethereal NYC 202',
+      network: 'Polygon',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      openSeaUrl: 'http://opensealurl.com',
+      customContent: `<h1>Custom content here</h1>`,
+      eventAddress: '',
+      eventDescription: '',
+      eventDate: '',
+    })
+
+    expect(asHtml(content).textContent).not.toContain(`Event details`)
+    expect(asHtml(content).textContent).not.toContain(`Event address`)
+    expect(asHtml(content).textContent).not.toContain(`Straw Hat Party`)
+    expect(asHtml(content).textContent).not.toContain(`15 September 2023`)
+  })
 })
