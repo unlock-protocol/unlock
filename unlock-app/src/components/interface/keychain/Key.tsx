@@ -327,10 +327,9 @@ function Key({ ownedKey, account, network }: Props) {
                             network={network}
                             lockAddress={lock.address}
                             tokenId={tokenId}
-                            image={metadata.image}
                             name={metadata.name}
                             handlePassUrl={(url: string) => {
-                              window.open(url, '_')
+                              window.location.assign(url)
                             }}
                           >
                             <Image
@@ -353,12 +352,11 @@ function Key({ ownedKey, account, network }: Props) {
                             network={network}
                             lockAddress={lock.address}
                             tokenId={tokenId}
-                            image={metadata.image}
                             name={metadata.name}
                             handlePassUrl={(url: string) => {
                               if (isIOS) {
                                 // Download
-                                window.open(url, '_')
+                                window.location.assign(url)
                               } else if (setPassUrl) {
                                 // Show the modal
                                 setPassUrl(url)

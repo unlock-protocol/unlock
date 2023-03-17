@@ -130,10 +130,6 @@ export function Minting({
 
   const stepItems = useCheckoutSteps(checkoutService)
 
-  const tokenImage = `${config.services.storage.host}/lock/${
-    lock!.address
-  }/icon?id=${tokenId}`
-
   const hasTokenId = !!tokenId
 
   return (
@@ -195,10 +191,9 @@ export function Minting({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Google Wallet
@@ -225,10 +220,9 @@ export function Minting({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Apple Wallet
