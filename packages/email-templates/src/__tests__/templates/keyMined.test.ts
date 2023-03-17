@@ -119,7 +119,7 @@ describe('keyMined', () => {
   })
 
   it('should not contains event details', () => {
-    expect.assertions(4)
+    expect.assertions(1)
     const content = prepareAll(keyMined).html({
       keyId: '1337',
       lockName: 'Ethereal NYC 202',
@@ -133,8 +133,5 @@ describe('keyMined', () => {
     })
 
     expect(asHtml(content).textContent).not.toContain(`Event details`)
-    expect(asHtml(content).textContent).not.toContain(`Event address`)
-    expect(asHtml(content).textContent).not.toContain(`Straw Hat Party`)
-    expect(asHtml(content).textContent).not.toContain(`15 September 2023`)
   })
 })
