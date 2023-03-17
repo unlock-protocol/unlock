@@ -121,6 +121,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // address 
   address public unlockManager;
 
+  // as per OZ EIP1967 Proxy implementation, this is the keccak-256 hash 
+  // of "eip1967.proxy.admin" subtracted by 1
+  bytes32 constant internal _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
+
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
@@ -385,6 +389,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return block.basefee;
   }
 
+  /**
+   * Returns the proxy admin address to manager upgrade for 
+   * this contract
+   * TODO: @dev protected by modifier onlyGov
+   */
+  function _getAdmin() public view returns (address) {
+      return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
+  }
+  
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.

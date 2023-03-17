@@ -11,6 +11,8 @@ const {
   deployWETH,
 } = require("../helpers");
 
+const { abi : proxyAdminAbi } = require('../helpers/ABIs/ProxyAdmin.json')
+
 let managerDest,
   managerSrc,
   connext,
@@ -170,7 +172,7 @@ contract("Unlock / bridged governance", () => {
   describe("unlockManager", () => {
     let calldata
     const slippage = 30
-    it('can receive and execute a call from the bridge', async () => {
+    it('can change Unlock settings from the bridge', async () => {
       const PublicLock = await ethers.getContractFactory('TestPublicLockUpgraded')
       const template = await PublicLock.deploy()
       const args = [
@@ -199,5 +201,27 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), args[1]);
       assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
     })
+
+    it('can upgrade Unlock from the bridge', async () => {
+      const UnlockUpgraded = await ethers.getContractFactory('TestUnlockUpgraded')
+      const unlockUpgraded = await UnlockUpgraded.deploy()
+
+      const interface = new ethers.utils.Interface(proxyAdminAbi)
+      const args = [unlockDest.address, unlockUpgraded.address]
+      calldata = interface.encodeFunctionData('upgrade', args)
+
+      // send call to the manager through the bridge
+      await connext.xcall(
+        destDomainId, // domainID
+        managerDest.address,
+        ADDRESS_ZERO, // currency
+        ADDRESS_ZERO,
+        0, // amount
+        slippage,
+        calldata
+      )
+
+    })
   })
+
 });

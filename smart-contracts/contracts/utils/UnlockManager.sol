@@ -10,6 +10,8 @@ pragma solidity ^0.8.7;
 
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
 import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
+import {StorageSlot} from '@openzeppelin/contracts/utils/StorageSlot.sol';
+
 import '../interfaces/IUnlock.sol';
 import 'hardhat/console.sol';
 
@@ -59,6 +61,12 @@ contract UnlockManager {
     return true;
   }
 
+  function _getAdmin(address proxy) internal view returns (address) {
+    address proxyAdminAddress = IUnlock(proxy)._getAdmin();
+    return proxyAdminAddress;
+  }
+  
+
   /**
    * SETTERS
    */
@@ -92,7 +100,7 @@ contract UnlockManager {
     bytes32 transferId,
     uint256 amount,
     address currency,
-    address originSender, // address of the contract on the origin chain
+    address, // address of the contract on the origin chain
     uint32 origin, // 	Domain ID of the origin chain
     bytes memory callData
   ) external returns (bytes memory) {
@@ -108,8 +116,16 @@ contract UnlockManager {
     // TODO: parse msg.value properly
     uint valueToSend = currency != address(0) ? amount: 0;
 
-    // forward the call to unlock
-    (bool success, ) = unlockAddress.call{value: valueToSend}(callData);
+    // TODO: switch upgrade Unlock
+    bool success = false;
+    if(false) {
+      // forward the call to unlock
+      (success, ) = unlockAddress.call{value: valueToSend}(callData);
+    } else {
+      // TODO: how to manage proxyAdmin ownership?
+      address proxyAdmin = _getAdmin(unlockAddress);
+      (success, ) = proxyAdmin.call(callData);
+    }
 
     // catch revert reason
     if (success == false) {
