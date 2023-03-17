@@ -19,8 +19,7 @@ module.exports = async () => {
   const Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
 
   const unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-    initializer: 'initialize(address)',
-    unsafeAllow: ['delegatecall']
+    initializer: 'initialize(address)'
   })
   await unlock.deployed()
 

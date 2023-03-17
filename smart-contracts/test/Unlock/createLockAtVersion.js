@@ -24,8 +24,7 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     ;[unlockOwner, lockOwner] = await ethers.getSigners()
     const Unlock = await ethers.getContractFactory('Unlock')
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-      unsafeAllow: ['delegatecall']
+      initializer: 'initialize(address)'
     })
     await unlock.deployed()
 

@@ -14,8 +14,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
 
     const Unlock = await ethers.getContractFactory('Unlock')
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-      unsafeAllow: ['delegatecall']
+      initializer: 'initialize(address)'
     })
     await unlock.deployed()
 
