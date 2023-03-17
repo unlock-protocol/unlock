@@ -111,11 +111,13 @@ interface EventProps {
   eventDate: string
   eventTime: string
   eventAddress: string
+  eventName: string
 }
 export const getEventDetail = async (
   lockAddress: string,
-  network: number
+  network?: number
 ): Promise<Partial<EventProps> | undefined> => {
+  if (!network) return
   let eventDetail = undefined
   const lockMetadata = await metadataOperations.getLockMetadata({
     lockAddress,
@@ -167,6 +169,7 @@ export const getEventDetail = async (
     })
 
     eventDetail = {
+      eventName: lockMetadata?.name,
       eventDescription: lockMetadata?.description,
       eventDate,
       eventTime,
@@ -298,7 +301,7 @@ export const notifyNewKeyToWedlocks = async (
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
-  const eventDetail = await getEventDetail(lockAddress, network!)
+  const eventDetail = await getEventDetail(lockAddress, network)
 
   await sendEmail(
     templates[0],
