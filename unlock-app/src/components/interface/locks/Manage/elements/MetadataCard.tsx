@@ -25,6 +25,7 @@ import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
 
 interface MetadataCardProps {
   metadata: any
@@ -591,6 +592,11 @@ const UpdateEmailModal = ({
       email: '',
     },
   })
+  const { mutateAsync: updateUserMetadata } = useUpdateUserMetadata({
+    lockAddress,
+    userAddress,
+    network,
+  })
 
   const updateData = (formFields: FieldValues) => {
     reset() // reset form state
@@ -602,16 +608,7 @@ const UpdateEmailModal = ({
   }
 
   const updateMetadata = async (params: any, callback?: () => void) => {
-    const updateMetadataPromise = storage.updateUserMetadata(
-      network,
-      lockAddress,
-      userAddress,
-      {
-        metadata: {
-          protected: params.metadata,
-        },
-      }
-    )
+    const updateMetadataPromise = updateUserMetadata(params)
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
       success: 'Email successfully added to member',

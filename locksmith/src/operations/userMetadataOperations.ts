@@ -1,7 +1,10 @@
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types'
 import { UserTokenMetadata } from '../models'
+import { InferAttributes } from 'sequelize'
+import { isEmpty } from 'lodash'
 
+// @deprecated
 export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
     {
@@ -23,6 +26,12 @@ export async function addMetadata(metadata: UserTokenMetadataInput) {
   )
 }
 
+export function isMetadataEmpty(data: Record<string, any>) {
+  const publicData = isEmpty(data?.public)
+  const protectedData = isEmpty(data?.protected)
+  return publicData && protectedData
+}
+
 export async function getMetadata(
   tokenAddress: string,
   userAddress: string,
@@ -40,4 +49,82 @@ export async function getMetadata(
   }
 
   return data ? data.data : data
+}
+
+export interface UserMetadataInputs {
+  by?: string | null
+  userAddress: string
+  network: number
+  lockAddress: string
+  metadata: Record<string, any>
+}
+
+export const createOrUpdateUserMetadata = async (
+  {
+    userAddress: recipient,
+    lockAddress,
+    network: chain,
+    by,
+    metadata,
+  }: UserMetadataInputs,
+  forceUpdate = false
+) => {
+  const userAddress = Normalizer.ethereumAddress(recipient)
+  const tokenAddress = Normalizer.ethereumAddress(lockAddress)
+  const updatedBy = Normalizer.ethereumAddress(by || recipient)
+  const data = {
+    userMetadata: {
+      protected: metadata.protected,
+      public: metadata.public,
+    },
+  }
+  const user = await UserTokenMetadata.findOne({
+    where: {
+      chain,
+      userAddress,
+      tokenAddress,
+    },
+  })
+  const userTokenMetadata = {
+    chain,
+    userAddress,
+    tokenAddress,
+    data,
+    updatedBy,
+  }
+
+  // if no user, create one
+  if (!user) {
+    const result = await UserTokenMetadata.create(userTokenMetadata)
+    return result
+  }
+
+  const canItBeUpdated =
+    user.updatedBy === updatedBy ||
+    user.userAddress === updatedBy ||
+    isMetadataEmpty(user.data?.userMetadata) ||
+    forceUpdate
+
+  if (!canItBeUpdated) {
+    throw new Error('No permission to update this user metadata')
+  }
+
+  const result = await user.update(userTokenMetadata)
+  return result
+}
+
+export const createOrUpdateUsersMetadata = async (
+  users: UserMetadataInputs[]
+) => {
+  const updated: InferAttributes<UserTokenMetadata>[] = []
+  const error: string[] = []
+  for await (const user of users) {
+    try {
+      const result = await createOrUpdateUserMetadata(user)
+      updated.push(result.toJSON())
+    } catch (e) {
+      error.push(user.userAddress)
+    }
+  }
+  return { updated, error }
 }

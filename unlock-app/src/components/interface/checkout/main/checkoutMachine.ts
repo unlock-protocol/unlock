@@ -82,6 +82,7 @@ export interface SelectRecipientsEvent {
   type: 'SELECT_RECIPIENTS'
   recipients: string[]
   keyManagers?: string[]
+  metadata?: any[]
 }
 
 export interface SelectPaymentMethodEvent {
@@ -179,12 +180,32 @@ interface CheckoutMachineContext {
   skipQuantity: boolean
   skipRecipient: boolean
   password?: string[]
+  metadata?: any[]
   promo?: string[]
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
 }
 
+const DEFAULT_CONTEXT: CheckoutMachineContext = {
+  paywallConfig: {} as PaywallConfig,
+  skipRecipient: true,
+  lock: undefined,
+  messageToSign: undefined,
+  mint: undefined,
+  captcha: undefined,
+  payment: {
+    method: 'crypto',
+  },
+  quantity: 1,
+  renewed: undefined,
+  recipients: [],
+  keyManagers: [],
+  skipQuantity: false,
+  renew: false,
+  hook: undefined,
+  metadata: undefined,
+}
 export const checkoutMachine = createMachine(
   {
     id: 'checkout',
@@ -194,24 +215,7 @@ export const checkoutMachine = createMachine(
       context: {} as CheckoutMachineContext,
       events: {} as CheckoutMachineEvents,
     },
-    context: {
-      paywallConfig: {} as PaywallConfig,
-      skipRecipient: true,
-      lock: undefined,
-      messageToSign: undefined,
-      mint: undefined,
-      captcha: undefined,
-      payment: {
-        method: 'crypto',
-      },
-      quantity: 1,
-      renewed: undefined,
-      recipients: [],
-      keyManagers: [],
-      skipQuantity: false,
-      renew: false,
-      hook: undefined,
-    },
+    context: DEFAULT_CONTEXT,
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
       SELECT: 'SELECT',
@@ -317,6 +321,7 @@ export const checkoutMachine = createMachine(
             target: 'PAYMENT',
             actions: ['selectRecipients'],
           },
+
           BACK: [
             {
               target: 'SELECT',
@@ -630,22 +635,7 @@ export const checkoutMachine = createMachine(
   {
     actions: {
       disconnect: assign((context) => {
-        return {
-          paywallConfig: context.paywallConfig,
-          lock: context.lock,
-          payment: {
-            method: 'crypto',
-          },
-          quantity: context.quantity,
-          messageToSign: undefined,
-          recipients: [],
-          mint: undefined,
-          renewed: undefined,
-          skipQuantity: false,
-          renew: false,
-          skipRecipient: true,
-          keyManagers: [],
-        } as CheckoutMachineContext
+        return DEFAULT_CONTEXT
       }),
       selectLock: assign((context, event) => {
         return {
@@ -675,6 +665,9 @@ export const checkoutMachine = createMachine(
         },
         keyManagers: (_, event) => {
           return event.keyManagers
+        },
+        metadata: (_, event) => {
+          return event.metadata
         },
       }),
       selectCardToCharge: assign({
@@ -711,21 +704,8 @@ export const checkoutMachine = createMachine(
       }),
       updatePaywallConfig: assign((_, event) => {
         return {
+          ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
-          lock: undefined,
-          messageToSign: undefined,
-          mint: undefined,
-          captcha: undefined,
-          payment: {
-            method: 'crypto',
-          },
-          quantity: 1,
-          recipients: [],
-          renewed: undefined,
-          skipQuantity: false,
-          renew: false,
-          skipRecipient: true,
-          keyManagers: [],
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({

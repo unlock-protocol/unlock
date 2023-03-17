@@ -20,7 +20,6 @@ import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
-import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -33,6 +32,8 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
 import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
+import { storage } from '~/config/storage'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -243,7 +244,6 @@ const emailInput: MetadataInput = {
 export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
-  const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
@@ -263,6 +263,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     isEmailRequired,
   ])
 
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
   const methods = useForm<FormData>({
     shouldUnregister: false,
     shouldFocusError: true,
@@ -326,14 +327,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           }
         })
       )
-      const users = await Promise.all(
-        data.metadata.map(async ({ recipient, keyManager, ...props }) => {
+      const metadata = await Promise.all(
+        data.metadata.map(({ recipient, keyManager, ...props }) => {
           const formattedMetadata = formResultToMetadata(
             props,
             metadataInputs || []
           )
           return {
             userAddress: recipient,
+            network: lock!.network,
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -347,11 +349,12 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       const keyManagers = data.metadata.map(
         (item) => item.keyManager || item.recipient
       )
-      await storage.submitMetadata(users, lock!.network)
+      await updateUsersMetadata(metadata)
       send({
         type: 'SELECT_RECIPIENTS',
         recipients,
         keyManagers,
+        metadata,
       })
     } catch (error) {
       if (error instanceof Error) {

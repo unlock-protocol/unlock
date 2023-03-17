@@ -12,6 +12,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { omit } from 'lodash'
 import { useLockData } from '~/hooks/useLockData'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 
 dayjs.extend(customParseFormat)
 
@@ -32,6 +33,7 @@ export function AirdropKeysDrawer({
 }: Props) {
   const storageService = useStorageService()
   const { account, getWalletService } = useAuth()
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const { lock: lockData, isLockLoading: isLockDataLoading } = useLockData({
     lockAddress,
@@ -71,13 +73,14 @@ export function AirdropKeysDrawer({
         userAddress,
         lockAddress,
         metadata,
+        network,
       } as const
 
       return user
     })
 
     // Save metadata for users
-    await storageService.submitMetadata(users, network)
+    await updateUsersMetadata(users)
 
     const initialValue: Record<
       'recipients' | 'keyManagers' | 'expirations',
