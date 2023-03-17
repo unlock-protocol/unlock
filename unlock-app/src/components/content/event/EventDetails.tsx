@@ -21,6 +21,7 @@ import { TweetItButton } from './TweetItButton'
 import { getEventDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
+import { storage } from '~/config/storage'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -53,6 +54,17 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
+
+  const { data: verifiers } = useQuery(
+    ['getVerifiers', lockAddress, network],
+    async () => {
+      const response = await storage.verifiers(network, lockAddress)
+      return response.data.results || []
+    },
+    {
+      enabled: isLockManager,
+    }
+  )
 
   if (isMetadataLoading || isHasValidKeyLoading) {
     return <LoadingIcon></LoadingIcon>
@@ -99,6 +111,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       },
     },
   }
+
+  const settingRoles = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=roles`
 
   return (
     <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
@@ -215,20 +229,40 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </p>
         )}
         {isLockManager && (
-          <>
-            <p className="mt-12 mb-4 text-sm">
-              Want to change something? You can update anytime by accessing your
-              contract (Lock) on the Unlock Dashboard.
-            </p>
-            <Button
-              onClick={onEdit}
-              variant="black"
-              className="border md:w-1/2"
-              size="small"
-            >
-              Edit Details
-            </Button>
-          </>
+          <div className="grid gap-2">
+            <div>
+              <p className="mt-12 mb-4 text-sm">
+                Want to change something? You can update anytime by accessing
+                your contract (Lock) on the Unlock Dashboard.
+              </p>
+              <Button
+                onClick={onEdit}
+                variant="black"
+                className="border md:w-1/2"
+                size="small"
+              >
+                Edit Details
+              </Button>
+            </div>
+            <div className="grid gap-0.5 mt-12">
+              <span>Total verifiers: {verifiers?.length}</span>
+              <p className="mb-4 text-sm ">
+                Verifiers are trusted users at an event who can use a smart
+                phone camera to scan a ticket QR code at the check-in to a venue
+                and mark a ticket as checked-in.
+              </p>
+              <Link href={settingRoles}>
+                <Button
+                  onClick={onEdit}
+                  variant="outlined-primary"
+                  className="border md:w-1/2"
+                  size="small"
+                >
+                  Add Verifier
+                </Button>
+              </Link>
+            </div>
+          </div>
         )}
       </section>
     </main>
