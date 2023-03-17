@@ -89,10 +89,6 @@ export function Returning({
     }
   )
 
-  const tokenImage = `${config.services.storage.host}/lock/${
-    lock!.address
-  }/icon?id=${tokenId}`
-
   return (
     <Fragment>
       <Stepper position={2} service={checkoutService} items={stepItems} />
@@ -137,10 +133,9 @@ export function Returning({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Google Wallet
@@ -167,10 +162,9 @@ export function Returning({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Apple Wallet
