@@ -307,12 +307,7 @@ export const LocksForm = ({
   }
 
   useEffect(() => {
-    const recurringPayments = locks[lockAddress]?.recurringPayments ?? ''
-    if (recurringPayments) {
-      setRecurring(recurringPayments)
-    } else {
-      setRecurring('')
-    }
+    setRecurring(locks[lockAddress]?.recurringPayments ?? '')
   }, [lockAddress, locks])
 
   return (
