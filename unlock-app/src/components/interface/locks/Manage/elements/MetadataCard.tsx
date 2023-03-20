@@ -153,7 +153,7 @@ const ChangeManagerModal = ({
     await changeManagerMutation.mutateAsync(newManager)
   }
 
-  const recipientUnchanged =
+  const managerUnchanged =
     newManager?.toLowerCase() === manager?.toLowerCase()
 
   const fieldDisabled =
