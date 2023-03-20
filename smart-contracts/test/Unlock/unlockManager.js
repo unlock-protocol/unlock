@@ -6,20 +6,15 @@ const {
   deployContracts,
   reverts,
   ADDRESS_ZERO,
-  addSomeETH,
-  deployERC20,
-  deployWETH,
+  deployBridge,
   getProxyAdmin,
 } = require("../helpers");
 
 let managerDest,
   managerSrc,
-  connext,
-  erc20Src,
-  erc20Dest,
+  bridge,
   unlockSrc,
   unlockDest,
-  unlockOwner,
   keyOwner,
   wethSrc,
   wethDest,
@@ -36,38 +31,16 @@ const url = `http://locksmith:8080/api/key/`;
 
 contract("Unlock / bridged governance", () => {
   before(async () => {
-    [unlockOwner, keyOwner] = await ethers.getSigners();
-
-    // deploy weth & a token
-    wethSrc = await deployWETH(unlockOwner);
-    wethDest = await deployWETH(unlockOwner);
-
-    // ERC20s on each chain
-    erc20Src = await deployERC20(unlockOwner, true);
-    erc20Dest = await deployERC20(unlockOwner, true);
-
-    // connext
-    const MockConnext = await ethers.getContractFactory("TestBridge");
-    connext = await MockConnext.deploy(
-      wethSrc.address,
-      wethDest.address,
-      srcDomainId,
-      // both token mentioned for the swap
-      erc20Src.address,
-      erc20Dest.address
-    );
-
-    // fund the bridge
-    await addSomeETH(connext.address);
-    await erc20Dest.mint(connext.address, ethers.utils.parseEther("100"));
+    
+    ;({bridge, wethSrc, wethDest} = await deployBridge())
 
     const UnlockManager = await ethers.getContractFactory("UnlockManager");
 
     // source chain
-    managerSrc = await UnlockManager.deploy(connext.address);
+    managerSrc = await UnlockManager.deploy(bridge.address);
 
     // destination chain
-    managerDest = await UnlockManager.deploy(connext.address);
+    managerDest = await UnlockManager.deploy(bridge.address);
 
     // source chain
     ({ unlockEthers: unlockSrc } = await deployContracts());
@@ -110,8 +83,8 @@ contract("Unlock / bridged governance", () => {
 
   describe("bridgeAddress", () => {
     it("stores bridger sender", async () => {
-      assert.equal(connext.address, await managerDest.bridgeAddress());
-      assert.equal(connext.address, await managerDest.bridgeAddress());
+      assert.equal(bridge.address, await managerDest.bridgeAddress());
+      assert.equal(bridge.address, await managerDest.bridgeAddress());
     });
   });
 
@@ -192,7 +165,7 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send call to the manager through the bridge
-      await connext.xcall(
+      await bridge.xcall(
         destDomainId, // domainID
         managerDest.address,
         ADDRESS_ZERO, // currency
@@ -217,7 +190,7 @@ contract("Unlock / bridged governance", () => {
       calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send call to the manager through the bridge
-      await connext.xcall(
+      await bridge.xcall(
         destDomainId, // domainID
         managerDest.address,
         ADDRESS_ZERO, // currency
