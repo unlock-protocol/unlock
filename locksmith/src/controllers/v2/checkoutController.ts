@@ -100,8 +100,11 @@ export const deleteCheckoutConfig: RequestHandler = async (
   })
   if (checkoutConfig) {
     await checkoutConfig.destroy()
-  }
-  return response.status(200).send({
+     return response.status(200).send({
     message: 'Config deleted',
+  })
+  }
+  return response.status(404).send({
+    message: 'Not found',
   })
 }
