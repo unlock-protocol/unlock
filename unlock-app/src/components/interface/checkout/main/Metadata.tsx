@@ -188,6 +188,7 @@ export const MetadataInputs = ({
                   }}
                   ref={ref}
                   onBlur={onBlur}
+                  autoComplete={label}
                 />
                 {description && !error && (
                   <p className="text-xs text-gray-600"> {description} </p>
@@ -208,23 +209,26 @@ export const MetadataInputs = ({
             )
           )
         })
-        .map((metadataInputItem) => (
-          <Input
-            key={metadataInputItem.name}
-            label={metadataInputItem.name}
-            defaultValue={metadataInputItem.defaultValue}
-            size="small"
-            disabled={disabled}
-            placeholder={metadataInputItem.placeholder}
-            type={metadataInputItem.type}
-            error={errors?.metadata?.[id]?.[metadataInputItem.name]?.message}
-            {...register(`metadata.${id}.${metadataInputItem.name}`, {
-              required:
-                metadataInputItem.required &&
-                `${metadataInputItem.name} is required`,
-            })}
-          />
-        ))}
+        .map((metadataInputItem) => {
+          const { name, defaultValue, placeholder, type, required } =
+            metadataInputItem ?? {}
+          return (
+            <Input
+              key={name}
+              label={name}
+              defaultValue={defaultValue}
+              size="small"
+              disabled={disabled}
+              placeholder={placeholder}
+              type={type}
+              error={errors?.metadata?.[id]?.[name]?.message}
+              autoComplete={label}
+              {...register(`metadata.${id}.${name}`, {
+                required: required && `${name} is required`,
+              })}
+            />
+          )
+        })}
     </div>
   )
 }
