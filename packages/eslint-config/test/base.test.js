@@ -2,8 +2,6 @@
 
 'use strict'
 
-import { test, expect } from 'vitest'
-
 test('entry point parse', () => {
   expect(() => require('../src')).not.toThrow()
 })
