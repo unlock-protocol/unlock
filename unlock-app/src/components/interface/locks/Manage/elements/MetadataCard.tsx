@@ -255,7 +255,7 @@ export const MetadataCard = ({
 
   const key = keys?.[0]
 
-  // defaults to the onwer when the manager is not set
+  // defaults to the owner when the manager is not set
   const manager = key?.manager ?? key?.owner
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
