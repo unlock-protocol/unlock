@@ -76,9 +76,18 @@ export class Paywall {
     this.networkConfigs = networkConfigs
     // Use provider in parameter, fall back to injected provider in window (if any)
     this.provider = provider || getProvider(window as Web3Window)
-    this.resetConfig(paywallConfig)
+    this.paywallConfig = injectProviderInfo(paywallConfig, this.provider)
     // Always do this last!
     this.loadCache()
+  }
+
+  authenticate = () => {
+    if (this.iframe) {
+      this.showIframe()
+    } else {
+      this.shakeHands()
+    }
+    this.sendOrBuffer('authenticate', {})
   }
 
   loadCheckoutModal = (config?: PaywallConfig) => {
@@ -142,6 +151,7 @@ export class Paywall {
   }
 
   shakeHands = async () => {
+    console.log(`Connecting to ${unlockAppUrl}`)
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],

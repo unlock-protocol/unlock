@@ -20,8 +20,9 @@ export function CheckoutPage() {
 
   // Get paywallConfig or oauthConfig from the query parameters.
   const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
-  const oauthConfig = getOauthConfigFromQuery(query)
+  const oauthConfigFromQuery = getOauthConfigFromQuery(query)
 
+  const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
   const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
 
   const injectedProvider =
@@ -59,7 +60,6 @@ export function CheckoutPage() {
           injectedProvider={injectedProvider}
           communication={communication}
           oauthConfig={oauthConfig}
-          paywallConfig={paywallConfig}
         />
       </Container>
     )

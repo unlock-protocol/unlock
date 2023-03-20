@@ -9,6 +9,7 @@ import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 
 interface Props {
   paywallConfig?: PaywallConfig
@@ -16,6 +17,7 @@ interface Props {
   connectService: ConnectService
   injectedProvider: unknown
   onClose(params?: Record<string, string>): void
+  communication: ReturnType<typeof useCheckoutCommunication>
 }
 
 export function ConfirmConnect({
@@ -24,6 +26,7 @@ export function ConfirmConnect({
   connectService,
   paywallConfig,
   onClose,
+  communication,
 }: Props) {
   const [loading, setLoading] = useState(false)
   const { account, network = 1, getWalletService, isUnlockAccount } = useAuth()
@@ -49,6 +52,11 @@ export function ConfirmConnect({
         })
       ).toString('base64')
       setLoading(false)
+      communication?.emitUserInfo({
+        address: account,
+        message: message,
+        signedMessage: signature,
+      })
       onClose({
         code,
         state: oauthConfig.state,

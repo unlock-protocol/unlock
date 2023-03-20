@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { OAuthConfig } from '~/unlockTypes'
 export interface UserInfo {
   address?: string
   signedMessage?: string
+  message?: string
 }
 
 export interface TransactionInfo {
@@ -103,11 +105,24 @@ export const useCheckoutCommunication = () => {
     AsyncSendable | undefined
   >(undefined)
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
-  const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
+  const [paywallConfig, setPaywallConfig] = useState<PaywallConfig | undefined>(
+    undefined
+  )
+  const [oauthConfig, setOauthConfig] = useState<OAuthConfig | undefined>(
+    undefined
+  )
   const [user, setUser] = useState<string | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
-      setConfig(config)
+      setPaywallConfig(config)
+    },
+    authenticate: () => {
+      setOauthConfig({
+        clientId: window.parent.location.host,
+        responseType: '',
+        state: '',
+        redirectUri: '',
+      })
     },
     resolveMethodCall,
     resolveOnEvent,
@@ -168,7 +183,10 @@ export const useCheckoutCommunication = () => {
     insideIframe = window.top !== window
   }
 
-  if (config && config.useDelegatedProvider && !providerAdapter) {
+  const useDelegatedProvider =
+    paywallConfig?.useDelegatedProvider || oauthConfig?.useDelegatedProvider
+
+  if (useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
       enable: () => {
         return new Promise((resolve) => {
@@ -194,7 +212,8 @@ export const useCheckoutCommunication = () => {
     emitCloseModal,
     emitTransactionInfo,
     emitMethodCall,
-    paywallConfig: config,
+    paywallConfig,
+    oauthConfig,
     providerAdapter,
     insideIframe,
     // `ready` is primarily provided as an aid for testing the buffer
