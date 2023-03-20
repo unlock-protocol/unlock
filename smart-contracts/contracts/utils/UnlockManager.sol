@@ -105,8 +105,17 @@ contract UnlockManager {
     bytes memory callData
   ) external returns (bytes memory) {
 
-    // make sure domain is set
-    if(! _chainIsSet(chainIds[origin]) || msg.sender != bridgeAddress) {
+
+    if(
+      // domain is set
+      ! _chainIsSet(chainIds[origin]) 
+      || 
+      // sender is the bridge
+      msg.sender != bridgeAddress
+      ||
+      // we aren't on mainnet
+      chainIds[origin] != 1 
+      ) {
       revert Unauthorized(msg.sender);
     }
 
