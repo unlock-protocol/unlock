@@ -1,5 +1,5 @@
 import * as metadataOperations from '../../src/operations/metadataOperations'
-
+import { expect, it, describe } from 'vitest'
 const chain = 31337
 
 describe('metadataOperations', () => {

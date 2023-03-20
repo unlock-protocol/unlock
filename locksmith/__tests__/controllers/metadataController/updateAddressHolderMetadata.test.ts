@@ -3,7 +3,7 @@ import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import * as Base64 from '../../../src/utils/base64'
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 
 const keyHolder = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',

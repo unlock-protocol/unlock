@@ -1,6 +1,6 @@
 import request from 'supertest'
 import app from '../../src/app'
-
+import { expect, it, describe } from 'vitest'
 describe('HubPublisherController', () => {
   describe('Hook publisher endpoints', () => {
     it('Check if returning the hubs in a head request', async () => {

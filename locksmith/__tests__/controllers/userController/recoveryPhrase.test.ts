@@ -2,6 +2,7 @@ import request from 'supertest'
 import app from '../../app'
 import { User, UserReference } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
+import { describe, expect, beforeAll, it } from 'vitest'
 
 beforeAll(() => {
   return Promise.all([

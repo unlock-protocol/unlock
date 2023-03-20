@@ -1,5 +1,6 @@
 import { Wallet } from 'ethers'
 import { isSignatureValidForAddress } from '../../utils/signatures'
+import { describe, it, expect } from 'vitest'
 
 const privateKey =
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'

@@ -2,8 +2,7 @@ import request from 'supertest'
 import app from '../../app'
 import { User, UserReference, StripeCustomer } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
-import { vi } from 'vitest'
-
+import { vi, beforeAll, expect, describe, it } from 'vitest'
 beforeAll(() => {
   return Promise.all([
     StripeCustomer.truncate({ cascade: true }),

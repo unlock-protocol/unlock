@@ -1,6 +1,7 @@
 import request from 'supertest'
 import app from '../../app'
 import { User, UserReference } from '../../../src/models'
+import { vi, expect, beforeAll, it, describe } from 'vitest'
 
 import UserOperations from '../../../src/operations/userOperations'
 // These tests are slow because we generate private keys

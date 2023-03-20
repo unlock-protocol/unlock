@@ -3,7 +3,7 @@ import {
   sendEmail,
   notifyNewKeyToWedlocks,
 } from '../../src/operations/wedlocksOperations'
-import { vi } from 'vitest'
+import { vi, describe, expect, it, afterEach } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 import GasPrice from '../../src/utils/gasPrice'
-import { vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 // mock coinbase API
 vi.mock('isomorphic-fetch', () => {
   return {

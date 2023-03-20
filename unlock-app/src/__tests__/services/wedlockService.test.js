@@ -1,5 +1,5 @@
 import WedlockService, { emailTemplate } from '../../services/wedlockService'
-import { vi } from 'vitest'
+import { vi, describe, beforeEach, it, expect } from 'vitest'
 
 let w = new WedlockService('http://notareal.host')
 

@@ -5,7 +5,7 @@ import * as Base64 from '../../../src/utils/base64'
 import { User, UserReference, StripeCustomer } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
 import StripeOperations from '../../../src/operations/stripeOperations'
-import { vi } from 'vitest'
+import { vi, expect, describe, it, beforeAll, afterAll } from 'vitest'
 const publicKey = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
 function generateTypedData(message: any, messageKey: string) {

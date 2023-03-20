@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import app from '../app'
-import { vi } from 'vitest'
+import { vi, expect, describe } from 'vitest'
 import { Buffer } from 'buffer'
 
 vi.mock('../../src/payment/paymentProcessor', () => {

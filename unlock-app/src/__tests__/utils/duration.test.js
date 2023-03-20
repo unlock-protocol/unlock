@@ -5,6 +5,7 @@ import {
   expirationAsDate,
 } from '../../utils/durations'
 import { MONTH_NAMES } from '../../constants'
+import { describe, it, expect } from 'vitest'
 
 describe('durations', () => {
   it('should compute the right durations', () => {

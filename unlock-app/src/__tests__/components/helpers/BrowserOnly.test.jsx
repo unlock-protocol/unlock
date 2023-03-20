@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import * as rtl from '@testing-library/react'
 import BrowserOnly from '../../../components/helpers/BrowserOnly'
+import { describe, it, expect } from 'vitest'
 
 describe('BrowserOnly', () => {
   const tester = (

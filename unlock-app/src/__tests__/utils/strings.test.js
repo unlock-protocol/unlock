@@ -4,7 +4,7 @@ import {
   addressMinify,
   minifyEmail,
 } from '../../utils/strings'
-
+import { describe, it, expect } from 'vitest'
 describe('camelCaseToTitle helper', () => {
   it('transforms itself', () => {
     expect.assertions(1)

@@ -1,5 +1,5 @@
 import KeyData from '../../src/utils/keyData'
-
+import { describe, expect, it } from 'vitest'
 describe('KeyData', () => {
   const keyData = new KeyData()
 

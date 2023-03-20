@@ -1,5 +1,5 @@
 import { DecoyUser } from '../../src/utils/decoyUser'
-
+import { describe, expect, it } from 'vitest'
 describe('DecoyUser', () => {
   const decoyUser = new DecoyUser()
   describe('recoveryPhrase', () => {

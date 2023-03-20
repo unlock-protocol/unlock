@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, beforeAll, afterAll, expect, it } from 'vitest'
 import config from '../../../src/config/config'
 
 beforeAll(() => {

@@ -2,7 +2,7 @@ import request from 'supertest'
 import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
 import * as metadataOperations from '../../../src/operations/metadataOperations'
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 
 function* keyIdGen() {
   const start = Date.now()

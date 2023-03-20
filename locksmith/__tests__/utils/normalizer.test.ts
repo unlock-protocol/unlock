@@ -1,5 +1,5 @@
 import * as Normalizer from '../../src/utils/normalizer'
-
+import { describe, expect, it } from 'vitest'
 describe('Normalizer', () => {
   describe('emailAddress', () => {
     it('returns a normalized email address', () => {

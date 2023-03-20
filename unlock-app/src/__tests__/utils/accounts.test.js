@@ -3,7 +3,7 @@ import {
   getAccountFromPrivateKey,
   reEncryptPrivateKey,
 } from '../../utils/accounts'
-import { vi } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
 describe('account helpers', () => {

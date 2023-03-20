@@ -1,5 +1,5 @@
 import { lockIcon } from '../../src/utils/lockIcon'
-
+import { describe, expect, it } from 'vitest'
 describe('lockIcon', () => {
   it('should generate the right svg for different locks', () => {
     expect.assertions(2)

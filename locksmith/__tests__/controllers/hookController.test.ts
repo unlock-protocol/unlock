@@ -3,7 +3,7 @@ import request from 'supertest'
 import { Hook } from '../../src/models'
 import { HookController } from '../../src/controllers/hookController'
 import app from '../app'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 describe('HookController', () => {
   const controller = new HookController({
     leaseSeconds: {

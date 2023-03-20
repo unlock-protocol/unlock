@@ -1,4 +1,4 @@
-import { vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { getGasSettings } from '../../src/utils/gasSettings'
 
 vi.mock('@unlock-protocol/networks', async () => {

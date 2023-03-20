@@ -4,6 +4,7 @@ import app from '../../app'
 import * as Base64 from '../../../src/utils/base64'
 import { User, UserReference } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
+
 function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
@@ -18,6 +19,8 @@ function generateTypedData(message: any, messageKey: string) {
     messageKey,
   }
 }
+
+import { beforeAll, expect, describe, it } from 'vitest'
 
 beforeAll(() => {
   return Promise.all([

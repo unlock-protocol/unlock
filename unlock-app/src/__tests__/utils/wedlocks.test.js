@@ -1,5 +1,5 @@
 import forge from 'node-forge'
-import { vi } from 'vitest'
+import { vi, describe, beforeAll, it, expect } from 'vitest'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 
 const emailAddressToSign = 'julien@unlock-protocol.com'

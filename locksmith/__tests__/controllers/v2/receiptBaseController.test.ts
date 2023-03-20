@@ -3,7 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import * as z from 'zod'
 
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'

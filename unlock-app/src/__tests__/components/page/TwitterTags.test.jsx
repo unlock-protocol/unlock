@@ -6,7 +6,7 @@ import {
   PAGE_DEFAULT_IMAGE,
 } from '../../../constants'
 import TwitterTags from '../../../components/page/TwitterTags'
-
+import { describe, expect, it } from 'vitest'
 describe('TwitterTags', () => {
   it('should render twitter tags based on default values', () => {
     expect.assertions(3)

@@ -3,7 +3,7 @@ import {
   getMetadata,
 } from '../../src/operations/userMetadataOperations'
 import { UserTokenMetadata } from '../../src/models'
-
+import { describe, beforeAll, expect, it } from 'vitest'
 const chain = 31337
 
 describe('userMetadataOperations', () => {

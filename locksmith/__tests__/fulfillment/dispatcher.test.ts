@@ -3,7 +3,7 @@ import { EventEmitter } from 'events'
 import { BigNumber, Wallet } from 'ethers'
 import Dispatcher from '../../src/fulfillment/dispatcher'
 import config from '../../src/config/config'
-import { vi } from 'vitest'
+import { vi, expect, it, describe } from 'vitest'
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 

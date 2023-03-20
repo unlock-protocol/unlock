@@ -2,7 +2,7 @@ import { Op } from 'sequelize'
 import UserOperations from '../../src/operations/userOperations'
 import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 import * as models from '../../src/models'
-import { vi } from 'vitest'
+import { vi, expect, it, describe } from 'vitest'
 
 // TODO: remove this hack with proper mocking
 const { User, UserReference } = models as any

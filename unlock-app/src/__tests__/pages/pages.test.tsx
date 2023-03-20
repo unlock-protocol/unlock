@@ -6,7 +6,7 @@ import Home from '../../pages/index'
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
-import { vi } from 'vitest'
+import { vi, expect, beforeEach } from 'vitest'
 
 const config = configure()
 

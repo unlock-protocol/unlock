@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 import * as Base64 from '../../src/utils/base64'
 import httpMocks from 'node-mocks-http'
-import { vi } from 'vitest'
+import { vi, beforeAll, describe, it, expect } from 'vitest'
 
 let request: any
 let response: any

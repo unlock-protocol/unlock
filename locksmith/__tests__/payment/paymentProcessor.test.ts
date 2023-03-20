@@ -8,7 +8,7 @@ const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
 const stripeToken = 'sk_test_token'
 const mockVisaToken = 'tok_visa'
 const nockBack = nock.back
-import { vi } from 'vitest'
+import { vi, describe, it, expect, beforeAll, afterAll } from 'vitest'
 const mockCreateSource = vi.fn()
 
 vi.mock('stripe', () => {

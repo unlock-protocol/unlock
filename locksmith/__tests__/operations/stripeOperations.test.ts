@@ -5,7 +5,7 @@ import {
 } from '../../src/operations/stripeOperations'
 import { Op } from 'sequelize'
 import * as models from '../../src/models'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 
 // TODO: remove this hack with proper mocking
 let { UserReference, StripeCustomer } = models as any

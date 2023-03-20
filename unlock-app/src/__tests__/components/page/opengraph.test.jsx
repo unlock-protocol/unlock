@@ -6,6 +6,7 @@ import {
   PAGE_DEFAULT_IMAGE,
 } from '../../../constants'
 import OpenGraphTags from '../../../components/page/OpenGraphTags'
+import { describe, expect, it } from 'vitest'
 
 describe('OpenGraphTags', () => {
   it('should render open graph tags based on default values', () => {

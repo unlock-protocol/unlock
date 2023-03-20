@@ -4,7 +4,7 @@ import request from 'supertest'
 import app from '../../app'
 import { User, UserReference } from '../../../src/models'
 import * as Base64 from '../../../src/utils/base64'
-
+import { beforeAll, expect, describe, it } from 'vitest'
 function generateTypedData(message: any, messageKey: string) {
   return {
     types: {

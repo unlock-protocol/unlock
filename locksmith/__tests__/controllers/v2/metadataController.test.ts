@@ -5,7 +5,7 @@ import verifierOperations from '../../../src/operations/verifierOperations'
 import logger from '../../../src/logger'
 
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`

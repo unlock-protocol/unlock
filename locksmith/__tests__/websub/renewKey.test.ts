@@ -1,7 +1,7 @@
 // see hardhat script https://github.com/unlock-protocol/unlock/blob/8e3b93f0c3b0c1ff0d8d883e2dbe8b01ca029e06/smart-contracts/scripts/renew.js
 import { BigNumber } from 'ethers'
 import { KeyRenewal } from '../../src/models'
-import { vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { renewKey, isWorthRenewing } from '../../src/websub/helpers/renewKey'
 
 const renewalInfo = {

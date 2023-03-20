@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { renderHook } from '@testing-library/react-hooks'
 import useLock, { updateKeyPriceOnLock } from '../../hooks/useLock'
 import configure from '../../config'
@@ -8,7 +7,8 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-import { vi } from 'vitest'
+import { vi, describe, beforeEach, expect, it } from 'vitest'
+
 const config = configure()
 const networkId = 31337
 const mockWeb3Service = {

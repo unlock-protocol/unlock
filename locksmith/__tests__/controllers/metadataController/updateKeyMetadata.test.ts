@@ -3,7 +3,7 @@ import request from 'supertest'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 import * as Base64 from '../../../src/utils/base64'
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, beforeAll, describe, it, expect } from 'vitest'
 
 const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'

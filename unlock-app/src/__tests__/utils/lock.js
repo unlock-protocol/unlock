@@ -1,5 +1,5 @@
 import { currencySymbol } from '../../utils/lock'
-
+import { describe, it, expect } from 'vitest'
 const defaultERC20 = {
   address: '0xerc20',
   name: 'TOKEN',

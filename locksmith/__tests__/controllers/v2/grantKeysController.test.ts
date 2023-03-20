@@ -4,7 +4,7 @@ import {
   loginRandomUser,
   loginAsApplication,
 } from '../../test-helpers/utils'
-import { vi } from 'vitest'
+import { vi, expect, it, describe } from 'vitest'
 import app from '../../app'
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'

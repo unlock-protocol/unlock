@@ -1,5 +1,5 @@
 import Asset from '../../src/utils/assets'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 
 vi.mock('request-promise-native', () => {
   return {

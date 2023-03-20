@@ -4,6 +4,7 @@ import app from '../../app'
 import * as Base64 from '../../../src/utils/base64'
 import { User, UserReference } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
+import { describe, expect, beforeAll, it } from 'vitest'
 
 function generateTypedData(message: any, messageKey: string) {
   return {

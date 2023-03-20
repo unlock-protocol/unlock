@@ -1,7 +1,7 @@
 import { handler } from '../../__mocks__/websub/subscriber'
 import { notify } from '../../src/websub/helpers'
 import { Hook, HookEvent } from '../../src/models'
-import { vi } from 'vitest'
+import { describe, expect, it, vi, beforeAll } from 'vitest'
 
 const notifyHook = vi.fn()
 notifyHook.mockImplementation(() => new HookEvent())

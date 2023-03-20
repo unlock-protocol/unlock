@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { networks } from '@unlock-protocol/networks'
-
+import { expect, it, describe, beforeEach } from 'vitest'
 import app from '../../app'
 
 const networkIds = Object.values(networks)
