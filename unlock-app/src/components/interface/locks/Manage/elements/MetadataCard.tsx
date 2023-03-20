@@ -247,7 +247,6 @@ export const MetadataCard = ({
     network,
   })
 
-  console.log('data', data)
   // defaults to the owner when the manager is not set
   const manager = data?.keyManager ?? data?.keyholderAddress
 
