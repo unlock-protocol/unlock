@@ -47,5 +47,12 @@ CheckoutConfig.init(
   {
     modelName: 'CheckoutConfigs',
     sequelize,
+    indexes: [
+      {
+        fields: ['name', 'createdBy'],
+        type: 'UNIQUE',
+        name: 'checkout_configs_by_user_and_name',
+      },
+    ],
   }
 )

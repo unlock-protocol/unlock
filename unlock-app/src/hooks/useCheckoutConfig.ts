@@ -11,8 +11,12 @@ export const useCheckoutConfig = ({ id }: CheckoutConfigOptions) => {
   return useQuery(
     ['checkout', id],
     async () => {
-      const response = await storage.getCheckoutConfig(id!)
-      return response.data
+      try {
+        const response = await storage.getCheckoutConfig(id!)
+        return response.data
+      } catch {
+        return null
+      }
     },
     {
       enabled: !!id,

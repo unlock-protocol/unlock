@@ -1,6 +1,12 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
@@ -30,19 +36,23 @@ export const CheckoutUrlPage = () => {
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
 
-  const DEFAULT_CONFIG = {
-    locks:
-      network && lockAddress
-        ? {
-            [lockAddress as string]: {
-              network: parseInt(`${network!}`),
-              skipRecipient: true,
-            },
-          }
-        : {},
-    pessimistic: true,
-    skipRecipient: true,
-  } as PaywallConfig
+  const DEFAULT_CONFIG = useMemo(
+    () =>
+      ({
+        locks:
+          network && lockAddress
+            ? {
+                [lockAddress as string]: {
+                  network: parseInt(`${network!}`),
+                  skipRecipient: true,
+                },
+              }
+            : {},
+        pessimistic: true,
+        skipRecipient: true,
+      } as PaywallConfig),
+    [lockAddress, network]
+  )
 
   const { data: checkoutConfigList, refetch: refetchConfig } =
     useCheckoutConfigsByUser()
@@ -80,9 +90,13 @@ export const CheckoutUrlPage = () => {
   const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
     async (event) => {
       event.preventDefault()
-      await removeConfig(checkoutConfig.id!)
+      if (!checkoutConfig.id) {
+        setDeleteConfirmation(false)
+        return
+      }
+      await removeConfig(checkoutConfig.id)
       const { data: list } = await refetchConfig()
-      const result = list?.pop()
+      const result = list?.[0]
       if (!result) return
       setCheckoutConfig({
         id: result.id,
@@ -217,7 +231,7 @@ export const CheckoutUrlPage = () => {
               Save
             </Button>
             <Button
-              loading={isConfigRemoving}
+              disabled={!checkoutConfig.id}
               iconLeft={<TrashIcon />}
               onClick={(event) => {
                 event.preventDefault()
