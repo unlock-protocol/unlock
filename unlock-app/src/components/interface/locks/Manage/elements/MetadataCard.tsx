@@ -157,7 +157,7 @@ const ChangeManagerModal = ({
     newManager?.toLowerCase() === manager?.toLowerCase()
 
   const fieldDisabled =
-    recipientUnchanged || changeManagerMutation.isLoading || !isValid
+    managerUnchanged || changeManagerMutation.isLoading || !isValid
 
   useEffect(() => {
     if (isOpen) {
