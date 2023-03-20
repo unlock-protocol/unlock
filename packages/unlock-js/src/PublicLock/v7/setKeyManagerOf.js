@@ -21,7 +21,6 @@ export default async function (
     callback(null, hash)
   }
 
-  await this.provider.waitForTransaction(hash)
-
-  return null
+  const tx = await this.provider.waitForTransaction(hash)
+  return tx
 }

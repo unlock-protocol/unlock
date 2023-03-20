@@ -153,8 +153,7 @@ const ChangeManagerModal = ({
     await changeManagerMutation.mutateAsync(newManager)
   }
 
-  const managerUnchanged =
-    newManager?.toLowerCase() === manager?.toLowerCase()
+  const managerUnchanged = newManager?.toLowerCase() === manager?.toLowerCase()
 
   const fieldDisabled =
     managerUnchanged || changeManagerMutation.isLoading || !isValid
@@ -248,6 +247,7 @@ export const MetadataCard = ({
     network,
   })
 
+  console.log('data', data)
   // defaults to the owner when the manager is not set
   const manager = data?.keyManager ?? data?.keyholderAddress
 
