@@ -94,7 +94,7 @@ export const SubscriptionForm = ({
         <div className="grid  gap-1.5">
           <small className="text-sm text-brand-dark">
             Recurring memberships are only available for locks that are using
-            and ERC20 currency and that have expirations and a refund value.
+            and ERC20 currency for which a gas refund value is set.
           </small>
           <ul className="ml-2 list-disc">
             {refund === 0 && (
