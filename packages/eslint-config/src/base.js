@@ -1,14 +1,16 @@
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:json/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:json/recommended',
+  ],
   env: {
     es6: true,
     node: true,
     browser: true,
-    jest: true,
   },
   root: true,
   plugins: [
-    'jest',
     'eslint-plugin-prettier',
     'eslint-plugin-mocha',
     '@typescript-eslint',
