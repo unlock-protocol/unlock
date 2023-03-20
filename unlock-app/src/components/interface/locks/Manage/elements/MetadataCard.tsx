@@ -6,7 +6,6 @@ import {
   Detail,
   AddressInput,
   isAddressOrEns,
-  Placeholder,
 } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
@@ -26,13 +25,13 @@ import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useKeys } from '~/hooks/useKeys'
 
 interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
   expirationDuration?: string
+  reloadMembers?: any
 }
 
 const keysToIgnore = [
@@ -40,6 +39,7 @@ const keysToIgnore = [
   'lockName',
   'expiration',
   'keyholderAddress',
+  'keyManager',
   'lockAddress',
   'checkedInAt',
   'email',
@@ -229,6 +229,7 @@ export const MetadataCard = ({
   owner,
   network,
   expirationDuration,
+  reloadMembers,
 }: MetadataCardProps) => {
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
@@ -246,17 +247,8 @@ export const MetadataCard = ({
     network,
   })
 
-  const { keys, isKeysLoading, refetchUseKeys } = useKeys({
-    lockAddress,
-    owner,
-    networks: [network],
-    tokenId,
-  })
-
-  const key = keys?.[0]
-
   // defaults to the owner when the manager is not set
-  const manager = key?.manager ?? key?.owner
+  const manager = data?.keyManager ?? data?.keyholderAddress
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
@@ -526,45 +518,43 @@ export const MetadataCard = ({
               <Detail
                 className="py-2"
                 label={
-                  <>
-                    {isKeysLoading ? (
-                      <Placeholder.Line />
-                    ) : (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span>Key Manager:</span>
-                          {/* show full address on desktop */}
-                          <div className="text-base font-bold break-words">
-                            <span className="hidden md:block">{manager}</span>
-                            {/* show minified address on mobile */}
-                            <span className="block md:hidden">
-                              {addressMinify(manager)}
-                            </span>
-                          </div>
-                          <Button
-                            className="p-0 outline-none text-brand-ui-primary ring-0"
-                            variant="transparent"
-                            aria-label="blockscan link"
-                          >
-                            <a
-                              href={`https://blockscan.com/address/${manager}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <ExternalLinkIcon size={20} />
-                            </a>
-                          </Button>
-                        </div>
-                        <ChangeManagerModal
-                          lockAddress={lockAddress}
-                          network={network}
-                          manager={manager}
-                          tokenId={tokenId}
-                          onChange={refetchUseKeys}
-                        />
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span>Key Manager:</span>
+                      {/* show full address on desktop */}
+                      <div className="text-base font-bold break-words">
+                        <span className="hidden md:block">{manager}</span>
+                        {/* show minified address on mobile */}
+                        <span className="block md:hidden">
+                          {addressMinify(manager)}
+                        </span>
                       </div>
-                    )}
-                  </>
+                      <Button
+                        className="p-0 outline-none text-brand-ui-primary ring-0"
+                        variant="transparent"
+                        aria-label="blockscan link"
+                      >
+                        <a
+                          href={`https://blockscan.com/address/${manager}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <ExternalLinkIcon size={20} />
+                        </a>
+                      </Button>
+                    </div>
+                    <ChangeManagerModal
+                      lockAddress={lockAddress}
+                      network={network}
+                      manager={manager}
+                      tokenId={tokenId}
+                      onChange={() => {
+                        if (typeof reloadMembers === 'function') {
+                          reloadMembers()
+                        }
+                      }}
+                    />
+                  </div>
                 }
               />
             </div>

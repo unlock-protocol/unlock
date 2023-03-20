@@ -72,6 +72,7 @@ export const buildKeysWithMetadata = (
         lockName: lock?.name,
         expiration: key?.expiration,
         keyholderAddress: key?.owner,
+        keyManager: key?.manager,
         lockAddress: lock?.address,
         ...metadata,
       }

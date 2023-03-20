@@ -11,28 +11,26 @@ import { useConfig } from '~/utils/withConfig'
 
 interface Options {
   lockAddress?: string
-  tokenId?: string
   owner?: string
   networks?: number[]
 }
 
 export type Key = NonNullable<ReturnType<typeof useKeys>['keys']>[0]
 
-export const useKeys = ({ networks, lockAddress, tokenId, owner }: Options) => {
+export const useKeys = ({ networks, lockAddress, owner }: Options) => {
   const config = useConfig()
   const subgraph = new SubgraphService(config.networks)
   const {
     data: keys,
     isLoading: isKeysLoading,
     refetch: refetchUseKeys,
-  } = useQuery(['keys', networks, lockAddress, tokenId], async () => {
+  } = useQuery(['keys', networks, lockAddress], async () => {
     const keys = await subgraph.keys(
       {
         first: 500,
         where: {
           lock: lockAddress?.toLowerCase(),
           owner: owner?.toLowerCase(),
-          tokenId,
         },
         orderBy: KeyOrderBy.Expiration,
         orderDirection: OrderDirection.Desc,
