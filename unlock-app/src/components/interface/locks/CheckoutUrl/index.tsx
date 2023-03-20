@@ -38,15 +38,17 @@ export const CheckoutUrlPage = () => {
       ...locks,
     }
     Object.entries(locks).map(async ([lockAddress, values]) => {
-      const { isRecurringPossible = false } = await getIsRecurringPossible({
-        lockAddress,
-        network: values!.network!,
-      })
+      const { isRecurringPossible = false, oneYearRecurring } =
+        await getIsRecurringPossible({
+          lockAddress,
+          network: values!.network!,
+        })
 
       // checkout config URL default to 1 year of recurring payments if recurring is set
       if (isRecurringPossible) {
         const recurringPayments =
-          values?.recurringPayments || (isRecurringPossible ? 12 : undefined)
+          values?.recurringPayments ||
+          (isRecurringPossible ? oneYearRecurring : undefined)
 
         newLocksMapping = {
           ...locks,

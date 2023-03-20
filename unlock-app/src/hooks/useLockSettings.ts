@@ -1,4 +1,5 @@
 import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface LockSettingsProps {
@@ -35,9 +36,15 @@ export function useLockSettings() {
       lock?.tokenAddress?.length > 0 &&
       refund > 0
 
+    // 1 year of recurring payments
+    const oneYearRecurring = Math.floor(
+      365 / Number(secondsAsDays(lock.expirationDuration))
+    )
+
     return {
       refund,
       isRecurringPossible,
+      oneYearRecurring,
     }
   }
 
