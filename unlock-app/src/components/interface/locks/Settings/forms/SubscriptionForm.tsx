@@ -126,8 +126,7 @@ export const SubscriptionForm = ({
             {(lock?.currencyContractAddress ?? '')?.length === 0 && (
               <li>
                 <span className="text-red-500">
-                  {`This lock does not have a custom ERC20 contract address. You
-                  can change it from "Price" tab.`}
+                  {`This lock uses the chain's default currency which cannot be used for recurring memberships. Please change to use an ERC20 current from the "Price" tab.`}
                 </span>
               </li>
             )}
