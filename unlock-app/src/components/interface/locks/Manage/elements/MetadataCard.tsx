@@ -200,7 +200,7 @@ const ChangeManagerModal = ({
                     />
                     {recipientIsManager && (
                       <span className="text-sm text-red-500">
-                        This recipient is the current Key Manager.
+                        This address is already the current manager for this key.
                       </span>
                     )}
                   </>
