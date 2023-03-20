@@ -9,22 +9,14 @@ pragma solidity ^0.8.7;
 
 
 import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IXReceiver.sol";
-import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
-import {StorageSlot} from '@openzeppelin/contracts/utils/StorageSlot.sol';
-
 import '../interfaces/IUnlock.sol';
-import 'hardhat/console.sol';
 
 contract UnlockManager {
 
   address public bridgeAddress;
-
-  // the chain id => address of Unlock receiver on the destination chain
-  mapping (uint => address) public unlockAddresses;
-
-  // the mapping 
-  mapping(uint => uint32) public domains; 
-  mapping(uint32 => uint) public chainIds; 
+  address public unlockAddress;
+  address public dispatcherAddress;
+  uint32 public domain;
 
   // Errors
   error OnlyUnlock();
@@ -35,13 +27,28 @@ contract UnlockManager {
   error InsufficientBalance();
 
   event BridgeCallReceived(
-    uint originChainId,
-    address indexed unlockAddress, 
-    bytes32 transferID
+    bytes32 transferId,
+    uint8 action,      
+    address indexed contractCalled, 
+    bytes execCallData
   );
 
-  constructor (address _bridgeAddress) {
+   /**
+   * @param _bridgeAddress address of connext contract on current chain
+   * @param _unlockAddress address of the Unlock contract on current chain
+   * @param _domain the Domain ID of the current chain as used by the Connext Bridge 
+   * https://docs.connext.network/resources/supported-chains
+   */
+  constructor (
+    address _bridgeAddress,
+    address _dispatcherAddress,
+    address _unlockAddress,
+    uint32 _domain
+  ) {
     bridgeAddress = _bridgeAddress;
+    dispatcherAddress = _dispatcherAddress;
+    domain = _domain;
+    unlockAddress = _unlockAddress;
   }
 
   /**
@@ -50,48 +57,14 @@ contract UnlockManager {
   
   // Check is sender is current chain Unlock multisig address
   function _isUnlockOwner() internal view returns (bool) {    
-    return IUnlock(unlockAddresses[block.chainid]).owner() == msg.sender;
+    return IUnlock(unlockAddress).owner() == msg.sender;
   }
 
-  // Make sure Unlock receiver contract exists on dest chain
-  function _chainIsSet(uint _chainId) internal view returns (bool) {
-    if(domains[_chainId] == 0 || unlockAddresses[_chainId] == address(0)) {
-      revert ChainNotSet();
-    }
-    return true;
-  }
-
-  function _getAdmin(address proxy) internal view returns (address) {
+  function _getProxyAdmin(address proxy) internal view returns (address) {
     address proxyAdminAddress = IUnlock(proxy)._getAdmin();
     return proxyAdminAddress;
   }
   
-
-  /**
-   * SETTERS
-   */
-
-  // TODO: add ownable modifier
-  /**
-   * @param _unlockAddresses addresses of the Unlock contract on all chains
-   * @param _chainIds ID of the chain where the corresponding Unlock contract is deployed
-   * @param _domains Domain IDs mapped to chains as used by the Connext Bridge https://docs.connext.network/resources/supported-chains
-   */
-  function setUnlockAddresses(
-    address[] calldata _unlockAddresses,
-    uint[] calldata _chainIds, 
-    uint32[] calldata _domains
-  ) public {
-    if( _unlockAddresses.length != _chainIds.length || _chainIds.length != _domains.length ){
-      revert LengthMismatch();
-    }
-    for (uint i = 0; i < _unlockAddresses.length; i++) {
-      domains[_chainIds[i]] = _domains[i];
-      chainIds[_domains[i]] = _chainIds[i];
-      unlockAddresses[_chainIds[i]] = _unlockAddresses[i];
-    }
-  }
-
   /** 
    * @notice The receiver function as required by the IXReceiver interface.
    * @dev The Connext bridge contract will call this function.
@@ -100,45 +73,46 @@ contract UnlockManager {
     bytes32 transferId,
     uint256 amount,
     address currency,
-    address, // address of the contract on the origin chain
+    address caller, // address of the contract on the origin chain
     uint32 origin, // 	Domain ID of the origin chain
     bytes memory callData
   ) external returns (bytes memory) {
 
-
+    // TODO: allow also multisig
     if(
-      // domain is set
-      ! _chainIsSet(chainIds[origin]) 
-      || 
       // sender is the bridge
       msg.sender != bridgeAddress
+      || 
+      // origin sender is not mainnet dispatcher
+      caller != dispatcherAddress 
       ||
-      // we aren't on mainnet
-      chainIds[origin] != 1 
+      // origin is not mainnet
+      origin != 6648936
+      ||
+      // we are on mainnet
+      block.chainid == 1 
       ) {
       revert Unauthorized(msg.sender);
     }
 
-    // make sure unlock
-    address unlockAddress = unlockAddresses[block.chainid];
-
     // TODO: parse msg.value properly
     uint valueToSend = currency != address(0) ? amount: 0;
 
-    // TODO: switch upgrade Unlock
-    bool success = false;
-    if(false) {
-      // forward the call to unlock
-      (success, ) = unlockAddress.call{value: valueToSend}(callData);
-    } else {
-      // TODO: how to manage proxyAdmin ownership?
-      address proxyAdmin = _getAdmin(unlockAddress);
-      (success, ) = proxyAdmin.call(callData);
+    // unpack calldata args
+    (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
+
+    // check where to forward the call
+    address contractToCall;    
+    if(action == 1) { 
+      contractToCall = unlockAddress;
+    } else if (action == 2) { 
+      contractToCall = _getProxyAdmin(unlockAddress);
     }
+
+    (bool success, ) = contractToCall.call{value: valueToSend}(execCallData);
 
     // catch revert reason
     if (success == false) {
-      // TODO: potentially refund if the lock call failed
       assembly {
         let ptr := mload(0x40)
         let size := returndatasize()
@@ -148,9 +122,10 @@ contract UnlockManager {
     }
 
     emit BridgeCallReceived(
-      chainIds[origin],
-      unlockAddress, 
-      transferId
+      transferId,
+      action,
+      contractToCall, 
+      execCallData
     );
   }
 

@@ -8,12 +8,10 @@ const ADMIN_SLOT =
 
 async function getProxyAdmin(contractAddress) {
   const proxyAdminAddress = await getProxyAdminAddress(contractAddress)
-  console.log(proxyAdminAddress)
   const proxyAdmin = await ethers.getContractAt(
     proxyAdminAbi,
     proxyAdminAddress
   )
-  console.log(proxyAdmin)
   return proxyAdmin
 }
 

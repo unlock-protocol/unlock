@@ -8,10 +8,9 @@ pragma solidity ^0.8.7;
 
 
 import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-import 'hardhat/console.sol';
-
-contract GovDispatcher {
+contract GovDispatcher is Ownable {
 
   address public bridgeAddress;
   address public daoAddress;
@@ -27,20 +26,24 @@ contract GovDispatcher {
 
   constructor (
     address _daoAddress, 
-    address _bridgeAddress,
-    uint[] memory _chainIds,
-    uint32[] memory _domainIds,
-    address[] memory _unlockManagers
+    address _bridgeAddress
   ) {
     daoAddress = _daoAddress;
     bridgeAddress = _bridgeAddress;
+  }
 
-    if( _unlockManagers.length != _domainIds.length ){
+
+  function setManagers(
+    address[] memory _unlockManagers,
+    uint[] memory _chainIds,
+    uint32[] memory _domainIds
+  ) public onlyOwner {
+     if( _unlockManagers.length != _chainIds.length || _chainIds.length != _domainIds.length ){
       revert LengthMismatch();
     }
 
     for (uint i = 0; i < _domainIds.length; i++) {
-      unlockManagers[_domainIds[i]] = _unlockManagers[_chainIds[i]];
+      unlockManagers[_domainIds[i]] = _unlockManagers[i];
       domains[_chainIds[i]] = _domainIds[i];
     }
   }
