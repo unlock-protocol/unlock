@@ -9,9 +9,8 @@ const {
   addSomeETH,
   deployERC20,
   deployWETH,
+  getProxyAdmin,
 } = require("../helpers");
-
-const { abi : proxyAdminAbi } = require('../helpers/ABIs/ProxyAdmin.json')
 
 let managerDest,
   managerSrc,
@@ -23,7 +22,8 @@ let managerDest,
   unlockOwner,
   keyOwner,
   wethSrc,
-  wethDest;
+  wethDest,
+  proxyAdmin
 
 //
 const srcChainId = 4;
@@ -90,6 +90,10 @@ contract("Unlock / bridged governance", () => {
       url,
       destChainId
     );
+
+    // transfer Unlock ProxyAdmin ownership to UnlockManager
+    proxyAdmin = await getProxyAdmin(unlockDest.address)
+    await proxyAdmin.transferOwnership(managerDest.address)
 
     const args = [
       [unlockSrc.address, unlockDest.address],
@@ -181,7 +185,8 @@ contract("Unlock / bridged governance", () => {
       ]
 
       const { interface } = unlockDest
-      calldata = interface.encodeFunctionData('addLockTemplate', args)
+      const unlockCallData =  interface.encodeFunctionData('addLockTemplate', args)
+      calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [1, unlockCallData])
 
       assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
@@ -206,9 +211,10 @@ contract("Unlock / bridged governance", () => {
       const UnlockUpgraded = await ethers.getContractFactory('TestUnlockUpgraded')
       const unlockUpgraded = await UnlockUpgraded.deploy()
 
-      const interface = new ethers.utils.Interface(proxyAdminAbi)
+      const { interface } = proxyAdmin
       const args = [unlockDest.address, unlockUpgraded.address]
-      calldata = interface.encodeFunctionData('upgrade', args)
+      const proxyAdminCalldata = interface.encodeFunctionData('upgrade', args)
+      calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send call to the manager through the bridge
       await connext.xcall(
