@@ -153,11 +153,11 @@ const ChangeManagerModal = ({
     await changeManagerMutation.mutateAsync(newManager)
   }
 
-  const recipientIsManager =
+  const recipientUnchanged =
     newManager?.toLowerCase() === manager?.toLowerCase()
 
   const fieldDisabled =
-    recipientIsManager || changeManagerMutation.isLoading || !isValid
+    recipientUnchanged || changeManagerMutation.isLoading || !isValid
 
   useEffect(() => {
     if (isOpen) {
@@ -198,9 +198,10 @@ const ChangeManagerModal = ({
                         })
                       }}
                     />
-                    {recipientIsManager && (
+                    {recipientUnchanged && (
                       <span className="text-sm text-red-500">
-                        This address is already the current manager for this key.
+                        This address is already the current manager for this
+                        key.
                       </span>
                     )}
                   </>
