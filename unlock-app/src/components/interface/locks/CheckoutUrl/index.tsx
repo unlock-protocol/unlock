@@ -1,11 +1,23 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Modal } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-
+import ConfigComboBox, { CheckoutConfig } from './ComboBox'
+import {
+  useCheckoutConfigRemove,
+  useCheckoutConfigUpdate,
+  useCheckoutConfigsByUser,
+} from '~/hooks/useCheckoutConfig'
+import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 const Header = () => {
   return (
     <header className="flex flex-col gap-4">
@@ -21,20 +33,106 @@ const Header = () => {
 export const CheckoutUrlPage = () => {
   const router = useRouter()
   const query = router.query
-
   const { lock: lockAddress, network } = query ?? {}
+  const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
 
-  // TODO @kalidou : let's use the default values from zod?
-  const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
-    locks: {},
-    pessimistic: true,
-    skipRecipient: true,
+  const DEFAULT_CONFIG = useMemo(
+    () =>
+      ({
+        locks:
+          network && lockAddress
+            ? {
+                [lockAddress as string]: {
+                  network: parseInt(`${network!}`),
+                  skipRecipient: true,
+                },
+              }
+            : {},
+        pessimistic: true,
+        skipRecipient: true,
+      } as PaywallConfig),
+    [lockAddress, network]
+  )
+
+  const { data: checkoutConfigList, refetch: refetchConfig } =
+    useCheckoutConfigsByUser()
+
+  const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
+    id: null as null | string,
+    name: 'default',
+    config: DEFAULT_CONFIG,
   })
 
+  const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
+    useCheckoutConfigUpdate()
+
+  const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
+    useCheckoutConfigRemove()
+
+  const onConfigSave = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    async (event) => {
+      event.preventDefault()
+      const updated = await updateConfig({
+        config: checkoutConfig.config,
+        name: checkoutConfig.name,
+        id: checkoutConfig.id,
+      })
+      setCheckoutConfig({
+        id: updated.id,
+        name: updated.name,
+        config: updated.config as PaywallConfig,
+      })
+      await refetchConfig()
+    },
+    [checkoutConfig, updateConfig, refetchConfig]
+  )
+
+  const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    async (event) => {
+      event.preventDefault()
+      if (!checkoutConfig.id) {
+        setDeleteConfirmation(false)
+        return
+      }
+      await removeConfig(checkoutConfig.id)
+      const { data: list } = await refetchConfig()
+      const result = list?.[0]
+      if (!result) return
+      setCheckoutConfig({
+        id: result.id,
+        name: result.name,
+        config: (result.config as PaywallConfig) || DEFAULT_CONFIG,
+      })
+      setDeleteConfirmation(false)
+    },
+    [
+      checkoutConfig,
+      removeConfig,
+      refetchConfig,
+      DEFAULT_CONFIG,
+      setDeleteConfirmation,
+    ]
+  )
+  useEffect(() => {
+    const checkout = checkoutConfigList?.[0]
+    if (!checkout) return
+
+    setCheckoutConfig({
+      id: checkout.id,
+      name: checkout.name,
+      config: checkout.config as PaywallConfig,
+    })
+  }, [checkoutConfigList])
+
   const onAddLocks = (locks: any) => {
-    setPaywallConfig({
-      ...paywallConfig,
-      locks,
+    setCheckoutConfig((state) => {
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          locks,
+        },
+      }
     })
   }
 
@@ -53,25 +151,16 @@ export const CheckoutUrlPage = () => {
       }
     }
 
-    setPaywallConfig({
-      ...paywallConfig,
-      ...fields,
+    setCheckoutConfig((state) => {
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          ...fields,
+        },
+      }
     })
   }
-
-  const addDefaultLockFromQuery = () => {
-    if (!lockAddress && !network) return null
-    onAddLocks({
-      [lockAddress as string]: {
-        network: parseInt(`${network!}`),
-        skipRecipient: true,
-      },
-    })
-  }
-
-  useEffect(() => {
-    addDefaultLockFromQuery()
-  }, [])
 
   const TopBar = () => {
     return (
@@ -87,17 +176,77 @@ export const CheckoutUrlPage = () => {
 
   return (
     <>
+      <Modal isOpen={isDeleteConfirmation} setIsOpen={setDeleteConfirmation}>
+        <div className="flex flex-col gap-4">
+          <h1 className="text-2xl font-bold">Delete {checkoutConfig.name}</h1>
+          <span className="text-base text-gray-700">
+            Are you sure you want to delete this checkout configuration? This
+            will break any links that use this configuration and cannot be
+            undone.
+          </span>
+          <div className="grid w-full">
+            <Button
+              loading={isConfigRemoving}
+              iconLeft={<TrashIcon />}
+              onClick={onConfigRemove}
+            >
+              Delete {checkoutConfig.name}
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <TopBar />
       <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
         <div className="md:w-1/2">
-          <CheckoutPreview paywallConfig={paywallConfig} />
+          <CheckoutPreview
+            id={checkoutConfig.id}
+            paywallConfig={checkoutConfig.config}
+          />
         </div>
         <div className="flex flex-col gap-4 md:w-1/2">
           <Header />
+          <div className="flex items-center w-full gap-4 p-2">
+            <div className="w-full">
+              <ConfigComboBox
+                items={
+                  (checkoutConfigList as unknown as CheckoutConfig[]) ||
+                  ([] as CheckoutConfig[])
+                }
+                onChange={(value) => {
+                  setCheckoutConfig({
+                    id: value.id,
+                    name: value.name,
+                    config: value.config || DEFAULT_CONFIG,
+                  })
+                }}
+                value={checkoutConfig}
+              />
+            </div>
+            <Button
+              loading={isConfigUpdating}
+              iconLeft={<SaveIcon />}
+              onClick={onConfigSave}
+              size="small"
+            >
+              Save
+            </Button>
+            <Button
+              disabled={!checkoutConfig.id}
+              iconLeft={<TrashIcon />}
+              onClick={(event) => {
+                event.preventDefault()
+                setDeleteConfirmation(true)
+              }}
+              size="small"
+            >
+              Delete
+            </Button>
+          </div>
           <CheckoutForm
+            key={checkoutConfig.id}
             onAddLocks={onAddLocks}
             onBasicConfigChange={onBasicConfigChange}
-            paywallConfig={paywallConfig}
+            paywallConfig={checkoutConfig.config}
           />
         </div>
       </div>

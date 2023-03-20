@@ -91,14 +91,25 @@ components:
         - 'id'
         - 'by'
         - 'config'
+        - 'name'
       properties:
         id:
+          type: string
+        name:
           type: string
         by:
           type: string
         config:
           type: object
           additionalProperties: true
+
+        createdAt:
+          type: string
+          format: date-time
+
+        updatedAt:
+          type: string
+          format: date-time
 
     Verifier:
       type: object
@@ -2228,6 +2239,32 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/checkout/{id}:
+    delete:
+      operationId: deleteCheckoutConfig
+      security:
+        - User: []
+      description: Delete a checkout config
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
     get:
       operationId: getCheckoutConfig
       security:
@@ -2253,7 +2290,7 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
     put:
-      operationId: saveCheckoutConfig
+      operationId: updateCheckoutConfig
       security:
         - User: []
       description: A new checkout config is created or updated if it already exists
@@ -2271,7 +2308,12 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - 'config'
+                - 'name'
               properties:
+                name:
+                  type: string
                 config:
                   type: object
                   additionalProperties: true
@@ -2288,6 +2330,7 @@ paths:
 
   /v2/checkout/list:
     get:
+      operationId: listCheckoutConfigs
       security:
         - User: []
       description: A list of all checkout configs created by the user
@@ -2298,9 +2341,11 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CheckoutConfig'
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CheckoutConfig'
 
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
