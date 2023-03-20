@@ -1,7 +1,5 @@
 import handlebars from 'handlebars'
 import { eventDetailStyle } from './customContentStyle'
-import { google } from 'calendar-link'
-import dayjs from 'dayjs'
 
 export function eventDetails(
   eventName: string,
@@ -15,17 +13,6 @@ export function eventDetails(
     [eventName, eventDescription, eventDate, eventTime, eventAddress].join('')
       .length > 0
   ) {
-    const date = dayjs(eventDate)
-    const calendarEvent = {
-      title: eventName,
-      start: date.toDate(),
-      description: eventDescription || '',
-      // https://github.com/AnandChowdhary/calendar-link#options
-      allDay: false,
-      end: new Date(date.toDate().getTime() + 1000 * 60 * 60),
-      url: '',
-    }
-
     eventDetails = `<h2>Event details</h2>`
 
     if (!!eventDescription) {
@@ -63,18 +50,10 @@ export function eventDetails(
 
     // Wrap content with container with style
     eventDetails = `
-        <div style="${eventDetailStyle}">
-          ${eventDetails}
-          ${
-            !!eventName && !!eventDate && !!eventDescription
-              ? `<br />
-          <a target="_blank" href="${google(calendarEvent)}"> 
-            Add to Google Calendar
-          </a>`
-              : ''
-          }
-        </div>
-      `
+     <div style="${eventDetailStyle}">
+       ${eventDetails}
+     </div>
+   `
   }
 
   return new handlebars.SafeString(eventDetails)
