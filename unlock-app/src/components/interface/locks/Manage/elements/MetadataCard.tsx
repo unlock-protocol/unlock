@@ -198,7 +198,7 @@ const ChangeManagerModal = ({
                         })
                       }}
                     />
-                    {recipientUnchanged && (
+                    {managerUnchanged && (
                       <span className="text-sm text-red-500">
                         This address is already the current manager for this
                         key.
