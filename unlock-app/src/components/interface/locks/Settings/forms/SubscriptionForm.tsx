@@ -113,7 +113,7 @@ export const SubscriptionForm = ({
             {lock?.expirationDuration == -1 && (
               <li>
                 <span className="text-red-500">
-                  This lock does not have an expiration. You can change it from{' '}
+                  The memberships on this lock do not expire, so they cannot be renewed. You can change it from{' '}
                   <Link
                     href={termsSettingsUrl}
                     className="font-semibold text-brand-ui-primary hover:underline"
