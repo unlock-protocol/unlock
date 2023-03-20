@@ -14,7 +14,7 @@ let bridge,
   owner,
   dispatcher,
   manager,
-  daoAddress,
+  dao,
   unlockDest,
   keyOwner,
   wethDest,
@@ -30,7 +30,7 @@ const url = `http://locksmith:8080/api/key/`;
 contract("Unlock / bridged governance", () => {
   before(async () => {
     
-    ;[owner, keyOwner, {address: daoAddress}] = await ethers.getSigners()
+    ;[owner, keyOwner, dao] = await ethers.getSigners()
 
     // mock bridge
     ;({bridge, wethDest} = await deployBridge())
@@ -49,7 +49,7 @@ contract("Unlock / bridged governance", () => {
     // deploy dispatcher to current chain (our mainnet)
     const GovDispatcher = await ethers.getContractFactory("GovDispatcher");
     dispatcher = await GovDispatcher.deploy(
-      daoAddress,
+      dao.address,
       bridge.address
     );
 
@@ -89,7 +89,7 @@ contract("Unlock / bridged governance", () => {
     });
 
     it("stores DAO address", async () => {
-      assert.equal(daoAddress, await dispatcher.daoAddress());
+      assert.equal(dao.address, await dispatcher.daoAddress());
     });
 
     it("has an owner", async () => {
@@ -114,6 +114,16 @@ contract("Unlock / bridged governance", () => {
       it("stores the domains properly", async () => {
         assert.equal(await dispatcher.domains(destChainId), destDomainId);
       });
+      it("can be called only by owner", async () => {
+        await reverts(
+          dispatcher.connect(keyOwner).setManagers(
+            [manager.address],
+            [destChainId],
+            [destDomainId],
+          ),
+          'Ownable'
+        )
+      })    
     })
   });
 
@@ -136,6 +146,17 @@ contract("Unlock / bridged governance", () => {
   });
 
   describe("make changes accross the bridge", () => {
+
+    it('reverts is dispatcher is not called by the DAO', async () => {
+      await reverts(
+        dispatcher.dispatch(
+          [destChainId],
+          ['0x']
+        ),
+        'Unauthorized'
+      )
+    })
+
     it('can add new template to Unlock', async () => {
       // depoloy template
       const PublicLock = await ethers.getContractFactory('TestPublicLockUpgraded')
@@ -155,7 +176,7 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the dispatcher
-      await dispatcher.dispatch(
+      await dispatcher.connect(dao).dispatch(
         [destChainId],
         [calldata]
       )
@@ -175,7 +196,7 @@ contract("Unlock / bridged governance", () => {
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send through the dispatcher
-      await dispatcher.dispatch(
+      await dispatcher.connect(dao).dispatch(
         [destChainId],
         [calldata]
       )

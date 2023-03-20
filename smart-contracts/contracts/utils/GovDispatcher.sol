@@ -28,6 +28,9 @@ contract GovDispatcher is Ownable {
     address _daoAddress, 
     address _bridgeAddress
   ) {
+    // TODO: can only be deployed on mainnet
+    // if(block.chainid != 1) { revert Unauthorized(msg.sender); }
+
     daoAddress = _daoAddress;
     bridgeAddress = _bridgeAddress;
   }
@@ -57,11 +60,7 @@ contract GovDispatcher is Ownable {
     uint[] memory _chainIds,
     bytes[] calldata _calldata
   ) public {
-    if(
-      msg.sender != daoAddress
-      || 
-      block.chainid !=1
-    ) {
+    if(msg.sender != daoAddress) {
       revert Unauthorized(msg.sender);
     }
 
@@ -76,18 +75,18 @@ contract GovDispatcher is Ownable {
       (uint8 action, bytes memory targetCalldata) = abi.decode(_calldata[i], (uint8, bytes));
       
       // pick target: 1 for ProxyAdmin, 2 for Unlock
-      if(action != 1 || action != 2) {
+      if(action != 1 && action != 2) {
         revert UnauthorizedAction(action);
       }
 
       IConnext(bridgeAddress).xcall(
         domains[_chainIds[i]], // domainID
-        unlockManagers[_chainIds[i]], // target contract
+        unlockManagers[domains[_chainIds[i]]], // target contract
         asset,
         address(0), // delegate,
         amount, 
         slippage,
-        targetCalldata
+        _calldata[i]
       );
     }
 
