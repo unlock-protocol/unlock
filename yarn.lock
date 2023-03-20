@@ -15422,7 +15422,6 @@ __metadata:
     eslint: 8.35.0
     eslint-config-next: 13.2.3
     eslint-config-prettier: 8.6.0
-    eslint-plugin-jest: 27.2.0
     eslint-plugin-json: 3.1.0
     eslint-plugin-mocha: 10.1.0
     eslint-plugin-prettier: 4.2.1
@@ -15457,7 +15456,6 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.7
     eslint: 8.35.0
-    eslint-plugin-jest: 27.2.0
     eslint-plugin-mocha: 10.1.0
     hardhat: 2.12.6
     mocha: 10.2.0
@@ -15561,7 +15559,6 @@ __metadata:
     satori: 0.2.2
     sequelize: 6.29.0
     sequelize-cli: 6.6.0
-    setimmediate: 1.0.5
     siwe: 1.1.6
     stripe: 8.222.0
     supertest: 6.3.3
@@ -25966,23 +25963,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:27.2.0":
-  version: 27.2.0
-  resolution: "eslint-plugin-jest@npm:27.2.0"
-  dependencies:
-    "@typescript-eslint/utils": ^5.10.0
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-    jest:
-      optional: true
-  checksum: 83554bb8eed289f903e2e03871a42a9b7b37b5e443d4a1501a42e004db49cddad894592ccec9840221b412ea3d2388428a1b11938031e5628d21c5a3210f1240
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-jest@npm:27.2.1":
   version: 27.2.1
   resolution: "eslint-plugin-jest@npm:27.2.1"
@@ -29869,7 +29849,7 @@ __metadata:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
+  checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
   languageName: node
   linkType: hard
 
@@ -46777,7 +46757,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"setimmediate@npm:1.0.5, setimmediate@npm:^1.0.4, setimmediate@npm:^1.0.5":
+"setimmediate@npm:^1.0.4, setimmediate@npm:^1.0.5":
   version: 1.0.5
   resolution: "setimmediate@npm:1.0.5"
   checksum: c9a6f2c5b51a2dabdc0247db9c46460152ffc62ee139f3157440bd48e7c59425093f42719ac1d7931f054f153e2d26cf37dfeb8da17a794a58198a2705e527fd

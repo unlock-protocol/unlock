@@ -11,7 +11,6 @@ module.exports = {
   },
   root: true,
   plugins: [
-    'jest',
     'eslint-plugin-prettier',
     'eslint-plugin-mocha',
     '@typescript-eslint',
@@ -45,10 +44,6 @@ module.exports = {
     'brace-style': 0,
     'no-constant-condition': 0,
     'no-promise-executor-return': 0,
-    'jest/no-disabled-tests': 'warn',
-    'jest/no-identical-title': 'error',
-    'jest/no-focused-tests': 'error',
-    'jest/prefer-expect-assertions': 'error',
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-explicit-any': 'warn',

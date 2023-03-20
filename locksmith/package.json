@@ -87,7 +87,6 @@
     "satori": "0.2.2",
     "sequelize": "6.29.0",
     "sequelize-cli": "6.6.0",
-    "setimmediate": "1.0.5",
     "siwe": "1.1.6",
     "stripe": "8.222.0",
     "unified": "10.1.2",
