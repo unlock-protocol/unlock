@@ -9,7 +9,11 @@ export enum Platform {
 
 export const isEthPassSupported = (network: number) => {
   // Check `chain` param on https://docs.ethpass.xyz/api-reference#tag/passes
-  return [1, 5, 137, 80001, 10, 69, 42161, 421611].indexOf(network) > -1
+  return (
+    [1, 5, 137, 80001, 10, 56, 100, 69, 84531, 42161, 421611, 11155111].indexOf(
+      network
+    ) > -1
+  )
 }
 
 export const applePass = (
