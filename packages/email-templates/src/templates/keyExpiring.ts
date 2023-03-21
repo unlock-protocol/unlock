@@ -13,8 +13,16 @@ export default {
 {{/if}}
 
 {{#if isRenewable}}
-<p>You can renew the duration from <a href="{{keychainUrl}}">Unlock Keychain</a>, so you don't lose any benefit.</p>
-<p>By renewing the duration, the Key's expiration date is extended so the Key is considered valid for a longer duration.</p>
+<p>You can renew this membership from the <a href="{{keychainUrl}}">Unlock Keychain</a> so you don't lose any benefit.</p>
+{{/if}}
+{{#if isAutoRenewable}}
+<p>This membership will automatically renew, since your balance of {{currency}} is enough. You can cancel this renewal from the <a href="{{keychainUrl}}">Unlock Keychain</a>.</p>
+{{/if}}
+{{#if isRenewableIfRePurchased}}
+<p>This membership will not automatically renew because the membership contract terms have changed. You can approve the new terms from the <a href="{{keychainUrl}}">Unlock Keychain</a> so you don't lose any benefit.</p>
+{{/if}}
+{{#if isRenewableIfReApproved}}
+<p>This membership will not automatically renew because you have not approved enough {{currency}}. You can approve renewals from the <a href="{{keychainUrl}}">Unlock Keychain</a> so you don't lose any benefit.</p>
 {{/if}}
 `,
 }
