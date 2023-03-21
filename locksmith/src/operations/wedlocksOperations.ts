@@ -113,6 +113,21 @@ interface EventProps {
   eventAddress: string
   eventName: string
 }
+
+interface GetTemplateProps {
+  isEvent: boolean
+  isAirdropped: boolean
+  lockAddress?: string
+}
+
+interface GetAttachmentProps {
+  tokenId?: string
+  network?: number
+  lockAddress: string
+  owner: string
+  includeQrCode?: boolean
+  event?: Partial<EventProps>
+}
 export const getEventDetail = async (
   lockAddress: string,
   network?: number
@@ -180,7 +195,7 @@ export const getEventDetail = async (
   return eventDetail
 }
 
-export const getCustomContent = async (
+const getCustomContent = async (
   lockAddress: string,
   network: number,
   template: string
@@ -210,6 +225,67 @@ export const getCustomContent = async (
   return customContent
 }
 
+const getAttachments = async ({
+  tokenId,
+  network,
+  lockAddress,
+  owner,
+  includeQrCode = false,
+  event,
+}: GetAttachmentProps): Promise<Attachment[]> => {
+  const attachments: Attachment[] = []
+
+  // QR-code attachment
+  if (includeQrCode && network && tokenId) {
+    const ticket = await createTicket({
+      lockAddress,
+      tokenId,
+      network,
+      owner,
+    })
+    const svg = new resvg.Resvg(ticket)
+    const pngData = svg.render()
+    const pngBuffer = pngData.asPng()
+    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+    attachments.push({ path: dataURI })
+  }
+
+  // Calendar ICS for event
+  if (event) {
+    // todo
+  }
+
+  return attachments
+}
+
+const getCustomTemplate = ({
+  isEvent = false,
+  isAirdropped = false,
+}: GetTemplateProps) => {
+  if (isAirdropped) {
+    return isEvent ? 'eventKeyAirdropped' : `keyAirdropped`
+  }
+
+  return isEvent ? `eventKeyMined` : `keyMined`
+}
+
+const getTemplates = ({
+  isEvent = false,
+  isAirdropped = false,
+  lockAddress = '',
+}: GetTemplateProps): [string, string] => {
+  if (isEvent) {
+    // Lock address to find the specific template
+    return isAirdropped
+      ? [`eventKeyAirdropped${lockAddress.trim()}`, `eventKeyAirdropped`]
+      : [`eventKeyMined${lockAddress.trim()}`, 'eventKeyMined']
+  }
+
+  // Lock address to find the specific template
+  return isAirdropped
+    ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
+    : [`keyMined${lockAddress.trim()}`, 'keyMined']
+}
 /**
  * Check if there are metadata with an email address for a key and sends
  * and email based on the lock's template if applicable
@@ -264,21 +340,6 @@ export const notifyNewKeyToWedlocks = async (
     keyId: tokenId,
   })
 
-  const attachments: Attachment[] = []
-  if (includeQrCode && network && tokenId) {
-    const ticket = await createTicket({
-      lockAddress,
-      tokenId,
-      network,
-      owner: ownerAddress,
-    })
-    const svg = new resvg.Resvg(ticket)
-    const pngData = svg.render()
-    const pngBuffer = pngData.asPng()
-    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-    attachments.push({ path: dataURI })
-  }
-
   const openSeaUrl =
     networks[network!] && tokenId && lockAddress
       ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ?? undefined
@@ -289,19 +350,35 @@ export const notifyNewKeyToWedlocks = async (
   transferUrl.searchParams.set('keyId', tokenId ?? '')
   transferUrl.searchParams.set('network', network?.toString() ?? '')
 
-  const templates = isAirdroppedRecipient
-    ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
-    : [`keyMined${lockAddress.trim()}`, 'keyMined']
-  // Lock address to find the specific template
+  const eventDetail = await getEventDetail(lockAddress, network)
+  const isEvent = !!eventDetail
+
+  // attachments list
+  const attachments = await getAttachments({
+    tokenId,
+    lockAddress,
+    network,
+    owner: ownerAddress,
+    includeQrCode,
+    event: eventDetail,
+  })
+
+  // email templates
+  const templates = getTemplates({
+    isEvent,
+    isAirdropped: isAirdroppedRecipient,
+    lockAddress,
+  })
 
   // get custom email content
-  const template = isAirdroppedRecipient ? `keyAirdropped` : `keyMined`
+  const template = getCustomTemplate({
+    isEvent,
+    isAirdropped: isAirdroppedRecipient,
+  })
 
   const customContent = await getCustomContent(lockAddress, network!, template)
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
-
-  const eventDetail = await getEventDetail(lockAddress, network)
 
   await sendEmail(
     templates[0],
