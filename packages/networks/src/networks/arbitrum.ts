@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const arbitrum: NetworkConfig = {
+  featured: true,
   publicProvider: 'https://arb1.arbitrum.io/rpc',
   provider: 'https://rpc.unlock-protocol.com/42161',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
@@ -46,7 +47,7 @@ export const arbitrum: NetworkConfig = {
   startBlock: 17429533,
   previousDeploys: [],
   isTestNetwork: false,
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
   uniswapV3: {
@@ -54,7 +55,7 @@ export const arbitrum: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
   },
-  swapPurchaser: '0x36f1Ff99c094F313BE647649F82B19A83e766d2B',
+  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -96,8 +97,14 @@ export const arbitrum: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0xd0b14797b9D08493392865647384974470202A78',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xF6963D3c395A7914De77f771C2fC44b47B8379AC',
       },
     ],
   },

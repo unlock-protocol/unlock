@@ -30,6 +30,15 @@ contract MixinPurchase is
     address unlockAddress
   );
 
+  event ReferrerFee(
+    address indexed referrer,
+    uint fee
+  );
+  
+  event GasRefundValueChanged(
+    uint refundValue
+  );
+
   // default to 0
   uint256 internal _gasRefundValue;
 
@@ -44,6 +53,8 @@ contract MixinPurchase is
 
   mapping(address => uint) public referrerFees;
 
+  error TransferFailed();
+
   /**
    * @dev Set the value/price to be refunded to the sender on purchase
    */
@@ -53,6 +64,7 @@ contract MixinPurchase is
   ) external {
     _onlyLockManager();
     _gasRefundValue = _refundValue;
+    emit GasRefundValueChanged(_refundValue);
   }
 
   /**
@@ -72,7 +84,7 @@ contract MixinPurchase is
    * @param _referrer the address of the referrer. If set to the 0x address, any referrer will receive the fee.
    * @param _feeBasisPoint the percentage of the price to be used for this
    * specific referrer (in basis points)
-   * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+   * @dev To send a fixed percentage of the key price to all referrers, set a percentage to `address(0)`
    */
   function setReferrerFee(
     address _referrer,
@@ -80,26 +92,54 @@ contract MixinPurchase is
   ) public {
     _onlyLockManager();
     referrerFees[_referrer] = _feeBasisPoint;
+    emit ReferrerFee(_referrer, _feeBasisPoint);
   }
 
   /** 
   @dev internal function to execute the payments to referrers if any is set
   */
   function _payReferrer(address _referrer) internal {
-    // get default value
-    uint basisPointsToPay = referrerFees[address(0)];
+    if(_referrer != address(0)) {
+      // get default value
+      uint basisPointsToPay = referrerFees[address(0)];
 
-    // get value for the referrer
-    if (referrerFees[_referrer] != 0) {
-      basisPointsToPay = referrerFees[_referrer];
+      // get value for the referrer
+      if (referrerFees[_referrer] != 0) {
+        basisPointsToPay = referrerFees[_referrer];
+      }
+
+      // pay the referrer if necessary
+      if (basisPointsToPay != 0) {
+        _transfer(
+          tokenAddress,
+          payable(_referrer),
+          (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
+        );
+      }
     }
+  }
 
-    // pay the referrer if necessary
-    if (basisPointsToPay != 0) {
-      _transfer(
-        tokenAddress,
-        payable(_referrer),
-        (keyPrice * basisPointsToPay) / BASIS_POINTS_DEN
+  /** 
+   * @param _baseAmount the total amount to calculate the fee
+   * @dev internal function to execute the payments to referrers if any is set
+   */
+  function _payProtocol(uint _baseAmount) internal {
+
+    // get fee from Unlock 
+    uint protocolFee;
+    try unlockProtocol.protocolFee() {
+      // calculate fee to be paid
+      protocolFee = (_baseAmount * unlockProtocol.protocolFee()) / BASIS_POINTS_DEN;
+    
+      // pay fee to Unlock
+      if (protocolFee != 0) {
+        _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+      }
+    } catch {
+      // emit missing unlock
+      emit UnlockCallFailed(
+        address(this),
+        address(unlockProtocol)
       );
     }
   }
@@ -111,8 +151,10 @@ contract MixinPurchase is
     uint _keyPrice,
     address _referrer
   ) internal {
+
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
+      
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try
@@ -133,6 +175,68 @@ contract MixinPurchase is
         address(this),
         address(unlockProtocol)
       );
+    }
+  }
+
+  /**
+   * @dev helper to keep track of price and duration settings of a key
+   * at purchase / extend time 
+   * @notice stores values are used to prevent renewal if a key has settings 
+   * has changed
+   */
+  function _recordTokenTerms(
+    uint _tokenId,
+    uint _keyPrice
+  ) internal {
+    if (_originalPrices[_tokenId] != _keyPrice) {
+      _originalPrices[_tokenId] = _keyPrice;
+    }
+    if (
+      _originalDurations[_tokenId] != expirationDuration
+    ) {
+      _originalDurations[_tokenId] = expirationDuration;
+    }
+    if (_originalTokens[_tokenId] != tokenAddress) {
+      _originalTokens[_tokenId] = tokenAddress;
+    }
+  }
+
+  /**
+   * @dev helper to check if the pricing or duration of the lock have been modified 
+   * since the key was bought
+   * @return true if the terms has changed
+   */
+  function _tokenTermsChanged(uint _tokenId, address _referrer) internal view returns (bool) {
+    return (
+      _originalPrices[_tokenId] != purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalDurations[_tokenId] != expirationDuration ||
+      _originalTokens[_tokenId] != tokenAddress
+    );
+  }
+
+  /**
+   * @dev simple helper to check the amount of ERC20 tokens declared
+   * by user is enough to cover the actual price
+   */
+  function _checkValue(uint _declared, uint _actual) private pure {
+    if (_declared < _actual) {
+      revert INSUFFICIENT_ERC20_VALUE();
+    }
+  }
+  
+  /**
+   * @dev helper to pay ERC20 tokens
+   */
+  function _transferValue(address _payer, uint _priceToPay) private {
+    if (tokenAddress != address(0)) {
+      IERC20Upgradeable(tokenAddress).transferFrom(
+        _payer,
+        address(this),
+        _priceToPay
+      );
+    } else if (msg.value < _priceToPay) {
+      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+      revert INSUFFICIENT_VALUE();
     }
   }
 
@@ -194,15 +298,11 @@ contract MixinPurchase is
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       // store values at purchase time
-      _originalPrices[tokenIds[i]] = inMemoryKeyPrice;
-      _originalDurations[tokenIds[i]] = expirationDuration;
-      _originalTokens[tokenIds[i]] = tokenAddress;
+      _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
-      if (
-        tokenAddress != address(0) &&
-        _values[i] < inMemoryKeyPrice
-      ) {
-        revert INSUFFICIENT_ERC20_VALUE();
+      // make sure erc20 price is correct
+      if(tokenAddress != address(0)) {
+        _checkValue(_values[i], inMemoryKeyPrice);
       }
 
       // store in unlock
@@ -226,19 +326,10 @@ contract MixinPurchase is
     }
 
     // transfer the ERC20 tokens
-    if (tokenAddress != address(0)) {
-      IERC20Upgradeable token = IERC20Upgradeable(
-        tokenAddress
-      );
-      token.transferFrom(
-        msg.sender,
-        address(this),
-        totalPriceToPay
-      );
-    } else if (msg.value < totalPriceToPay) {
-      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      revert INSUFFICIENT_VALUE();
-    }
+    _transferValue(msg.sender, totalPriceToPay);
+
+    // pay protocol
+    _payProtocol(totalPriceToPay);
 
     // refund gas
     _refundGas();
@@ -279,44 +370,28 @@ contract MixinPurchase is
       _data
     );
 
+    // make sure erc20 price is correct
+    if(tokenAddress != address(0)) {
+      _checkValue(_value, inMemoryKeyPrice);
+    }
+
     // process in unlock
     _recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
-    if (tokenAddress != address(0)) {
-      if (_value < inMemoryKeyPrice) {
-        revert INSUFFICIENT_ERC20_VALUE();
-      }
-      IERC20Upgradeable token = IERC20Upgradeable(
-        tokenAddress
-      );
-      token.transferFrom(
-        msg.sender,
-        address(this),
-        inMemoryKeyPrice
-      );
-    } else if (msg.value < inMemoryKeyPrice) {
-      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      revert INSUFFICIENT_VALUE();
-    }
+    // pay value in ERC20
+    _transferValue(msg.sender, inMemoryKeyPrice);
 
-    // if params have changed, then update them
-    if (_originalPrices[_tokenId] != inMemoryKeyPrice) {
-      _originalPrices[_tokenId] = inMemoryKeyPrice;
-    }
-    if (
-      _originalDurations[_tokenId] != expirationDuration
-    ) {
-      _originalDurations[_tokenId] = expirationDuration;
-    }
-    if (_originalTokens[_tokenId] != tokenAddress) {
-      _originalTokens[_tokenId] = tokenAddress;
-    }
+    // if key params have changed, then update them
+    _recordTokenTerms(_tokenId, inMemoryKeyPrice);
 
     // refund gas (if applicable)
     _refundGas();
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(inMemoryKeyPrice);
   }
 
   /**
@@ -340,17 +415,8 @@ contract MixinPurchase is
       revert NON_RENEWABLE_LOCK();
     }
 
-    // make sure duration and pricing havent changed
-    uint keyPrice = purchasePriceFor(
-      ownerOf(_tokenId),
-      _referrer,
-      ""
-    );
-    if (
-      _originalPrices[_tokenId] != keyPrice ||
-      _originalDurations[_tokenId] != expirationDuration ||
-      _originalTokens[_tokenId] != tokenAddress
-    ) {
+    // make sure key duration and pricing havent changed
+    if (_tokenTermsChanged(_tokenId, _referrer)) {
       revert LOCK_HAS_CHANGED();
     }
 
@@ -366,20 +432,16 @@ contract MixinPurchase is
     _recordKeyPurchase(keyPrice, _referrer);
 
     // transfer the tokens
-    IERC20Upgradeable token = IERC20Upgradeable(
-      tokenAddress
-    );
-    token.transferFrom(
-      ownerOf(_tokenId),
-      address(this),
-      keyPrice
-    );
+    _transferValue(ownerOf(_tokenId), keyPrice);
 
     // refund gas if applicable
     _refundGas();
 
     // send what is due to referrer
     _payReferrer(_referrer);
+
+    // pay protocol
+    _payProtocol(keyPrice);
   }
 
   /**
@@ -409,20 +471,9 @@ contract MixinPurchase is
    */
   function _refundGas() internal {
     if (_gasRefundValue != 0) {
-      if (tokenAddress != address(0)) {
-        IERC20Upgradeable token = IERC20Upgradeable(
-          tokenAddress
-        );
-        // send tokens to refun gas
-        token.transfer(msg.sender, _gasRefundValue);
-      } else {
-        (bool success, ) = msg.sender.call{
-          value: _gasRefundValue
-        }("");
-        if (!success) {
-          revert GAS_REFUND_FAILED();
-        }
-      }
+
+      _transfer(tokenAddress, payable(msg.sender), _gasRefundValue);
+
       emit GasRefunded(
         msg.sender,
         _gasRefundValue,

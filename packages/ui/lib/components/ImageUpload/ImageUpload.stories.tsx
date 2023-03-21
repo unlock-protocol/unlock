@@ -1,19 +1,27 @@
 import { ImageUpload } from './ImageUpload'
-import { StoryFn, Meta } from '@storybook/react'
+import { StoryObj, Meta } from '@storybook/react'
 
-export default {
+const meta = {
   component: ImageUpload,
   title: 'ImageUpload',
-} as Meta<typeof ImageUpload>
+} satisfies Meta<typeof ImageUpload>
 
-const Template: StoryFn<typeof ImageUpload> = (args) => (
-  <ImageUpload {...args} />
-)
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const Primary = Template.bind({})
+export const Primary = {
+  args: {
+    preview: '/images/image_upload.png',
+    description:
+      'Upload an image or select an external URL. Recommend using a square of at least 300x300 pixels.',
+  },
+} satisfies Story
 
-Primary.args = {
-  preview: '/images/image_upload.png',
-  description:
-    'Upload an image or select an external URL. Recommend using a square of at least 300x300 pixels.',
+export const Loading = {
+  args: {
+    preview: '/images/image_upload.png',
+    description:
+      'Upload an image or select an external URL. Recommend using a square of at least 300x300 pixels.',
+    isUploading: true,
+  },
 }

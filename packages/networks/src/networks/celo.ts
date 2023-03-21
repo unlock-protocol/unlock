@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
@@ -50,7 +50,7 @@ export const celo: NetworkConfig = {
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
-  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
+  swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   wrappedNativeCurrency: {
     name: 'Celo native asset',
     symbol: 'CELO',
@@ -73,6 +73,15 @@ export const celo: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x80E085D7591C61153D876b5171dc25756a7A3254',
+      },
+    ],
+  },
 }
 
 export default celo

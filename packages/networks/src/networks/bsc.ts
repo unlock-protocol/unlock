@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const bsc: NetworkConfig = {
   publicProvider: 'https://bsc-dataseed.binance.org/',
@@ -49,6 +49,7 @@ export const bsc: NetworkConfig = {
   isTestNetwork: false,
   maxFreeClaimCost: 1,
   teamMultisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
+  swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',
   tokens: [
     {
       name: 'Ethereum',
@@ -78,8 +79,14 @@ export const bsc: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x88ed81de2d62849B337c3f31cd84D041bF26A38C',
       },
     ],
   },

@@ -93,7 +93,7 @@ describe('grantKeys endpoint', () => {
           },
         ],
       })
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(403)
   })
 
   it('returns an error when authentication is not an application', async () => {
@@ -115,7 +115,7 @@ describe('grantKeys endpoint', () => {
           },
         ],
       })
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(403)
   })
 
   it('grant keys if the caller is a lock manager', async () => {

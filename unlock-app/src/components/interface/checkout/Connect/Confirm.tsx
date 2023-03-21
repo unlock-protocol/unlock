@@ -2,7 +2,8 @@ import React, { Fragment, useState } from 'react'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiUser3Line as UserIcon } from 'react-icons/ri'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
-import { OAuthConfig, PaywallConfig } from '~/unlockTypes'
+import { OAuthConfig } from '~/unlockTypes'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
@@ -25,10 +26,11 @@ export function ConfirmConnect({
   onClose,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network = 1, signMessage, isUnlockAccount } = useAuth()
+  const { account, network = 1, getWalletService, isUnlockAccount } = useAuth()
   const onSignIn = async () => {
     try {
       setLoading(true)
+      const walletService = await getWalletService()
       const message = createMessageToSignIn({
         clientId: oauthConfig.clientId,
         statement: paywallConfig?.messageToSign || '',
@@ -36,7 +38,10 @@ export function ConfirmConnect({
         chainId: network,
       })
 
-      const signature = await signMessage(message)
+      const signature = await walletService.signMessage(
+        message,
+        'personal_sign'
+      )
       const code = Buffer.from(
         JSON.stringify({
           d: message,

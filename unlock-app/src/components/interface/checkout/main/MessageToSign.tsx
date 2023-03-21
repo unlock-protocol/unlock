@@ -16,7 +16,7 @@ interface Props {
 
 export function MessageToSign({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, signMessage } = useAuth()
+  const { account, getWalletService } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
   const { paywallConfig } = state.context
   const { messageToSign } = paywallConfig
@@ -24,7 +24,11 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
   const onSign = async () => {
     setIsSigning(true)
     try {
-      const signature = await signMessage(messageToSign!)
+      const walletService = await getWalletService()
+      const signature = await walletService.signMessage(
+        messageToSign,
+        'personal_sign'
+      )
       setIsSigning(false)
       send({
         type: 'SIGN_MESSAGE',

@@ -38,16 +38,26 @@ export interface Token {
   mainnetAddress?: string
 }
 
-type HookName =
-  | 'onKeyPurchaseHook'
-  | 'onKeyCancelHook'
-  | 'onValidKeyHook'
-  | 'onTokenURIHook'
-  | 'onKeyTransferHook'
-  | 'onKeyExtendHook'
-  | 'onKeyGrantHook'
+export enum HookType {
+  CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
+  PASSWORD = 'PASSWORD',
+  CAPTCHA = 'CAPTCHA',
+}
+
+export const HooksName = [
+  'onKeyPurchaseHook',
+  'onKeyCancelHook',
+  'onValidKeyHook',
+  'onTokenURIHook',
+  'onKeyTransferHook',
+  'onKeyExtendHook',
+  'onKeyGrantHook',
+] as const
+
+export type HookName = (typeof HooksName)[number]
 
 export interface Hook {
+  id: HookType
   name: string
   address: string
   description?: string
@@ -55,6 +65,7 @@ export interface Hook {
 
 export interface NetworkConfig {
   id: number
+  featured?: boolean
   name: string
   chain?: string
   provider: string

@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const goerli: NetworkConfig = {
+  featured: true,
   publicProvider:
     'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/5',
@@ -46,13 +47,13 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
-  maxFreeClaimCost: 5000,
+  maxFreeClaimCost: 10000,
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
   },
-  swapPurchaser: '0x627118a4fB747016911e5cDA82e2E77C531e8206',
+  swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -85,8 +86,14 @@ export const goerli: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0xCa837900f7DaB40787b608b6738d1B730f1d2759',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
       },
     ],
   },

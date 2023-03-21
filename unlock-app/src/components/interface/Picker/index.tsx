@@ -6,6 +6,8 @@ import { subgraph } from '~/config/subgraph'
 import { LockImage } from '../locks/Manage/elements/LockPicker'
 import LoadingIcon from '../Loading'
 import Link from 'next/link'
+import { ethers } from 'ethers'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 
@@ -21,6 +23,7 @@ interface Props extends PickerState {
   userAddress: string
   onChange(state: PickerState): void
   collect?: Partial<Record<CollectionItem, boolean>>
+  customOption?: boolean
 }
 
 export function Picker({
@@ -34,6 +37,7 @@ export function Picker({
     lockAddress: true,
     network: true,
   },
+  customOption = false,
 }: Props) {
   const [state, setState] = useState<Partial<PickerState>>({
     lockAddress,
@@ -85,6 +89,32 @@ export function Picker({
     return <LoadingIcon />
   }
 
+  const onChangeFn = (lockAddress: string) => {
+    setState((state) => ({
+      network: state.network,
+      lockAddress: lockAddress.toString(),
+      name: locksOptions.find(
+        (item) =>
+          item.value?.toLowerCase() === lockAddress.toString().toLowerCase()
+      )?.label,
+    }))
+  }
+
+  const handleOnChange = (lockAddress: string) => {
+    const addressIsValid = collect.lockAddress
+      ? ethers.utils.isAddress(lockAddress)
+      : true
+
+    if (addressIsValid) {
+      onChangeFn(lockAddress)
+    } else {
+      ToastHelper.error('Lock address is not valid, please check the value')
+      setState((state) => ({
+        ...state,
+        lockAddress, // reset lockAddress because is not valid
+      }))
+    }
+  }
   const { collectionUrl, tokenUrl } = networks[network]?.opensea ?? {}
 
   const openSeaCollectionUrl =
@@ -117,17 +147,10 @@ export function Picker({
             label="Lock"
             options={locksOptions}
             defaultValue={lockAddress}
-            onChange={(lockAddress) => {
-              setState((state) => ({
-                network: state.network,
-                lockAddress: lockAddress.toString(),
-                name: locksOptions.find(
-                  (item) =>
-                    item.value?.toLowerCase() ===
-                    lockAddress.toString().toLowerCase()
-                )?.label,
-              }))
+            onChange={(lockAddress: any) => {
+              handleOnChange(lockAddress)
             }}
+            customOption={customOption}
             description="Select the lock you want to use."
           />
         ) : (

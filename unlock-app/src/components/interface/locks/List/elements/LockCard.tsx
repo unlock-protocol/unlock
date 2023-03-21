@@ -8,15 +8,12 @@ import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
 import { DEFAULT_USER_ACCOUNT_ADDRESS, MAX_UINT } from '~/constants'
 import Duration from '~/components/helpers/Duration'
-import { CryptoIcon } from '../../elements/KeyPrice'
-import { IconModal } from '../../Manage/elements/LockIcon'
-import { ImFilePicture as PictureFile } from 'react-icons/im'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
 import { Detail, Icon } from '@unlock-protocol/ui'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockCardProps {
   lock: any
   network: number
@@ -86,7 +83,6 @@ export const LocksByNetworkPlaceholder = ({
 
 const LockIcon = ({ lock }: LockIconProps) => {
   const config = useConfig()
-  const [isOpen, setIsOpen] = useState(false)
   const [imageSrc, setImageSrc] = useState(
     lock.address
       ? `${config.services.storage.host}/lock/${lock.address}/icon`
@@ -98,29 +94,7 @@ const LockIcon = ({ lock }: LockIconProps) => {
   }
 
   return (
-    <div className="relative block overflow-hidden bg-gray-200 rounded-full cursor-pointer h-14 w-14 group">
-      {lock.address && (
-        <div
-          className="absolute inset-0 flex items-center justify-center duration-500 bg-black opacity-0 group-hover:opacity-80"
-          onClick={() => setIsOpen(true)}
-        >
-          <PictureFile
-            className="text-white opacity-0 group-hover:opacity-100"
-            size={20}
-          />
-        </div>
-      )}
-      <IconModal
-        lockAddress={lock.address}
-        network={lock.network}
-        imageUrl={imageSrc}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        dismiss={(image: any) => {
-          setIsOpen(false)
-          setImageSrc(image)
-        }}
-      />
+    <div className="relative block overflow-hidden rounded-full h-14 w-14 group">
       <img
         alt="logo"
         className="object-cover w-full h-full"
@@ -219,8 +193,8 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} size={25} />
-                <span>{keyPrice}</span>
+                <CryptoIcon symbol={symbol} />
+                <span className="overflow-auto text-ellipsis">{keyPrice}</span>
               </div>
             </Detail>
 
@@ -237,8 +211,8 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               truncate
             >
               <div className="flex items-center gap-2">
-                <CryptoIcon symbol={symbol} size={25} />
-                <span>{balance}</span>
+                <CryptoIcon symbol={symbol} />
+                <span className="overflow-auto text-ellipsis">{balance}</span>
               </div>
             </Detail>
             <Detail

@@ -19,6 +19,7 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
 import { ViewContract } from '../ViewContract'
+import { getReferrer } from '~/utils/checkoutLockUtils'
 
 interface Props {
   injectedProvider: unknown
@@ -44,7 +45,7 @@ export function Renew({
     password,
     captcha,
   } = state.context
-  const { messageToSign, referrer } = paywallConfig
+  const { messageToSign } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
   const { isLoading: isFiatPricingLoading, data: fiatPricing } = useQuery(
@@ -122,7 +123,7 @@ export function Renew({
           {
             lockAddress,
             owners: [account],
-            referrers: [referrer || account],
+            referrers: [getReferrer(account, paywallConfig)],
             data,
           },
           {} /** transactionParams */,
@@ -139,7 +140,7 @@ export function Renew({
           {
             lockAddress,
             tokenId: tokenId.toString(),
-            referrer,
+            referrer: getReferrer(account, paywallConfig),
             data: data?.[0],
           },
           {} /** Transaction params */,

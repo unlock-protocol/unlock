@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mumbai: NetworkConfig = {
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
@@ -49,7 +49,7 @@ export const mumbai: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
-  swapPurchaser: '0xFAE21e3fab3bfb74029b785DaC27E8f9f14964c6',
+  swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
@@ -89,8 +89,14 @@ export const mumbai: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x639143cbf90F27eA5Ce4b3A7D869d4D7878009A5',
       },
     ],
   },

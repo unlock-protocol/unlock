@@ -21,13 +21,15 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../Lock'
-import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
 import { useStorageService } from '~/utils/withStorageService'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../ViewContract'
+import { useClaim } from '~/hooks/useClaim'
+import { usePurchase } from '~/hooks/usePurchase'
 
 interface Props {
   injectedProvider: unknown
@@ -83,16 +85,12 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, network, getWalletService } = useAuth()
+  const { account, getWalletService } = useAuth()
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
   const storage = useStorageService()
-  const {
-    prepareChargeForCard,
-    captureChargeForCard,
-    claimMembershipFromLock,
-  } = useAccount(account!, network!)
+  const { captureChargeForCard } = useAccount(account!)
 
   const [isConfirming, setIsConfirming] = useState(false)
 
@@ -133,6 +131,16 @@ export function Confirm({
   const recurringPayments: number[] | undefined = recurringPaymentAmount
     ? new Array(recipients.length).fill(recurringPaymentAmount)
     : undefined
+
+  const { mutateAsync: claim } = useClaim({
+    lockAddress,
+    network: lockNetwork,
+  })
+
+  const { mutateAsync: createPurchaseIntent } = usePurchase({
+    lockAddress,
+    network: lockNetwork,
+  })
 
   const { isInitialLoading: isFiatPriceLoading, data: fiatPricing } = useQuery(
     [quantity, lockAddress, lockNetwork],
@@ -203,11 +211,13 @@ export function Confirm({
     async () => {
       const prices = await Promise.all(
         recipients.map(async (recipient, index) => {
+          const referrer = getReferrer(recipient, paywallConfig)
+
           const options = {
             lockAddress: lockAddress,
             network: lockNetwork,
             userAddress: recipient,
-            referrer: paywallConfig.referrer || recipient,
+            referrer,
             data: purchaseData?.[index] || '0x',
           }
           const price = await web3Service.purchasePriceFor(options)
@@ -307,18 +317,18 @@ export function Confirm({
         return
       }
 
-      const stripeIntent = await prepareChargeForCard(
-        payment.cardId!,
-        lockAddress,
-        lockNetwork,
-        formattedData.formattedKeyPrice,
-        recipients,
-        recurringPaymentAmount || 0
-      )
+      const pricing =
+        Object.values(fiatPricing.usd).reduce<number>(
+          (t, amount) => t + Number(amount),
+          0
+        ) / 100
 
-      if (stripeIntent?.error) {
-        throw new Error(stripeIntent.error)
-      }
+      const stripeIntent = await createPurchaseIntent({
+        pricing,
+        stripeTokenId: payment.cardId!,
+        recipients,
+        recurring: recurringPaymentAmount || 0,
+      })
       if (!stripeIntent?.clientSecret) {
         throw new Error('Creating payment intent failed')
       }
@@ -390,9 +400,9 @@ export function Confirm({
         pricingData?.prices.map((item) => item.amount.toString()) ||
         new Array(recipients!.length).fill(keyPrice)
 
-      const referrers: string[] | undefined = paywallConfig.referrer
-        ? new Array(recipients!.length).fill(paywallConfig.referrer)
-        : undefined
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig)
+      })
 
       const walletService = await getWalletService(lockNetwork)
       await walletService.purchaseKeys(
@@ -449,15 +459,12 @@ export function Confirm({
 
       const captcha = await recaptchaRef.current?.executeAsync()
 
-      const response = await claimMembershipFromLock(
-        lockAddress,
-        lockNetwork,
-        purchaseData?.[0],
-        captcha
-      )
+      const hash = await claim({
+        data: purchaseData?.[0],
+        captcha,
+      })
 
-      const { transactionHash: hash, error } = response
-      if (hash && !error) {
+      if (hash) {
         communication?.emitTransactionInfo({
           hash,
           lock: lockAddress,
@@ -468,12 +475,13 @@ export function Confirm({
           transactionHash: hash,
         })
       } else {
-        throw new Error('Failed to claim the membership. Try again')
+        new Error('No transaction hash returned')
       }
       setIsConfirming(false)
     } catch (error: any) {
       setIsConfirming(false)
-      ToastHelper.error(error?.error?.message || error.message)
+      console.error(error)
+      ToastHelper.error('Failed to claim the membership. Try again')
     }
   }
 
@@ -553,7 +561,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading}
+              disabled={isConfirming || isLoading || isError}
               onClick={(event) => {
                 event.preventDefault()
                 onConfirmClaim()
@@ -590,7 +598,7 @@ export function Confirm({
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={network!} />
+            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
           </div>
           {isError && (
             // TODO: use actual error from simulation

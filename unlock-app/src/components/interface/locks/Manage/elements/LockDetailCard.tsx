@@ -11,11 +11,10 @@ import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
-import { CryptoIcon } from '../../elements/KeyPrice'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
 import { storage } from '~/config/storage'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
@@ -173,16 +172,27 @@ export const LockDetailCard = ({
     )
 
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
-
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   return (
     <>
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
-          <LockIcon
-            lockAddress={lockAddress}
-            network={network}
-            loading={loading}
-          />
+          <div className="grid gap-2">
+            <LockIcon
+              lockAddress={lockAddress}
+              network={network}
+              loading={loading}
+            />
+            <p className="p-2 text-sm leading-tight text-gray-500 ">
+              Need to update the icon? Use the{' '}
+              <Link
+                href={metadataPageUrl}
+                className="capitalize text-brand-ui-primary hover:underline"
+              >
+                Metadata Editor
+              </Link>
+            </p>
+          </div>
           <LockInfoCard
             lockAddress={lockAddress}
             network={network}
@@ -226,7 +236,7 @@ export const LockDetailCard = ({
             <div className="py-2">
               <Detail label="Price" loading={loading} inline>
                 <div className="flex items-center gap-2">
-                  <CryptoIcon symbol={symbol} size={22} />
+                  <CryptoIcon symbol={symbol} />
                   <span>{priceLabel}</span>
                 </div>
               </Detail>

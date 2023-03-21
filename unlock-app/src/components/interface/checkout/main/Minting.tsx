@@ -130,9 +130,7 @@ export function Minting({
 
   const stepItems = useCheckoutSteps(checkoutService)
 
-  const tokenImage = `${config.services.storage.host}/lock/${
-    lock!.address
-  }/icon?id=${tokenId}`
+  const hasTokenId = !!tokenId
 
   return (
     <Fragment>
@@ -148,7 +146,7 @@ export function Minting({
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
-          {mint?.status === 'FINISHED' && tokenId && (
+          {mint?.status === 'FINISHED' && hasTokenId && (
             <Link
               href="/keychain"
               target="_blank"
@@ -172,7 +170,7 @@ export function Minting({
               <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           )}
-          {tokenId && isEthPassSupported(lock!.network) && (
+          {hasTokenId && isEthPassSupported(lock!.network) && (
             <ul className="grid grid-cols-2 gap-3 pt-4">
               {!isIOS && (
                 <li className="">
@@ -193,10 +191,9 @@ export function Minting({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Google Wallet
@@ -223,10 +220,9 @@ export function Minting({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Apple Wallet

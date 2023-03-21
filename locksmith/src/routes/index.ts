@@ -28,7 +28,9 @@ import transferRouter from './v2/transfer'
 import receiptRouter from './v2/receipt'
 import receiptBaseRouter from './v2/receiptBase'
 import emailRouter from './v2/email'
+import checkoutConfigRouter from './v2/checkoutConfigs'
 import config from '../config/config'
+import stripeRouter from './v2/stripe'
 
 const router = express.Router({ mergeParams: true })
 
@@ -74,6 +76,8 @@ router.use('/v2/transfer', transferRouter)
 router.use('/v2/receipts', receiptRouter)
 router.use('/v2/receipts-base', receiptBaseRouter)
 router.use('/v2/email', emailRouter)
+router.use('/v2/checkout', checkoutConfigRouter)
+router.use('/v2/stripe', stripeRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

@@ -1,28 +1,14 @@
 import UnlockProvider from '../services/unlockProvider'
 import { useConfig } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
-import { useWalletService } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
-import { generateKeyHolderMetadataPayload } from '../structured_data/keyHolderMetadata'
 import { useWedlockService } from '../contexts/WedlocksContext'
-import {
-  generateTypedData,
-  getCardsForAddress,
-  chargeAndSaveCard,
-  claimMembership,
-  prepareCharge,
-  captureCharge,
-} from './useCards'
+import { captureCharge } from './useCards'
 import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '../utils/accounts'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { storage } from '~/config/storage'
-
-interface ApiResponse {
-  url: string
-}
 
 export const getAccountTokenBalance = async (
   web3Service: any,
@@ -40,59 +26,9 @@ export const getAccountTokenBalance = async (
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  */
-export const useAccount = (address: string, network: number) => {
+export const useAccount = (address: string) => {
   const config = useConfig()
-  const walletService = useWalletService()
   const wedlockService = useWedlockService()
-
-  const connectStripeToLock = async (
-    lockAddress: string,
-    network: number,
-    baseUrl: string
-  ) => {
-    const storageService = new StorageService(config.services.storage.host)
-    const typedData = generateTypedData(
-      {
-        'Connect Stripe': {
-          lockAddress,
-          chain: network,
-          lockManager: address,
-          baseUrl,
-        },
-      },
-      'Connect Stripe'
-    )
-
-    const message = `I want to connect Stripe to the lock ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
-
-    try {
-      return (
-        (await storageService.getStripeConnect(
-          lockAddress,
-          signature,
-          typedData
-        )) as ApiResponse
-      ).url
-    } catch (error) {
-      return null
-    }
-  }
-
-  const disconnectStripeFromLock = async ({
-    lockAddress,
-    network,
-  }: {
-    lockAddress: string
-    network: number
-  }) => {
-    try {
-      const response = await storage.disconnectStripe(network, lockAddress)
-      return response.status
-    } catch (error) {
-      return null
-    }
-  }
 
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
@@ -137,7 +73,7 @@ export const useAccount = (address: string, network: number) => {
       }
     }
 
-    wedlockService.welcomeEmail(
+    await wedlockService.welcomeEmail(
       emailAddress,
       `${origin}/recover/?email=${encodeURIComponent(
         emailAddress
@@ -153,7 +89,7 @@ export const useAccount = (address: string, network: number) => {
   const retrieveUserAccount = async (email: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
     const encryptedKey = await storageService.getUserPrivateKey(email)
-    const unlockProvider = new UnlockProvider(config.networks[network])
+    const unlockProvider = new UnlockProvider(config.networks[1])
 
     await unlockProvider.connect({
       key: encryptedKey,
@@ -161,30 +97,6 @@ export const useAccount = (address: string, network: number) => {
       password,
     })
     return unlockProvider
-  }
-
-  const getCards = () => {
-    return getCardsForAddress(config, walletService, address)
-  }
-
-  const chargeCard = async (
-    token: string,
-    lock: any,
-    network: number,
-    pricing: any,
-    recipients: string[]
-  ) => {
-    const response = await chargeAndSaveCard(
-      config,
-      walletService,
-      address,
-      token,
-      network,
-      lock,
-      pricing,
-      recipients
-    )
-    return response.transactionHash
   }
 
   /**
@@ -213,124 +125,10 @@ export const useAccount = (address: string, network: number) => {
     return response
   }
 
-  /**
-   * Prepares a charge on the backend
-   * @param token
-   * @param lock
-   * @param network
-   * @param pricing
-   * @param recipient
-   * @returns
-   */
-  const prepareChargeForCard = async (
-    token: string,
-    lock: any,
-    network: number,
-    pricing: any,
-    recipients: string[],
-    recurring = 0
-  ) => {
-    const response = await prepareCharge(
-      config,
-      walletService,
-      address,
-      token,
-      network,
-      lock,
-      pricing,
-      recipients,
-      recurring
-    )
-    return response
-  }
-
-  const claimMembershipFromLock = async (
-    lock: any,
-    network: number,
-    data?: string,
-    captcha?: string
-  ) => {
-    const response = await claimMembership(
-      config,
-      walletService,
-      address,
-      network,
-      lock,
-      data,
-      captcha
-    )
-    return response
-  }
-
-  const setUserMetadataData = async (
-    lockAddress: string,
-    metadata: any,
-    network: number
-  ) => {
-    const payload = generateKeyHolderMetadataPayload(address, metadata)
-    // TODO prevent replays by adding timestamp?
-    const message = `I am signing the metadata for the lock at ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
-
-    const storageService = new StorageService(config.services.storage.host)
-
-    const response = await storageService.setUserMetadataData(
-      lockAddress,
-      address,
-      payload,
-      signature,
-      network
-    )
-    return response
-  }
-
-  /**
-   * Updates the icon on a lock
-   * @param lockAddress
-   * @param network
-   * @param icon
-   * @returns
-   */
-  const updateLockIcon = async (
-    lockAddress: string,
-    network: number,
-    icon: string
-  ) => {
-    const storageService = new StorageService(config.services.storage.host)
-    const typedData = generateTypedData(
-      {
-        'Update Icon': {
-          lockAddress,
-          chain: network,
-          lockManager: address,
-        },
-      },
-      'Update Icon'
-    )
-
-    const message = `I want to change the image for ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
-
-    return storageService.updateLockIcon(
-      lockAddress,
-      signature,
-      typedData,
-      icon
-    )
-  }
-
   return {
-    setUserMetadataData,
-    getCards,
-    chargeCard,
     captureChargeForCard,
-    prepareChargeForCard,
-    connectStripeToLock,
     createUserAccount,
     retrieveUserAccount,
-    claimMembershipFromLock,
-    updateLockIcon,
-    disconnectStripeFromLock,
   }
 }
 export default useAccount
