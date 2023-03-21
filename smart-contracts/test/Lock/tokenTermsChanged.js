@@ -36,9 +36,7 @@ contract('Lock / assess renewable terms', (accounts) => {
     await dai.approve(lock.address, totalPrice, {
       from: keyOwner,
     })
-  })
-
-  beforeEach(async () => {
+  
     ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
     const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
     await time.increaseTo(expirationTs.toNumber())
@@ -57,7 +55,7 @@ contract('Lock / assess renewable terms', (accounts) => {
         )
       })
 
-      it('should revert if erc20 token has changed', async () => {
+      it('if erc20 token has changed', async () => {
         // deploy another token
         const dai2 = await deployERC20(accounts[3])
         await dai2.mint(keyOwner, someDai, {
@@ -71,7 +69,7 @@ contract('Lock / assess renewable terms', (accounts) => {
         )
       })
 
-      it('should revert if duration has changed', async () => {
+      it('if duration has changed', async () => {
         await lock.updateLockConfig(
           1000,
           await lock.maxNumberOfKeys(),
