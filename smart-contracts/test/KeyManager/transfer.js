@@ -66,13 +66,13 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
       owner: grantee,
       deadline: OneHourFromNow,
     };
-    expect(await lock.ownerOf(1)).not.to.equal(realUser)
+    assert.notEqual(await lock.ownerOf(1), realUser)
     const locksmithSigner = await ethers.getSigner(locksmith)
     const signature = await locksmithSigner._signTypedData(domain, types, transfer);
-    expect(ethers.utils.verifyTypedData(domain, types, transfer, signature)).to.equal(locksmith)
+    assert.equal(ethers.utils.verifyTypedData(domain, types, transfer, signature), locksmith)
     const realUserSigner = await ethers.getSigner(realUser)
     await keyManager.connect(realUserSigner).transfer(transfer.lock, transfer.token, transfer.owner, transfer.deadline, signature)
-    expect(await lock.ownerOf(1)).to.equal(realUser)
-    expect(await lock.keyManagerOf(1)).to.equal(keyManager.address)
+    assert.equal(await lock.ownerOf(1), realUser)
+    assert.equal(await lock.keyManagerOf(1), keyManager.address)
   })
 })

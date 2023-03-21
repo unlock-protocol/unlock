@@ -1,6 +1,7 @@
+import { it, beforeEach, describe, expect, vi } from 'vitest'
+
 import { handler } from '../functions/handler/handler'
 import { route } from '../route'
-import { vi } from 'vitest'
 
 vi.mock('../route')
 vi.mock('handler')
