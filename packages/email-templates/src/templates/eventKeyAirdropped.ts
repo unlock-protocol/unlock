@@ -8,9 +8,9 @@ import { links } from './helpers/links'
 handlebars.registerHelper('links', links)
 
 export default {
-  subject: 'A ticket for your next event was added to your wallet!',
-  html: `<h1>A NFT ticket for the event "{{lockName}}"  was added to your wallet!</h1>
-<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just minted for you!</p>
+  subject: 'A ticket for your next event was airdropped to you!',
+  html: `<h1>A NFT ticket for the event "{{lockName}}"  was airdropped to you!</h1>
+<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just airdropped for you!</p>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
@@ -46,7 +46,7 @@ export default {
   {{/if}}
 </div>
 
-<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
+<p> You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
 
 {{links txUrl openSeaUrl true}}
 `,

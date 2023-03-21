@@ -8,6 +8,7 @@ import keyAirdropped from './templates/keyAirdropped'
 import eventKeyMined from './templates/eventKeyMined'
 import keyExpiring from './templates/keyExpiring'
 import keyExpired from './templates/keyExpired'
+import eventKeyAirdropped from './templates/eventKeyAirdropped'
 import LockTemplates from './templates/locks'
 import { base } from './templates/base/index'
 
@@ -25,9 +26,10 @@ type Template =
   | 'keyAirdropped'
   | 'keyOwnership'
   | 'transferCode'
-  | 'eventKeyMined'
   | 'keyExpiring'
   | 'keyExpired'
+  | 'eventKeyMined'
+  | 'eventKeyAirdropped'
 
 export const EmailTemplates: Record<Partial<Template>, EmailTemplateProps> = {
   confirmEmail,
@@ -37,9 +39,10 @@ export const EmailTemplates: Record<Partial<Template>, EmailTemplateProps> = {
   debug,
   transferCode,
   keyAirdropped,
-  eventKeyMined,
   keyExpired,
   keyExpiring,
+  eventKeyMined,
+  eventKeyAirdropped,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}
