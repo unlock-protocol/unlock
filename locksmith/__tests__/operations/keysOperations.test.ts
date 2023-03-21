@@ -14,7 +14,6 @@ const lock = {
   owner: '0x445',
   keys: [
     {
-      manager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
       owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
       tokenId: '1',
       expiration:
