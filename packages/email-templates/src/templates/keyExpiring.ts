@@ -4,7 +4,7 @@ export default {
   subject: 'Your "{{lockName}}" membership is about to expire!',
   html: `<h1>Your Membership NFT is expiring!</h1>
 
-<p>Your <strong>{{lockName}}</strong> membership (#{{keyId}}) is expiring!</p>
+<p>Your <strong>{{lockName}}</strong> membership (#{{keyId}}) will expire on #{{expirationDate}}</p>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
