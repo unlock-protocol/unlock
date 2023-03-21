@@ -2,6 +2,7 @@ const { ethers } = require('hardhat')
 const createLockHash = require('../helpers/createLockCalldata')
 const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
+const { assert } = require('chai')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -31,9 +32,9 @@ contract('Lock / expirationDuration', () => {
     const [, , buyer, buyer2] = await ethers.getSigners()
     const { tokenId, blockNumber } = await purchaseKey(lock, buyer.address)
     const transfer1Block = await ethers.provider.getBlock(blockNumber)
-    expect(
+    assert.equal(
       (await lock.keyExpirationTimestampFor(tokenId)).toNumber()
-    ).to.be.equals(transfer1Block.timestamp + 1800)
+      , transfer1Block.timestamp + 1800)
 
     // update duration
     await lock.updateLockConfig(
@@ -48,10 +49,10 @@ contract('Lock / expirationDuration', () => {
     )
     const transfer2Block = await ethers.provider.getBlock(blockNumber2)
 
-    expect(
+    assert.equal(
       (await lock.keyExpirationTimestampFor(tokenId2)).toNumber()
-    ).to.be.equals(transfer2Block.timestamp + 5000)
-    expect((await lock.expirationDuration()).toString()).to.be.equal('5000')
+      , transfer2Block.timestamp + 5000)
+    assert.equal((await lock.expirationDuration()).toString(), '5000')
   })
 
   it('does not affect the timestamps of existing keys', async () => {
@@ -66,6 +67,6 @@ contract('Lock / expirationDuration', () => {
     )
     const tsAfter = await lock.keyExpirationTimestampFor(buyer.address)
 
-    expect(tsBefore.toString()).to.be.equal(tsAfter.toString())
+    assert.equal(tsBefore.toString(), tsAfter.toString())
   })
 })

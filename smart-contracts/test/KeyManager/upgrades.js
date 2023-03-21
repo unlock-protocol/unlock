@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../helpers')
 
@@ -34,9 +35,9 @@ contract('KeyManager', (accounts) => {
     // the `reverts` helper does not seem to work here.
     try {
       await upgrades.upgradeProxy(proxy.address, KeyManagerV2)
-      expect(false, 'to have reverted')
+      assert.equal(false, 'to have reverted')
     } catch (error) {
-      expect(error.message).to.equal("VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'")
+      assert.equal(error.message, "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'")
     }
   })
 })

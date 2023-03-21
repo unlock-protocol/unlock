@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-identical-title */
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
 const BigNumber = require('bignumber.js')
@@ -32,18 +31,18 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   let rate
 
   before(async () => {
-    ;({ unlock, udt } = await deployContracts())
+    ; ({ unlock, udt } = await deployContracts())
     // parse for truffle
     udt = await UnlockDiscountToken.at(udt.address)
 
     lock = await deployLock({ unlock })
 
-    // Deploy the exchange
-    ;({ oracle, weth } = await createUniswapV2Exchange({
-      protocolOwner: await ethers.getSigner(protocolOwner),
-      minter: await ethers.getSigner(minter),
-      udtAddress: udt.address,
-    }))
+      // Deploy the exchange
+      ; ({ oracle, weth } = await createUniswapV2Exchange({
+        protocolOwner: await ethers.getSigner(protocolOwner),
+        minter: await ethers.getSigner(minter),
+        udtAddress: udt.address,
+      }))
 
     // default config Unlock oracle
     await unlock.configUnlock(
@@ -114,9 +113,9 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   })
 
   scenarios.forEach((chainId) => {
-    
+
     let balanceReferrer, balanceUnlockOwner, unlockOwner
-    
+
     describe(`behaviour on chain with ${chainId}`, () => {
       before(async () => {
         unlockOwner = await unlock.owner()
@@ -154,13 +153,13 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
               value: await lock.keyPrice(),
             }
           )
-          
+
 
           const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
           // using estimatedGas instead of the actual gas used so this test does
           // not regress as other features are implemented
           gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
-          
+
           balanceReferrer = new BigNumber(await udt.balanceOf(referrer)).minus(balanceReferrerBefore)
           balanceUnlockOwner = new BigNumber(await udt.balanceOf(unlockOwner)).minus(balanceUnlockOwnerBefore)
         })
@@ -224,7 +223,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
             value: await lock.keyPrice(),
             gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16),
           })
-          
+
           balanceReferrer = new BigNumber(await udt.balanceOf(referrer)).minus(balanceReferrerBefore)
           balanceUnlockOwner = new BigNumber(await udt.balanceOf(unlockOwner)).minus(balanceUnlockOwnerBefore)
         })

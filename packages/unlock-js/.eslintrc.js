@@ -21,9 +21,18 @@ const rulesToIgnore = [
 
 module.exports = {
   extends: ['@unlock-protocol/eslint-config'],
+  plugins: ['jest'], // TODO remove once jest has been removed
+  env: {
+    jest: true, // TODO remove once jest has been removed
+  },
   rules: {
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }
     }, {}),
+    // TODO Remove these rules once jest is gone!
+    'jest/no-disabled-tests': 'warn',
+    'jest/no-identical-title': 'error',
+    'jest/no-focused-tests': 'error',
+    'jest/prefer-expect-assertions': 'error',
   },
 }

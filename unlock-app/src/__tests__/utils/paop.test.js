@@ -1,5 +1,5 @@
+import { vi, describe, beforeAll, beforeEach, expect, it } from 'vitest'
 import pingPoap from '../../utils/poap'
-import { vi } from 'vitest'
 
 describe('pingPoap', () => {
   beforeEach(() => {

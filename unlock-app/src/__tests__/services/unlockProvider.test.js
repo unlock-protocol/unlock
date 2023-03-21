@@ -1,7 +1,7 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
-import { vi } from 'vitest'
+import { vi, describe, beforeAll, expect, it } from 'vitest'
 
 const utf8ToHex = (str) =>
   utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)

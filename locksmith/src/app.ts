@@ -1,4 +1,3 @@
-import 'setimmediate' // polyfill to prevent jest from crashing
 import cors from 'cors'
 import express from 'express'
 import expressWinston from 'express-winston' // TODO: use a single logger!
