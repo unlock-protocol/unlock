@@ -2,7 +2,7 @@ import { customContentStyle } from './helpers/customContentStyle'
 
 export default {
   subject: 'Your "{{lockName}}" membership is about to expire!',
-  html: `<h1>Your Membership NFT is expiring!</h1>
+  html: `<h1>Your Membership NFT will expire soon</h1>
 
 <p>Your <strong>{{lockName}}</strong> membership (#{{keyId}}) will expire on #{{expirationDate}}</p>
 
