@@ -11,7 +11,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary = {
   args: {
-    preview: '',
+    preview: '/images/image_upload.png',
     description:
       'Upload an image or select an external URL. Recommend using a square of at least 300x300 pixels.',
   },
