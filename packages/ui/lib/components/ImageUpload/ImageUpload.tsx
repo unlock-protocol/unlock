@@ -48,13 +48,16 @@ export const ImageUpload = ({
             />
           </div>
         )}
-        {!isUploading && (
-          <img
-            className="object-cover w-full h-full rounded-xl"
-            src={preview}
-            alt="NFT"
-          />
-        )}
+        {!isUploading &&
+          (preview ? (
+            <img
+              className="object-cover w-full h-full rounded-xl"
+              src={preview}
+              alt="NFT"
+            />
+          ) : (
+            <div className="text-xs">No image selected</div>
+          ))}
       </div>
       <Tab.Group>
         <div className="grid gap-4">
