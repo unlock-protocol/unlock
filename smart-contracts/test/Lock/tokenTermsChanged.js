@@ -4,6 +4,7 @@ const {
   deployERC20,
   purchaseKey,
   deployLock,
+  ADDRESS_ZERO
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
@@ -21,7 +22,7 @@ contract('Lock / assess renewable terms', (accounts) => {
   // const referrer = accounts[3]
   let tokenId
 
-  beforeEach(async () => {
+  before(async () => {
     dai = await deployERC20(lockOwner)
 
     // Mint some dais for testing
@@ -35,7 +36,9 @@ contract('Lock / assess renewable terms', (accounts) => {
     await dai.approve(lock.address, totalPrice, {
       from: keyOwner,
     })
-  
+  })
+
+  beforeEach(async () => {
     ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
     const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
     await time.increaseTo(expirationTs.toNumber())
@@ -49,7 +52,7 @@ contract('Lock / assess renewable terms', (accounts) => {
           { from: lockOwner }
         )
         assert.equal(
-          await lock.tokenTermsChanged(tokenId),
+          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
           true
         )
       })
@@ -63,7 +66,7 @@ contract('Lock / assess renewable terms', (accounts) => {
         // update lock token without changing price
         await lock.updateKeyPricing(keyPrice, dai2.address, { from: lockOwner })
         assert.equal(
-          await lock.tokenTermsChanged(tokenId),
+          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
           true
         )
       })
@@ -76,7 +79,7 @@ contract('Lock / assess renewable terms', (accounts) => {
           { from: lockOwner }
         )
         assert.equal(
-          await lock.tokenTermsChanged(tokenId),
+          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
           true
         )
       })
