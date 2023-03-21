@@ -4,7 +4,7 @@ import {
 } from '../../src/operations/keysOperations'
 import { loginRandomUser } from '../test-helpers/utils'
 import app from '../app'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 const network = 4
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
@@ -14,30 +14,35 @@ const lock = {
   owner: '0x445',
   keys: [
     {
+      manager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
       owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
       tokenId: '1',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
+      manager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
       owner: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
       tokenId: '2',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
+      manager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
       owner: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
       tokenId: '3',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
+      manager: '0xff24307539a043e7fa40c4582090b3029de26b41',
       owner: '0xff24307539a043e7fa40c4582090b3029de26b41',
       tokenId: '42',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
+      manager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
       owner: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
       tokenId: '43',
       expiration:
@@ -127,6 +132,7 @@ describe('keysOperations operations', () => {
           checkedInAt: 1660812048626,
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
@@ -136,6 +142,7 @@ describe('keysOperations operations', () => {
           checkedInAt: 1660812066160,
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
@@ -144,6 +151,7 @@ describe('keysOperations operations', () => {
         {
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
@@ -155,6 +163,7 @@ describe('keysOperations operations', () => {
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           firstname: 'kalidou',
+          keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
@@ -166,6 +175,7 @@ describe('keysOperations operations', () => {
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           firstname: 'mario rossi',
+          keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
@@ -185,6 +195,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
         },
@@ -193,6 +204,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
         },
@@ -201,6 +213,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
         },
@@ -209,6 +222,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
           lockAddress: '0xxee',
         },
@@ -217,6 +231,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
           lockAddress: '0xxee',
         },
@@ -258,6 +273,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
           checkedInAt: 1660812048626,
@@ -267,6 +283,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
           checkedInAt: 1660812066160,
@@ -276,6 +293,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
         },
@@ -284,6 +302,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
           lockAddress: '0xxee',
           email: 'kld.diagne@gmail.com',
@@ -295,6 +314,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
           lockAddress: '0xxee',
           email: 'example@gmai.com',
@@ -321,6 +341,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
         },
@@ -329,6 +350,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
         },
@@ -337,6 +359,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
         },
@@ -345,6 +368,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
           lockAddress: '0xxee',
         },
@@ -353,6 +377,7 @@ describe('keysOperations operations', () => {
           lockName: 'Alice in Borderlands',
           expiration:
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
           lockAddress: '0xxee',
         },
