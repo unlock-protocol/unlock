@@ -14,6 +14,7 @@ import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as metadataOperations from './metadataOperations'
+import { createEventIcs } from '../utils/calendar'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -106,7 +107,7 @@ interface AttributeProps {
   value: string
   trait_type: string
 }
-interface EventProps {
+export interface EventProps {
   eventDescription: string
   eventDate: string
   eventTime: string
@@ -252,7 +253,12 @@ const getAttachments = async ({
 
   // Calendar ICS for event
   if (event) {
-    // todo
+    const startDate = dayjs(`${event.eventTime} ${event.eventTime}`).toDate()
+    const file = await createEventIcs({
+      title: event?.eventName ?? '',
+      description: event?.eventDescription ?? '',
+      startDate,
+    })
   }
 
   return attachments
