@@ -134,23 +134,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     }
   }
 
-  /**
-   * Deactivate an existing key
-   * @param _tokenId the id of token to burn
-   * @notice the key will be expired and ownership records will be destroyed
-   */
-  function burn(uint _tokenId) public {
-    _isKey(_tokenId);
-    _onlyKeyManagerOrApproved(_tokenId);
-
-    emit Transfer(_ownerOf[_tokenId], address(0), _tokenId);
-
-    // expire key
-    _cancelKey(_tokenId);
-
-    // delete owner
-    _ownerOf[_tokenId] = address(0);
-  }
 
   /**
    * Migrate data from the previous single owner => key mapping to
