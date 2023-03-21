@@ -21,6 +21,7 @@ import { TweetItButton } from './TweetItButton'
 import { getEventDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
+import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -215,20 +216,51 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </p>
         )}
         {isLockManager && (
-          <>
-            <p className="mt-12 mb-4 text-sm">
-              Want to change something? You can update anytime by accessing your
-              contract (Lock) on the Unlock Dashboard.
-            </p>
-            <Button
-              onClick={onEdit}
-              variant="black"
-              className="border md:w-1/2"
-              size="small"
-            >
-              Edit Details
-            </Button>
-          </>
+          <div className="grid gap-6 mt-12">
+            <span className="text-2xl font-bold text-brand-dark">
+              Tools for you, the lock manager
+            </span>
+            <div className="grid gap-4">
+              <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
+                <div className="flex flex-col md:col-span-2">
+                  <span className="text-lg font-bold text-brand-ui-primary">
+                    Event detail
+                  </span>
+                  <span>
+                    Need to change something? Access your contract (Lock) &
+                    update detail
+                  </span>
+                </div>
+                <div className="md:col-span-1">
+                  <Button
+                    onClick={onEdit}
+                    variant="black"
+                    className="w-full border"
+                    size="small"
+                  >
+                    Edit Details
+                  </Button>
+                </div>
+              </div>
+              <div className="w-full p-6 bg-white border border-gray-200 rounded-2xl">
+                <div className="flex flex-col mb-2">
+                  <span className="text-lg font-bold text-brand-ui-primary">
+                    Verifiers
+                  </span>
+                  <span>
+                    Add & manage trusted users at the event to help check-in
+                    attendees
+                  </span>
+                </div>
+                <VerifierForm
+                  lockAddress={lockAddress}
+                  network={network}
+                  isManager={isLockManager}
+                  disabled={!isLockManager}
+                />
+              </div>
+            </div>
+          </div>
         )}
       </section>
     </main>
