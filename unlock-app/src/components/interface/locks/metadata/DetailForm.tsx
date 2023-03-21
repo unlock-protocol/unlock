@@ -54,7 +54,7 @@ export function DetailForm({ disabled }: Props) {
             description="This will appear as each NFT's image on OpenSea on other marketplaces. Use 512 by 512 pixels for best results."
             isUploading={isUploading}
             preview={image!}
-            onChange={async (fileOrFileUrl) => {
+            onChange={async (fileOrFileUrl: any) => {
               if (typeof fileOrFileUrl === 'string') {
                 setValue('image', fileOrFileUrl)
               } else {
