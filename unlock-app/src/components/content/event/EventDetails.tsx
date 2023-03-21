@@ -176,7 +176,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                       }
                     )}
                   </span>
-                  {eventEndDate && (
+                  {eventEndDate && isSameDay && (
                     <>
                       <span>to</span>
                       <span>
