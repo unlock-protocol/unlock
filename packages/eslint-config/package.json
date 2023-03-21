@@ -28,6 +28,7 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "eslint-plugin-vitest": "0.0.54",
     "vitest": "0.28.3"
   }
 }

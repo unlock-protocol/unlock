@@ -15065,7 +15065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^5.10.0":
+"@typescript-eslint/utils@npm:^5.10.0, @typescript-eslint/utils@npm:^5.53.0":
   version: 5.56.0
   resolution: "@typescript-eslint/utils@npm:5.56.0"
   dependencies:
@@ -15499,6 +15499,7 @@ __metadata:
     eslint-plugin-json: 3.1.0
     eslint-plugin-mocha: 10.1.0
     eslint-plugin-prettier: 4.2.1
+    eslint-plugin-vitest: 0.0.54
     typescript: 4.9.5
     vitest: 0.28.3
   languageName: unknown
@@ -26222,6 +26223,17 @@ __metadata:
   peerDependencies:
     eslint: ^7.5.0 || ^8.0.0
   checksum: 3b2b330e62f4a6dc438050006f0d0c97605f6861828b153271dc6d2fafb1e60f4e86fbaa8166c7afd452e3b6cad39413738fd4c8e2eb2def1915c678154676da
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-vitest@npm:0.0.54":
+  version: 0.0.54
+  resolution: "eslint-plugin-vitest@npm:0.0.54"
+  dependencies:
+    "@typescript-eslint/utils": ^5.53.0
+  peerDependencies:
+    eslint: ">=8.0.0"
+  checksum: 4bb699f5ffc6077fd8d39b20391059681f40af37ea2741058fcb852d5ca057ffc007f0eedac1dd84f61d5e9515777da68be47b3c439e3d8baa204eae6361d808
   languageName: node
   linkType: hard
 

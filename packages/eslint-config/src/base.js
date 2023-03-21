@@ -11,6 +11,7 @@ module.exports = {
   },
   root: true,
   plugins: [
+    'vitest',
     'eslint-plugin-prettier',
     'eslint-plugin-mocha',
     '@typescript-eslint',
@@ -44,6 +45,9 @@ module.exports = {
     'brace-style': 0,
     'no-constant-condition': 0,
     'no-promise-executor-return': 0,
+    'vitest/no-disabled-tests': 'warn',
+    'vitest/no-identical-title': 'error',
+    'vitest/no-focused-tests': 'error',
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-explicit-any': 'warn',
