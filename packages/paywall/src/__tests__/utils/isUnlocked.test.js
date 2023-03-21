@@ -1,4 +1,4 @@
-import { it, beforeEach, describe, expect, spyOn } from 'vitest'
+import { it, beforeEach, describe, expect, vi } from 'vitest'
 
 import { isUnlocked } from '../../utils/isUnlocked'
 import * as timeStampUtil from '../../utils/hasValidKey'
@@ -37,7 +37,7 @@ describe('isUnlocked', () => {
   describe('when the user has a valid key to any of the locks', () => {
     it('should check each locks', async () => {
       expect.assertions(6)
-      const spy = spyOn(timeStampUtil, 'hasValidKey').mockResolvedValue(true)
+      const spy = vi.spyOn(timeStampUtil, 'hasValidKey').mockResolvedValue(true)
 
       const unlocked = await isUnlocked(
         userAccountAddress,
@@ -66,7 +66,7 @@ describe('isUnlocked', () => {
 
   describe('when the user does not have a valid key to any of the locks', () => {
     beforeEach(() => {
-      spyOn(timeStampUtil, 'hasValidKey').mockResolvedValue(false)
+      vi.spyOn(timeStampUtil, 'hasValidKey').mockResolvedValue(false)
     })
 
     describe('when the config is pessimistic', () => {
