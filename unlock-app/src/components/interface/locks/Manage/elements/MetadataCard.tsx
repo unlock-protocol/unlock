@@ -31,7 +31,6 @@ interface MetadataCardProps {
   owner: string
   network: number
   expirationDuration?: string
-  reloadMembers?: any
 }
 
 const keysToIgnore = [
@@ -109,7 +108,7 @@ const ChangeManagerModal = ({
   network: number
   manager: string
   tokenId: string
-  onChange?: any
+  onChange?: (keyManager: string) => void
 }) => {
   const { getWalletService } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
@@ -142,7 +141,7 @@ const ChangeManagerModal = ({
   const changeManagerMutation = useMutation(setKeyManagerForKey, {
     onSuccess: () => {
       if (typeof onChange === 'function') {
-        onChange()
+        onChange(newManager)
       }
       ToastHelper.success('Key Manager updated')
       setIsOpen(false)
@@ -229,7 +228,6 @@ export const MetadataCard = ({
   owner,
   network,
   expirationDuration,
-  reloadMembers,
 }: MetadataCardProps) => {
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
@@ -548,10 +546,11 @@ export const MetadataCard = ({
                       network={network}
                       manager={manager}
                       tokenId={tokenId}
-                      onChange={() => {
-                        if (typeof reloadMembers === 'function') {
-                          reloadMembers()
-                        }
+                      onChange={(keyManager) => {
+                        setData({
+                          ...data,
+                          keyManager,
+                        })
                       }}
                     />
                   </div>

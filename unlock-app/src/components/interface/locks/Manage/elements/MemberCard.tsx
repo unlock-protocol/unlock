@@ -23,7 +23,6 @@ interface MemberCardProps {
   lockAddress: string
   network: number
   expirationDuration: string
-  reloadMembers?: any
 }
 
 export const MemberCard = ({
@@ -35,7 +34,6 @@ export const MemberCard = ({
   lockAddress,
   network,
   expirationDuration,
-  reloadMembers,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
@@ -178,7 +176,6 @@ export const MemberCard = ({
         metadata={metadata}
         owner={owner}
         network={network}
-        reloadMembers={reloadMembers}
       />
     </Collapse>
   )

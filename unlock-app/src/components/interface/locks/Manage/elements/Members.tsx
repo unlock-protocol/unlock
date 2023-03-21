@@ -67,7 +67,7 @@ export const Members = ({
   }
 
   const [
-    { isLoading, data: members = [], refetch },
+    { isLoading, data: members = [] },
     { isLoading: isLockLoading, data: lock },
   ] = useQueries({
     queries: [
@@ -173,7 +173,6 @@ export const Members = ({
             lockAddress={lockAddress!}
             network={network}
             expirationDuration={lock?.expirationDuration}
-            reloadMembers={refetch}
           />
         )
       })}
