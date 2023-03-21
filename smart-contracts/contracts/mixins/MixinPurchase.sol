@@ -206,7 +206,7 @@ contract MixinPurchase is
    * since the key was bought
    * @return true if the terms has changed
    */
-  function _tokenTermsChanged(uint _tokenId, address _referrer) internal view returns (bool) {
+  function tokenTermsChanged(uint _tokenId, address _referrer) public view returns (bool) {
     return (
       _originalPrices[_tokenId] != purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
       _originalDurations[_tokenId] != expirationDuration ||
@@ -416,7 +416,7 @@ contract MixinPurchase is
     }
 
     // make sure key duration and pricing havent changed
-    if (_tokenTermsChanged(_tokenId, _referrer)) {
+    if (tokenTermsChanged(_tokenId, _referrer)) {
       revert LOCK_HAS_CHANGED();
     }
 
