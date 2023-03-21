@@ -187,11 +187,8 @@ contract MixinTransfer is
     _isKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
 
-    // expire key
-    _cancelKey(_tokenId);
-
     // burn token
-    _transferFrom(msg.sender, address(0), _tokenId);
+    _transferFrom(ownerOf(_tokenId), address(0), _tokenId);
   }
 
   /**

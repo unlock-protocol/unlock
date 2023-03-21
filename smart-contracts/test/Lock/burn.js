@@ -1,5 +1,6 @@
 const { reverts } = require('../helpers/errors')
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
+const { assert } = require('chai')
 
 contract('Lock / burn', (accounts) => {
   let keyOwner = accounts[1]
@@ -37,6 +38,18 @@ contract('Lock / burn', (accounts) => {
     await lock.burn(tokenId, { from: accounts[9] })
     assert.equal(await lock.getHasValidKey(keyOwner), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
+  })
+
+  it('balance is updated correctly', async () => {
+    assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 1)
+    assert.equal((await lock.tokenOfOwnerByIndex(keyOwner, 0)).toNumber(), tokenId.toNumber())
+    await lock.burn(tokenId, { from: keyOwner })
+    assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 0)
+    await reverts(
+      lock.tokenOfOwnerByIndex(keyOwner, 0),
+      'OUT_OF_RANGE'
+    )
+
   })
 
   it('should work only on existing keys', async () => {

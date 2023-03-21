@@ -386,9 +386,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function totalKeys(
     address _keyOwner
   ) public view returns (uint) {
-    if (_keyOwner == address(0)) {
-      revert INVALID_ADDRESS();
-    }
     return _balances[_keyOwner];
   }
 
