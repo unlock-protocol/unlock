@@ -159,6 +159,8 @@ export class keysByQuery extends GraphQLDataSource {
 
       const getData = async (getFromPage = page) => {
         const skip = parseInt(`${getFromPage}`, 10) * first
+        // The Graph does not support skipping more than 5000
+        // https://thegraph.com/docs/en/querying/graphql-api/#pagination
         return await this.query(query, {
           variables: {
             addresses,
@@ -180,20 +182,25 @@ export class keysByQuery extends GraphQLDataSource {
       // get next page keys and add it to the list until the length is equal to MAX_ITEMS
       while (getForNextPage) {
         page = page + 1
+        try {
+          const {
+            data: {
+              locks: [{ keys: nextPageKeys = [] }],
+            },
+          } = (await getData()) ?? {}
 
-        const {
-          data: {
-            locks: [{ keys: nextPageKeys = [] }],
-          },
-        } = (await getData()) ?? {}
+          keysList?.push(...(nextPageKeys ?? []))
 
-        keysList?.push(...(nextPageKeys ?? []))
-
-        getForNextPage = nextPageKeys?.length === first
+          getForNextPage = nextPageKeys?.length === first
+        } catch (error) {
+          console.error(error)
+          getForNextPage = false // When we have an error, we stop paginating, results will be partial
+        }
       }
 
       return locks
     } catch (error) {
+      console.error(error)
       return []
     }
   }
