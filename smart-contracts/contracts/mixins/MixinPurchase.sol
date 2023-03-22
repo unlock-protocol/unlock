@@ -214,6 +214,19 @@ contract MixinPurchase is
     );
   }
 
+  function _isRenewable(uint _tokenId) private view returns (bool isRenewable) {
+
+    // check if key is 90% expired  
+    uint deadline = 
+      (_keys[_tokenId].expirationTimestamp - expirationDuration) // origin
+      + 
+      (expirationDuration * 90 / BASIS_POINTS_DEN); // 90% of duration
+
+    isRenewable  = block.timestamp >= deadline;
+
+    // TODO: use onValidKeyHook if it exists?
+  }
+
   /**
    * @dev simple helper to check the amount of ERC20 tokens declared
    * by user is enough to cover the actual price
@@ -421,7 +434,7 @@ contract MixinPurchase is
     }
 
     // make sure key is ready for renewal
-    if (isValidKey(_tokenId)) {
+    if (!_isRenewable(_tokenId)) {
       revert NOT_READY_FOR_RENEWAL();
     }
 
