@@ -265,16 +265,14 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
         />
       )}
       <div className="grid gap-4 p-6">
-        {isSignIn && (
-          <CustomAnchorButton
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://ethereum.org/en/wallets/find-wallet/"
-          >
-            I want to get a wallet
-            <WalletIcon size={26} className="mr-2" />
-          </CustomAnchorButton>
-        )}
+        <CustomAnchorButton
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://ethereum.org/en/wallets/find-wallet/"
+        >
+          I want to get a wallet
+          <WalletIcon size={26} className="mr-2" />
+        </CustomAnchorButton>
         <ConnectButton
           icon={<WalletIcon size={24} />}
           onClick={(event) => {

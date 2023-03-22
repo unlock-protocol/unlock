@@ -9,14 +9,14 @@ interface AuthResult {
   provider: any
 }
 const ConnectModalContext = createContext({
-  openConnectModal: (state?: ConnectStatus) => {},
-  openConnectModalAsync: async (state?: ConnectStatus) => {
+  openConnectModal: (_state?: ConnectStatus) => {},
+  openConnectModalAsync: async (_state?: ConnectStatus) => {
     return {} as AuthResult
   },
   closeConnectModal: () => {},
   status: 'crypto' as ConnectStatus,
   open: false as boolean,
-  send: (detail: any) => {},
+  send: (_detail: any) => {},
   connection: new EventTarget(),
 })
 
