@@ -189,6 +189,9 @@ contract MixinTransfer is
 
     // burn token
     _transferFrom(ownerOf(_tokenId), address(0), _tokenId);
+
+    // decrease totalSupply
+    _totalSupply--;
   }
 
   /**

@@ -49,7 +49,12 @@ contract('Lock / burn', (accounts) => {
       lock.tokenOfOwnerByIndex(keyOwner, 0),
       'OUT_OF_RANGE'
     )
+  })
 
+  it('totalSupply is decreased', async () => {
+    const totalSupply = (await lock.totalSupply()).toNumber()
+    await lock.burn(tokenId, { from: keyOwner })
+    assert.equal(await lock.totalSupply(), totalSupply - 1)
   })
 
   it('should work only on existing keys', async () => {
