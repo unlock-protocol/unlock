@@ -1,9 +1,4 @@
-import React, {
-  Fragment,
-  MouseEventHandler,
-  ReactNode,
-  forwardRef,
-} from 'react'
+import React, { MouseEventHandler, forwardRef } from 'react'
 import {
   RiCloseLine as CloseIcon,
   RiArrowLeftLine as BackIcon,
@@ -63,14 +58,6 @@ export const BackButton = forwardRef<HTMLButtonElement, ButtonProps>(
 )
 
 BackButton.displayName = 'Back Button'
-
-interface CheckoutTransitionProps {
-  children?: ReactNode
-}
-
-export const CheckoutTransition = ({ children }: CheckoutTransitionProps) => {
-  return <Fragment>{children}</Fragment>
-}
 
 interface CheckoutHeadProps {
   title?: string

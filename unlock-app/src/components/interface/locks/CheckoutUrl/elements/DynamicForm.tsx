@@ -270,11 +270,16 @@ export const DynamicForm = ({
           }}
         >
           {Object.entries(properties ?? {}).map(([fieldName, props], index) => {
-            const { type = undefined, description = '' } = (props as any) || {}
+            let { type = undefined, description = '' } = (props as any) || {}
+            const { anyOf } = (props as any) || {}
+            if (anyOf?.length) {
+              type = anyOf[0].type
+              description = anyOf[0].description
+            }
+
             let Component = getComponentByType(type)
             let inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
-
             const isUnionType =
               Array.isArray(type) &&
               (type.includes('string') || type.includes('number'))
