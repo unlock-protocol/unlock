@@ -13,8 +13,9 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
-import * as metadataOperations from './metadataOperations'
+
 import { createEventIcs } from '../utils/calendar'
+import { EventProps, getEventDetail } from './eventOperations'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -102,19 +103,6 @@ export const notifyNewKeysToWedlocks = async (
     notifyNewKeyToWedlocks(key, network, true)
   }
 }
-
-interface AttributeProps {
-  value: string
-  trait_type: string
-}
-export interface EventProps {
-  eventDescription: string
-  eventDate: string
-  eventTime: string
-  eventAddress: string
-  eventName: string
-}
-
 interface GetTemplateProps {
   isEvent: boolean
   isAirdropped: boolean
@@ -128,72 +116,6 @@ interface GetAttachmentProps {
   owner: string
   includeQrCode?: boolean
   event?: Partial<EventProps>
-}
-export const getEventDetail = async (
-  lockAddress: string,
-  network?: number
-): Promise<Partial<EventProps> | undefined> => {
-  if (!network) return
-  let eventDetail = undefined
-  const lockMetadata = await metadataOperations.getLockMetadata({
-    lockAddress,
-    network: network!,
-  })
-
-  const attributes: AttributeProps[] = lockMetadata?.attributes
-
-  const getAttribute = (name: string): string | undefined => {
-    return (
-      attributes?.find(({ trait_type }: AttributeProps) => trait_type === name)
-        ?.value || undefined
-    )
-  }
-
-  const getEventDate = (
-    startDate?: string,
-    startTime?: string,
-    timezone?: string
-  ): Date | null => {
-    if (startDate && startTime) {
-      const timestamp = `${startDate} ${startTime}`
-      const dayjsLocal = dayjs.tz(timestamp, timezone)
-      return dayjsLocal.toDate()
-    }
-
-    return null
-  }
-
-  // This is an event, collect event information
-  if (attributes) {
-    const timeZone = getAttribute('event_timezone')
-    const date = getEventDate(
-      getAttribute('event_start_date'),
-      getAttribute('event_start_time'),
-      timeZone
-    )
-    const eventAddress = getAttribute('event_address')
-
-    const eventDate = date?.toLocaleDateString(undefined, {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-
-    const eventTime = date?.toLocaleTimeString('en-US', {
-      timeZone,
-    })
-
-    eventDetail = {
-      eventName: lockMetadata?.name,
-      eventDescription: lockMetadata?.description,
-      eventDate,
-      eventTime,
-      eventAddress,
-    }
-  }
-
-  return eventDetail
 }
 
 const getCustomContent = async (
@@ -399,7 +321,8 @@ export const notifyNewKeyToWedlocks = async (
       transferUrl: transferUrl.toString(),
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
-      ...eventDetail, // add event details props
+      // add event details props
+      ...eventDetail,
     },
     attachments
   )
