@@ -251,7 +251,7 @@ export async function notifyKeyExpired() {
         if (!recipient) return
 
         // send expiring email
-        sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
+        sendEmail(`keyExpired`, `keyExpired`, recipient, {
           lockName,
           keyId,
           network: networkId,
