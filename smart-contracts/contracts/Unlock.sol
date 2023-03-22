@@ -56,22 +56,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     _;
   }
 
-  // modifier 
-  modifier onlyGov() {
-    if(unlockManager != address(0)) {
-      require(
-        _msgSender() == unlockManager
-        || 
-        isOwner()
-        , 
-        "ONLY_MANAGER"
-      );
-    } else {
-      require(isOwner(), "ONLY_OWNER");
-    }
-    _;
-  }
-
   uint public grossNetworkProduct;
 
   uint public totalDiscountGranted;
@@ -118,13 +102,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // protocol fee
   uint public protocolFee;
 
-  // address 
-  address public unlockManager;
-
-  // as per OZ EIP1967 Proxy implementation, this is the keccak-256 hash 
-  // of "eip1967.proxy.admin" subtracted by 1
-  bytes32 constant internal _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
-
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
@@ -160,7 +137,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // add a proxy admin on deployment
     _deployProxyAdmin();
   }
-  function initializeProxyAdmin() public onlyGov {
+  function initializeProxyAdmin() public onlyOwner {
     if(proxyAdminAddress != address(0)){revert Unlock__ALREADY_DEPLOYED();}
     _deployProxyAdmin();
   }
@@ -183,16 +160,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * Set the `UnlockManager` instance that is capable of performing admin tasks
-   * on Unlock
-   * @param _unlockManager address of the UnlockManager contract instance on
-   * current network 
-   */
-  function setUnlockManager(address _unlockManager) external {
-    unlockManager = _unlockManager;
-  }
-
-  /**
    * @dev Helper to get the address of a template based on its version number
    */
   function publicLockImpls(uint16 _version) external view returns (address) {
@@ -208,7 +175,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function addLockTemplate(
     address impl,
     uint16 version
-  ) public onlyGov {
+  ) public onlyOwner {
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
 
@@ -388,15 +355,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function networkBaseFee() external view returns (uint) {
     return block.basefee;
   }
-
-  /**
-   * Returns the proxy admin address to manager upgrade for 
-   * this contract
-   * TODO: @dev protected by modifier onlyGov
-   */
-  function _getAdmin() public view returns (address) {
-      return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
-  }
   
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
@@ -537,7 +495,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Set the fee used by the protocol
    * @param _protocolFee fee in basic point
    */
-  function setProtocolFee(uint _protocolFee) external onlyGov {
+  function setProtocolFee(uint _protocolFee) external onlyOwner {
     protocolFee = _protocolFee;
   }
 
@@ -551,7 +509,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     string calldata _symbol,
     string calldata _URI,
     uint _chainId
-  ) external onlyGov {
+  ) external onlyOwner {
     udt = _udt;
     weth = _weth;
     estimatedGasForPurchase = _estimatedGasForPurchase;
@@ -576,7 +534,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    */
   function setLockTemplate(
     address _publicLockAddress
-  ) external onlyGov {
+  ) external onlyOwner {
     // First claim the template so that no-one else could
     // this will revert if the template was already initialized.
     IPublicLock(_publicLockAddress).initialize(
@@ -601,7 +559,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function setOracle(
     address _tokenAddress,
     address _oracleAddress
-  ) external onlyGov {
+  ) external onlyOwner {
     uniswapOracles[_tokenAddress] = IUniswapOracleV3(
       _oracleAddress
     );
@@ -614,7 +572,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function resetTrackedValue(
     uint _grossNetworkProduct,
     uint _totalDiscountGranted
-  ) external onlyGov {
+  ) external onlyOwner {
     grossNetworkProduct = _grossNetworkProduct;
     totalDiscountGranted = _totalDiscountGranted;
 
