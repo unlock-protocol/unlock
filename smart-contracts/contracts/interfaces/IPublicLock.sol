@@ -728,4 +728,13 @@ interface IPublicLock {
     uint _tokenId,
     address _referrer
   ) external;
+
+  /**
+    * @dev helper to check if the pricing or duration of the lock have been modified 
+   * since the key was bought
+   * @param tokenId the id of the token to check
+   * @param referrer the address where to send the referrer fee
+   * @return true if the terms has changed
+   */
+  function tokenTermsChanged(uint256 tokenId, address referrer) external view returns (bool);
 }
