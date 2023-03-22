@@ -3,6 +3,7 @@ import networks from '@unlock-protocol/networks'
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { getValidNumber } from '../../utils/normalizer'
+import logger from '../../logger'
 
 export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
 const keyholdersByTokedIdQuery = gql`
@@ -193,14 +194,14 @@ export class keysByQuery extends GraphQLDataSource {
 
           getForNextPage = nextPageKeys?.length === first
         } catch (error) {
-          console.error(error)
+          logger.error(error)
           getForNextPage = false // When we have an error, we stop paginating, results will be partial
         }
       }
 
       return locks
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       return []
     }
   }
