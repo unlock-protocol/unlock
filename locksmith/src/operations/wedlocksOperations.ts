@@ -176,11 +176,14 @@ const getAttachments = async ({
   // Calendar ICS for event
   if (event) {
     const startDate = dayjs(`${event.eventTime} ${event.eventTime}`).toDate()
-    const file = await createEventIcs({
+    const file: any = await createEventIcs({
       title: event?.eventName ?? '',
       description: event?.eventDescription ?? '',
       startDate,
     })
+    const url = URL.createObjectURL(file).toString()
+    const dataURI = `data:text/calendar;base64,${url}`
+    attachments.push({ path: dataURI })
   }
 
   return attachments
