@@ -1,4 +1,5 @@
 // testing Bridge using a MockBridge contract
+const { ZERO_ADDRESS } = require("@openzeppelin/test-helpers/src/constants");
 const { assert } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -11,18 +12,18 @@ const {
 } = require("../helpers");
 
 let bridge,
-  owner,
-  dispatcher,
-  manager,
   dao,
+  multisig,
+  managerMainnet,
+  managerDest,
   unlockDest,
-  keyOwner,
   wethDest,
   proxyAdmin
 
 //
 const destChainId = 31337;
 const destDomainId = 1734439522;
+const srcDomainId = 1
 
 const gasEstimate = 16000;
 const url = `http://locksmith:8080/api/key/`;
@@ -30,7 +31,7 @@ const url = `http://locksmith:8080/api/key/`;
 contract("Unlock / bridged governance", () => {
   before(async () => {
     
-    ;[owner, keyOwner, dao] = await ethers.getSigners()
+    ;[, dao, multisig] = await ethers.getSigners()
 
     // mock bridge
     ;({bridge, wethDest} = await deployBridge())
@@ -46,122 +47,64 @@ contract("Unlock / bridged governance", () => {
       destChainId
     );
 
-    // deploy dispatcher to current chain (our mainnet)
-    const GovDispatcher = await ethers.getContractFactory("GovDispatcher");
-    dispatcher = await GovDispatcher.deploy(
-      dao.address,
-      bridge.address
-    );
-
     // deploy unlock manager on remote chain
     const UnlockManager = await ethers.getContractFactory("UnlockManager");
-    manager = await UnlockManager.deploy(
+    
+    managerMainnet = await UnlockManager.deploy(
       bridge.address,
-      dispatcher.address,
+      ZERO_ADDRESS, // unlock on mainnet
+      dao.address,
+      ZERO_ADDRESS, // mutisig
+      srcDomainId,
+    );
+    
+    managerDest = await UnlockManager.deploy(
+      bridge.address,
       unlockDest.address,
+      dao.address, // dao address on mainnet
+      multisig.address,
       destDomainId,
     );
     
-    // transfer Unlock ProxyAdmin ownership to UnlockManager
+    // transfer assets to UnlockManager on dest chain
     proxyAdmin = await getProxyAdmin(unlockDest.address)
-    await proxyAdmin.transferOwnership(manager.address)
+    await proxyAdmin.transferOwnership(managerDest.address)
+    await unlockDest.transferOwnership(managerDest.address)
   });
 
-  describe("manager", () => {
-    it("stores bridger address", async () => {
-      assert.equal(bridge.address, await manager.bridgeAddress());
+  describe("constructor", () => {
+    it("stores bridge address", async () => {
+      assert.equal(bridge.address, await managerMainnet.bridgeAddress());
     });
+
     it("stores Unlock address properly", async () => {
       assert.equal(
-        await manager.unlockAddress(),
+        await managerMainnet.unlockAddress(),
         unlockDest.address
       );
     });
-    it("stores the domain properly", async () => {
-      assert.equal(await manager.domain(), destDomainId);
-    });
-  })
 
-  describe("dispatcher", () => {
-    
-    it("stores bridger sender", async () => {
-      assert.equal(bridge.address, await dispatcher.bridgeAddress());
+    it("stores the domain properly", async () => {
+      assert.equal(await managerMainnet.domain(), destDomainId);
     });
 
     it("stores DAO address", async () => {
-      assert.equal(dao.address, await dispatcher.daoAddress());
+      assert.equal(dao.address, await managerMainnet.daoAddress());
     });
-
-    it("has an owner", async () => {
-      assert.equal(owner.address, await dispatcher.owner());
-    })
-
-    describe('setManagers', () => {
-      beforeEach(async () => {
-        // set manager(s) in dispatcher
-        await dispatcher.setManagers(
-          [manager.address],
-          [destChainId],
-          [destDomainId],
-        )
-      })
-      it("stores UnlockManager address properly", async () => {
-        assert.equal(
-          await dispatcher.unlockManagers(destDomainId),
-          manager.address
-        );
-      });
-      it("stores the domains properly", async () => {
-        assert.equal(await dispatcher.domains(destChainId), destDomainId);
-      });
-      it("can be called only by owner", async () => {
-        await reverts(
-          dispatcher.connect(keyOwner).setManagers(
-            [manager.address],
-            [destChainId],
-            [destDomainId],
-          ),
-          'Ownable'
-        )
-      })    
-    })
-  });
-
-  describe("Unlock / setUnlockManager", () => {
-    it("default to zero", async () => {
-      assert.equal(await unlockDest.unlockManager(), ADDRESS_ZERO);
-    })
-    it("sets unlock manager address correctly", async () => {
-      await unlockDest.setUnlockManager(manager.address)
-      assert.equal(await unlockDest.unlockManager(), manager.address);
-    });
-    it("only unlock owner can call", async () => {
-      reverts(
-        unlockDest
-          .connect(keyOwner)
-          .setUnlockManager(manager.address),
-        "ONLY_OWNER"
-      );
+    
+    it("stores multisig address", async () => {
+      assert.equal(dao.address, await managerMainnet.daoAddress());
     });
   });
 
-  describe("make changes accross the bridge", () => {
-
-    it('reverts is dispatcher is not called by the DAO', async () => {
-      await reverts(
-        dispatcher.dispatch(
-          [destChainId],
-          ['0x']
-        ),
-        'Unauthorized'
-      )
-    })
-
-    it('can add new template to Unlock', async () => {
-      // depoloy template
+  describe("change Unlock settings", () => {
+    let calldata
+    let args
+    before( async () => {
+      // deploy template
       const PublicLock = await ethers.getContractFactory('TestPublicLockUpgraded')
       const template = await PublicLock.deploy()
-      const args = [
+      args = [
         template.address,
         14
       ]
@@ -169,23 +112,70 @@ contract("Unlock / bridged governance", () => {
       // parse call
       const { interface } = unlockDest
       const unlockCallData =  interface.encodeFunctionData('addLockTemplate', args)
-      const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [1, unlockCallData])
-
+      calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [1, unlockCallData])
+    })
+    it('through the bridge', async () => {
       // make sure settings were ok before
       assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
-      // send through the dispatcher
-      await dispatcher.connect(dao).dispatch(
-        [destChainId],
-        [calldata]
+      // send through the DAO > mainnet manager > bridge path
+      await managerMainnet.connect(dao).dispatch(
+        destChainId,
+        managerDest.address,
+        calldata,
+        ZERO_ADDRESS,
+        0,
+        ZERO_ADDRESS,
+        30
       )
 
       // make sure things have worked correctly
       assert.equal(await unlockDest.publicLockVersions(args[0]), args[1]);
       assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
     })
+    it('via multisig', async () => {
+      
+      // make sure settings were ok before
+      assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
+      assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
+      // send through the DAO > mainnet manager > bridge path
+      await managerMainnet.connect(multisig).exec(
+        calldata
+      )
+
+      // make sure things have worked correctly
+      assert.equal(await unlockDest.publicLockVersions(args[0]), args[1]);
+      assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
+
+    })
+
+    it('reverts is dispatc is not called by the DAO', async () => {
+      await reverts(
+        managerMainnet.dispatch(
+          destChainId,
+          managerDest.address,
+          calldata,
+          ZERO_ADDRESS,
+          0,
+          ZERO_ADDRESS,
+          30
+        ),
+        'Unauthorized'
+      )
+    })
+    
+    it('reverts if exec is not called by multisig', async () => {
+      await reverts(
+        managerDest.exec(calldata),
+        'Unauthorized'
+      )
+    })
+  })
+
+
+  describe("update proxied contract via proxyAdmin", () => {    
     it('can upgrade Unlock from the bridge', async () => {
       const UnlockUpgraded = await ethers.getContractFactory('TestUnlockUpgraded')
       const unlockUpgraded = await UnlockUpgraded.deploy()
@@ -196,9 +186,8 @@ contract("Unlock / bridged governance", () => {
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send through the dispatcher
-      await dispatcher.connect(dao).dispatch(
-        [destChainId],
-        [calldata]
+      await managerDest.connect(dao).exec(
+        calldata
       )
 
       const unlockAfterUpgrade = await ethers.getContractAt('TestUnlockUpgraded', unlockDest.address)
