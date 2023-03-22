@@ -208,7 +208,7 @@ contract MixinPurchase is
    */
   function tokenTermsChanged(uint _tokenId, address _referrer) public view returns (bool) {
     return (
-      _originalPrices[_tokenId] != purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalPrices[_tokenId] < purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
       _originalDurations[_tokenId] != expirationDuration ||
       _originalTokens[_tokenId] != tokenAddress
     );
