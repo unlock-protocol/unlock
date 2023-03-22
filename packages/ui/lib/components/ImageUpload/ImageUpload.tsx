@@ -3,13 +3,7 @@ import { Button } from '../Button/Button'
 import { Tab } from '@headlessui/react'
 import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 import { Input } from '../Form'
-
-interface ImageUploadProps {
-  preview: string
-  isUploading?: boolean
-  onChange: (fileOrFileUrl: File[] | string) => Promise<unknown> | unknown
-  description?: string
-}
+import { classed } from '@tw-classed/react'
 
 const tabs = [
   {
@@ -21,12 +15,35 @@ const tabs = [
     name: 'Insert image URL',
   },
 ]
+
+const ImageUploadWrapper = classed.div('grid gap-6 p-2 bg-white rounded-xl', {
+  variants: {
+    size: {
+      sm: 'max-w-sm',
+      full: 'w-full',
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
+})
+
+type ImageUploadWrapperProps = React.ComponentProps<
+  typeof ImageUploadWrapper
+> & {
+  preview: string
+  isUploading?: boolean
+  onChange: (fileOrFileUrl: File[] | string) => Promise<unknown> | unknown
+  description?: string
+}
+
 export const ImageUpload = ({
   onChange,
   preview,
   isUploading,
   description,
-}: ImageUploadProps) => {
+  size,
+}: ImageUploadWrapperProps) => {
   const { getInputProps, getRootProps } = useDropzone({
     accept: {
       'image/png': ['.png'],
@@ -37,7 +54,7 @@ export const ImageUpload = ({
     onDropAccepted: onChange,
   })
   return (
-    <div className="grid max-w-sm gap-6 p-2 bg-white rounded-xl">
+    <ImageUploadWrapper size={size}>
       <div className="flex flex-col items-center justify-center p-1 border border-dashed rounded-lg aspect-1">
         {isUploading && (
           <div className="flex flex-col items-center justify-center h-full">
@@ -48,13 +65,16 @@ export const ImageUpload = ({
             />
           </div>
         )}
-        {!isUploading && (
-          <img
-            className="object-cover w-full h-full rounded-xl"
-            src={preview}
-            alt="NFT"
-          />
-        )}
+        {!isUploading &&
+          (preview ? (
+            <img
+              className="object-cover w-full h-full rounded-xl"
+              src={preview}
+              alt="NFT"
+            />
+          ) : (
+            <div className="text-xs">No image selected</div>
+          ))}
       </div>
       <Tab.Group>
         <div className="grid gap-4">
@@ -104,6 +124,6 @@ export const ImageUpload = ({
           </Tab.Panels>
         </div>
       </Tab.Group>
-    </div>
+    </ImageUploadWrapper>
   )
 }

@@ -18,11 +18,12 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
-import { getEventDate } from './utils'
+import { getEventDate, getEventEndDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import { useStorageService } from '~/utils/withStorageService'
+import dayjs from 'dayjs'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -102,6 +103,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const eventData = toFormData(metadata)
   const eventDate = getEventDate(eventData.ticket)
+  const eventEndDate = getEventEndDate(eventData.ticket)
+
+  const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
   const injectedProvider = selectProvider(config)
 
@@ -153,18 +157,35 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           style={{ color: `#${eventData.background_color}` }}
         >
           {eventDate && (
-            <li className="mb-2">
+            <li className="flex items-center mb-2 ">
               <FaCalendar className="inline mr-2" />
-              {eventDate.toLocaleDateString(undefined, {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
+              <div className="flex flex-col gap-1 text-lg md:flex-row md:items-center md:text-2xl">
+                <span>
+                  {eventDate.toLocaleDateString(undefined, {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
+                {eventEndDate && !isSameDay && (
+                  <>
+                    <span className="hidden md:block">to</span>
+                    <span>
+                      {eventEndDate.toLocaleDateString(undefined, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </span>
+                  </>
+                )}
+              </div>
             </li>
           )}
           {eventDate && eventData.ticket?.event_start_time && (
-            <li className="mb-2">
+            <li className="flex items-center mb-2">
               <FaClock className="inline mr-2" />
               <Tooltip
                 delay={0}
@@ -172,11 +193,29 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 tip={eventData.ticket.event_timezone}
                 side="bottom"
               >
-                <span>
-                  {eventDate.toLocaleTimeString(navigator.language || 'en-US', {
-                    timeZone: eventData.ticket.event_timezone,
-                  })}
-                </span>
+                <div className="flex items-center gap-1 text-lg md:text-2xl">
+                  <span>
+                    {eventDate.toLocaleTimeString(
+                      navigator.language || 'en-US',
+                      {
+                        timeZone: eventData.ticket.event_timezone,
+                      }
+                    )}
+                  </span>
+                  {eventEndDate && isSameDay && (
+                    <>
+                      <span>to</span>
+                      <span>
+                        {eventEndDate.toLocaleTimeString(
+                          navigator.language || 'en-US',
+                          {
+                            timeZone: eventData.ticket.event_timezone,
+                          }
+                        )}
+                      </span>
+                    </>
+                  )}
+                </div>
               </Tooltip>
             </li>
           )}
