@@ -175,6 +175,13 @@ export async function notifyKeyExpiration() {
             )) ?? ''
           : networks?.[networkId]?.baseCurrencySymbol
 
+        const addressBalance =
+          web3Service.getAddressBalance(ownerAddress, Number(networkId)) ?? 0
+
+        const isAutoRenewable =
+          parseFloat(Number(addressBalance).toString()) >
+          parseFloat(key?.lock?.price)
+
         // expiration date example: 1 December 2022 - 10:55
         const expirationDate = dayjs(new Date(key.expiration)).format(
           'D MMMM YYYY - HH:mm'
@@ -188,8 +195,8 @@ export async function notifyKeyExpiration() {
           currency,
           expirationDate,
           keychainUrl: 'https://app.unlock-protocol.com/keychain',
-          isRenewable: isRenewable ? 'true' : '',
-          isAutoRenewable: '',
+          isRenewable: isRenewable && !isAutoRenewable ? 'true' : '',
+          isAutoRenewable: isAutoRenewable ? 'true' : '',
           isRenewableIfRePurchased: '',
           isRenewableIfReApproved: '',
         })
