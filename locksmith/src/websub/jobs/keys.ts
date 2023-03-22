@@ -128,7 +128,7 @@ export async function notifyKeyExpiration() {
       // get keys from now to 24h in the future
       const keys = await subgraph.keys(
         {
-          first: 1000, // more than 1000 limit? need to handle it
+          first: 1000, //  TODO: handle more than 1000 keys
         },
         {
           networks: [Number(networkId)],
@@ -218,7 +218,7 @@ export async function notifyKeyExpired() {
       // get keys from now to 24h before
       const keys = await subgraph.keys(
         {
-          first: 1000, // more than 1000 limit? need to handle it
+          first: 1000, //  TODO: handle more than 1000 keys
           where: {
             expiration_lt: now.getTime().toString(),
             expiration_gt: yesterday.getTime().toString(),
