@@ -1,5 +1,9 @@
 # Changes
 
+# 0.34.1
+
+- add support for `setKeyManagerOf` to walletService
+
 # 0.33.4
 
 - move `customHookService` to web3Service
