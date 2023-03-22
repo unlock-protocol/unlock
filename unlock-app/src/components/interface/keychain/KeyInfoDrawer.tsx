@@ -26,7 +26,7 @@ import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
-import { getEventDate } from '~/components/content/event/utils'
+import { getEventDate, getEventEndDate } from '~/components/content/event/utils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 dayjs.extend(relative)
@@ -194,6 +194,11 @@ export const KeyInfo = ({
 
   const isTicketInfoNotAvailable = Object.keys(ticket || {}).length === 0
 
+  const starDate = getEventDate(ticket)
+  const endDate = getEventEndDate(ticket)
+
+  const isSameDay = dayjs(starDate).isSame(endDate, 'day')
+
   return (
     <div className="grid gap-6">
       <header className="flex flex-col items-center w-full gap-6">
@@ -245,9 +250,14 @@ export const KeyInfo = ({
         <div>
           <h3 className="text-lg font-bold"> Event Information </h3>
           <div className="divide-y divide-brand-dark">
-            {!!ticket?.event_start_date && (
-              <KeyItem label="Event Date">
-                {getEventDate(ticket)?.toLocaleDateString()}
+            {starDate && (
+              <KeyItem label={isSameDay ? 'Event Date' : 'Event Start Date'}>
+                {starDate?.toLocaleDateString()}
+              </KeyItem>
+            )}
+            {endDate && !isSameDay && (
+              <KeyItem label="Event End Date">
+                {endDate?.toLocaleDateString()}
               </KeyItem>
             )}
             {ticket?.event_start_date && (
@@ -257,13 +267,30 @@ export const KeyInfo = ({
                 tip={ticket.event_timezone}
                 side="bottom"
               >
-                <KeyItem label="Event Time">
-                  {getEventDate(ticket)?.toLocaleTimeString(
-                    navigator.language || 'en-US',
-                    {
-                      timeZone: ticket.event_timezone,
-                    }
-                  )}
+                <KeyItem label={isSameDay ? 'Event Time' : 'Event Start Time'}>
+                  <div className="flex gap-1">
+                    <span>
+                      {starDate?.toLocaleTimeString(
+                        navigator.language || 'en-US',
+                        {
+                          timeZone: ticket.event_timezone,
+                        }
+                      )}
+                    </span>
+                    {isSameDay && (
+                      <>
+                        <span>to</span>
+                        <span>
+                          {endDate?.toLocaleTimeString(
+                            navigator.language || 'en-US',
+                            {
+                              timeZone: ticket.event_timezone,
+                            }
+                          )}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </KeyItem>
               </Tooltip>
             )}
