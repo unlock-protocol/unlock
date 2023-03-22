@@ -73,20 +73,21 @@ export const PaywallLockConfig = z.object({
         'If enabled, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager on the dashboard. Additionaly a confirmation email will be sent to the user once the NFT membership has been minted.',
     })
     .optional(),
-  minRecipients: z
+  minRecipients: z.coerce
     .number({
       description:
         'During checkout, users can buy multiple memberships at once. You can set a minimum number they can buy.',
     })
     .int()
-    .positive()
+    .nullable()
     .optional(),
-  maxRecipients: z
+  maxRecipients: z.coerce
     .number({
       description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
     })
     .int()
     .positive()
+    .nullable()
     .optional(),
   default: z.boolean().optional(),
   dataBuilder: z
@@ -162,18 +163,21 @@ export const PaywallConfig = z
           'If set true, the users will be prompted to go through a captcha during the checkout process. This is better used in conjunction with a purchase hook that verifies that captcha is valid.',
       })
       .optional(),
-    minRecipients: z
+    minRecipients: z.coerce
       .number({
         description:
           'Set the minimum number of memberships a user needs to purchase.',
       })
       .int()
+      .nullable()
       .optional(),
-    maxRecipients: z
+    maxRecipients: z.coerce
       .number({
         description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
       })
       .int()
+      .positive()
+      .nullable()
       .optional(),
     hideSoldOut: z
       .boolean({
