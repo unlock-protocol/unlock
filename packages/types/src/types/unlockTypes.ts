@@ -114,7 +114,7 @@ export interface NetworkConfig {
   maxFreeClaimCost?: number
   requiredConfirmations?: number
   baseCurrencySymbol?: string
-  nativeCurrency?: Omit<Token, 'address'>
+  nativeCurrency: Omit<Token, 'address'>
   wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
