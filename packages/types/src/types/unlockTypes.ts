@@ -118,7 +118,9 @@ export interface NetworkConfig {
   wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
-  description?: string
+  description: string
+  url?: string
+  faucet?: string
   teamMultisig?: string
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
