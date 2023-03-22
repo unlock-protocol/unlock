@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
 import router from './routes'
-import { errorHandler } from '@sentry/node/types/handlers'
+import { errorHandler } from './utils/middlewares/error'
 
 const app = express()
 
