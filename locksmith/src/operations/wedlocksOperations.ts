@@ -1,5 +1,4 @@
 import * as Normalizer from '../utils/normalizer'
-import { UserTokenMetadata } from '../models'
 import config from '../config/config'
 import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
@@ -10,6 +9,7 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
+import * as metadataOperations from './metadataOperations'
 
 type Params = {
   [key: string]: string | number | undefined
@@ -141,19 +141,9 @@ export const notifyNewKeyToWedlocks = async (
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
   const tokenId = key?.tokenId
 
-  const userTokenMetadataRecord = await UserTokenMetadata.findOne({
-    where: {
-      tokenAddress: lockAddress,
-      userAddress: ownerAddress,
-    },
-  })
-  logger.info(
-    'Found the relevant token metadata',
-    userTokenMetadataRecord?.data
-  )
-
-  const protectedData = Normalizer.toLowerCaseKeys({
-    ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+  const protectedData = await metadataOperations.getUserProtectedMetadata({
+    lockAddress,
+    userAddress: ownerAddress,
   })
 
   const recipient = protectedData?.email as string

@@ -9,6 +9,9 @@ import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
+import { UserTokenMetadata } from '../models'
+import logger from '../logger'
+
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -244,4 +247,30 @@ export const getKeysMetadata = async ({
 
   const mergedData = await Promise.all(mergedDataList)
   return mergedData.filter(Boolean)
+}
+
+export const getUserProtectedMetadata = async ({
+  lockAddress,
+  userAddress,
+}: {
+  lockAddress: string
+  userAddress: string
+}) => {
+  const userTokenMetadataRecord = await UserTokenMetadata.findOne({
+    where: {
+      tokenAddress: lockAddress,
+      userAddress,
+    },
+  })
+
+  logger.info(
+    'Found the relevant token metadata',
+    userTokenMetadataRecord?.data
+  )
+
+  const protectedData = Normalizer.toLowerCaseKeys({
+    ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+  })
+
+  return protectedData
 }

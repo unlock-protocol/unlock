@@ -11,6 +11,7 @@ import {
 import { logger } from '../../logger'
 import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
 import * as Normalizer from '../../utils/normalizer'
+import * as metadataOperations from './../../operations/metadataOperations'
 import { ethers } from 'ethers'
 import dayjs from 'dayjs'
 
@@ -128,14 +129,14 @@ export async function notifyKeyExpiration() {
       const keys = await subgraph.keys(
         {
           first: 1000, // more than 1000 limit? need to handle it
-          where: {
-            expiration_gt: now.getTime().toString(),
-            expiration_lt: end.getTime().toString(),
-          },
         },
         {
           networks: [Number(networkId)],
         }
+      )
+
+      logger.info(
+        `keys expiring for ${networks[networkId].name}: ${keys?.length}`
       )
 
       await Promise.allSettled([
@@ -146,18 +147,15 @@ export async function notifyKeyExpiration() {
           const tokenAddress = key?.lock?.tokenAddress ?? ''
           const keyId = key?.tokenId ?? ''
 
-          const userTokenMetadataRecord = await UserTokenMetadata.findOne({
-            where: {
-              tokenAddress: lockAddress,
+          const protectedData =
+            await metadataOperations.getUserProtectedMetadata({
+              lockAddress,
               userAddress: ownerAddress,
-            },
-          })
-
-          const protectedData = Normalizer.toLowerCaseKeys({
-            ...userTokenMetadataRecord?.data?.userMetadata?.protected,
-          })
+            })
 
           const recipient = protectedData?.email as string
+
+          logger.info(`for key ${lockName} sent to ${recipient}`)
 
           if (!recipient) return
 
@@ -231,6 +229,10 @@ export async function notifyKeyExpired() {
         }
       )
 
+      logger.info(
+        `keys expired for ${networks[networkId]?.name}: ${keys?.length}`
+      )
+
       await Promise.allSettled(
         keys?.map(async (key: any) => {
           const lockName = key?.lock?.name ?? ''
@@ -238,16 +240,11 @@ export async function notifyKeyExpired() {
           const ownerAddress = Normalizer.ethereumAddress(key.owner)
           const keyId = key?.tokenId ?? ''
 
-          const userTokenMetadataRecord = await UserTokenMetadata.findOne({
-            where: {
-              tokenAddress: lockAddress,
+          const protectedData =
+            await metadataOperations.getUserProtectedMetadata({
+              lockAddress,
               userAddress: ownerAddress,
-            },
-          })
-
-          const protectedData = Normalizer.toLowerCaseKeys({
-            ...userTokenMetadataRecord?.data?.userMetadata?.protected,
-          })
+            })
 
           const recipient = protectedData?.email as string
 
