@@ -22,6 +22,7 @@ import { getEventDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -31,6 +32,8 @@ interface EventDetailsProps {
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
   const web3Service = useWeb3Service()
+  const storageService = useStorageService()
+
   const config = useConfig()
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
@@ -38,6 +41,16 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
+
+  const { isLoading: isClaimableLoading, data: isClaimable } = useQuery(
+    ['claim', lockAddress, network],
+    () => {
+      return storageService.canClaimMembership({
+        network,
+        lockAddress,
+      })
+    }
+  )
 
   const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =
     useQuery(
@@ -99,6 +112,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         emailRequired: true,
       },
     },
+  }
+
+  const onRegister = () => {
+    // Check if the lock is free and on a free network and
+    // if so let's add support for walletless airdrop from the backend!
+    if (isClaimable) {
+      // Show screen for claims!
+      // Can we get the metadata from the checkout
+      // Add a wallet field too!
+    } else {
+      // Use regular checkout!
+      setCheckoutOpen(true)
+    }
   }
 
   return (
@@ -201,7 +227,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 ? fontColorContrast(`#${eventData.background_color}`)
                 : 'white',
             }}
-            onClick={() => setCheckoutOpen(true)}
+            disabled={isClaimableLoading}
+            onClick={onRegister}
           >
             Register
           </Button>
