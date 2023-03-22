@@ -51,11 +51,11 @@ contract MixinRoles is
     return hasRole(LOCK_MANAGER_ROLE, account);
   }
 
-  // function addLockManager(address account) public {
-  //   _onlyLockManager();
-  //   grantRole(LOCK_MANAGER_ROLE, account);
-  //   emit LockManagerAdded(account);
-  // }
+  function addLockManager(address account) public {
+    _onlyLockManager();
+    grantRole(LOCK_MANAGER_ROLE, account);
+    emit LockManagerAdded(account);
+  }
 
   function renounceLockManager() public {
     renounceRole(LOCK_MANAGER_ROLE, msg.sender);
