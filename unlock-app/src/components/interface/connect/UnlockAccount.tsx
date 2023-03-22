@@ -4,7 +4,7 @@ import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
 import SvgComponents from '../svg'
-import { ConnectButton } from './Custom'
+import { ConnectButton, CustomAnchorButton } from './Custom'
 import { useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
@@ -264,7 +264,17 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
           }}
         />
       )}
-      <div className="grid p-6">
+      <div className="grid gap-4 p-6">
+        {isSignIn && (
+          <CustomAnchorButton
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://ethereum.org/en/wallets/find-wallet/"
+          >
+            I want to get a wallet
+            <WalletIcon size={26} className="mr-2" />
+          </CustomAnchorButton>
+        )}
         <ConnectButton
           icon={<WalletIcon size={24} />}
           onClick={(event) => {
