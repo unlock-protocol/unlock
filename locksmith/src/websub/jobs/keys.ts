@@ -197,7 +197,7 @@ export async function notifyKeyExpiration() {
             expirationDate,
             keychainUrl: 'https://app.unlock-protocol.com/keychain',
             isRenewable: isRenewable && !isAutoRenewable ? 'true' : '',
-            isAutoRenewable: isAutoRenewable ? 'true' : '',
+            isAutoRenewable: isRenewable && isAutoRenewable ? 'true' : '',
             isRenewableIfRePurchased: '',
             isRenewableIfReApproved: '',
           })
