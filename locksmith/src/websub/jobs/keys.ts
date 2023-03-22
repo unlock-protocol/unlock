@@ -117,7 +117,7 @@ export async function notifyKeyExpiration() {
 
   const now = new Date()
 
-  let end = new Date(now.getTime())
+  const end = new Date(now.getTime())
   end.setDate(now.getDate() + 1)
 
   await Promise.allSettled(
@@ -138,69 +138,71 @@ export async function notifyKeyExpiration() {
         }
       )
 
-      keys?.map(async (key) => {
-        const lockName = key?.lock?.name ?? ''
-        const lockAddress = Normalizer.ethereumAddress(key.lock.address)
-        const ownerAddress = Normalizer.ethereumAddress(key.owner)
-        const tokenAddress = key?.lock?.tokenAddress ?? ''
-        const keyId = key?.tokenId ?? ''
+      await Promise.allSettled([
+        keys?.map(async (key: any) => {
+          const lockName = key?.lock?.name ?? ''
+          const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+          const ownerAddress = Normalizer.ethereumAddress(key.owner)
+          const tokenAddress = key?.lock?.tokenAddress ?? ''
+          const keyId = key?.tokenId ?? ''
 
-        const userTokenMetadataRecord = await UserTokenMetadata.findOne({
-          where: {
-            tokenAddress: lockAddress,
-            userAddress: ownerAddress,
-          },
-        })
+          const userTokenMetadataRecord = await UserTokenMetadata.findOne({
+            where: {
+              tokenAddress: lockAddress,
+              userAddress: ownerAddress,
+            },
+          })
 
-        const protectedData = Normalizer.toLowerCaseKeys({
-          ...userTokenMetadataRecord?.data?.userMetadata?.protected,
-        })
+          const protectedData = Normalizer.toLowerCaseKeys({
+            ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+          })
 
-        const recipient = protectedData?.email as string
+          const recipient = protectedData?.email as string
 
-        if (!recipient) return
+          if (!recipient) return
 
-        const isERC20 =
-          tokenAddress && tokenAddress !== ethers.constants.AddressZero
+          const isERC20 =
+            tokenAddress && tokenAddress !== ethers.constants.AddressZero
 
-        const isRenewable =
-          Number(key?.lock?.version) >= 11 &&
-          key.expiration !== MAX_UINT &&
-          isERC20
+          const isRenewable =
+            Number(key?.lock?.version) >= 11 &&
+            key.expiration !== MAX_UINT &&
+            isERC20
 
-        const currency = isERC20
-          ? (await web3Service.getTokenSymbol(
-              tokenAddress,
-              Number(networkId)
-            )) ?? ''
-          : networks?.[networkId]?.baseCurrencySymbol
+          const currency = isERC20
+            ? (await web3Service.getTokenSymbol(
+                tokenAddress,
+                Number(networkId)
+              )) ?? ''
+            : networks?.[networkId]?.baseCurrencySymbol
 
-        const addressBalance =
-          web3Service.getAddressBalance(ownerAddress, Number(networkId)) ?? 0
+          const addressBalance =
+            web3Service.getAddressBalance(ownerAddress, Number(networkId)) ?? 0
 
-        const isAutoRenewable =
-          parseFloat(Number(addressBalance).toString()) >
-          parseFloat(key?.lock?.price)
+          const isAutoRenewable =
+            parseFloat(Number(addressBalance).toString()) >
+            parseFloat(key?.lock?.price)
 
-        // expiration date example: 1 December 2022 - 10:55
-        const expirationDate = dayjs(new Date(key.expiration)).format(
-          'D MMMM YYYY - HH:mm'
-        )
+          // expiration date example: 1 December 2022 - 10:55
+          const expirationDate = dayjs(new Date(key.expiration)).format(
+            'D MMMM YYYY - HH:mm'
+          )
 
-        // send expiring email
-        sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
-          lockName,
-          keyId,
-          network: networkId,
-          currency,
-          expirationDate,
-          keychainUrl: 'https://app.unlock-protocol.com/keychain',
-          isRenewable: isRenewable && !isAutoRenewable ? 'true' : '',
-          isAutoRenewable: isAutoRenewable ? 'true' : '',
-          isRenewableIfRePurchased: '',
-          isRenewableIfReApproved: '',
-        })
-      })
+          // send expiring email
+          await sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
+            lockName,
+            keyId,
+            network: networkId,
+            currency,
+            expirationDate,
+            keychainUrl: 'https://app.unlock-protocol.com/keychain',
+            isRenewable: isRenewable && !isAutoRenewable ? 'true' : '',
+            isAutoRenewable: isAutoRenewable ? 'true' : '',
+            isRenewableIfRePurchased: '',
+            isRenewableIfReApproved: '',
+          })
+        }),
+      ])
     })
   )
 }
@@ -208,7 +210,7 @@ export async function notifyKeyExpiration() {
 export async function notifyKeyExpired() {
   const now = new Date()
 
-  let yesterday = new Date(now.getTime())
+  const yesterday = new Date(now.getTime())
   yesterday.setDate(now.getDate() - 1)
 
   await Promise.allSettled(
@@ -229,35 +231,37 @@ export async function notifyKeyExpired() {
         }
       )
 
-      keys?.map(async (key) => {
-        const lockName = key?.lock?.name ?? ''
-        const lockAddress = Normalizer.ethereumAddress(key.lock.address)
-        const ownerAddress = Normalizer.ethereumAddress(key.owner)
-        const keyId = key?.tokenId ?? ''
+      await Promise.allSettled(
+        keys?.map(async (key: any) => {
+          const lockName = key?.lock?.name ?? ''
+          const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+          const ownerAddress = Normalizer.ethereumAddress(key.owner)
+          const keyId = key?.tokenId ?? ''
 
-        const userTokenMetadataRecord = await UserTokenMetadata.findOne({
-          where: {
-            tokenAddress: lockAddress,
-            userAddress: ownerAddress,
-          },
+          const userTokenMetadataRecord = await UserTokenMetadata.findOne({
+            where: {
+              tokenAddress: lockAddress,
+              userAddress: ownerAddress,
+            },
+          })
+
+          const protectedData = Normalizer.toLowerCaseKeys({
+            ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+          })
+
+          const recipient = protectedData?.email as string
+
+          if (!recipient) return
+
+          // send expiring email
+          await sendEmail(`keyExpired`, `keyExpired`, recipient, {
+            lockName,
+            keyId,
+            network: networkId,
+            keychainUrl: 'https://app.unlock-protocol.com/keychain',
+          })
         })
-
-        const protectedData = Normalizer.toLowerCaseKeys({
-          ...userTokenMetadataRecord?.data?.userMetadata?.protected,
-        })
-
-        const recipient = protectedData?.email as string
-
-        if (!recipient) return
-
-        // send expiring email
-        sendEmail(`keyExpired`, `keyExpired`, recipient, {
-          lockName,
-          keyId,
-          network: networkId,
-          keychainUrl: 'https://app.unlock-protocol.com/keychain',
-        })
-      })
+      )
     })
   )
 }
