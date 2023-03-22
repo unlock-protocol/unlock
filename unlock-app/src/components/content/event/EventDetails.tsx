@@ -24,6 +24,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import { useStorageService } from '~/utils/withStorageService'
 import dayjs from 'dayjs'
+import { WalletlessRegistration } from './WalletlessRegistration'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -119,21 +120,26 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   }
 
   const onRegister = () => {
+    setCheckoutOpen(true)
     // Check if the lock is free and on a free network and
     // if so let's add support for walletless airdrop from the backend!
     if (isClaimable) {
+      console.log('Cool')
       // Show screen for claims!
       // Can we get the metadata from the checkout
       // Add a wallet field too!
     } else {
       // Use regular checkout!
-      setCheckoutOpen(true)
     }
   }
 
   return (
     <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
-      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+      <Modal
+        isOpen={isCheckoutOpen && !isClaimable}
+        setIsOpen={setCheckoutOpen}
+        empty={true}
+      >
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
@@ -255,7 +261,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         </ul>
       </section>
       <section className="flex flex-col mb-8">
-        {!hasValidKey && (
+        {!hasValidKey && !isCheckoutOpen && (
           <Button
             variant="primary"
             size="medium"
@@ -271,6 +277,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           >
             Register
           </Button>
+        )}
+        {!hasValidKey && isClaimable && isCheckoutOpen && (
+          <WalletlessRegistration />
         )}
         {hasValidKey && (
           <p className="text-lg">
