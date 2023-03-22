@@ -1,9 +1,10 @@
+import { vi, describe, beforeAll, expect, it } from 'vitest'
+
 import {
   createAccountAndPasswordEncryptKey,
   getAccountFromPrivateKey,
   reEncryptPrivateKey,
 } from '../../utils/accounts'
-import { vi } from 'vitest'
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
 describe('account helpers', () => {
