@@ -74,6 +74,7 @@ export const CancelAndRefundModal = ({
       tokenId,
     }
     const walletService = await getWalletService(network)
+
     return walletService.cancelAndRefund(
       params,
       {} /** transactionParams */,

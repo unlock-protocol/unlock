@@ -44,7 +44,7 @@ import {
 import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-import { useGetReceiptsPageUrl } from '~/hooks/receipts'
+import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
 import { isIOS } from 'react-device-detect'
 import Image from 'next/image'
@@ -108,6 +108,7 @@ function Key({ ownedKey, account, network }: Props) {
       tokenId,
     })
     const walletService = await getWalletService()
+
     const signature = await walletService.signMessage(payload, 'personal_sign')
     setSignature({
       payload,

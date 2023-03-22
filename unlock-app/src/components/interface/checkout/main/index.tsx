@@ -17,7 +17,7 @@ import { Password } from './Password'
 import { Promo } from './Promo'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
-import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
+import { CheckoutHead, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -270,21 +270,16 @@ export function Checkout({
     if (paywallConfig?.autoconnect) {
       authenticateWithProvider('METAMASK')
     }
-  }, [paywallConfig?.autoconnect])
+  }, [paywallConfig?.autoconnect, authenticateWithProvider])
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white z-10 max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
-        <TopNavigation
-          onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
-          onBack={onBack}
-        />
-        <CheckoutHead
-          iconURL={paywallConfig.icon}
-          title={paywallConfig.title}
-        />
-        <Content />
-      </div>
-    </CheckoutTransition>
+    <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
+      <TopNavigation
+        onClose={!paywallConfig?.persistentCheckout ? onClose : undefined}
+        onBack={onBack}
+      />
+      <CheckoutHead iconURL={paywallConfig.icon} title={paywallConfig.title} />
+      <Content />
+    </div>
   )
 }

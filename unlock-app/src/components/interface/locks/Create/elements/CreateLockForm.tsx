@@ -42,7 +42,7 @@ export const networkDescription = (network: number) => {
           className="underline"
           target="_blank"
           href="https://goerlifaucet.com/"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           Check this faucet.
         </a>

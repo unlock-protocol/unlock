@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { ProviderContext } from '../contexts/ProviderContext'
 import { ConfigContext } from '../utils/withConfig'
 
-export const useAddToNetwork = (account?: string) => {
+export const useAddToNetwork = (account?: string | null) => {
   const { networks } = useContext(ConfigContext)
   const { provider } = useContext(ProviderContext)
   const [currentNetwork, setCurrentNetwork] = useState<number | null>()

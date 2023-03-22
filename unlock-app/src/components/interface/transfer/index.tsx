@@ -6,10 +6,6 @@ import { useForm } from 'react-hook-form'
 import { useTransferCode, useTransferDone } from '~/hooks/useTransfer'
 import { useConfig } from '~/utils/withConfig'
 import ReCaptcha from 'react-google-recaptcha'
-import {
-  EthersError,
-  getParsedEthersError,
-} from '@enzoferey/ethers-error-parser'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -108,6 +104,9 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const { transferDone } = useTransferDone()
 
   const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
+    const walletService = await getWalletService()
+
+    const signer = walletService.signer
     const transferSignature = [
       '0x',
       Buffer.from(
@@ -136,8 +135,6 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
       }
     )
 
-    const walletService = await getWalletService()
-    const signer = walletService.signer
     try {
       const tx = await manager.transfer({
         network: network!,
@@ -155,15 +152,7 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
       router.push('/keychain')
     } catch (error) {
       console.log(error)
-      const parsedError = getParsedEthersError(error as EthersError)
-      if (parsedError.context) {
-        toast.error(
-          parsedError.context.length > 250
-            ? parsedError.errorCode
-            : parsedError.context
-        )
-        return
-      }
+      toast.error('Error transferring key. Please try again later.')
     }
   }
 

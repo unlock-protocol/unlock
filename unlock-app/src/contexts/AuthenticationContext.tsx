@@ -9,13 +9,12 @@ interface AuthenticationContextType {
   account?: string
   network?: number
   email?: string
-  isConnected: boolean
+  connected?: string
   encryptedPrivateKey?: any
   isUnlockAccount?: boolean
   getWalletService(network?: number): Promise<WalletService>
   providerSend(method: string, params: string[]): void
-  openConnectModal: boolean
-  setOpenConnectModal: (open: boolean) => void
+  displayAccount?: string
 }
 
 export const defaultValues = {
@@ -24,9 +23,6 @@ export const defaultValues = {
   watchAsset: () => {},
   providerSend: (_method: string, _params: string[]) => {},
   getWalletService: async (_network?: number) => new WalletService(networks),
-  openConnectModal: false,
-  setOpenConnectModal: (_open: boolean) => {},
-  isConnected: false,
 }
 
 export const AuthenticationContext =

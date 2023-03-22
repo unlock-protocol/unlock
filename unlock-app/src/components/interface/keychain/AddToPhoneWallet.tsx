@@ -102,6 +102,7 @@ export const AddToDeviceWallet = ({
   const handleClick = async () => {
     const generate = async () => {
       const walletService = await getWalletService()
+
       const passUrl = await addToPhoneWallet(
         walletService,
         lockAddress,

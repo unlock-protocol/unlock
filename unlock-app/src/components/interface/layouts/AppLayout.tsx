@@ -10,6 +10,7 @@ import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
 import { addressMinify } from '~/utils/strings'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface DashboardLayoutProps {
   title?: string
@@ -21,7 +22,7 @@ interface DashboardLayoutProps {
 }
 
 export const WalletNotConnected = () => {
-  const { setOpenConnectModal } = useAuth()
+  const { openConnectModal } = useConnectModal()
   return (
     <ImageBar
       src="/images/illustrations/wallet-not-connected.svg"
@@ -32,7 +33,7 @@ export const WalletNotConnected = () => {
             <button
               onClick={(event) => {
                 event.preventDefault()
-                setOpenConnectModal(true)
+                openConnectModal()
               }}
               className="cursor-pointer text-brand-ui-primary"
             >
@@ -144,7 +145,7 @@ export const AppLayout = ({
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
-  const { setOpenConnectModal } = useAuth()
+  const { openConnectModal } = useConnectModal()
   if (termsLoading) {
     return <Loading />
   }
@@ -221,7 +222,7 @@ export const AppLayout = ({
                         <button
                           onClick={(event) => {
                             event.preventDefault()
-                            setOpenConnectModal(true)
+                            openConnectModal()
                           }}
                         >
                           <div className="flex items-center gap-2">
@@ -239,7 +240,7 @@ export const AppLayout = ({
                       <Button
                         onClick={(event) => {
                           event.preventDefault()
-                          setOpenConnectModal(true)
+                          openConnectModal()
                         }}
                       >
                         Connect
