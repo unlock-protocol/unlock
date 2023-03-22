@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { getValidNumber } from '../../utils/normalizer'
 
+// todo: replace with subgraphService
 export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
 const keyholdersByTokedIdQuery = gql`
   query Lock(
@@ -21,6 +22,7 @@ const keyholdersByTokedIdQuery = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
@@ -47,9 +49,11 @@ const ActiveKeys = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
+        manager
       }
       name
       address
@@ -73,6 +77,7 @@ const ExpiredKeys = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
@@ -98,6 +103,7 @@ const keyListByLock = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
