@@ -14,3 +14,13 @@ export const getEventDate = (ticket: any): Date | null => {
 
   return null
 }
+
+export const getEventEndDate = (ticket: any): Date | null => {
+  if (ticket?.event_end_date && ticket?.event_end_time) {
+    const timestamp = `${ticket.event_end_date} ${ticket.event_end_time}`
+    const dayjsLocal = dayjs.tz(timestamp, ticket.event_timezone)
+    return dayjsLocal.toDate()
+  }
+
+  return null
+}
