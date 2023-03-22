@@ -1,13 +1,22 @@
 import { Op } from 'sequelize'
 import { networks } from '@unlock-protocol/networks'
 import { Key } from '../../graphql/datasource'
-import { Hook, ProcessedHookItem } from '../../models'
+import { Hook, ProcessedHookItem, UserTokenMetadata } from '../../models'
 import { TOPIC_KEYS_ON_LOCK, TOPIC_KEYS_ON_NETWORK } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
-import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
+import {
+  notifyNewKeysToWedlocks,
+  sendEmail,
+} from '../../operations/wedlocksOperations'
 import { logger } from '../../logger'
+import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
+import * as Normalizer from '../../utils/normalizer'
+import { ethers } from 'ethers'
+import dayjs from 'dayjs'
 
 const FETCH_LIMIT = 25
+const MAX_UINT =
+  '115792089237316195423570985008687907853269984665640564039457584007913129639935'
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const keySource = new Key(network)
@@ -101,4 +110,147 @@ export async function notifyOfKeys(hooks: Hook[]) {
   }
 
   await Promise.allSettled(tasks)
+}
+
+export async function notifyKeyExpiration() {
+  const web3Service = new Web3Service(networks)
+
+  const now = new Date()
+
+  let end = new Date(now.getTime())
+  end.setDate(now.getDate() + 1)
+
+  await Promise.allSettled(
+    // get expiring keys for every network
+    Object.keys(networks).map(async (networkId: string) => {
+      const subgraph = new SubgraphService()
+      // get keys from now to 24h in the future
+      const keys = await subgraph.keys(
+        {
+          first: 1000, // more than 1000 limit? need to handle it
+          where: {
+            expiration_gt: now.getTime().toString(),
+            expiration_lt: end.getTime().toString(),
+          },
+        },
+        {
+          networks: [Number(networkId)],
+        }
+      )
+
+      keys?.map(async (key) => {
+        const lockName = key?.lock?.name ?? ''
+        const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+        const ownerAddress = Normalizer.ethereumAddress(key.owner)
+        const tokenAddress = key?.lock?.tokenAddress ?? ''
+        const keyId = key?.tokenId ?? ''
+
+        const userTokenMetadataRecord = await UserTokenMetadata.findOne({
+          where: {
+            tokenAddress: lockAddress,
+            userAddress: ownerAddress,
+          },
+        })
+
+        const protectedData = Normalizer.toLowerCaseKeys({
+          ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+        })
+
+        const recipient = protectedData?.email as string
+
+        if (!recipient) return
+
+        const isERC20 =
+          tokenAddress && tokenAddress !== ethers.constants.AddressZero
+
+        const isRenewable =
+          Number(key?.lock?.version) >= 11 &&
+          key.expiration !== MAX_UINT &&
+          isERC20
+
+        const currency = isERC20
+          ? (await web3Service.getTokenSymbol(
+              tokenAddress,
+              Number(networkId)
+            )) ?? ''
+          : networks?.[networkId]?.baseCurrencySymbol
+
+        // expiration date example: 1 December 2022 - 10:55
+        const expirationDate = dayjs(new Date(key.expiration)).format(
+          'D MMMM YYYY - HH:mm'
+        )
+
+        // send expiring email
+        sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
+          lockName,
+          keyId,
+          network: networkId,
+          currency,
+          expirationDate,
+          keychainUrl: 'https://app.unlock-protocol.com/keychain',
+          isRenewable: isRenewable ? 'true' : '',
+          isAutoRenewable: '',
+          isRenewableIfRePurchased: '',
+          isRenewableIfReApproved: '',
+        })
+      })
+    })
+  )
+}
+
+export async function notifyKeyExpired() {
+  const now = new Date()
+
+  let yesterday = new Date(now.getTime())
+  yesterday.setDate(now.getDate() - 1)
+
+  await Promise.allSettled(
+    // get expiring keys for every network
+    Object.keys(networks).map(async (networkId: string) => {
+      const subgraph = new SubgraphService()
+      // get keys from now to 24h before
+      const keys = await subgraph.keys(
+        {
+          first: 1000, // more than 1000 limit? need to handle it
+          where: {
+            expiration_lt: now.getTime().toString(),
+            expiration_gt: yesterday.getTime().toString(),
+          },
+        },
+        {
+          networks: [Number(networkId)],
+        }
+      )
+
+      keys?.map(async (key) => {
+        const lockName = key?.lock?.name ?? ''
+        const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+        const ownerAddress = Normalizer.ethereumAddress(key.owner)
+        const keyId = key?.tokenId ?? ''
+
+        const userTokenMetadataRecord = await UserTokenMetadata.findOne({
+          where: {
+            tokenAddress: lockAddress,
+            userAddress: ownerAddress,
+          },
+        })
+
+        const protectedData = Normalizer.toLowerCaseKeys({
+          ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+        })
+
+        const recipient = protectedData?.email as string
+
+        if (!recipient) return
+
+        // send expiring email
+        sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
+          lockName,
+          keyId,
+          network: networkId,
+          keychainUrl: 'https://app.unlock-protocol.com/keychain',
+        })
+      })
+    })
+  )
 }
