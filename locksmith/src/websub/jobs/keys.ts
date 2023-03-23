@@ -343,7 +343,7 @@ export async function notifyKeyExpired() {
               lockName,
               keyId,
               network: networkId,
-              keychainUrl: 'https://app.unlock-protocol.com/keychain',
+              keychainUrl: `${config.unlockApp}/keychain`,
             })
           }),
         ])
