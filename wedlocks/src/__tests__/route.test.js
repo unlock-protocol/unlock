@@ -1,8 +1,9 @@
+import { it, beforeEach, describe, expect, vi } from 'vitest'
+
 import nodemailer from 'nodemailer'
 import { route } from '../route'
 import encrypter from '../encrypter'
 import config from '../../config'
-import { vi } from 'vitest'
 
 import templates from '@unlock-protocol/email-templates'
 

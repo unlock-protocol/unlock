@@ -9,7 +9,7 @@ import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 import setEventHooks from './setEventHooks'
-
+import setKeyManagerOf from './setKeyManagerOf'
 import v6 from '../v6'
 
 const {
@@ -63,4 +63,5 @@ export default {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
 }

@@ -81,14 +81,19 @@ export function Connect({
         return null
       }
     }
-  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
+  }, [
+    matched,
+    onClose,
+    connectService,
+    injectedProvider,
+    oauthConfig,
+    paywallConfig,
+  ])
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
-        <TopNavigation onClose={onClose} onBack={onBack} />
-        <Content />
-      </div>
-    </CheckoutTransition>
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
+      <TopNavigation onClose={onClose} onBack={onBack} />
+      <Content />
+    </div>
   )
 }
