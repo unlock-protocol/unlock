@@ -1,13 +1,11 @@
 const { ethers } = require('hardhat')
 
 const createLockHash = require('../helpers/createLockCalldata')
+
 const {
   LATEST_UNLOCK_VERSION,
   LATEST_PUBLIC_LOCK_VERSION,
   ADDRESS_ZERO,
-} = require('../helpers/constants')
-
-const {
   getContractFactoryAtVersion,
   getUnlockVersionNumbers,
   getMatchingLockVersion,
