@@ -27,7 +27,7 @@ export const claim: RequestHandler = async (request, response: Response) => {
   const { data } = await ClaimBody.parseAsync(request.body)
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-  const owner = normalizer.ethereumAddress(request.user!.walletAddress)
+  let owner = normalizer.ethereumAddress(request.user!.walletAddress)
   const email = request.params.email?.toLowerCase()
 
   if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
@@ -72,51 +72,48 @@ export const claim: RequestHandler = async (request, response: Response) => {
   if (!owner && email) {
     // We can build a recipient wallet address from the email address
     const keyManager = new KeyManager()
-    const userAddress = keyManager.createTransferAddress({
+    owner = keyManager.createTransferAddress({
       params: {
         email,
         lockAddress,
       },
     })
+  }
 
-    const userData = await UserTokenMetadata.findOne({
-      where: {
-        userAddress,
-        tokenAddress: lockAddress,
-        chain: network,
+  // Save email if applicable
+  const userData = await UserTokenMetadata.findOne({
+    where: {
+      userAddress: owner,
+      tokenAddress: lockAddress,
+      chain: network,
+    },
+  })
+  // If no metadata was set previously, we let anyone set it.
+  // Can we just "merge" the data, rather than override it?
+  // In any case, we do not override (and/or do not fail)
+  if (isMetadataEmpty(userData?.data?.userMetadata)) {
+    const metadata = await UserMetadata.parseAsync({
+      public: {},
+      protected: {
+        email,
       },
     })
-
-    // If no metadata was set previously, we let anyone set it.
-    // Can we just "merge" the data, rather than override it?
-    if (isMetadataEmpty(userData?.data?.userMetadata)) {
-      const metadata = await UserMetadata.parseAsync({
-        public: {},
-        protected: {
-          email,
-        },
-      })
-      await UserTokenMetadata.upsert(
-        {
-          tokenAddress: lockAddress,
-          chain: network,
-          userAddress: userAddress,
-          data: {
-            userMetadata: {
-              ...metadata,
-            },
+    await UserTokenMetadata.upsert(
+      {
+        tokenAddress: lockAddress,
+        chain: network,
+        userAddress: owner,
+        data: {
+          userMetadata: {
+            ...metadata,
           },
         },
-        {
-          returning: true,
-          conflictFields: ['userAddress', 'tokenAddress'],
-        }
-      )
-    } else {
-      return response.status(400).send({
-        message: 'User already has data saved.',
-      })
-    }
+      },
+      {
+        returning: true,
+        conflictFields: ['userAddress', 'tokenAddress'],
+      }
+    )
   }
 
   const web3Service = new Web3Service(networks)

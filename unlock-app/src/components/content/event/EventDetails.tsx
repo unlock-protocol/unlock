@@ -279,7 +279,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </Button>
         )}
         {!hasValidKey && isClaimable && isCheckoutOpen && (
-          <WalletlessRegistration />
+          <WalletlessRegistration lockAddress={lockAddress} network={network} />
         )}
         {hasValidKey && (
           <p className="text-lg">

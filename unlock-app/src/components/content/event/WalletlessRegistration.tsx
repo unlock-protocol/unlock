@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import { useClaim } from '~/hooks/useClaim'
+import ReCaptcha from 'react-google-recaptcha'
 
 import {
   Button,
@@ -8,6 +10,8 @@ import {
 } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Controller, useForm, useWatch } from 'react-hook-form'
+import { useRef } from 'react'
+import { useConfig } from '~/utils/withConfig'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -26,8 +30,23 @@ const rsvpForm = z.object({
 
 type RsvpFormProps = z.infer<typeof rsvpForm>
 
-export const WalletlessRegistration = () => {
+interface WalletlessRegistrationProps {
+  lockAddress: string
+  network: number
+}
+
+export const WalletlessRegistration = ({
+  lockAddress,
+  network,
+}: WalletlessRegistrationProps) => {
   const { account } = useAuth()
+  const recaptchaRef = useRef<any>()
+  const config = useConfig()
+
+  const { mutateAsync: claim } = useClaim({
+    lockAddress,
+    network,
+  })
 
   const localForm = useForm<RsvpFormProps>({
     mode: 'onChange',
@@ -45,23 +64,14 @@ export const WalletlessRegistration = () => {
   } = localForm
 
   const onSubmit = async (form: RsvpFormProps) => {
-    console.log('SUBMITTED!')
-    console.log(form)
+    const captcha = await recaptchaRef.current?.executeAsync()
 
-    // Let's just use the walletless airdrop API from there!
-    // const params = await emailPreviewData()
-    // const promise = wedlocksService.sendEmail(
-    //   templateId as any,
-    //   form.email,
-    //   params,
-    //   [] // attachments
-    // )
-    // await ToastHelper.promise(promise, {
-    //   loading: 'Sending email preview...',
-    //   success: 'Email preview sent.',
-    //   error: `Can't send email preview`,
-    // })
-    // setShowPreview(false) // close modal after email is sent
+    const hash = await claim({
+      ...form,
+      captcha,
+    })
+    console.log(hash)
+    // Let's wait for this to be mined... and show a success message to the user!
   }
 
   const { recipient = '' } = useWatch({
@@ -70,6 +80,12 @@ export const WalletlessRegistration = () => {
 
   return (
     <div className="grid gap-6">
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col w-full gap-6 py-4"
