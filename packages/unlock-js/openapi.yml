@@ -1554,6 +1554,13 @@ paths:
           description: Recaptcha value to pass.
           schema:
             type: string
+        - in: query
+          name: email
+          required: false
+          schema:
+            type: string
+          description: Email of the recipient
+
       requestBody:
         required: true
         content:
