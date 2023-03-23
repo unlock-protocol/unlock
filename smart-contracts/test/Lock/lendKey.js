@@ -38,15 +38,6 @@ contract('Lock / lendKey', (accounts) => {
       )
     })
 
-    it.skip('should abort if the recipient is 0x', async () => {
-      await reverts(
-        lock.lendKey(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
-          from: keyOwners[0],
-        }),
-        'INVALID_ADDRESS'
-      )
-    })
-
     it('should only allow key manager or owner', async () => {
       // testing an id mismatch
       await reverts(

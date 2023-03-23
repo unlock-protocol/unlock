@@ -10,10 +10,6 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
     lock = await deployLock()
   })
 
-  it.skip('should fail if the user address is 0', async () => {
-    await reverts(lock.balanceOf(ADDRESS_ZERO), 'INVALID_ADDRESS')
-  })
-
   it('should return 0 if the user has no key', async () => {
     const balance = new BigNumber(await lock.balanceOf(accounts[3]))
     assert.equal(balance.toFixed(), 0)

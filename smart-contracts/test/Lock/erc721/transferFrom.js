@@ -35,15 +35,6 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       )
     })
 
-    it.skip('should abort if the recipient is 0x', async () => {
-      await reverts(
-        lock.transferFrom(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
-          from: keyOwners[0],
-        }),
-        'INVALID_ADDRESS'
-      )
-    })
-
     it('should abort if token owner (from) is incorrect', async () => {
       await reverts(
         lock.transferFrom(keyOwners[0], accounts[9], tokenIds[2], {
