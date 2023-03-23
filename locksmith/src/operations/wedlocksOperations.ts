@@ -12,7 +12,7 @@ import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 
 type Params = {
-  [key: string]: string | number | undefined
+  [key: string]: string | number | undefined | boolean
   keyId: string
   keychainUrl?: string
   lockName: string
