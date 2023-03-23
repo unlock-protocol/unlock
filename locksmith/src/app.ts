@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
 import router from './routes'
+import { errorHandler } from './utils/middlewares/error'
 
 const app = express()
 
@@ -76,5 +77,7 @@ app.use(
     ),
   })
 )
+
+app.use(errorHandler)
 
 export default app

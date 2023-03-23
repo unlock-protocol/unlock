@@ -45,7 +45,9 @@ export const mainnet: NetworkConfig = {
     coingecko: 'ethereum',
   },
   startBlock: 7120795,
-  description: 'The most popular network',
+  description:
+    'The original and most secure EVM network. Gas fees are expensive on this network.',
+  url: 'https://ethereum.org/en/',
   isTestNetwork: false,
   maxFreeClaimCost: 1,
   teamMultisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',

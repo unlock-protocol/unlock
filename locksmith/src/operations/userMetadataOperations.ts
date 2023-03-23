@@ -1,7 +1,16 @@
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types'
 import { UserTokenMetadata } from '../models'
+import { isEmpty } from 'lodash'
 
+export function isMetadataEmpty(data: Record<string, any>) {
+  const publicData = isEmpty(data?.public)
+  const protectedData = isEmpty(data?.protected)
+  return publicData && protectedData
+}
+
+// TODO: Are we still using this?
+// We should and we should add he logic of overriding data by merging
 export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
     {

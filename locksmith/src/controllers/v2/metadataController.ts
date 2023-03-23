@@ -9,10 +9,10 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
 import * as lockOperations from '../../operations/lockOperations'
-import { isEmpty } from 'lodash'
 import { getDefaultLockData } from '../../utils/metadata'
+import { isMetadataEmpty } from '../../operations/userMetadataOperations'
 
-const UserMetadata = z
+export const UserMetadata = z
   .object({
     public: z.record(z.string(), z.any()).optional(),
     protected: z.record(z.string(), z.any()).optional(),
@@ -29,12 +29,6 @@ const UserMetadataBody = z.object({
 const BulkUserMetadataBody = z.object({
   users: z.array(UserMetadataBody),
 })
-
-function isMetadataEmpty(data: Record<string, any>) {
-  const publicData = isEmpty(data?.public)
-  const protectedData = isEmpty(data?.protected)
-  return publicData && protectedData
-}
 
 export class MetadataController {
   public web3Service: Web3Service

@@ -134,7 +134,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   }
 
   return (
-    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
+    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] mt-8">
       <Modal
         isOpen={isCheckoutOpen && !isClaimable}
         setIsOpen={setCheckoutOpen}
@@ -151,13 +151,13 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         <h1 className="mb-4 text-5xl font-bold md:text-7xl">
           {eventData.name}
         </h1>
-        <p className="flex gap-2 mb-4 flex-rows">
+        <div className="flex gap-2 mb-4 flex-rows">
           <span className="text-brand-gray">Ticket contract</span>
           <AddressLink
             lockAddress={lockAddress}
             network={network}
           ></AddressLink>
-        </p>
+        </div>
         <ul
           className="mb-6 text-xl bold md:text-2xl"
           style={{ color: `#${eventData.background_color}` }}

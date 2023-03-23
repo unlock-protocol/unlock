@@ -1,5 +1,5 @@
 import { Modal } from '@unlock-protocol/ui'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface ConnectWalletModalPros {
   isOpen: boolean
@@ -10,7 +10,7 @@ export const ConnectWalletModal = ({
   isOpen,
   setIsOpen,
 }: ConnectWalletModalPros) => {
-  const { setOpenConnectModal } = useAuth()
+  const { openConnectModal } = useConnectModal()
   return (
     <div className="flex flex-col items-center justify-center min-w-full min-h-screen p-3 overflow-auto bg-opacity-50 backdrop-filter backdrop-blur-sm bg-zinc-500">
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -24,7 +24,7 @@ export const ConnectWalletModal = ({
             <button
               onClick={(event) => {
                 event.preventDefault()
-                setOpenConnectModal(true)
+                openConnectModal()
               }}
             >
               <span className="cursor-pointer text-brand-ui-primary">

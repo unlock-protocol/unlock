@@ -25,6 +25,7 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
     setIsSigning(true)
     try {
       const walletService = await getWalletService()
+
       const signature = await walletService.signMessage(
         messageToSign,
         'personal_sign'
