@@ -205,7 +205,7 @@ contract MixinPurchase is
    * @dev helper to check if the pricing or duration of the lock have been modified 
    * since the key was bought
    */
-  function isRenewable(uint _tokenId, address _referrer) public view {
+  function isRenewable(uint _tokenId, address _referrer) public view returns (bool) {
     // check the lock
     if (
       _originalDurations[_tokenId] == type(uint).max ||
@@ -234,6 +234,7 @@ contract MixinPurchase is
       revert NOT_READY_FOR_RENEWAL();
     }
 
+    return true;
   }
 
   /**

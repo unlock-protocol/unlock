@@ -4,7 +4,8 @@ const {
   deployERC20,
   purchaseKey,
   deployLock,
-  ADDRESS_ZERO
+  ADDRESS_ZERO,
+  reverts
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
@@ -16,7 +17,7 @@ const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / assess renewable terms', (accounts) => {
+contract('Lock / isRenewable', (accounts) => {
   const lockOwner = accounts[0]
   const keyOwner = accounts[1]
   // const referrer = accounts[3]
@@ -45,7 +46,7 @@ contract('Lock / assess renewable terms', (accounts) => {
     describe('return false', () => {
       it('if terms havent changed', async () => {
         assert.equal(
-          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
+          await lock.isRenewable(tokenId, ADDRESS_ZERO),
           false
         )
       })  
@@ -56,22 +57,22 @@ contract('Lock / assess renewable terms', (accounts) => {
           { from: lockOwner }
         )
         assert.equal(
-          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
+          await lock.isRenewable(tokenId, ADDRESS_ZERO),
           false
         )
       })
     })
 
-    describe('return true', () => {
+    describe('reverts', () => {
       it('if price has increased', async () => {
         await lock.updateKeyPricing(
           ethers.utils.parseUnits('0.3', 'ether'),
           dai.address,
           { from: lockOwner }
         )
-        assert.equal(
-          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
-          true
+        await reverts(
+          lock.isRenewable(tokenId, ADDRESS_ZERO),
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -83,9 +84,9 @@ contract('Lock / assess renewable terms', (accounts) => {
         })
         // update lock token without changing price
         await lock.updateKeyPricing(keyPrice, dai2.address, { from: lockOwner })
-        assert.equal(
-          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
-          true
+        await reverts(
+          lock.isRenewable(tokenId, ADDRESS_ZERO),
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -96,9 +97,9 @@ contract('Lock / assess renewable terms', (accounts) => {
           await lock.maxKeysPerAddress(),
           { from: lockOwner }
         )
-        assert.equal(
-          await lock.tokenTermsChanged(tokenId, ADDRESS_ZERO),
-          true
+        await reverts(
+          await lock.isRenewable(tokenId, ADDRESS_ZERO),
+          'LOCK_HAS_CHANGED'
         )
       })
     })
