@@ -18,6 +18,7 @@ export const polygon: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
     networkName: 'matic',
   },
+  url: 'https://polygon.technology/',
   explorer: {
     name: 'Polygonscan',
     urls: {
@@ -51,7 +52,8 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
-  description: 'Popular side chain network. Cheaper transaction cost.',
+  description:
+    "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   isTestNetwork: false,
   maxFreeClaimCost: 100,
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',

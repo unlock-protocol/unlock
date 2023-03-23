@@ -252,27 +252,6 @@ contract MixinTransfer is
   }
 
   /**
-   * @notice An ERC-20 style transfer.
-   * @param _tokenId the Id of the token to send
-   * @param _to the destination address
-   * @param _valueBasisPoint a percentage (expressed as basis points) of the time to be transferred
-   * @return success bool success/failure of the transfer
-   */
-  function transfer(
-    uint _tokenId,
-    address _to,
-    uint _valueBasisPoint
-  ) public returns (bool success) {
-    _isValidKey(_tokenId);
-    uint timeShared = ((keyExpirationTimestampFor(
-      _tokenId
-    ) - block.timestamp) * _valueBasisPoint) /
-      BASIS_POINTS_DEN;
-    shareKey(_to, _tokenId, timeShared);
-    return true;
-  }
-
-  /**
    * @notice Transfers the ownership of an NFT from one address to another address
    * @dev This works identically to the other function with an extra data parameter,
    *  except this function just sets data to ''
