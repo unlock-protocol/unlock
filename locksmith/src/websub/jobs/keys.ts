@@ -1,7 +1,7 @@
 import { Op } from 'sequelize'
 import { networks } from '@unlock-protocol/networks'
 import { Key } from '../../graphql/datasource'
-import { Hook, ProcessedHookItem, UserTokenMetadata } from '../../models'
+import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS_ON_LOCK, TOPIC_KEYS_ON_NETWORK } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import {
@@ -9,11 +9,13 @@ import {
   sendEmail,
 } from '../../operations/wedlocksOperations'
 import { logger } from '../../logger'
-import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import * as Normalizer from '../../utils/normalizer'
 import * as metadataOperations from './../../operations/metadataOperations'
+import * as subscriptionOperations from './../../operations/subscriptionOperations'
 import { ethers } from 'ethers'
 import dayjs from 'dayjs'
+import config from '../../config/config'
 
 const FETCH_LIMIT = 25
 const MAX_UINT =
@@ -113,9 +115,63 @@ export async function notifyOfKeys(hooks: Hook[]) {
   await Promise.allSettled(tasks)
 }
 
-export async function notifyKeyExpiration() {
-  const web3Service = new Web3Service(networks)
+const getMembershipStatus = async ({
+  key,
+  tokenAddress,
+  network,
+  lockAddress,
+  tokenId,
+  owner,
+}: {
+  key: any
+  tokenAddress: string
+  network: number
+  lockAddress: string
+  tokenId: string
+  owner: string
+}) => {
+  const isERC20 = tokenAddress && tokenAddress !== ethers.constants.AddressZero
 
+  const isRenewable =
+    Number(key?.lock?.version) >= 11 && key?.expiration !== MAX_UINT && isERC20
+
+  const subscriptions = await subscriptionOperations.getSubscriptions({
+    tokenId,
+    lockAddress,
+    owner,
+    network,
+  })
+
+  let currency = ''
+  let isAutoRenewable = undefined
+  let isRenewableIfReApproved = undefined
+
+  // get subscription and check for renews
+  if (subscriptions?.length) {
+    const [subscription] = subscriptions ?? []
+
+    if (subscription) {
+      const possible = ethers.BigNumber.from(subscription.possibleRenewals)
+      const approved = ethers.BigNumber.from(subscription.approvedRenewals)
+
+      isAutoRenewable = approved.gte(0) && possible.gte(0)
+
+      isRenewableIfReApproved = approved.lte(0)
+
+      currency = subscription.balance.symbol
+    }
+  }
+
+  return {
+    currency,
+    isRenewable,
+    isAutoRenewable,
+    isRenewableIfReApproved,
+    isRenewableIfRePurchased: undefined,
+  }
+}
+
+export async function notifyKeyExpiration() {
   const now = new Date()
 
   const end = new Date(now.getTime())
@@ -159,27 +215,20 @@ export async function notifyKeyExpiration() {
 
           if (!recipient) return
 
-          const isERC20 =
-            tokenAddress && tokenAddress !== ethers.constants.AddressZero
-
-          const isRenewable =
-            Number(key?.lock?.version) >= 11 &&
-            key.expiration !== MAX_UINT &&
-            isERC20
-
-          const currency = isERC20
-            ? (await web3Service.getTokenSymbol(
-                tokenAddress,
-                Number(networkId)
-              )) ?? ''
-            : networks?.[networkId]?.baseCurrencySymbol
-
-          const addressBalance =
-            web3Service.getAddressBalance(ownerAddress, Number(networkId)) ?? 0
-
-          const isAutoRenewable =
-            parseFloat(Number(addressBalance).toString()) >
-            parseFloat(key?.lock?.price)
+          const {
+            isAutoRenewable,
+            isRenewable,
+            isRenewableIfRePurchased,
+            isRenewableIfReApproved,
+            currency,
+          } = await getMembershipStatus({
+            owner: ownerAddress,
+            key,
+            tokenAddress,
+            tokenId: keyId,
+            lockAddress,
+            network: Number(networkId),
+          })
 
           // expiration date example: 1 December 2022 - 10:55
           const expirationDate = dayjs(new Date(key.expiration)).format(
@@ -191,13 +240,13 @@ export async function notifyKeyExpiration() {
             lockName,
             keyId,
             network: networkId,
+            keychainUrl: `${config.unlockApp}/keychain`,
             currency,
             expirationDate,
-            keychainUrl: 'https://app.unlock-protocol.com/keychain',
-            isRenewable: isRenewable && !isAutoRenewable ? 'true' : '',
-            isAutoRenewable: isRenewable && isAutoRenewable ? 'true' : '',
-            isRenewableIfRePurchased: '',
-            isRenewableIfReApproved: '',
+            isRenewable: isRenewable ? 'true' : '',
+            isAutoRenewable: isAutoRenewable ? 'true' : '',
+            isRenewableIfRePurchased: isRenewableIfRePurchased ? 'true' : '',
+            isRenewableIfReApproved: isRenewableIfReApproved ? 'true' : '',
           })
         }),
       ])
