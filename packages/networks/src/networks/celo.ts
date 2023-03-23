@@ -10,7 +10,8 @@ export const celo: NetworkConfig = {
   name: 'Celo',
   chain: 'celo',
   description:
-    'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
+    'Celo is the carbon-negative, mobile-first, EVM-compatible blockchain ecosystem leading a thriving new digital economy for all.',
+  url: 'https://celo.org',
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',

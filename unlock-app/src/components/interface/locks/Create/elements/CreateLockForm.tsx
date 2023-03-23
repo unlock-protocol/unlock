@@ -34,30 +34,31 @@ interface CreateLockFormProps {
 }
 
 export const networkDescription = (network: number) => {
-  if (network === 5) {
-    return (
-      <>
-        Need some Test ETH?{' '}
-        <a
-          className="underline"
-          target="_blank"
-          href="https://goerlifaucet.com/"
-          rel="noopener noreferrer"
-        >
-          Check this faucet.
-        </a>
-      </>
-    )
-  } else if (network === 1) {
-    return (
-      <>
-        Gas fees on the <em>Ethereum mainnet are expensive</em>. Please consider
-        using another network like Polygon, Gnosis Chain or Optimism.
-      </>
-    )
-  } else {
-    return <>{networks[network!].description}</>
-  }
+  const { description, url, faucet, nativeCurrency } = networks[network!]
+  return (
+    <>
+      {description}{' '}
+      {url && (
+        <>
+          <Link className="underline" href={url} target="_blank">
+            Learn more
+          </Link>
+          .
+        </>
+      )}
+      {faucet && (
+        <>
+          {' '}
+          <br />
+          Need some {nativeCurrency.name} to pay for gas?{' '}
+          <Link className="underline" href={faucet} target="_blank">
+            Try this faucet
+          </Link>
+          .
+        </>
+      )}
+    </>
+  )
 }
 
 export const CreateLockForm = ({
