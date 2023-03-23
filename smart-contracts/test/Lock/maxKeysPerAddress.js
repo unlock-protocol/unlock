@@ -77,7 +77,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.transfer(tokenId, accounts[8], 1000, {
+        lock.transferFrom(keyOwner, accounts[8], tokenId, {
           from: keyOwner,
         }),
         'MAX_KEYS'
