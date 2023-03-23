@@ -16,6 +16,7 @@ export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on
 
 export const GAS_COST_TO_GRANT = 250000
 
+// @deprecated - Remove once no longer used anywhere. Use functions in pricing.ts instead.
 export default class KeyPricer {
   readOnlyEthereumService: any
 
@@ -37,8 +38,9 @@ export default class KeyPricer {
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
       network,
-      { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
+      { fields: ['currencyContractAddress', 'keyPrice'] }
     )
+
     let symbol =
       networks[network]?.nativeCurrency?.coinbase ||
       networks[network]?.nativeCurrency?.symbol

@@ -1,4 +1,13 @@
 import { networks } from '@unlock-protocol/networks'
+import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { ethers } from 'ethers'
+import logger from '../logger'
+
+// Stripe's fee is 30 cents plus 2.9% of the transaction.
+const baseStripeFee = 30
+const stripePercentage = 0.029
+export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
+export const GAS_COST_TO_GRANT = 250000
 
 export interface Options {
   amount?: number
@@ -18,7 +27,16 @@ export async function defiLammaPrice({
   network,
   address,
   amount = 1,
-}: Options) {
+}: Options): Promise<
+  Partial<
+    Price & {
+      priceInAmount: number
+      creditCardProcessingFee: number
+      unlockServiceFee: number
+      inclusive: number
+    }
+  >
+> {
   const networkConfig = networks[network]
   if (!network) {
     return {}
@@ -57,8 +75,176 @@ export async function defiLammaPrice({
     return {}
   }
 
+  const priceInAmount = item.price * amount
+  const unlockServiceFee = getUnlockServiceFee(priceInAmount)
+  const creditCardProcessingFee = getCreditCardProcessingFee(priceInAmount)
+
   return {
     ...item,
-    priceInAmount: item.price * amount,
+    creditCardProcessingFee,
+    unlockServiceFee,
+    priceInAmount,
+    inclusive: creditCardProcessingFee + unlockServiceFee + priceInAmount,
+  }
+}
+
+type NullOrString = string | null
+interface KeyPricingOptions {
+  recipients: NullOrString[]
+  data: NullOrString[]
+  referrers: NullOrString[]
+  network: number
+  lockAddress: string
+}
+
+const fromDecimal = (num: string, decimals: number) => {
+  return parseFloat(
+    ethers.utils
+      .formatUnits(ethers.BigNumber.from(num), decimals)
+      .replace(/\.0$/, '')
+  )
+}
+
+export const getLockKeyPricing = async ({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) => {
+  const web3Service = new Web3Service(networks)
+  const provider = web3Service.providerForNetwork(network)
+  const lockContract = await web3Service.getLockContract(lockAddress, provider)
+  const [keyPrice, currencyContractAddress] = await Promise.all([
+    lockContract.keyPrice(),
+    lockContract.tokenAddress(),
+  ])
+  const decimals =
+    currencyContractAddress &&
+    currencyContractAddress !== ethers.constants.AddressZero
+      ? await getErc20Decimals(currencyContractAddress, provider)
+      : networks[network].nativeCurrency?.decimals || 18
+
+  return {
+    decimals,
+    keyPrice,
+    currencyContractAddress,
+  }
+}
+
+export const getKeyPricingInUSD = async ({
+  recipients,
+  network,
+  lockAddress,
+  data: dataArray,
+  referrers,
+}: KeyPricingOptions) => {
+  const web3Service = new Web3Service(networks)
+  const { keyPrice, decimals, currencyContractAddress } =
+    await getLockKeyPricing({
+      lockAddress,
+      network,
+    })
+
+  const usdPricing = await defiLammaPrice({
+    network,
+    address:
+      !currencyContractAddress ||
+      currencyContractAddress === ethers.constants.AddressZero
+        ? undefined
+        : currencyContractAddress,
+    amount: 1,
+  })
+
+  const defaultPrice = fromDecimal(keyPrice, decimals)
+
+  const defaultPricing = {
+    amount: defaultPrice,
+    decimals,
+    symbol: usdPricing.symbol,
+    amountInUSD: usdPricing?.price
+      ? defaultPrice * usdPricing.price
+      : undefined,
+    amountInCents: usdPricing?.price
+      ? Math.round(defaultPrice * usdPricing.price * 100)
+      : 0,
+  }
+
+  const result = await Promise.all(
+    recipients.map(async (address, index) => {
+      const data = dataArray?.[index] ?? '0x'
+      const referrer = referrers?.[index] ?? address!
+
+      if (!address) {
+        return {
+          recipient: null,
+          ...defaultPricing,
+        }
+      }
+
+      try {
+        const purchasePrice = await web3Service.purchasePriceFor({
+          lockAddress,
+          userAddress: address,
+          data,
+          network,
+          referrer,
+        })
+        const amount = fromDecimal(purchasePrice, decimals)
+        return {
+          address,
+          price: {
+            amount,
+            decimals,
+            symbol: usdPricing.symbol,
+            amountInUSD: usdPricing?.price
+              ? amount * usdPricing.price
+              : undefined,
+            amountInCents: usdPricing?.price
+              ? Math.round(amount * usdPricing.price * 100)
+              : 0,
+          },
+        }
+      } catch (error) {
+        logger.error(error)
+        return {
+          address,
+          ...defaultPricing,
+        }
+      }
+    })
+  )
+  return result
+}
+
+// Fee denominated in cents
+export const getCreditCardProcessingFee = (subtotal: number) => {
+  const serviceFee = getUnlockServiceFee(subtotal)
+  const total = subtotal + serviceFee
+  // This is rounded up to an integer number of cents.
+  const percentageFee = Math.ceil(total * stripePercentage)
+  return baseStripeFee + percentageFee
+}
+
+// Fee denominated in cents
+export const getUnlockServiceFee = (cost: number) => {
+  return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
+}
+
+export const createPricingForPurchase = async (options: KeyPricingOptions) => {
+  const recipients = await getKeyPricingInUSD(options)
+  const totalCost = recipients.reduce(
+    (sum, item) => sum + (item.price?.amountInCents || 0),
+    0
+  )
+  const unlockServiceFee = getUnlockServiceFee(totalCost)
+  const creditCardProcessingFee = getCreditCardProcessingFee(totalCost)
+  const total = totalCost + unlockServiceFee + creditCardProcessingFee
+  return {
+    recipients,
+    total,
+    unlockServiceFee,
+    creditCardProcessingFee,
+    isCreditPurchasable: total > 50,
   }
 }

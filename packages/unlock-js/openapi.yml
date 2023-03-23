@@ -1393,13 +1393,26 @@ paths:
                   items:
                     type: string
                   minItems: 1
+
                 stripeTokenId:
                   type: string
+
                 pricing:
                   type: number
+
                 recurring:
                   type: number
                   nullable: true
+
+                data:
+                  type: array
+                  items:
+                    type: string
+
+                referrers:
+                  type: array
+                  items:
+                    type: string
 
       responses:
         200:
@@ -2556,3 +2569,106 @@ paths:
                 properties:
                   message:
                     type: string
+  /purchase/capture:
+    post:
+      operationId: capturePurchase
+      security:
+        - User: []
+      description: Capture a purchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'network'
+                - 'lock'
+                - 'userAddress'
+                - 'paymentIntent'
+
+              properties:
+                network: # The network the lock is on
+                  type: number
+
+                lock:
+                  type: string
+
+                userAddress:
+                  type: string
+
+                paymentIntent:
+                  type: string
+
+                data:
+                  type: array
+                  items:
+                    type: string
+
+                referrers:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Successfully captured purchase
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+
+  /v2/purchase/total:
+    get:
+      description: Get the total price for a purchase (including fees)
+      operationId: getTotalPrice
+      parameters:
+        - in: query
+          name: network
+          required: true
+          description: The network the lock is on
+          schema:
+            type: number
+
+        - in: query
+          name: amount
+          required: false
+          description: Amount of tokens you want to get the price for in USD.
+          schema:
+            type: number
+
+        - in: query
+          name: address
+          required: false
+          description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfully got price
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'total'
+                  - 'subtotal'
+                  - 'gasCost'
+                  - 'unlockServiceFee'
+                  - 'creditCardProcessingFee'
+                  - 'isCreditPurchasable'
+                properties:
+                  total:
+                    type: number
+                  subtotal:
+                    type: number
+                  gasCost:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  isCreditPurchasable:
+                    type: boolean
