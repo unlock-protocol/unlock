@@ -1,20 +1,8 @@
-// import {
-//   Controller,
-//   FormProvider,
-//   useFieldArray,
-//   useForm,
-//   useFormContext,
-// } from 'react-hook-form'
 import { z } from 'zod'
 
 import {
   Button,
-  Disclosure,
   Input,
-  TextBox,
-  Select,
-  ToggleSwitch,
-  ImageUpload,
   AddressInput,
   isAddressOrEns,
 } from '@unlock-protocol/ui'
@@ -59,6 +47,7 @@ export const WalletlessRegistration = () => {
   const onSubmit = async (form: RsvpFormProps) => {
     console.log('SUBMITTED!')
     console.log(form)
+
     // Let's just use the walletless airdrop API from there!
     // const params = await emailPreviewData()
     // const promise = wedlocksService.sendEmail(
