@@ -12,7 +12,7 @@ import * as emailOperations from './emailOperations'
 import * as metadataOperations from './metadataOperations'
 
 type Params = {
-  [key: string]: string | number | undefined
+  [key: string]: string | number | undefined | boolean
   keyId: string
   keychainUrl?: string
   lockName: string

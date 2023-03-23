@@ -151,8 +151,9 @@ const getMembershipStatus = async ({
   })
 
   let currency = ''
-  let isAutoRenewable = undefined
-  let isRenewableIfReApproved = undefined
+  let isAutoRenewable = false
+  let isRenewableIfReApproved = false
+  const isRenewableIfRePurchased = false
 
   // get subscription and check for renews
   if (subscriptions?.length) {
@@ -175,7 +176,7 @@ const getMembershipStatus = async ({
     isRenewable,
     isAutoRenewable,
     isRenewableIfReApproved,
-    isRenewableIfRePurchased: undefined,
+    isRenewableIfRePurchased,
   }
 }
 
@@ -266,12 +267,10 @@ export async function notifyKeyExpiration() {
                 keychainUrl: `${config.unlockApp}/keychain`,
                 currency,
                 expirationDate,
-                isRenewable: isRenewable ? 'true' : '',
-                isAutoRenewable: isAutoRenewable ? 'true' : '',
-                isRenewableIfRePurchased: isRenewableIfRePurchased
-                  ? 'true'
-                  : '',
-                isRenewableIfReApproved: isRenewableIfReApproved ? 'true' : '',
+                isRenewable,
+                isAutoRenewable,
+                isRenewableIfRePurchased,
+                isRenewableIfReApproved,
               })
             }),
           ])
