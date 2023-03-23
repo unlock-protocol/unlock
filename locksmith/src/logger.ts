@@ -1,4 +1,3 @@
-import 'setimmediate'
 import Sentry from 'winston-transport-sentry-node'
 import winston from 'winston'
 import { Logtail } from '@logtail/node'

@@ -50,7 +50,9 @@ export const gnosis: NetworkConfig = {
     },
   ],
   description:
-    'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
+    'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
+  url: 'https://www.gnosis.io/',
+  faucet: 'https://gnosisfaucet.com/',
   isTestNetwork: false,
   maxFreeClaimCost: 100,
   teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
