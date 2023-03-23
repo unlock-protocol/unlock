@@ -1393,13 +1393,26 @@ paths:
                   items:
                     type: string
                   minItems: 1
+
                 stripeTokenId:
                   type: string
+
                 pricing:
                   type: number
+
                 recurring:
                   type: number
                   nullable: true
+
+                data:
+                  type: array
+                  items:
+                    type: string
+
+                referrers:
+                  type: array
+                  items:
+                    type: string
 
       responses:
         200:
@@ -2527,3 +2540,43 @@ paths:
                     type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /purchase/capture:
+    post:
+      operationId: capturePurchase
+      security:
+        - User: []
+      description: Capture a purchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'network'
+                - 'lock'
+                - 'userAddress'
+                - 'paymentIntent'
+
+              properties:
+                network: # The network the lock is on
+                  type: number
+
+                lock:
+                  type: string
+
+                userAddress:
+                  type: string
+
+                paymentIntent:
+                  type: string
+
+                data:
+                  type: array
+                  items:
+                    type: string
+
+                referrers:
+                  type: array
+                  items:
+                    type: string
