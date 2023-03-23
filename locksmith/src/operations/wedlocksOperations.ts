@@ -173,17 +173,20 @@ const getAttachments = async ({
     attachments.push({ path: dataURI })
   }
 
-  // Calendar ICS for event
+  // Add ICS attachment when event is present
   if (event) {
-    const startDate = dayjs(`${event.eventTime} ${event.eventTime}`).toDate()
-    const file: any = await createEventIcs({
+    const file: Buffer | undefined = await createEventIcs({
       title: event?.eventName ?? '',
       description: event?.eventDescription ?? '',
-      startDate,
+      startDate: event?.startDate || null,
+      endDate: event?.endDate ?? null,
     })
-    const url = URL.createObjectURL(file).toString()
-    const dataURI = `data:text/calendar;base64,${url}`
-    attachments.push({ path: dataURI })
+
+    if (file) {
+      const url = file.toString('base64')
+      const dataURI = `data:text/calendar;base64,${url}`
+      attachments.push({ path: dataURI })
+    }
   }
 
   return attachments
@@ -311,6 +314,9 @@ export const notifyNewKeyToWedlocks = async (
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
+  const { eventDescription, eventTime, eventDate, eventAddress, eventName } =
+    eventDetail ?? {}
+
   await sendEmail(
     templates[0],
     templates[1],
@@ -325,7 +331,11 @@ export const notifyNewKeyToWedlocks = async (
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
       // add event details props
-      ...eventDetail,
+      eventName,
+      eventDate,
+      eventDescription,
+      eventTime,
+      eventAddress,
     },
     attachments
   )

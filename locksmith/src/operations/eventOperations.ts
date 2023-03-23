@@ -12,6 +12,8 @@ export interface EventProps {
   eventDate: string
   eventAddress: string
   eventName: string
+  startDate: Date | null
+  endDate: Date | null
 }
 
 const getEventDate = (
@@ -109,6 +111,8 @@ export const getEventDetail = async (
       eventDate,
       eventTime,
       eventAddress,
+      startDate,
+      endDate,
     }
   }
 
