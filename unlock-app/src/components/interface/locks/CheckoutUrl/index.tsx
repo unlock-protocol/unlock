@@ -5,7 +5,6 @@ import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { useLockSettings } from '~/hooks/useLockSettings'
 
 const Header = () => {
   return (
@@ -24,7 +23,6 @@ export const CheckoutUrlPage = () => {
   const query = router.query
 
   const { lock: lockAddress, network } = query ?? {}
-  const { getIsRecurringPossible } = useLockSettings()
 
   // TODO @kalidou : let's use the default values from zod?
   const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
@@ -33,48 +31,11 @@ export const CheckoutUrlPage = () => {
     skipRecipient: true,
   })
 
-  const handleRecurring = (locks: Record<string, any>) => {
-    let newLocksMapping: Record<string, any> = {
-      ...locks,
-    }
-    Object.entries(locks).map(async ([lockAddress, values]) => {
-      const { isRecurringPossible = false, oneYearRecurring } =
-        await getIsRecurringPossible({
-          lockAddress,
-          network: values!.network!,
-        })
-
-      // checkout config URL default to 1 year of recurring payments if recurring is set
-      if (isRecurringPossible) {
-        const recurringPayments =
-          values?.recurringPayments ||
-          (isRecurringPossible ? oneYearRecurring : undefined)
-
-        newLocksMapping = {
-          ...locks,
-          ...newLocksMapping,
-          [lockAddress]: {
-            ...values,
-            recurringPayments,
-          },
-        }
-
-        setPaywallConfig({
-          ...paywallConfig,
-          locks: {
-            ...newLocksMapping,
-          },
-        })
-      }
-    })
-  }
-
   const onAddLocks = async (locks: any) => {
     setPaywallConfig({
       ...paywallConfig,
       locks,
     })
-    handleRecurring(locks)
   }
 
   const onBasicConfigChange = (fields: Partial<PaywallConfig>) => {

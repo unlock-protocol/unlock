@@ -20,6 +20,7 @@ import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
 import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
+import { useLockSettings } from '~/hooks/useLockSettings'
 const LockSchema = PaywallLockConfig.omit({
   network: true, // network will managed with a custom input with the lock address
 })
@@ -88,6 +89,8 @@ export const LocksForm = ({
   const [defaultValue, setDefaultValue] = useState<Record<string, any>>({})
   const [recurring, setRecurring] = useState<string | number>('')
   const [recurringUnlimited, setRecurringUnlimited] = useState(false)
+
+  const { getIsRecurringPossible } = useLockSettings()
 
   const [locks, setLocks] = useState<LocksProps>(locksDefault)
 
@@ -201,7 +204,7 @@ export const LocksForm = ({
     )
   }
 
-  const onAddLock = (
+  const onAddLock = async (
     lockAddress: string,
     network?: number | string,
     name = '',
@@ -225,11 +228,23 @@ export const LocksForm = ({
       ...fields,
     }
 
+    // get recurring default value
+    const { isRecurringPossible = false, oneYearRecurring } =
+      await getIsRecurringPossible({
+        lockAddress,
+        network: Number(network),
+      })
+
+    const recurringPayments =
+      fields?.recurringPayments ||
+      (isRecurringPossible ? oneYearRecurring : undefined)
+
     const locksByAddress = {
       ...locks,
       [lockAddress]: {
         network: parseInt(`${network}`),
         ...fields,
+        recurringPayments,
       },
     }
     setLocks(locksByAddress)

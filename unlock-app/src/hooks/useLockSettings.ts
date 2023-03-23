@@ -1,4 +1,4 @@
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { ethers } from 'ethers'
 import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -9,32 +9,20 @@ interface LockSettingsProps {
 
 export function useLockSettings() {
   const web3Service = useWeb3Service()
-  const subgraph = new SubgraphService()
 
   const getIsRecurringPossible = async ({
     lockAddress,
     network,
   }: LockSettingsProps) => {
-    const lock = await subgraph.lock(
-      {
-        where: {
-          address_in: [lockAddress],
-        },
-      },
-      {
-        network,
-      }
-    )
-    const refund = await await web3Service.refundPenaltyBasisPoints({
-      lockAddress,
-      network,
-    })
+    const lock = await web3Service.getLock(lockAddress, network)
 
+    const isERC20 =
+      lock?.currencyContractAddress &&
+      lock.currencyContractAddress !== ethers.constants.AddressZero.toString()
+
+    // todo: Add gas refund
     const isRecurringPossible =
-      lock?.expirationDuration != -1 &&
-      lock?.version >= 10 &&
-      lock?.tokenAddress?.length > 0 &&
-      refund > 0
+      lock?.expirationDuration != -1 && lock?.publicLockVersion >= 10 && isERC20
 
     // 1 year of recurring payments
     const oneYearRecurring = Math.floor(
@@ -42,7 +30,6 @@ export function useLockSettings() {
     )
 
     return {
-      refund,
       isRecurringPossible,
       oneYearRecurring,
     }
