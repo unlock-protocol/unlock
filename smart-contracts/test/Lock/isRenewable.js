@@ -43,7 +43,7 @@ contract('Lock / isRenewable', (accounts) => {
     await time.increaseTo(expirationTs.toNumber())
   })
 
-    describe('return false', () => {
+    describe('return true', () => {
       it('if terms havent changed', async () => {
         assert.equal(
           await lock.isRenewable(tokenId, ADDRESS_ZERO),
@@ -54,6 +54,18 @@ contract('Lock / isRenewable', (accounts) => {
         await lock.updateKeyPricing(
           ethers.utils.parseUnits('0.009', 'ether'),
           dai.address,
+          { from: lockOwner }
+        )
+        assert.equal(
+          await lock.isRenewable(tokenId, ADDRESS_ZERO),
+          false
+        )
+      })
+      it('if time has increased', async () => {
+        await lock.updateLockConfig(
+          await lock.expirationDuration() + 1000,
+          await lock.maxNumberOfKeys(),
+          await lock.maxKeysPerAddress(),
           { from: lockOwner }
         )
         assert.equal(
@@ -98,7 +110,7 @@ contract('Lock / isRenewable', (accounts) => {
           { from: lockOwner }
         )
         await reverts(
-          await lock.isRenewable(tokenId, ADDRESS_ZERO),
+          lock.isRenewable(tokenId, ADDRESS_ZERO),
           'LOCK_HAS_CHANGED'
         )
       })
