@@ -5,6 +5,7 @@ import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
+import { useLockSettings } from '~/hooks/useLockSettings'
 
 const Header = () => {
   return (
@@ -21,6 +22,8 @@ const Header = () => {
 export const CheckoutUrlPage = () => {
   const router = useRouter()
   const query = router.query
+
+  const { getIsRecurringPossible } = useLockSettings()
 
   const { lock: lockAddress, network } = query ?? {}
 
@@ -59,12 +62,23 @@ export const CheckoutUrlPage = () => {
     })
   }
 
-  const addDefaultLockFromQuery = () => {
+  const addDefaultLockFromQuery = async () => {
     if (!lockAddress && !network) return null
+
+    // get recurring default value
+    const { isRecurringPossible = false, oneYearRecurring } =
+      await getIsRecurringPossible({
+        lockAddress: lockAddress as string,
+        network: Number(network),
+      })
+
+    const recurringPayments = isRecurringPossible ? oneYearRecurring : undefined
+
     onAddLocks({
       [lockAddress as string]: {
         network: parseInt(`${network!}`),
         skipRecipient: true,
+        recurringPayments,
       },
     })
   }

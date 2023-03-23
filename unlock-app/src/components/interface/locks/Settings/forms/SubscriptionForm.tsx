@@ -28,7 +28,7 @@ export const SubscriptionForm = ({
   const { getIsRecurringPossible } = useLockSettings()
 
   const {
-    data: { refund = 0, isRecurringPossible = false } = {},
+    data: { gasRefund = 0, isRecurringPossible = false } = {},
     isLoading: isLoadingRefund,
   } = useQuery(
     ['getIsRecurringPossible', lockAddress, network],
@@ -97,10 +97,10 @@ export const SubscriptionForm = ({
             and ERC20 currency for which a gas refund value is set.
           </small>
           <ul className="ml-2 list-disc">
-            {refund === 0 && (
+            {gasRefund === 0 && (
               <li>
                 <span className="text-red-500">
-                  Refund value is not set. You can change it from{' '}
+                  Gas refund value is not set. You can change it from{' '}
                   <Link
                     href={termsSettingsUrl}
                     className="font-semibold text-brand-ui-primary hover:underline"
@@ -113,7 +113,8 @@ export const SubscriptionForm = ({
             {lock?.expirationDuration == -1 && (
               <li>
                 <span className="text-red-500">
-                  The memberships on this lock do not expire, so they cannot be renewed. You can change it from{' '}
+                  The memberships on this lock do not expire, so they cannot be
+                  renewed. You can change it from{' '}
                   <Link
                     href={termsSettingsUrl}
                     className="font-semibold text-brand-ui-primary hover:underline"
