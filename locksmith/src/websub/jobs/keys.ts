@@ -16,10 +16,18 @@ import * as subscriptionOperations from './../../operations/subscriptionOperatio
 import { ethers } from 'ethers'
 import dayjs from 'dayjs'
 import config from '../../config/config'
+import { arrayToChunks } from '../../utils/array'
 
 const FETCH_LIMIT = 25
 const MAX_UINT =
   '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+const KEYS_CHUNKS_SIZE = 25
+const DELAY = 10000
+
+const delay = (timeout: number) =>
+  new Promise((resolve: any) => {
+    setTimeout(() => resolve(), timeout)
+  })
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const keySource = new Key(network)
@@ -185,6 +193,10 @@ export async function notifyKeyExpiration() {
       const keys = await subgraph.keys(
         {
           first: 1000, //  TODO: handle more than 1000 keys
+          where: {
+            expiration_gt: now.getTime().toString(),
+            expiration_lt: end.getTime().toString(),
+          },
         },
         {
           networks: [Number(networkId)],
@@ -195,61 +207,76 @@ export async function notifyKeyExpiration() {
         `keys expiring for ${networks[networkId].name}: ${keys?.length}`
       )
 
-      await Promise.allSettled([
-        keys?.map(async (key: any) => {
-          const lockName = key?.lock?.name ?? ''
-          const lockAddress = Normalizer.ethereumAddress(key.lock.address)
-          const ownerAddress = Normalizer.ethereumAddress(key.owner)
-          const tokenAddress = key?.lock?.tokenAddress ?? ''
-          const keyId = key?.tokenId ?? ''
+      // split keys into groups to send email by group with some delay
+      const chunks = arrayToChunks(keys, KEYS_CHUNKS_SIZE)
+      await Promise.allSettled(
+        Object.values(chunks).map(async (keys, index) => {
+          const timeout = DELAY * (index + 1) // increase delay for each chunks
+          await delay(timeout)
 
-          const protectedData =
-            await metadataOperations.getUserProtectedMetadata({
-              lockAddress,
-              userAddress: ownerAddress,
-            })
-
-          const recipient = protectedData?.email as string
-
-          logger.info(`for key ${lockName} sent to ${recipient}`)
-
-          if (!recipient) return
-
-          const {
-            isAutoRenewable,
-            isRenewable,
-            isRenewableIfRePurchased,
-            isRenewableIfReApproved,
-            currency,
-          } = await getMembershipStatus({
-            owner: ownerAddress,
-            key,
-            tokenAddress,
-            tokenId: keyId,
-            lockAddress,
-            network: Number(networkId),
-          })
-
-          // expiration date example: 1 December 2022 - 10:55
-          const expirationDate = dayjs(new Date(key.expiration)).format(
-            'D MMMM YYYY - HH:mm'
+          logger.info(
+            `send expiring emails for chunk group ${index + 1} on ${
+              networks?.[networkId]?.name
+            }`
           )
 
-          // send expiring email
-          await sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
-            lockName,
-            keyId,
-            network: networkId,
-            keychainUrl: `${config.unlockApp}/keychain`,
-            currency,
-            expirationDate,
-            isRenewable: isRenewable ? 'true' : '',
-            isAutoRenewable: isAutoRenewable ? 'true' : '',
-            isRenewableIfRePurchased: isRenewableIfRePurchased ? 'true' : '',
-            isRenewableIfReApproved: isRenewableIfReApproved ? 'true' : '',
-          })
-        }),
-      ])
+          await Promise.allSettled([
+            keys?.map(async (key: any) => {
+              const lockName = key?.lock?.name ?? ''
+              const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+              const ownerAddress = Normalizer.ethereumAddress(key.owner)
+              const tokenAddress = key?.lock?.tokenAddress ?? ''
+              const keyId = key?.tokenId ?? ''
+
+              const protectedData =
+                await metadataOperations.getUserProtectedMetadata({
+                  lockAddress,
+                  userAddress: ownerAddress,
+                })
+
+              const recipient = protectedData?.email as string
+
+              if (!recipient) return
+
+              const {
+                isAutoRenewable,
+                isRenewable,
+                isRenewableIfRePurchased,
+                isRenewableIfReApproved,
+                currency,
+              } = await getMembershipStatus({
+                owner: ownerAddress,
+                key,
+                tokenAddress,
+                tokenId: keyId,
+                lockAddress,
+                network: Number(networkId),
+              })
+
+              // expiration date example: 1 December 2022 - 10:55
+              const expirationDate = dayjs(new Date(key.expiration)).format(
+                'D MMMM YYYY - HH:mm'
+              )
+
+              // send expiring email
+              await sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
+                lockName,
+                keyId,
+                network: networkId,
+                keychainUrl: `${config.unlockApp}/keychain`,
+                currency,
+                expirationDate,
+                isRenewable: isRenewable ? 'true' : '',
+                isAutoRenewable: isAutoRenewable ? 'true' : '',
+                isRenewableIfRePurchased: isRenewableIfRePurchased
+                  ? 'true'
+                  : '',
+                isRenewableIfReApproved: isRenewableIfReApproved ? 'true' : '',
+              })
+            }),
+          ])
+        })
+      )
     })
   )
 }
@@ -282,32 +309,46 @@ export async function notifyKeyExpired() {
         `keys expired for ${networks[networkId]?.name}: ${keys?.length}`
       )
 
-      await Promise.allSettled(
-        keys?.map(async (key: any) => {
-          const lockName = key?.lock?.name ?? ''
-          const lockAddress = Normalizer.ethereumAddress(key.lock.address)
-          const ownerAddress = Normalizer.ethereumAddress(key.owner)
-          const keyId = key?.tokenId ?? ''
+      // split keys into groups to send email by group with some delay
+      const chunks = arrayToChunks(keys, KEYS_CHUNKS_SIZE)
 
-          const protectedData =
-            await metadataOperations.getUserProtectedMetadata({
-              lockAddress,
-              userAddress: ownerAddress,
+      Object.values(chunks).map(async (keys, index) => {
+        const timeout = DELAY * (index + 1) // increase delay for each chunks
+        await delay(timeout)
+
+        logger.info(
+          `send expired emails for chunk group ${index + 1} on ${
+            networks?.[networkId]?.name
+          }`
+        )
+
+        await Promise.allSettled([
+          keys?.map(async (key: any) => {
+            const lockName = key?.lock?.name ?? ''
+            const lockAddress = Normalizer.ethereumAddress(key?.lock?.address)
+            const ownerAddress = Normalizer.ethereumAddress(key.owner)
+            const keyId = key?.tokenId ?? ''
+
+            const protectedData =
+              await metadataOperations.getUserProtectedMetadata({
+                lockAddress,
+                userAddress: ownerAddress,
+              })
+
+            const recipient = protectedData?.email as string
+
+            if (!recipient) return
+
+            // send expiring email
+            await sendEmail(`keyExpired`, `keyExpired`, recipient, {
+              lockName,
+              keyId,
+              network: networkId,
+              keychainUrl: 'https://app.unlock-protocol.com/keychain',
             })
-
-          const recipient = protectedData?.email as string
-
-          if (!recipient) return
-
-          // send expiring email
-          await sendEmail(`keyExpired`, `keyExpired`, recipient, {
-            lockName,
-            keyId,
-            network: networkId,
-            keychainUrl: 'https://app.unlock-protocol.com/keychain',
-          })
-        })
-      )
+          }),
+        ])
+      })
     })
   )
 }
