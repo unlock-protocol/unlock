@@ -1,25 +1,25 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { ConnectWallet } from './Wallet'
 import { ConnectUnlockAccount } from './UnlockAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectedWallet } from './ConnectedWallet'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
-export interface Props {
-  open: boolean
-  setOpen: (open: boolean) => void
-}
+export const ConnectModal = () => {
+  const { status, openConnectModal, closeConnectModal, open } =
+    useConnectModal()
+  const { connected } = useAuth()
 
-export const ConnectModal = ({ open, setOpen }: Props) => {
-  const [useUnlockAccount, setUseUnlockAccount] = useState(false)
-  const { isConnected } = useAuth()
+  const useUnlockAccount = status === 'unlock_account'
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-50 overflow-y-auto"
-        onClose={() => setOpen(false)}
+        onClose={closeConnectModal}
+        open={open}
       >
         <div className="flex flex-col items-center justify-center min-h-screen p-6">
           <Transition.Child
@@ -48,11 +48,11 @@ export const ConnectModal = ({ open, setOpen }: Props) => {
                 <div className="flex px-1">
                   <div className="flex-1 font-bold ">
                     <h1 className="text-center">
-                      {isConnected
-                        ? 'Connected Account'
+                      {!connected
+                        ? 'Connect Account'
                         : useUnlockAccount
                         ? 'Unlock Account'
-                        : 'Connect Wallet'}{' '}
+                        : 'Connected Wallet'}
                     </h1>
                   </div>
                   <div>
@@ -60,7 +60,7 @@ export const ConnectModal = ({ open, setOpen }: Props) => {
                       aria-label="close"
                       onClick={(event) => {
                         event.preventDefault()
-                        setOpen(false)
+                        closeConnectModal()
                       }}
                       className="p-1 rounded-full hover:bg-gray-50"
                     >
@@ -69,21 +69,21 @@ export const ConnectModal = ({ open, setOpen }: Props) => {
                   </div>
                 </div>
               </header>
-              {!useUnlockAccount && !isConnected && (
+              {!useUnlockAccount && !connected && (
                 <ConnectWallet
                   onUnlockAccount={() => {
-                    setUseUnlockAccount(true)
+                    openConnectModal('unlock_account')
                   }}
                 />
               )}
-              {useUnlockAccount && !isConnected && (
+              {useUnlockAccount && !connected && (
                 <ConnectUnlockAccount
                   onExit={() => {
-                    setUseUnlockAccount(false)
+                    openConnectModal('crypto')
                   }}
                 />
               )}
-              {isConnected && <ConnectedWallet />}
+              {connected && <ConnectedWallet />}
             </div>
           </Transition.Child>
         </div>
