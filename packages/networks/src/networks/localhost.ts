@@ -12,7 +12,12 @@ export const localhost: NetworkConfig = {
     endpoint: 'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
     endpointV2: 'http://localhost:8000/subgraphs/name/testgraph',
   },
-
+  nativeCurrency: {
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    coingecko: 'ethereum',
+  },
   serializerAddress: '0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1',
   description: 'Localhost network.',
   isTestNetwork: true,

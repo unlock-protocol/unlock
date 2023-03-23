@@ -26,7 +26,7 @@ export default class VerifierController {
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
-        message: 'Verifier list could not be retrived.',
+        message: 'Verifier list could not be retrieved.',
       })
     }
   }

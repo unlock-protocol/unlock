@@ -45,6 +45,7 @@ export const avalanche: NetworkConfig = {
   maxFreeClaimCost: 1,
   description:
     'Avalanche is an open, programmable smart contracts platform for decentralized applications.',
+  url: 'https://www.avalabs.org/',
   tokens: [
     {
       name: 'Ethereum',
