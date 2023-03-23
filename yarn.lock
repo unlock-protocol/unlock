@@ -15724,7 +15724,7 @@ __metadata:
     sequelize: 6.29.0
     sequelize-cli: 6.6.0
     siwe: 1.1.6
-    stripe: 8.222.0
+    stripe: 11.15.0
     supertest: 6.3.3
     tsx: 3.12.3
     typescript: 4.9.5
@@ -43834,7 +43834,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.4.0, qs@npm:^6.5.2, qs@npm:^6.7.0, qs@npm:^6.9.6":
+"qs@npm:^6.10.0, qs@npm:^6.11.0, qs@npm:^6.4.0, qs@npm:^6.5.2, qs@npm:^6.7.0, qs@npm:^6.9.6":
   version: 6.11.1
   resolution: "qs@npm:6.11.1"
   dependencies:
@@ -48653,13 +48653,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:8.222.0":
-  version: 8.222.0
-  resolution: "stripe@npm:8.222.0"
+"stripe@npm:11.15.0":
+  version: 11.15.0
+  resolution: "stripe@npm:11.15.0"
   dependencies:
     "@types/node": ">=8.1.0"
-    qs: ^6.10.3
-  checksum: ac9a5b569abf274a9f10cf5bad09d6cf47d457dad21191e8fc896c356608e75337b2e39b6e39526579d39f5b29c74a34e61c55e706def2498a079f7b4dbaea17
+    qs: ^6.11.0
+  checksum: da017f063016f11329c4c704b63c86703801d17aad6bb998eb90b5ce9980c9296ba86baa3b62a0deba4e523e018ea02b4ad4fc42d821df91ab85dcbc28fb124f
   languageName: node
   linkType: hard
 
