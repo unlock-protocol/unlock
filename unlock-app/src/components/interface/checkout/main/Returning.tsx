@@ -32,7 +32,6 @@ export function Returning({
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
   const web3Service = useWeb3Service()
-
   const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
@@ -44,6 +43,7 @@ export function Returning({
     try {
       setIsSigningMessage(true)
       const walletService = await getWalletService()
+
       const signature = await walletService.signMessage(
         paywallConfig.messageToSign!,
         'personal_sign'
