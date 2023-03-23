@@ -119,20 +119,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     },
   }
 
-  const onRegister = () => {
-    setCheckoutOpen(true)
-    // Check if the lock is free and on a free network and
-    // if so let's add support for walletless airdrop from the backend!
-    if (isClaimable) {
-      console.log('Cool')
-      // Show screen for claims!
-      // Can we get the metadata from the checkout
-      // Add a wallet field too!
-    } else {
-      // Use regular checkout!
-    }
-  }
-
   return (
     <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] mt-8">
       <Modal
@@ -273,7 +259,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 : 'white',
             }}
             disabled={isClaimableLoading}
-            onClick={onRegister}
+            onClick={() => setCheckoutOpen(true)}
           >
             Register
           </Button>
