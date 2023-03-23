@@ -31,7 +31,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint --fix"
+      "yarn run lint --fix"
     ]
   },
   "author": "Unlock Inc",
