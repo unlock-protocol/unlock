@@ -9,8 +9,8 @@ import { LockMetadata } from '../../models/lockMetadata'
 import * as lockOperations from '../../operations/lockOperations'
 import { getDefaultLockData } from '../../utils/metadata'
 import {
-  createOrUpdateUsersMetadata,
-  createOrUpdateUserMetadata,
+  upsertUsersMetadata,
+  upsertUserMetadata,
   UserMetadataInputs,
 } from '../../operations/userMetadataOperations'
 import { networks } from '@unlock-protocol/networks'
@@ -232,7 +232,7 @@ export const updateUserMetadata: RequestHandler = async (request, response) => {
       loggedInUser,
       network
     )
-    const user = await createOrUpdateUserMetadata(
+    const user = await upsertUserMetadata(
       {
         network,
         userAddress,
@@ -243,7 +243,9 @@ export const updateUserMetadata: RequestHandler = async (request, response) => {
       isLockManager
     )
 
-    return response.status(201).send(user.toJSON().data)
+    return response.status(200).send({
+      metadata: user.toJSON().data?.userMetadata,
+    })
   } catch (error) {
     logger.error(error.message)
 
@@ -264,34 +266,28 @@ export const updateUsersMetadata: RequestHandler = async (
   request: Request,
   response: Response
 ) => {
-  try {
-    const loggedInUser = request.user!.walletAddress
-    const parsed = await BulkUserMetadataBody.parseAsync(request.body)
+  const loggedInUser = request.user!.walletAddress
+  const parsed = await BulkUserMetadataBody.parseAsync(request.body)
 
-    const users = parsed.users.map(
-      (item) =>
-        ({
-          ...item,
-          by: loggedInUser,
-        } as UserMetadataInputs)
-    )
+  const users = parsed.users.map(
+    (item) =>
+      ({
+        ...item,
+        by: loggedInUser,
+      } as UserMetadataInputs)
+  )
 
-    const { updated, error } = await createOrUpdateUsersMetadata(users)
+  const { updated, error } = await upsertUsersMetadata(users)
 
-    return response.status(201).send({
-      result: updated,
-      error,
-    })
-  } catch (error) {
-    logger.error(error)
-    if (error instanceof z.ZodError) {
-      return response.status(400).send({
-        message: 'User metadata is not in the correct form.',
-        error: error.format(),
-      })
-    }
-    return response.status(500).send({
-      message: 'Bulk user metadata could not be added.',
-    })
-  }
+  return response.status(200).send({
+    results: updated.map((item) => {
+      return {
+        network: item.chain,
+        userAddress: item.userAddress,
+        lockAddress: item.tokenAddress,
+        metadata: item.data?.userMetadata,
+      }
+    }),
+    error,
+  })
 }

@@ -573,7 +573,6 @@ const UpdateEmailModal = ({
   lockAddress,
   network,
   hasEmail,
-  extraDataItems,
   onEmailChange,
 }: {
   isOpen: boolean
@@ -626,31 +625,18 @@ const UpdateEmailModal = ({
     if (!isLockManager) return
     try {
       setLoading(true)
-      let metadata = {}
 
-      extraDataItems.map(([key, value]: [string, string | number]) => {
-        metadata = {
-          ...metadata,
-          [key]: value,
+      updateMetadata(
+        {
+          protected: {
+            email: formFields.email,
+          },
+          public: {},
+        },
+        () => {
+          updateData(formFields)
         }
-      })
-
-      // merge old metadata with new one to prevent data lost
-      metadata = {
-        ...metadata,
-        ...formFields,
-      }
-
-      const params = {
-        lockAddress,
-        userAddress,
-        network,
-        metadata,
-      }
-
-      updateMetadata(params, () => {
-        updateData(formFields)
-      })
+      )
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }

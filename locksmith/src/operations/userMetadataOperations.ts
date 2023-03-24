@@ -2,7 +2,7 @@ import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types'
 import { UserTokenMetadata } from '../models'
 import { InferAttributes } from 'sequelize'
-import { isEmpty } from 'lodash'
+import { isEmpty, merge } from 'lodash'
 
 // @deprecated
 export async function addMetadata(metadata: UserTokenMetadataInput) {
@@ -59,7 +59,7 @@ export interface UserMetadataInputs {
   metadata: Record<string, any>
 }
 
-export const createOrUpdateUserMetadata = async (
+export const upsertUserMetadata = async (
   {
     userAddress: recipient,
     lockAddress,
@@ -74,8 +74,8 @@ export const createOrUpdateUserMetadata = async (
   const updatedBy = Normalizer.ethereumAddress(by || recipient)
   const data = {
     userMetadata: {
-      protected: metadata.protected,
-      public: metadata.public,
+      protected: Normalizer.toLowerCaseKeys(metadata.protected || {}),
+      public: Normalizer.toLowerCaseKeys(metadata.public || {}),
     },
   }
   const user = await UserTokenMetadata.findOne({
@@ -85,11 +85,22 @@ export const createOrUpdateUserMetadata = async (
       tokenAddress,
     },
   })
+
+  const existingUserMetadata = Normalizer.toLowerCaseKeys(
+    user?.data?.userMetadata || {}
+  )
+
   const userTokenMetadata = {
     chain,
     userAddress,
     tokenAddress,
-    data,
+    // merge existing metadata with new metadata
+    data: merge(
+      {
+        userMetadata: existingUserMetadata,
+      },
+      data
+    ),
     updatedBy,
   }
 
@@ -113,14 +124,12 @@ export const createOrUpdateUserMetadata = async (
   return result
 }
 
-export const createOrUpdateUsersMetadata = async (
-  users: UserMetadataInputs[]
-) => {
+export const upsertUsersMetadata = async (users: UserMetadataInputs[]) => {
   const updated: InferAttributes<UserTokenMetadata>[] = []
   const error: string[] = []
   for await (const user of users) {
     try {
-      const result = await createOrUpdateUserMetadata(user)
+      const result = await upsertUserMetadata(user)
       updated.push(result.toJSON())
     } catch (e) {
       error.push(user.userAddress)

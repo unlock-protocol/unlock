@@ -1172,7 +1172,7 @@ paths:
               type: object
               nullable: false
               properties:
-                users:
+                results:
                   type: array
                   items:
                     $ref: '#/components/schemas/UserMetadata'
