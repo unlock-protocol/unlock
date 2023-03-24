@@ -10,7 +10,6 @@ import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
 import * as lockOperations from '../../operations/lockOperations'
 import { isEmpty } from 'lodash'
-import { getDefaultLockData } from '../../utils/metadata'
 
 const UserMetadata = z
   .object({
@@ -48,21 +47,12 @@ export class MetadataController {
       const network = Number(request.params.network)
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
 
-      const lockData = await LockMetadata.findOne({
-        where: {
-          chain: network,
-          address: lockAddress,
-        },
+      const lockData = await metadataOperations.getLockMetadata({
+        lockAddress,
+        network,
       })
 
-      if (!lockData) {
-        const defaultLockData = await getDefaultLockData({
-          lockAddress,
-          network,
-        })
-        return response.status(200).send(defaultLockData)
-      }
-      return response.status(200).send(lockData.data)
+      return response.status(200).send(lockData)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
