@@ -7,7 +7,10 @@ import normalizer from '../../utils/normalizer'
 import networks from '@unlock-protocol/networks'
 import { UserTokenMetadata } from '../../models'
 import { UserMetadata } from './metadataController'
-import { isMetadataEmpty } from '../../operations/userMetadataOperations'
+import {
+  addMetadata,
+  isMetadataEmpty,
+} from '../../operations/userMetadataOperations'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
@@ -86,40 +89,18 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   if (email) {
     // Save email if applicable
-    const userData = await UserTokenMetadata.findOne({
-      where: {
-        userAddress: owner,
-        tokenAddress: lockAddress,
-        chain: network,
+    const metadata = await UserMetadata.parseAsync({
+      public: {},
+      protected: {
+        email,
       },
     })
-    // If no metadata was set previously, we let anyone set it.
-    // Can we just "merge" the data, rather than override it?
-    // In any case, we do not override (and/or do not fail)
-    if (isMetadataEmpty(userData?.data?.userMetadata)) {
-      const metadata = await UserMetadata.parseAsync({
-        public: {},
-        protected: {
-          email,
-        },
-      })
-      await UserTokenMetadata.upsert(
-        {
-          tokenAddress: lockAddress,
-          chain: network,
-          userAddress: owner,
-          data: {
-            userMetadata: {
-              ...metadata,
-            },
-          },
-        },
-        {
-          returning: true,
-          conflictFields: ['userAddress', 'tokenAddress'],
-        }
-      )
-    }
+    await addMetadata({
+      chain: network,
+      userAddress: owner,
+      tokenAddress: lockAddress,
+      data: metadata,
+    })
   }
 
   const web3Service = new Web3Service(networks)
