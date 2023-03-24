@@ -11,6 +11,7 @@ export const baseGoerli: NetworkConfig = {
   name: 'Base Goerli (Testnet)',
   chain: 'base-goerli',
   subgraph: {
+    networkName: 'base-testnet',
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/base-goerli',
     endpointV2:
@@ -40,7 +41,7 @@ export const baseGoerli: NetworkConfig = {
     decimals: 18,
     coingecko: 'ethereum',
   },
-  startBlock: 0,
+  startBlock: 2247300,
   isTestNetwork: true,
   maxFreeClaimCost: 10000,
 }
