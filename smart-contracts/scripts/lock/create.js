@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-
 const createLockHash = require('../../test/helpers/createLockCalldata')
 
 const defaultParams = {
@@ -11,10 +10,11 @@ const defaultParams = {
 }
 
 async function main({
+  unlockAddress,
   price,
   duration,
   name,
-  beneficiary,
+  owner,
   tokenAddress,
   maxNumberOfKeys,
   lockVersion,
@@ -29,20 +29,25 @@ async function main({
   ]
 
   // get unlock on current network
-  const { chainId } = await ethers.provider.getNetwork()
-  const { unlockAddress } = networks[chainId]
+  if (!unlockAddress) {
+    const { chainId } = await ethers.provider.getNetwork()
+    unlockAddress = networks[chainId].unlockAddress
+  }
 
   const Unlock = await ethers.getContractFactory('Unlock')
   const unlock = Unlock.attach(unlockAddress)
 
+  if (!lockVersion) {
+    lockVersion = await unlock.publicLockLatestVersion()
+  }
+
   // send tx
   const [signer] = await ethers.getSigners()
-  lockVersion = lockVersion || 11
-  beneficiary = beneficiary || signer.address
+  owner = owner || signer.address
 
   const calldata = await createLockHash({
     args: lockParams,
-    from: beneficiary,
+    from: owner,
   })
 
   const tx = await unlock.createUpgradeableLockAtVersion(calldata, lockVersion)
@@ -54,6 +59,7 @@ async function main({
   console.log(
     `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${transactionHash}) \n with params: ${lockParams.toString()}`
   )
+  return newLockAddress
 }
 
 // execute as standalone

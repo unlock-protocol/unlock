@@ -1,7 +1,9 @@
 /* eslint-disable global-require */
-const { ethers, run } = require('hardhat')
+const { ethers, run, upgrades } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { getNetworkName } = require('../../helpers/network')
+const { networks } = require('@unlock-protocol/networks')
+const createLock = require('../lock/create')
 
 const { MaxUint256 } = ethers.constants
 
@@ -26,6 +28,7 @@ async function main({
   oracleAddress,
   estimatedGasForPurchase,
   locksmithURI,
+  owner,
 }) {
   let udt
   const [deployer, minter] = await ethers.getSigners()
@@ -92,26 +95,13 @@ async function main({
       log(`WETH deployed to : ${wethAddress}`)
     }
 
-    if (!wethAddress) {
-      const WETH = {
-        mainnet: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-        ropsten: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
-        goerli: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
-        kovan: '0xd0A1E359811322d97991E03f863a0C30C2cF029C',
-      }
-
-      if (!Object.keys(WETH).includes(networkName)) {
-        throw new Error(
-          'Missing wethAddress. Cannot proceed. Please use --weth-address'
-        )
-      } else {
-        wethAddress = WETH[networkName]
-        log(`using WETH at: ${wethAddress}`)
-      }
-    }
-
     // deploy uniswap v2 if needed
     if ((!uniswapFactoryAddress || !uniswapRouterAddress) && isLocalNet) {
+      if (!wethAddress || wethAddress === ethers.constants.AddressZero) {
+        throw new Error(
+          'Missing wethAddress. Cannot deploy Uniswap factory. Please use --weth-address'
+        )
+      }
       const { router, factory } = await run('deploy:uniswap', { wethAddress })
       uniswapRouterAddress = router
       uniswapFactoryAddress = factory
@@ -169,7 +159,7 @@ async function main({
   await run('set:unlock-config', {
     unlockAddress,
     udtAddress,
-    wethAddress,
+    wethAddress: wethAddress || ethers.constants.AddressZero,
     estimatedGasForPurchase,
     locksmithURI,
     isLocalNet,
@@ -186,6 +176,43 @@ async function main({
       oracleAddress,
     })
   }
+
+  // Transfer ownership of Unlock + Proxy admin
+  const multisig = networks[chainId.toString()].multisig
+  if (!owner && multisig) {
+    owner = multisig
+    if (owner) {
+      // get unlock instance (TODO: do not use code version but packaged version)
+      const Unlock = await ethers.getContractFactory('Unlock')
+      const unlock = Unlock.attach(unlockAddress)
+
+      await unlock.transferOwnership(owner)
+      console.log(`> Transfered ownership of KeyManager to owner ${owner}`)
+
+      // Transfer ownership of proxyadmin!
+      const proxyAdmin = await upgrades.admin.getInstance()
+      const proxyAdminOwner = await proxyAdmin.owner()
+      if (proxyAdminOwner === deployer.address) {
+        console.log(`> Proxy admin is owned by deployer, transfering to owner ${owner}`)
+        await upgrades.admin.transferProxyAdminOwnership(owner)
+        console.log(`> Transfered proxy admin ownership to ${owner}`)
+      } else if (proxyAdminOwner === owner) {
+        console.log(`> Proxy admin is already owned by ${owner}`)
+      } else {
+        console.log(`⚠️ Proxy admin is owned by ${proxyAdminOwner}! Can't transfer to ${owner}!`)
+      }
+    }
+  }
+
+  // Test by deploying a lock
+  await createLock({
+    unlockAddress,
+    price: 0,
+    duration: 60 * 60 * 24 * 30,
+    maxNumberOfKeys: 100,
+    name: 'Test Lock'
+  })
+
 }
 
 // execute as standalone
