@@ -1544,7 +1544,7 @@ paths:
       security:
         - User: []
       operationId: claim
-      description: Claim a membership key for a lock.
+      description: Claim a membership key for a lock. If not authenticated, requires an email query
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1554,12 +1554,6 @@ paths:
           description: Recaptcha value to pass.
           schema:
             type: string
-        - in: query
-          name: email
-          required: false
-          schema:
-            type: string
-          description: Email of the recipient
 
       requestBody:
         required: true
@@ -1570,6 +1564,9 @@ paths:
               properties:
                 data:
                   type: string
+                email:
+                  type: string
+                  description: Email address of the recipient
 
       responses:
         200:
@@ -1580,6 +1577,8 @@ paths:
                 type: object
                 properties:
                   transactionHash:
+                    type: string
+                  owner:
                     type: string
 
         401:

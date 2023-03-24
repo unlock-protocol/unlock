@@ -157,8 +157,11 @@ type Payment =
   | {
       method: 'claim'
     }
+
+export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
+
 export interface Transaction {
-  status: 'ERROR' | 'PROCESSING' | 'FINISHED'
+  status: TransactionStatus
   transactionHash?: string
 }
 

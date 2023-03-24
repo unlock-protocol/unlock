@@ -234,7 +234,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       <section className="flex flex-col items-center">
         <img
           alt={eventData.title}
-          className="mb-5 aspect-auto "
+          className="mb-4 aspect-auto "
           src={eventData.image}
         />
         <ul className="flex justify-around w-1/2">
@@ -251,7 +251,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             variant="primary"
             size="medium"
-            className="md:w-1/2"
+            className="md:w-1/2 mt-4"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`
