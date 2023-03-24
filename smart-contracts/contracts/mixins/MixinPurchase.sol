@@ -214,7 +214,7 @@ contract MixinPurchase is
       revert NON_RENEWABLE_LOCK();
     }
 
-    // make sure key duration havent devreased or price hasnt increase
+    // make sure key duration haven't decreased or price hasn't increase
     if (
       _originalPrices[_tokenId] < purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
       _originalDurations[_tokenId] > expirationDuration ||
