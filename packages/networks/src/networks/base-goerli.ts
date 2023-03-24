@@ -4,7 +4,7 @@ export const baseGoerli: NetworkConfig = {
   featured: true,
   publicProvider: 'https://goerli.base.org',
   provider: 'https://goerli.base.org', //'https://rpc.unlock-protocol.com/84531',
-  unlockAddress: '0x04C89607413713Ec9775E14b954286519d836FEf',
+  unlockAddress: '',
   multisig: '',
   keyManagerAddress: '',
   id: 84531,
