@@ -20,7 +20,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 type Params = {
-  [key: string]: string | number | undefined
+  [key: string]: string | number | undefined | boolean
   keyId: string
   keychainUrl?: string
   lockName: string
