@@ -43,7 +43,7 @@ function getMatchingLockVersion(unlockVersion) {
   )
   // after v10, they start decoupling
   publicLockVersions[10] = 9
-  publicLockVersions[11] = 10
+  publicLockVersions[11] = 11
   publicLockVersions[12] = 11
 
   return publicLockVersions[unlockVersion]
