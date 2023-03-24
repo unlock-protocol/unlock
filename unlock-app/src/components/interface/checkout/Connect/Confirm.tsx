@@ -31,6 +31,7 @@ export function ConfirmConnect({
     try {
       setLoading(true)
       const walletService = await getWalletService()
+
       const message = createMessageToSignIn({
         clientId: oauthConfig.clientId,
         statement: paywallConfig?.messageToSign || '',
@@ -95,7 +96,7 @@ export function ConfirmConnect({
                 <a
                   target="_blank"
                   href="https://ethereum.org/en/wallets/"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                 >
                   crypto wallet
                 </a>{' '}

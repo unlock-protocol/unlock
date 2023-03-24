@@ -31,7 +31,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint --fix"
+      "yarn run lint --fix"
     ]
   },
   "author": "Unlock Inc",
@@ -68,6 +68,7 @@
     "graphql": "16.6.0",
     "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.1",
+    "ics": "3.1.0",
     "isomorphic-fetch": "3.0.0",
     "lodash.isequal": "4.5.0",
     "memory-cache-node": "1.4.0",
@@ -87,7 +88,6 @@
     "satori": "0.2.2",
     "sequelize": "6.29.0",
     "sequelize-cli": "6.6.0",
-    "setimmediate": "1.0.5",
     "siwe": "1.1.6",
     "stripe": "8.222.0",
     "unified": "10.1.2",
