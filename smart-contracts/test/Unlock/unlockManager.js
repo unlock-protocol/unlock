@@ -195,7 +195,30 @@ contract("Unlock / bridged governance", () => {
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send through the dispatcher
-      await managerDest.connect(dao).exec(
+      await managerMainnet.connect(dao).dispatch(
+        destChainId,
+        managerDest.address,
+        calldata,
+        ZERO_ADDRESS,
+        0,
+        ZERO_ADDRESS,
+        30
+      )
+
+      const unlockAfterUpgrade = await ethers.getContractAt('TestUnlockUpgraded', unlockDest.address)
+      assert.equal(await unlockAfterUpgrade.sayHello(), 'hello world')
+    })
+    it('via multisig', async () => {
+      const UnlockUpgraded = await ethers.getContractFactory('TestUnlockUpgraded')
+      const unlockUpgraded = await UnlockUpgraded.deploy()
+
+      const { interface } = proxyAdmin
+      const args = [unlockDest.address, unlockUpgraded.address]
+      const proxyAdminCalldata = interface.encodeFunctionData('upgrade', args)
+      const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
+
+      // send through the DAO > mainnet manager > bridge path
+      await managerDest.connect(multisig).exec(
         calldata
       )
 
