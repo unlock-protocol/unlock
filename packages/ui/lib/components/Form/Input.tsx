@@ -25,9 +25,9 @@ export interface Props
 }
 
 export const SIZE_STYLES: SizeStyleProp = {
-  small: 'pl-2.5 py-1.5 text-sm',
+  small: 'pl-2.5 py-1.5 text-base md:text-sm',
   medium: 'pl-4 py-2 text-base',
-  large: 'pl-4 py-2.5',
+  large: 'pl-4 py-2.5 text-base',
 }
 
 export const STATE_STYLES = {
