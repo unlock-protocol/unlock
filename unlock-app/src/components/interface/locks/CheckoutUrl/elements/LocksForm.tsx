@@ -11,13 +11,14 @@ import { DynamicForm } from './DynamicForm'
 import {
   Button,
   Input,
+  Placeholder,
   ToggleSwitch,
   Tooltip,
   minifyAddress,
 } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
 import { useLockSettings } from '~/hooks/useLockSettings'
@@ -204,12 +205,17 @@ export const LocksForm = ({
     )
   }
 
-  const onAddLock = async (
-    lockAddress: string,
-    network?: number | string,
+  const onAddLock = async ({
+    lockAddress,
+    network,
     name = '',
-    fields: any = null
-  ) => {
+    fields = null,
+  }: {
+    lockAddress: string
+    network?: number | string
+    name?: string
+    fields?: any
+  }) => {
     const defaultLockName = locksByNetwork?.find(
       (lock) => lock.address?.toLowerCase() === lockAddress?.toLowerCase()
     )?.name
@@ -252,6 +258,7 @@ export const LocksForm = ({
     setAddMetadata(false)
   }
 
+  const addLockMutation = useMutation(onAddLock)
   const onAddMetadata = (fields: MetadataInputType) => {
     const lock = locks[lockAddress]
     const metadata = lock?.metadataInputs || []
@@ -302,8 +309,12 @@ export const LocksForm = ({
   }
 
   const onRecurringChange = ({ recurringPayments }: any) => {
-    onAddLock(lockAddress, network, undefined, {
-      recurringPayments,
+    addLockMutation.mutate({
+      lockAddress,
+      network,
+      fields: {
+        recurringPayments,
+      },
     })
   }
 
@@ -318,7 +329,11 @@ export const LocksForm = ({
     setNetwork(network)
     setLockAddress(lockAddress)
     onRemoveFromList(lockAddress)
-    onAddLock(lockAddress, network!, name)
+    addLockMutation.mutateAsync({
+      lockAddress,
+      network,
+      name,
+    })
   }
 
   useEffect(() => {
@@ -327,6 +342,11 @@ export const LocksForm = ({
 
   return (
     <div className="flex flex-col gap-2">
+      {addLockMutation?.isLoading && (
+        <Placeholder.Root>
+          <Placeholder.Line className="p-2" />
+        </Placeholder.Root>
+      )}
       {Object.keys(locks ?? {}).length > 0 && <LockList />}
       <div className="flex gap-2">
         {!addLock && !lockAddress && (
@@ -437,7 +457,11 @@ export const LocksForm = ({
                     captcha: true,
                   })}
                   onChange={(fields: any) =>
-                    onAddLock(lockAddress, network, undefined, fields)
+                    onAddLock({
+                      lockAddress,
+                      network,
+                      fields,
+                    })
                   }
                 />
               </div>
