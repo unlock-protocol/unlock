@@ -1,0 +1,48 @@
+import { NetworkConfig } from '@unlock-protocol/types'
+
+export const baseGoerli: NetworkConfig = {
+  featured: true,
+  publicProvider: 'https://goerli.base.org',
+  provider: 'https://rpc.unlock-protocol.com/84531',
+  unlockAddress: '',
+  multisig: '',
+  keyManagerAddress: '',
+  id: 84531,
+  name: 'Base Goerli (Testnet)',
+  chain: 'base-goerli',
+  subgraph: {
+    endpoint:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/base-goerli',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/base-goerli',
+  },
+  explorer: {
+    name: 'Base Goerli',
+    urls: {
+      base: `https://goerli.basescan.org/`,
+      address: (address: string) =>
+        `https://goerli.basescan.org/address/${address}`,
+      transaction: (hash: string) => `https://goerli.basescan.org/tx/${hash}`,
+      token: (address: string, holder: string) =>
+        `https://goerli.basescan.org/token/${address}?a=${holder}`,
+    },
+  },
+  opensea: {
+    tokenUrl: (lockAddress: string, tokenId: string) =>
+      `https://testnets.opensea.io/assets/goerli/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress: string) =>
+      `https://testnets.opensea.io/assets/goerli/${lockAddress}`,
+  },
+  description: 'Main Ethereum test network. Do not use for production.',
+  nativeCurrency: {
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    coingecko: 'ethereum',
+  },
+  startBlock: 0,
+  isTestNetwork: true,
+  maxFreeClaimCost: 10000,
+}
+
+export default baseGoerli
