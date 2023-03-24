@@ -122,6 +122,7 @@ describe('Wedlocks operations', () => {
           keychainUrl: 'test',
           lockName: 'lockName',
           network: 'Test',
+          lockAddress: lockAddressMock,
         },
         []
       )

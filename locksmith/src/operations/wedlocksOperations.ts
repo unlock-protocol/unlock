@@ -13,6 +13,7 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
+import * as lockSettingOperations from './lockSettingOperations'
 
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
@@ -25,6 +26,7 @@ type Params = {
   keychainUrl?: string
   lockName: string
   network: string
+  lockAddress: string
   txUrl?: string
   openSeaUrl?: string
 }
@@ -66,6 +68,16 @@ export const sendEmail = async (
     recipient,
     params,
     attachments,
+  }
+
+  // prevent send email when is not enabled
+  const canSendEmail = await isSendEmailEnabled(
+    params.lockAddress,
+    Number(params.network)
+  )
+
+  if (!canSendEmail) {
+    return
   }
 
   try {
@@ -220,11 +232,27 @@ const getTemplates = ({
     ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
     : [`keyMined${lockAddress.trim()}`, 'keyMined']
 }
+
+const isSendEmailEnabled = async (
+  lockAddress: string,
+  network?: number
+): Promise<boolean> => {
+  if (lockAddress && network) {
+    const settings = await lockSettingOperations.getSettings({
+      lockAddress,
+      network,
+    })
+    // fallback to true when settings are not present
+    return settings?.sendEmail ?? true
+  }
+  return true
+}
 /**
  * Check if there are metadata with an email address for a key and sends
  * and email based on the lock's template if applicable
  * @param key
  */
+
 export const notifyNewKeyToWedlocks = async (
   key: Key,
   network?: number,
@@ -322,6 +350,7 @@ export const notifyNewKeyToWedlocks = async (
     templates[1],
     recipient,
     {
+      lockAddress: key.lock.address ?? '',
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
