@@ -32,7 +32,6 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
 import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
-import { storage } from '~/config/storage'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 interface Props {
   injectedProvider: unknown

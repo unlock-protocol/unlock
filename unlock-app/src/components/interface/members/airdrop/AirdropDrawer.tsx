@@ -3,7 +3,6 @@ import { Tab } from '@headlessui/react'
 import { AirdropManualForm } from './AirdropManualForm'
 import { AirdropBulkForm } from './AirdropBulkForm'
 import { AirdropMember } from './AirdropElements'
-import { useStorageService } from '~/utils/withStorageService'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
 import { formatDate } from '~/utils/lock'
@@ -31,7 +30,6 @@ export function AirdropKeysDrawer({
   isOpen,
   setIsOpen,
 }: Props) {
-  const storageService = useStorageService()
   const { account, getWalletService } = useAuth()
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 

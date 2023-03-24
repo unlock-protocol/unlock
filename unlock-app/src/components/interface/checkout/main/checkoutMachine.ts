@@ -634,7 +634,7 @@ export const checkoutMachine = createMachine(
   },
   {
     actions: {
-      disconnect: assign((context) => {
+      disconnect: assign((_context) => {
         return DEFAULT_CONTEXT
       }),
       selectLock: assign((context, event) => {
