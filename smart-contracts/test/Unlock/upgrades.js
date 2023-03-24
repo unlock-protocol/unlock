@@ -12,7 +12,7 @@ const {
   cleanupPastContracts,
   deployUpgreadableContract,
   upgradeUpgreadableContract
-} = require('../helpers/versions')
+} = require('../helpers')
 
 const unlockVersions = getUnlockVersionNumbers()
 
@@ -97,7 +97,6 @@ contract('Unlock / upgrades', async (accounts) => {
         beforeEach(async () => {
           // Create Lock
           let lockTx
-
           if (versionNumber >= 11) {
             const args = [
               60 * 60 * 24, // expirationDuration 1 day
