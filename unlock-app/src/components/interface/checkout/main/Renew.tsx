@@ -61,7 +61,7 @@ export function Renew({
       fiatPricing,
     },
     lockNetwork,
-    config.networks[lockNetwork].baseCurrencySymbol,
+    config.networks[lockNetwork].nativeCurrency.symbol,
     lockName
   )
 

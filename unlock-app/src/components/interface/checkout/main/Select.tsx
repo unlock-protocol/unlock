@@ -55,7 +55,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
         const formattedData = getLockProps(
           lock,
           lock.network,
-          config.networks[lock.network].baseCurrencySymbol,
+          config.networks[lock.network].nativeCurrency.symbol,
           lock.name
         )
         const lockImageURL = `${config.services.storage.host}/lock/${lock?.address}/icon`

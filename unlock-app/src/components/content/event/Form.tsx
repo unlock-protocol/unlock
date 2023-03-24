@@ -56,7 +56,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network!].baseCurrencySymbol,
+      currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {
@@ -202,7 +202,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   setValue('lock.currencyContractAddress', null)
                   setValue(
                     'currencySymbol',
-                    networks[newValue].baseCurrencySymbol
+                    networks[newValue].nativeCurrency.symbol
                   )
                 }}
                 options={networkOptions}
