@@ -728,4 +728,16 @@ interface IPublicLock {
     uint _tokenId,
     address _referrer
   ) external;
+
+  /**
+   * @dev helper to check if a key is currently renewable 
+   * it will revert if the pricing or duration of the lock have been modified 
+   * unfavorably since the key was bought(price increase or duration decrease).
+   * It will also revert if a lock is not renewable or if the key is not ready for renewal yet 
+   * (at least 90% expired).
+   * @param tokenId the id of the token to check
+   * @param referrer the address where to send the referrer fee
+   * @return true if the terms has changed
+   */
+  function isRenewable(uint256 tokenId, address referrer) external view returns (bool);
 }
