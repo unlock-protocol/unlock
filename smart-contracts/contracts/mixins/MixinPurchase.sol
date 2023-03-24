@@ -204,14 +204,37 @@ contract MixinPurchase is
   /**
    * @dev helper to check if the pricing or duration of the lock have been modified 
    * since the key was bought
-   * @return true if the terms has changed
    */
-  function _tokenTermsChanged(uint _tokenId, address _referrer) internal view returns (bool) {
-    return (
-      _originalPrices[_tokenId] != purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
-      _originalDurations[_tokenId] != expirationDuration ||
+  function isRenewable(uint _tokenId, address _referrer) public view returns (bool) {
+    // check the lock
+    if (
+      _originalDurations[_tokenId] == type(uint).max ||
+      tokenAddress == address(0)
+    ) {
+      revert NON_RENEWABLE_LOCK();
+    }
+
+    // make sure key duration haven't decreased or price hasn't increase
+    if (
+      _originalPrices[_tokenId] < purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalDurations[_tokenId] > expirationDuration ||
       _originalTokens[_tokenId] != tokenAddress
-    );
+    ) {
+      revert LOCK_HAS_CHANGED();
+    }
+
+    // make sure key is ready for renewal (at least 90% expired)
+    // check if key is 90% expired  
+    uint deadline = 
+      (_keys[_tokenId].expirationTimestamp - expirationDuration) // origin
+      + 
+      (expirationDuration * 9000 / BASIS_POINTS_DEN); // 90% of duration
+
+    if (block.timestamp < deadline) {
+      revert NOT_READY_FOR_RENEWAL();
+    }
+
+    return true;
   }
 
   /**
@@ -406,24 +429,9 @@ contract MixinPurchase is
   ) public {
     _lockIsUpToDate();
     _isKey(_tokenId);
-
-    // check the lock
-    if (
-      _originalDurations[_tokenId] == type(uint).max ||
-      tokenAddress == address(0)
-    ) {
-      revert NON_RENEWABLE_LOCK();
-    }
-
-    // make sure key duration and pricing havent changed
-    if (_tokenTermsChanged(_tokenId, _referrer)) {
-      revert LOCK_HAS_CHANGED();
-    }
-
-    // make sure key is ready for renewal
-    if (isValidKey(_tokenId)) {
-      revert NOT_READY_FOR_RENEWAL();
-    }
+    
+    // check if key is ripe for renewal
+    isRenewable(_tokenId, _referrer);
 
     // extend key duration
     _extendKey(_tokenId, 0);
