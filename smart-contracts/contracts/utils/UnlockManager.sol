@@ -210,7 +210,7 @@ contract UnlockManager {
     address caller, // address of the contract on the origin chain
     uint32 origin, // 	Domain ID of the origin chain
     bytes memory callData
-  ) external {
+  ) external returns (bytes memory) {
 
     // The calls can only be sent by 
     // 1) the DAO on mainnet through the bridge

@@ -98,11 +98,11 @@ contract("Unlock / bridged governance", () => {
   });
 
   describe("change Unlock settings", () => {
-    let calldata
-    let args
+    let calldata, args, PublicLock
     before( async () => {
+      PublicLock = await ethers.getContractFactory('TestPublicLockUpgraded')
+
       // deploy template
-      const PublicLock = await ethers.getContractFactory('TestPublicLockUpgraded')
       const template = await PublicLock.deploy()
       args = [
         template.address,
@@ -135,9 +135,19 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
     })
     it('via multisig', async () => {
-      
+      const template = await PublicLock.deploy()
+      const args = [
+        template.address,
+        15
+      ]
+
+      // parse call
+      const { interface } = unlockDest
+      const unlockCallData =  interface.encodeFunctionData('addLockTemplate', args)
+      const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [1, unlockCallData])
+
       // make sure settings were ok before
-      assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
+      assert.equal(await unlockDest.publicLockImpls(args[1] + 1), ADDRESS_ZERO);
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the DAO > mainnet manager > bridge path
@@ -148,7 +158,6 @@ contract("Unlock / bridged governance", () => {
       // make sure things have worked correctly
       assert.equal(await unlockDest.publicLockVersions(args[0]), args[1]);
       assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
-
     })
 
     it('reverts is dispatch is not called by the DAO', async () => {
