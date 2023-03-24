@@ -2422,6 +2422,10 @@ paths:
     get:
       operationId: getLockSettings
       description: Get saved lock settings
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
       responses:
         200:
           description: Successfully get settings for lock
@@ -2458,31 +2462,30 @@ paths:
       security:
         - User: []
       description: Save lock settings
+
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+
       requestBody:
         content:
           application/json:
             schema:
-              required:
-                - sendEmail
               type: object
               properties:
                 sendEmail:
                   type: boolean
+
       responses:
         200:
           description: Successfully saved settings for lock
           content:
             application/json:
               schema:
-              required:
-                - sendEmail
-              type: object
-              properties:
-                sendEmail:
-                  type: boolean
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
 
         500:
           description: Invalid request
