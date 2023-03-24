@@ -1,6 +1,6 @@
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
@@ -10,7 +10,6 @@ import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import { Container } from '../../Container'
 import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
@@ -313,7 +312,7 @@ const NotManagerBanner = () => {
 }
 
 export const ManageLockPage = () => {
-  const { network: walletNetwork, changeNetwork, account: owner } = useAuth()
+  const { account: owner } = useAuth()
   const { query } = useRouter()
   const [loading, setLoading] = useState(false)
   const [network, setNetwork] = useState<string>(
@@ -326,28 +325,14 @@ export const ManageLockPage = () => {
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
-  // let's force to switch network based on the lockAddress
-  const switchToCurrentNetwork = async () => {
-    if (!lockNetwork) return
-    const differentNetwork = walletNetwork != parseInt(`${lockNetwork}`)
-
-    if (differentNetwork) {
-      await changeNetwork(parseInt(`${network}`))
-    }
-  }
-
   const withoutParams = !lockAddress && !lockNetwork
 
   const { isManager, isLoading: isLoadingLockManager } = useLockManager({
     lockAddress,
-    network: walletNetwork!,
+    network: lockNetwork!,
   })
 
   const showNotManagerBanner = !isLoadingLockManager && !isManager
-
-  useEffect(() => {
-    switchToCurrentNetwork()
-  }, [])
 
   const [filters, setFilters] = useState({
     query: '',
@@ -356,7 +341,7 @@ export const ManageLockPage = () => {
   })
   const [page, setPage] = useState(1)
 
-  if (!walletNetwork) {
+  if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
 
@@ -416,53 +401,48 @@ export const ManageLockPage = () => {
         network={parseInt(network!, 10)}
       />
       <div className="min-h-screen bg-ui-secondary-200 pb-60">
-        <Container>
-          <LockSelection />
-          {!withoutParams && (
-            <div className="pt-9">
-              <div className="flex flex-col gap-3 mb-7">
-                <TopActionBar
+        <LockSelection />
+        {!withoutParams && (
+          <div className="pt-9">
+            <div className="flex flex-col gap-3 mb-7">
+              <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
+              {showNotManagerBanner && <NotManagerBanner />}
+            </div>
+            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
+              <div className="lg:col-span-3">
+                <LockDetailCard
                   lockAddress={lockAddress}
                   network={lockNetwork!}
                 />
-                {showNotManagerBanner && <NotManagerBanner />}
               </div>
-              <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
-                <div className="lg:col-span-3">
-                  <LockDetailCard
-                    lockAddress={lockAddress}
-                    network={lockNetwork!}
-                  />
-                </div>
-                <div className="flex flex-col gap-6 lg:col-span-9">
-                  <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
-                  <ActionBar
-                    lockAddress={lockAddress}
-                    network={lockNetwork!}
-                    isOpen={airdropKeys}
-                    setIsOpen={setAirdropKeys}
-                  />
-                  <FilterBar
-                    filters={filters}
-                    setFilters={setFilters}
-                    setLoading={setLoading}
-                    setPage={setPage}
-                    page={page}
-                  />
-                  <Members
-                    lockAddress={lockAddress}
-                    network={lockNetwork!}
-                    filters={filters}
-                    loading={loading}
-                    setPage={setPage}
-                    page={page}
-                    onAirdropKeys={toggleAirdropKeys}
-                  />
-                </div>
+              <div className="flex flex-col gap-6 lg:col-span-9">
+                <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                <ActionBar
+                  lockAddress={lockAddress}
+                  network={lockNetwork!}
+                  isOpen={airdropKeys}
+                  setIsOpen={setAirdropKeys}
+                />
+                <FilterBar
+                  filters={filters}
+                  setFilters={setFilters}
+                  setLoading={setLoading}
+                  setPage={setPage}
+                  page={page}
+                />
+                <Members
+                  lockAddress={lockAddress}
+                  network={lockNetwork!}
+                  filters={filters}
+                  loading={loading}
+                  setPage={setPage}
+                  page={page}
+                  onAirdropKeys={toggleAirdropKeys}
+                />
               </div>
             </div>
-          )}
-        </Container>
+          </div>
+        )}
       </div>
     </>
   )

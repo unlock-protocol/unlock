@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
@@ -10,7 +10,8 @@ export const celo: NetworkConfig = {
   name: 'Celo',
   chain: 'celo',
   description:
-    'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
+    'Celo is the carbon-negative, mobile-first, EVM-compatible blockchain ecosystem leading a thriving new digital economy for all.',
+  url: 'https://celo.org',
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
@@ -50,6 +51,7 @@ export const celo: NetworkConfig = {
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
+  swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   wrappedNativeCurrency: {
     name: 'Celo native asset',
     symbol: 'CELO',
@@ -72,6 +74,15 @@ export const celo: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x80E085D7591C61153D876b5171dc25756a7A3254',
+      },
+    ],
+  },
 }
 
 export default celo

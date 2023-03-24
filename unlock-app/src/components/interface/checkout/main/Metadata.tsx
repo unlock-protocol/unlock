@@ -28,11 +28,11 @@ import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { Lock, MetadataInput } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
-
+import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -188,6 +188,7 @@ export const MetadataInputs = ({
                   }}
                   ref={ref}
                   onBlur={onBlur}
+                  autoComplete={label}
                 />
                 {description && !error && (
                   <p className="text-xs text-gray-600"> {description} </p>
@@ -208,23 +209,26 @@ export const MetadataInputs = ({
             )
           )
         })
-        .map((metadataInputItem) => (
-          <Input
-            key={metadataInputItem.name}
-            label={metadataInputItem.name}
-            defaultValue={metadataInputItem.defaultValue}
-            size="small"
-            disabled={disabled}
-            placeholder={metadataInputItem.placeholder}
-            type={metadataInputItem.type}
-            error={errors?.metadata?.[id]?.[metadataInputItem.name]?.message}
-            {...register(`metadata.${id}.${metadataInputItem.name}`, {
-              required:
-                metadataInputItem.required &&
-                `${metadataInputItem.name} is required`,
-            })}
-          />
-        ))}
+        .map((metadataInputItem) => {
+          const { name, defaultValue, placeholder, type, required } =
+            metadataInputItem ?? {}
+          return (
+            <Input
+              key={name}
+              label={name}
+              defaultValue={defaultValue}
+              size="small"
+              disabled={disabled}
+              placeholder={placeholder}
+              type={type}
+              error={errors?.metadata?.[id]?.[name]?.message}
+              autoComplete={label}
+              {...register(`metadata.${id}.${name}`, {
+                required: required && `${name} is required`,
+              })}
+            />
+          )
+        })}
     </div>
   )
 }

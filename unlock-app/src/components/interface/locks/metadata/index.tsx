@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
@@ -19,7 +19,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker, PickerState } from '../../Picker'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 
@@ -47,13 +46,13 @@ export const Form = ({
     shouldUnregister: false,
   })
 
-  const {
-    formState: { errors },
-  } = methods
-
   const image = `${config.locksmithHost}/lock/${lockAddress}/icon${
     keyId ? `?id=${keyId}` : ''
   }`
+
+  const {
+    formState: { errors },
+  } = methods
 
   useEffect(() => {
     methods.reset()
@@ -113,57 +112,9 @@ export const Form = ({
   )
 }
 
-interface SwitchNetworkProps {
-  network: number
-  children: ReactNode
-}
-
-export const SwitchNetwork = ({
-  network = 1,
-  children,
-}: SwitchNetworkProps) => {
-  const { network: connectedNetwork, changeNetwork } = useAuth()
-  const [isNetworkSwitching, setIsNetworkSwitching] = useState(false)
-
-  const isIncorrectNetwork = network !== connectedNetwork
-
-  if (!isIncorrectNetwork) {
-    return <>{children}</>
-  }
-  const connectedNetworkName = config.networks?.[connectedNetwork!]?.name
-  const networkName = config.networks?.[network]?.name
-
-  return (
-    <div className="grid gap-6 p-6 border border-ui-secondary-600 rounded-xl">
-      <div className="space-y-1">
-        <h3 className="text-xl font-bold">
-          You are connected to the wrong network
-        </h3>
-        <p className="text-gray-600">
-          You are connected to the {connectedNetworkName} network. Please switch
-          to the {networkName} network to change token URI.
-        </p>
-      </div>
-      <Button
-        loading={isNetworkSwitching}
-        disabled={isNetworkSwitching}
-        onClick={async (event) => {
-          event.preventDefault()
-          setIsNetworkSwitching(true)
-          await changeNetwork(network)
-          setIsNetworkSwitching(false)
-        }}
-      >
-        Switch network to {networkName}
-      </Button>
-    </div>
-  )
-}
-
 export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
   const web3Service = useWeb3Service()
-  const walletService = useWalletService()
 
   const [selected, setSelected] = useState<PickerState>({
     lockAddress,
@@ -209,6 +160,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
         selected.lockAddress,
       ],
       mutationFn: async (baseTokenURI: string) => {
+        const walletService = await getWalletService(selected.network!)
         await walletService.setBaseTokenURI({
           lockAddress: selected.lockAddress!,
           baseTokenURI,
@@ -286,34 +238,32 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
       </div>
       {isLoading && <LoadingIcon />}
       {!isLoading && !isTokenURIEditable && isLockSelected && (
-        <SwitchNetwork network={selected.network!}>
-          <div className="grid gap-6 p-6 border border-red-300 bg-red-50 rounded-xl">
-            <div className="flex items-center gap-4">
-              <div className="hidden p-2 bg-red-200 rounded-full sm:block">
-                <ErrorIcon size={24} className="fill-red-900" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-xl font-bold text-red-900">
-                  Unexpected Base Token URI
-                </h3>
-                <p className="text-gray-600">
-                  You need to change your base token URI to be editable by the
-                  Unlock Dashboard.
-                </p>
-              </div>
+        <div className="grid gap-6 p-6 border border-red-300 bg-red-50 rounded-xl">
+          <div className="flex items-center gap-4">
+            <div className="hidden p-2 bg-red-200 rounded-full sm:block">
+              <ErrorIcon size={24} className="fill-red-900" />
             </div>
-            <Button
-              disabled={isUpdatingBaseTokenURI}
-              loading={isUpdatingBaseTokenURI}
-              onClick={async (event) => {
-                event.preventDefault()
-                await update(baseTokenURI)
-              }}
-            >
-              Change Base Token URI
-            </Button>
+            <div className="space-y-1">
+              <h3 className="text-xl font-bold text-red-900">
+                Unexpected Base Token URI
+              </h3>
+              <p className="text-gray-600">
+                You need to change your base token URI to be editable by the
+                Unlock Dashboard.
+              </p>
+            </div>
           </div>
-        </SwitchNetwork>
+          <Button
+            disabled={isUpdatingBaseTokenURI}
+            loading={isUpdatingBaseTokenURI}
+            onClick={async (event) => {
+              event.preventDefault()
+              await update(baseTokenURI)
+            }}
+          >
+            Change Base Token URI
+          </Button>
+        </div>
       )}
       {!isLoading && isTokenURIEditable && isLockSelected && (
         <Form

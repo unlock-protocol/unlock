@@ -17,9 +17,10 @@ import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
-
-import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
+import { SIWEProvider } from '~/hooks/useSIWE'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
+import { ConnectModal } from './connect'
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -88,9 +89,11 @@ export const Authenticate = ({
     connectProvider,
     disconnectProvider,
     isUnlockAccount,
-    changeNetwork,
     watchAsset,
     providerSend,
+    getWalletService,
+    connected,
+    displayAccount,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -118,8 +121,10 @@ export const Authenticate = ({
         authenticate,
         isUnlockAccount,
         deAuthenticate,
-        changeNetwork,
         watchAsset,
+        getWalletService,
+        connected,
+        displayAccount,
       }}
     >
       <WalletServiceContext.Provider value={walletService}>
@@ -131,7 +136,10 @@ export const Authenticate = ({
           encryptedPrivateKey={encryptedPrivateKey}
           authenticate={authenticate}
         >
-          {children}
+          <SIWEProvider>
+            {children}
+            <ConnectModal />
+          </SIWEProvider>
         </Providers>
       </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>
@@ -139,7 +147,7 @@ export const Authenticate = ({
 }
 
 Authenticate.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   unlockUserAccount: PropTypes.bool,
   requiredNetwork: PropTypes.string,
   optional: PropTypes.bool,

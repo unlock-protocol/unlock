@@ -14,21 +14,21 @@
   },
   "description": "Unlock's base JS ESLint config",
   "scripts": {
-    "test": "jest"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.47.1",
-    "@typescript-eslint/parser": "5.47.1",
-    "eslint": "8.31.0",
-    "eslint-config-next": "13.1.6",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-jest": "27.2.0",
+    "@typescript-eslint/eslint-plugin": "5.56.0",
+    "@typescript-eslint/parser": "5.56.0",
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.3",
+    "eslint-config-prettier": "8.8.0",
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-vitest": "0.0.54",
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "jest": "27.5.1"
+    "vitest": "0.29.7"
   }
 }

@@ -35,6 +35,7 @@ import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
+import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
 
 error Unlock__MANAGER_ONLY();   
@@ -46,7 +47,7 @@ error Unlock__MISSING_LOCK_TEMPLATE();
 
 // TODO: prefix errors
 error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
-error LockDoesntExist(address lockAddress);
+error LockDoesNotExist(address lockAddress);
 error InsufficientBalance();
 error UnauthorizedBalanceChange();
 error LockCallFailed();
@@ -113,6 +114,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(address => uint16) private _publicLockVersions;
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
+
+  // protocol fee
+  uint public protocolFee;
 
   // Events
   event NewLock(
@@ -314,6 +318,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @dev Upgrade a Lock template implementation
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
+   * @custom:oz-upgrades-unsafe-allow-reachable delegatecall
    */
 
   function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
@@ -340,7 +345,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
         lockAddress
-      );
+    );
+
     proxyAdmin.upgrade(proxy, impl);
 
     // let's upgrade the data schema
@@ -378,14 +384,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function networkBaseFee() external view returns (uint) {
     return block.basefee;
   }
-
+  
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
    * the current growth rate and the lock's discount token distribution rate
    * This function is invoked by a previously deployed lock only.
-   * TODO: actually implement
    */
   function recordKeyPurchase(
     uint _value,
@@ -425,7 +430,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       locks[msg.sender].totalSales += valueInETH;
 
       // Distribute UDT
-      if (_referrer != address(0)) {
+      // version 13 is the first version for which locks can be paying the fee. Prior versions should not distribute UDT if they don't "pay" the fee.
+      if (_referrer != address(0) && IPublicLock(msg.sender).publicLockVersion() <= 13) {
         IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
@@ -475,7 +481,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           if (tokensToDistribute > 0) {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
             uint devReward = (tokensToDistribute * 20) / 100;
-            
             
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
@@ -530,6 +535,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
     return 11;
+  }
+
+  /**
+   * Set the fee used by the protocol
+   * @param _protocolFee fee in basic point
+   */
+  function setProtocolFee(uint _protocolFee) external onlyOwner {
+    protocolFee = _protocolFee;
   }
 
   /**
@@ -642,6 +655,39 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return globalTokenSymbol;
   }
 
-  // required to receive ETH
+  // for doc, see IUnlock.sol
+  function postLockUpgrade() public {
+    // check if lock hasnot already been deployed here and version is correct
+    if (
+      locks[msg.sender].deployed == false
+      && 
+      IPublicLock(msg.sender).publicLockVersion() == 13 
+      && 
+      IPublicLock(msg.sender).unlockProtocol() != address(this)
+    ) {
+      IUnlock previousUnlock = IUnlock(
+        IPublicLock(msg.sender).unlockProtocol()
+      );
+
+      (
+        bool deployed, 
+        uint totalSales, 
+        uint yieldedDiscountTokens
+      ) = previousUnlock.locks(msg.sender);
+
+      // record lock from old Unlock in this one
+      if (deployed) {
+          locks[msg.sender] = LockBalances(
+            deployed, 
+            totalSales, 
+            yieldedDiscountTokens
+          );
+      } else {
+        revert LockDoesNotExist(msg.sender);
+      }
+    }
+  }
+
+  // required to withdraw WETH
   receive() external payable {}
 }

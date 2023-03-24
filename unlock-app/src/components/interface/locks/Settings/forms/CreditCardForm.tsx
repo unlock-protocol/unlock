@@ -3,13 +3,13 @@ import { Button, Badge } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import useAccount from '~/hooks/useAccount'
 import useLock from '~/hooks/useLock'
 import { useStorageService } from '~/utils/withStorageService'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
+import Link from 'next/link'
+import { useStripeConnect, useStripeDisconnect } from '~/hooks/useStripeConnect'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -45,17 +45,12 @@ export const CreditCardForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
-  const { account } = useAuth()
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const { isStripeConnected, getCreditCardPricing } = useLock(
     { address: lockAddress },
     network
-  )
-  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(
-    account!,
-    network!
   )
 
   const [hasRole, setHasRole] = useState(false)
@@ -68,33 +63,13 @@ export const CreditCardForm = ({
     return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
   }
 
-  const connectStripe = async (): Promise<any> => {
-    return await connectStripeToLock(
-      lockAddress,
-      network,
-      window.location.origin
-    )
-  }
-
-  const disconnectStipeMutation = useMutation(disconnectStripeFromLock, {
-    onSuccess: (res: any) => {
-      if (res.ok) {
-        ToastHelper.success('Stripe disconnected')
-      } else {
-        ToastHelper.error(`Can't disconnect Stripe, please try again`)
-      }
-    },
+  const disconnectStipeMutation = useStripeDisconnect({
+    lockAddress,
+    network,
   })
-
-  const connectStripeMutation = useMutation(connectStripe, {
-    onSuccess: (redirectUrl?: string) => {
-      if (!redirectUrl) {
-        return ToastHelper.error(
-          'We could not connect your lock to a Stripe account. Please try again later.'
-        )
-      }
-      window.location.href = redirectUrl
-    },
+  const connectStripeMutation = useStripeConnect({
+    lockAddress,
+    network,
   })
 
   const [
@@ -156,6 +131,7 @@ export const CreditCardForm = ({
     isLoadingPricing
 
   const grantKeyGrantorRole = async (): Promise<any> => {
+    const walletService = await getWalletService(network)
     return await walletService.addKeyGranter({
       lockAddress,
       keyGranter,
@@ -187,7 +163,33 @@ export const CreditCardForm = ({
         ) : (
           <SettingCardDetail
             title="Enable Contract to Accept Credit Card"
-            description="Please accept Unlock Protocol will be processing this for you. Service & credit card processing fee will apply on your member’s purchase."
+            description={
+              <div className="flex flex-col gap-2">
+                <span>
+                  {`Credit card processing is not part of the core protocol.
+                  Unlock Labs processes non-crypto payments via our Stripe
+                  integration and includes fees that are applied on top of your
+                  lock's key price.`}
+                </span>
+                <span>
+                  If you enable credit card payments for your lock, your members
+                  will usually be charged a higher amount than the amount for
+                  your lock. The Unlock Labs fee is 10%, which must be added to
+                  the Stripe fees and gas costs.
+                </span>
+                <span>
+                  For more details see{' '}
+                  <Link
+                    className="font-semibold text-brand-ui-primary"
+                    href="https://unlock-protocol.com/guides/enabling-credit-cards/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Enabling Credit Cards guide
+                  </Link>
+                </span>
+              </div>
+            }
           />
         )}
 
@@ -198,7 +200,20 @@ export const CreditCardForm = ({
                 variant="outlined-primary"
                 size="small"
                 className="w-full md:w-1/3"
-                onClick={() => connectStripeMutation.mutate()}
+                loading={connectStripeMutation.isLoading}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  connectStripeMutation.mutate(undefined, {
+                    onSuccess: (connect) => {
+                      if (connect?.url) {
+                        window.location.assign(connect.url)
+                      }
+                    },
+                    onError: () => {
+                      ToastHelper.error('Stripe connection failed')
+                    },
+                  })
+                }}
                 disabled={disabled}
               >
                 Connect
@@ -209,7 +224,7 @@ export const CreditCardForm = ({
                 variant="outlined-primary"
                 className="w-full md:w-1/3"
                 onClick={onGrantKeyRole}
-                disabled={grantKeyGrantorRoleMutation.isLoading || disabled}
+                loading={grantKeyGrantorRoleMutation.isLoading}
               >
                 Accept
               </Button>
@@ -242,12 +257,17 @@ export const CreditCardForm = ({
               variant="borderless"
               className="text-brand-ui-primary"
               disabled={disconnectStipeMutation.isLoading || disabled}
-              onClick={() =>
-                disconnectStipeMutation.mutate({
-                  lockAddress,
-                  network,
+              onClick={(event) => {
+                event.preventDefault()
+                disconnectStipeMutation.mutate(undefined, {
+                  onSuccess: () => {
+                    ToastHelper.success('Stripe disconnected')
+                  },
+                  onError: () => {
+                    ToastHelper.error('Stripe disconnection failed')
+                  },
                 })
-              }
+              }}
             >
               Disconnect Stripe
             </Button>

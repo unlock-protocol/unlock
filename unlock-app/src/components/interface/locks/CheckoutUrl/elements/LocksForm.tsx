@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import {
   MetadataInput,
-  MetadataInputSchema,
-  PaywallConfigLock,
-  PaywallConfigLockSchema,
-} from '~/unlockTypes'
+  PaywallLockConfig,
+  MetadataInputType,
+  PaywallLockConfigType,
+} from '@unlock-protocol/core'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
 import {
@@ -19,8 +19,8 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
 import { Picker } from '~/components/interface/Picker'
-
-const LockSchema = PaywallConfigLockSchema.omit({
+import type { z } from 'zod'
+const LockSchema = PaywallLockConfig.omit({
   network: true, // network will managed with a custom input with the lock address
 })
 
@@ -32,7 +32,7 @@ interface LockListItemProps {
   onEdit?: () => void
 }
 
-type LocksProps = Record<string, PaywallConfigLock>
+type LocksProps = Record<string, PaywallLockConfigType>
 
 interface LocksFormProps {
   onChange: (locks: LocksProps) => void
@@ -184,7 +184,7 @@ export const LocksForm = ({
     return (
       <div className="flex flex-col gap-4">
         {Object.entries(locks ?? {})?.map(
-          ([address, values]: [string, PaywallConfigLock]) => {
+          ([address, values]: [string, z.infer<typeof PaywallLockConfig>]) => {
             return (
               <LockListItem
                 key={address}
@@ -237,7 +237,7 @@ export const LocksForm = ({
     setAddMetadata(false)
   }
 
-  const onAddMetadata = (fields: MetadataInput) => {
+  const onAddMetadata = (fields: MetadataInputType) => {
     const lock = locks[lockAddress]
     const metadata = lock?.metadataInputs || []
 
@@ -338,6 +338,7 @@ export const LocksForm = ({
                     onChange={(state) => {
                       onChangeLock(state.lockAddress, state.network, state.name)
                     }}
+                    customOption={true}
                   />
                   <Button
                     className="w-full"
@@ -359,7 +360,7 @@ export const LocksForm = ({
               <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
                 Settings
               </h2>
-              <div className="flex whitespace-nowrap text-sm mb-5">
+              <div className="flex mb-5 text-sm whitespace-nowrap">
                 Address: <pre className="ml-3">{lockAddress}</pre>
               </div>
               <div className="flex flex-col gap-1">
@@ -410,9 +411,11 @@ export const LocksForm = ({
                   schema={LockSchema.omit({
                     metadataInputs: true,
                     minRecipients: true, // This option is confusing. Let's not add it by default.
-                    superfluid: true,
                     default: true,
                     recurringPayments: true, // Managed separately to get Unlimited recurring
+                    // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
+                    password: true,
+                    captcha: true,
                   })}
                   onChange={(fields: any) =>
                     onAddLock(lockAddress, network, undefined, fields)
@@ -452,7 +455,7 @@ export const LocksForm = ({
                   <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
                     <DynamicForm
                       name={'metadata'}
-                      schema={MetadataInputSchema.omit({
+                      schema={MetadataInput.omit({
                         defaultValue: true, // default value is not needed
                       })}
                       onChange={() => void 0}

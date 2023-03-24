@@ -10,7 +10,6 @@ import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import dynamic from 'next/dynamic'
 import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
@@ -20,11 +19,7 @@ import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-
-const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
-  ssr: false,
-})
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -39,7 +34,7 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
       {amount + ' '} {symbol.toUpperCase()}
-      <CryptoIcon name={symbol.toLowerCase()} size={18} />
+      <CryptoIcon symbol={symbol} />
     </div>
   )
 }
@@ -47,7 +42,7 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { paywallConfig, quantity, recipients } = state.context
+  const { quantity, recipients } = state.context
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
   const storageService = useStorageService()
@@ -110,33 +105,28 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
 
   const networkConfig = config.networks[lock.network]
-  const lockConfig = paywallConfig.locks[lock!.address]
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
     recipients[0]?.toLowerCase() === account?.toLowerCase()
 
-  const enableSuperfluid =
-    (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
-
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
   const enableCrypto = !isUnlockAccount || !!walletInfo?.isPayable
+
+  const forceClaim = lock.network === 42161
 
   const enableClaim =
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !walletInfo?.isPayable
+    (!walletInfo?.isPayable || forceClaim)
 
   const stepItems = useCheckoutSteps(checkoutService)
 
-  const allDisabled = [
-    enableCreditCard,
-    enableClaim,
-    enableCrypto,
-    enableSuperfluid,
-  ].every((item) => !item)
+  const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
+    (item) => !item
+  )
 
   const keyPrice = Number(parseFloat(lock.keyPrice)).toLocaleString()
   return (
@@ -170,8 +160,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()}){' '}
-                    {parseFloat(walletInfo?.balance).toFixed(6)}{' '}
+                    Your balance of {symbol.toUpperCase()} on{' '}
+                    {networkConfig.name}:{' ~'}
+                    {parseFloat(walletInfo?.balance).toFixed(3)}{' '}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -243,42 +234,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
-            {enableSuperfluid && (
-              <button
-                disabled={!walletInfo?.isPayable}
-                onClick={(event) => {
-                  event.preventDefault()
-                  send({
-                    type: 'SELECT_PAYMENT_METHOD',
-                    payment: {
-                      method: 'superfluid',
-                    },
-                  })
-                }}
-                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Stream payment via superfluid </h3>
-                  <AmountBadge amount={keyPrice} symbol={symbol} />
-                </div>
-                <div className="flex items-center justify-between w-full gap-2">
-                  <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()})
-                    <p className="w-20 ml-2 font-medium truncate">
-                      {walletInfo?.balance?.toString()}
-                    </p>
-                  </div>
-                  <RightArrowIcon
-                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
-                    size={20}
-                  />
-                </div>
-                <div className="inline-flex text-sm text-start">
-                  {!walletInfo?.isGasPayable &&
-                    `You don't have enough funds to pay for gas in ${networkConfig.nativeCurrency.symbol}`}
-                </div>
-              </button>
-            )}
+
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">

@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import type { OAuthConfig, PaywallConfig } from '~/unlockTypes'
+import type { OAuthConfig } from '~/unlockTypes'
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { ConfirmConnect } from './Confirm'
 import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
-import { CheckoutTransition, TopNavigation } from '../Shell'
+import { TopNavigation } from '../Shell'
 
 interface Props {
   paywallConfig?: PaywallConfig
@@ -74,14 +75,19 @@ export function Connect({
         return null
       }
     }
-  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
+  }, [
+    matched,
+    onClose,
+    connectService,
+    injectedProvider,
+    oauthConfig,
+    paywallConfig,
+  ])
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
-        <TopNavigation onClose={onClose} onBack={onBack} />
-        <Content />
-      </div>
-    </CheckoutTransition>
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
+      <TopNavigation onClose={onClose} onBack={onBack} />
+      <Content />
+    </div>
   )
 }

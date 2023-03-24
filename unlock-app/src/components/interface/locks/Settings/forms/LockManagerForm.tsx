@@ -1,12 +1,15 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input, AddressInput } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  AddressInput,
+  isAddressOrEns,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { addressMinify } from '~/utils/strings'
-import { useWalletService } from '~/utils/withWalletService'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
@@ -20,6 +23,7 @@ interface LockManagerCardProps {
   lockAddress: string
   manager: string
   hasMultipleManagers: boolean
+  network: number
 }
 
 interface RenounceModalFormProps {
@@ -137,14 +141,15 @@ const LockManagerCard = ({
   lockAddress,
   manager,
   hasMultipleManagers,
+  network,
 }: LockManagerCardProps) => {
-  const walletService = useWalletService()
   const [renounceModal, setRenounceModal] = useState(false)
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
 
   const isLoggedUser = account?.toLowerCase() === manager?.toLowerCase()
 
   const renounceLockManager = async () => {
+    const walletService = await getWalletService(network)
     return await walletService.renounceLockManager({
       lockAddress,
     })
@@ -156,8 +161,8 @@ const LockManagerCard = ({
     const renounceLockManagerPromise = renounceLockManagerMutation.mutateAsync()
     await ToastHelper.promise(renounceLockManagerPromise, {
       loading: `Removing Lock Manager status.`,
-      success: `Lock manager renounced for ${addressMinify(manager)}.`,
-      error: `Can't renounce Lock manager for ${addressMinify(manager)}`,
+      success: `Lock manager renounced for ${minifyAddress(manager)}.`,
+      error: `Can't renounce Lock manager for ${minifyAddress(manager)}`,
     })
   }
 
@@ -209,14 +214,14 @@ export const LockManagerForm = ({
   isManager,
   disabled,
 }: LockManagerFormProps) => {
-  const walletService = useWalletService()
-  const web3Service = useWeb3Service()
+  const localForm = useForm<{ manager: string }>()
 
-  const [managerAddress, setManagerAddress] = useState('')
+  const { handleSubmit, control, setValue } = localForm
+  const { getWalletService } = useAuth()
 
-  const localForm = useForm()
-
-  const { handleSubmit, reset, watch } = localForm
+  const { manager } = useWatch({
+    control,
+  })
 
   const getLock = async () => {
     const service = new SubgraphService()
@@ -233,7 +238,8 @@ export const LockManagerForm = ({
   }
 
   const addLockManager = async (address: string) => {
-    const managerAddress = addressMinify(address)
+    const managerAddress = minifyAddress(address)
+    const walletService = await getWalletService(network)
     const addManagerPromise = walletService.addLockManager({
       lockAddress,
       userAddress: address,
@@ -247,7 +253,7 @@ export const LockManagerForm = ({
 
   const addLockManagerMutation = useMutation(addLockManager, {
     onSuccess: () => {
-      reset()
+      setValue('manager', '')
     },
   })
 
@@ -264,28 +270,15 @@ export const LockManagerForm = ({
     }
   )
 
-  const getManagerAddress = async () => {
-    const managerValue = await watch('manager')
-    if (managerValue !== '' && managerValue !== undefined) {
-      setManagerAddress(managerValue)
-    } else setManagerAddress('')
-  }
-  getManagerAddress()
-
-  const onAddLockManager = async () => {
-    if (managerAddress !== '')
-      await addLockManagerMutation.mutateAsync(managerAddress)
+  const onAddLockManager = async ({ manager = '' }: any) => {
+    if (manager !== '') await addLockManagerMutation.mutateAsync(manager)
   }
 
   const managers = lockSubgraph?.lockManagers ?? []
 
   const noManagers = managers?.length === 0
 
-  const disableInput =
-    disabled ||
-    isLoading ||
-    addLockManagerMutation.isLoading ||
-    managerAddress === ''
+  const disableInput = disabled || isLoading || addLockManagerMutation.isLoading
 
   return (
     <div className="relative">
@@ -300,6 +293,7 @@ export const LockManagerForm = ({
             lockAddress={lockAddress}
             manager={manager}
             key={manager}
+            network={network}
             hasMultipleManagers={managers?.length > 1}
           />
         ))}
@@ -313,13 +307,28 @@ export const LockManagerForm = ({
           onSubmit={handleSubmit(onAddLockManager)}
         >
           <div className="flex flex-col gap-2">
-            <AddressInput
-              withIcon
+            <Controller
               name="manager"
-              label="Add manager, please enter the wallet address of theirs."
-              description="Enter a wallet address or an ens name"
-              web3Service={web3Service}
-              localForm={localForm}
+              control={control}
+              rules={{
+                required: true,
+                validate: isAddressOrEns,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      withIcon
+                      value={manager}
+                      label="Add manager, please enter the wallet address of theirs."
+                      description="Enter a wallet address or an ens name"
+                      onChange={(value: any) => {
+                        setValue('manager', value)
+                      }}
+                    />
+                  </>
+                )
+              }}
             />
           </div>
           <Button

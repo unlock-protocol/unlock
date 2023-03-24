@@ -12,6 +12,7 @@ import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
 import { useLockManager } from '~/hooks/useLockManager'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
+import { Detail } from '@unlock-protocol/ui'
 
 interface MemberCardProps {
   token: string
@@ -22,19 +23,6 @@ interface MemberCardProps {
   lockAddress: string
   network: number
   expirationDuration: string
-}
-
-interface DetailProps {
-  title: string
-  value: React.ReactNode
-}
-const CardDetail = ({ title, value }: DetailProps) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <span className="text-base text-gray-700">{title}</span>
-      {value && <span className="text-lg font-bold text-black">{value}</span>}
-    </div>
-  )
 }
 
 export const MemberCard = ({
@@ -87,6 +75,7 @@ export const MemberCard = ({
     return (
       <>
         <ExpireAndRefundModal
+          network={network}
           isOpen={expireAndRefundOpen}
           setIsOpen={setExpireAndRefundOpen}
           lockAddress={lockAddress}
@@ -104,59 +93,70 @@ export const MemberCard = ({
               lockAddress,
               tokenId,
               expiration,
+              network,
             }!
           }
         />
         <div className="grid justify-between grid-cols-3 gap-4 md:grid-cols-7 md:gap-0">
-          <div className="col-span-1 grow">
-            <CardDetail title="Token ID" value={token} />
-          </div>
-          <div className="flex self-start col-span-2 gap-2">
-            <CardDetail title="Owner" value={resolvedAddress} />
-            <div className="mt-auto">
-              <Button
-                variant="borderless"
-                onClick={setCopied}
-                aria-label="copy"
-              >
-                <CopyIcon size={20} />
-              </Button>
+          <Detail
+            className="col-span-3 md:col-span-1 grow"
+            label="Token ID"
+            valueSize="medium"
+          >
+            {token}
+          </Detail>
+          <Detail
+            className="col-span-3 md:col-span-2"
+            label="Owner"
+            valueSize="medium"
+          >
+            <div className="flex self-start gap-2">
+              <div>{resolvedAddress}</div>
+              <div className="mt-auto">
+                <Button
+                  variant="borderless"
+                  onClick={setCopied}
+                  aria-label="copy"
+                >
+                  <CopyIcon size={20} />
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="col-span-2">
-            <CardDetail
-              title="Expiration"
-              value={expirationAsDate(expiration)}
-            />
-          </div>
+          </Detail>
+          <Detail
+            className="col-span-3 md:col-span-2"
+            label="Expiration"
+            valueSize="medium"
+          >
+            {expirationAsDate(expiration)}
+          </Detail>
 
           {isManager && (
-            <div className="col-span-3 mx-auto md:mx-0 md:ml-auto md:col-span-2">
-              <div className="flex gap-3">
-                {!refundDisabled && (
-                  <Button
-                    size="small"
-                    variant="outlined-primary"
-                    disabled={refundDisabled}
-                    aria-label="refund"
-                    onClick={() => {
-                      if (refundDisabled) return
-                      setExpireAndRefundOpen(true)
-                    }}
-                  >
-                    Refund
-                  </Button>
-                )}
-                {canExtendKey && (
-                  <Button
-                    variant="outlined-primary"
-                    size="small"
-                    onClick={() => setExtendKeysOpen(true)}
-                  >
-                    Extend
-                  </Button>
-                )}
-              </div>
+            <div className="w-full col-span-3 gap-3 mx-auto md:mx-0 md:ml-auto md:col-span-2 md:w-auto">
+              {!refundDisabled && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  disabled={refundDisabled}
+                  aria-label="refund"
+                  onClick={() => {
+                    if (refundDisabled) return
+                    setExpireAndRefundOpen(true)
+                  }}
+                >
+                  Refund
+                </Button>
+              )}
+              {canExtendKey && (
+                <Button
+                  variant="outlined-primary"
+                  size="small"
+                  onClick={() => setExtendKeysOpen(true)}
+                  className="mt-1"
+                >
+                  Extend
+                </Button>
+              )}
             </div>
           )}
         </div>

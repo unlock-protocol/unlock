@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
-import { PaywallConfig } from '../unlockTypes'
-
+import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 export interface UserInfo {
   address?: string
   signedMessage?: string

@@ -1,6 +1,5 @@
-import { Disclosure, Drawer } from '@unlock-protocol/ui'
+import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
 import React, { ReactNode } from 'react'
-import { useWalletService } from '~/utils/withWalletService'
 import { useQuery } from '@tanstack/react-query'
 import { Property } from '../locks/metadata/custom/AddProperty'
 import { Level } from '../locks/metadata/custom/AddLevel'
@@ -27,7 +26,8 @@ import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
-import { getEventDate } from '~/components/content/event/utils'
+import { getEventDate, getEventEndDate } from '~/components/content/event/utils'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 dayjs.extend(relative)
 dayjs.extend(duration)
@@ -101,8 +101,8 @@ export const KeyInfo = ({
   expiration,
   imageURL,
 }: KeyInfoProps) => {
-  const walletService = useWalletService()
-  const provider = walletService.providerForNetwork(network)
+  const web3Service = useWeb3Service()
+  const provider = web3Service.providerForNetwork(network)
   const config = useConfig()
   const isERC20 =
     lock.tokenAddress &&
@@ -194,6 +194,11 @@ export const KeyInfo = ({
 
   const isTicketInfoNotAvailable = Object.keys(ticket || {}).length === 0
 
+  const starDate = getEventDate(ticket)
+  const endDate = getEventEndDate(ticket)
+
+  const isSameDay = dayjs(starDate).isSame(endDate, 'day')
+
   return (
     <div className="grid gap-6">
       <header className="flex flex-col items-center w-full gap-6">
@@ -245,15 +250,49 @@ export const KeyInfo = ({
         <div>
           <h3 className="text-lg font-bold"> Event Information </h3>
           <div className="divide-y divide-brand-dark">
-            {!!ticket?.event_start_date && (
-              <KeyItem label="Event Date">
-                {getEventDate(ticket)?.toLocaleDateString()}
+            {starDate && (
+              <KeyItem label={isSameDay ? 'Event Date' : 'Event Start Date'}>
+                {starDate?.toLocaleDateString()}
+              </KeyItem>
+            )}
+            {endDate && !isSameDay && (
+              <KeyItem label="Event End Date">
+                {endDate?.toLocaleDateString()}
               </KeyItem>
             )}
             {ticket?.event_start_date && (
-              <KeyItem label="Event Time">
-                {getEventDate(ticket)?.toLocaleTimeString()}
-              </KeyItem>
+              <Tooltip
+                delay={0}
+                label={ticket.event_timezone}
+                tip={ticket.event_timezone}
+                side="bottom"
+              >
+                <KeyItem label={isSameDay ? 'Event Time' : 'Event Start Time'}>
+                  <div className="flex gap-1">
+                    <span>
+                      {starDate?.toLocaleTimeString(
+                        navigator.language || 'en-US',
+                        {
+                          timeZone: ticket.event_timezone,
+                        }
+                      )}
+                    </span>
+                    {isSameDay && (
+                      <>
+                        <span>to</span>
+                        <span>
+                          {endDate?.toLocaleTimeString(
+                            navigator.language || 'en-US',
+                            {
+                              timeZone: ticket.event_timezone,
+                            }
+                          )}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </KeyItem>
+              </Tooltip>
             )}
             {ticket?.event_address && (
               <KeyItem label="Event Address">{ticket.event_address}</KeyItem>

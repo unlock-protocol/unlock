@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
+  featured: true,
   id: 1,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   provider: 'https://rpc.unlock-protocol.com/1',
@@ -28,6 +29,7 @@ export const mainnet: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) => `https://opensea.io/assets/${lockAddress}`,
   },
   erc20: {
     symbol: 'DAI',
@@ -43,7 +45,9 @@ export const mainnet: NetworkConfig = {
     coingecko: 'ethereum',
   },
   startBlock: 7120795,
-  description: 'The most popular network',
+  description:
+    'The original and most secure EVM network. Gas fees are expensive on this network.',
+  url: 'https://ethereum.org/en/',
   isTestNetwork: false,
   maxFreeClaimCost: 1,
   teamMultisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
@@ -56,6 +60,7 @@ export const mainnet: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
   },
+  swapPurchaser: '0x7039d2BB4CfC5f5DA49E6b4b9c40400bccb0d1E8',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -106,6 +111,20 @@ export const mainnet: NetworkConfig = {
       decimals: 18,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.PASSWORD,
+        name: 'Password required',
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x0959482CbFB3c3C85ECd7bf690a0cde808eE8471',
+      },
+    ],
+  },
 }
 
 export default mainnet

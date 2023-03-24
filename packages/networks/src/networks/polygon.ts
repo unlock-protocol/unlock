@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const polygon: NetworkConfig = {
+  featured: true,
   publicProvider: 'https://polygon-rpc.com/',
   provider: 'https://rpc.unlock-protocol.com/137',
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
@@ -17,6 +18,7 @@ export const polygon: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
     networkName: 'matic',
   },
+  url: 'https://polygon.technology/',
   explorer: {
     name: 'Polygonscan',
     urls: {
@@ -30,6 +32,8 @@ export const polygon: NetworkConfig = {
   opensea: {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/matic/${lockAddress}/${tokenId}`,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/matic/${lockAddress}`,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -48,7 +52,8 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
-  description: 'Popular side chain network. Cheaper transaction cost.',
+  description:
+    "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   isTestNetwork: false,
   maxFreeClaimCost: 100,
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
@@ -60,6 +65,7 @@ export const polygon: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
   },
+  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
@@ -99,6 +105,20 @@ export const polygon: NetworkConfig = {
       decimals: 8,
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.PASSWORD,
+        name: 'Password required',
+        address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xA0863a0B58457A86c937e91533e3F6B8dA27cf4b',
+      },
+    ],
+  },
 }
 
 export default polygon

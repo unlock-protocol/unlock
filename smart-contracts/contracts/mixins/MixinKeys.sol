@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./MixinLockCore.sol";
 import "./MixinErrors.sol";
+import "../interfaces/IUnlock.sol";
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -154,12 +155,36 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   /**
    * Migrate data from the previous single owner => key mapping to
    * the new data structure w multiple tokens.
-   * No data migration needed for v10 > v11
    */
-  function migrate(bytes calldata) public virtual {
-    schemaVersion = publicLockVersion();
-  }
+  function migrate(bytes calldata /*_calldata*/) public virtual {
+    // make sure we have correct data version before migrating
+    require(
+      (
+        (schemaVersion == publicLockVersion() - 1)
+        ||
+        schemaVersion == 0
+      ),
+      'SCHEMA_VERSION_NOT_CORRECT'
+    );
 
+    // only for mainnet
+    if(block.chainid == 1) {
+
+      // TODO !
+      // Hardcoding mainnet Unlock address
+      address newUnlockAddress = 0x84d085898F6ae4ae8c4225f2601F29a10335F653;
+
+      // trigger migration from the new Unlock
+      IUnlock(newUnlockAddress).postLockUpgrade();
+
+      // update unlock ref in this lock
+      unlockProtocol = IUnlock(newUnlockAddress);
+      
+      // update data version
+      schemaVersion = publicLockVersion();
+    }
+  }
+  
   /**
    * Set the schema version to the latest
    * @notice only lock manager call call this
@@ -381,7 +406,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     if (_keyOwner == address(0)) {
       revert INVALID_ADDRESS();
     }
-
     return _balances[_keyOwner];
   }
 
@@ -410,6 +434,18 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   ) public view returns (bool) {
     bool isValid = _keys[_tokenId].expirationTimestamp >
       block.timestamp;
+
+    // use hook if it exists
+    if (address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.isValidKey(
+        address(this),
+        msg.sender,
+        _tokenId,
+        _keys[_tokenId].expirationTimestamp,
+        _ownerOf[_tokenId],
+        isValid
+      );
+    }
     return isValid;
   }
 
@@ -420,20 +456,21 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function getHasValidKey(
     address _keyOwner
   ) public view returns (bool isValid) {
-    // `balanceOf` returns only valid keys
-    isValid = balanceOf(_keyOwner) > 0;
-
-    // use hook if it exists
-    if (address(onValidKeyHook) != address(0)) {
-      isValid = onValidKeyHook.hasValidKey(
-        address(this),
-        _keyOwner,
-        0, // no timestamp needed (we use tokenId)
-        isValid
-      );
+    // check hook directly with address if user has no valid keys
+    if(balanceOf(_keyOwner) == 0) {
+      if (address(onValidKeyHook) != address(0)) {
+        return onValidKeyHook.isValidKey(
+          address(this),
+          msg.sender,
+          0, // no token specified
+          0, // no token specified
+          _keyOwner,
+          false
+        );
+      }
     }
-
-    return isValid;
+    // `balanceOf` returns only valid keys
+    return balanceOf(_keyOwner) >= 1;
   }
 
   /**
@@ -661,5 +698,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
-  uint256[996] private __safe_upgrade_gap;
+  // decrease 996 to 995 when adding PrevUnlock in v13
+  uint256[995] private __safe_upgrade_gap;
 }

@@ -68,7 +68,7 @@ export const SettingMisc = ({
             itself is called. Whether it'd be for password protected purchase,
             or other use case. You can also learn more from our`}{' '}
             <a
-              href=""
+              href="https://docs.unlock-protocol.com/core-protocol/public-lock/hooks"
               target="_blank"
               rel="noreferrer"
               className="font-bold text-brand-ui-primary"

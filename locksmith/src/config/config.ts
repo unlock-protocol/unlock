@@ -1,13 +1,18 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 
+const isProduction = ['prod'].includes(
+  process.env.NODE_ENV?.toLowerCase().trim() ?? ''
+)
+
 const stagingConfig = {
   storage: {
     publicHost: 'https://staging-storage.unlock-protocol.com',
   },
   unlockApp: 'https://staging-app.unlock-protocol.com',
   services: {
-    wedlocks: 'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+    wedlocks:
+      'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler',
     locksmith: 'https://staging-locksmith.unlock-protocol.com',
   },
 }
@@ -23,10 +28,10 @@ const prodConfig = {
   unlockApp: 'https://app.unlock-protocol.com',
 }
 
-const defaultConfig =
-  process.env.UNLOCK_ENV === 'prod' ? prodConfig : stagingConfig
+const defaultConfig = isProduction ? prodConfig : stagingConfig
 
 const config = {
+  isProduction,
   database: {
     logging: false,
     dialect: 'postgres',
@@ -46,10 +51,13 @@ const config = {
     endpoint: process.env.STORAGE_ENDPOINT,
     accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
     secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
+    bucket: process.env.STORAGE_BUCKET || 'images',
     publicHost:
       process.env.STORAGE_PUBLIC_HOST || defaultConfig.storage.publicHost,
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
+  logtailSourceToken: process.env.LOGTAIL,
+  sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
 }
 
 if (process.env.ON_HEROKU) {
@@ -78,9 +86,12 @@ if (process.env.DATABASE_URL) {
   config.database.host = process.env.DB_HOSTNAME
 }
 
-if (process.env.UNLOCK_ENV === 'prod' || process.env.UNLOCK_ENV === 'staging') {
+if (process.env.UNLOCK_ENV === 'prod') {
   config.services.wedlocks =
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
+} else if (process.env.UNLOCK_ENV === 'staging') {
+  config.services.wedlocks =
+    'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler'
 }
 
 export default config

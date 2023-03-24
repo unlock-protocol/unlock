@@ -6,6 +6,7 @@ import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
 import config from '../config/config'
+import logger from '../logger'
 
 const { Op } = Sequelize
 
@@ -59,12 +60,13 @@ export const saveStripeCustomerIdForAddress = async (
       StripeCustomerId: stripeCustomerId,
     })
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     return false
   }
 }
 
 /**
+ * @deprecated
  * Method which delets the stripe customer id for an address
  */
 export const deletePaymentDetailsForAddress = async (
@@ -133,6 +135,7 @@ export const disconnectStripe = async ({
 }
 
 /**
+ * @deprecated
  * Connects a Stripe account to a lock
  * Do we want to store this?
  */

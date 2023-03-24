@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-
+import { Request } from 'express'
 export function emailAddress(input: string): string {
   return input.toLocaleLowerCase()
 }
@@ -22,9 +22,32 @@ export const getValidNumber = (value: string | number): number | undefined => {
     : undefined
 }
 
+export const url = (value: string) => {
+  const trimmed = value.toLowerCase().trim()
+  return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed
+}
+
+export const getRequestURL = (req: Request) => {
+  const requestURL = new URL(
+    req.originalUrl,
+    `${req.protocol}://${req.get('host')}`
+  )
+  return requestURL
+}
+
+export const getURL = (text: string) => {
+  try {
+    return new URL(text)
+  } catch {
+    return
+  }
+}
+
 export default {
   emailAddress,
   ethereumAddress,
   toLowerCaseKeys,
   getValidNumber,
+  url,
+  getRequestURL,
 }

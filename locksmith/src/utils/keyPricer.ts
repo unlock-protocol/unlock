@@ -33,12 +33,15 @@ export default class KeyPricer {
   }
 
   async keyPriceUSD(lockAddress: string, network: number) {
+    // can we reduce load here?
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
       network,
       { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
-    let symbol = networks[network]?.nativeCurrency?.symbol
+    let symbol =
+      networks[network]?.nativeCurrency?.coinbase ||
+      networks[network]?.nativeCurrency?.symbol
     if (lock?.currencyContractAddress !== ZERO && lock.currencySymbol) {
       symbol = lock.currencySymbol
     }
@@ -86,10 +89,11 @@ export default class KeyPricer {
     network: number,
     quantity = 1
   ): Promise<ItemizedKeyPrice> {
-    // Here we need to get the conversion as well!
-    const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
+    const [usdKeyPrice, gasFee] = await Promise.all([
+      this.keyPriceUSD(lockAddress, network),
+      this.gasFee(network),
+    ])
     const usdKeyPricing = usdKeyPrice * quantity
-    const gasFee = await this.gasFee(network)
     let unlockServiceFee = gasFee
 
     //  Temporary : for some locks, Unlock labs does not take credit card fees (only gas)

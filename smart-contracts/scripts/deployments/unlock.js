@@ -53,7 +53,6 @@ async function main({ unlockVersion }) {
 
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
-    unsafeAllow: ['delegatecall']
   })
   await unlock.deployed()
 

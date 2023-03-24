@@ -38,7 +38,7 @@ export const Disclosure = ({
             disabled={disabled}
           >
             <div className="flex justify-between w-full">
-              <span className="text-xl font-bold text-brand-ui-primary">
+              <span className="text-xl font-bold capitalize text-brand-ui-primary">
                 {label}
               </span>
               <ArrowDownIcon

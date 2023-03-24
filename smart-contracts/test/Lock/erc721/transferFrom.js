@@ -31,7 +31,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     it('should abort when there is no key to transfer', async () => {
       await reverts(
         lock.transferFrom(keyOwners[0], accounts[9], 999),
-        'KEY_NOT_VALID'
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 

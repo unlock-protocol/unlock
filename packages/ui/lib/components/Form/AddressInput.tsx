@@ -1,14 +1,19 @@
-import { InputHTMLAttributes, ForwardedRef, ReactNode, useState } from 'react'
-import type { Size, SizeStyleProp } from '../../types'
+import {
+  InputHTMLAttributes,
+  ForwardedRef,
+  ReactNode,
+  useState,
+  useEffect,
+} from 'react'
+import type { Size } from '../../types'
 import { forwardRef } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { FieldLayout } from './FieldLayout'
-import { Icon } from '../Icon/Icon'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { minifyAddress } from '../../utils'
+import { isAddressOrEns, minifyAddress } from '../../utils'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-
+import { useMutation } from '@tanstack/react-query'
+import networks from '@unlock-protocol/networks'
+import { Input } from './Input'
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -19,22 +24,6 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
-  web3Service: Web3Service
-  localForm: any // todo: fix typing UseFormReturn<any, any>' is not assignable to type .UseFormReturn<any, any>'. Types of property 'setValue' are incompatible.
-  name: string
-}
-
-const SIZE_STYLES: SizeStyleProp = {
-  small: 'pl-2.5 py-1.5 text-sm',
-  medium: 'pl-4 py-2 text-base',
-  large: 'pl-4 py-2.5',
-}
-
-const STATE_STYLES = {
-  error:
-    'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary',
-  success:
-    'border-green-500 hover:border-green-500 focus:border-green-500 focus:ring-green-500',
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -50,7 +39,6 @@ const LoadingIcon = (props: IconBaseProps) => (
  * @param label - Label for the input
  * @param name - Name of the input
  * @param type - Type of the input
- * @param localForm - React Hook Form object
  * @returns Input component
  *
  */
@@ -59,119 +47,107 @@ export const AddressInput = forwardRef(
     const {
       size = 'medium',
       value,
+      defaultValue,
       className,
       description,
       label,
       withIcon = true,
-      isTruncated,
-      web3Service,
-      localForm,
-      name,
+      isTruncated = false, // address not truncated by default
+      onChange,
       ...inputProps
     } = props
 
-    if (!localForm) return null
-    const { register } = localForm
+    const web3Service = new Web3Service(networks)
 
-    const [addressType, setAddressType] = useState('')
-    const [resolvedAddress, setResolvedAddress] = useState('')
-    const [resolvedName, setResolvedName] = useState('')
-    const [loadingResolvedAddress, setLoading] = useState(false)
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
+    const [address, setAddress] = useState<string>(value as string)
 
-    const inputSizeStyle = SIZE_STYLES[size]
-    let inputStateStyles = ''
-
-    if (error) {
-      inputStateStyles = STATE_STYLES.error
-    } else if (success) {
-      inputStateStyles = STATE_STYLES.success
+    const resolveName = async (address: string) => {
+      if (address.length === 0) return
+      return await web3Service.resolveName(address)
     }
 
-    const inputClass = twMerge(
-      'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100',
-      inputSizeStyle,
-      inputStateStyles,
-      withIcon ? 'pl-10' : undefined
-    )
+    const onReset = () => {
+      setError('')
+      setSuccess('')
+    }
+
+    const resolveNameMutation = useMutation(resolveName, {
+      onMutate: () => {
+        onReset() // restore state when typing
+      },
+    })
 
     const handleResolver = async (address: string) => {
-      if (address.length) {
-        setLoading(true)
-        setError('')
-        setSuccess('')
-        setAddressType('')
-      }
-      const result = await web3Service.resolveName(address)
-      if (result && result.name !== null && result.type === 'address') {
-        setLoading(false)
-        setAddressType(result.type)
-        setSuccess(`It's a valid eth address`)
-        setResolvedName(result.name)
-        return result.address
-      } else if (result && result.address !== null && result.type === 'name') {
-        setLoading(false)
-        setAddressType(result.type)
-        setSuccess(`It's a valid ens name`)
-        setResolvedAddress(result.address)
-        return result.address
-      } else if (
-        (result && result.address === null) ||
-        (result && result.name === null && result.type === 'error')
-      ) {
-        setLoading(false)
-        setAddressType('error')
+      try {
+        const res: any = await resolveNameMutation.mutateAsync(address)
+        if (res) {
+          const isError = res?.type === 'error'
+
+          setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
+
+          if (res && (res?.type || '')?.length > 0) {
+            if (res.type === 'address') {
+              setSuccess(res.name)
+            }
+
+            if (res.type === 'name') {
+              setSuccess(res.address)
+            }
+          }
+          return res.address
+        }
+        return ''
+      } catch (err) {
+        onReset()
         setError(`It's not a valid ens name or address`)
+        return ''
       }
     }
+
+    useEffect(() => {
+      if (
+        (typeof defaultValue === 'string' && defaultValue.length === 0) ||
+        (typeof value === 'string' && value === '')
+      ) {
+        setAddress('')
+        onReset()
+      }
+    }, [defaultValue, value])
+
     return (
       <>
-        <FieldLayout
+        <Input
+          {...inputProps}
+          type="address"
+          value={address}
           label={label}
-          size={size}
-          success={success}
           error={error}
+          success={isTruncated ? minifyAddress(success) : success}
           description={description}
-        >
-          <div className="flex flex-col">
-            <div className="relative">
-              {withIcon && (
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  {loadingResolvedAddress ? (
-                    <div className="animate-spin">
-                      <Icon size={size} icon={LoadingIcon} />
-                    </div>
-                  ) : (
-                    <Icon size={size} icon={WalletIcon} />
-                  )}
-                </span>
-              )}
-              <input
-                {...inputProps}
-                id={label}
-                className={inputClass}
-                {...register(name, {
-                  setValueAs: (value: string) => handleResolver(value),
-                })}
-              />
-            </div>
-          </div>
-        </FieldLayout>
-        {!loadingResolvedAddress && (
-          <div>
-            {addressType === 'name' && resolvedAddress !== '' && (
-              <span className="text-gray-600">
-                {isTruncated ? minifyAddress(resolvedAddress) : resolvedAddress}
-              </span>
-            )}
-            {addressType === 'address' && resolvedName !== '' && (
-              <span className="text-gray-600">
-                {isTruncated ? minifyAddress(resolvedName) : resolvedName}
-              </span>
-            )}
-          </div>
-        )}
+          iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
+          icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
+          onChange={async (e) => {
+            const value: string = e.target.value
+            await resolveNameMutation.reset() // reset mutation
+            setAddress(value)
+
+            if (isAddressOrEns(value)) {
+              try {
+                const res = await handleResolver(value)
+                if (typeof onChange === 'function' && res) {
+                  onChange(res)
+                }
+              } catch (_err) {}
+            } else {
+              setError(`It's not a valid ens name or address`)
+              if (typeof onChange === 'function') {
+                onChange(value as any)
+              }
+            }
+          }}
+        />
       </>
     )
   }
