@@ -1,3 +1,4 @@
+import { SendEmailForm } from '../forms/SendEmailForm'
 import { EmailTemplatePreview } from './EmailTemplatePreview'
 import { SettingCard } from './SettingCard'
 
@@ -18,6 +19,18 @@ export const SettingEmail = ({
 }: SettingEmailProps) => {
   return (
     <div className="grid grid-cols-1 gap-6">
+      <SettingCard
+        label="Send email"
+        description={`Control if you want to  enable/disable emails sent for a lock.`}
+        isLoading={isLoading}
+      >
+        <SendEmailForm
+          disabled={!isManager}
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+        />
+      </SettingCard>
       <SettingCard
         label="Key Purchased Template"
         description={`Customize the content of the email sent when a new membership has been purchased. Emails are only sent if you selected the Collect Email option on the checkout.`}
