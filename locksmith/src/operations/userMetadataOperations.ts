@@ -4,7 +4,7 @@ import { UserTokenMetadata } from '../models'
 import { InferAttributes } from 'sequelize'
 import { isEmpty, merge } from 'lodash'
 
-// @deprecated
+// @deprecated Use `createOrUpdateUserMetadata` instead.
 export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
     {
