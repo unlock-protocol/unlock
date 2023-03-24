@@ -153,6 +153,8 @@ const getMembershipStatus = async ({
   let currency = ''
   let isAutoRenewable = false
   let isRenewableIfReApproved = false
+
+  // TODO: need new version of the lock contract to get the value easily
   const isRenewableIfRePurchased = false
 
   // get subscription and check for renews
