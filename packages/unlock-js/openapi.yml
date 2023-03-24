@@ -174,7 +174,16 @@ components:
     UserMetadata:
       type: object
       nullable: false
+      required:
+        - 'lockAddress'
+        - 'userAddress'
+        - 'metadata'
+        - 'network'
       properties:
+        network:
+          type: integer
+          nullable: false
+
         lockAddress:
           type: string
           nullable: false
@@ -1101,48 +1110,12 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}:
-    post:
-      operationId: createUserMetadata
-      description: Store user metadata for lock.
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/UserAddress'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                metadata:
-                  $ref: '#/components/schemas/UserMetadataInput'
-
-      responses:
-        201:
-          description: Return user metadata saved.
-          content:
-            application/json:
-              schema:
-                type: object
-                nullable: false
-                additionalProperties: true
-
-        400:
-          $ref: '#/components/responses/400.Invalid'
-
-        409:
-          $ref: '#/components/responses/409.Conflict'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
     put:
       operationId: updateUserMetadata
       security:
         - User: ['user', 'lockManager']
 
-      description: Update user metadata for lock.
+      description: Update or create user metadata for lock.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1183,15 +1156,13 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/metadata/{network}/users:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-    post:
-      operationId: createUsersMetadata
+  /v2/api/metadata/users:
+    put:
+      operationId: updateUsersMetadata
       security:
         - User: []
         - {}
-      description: Bulk endpoint for storing user metadata.
+      description: Update or create user metadata for lock.
       requestBody:
         required: true
         description: users array containing user metadata.
@@ -1219,6 +1190,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserMetadata'
+
+                  error:
+                    description: Array containing user addresses for which metadata was not created.
+                    type: array
+                    items:
+                      type: string
         400:
           $ref: '#/components/responses/400.Invalid'
 

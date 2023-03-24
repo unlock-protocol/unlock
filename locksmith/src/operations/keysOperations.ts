@@ -62,7 +62,7 @@ export const buildKeysWithMetadata = (
         )?.data ?? {}
 
       const metadata = {
-        ...userMetadata?.private,
+        ...userMetadata?.public,
         ...userMetadata?.protected,
         ...extraMetadata,
       }
