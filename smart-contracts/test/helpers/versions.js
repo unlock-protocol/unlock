@@ -6,7 +6,8 @@ const fs = require('fs-extra')
 const { abi : proxyAbi, bytecode: proxyBytecode } = require('./ABIs/TransparentUpgradeableProxy.json')
 const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./ABIs/ProxyAdmin.json')
 
-const { LATEST_UNLOCK_VERSION } = require('../helpers/constants')
+const LATEST_UNLOCK_VERSION = 12
+const LATEST_PUBLIC_LOCK_VERSION = 13
 
 // files path
 const CONTRACTS_PATH = path.resolve(
@@ -42,7 +43,8 @@ function getMatchingLockVersion(unlockVersion) {
   )
   // after v10, they start decoupling
   publicLockVersions[10] = 9
-  publicLockVersions[11] = 10
+  publicLockVersions[11] = 11
+  publicLockVersions[12] = 11
 
   return publicLockVersions[unlockVersion]
 }
@@ -162,6 +164,8 @@ async function cleanupPastContracts() {
 }
 
 module.exports = {
+  LATEST_UNLOCK_VERSION,
+  LATEST_PUBLIC_LOCK_VERSION,
   getContractAtVersion,
   getUnlockVersionNumbers,
   getMatchingLockVersion,
