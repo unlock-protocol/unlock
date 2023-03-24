@@ -6,6 +6,8 @@ import templates from '@unlock-protocol/email-templates'
 
 import { prepareAll } from './templates/prepare'
 
+console.log({ config })
+
 /**
  * Builds the template and params
  * @param {*} args
@@ -65,7 +67,6 @@ export const route = async (args) => {
       .concat(args.attachments, template.attachments)
       .filter((x) => !!x),
   }
-
   const transporter = nodemailer.createTransport(config)
   return transporter.sendMail(email)
 }

@@ -53,7 +53,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
     receipt?.payer?.toLocaleLowerCase() === userAddress?.toLocaleLowerCase()
 
   if (!isLockManager && !isPayer) {
-    return res.status(401).send({
+    return res.status(403).send({
       message: `${userAddress} is not a lock manager or payer of this transaction`,
     })
   }

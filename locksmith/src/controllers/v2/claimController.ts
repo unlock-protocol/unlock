@@ -8,6 +8,10 @@ const ClaimBody = z.object({
   data: z.string().optional(),
 })
 
+export const LOCKS_WITH_DISABLED_CLAIMS = [
+  '0xafcfff71f3e717fcdb0b6a1bf20026304fd41bee',
+]
+
 export const claim: RequestHandler = async (request, response) => {
   const { data } = await ClaimBody.parseAsync(request.body)
   const network = Number(request.params.network)
@@ -18,8 +22,14 @@ export const claim: RequestHandler = async (request, response) => {
   const pricing = await pricer.generate(lockAddress, network)
   const fulfillmentDispatcher = new Dispatcher()
 
+  if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
+    return response.status(400).send({
+      message: 'Claim disabled for this lock',
+    })
+  }
+
   if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-    return response.status(500).send({
+    return response.status(400).send({
       message: 'Lock is not free!',
     })
   }

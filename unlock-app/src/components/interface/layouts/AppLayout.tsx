@@ -1,16 +1,16 @@
 import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
 import Loading from '../Loading'
-import { Button, Footer, Modal } from '@unlock-protocol/ui'
-import { AppHeader } from '../AppHeader'
+import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import React from 'react'
+import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
+import { addressMinify } from '~/utils/strings'
+import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface DashboardLayoutProps {
   title?: string
@@ -22,11 +22,7 @@ interface DashboardLayoutProps {
 }
 
 export const WalletNotConnected = () => {
-  const [loginUrl, setLoginUrl] = useState<string>('')
-  useEffect(() => {
-    setLoginUrl(`/login?redirect=${encodeURIComponent(window.location.href)}`)
-  }, [])
-
+  const { openConnectModal } = useConnectModal()
   return (
     <ImageBar
       src="/images/illustrations/wallet-not-connected.svg"
@@ -34,11 +30,15 @@ export const WalletNotConnected = () => {
         <>
           <span>
             Wallet is not connected yet.{' '}
-            <Link href={loginUrl}>
-              <span className="cursor-pointer text-brand-ui-primary">
-                Connect it now
-              </span>
-            </Link>
+            <button
+              onClick={(event) => {
+                event.preventDefault()
+                openConnectModal()
+              }}
+              className="cursor-pointer text-brand-ui-primary"
+            >
+              Connect it now
+            </button>
           </span>
         </>
       }
@@ -145,77 +145,142 @@ export const AppLayout = ({
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
-
+  const { openConnectModal } = useConnectModal()
   if (termsLoading) {
     return <Loading />
   }
 
   const showLogin = authRequired && !account
 
+  const MENU = {
+    extraClass: {
+      mobile: 'bg-ui-secondary-200 px-6',
+    },
+    showSocialIcons: false,
+    logo: { url: '/locks', src: '/images/svg/unlock-logo.svg' },
+    menuSections: showLinks
+      ? [
+          {
+            title: 'Locks',
+            url: '/locks',
+          },
+          {
+            title: 'Keys',
+            url: '/keychain',
+          },
+          {
+            title: 'Settings',
+            url: '/settings',
+          },
+        ]
+      : [],
+  }
+
   return (
-    <div className="bg-ui-secondary-200">
-      <Modal
-        isOpen={!termsAccepted}
-        setIsOpen={() => {
-          saveTermsAccepted()
-        }}
-      >
-        <div className="flex flex-col justify-center gap-4 bg-white">
-          <span className="text-base">
-            No account required{' '}
-            <span role="img" aria-label="stars">
-              ✨
+    <>
+      <div className="bg-ui-secondary-200">
+        <Modal
+          isOpen={!termsAccepted}
+          setIsOpen={() => {
+            saveTermsAccepted()
+          }}
+        >
+          <div className="flex flex-col justify-center gap-4 bg-white">
+            <span className="text-base">
+              No account required{' '}
+              <span role="img" aria-label="stars">
+                ✨
+              </span>
+              , but you need to agree to our{' '}
+              <a
+                className="outline-none text-brand-ui-primary"
+                href={`${config.unlockStaticUrl}/terms`}
+              >
+                Terms of Service
+              </a>{' '}
+              and{' '}
+              <a
+                className="outline-none text-brand-ui-primary"
+                href={`${config.unlockStaticUrl}/privacy`}
+              >
+                Privacy Policy
+              </a>
+              .
             </span>
-            , but you need to agree to our{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/terms`}
-            >
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/privacy`}
-            >
-              Privacy Policy
-            </a>
-            .
-          </span>
-          <Button onClick={saveTermsAccepted}>I agree</Button>
-        </div>
-      </Modal>
-      <div className="w-full">
-        {showHeader && <AppHeader showLinks={showLinks} />}
-        <div className="min-w-full min-h-screen">
-          <div className="pt-8">
-            <Container>
-              <div className="flex flex-col gap-10">
-                {(title || description) && (
-                  <div className="flex flex-col gap-4">
-                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
-                    {description && (
-                      <div className="w-full text-base text-gray-700">
-                        {description}
+            <Button onClick={saveTermsAccepted}>I agree</Button>
+          </div>
+        </Modal>
+        <div className="w-full">
+          {showHeader && (
+            <div className="px-4 mx-auto lg:container">
+              <HeaderNav
+                {...MENU}
+                actions={[
+                  {
+                    content: account ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(event) => {
+                            event.preventDefault()
+                            openConnectModal()
+                          }}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-brand-ui-primary">
+                              {addressMinify(account)}
+                            </span>
+                            <DisconnectIcon
+                              className="text-brand-ui-primary"
+                              size={20}
+                            />
+                          </div>
+                        </button>
                       </div>
-                    )}
-                  </div>
-                )}
-                {showLogin ? (
-                  <div className="flex justify-center">
-                    <WalletNotConnected />
-                  </div>
-                ) : (
-                  <div>{children}</div>
-                )}
-              </div>
-            </Container>
+                    ) : (
+                      <Button
+                        onClick={(event) => {
+                          event.preventDefault()
+                          openConnectModal()
+                        }}
+                      >
+                        Connect
+                      </Button>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          )}
+          <div className="min-w-full min-h-screen">
+            <div className="pt-8">
+              <Container>
+                <div className="flex flex-col gap-10">
+                  {(title || description) && (
+                    <div className="flex flex-col gap-4">
+                      {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                      {description && (
+                        <div className="w-full text-base text-gray-700">
+                          {description}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {showLogin ? (
+                    <div className="flex justify-center">
+                      <WalletNotConnected />
+                    </div>
+                  ) : (
+                    <div>{children}</div>
+                  )}
+                </div>
+              </Container>
+            </div>
+          </div>
+          <div className="px-4 mx-auto lg:container">
+            <Footer {...FOOTER} />
           </div>
         </div>
-        <div className="px-4 mx-auto lg:container">
-          <Footer {...FOOTER} />
-        </div>
       </div>
-    </div>
+    </>
   )
 }

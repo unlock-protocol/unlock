@@ -1,20 +1,15 @@
 import React, { useContext } from 'react'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import Key from './Key'
-import LoginPrompt from '../LoginPrompt'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useKeys } from '~/hooks/useKeys'
 import { Placeholder } from '@unlock-protocol/ui'
 
 export const KeyDetails = () => {
-  const { account, network } = useContext(AuthenticationContext)
+  const { account } = useContext(AuthenticationContext)
   const { keys, isKeysLoading } = useKeys({
     owner: account,
   })
-
-  if (!account || !network) {
-    return <LoginPrompt />
-  }
 
   if (!keys?.length && !isKeysLoading) {
     return (
@@ -26,7 +21,7 @@ export const KeyDetails = () => {
   }
 
   return (
-    <div className="grid gap-6 pb-16 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-6 pb-16 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {isKeysLoading &&
         Array.from({ length: 10 }).map((_, index) => (
           <Placeholder.Root
@@ -45,7 +40,7 @@ export const KeyDetails = () => {
           <Key
             key={item.id}
             ownedKey={item}
-            account={account}
+            account={account!}
             network={item.network}
           />
         ))}

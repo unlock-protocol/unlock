@@ -17,7 +17,6 @@ import {
   RiCheckboxCircleFill as CheckIcon,
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
-  RiExternalLinkLine as ExternalLinkIcon,
   RiRepeatFill as RecurringIcon,
   RiCheckboxCircleFill as CheckMarkIcon,
 } from 'react-icons/ri'
@@ -27,6 +26,8 @@ import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { minifyAddress } from '@unlock-protocol/ui'
+import { ViewContract } from '../ViewContract'
+import { useCheckoutHook } from './useCheckoutHook'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -78,17 +79,10 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   >
                     {lock.name}
                   </RadioGroup.Label>
-                  <a
-                    href={config.networks[lock.network].explorer.urls.address(
-                      lock.address
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm cursor-pointer text-brand-ui-primary hover:opacity-75"
-                  >
-                    View Contract
-                    <Icon icon={ExternalLinkIcon} size="small" />
-                  </a>
+                  <ViewContract
+                    network={lock.network}
+                    lockAddress={lock.address}
+                  />
                 </div>
 
                 <Pricing
@@ -283,6 +277,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
+  const { isLoading: isLoadingHook, lockHookMapping } =
+    useCheckoutHook(checkoutService)
 
   const isDisabled =
     isLocksLoading ||
@@ -290,7 +286,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
-    isNotExpectedAddress
+    isNotExpectedAddress ||
+    isLoadingHook
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -377,6 +374,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
+                const hookType =
+                  lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ??
+                  undefined
+
                 send({
                   type: 'SELECT_LOCK',
                   lock,
@@ -388,6 +389,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     ? false
                     : !!membership?.expired,
                   recipients: account ? [account] : [],
+                  hook: hookType,
                 })
               }}
             >

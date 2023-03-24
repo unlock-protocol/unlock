@@ -31,7 +31,7 @@ export const keyOwnerMiddleware: RequestHandler = async (req, res, next) => {
   const tokenOwner = await web3Service.ownerOf(lockAddress, keyId, network)
 
   if (tokenOwner !== userAddress) {
-    return res.status(401).send({
+    return res.status(403).send({
       message: `${userAddress} is not a the owner of ${keyId} from ${lockAddress} on ${network}`,
     })
   }

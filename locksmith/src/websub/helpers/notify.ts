@@ -1,6 +1,5 @@
 import pRetry, { AbortError } from 'p-retry'
 import crypto from 'crypto'
-import { AbortController } from 'node-abort-controller'
 import { setTimeout, clearTimeout } from 'timers'
 import { Op } from 'sequelize'
 import { Hook, HookEvent } from '../../models'

@@ -1,5 +1,6 @@
 import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
 import useClipboard from 'react-use-clipboard'
+import { isEthPassSupported, Platform } from '../../../services/ethpass'
 import {
   AvatarImage,
   Root as Avatar,
@@ -43,7 +44,10 @@ import {
 import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-import { useGetReceiptsPageUrl } from '~/hooks/receipts'
+import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
+import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
+import { isIOS } from 'react-device-detect'
+import Image from 'next/image'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -76,6 +80,8 @@ function Key({ ownedKey, account, network }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
+  const [showApplePassModal, setShowApplePassModal] = useState(false)
+  const [applePassUrl, setPassUrl] = useState<string>()
   const isKeyExpired = isExpired || expireAndRefunded
 
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
@@ -89,7 +95,7 @@ function Key({ ownedKey, account, network }: Props) {
     successDuration: 2000,
   })
 
-  const handleSignature: MouseEventHandler<HTMLButtonElement> = async (
+  const handleQRCodeSignature: MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
     event.preventDefault()
@@ -102,6 +108,7 @@ function Key({ ownedKey, account, network }: Props) {
       tokenId,
     })
     const walletService = await getWalletService()
+
     const signature = await walletService.signMessage(payload, 'personal_sign')
     setSignature({
       payload,
@@ -218,6 +225,11 @@ function Key({ ownedKey, account, network }: Props) {
         network={network}
         ownedKey={ownedKey}
       />
+      <ApplePassModal
+        isOpen={showApplePassModal}
+        setIsOpen={setShowApplePassModal}
+        applePassUrl={applePassUrl}
+      />
       <div className="flex items-center justify-between">
         <div>
           {isKeyExpired ? (
@@ -243,7 +255,7 @@ function Key({ ownedKey, account, network }: Props) {
             aria-label="QR Code"
             className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
             type="button"
-            onClick={handleSignature}
+            onClick={handleQRCodeSignature}
           >
             <QrCodeIcon size={18} />
           </button>
@@ -300,10 +312,71 @@ function Key({ ownedKey, account, network }: Props) {
                         onClick={addToWallet}
                       >
                         <WalletIcon />
-                        Add to my wallet
+                        Add to my crypto wallet
                       </MenuButton>
                     )}
                   </Menu.Item>
+                  {isEthPassSupported(network) && (
+                    <>
+                      <Menu.Item>
+                        {({ active, disabled }) => (
+                          <AddToDeviceWallet
+                            platform={Platform.GOOGLE}
+                            disabled={disabled}
+                            active={active}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            name={metadata.name}
+                            handlePassUrl={(url: string) => {
+                              window.location.assign(url)
+                            }}
+                          >
+                            <Image
+                              width="16"
+                              height="16"
+                              alt="Google Wallet"
+                              src={`/images/illustrations/google-wallet.svg`}
+                            />
+                            Add to my Google Wallet
+                          </AddToDeviceWallet>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active, disabled }) => (
+                          <AddToDeviceWallet
+                            platform={Platform.APPLE}
+                            disabled={disabled}
+                            active={active}
+                            as={MenuButton}
+                            network={network}
+                            lockAddress={lock.address}
+                            tokenId={tokenId}
+                            name={metadata.name}
+                            handlePassUrl={(url: string) => {
+                              if (isIOS) {
+                                // Download
+                                window.location.assign(url)
+                              } else if (setPassUrl) {
+                                // Show the modal
+                                setPassUrl(url)
+                                setShowApplePassModal(true)
+                              }
+                            }}
+                          >
+                            <Image
+                              width="16"
+                              height="16"
+                              alt="Apple Wallet"
+                              src={`/images/illustrations/apple-wallet.svg`}
+                            />
+                            Add to my Apple Wallet
+                          </AddToDeviceWallet>
+                        )}
+                      </Menu.Item>
+                    </>
+                  )}
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton

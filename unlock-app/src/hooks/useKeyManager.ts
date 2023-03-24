@@ -13,6 +13,7 @@ interface Options {
   enabled?: boolean
 }
 
+// todo: remove? not used anywhere
 export const useTransferPossible = ({
   transferObject,
   transferSignature,
@@ -30,13 +31,17 @@ export const useTransferPossible = ({
     ['isTransferPossible', transferObject, transferSignature],
     async () => {
       const walletService = await getWalletService(network)
+      const signer = walletService.signer
+      if (!signer) {
+        return
+      }
       await keyManager.isTransferPossible({
         network,
         params: {
           ...transferObject,
           transferSignature,
         },
-        signer: walletService.signer,
+        signer,
       })
       return true
     },

@@ -9,18 +9,31 @@ import logger from '../logger'
 import { GAS_COST } from '../utils/keyPricer'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
+import executeAndRetry from './retries'
 
 interface KeyToGrant {
   recipient: string
   manager?: string
   expiration?: number
 }
+
 export default class Dispatcher {
+  /**
+   * Helper function to return a provider for a network id
+   * @param network
+   * @returns
+   */
   getProviderForNetwork(network: number) {
     return new ethers.providers.JsonRpcProvider(
       networks[network].publicProvider
     )
   }
+
+  /**
+   * Helper function that yields a provider and connected wallet based on the config
+   * @param network
+   * @returns
+   */
   async getPurchaser(network: number) {
     const provider = this.getProviderForNetwork(network)
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
@@ -30,12 +43,15 @@ export default class Dispatcher {
     }
   }
 
+  /**
+   * Return the purchaser's balances for each network
+   * @returns
+   */
   async balances() {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const provider = this.getProviderForNetwork(network.id)
-          const wallet = new ethers.Wallet(config.purchaserCredentials)
+          const { wallet, provider } = await this.getPurchaser(network.id)
           const balance = await provider.getBalance(wallet.address)
           return [
             network.id,
@@ -56,80 +72,13 @@ export default class Dispatcher {
     return Object.fromEntries(entries)
   }
 
-  async grantKeyExtension(
-    lockAddress: string,
-    keyId: number,
-    network: number,
-    callback: (error: any, hash: string | null) => Promise<void>
-  ) {
-    const walletService = new WalletService(networks)
-    const { wallet, provider } = await this.getPurchaser(network)
-    await walletService.connect(provider, wallet)
-    await walletService.grantKeyExtension(
-      {
-        lockAddress,
-        tokenId: keyId.toString(),
-        duration: 0,
-      },
-      {} /** TransactionOptions */,
-      callback
-    )
-  }
-
   /**
-   * Called to grant key to user!
+   * Yields a boolean to indicate if the purchaser has enough funds to initiate a purchase
+   * @param network
+   * @returns
    */
-  async grantKeys(
-    lockAddress: string,
-    keys: KeyToGrant[],
-    network: number,
-    cb?: any
-  ) {
-    const walletService = new WalletService(networks)
-
-    const provider = this.getProviderForNetwork(network)
-
-    const walletWithProvider = new ethers.Wallet(
-      config.purchaserCredentials,
-      provider
-    )
-
-    const transactionOptions = await getGasSettings(network)
-
-    const teamMultisig = networks[network]?.teamMultisig
-
-    const recipients: string[] = []
-    const keyManagers: string[] = []
-    const expirations: string[] = []
-    keys.forEach(({ recipient, manager, expiration }) => {
-      recipients.push(recipient)
-      if (manager) {
-        keyManagers.push(manager)
-      } else if (teamMultisig) {
-        keyManagers.push(teamMultisig)
-      }
-      if (expiration) {
-        expirations.push(expiration.toString())
-      }
-    })
-
-    await walletService.connect(provider, walletWithProvider)
-    return walletService.grantKeys(
-      {
-        lockAddress,
-        recipients,
-        keyManagers,
-        expirations,
-      },
-      transactionOptions,
-      cb
-    )
-  }
-
-  async hasFundsForTransaction(network: number) {
-    const provider = this.getProviderForNetwork(network)
-
-    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+  async hasFundsForTransaction(network: number): Promise<boolean> {
+    const { wallet, provider } = await this.getPurchaser(network)
 
     const gasPrice = await provider.getGasPrice()
 
@@ -150,69 +99,6 @@ export default class Dispatcher {
     return true
   }
 
-  async purchaseKey(
-    options: {
-      lockAddress: string
-      owner: string
-      network: number
-      data?: string
-    },
-    cb?: any
-  ) {
-    const { network, lockAddress, owner, data } = options
-    const walletService = new WalletService(networks)
-
-    const provider = this.getProviderForNetwork(network)
-
-    const walletWithProvider = new ethers.Wallet(
-      config.purchaserCredentials,
-      provider
-    )
-    await walletService.connect(provider, walletWithProvider)
-
-    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-
-    return await walletService.purchaseKey(
-      {
-        lockAddress,
-        owner,
-        data,
-      },
-      { maxFeePerGas, maxPriorityFeePerGas },
-      cb
-    )
-  }
-
-  async renewMembershipFor(
-    network: number,
-    lockAddress: string,
-    keyId: string
-  ) {
-    const walletService = new WalletService(networks)
-    const provider = this.getProviderForNetwork(network)
-
-    const walletWithProvider = new ethers.Wallet(
-      config.purchaserCredentials,
-      provider
-    )
-
-    await walletService.connect(provider, walletWithProvider)
-
-    // TODO: use team multisig here (based on network config) instead of purchaser address!
-    const referrer = walletWithProvider.address
-
-    // send tx with custom gas (Polygon estimates are too often wrong...)
-    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-    return walletService.renewMembershipFor(
-      {
-        lockAddress,
-        referrer,
-        tokenId: keyId,
-      },
-      { maxFeePerGas, maxPriorityFeePerGas }
-    )
-  }
-
   /**
    * Function that lets the purchaser sign a to proove ownership of a token (personal_sign)
    * @param network
@@ -226,7 +112,6 @@ export default class Dispatcher {
     tokenId: string,
     account?: string
   ) {
-    const provider = this.getProviderForNetwork(network)
     if (!account) {
       const web3Service = new Web3Service(networks)
       account = await web3Service.ownerOf(lockAddress, tokenId, network)
@@ -240,55 +125,44 @@ export default class Dispatcher {
       timestamp: Date.now(),
     })
 
-    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+    const { wallet } = await this.getPurchaser(network)
 
     return [payload, await wallet.signMessage(payload)]
   }
 
-  async createLockContract(
-    network: number,
-    options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
-    callback: (error: any, hash: string | null) => Promise<void> | void
-  ) {
-    const provider = this.getProviderForNetwork(network)
-    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
-    const walletService = new WalletService(networks)
-    await walletService.connect(provider, signer)
-    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-
-    return walletService.createLock(
-      options,
-      { maxFeePerGas, maxPriorityFeePerGas },
-      callback
-    )
-  }
-
+  /**
+   * Yields a transfer code
+   * @param network
+   * @param params
+   * @returns
+   */
   async createTransferCode(
     network: number,
     params: Parameters<
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
-    const provider = this.getProviderForNetwork(network)
-    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const { wallet } = await this.getPurchaser(network)
     const keyManager = new KeyManager()
     const transferCode = await keyManager.createTransferSignature({
       params,
-      signer,
+      signer: wallet,
       network,
     })
     return transferCode
   }
 
-  isTransferSignedByLocksmith(
+  /**
+   * Returns true if params was signed by locksmith
+   */
+  async isTransferSignedByLocksmith(
     network: number,
     params: Parameters<
       InstanceType<typeof KeyManager>['getSignerForTransferSignature']
     >[0]['params']
   ) {
-    const provider = this.getProviderForNetwork(network)
-    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
-    const signerAddress = signer.address
+    const { wallet } = await this.getPurchaser(network)
+
     const keyManager = new KeyManager()
     const transferSignerAddress = keyManager.getSignerForTransferSignature({
       network,
@@ -296,8 +170,163 @@ export default class Dispatcher {
     })
     const isSignedByLocksmith =
       transferSignerAddress.trim().toLowerCase() ===
-      signerAddress.trim().toLowerCase()
+      wallet.address.trim().toLowerCase()
 
     return isSignedByLocksmith
+  }
+
+  /** Sends a purchase transaction */
+  async purchaseKey(
+    options: {
+      lockAddress: string
+      owner: string
+      network: number
+      data?: string
+    },
+    cb?: any
+  ) {
+    const { network, lockAddress, owner, data } = options
+    const walletService = new WalletService(networks)
+
+    const { wallet, provider } = await this.getPurchaser(network)
+
+    await walletService.connect(provider, wallet)
+
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
+    return executeAndRetry(
+      walletService.purchaseKey(
+        {
+          lockAddress,
+          owner,
+          data,
+        },
+        { maxFeePerGas, maxPriorityFeePerGas },
+        cb
+      )
+    )
+  }
+
+  /** Sends a transaction to renew an existing NFT memvership */
+  async renewMembershipFor(
+    network: number,
+    lockAddress: string,
+    keyId: string
+  ) {
+    const walletService = new WalletService(networks)
+
+    const { wallet, provider } = await this.getPurchaser(network)
+
+    await walletService.connect(provider, wallet)
+
+    const referrer = networks[network]?.teamMultisig
+
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+    return executeAndRetry(
+      walletService.renewMembershipFor(
+        {
+          lockAddress,
+          referrer: referrer!,
+          tokenId: keyId,
+        },
+        { maxFeePerGas, maxPriorityFeePerGas }
+      )
+    )
+  }
+
+  /**
+   * Grants an extension for an existing NFT membership
+   * @param lockAddress
+   * @param keyId
+   * @param network
+   * @param callback
+   */
+  async grantKeyExtension(
+    lockAddress: string,
+    keyId: number,
+    network: number,
+    callback: (error: any, hash: string | null) => Promise<void>
+  ) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getPurchaser(network)
+    await walletService.connect(provider, wallet)
+    return executeAndRetry(
+      walletService.grantKeyExtension(
+        {
+          lockAddress,
+          tokenId: keyId.toString(),
+          duration: 0,
+        },
+        {} /** TransactionOptions */,
+        callback
+      )
+    )
+  }
+
+  /**
+   * Called to grant key to user!
+   */
+  async grantKeys(
+    lockAddress: string,
+    keys: KeyToGrant[],
+    network: number,
+    cb?: any
+  ) {
+    const walletService = new WalletService(networks)
+
+    const { wallet, provider } = await this.getPurchaser(network)
+
+    const transactionOptions = await getGasSettings(network)
+
+    const teamMultisig = networks[network]?.teamMultisig
+
+    const recipients: string[] = []
+    const keyManagers: string[] = []
+    const expirations: string[] = []
+    keys.forEach(({ recipient, manager, expiration }) => {
+      recipients.push(recipient)
+      if (manager) {
+        keyManagers.push(manager)
+      } else if (teamMultisig) {
+        keyManagers.push(teamMultisig)
+      }
+      if (expiration) {
+        expirations.push(expiration.toString())
+      }
+    })
+
+    await walletService.connect(provider, wallet)
+    return executeAndRetry(
+      walletService.grantKeys(
+        {
+          lockAddress,
+          recipients,
+          keyManagers,
+          expirations,
+        },
+        transactionOptions,
+        cb
+      )
+    )
+  }
+
+  /** Deploys a lock */
+  async createLockContract(
+    network: number,
+    options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
+    callback: (error: any, hash: string | null) => Promise<void> | void
+  ) {
+    const { wallet, provider } = await this.getPurchaser(network)
+    const walletService = new WalletService(networks)
+    await walletService.connect(provider, wallet)
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
+    return executeAndRetry(
+      walletService.createLock(
+        options,
+        { maxFeePerGas, maxPriorityFeePerGas },
+        callback
+      )
+    )
   }
 }

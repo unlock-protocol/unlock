@@ -10,6 +10,7 @@ import {
   TextBox,
   Select,
   ToggleSwitch,
+  ImageUpload,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -18,9 +19,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { CryptoIcon } from '~/components/interface/locks/elements/KeyPrice'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useImageUpload } from '~/hooks/useImageUpload'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
@@ -39,6 +40,7 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
+  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
   const web3Service = useWeb3Service()
 
@@ -60,6 +62,8 @@ export const Form = ({ onSubmit }: FormProps) => {
         ticket: {
           event_start_date: '',
           event_start_time: '',
+          event_end_date: '',
+          event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
@@ -73,6 +77,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     register,
     setValue,
     formState: { errors },
+    watch,
   } = methods
 
   const details = useWatch({
@@ -128,6 +133,8 @@ export const Form = ({ onSubmit }: FormProps) => {
     )
   }
 
+  const metadataImage = watch('metadata.image')
+
   return (
     <FormProvider {...methods}>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
@@ -167,15 +174,27 @@ export const Form = ({ onSubmit }: FormProps) => {
                 error={errors.metadata?.description?.message as string}
               />
 
-              <Input
-                {...register('metadata.image', {})}
-                type="url"
-                placeholder="Please enter an image URL"
-                label="Illustration"
-                description={
-                  'This illustration will be used for the NFT tickets.'
-                }
-              />
+              <div className="grid grid-1.5">
+                <span>Illustration</span>
+                <ImageUpload
+                  size="full"
+                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                  isUploading={isUploading}
+                  preview={metadataImage!}
+                  onChange={async (fileOrFileUrl: any) => {
+                    if (typeof fileOrFileUrl === 'string') {
+                      setValue('metadata.image', fileOrFileUrl)
+                    } else {
+                      const items = await uploadImage(fileOrFileUrl[0])
+                      const image = items?.[0]?.publicUrl
+                      if (!image) {
+                        return
+                      }
+                      setValue('metadata.image', image)
+                    }
+                  }}
+                />
+              </div>
 
               <Select
                 onChange={(newValue) => {
@@ -214,26 +233,50 @@ export const Form = ({ onSubmit }: FormProps) => {
                     <iframe width="100%" height="300" src={mapAddress}></iframe>
                   </div>
                 </div>
-                <div className="flex flex-col self-start justify-top">
-                  <Input
-                    {...register('metadata.ticket.event_start_date', {
-                      required: {
-                        value: true,
-                        message: 'Add a date to your event',
-                      },
-                    })}
-                    type="date"
-                    label="Date"
-                    error={
-                      // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                      errors.metadata?.ticket?.event_start_date?.message || ''
-                    }
-                  />
-                  <Input
-                    {...register('metadata.ticket.event_start_time')}
-                    type="time"
-                    label="Time"
-                  />
+                <div className="flex flex-col self-start gap-2 justify-top">
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <Input
+                      {...register('metadata.ticket.event_start_date', {
+                        required: {
+                          value: true,
+                          message: 'Add a start date to your event',
+                        },
+                      })}
+                      type="date"
+                      label="Star Date"
+                      error={
+                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_start_date?.message || ''
+                      }
+                    />
+                    <Input
+                      {...register('metadata.ticket.event_start_time')}
+                      type="time"
+                      label="Start Time"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <Input
+                      {...register('metadata.ticket.event_end_date', {
+                        required: {
+                          value: true,
+                          message: 'Add a end date to your event',
+                        },
+                      })}
+                      type="date"
+                      label="End Date"
+                      error={
+                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_end_date?.message || ''
+                      }
+                    />
+                    <Input
+                      {...register('metadata.ticket.event_end_time')}
+                      type="time"
+                      label="End Time"
+                    />
+                  </div>
 
                   <Controller
                     name="metadata.ticket.event_timezone"

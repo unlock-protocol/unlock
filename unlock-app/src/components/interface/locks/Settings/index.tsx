@@ -21,12 +21,6 @@ interface LockSettingsPageProps {
   defaultTab?: SettingTab
 }
 
-interface SidebarCardProps {
-  src: string
-  description?: ReactNode
-  alt?: string
-}
-
 const NotManagerBanner = () => {
   const { account } = useAuth()
 
@@ -35,23 +29,6 @@ const NotManagerBanner = () => {
       You are connected as {addressMinify(account!)} and this address is not a
       manager for this lock. If you want to update details, please connect as
       lock manager.
-    </div>
-  )
-}
-
-const SidebarCard = ({ src, description }: SidebarCardProps) => {
-  return (
-    <div
-      className="flex w-full overflow-hidden bg-cover rounded-2xl"
-      style={{
-        backgroundImage: `url(${src})`,
-      }}
-    >
-      {description && (
-        <span className="block p-4 py-3 mb-20 text-lg text-gray-800 md:mb-48">
-          {description}
-        </span>
-      )}
     </div>
   )
 }
@@ -113,9 +90,9 @@ const LockSettingsPage = ({
 
   const tabs: {
     label: string
+    description?: string
     id: SettingTab
     children: ReactNode
-    sidebar?: ReactNode
   }[] = [
     {
       id: 'general',
@@ -127,12 +104,6 @@ const LockSettingsPage = ({
           isManager={isManager}
           isLoading={isLoading}
           lock={lock}
-        />
-      ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-general.svg"
-          description="Change the name and ticker for your membership contract."
         />
       ),
     },
@@ -149,12 +120,8 @@ const LockSettingsPage = ({
           publicLockVersion={publicLockVersion}
         />
       ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-terms.svg"
-          description="Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees."
-        />
-      ),
+      description:
+        'Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees.',
     },
     {
       id: 'payments',
@@ -168,12 +135,8 @@ const LockSettingsPage = ({
           isLoading={isLoading}
         />
       ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-payment.svg"
-          description="Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments."
-        />
-      ),
+      description:
+        'Payments settings lets you change the price and currency of your memberships, as well as enable credit cards and recurring payments.',
     },
     {
       id: 'roles',
@@ -186,16 +149,11 @@ const LockSettingsPage = ({
           isLoading={isLoading}
         />
       ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-roles.svg"
-          description={`Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`}
-        />
-      ),
+      description: `Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles.`,
     },
     {
       id: 'emails',
-      label: 'Email',
+      label: 'Emails',
       children: (
         <SettingEmail
           lockAddress={lockAddress}
@@ -204,12 +162,8 @@ const LockSettingsPage = ({
           isLoading={isLoading}
         />
       ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-email.svg"
-          description="Customize the emails sent to users when they purchase your lock's membership NFTs."
-        />
-      ),
+      description:
+        "Customize the emails sent to users when they purchase your lock's membership NFTs.",
     },
     {
       id: 'advanced',
@@ -224,12 +178,8 @@ const LockSettingsPage = ({
           publicLockVersion={publicLockVersion}
         />
       ),
-      sidebar: (
-        <SidebarCard
-          src="/images/illustrations/img-misc.svg"
-          description="This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol."
-        />
-      ),
+      description:
+        'This section lets you configure referral fees, hooks and upgrade your lock to the latest version of the protocol.',
     },
   ]
 
@@ -274,21 +224,25 @@ const LockSettingsPage = ({
           </div>
           <div className="md:col-span-4">
             <div className="flex flex-col gap-10 md:grid md:grid-cols-4">
-              <div className="md:col-span-3">
+              <div className="md:col-span-4">
                 <Tab.Panels>
-                  {tabs?.map(({ label, children }, index) => {
+                  {tabs?.map(({ label, description, children }, index) => {
                     return (
-                      <Tab.Panel className="flex flex-col gap-6" key={index}>
-                        <h2 className="text-2xl font-bold md:text-4xl text-brand-dark">
-                          {label}
-                        </h2>
+                      <Tab.Panel className="flex flex-col gap-10" key={index}>
+                        <div className="flex flex-col gap-1">
+                          <h2 className="text-2xl font-bold md:text-4xl text-brand-dark">
+                            {label}
+                          </h2>
+                          <span className="text-base text-brand-dark">
+                            {description}
+                          </span>
+                        </div>
                         <div>{children}</div>
                       </Tab.Panel>
                     )
                   })}
                 </Tab.Panels>
               </div>
-              <div className="md:col-span-1">{tabs[selectedIndex].sidebar}</div>
             </div>
           </div>
         </div>

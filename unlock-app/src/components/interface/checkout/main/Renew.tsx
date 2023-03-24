@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -11,16 +11,15 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import {
-  RiExternalLinkLine as ExternalLinkIcon,
-  RiTimer2Line as DurationIcon,
-} from 'react-icons/ri'
+import { RiTimer2Line as DurationIcon } from 'react-icons/ri'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
+import { ViewContract } from '../ViewContract'
+import { getReferrer } from '~/utils/checkoutLockUtils'
 
 interface Props {
   injectedProvider: unknown
@@ -46,7 +45,7 @@ export function Renew({
     password,
     captcha,
   } = state.context
-  const { messageToSign, referrer } = paywallConfig
+  const { messageToSign } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
   const { isLoading: isFiatPricingLoading, data: fiatPricing } = useQuery(
@@ -119,12 +118,13 @@ export function Renew({
         }
       }
       const walletService = await getWalletService(lockNetwork)
+
       if (lock.publicLockVersion! <= 9) {
         await walletService.purchaseKeys(
           {
             lockAddress,
             owners: [account],
-            referrers: [referrer || account],
+            referrers: [getReferrer(account, paywallConfig)],
             data,
           },
           {} /** transactionParams */,
@@ -141,7 +141,7 @@ export function Renew({
           {
             lockAddress,
             tokenId: tokenId.toString(),
-            referrer,
+            referrer: getReferrer(account, paywallConfig),
             data: data?.[0],
           },
           {} /** Transaction params */,
@@ -157,6 +157,7 @@ export function Renew({
     setIsSigningMessage(true)
     try {
       const walletService = await getWalletService()
+
       const signature = await walletService.signMessage(
         messageToSign!,
         'personal_sign'
@@ -208,16 +209,7 @@ export function Renew({
                   value={formattedData.formattedDuration}
                 />
               </ul>
-              <a
-                href={config.networks[lockNetwork].explorer.urls.address(
-                  lockAddress
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
+              <ViewContract network={lockNetwork} lockAddress={lockAddress} />
             </div>
           ) : (
             <div className="py-1.5 space-y-2 items-center">

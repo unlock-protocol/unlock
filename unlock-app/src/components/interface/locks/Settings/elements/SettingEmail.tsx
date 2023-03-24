@@ -20,7 +20,7 @@ export const SettingEmail = ({
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Key Purchased Template"
-        description={`Customize the content of the email sent when a new membership has been purchased.`}
+        description={`Customize the content of the email sent when a new membership has been purchased. Emails are only sent if you selected the Collect Email option on the checkout.`}
         isLoading={isLoading}
       >
         <EmailTemplatePreview
@@ -33,7 +33,7 @@ export const SettingEmail = ({
 
       <SettingCard
         label="Key Airdropped Template"
-        description={`Customize the content of the email sent when a new membership has been airdropped.`}
+        description={`Customize the content of the email sent when a new membership has been airdropped. Emails are only sent if you supplied them when you airdropped the memberships.`}
         isLoading={isLoading}
       >
         <EmailTemplatePreview

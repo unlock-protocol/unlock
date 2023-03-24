@@ -1,6 +1,14 @@
-import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
-import { useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import {
+  Button,
+  Badge,
+  Input,
+  Modal,
+  Detail,
+  AddressInput,
+  isAddressOrEns,
+} from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -12,15 +20,11 @@ import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
-import { useGetReceiptsPageUrl } from '~/hooks/receipts'
+import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
-
-interface DetailProps {
-  label: string
-  children?: React.ReactNode
-  append?: React.ReactNode
-}
+import { addressMinify } from '~/utils/strings'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface MetadataCardProps {
   metadata: any
@@ -34,26 +38,11 @@ const keysToIgnore = [
   'lockName',
   'expiration',
   'keyholderAddress',
+  'keyManager',
   'lockAddress',
   'checkedInAt',
   'email',
 ]
-
-const MetadataDetail = ({ label, children, append }: DetailProps) => {
-  return (
-    <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
-      <div className="flex items-center gap-2">
-        <span className="text-base">{label}: </span>
-        <div className="flex items-center gap-2">
-          <span className="block text-base font-bold break-words md:inline-block">
-            {children}
-          </span>
-          {append && <div>{append}</div>}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 interface KeyRenewalProps {
   possibleRenewals: string
@@ -71,35 +60,169 @@ const MembershipRenewal = ({
 
   if (possible.lte(0)) {
     return (
-      <MetadataDetail label="Renewals">
+      <Detail className="py-2" label="Renewals" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
-      </MetadataDetail>
+      </Detail>
     )
   }
 
   if (approved.lte(0)) {
     return (
-      <MetadataDetail label="Renewals">No renewals approved</MetadataDetail>
+      <Detail className="py-2" label="Renewals" inline justify={false}>
+        No renewals approved
+      </Detail>
     )
   }
 
   if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
     return (
-      <MetadataDetail label="Renewals">
+      <Detail className="py-2" label="Renewals" inline justify={false}>
         {approved.toString()} times
-      </MetadataDetail>
+      </Detail>
     )
   }
 
   if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
     return (
-      <MetadataDetail label="Renewals">Renews unlimited times</MetadataDetail>
+      <Detail className="py-2" label="Renewals" inline justify={false}>
+        Renews unlimited times
+      </Detail>
     )
   }
 
-  return <MetadataDetail label="Renewals">-</MetadataDetail>
+  return (
+    <Detail className="py-2" label="Renewals" inline justify={false}>
+      -
+    </Detail>
+  )
 }
 
+const ChangeManagerModal = ({
+  lockAddress,
+  network,
+  manager,
+  tokenId,
+  onChange,
+}: {
+  lockAddress: string
+  network: number
+  manager: string
+  tokenId: string
+  onChange?: (keyManager: string) => void
+}) => {
+  const { getWalletService } = useAuth()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const {
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { isValid },
+    control,
+  } = useForm<{
+    newManager: string
+  }>({
+    defaultValues: {
+      newManager: '',
+    },
+  })
+
+  const newManager = watch('newManager', manager)
+
+  const setKeyManagerForKey = async (newManager: string) => {
+    const walletService = await getWalletService(network)
+    return walletService.setKeyManagerOf({
+      lockAddress,
+      managerAddress: newManager,
+      tokenId,
+    })
+  }
+
+  const changeManagerMutation = useMutation(setKeyManagerForKey, {
+    onSuccess: () => {
+      if (typeof onChange === 'function') {
+        onChange(newManager)
+      }
+      ToastHelper.success('Key Manager updated')
+      setIsOpen(false)
+    },
+  })
+
+  const onSubmit = async ({ newManager }: any) => {
+    await changeManagerMutation.mutateAsync(newManager)
+  }
+
+  const managerUnchanged = newManager?.toLowerCase() === manager?.toLowerCase()
+
+  const fieldDisabled =
+    managerUnchanged || changeManagerMutation.isLoading || !isValid
+
+  useEffect(() => {
+    if (isOpen) {
+      setValue('newManager', '') // reset when modal opens
+    }
+  }, [isOpen, setValue])
+
+  return (
+    <>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <div className="flex flex-col w-full gap-5">
+          <div className="text-left">
+            <h3 className="text-xl font-semibold text-left text-black-500">
+              Change Key Manager
+            </h3>
+            <span className="text-sm leading-tight text-gray-500">
+              Update the address of the Key Manager.
+            </span>
+          </div>
+          <form className="grid w-full gap-3" onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="newManager"
+              control={control}
+              rules={{
+                required: true,
+                validate: isAddressOrEns,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      label="New Manager"
+                      value={newManager}
+                      disabled={changeManagerMutation.isLoading}
+                      onChange={(value: any) => {
+                        setValue('newManager', value, {
+                          shouldValidate: true,
+                        })
+                      }}
+                    />
+                    {managerUnchanged && (
+                      <span className="text-sm text-red-500">
+                        This address is already the current manager for this
+                        key.
+                      </span>
+                    )}
+                  </>
+                )
+              }}
+            />
+
+            <Button
+              disabled={fieldDisabled}
+              type="submit"
+              loading={changeManagerMutation.isLoading}
+            >
+              Update
+            </Button>
+          </form>
+        </div>
+      </Modal>
+      <Button size="small" onClick={() => setIsOpen(true)}>
+        Change
+      </Button>
+    </>
+  )
+}
 export const MetadataCard = ({
   metadata,
   owner,
@@ -121,6 +244,9 @@ export const MetadataCard = ({
     lockAddress,
     network,
   })
+
+  // defaults to the owner when the manager is not set
+  const manager = data?.keyManager ?? data?.keyholderAddress
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
@@ -148,7 +274,7 @@ export const MetadataCard = ({
       return response.data.subscriptions?.[0] ?? null
     },
     {
-      onError(error) {
+      onError(error: any) {
         console.error(error)
       },
     }
@@ -173,7 +299,6 @@ export const MetadataCard = ({
   const hasEmail = Object.entries(data || {})
     .map(([key]) => key.toLowerCase())
     .includes('email')
-  const hasExtraData = items?.length > 0 || isCheckedIn
 
   const onEmailChange = (values: FieldValues) => {
     setData({
@@ -181,6 +306,8 @@ export const MetadataCard = ({
       ...values,
     })
   }
+
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
 
   const onMarkAsCheckIn = async () => {
     const { lockAddress, token: keyId } = data
@@ -212,7 +339,6 @@ export const MetadataCard = ({
         userAddress={owner}
         lockAddress={lockAddress}
         network={network!}
-        hasExtraData={hasExtraData}
         hasEmail={hasEmail}
         extraDataItems={items as any}
         onEmailChange={onEmailChange}
@@ -245,6 +371,9 @@ export const MetadataCard = ({
             </Link>
           </Button>
         )}
+        <Button variant="outlined-primary" size="small">
+          <Link href={metadataPageUrl}>Edit token metadata</Link>
+        </Button>
       </div>
 
       <div className="pt-6">
@@ -259,19 +388,27 @@ export const MetadataCard = ({
               <span className="text-sm font-semibold">Checked-in</span>
             </Badge>
           )}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col divide-y divide-gray-400">
             {isCheckedIn && (
-              <MetadataDetail label="Checked-in at">
+              <Detail
+                className="py-2"
+                inline
+                justify={false}
+                label="Checked-in at:"
+              >
                 {getCheckInTime()}
-              </MetadataDetail>
+              </Detail>
             )}
-            <MetadataDetail
-              label="email"
-              append={
-                <>
+            <Detail
+              className="py-2"
+              label={
+                <div className="flex flex-col w-full gap-2 md:items-center md:flex-row">
+                  <span>Email:</span>
                   {hasEmail ? (
-                    <div className="flex gap-4">
-                      {data?.email}
+                    <div className="flex flex-col w-full gap-3 md:flex-row">
+                      <span className="block font-semibold text-black ">
+                        {data?.email}
+                      </span>
                       <Button
                         size="tiny"
                         variant="outlined-primary"
@@ -302,22 +439,37 @@ export const MetadataCard = ({
                       Add email
                     </Button>
                   )}
-                </>
+                </div>
               }
             />
             {items?.map(([key, value]: any, index) => {
               return (
-                <MetadataDetail key={`${key}-${index}`} label={`${key}`}>
+                <Detail
+                  className="py-2"
+                  key={`${key}-${index}`}
+                  label={`${key}: `}
+                  inline
+                  justify={false}
+                >
                   {value || null}
-                </MetadataDetail>
+                </Detail>
               )
             })}
-            <MetadataDetail
-              label="Key Holder"
-              append={
-                <>
+            <Detail
+              className="py-2"
+              label={
+                <div className="flex items-center gap-2">
+                  <span>Key Holder:</span>
+                  {/* show full address on desktop */}
+                  <div className="text-base font-bold break-words">
+                    <span className="hidden md:block">{owner}</span>
+                    {/* show minified address on mobile */}
+                    <span className="block md:hidden">
+                      {addressMinify(owner)}
+                    </span>
+                  </div>
                   <Button
-                    className="p-0 text-brand-ui-primary"
+                    className="p-0 outline-none text-brand-ui-primary ring-0"
                     variant="transparent"
                     aria-label="blockscan link"
                   >
@@ -329,29 +481,82 @@ export const MetadataCard = ({
                       <ExternalLinkIcon size={20} />
                     </a>
                   </Button>
-                </>
+                </div>
               }
-            >
-              {owner}
-            </MetadataDetail>
+            />
             {isSubscriptionLoading && <LoadingIcon />}
             {!isSubscriptionLoading && subscription && (
               <>
-                <MetadataDetail label="User Balance">
+                <Detail
+                  className="py-2"
+                  label="User Balance:"
+                  inline
+                  justify={false}
+                >
                   {subscription.balance?.amount} {subscription.balance?.symbol}
-                </MetadataDetail>
+                </Detail>
                 <MembershipRenewal
                   possibleRenewals={subscription.possibleRenewals!}
                   approvedRenewals={subscription.approvedRenewals!}
                   balance={subscription.balance as any}
                 />
                 {expirationDuration && expirationDuration !== MAX_UINT && (
-                  <MetadataDetail label="Renewal duration">
+                  <Detail
+                    className="py-2"
+                    label="Renewal duration:"
+                    inline
+                    justify={false}
+                  >
                     {durationAsText(expirationDuration)}
-                  </MetadataDetail>
+                  </Detail>
                 )}
               </>
             )}
+            <div className="w-full">
+              <Detail
+                className="py-2"
+                label={
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span>Key Manager:</span>
+                      {/* show full address on desktop */}
+                      <div className="text-base font-bold break-words">
+                        <span className="hidden md:block">{manager}</span>
+                        {/* show minified address on mobile */}
+                        <span className="block md:hidden">
+                          {addressMinify(manager)}
+                        </span>
+                      </div>
+                      <Button
+                        className="p-0 outline-none text-brand-ui-primary ring-0"
+                        variant="transparent"
+                        aria-label="blockscan link"
+                      >
+                        <a
+                          href={`https://blockscan.com/address/${manager}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <ExternalLinkIcon size={20} />
+                        </a>
+                      </Button>
+                    </div>
+                    <ChangeManagerModal
+                      lockAddress={lockAddress}
+                      network={network}
+                      manager={manager}
+                      tokenId={tokenId}
+                      onChange={(keyManager) => {
+                        setData({
+                          ...data,
+                          keyManager,
+                        })
+                      }}
+                    />
+                  </div>
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -366,7 +571,6 @@ const UpdateEmailModal = ({
   userAddress,
   lockAddress,
   network,
-  hasExtraData,
   hasEmail,
   extraDataItems,
   onEmailChange,
@@ -376,7 +580,6 @@ const UpdateEmailModal = ({
   userAddress: string
   lockAddress: string
   network: number
-  hasExtraData: boolean
   hasEmail: boolean
   extraDataItems: [string, string | number][]
   setIsOpen: (status: boolean) => void
@@ -395,33 +598,6 @@ const UpdateEmailModal = ({
     setIsOpen(false)
     if (typeof onEmailChange === 'function') {
       onEmailChange(formFields)
-    }
-  }
-
-  const createMetadata = async (params: any, callback?: () => void) => {
-    try {
-      const createMetadataPromise = storage.createUserMetadata(
-        network,
-        lockAddress,
-        userAddress,
-        {
-          metadata: {
-            protected: params.metadata,
-          },
-        }
-      )
-      await ToastHelper.promise(createMetadataPromise, {
-        loading: 'Saving email address',
-        success: 'Email successfully added to member',
-        error: 'We could not save the email address.',
-      })
-      if (typeof callback === 'function') {
-        callback()
-      }
-    } catch (err: any) {
-      ToastHelper.error(
-        err?.message || `Can't update metadata, please try again.`
-      )
     }
   }
 
@@ -475,15 +651,9 @@ const UpdateEmailModal = ({
         metadata,
       }
 
-      if (hasExtraData) {
-        updateMetadata(params, () => {
-          updateData(formFields)
-        })
-      } else {
-        createMetadata(params, () => {
-          updateData(formFields)
-        })
-      }
+      updateMetadata(params, () => {
+        updateData(formFields)
+      })
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }

@@ -21,7 +21,7 @@ export const useKeys = ({ networks, lockAddress, owner }: Options) => {
   const config = useConfig()
   const subgraph = new SubgraphService(config.networks)
   const { data: keys, isLoading: isKeysLoading } = useQuery(
-    ['keys', networks, lockAddress],
+    ['keys', owner, networks, lockAddress],
     async () => {
       const keys = await subgraph.keys(
         {

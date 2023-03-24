@@ -11,6 +11,7 @@ interface UpdateTransferFeeProps {
   network: number
   isManager: boolean
   disabled: boolean
+  unlimitedDuration: boolean
 }
 
 interface FormProps {
@@ -22,6 +23,7 @@ export const UpdateTransferFee = ({
   network,
   isManager,
   disabled,
+  unlimitedDuration,
 }: UpdateTransferFeeProps) => {
   const web3Service = useWeb3Service()
   const { getWalletService } = useAuth()
@@ -77,14 +79,13 @@ export const UpdateTransferFee = ({
     async () => getTransferFeeBasisPoints()
   )
 
+  const transferFeePercentage = (transferFeeBasisPoints ?? 0) / 100
+  const isTransferAllowed = transferFeePercentage < 100
+
   useEffect(() => {
-    setValue('transferFeePercentage', (transferFeeBasisPoints ?? 0) / 100)
-    if (transferFeeBasisPoints === undefined) {
-      setAllowTransfer(false)
-    } else {
-      setAllowTransfer(transferFeeBasisPoints < 100)
-    }
-  }, [transferFeeBasisPoints])
+    setValue('transferFeePercentage', transferFeePercentage)
+    setAllowTransfer(isTransferAllowed)
+  }, [isTransferAllowed, setValue, transferFeePercentage])
 
   const disabledInput =
     disabled || isLoading || updateTransferFeeMutation.isLoading
@@ -108,7 +109,7 @@ export const UpdateTransferFee = ({
         }
         disabled={disabledInput}
       />
-      {allowTransfer && (
+      {allowTransfer && !unlimitedDuration && (
         <>
           <Input
             label="Transfer fee (%)"

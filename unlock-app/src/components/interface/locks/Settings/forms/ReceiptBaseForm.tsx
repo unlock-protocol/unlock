@@ -3,9 +3,9 @@ import { Input, Button } from '@unlock-protocol/ui'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/receipts'
+import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/useReceipts'
 
-import { SupplierBodyProps } from '../../../../../../../locksmith/src/controllers/v2/receiptBaseController'
+type SupplierBodyProps = any
 
 interface ReceiptBaseFormProps {
   lockAddress: string

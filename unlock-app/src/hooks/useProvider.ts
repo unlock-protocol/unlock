@@ -1,13 +1,14 @@
 import { ethers } from 'ethers'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import { NetworkConfig } from '@unlock-protocol/types'
-import { signOut } from '~/config/storage'
+import { useSession } from './useSession'
+import { getCurrentNetwork } from '~/utils/session'
+import { useConnectModal } from './useConnectModal'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -26,31 +27,30 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
+  const { openConnectModalAsync, closeConnectModal } = useConnectModal()
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
-  const [network, setNetwork] = useState<string | undefined>(undefined)
-  const [account, setAccount] = useState<string | undefined>(undefined)
-  const [email, setEmail] = useState<string | undefined>(undefined)
-  const [isUnlockAccount, setIsUnlockAccount] = useState<boolean>(false)
-  const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
-    any | undefined
-  >(undefined)
-  const { getStorage, setStorage, clearStorage } = useAppStorage()
-  const { addNetworkToWallet } = useAddToNetwork(account)
+  const [network, setNetwork] = useState<number | null | undefined>(
+    getCurrentNetwork() || 1
+  )
+  const [connected, setConnected] = useState<string | undefined>()
+  const { setStorage, clearStorage } = useAppStorage()
+  const { addNetworkToWallet } = useAddToNetwork(connected)
+  const { session: account, refetchSession } = useSession()
 
-  useEffect(() => {
-    if (!getStorage('account') && account) {
-      setStorage('account', account)
-    }
-
-    if (!getStorage('network') && network) {
-      setStorage('network', network)
-    }
-  }, [account, network])
+  const isUnlockAccount = !!provider?.isUnlock
+  const email = provider?.emailAddress
+  const encryptedPrivateKey = provider?.passwordEncryptedPrivateKey
 
   const createWalletService = async (provider: any) => {
     const _walletService = new WalletService(config.networks)
-    const _network = await _walletService.connect(provider)
+    let _network = 1 // default
+    try {
+      _network = await _walletService.connect(provider)
+    } catch (error) {
+      console.log(error)
+    }
+
     const _account = await _walletService.getAccount()
     return {
       walletService: _walletService,
@@ -58,6 +58,8 @@ export const useProvider = (config: any) => {
       account: _account,
     }
   }
+
+  const displayAccount = isUnlockAccount ? email : connected
 
   const switchWeb3ProviderNetwork = async (id: number) => {
     try {
@@ -68,7 +70,7 @@ export const useProvider = (config: any) => {
             chainId: `0x${id.toString(16)}`,
           },
         ],
-        account
+        connected
       )
     } catch (switchError: any) {
       if (switchError.code === 4902 || switchError.code === -32603) {
@@ -81,19 +83,23 @@ export const useProvider = (config: any) => {
 
   const getWalletService = async (networkId?: number) => {
     const currentNetworkId = Number(network)
-    let walletServiceProvider: ethers.providers.Provider = provider
+    let pr = provider
+    // If the user is not connected, we open the connect modal
+    if (!connected) {
+      const response = await openConnectModalAsync()
+      closeConnectModal()
+      pr = response?.provider
+    }
+    let walletServiceProvider: ethers.providers.Provider = pr
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
-      if (provider.isUnlock) {
-        walletServiceProvider = UnlockProvider.reconnect(
-          provider,
-          networkConfig
-        )
+      if (pr.isUnlock) {
+        walletServiceProvider = UnlockProvider.reconnect(pr, networkConfig)
       } else {
-        await switchWeb3ProviderNetwork(networkId)
+        await switchWeb3ProviderNetwork(networkId).catch(console.error)
         walletServiceProvider = new ethers.providers.Web3Provider(
-          provider.provider,
-          networkId
+          pr.provider,
+          'any'
         )
       }
     }
@@ -111,42 +117,35 @@ export const useProvider = (config: any) => {
         walletService: _walletService,
         account: _account,
       } = await createWalletService(provider)
-      setNetwork(_network || undefined)
 
       setWalletService(_walletService)
-      // @ts-expect-error
-      if (!provider.isUnlock) {
-        setIsUnlockAccount(false)
-        setEmail(undefined)
-        setEncryptedPrivateKey(null)
-        // Doing this last because usually consuming components will change their behavior based on it
-        setAccount(_account || undefined)
-        return {
-          network: _network,
-          account: _account,
-        }
+
+      if (_account) {
+        setStorage('account', _account)
       }
-      setIsUnlockAccount(true)
-      // @ts-expect-error
-      setEmail(provider.emailAddress)
-      // @ts-expect-error
-      setEncryptedPrivateKey(provider.passwordEncryptedPrivateKey)
-      // Doing this last because usually consuming components will change their behavior based on it
-      setAccount(_account || undefined)
+
+      if (_network) {
+        setStorage('network', _network)
+      }
+
+      await refetchSession()
+
+      setNetwork(_network || undefined)
+      setConnected(_account || undefined)
+
       return {
+        email,
+        provider,
+        passwordEncryptedPrivateKey: encryptedPrivateKey,
+        isUnlock: isUnlockAccount,
+        walletService: _walletService,
         network: _network,
         account: _account,
-        isUnlock: true,
-        // @ts-expect-error
-        email: provider.emailAddress,
-        // @ts-expect-error
-        passwordEncryptedPrivateKey: provider.passwordEncryptedPrivateKey,
       }
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
-        ToastHelper.error(
-          `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
-        )
+        // We actually do not care :D
+        // The user will be promped to switch networks when they perform a transaction
       } else if (error.message.includes('could not detect network')) {
         ToastHelper.error(
           'We could not detect the network to which your wallet is connected. Please try another wallet. (This issue happens often with the Frame Wallet)' // TODO: remove when Frame is fixed
@@ -177,12 +176,11 @@ export const useProvider = (config: any) => {
 
       if (provider.on) {
         provider.on('accountsChanged', async () => {
-          resetProvider(new ethers.providers.Web3Provider(provider))
-          await signOut()
+          await resetProvider(new ethers.providers.Web3Provider(provider))
         })
 
         provider.on('chainChanged', async () => {
-          resetProvider(new ethers.providers.Web3Provider(provider))
+          await resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
       auth = await resetProvider(ethersProvider)
@@ -197,10 +195,8 @@ export const useProvider = (config: any) => {
     const _walletService = new WalletService(config.networks)
     setWalletService(_walletService)
     setNetwork(undefined)
-    setAccount(undefined)
-    setIsUnlockAccount(false)
-    setEmail('')
-    setEncryptedPrivateKey(null)
+    setConnected(undefined)
+
     clearStorage()
     try {
       // unlock provider does not support removing listeners or closing.
@@ -220,29 +216,6 @@ export const useProvider = (config: any) => {
     }
     setProvider(null)
     setLoading(false)
-    await signOut()
-  }
-
-  const changeNetwork = async (networkConf: NetworkConfig | number) => {
-    const networkConfig =
-      typeof networkConf === 'number'
-        ? config.networks[networkConf]
-        : networkConf
-
-    const { id } = networkConfig
-
-    // don't change network if not needed
-    if (id === network) {
-      return
-    }
-
-    if (provider.isUnlock) {
-      const newProvider = UnlockProvider.reconnect(provider, networkConfig)
-      await resetProvider(newProvider)
-    } else {
-      await switchWeb3ProviderNetwork(id)
-      setNetwork(id)
-    }
   }
 
   const watchAsset = async ({
@@ -265,23 +238,10 @@ export const useProvider = (config: any) => {
     return await provider.send(method, params)
   }
 
-  // TODO: cleanup. Do we still use this? We should not,
-  const signMessage = async (messageToSign: string) => {
-    return ToastHelper.promise(
-      walletService.signMessage(messageToSign, 'personal_sign'),
-      {
-        loading: 'Please sign the message from your wallet',
-        success: 'Successfully signed the message',
-        error: 'There was an error in signing the message',
-      }
-    )
-  }
-
   return {
     loading,
     network,
     account,
-    signMessage,
     email,
     getWalletService,
     isUnlockAccount,
@@ -290,7 +250,8 @@ export const useProvider = (config: any) => {
     connectProvider,
     disconnectProvider,
     watchAsset,
-    changeNetwork,
     providerSend,
+    connected,
+    displayAccount,
   }
 }

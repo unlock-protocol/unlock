@@ -36,6 +36,7 @@ const {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
 } = v9
 
 export default {
@@ -75,4 +76,5 @@ export default {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
 }

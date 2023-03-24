@@ -6,3 +6,9 @@ export const minifyAddress = (address: string) => {
     ? `${address.slice(0, 5)}...${address.slice(address.length - 5)}`
     : address
 }
+
+export const isAddressOrEns = (address = '') => {
+  return (
+    address?.toLowerCase()?.includes('.eth') || ethers.utils.isAddress(address)
+  )
+}

@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import { Lock, WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
+import { passwordHookAbi } from './abis/passwordHookAbi'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -940,6 +941,57 @@ export default class WalletService extends UnlockService {
       throw new Error('Lock version not supported')
     }
     return version.setReferrerFee.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Set signer for `Password hook contract`
+   */
+  async setPasswordHookSigner(
+    params: {
+      lockAddress: string
+      signerAddress: string
+      contractAddress: string
+      network: number
+    },
+    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+  ) {
+    const { lockAddress, signerAddress, contractAddress, network } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: passwordHookAbi,
+      signer,
+    })
+    const tx = await contract.setSigner(lockAddress, signerAddress)
+    return tx
+  }
+
+  /**
+   * Change lock manager for a specific key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setKeyManagerOf(
+    params: {
+      lockAddress: string
+      managerAddress: string
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.managerAddress) throw new Error('Missing managerAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setKeyManagerOf) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setKeyManagerOf.bind(this)(
       params,
       transactionOptions,
       callback

@@ -1,5 +1,19 @@
 # Changes
 
+# 0.34.1
+
+- add support for `setKeyManagerOf` to walletService
+
+# 0.33.4
+
+- move `customHookService` to web3Service
+- add `getPasswordHookSigners` to web3Service
+- move `setPasswordHookSigner` to walletService
+
+# 0.33.4
+
+- add `customHookService`
+
 # 0.33.3
 
 - remove `getEthAddressType` to web3Service

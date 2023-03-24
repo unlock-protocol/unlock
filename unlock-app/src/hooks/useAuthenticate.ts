@@ -3,6 +3,7 @@ import WalletLink from 'walletlink'
 import { useConfig } from '../utils/withConfig'
 import { useAuth } from '../contexts/AuthenticationContext'
 import { useAppStorage } from './useAppStorage'
+import { useConnectModal } from './useConnectModal'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
@@ -11,6 +12,8 @@ export interface EthereumWindow extends Window {
 interface RpcType {
   [network: string]: string
 }
+
+export const RECENTLY_USED_PROVIDER = 'recently_used_provider'
 
 export const rpcForWalletConnect = (config: any) => {
   const rpc: RpcType = {}
@@ -54,7 +57,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const config = useConfig()
   const { authenticate } = useAuth()
   const { setStorage, removeKey } = useAppStorage()
-
+  const { send } = useConnectModal()
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
   const handleInjectProvider = async () => {
@@ -109,8 +112,10 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       } else {
         removeKey('email')
       }
+      localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
       setStorage('provider', providerType)
     })
+    send(connectedProvider)
     return connectedProvider
   }
 

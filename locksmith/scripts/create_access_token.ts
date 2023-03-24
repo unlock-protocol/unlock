@@ -1,5 +1,5 @@
 import { createAccessToken } from '../src/utils/middlewares/auth'
-
+import { randomUUID } from 'node:crypto'
 import yargs from 'yargs'
 
 const argv = yargs
@@ -16,14 +16,19 @@ const argv = yargs
     'yarn tsx scripts/create_access_token.ts --address 0x123',
     'create an access token to test locksmith locally.'
   )
-  .parse()
+  .parseSync()
 
 if (argv.address) {
-  const token = createAccessToken({
-    type: 'user',
+  createAccessToken({
     walletAddress: argv.address,
+    nonce: randomUUID(),
+    expireAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+  }).then((session) => {
+    console.table({
+      walletAddress: session.walletAddress,
+      token: session.id,
+    })
   })
-  console.log(token)
 } else {
   console.log(argv)
 }
