@@ -534,7 +534,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
-    return 11;
+    return 12;
   }
 
   /**
