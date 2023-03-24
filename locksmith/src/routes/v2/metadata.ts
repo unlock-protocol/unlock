@@ -16,7 +16,7 @@ const router = express.Router({ mergeParams: true })
 router.get('/:network/locks/:lockAddress', getLockMetadata)
 router.get('/:network/locks/:lockAddress/keys/:keyId', getKeyMetadata)
 
-router.get(
+router.post(
   '/:network/locks/:lockAddress/keys',
   authenticatedMiddleware,
   lockManagerMiddleware,
