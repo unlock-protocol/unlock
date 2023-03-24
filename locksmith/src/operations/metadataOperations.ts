@@ -11,6 +11,7 @@ import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { UserTokenMetadata } from '../models'
 import logger from '../logger'
+import { getDefaultLockData } from '../utils/metadata'
 
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
@@ -273,4 +274,29 @@ export const getUserProtectedMetadata = async ({
   })
 
   return protectedData
+}
+
+export const getLockMetadata = async ({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) => {
+  const lockData = await LockMetadata.findOne({
+    where: {
+      chain: network,
+      address: lockAddress,
+    },
+  })
+
+  if (!lockData) {
+    const defaultLockData = await getDefaultLockData({
+      lockAddress,
+      network,
+    })
+    return defaultLockData
+  }
+
+  return lockData?.data
 }
