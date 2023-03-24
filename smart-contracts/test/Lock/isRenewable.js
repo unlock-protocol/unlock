@@ -47,7 +47,7 @@ contract('Lock / isRenewable', (accounts) => {
       it('if terms havent changed', async () => {
         assert.equal(
           await lock.isRenewable(tokenId, ADDRESS_ZERO),
-          false
+          true
         )
       })  
       it('if price has decreased', async () => {
@@ -58,25 +58,82 @@ contract('Lock / isRenewable', (accounts) => {
         )
         assert.equal(
           await lock.isRenewable(tokenId, ADDRESS_ZERO),
-          false
+          true
         )
       })
       it('if time has increased', async () => {
+        const increasedDuration = (await lock.expirationDuration()).toNumber() + 1000
         await lock.updateLockConfig(
-          await lock.expirationDuration() + 1000,
+          increasedDuration,
           await lock.maxNumberOfKeys(),
           await lock.maxKeysPerAddress(),
           { from: lockOwner }
         )
         assert.equal(
           await lock.isRenewable(tokenId, ADDRESS_ZERO),
-          false
+          true
         )
       })
     })
 
-    describe('reverts', () => {
-      it('if price has increased', async () => {
+    describe('uncorrect lock settings', () => {
+      it('reverts if lock isnt erc20', async () => {
+        const noERC20lock = await deployLock()
+        const { tokenId } = await purchaseKey(noERC20lock, keyOwner)
+        await reverts(
+          noERC20lock.isRenewable(tokenId, ADDRESS_ZERO),
+          'NON_RENEWABLE_LOCK'
+        )
+
+      })
+      it('reverts if lock has infinite duration', async () => {
+        const infiniteLock = await deployLock({ name: 'NON_EXPIRING', tokenAddress: dai.address })
+        await dai.approve(infiniteLock.address, keyPrice, {
+          from: keyOwner,
+        })
+        const { tokenId } = await purchaseKey(infiniteLock, keyOwner, true)
+        await reverts(
+          infiniteLock.isRenewable(tokenId, ADDRESS_ZERO),
+          'NON_RENEWABLE_LOCK'
+        )
+      })
+    })
+
+    describe('key readiness', () => {
+      it('reverts if key isnt close to expiration', async () => {
+        const { tokenId } = await purchaseKey(lock, keyOwner, true)
+        await reverts(
+          lock.isRenewable(tokenId, ADDRESS_ZERO),
+          'NOT_READY_FOR_RENEWAL'
+        )
+        
+        const expirationTs = (await lock.keyExpirationTimestampFor(tokenId)).toNumber()
+        const lockDuration =(await lock.expirationDuration()).toNumber()
+        const notCloseEnough = (expirationTs - lockDuration) + lockDuration * .89
+        await time.increaseTo(notCloseEnough)
+        await reverts(
+          lock.isRenewable(tokenId, ADDRESS_ZERO),
+          'NOT_READY_FOR_RENEWAL'
+        )
+      })
+      it('return true if key is close to expiration (90%)', async () => {
+        const { tokenId } = await purchaseKey(lock, keyOwner, true)
+        
+        const expirationTs = (await lock.keyExpirationTimestampFor(tokenId)).toNumber()
+        const lockDuration =(await lock.expirationDuration()).toNumber()
+        
+        const ninetyPercent = (expirationTs - lockDuration) + lockDuration * 0.9
+        await time.increaseTo(ninetyPercent)
+
+        assert.equal(
+          await lock.isRenewable(tokenId, ADDRESS_ZERO),
+          true
+        )
+      })
+    })
+
+    describe('change in lock settings', () => {
+      it('reverts if price has increased', async () => {
         await lock.updateKeyPricing(
           ethers.utils.parseUnits('0.3', 'ether'),
           dai.address,
@@ -88,7 +145,7 @@ contract('Lock / isRenewable', (accounts) => {
         )
       })
 
-      it('if erc20 token has changed', async () => {
+      it('reverts if erc20 token has changed', async () => {
         // deploy another token
         const dai2 = await deployERC20(accounts[3])
         await dai2.mint(keyOwner, someDai, {
@@ -102,7 +159,7 @@ contract('Lock / isRenewable', (accounts) => {
         )
       })
 
-      it('if duration has changed', async () => {
+      it('reverts if duration has changed', async () => {
         await lock.updateLockConfig(
           1000,
           await lock.maxNumberOfKeys(),
