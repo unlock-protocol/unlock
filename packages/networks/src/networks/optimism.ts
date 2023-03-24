@@ -43,7 +43,9 @@ export const optimism: NetworkConfig = {
     decimals: 18,
     coingecko: 'ethereum',
   },
-  description: 'Layer 2 network. Cheaper transaction cost.',
+  description:
+    'Optimism is a Layer 2 Optimistic Rollup network designed to utilize the strong security guarantees of Ethereum while reducing its cost and latency.',
+  url: 'https://www.optimism.io/',
   isTestNetwork: false,
   maxFreeClaimCost: 10,
   teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',

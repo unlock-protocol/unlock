@@ -114,11 +114,13 @@ export interface NetworkConfig {
   maxFreeClaimCost?: number
   requiredConfirmations?: number
   baseCurrencySymbol?: string
-  nativeCurrency?: Omit<Token, 'address'>
+  nativeCurrency: Omit<Token, 'address'>
   wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
-  description?: string
+  description: string
+  url?: string
+  faucet?: string
   teamMultisig?: string
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
