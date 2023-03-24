@@ -228,7 +228,7 @@ contract MixinPurchase is
     uint deadline = 
       (_keys[_tokenId].expirationTimestamp - expirationDuration) // origin
       + 
-      (expirationDuration * 90 / BASIS_POINTS_DEN); // 90% of duration
+      (expirationDuration * 9000 / BASIS_POINTS_DEN); // 90% of duration
 
     if (block.timestamp < deadline) {
       revert NOT_READY_FOR_RENEWAL();
