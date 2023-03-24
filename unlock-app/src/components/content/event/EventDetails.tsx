@@ -22,9 +22,9 @@ import { getEventDate, getEventEndDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
-import { useStorageService } from '~/utils/withStorageService'
 import dayjs from 'dayjs'
 import { WalletlessRegistration } from './WalletlessRegistration'
+import { useIsClaimable } from '~/hooks/useIsClaimable'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -34,7 +34,6 @@ interface EventDetailsProps {
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
   const web3Service = useWeb3Service()
-  const storageService = useStorageService()
 
   const config = useConfig()
 
@@ -44,15 +43,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
-  const { isLoading: isClaimableLoading, data: isClaimable } = useQuery(
-    ['claim', lockAddress, network],
-    () => {
-      return storageService.canClaimMembership({
-        network,
-        lockAddress,
-      })
-    }
-  )
+  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
+    lockAddress,
+    network,
+  })
 
   const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =
     useQuery(

@@ -1544,7 +1544,7 @@ paths:
       security:
         - User: []
       operationId: claim
-      description: Claim a membership key for a lock. If not authenticated, requires an email query
+      description: Claim a membership key for a lock. If not authenticated, requires an email in the body.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'

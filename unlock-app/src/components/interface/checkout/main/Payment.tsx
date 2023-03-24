@@ -16,10 +16,10 @@ import {
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
-import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useIsClaimable } from '~/hooks/useIsClaimable'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -45,7 +45,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { quantity, recipients } = state.context
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
-  const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
   const web3Service = useWeb3Service()
@@ -62,15 +61,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const { isLoading: isClaimableLoading, data: isClaimable } = useQuery(
-    ['claim', lock.address, lock.network],
-    () => {
-      return storageService.canClaimMembership({
-        network: lock.network,
-        lockAddress: lock.address,
-      })
-    }
-  )
+  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
 
   const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
     ['balance', account, lock.address],
