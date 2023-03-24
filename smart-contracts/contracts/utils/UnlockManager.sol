@@ -2,9 +2,18 @@
 pragma solidity ^0.8.7;
 
 /**
- * UnlockManager receives and send instructions from bridges 
- * to Unlock contracts deployed on various chains. It triggers upgrades
- * and settings, following orders coming from mainnet.
+ * UnlockManager is used to faciliate the governance of the Unlock protocol
+ * accross multiple chains. His role is to manage the state of the Unlock contract
+ * based on instructions coming from the DAO on mainnet via the Connext bridge.
+ * 
+ * There are two kind of instructions that can be sent :
+ * - 1. change in Unlock settings
+ * - 2. upgrade of the Unlock contract (via its proxyAdmmin)
+ *
+ * As a security measure, this contract also has an `exec` function 
+ * that can be used to send calls directly (without going through a bridge)
+ * through a multisig wallet managed by the Unlock team.
+ * 
  */
 
 
@@ -14,10 +23,19 @@ import '../interfaces/IUnlock.sol';
 
 contract UnlockManager {
 
+  // address of the connext bridge on the current chain
   address public bridgeAddress;
+
+  // address of Unlock on the current chain
   address public unlockAddress;
+
+  // address of Unlock team multisig wallet for the current chain
   address public multisigAddress;
+  
+  // address of the DAO on mainnet (used to verify trusted origin)
   address public daoAddress;
+
+  // the domain ID of the current network (defined by Connext)
   uint32 public domain;
 
   // Errors
@@ -32,7 +50,8 @@ contract UnlockManager {
     bytes32 transferId,
     uint8 action,      
     address indexed contractCalled, 
-    bytes execCallData
+    bytes execCallData,
+    bytes returnedData
   );
 
    /**
@@ -65,11 +84,11 @@ contract UnlockManager {
   }
 
   function _isMultisig() internal view returns (bool) {
-    msg.sender != multisigAddress;
+    return msg.sender == multisigAddress;
   }
   
   function _isDAO() internal view returns (bool) {
-    msg.sender != daoAddress && block.chainid != 1;
+    return msg.sender == daoAddress; // TODO: && block.chainid == 1;
   }
 
 
@@ -83,6 +102,9 @@ contract UnlockManager {
       && caller == daoAddress;
   }
 
+  /**
+   * helper used to get the proxyAdmin address from the Unlock contract
+   */
   function _getProxyAdmin(address proxy) internal view returns (address) {
     address proxyAdminAddress = IUnlock(proxy)._getAdmin();
     return proxyAdminAddress;
@@ -90,11 +112,13 @@ contract UnlockManager {
 
   /**
    * Internal helper to execute a call
-   * @param action 1 for contract upgrade through ProxyAdmin, 2 for contract call
-   * @param value amount of native tokens to send with the contract call
+   * @param action the type of action to perform is decribed as a number. Currently, 
+   * two types of actions are available : `1` to pass directly the callData to the Unlock contract, 
+   * and `2` to trigger a contract upgrade through Unlock's ProxyAdmin
+   * @param value amount of (native) tokens to send with the contract call
    * @param callData the data to pass in the call 
    */
-  function _execAction(uint8 action, uint value, bytes memory callData) internal returns (address) {
+  function _execAction(uint8 action, uint value, bytes memory callData) internal returns (address, bytes memory) {
     
     // check where to forward the call
     address contractToCall;    
@@ -104,7 +128,7 @@ contract UnlockManager {
       contractToCall = _getProxyAdmin(unlockAddress);
     }
 
-    (bool success, ) = contractToCall.call{value: value}(callData);
+    (bool success, bytes memory returnedData) = contractToCall.call{value: value}(callData);
 
     // catch revert reason
     if (success == false) {
@@ -116,26 +140,31 @@ contract UnlockManager {
       }
     }
 
-    return contractToCall;
+    return (contractToCall, returnedData);
   }
 
 
   /**
-   * This function can only be called by multisig
+   * Calling this function will execute directly a call to Unlock or a proxy upgrade
+   * @notice This function can only be called by the multisig specified in the constructor
+   * @param callData the encoded bytes should contains both the call data to be executed and 
+   *  the *action* code that follows `_execAction` pattern (see above).
+   * @return the address of the contract where code has been executed
    */
-  function exec (bytes memory callData) external payable returns (address) {
+  function exec (bytes memory callData) external payable returns (address, bytes memory) {
     if(!_isMultisig()) {
       revert Unauthorized(msg.sender);
     }
     // unpack calldata args
     (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
-    (address contractCalled) = _execAction(action, msg.value, execCallData);
-    return contractCalled;
+    (address contractCalled, bytes memory returnedData) = _execAction(action, msg.value, execCallData);
+    return (contractCalled, returnedData);
   }
 
 
   /**
-   * Only called by DAO on mainnet
+   * This function is used to send calls to Unlock contracts on other chains.
+   * @notice This is only called by DAO on mainnet
    * @param domainId the domain ID to target as defined by Connext https://docs.connext.network/resources/supported-chains
    * @param targetContract the contract that will receive the call
    * @param callData the data to be executed on the destination chain 
@@ -170,8 +199,9 @@ contract UnlockManager {
   }
 
   /** 
-   * @notice The receiver function as required by the IXReceiver interface.
-   * @dev The Connext bridge contract will call this function.
+   * @notice The receiver function as required by the bridge IXReceiver interface.
+   * @dev The Connext bridge contract will call this function, that will trigger
+   * a `_execAction` locally
    */
   function xReceive(
     bytes32 transferId,
@@ -180,7 +210,7 @@ contract UnlockManager {
     address caller, // address of the contract on the origin chain
     uint32 origin, // 	Domain ID of the origin chain
     bytes memory callData
-  ) external returns (bytes memory) {
+  ) external {
 
     // The calls can only be sent by 
     // 1) the DAO on mainnet through the bridge
@@ -195,13 +225,14 @@ contract UnlockManager {
     // unpack calldata args
     (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
 
-    (address contractCalled) = _execAction(action, valueToSend, execCallData);
+    (address contractCalled,  bytes memory returnedData) = _execAction(action, valueToSend, execCallData);
 
     emit BridgeCallReceived(
       transferId,
       action,
       contractCalled, 
-      execCallData
+      execCallData,
+      returnedData
     );
   }
 

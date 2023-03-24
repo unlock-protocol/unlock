@@ -79,13 +79,13 @@ contract("Unlock / bridged governance", () => {
 
     it("stores Unlock address properly", async () => {
       assert.equal(
-        await managerMainnet.unlockAddress(),
+        await managerDest.unlockAddress(),
         unlockDest.address
       );
     });
 
     it("stores the domain properly", async () => {
-      assert.equal(await managerMainnet.domain(), destDomainId);
+      assert.equal(await managerMainnet.domain(), srcDomainId);
     });
 
     it("stores DAO address", async () => {
@@ -114,7 +114,7 @@ contract("Unlock / bridged governance", () => {
       const unlockCallData =  interface.encodeFunctionData('addLockTemplate', args)
       calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [1, unlockCallData])
     })
-    it('through the bridge', async () => {
+    it('DAO through the bridge', async () => {
       // make sure settings were ok before
       assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
@@ -141,7 +141,7 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the DAO > mainnet manager > bridge path
-      await managerMainnet.connect(multisig).exec(
+      await managerDest.connect(multisig).exec(
         calldata
       )
 
@@ -151,7 +151,7 @@ contract("Unlock / bridged governance", () => {
 
     })
 
-    it('reverts is dispatc is not called by the DAO', async () => {
+    it('reverts is dispatch is not called by the DAO', async () => {
       await reverts(
         managerMainnet.dispatch(
           destChainId,
@@ -176,7 +176,7 @@ contract("Unlock / bridged governance", () => {
 
 
   describe("update proxied contract via proxyAdmin", () => {    
-    it('can upgrade Unlock from the bridge', async () => {
+    it('DAO from the bridge', async () => {
       const UnlockUpgraded = await ethers.getContractFactory('TestUnlockUpgraded')
       const unlockUpgraded = await UnlockUpgraded.deploy()
 
