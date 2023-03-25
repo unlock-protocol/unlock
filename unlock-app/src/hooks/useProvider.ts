@@ -165,13 +165,6 @@ export const useProvider = (config: any) => {
     if (provider instanceof ethers.providers.Provider) {
       auth = await resetProvider(provider)
     } else {
-      if (provider.enable) {
-        try {
-          await provider.enable()
-        } catch {
-          console.error('Please check your wallet and try again to connect.')
-        }
-      }
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
       if (provider.on) {

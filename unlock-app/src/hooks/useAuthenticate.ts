@@ -72,7 +72,15 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     const walletConnectProvider = new WalletConnectProvider({
       rpc: rpcForWalletConnect(config),
     })
-    return authenticate(walletConnectProvider)
+    const connectedAccount = await walletConnectProvider
+      .enable()
+      .catch((error) => {
+        console.error(error)
+        return undefined
+      })
+    if (connectedAccount) {
+      return authenticate(walletConnectProvider)
+    }
   }
 
   const handleCoinbaseWalletProvider = async () => {
@@ -81,8 +89,19 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       appLogoUrl: '/static/images/svg/default-lock-logo.svg',
     })
 
-    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
-    return authenticate(ethereum)
+    const walletLinkProvider = walletLink.makeWeb3Provider(
+      config.networks[1].provider,
+      1
+    )
+    const connectedAccount = await walletLinkProvider
+      .enable()
+      .catch((error) => {
+        console.error(error)
+        return undefined
+      })
+    if (connectedAccount) {
+      return authenticate(walletLinkProvider)
+    }
   }
 
   const walletHandlers: {
