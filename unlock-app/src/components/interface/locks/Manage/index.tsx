@@ -198,7 +198,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
         <Popover className="relative">
           <>
             <Popover.Button className="outline-none ring-0">
-              <Button as="div">
+              <Button as="div" role="button">
                 <div className="flex items-center gap-2">
                   <Icon icon={ToolsIcon} size={20} />
                   <span>Tools</span>
