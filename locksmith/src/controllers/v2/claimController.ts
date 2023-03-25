@@ -5,12 +5,8 @@ import Dispatcher from '../../fulfillment/dispatcher'
 import KeyPricer from '../../utils/keyPricer'
 import normalizer from '../../utils/normalizer'
 import networks from '@unlock-protocol/networks'
-import { UserTokenMetadata } from '../../models'
 import { UserMetadata } from './metadataController'
-import {
-  addMetadata,
-  isMetadataEmpty,
-} from '../../operations/userMetadataOperations'
+import { addMetadata } from '../../operations/userMetadataOperations'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
