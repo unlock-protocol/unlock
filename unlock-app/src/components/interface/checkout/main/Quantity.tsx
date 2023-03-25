@@ -46,7 +46,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   const formattedData = getLockProps(
     lock,
     lock!.network,
-    config.networks[lock!.network].baseCurrencySymbol,
+    config.networks[lock!.network].nativeCurrency.symbol,
     lock!.name,
     quantity
   )

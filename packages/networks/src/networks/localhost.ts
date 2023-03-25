@@ -6,8 +6,6 @@ export const localhost: NetworkConfig = {
   chain: 'localhost',
   provider: 'http://127.0.0.1:8545',
   publicProvider: 'http://127.0.0.1:8545',
-  locksmithUri: 'http://127.0.0.1:8080',
-  unlockAppUrl: 'http://0.0.0.0:3000',
   subgraph: {
     endpoint: 'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
     endpointV2: 'http://localhost:8000/subgraphs/name/testgraph',

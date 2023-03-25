@@ -45,10 +45,6 @@ describe('Unlock Hardhat plugin', function () {
         this.hre.unlock.networks['31337'].subgraph?.endpoint,
         'here goes a subgraph URI'
       )
-      assert.equal(
-        this.hre.unlock.networks['31337'].locksmithUri,
-        networks['31337'].locksmithUri
-      )
     })
 
     describe('functions', function () {

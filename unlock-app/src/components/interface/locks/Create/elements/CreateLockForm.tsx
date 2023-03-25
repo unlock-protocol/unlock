@@ -101,7 +101,7 @@ export const CreateLockForm = ({
     control,
   })
 
-  const { baseCurrencySymbol } = networks[selectedNetwork!] ?? {}
+  const baseCurrencySymbol = networks[selectedNetwork!].nativeCurrency.symbol
 
   const getBalance = async () => {
     const balance = await getAccountTokenBalance(

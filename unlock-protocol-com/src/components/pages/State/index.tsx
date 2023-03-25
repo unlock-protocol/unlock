@@ -573,14 +573,14 @@ export function State() {
                       >
                         <div className="flex justify-start pb-4 border-b border-gray-300">
                           <CryptoIcon
-                            symbol={network.baseCurrencySymbol}
+                            symbol={network.nativeCurrency.symbol}
                             size={40}
                           />
                           <p className="self-center pr-2 heading-small">
                             {numeral(total).format('0,0.000')}{' '}
                           </p>
                           <p className="self-center pr-2 heading-small">
-                            {network.baseCurrencySymbol.toUpperCase()}
+                            {network.nativeCurrency.symbol}
                           </p>
                         </div>
                         <div className="flex justify-between pt-4">

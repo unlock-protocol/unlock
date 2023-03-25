@@ -45,7 +45,7 @@ const priceConversion = async (network) => {
     return 0
   }
   const response = await fetch(
-    `https://api.coinbase.com/v2/exchange-rates?currency=${network.baseCurrencySymbol}`
+    `https://api.coinbase.com/v2/exchange-rates?currency=${network.nativeCurrency.symbol}`
   )
 
   const json = await response.json()

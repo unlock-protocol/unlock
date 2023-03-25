@@ -10,7 +10,6 @@ export const polygon: NetworkConfig = {
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
   id: 137,
   name: 'Polygon',
-  blockTime: 1000,
   chain: 'polygon',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
@@ -35,10 +34,6 @@ export const polygon: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/matic/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'Matic',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'Matic',
     symbol: 'MATIC',
@@ -56,7 +51,6 @@ export const polygon: NetworkConfig = {
     "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   isTestNetwork: false,
   maxFreeClaimCost: 100,
-  teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   uniswapV2: {
     oracle: '0xE20ef269CE3ac2Af8107E706FC2Ec6E1831e3125',
   },

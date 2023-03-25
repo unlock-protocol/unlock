@@ -8,7 +8,6 @@ export const bsc: NetworkConfig = {
   id: 56,
   name: 'BNB Chain',
   chain: 'bsc',
-  blockTime: 1000,
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
@@ -28,10 +27,6 @@ export const bsc: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'BNB',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'BNB',
     symbol: 'BNB',
@@ -50,7 +45,6 @@ export const bsc: NetworkConfig = {
   url: 'https://www.bnbchain.org/en',
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  teamMultisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
   swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',
   tokens: [
     {

@@ -46,7 +46,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
   const storageService = useStorageService()
-  const baseSymbol = config.networks[lock.network].baseCurrencySymbol
+  const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
   const web3Service = useWeb3Service()
   const { isLoading, data: fiatPricing } = useQuery(

@@ -8,7 +8,6 @@ export const mumbai: NetworkConfig = {
   keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
   id: 80001,
   name: 'Mumbai (Polygon)',
-  blockTime: 1000,
   chain: 'mumbai',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai',
@@ -28,10 +27,6 @@ export const mumbai: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'MATIC',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'MATIC',
     symbol: 'MATIC',
@@ -45,7 +40,6 @@ export const mumbai: NetworkConfig = {
   faucet: 'https://faucet.polygon.technology/',
   isTestNetwork: true,
   maxFreeClaimCost: 500,
-  teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',

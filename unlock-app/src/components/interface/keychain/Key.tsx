@@ -161,7 +161,7 @@ function Key({ ownedKey, account, network }: Props) {
   const isAvailableOnOpenSea =
     networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
-  const baseSymbol = config.networks[network].baseCurrencySymbol!
+  const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
     isLockDataLoading || !lockData
       ? baseSymbol

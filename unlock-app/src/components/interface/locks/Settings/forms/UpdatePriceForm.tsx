@@ -43,7 +43,7 @@ export const UpdatePriceForm = ({
   const web3Service = useWeb3Service()
   const [changeCurrencyOpen, setChangeCurrencyModal] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const { baseCurrencySymbol } = networks[network!] ?? {}
+  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
 
   const {
     register,
