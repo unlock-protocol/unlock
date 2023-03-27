@@ -18,6 +18,6 @@ contract TestUnlockUpgraded is Unlock {
 
 }
 
-interface ITestPublicLockUpgraded is IPublicLock {
+interface ITestUnlockUpgraded is IPublicLock {
   function sayHello() external pure returns (string memory);
 }
