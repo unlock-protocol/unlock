@@ -1,3 +1,7 @@
+import {
+  DEFAULT_LOCK_SETTINGS,
+  LockSettingProps,
+} from '../controllers/v2/lockSettingContoller'
 import { LockSetting } from '../models/lockSetting'
 
 interface SendEmailProps {
@@ -32,7 +36,7 @@ export async function getSettings({
 }: {
   lockAddress: string
   network: number
-}): Promise<LockSetting | null> {
+}): Promise<LockSetting | LockSettingProps> {
   const settings = await LockSetting.findOne({
     where: {
       lockAddress,
@@ -40,5 +44,5 @@ export async function getSettings({
     },
   })
 
-  return settings
+  return settings || DEFAULT_LOCK_SETTINGS
 }

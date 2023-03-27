@@ -16,8 +16,13 @@ router.post(
   }
 )
 
-router.get('/:network/locks/:lockAddress', (req, res) => {
-  lockSettingController.getSettings(req, res)
-})
+router.get(
+  '/:network/locks/:lockAddress',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => {
+    lockSettingController.getSettings(req, res)
+  }
+)
 
 export default router

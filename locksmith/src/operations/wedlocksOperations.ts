@@ -17,6 +17,11 @@ import * as lockSettingOperations from './lockSettingOperations'
 
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
+import { LockSetting } from '../models/lockSetting'
+import {
+  DEFAULT_LOCK_SETTINGS,
+  LockSettingProps,
+} from '../controllers/v2/lockSettingContoller'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -71,7 +76,7 @@ export const sendEmail = async (
   }
 
   // prevent send email when is not enabled
-  const canSendEmail = await isSendEmailEnabled(
+  const { sendEmail: canSendEmail } = await getLockSettings(
     params.lockAddress,
     Number(params.network)
   )
@@ -233,19 +238,18 @@ const getTemplates = ({
     : [`keyMined${lockAddress.trim()}`, 'keyMined']
 }
 
-const isSendEmailEnabled = async (
+const getLockSettings = async (
   lockAddress: string,
   network?: number
-): Promise<boolean> => {
+): Promise<LockSetting | LockSettingProps> => {
   if (lockAddress && network) {
     const settings = await lockSettingOperations.getSettings({
       lockAddress,
       network,
     })
-    // fallback to true when settings are not present
-    return settings?.sendEmail ?? true
+    return settings
   }
-  return true
+  return DEFAULT_LOCK_SETTINGS
 }
 /**
  * Check if there are metadata with an email address for a key and sends

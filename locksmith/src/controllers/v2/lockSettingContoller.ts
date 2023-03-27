@@ -12,6 +12,12 @@ const LockSettingSchema = z.object({
     .default(true),
 })
 
+export type LockSettingProps = z.infer<typeof LockSettingSchema>
+
+export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
+  sendEmail: true,
+}
+
 export class LockSettingController {
   async updateSettings(request: Request, response: Response) {
     try {
@@ -48,9 +54,8 @@ export class LockSettingController {
         return response.status(200).send(settings)
       }
 
-      return response.status(404).json({
-        message: 'There is not settings for this Lock.',
-      })
+      // return default settings
+      return response.status(200).send(DEFAULT_LOCK_SETTINGS)
     } catch (err: any) {
       logger.error(err.message)
       return response.status(500).send({
