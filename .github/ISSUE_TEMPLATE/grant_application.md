@@ -53,9 +53,9 @@ Profiles or links to profiles of key team members
 How'd you learn about Unlock?
 
 **Provide two or three measurable milestones for periodic review (please include both measurable goal and expected timeframe to reach the goal**
-1.
-2.
-3.
+-
+-
+-
 
 **Anything else you think we should know**
 Feel free to include any other relevant information about your grant proposal here
