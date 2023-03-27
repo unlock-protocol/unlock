@@ -48,9 +48,9 @@ contract("Unlock / bridged governance", () => {
     );
 
     // deploy unlock manager on remote chain
-    const UnlockManager = await ethers.getContractFactory("UnlockManager");
+    const UnlockOwner = await ethers.getContractFactory("UnlockOwner");
     
-    managerMainnet = await UnlockManager.deploy(
+    managerMainnet = await UnlockOwner.deploy(
       bridge.address,
       ZERO_ADDRESS, // unlock on mainnet
       dao.address,
@@ -58,7 +58,7 @@ contract("Unlock / bridged governance", () => {
       srcDomainId,
     );
     
-    managerDest = await UnlockManager.deploy(
+    managerDest = await UnlockOwner.deploy(
       bridge.address,
       unlockDest.address,
       dao.address, // dao address on mainnet
@@ -66,7 +66,7 @@ contract("Unlock / bridged governance", () => {
       destDomainId,
     );
     
-    // transfer assets to UnlockManager on dest chain
+    // transfer assets to unlockOwner on dest chain
     proxyAdmin = await getProxyAdmin(unlockDest.address)
     await proxyAdmin.transferOwnership(managerDest.address)
     await unlockDest.transferOwnership(managerDest.address)

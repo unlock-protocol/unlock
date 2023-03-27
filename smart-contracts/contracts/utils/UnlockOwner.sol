@@ -21,7 +21,7 @@ import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfa
 import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
 import '../interfaces/IUnlock.sol';
 
-contract UnlockManager {
+contract UnlockOwner {
 
   // address of the connext bridge on the current chain
   address public bridgeAddress;
