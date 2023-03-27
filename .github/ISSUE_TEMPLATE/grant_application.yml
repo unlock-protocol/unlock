@@ -1,6 +1,6 @@
-name: "Grant Application 1"
+name: "Grant Application"
 description: Submit a grant application
-title: "Grant Application 2"
+title: "Project Name <- Replace me!"
 labels: ["Grant Application"]
 assignees:
   - desertrat10
