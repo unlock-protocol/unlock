@@ -105,7 +105,7 @@ export const upsertUserMetadata = async (
     updatedBy,
   }
 
-  // if no user, create one
+  // if no UserTokenMetadata, create one
   if (!user) {
     const result = await UserTokenMetadata.create(userTokenMetadata)
     return result

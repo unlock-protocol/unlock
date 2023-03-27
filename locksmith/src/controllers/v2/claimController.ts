@@ -6,7 +6,7 @@ import KeyPricer from '../../utils/keyPricer'
 import normalizer from '../../utils/normalizer'
 import networks from '@unlock-protocol/networks'
 import { UserMetadata } from './metadataController'
-import { addMetadata } from '../../operations/userMetadataOperations'
+import { upsertUserMetadata } from '../../operations/userMetadataOperations'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
@@ -91,11 +91,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
         email,
       },
     })
-    await addMetadata({
-      chain: network,
+    await upsertUserMetadata({
+      network,
       userAddress: owner,
-      tokenAddress: lockAddress,
-      data: metadata,
+      lockAddress,
+      metadata,
     })
   }
 
