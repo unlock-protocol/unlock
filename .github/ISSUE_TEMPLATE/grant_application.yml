@@ -8,51 +8,40 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        Thanks for taking the time to fill out this grant application! Please make sure you follow the guidelines [detailed in our docs](https://docs.unlock-protocol.com/governance/grants-bounties/).
+        Once submitted, the Unlock community will review your application so please make sure it is thorough and detailed.
   - type: input
-    id: contact
+    id: title
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: Title of your grant application
+      description: Please enter the title of your grant application
+      placeholder: ex. a plugin for Squarespace
     validations:
       required: true
-  - type: dropdown
-    id: version
+  - type: textarea
+    id: details
     attributes:
-      label: Version
-      description: What version of our software are you running?
-      options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+      label: Description
+      description: Please provide us with a complete description of your grant. You can use markdown syntax.
+      placeholder: ex. I will build a plugin for Squarespace that lets website owners in squarespace token gate some of their pages. The plugin will... etc
     validations:
       required: true
-  - type: dropdown
-    id: browsers
+  - type: input
+    id: discord 
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
-  - type: textarea
-    id: logs
-    attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      label: Discord handle
+      description: Your discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
+    validations:
+      required: true
   - type: checkboxes
+    id: open-source
+    attributes:
+      label: Is your work Open Source
+      description: Do you intend to release your work as Open Source
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
+- type: checkboxes
     id: terms
     attributes:
       label: Code of Conduct
