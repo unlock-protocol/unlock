@@ -143,6 +143,17 @@ contract UnlockOwner {
     return (contractToCall, returnedData);
   }
 
+  /**
+   * This function can be called by the multisig to remove itself, so only the DAO
+   * is left as sole owner of the Unlock contract
+   */
+  function renounceMultisig() external {
+    if ( !_isMultisig()) {
+      revert Unauthorized(msg.sender);
+    }
+    multisigAddress = address(0);
+  } 
+
 
   /**
    * Calling this function will execute directly a call to Unlock or a proxy upgrade

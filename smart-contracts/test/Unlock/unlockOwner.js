@@ -228,4 +228,31 @@ contract("Unlock / bridged governance", () => {
     })
   })
 
+  describe("renounceMultisig", () => {
+    it('can only be called by the multisig itself', async () => {
+      await reverts(
+        managerDest.renounceMultisig(),
+        'Unauthorized'
+      )
+    })
+
+    it('allow the multisig to remove itself', async () => {
+      await managerDest.connect(multisig).renounceMultisig()
+      assert.equal(
+        await managerDest.multisigAddress(),
+        ADDRESS_ZERO
+      )
+
+      // make sure exec reverts
+      const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, '0x'])
+      await reverts(
+        managerDest.connect(multisig).execMultisig(calldata),
+        'Unauthorized'
+      )
+      
+
+
+    })
+  })
+
 });
