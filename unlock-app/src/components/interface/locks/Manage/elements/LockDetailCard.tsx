@@ -139,7 +139,7 @@ export const LockDetailCard = ({
 
   const { keyPrice, maxNumberOfKeys, expirationDuration } = lock ?? {}
 
-  const { name: networkName, baseCurrencySymbol } = networks?.[network] ?? {}
+  const { name: networkName, nativeCurrency } = networks?.[network] ?? {}
   const numbersOfKeys =
     maxNumberOfKeys === UNLIMITED_KEYS_COUNT ? 'Unlimited' : maxNumberOfKeys
   const duration =
@@ -151,7 +151,7 @@ export const LockDetailCard = ({
 
   const loading = isLoading || isLoadingStripe
 
-  const symbol = lock?.currencySymbol || baseCurrencySymbol
+  const symbol = lock?.currencySymbol || nativeCurrency.symbol
   const priceLabel =
     keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
 

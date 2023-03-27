@@ -302,7 +302,7 @@ export function Confirm({
     isInitialDataLoading ||
     isPayableLoading
 
-  const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
+  const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
   const formattedData = getLockProps(
     lock,
@@ -556,8 +556,8 @@ export function Confirm({
                 {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
                   <small className="text-center text-red-500">
                     You do not have enough{' '}
-                    {config.networks[lock!.network].baseCurrencySymbol} to pay
-                    transaction fees (gas).
+                    {config.networks[lock!.network].nativeCurrency.symbol} to
+                    pay transaction fees (gas).
                   </small>
                 )}
               </>
