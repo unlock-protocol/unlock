@@ -32,7 +32,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --fix"
+      "yarn run lint --fix"
     ]
   },
   "browserslist": [
