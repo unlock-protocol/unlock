@@ -47,7 +47,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('LockSettings v2 endpoints for lock', () => {
-  it('should throw an error when authorized user try to save setting', async () => {
+  it('should throw an error when non-authorized user try to save setting', async () => {
     expect.assertions(2)
     const { loginResponse, address } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
@@ -102,7 +102,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.sendEmail).toBe(false)
   })
 
-  it('should save and retrieve saved setting when lockManager', async () => {
+  it('should save and retrieve setting when user is lockManager', async () => {
     expect.assertions(5)
 
     const { loginResponse } = await loginRandomUser(app)
