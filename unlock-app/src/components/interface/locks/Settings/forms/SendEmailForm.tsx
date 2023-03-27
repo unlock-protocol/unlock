@@ -32,22 +32,19 @@ export const SendEmailForm = ({
     },
   })
 
-  const { isLoading, data: { data: { sendEmail: sendEmailValue } } = {} } =
-    useQuery(
-      [
-        'getLockSettings',
-        lockAddress,
-        network,
-        updateSettingsMutation.isSuccess,
-      ],
-      async () => await storage.getLockSettings(network, lockAddress),
-      {
-        enabled: lockAddress?.length > 0 && !!network && isManager,
-        onSuccess: (res: any) => {
-          setSendEmail(res?.data?.sendEmail ?? true)
-        },
-      }
-    )
+  const {
+    isLoading,
+    data: { data: { sendEmail: sendEmailValue } } = { data: {} },
+  } = useQuery(
+    ['getLockSettings', lockAddress, network, updateSettingsMutation.isSuccess],
+    async () => await storage.getLockSettings(network, lockAddress),
+    {
+      enabled: lockAddress?.length > 0 && !!network && isManager,
+      onSuccess: (res: any) => {
+        setSendEmail(res?.data?.sendEmail ?? true)
+      },
+    }
+  )
 
   const disabledInput = disabled || isLoading || !isManager
 
