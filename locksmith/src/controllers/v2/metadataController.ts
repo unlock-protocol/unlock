@@ -14,7 +14,7 @@ import {
 } from '../../operations/userMetadataOperations'
 import { networks } from '@unlock-protocol/networks'
 
-const UserMetadata = z
+export const UserMetadata = z
   .object({
     public: z.record(z.string(), z.any()).optional(),
     protected: z.record(z.string(), z.any()).optional(),

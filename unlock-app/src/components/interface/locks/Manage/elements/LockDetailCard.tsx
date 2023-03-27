@@ -187,7 +187,7 @@ export const LockDetailCard = ({
               Need to update the icon? Use the{' '}
               <Link
                 href={metadataPageUrl}
-                className="capitalize text-brand-ui-primary hover:underline"
+                className="text-brand-ui-primary hover:underline"
               >
                 Metadata Editor
               </Link>

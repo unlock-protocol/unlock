@@ -462,7 +462,7 @@ export function Confirm({
 
       const captcha = await recaptchaRef.current?.executeAsync()
 
-      const hash = await claim({
+      const { hash } = await claim({
         data: purchaseData?.[0],
         captcha,
       })

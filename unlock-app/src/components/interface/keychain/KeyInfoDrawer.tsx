@@ -41,7 +41,7 @@ interface KeyItemProps {
 export const KeyItem = ({ label, children }: KeyItemProps) => {
   return (
     <div className="flex items-center justify-between gap-2 py-1">
-      <span className="text-gray-500 capitalize">{label}</span>
+      <span className="text-gray-500">{label}</span>
       <span className="font-bold">{children}</span>
     </div>
   )
