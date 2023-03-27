@@ -9,7 +9,6 @@ export const avalanche: NetworkConfig = {
   id: 43114,
   name: 'Avalanche (C-Chain)',
   chain: 'avax',
-  blockTime: 1000,
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
@@ -29,10 +28,6 @@ export const avalanche: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'AVAX',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'AVAX',
     symbol: 'AVAX',

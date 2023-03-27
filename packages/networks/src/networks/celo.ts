@@ -12,7 +12,6 @@ export const celo: NetworkConfig = {
   description:
     'Celo is the carbon-negative, mobile-first, EVM-compatible blockchain ecosystem leading a thriving new digital economy for all.',
   url: 'https://celo.org',
-  blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
     endpointV2:
@@ -31,10 +30,6 @@ export const celo: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'CELO',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'CELO',
     symbol: 'CELO',
@@ -45,7 +40,6 @@ export const celo: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
