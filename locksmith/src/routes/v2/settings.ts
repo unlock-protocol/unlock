@@ -1,28 +1,25 @@
 import express from 'express'
-import { LockSettingController } from '../../controllers/v2/lockSettingContoller'
+import {
+  getSettings,
+  updateSettings,
+} from '../../controllers/v2/lockSettingController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
 const router = express.Router({ mergeParams: true })
 
-const lockSettingController = new LockSettingController()
-
 router.post(
   '/:network/locks/:lockAddress',
   authenticatedMiddleware,
   lockManagerMiddleware,
-  (req, res) => {
-    lockSettingController.updateSettings(req, res)
-  }
+  updateSettings
 )
 
 router.get(
   '/:network/locks/:lockAddress',
   authenticatedMiddleware,
   lockManagerMiddleware,
-  (req, res) => {
-    lockSettingController.getSettings(req, res)
-  }
+  getSettings
 )
 
 export default router

@@ -2,10 +2,11 @@ import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { expect, vi } from 'vitest'
+import { DEFAULT_LOCK_SETTINGS } from '../../../src/controllers/v2/lockSettingController'
 
 const network = 4
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
-const wrongWallet = '0xdCc44A9502239657578cB626C5afe9c2615733c0'
+const lockAddress2 = '0x060D07E7cCcD390B6F93B4D318E9FF203250D9be'
 const lockSettingMock = {
   id: 4,
   lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
@@ -37,8 +38,8 @@ vi.mock('@unlock-protocol/unlock-js', () => {
           console.log(lock)
           return (
             lockAddress.toLowerCase() === lock.toLowerCase() ||
-            lock.toLocaleLowerCase() ===
-              lockSettingMock.lockAddress?.toLocaleLowerCase()
+            lockSettingMock.lockAddress?.toLowerCase() === lock.toLowerCase() ||
+            lockAddress2.toLowerCase() === lock.toLowerCase()
           )
         },
       }
@@ -47,33 +48,61 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('LockSettings v2 endpoints for lock', () => {
-  it('should throw an error when non-authorized user try to save setting', async () => {
+  it('should fail to get settings  with no authentication', async () => {
+    expect.assertions(1)
+
+    const response = await request(app).get(
+      `/v2/settings/${network}/locks/${lockAddress}`
+    )
+
+    expect(response.status).toBe(401)
+  })
+
+  it('should fail to save settings with no authentication', async () => {
+    expect.assertions(1)
+
+    const saveSettingResponse = await request(app).post(
+      `/v2/settings/${network}/locks/${lockAddress}`
+    )
+
+    expect(saveSettingResponse.status).toBe(401)
+  })
+
+  it('should fail to get settings when authenticated and not lockManager', async () => {
     expect.assertions(2)
+
     const { loginResponse, address } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
-    const response = await request(app).get(
-      `/v2/settings/${network}/locks/${address}`
-    )
-
-    expect(response.status).toBe(404)
-  })
-
-  it('should fail to save setting with invalid params', async () => {
-    expect.assertions(1)
-
-    const { loginResponse } = await loginRandomUser(app)
-    const saveSettingResponse = await request(app)
-      .post(`/v2/settings/${network}/locks/${lockAddress}`)
+    const response = await request(app)
+      .get(`/v2/settings/${network}/locks/${address}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(saveSettingResponse.status).toBe(500)
+    expect(response.status).toBe(403)
   })
 
-  it('should correctly enable "sendEmail"  setting when user is lockManager', async () => {
+  it('should fail to save settings when authenticated and not lockManager', async () => {
     expect.assertions(2)
 
+    const { loginResponse, address } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const saveSettingResponse = await request(app)
+      .post(`/v2/settings/${network}/locks/${address}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        sendEmail: true,
+      })
+
+    expect(saveSettingResponse.status).toBe(403)
+  })
+
+  it('should correctly enable "sendEmail" setting when user is lockManager', async () => {
+    expect.assertions(3)
+
     const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
     const saveSettingResponse = await request(app)
       .post(`/v2/settings/${network}/locks/${lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
@@ -86,7 +115,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.sendEmail).toBe(true)
   })
 
-  it('should correctly disable "sendEmail"  setting when user is lockManager', async () => {
+  it('should correctly disable "sendEmail" setting when user is lockManager', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
@@ -120,9 +149,9 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.sendEmail).toBe(false)
 
     // retrieve settings
-    const getSettingResponse = await request(app).get(
-      `/v2/settings/${network}/locks/${lockSettingMock.lockAddress}`
-    )
+    const getSettingResponse = await request(app)
+      .get(`/v2/settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(getSettingResponse.status).toBe(200)
     expect(getSettingResponse.body.sendEmail).toBe(false)
@@ -131,12 +160,20 @@ describe('LockSettings v2 endpoints for lock', () => {
     )
   })
 
-  it('should fail to retrieve non existing setting', async () => {
-    expect.assertions(1)
-    // retrieve settings
-    const getSettingResponse = await request(app).get(
-      `/v2/settings/${network}/locks/${wrongWallet}`
+  it('should retrieve default settings for a lock', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+
+    const getSettingResponse = await request(app)
+      .get(`/v2/settings/${network}/locks/${lockAddress2}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    console.log(getSettingResponse.body)
+
+    expect(getSettingResponse.status).toBe(200)
+    expect(getSettingResponse.body.sendEmail).toBe(
+      DEFAULT_LOCK_SETTINGS.sendEmail
     )
-    expect(getSettingResponse.status).toBe(404)
   })
 })

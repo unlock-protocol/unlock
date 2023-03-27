@@ -1,7 +1,7 @@
 import {
   DEFAULT_LOCK_SETTINGS,
   LockSettingProps,
-} from '../controllers/v2/lockSettingContoller'
+} from '../controllers/v2/lockSettingController'
 import { LockSetting } from '../models/lockSetting'
 
 interface SendEmailProps {
