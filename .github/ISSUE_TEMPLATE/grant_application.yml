@@ -39,7 +39,7 @@ body:
       label: Is your work Open Source
       description: Do you intend to release your work as Open Source
       options:
-        - label: I agree to follow this project's Code of Conduct
+        - label: Yes, my project uses an Open Source license such as MIT
           required: true
   - type: checkboxes
     id: terms
