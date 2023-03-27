@@ -8,7 +8,7 @@ pragma solidity ^0.8.7;
  * 
  * There are two kind of instructions that can be sent :
  * - 1. change in Unlock settings
- * - 2. upgrade of the Unlock contract (via its proxyAdmmin)
+ * - 2. upgrade of the Unlock contract (via its proxyAdmin)
  *
  * As a security measure, this contract also has an `exec` function 
  * that can be used to send calls directly (without going through a bridge)
