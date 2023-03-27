@@ -1,6 +1,5 @@
 'use strict'
 const table = 'CheckoutConfigs'
-const crypto = require('crypto')
 /** @type {import('sequelize-cli').Migration} */
 
 module.exports = {
@@ -8,10 +7,8 @@ module.exports = {
     await queryInterface.addColumn(table, 'name', {
       type: Sequelize.STRING,
       allowNull: false,
-      // Default for existing rows
-      defaultValue: crypto.randomBytes(16).toString('hex'),
+      defaultValue: Sequelize.literal('gen_random_uuid()'),
     })
-
     await queryInterface.addConstraint(table, {
       fields: ['name', 'createdBy'],
       type: 'unique',
@@ -20,6 +17,10 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    queryInterface.removeColumn(table, 'name')
+    await queryInterface.removeColumn(table, 'name')
+    await queryInterface.removeConstraint(
+      table,
+      'checkout_configs_by_user_and_name'
+    )
   },
 }
