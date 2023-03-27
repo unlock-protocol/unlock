@@ -1,125 +1,65 @@
-import { GraphQLDataSource } from 'apollo-datasource-graphql'
-import networks from '@unlock-protocol/networks'
-import gql from 'graphql-tag'
-import { DocumentNode } from 'graphql'
 import { getValidNumber } from '../../utils/normalizer'
 import logger from '../../logger'
+import {
+  OrderDirection,
+  SubgraphLock,
+  SubgraphService,
+} from '@unlock-protocol/unlock-js'
 
-// todo: replace with subgraphService
 export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
-const keyholdersByTokedIdQuery = gql`
-  query Lock(
-    $addresses: [String!]
-    $expireTimestamp: BigInt! = 0
-    $first: Int! = 100
-    $skip: Int! = 0
-    $tokenId: BigInt
-  ) {
-    locks(where: { address_in: $addresses }) {
-      keys(
-        where: { expiration_gt: $expireTimestamp, tokenId: $tokenId }
-        first: $first
-        skip: $skip
-        orderBy: tokenId
-        orderDirection: asc
-      ) {
-        manager
-        owner
-        tokenId
-        expiration
-      }
-      name
-      address
-    }
-  }
-`
 
-const ActiveKeys = gql`
-  query Lock(
-    $addresses: [String!]
-    $expireTimestamp: BigInt! = 0
-    $first: Int! = 100
-    $skip: Int! = 0
-    $owner: String = ""
-  ) {
-    locks(where: { address_in: $addresses }) {
-      keys(
-        where: { expiration_gt: $expireTimestamp, owner_contains: $owner }
-        first: $first
-        skip: $skip
-        orderBy: tokenId
-        orderDirection: asc
-      ) {
-        manager
-        owner
-        tokenId
-        expiration
-        manager
-      }
-      name
-      address
-    }
-  }
-`
+interface KeyByFilterProps {
+  first: number
+  skip: number
+  network: number
+  addresses: string[]
+  expireTimestamp: number | undefined
+  filter: KeyFilter
+  tokenId?: number
+}
 
-const ExpiredKeys = gql`
-  query Lock(
-    $addresses: [String!]
-    $expireTimestamp: BigInt! = 0
-    $first: Int! = 100
-    $skip: Int! = 0
-    $owner: String = ""
-  ) {
-    locks(where: { address_in: $addresses }) {
-      keys(
-        where: { expiration_lt: $expireTimestamp, owner_contains: $owner }
-        first: $first
-        skip: $skip
-        orderBy: tokenId
-        orderDirection: asc
-      ) {
-        manager
-        owner
-        tokenId
-        expiration
-      }
-      name
-      address
-    }
-  }
-`
+const locksByFilter = async ({
+  network,
+  tokenId,
+  filter,
+  first = 100,
+  skip = 0,
+  expireTimestamp,
+  addresses = [],
+}: KeyByFilterProps): Promise<any> => {
+  const subgraph = new SubgraphService()
 
-const keyListByLock = gql`
-  query Lock(
-    $addresses: [String!]
-    $first: Int! = 100
-    $skip: Int! = 0
-    $owner: String = ""
-  ) {
-    locks(where: { address_in: $addresses }) {
-      keys(
-        where: { expiration_gt: 0, owner_contains: $owner }
-        first: $first
-        skip: $skip
-        orderBy: tokenId
-        orderDirection: asc
-      ) {
-        manager
-        owner
-        tokenId
-        expiration
-      }
-      name
-      address
-    }
+  if (filter === 'all') {
+    expireTimestamp = 0
   }
-`
 
-const QUERY_BY_TYPE: { [key in KeyFilter]: DocumentNode } = {
-  active: ActiveKeys,
-  expired: ExpiredKeys,
-  all: keyListByLock,
-  tokenId: keyholdersByTokedIdQuery,
+  const query: Record<string, any> =
+    filter === 'expired'
+      ? {
+          expiration_lt: expireTimestamp, // all expired keys
+        }
+      : {
+          expiration_gt: expireTimestamp, // all non expired keys
+        }
+
+  const locks = await subgraph.locks(
+    {
+      first,
+      skip,
+      where: {
+        address_in: addresses?.map((address) => address.toLowerCase()), // lowercase address
+        keys_: {
+          tokenId: filter === 'tokenId' ? tokenId : undefined,
+          ...query,
+        },
+      },
+      orderDirection: OrderDirection.Asc,
+    },
+    {
+      networks: [network],
+    }
+  )
+  return locks || []
 }
 
 interface KeyGetProps {
@@ -130,86 +70,68 @@ interface KeyGetProps {
     page: number
     expiration: KeyFilter
   }
+  network: number
 }
 
-export class keysByQuery extends GraphQLDataSource {
-  constructor(public network: number) {
-    super()
-    this.baseURL = networks[network].subgraph.endpointV2
-  }
+export const keysByQuery = async ({
+  network,
+  addresses = [],
+  filters: {
+    query: search,
+    filterKey = 'owner',
+    expiration = 'active',
+    page = 0,
+  },
+}: KeyGetProps) => {
+  try {
+    const first = 1000 // max items
 
-  async get({
-    addresses = [],
-    filters: {
-      query: search,
-      filterKey = 'owner',
-      expiration = 'active',
-      page = 0,
-    },
-  }: KeyGetProps) {
-    try {
-      const first = 1000 // max items
+    // need to query all keys ignoring expiration duration when searching by token id
+    const expireTimestamp =
+      expiration === 'all' || filterKey === 'tokenId'
+        ? 0
+        : parseInt(`${new Date().getTime() / 1000}`)
+    const tokenId = getValidNumber(search)
 
-      // need to query all keys ignoring expiration duration when searching by token id
-      const expireTimestamp =
-        expiration === 'all' || filterKey === 'tokenId'
-          ? 0
-          : parseInt(`${new Date().getTime() / 1000}`)
-      const tokenId = getValidNumber(search)
+    const getData = async (getFromPage = page) => {
+      const skip = parseInt(`${getFromPage}`, 10) * first
+      // The Graph does not support skipping more than 5000
+      // https://thegraph.com/docs/en/querying/graphql-api/#pagination
 
-      let query: any
-      if (filterKey === 'tokenId' && `${search}`?.length) {
-        query = QUERY_BY_TYPE.tokenId
-      } else {
-        query = QUERY_BY_TYPE[expiration]
-      }
-
-      const getData = async (getFromPage = page) => {
-        const skip = parseInt(`${getFromPage}`, 10) * first
-        // The Graph does not support skipping more than 5000
-        // https://thegraph.com/docs/en/querying/graphql-api/#pagination
-        return await this.query(query, {
-          variables: {
-            addresses,
-            tokenId,
-            first,
-            skip,
-            expireTimestamp,
-          },
-        })
-      }
-      const {
-        data: { locks },
-      } = (await getData()) ?? {}
-
-      const keysList = locks[0]?.keys ?? []
-
-      let getForNextPage = keysList?.length === first
-
-      // get next page keys and add it to the list until the length is equal to MAX_ITEMS
-      while (getForNextPage) {
-        page = page + 1
-        try {
-          const {
-            data: {
-              locks: [{ keys: nextPageKeys = [] }],
-            },
-          } = (await getData()) ?? {}
-
-          keysList?.push(...(nextPageKeys ?? []))
-
-          getForNextPage = nextPageKeys?.length === first
-        } catch (error) {
-          logger.error(error)
-          getForNextPage = false // When we have an error, we stop paginating, results will be partial
-        }
-      }
-
-      return locks
-    } catch (error) {
-      logger.error(error)
-      return []
+      return await locksByFilter({
+        first,
+        skip,
+        addresses,
+        network,
+        tokenId,
+        expireTimestamp,
+        filter: expiration,
+      })
     }
+    const locks: SubgraphLock[] = (await getData()) ?? {}
+
+    const keysList: any[] = locks[0]?.keys || []
+
+    let getForNextPage = keysList?.length === first
+
+    // get next page keys and add it to the list until the length is equal to MAX_ITEMS
+    while (getForNextPage) {
+      page = page + 1
+      try {
+        const [{ keys: nextPageKeys = [] }] = (await getData()) ?? {}
+
+        keysList?.push(...(nextPageKeys ?? []))
+
+        getForNextPage = nextPageKeys?.length === first
+      } catch (error) {
+        logger.error(error)
+        getForNextPage = false // When we have an error, we stop paginating, results will be partial
+      }
+    }
+
+    return locks || []
+  } catch (error) {
+    logger.error(error)
+    return []
   }
 }
-export default keysByQuery

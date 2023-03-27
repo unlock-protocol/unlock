@@ -22,6 +22,17 @@ query allLocks(
     version
     createdAtBlock
     totalKeys
+    keys {
+      id
+      tokenId
+      owner
+      manager
+      expiration
+      tokenURI
+      createdAtBlock
+      cancelled
+      transactionsHash
+    }
   }
 }
 
