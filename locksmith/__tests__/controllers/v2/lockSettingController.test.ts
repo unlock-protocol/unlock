@@ -51,7 +51,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect.assertions(1)
 
     const response = await request(app).get(
-      `/v2/settings/${network}/locks/${lockAddress}`
+      `/v2/lock-settings/${network}/locks/${lockAddress}`
     )
 
     expect(response.status).toBe(401)
@@ -61,7 +61,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect.assertions(1)
 
     const saveSettingResponse = await request(app).post(
-      `/v2/settings/${network}/locks/${lockAddress}`
+      `/v2/lock-settings/${network}/locks/${lockAddress}`
     )
 
     expect(saveSettingResponse.status).toBe(401)
@@ -74,7 +74,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
-      .get(`/v2/settings/${network}/locks/${address}`)
+      .get(`/v2/lock-settings/${network}/locks/${address}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(403)
@@ -87,7 +87,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(loginResponse.status).toBe(200)
 
     const saveSettingResponse = await request(app)
-      .post(`/v2/settings/${network}/locks/${address}`)
+      .post(`/v2/lock-settings/${network}/locks/${address}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         sendEmail: true,
@@ -103,7 +103,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(loginResponse.status).toBe(200)
 
     const saveSettingResponse = await request(app)
-      .post(`/v2/settings/${network}/locks/${lockAddress}`)
+      .post(`/v2/lock-settings/${network}/locks/${lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         sendEmail: true,
@@ -119,7 +119,7 @@ describe('LockSettings v2 endpoints for lock', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const saveSettingResponse = await request(app)
-      .post(`/v2/settings/${network}/locks/${lockAddress}`)
+      .post(`/v2/lock-settings/${network}/locks/${lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         sendEmail: false,
@@ -137,7 +137,7 @@ describe('LockSettings v2 endpoints for lock', () => {
 
     // save settings
     const saveSettingResponse = await request(app)
-      .post(`/v2/settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         sendEmail: false,
@@ -149,7 +149,7 @@ describe('LockSettings v2 endpoints for lock', () => {
 
     // retrieve settings
     const getSettingResponse = await request(app)
-      .get(`/v2/settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .get(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(getSettingResponse.status).toBe(200)
@@ -165,7 +165,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     const { loginResponse } = await loginRandomUser(app)
 
     const getSettingResponse = await request(app)
-      .get(`/v2/settings/${network}/locks/${lockAddress2}`)
+      .get(`/v2/lock-settings/${network}/locks/${lockAddress2}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     console.log(getSettingResponse.body)

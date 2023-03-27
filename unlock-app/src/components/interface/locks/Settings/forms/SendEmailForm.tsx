@@ -60,8 +60,8 @@ export const SendEmailForm = ({
         description={
           <span className="mt-2 text-base font-semibold text-black">
             {!sendEmailValue
-              ? 'Emails are disabled, when a user purchase a key does not receive any email.  '
-              : 'Email are enabled, every time a user purchase a key will receive an email'}
+              ? 'Emails are disabled, Unlock Labs will not send emails to users.'
+              : 'Email are enabled, Unlock Labs will send emails to user when their membership status changes.'}
           </span>
         }
         setEnabled={(enabled: boolean) => {

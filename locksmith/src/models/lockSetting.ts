@@ -9,6 +9,7 @@ export class LockSetting extends Model<
   declare lockAddress: string
   declare network: number
   declare sendEmail: boolean
+  declare replyTo?: boolean
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -27,6 +28,10 @@ LockSetting.init(
     sendEmail: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
+    },
+    replyTo: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     createdAt: {
       allowNull: false,

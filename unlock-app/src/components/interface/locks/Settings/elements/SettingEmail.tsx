@@ -21,7 +21,7 @@ export const SettingEmail = ({
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Send email"
-        description={`Control if you want to  enable/disable emails sent for a lock.`}
+        description={`Enable or disable emails sent by Unlock Labs for a lock.`}
         isLoading={isLoading}
       >
         <SendEmailForm
