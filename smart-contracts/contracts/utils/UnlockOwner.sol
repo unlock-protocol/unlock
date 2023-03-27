@@ -162,7 +162,8 @@ contract UnlockOwner {
   }  
 
   /** 
-   * @notice The receiver function as required by the bridge IXReceiver interface.
+   * The receiver function as required by the bridge IXReceiver interface.
+   * @notice calls can only be sent by the DAO on mainnet through the bridge
    * @dev The Connext bridge contract will call this function, that will trigger
    * a `_execAction` locally
    */
@@ -175,10 +176,8 @@ contract UnlockOwner {
     bytes memory callData
   ) external returns (bytes memory) {
 
-    // The calls can only be sent by 
-    // 1) the DAO on mainnet through the bridge
-    // 2) the team multisig on current chain
-    if(!_isBridgedDAO(origin, caller) && _isMultisig()) {
+    // only DAO on mainnet through the bridge
+    if(!_isBridgedDAO(origin, caller)) {
       revert Unauthorized(msg.sender);
     }
 
