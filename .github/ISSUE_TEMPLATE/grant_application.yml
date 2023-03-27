@@ -1,6 +1,6 @@
-name: "Grant Application"
+name: "Grant Application 1"
 description: Submit a grant application
-title: "Grant Application"
+title: "Grant Application 2"
 labels: ["Grant Application"]
 assignees:
   - desertrat10
