@@ -82,7 +82,7 @@ export const getEventDetail = async (
       day: 'numeric',
     })
 
-    const eventEndDate = startDate?.toLocaleDateString(undefined, {
+    const eventEndDate = endDate?.toLocaleDateString(undefined, {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -97,9 +97,10 @@ export const getEventDetail = async (
       timeZone,
     })
 
-    const eventDate = isSameDay
-      ? `${eventStartDate}`
-      : `${eventStartDate} to ${eventEndDate}`
+    const eventDate =
+      isSameDay || !endDate
+        ? `${eventStartDate}`
+        : `${eventStartDate} to ${eventEndDate}`
 
     const eventTime = isSameDay
       ? `${eventStartTime} to ${eventEndTime}`
