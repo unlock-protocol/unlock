@@ -184,7 +184,7 @@ contract UnlockOwner {
     // unpack calldata args
     (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
 
-    (address contractCalled,  bytes memory returnedData) = _execAction(action, valueToSend, execCallData);
+    (address contractCalled,  bytes memory returnedData) = _execAction(action, 0, execCallData);
 
     emit BridgeCallReceived(
       transferId,
