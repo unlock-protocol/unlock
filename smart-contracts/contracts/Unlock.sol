@@ -598,7 +598,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * this proxy contract
    * @dev only the owner can call it
    */
-  function _getAdmin() public view onlyOwner returns (address) {
+  function _getAdmin() public view returns (address) {
       // as per OZ EIP1967 Proxy implementation, this is the keccak-256 hash 
       // of "eip1967.proxy.admin" subtracted by 1
       bytes32 _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
