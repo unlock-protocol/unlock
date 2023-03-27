@@ -2395,7 +2395,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  /v2/settings/{network}/locks/{lockAddress}:
+  /v2/lock-settings/{network}/locks/{lockAddress}:
     get:
       operationId: getLockSettings
       description: Get saved lock settings
