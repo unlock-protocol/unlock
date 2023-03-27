@@ -181,9 +181,6 @@ contract UnlockOwner {
       revert Unauthorized(msg.sender);
     }
 
-    // TODO: parse msg.value properly
-    uint valueToSend = currency != address(0) ? amount: 0;
-
     // unpack calldata args
     (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
 
