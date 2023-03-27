@@ -15975,7 +15975,7 @@ __metadata:
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": 3.1.0
-    "@vitest/coverage-c8": 0.29.7
+    "@vitest/coverage-c8": 0.28.4
     "@walletconnect/client": 1.8.0
     "@walletconnect/web3-provider": 1.8.0
     "@xstate/react": 3.2.1
@@ -16022,7 +16022,7 @@ __metadata:
     tailwindcss: 3.2.7
     typescript: 4.9.5
     validator: 13.9.0
-    vitest: 0.29.7
+    vitest: 0.28.4
     vitest-fetch-mock: 0.2.2
     vitest-localstorage-mock: 0.0.1
     walletlink: 2.5.0
