@@ -14,7 +14,6 @@ const {
 let bridge,
   dao,
   multisig,
-  managerMainnet,
   managerDest,
   unlockDest,
   wethDest,
@@ -23,7 +22,6 @@ let bridge,
 //
 const destChainId = 31337;
 const destDomainId = 1734439522;
-const srcDomainId = 1
 
 const gasEstimate = 16000;
 const url = `http://locksmith:8080/api/key/`;
@@ -49,15 +47,7 @@ contract("Unlock / bridged governance", () => {
 
     // deploy unlock manager on remote chain
     const UnlockOwner = await ethers.getContractFactory("UnlockOwner");
-    
-    managerMainnet = await UnlockOwner.deploy(
-      bridge.address,
-      ZERO_ADDRESS, // unlock on mainnet
-      dao.address,
-      ZERO_ADDRESS, // mutisig
-      srcDomainId,
-    );
-    
+        
     managerDest = await UnlockOwner.deploy(
       bridge.address,
       unlockDest.address,
@@ -74,7 +64,7 @@ contract("Unlock / bridged governance", () => {
 
   describe("constructor", () => {
     it("stores bridge address", async () => {
-      assert.equal(bridge.address, await managerMainnet.bridgeAddress());
+      assert.equal(bridge.address, await managerDest.bridgeAddress());
     });
 
     it("stores Unlock address properly", async () => {
@@ -85,15 +75,15 @@ contract("Unlock / bridged governance", () => {
     });
 
     it("stores the domain properly", async () => {
-      assert.equal(await managerMainnet.domain(), srcDomainId);
+      assert.equal(await managerDest.domain(), destDomainId);
     });
 
     it("stores DAO address", async () => {
-      assert.equal(dao.address, await managerMainnet.daoAddress());
+      assert.equal(dao.address, await managerDest.daoAddress());
     });
     
     it("stores multisig address", async () => {
-      assert.equal(dao.address, await managerMainnet.daoAddress());
+      assert.equal(dao.address, await managerDest.daoAddress());
     });
   });
 
@@ -114,20 +104,21 @@ contract("Unlock / bridged governance", () => {
       const unlockCallData =  interface.encodeFunctionData('addLockTemplate', args)
       calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [1, unlockCallData])
     })
+
     it('DAO through the bridge', async () => {
       // make sure settings were ok before
       assert.equal(await unlockDest.publicLockImpls(args[1]), ADDRESS_ZERO);
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the DAO > mainnet manager > bridge path
-      await managerMainnet.connect(dao).dispatch(
+      await bridge.connect(dao).xcall(
         destChainId,
         managerDest.address,
+        ZERO_ADDRESS, // asset
+        ZERO_ADDRESS, // delegate
+        0, // amount
+        30, // slippage
         calldata,
-        ZERO_ADDRESS,
-        0,
-        ZERO_ADDRESS,
-        30
       )
 
       // make sure things have worked correctly
@@ -160,16 +151,16 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
     })
 
-    it('reverts is dispatch is not called by the DAO', async () => {
+    it('reverts is xcall has not been called by the DAO', async () => {
       await reverts(
-        managerMainnet.dispatch(
+        bridge.xcall(
           destChainId,
           managerDest.address,
-          calldata,
+          ZERO_ADDRESS,
           ZERO_ADDRESS,
           0,
-          ZERO_ADDRESS,
-          30
+          30,
+          calldata,
         ),
         'Unauthorized'
       )
@@ -195,14 +186,14 @@ contract("Unlock / bridged governance", () => {
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send through the dispatcher
-      await managerMainnet.connect(dao).dispatch(
+      await bridge.connect(dao).xcall(
         destChainId,
         managerDest.address,
-        calldata,
+        ZERO_ADDRESS,
         ZERO_ADDRESS,
         0,
-        ZERO_ADDRESS,
-        30
+        30,
+        calldata
       )
 
       const unlockAfterUpgrade = await ethers.getContractAt('TestUnlockUpgraded', unlockDest.address)

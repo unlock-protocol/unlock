@@ -159,44 +159,7 @@ contract UnlockOwner {
     (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
     (address contractCalled, bytes memory returnedData) = _execAction(action, msg.value, execCallData);
     return (contractCalled, returnedData);
-  }
-
-
-  /**
-   * This function is used to send calls to Unlock contracts on other chains.
-   * @notice This is only called by DAO on mainnet
-   * @param domainId the domain ID to target as defined by Connext https://docs.connext.network/resources/supported-chains
-   * @param targetContract the contract that will receive the call
-   * @param callData the data to be executed on the destination chain 
-   * @param asset asset to transfer (can be used to pay bridge fees)
-   * @param amount amount to send across the bridge
-   * @param delegate address that can revert or forceLocal on destination
-   * @param slippage in basis point
-   * @return transferId the Connext ID that can be used to track status on the bridge
-   */
-  function dispatch(
-    uint32 domainId,
-    address targetContract,
-    bytes memory callData,
-    address asset,
-    uint amount,
-    address delegate,
-    uint slippage
-  ) external returns (bytes32 transferId) {
-    if(!_isDAO()) {
-      revert Unauthorized(msg.sender);
-    }
-
-    transferId = IConnext(bridgeAddress).xcall(
-        domainId,
-        targetContract,
-        asset,
-        address(0), // delegate,
-        amount, 
-        slippage,
-        callData
-      );
-  }
+  }  
 
   /** 
    * @notice The receiver function as required by the bridge IXReceiver interface.
