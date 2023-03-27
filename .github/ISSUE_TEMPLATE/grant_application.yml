@@ -4,6 +4,7 @@ title: "Project Name <- Replace me!"
 labels: ["Grant Application"]
 assignees:
   - desertrat10
+  - thehen
 body:
   - type: markdown
     attributes:
