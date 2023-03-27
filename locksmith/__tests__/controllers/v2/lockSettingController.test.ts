@@ -35,7 +35,6 @@ vi.mock('@unlock-protocol/unlock-js', () => {
     Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string) => {
-          console.log(lock)
           return (
             lockAddress.toLowerCase() === lock.toLowerCase() ||
             lockSettingMock.lockAddress?.toLowerCase() === lock.toLowerCase() ||
