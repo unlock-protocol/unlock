@@ -88,7 +88,7 @@ contract UnlockOwner {
   }
   
   function _isDAO() internal view returns (bool) {
-    return msg.sender == daoAddress; // TODO: && block.chainid == 1;
+    return msg.sender == daoAddress;
   }
 
 
@@ -151,7 +151,7 @@ contract UnlockOwner {
    *  the *action* code that follows `_execAction` pattern (see above).
    * @return the address of the contract where code has been executed
    */
-  function exec (bytes memory callData) external payable returns (address, bytes memory) {
+  function execMultisig (bytes memory callData) external payable returns (address, bytes memory) {
     if(!_isMultisig()) {
       revert Unauthorized(msg.sender);
     }
@@ -159,7 +159,24 @@ contract UnlockOwner {
     (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
     (address contractCalled, bytes memory returnedData) = _execAction(action, msg.value, execCallData);
     return (contractCalled, returnedData);
-  }  
+  }
+
+  /**
+   * This function is used to call Unlock or perform a proxy upgrade on mainnet
+   * @notice only callable by DAO 
+   * @param callData the encoded bytes should contains both the call data to be executed and 
+   *  the *action* code that follows `_execAction` pattern (see above).
+   * @return the address of the contract where code has been executed
+   */
+  function execDAO (bytes memory callData) external payable returns (address, bytes memory) {
+    if(!_isDAO() && block.chainid != 1) {
+      revert Unauthorized(msg.sender);
+    }
+    // unpack calldata args
+    (uint8 action, bytes memory execCallData) = abi.decode(callData, (uint8, bytes));
+    (address contractCalled, bytes memory returnedData) = _execAction(action, msg.value, execCallData);
+    return (contractCalled, returnedData);
+  }
 
   /** 
    * The receiver function as required by the bridge IXReceiver interface.

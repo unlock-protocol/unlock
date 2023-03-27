@@ -142,7 +142,7 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the DAO > mainnet manager > bridge path
-      await managerDest.connect(multisig).exec(
+      await managerDest.connect(multisig).execMultisig(
         calldata
       )
 
@@ -168,7 +168,7 @@ contract("Unlock / bridged governance", () => {
     
     it('reverts if exec is not called by multisig', async () => {
       await reverts(
-        managerDest.exec(calldata),
+        managerDest.execMultisig(calldata),
         'Unauthorized'
       )
     })
@@ -209,12 +209,22 @@ contract("Unlock / bridged governance", () => {
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, proxyAdminCalldata])
 
       // send through the DAO > mainnet manager > bridge path
-      await managerDest.connect(multisig).exec(
+      await managerDest.connect(multisig).execMultisig(
         calldata
       )
 
       const unlockAfterUpgrade = await ethers.getContractAt('TestUnlockUpgraded', unlockDest.address)
       assert.equal(await unlockAfterUpgrade.sayHello(), 'hello world')
+    })
+  })
+
+  describe("execDao", () => {
+    it('should revert when not on mainnet', async () => {
+      const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, '0x'])
+      await reverts(
+        managerDest.execDAO(calldata),
+        'Unauthorized'
+      )
     })
   })
 
