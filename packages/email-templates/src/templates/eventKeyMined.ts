@@ -8,9 +8,9 @@ import { links } from './helpers/links'
 handlebars.registerHelper('links', links)
 
 export default {
-  subject: 'A ticket for your next event was added to your wallet!',
-  html: `<h1>A NFT ticket for the event "{{lockName}}"  was added to your wallet!</h1>
-<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just minted for you!</p>
+  subject: `Your ticket for {{lockName}}`,
+  html: `<h1>A NFT ticket for "{{lockName}}" was added to your wallet!</h1>
+<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just minted!</p>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
