@@ -36,7 +36,7 @@ Your project's URL
 
 ## Discord Handle
 
-Your Discord hanlde
+Your Discord handle
 
 ## Social Profiles
 
