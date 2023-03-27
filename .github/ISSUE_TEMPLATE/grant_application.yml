@@ -39,7 +39,7 @@ body:
       label: Github
       description: Please enter the your project\'s github page
       placeholder: ex. https://github.com/unlock-protocol/unlock
-   - type: input
+  - type: input
     id: linkedIn
     attributes:
       label: LinkedIn
