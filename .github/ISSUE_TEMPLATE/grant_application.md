@@ -52,7 +52,7 @@ Development languages that will be used
 
 ## Is this project open source?
 
-Yes | No
+* [ ] Yes
 
 ## What is your estimated timeframe for this project?
 
