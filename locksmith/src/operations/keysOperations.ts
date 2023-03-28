@@ -62,7 +62,7 @@ export const buildKeysWithMetadata = (
         )?.data ?? {}
 
       const metadata = {
-        ...userMetadata?.private,
+        ...userMetadata?.public,
         ...userMetadata?.protected,
         ...extraMetadata,
       }
@@ -72,6 +72,8 @@ export const buildKeysWithMetadata = (
         lockName: lock?.name,
         expiration: key?.expiration,
         keyholderAddress: key?.owner,
+        // defaults to the owner when the manager is not set
+        keyManager: key?.manager ?? key?.owner,
         lockAddress: lock?.address,
         ...metadata,
       }

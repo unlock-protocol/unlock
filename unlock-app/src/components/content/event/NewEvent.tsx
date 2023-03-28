@@ -23,6 +23,7 @@ export const NewEvent = () => {
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
+
     try {
       lockAddress = await walletService.createLock(
         {

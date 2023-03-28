@@ -9,7 +9,8 @@ import '../index.css'
 import { ErrorBoundary } from '@sentry/nextjs'
 import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
-import { Auth } from '~/components/helpers/Auth'
+import { SessionProvider } from '~/hooks/useSession'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
@@ -22,14 +23,16 @@ const UnlockApp = ({ Component }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GlobalWrapper>
-        <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
-          <Auth>
-            <Component />
-          </Auth>
-        </ErrorBoundary>
-        <Toaster />
-      </GlobalWrapper>
+      <SessionProvider>
+        <ConnectModalProvider>
+          <GlobalWrapper>
+            <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
+              <Component />
+            </ErrorBoundary>
+            <Toaster />
+          </GlobalWrapper>
+        </ConnectModalProvider>
+      </SessionProvider>
     </QueryClientProvider>
   )
 }

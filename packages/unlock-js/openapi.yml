@@ -91,14 +91,25 @@ components:
         - 'id'
         - 'by'
         - 'config'
+        - 'name'
       properties:
         id:
+          type: string
+        name:
           type: string
         by:
           type: string
         config:
           type: object
           additionalProperties: true
+
+        createdAt:
+          type: string
+          format: date-time
+
+        updatedAt:
+          type: string
+          format: date-time
 
     Verifier:
       type: object
@@ -163,7 +174,16 @@ components:
     UserMetadata:
       type: object
       nullable: false
+      required:
+        - 'lockAddress'
+        - 'userAddress'
+        - 'metadata'
+        - 'network'
       properties:
+        network:
+          type: integer
+          nullable: false
+
         lockAddress:
           type: string
           nullable: false
@@ -1090,48 +1110,12 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}:
-    post:
-      operationId: createUserMetadata
-      description: Store user metadata for lock.
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/UserAddress'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                metadata:
-                  $ref: '#/components/schemas/UserMetadataInput'
-
-      responses:
-        201:
-          description: Return user metadata saved.
-          content:
-            application/json:
-              schema:
-                type: object
-                nullable: false
-                additionalProperties: true
-
-        400:
-          $ref: '#/components/responses/400.Invalid'
-
-        409:
-          $ref: '#/components/responses/409.Conflict'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
     put:
       operationId: updateUserMetadata
       security:
         - User: ['user', 'lockManager']
 
-      description: Update user metadata for lock.
+      description: Update or create user metadata for lock.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1172,15 +1156,13 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/metadata/{network}/users:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-    post:
-      operationId: createUsersMetadata
+  /v2/api/metadata/users:
+    put:
+      operationId: updateUsersMetadata
       security:
         - User: []
         - {}
-      description: Bulk endpoint for storing user metadata.
+      description: Update or create user metadata for lock.
       requestBody:
         required: true
         description: users array containing user metadata.
@@ -1208,6 +1190,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserMetadata'
+
+                  error:
+                    description: Array containing user addresses for which metadata was not created.
+                    type: array
+                    items:
+                      type: string
         400:
           $ref: '#/components/responses/400.Invalid'
 
@@ -1533,7 +1521,7 @@ paths:
       security:
         - User: []
       operationId: claim
-      description: Claim a membership key for a lock.
+      description: Claim a membership key for a lock. If not authenticated, requires an email in the body.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1543,6 +1531,7 @@ paths:
           description: Recaptcha value to pass.
           schema:
             type: string
+
       requestBody:
         required: true
         content:
@@ -1552,6 +1541,9 @@ paths:
               properties:
                 data:
                   type: string
+                email:
+                  type: string
+                  description: Email address of the recipient
 
       responses:
         200:
@@ -1562,6 +1554,8 @@ paths:
                 type: object
                 properties:
                   transactionHash:
+                    type: string
+                  owner:
                     type: string
 
         401:
@@ -2228,6 +2222,32 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/checkout/{id}:
+    delete:
+      operationId: deleteCheckoutConfig
+      security:
+        - User: []
+      description: Delete a checkout config
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
     get:
       operationId: getCheckoutConfig
       security:
@@ -2253,7 +2273,7 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
     put:
-      operationId: saveCheckoutConfig
+      operationId: updateCheckoutConfig
       security:
         - User: []
       description: A new checkout config is created or updated if it already exists
@@ -2271,7 +2291,12 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - 'config'
+                - 'name'
               properties:
+                name:
+                  type: string
                 config:
                   type: object
                   additionalProperties: true
@@ -2288,6 +2313,7 @@ paths:
 
   /v2/checkout/list:
     get:
+      operationId: listCheckoutConfigs
       security:
         - User: []
       description: A list of all checkout configs created by the user
@@ -2298,9 +2324,11 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CheckoutConfig'
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CheckoutConfig'
 
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
@@ -2362,6 +2390,87 @@ paths:
                     type: string
 
         400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/lock-settings/{network}/locks/{lockAddress}:
+    get:
+      operationId: getLockSettings
+      description: Get saved lock settings
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+
+        404:
+          description: Setting not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        500:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    post:
+      operationId: saveLockSetting
+      security:
+        - User: []
+      description: Save lock settings
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sendEmail:
+                  type: boolean
+
+      responses:
+        200:
+          description: Successfully saved settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+
+        500:
           description: Invalid request
           content:
             application/json:

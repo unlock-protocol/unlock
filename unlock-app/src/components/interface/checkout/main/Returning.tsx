@@ -32,7 +32,6 @@ export function Returning({
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
   const web3Service = useWeb3Service()
-
   const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
@@ -44,6 +43,7 @@ export function Returning({
     try {
       setIsSigningMessage(true)
       const walletService = await getWalletService()
+
       const signature = await walletService.signMessage(
         paywallConfig.messageToSign!,
         'personal_sign'
@@ -89,10 +89,6 @@ export function Returning({
     }
   )
 
-  const tokenImage = `${config.services.storage.host}/lock/${
-    lock!.address
-  }/icon?id=${tokenId}`
-
   return (
     <Fragment>
       <Stepper position={2} service={checkoutService} items={stepItems} />
@@ -137,10 +133,9 @@ export function Returning({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Google Wallet
@@ -167,10 +162,9 @@ export function Returning({
                     network={lock!.network}
                     lockAddress={lock!.address}
                     tokenId={tokenId}
-                    image={tokenImage}
                     name={lock!.name}
                     handlePassUrl={(url: string) => {
-                      window.open(url, '_')
+                      window.location.assign(url)
                     }}
                   >
                     Add to Apple Wallet
