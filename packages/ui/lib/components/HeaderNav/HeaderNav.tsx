@@ -465,7 +465,7 @@ export const HeaderNav = ({
                   </Link>
                 )
               } else if ('content' in action) {
-                return action.content
+                return <div key={index}>{action.content}</div>
               }
               return null
             })}

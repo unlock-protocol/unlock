@@ -108,6 +108,7 @@ export const ExtendMembershipModal = ({
 
   const extendMembership = async (renewal?: number) => {
     const walletService = await getWalletService(network)
+
     if (isERC20 && isRenewable && !isKeyExpired && (!!renewal || unlimited)) {
       await approveTransfer(
         ownedKey.lock.tokenAddress,

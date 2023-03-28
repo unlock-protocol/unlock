@@ -8,8 +8,7 @@ contract('proxyAdmin', () => {
     const Unlock = await ethers.getContractFactory('Unlock')
     const [unlockOwner] = await ethers.getSigners()
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-      unsafeAllow: ['delegatecall']
+      initializer: 'initialize(address)'
     })
     await unlock.deployed()
   })
@@ -22,8 +21,7 @@ contract('proxyAdmin', () => {
     const Unlock = await ethers.getContractFactory('Unlock')
     const [unlockOwner] = await ethers.getSigners()
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-      unsafeAllow: ['delegatecall']
+      initializer: 'initialize(address)'
     })
 
     // make sure is has been set

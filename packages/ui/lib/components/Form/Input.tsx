@@ -1,9 +1,4 @@
-import {
-  InputHTMLAttributes,
-  ForwardedRef,
-  ComponentType,
-  ReactNode,
-} from 'react'
+import { InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -26,12 +21,13 @@ export interface Props
   icon?: IconType
   iconClass?: string
   copy?: boolean
+  actions?: ReactNode
 }
 
 export const SIZE_STYLES: SizeStyleProp = {
-  small: 'pl-2.5 py-1.5 text-sm',
+  small: 'pl-2.5 py-1.5 text-base md:text-sm',
   medium: 'pl-4 py-2 text-base',
-  large: 'pl-4 py-2.5',
+  large: 'pl-4 py-2.5 text-base',
 }
 
 export const STATE_STYLES = {
@@ -60,6 +56,7 @@ export const Input = forwardRef(
       label,
       icon,
       iconClass,
+      actions,
       ...inputProps
     } = props
     const [isCopied, setCopy] = useClipboard(props.value as string)
@@ -108,12 +105,13 @@ export const Input = forwardRef(
             ref={ref}
             className={inputClass}
           />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-1 ml-4">
+          <div className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1">
             {copy && !hidden && (
               <button onClick={() => setCopy()} className={inputButtonClass}>
                 <CopyIcon /> {isCopied ? 'Copied' : 'Copy'}
               </button>
             )}
+            {actions}
           </div>
         </div>
       </FieldLayout>
