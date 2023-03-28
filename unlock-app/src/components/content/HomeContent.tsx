@@ -5,17 +5,20 @@ import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import Loading from '../interface/Loading'
 import { AppLayout } from '../interface/layouts/AppLayout'
+import { config } from '~/config/app'
+import { useRouter } from 'next/router'
 
-export const HomeContent = ({ config }: any) => {
+export const HomeContent = () => {
+  const router = useRouter()
   useEffect(() => {
     // In dev, redirect to dashboard, otherwise to static site!
     if (
       ['localhost', '127.0.0.1', '0.0,0,0'].indexOf(window.location.hostname) >
       -1
     ) {
-      window.location.assign('/locks')
+      router.push('/locks')
     } else {
-      window.location.assign(config.unlockStaticUrl)
+      router.push(config.unlockStaticUrl)
     }
   })
   return (
