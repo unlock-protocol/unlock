@@ -244,7 +244,7 @@ const getLockSettings = async (
 ): Promise<LockSetting | LockSettingProps> => {
   if (lockAddress && network) {
     const settings = await lockSettingOperations.getSettings({
-      lockAddress,
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     })
     return settings
