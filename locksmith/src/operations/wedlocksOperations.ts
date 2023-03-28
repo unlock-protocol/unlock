@@ -61,14 +61,7 @@ interface SendEmailProps {
 }
 /**
  * Function to send an email with the Wedlocks service
- * Pass a template, a recipient, some params and attachements
- * @param template
- * @param failoverTemplate
- * @param recipient
- * @param params
- * @param attachments
- * @param network
- * @returns
+ * Pass a template, a recipient, some params and attachments
  */
 export const sendEmail = async ({
   network,
