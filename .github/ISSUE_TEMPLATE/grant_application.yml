@@ -10,7 +10,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this grant application! Please make sure you follow the guidelines [detailed in our docs](https://docs.unlock-protocol.com/governance/grants-bounties/).
-        Start by updating the title above with the name of your grant applicattion. (for example, `Plugin for Squarespace`...) 
+        Start by updating the title above with the name of your grant application (for example, `Plugin for Squarespace`). 
         Once submitted, the Unlock community will review your application so please make sure it is thorough and detailed.
   - type: textarea
     id: details
@@ -38,7 +38,7 @@ body:
     id: github
     attributes:
       label: Github
-      description: Please enter the your project\'s github page
+      description: Please enter the your project\'s Github page
       placeholder: ex. https://github.com/unlock-protocol/unlock
   - type: input
     id: linkedIn
@@ -50,28 +50,28 @@ body:
     id: discord 
     attributes:
       label: Discord handle
-      description: Your discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
+      description: Your Discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
     validations:
       required: true
   - type: input
     id: duration 
     attributes:
       label: Completion time
-      description: Let us know how much time do you think you will need to complete your project. 
+      description: Let us know how much time do you think you will need to complete your project 
     validations:
       required: true
   - type: textarea
     id: team
     attributes:
       label: Team
-      description: Please provide us with details about your team. How many people are contributing, are you looking for help from other folks?
+      description: Please provide us with details about your team (e.g. how many people are contributing, are you looking for help from other folks, etc.)
     validations:
       required: true
   - type: textarea
     id: milestones
     attributes:
       label: Milestones
-      description: Provide two or three measurable milestones for periodic review (please include both measurable goal and expected timeframe to reach each goal).
+      description: Provide two or three measurable milestones for periodic review (please include both measurable goal and expected timeframe to reach each goal)
   - type: textarea
     id: extra
     attributes:
