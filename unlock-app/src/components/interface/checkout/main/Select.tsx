@@ -210,6 +210,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   )
 
   const lockOptions = useMemo(() => {
+    console.log('OK. ', paywallConfig)
     return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
       ...props,
       address: lock,
