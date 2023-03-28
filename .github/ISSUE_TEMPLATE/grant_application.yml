@@ -1,0 +1,95 @@
+name: "Grant Application"
+description: Submit a grant application
+title: "Project Name <- Replace me!"
+labels: ["Grant Application"]
+assignees:
+  - desertrat10
+  - thehen
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this grant application! Please make sure you follow the guidelines [detailed in our docs](https://docs.unlock-protocol.com/governance/grants-bounties/).
+        Start by updating the title above with the name of your grant applicattion. (for example, `Plugin for Squarespace`...) 
+        Once submitted, the Unlock community will review your application so please make sure it is thorough and detailed.
+  - type: textarea
+    id: details
+    attributes:
+      label: Description
+      description: Please provide us with a complete description of your grant. You can use markdown syntax (click on the `Preview` tab to preview your description). You can attach files when using drag and drop over this field. Use that to upload images, videos or a presentation!
+      placeholder: ex. I will build a plugin for Squarespace that lets website owners in squarespace token gate some of their pages. The plugin will... etc
+    validations:
+      required: true
+  - type: input
+    id: website
+    attributes:
+      label: Website URL
+      description: Please enter the URL of the website for your project
+      placeholder: ex. https://unlock-protocol.com/
+    validations:
+      required: true
+  - type: input
+    id: twitter
+    attributes:
+      label: Twitter
+      description: Please enter your Twitter handle
+      placeholder: ex. @unlockProtocol
+  - type: input
+    id: github
+    attributes:
+      label: Github
+      description: Please enter the your project\'s github page
+      placeholder: ex. https://github.com/unlock-protocol/unlock
+  - type: input
+    id: linkedIn
+    attributes:
+      label: LinkedIn
+      description: Please enter the page for your LinkedIn profile 
+      placeholder: ex. https://www.linkedin.com/company/unlock-protocol/
+  - type: input
+    id: discord 
+    attributes:
+      label: Discord handle
+      description: Your discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
+    validations:
+      required: true
+  - type: input
+    id: duration 
+    attributes:
+      label: Completion time
+      description: Let us know how much time do you think you will need to complete your project. 
+    validations:
+      required: true
+  - type: textarea
+    id: team
+    attributes:
+      label: Team
+      description: Please provide us with details about your team. How many people are contributing, are you looking for help from other folks?
+    validations:
+      required: true
+  - type: textarea
+    id: milestones
+    attributes:
+      label: Milestones
+      description: Provide two or three measurable milestones for periodic review (please include both measurable goal and expected timeframe to reach each goal).
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else you think we should know
+      description: Feel free to include any other relevant information about your grant proposal here
+  - type: checkboxes
+    id: open-source
+    attributes:
+      label: Is your work Open Source
+      description: Do you intend to release your work as Open Source
+      options:
+        - label: Yes, my project uses an Open Source license such as MIT
+          required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/unlock-protocol/unlock/blob/master/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
