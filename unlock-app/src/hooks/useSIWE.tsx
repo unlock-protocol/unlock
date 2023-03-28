@@ -6,7 +6,6 @@ import { storage } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   getAccessToken,
-  getCurrentAccount,
   removeAccessToken,
   saveAccessToken,
 } from '~/utils/session'
