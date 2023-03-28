@@ -5,6 +5,7 @@ import { SiweMessage } from 'siwe'
 import { storage } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
+  getAccessToken,
   getCurrentAccount,
   removeAccessToken,
   saveAccessToken,
@@ -57,10 +58,10 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      const current = getCurrentAccount()
-      if (current) {
+      const session = getAccessToken()
+      if (session) {
         await storage.revoke().catch(console.error)
-        removeAccessToken(current)
+        removeAccessToken()
       }
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
