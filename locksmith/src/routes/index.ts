@@ -30,6 +30,8 @@ import receiptBaseRouter from './v2/receiptBase'
 import emailRouter from './v2/email'
 import checkoutConfigRouter from './v2/checkoutConfigs'
 import config from '../config/config'
+import stripeRouter from './v2/stripe'
+import lockSettingsRouter from './v2/lock-settings'
 
 const router = express.Router({ mergeParams: true })
 
@@ -58,8 +60,8 @@ router.use('/api/oauth', authRouter)
 router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
 router.use('/v2', authMiddleware)
-router.use('/v2/images', imagesRouter)
 router.use('/v2/auth', authRouterV2)
+router.use('/v2/images', imagesRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
 router.use('/v2/api/verifier', verifierRouter)
 router.use('/v2/api/grant', grantKeysRouter)
@@ -76,6 +78,8 @@ router.use('/v2/receipts', receiptRouter)
 router.use('/v2/receipts-base', receiptBaseRouter)
 router.use('/v2/email', emailRouter)
 router.use('/v2/checkout', checkoutConfigRouter)
+router.use('/v2/stripe', stripeRouter)
+router.use('/v2/lock-settings', lockSettingsRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

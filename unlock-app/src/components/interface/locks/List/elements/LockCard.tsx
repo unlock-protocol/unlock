@@ -110,7 +110,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
   const web3service = useWeb3Service()
   const tokenAddress = lock?.tokenAddress
   const lockAddress = lock?.address
-  const { baseCurrencySymbol } = networks?.[network] ?? {}
+  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
 
   const getBalance = async (
     address: string,
@@ -194,7 +194,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             >
               <div className="flex items-center gap-2">
                 <CryptoIcon symbol={symbol} />
-                <span>{keyPrice}</span>
+                <span className="overflow-auto text-ellipsis">{keyPrice}</span>
               </div>
             </Detail>
 
@@ -212,7 +212,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             >
               <div className="flex items-center gap-2">
                 <CryptoIcon symbol={symbol} />
-                <span>{balance}</span>
+                <span className="overflow-auto text-ellipsis">{balance}</span>
               </div>
             </Detail>
             <Detail

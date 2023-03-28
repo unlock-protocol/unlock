@@ -60,20 +60,20 @@ contract('Lock / updateLockConfig', (accounts) => {
   describe('set expirationDuration', () => {
     it('update the expiration duration of an existing lock', async () => {
       await lock.updateLockConfig(1000, maxNumberOfKeys, maxKeysPerAddress)
-      expect((await lock.expirationDuration()).toString()).to.be.equal('1000')
+      assert.equal((await lock.expirationDuration()).toString(), '1000')
 
       await lock.updateLockConfig(0, maxNumberOfKeys, maxKeysPerAddress)
-      expect((await lock.expirationDuration()).toString()).to.be.equal('0')
+      assert.equal((await lock.expirationDuration()).toString(), '0')
     })
   })
 
   describe('set maxNumberofKeys', () => {
     it('update the expiration duration of an existing lock', async () => {
       await lock.updateLockConfig(expirationDuration, 20, maxKeysPerAddress)
-      expect((await lock.maxNumberOfKeys()).toNumber()).to.be.equal(20)
+      assert.equal((await lock.maxNumberOfKeys()).toNumber(), 20)
 
       await lock.updateLockConfig(expirationDuration, 201, maxKeysPerAddress)
-      expect((await lock.maxNumberOfKeys()).toNumber()).to.be.equal(201)
+      assert.equal((await lock.maxNumberOfKeys()).toNumber(), 201)
     })
     it('should prevent from setting a value lower than total supply', async () => {
       // buy 10 keys
@@ -115,9 +115,9 @@ contract('Lock / updateLockConfig', (accounts) => {
       const tx = await lock.updateLockConfig(10, 20, 30)
       const { args } = tx.logs.find(({ event }) => event === 'LockConfig')
 
-      expect(args.expirationDuration.toNumber()).to.be.equal(10)
-      expect(args.maxNumberOfKeys.toNumber()).to.be.equal(20)
-      expect(args.maxKeysPerAcccount.toNumber()).to.be.equal(30)
+      assert.equal(args.expirationDuration.toNumber(), 10)
+      assert.equal(args.maxNumberOfKeys.toNumber(), 20)
+      assert.equal(args.maxKeysPerAcccount.toNumber(), 30)
     })
   })
 })

@@ -46,7 +46,7 @@ export default class KeyController {
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
-        message: 'Keys list could not be retrived.',
+        message: 'Keys list could not be retrieved.',
       })
     }
   }

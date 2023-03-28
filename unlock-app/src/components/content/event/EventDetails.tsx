@@ -18,9 +18,13 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
-import { getEventDate } from './utils'
+import { getEventDate, getEventEndDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
+import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
+import dayjs from 'dayjs'
+import { WalletlessRegistration } from './WalletlessRegistration'
+import { useIsClaimable } from '~/hooks/useIsClaimable'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -30,10 +34,16 @@ interface EventDetailsProps {
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
   const web3Service = useWeb3Service()
+
   const config = useConfig()
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+    lockAddress,
+    network,
+  })
+
+  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
   })
@@ -88,6 +98,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const eventData = toFormData(metadata)
   const eventDate = getEventDate(eventData.ticket)
+  const eventEndDate = getEventEndDate(eventData.ticket)
+
+  const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
   const injectedProvider = selectProvider(config)
 
@@ -101,8 +114,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   }
 
   return (
-    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
-      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] mt-8">
+      <Modal
+        isOpen={isCheckoutOpen && !isClaimable}
+        setIsOpen={setCheckoutOpen}
+        empty={true}
+      >
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
@@ -114,30 +131,47 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         <h1 className="mb-4 text-5xl font-bold md:text-7xl">
           {eventData.name}
         </h1>
-        <p className="flex gap-2 mb-4 flex-rows">
+        <div className="flex gap-2 mb-4 flex-rows">
           <span className="text-brand-gray">Ticket contract</span>
           <AddressLink
             lockAddress={lockAddress}
             network={network}
           ></AddressLink>
-        </p>
+        </div>
         <ul
           className="mb-6 text-xl bold md:text-2xl"
           style={{ color: `#${eventData.background_color}` }}
         >
           {eventDate && (
-            <li className="mb-2">
+            <li className="flex items-center mb-2 ">
               <FaCalendar className="inline mr-2" />
-              {eventDate.toLocaleDateString(undefined, {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
+              <div className="flex flex-col gap-1 text-lg md:flex-row md:items-center md:text-2xl">
+                <span>
+                  {eventDate.toLocaleDateString(undefined, {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
+                {eventEndDate && !isSameDay && (
+                  <>
+                    <span className="hidden md:block">to</span>
+                    <span>
+                      {eventEndDate.toLocaleDateString(undefined, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </span>
+                  </>
+                )}
+              </div>
             </li>
           )}
           {eventDate && eventData.ticket?.event_start_time && (
-            <li className="mb-2">
+            <li className="flex items-center mb-2">
               <FaClock className="inline mr-2" />
               <Tooltip
                 delay={0}
@@ -145,11 +179,29 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 tip={eventData.ticket.event_timezone}
                 side="bottom"
               >
-                <span>
-                  {eventDate.toLocaleTimeString(navigator.language || 'en-US', {
-                    timeZone: eventData.ticket.event_timezone,
-                  })}
-                </span>
+                <div className="flex items-center gap-1 text-lg md:text-2xl">
+                  <span>
+                    {eventDate.toLocaleTimeString(
+                      navigator.language || 'en-US',
+                      {
+                        timeZone: eventData.ticket.event_timezone,
+                      }
+                    )}
+                  </span>
+                  {eventEndDate && isSameDay && (
+                    <>
+                      <span>to</span>
+                      <span>
+                        {eventEndDate.toLocaleTimeString(
+                          navigator.language || 'en-US',
+                          {
+                            timeZone: eventData.ticket.event_timezone,
+                          }
+                        )}
+                      </span>
+                    </>
+                  )}
+                </div>
               </Tooltip>
             </li>
           )}
@@ -176,7 +228,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       <section className="flex flex-col items-center">
         <img
           alt={eventData.title}
-          className="mb-5 aspect-auto "
+          className="mb-4 aspect-auto "
           src={eventData.image}
         />
         <ul className="flex justify-around w-1/2">
@@ -189,21 +241,25 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         </ul>
       </section>
       <section className="flex flex-col mb-8">
-        {!hasValidKey && (
+        {!hasValidKey && !isCheckoutOpen && (
           <Button
             variant="primary"
             size="medium"
-            className="md:w-1/2"
+            className="md:w-1/2 mt-4"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`
                 ? fontColorContrast(`#${eventData.background_color}`)
                 : 'white',
             }}
+            disabled={isClaimableLoading}
             onClick={() => setCheckoutOpen(true)}
           >
             Register
           </Button>
+        )}
+        {!hasValidKey && isClaimable && isCheckoutOpen && (
+          <WalletlessRegistration lockAddress={lockAddress} network={network} />
         )}
         {hasValidKey && (
           <p className="text-lg">
@@ -215,20 +271,51 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </p>
         )}
         {isLockManager && (
-          <>
-            <p className="mt-12 mb-4 text-sm">
-              Want to change something? You can update anytime by accessing your
-              contract (Lock) on the Unlock Dashboard.
-            </p>
-            <Button
-              onClick={onEdit}
-              variant="black"
-              className="border md:w-1/2"
-              size="small"
-            >
-              Edit Details
-            </Button>
-          </>
+          <div className="grid gap-6 mt-12">
+            <span className="text-2xl font-bold text-brand-dark">
+              Tools for you, the lock manager
+            </span>
+            <div className="grid gap-4">
+              <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
+                <div className="flex flex-col md:col-span-2">
+                  <span className="text-lg font-bold text-brand-ui-primary">
+                    Event detail
+                  </span>
+                  <span>
+                    Need to change something? Access your contract (Lock) &
+                    update detail
+                  </span>
+                </div>
+                <div className="md:col-span-1">
+                  <Button
+                    onClick={onEdit}
+                    variant="black"
+                    className="w-full border"
+                    size="small"
+                  >
+                    Edit Details
+                  </Button>
+                </div>
+              </div>
+              <div className="w-full p-6 bg-white border border-gray-200 rounded-2xl">
+                <div className="flex flex-col mb-2">
+                  <span className="text-lg font-bold text-brand-ui-primary">
+                    Verifiers
+                  </span>
+                  <span>
+                    Add & manage trusted users at the event to help check-in
+                    attendees
+                  </span>
+                </div>
+                <VerifierForm
+                  lockAddress={lockAddress}
+                  network={network}
+                  isManager={isLockManager}
+                  disabled={!isLockManager}
+                />
+              </div>
+            </div>
+          </div>
         )}
       </section>
     </main>

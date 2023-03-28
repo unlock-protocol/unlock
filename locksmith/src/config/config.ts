@@ -1,6 +1,10 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 
+const isProduction = ['prod'].includes(
+  process.env.NODE_ENV?.toLowerCase().trim() ?? ''
+)
+
 const stagingConfig = {
   storage: {
     publicHost: 'https://staging-storage.unlock-protocol.com',
@@ -24,10 +28,10 @@ const prodConfig = {
   unlockApp: 'https://app.unlock-protocol.com',
 }
 
-const defaultConfig =
-  process.env.UNLOCK_ENV === 'prod' ? prodConfig : stagingConfig
+const defaultConfig = isProduction ? prodConfig : stagingConfig
 
 const config = {
+  isProduction,
   database: {
     logging: false,
     dialect: 'postgres',
@@ -53,6 +57,7 @@ const config = {
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
+  sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
 }
 
 if (process.env.ON_HEROKU) {

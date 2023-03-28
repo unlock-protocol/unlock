@@ -1,5 +1,11 @@
 import express from 'express'
-import { AuthController } from '../../controllers/v2/authController'
+import {
+  nonce,
+  login,
+  logout,
+  user,
+  revoke,
+} from '../../controllers/v2/authController'
 import {
   authenticatedMiddleware,
   userOnlyMiddleware,
@@ -7,20 +13,10 @@ import {
 
 const router = express.Router({ mergeParams: true })
 
-const authController = new AuthController()
-
-router.get('/nonce', (req, res) => authController.nonce(req, res))
-router.get('/user', authenticatedMiddleware, (req, res) =>
-  authController.user(req, res)
-)
-router.post('/login', (req, res) => authController.login(req, res))
-router.post(
-  '/logout',
-  authenticatedMiddleware,
-  userOnlyMiddleware,
-  (req, res) => authController.logout(req, res)
-)
-router.post('/revoke', (req, res) => authController.revokeToken(req, res))
-router.post('/token', (req, res) => authController.token(req, res))
+router.get('/user', authenticatedMiddleware, user)
+router.get('/nonce', nonce)
+router.post('/login', login)
+router.post('/logout', authenticatedMiddleware, userOnlyMiddleware, logout)
+router.post('/revoke', revoke)
 
 export default router

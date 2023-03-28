@@ -49,6 +49,8 @@
     "hardhat-gas-reporter": "1.0.9",
     "hardhat-storage-layout": "0.1.7",
     "hardhat-tracer": "2.1.2",
+    "hardlydifficult-eth": "1.1.4",
+    "hardlydifficult-ethereum-contracts": "0.11.1",
     "lint-staged": "13.1.0",
     "prettier": "2.8.3",
     "prettier-plugin-solidity": "1.1.2",
@@ -63,7 +65,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint --fix"
+      "yarn run lint --fix"
     ]
   },
   "scripts": {

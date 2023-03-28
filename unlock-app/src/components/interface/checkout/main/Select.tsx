@@ -27,6 +27,7 @@ import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { ViewContract } from '../ViewContract'
+import { useCheckoutHook } from './useCheckoutHook'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -54,7 +55,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
         const formattedData = getLockProps(
           lock,
           lock.network,
-          config.networks[lock.network].baseCurrencySymbol,
+          config.networks[lock.network].nativeCurrency.symbol,
           lock.name
         )
         const lockImageURL = `${config.services.storage.host}/lock/${lock?.address}/icon`
@@ -276,6 +277,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
+  const { isLoading: isLoadingHook, lockHookMapping } =
+    useCheckoutHook(checkoutService)
 
   const isDisabled =
     isLocksLoading ||
@@ -283,7 +286,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
-    isNotExpectedAddress
+    isNotExpectedAddress ||
+    isLoadingHook
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -370,6 +374,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
+                const hookType =
+                  lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ??
+                  undefined
+
                 send({
                   type: 'SELECT_LOCK',
                   lock,
@@ -381,6 +389,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     ? false
                     : !!membership?.expired,
                   recipients: account ? [account] : [],
+                  hook: hookType,
                 })
               }}
             >

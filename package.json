@@ -81,7 +81,7 @@
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.4.1",
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
+    "*.js": "yarn run lint --fix",
     "*.{js,css,md}": "prettier --write"
   }
 }

@@ -8,13 +8,6 @@ export function ethereumAddress(input: string): string {
   return ethers.utils.getAddress(input)
 }
 
-export function toLowerCaseKeys(obj: Record<string, unknown>) {
-  return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
-    acc[key.toLowerCase()] = obj[key]
-    return acc
-  }, {})
-}
-
 export const getValidNumber = (value: string | number): number | undefined => {
   const reg = new RegExp('^[0-9]*$')
   return reg.test(`${value}`) && !isNaN(parseInt(`${value}`))
@@ -33,6 +26,32 @@ export const getRequestURL = (req: Request) => {
     `${req.protocol}://${req.get('host')}`
   )
   return requestURL
+}
+
+export const getURL = (text: string) => {
+  try {
+    return new URL(text)
+  } catch {
+    return
+  }
+}
+
+export const toLowerCaseKeys = (
+  obj: Record<string, unknown>
+): Record<string, unknown> => {
+  return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
+    const lowerKey = key.toLowerCase()
+    if (
+      obj[key] !== null &&
+      typeof obj[key] === 'object' &&
+      !Array.isArray(obj[key])
+    ) {
+      acc[lowerKey] = toLowerCaseKeys(obj[key] as Record<string, unknown>)
+    } else {
+      acc[lowerKey] = obj[key]
+    }
+    return acc
+  }, {})
 }
 
 export default {

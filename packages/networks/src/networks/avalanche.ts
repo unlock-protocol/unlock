@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const avalanche: NetworkConfig = {
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
@@ -9,7 +9,6 @@ export const avalanche: NetworkConfig = {
   id: 43114,
   name: 'Avalanche (C-Chain)',
   chain: 'avax',
-  blockTime: 1000,
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
@@ -29,10 +28,6 @@ export const avalanche: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'AVAX',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'AVAX',
     symbol: 'AVAX',
@@ -45,6 +40,7 @@ export const avalanche: NetworkConfig = {
   maxFreeClaimCost: 1,
   description:
     'Avalanche is an open, programmable smart contracts platform for decentralized applications.',
+  url: 'https://www.avalabs.org/',
   tokens: [
     {
       name: 'Ethereum',
@@ -77,6 +73,15 @@ export const avalanche: NetworkConfig = {
       address: '0x50b7545627a5162f82a992c33b87adc75187b218',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x2499D94880B30fA505543550ac8a1e24cfFeFe78',
+      },
+    ],
+  },
 }
 
 export default avalanche
