@@ -31,6 +31,7 @@ type Params = {
   keychainUrl?: string
   lockName: string
   network: string
+  networkId: number
   lockAddress: string
   txUrl?: string
   openSeaUrl?: string
@@ -78,7 +79,7 @@ export const sendEmail = async (
   // prevent send email when is not enabled
   const { sendEmail: canSendEmail } = await getLockSettings(
     params.lockAddress,
-    Number(params.network)
+    Number(params.networkId)
   )
 
   if (!canSendEmail) {
@@ -244,7 +245,7 @@ const getLockSettings = async (
 ): Promise<LockSetting | LockSettingProps> => {
   if (lockAddress && network) {
     const settings = await lockSettingOperations.getSettings({
-      lockAddress,
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     })
     return settings
@@ -358,6 +359,7 @@ export const notifyNewKeyToWedlocks = async (
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
+      networkId: network!,
       network: networks[network!]?.name ?? '',
       openSeaUrl,
       transferUrl: transferUrl.toString(),

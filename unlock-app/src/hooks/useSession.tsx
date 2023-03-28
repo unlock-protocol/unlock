@@ -18,8 +18,8 @@ export const useSessionUser = () => {
             return null
           }
         }
-        if (address) {
-          return getAccessToken(address)
+        if (address && getAccessToken(address)) {
+          return address
         }
         return null
       }
