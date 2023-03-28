@@ -59,7 +59,7 @@ export const QRModal = ({
           required
           value={recipient}
           onChange={handleChange}
-          placeholder="me@domain.tld"
+          placeholder="your@email.com"
         />
         <Submit
           active={isValid}

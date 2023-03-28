@@ -10,7 +10,6 @@ export const polygon: NetworkConfig = {
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
   id: 137,
   name: 'Polygon',
-  blockTime: 1000,
   chain: 'polygon',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
@@ -18,6 +17,7 @@ export const polygon: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
     networkName: 'matic',
   },
+  url: 'https://polygon.technology/',
   explorer: {
     name: 'Polygonscan',
     urls: {
@@ -34,10 +34,6 @@ export const polygon: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/matic/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'Matic',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'Matic',
     symbol: 'MATIC',
@@ -51,10 +47,10 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
-  description: 'Popular side chain network. Cheaper transaction cost.',
+  description:
+    "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   isTestNetwork: false,
   maxFreeClaimCost: 100,
-  teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   uniswapV2: {
     oracle: '0xE20ef269CE3ac2Af8107E706FC2Ec6E1831e3125',
   },
@@ -63,7 +59,7 @@ export const polygon: NetworkConfig = {
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
   },
-  swapPurchaser: '0x073C188bFFC8DE384eee702Cd590fB22a7BaE67B',
+  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',

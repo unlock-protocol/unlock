@@ -23,7 +23,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
     network,
   })
 
-  const { baseCurrencySymbol } = networks[network] ?? {}
+  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
 
   const getNumberOfOwners = async () => {
     return await web3Service.numberOfOwners(lockAddress, network)

@@ -3,7 +3,9 @@ import networks from '@unlock-protocol/networks'
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { getValidNumber } from '../../utils/normalizer'
+import logger from '../../logger'
 
+// todo: replace with subgraphService
 export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
 const keyholdersByTokedIdQuery = gql`
   query Lock(
@@ -21,6 +23,7 @@ const keyholdersByTokedIdQuery = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
@@ -47,9 +50,11 @@ const ActiveKeys = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
+        manager
       }
       name
       address
@@ -73,6 +78,7 @@ const ExpiredKeys = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
@@ -98,6 +104,7 @@ const keyListByLock = gql`
         orderBy: tokenId
         orderDirection: asc
       ) {
+        manager
         owner
         tokenId
         expiration
@@ -159,6 +166,8 @@ export class keysByQuery extends GraphQLDataSource {
 
       const getData = async (getFromPage = page) => {
         const skip = parseInt(`${getFromPage}`, 10) * first
+        // The Graph does not support skipping more than 5000
+        // https://thegraph.com/docs/en/querying/graphql-api/#pagination
         return await this.query(query, {
           variables: {
             addresses,
@@ -180,20 +189,25 @@ export class keysByQuery extends GraphQLDataSource {
       // get next page keys and add it to the list until the length is equal to MAX_ITEMS
       while (getForNextPage) {
         page = page + 1
+        try {
+          const {
+            data: {
+              locks: [{ keys: nextPageKeys = [] }],
+            },
+          } = (await getData()) ?? {}
 
-        const {
-          data: {
-            locks: [{ keys: nextPageKeys = [] }],
-          },
-        } = (await getData()) ?? {}
+          keysList?.push(...(nextPageKeys ?? []))
 
-        keysList?.push(...(nextPageKeys ?? []))
-
-        getForNextPage = nextPageKeys?.length === first
+          getForNextPage = nextPageKeys?.length === first
+        } catch (error) {
+          logger.error(error)
+          getForNextPage = false // When we have an error, we stop paginating, results will be partial
+        }
       }
 
       return locks
     } catch (error) {
+      logger.error(error)
       return []
     }
   }

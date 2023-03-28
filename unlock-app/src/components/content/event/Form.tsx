@@ -56,12 +56,14 @@ export const Form = ({ onSubmit }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network!].baseCurrencySymbol,
+      currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {
           event_start_date: '',
           event_start_time: '',
+          event_end_date: '',
+          event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
@@ -141,79 +143,78 @@ export const Form = ({ onSubmit }: FormProps) => {
             <p className="mb-5">
               All of these fields can also be adjusted later.
             </p>
-            <div className="grid gap-6">
-              <Input
-                {...register('lock.name', {
-                  required: {
-                    value: true,
-                    message: 'Name is required',
-                  },
-                })}
-                type="text"
-                placeholder="Name"
-                label="Event Name"
-                description={
-                  'Enter the name of your event. It will appear on the NFT tickets.'
-                }
-                error={errors.lock?.name?.message}
-              />
 
-              <TextBox
-                {...register('metadata.description', {
-                  required: {
-                    value: true,
-                    message: 'Please add a description for your event',
-                  },
-                })}
-                label="Description"
-                placeholder="Write description here."
-                description={<DescDescription />}
-                rows={4}
-                error={errors.metadata?.description?.message as string}
-              />
-
-              <div className="grid grid-1.5">
-                <span>Illustration</span>
-                <ImageUpload
-                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
-                  isUploading={isUploading}
-                  preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
-                    if (typeof fileOrFileUrl === 'string') {
-                      setValue('metadata.image', fileOrFileUrl)
-                    } else {
-                      const items = await uploadImage(fileOrFileUrl[0])
-                      const image = items?.[0]?.publicUrl
-                      if (!image) {
-                        return
-                      }
-                      setValue('metadata.image', image)
+            <div className="grid grid-cols-2 gap-4">
+              <ImageUpload
+                description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                isUploading={isUploading}
+                preview={metadataImage!}
+                onChange={async (fileOrFileUrl: any) => {
+                  if (typeof fileOrFileUrl === 'string') {
+                    setValue('metadata.image', fileOrFileUrl)
+                  } else {
+                    const items = await uploadImage(fileOrFileUrl[0])
+                    const image = items?.[0]?.publicUrl
+                    if (!image) {
+                      return
                     }
-                  }}
-                />
-              </div>
-
-              <Select
-                onChange={(newValue) => {
-                  setValue('network', Number(newValue))
-                  setValue('lock.currencyContractAddress', null)
-                  setValue(
-                    'currencySymbol',
-                    networks[newValue].baseCurrencySymbol
-                  )
+                    setValue('metadata.image', image)
+                  }
                 }}
-                options={networkOptions}
-                label="Network"
-                defaultValue={network}
-                description={<NetworkDescription />}
               />
-              <div className="mb-4">
-                {noBalance && (
-                  <BalanceWarning
-                    network={details.network!}
-                    balance={balance}
-                  />
-                )}
+              <div className="grid gap-6">
+                <Input
+                  {...register('lock.name', {
+                    required: {
+                      value: true,
+                      message: 'Name is required',
+                    },
+                  })}
+                  type="text"
+                  placeholder="Name"
+                  label="Event Name"
+                  description={
+                    'Enter the name of your event. It will appear on the NFT tickets.'
+                  }
+                  error={errors.lock?.name?.message}
+                />
+
+                <TextBox
+                  {...register('metadata.description', {
+                    required: {
+                      value: true,
+                      message: 'Please add a description for your event',
+                    },
+                  })}
+                  label="Description"
+                  placeholder="Write description here."
+                  description={<DescDescription />}
+                  rows={4}
+                  error={errors.metadata?.description?.message as string}
+                />
+
+                <Select
+                  onChange={(newValue) => {
+                    setValue('network', Number(newValue))
+                    setValue('lock.currencyContractAddress', null)
+                    setValue(
+                      'currencySymbol',
+                      networks[newValue].nativeCurrency.symbol
+                    )
+                  }}
+                  options={networkOptions}
+                  label="Network"
+                  defaultValue={network}
+                  description={<NetworkDescription />}
+                />
+                <div className="mb-4">
+                  {noBalance && (
+                    <BalanceWarning
+                      network={details.network!}
+                      balance={balance}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </Disclosure>
@@ -230,26 +231,50 @@ export const Form = ({ onSubmit }: FormProps) => {
                     <iframe width="100%" height="300" src={mapAddress}></iframe>
                   </div>
                 </div>
-                <div className="flex flex-col self-start justify-top">
-                  <Input
-                    {...register('metadata.ticket.event_start_date', {
-                      required: {
-                        value: true,
-                        message: 'Add a date to your event',
-                      },
-                    })}
-                    type="date"
-                    label="Date"
-                    error={
-                      // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                      errors.metadata?.ticket?.event_start_date?.message || ''
-                    }
-                  />
-                  <Input
-                    {...register('metadata.ticket.event_start_time')}
-                    type="time"
-                    label="Time"
-                  />
+                <div className="flex flex-col self-start gap-2 justify-top">
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <Input
+                      {...register('metadata.ticket.event_start_date', {
+                        required: {
+                          value: true,
+                          message: 'Add a start date to your event',
+                        },
+                      })}
+                      type="date"
+                      label="Star Date"
+                      error={
+                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_start_date?.message || ''
+                      }
+                    />
+                    <Input
+                      {...register('metadata.ticket.event_start_time')}
+                      type="time"
+                      label="Start Time"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <Input
+                      {...register('metadata.ticket.event_end_date', {
+                        required: {
+                          value: true,
+                          message: 'Add a end date to your event',
+                        },
+                      })}
+                      type="date"
+                      label="End Date"
+                      error={
+                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_end_date?.message || ''
+                      }
+                    />
+                    <Input
+                      {...register('metadata.ticket.event_end_time')}
+                      type="time"
+                      label="End Time"
+                    />
+                  </div>
 
                   <Controller
                     name="metadata.ticket.event_timezone"
