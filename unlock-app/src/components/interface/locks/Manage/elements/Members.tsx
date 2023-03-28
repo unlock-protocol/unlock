@@ -66,9 +66,14 @@ export const Members = ({
     return keys.data
   }
 
+  const getLockSettings = async () => {
+    return await storage.getLockSettings(network, lockAddress)
+  }
+
   const [
     { isLoading, data: members = [] },
     { isLoading: isLockLoading, data: lock },
+    { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
       {
@@ -95,10 +100,16 @@ export const Members = ({
           ToastHelper.error('Unable to fetch lock from subgraph')
         },
       },
+      {
+        queryKey: ['getLockSettings', lockAddress, network],
+        queryFn: async () => getLockSettings(),
+      },
     ],
   })
 
-  const loading = isLockLoading || isLoading || loadingFilters
+  const loading =
+    isLockLoading || isLoading || loadingFilters || isLoadingSettings
+
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
@@ -173,6 +184,7 @@ export const Members = ({
             lockAddress={lockAddress!}
             network={network}
             expirationDuration={lock?.expirationDuration}
+            lockSettings={lockSettings}
           />
         )
       })}
