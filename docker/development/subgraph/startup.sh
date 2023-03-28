@@ -14,9 +14,6 @@ echo -e "✔ Unlock local ABI prepared\n\n"
 yarn workspace @unlock-protocol/subgraph codegen
 echo -e "✔ Unlock local code generated\n\n"
 
-# show cli version
-yarn workspace @unlock-protocol/subgraph run graph --version
-
 # build the subgraph files
 yarn workspace @unlock-protocol/subgraph run build localhost
 echo -e "✔ Unlock local subgraph built\n\n"
