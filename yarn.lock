@@ -16297,7 +16297,7 @@ __metadata:
     fs-extra: 11.1.0
     handlebars: 4.7.7
     lint-staged: 13.1.2
-    matchstick-as: 0.5.1
+    matchstick-as: 0.5.2
     yargs: 17.6.2
   languageName: unknown
   linkType: soft
@@ -37603,12 +37603,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"matchstick-as@npm:0.5.1":
-  version: 0.5.1
-  resolution: "matchstick-as@npm:0.5.1"
+"matchstick-as@npm:0.5.2":
+  version: 0.5.2
+  resolution: "matchstick-as@npm:0.5.2"
   dependencies:
     wabt: 1.0.24
-  checksum: cd5b60e0021b3691544262f199980a581ba7798e4dc6a2f20a079c265cec64e3910a8b714cd1e654eab6d7e490df8482de99a5d94c90e0af0348c3545b67a173
+  checksum: 6493b2c27e4e2d47397e111dd188ba637b76a46674b2165350f7f1571728acfae3bdb3e12c440ad0793853140aff4dca5bcd322eebe259074cc1fc508e2da926
   languageName: node
   linkType: hard
 
