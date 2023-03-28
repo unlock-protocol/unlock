@@ -161,7 +161,7 @@ function Key({ ownedKey, account, network }: Props) {
   const isAvailableOnOpenSea =
     networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
-  const baseSymbol = config.networks[network].baseCurrencySymbol!
+  const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
     isLockDataLoading || !lockData
       ? baseSymbol
@@ -496,7 +496,7 @@ function Key({ ownedKey, account, network }: Props) {
         <h3 className="text-xl font-bold rounded">{lock.name}</h3>
         {networkName && (
           <div className="flex items-center justify-between gap-2 py-1">
-            <span className="text-gray-500 capitalize">Network</span>
+            <span className="text-gray-500">Network</span>
             <span className="font-bold">{networkName}</span>
           </div>
         )}

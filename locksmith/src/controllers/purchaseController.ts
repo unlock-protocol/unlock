@@ -238,8 +238,7 @@ export class PurchaseController {
     }
   }
 
-  // TODO: add captcha to avoid spamming!
-  // TODO: save claims?
+  // DEPRECATED.
   async claim(req: SignedRequest, res: Response) {
     const { publicKey, lock, network, data } =
       req.body.message['Claim Membership']

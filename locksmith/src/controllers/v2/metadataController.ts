@@ -1,17 +1,20 @@
-import type { Web3Service } from '@unlock-protocol/unlock-js'
-import { Response, Request } from 'express'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { Response, Request, RequestHandler } from 'express'
 import * as z from 'zod'
-import { Op } from 'sequelize'
 import Normalizer from '../../utils/normalizer'
 import * as metadataOperations from '../../operations/metadataOperations'
 import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
-import { UserTokenMetadata } from '../../models'
 import * as lockOperations from '../../operations/lockOperations'
-import { isEmpty } from 'lodash'
+import {
+  upsertUsersMetadata,
+  upsertUserMetadata,
+  UserMetadataInputs,
+} from '../../operations/userMetadataOperations'
+import { networks } from '@unlock-protocol/networks'
 
-const UserMetadata = z
+export const UserMetadata = z
   .object({
     public: z.record(z.string(), z.any()).optional(),
     protected: z.record(z.string(), z.any()).optional(),
@@ -23,409 +26,223 @@ const UserMetadataBody = z.object({
   lockAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   metadata: UserMetadata,
+  network: z.number(),
 })
 
 const BulkUserMetadataBody = z.object({
   users: z.array(UserMetadataBody),
 })
 
-function isMetadataEmpty(data: Record<string, any>) {
-  const publicData = isEmpty(data?.public)
-  const protectedData = isEmpty(data?.protected)
-  return publicData && protectedData
+export const getLockMetadata: RequestHandler = async (request, response) => {
+  const network = Number(request.params.network)
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const lockData = await metadataOperations.getLockMetadata({
+    lockAddress,
+    network,
+  })
+  return response.status(200).send(lockData)
 }
 
-export class MetadataController {
-  public web3Service: Web3Service
+export const getKeyMetadata: RequestHandler = async (request, response) => {
+  const keyId = request.params.keyId.toLowerCase()
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const host = `${request.protocol}://${request.headers.host}`
 
-  constructor({ web3Service }: { web3Service: Web3Service }) {
-    this.web3Service = web3Service
-  }
+  const includeProtected = await metadataOperations.isKeyOwnerOrLockVerifier({
+    keyId,
+    network,
+    lockAddress,
+    userAddress: request.user?.walletAddress,
+  })
 
-  async getLockMetadata(request: Request, response: Response) {
-    try {
-      const network = Number(request.params.network)
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const keyData = await metadataOperations.generateKeyMetadata(
+    lockAddress,
+    keyId,
+    includeProtected,
+    host,
+    network
+  )
 
-      const lockData = await metadataOperations.getLockMetadata({
-        lockAddress,
-        network,
-      })
+  return response.status(200).send(keyData)
+}
 
-      return response.status(200).send(lockData)
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'There were some problems in getting the lock data.',
-      })
-    }
-  }
+export const getBulkKeysMetadata: RequestHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+    const network = Number(request.params.network)
+    const { keys }: any = request.body
 
-  /**
-   * Yields the metadata associated with a key and includes protected
-   * fields if the request is performed by key owner or verifier
-   * @param request
-   * @param response
-   * @returns
-   */
-  async getKeyMetadata(request: Request, response: Response) {
-    try {
-      const keyId = request.params.keyId.toLowerCase()
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const network = Number(request.params.network)
-      const host = `${request.protocol}://${request.headers.host}`
-
-      const includeProtected =
-        await metadataOperations.isKeyOwnerOrLockVerifier({
-          keyId,
-          network,
-          lockAddress,
-          userAddress: request.user?.walletAddress,
+    if (!keys) {
+      return response
+        .send({
+          message: 'Parameter `keys` is not present',
         })
-
-      const keyData = await metadataOperations.generateKeyMetadata(
-        lockAddress,
-        keyId,
-        includeProtected,
-        host,
-        network
-      )
-
-      return response.status(200).send(keyData)
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'There were some problems in getting the key metadata.',
-      })
+        .status(500)
     }
-  }
 
-  async updateLockMetadata(request: Request, response: Response) {
-    try {
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const network = Number(request.params.network)
-      const { metadata } = request.body
-      const [updatedLockMetadata] = await LockMetadata.upsert(
-        {
-          address: lockAddress,
-          chain: network,
-          data: {
-            ...metadata,
-          },
-        },
-        {
-          returning: true,
-        }
-      )
-      return response.status(200).send(updatedLockMetadata.data)
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'There were some problems in updating the lock metadata.',
-      })
-    }
-  }
-
-  async updateKeyMetadata(request: Request, response: Response) {
-    try {
-      const keyId = request.params.keyId.toLowerCase()
-      const { metadata } = request.body
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const network = Number(request.params.network)
-      const host = `${request.protocol}://${request.headers.host}`
-
-      await KeyMetadata.upsert(
-        {
-          chain: network,
-          address: lockAddress,
-          id: keyId,
-          data: {
-            ...metadata,
-          },
-        },
-        {
-          conflictFields: ['address', 'id'],
-        }
-      )
-
-      const keyData = await metadataOperations.generateKeyMetadata(
-        lockAddress,
-        keyId,
-        true /* isLockManager */,
-        host,
-        network
-      )
-
-      return response.status(200).send(keyData)
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'There were some problems in updating the key metadata.',
-      })
-    }
-  }
-
-  async createUserMetadata(request: Request, response: Response) {
-    try {
-      const tokenAddress = Normalizer.ethereumAddress(
-        request.params.lockAddress
-      )
-      const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const network = Number(request.params.network)
-      const metadata = await UserMetadata.parseAsync(request.body.metadata)
-      const userData = await UserTokenMetadata.findOne({
-        where: {
-          userAddress,
-          tokenAddress,
-          chain: network,
-        },
-      })
-
-      // If no metadata was set previously, we let anyone set it.
-      if (isMetadataEmpty(userData?.data?.userMetadata)) {
-        const [createdUser] = await UserTokenMetadata.upsert(
-          {
-            tokenAddress,
-            chain: network,
-            userAddress: userAddress,
-            data: {
-              userMetadata: {
-                ...metadata,
-              },
-            },
-          },
-          {
-            returning: true,
-            conflictFields: ['userAddress', 'tokenAddress'],
-          }
-        )
-        return response.status(201).send(createdUser.data)
-      }
-
-      return response.status(409).send({
-        message: 'User metadata already exists.',
-      })
-    } catch (error) {
-      logger.error(error.message)
-
-      if (error instanceof z.ZodError) {
-        return response.status(400).send({
-          message: 'User metadata is not in the correct form.',
-          error: error.format(),
-        })
-      }
-
-      return response.status(500).send({
-        message: 'User metadata could not be added.',
-      })
-    }
-  }
-
-  async updateUserMetadata(request: Request, response: Response) {
-    try {
-      const tokenAddress = Normalizer.ethereumAddress(
-        request.params.lockAddress
-      )
-      const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const loggedUserAddress = Normalizer.ethereumAddress(
-        request.user!.walletAddress
-      )
-      const network = Number(request.params.network)
-      const metadata = await UserMetadata.parseAsync(request.body.metadata)
-
-      const isUserMetadataOwner = userAddress === loggedUserAddress
-
-      const isLockOwner = this.web3Service.isLockManager(
-        tokenAddress,
-        loggedUserAddress,
-        network
-      )
-
-      if (!(isLockOwner || isUserMetadataOwner)) {
-        return response.status(403).send({
-          message:
-            'You are not authorized to update user metadata for this key.',
-        })
-      }
-
-      const [{ dataValues }] = await UserTokenMetadata.upsert(
-        {
-          userAddress,
-          tokenAddress,
-          chain: network,
-          data: {
-            userMetadata: {
-              ...metadata,
-            },
-          },
-        },
-        {
-          conflictFields: ['userAddress', 'tokenAddress'],
-          returning: true,
-        }
-      )
-      return response.status(204).send(dataValues?.data)
-    } catch (error) {
-      logger.error(error.message)
-
-      if (error instanceof z.ZodError) {
-        return response.status(400).send({
-          message: 'User metadata is not in the correct form.',
-          error: error.format(),
-        })
-      }
-
-      return response.status(500).send({
-        message: 'There were some problems in updating user metadata.',
-      })
-    }
-  }
-
-  async createBulkUserMetadata(request: Request, response: Response) {
-    try {
-      const network = Number(request.params.network)
-      const { users } = await BulkUserMetadataBody.parseAsync(request.body)
-      const query = users.map((user) => {
-        const tokenAddress = Normalizer.ethereumAddress(user.lockAddress)
-        const userAddress = Normalizer.ethereumAddress(user.userAddress)
+    const owners: { owner: string; keyId: string }[] = keys?.map(
+      ({ owner, keyId }: any) => {
         return {
-          [Op.and]: [
-            {
-              tokenAddress,
-            },
-            {
-              userAddress,
-            },
-          ],
+          owner: owner?.address,
+          keyId,
         }
-      })
-
-      const userMetadataResults = await UserTokenMetadata.findAll({
-        where: {
-          [Op.or]: query,
-        },
-      })
-
-      const filteredUsers = users.filter(
-        (user) =>
-          !userMetadataResults.some(
-            ({ tokenAddress, userAddress, data }) =>
-              user.lockAddress === tokenAddress &&
-              user.userAddress === userAddress &&
-              !isMetadataEmpty(data?.userMetadata)
-          )
-      )
-
-      const newUsersData = filteredUsers.map(
-        ({ userAddress, lockAddress, metadata }) => {
-          const data = UserMetadata.parse(metadata)
-          const newUserData = {
-            userAddress,
-            tokenAddress: lockAddress,
-            chain: network,
-            data: {
-              userMetadata: {
-                ...data,
-              },
-            },
-          }
-          return newUserData
-        }
-      )
-
-      // Sequelize v6.x support bulk upsert in the bulkCreate so replace
-      const result = await Promise.all(
-        newUsersData.map(async (item) => {
-          const [createdUser] = await UserTokenMetadata.upsert(item, {
-            returning: true,
-            conflictFields: ['tokenAddress', 'userAddress'],
-          })
-          return createdUser.toJSON()
-        })
-      )
-
-      return response.status(201).send({
-        result,
-      })
-    } catch (error) {
-      logger.error(error)
-      if (error instanceof z.ZodError) {
-        return response.status(400).send({
-          message: 'User metadata is not in the correct form.',
-          error: error.format(),
-        })
       }
-      return response.status(500).send({
-        message: 'Bulk user metadata could not be added.',
-      })
-    }
-  }
+    )
 
-  async getBulkKeysMetadata(request: Request, response: Response) {
-    try {
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const network = Number(request.params.network)
-      const { keys }: any = request.body
-
-      if (!keys) {
-        return response
-          .send({
-            message: 'Parameter `keys` is not present',
-          })
-          .status(500)
-      }
-
-      const owners: { owner: string; keyId: string }[] = keys?.map(
-        ({ owner, keyId }: any) => {
-          return {
-            owner: owner?.address,
-            keyId,
-          }
-        }
+    const mergedDataList = owners.map(async ({ owner, keyId }) => {
+      let metadata: any = undefined
+      const keyData = await metadataOperations.getKeyCentricData(
+        lockAddress,
+        keyId
+      )
+      const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
+        lockAddress,
+        [owner],
+        network
       )
 
-      const mergedDataList = owners.map(async ({ owner, keyId }) => {
-        let metadata: any = undefined
-        const keyData = await metadataOperations.getKeyCentricData(
-          lockAddress,
-          keyId
-        )
-        const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
-          lockAddress,
-          [owner],
-          network
-        )
+      const keyMetadataData = keyMetadata?.data || undefined
 
-        const keyMetadataData = keyMetadata?.data || undefined
+      const hasMetadata =
+        [...Object.keys(keyData ?? {}), ...Object.keys(keyMetadataData ?? {})]
+          .length > 0
 
-        const hasMetadata =
-          [...Object.keys(keyData ?? {}), ...Object.keys(keyMetadataData ?? {})]
-            .length > 0
-
-        // build metadata object only if metadata or extraMetadata are present
-        if (hasMetadata) {
-          metadata = {
-            userAddress: owner,
-            data: {
-              ...keyMetadataData,
-              extraMetadata: {
-                ...keyData?.metadata,
-              },
+      // build metadata object only if metadata or extraMetadata are present
+      if (hasMetadata) {
+        metadata = {
+          userAddress: owner,
+          data: {
+            ...keyMetadataData,
+            extraMetadata: {
+              ...keyData?.metadata,
             },
-          }
+          },
         }
-        return metadata
-      })
+      }
+      return metadata
+    })
 
-      const mergedData = await Promise.all(mergedDataList)
-      const filtredMergedData = mergedData.filter(Boolean)
+    const mergedData = await Promise.all(mergedDataList)
+    const filtredMergedData = mergedData.filter(Boolean)
 
-      return response.send(filtredMergedData).status(200)
-    } catch (err) {
-      logger.error(err.message)
-      return response.status(400).send({
-        message: 'There were some problems from getting keys metadata.',
-      })
-    }
+    return response.send(filtredMergedData).status(200)
+  } catch (err) {
+    logger.error(err.message)
+    return response.status(400).send({
+      message: 'There were some problems from getting keys metadata.',
+    })
   }
+}
+
+export const updateLockMetadata: RequestHandler = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const { metadata } = request.body
+  const [updatedLockMetadata] = await LockMetadata.upsert(
+    {
+      address: lockAddress,
+      chain: network,
+      data: {
+        ...metadata,
+      },
+    },
+    {
+      returning: true,
+    }
+  )
+  return response.status(200).send(updatedLockMetadata.data)
+}
+
+export const updateKeyMetadata: RequestHandler = async (request, response) => {
+  const keyId = request.params.keyId.toLowerCase()
+  const { metadata } = request.body
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const host = `${request.protocol}://${request.headers.host}`
+
+  await KeyMetadata.upsert(
+    {
+      chain: network,
+      address: lockAddress,
+      id: keyId,
+      data: {
+        ...metadata,
+      },
+    },
+    {
+      conflictFields: ['address', 'id'],
+    }
+  )
+
+  const keyData = await metadataOperations.generateKeyMetadata(
+    lockAddress,
+    keyId,
+    true /* isLockManager */,
+    host,
+    network
+  )
+
+  return response.status(200).send(keyData)
+}
+
+export const updateUserMetadata: RequestHandler = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
+  const network = Number(request.params.network)
+  const metadata = await UserMetadata.parseAsync(request.body.metadata)
+  const web3Service = new Web3Service(networks)
+  const loggedInUser = request.user!.walletAddress
+  const isLockManager = await web3Service.isLockManager(
+    lockAddress,
+    loggedInUser,
+    network
+  )
+  const user = await upsertUserMetadata(
+    {
+      network,
+      userAddress,
+      lockAddress,
+      metadata,
+      by: loggedInUser,
+    },
+    isLockManager
+  )
+
+  return response.status(200).send({
+    metadata: user.toJSON().data?.userMetadata,
+  })
+}
+
+export const updateUsersMetadata: RequestHandler = async (
+  request: Request,
+  response: Response
+) => {
+  const loggedInUser = request.user!.walletAddress
+  const parsed = await BulkUserMetadataBody.parseAsync(request.body)
+
+  const users = parsed.users.map(
+    (item) =>
+      ({
+        ...item,
+        by: loggedInUser,
+      } as UserMetadataInputs)
+  )
+
+  const { updated, error } = await upsertUsersMetadata(users)
+
+  return response.status(200).send({
+    result: updated.map((item) => {
+      return {
+        network: item.chain,
+        userAddress: item.userAddress,
+        lockAddress: item.tokenAddress,
+        metadata: item.data?.userMetadata,
+      }
+    }),
+    error,
+  })
 }

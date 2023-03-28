@@ -244,7 +244,7 @@ export const EmailTemplatePreview = ({
                   ></div>
                   <div className="flex flex-col gap-2">
                     <Input
-                      placeholder="example@email.com"
+                      placeholder="your@email.com"
                       type="email"
                       disabled={disabled}
                       className="w-full"

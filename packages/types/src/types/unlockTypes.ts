@@ -70,9 +70,6 @@ export interface NetworkConfig {
   chain?: string
   provider: string
   publicProvider: string
-  locksmithUri?: string // TODO: remove as this should not be network specific
-  unlockAppUrl?: string // TODO: remove as this should not be network specific
-  blockTime?: number
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
@@ -112,8 +109,6 @@ export interface NetworkConfig {
     address: string
   } | null
   maxFreeClaimCost?: number
-  requiredConfirmations?: number
-  baseCurrencySymbol?: string
   nativeCurrency: Omit<Token, 'address'>
   wrappedNativeCurrency?: Token
   startBlock?: number
@@ -121,7 +116,6 @@ export interface NetworkConfig {
   description: string
   url?: string
   faucet?: string
-  teamMultisig?: string
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
 }

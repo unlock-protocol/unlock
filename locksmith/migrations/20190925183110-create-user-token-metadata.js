@@ -1,7 +1,8 @@
 'use strict'
+const table = 'UserTokenMetadata'
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserTokenMetadata', {
+    return queryInterface.createTable(table, {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -31,6 +32,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserTokenMetadata')
+    return queryInterface.dropTable(table)
   },
 }
