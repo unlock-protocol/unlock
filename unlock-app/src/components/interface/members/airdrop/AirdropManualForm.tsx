@@ -38,6 +38,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
     control,
     formState: { errors, isSubmitting },
   } = useForm<AirdropMember>({
+    // @ts-expect-error
     defaultValues,
     mode: 'onSubmit',
   })
@@ -51,7 +52,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
     return async (event: React.ChangeEvent<HTMLInputElement>) => {
       const address = await getAddressForName(event.target.value)
       if (address) {
-        return setValue(name, address, {
+        return setValue(name as string, address, {
           shouldValidate: true,
           shouldDirty: true,
         })
