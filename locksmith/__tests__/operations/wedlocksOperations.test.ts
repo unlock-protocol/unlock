@@ -112,12 +112,12 @@ describe('Wedlocks operations', () => {
   describe('sendEmail', () => {
     it('should call the API with the right values', async () => {
       expect.assertions(1)
-      await sendEmail(
-        'template',
-        'failover',
-        'julien@unlock-protocol.com',
-        {
-          networkId: 4,
+      await sendEmail({
+        network: 4,
+        template: 'template',
+        failoverTemplate: 'failover',
+        recipient: 'julien@unlock-protocol.com',
+        params: {
           hello: 'world',
           keyId: '1',
           keychainUrl: 'test',
@@ -125,10 +125,11 @@ describe('Wedlocks operations', () => {
           network: 'Test',
           lockAddress: lockAddressMock,
         },
-        []
-      )
+        attachments: [],
+      })
+
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"networkId":4,"hello":"world","keyId":"1","keychainUrl":"test","lockName":"lockName","network":"Test","lockAddress":"0x8D33b257bce083eE0c7504C7635D1840b3858AFD"},"attachments":[]}',
+        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world","keyId":"1","keychainUrl":"test","lockName":"lockName","network":"Test","lockAddress":"0x8D33b257bce083eE0c7504C7635D1840b3858AFD"},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })

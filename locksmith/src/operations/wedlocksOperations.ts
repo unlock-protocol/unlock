@@ -31,7 +31,6 @@ type Params = {
   keychainUrl?: string
   lockName: string
   network: string
-  networkId: number
   lockAddress: string
   txUrl?: string
   openSeaUrl?: string
@@ -51,6 +50,14 @@ interface Key {
   keyId?: string
 }
 
+interface SendEmailProps {
+  network: number
+  template: string
+  failoverTemplate: string
+  recipient: string
+  params: Params
+  attachments?: Attachment[]
+}
 /**
  * Function to send an email with the Wedlocks service
  * Pass a template, a recipient, some params and attachements
@@ -59,15 +66,17 @@ interface Key {
  * @param recipient
  * @param params
  * @param attachments
+ * @param network
  * @returns
  */
-export const sendEmail = async (
-  template: string,
-  failoverTemplate: string,
-  recipient: string,
-  params: Params = {} as any,
-  attachments: Attachment[] = []
-) => {
+export const sendEmail = async ({
+  network,
+  template,
+  failoverTemplate,
+  recipient,
+  params = {} as any,
+  attachments = [],
+}: SendEmailProps) => {
   const payload = {
     template,
     failoverTemplate,
@@ -79,7 +88,7 @@ export const sendEmail = async (
   // prevent send email when is not enabled
   const { sendEmail: canSendEmail } = await getLockSettings(
     params.lockAddress,
-    Number(params.networkId)
+    network
   )
 
   if (!canSendEmail) {
@@ -350,16 +359,17 @@ export const notifyNewKeyToWedlocks = async (
   const { eventDescription, eventTime, eventDate, eventAddress, eventName } =
     eventDetail ?? {}
 
-  await sendEmail(
-    templates[0],
-    templates[1],
+  await sendEmail({
+    network: network!,
+    template: templates[0],
+    failoverTemplate: templates[1],
     recipient,
-    {
+    attachments,
+    params: {
       lockAddress: key.lock.address ?? '',
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
-      networkId: network!,
       network: networks[network!]?.name ?? '',
       openSeaUrl,
       transferUrl: transferUrl.toString(),
@@ -372,6 +382,5 @@ export const notifyNewKeyToWedlocks = async (
       eventTime,
       eventAddress,
     },
-    attachments
-  )
+  })
 }
