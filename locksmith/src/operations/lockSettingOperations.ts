@@ -7,7 +7,6 @@ import { LockSetting } from '../models/lockSetting'
 interface SendEmailProps {
   lockAddress: string
   network: number
-  sendEmail: boolean
 }
 
 /**
@@ -17,12 +16,14 @@ export async function saveSettings({
   lockAddress,
   network,
   sendEmail,
-}: SendEmailProps) {
+  replyTo,
+}: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
       lockAddress,
       network,
       sendEmail,
+      replyTo,
     },
     {
       returning: true,
