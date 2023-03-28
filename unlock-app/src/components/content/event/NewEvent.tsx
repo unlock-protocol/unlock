@@ -33,6 +33,7 @@ export const NewEvent = () => {
         },
         {} /** transactionParams */,
         async (createLockError, transactionHash) => {
+          window?.scrollTo(0, 0)
           if (createLockError) {
             throw createLockError
           }
