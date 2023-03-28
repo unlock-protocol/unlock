@@ -63,7 +63,7 @@ export const EmailReplyToForm = ({
             enabled={enabled}
             setEnabled={(enabled) => {
               setEnabled(enabled)
-              setValue('replyTo', enabled ? lockSettings?.replyTo : undefined, {
+              setValue('replyTo', enabled ? lockSettings?.replyTo : '', {
                 shouldDirty: true,
               })
             }}
