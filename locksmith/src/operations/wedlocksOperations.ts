@@ -31,6 +31,7 @@ type Params = {
   keychainUrl?: string
   lockName: string
   network: string
+  networkId: number
   lockAddress: string
   txUrl?: string
   openSeaUrl?: string
@@ -370,6 +371,7 @@ export const notifyNewKeyToWedlocks = async (
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
+      networkId: network!,
       network: networks[network!]?.name ?? '',
       openSeaUrl,
       transferUrl: transferUrl.toString(),
