@@ -117,6 +117,7 @@ describe('Wedlocks operations', () => {
         'failover',
         'julien@unlock-protocol.com',
         {
+          networkId: 4,
           hello: 'world',
           keyId: '1',
           keychainUrl: 'test',
