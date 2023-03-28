@@ -176,24 +176,25 @@ export const Form = ({ onSubmit }: FormProps) => {
 
               <div className="grid grid-1.5">
                 <span>Illustration</span>
-                <ImageUpload
-                  size="full"
-                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
-                  isUploading={isUploading}
-                  preview={metadataImage!}
-                  onChange={async (fileOrFileUrl: any) => {
-                    if (typeof fileOrFileUrl === 'string') {
-                      setValue('metadata.image', fileOrFileUrl)
-                    } else {
-                      const items = await uploadImage(fileOrFileUrl[0])
-                      const image = items?.[0]?.publicUrl
-                      if (!image) {
-                        return
+                <div className="mx-auto">
+                  <ImageUpload
+                    description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                    isUploading={isUploading}
+                    preview={metadataImage!}
+                    onChange={async (fileOrFileUrl: any) => {
+                      if (typeof fileOrFileUrl === 'string') {
+                        setValue('metadata.image', fileOrFileUrl)
+                      } else {
+                        const items = await uploadImage(fileOrFileUrl[0])
+                        const image = items?.[0]?.publicUrl
+                        if (!image) {
+                          return
+                        }
+                        setValue('metadata.image', image)
                       }
-                      setValue('metadata.image', image)
-                    }
-                  }}
-                />
+                    }}
+                  />
+                </div>
               </div>
 
               <Select
