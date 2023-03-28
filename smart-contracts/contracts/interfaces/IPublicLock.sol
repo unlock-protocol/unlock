@@ -680,20 +680,6 @@ interface IPublicLock {
     address account
   ) external view returns (bool);
 
-  /**
-   * @param _tokenId the id of the token to transfer time from
-   * @param _to the recipient of the new token with time
-   * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
-   * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
-   * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
-   * @return success the result of the transfer operation
-   */
-  function transfer(
-    uint _tokenId,
-    address _to,
-    uint _value
-  ) external returns (bool success);
-
   /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
    * The `Ownable` logic is used by many 3rd party services to determine
    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
@@ -742,4 +728,16 @@ interface IPublicLock {
     uint _tokenId,
     address _referrer
   ) external;
+
+  /**
+   * @dev helper to check if a key is currently renewable 
+   * it will revert if the pricing or duration of the lock have been modified 
+   * unfavorably since the key was bought(price increase or duration decrease).
+   * It will also revert if a lock is not renewable or if the key is not ready for renewal yet 
+   * (at least 90% expired).
+   * @param tokenId the id of the token to check
+   * @param referrer the address where to send the referrer fee
+   * @return true if the terms has changed
+   */
+  function isRenewable(uint256 tokenId, address referrer) external view returns (bool);
 }

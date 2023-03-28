@@ -5,7 +5,7 @@ import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
 import { lazyObject } from 'hardhat/plugins'
 import './type-extensions'
 
-import { TASK_CREATE_LOCK, TASK_DEPLOY_PROTOCOL } from './constants'
+import { TASK_CREATE_LOCK } from './constants'
 
 import { deployLockTask } from './tasks'
 import networks from './networks.json'
@@ -103,20 +103,5 @@ task(TASK_CREATE_LOCK, 'Create a lock')
   .addOptionalParam(
     'unlockContract',
     'The address of the Unlock instance to use'
-  )
-  .setAction(deployLockTask)
-
-task(TASK_DEPLOY_PROTOCOL, 'Deploy and set the entire Unlock Protocol')
-  .addOptionalParam(
-    'unlockVersion',
-    'The version number of the Unlock contract (default to latest)'
-  )
-  .addOptionalParam(
-    'lockVersion',
-    'The version number of the Lock template (default to latest)'
-  )
-  .addOptionalParam(
-    'confirmations',
-    'The number of confirmationsto wait (default 5)'
   )
   .setAction(deployLockTask)

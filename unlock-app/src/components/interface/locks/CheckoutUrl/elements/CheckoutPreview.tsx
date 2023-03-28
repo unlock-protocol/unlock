@@ -10,6 +10,7 @@ import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 
 interface CheckoutPreviewProps {
   paywallConfig?: PaywallConfig
+  id?: string | null
 }
 
 const onDownloadJson = (paywallConfig: PaywallConfig) => {
@@ -22,7 +23,10 @@ const onDownloadJson = (paywallConfig: PaywallConfig) => {
 
   FileSaver.saveAs(fileToSave, fileName)
 }
-export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
+export const CheckoutPreview = ({
+  paywallConfig,
+  id,
+}: CheckoutPreviewProps) => {
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const config = useConfig()
 
@@ -38,10 +42,14 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
       delete paywallConfig.redirectUri
     }
 
-    url.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
+    if (id) {
+      url.searchParams.append('id', id)
+    } else {
+      url.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
+    }
 
     setCheckoutUrl(url.toString())
-  }, [paywallConfig])
+  }, [paywallConfig, id])
 
   const [_isCopied, setCopied] = useClipboard(checkoutUrl, {
     successDuration: 2000,

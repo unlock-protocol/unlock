@@ -318,6 +318,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @dev Upgrade a Lock template implementation
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
+   * @custom:oz-upgrades-unsafe-allow-reachable delegatecall
    */
 
   function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
@@ -344,7 +345,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
         lockAddress
-      );
+    );
+
     proxyAdmin.upgrade(proxy, impl);
 
     // let's upgrade the data schema
@@ -532,7 +534,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
-    return 11;
+    return 12;
   }
 
   /**

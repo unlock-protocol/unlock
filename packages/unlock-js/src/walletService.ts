@@ -970,4 +970,31 @@ export default class WalletService extends UnlockService {
     const tx = await contract.setSigner(lockAddress, signerAddress)
     return tx
   }
+
+  /**
+   * Change lock manager for a specific key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setKeyManagerOf(
+    params: {
+      lockAddress: string
+      managerAddress: string
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.managerAddress) throw new Error('Missing managerAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setKeyManagerOf) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setKeyManagerOf.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }

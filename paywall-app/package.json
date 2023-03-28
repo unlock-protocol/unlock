@@ -17,7 +17,7 @@
   "dependencies": {
     "@types/next": "8.0.7",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "13.2.3",
+    "next": "13.1.6",
     "vite-plugin-node-polyfills": "0.7.0"
   },
   "license": "MIT",
@@ -32,7 +32,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --fix"
+      "yarn run lint --fix"
     ]
   },
   "browserslist": [

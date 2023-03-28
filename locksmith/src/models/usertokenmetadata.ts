@@ -15,6 +15,7 @@ export class UserTokenMetadata extends Model<
   declare userAddress: string
   declare data: any
   declare chain: number
+  declare updatedBy: null | string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -50,6 +51,10 @@ UserTokenMetadata.init(
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
+    },
+    updatedBy: {
+      allowNull: true,
+      type: DataTypes.STRING,
     },
   },
   {
