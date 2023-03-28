@@ -28,7 +28,7 @@ export const EventContent = () => {
       </Head>
       {!showDetails && <LandingPage handleCreateEvent={handleCreateEvent} />}
       {showDetails && (
-        <div className="md:w-3/4 m-auto">
+        <div className="m-auto md:w-3/4">
           <EventDetails
             lockAddress={lockAddress.toString()}
             network={parseInt(network.toString(), 10)}
