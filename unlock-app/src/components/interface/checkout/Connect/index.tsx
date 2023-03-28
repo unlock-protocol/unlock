@@ -80,14 +80,7 @@ export function Connect({
         return null
       }
     }
-  }, [
-    matched,
-    onClose,
-    connectService,
-    injectedProvider,
-    oauthConfig,
-    paywallConfig,
-  ])
+  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
 
   return (
     <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
