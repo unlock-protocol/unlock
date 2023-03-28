@@ -638,7 +638,10 @@ export const checkoutMachine = createMachine(
   {
     actions: {
       disconnect: assign((_context) => {
-        return DEFAULT_CONTEXT
+        return {
+          ...DEFAULT_CONTEXT,
+          paywallConfig: _context.paywallConfig,
+        }
       }),
       selectLock: assign((context, event) => {
         return {
