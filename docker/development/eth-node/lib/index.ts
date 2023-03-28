@@ -32,6 +32,7 @@ export const outputSubgraphNetworkConf = async (
   // update subgraph configuration
   await fs.writeJSON(path.join('.', 'networks.json'), networkConf, {
     spaces: 2,
+    mode: '0o666',
   })
   return networkConf
 }

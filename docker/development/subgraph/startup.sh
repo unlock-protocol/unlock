@@ -6,6 +6,7 @@ echo "Preparing Unlock local subgraph..."
 
 # show networks
 cat /home/unlock/subgraph/networks.json
+ls -la /home/unlock/subgraph/networks.json
 
 # generate ts code from ABIs
 yarn workspace @unlock-protocol/subgraph prepare:abis
