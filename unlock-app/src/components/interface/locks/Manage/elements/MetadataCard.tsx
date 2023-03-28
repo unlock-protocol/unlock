@@ -32,6 +32,7 @@ interface MetadataCardProps {
   owner: string
   network: number
   expirationDuration?: string
+  lockSettings?: Record<string, any>
 }
 
 const keysToIgnore = [
@@ -229,6 +230,7 @@ export const MetadataCard = ({
   owner,
   network,
   expirationDuration,
+  lockSettings,
 }: MetadataCardProps) => {
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
@@ -417,19 +419,21 @@ export const MetadataCard = ({
                       >
                         Edit email
                       </Button>
-                      <Button
-                        size="tiny"
-                        variant="outlined-primary"
-                        onClick={onSendQrCode}
-                        disabled={
-                          sendEmailMutation.isLoading ||
-                          sendEmailMutation.isSuccess
-                        }
-                      >
-                        {sendEmailMutation.isSuccess
-                          ? 'QR-code sent by email'
-                          : 'Send QR-code by email'}
-                      </Button>
+                      {lockSettings?.sendEmail && (
+                        <Button
+                          size="tiny"
+                          variant="outlined-primary"
+                          onClick={onSendQrCode}
+                          disabled={
+                            sendEmailMutation.isLoading ||
+                            sendEmailMutation.isSuccess
+                          }
+                        >
+                          {sendEmailMutation.isSuccess
+                            ? 'QR-code sent by email'
+                            : 'Send QR-code by email'}
+                        </Button>
+                      )}
                     </div>
                   ) : (
                     <Button
