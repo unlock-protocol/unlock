@@ -10,7 +10,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this grant application! Please make sure you follow the guidelines [detailed in our docs](https://docs.unlock-protocol.com/governance/grants-bounties/).
-        Start by updating the title above with the name of your grant application. (for example, `Plugin for Squarespace`...) 
+        Start by updating the title above with the name of your grant application (for example, `Plugin for Squarespace`). 
         Once submitted, the Unlock community will review your application so please make sure it is thorough and detailed.
   - type: textarea
     id: details
