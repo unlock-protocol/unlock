@@ -38,7 +38,7 @@ body:
     id: github
     attributes:
       label: Github
-      description: Please enter the your project\'s github page
+      description: Please enter the your project\'s Github page
       placeholder: ex. https://github.com/unlock-protocol/unlock
   - type: input
     id: linkedIn
@@ -50,14 +50,14 @@ body:
     id: discord 
     attributes:
       label: Discord handle
-      description: Your discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
+      description: Your Discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
     validations:
       required: true
   - type: input
     id: duration 
     attributes:
       label: Completion time
-      description: Let us know how much time do you think you will need to complete your project. 
+      description: Let us know how much time do you think you will need to complete your project 
     validations:
       required: true
   - type: textarea
