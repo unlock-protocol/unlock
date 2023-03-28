@@ -29,3 +29,4 @@ yarn-error.log*
 
 # output directly from package
 src/static/unlock.latest.min.js
+public/static/unlock.latest.min.js
