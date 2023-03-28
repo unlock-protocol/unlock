@@ -12,7 +12,7 @@ const networkName = (n) => {
 }
 
 const networks = Object.keys(networksConfig)
-  .filter((d) => !['networks', 'default', 'localhost'].includes(d))
+  .filter((d) => !['networks', 'default'].includes(d))
   .reduce((acc, chainName) => {
     const {
       startBlock,

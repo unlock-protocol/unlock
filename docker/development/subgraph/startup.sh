@@ -10,7 +10,7 @@ yarn workspace @unlock-protocol/subgraph prepare:abis
 yarn workspace @unlock-protocol/subgraph codegen
 
 # build the subgraph files
-yarn workspace @unlock-protocol/subgraph graph build:graph --network localhost
+yarn workspace @unlock-protocol/subgraph run graph build --network localhost
 
 # init the graph
 yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://graph-node:8020/ --version 0.0.1
