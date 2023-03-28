@@ -56,12 +56,14 @@ export const Form = ({ onSubmit }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network!].baseCurrencySymbol,
+      currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {
           event_start_date: '',
           event_start_time: '',
+          event_end_date: '',
+          event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
@@ -175,6 +177,7 @@ export const Form = ({ onSubmit }: FormProps) => {
               <div className="grid grid-1.5">
                 <span>Illustration</span>
                 <ImageUpload
+                  size="full"
                   description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
@@ -199,7 +202,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   setValue('lock.currencyContractAddress', null)
                   setValue(
                     'currencySymbol',
-                    networks[newValue].baseCurrencySymbol
+                    networks[newValue].nativeCurrency.symbol
                   )
                 }}
                 options={networkOptions}
@@ -230,26 +233,50 @@ export const Form = ({ onSubmit }: FormProps) => {
                     <iframe width="100%" height="300" src={mapAddress}></iframe>
                   </div>
                 </div>
-                <div className="flex flex-col self-start justify-top">
-                  <Input
-                    {...register('metadata.ticket.event_start_date', {
-                      required: {
-                        value: true,
-                        message: 'Add a date to your event',
-                      },
-                    })}
-                    type="date"
-                    label="Date"
-                    error={
-                      // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
-                      errors.metadata?.ticket?.event_start_date?.message || ''
-                    }
-                  />
-                  <Input
-                    {...register('metadata.ticket.event_start_time')}
-                    type="time"
-                    label="Time"
-                  />
+                <div className="flex flex-col self-start gap-2 justify-top">
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <Input
+                      {...register('metadata.ticket.event_start_date', {
+                        required: {
+                          value: true,
+                          message: 'Add a start date to your event',
+                        },
+                      })}
+                      type="date"
+                      label="Star Date"
+                      error={
+                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_start_date?.message || ''
+                      }
+                    />
+                    <Input
+                      {...register('metadata.ticket.event_start_time')}
+                      type="time"
+                      label="Start Time"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <Input
+                      {...register('metadata.ticket.event_end_date', {
+                        required: {
+                          value: true,
+                          message: 'Add a end date to your event',
+                        },
+                      })}
+                      type="date"
+                      label="End Date"
+                      error={
+                        // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_end_date?.message || ''
+                      }
+                    />
+                    <Input
+                      {...register('metadata.ticket.event_end_time')}
+                      type="time"
+                      label="End Time"
+                    />
+                  </div>
 
                   <Controller
                     name="metadata.ticket.event_timezone"

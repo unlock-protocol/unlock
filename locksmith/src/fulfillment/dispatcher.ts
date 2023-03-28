@@ -219,7 +219,7 @@ export default class Dispatcher {
 
     await walletService.connect(provider, wallet)
 
-    const referrer = networks[network]?.teamMultisig
+    const referrer = networks[network]?.multisig
 
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
     return executeAndRetry(
@@ -278,7 +278,7 @@ export default class Dispatcher {
 
     const transactionOptions = await getGasSettings(network)
 
-    const teamMultisig = networks[network]?.teamMultisig
+    const teamMultisig = networks[network]?.multisig
 
     const recipients: string[] = []
     const keyManagers: string[] = []

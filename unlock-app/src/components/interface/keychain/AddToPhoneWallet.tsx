@@ -4,6 +4,7 @@ import { createWalletPass, Platform } from '../../../services/ethpass'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { WalletService } from '@unlock-protocol/unlock-js'
+import { config as AppConfig } from '~/config/app'
 
 const addToPhoneWallet = async (
   walletService: WalletService,
@@ -74,7 +75,6 @@ interface AddToWalletProps {
   network: number
   lockAddress: string
   tokenId: string
-  image: string
   platform: Platform
   handlePassUrl: (url: string) => void
   disabled?: boolean
@@ -92,17 +92,17 @@ export const AddToDeviceWallet = ({
   lockAddress,
   tokenId,
   network,
-  image,
   name,
   handlePassUrl,
   platform,
   ...rest
 }: AddToWalletProps) => {
   const { getWalletService } = useAuth()
-
+  const image = `${AppConfig.services.storage.host}/image/${network}/${lockAddress}/${tokenId}`
   const handleClick = async () => {
     const generate = async () => {
       const walletService = await getWalletService()
+
       const passUrl = await addToPhoneWallet(
         walletService,
         lockAddress,

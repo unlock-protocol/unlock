@@ -1,5 +1,6 @@
 // tests adapted/imported from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/7e41bf2259950c33e55604015875b7780b6a2e63/test/token/ERC20/extensions/ERC20VotesComp.test.js
 const { network } = require('hardhat')
+const { expect, assert } = require('chai')
 const {
   BN,
   expectEvent,

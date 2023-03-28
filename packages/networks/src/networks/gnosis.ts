@@ -10,9 +10,7 @@ export const gnosis: NetworkConfig = {
   keyManagerAddress: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
   id: 100,
   name: 'Gnosis Chain',
-  blockTime: 5000,
   chain: 'xdai', // This is used in llama pricing API so can't rename.
-  requiredConfirmations: 12,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
     endpointV2:
@@ -32,9 +30,6 @@ export const gnosis: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  erc20: null, // no default ERC20 on xdai for now
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
-  baseCurrencySymbol: 'xDAI',
   nativeCurrency: {
     name: 'xDAI',
     symbol: 'xDAI',
@@ -50,10 +45,11 @@ export const gnosis: NetworkConfig = {
     },
   ],
   description:
-    'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
+    'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
+  url: 'https://www.gnosis.io/',
+  faucet: 'https://gnosisfaucet.com/',
   isTestNetwork: false,
   maxFreeClaimCost: 100,
-  teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
   tokens: [
     {
       name: 'USD Coin',

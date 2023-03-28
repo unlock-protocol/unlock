@@ -55,7 +55,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
             label="Enter your email address:"
             type="email"
             size="small"
-            placeholder="jane.doe@example.com"
+            placeholder="your@email.com"
             required
             error={errors?.email?.message as unknown as string}
             {...register('email', {

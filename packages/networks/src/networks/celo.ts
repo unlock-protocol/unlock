@@ -10,8 +10,8 @@ export const celo: NetworkConfig = {
   name: 'Celo',
   chain: 'celo',
   description:
-    'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
-  blockTime: 1000,
+    'Celo is the carbon-negative, mobile-first, EVM-compatible blockchain ecosystem leading a thriving new digital economy for all.',
+  url: 'https://celo.org',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
     endpointV2:
@@ -30,10 +30,6 @@ export const celo: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'CELO',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'CELO',
     symbol: 'CELO',
@@ -44,13 +40,12 @@ export const celo: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
-  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
+  swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   wrappedNativeCurrency: {
     name: 'Celo native asset',
     symbol: 'CELO',

@@ -61,7 +61,7 @@ export function Renew({
       fiatPricing,
     },
     lockNetwork,
-    config.networks[lockNetwork].baseCurrencySymbol,
+    config.networks[lockNetwork].nativeCurrency.symbol,
     lockName
   )
 
@@ -118,6 +118,7 @@ export function Renew({
         }
       }
       const walletService = await getWalletService(lockNetwork)
+
       if (lock.publicLockVersion! <= 9) {
         await walletService.purchaseKeys(
           {
@@ -156,6 +157,7 @@ export function Renew({
     setIsSigningMessage(true)
     try {
       const walletService = await getWalletService()
+
       const signature = await walletService.signMessage(
         messageToSign!,
         'personal_sign'

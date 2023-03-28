@@ -38,10 +38,10 @@
   },
   "lint-staged": {
     ".{js,ts,tsx}": [
-      "eslint --fix"
+      "yarn run lint --fix"
     ]
   },
   "devDependencies": {
-    "matchstick-as": "0.5.1"
+    "matchstick-as": "0.5.2"
   }
 }
