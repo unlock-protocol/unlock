@@ -10,8 +10,8 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { usePasswordHookSigner } from './useHooks'
 import { getEthersWalletFromPassword } from '~/utils/strings'
+import { usePasswordHookSigner } from '~/hooks/useHooks'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
