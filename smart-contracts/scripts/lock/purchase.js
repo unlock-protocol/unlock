@@ -6,7 +6,7 @@ async function main({
 }) {
   const [signer] = await ethers.getSigners()
 
-    // get correct versio  of the lock abi
+    // get correct version  of the lock abi
     const lock = await ethers.getContractAt(
       'contracts/PublicLock.sol:PublicLock',
       lockAddress
