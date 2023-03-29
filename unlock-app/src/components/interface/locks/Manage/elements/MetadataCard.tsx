@@ -409,7 +409,7 @@ export const MetadataCard = ({
                   <span>Email:</span>
                   {hasEmail ? (
                     <div className="flex flex-col w-full gap-3 md:flex-row">
-                      <span className="block font-semibold text-black ">
+                      <span className="block text-base font-semibold text-black">
                         {data?.email}
                       </span>
                       <Button
@@ -466,7 +466,7 @@ export const MetadataCard = ({
                 <div className="flex items-center gap-2">
                   <span>Key Holder:</span>
                   {/* show full address on desktop */}
-                  <div className="text-base font-bold break-words">
+                  <div className="text-base font-semibold text-black break-words">
                     <span className="hidden md:block">{owner}</span>
                     {/* show minified address on mobile */}
                     <span className="block md:hidden">
@@ -525,7 +525,7 @@ export const MetadataCard = ({
                     <div className="flex items-center gap-2">
                       <span>Key Manager:</span>
                       {/* show full address on desktop */}
-                      <div className="text-base font-bold break-words">
+                      <div className="text-base font-semibold text-black break-words">
                         <span className="hidden md:block">{manager}</span>
                         {/* show minified address on mobile */}
                         <span className="block md:hidden">
