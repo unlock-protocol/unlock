@@ -4,10 +4,6 @@ set -e
 
 echo "Preparing Unlock local subgraph..."
 
-# show networks
-cat /home/unlock/subgraph/networks.json
-# build the subgraph files
-
 # generate ts code from ABIs
 yarn workspace @unlock-protocol/subgraph prepare:abis
 echo -e "✔ Unlock local ABI prepared\n\n"
@@ -16,7 +12,8 @@ yarn workspace @unlock-protocol/subgraph codegen
 echo -e "✔ Unlock local code generated\n\n"
 
 # build the subgraph files
-ls -la /home/unlock/subgraph/networks.json
+# show networks
+cat /home/unlock/subgraph/networks.json
 yarn workspace @unlock-protocol/subgraph run build:graph localhost
 echo -e "✔ Unlock local subgraph built\n\n"
 
