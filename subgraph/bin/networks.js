@@ -41,7 +41,7 @@ const networks = Object.keys(networksConfig)
     }
   }, {})
 
-fs.writeJSONSync(networkFilePath, networks, { spaces: 2 })
+fs.writeJSONSync(networkFilePath, networks, { spaces: 2, mode: 0o666 })
 
 console.log(`Networks file saved at: ${networkFilePath}`)
 
