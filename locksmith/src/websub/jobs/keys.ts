@@ -143,12 +143,13 @@ const getMembershipStatus = async ({
   const isRenewable =
     Number(key?.lock?.version) >= 11 && key?.expiration !== MAX_UINT && isERC20
 
-  const subscriptions = await subscriptionOperations.getSubscriptions({
-    tokenId,
-    lockAddress,
-    owner,
-    network,
-  })
+  const subscriptions =
+    await subscriptionOperations.getSubscriptionsForLockByOwner({
+      tokenId,
+      lockAddress,
+      owner,
+      network,
+    })
 
   let currency = ''
   let isAutoRenewable = false

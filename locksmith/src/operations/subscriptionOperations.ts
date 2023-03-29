@@ -40,7 +40,7 @@ interface GetSubscriptionsProps {
   network: number
 }
 
-export const getSubscriptions = async ({
+export const getSubscriptionsForLockByOwner = async ({
   tokenId,
   lockAddress,
   owner,
@@ -80,7 +80,8 @@ export const getSubscriptions = async ({
 
   const balance = ethers.utils.formatUnits(userBalance, decimals)
 
-  const price = ethers.BigNumber.from(key.lock.price)
+  const price = ethers.utils.formatUnits(key.lock.price, decimals)
+
   const next =
     key.expiration === ethers.constants.MaxUint256.toString()
       ? null
@@ -90,11 +91,11 @@ export const getSubscriptions = async ({
 
   // Approved renewals
   const approvedRenewalsAmount =
-    userAllowance.gt(0) && price.gt(0)
+    userAllowance.gt(0) && parseFloat(price) > 0
       ? userAllowance.div(price)
       : ethers.BigNumber.from(0)
 
-  const approvedRenewals = approvedRenewalsAmount.toString()
+  const numberOfRenewalsApproved = approvedRenewalsAmount.toString()
 
   const info = {
     next,
@@ -139,7 +140,7 @@ export const getSubscriptions = async ({
   // Add the default crypto subscription details.
   const cryptoSubscription: Subscription = {
     ...info,
-    approvedRenewals: approvedRenewals,
+    approvedRenewals: numberOfRenewalsApproved,
     possibleRenewals: ethers.BigNumber.from(userBalance).div(price).toString(),
     type: 'Crypto',
   }

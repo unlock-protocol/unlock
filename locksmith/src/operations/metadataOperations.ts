@@ -264,16 +264,20 @@ export const getUserProtectedMetadata = async ({
     },
   })
 
-  logger.info(
-    'Found the relevant token metadata',
-    userTokenMetadataRecord?.data
-  )
+  if (userTokenMetadataRecord) {
+    logger.info(
+      'Found the relevant token metadata',
+      userTokenMetadataRecord?.data
+    )
 
-  const protectedData = Normalizer.toLowerCaseKeys({
-    ...userTokenMetadataRecord?.data?.userMetadata?.protected,
-  })
+    const protectedData = Normalizer.toLowerCaseKeys({
+      ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+    })
 
-  return protectedData
+    return protectedData
+  }
+
+  return null
 }
 
 export const getLockMetadata = async ({
