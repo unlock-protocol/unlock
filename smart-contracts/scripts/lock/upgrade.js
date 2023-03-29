@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
 
-
 async function main({ lockAddress }) {
   if (!lockAddress) {
     // eslint-disable-next-line no-console
