@@ -77,7 +77,7 @@ body:
     attributes:
       label: Anything else you think we should know
       description: Feel free to include any other relevant information about your grant proposal here
-  - type: radio
+  - type: dropdown
     id: open-source
     required: true
     attributes:
