@@ -106,7 +106,7 @@ export const Authenticate = ({
   }
 
   const deAuthenticate = () => {
-    disconnectProvider()
+    return disconnectProvider()
   }
 
   return (
