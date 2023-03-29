@@ -47,7 +47,7 @@ const Label = classed.span('relative text-gray-700', {
   },
 })
 
-const Value = classed.span(`relative cursor-pointer font-bold text-black`, {
+const Value = classed.span(`relative font-bold text-black`, {
   variants: {
     size: {
       tiny: 'text-base',
@@ -108,7 +108,7 @@ export const Detail = ({
             </div>
           </Tooltip>
         ) : (
-          <div className="flex items-center gap-2 text-right">
+          <div className="flex items-center gap-2 text-right cursor-pointer">
             <Value truncate={truncate} size={valueSize}>
               {children}
             </Value>
