@@ -31,7 +31,6 @@ type Params = {
   keychainUrl?: string
   lockName: string
   network: string
-  lockAddress: string
   txUrl?: string
   openSeaUrl?: string
 }
@@ -51,6 +50,7 @@ interface Key {
 }
 
 interface SendEmailProps {
+  lockAddress: string
   network: number
   template: string
   failoverTemplate: string
@@ -63,6 +63,7 @@ interface SendEmailProps {
  * Pass a template, a recipient, some params and attachments
  */
 export const sendEmail = async ({
+  lockAddress,
   network,
   template,
   failoverTemplate,
@@ -72,7 +73,7 @@ export const sendEmail = async ({
 }: SendEmailProps) => {
   // prevent send email when is not enabled
   const { sendEmail: canSendEmail, replyTo } = await getLockSettings(
-    params.lockAddress,
+    lockAddress,
     network
   )
 
@@ -344,13 +345,13 @@ export const notifyNewKeyToWedlocks = async (
     eventDetail ?? {}
 
   await sendEmail({
+    lockAddress: key.lock.address ?? '',
     network: network!,
     template: templates[0],
     failoverTemplate: templates[1],
     recipient,
     attachments,
     params: {
-      lockAddress: key.lock.address ?? '',
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',

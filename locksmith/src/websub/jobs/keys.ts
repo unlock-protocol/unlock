@@ -263,6 +263,7 @@ export async function notifyKeyExpiration() {
 
               // send expiring email
               await sendEmail({
+                lockAddress,
                 network: Number(`${networkId}`),
                 template: 'keyExpiring',
                 failoverTemplate: 'keyExpiring',
@@ -348,6 +349,7 @@ export async function notifyKeyExpired() {
 
             // send expiring email
             await sendEmail({
+              lockAddress,
               network: Number(`${networkId}`),
               template: 'keyExpired',
               failoverTemplate: 'keyExpired',
