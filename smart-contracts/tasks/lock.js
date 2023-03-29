@@ -92,3 +92,12 @@ task('lock:create', 'Deploy a lock')
       })
     }
   )
+
+task('lock:upgrade', 'Upgrade a lock to the next version')
+  .addParam('lockAddress', 'The lock address')
+  .setAction(async ({ lockAddress }) => {
+    // eslint-disable-next-line global-require
+    const upgradeLock = require('../scripts/lock/upgrade')
+    await upgradeLock({ lockAddress })
+  })
+  
