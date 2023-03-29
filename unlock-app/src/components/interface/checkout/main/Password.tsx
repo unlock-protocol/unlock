@@ -10,10 +10,7 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { networks } from '@unlock-protocol/networks'
-import { HookType } from '@unlock-protocol/types'
-import { useQuery } from '@tanstack/react-query'
+import { usePasswordHookSigners } from './useHooks'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -24,8 +21,7 @@ interface FormData {
 }
 
 export function Password({ injectedProvider, checkoutService }: Props) {
-  const web3Service = useWeb3Service()
-  const { account, getWalletService } = useAuth()
+  const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const { recipients, renew, lock } = state.context
   const {
@@ -37,33 +33,11 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   })
   const users = recipients.length > 0 ? recipients : [account!]
 
-  // get password hook contract by network
-  const passwordHookContract =
-    lock &&
-    networks[lock.network]?.hooks?.onKeyPurchaseHook?.find(
-      (hook) => hook.id === HookType.PASSWORD
-    )?.address
-
-  const getSigners = async (): Promise<string> => {
-    if (!lock || !passwordHookContract) return ''
-    const walletService = await getWalletService(lock?.network)
-    return await web3Service.getPasswordHookSigners(
-      {
-        lockAddress: lock.address,
-        contractAddress: passwordHookContract,
-        network: lock.network,
-      },
-      walletService.signer
-    )
-  }
-
-  const { isLoading: isLoadingSigners, data: passwordSigners } = useQuery(
-    ['getSigners', lock?.address, lock?.network],
-    async () => getSigners(),
-    {
-      enabled: !!passwordHookContract && !!lock?.address && !!lock?.network,
-    }
-  )
+  const { isLoading: isLoadingSigners, data: passwordSigners } =
+    usePasswordHookSigners({
+      lockAddress: lock!.address,
+      network: lock!.network,
+    })
 
   const onSubmit = async (formData: FormData) => {
     try {
