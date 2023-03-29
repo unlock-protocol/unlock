@@ -13,6 +13,9 @@ Object.keys(networks).forEach((chainId) => {
   filtered[chainId] = net
 })
 
-fs.outputJSONSync(filePath, filtered, { spaces: 2 })
+fs.outputJSONSync(filePath, filtered, {
+  spaces: 2,
+  mode: 0o666,
+})
 
-console.log(`networks saved to ${filePath}.`)
+console.log(`networks saved to ${filePath}. anyone can read`)
