@@ -10,12 +10,19 @@ const LockSettingSchema = z.object({
       description: 'When true enable to send emails',
     })
     .default(true),
+  replyTo: z
+    .string({
+      description:
+        'Set the email address that will appear on the Reply-To: field.',
+    })
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
 
 export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
+  replyTo: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
@@ -26,12 +33,12 @@ export const updateSettings: RequestHandler = async (
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
 
-    const { sendEmail } = await LockSettingSchema.parseAsync(request.body)
+    const options = await LockSettingSchema.parseAsync(request.body)
 
     const [settings] = await lockSettingOperations.saveSettings({
       lockAddress,
       network,
-      sendEmail,
+      ...options,
     })
     return response.status(200).send(settings)
   } catch (err: any) {
