@@ -8,7 +8,6 @@ import * as Normalizer from '../utils/normalizer'
 interface SendEmailProps {
   lockAddress: string
   network: number
-  sendEmail: boolean
 }
 
 /**
@@ -18,12 +17,14 @@ export async function saveSettings({
   lockAddress,
   network,
   sendEmail,
-}: SendEmailProps) {
+  replyTo,
+}: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
       sendEmail,
+      replyTo,
     },
     {
       returning: true,
