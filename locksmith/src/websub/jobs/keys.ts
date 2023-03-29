@@ -262,17 +262,23 @@ export async function notifyKeyExpiration() {
               )
 
               // send expiring email
-              await sendEmail(`keyExpiring`, `keyExpiring`, recipient, {
-                lockName,
-                keyId,
-                network: networkId,
-                keychainUrl: `${config.unlockApp}/keychain`,
-                currency,
-                expirationDate,
-                isRenewable,
-                isAutoRenewable,
-                isRenewableIfRePurchased,
-                isRenewableIfReApproved,
+              await sendEmail({
+                network: Number(`${networkId}`),
+                template: 'keyExpiring',
+                failoverTemplate: 'keyExpiring',
+                recipient,
+                params: {
+                  lockName,
+                  keyId,
+                  network: networkId,
+                  keychainUrl: `${config.unlockApp}/keychain`,
+                  currency,
+                  expirationDate,
+                  isRenewable,
+                  isAutoRenewable,
+                  isRenewableIfRePurchased,
+                  isRenewableIfReApproved,
+                },
               })
             }),
           ])
@@ -341,11 +347,17 @@ export async function notifyKeyExpired() {
             if (!recipient) return
 
             // send expiring email
-            await sendEmail(`keyExpired`, `keyExpired`, recipient, {
-              lockName,
-              keyId,
-              network: networkId,
-              keychainUrl: `${config.unlockApp}/keychain`,
+            await sendEmail({
+              network: Number(`${networkId}`),
+              template: 'keyExpired',
+              failoverTemplate: 'keyExpired',
+              recipient,
+              params: {
+                lockName,
+                keyId,
+                network: networkId,
+                keychainUrl: `${config.unlockApp}/keychain`,
+              },
             })
           }),
         ])
