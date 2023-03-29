@@ -1,4 +1,4 @@
-let baseUrl = window?.location?.href || 'https://paywall.unlock-protocol.com' // assume prod
+let baseUrl = 'https://paywall.unlock-protocol.com' // assume prod
 
 const getURL = (url: string) => {
   try {
