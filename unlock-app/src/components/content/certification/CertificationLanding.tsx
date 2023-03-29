@@ -8,7 +8,23 @@ interface CertificationLandingProps {
   handleCreateCertification: () => void
 }
 
-const customers: any[] = []
+const customers = [
+  {
+    name: 'Web3 Academy',
+    link: '',
+    image: '',
+  },
+  {
+    name: 'CDAA',
+    link: '',
+    image: '',
+  },
+  {
+    name: 'Hay There Social Media',
+    link: '',
+    image: '',
+  },
+]
 
 const features = [
   {
@@ -31,10 +47,26 @@ const features = [
 ]
 
 const faqs = [
-  { title: 'Will certificants need wallets?', description: '' },
-  { title: 'What blockchain is this on?', description: '' },
-  { title: 'Can I charge for the certification?', description: '' },
-  { title: 'Can I set certifications to expire?', description: '' },
+  {
+    title: 'Will certificants need wallets?',
+    description:
+      'No! Certificants do not need wallets, but they will need user accounts if they do not have their own wallets. Unlock accounts require an email and password.',
+  },
+  {
+    title: 'What blockchain is this on?',
+    description:
+      'You can pick between all the networks on which the Unlock Protocol has been deployed: Polygon, Gnosis Chain, Optimism, and others.',
+  },
+  {
+    title: 'Can I charge for the certification?',
+    description:
+      'Yes, when deploying your contract you can pick a currency, as well as enable credit card, Apple Pay and Google Pay.',
+  },
+  {
+    title: 'Can I set certifications to expire?',
+    description:
+      'Yes, certifications can be set to expire and require renewal after one year, two years, or any length of time you desire.',
+  },
 ]
 
 export const CertificationLanding = ({
