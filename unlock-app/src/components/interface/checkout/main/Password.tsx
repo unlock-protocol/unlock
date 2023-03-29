@@ -10,7 +10,7 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { usePasswordHookSigners } from './useHooks'
+import { usePasswordHookSigner } from './useHooks'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 interface Props {
   injectedProvider: unknown
@@ -35,7 +35,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   const users = recipients.length > 0 ? recipients : [account!]
 
   const { isLoading: isLoadingSigner, data: passwordSigner } =
-    usePasswordHookSigners({
+    usePasswordHookSigner({
       lockAddress: lock!.address,
       network: lock!.network,
     })

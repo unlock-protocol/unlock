@@ -6,7 +6,7 @@ interface PasswordHookSignersProps {
   lockAddress: string
   network: number
 }
-export function usePasswordHookSigners({
+export function usePasswordHookSigner({
   lockAddress,
   network,
 }: PasswordHookSignersProps) {
