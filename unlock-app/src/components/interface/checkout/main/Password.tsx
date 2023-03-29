@@ -11,6 +11,7 @@ import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { usePasswordHookSigners } from './useHooks'
+import { getEthersWalletFromPassword } from '~/utils/strings'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -42,13 +43,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   const onSubmit = async (formData: FormData) => {
     try {
       const { password } = formData
-      const encoded = ethers.utils.defaultAbiCoder.encode(
-        ['bytes32'],
-        [ethers.utils.id(password)]
-      )
-
-      const privateKey = ethers.utils.keccak256(encoded)
-      const privateKeyAccount = new ethers.Wallet(privateKey)
+      const privateKeyAccount = getEthersWalletFromPassword(password)
       const data = await Promise.all(
         users.map((address) => {
           const messageHash = ethers.utils.solidityKeccak256(
@@ -89,18 +84,9 @@ export function Password({ injectedProvider, checkoutService }: Props) {
               required: true,
               min: 1,
               validate: (password: string) => {
-                const encoded = ethers.utils.defaultAbiCoder.encode(
-                  ['bytes32'],
-                  [ethers.utils.id(password)]
-                )
-                const privateKey = ethers.utils.keccak256(encoded)
-                const privateKeyAccount = new ethers.Wallet(privateKey)
-
+                const { address } = getEthersWalletFromPassword(password) ?? {}
                 // check if password match
-                return (
-                  passwordSigners === privateKeyAccount.address ||
-                  'Wrong password...'
-                )
+                return passwordSigner === address || 'Wrong password...'
               },
             })}
             error={errors.password?.message}
@@ -116,8 +102,8 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={isSubmitting || isLoadingSigners}
-            loading={isSubmitting || isLoadingSigners}
+            disabled={isSubmitting || isLoadingSigner}
+            loading={isSubmitting || isLoadingSigner}
             onClick={handleSubmit(onSubmit)}
           >
             Submit password
