@@ -34,6 +34,7 @@ docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 cd $REPO_ROOT/docker/development/eth-node
 yarn
 yarn provision --network localhost
+chmod a+w /home/unlock/subgraph/networks.json
 
 # copy the generated subgraph config file
 rm -rf $REPO_ROOT/subgraph/networks.json 
