@@ -12,6 +12,6 @@ Similarly, a few weeks ago, we announced our [web3 event hosting application](h
 
 One of the pieces of feedback we received from several organizers was that they wanted to also make it trivial for non-crypto users to quickly RSVP for their events, provided that these events were indeed free. So today, we're introducing wallet-less RSVP!
 
-You can try it by registering for this virtual launch party!
+You can try it by [registering for this virtual launch party](https://app.unlock-protocol.com/event?lockAddress=0x069d50f18f13426f7ba74bd20ea04c1fc1943c43&network=5)!
 
 We also added the ability to set the end time for events, and added a calendar invite in the confirmation emails! [Get started now](https://app.unlock-protocol.com/event): organize your web3 meetup, crypto party, or other event using Unlock!
