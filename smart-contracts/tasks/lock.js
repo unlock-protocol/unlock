@@ -100,4 +100,12 @@ task('lock:upgrade', 'Upgrade a lock to the next version')
     const upgradeLock = require('../scripts/lock/upgrade')
     await upgradeLock({ lockAddress })
   })
+
+task('lock:purchase', 'Purchase a key')
+  .addParam('lockAddress', 'The lock address')
+  .setAction(async ({ lockAddress }) => {
+    // eslint-disable-next-line global-require
+    const upgradeLock = require('../scripts/lock/purchase')
+    await upgradeLock({ lockAddress })
+  })
   
