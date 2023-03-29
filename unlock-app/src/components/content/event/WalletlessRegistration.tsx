@@ -133,7 +133,7 @@ export const WalletlessRegistration = ({
               status: transactionStatus,
               transactionHash: claimResult.hash,
             }}
-            account={claimResult.owner}
+            owner={claimResult.owner}
             lockName={''}
             lockAddress={lockAddress}
             network={network}
