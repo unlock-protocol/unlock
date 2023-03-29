@@ -22,5 +22,5 @@ yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http:
 echo -e "✔ Unlock local subgraph initiated\n\n"
 
 # deploy
-yarn workspace @unlock-protocol/subgraph run graph deploy testgraph --node http://graph-node:8020/ --ipfs http://ipfs:5001 --network localhost
+yarn workspace @unlock-protocol/subgraph run graph deploy testgraph --node http://graph-node:8020/ --ipfs http://ipfs:5001 --version-label 0.0.1 --network localhost
 echo -e "✔ Unlock local subgraph deployed\n\n"
