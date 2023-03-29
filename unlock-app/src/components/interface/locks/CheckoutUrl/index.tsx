@@ -18,6 +18,7 @@ import {
   useCheckoutConfigsByUser,
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
+import { useLockSettings } from '~/hooks/useLockSettings'
 const Header = () => {
   return (
     <header className="flex flex-col gap-4">
@@ -35,33 +36,87 @@ export const CheckoutUrlPage = () => {
   const query = router.query
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
-
-  const DEFAULT_CONFIG = useMemo(
-    () =>
-      ({
-        locks:
-          network && lockAddress
-            ? {
-                [lockAddress as string]: {
-                  network: parseInt(`${network!}`),
-                  skipRecipient: true,
-                },
-              }
-            : {},
-        pessimistic: true,
-        skipRecipient: true,
-      } as PaywallConfig),
-    [lockAddress, network]
-  )
-
-  const { data: checkoutConfigList, refetch: refetchConfig } =
-    useCheckoutConfigsByUser()
+  const { getIsRecurringPossible } = useLockSettings()
 
   const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
     id: null as null | string,
     name: 'default',
-    config: DEFAULT_CONFIG,
+    config: {
+      locks:
+        network && lockAddress
+          ? {
+              [lockAddress as string]: {
+                network: parseInt(`${network!}`),
+                skipRecipient: true,
+              },
+            }
+          : {},
+      pessimistic: true,
+      skipRecipient: true,
+    },
   })
+
+  // retrieve recurringPayments when lock is present in url
+  useEffect(() => {
+    if (!lockAddress && !network) return
+    const getDefaultConfig = async (): Promise<void> => {
+      // get recurring default value
+      const { isRecurringPossible = false, oneYearRecurring } =
+        await getIsRecurringPossible({
+          lockAddress: lockAddress as string,
+          network: Number(network),
+        })
+
+      const recurringPayments = isRecurringPossible
+        ? oneYearRecurring
+        : undefined
+
+      setCheckoutConfig((state) => {
+        if (state.config.locks[lockAddress as string]) {
+          // set recurring value
+          state.config.locks[lockAddress as string].recurringPayments =
+            recurringPayments
+        }
+
+        return {
+          ...state,
+          config: {
+            ...state.config,
+          },
+        }
+      })
+    }
+    getDefaultConfig()
+  }, [])
+
+  const DEFAULT_CONFIG = useMemo(async () => {
+    // get recurring default value
+    const { isRecurringPossible = false, oneYearRecurring } =
+      await getIsRecurringPossible({
+        lockAddress: lockAddress as string,
+        network: Number(network),
+      })
+
+    const recurringPayments = isRecurringPossible ? oneYearRecurring : undefined
+
+    return {
+      locks:
+        network && lockAddress
+          ? {
+              [lockAddress as string]: {
+                network: parseInt(`${network!}`),
+                skipRecipient: true,
+                recurringPayments,
+              },
+            }
+          : {},
+      pessimistic: true,
+      skipRecipient: true,
+    } as PaywallConfig
+  }, [getIsRecurringPossible, lockAddress, network])
+
+  const { data: checkoutConfigList, refetch: refetchConfig } =
+    useCheckoutConfigsByUser()
 
   const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
     useCheckoutConfigUpdate()
