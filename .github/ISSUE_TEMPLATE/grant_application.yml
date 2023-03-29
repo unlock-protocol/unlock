@@ -77,14 +77,15 @@ body:
     attributes:
       label: Anything else you think we should know
       description: Feel free to include any other relevant information about your grant proposal here
-  - type: checkboxes
+  - type: radio
     id: open-source
+    required: true
     attributes:
       label: Is your work Open Source
       description: Do you intend to release your work as Open Source
       options:
-        - label: Yes, my project uses an Open Source license such as MIT
-          required: true
+        - one: Yes, my project will use an Open Source license such as MIT
+        - two: No, my project does not use an Open Source license
   - type: checkboxes
     id: terms
     attributes:
