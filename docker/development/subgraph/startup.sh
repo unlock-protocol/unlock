@@ -13,7 +13,6 @@ echo -e "✔ Unlock local code generated\n\n"
 
 # build the subgraph files
 # show networks
-cat /home/unlock/subgraph/networks.json
 yarn workspace @unlock-protocol/subgraph run build:graph localhost
 echo -e "✔ Unlock local subgraph built\n\n"
 
