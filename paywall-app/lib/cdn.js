@@ -24,14 +24,20 @@ if (typeof window !== 'undefined') {
     }
 
     const paywall = new Paywall(rawConfig, networkConfigs)
-    const { getState, getUserAccountAddress, loadCheckoutModal, resetConfig } =
-      paywall
+    const {
+      getState,
+      getUserAccountAddress,
+      loadCheckoutModal,
+      resetConfig,
+      authenticate,
+    } = paywall
 
     setupUnlockProtocolVariable({
       loadCheckoutModal,
       resetConfig,
       getUserAccountAddress,
       getState,
+      authenticate,
     })
   }
 }
