@@ -101,14 +101,14 @@ export const Detail = ({
         children !== undefined &&
         (typeof label === 'string' && tooltip ? (
           <Tooltip tip={children} label={label} side="bottom">
-            <div className="flex items-center gap-2 text-right">
+            <div className="flex items-center gap-2 text-right cursor-pointer">
               <Value truncate={truncate} size={valueSize}>
                 {children}
               </Value>
             </div>
           </Tooltip>
         ) : (
-          <div className="flex items-center gap-2 text-right cursor-pointer">
+          <div className="flex items-center gap-2 text-right">
             <Value truncate={truncate} size={valueSize}>
               {children}
             </Value>
