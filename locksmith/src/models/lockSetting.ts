@@ -9,7 +9,7 @@ export class LockSetting extends Model<
   declare lockAddress: string
   declare network: number
   declare sendEmail: boolean
-  declare replyTo?: boolean
+  declare replyTo?: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }

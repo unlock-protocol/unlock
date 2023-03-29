@@ -60,6 +60,7 @@ export const route = async (args) => {
   const email = {
     from: config.sender,
     to: args.recipient,
+    replyTo: args?.replyTo || undefined,
     subject: await template.subject(templateParams),
     text: template.text ? await template.text(templateParams) : undefined,
     html: template.html ? await template.html(templateParams) : undefined,

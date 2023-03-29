@@ -68,22 +68,23 @@ export const sendEmail = async (
   params: Params = {} as any,
   attachments: Attachment[] = []
 ) => {
-  const payload = {
-    template,
-    failoverTemplate,
-    recipient,
-    params,
-    attachments,
-  }
-
   // prevent send email when is not enabled
-  const { sendEmail: canSendEmail } = await getLockSettings(
+  const { sendEmail: canSendEmail, replyTo } = await getLockSettings(
     params.lockAddress,
     Number(params.networkId)
   )
 
   if (!canSendEmail) {
     return
+  }
+
+  const payload = {
+    template,
+    failoverTemplate,
+    recipient,
+    params,
+    attachments,
+    replyTo,
   }
 
   try {

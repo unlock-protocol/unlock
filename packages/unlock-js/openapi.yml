@@ -2419,6 +2419,8 @@ paths:
                 properties:
                   sendEmail:
                     type: boolean
+                  replyTo:
+                    type: string
 
         404:
           description: Setting not found
@@ -2458,6 +2460,8 @@ paths:
               properties:
                 sendEmail:
                   type: boolean
+                replyTo:
+                  type: string
 
       responses:
         200:

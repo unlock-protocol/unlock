@@ -12,6 +12,7 @@ const lockSettingMock = {
   lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
   network,
   sendEmail: true,
+  replyTo: 'example@gmail.com',
   createdAt: '2023-03-24T15:40:54.509Z',
   updatedAt: '2023-03-24T15:40:54.509Z',
 }
@@ -21,10 +22,11 @@ vi.mock('../../../src/operations/lockSettingsOperations', () => {
     getSettings: () => {
       return lockSettingMock
     },
-    setSendMail: ({ sendEmail }) => {
+    setSendMail: ({ sendEmail, replyTo }) => {
       return {
         ...lockSettingMock,
         sendEmail,
+        replyTo,
       }
     },
   }
@@ -114,8 +116,8 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.sendEmail).toBe(true)
   })
 
-  it('should correctly disable "sendEmail" setting when user is lockManager', async () => {
-    expect.assertions(2)
+  it('should correctly save settings when user is lockManager', async () => {
+    expect.assertions(3)
 
     const { loginResponse } = await loginRandomUser(app)
     const saveSettingResponse = await request(app)
@@ -123,15 +125,17 @@ describe('LockSettings v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         sendEmail: false,
+        replyTo: 'example@gmail.com',
       })
 
     const response = saveSettingResponse.body
     expect(saveSettingResponse.status).toBe(200)
     expect(response.sendEmail).toBe(false)
+    expect(response.replyTo).toBe('example@gmail.com')
   })
 
   it('should save and retrieve setting when user is lockManager', async () => {
-    expect.assertions(5)
+    expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -141,11 +145,13 @@ describe('LockSettings v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         sendEmail: false,
+        replyTo: 'example@gmail.com',
       })
 
     const response = saveSettingResponse.body
     expect(saveSettingResponse.status).toBe(200)
     expect(response.sendEmail).toBe(false)
+    expect(response.replyTo).toBe('example@gmail.com')
 
     // retrieve settings
     const getSettingResponse = await request(app)
@@ -154,13 +160,14 @@ describe('LockSettings v2 endpoints for lock', () => {
 
     expect(getSettingResponse.status).toBe(200)
     expect(getSettingResponse.body.sendEmail).toBe(false)
+    expect(getSettingResponse.body.replyTo).toBe('example@gmail.com')
     expect(getSettingResponse.body.lockAddress).toBe(
       lockSettingMock.lockAddress
     )
   })
 
   it('should retrieve default settings for a lock', async () => {
-    expect.assertions(2)
+    expect.assertions(3)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -168,11 +175,10 @@ describe('LockSettings v2 endpoints for lock', () => {
       .get(`/v2/lock-settings/${network}/locks/${lockAddress2}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    console.log(getSettingResponse.body)
-
     expect(getSettingResponse.status).toBe(200)
     expect(getSettingResponse.body.sendEmail).toBe(
       DEFAULT_LOCK_SETTINGS.sendEmail
     )
+    expect(getSettingResponse.body.replyTo).toBe(undefined)
   })
 })
