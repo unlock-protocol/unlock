@@ -37,15 +37,45 @@ describe('Paywall object', () => {
     paywall.lockPage = vi.fn()
   })
 
-  it('is constructed with one call in the buffer to set the config', () => {
-    expect.assertions(2)
+  it('is constructed with with no buffered call', () => {
+    expect.assertions(1)
+    expect(paywall.childCallBuffer).toHaveLength(0)
+  })
 
-    expect(paywall.childCallBuffer).toHaveLength(1)
+  describe('resetConfig', () => {
+    beforeEach(() => {
+      localStorage.clear()
+      vi.resetAllMocks()
+      paywall = new Paywall(paywallConfig, networkConfigs)
+    })
 
-    // Constuctor will update config with provider info
-    const expectedConfig = paywallScriptUtils.injectProviderInfo(paywallConfig)
+    it('is adding one call in the buffer to set the config', () => {
+      expect.assertions(2)
+      paywall.resetConfig(paywallConfig)
+      expect(paywall.childCallBuffer).toHaveLength(1)
 
-    expect(paywall.childCallBuffer[0]).toEqual(['setConfig', expectedConfig])
+      // Constuctor will update config with provider info
+      const expectedConfig =
+        paywallScriptUtils.injectProviderInfo(paywallConfig)
+
+      expect(paywall.childCallBuffer[0]).toEqual(['setConfig', expectedConfig])
+    })
+  })
+
+  describe('authenticate', () => {
+    beforeEach(() => {
+      localStorage.clear()
+      vi.resetAllMocks()
+      paywall = new Paywall(paywallConfig, networkConfigs)
+    })
+
+    it('is constructed with one call in the buffer to authenticate', () => {
+      expect.assertions(2)
+      paywall.authenticate()
+      expect(paywall.childCallBuffer).toHaveLength(1)
+
+      expect(paywall.childCallBuffer[0]).toEqual(['authenticate', {}])
+    })
   })
 
   describe('userInfo event', () => {
