@@ -33,7 +33,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   })
   const users = recipients.length > 0 ? recipients : [account!]
 
-  const { isLoading: isLoadingSigners, data: passwordSigners } =
+  const { isLoading: isLoadingSigner, data: passwordSigner } =
     usePasswordHookSigners({
       lockAddress: lock!.address,
       network: lock!.network,
