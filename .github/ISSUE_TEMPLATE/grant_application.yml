@@ -79,13 +79,14 @@ body:
       description: Feel free to include any other relevant information about your grant proposal here
   - type: dropdown
     id: open-source
-    required: true
     attributes:
       label: Is your work Open Source
       description: Do you intend to release your work as Open Source
       options:
         - one: Yes, my project will use an Open Source license such as MIT
         - two: No, my project does not use an Open Source license
+    validations:
+        required: true
   - type: checkboxes
     id: terms
     attributes:
