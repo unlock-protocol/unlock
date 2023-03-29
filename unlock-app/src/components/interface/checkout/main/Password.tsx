@@ -99,7 +99,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
                 // check if password match
                 return (
                   passwordSigners === privateKeyAccount.address ||
-                  'Password does not match.'
+                  'Wrong password...'
                 )
               },
             })}
