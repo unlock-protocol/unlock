@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 /**
  * Applied to itself, yields "Camel Case To Title"
  */
@@ -36,4 +38,16 @@ export const getValidNumber = (value: string | number): number | undefined => {
   return reg.test(`${value}`) && !isNaN(parseInt(`${value}`))
     ? parseInt(`${value}`)
     : undefined
+}
+
+export const getEthersWalletFromPassword = (
+  password: string
+): ethers.Wallet => {
+  const encoded = ethers.utils.defaultAbiCoder.encode(
+    ['bytes32'],
+    [ethers.utils.id(password)]
+  )
+  const privateKey = ethers.utils.keccak256(encoded)
+  const privateKeyAccount = new ethers.Wallet(privateKey)
+  return privateKeyAccount
 }
