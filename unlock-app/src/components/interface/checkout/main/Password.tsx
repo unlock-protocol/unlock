@@ -10,6 +10,10 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { networks } from '@unlock-protocol/networks'
+import { HookType } from '@unlock-protocol/types'
+import { useQuery } from '@tanstack/react-query'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -20,15 +24,46 @@ interface FormData {
 }
 
 export function Password({ injectedProvider, checkoutService }: Props) {
-  const { account } = useAuth()
+  const web3Service = useWeb3Service()
+  const { account, getWalletService } = useAuth()
   const [state, send] = useActor(checkoutService)
-  const { recipients, renew } = state.context
+  const { recipients, renew, lock } = state.context
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    mode: 'onSubmit',
+  })
   const users = recipients.length > 0 ? recipients : [account!]
+
+  // get password hook contract by network
+  const passwordHookContract =
+    lock &&
+    networks[lock.network]?.hooks?.onKeyPurchaseHook?.find(
+      (hook) => hook.id === HookType.PASSWORD
+    )?.address
+
+  const getSigners = async (): Promise<string> => {
+    if (!lock || !passwordHookContract) return ''
+    const walletService = await getWalletService(lock?.network)
+    return await web3Service.getPasswordHookSigners(
+      {
+        lockAddress: lock.address,
+        contractAddress: passwordHookContract,
+        network: lock.network,
+      },
+      walletService.signer
+    )
+  }
+
+  const { isLoading: isLoadingSigners, data: passwordSigners } = useQuery(
+    ['getSigners', lock?.address, lock?.network],
+    async () => getSigners(),
+    {
+      enabled: !!passwordHookContract && !!lock?.address && !!lock?.network,
+    }
+  )
 
   const onSubmit = async (formData: FormData) => {
     try {
@@ -79,6 +114,20 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             {...register('password', {
               required: true,
               min: 1,
+              validate: (password: string) => {
+                const encoded = ethers.utils.defaultAbiCoder.encode(
+                  ['bytes32'],
+                  [ethers.utils.id(password)]
+                )
+                const privateKey = ethers.utils.keccak256(encoded)
+                const privateKeyAccount = new ethers.Wallet(privateKey)
+
+                // check if password match
+                return (
+                  passwordSigners === privateKeyAccount.address ||
+                  'Password does not match.'
+                )
+              },
             })}
             error={errors.password?.message}
           />
@@ -93,8 +142,8 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={isSubmitting}
-            loading={isSubmitting}
+            disabled={isSubmitting || isLoadingSigners}
+            loading={isSubmitting || isLoadingSigners}
             onClick={handleSubmit(onSubmit)}
           >
             Submit password
