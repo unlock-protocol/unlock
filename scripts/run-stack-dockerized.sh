@@ -19,6 +19,8 @@ docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 
 # Deploy Unlock etc
 docker-compose $COMPOSE_CONFIG exec -T eth-node yarn provision --network docker
+docker-compose $COMPOSE_CONFIG exec -T eth-node pwd
+docker-compose $COMPOSE_CONFIG exec -T eth-node ls
 docker-compose $COMPOSE_CONFIG exec -T eth-node chmod a+w /home/unlock/subgraph/networks.json
 
 # Make the correct subgraph config
