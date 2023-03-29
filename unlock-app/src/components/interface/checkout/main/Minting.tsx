@@ -25,7 +25,7 @@ import type { Transaction } from './checkoutMachine'
 interface MintingScreenProps {
   lockName: string
   mint: Transaction
-  account: string
+  owner: string
   lockAddress: string
   network: number
 }
@@ -33,17 +33,18 @@ interface MintingScreenProps {
 export const MintingScreen = ({
   lockName,
   mint,
-  account,
+  owner,
   lockAddress,
   network,
 }: MintingScreenProps) => {
   const web3Service = useWeb3Service()
   const config = useConfig()
+  const { account } = useAuth()
 
   const { data: tokenId } = useQuery(
-    ['userTokenId', mint, account, lockAddress, network, web3Service],
+    ['userTokenId', mint, owner, lockAddress, network, web3Service],
     async () => {
-      return web3Service.getTokenIdForOwner(lockAddress, account!, network)
+      return web3Service.getTokenIdForOwner(lockAddress, owner!, network)
     },
     {
       enabled: mint?.status === 'FINISHED',
@@ -102,7 +103,7 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </a>
       )}
-      {hasTokenId && isEthPassSupported(network) && (
+      {hasTokenId && account === owner && isEthPassSupported(network) && (
         <ul className="grid grid-cols-2 gap-3 pt-4">
           {!isIOS && (
             <li className="">
@@ -249,7 +250,7 @@ export function Minting({
       <main className="h-full px-6 py-2 overflow-auto">
         <MintingScreen
           mint={mint!}
-          account={account!}
+          owner={account!} // TODO: are we minting for someone else?
           lockAddress={lock!.address}
           lockName={lock!.name}
           network={lock!.network}
