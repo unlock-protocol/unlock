@@ -58,7 +58,6 @@ describe('Receipts for non-ERC20', () => {
     lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
     lock.version = BigInt.fromU32(12)
     lock.totalKeys = BigInt.fromU32(0)
-    lock.keys = []
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.save()
 
