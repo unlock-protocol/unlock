@@ -1,13 +1,14 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
 
 const lock = {
+  address: lockAddress,
   keys: [
     {
       owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
@@ -91,13 +92,9 @@ vi.mock('../../../src/operations/metadataOperations', () => {
 
 vi.mock('../../../src/graphql/datasource/keysByQuery', () => {
   return {
-    keysByQuery: vi.fn().mockImplementation(() => {
-      return {
-        get: vi.fn().mockImplementation(() => {
-          return Promise.resolve([lock])
-        }),
-      }
-    }),
+    keysByQuery: async () => {
+      return Promise.resolve([lock])
+    },
   }
 })
 
@@ -137,6 +134,8 @@ describe('Keys v2 endpoints for lock', () => {
         filterKey: 'tokenId',
         expiration: 'all',
       })
+
+    console.log('getKeysRespons', getKeysResponse.body)
 
     const [res] = getKeysResponse.body
     expect(getKeysResponse.status).toBe(200)

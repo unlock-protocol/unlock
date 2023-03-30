@@ -22,17 +22,6 @@ query allLocks(
     version
     createdAtBlock
     totalKeys
-    keys {
-      id
-      tokenId
-      owner
-      manager
-      expiration
-      tokenURI
-      createdAtBlock
-      cancelled
-      transactionsHash
-    }
   }
 }
 
@@ -96,5 +85,44 @@ query AllReceipts(
     tokenAddress
     gasTotal
     amountTransferred
+  }
+}
+
+query allLocksKeys(
+  $first: Int = 1
+  $skip: Int
+  $where: Lock_filter
+  $keyFilter: Key_filter
+  $orderBy: Lock_orderBy
+  $orderDirection: OrderDirection
+) {
+  locks(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    address
+    name
+    expirationDuration
+    tokenAddress
+    price
+    lockManagers
+    version
+    createdAtBlock
+    totalKeys
+    keys(where: $keyFilter) {
+      id
+      tokenId
+      owner
+      manager
+      expiration
+      tokenURI
+      createdAtBlock
+      cancelled
+      transactionsHash
+    }
   }
 }

@@ -1,6 +1,8 @@
 import { getValidNumber } from '../../utils/normalizer'
 import logger from '../../logger'
 import {
+  LockFilter,
+  KeyFilter as KeyFilterProps,
   OrderDirection,
   SubgraphLock,
   SubgraphService,
@@ -33,32 +35,33 @@ const locksByFilter = async ({
     expireTimestamp = 0
   }
 
-  const query: Record<string, any> =
-    filter === 'expired'
-      ? {
-          expiration_lt: expireTimestamp, // all expired keys
-        }
-      : {
-          expiration_gt: expireTimestamp, // all non expired keys
-        }
+  const keyFilter: KeyFilterProps = {
+    tokenId: filter === 'tokenId' ? tokenId : undefined,
+  }
 
-  const locks = await subgraph.locks(
+  if (filter === 'expired') {
+    keyFilter.expiration_lt = expireTimestamp // all expired keys
+  } else {
+    keyFilter.expiration_gt = expireTimestamp // all non expired keys
+  }
+
+  const lockFilter: LockFilter = {
+    address_in: addresses?.map((address) => address.toLowerCase()), // lowercase address
+  }
+
+  const locks = await subgraph.locksKeys(
     {
       first,
       skip,
-      where: {
-        address_in: addresses?.map((address) => address.toLowerCase()), // lowercase address
-        keys_: {
-          tokenId: filter === 'tokenId' ? tokenId : undefined,
-          ...query,
-        },
-      },
+      where: lockFilter,
+      keyFilter,
       orderDirection: OrderDirection.Asc,
     },
     {
       networks: [network],
     }
   )
+
   return locks || []
 }
 

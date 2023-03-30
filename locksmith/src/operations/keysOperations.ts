@@ -68,7 +68,7 @@ export const buildKeysWithMetadata = (
           expiration: key?.expiration,
           keyholderAddress: Normalizer.ethereumAddress(key.owner),
           // defaults to the owner when the manager is not set
-          keyManager: Normalizer.ethereumAddress(key?.manager ?? key?.owner),
+          keyManager: Normalizer.ethereumAddress(key?.manager || key?.owner),
           lockAddress: Normalizer.ethereumAddress(lock?.address),
           ...metadata,
         }
