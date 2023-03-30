@@ -2,7 +2,8 @@
 
 // File @openzeppelin/contracts/utils/Context.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+
+// SPDX-License-Identifier: MIT OR GPL-2.0-or-later
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -997,7 +998,7 @@ contract ProxyAdmin is Ownable {
 
 // File @uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol@v1.0.1
 
-// SPDX-License-Identifier: GPL-2.0-or-later
+
 pragma solidity >=0.5.0;
 
 /// @title Callback for IUniswapV3PoolActions#swap
@@ -1022,7 +1023,7 @@ interface IUniswapV3SwapCallback {
 
 // File @uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol@v1.4.3
 
-// SPDX-License-Identifier: GPL-2.0-or-later
+
 pragma solidity >=0.7.5;
 pragma abicoder v2;
 
@@ -1177,7 +1178,7 @@ interface IERC20 {
 
 // File @uniswap/v3-periphery/contracts/libraries/TransferHelper.sol@v1.4.3
 
-// SPDX-License-Identifier: GPL-2.0-or-later
+
 pragma solidity >=0.6.0;
 
 library TransferHelper {
