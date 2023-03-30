@@ -1521,7 +1521,7 @@ paths:
       security:
         - User: []
       operationId: claim
-      description: Claim a membership key for a lock.
+      description: Claim a membership key for a lock. If not authenticated, requires an email in the body.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1531,6 +1531,7 @@ paths:
           description: Recaptcha value to pass.
           schema:
             type: string
+
       requestBody:
         required: true
         content:
@@ -1540,6 +1541,9 @@ paths:
               properties:
                 data:
                   type: string
+                email:
+                  type: string
+                  description: Email address of the recipient
 
       responses:
         200:
@@ -1550,6 +1554,8 @@ paths:
                 type: object
                 properties:
                   transactionHash:
+                    type: string
+                  owner:
                     type: string
 
         401:
@@ -2384,6 +2390,91 @@ paths:
                     type: string
 
         400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/lock-settings/{network}/locks/{lockAddress}:
+    get:
+      operationId: getLockSettings
+      description: Get saved lock settings
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+                  replyTo:
+                    type: string
+
+        404:
+          description: Setting not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        500:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    post:
+      operationId: saveLockSetting
+      security:
+        - User: []
+      description: Save lock settings
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sendEmail:
+                  type: boolean
+                replyTo:
+                  type: string
+
+      responses:
+        200:
+          description: Successfully saved settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+
+        500:
           description: Invalid request
           content:
             application/json:

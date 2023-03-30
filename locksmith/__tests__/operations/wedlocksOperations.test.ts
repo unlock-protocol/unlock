@@ -3,7 +3,7 @@ import {
   sendEmail,
   notifyNewKeyToWedlocks,
 } from '../../src/operations/wedlocksOperations'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
@@ -57,7 +57,7 @@ describe('Wedlocks operations', () => {
       ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=`
 
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"","transferUrl":"${transferUrl}"},"attachments":[]}`,
+        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"","transferUrl":"${transferUrl}"},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
@@ -112,21 +112,24 @@ describe('Wedlocks operations', () => {
   describe('sendEmail', () => {
     it('should call the API with the right values', async () => {
       expect.assertions(1)
-      await sendEmail(
-        'template',
-        'failover',
-        'julien@unlock-protocol.com',
-        {
+      await sendEmail({
+        network: 4,
+        template: 'template',
+        failoverTemplate: 'failover',
+        recipient: 'julien@unlock-protocol.com',
+        params: {
           hello: 'world',
           keyId: '1',
           keychainUrl: 'test',
           lockName: 'lockName',
           network: 'Test',
+          lockAddress: lockAddressMock,
         },
-        []
-      )
+        attachments: [],
+      })
+
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world","keyId":"1","keychainUrl":"test","lockName":"lockName","network":"Test"},"attachments":[]}',
+        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world","keyId":"1","keychainUrl":"test","lockName":"lockName","network":"Test","lockAddress":"0x8D33b257bce083eE0c7504C7635D1840b3858AFD"},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })

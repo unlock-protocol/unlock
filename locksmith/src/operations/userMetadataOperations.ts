@@ -1,6 +1,7 @@
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types'
 import { UserTokenMetadata } from '../models'
+
 import { InferAttributes } from 'sequelize'
 import { isEmpty, merge } from 'lodash'
 
@@ -104,7 +105,7 @@ export const upsertUserMetadata = async (
     updatedBy,
   }
 
-  // if no user, create one
+  // if no UserTokenMetadata, create one
   if (!user) {
     const result = await UserTokenMetadata.create(userTokenMetadata)
     return result

@@ -13,9 +13,15 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
+import * as lockSettingOperations from './lockSettingOperations'
 
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
+import { LockSetting } from '../models/lockSetting'
+import {
+  DEFAULT_LOCK_SETTINGS,
+  LockSettingProps,
+} from '../controllers/v2/lockSettingController'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -25,6 +31,7 @@ type Params = {
   keychainUrl?: string
   lockName: string
   network: string
+  lockAddress: string
   txUrl?: string
   openSeaUrl?: string
 }
@@ -43,29 +50,43 @@ interface Key {
   keyId?: string
 }
 
+interface SendEmailProps {
+  network: number
+  template: string
+  failoverTemplate: string
+  recipient: string
+  params: Params
+  attachments?: Attachment[]
+}
 /**
  * Function to send an email with the Wedlocks service
- * Pass a template, a recipient, some params and attachements
- * @param template
- * @param failoverTemplate
- * @param recipient
- * @param params
- * @param attachments
- * @returns
+ * Pass a template, a recipient, some params and attachments
  */
-export const sendEmail = async (
-  template: string,
-  failoverTemplate: string,
-  recipient: string,
-  params: Params = {} as any,
-  attachments: Attachment[] = []
-) => {
+export const sendEmail = async ({
+  network,
+  template,
+  failoverTemplate,
+  recipient,
+  params = {} as any,
+  attachments = [],
+}: SendEmailProps) => {
+  // prevent send email when is not enabled
+  const { sendEmail: canSendEmail, replyTo } = await getLockSettings(
+    params.lockAddress,
+    network
+  )
+
+  if (!canSendEmail) {
+    return
+  }
+
   const payload = {
     template,
     failoverTemplate,
     recipient,
     params,
     attachments,
+    replyTo,
   }
 
   try {
@@ -220,11 +241,26 @@ const getTemplates = ({
     ? [`keyAirdropped${lockAddress.trim()}`, `keyAirdropped`]
     : [`keyMined${lockAddress.trim()}`, 'keyMined']
 }
+
+const getLockSettings = async (
+  lockAddress: string,
+  network?: number
+): Promise<LockSetting | LockSettingProps> => {
+  if (lockAddress && network) {
+    const settings = await lockSettingOperations.getSettings({
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
+      network,
+    })
+    return settings
+  }
+  return DEFAULT_LOCK_SETTINGS
+}
 /**
  * Check if there are metadata with an email address for a key and sends
  * and email based on the lock's template if applicable
  * @param key
  */
+
 export const notifyNewKeyToWedlocks = async (
   key: Key,
   network?: number,
@@ -317,11 +353,14 @@ export const notifyNewKeyToWedlocks = async (
   const { eventDescription, eventTime, eventDate, eventAddress, eventName } =
     eventDetail ?? {}
 
-  await sendEmail(
-    templates[0],
-    templates[1],
+  await sendEmail({
+    network: network!,
+    template: templates[0],
+    failoverTemplate: templates[1],
     recipient,
-    {
+    attachments,
+    params: {
+      lockAddress: key.lock.address ?? '',
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
@@ -337,6 +376,5 @@ export const notifyNewKeyToWedlocks = async (
       eventTime,
       eventAddress,
     },
-    attachments
-  )
+  })
 }

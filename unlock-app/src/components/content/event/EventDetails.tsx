@@ -23,6 +23,8 @@ import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
+import { WalletlessRegistration } from './WalletlessRegistration'
+import { useIsClaimable } from '~/hooks/useIsClaimable'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -32,10 +34,16 @@ interface EventDetailsProps {
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
   const web3Service = useWeb3Service()
+
   const config = useConfig()
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+    lockAddress,
+    network,
+  })
+
+  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
   })
@@ -106,8 +114,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   }
 
   return (
-    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
-      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] mt-8">
+      <Modal
+        isOpen={isCheckoutOpen && !isClaimable}
+        setIsOpen={setCheckoutOpen}
+        empty={true}
+      >
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
@@ -119,13 +131,13 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         <h1 className="mb-4 text-5xl font-bold md:text-7xl">
           {eventData.name}
         </h1>
-        <p className="flex gap-2 mb-4 flex-rows">
+        <div className="flex gap-2 mb-4 flex-rows">
           <span className="text-brand-gray">Ticket contract</span>
           <AddressLink
             lockAddress={lockAddress}
             network={network}
           ></AddressLink>
-        </p>
+        </div>
         <ul
           className="mb-6 text-xl bold md:text-2xl"
           style={{ color: `#${eventData.background_color}` }}
@@ -216,7 +228,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       <section className="flex flex-col items-center">
         <img
           alt={eventData.title}
-          className="mb-5 aspect-auto "
+          className="mb-4 aspect-auto "
           src={eventData.image}
         />
         <ul className="flex justify-around w-1/2">
@@ -229,21 +241,25 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         </ul>
       </section>
       <section className="flex flex-col mb-8">
-        {!hasValidKey && (
+        {!hasValidKey && !isCheckoutOpen && (
           <Button
             variant="primary"
             size="medium"
-            className="md:w-1/2"
+            className="md:w-1/2 mt-4"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`
                 ? fontColorContrast(`#${eventData.background_color}`)
                 : 'white',
             }}
+            disabled={isClaimableLoading}
             onClick={() => setCheckoutOpen(true)}
           >
             Register
           </Button>
+        )}
+        {!hasValidKey && isClaimable && isCheckoutOpen && (
+          <WalletlessRegistration lockAddress={lockAddress} network={network} />
         )}
         {hasValidKey && (
           <p className="text-lg">

@@ -54,8 +54,10 @@ export function AirdropKeysDrawer({
           const [name, designation] = key.split('.')
 
           if (designation !== 'public') {
+            // @ts-expect-error
             result.protected[name] = value
           } else {
+            // @ts-expect-error
             result.public[name] = value
           }
 
