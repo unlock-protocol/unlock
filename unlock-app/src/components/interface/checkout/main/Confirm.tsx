@@ -246,17 +246,28 @@ export function Confirm({
           .toString(),
       }
 
-      const response = await storage.locksmith.price(
-        lockNetwork,
-        parseFloat(item.total),
-        lock?.currencyContractAddress
-          ? lock?.currencyContractAddress
-          : undefined
-      )
+      const response = await storage.locksmith
+        .price(
+          lockNetwork,
+          parseFloat(item.total),
+          lock?.currencyContractAddress
+            ? lock?.currencyContractAddress
+            : undefined
+        )
+        .catch((error) => {
+          // Important: we do not fail if locksmith can't retrieve $ price.
+          console.error(
+            `We could not retrieve $ price for ${lockAddress} on ${lockNetwork} for ${recipients.join(
+              ','
+            )}`
+          )
+          console.error(error)
+          return null
+        })
 
       return {
         ...item,
-        usdPrice: response.data.result,
+        usdPrice: response?.data?.result,
       }
     },
     {
