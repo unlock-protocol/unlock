@@ -32,6 +32,7 @@ export const arbitrum: NetworkConfig = {
       `https://opensea.io/assets/arbitrum/${_lockAddress}/${_tokenId}`,
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/arbitrum/${lockAddress}`,
+    profileUrl: (address) => `https://opensea.io/${address}`,
   },
   nativeCurrency: {
     name: 'ETH',

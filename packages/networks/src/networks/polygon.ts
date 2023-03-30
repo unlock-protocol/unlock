@@ -33,6 +33,7 @@ export const polygon: NetworkConfig = {
       `https://opensea.io/assets/matic/${lockAddress}/${tokenId}`,
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/matic/${lockAddress}`,
+    profileUrl: (address) => `https://opensea.io/${address}`,
   },
   nativeCurrency: {
     name: 'Matic',

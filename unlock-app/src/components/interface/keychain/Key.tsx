@@ -158,8 +158,20 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
+  const { opensea } = networks[network] ?? {}
+
   const isAvailableOnOpenSea =
-    networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+    opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+
+  const openseaProfileUrl: string =
+    opensea && opensea.profileUrl ? opensea?.profileUrl(account) : ''
+
+  const onOpenSeaProfile = () => {
+    if (!openseaProfileUrl) {
+      return
+    }
+    window.open(openseaProfileUrl, '_')
+  }
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
@@ -280,6 +292,18 @@ function Key({ ownedKey, account, network }: Props) {
             >
               <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-80 ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="p-1">
+                  <Menu.Item disabled={openseaProfileUrl?.length === 0}>
+                    {({ disabled, active }) => (
+                      <MenuButton
+                        disabled={disabled}
+                        active={active}
+                        onClick={onOpenSeaProfile}
+                      >
+                        <OpenSeaIcon size={16} />
+                        View Opensea Profile
+                      </MenuButton>
+                    )}
+                  </Menu.Item>
                   <Menu.Item disabled={!isAvailableOnOpenSea}>
                     {({ disabled, active }) => (
                       <MenuButton
