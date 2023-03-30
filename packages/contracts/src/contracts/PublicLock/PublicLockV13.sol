@@ -94,7 +94,7 @@ interface IAccessControlUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.7.0) (utils/Address.sol)
 
 pragma solidity ^0.8.1;
@@ -293,7 +293,7 @@ library AddressUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.7.0) (proxy/utils/Initializable.sol)
 
 pragma solidity ^0.8.2;
@@ -433,7 +433,7 @@ abstract contract Initializable {
 
 // File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -473,7 +473,7 @@ abstract contract ContextUpgradeable is Initializable {
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -502,7 +502,7 @@ interface IERC165Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -546,7 +546,7 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.7.0) (utils/Strings.sol)
 
 pragma solidity ^0.8.0;
@@ -625,7 +625,7 @@ library StringsUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.7.0) (access/AccessControl.sol)
 
 pragma solidity ^0.8.0;
@@ -887,7 +887,7 @@ abstract contract AccessControlUpgradeable is Initializable, ContextUpgradeable,
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts v4.4.1 (token/ERC20/extensions/draft-IERC20Permit.sol)
 
 pragma solidity ^0.8.0;
@@ -951,7 +951,7 @@ interface IERC20PermitUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC20/IERC20.sol)
 
 pragma solidity ^0.8.0;
@@ -1037,7 +1037,7 @@ interface IERC20Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.7.0) (token/ERC20/utils/SafeERC20.sol)
 
 pragma solidity ^0.8.0;
@@ -1155,7 +1155,7 @@ library SafeERC20Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165Storage.sol)
 
 pragma solidity ^0.8.0;
@@ -1212,7 +1212,7 @@ abstract contract ERC165StorageUpgradeable is Initializable, ERC165Upgradeable {
 
 // File contracts/mixins/MixinErrors.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 /**
@@ -1283,7 +1283,7 @@ contract MixinErrors {
 
 // File contracts/interfaces/hooks/ILockKeyCancelHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1308,7 +1308,7 @@ interface ILockKeyCancelHook {
 
 // File contracts/interfaces/hooks/ILockKeyExtendHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1334,7 +1334,7 @@ interface ILockKeyExtendHook {
 
 // File contracts/interfaces/hooks/ILockKeyGrantHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1364,7 +1364,7 @@ interface ILockKeyGrantHook {
 
 // File contracts/interfaces/hooks/ILockKeyPurchaseHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1418,7 +1418,7 @@ interface ILockKeyPurchaseHook {
 
 // File contracts/interfaces/hooks/ILockKeyTransferHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1450,7 +1450,7 @@ interface ILockKeyTransferHook {
 
 // File contracts/interfaces/hooks/ILockTokenURIHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1480,7 +1480,7 @@ interface ILockTokenURIHook {
 
 // File contracts/interfaces/hooks/ILockValidKeyHook.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1511,7 +1511,7 @@ interface ILockValidKeyHook {
 
 // File contracts/interfaces/IUnlock.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1860,7 +1860,7 @@ interface IUnlock {
 
 // File contracts/mixins/MixinDisable.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 /**
@@ -1877,7 +1877,7 @@ contract MixinDisable {
 
 // File contracts/mixins/MixinFunds.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -1943,7 +1943,7 @@ contract MixinFunds is MixinErrors {
 
 // File contracts/mixins/MixinRoles.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 // This contract mostly follows the pattern established by openzeppelin in
@@ -2011,7 +2011,7 @@ contract MixinRoles is
 
 // File contracts/mixins/MixinLockCore.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -2325,7 +2325,7 @@ contract MixinLockCore is
 
 // File contracts/mixins/MixinConvenienceOwnable.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -2391,7 +2391,7 @@ contract MixinConvenienceOwnable is
 
 // File contracts/mixins/MixinKeys.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -3035,7 +3035,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
 // File contracts/mixins/MixinERC721Enumerable.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -3096,7 +3096,7 @@ contract MixinERC721Enumerable is
 
 // File contracts/mixins/MixinGrantKeys.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -3178,7 +3178,7 @@ contract MixinGrantKeys is
 
 // File contracts/UnlockUtils.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity >=0.5.17 <=0.8.13;
 
 // This contract provides some utility methods for use with the unlock protocol smart contracts.
@@ -3246,7 +3246,7 @@ library UnlockUtils {
 
 // File contracts/mixins/MixinLockMetadata.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 // import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
@@ -3396,7 +3396,7 @@ contract MixinLockMetadata is
 
 // File contracts/mixins/MixinPurchase.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -3897,7 +3897,7 @@ contract MixinPurchase is
 
 // File contracts/mixins/MixinRefunds.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -4065,7 +4065,7 @@ contract MixinRefunds is
 
 // File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.7.3
 
-// SPDX-License-Identifier: MIT
+`
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
 
 pragma solidity ^0.8.0;
@@ -4096,7 +4096,7 @@ interface IERC721ReceiverUpgradeable {
 
 // File contracts/mixins/MixinTransfer.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.0;
 
 
@@ -4445,7 +4445,7 @@ contract MixinTransfer is
 
 // File contracts/PublicLock.sol
 
-// SPDX-License-Identifier: MIT
+`
 pragma solidity ^0.8.13;
 
 
