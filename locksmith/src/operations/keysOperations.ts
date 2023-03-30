@@ -42,7 +42,7 @@ async function filterKeys(keys: any[], filters: any) {
 
 /** merge keys items with the corresponding metadata value */
 export const buildKeysWithMetadata = (
-  lock: Partial<SubgraphLock>,
+  lock: Omit<Partial<SubgraphLock>, 'keys'> & { keys: Partial<SubgraphKey>[] },
   metadataItems: any[]
 ): any[] => {
   return (
