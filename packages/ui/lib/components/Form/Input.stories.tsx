@@ -31,6 +31,14 @@ export const Required = {
   },
 } satisfies Story
 
+export const Optional = {
+  args: {
+    optional: true,
+    label: 'Full Name',
+    description: 'Enter your full name',
+  },
+} satisfies Story
+
 function CustomizedIcon(props: IconBaseProps) {
   return <PersonIcon {...props} className="fill-gray-500" />
 }

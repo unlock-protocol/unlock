@@ -22,6 +22,7 @@ export interface Props
   iconClass?: string
   copy?: boolean
   actions?: ReactNode
+  optional?: boolean
 }
 
 export const SIZE_STYLES: SizeStyleProp = {
@@ -58,6 +59,7 @@ export const Input = forwardRef(
       iconClass,
       actions,
       required,
+      optional,
       ...inputProps
     } = props
     const [isCopied, setCopy] = useClipboard(props.value as string)
@@ -86,6 +88,7 @@ export const Input = forwardRef(
     return (
       <FieldLayout
         label={label}
+        optional={optional}
         required={required}
         size={size}
         error={error}
