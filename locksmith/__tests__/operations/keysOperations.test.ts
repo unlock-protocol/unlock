@@ -5,13 +5,15 @@ import {
 import { loginRandomUser } from '../test-helpers/utils'
 import app from '../app'
 import { vi, expect, describe, it } from 'vitest'
+import { ethers } from 'ethers'
 const network = 4
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
+
 const lock = {
-  address: '0xxee',
+  address: lockAddress,
   name: 'Alice in Borderlands',
-  owner: '0x445',
+  owner: ethers.constants.AddressZero,
   keys: [
     {
       owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
@@ -102,13 +104,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 
 vi.mock('../../src/graphql/datasource/keysByQuery', () => {
   return {
-    keysByQuery: vi.fn().mockImplementation(() => {
-      return {
-        get: vi.fn().mockImplementation(() => {
-          return Promise.resolve([lock])
-        }),
-      }
-    }),
+    keysByQuery: async () => Promise.resolve([lock]),
   }
 })
 
@@ -133,7 +129,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
-          lockAddress: '0xxee',
+          lockAddress,
           lockName: 'Alice in Borderlands',
           token: '1',
         },
@@ -143,7 +139,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
-          lockAddress: '0xxee',
+          lockAddress,
           lockName: 'Alice in Borderlands',
           token: '2',
         },
@@ -152,7 +148,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
-          lockAddress: '0xxee',
+          lockAddress,
           lockName: 'Alice in Borderlands',
           token: '3',
         },
@@ -164,7 +160,7 @@ describe('keysOperations operations', () => {
           firstname: 'kalidou',
           keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
-          lockAddress: '0xxee',
+          lockAddress,
           lockName: 'Alice in Borderlands',
           token: '42',
         },
@@ -176,7 +172,7 @@ describe('keysOperations operations', () => {
           firstname: 'mario rossi',
           keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
-          lockAddress: '0xxee',
+          lockAddress,
           lockName: 'Alice in Borderlands',
           token: '43',
         },
@@ -196,7 +192,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '2',
@@ -205,7 +201,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '3',
@@ -214,7 +210,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '42',
@@ -223,7 +219,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '43',
@@ -232,7 +228,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
-          lockAddress: '0xxee',
+          lockAddress,
         },
       ])
     })
@@ -243,7 +239,6 @@ describe('keysOperations operations', () => {
         {
           address: '0xxee',
           name: 'Alice in Borderlands',
-          owner: '0x445',
           keys: [],
         },
         []
@@ -274,7 +269,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
-          lockAddress: '0xxee',
+          lockAddress,
           checkedInAt: 1660812048626,
         },
         {
@@ -284,7 +279,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
-          lockAddress: '0xxee',
+          lockAddress,
           checkedInAt: 1660812066160,
         },
         {
@@ -294,7 +289,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '42',
@@ -303,7 +298,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
-          lockAddress: '0xxee',
+          lockAddress,
           email: 'kld.diagne@gmail.com',
           address: 'email address',
           firstname: 'kalidou',
@@ -315,7 +310,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
-          lockAddress: '0xxee',
+          lockAddress,
           email: 'example@gmai.com',
           address: 'brescia',
           firstname: 'mario rossi',
@@ -342,7 +337,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '2',
@@ -351,7 +346,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '3',
@@ -360,7 +355,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '42',
@@ -369,7 +364,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
-          lockAddress: '0xxee',
+          lockAddress,
         },
         {
           token: '43',
@@ -378,7 +373,7 @@ describe('keysOperations operations', () => {
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
-          lockAddress: '0xxee',
+          lockAddress,
         },
       ])
     })

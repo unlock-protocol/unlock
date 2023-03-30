@@ -43,12 +43,12 @@ async function filterKeys(keys: any[], filters: any) {
 
 /** merge keys items with the corresponding metadata value */
 export const buildKeysWithMetadata = (
-  lock: SubgraphLock,
+  lock: Partial<SubgraphLock>,
   metadataItems: any[]
 ): any[] => {
   return (
     lock?.keys
-      ?.map((key: SubgraphKey) => {
+      ?.map((key: Partial<SubgraphKey>) => {
         // get key metadata for the owner
         const { userMetadata, extraMetadata } =
           metadataItems?.find(
@@ -66,10 +66,10 @@ export const buildKeysWithMetadata = (
           token: key?.tokenId,
           lockName: lock?.name,
           expiration: key?.expiration,
-          keyholderAddress: Normalizer.ethereumAddress(key.owner),
+          keyholderAddress: key?.owner,
           // defaults to the owner when the manager is not set
-          keyManager: Normalizer.ethereumAddress(key?.manager || key?.owner),
-          lockAddress: Normalizer.ethereumAddress(lock?.address),
+          keyManager: key?.manager || key?.owner,
+          lockAddress: lock?.address,
           ...metadata,
         }
         return merged

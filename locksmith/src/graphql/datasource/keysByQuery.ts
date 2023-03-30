@@ -87,7 +87,7 @@ export const keysByQuery = async ({
     expiration = 'active',
     page = 0,
   },
-}: KeyGetProps) => {
+}: KeyGetProps): Promise<SubgraphLock[]> => {
   try {
     const first = 1000 // max items
 
