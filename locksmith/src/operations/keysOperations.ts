@@ -1,5 +1,4 @@
 import { keysByQuery } from '../graphql/datasource'
-import * as Normalizer from '../utils/normalizer'
 import {
   SubgraphKey,
   SubgraphLock,
