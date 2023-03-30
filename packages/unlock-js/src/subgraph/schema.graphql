@@ -94,15 +94,10 @@ query allLocksKeys(
   $where: Lock_filter
   $keyFilter: Key_filter
   $orderBy: Lock_orderBy
+  $keyOrderBy: Key_orderBy
   $orderDirection: OrderDirection
 ) {
-  locks(
-    first: $first
-    skip: $skip
-    where: $where
-    orderBy: $orderBy
-    orderDirection: $orderDirection
-  ) {
+  locks(where: $where, orderBy: $orderBy, orderDirection: $orderDirection) {
     id
     address
     name
@@ -113,7 +108,7 @@ query allLocksKeys(
     version
     createdAtBlock
     totalKeys
-    keys(where: $keyFilter) {
+    keys(where: $keyFilter, orderBy: $keyOrderBy, first: $first, skip: $skip) {
       id
       tokenId
       owner

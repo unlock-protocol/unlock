@@ -6,6 +6,7 @@ import {
   OrderDirection,
   SubgraphLock,
   SubgraphService,
+  KeyOrderBy,
 } from '@unlock-protocol/unlock-js'
 
 export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
@@ -55,6 +56,7 @@ const locksByFilter = async ({
       skip,
       where: lockFilter,
       keyFilter,
+      keyOrderBy: KeyOrderBy.TokenId,
       orderDirection: OrderDirection.Asc,
     },
     {

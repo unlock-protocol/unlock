@@ -4,6 +4,7 @@ import {
   AllKeysQueryVariables,
   AllReceiptsQueryVariables,
   Key_Filter,
+  Key_OrderBy,
 } from '../@generated/subgraph'
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
@@ -72,7 +73,10 @@ export class SubgraphService {
    * ```
    */
   async locksKeys(
-    variables: AllLocksQueryVariables & { keyFilter: Key_Filter },
+    variables: AllLocksQueryVariables & {
+      keyFilter?: Key_Filter
+      keyOrderBy?: Key_OrderBy
+    },
     options?: QueryOptions
   ) {
     const networks =
