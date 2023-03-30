@@ -3,7 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi, expect } from 'vitest'
 
-const lockAddress = '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b'
+const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
 
