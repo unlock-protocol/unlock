@@ -36,5 +36,7 @@ export const enableInjectedProvider = async (provider: Enabler | undefined) => {
 
   // resolves if provider is already enabled or if user allows provider to enable
   // rejects if user does not allow
-  await provider.enable()
+  if (provider.enable) {
+    await provider.enable()
+  }
 }
