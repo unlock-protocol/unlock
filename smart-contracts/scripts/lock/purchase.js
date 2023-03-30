@@ -10,7 +10,7 @@ async function main({
     const [signer] = await ethers.getSigners()
     const recipient = _recipient || signer.address
     
-    // get correct version  of the lock abi
+    // get lock contract
     let Lock
     if (lockVersion) {
       Lock = await ethers.getContractFactory('PublicLock')
