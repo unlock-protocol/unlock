@@ -12,10 +12,9 @@ export const baseGoerli: NetworkConfig = {
   chain: 'base-goerli',
   subgraph: {
     networkName: 'base-testnet',
-    endpoint:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/base-goerli',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/base-goerli',
+    endpoint: 'https://api.studio.thegraph.com/query/37712/base-goerli/0.0.1',
+    endpointV2: 'https://api.studio.thegraph.com/query/37712/base-goerli/0.0.1',
+    //  'https://api.thegraph.com/subgraphs/name/unlock-protocol/base-goerli',
   },
   explorer: {
     name: 'Base Goerli',
