@@ -1,36 +1,53 @@
 const { ethers } = require('hardhat')
 const { AddressZero } = ethers.constants
+const contracts = require('@unlock-protocol/contracts')
 
 async function main({
   lockAddress,
+  to : _recipient,
+  lockVersion
 }) {
-  const [signer] = await ethers.getSigners()
-
-    // get correct version  of the lock abi
-    const lock = await ethers.getContractAt(
-      'contracts/PublicLock.sol:PublicLock',
-      lockAddress
-    )
+    const [signer] = await ethers.getSigners()
+    const recipient = _recipient || signer.address
     
-    // eslint-disable-next-line no-console
-    console.log('LOCK PURCHASE > Buying a key...')
-
+    // get correct version  of the lock abi
+    let Lock
+    if (lockVersion) {
+      Lock = await ethers.getContractFactory('PublicLock')
+    } else {
+      const { abi, bytecode } = contracts[`PublicLockV${lockVersion}`]
+      Lock = await ethers.getContractFactory(abi, bytecode)
+    }
+    const lock = Lock.attach(lockAddress)
+    
     // purchase a bunch of keys
+    console.log('LOCK PURCHASE > Buying a key...')
     const keyPrice = (await lock.keyPrice()).toString()
     const isErc20 = await lock.tokenAddress() !== AddressZero
-    const args = [
-      isErc20 ? [keyPrice] : [],
-      [signer.address],
-      [AddressZero],
-      [AddressZero],
-      [[]],
-    ]
-    const tx = await lock.purchase(
-      ...args,
-      { 
-        value: isErc20 ? 0 : keyPrice,
-      }
-    )
+
+    // multiple purchases was introduced in v11
+    let tx
+    if (lockVersion >= 10) {
+      tx = await lock.purchase(
+        isErc20 ? [keyPrice] : [],
+        [recipient],
+        [AddressZero],
+        [AddressZero],
+        [[]],
+        { 
+          value: isErc20 ? 0 : keyPrice,
+        }
+      )
+    } else {
+      tx = lock.purchase(
+          keyPrice,
+          recipient,
+          AddressZero,
+          AddressZero,
+          [],
+          { value: keyPrice }
+        )
+    }
 
     // get token ids
     const { events } = await tx.wait()

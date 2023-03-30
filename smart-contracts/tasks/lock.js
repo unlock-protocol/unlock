@@ -101,8 +101,10 @@ task('lock:upgrade', 'Upgrade a lock to the next version')
     await upgradeLock({ lockAddress })
   })
 
-task('lock:purchase', 'Purchase a key')
+task('lock:purchase', 'Purchase a single key')
   .addParam('lockAddress', 'The lock address')
+  .addOptionalParam('to', 'The address that will receive the key')
+  .addOptionalParam('lockVersion', 'The version of the Lock used to deploy the keys')
   .setAction(async ({ lockAddress }) => {
     // eslint-disable-next-line global-require
     const upgradeLock = require('../scripts/lock/purchase')
