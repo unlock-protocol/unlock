@@ -29,7 +29,7 @@ export function ConfirmConnect({
   communication,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network = 1, getWalletService, isUnlockAccount } = useAuth()
+  const { account, network, getWalletService, isUnlockAccount } = useAuth()
   const onSignIn = async () => {
     try {
       setLoading(true)
