@@ -325,6 +325,16 @@ interface IUnlock {
    */
   function protocolFee() external view returns (uint);
 
+  
+  /**
+   * Returns the ProxyAdmin contract address that manage upgrades for 
+   * the current Unlock contract.
+   * @dev this reads the address directly from storage, at the slot `_ADMIN_SLOT` 
+   * defined by Open Zeppelin's EIP1967 Proxy implementation which corresponds
+   * to the keccak-256 hash of "eip1967.proxy.admin" subtracted by 1
+   */
+   function getAdmin() external view returns (address);
+
   /**
    * Call executed by a lock after its version upgrade triggred by `upgradeLock`
    * - PublicLock v12 > v13 (mainnet): migrate an existing Lock to another instance 
