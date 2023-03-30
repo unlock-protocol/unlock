@@ -104,6 +104,7 @@ export const Input = forwardRef(
             </span>
           )}
           <input
+            required={required}
             {...inputProps}
             id={label}
             value={value}
