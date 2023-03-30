@@ -20,7 +20,7 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-async function main({ unlockVersion }) {
+async function main({ unlockVersion } = {}) {
   const [deployer] = await ethers.getSigners()
   let Unlock
   // need to fetch previous unlock versions
@@ -53,6 +53,7 @@ async function main({ unlockVersion }) {
 
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
+    unsafeAllow: ['delegatecall']
   })
   await unlock.deployed()
 

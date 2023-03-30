@@ -24,6 +24,7 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
+  optional?: boolean
 }
 
 const WalletIcon = (props: IconBaseProps) => (

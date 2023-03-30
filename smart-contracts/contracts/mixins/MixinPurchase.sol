@@ -127,20 +127,23 @@ contract MixinPurchase is
 
     // get fee from Unlock 
     uint protocolFee;
-    try unlockProtocol.protocolFee() {
-      // calculate fee to be paid
-      protocolFee = (_baseAmount * unlockProtocol.protocolFee()) / BASIS_POINTS_DEN;
-    
-      // pay fee to Unlock
-      if (protocolFee != 0) {
-        _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+    // make sure unlock is a contract, and we catch possible reverts
+    if (address(unlockProtocol).code.length > 0) {
+      try unlockProtocol.protocolFee() returns (uint _fee){
+        // calculate fee to be paid
+        protocolFee = (_baseAmount * _fee) / BASIS_POINTS_DEN;
+      
+        // pay fee to Unlock
+        if (protocolFee != 0) {
+          _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+        }
+      } catch {
+        // emit missing unlock
+        emit UnlockCallFailed(
+          address(this),
+          address(unlockProtocol)
+        );
       }
-    } catch {
-      // emit missing unlock
-      emit UnlockCallFailed(
-        address(this),
-        address(unlockProtocol)
-      );
     }
   }
 

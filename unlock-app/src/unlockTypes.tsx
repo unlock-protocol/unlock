@@ -203,4 +203,5 @@ export interface OAuthConfig {
   responseType: string
   state: string
   redirectUri: string
+  useDelegatedProvider?: boolean
 }

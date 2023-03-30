@@ -10,4 +10,5 @@ export interface Env {
   MUMBAI_PROVIDER: string
   OPTIMISM_PROVIDER: string
   POLYGON_PROVIDER: string
+  BASE_GOERLI_PROVIDER: string
 }
