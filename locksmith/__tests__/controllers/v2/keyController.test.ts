@@ -135,8 +135,6 @@ describe('Keys v2 endpoints for lock', () => {
         expiration: 'all',
       })
 
-    console.log('getKeysRespons', getKeysResponse.body)
-
     const [res] = getKeysResponse.body
     expect(getKeysResponse.status).toBe(200)
     expect(getKeysResponse.body.length).toBe(1)
