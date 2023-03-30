@@ -2821,6 +2821,7 @@ abstract contract UnlockOwnable is
 pragma solidity ^0.8.7;
 
 /**
+ *
  * @title The Unlock contract
  * @author Julien Genestoux (unlock-protocol.com)
  * This smart contract has 3 main roles:
@@ -2846,32 +2847,24 @@ pragma solidity ^0.8.7;
  *  b. Keeping track of GNP
  */
 
-
-
-
-
-
-
-
-
-
-error Unlock__MANAGER_ONLY();   
-error Unlock__VERSION_TOO_HIGH();   
-error Unlock__MISSING_TEMPLATE();  
-error Unlock__ALREADY_DEPLOYED();
-error Unlock__MISSING_PROXY_ADMIN();
-error Unlock__MISSING_LOCK_TEMPLATE();
-
-// TODO: prefix errors
-error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
-error LockDoesNotExist(address lockAddress);
-error InsufficientBalance();
-error UnauthorizedBalanceChange();
-error LockCallFailed();
-
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is UnlockInitializable, UnlockOwnable {
+
+  error Unlock__MANAGER_ONLY();   
+  error Unlock__VERSION_TOO_HIGH();   
+  error Unlock__MISSING_TEMPLATE();  
+  error Unlock__ALREADY_DEPLOYED();
+  error Unlock__MISSING_PROXY_ADMIN();
+  error Unlock__MISSING_LOCK_TEMPLATE();
+
+  // TODO: prefix errors
+  error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
+  error LockDoesNotExist(address lockAddress);
+  error InsufficientBalance();
+  error UnauthorizedBalanceChange();
+  error LockCallFailed();
+
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
