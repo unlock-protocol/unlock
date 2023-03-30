@@ -57,6 +57,7 @@ export const Input = forwardRef(
       icon,
       iconClass,
       actions,
+      required,
       ...inputProps
     } = props
     const [isCopied, setCopy] = useClipboard(props.value as string)
@@ -85,6 +86,7 @@ export const Input = forwardRef(
     return (
       <FieldLayout
         label={label}
+        required={required}
         size={size}
         error={error}
         success={success}
