@@ -157,6 +157,7 @@ export const WalletlessRegistration = ({
                 message: 'This field is required.',
               },
             })}
+            required
             type="email"
             placeholder="your@email.com"
             label="Email address"
@@ -177,16 +178,15 @@ export const WalletlessRegistration = ({
               return (
                 <>
                   <AddressInput
+                    optional
                     value={recipient}
                     withIcon
                     placeholder="0x..."
-                    label="Your wallet address (or ENS)"
+                    label="Wallet address or ENS"
                     onChange={(value: any) => {
                       setValue('recipient', value)
                     }}
-                    description={
-                      'You will receive your NFT ticket on this wallet.'
-                    }
+                    description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
                   />
                 </>
               )

@@ -13,13 +13,30 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Normal = {
-  icon: PersonIcon,
-  label: 'Email address',
-  size: 'small',
-  value: 'email@email.com',
-  description:
-    'If you have previously created account with Unlock, please enter the same email to continue',
-}
+  args: {
+    icon: PersonIcon,
+    label: 'Email address',
+    size: 'small',
+    value: 'email@email.com',
+    description:
+      'If you have previously created account with Unlock, please enter the same email to continue',
+  },
+} satisfies Story
+
+export const Required = {
+  args: {
+    required: true,
+    label: 'Full Name',
+    description: 'Enter your full name',
+  },
+} satisfies Story
+
+export const Optional = {
+  args: {
+    optional: true,
+    label: 'Full Name',
+  },
+} satisfies Story
 
 function CustomizedIcon(props: IconBaseProps) {
   return <PersonIcon {...props} className="fill-gray-500" />
