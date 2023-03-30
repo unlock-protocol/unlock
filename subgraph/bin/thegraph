@@ -73,7 +73,7 @@ const deploy = async (network, graphLabel) => {
 }
 
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'localhost'].includes(d)
+  (d) => !['networks', 'default'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))

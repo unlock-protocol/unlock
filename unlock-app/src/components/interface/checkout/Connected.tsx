@@ -194,9 +194,9 @@ export function Connected({
 
   const onDisconnect = async () => {
     setIsDisconnecting(true)
-    send('DISCONNECT')
     await signOut()
-    deAuthenticate()
+    await deAuthenticate()
+    send('DISCONNECT')
     setIsDisconnecting(false)
   }
 

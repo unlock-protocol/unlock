@@ -5,7 +5,7 @@ import { SiweMessage } from 'siwe'
 import { storage } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
-  getCurrentAccount,
+  getAccessToken,
   removeAccessToken,
   saveAccessToken,
 } from '~/utils/session'
@@ -36,7 +36,7 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
-  const { connected, getWalletService } = useAuth()
+  const { connected, getWalletService, network } = useAuth()
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
@@ -57,10 +57,10 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      const current = getCurrentAccount()
-      if (current) {
+      const session = getAccessToken()
+      if (session) {
         await storage.revoke().catch(console.error)
-        removeAccessToken(current)
+        removeAccessToken()
       }
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
@@ -83,7 +83,7 @@ export const SIWEProvider = ({ children }: Props) => {
         domain: window.location.hostname,
         uri: window.location.origin,
         address,
-        chainId: 1,
+        chainId: network,
         version: '1',
         statement: '',
         nonce,

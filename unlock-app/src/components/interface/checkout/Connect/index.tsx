@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { ConfirmConnect } from './Confirm'
 import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
@@ -9,7 +8,6 @@ import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
 
 interface Props {
-  paywallConfig?: PaywallConfig
   oauthConfig: OAuthConfig
   injectedProvider: unknown
   communication: ReturnType<typeof useCheckoutCommunication>
@@ -18,7 +16,7 @@ interface Props {
 export function Connect({
   injectedProvider,
   oauthConfig,
-  paywallConfig,
+  communication,
 }: Props) {
   const connectService = useInterpret(connectMachine)
   const [state] = useActor(connectService)
@@ -26,13 +24,20 @@ export function Connect({
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
-      const redirectURI = new URL(oauthConfig.redirectUri)
-      for (const [key, value] of Object.entries(params)) {
-        redirectURI.searchParams.append(key, value)
+      if (oauthConfig.redirectUri) {
+        const redirectURI = new URL(oauthConfig.redirectUri)
+
+        for (const [key, value] of Object.entries(params)) {
+          redirectURI.searchParams.append(key, value)
+        }
+        return window.location.assign(redirectURI)
+      } else if (!communication?.insideIframe) {
+        window.history.back()
+      } else {
+        communication.emitCloseModal()
       }
-      window.location.assign(redirectURI)
     },
-    [oauthConfig.redirectUri]
+    [oauthConfig.redirectUri, communication]
   )
 
   const onBack = useMemo(() => {
@@ -55,10 +60,10 @@ export function Connect({
       case 'CONNECT': {
         return (
           <ConfirmConnect
+            communication={communication}
             onClose={onClose}
             connectService={connectService}
             oauthConfig={oauthConfig}
-            paywallConfig={paywallConfig}
             injectedProvider={injectedProvider}
           />
         )
@@ -75,14 +80,7 @@ export function Connect({
         return null
       }
     }
-  }, [
-    matched,
-    onClose,
-    connectService,
-    injectedProvider,
-    oauthConfig,
-    paywallConfig,
-  ])
+  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
 
   return (
     <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">

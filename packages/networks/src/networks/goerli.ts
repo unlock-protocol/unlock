@@ -43,7 +43,7 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
-  maxFreeClaimCost: 10000,
+  maxFreeClaimCost: 100000,
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',

@@ -1,5 +1,7 @@
 import { z } from 'zod'
 import { useClaim } from '~/hooks/useClaim'
+import { ethers } from 'ethers'
+
 import ReCaptcha from 'react-google-recaptcha'
 
 import {
@@ -10,10 +12,11 @@ import {
 } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Controller, useForm, useWatch } from 'react-hook-form'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { MintingScreen } from '~/components/interface/checkout/main/Minting'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -43,6 +46,8 @@ export const WalletlessRegistration = ({
 }: WalletlessRegistrationProps) => {
   const { account } = useAuth()
   const [claimResult, setClaimResult] = useState<any>()
+  const [transactionStatus, setTransactionStatus] =
+    useState<TransactionStatus>('PROCESSING')
   const [loading, setLoading] = useState<boolean>(false)
   const recaptchaRef = useRef<any>()
   const config = useConfig()
@@ -90,6 +95,29 @@ export const WalletlessRegistration = ({
     control,
   })
 
+  useEffect(() => {
+    if (
+      ['ERROR', 'FINISHED'].includes(transactionStatus as string) ||
+      !claimResult?.hash
+    ) {
+      return
+    }
+    const waitForConfirmation = async () => {
+      const provider = new ethers.providers.JsonRpcBatchProvider(
+        config.networks[network].provider
+      )
+
+      const transaction = await provider.waitForTransaction(claimResult.hash, 2)
+
+      if (transaction.status !== 1) {
+        setTransactionStatus('ERROR')
+      } else {
+        setTransactionStatus('FINISHED')
+      }
+    }
+    waitForConfirmation()
+  }, [transactionStatus, network, claimResult?.hash, config.networks])
+
   return (
     <>
       <ReCaptcha
@@ -98,18 +126,23 @@ export const WalletlessRegistration = ({
         size="invisible"
         badge="bottomleft"
       />
-      {claimResult && (
-        <div className="h-72">
+      {claimResult && transactionStatus && (
+        <div className="h-72 mb-36">
           <MintingScreen
             mint={{
-              status: 'PROCESSING',
-              transactionHash: claimResult.transactionHash,
+              status: transactionStatus,
+              transactionHash: claimResult.hash,
             }}
-            account={claimResult.owner}
+            owner={claimResult.owner}
             lockName={''}
             lockAddress={lockAddress}
             network={network}
           />
+          {transactionStatus === 'FINISHED' && (
+            <p className="my-16 font-bold text-3xl text-center">
+              🎉 You have been added to the attendees list!
+            </p>
+          )}
         </div>
       )}
       {!claimResult && (

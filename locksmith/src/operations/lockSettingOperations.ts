@@ -3,11 +3,11 @@ import {
   LockSettingProps,
 } from '../controllers/v2/lockSettingController'
 import { LockSetting } from '../models/lockSetting'
+import * as Normalizer from '../utils/normalizer'
 
 interface SendEmailProps {
   lockAddress: string
   network: number
-  sendEmail: boolean
 }
 
 /**
@@ -17,12 +17,14 @@ export async function saveSettings({
   lockAddress,
   network,
   sendEmail,
-}: SendEmailProps) {
+  replyTo,
+}: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
-      lockAddress,
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
       sendEmail,
+      replyTo,
     },
     {
       returning: true,
@@ -39,7 +41,7 @@ export async function getSettings({
 }): Promise<LockSetting | LockSettingProps> {
   const settings = await LockSetting.findOne({
     where: {
-      lockAddress,
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     },
   })

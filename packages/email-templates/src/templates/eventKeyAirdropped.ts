@@ -8,13 +8,13 @@ import { links } from './helpers/links'
 handlebars.registerHelper('links', links)
 
 export default {
-  subject: 'A ticket for your next event was airdropped to you!',
-  html: `<h1>A NFT ticket for the event "{{lockName}}"  was airdropped to you!</h1>
-<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just airdropped for you!</p>
+  subject: `Your ticket for {{{lockName}}}`, // using {{{}}} prevents HTML escaping
+  html: `<h1>A NFT ticket for "{{lockName}}" was airdropped to you!</h1>
+<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just airdropped!</p>
 
 {{#if customContent}}
-<section style="${customContentStyle}">
-{{{customContent}}}
+  <section style="${customContentStyle}">
+    {{{customContent}}}
   </section>
 {{/if}}
 
@@ -46,7 +46,7 @@ export default {
   {{/if}}
 </div>
 
-<p> You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
+<p>You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print the ticket to this email.</p>
 
 {{links txUrl openSeaUrl true}}
 `,

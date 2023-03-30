@@ -2,6 +2,7 @@ import { storage } from '~/config/storage'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, ToggleSwitch } from '@unlock-protocol/ui'
 import { useState } from 'react'
+import { EmailReplyToForm } from './EmailReplyToForm'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -32,23 +33,17 @@ export const SendEmailForm = ({
     },
   })
 
-  const { isLoading, data: { data: { sendEmail: sendEmailValue } } = {} } =
-    useQuery(
-      [
-        'getLockSettings',
-        lockAddress,
-        network,
-        updateSettingsMutation.isSuccess,
-      ],
-      async () => await storage.getLockSettings(network, lockAddress),
-      {
-        enabled: lockAddress?.length > 0 && !!network && isManager,
-        onSuccess: (res: any) => {
-          setSendEmail(res?.data?.sendEmail ?? true)
-        },
-      }
-    )
-
+  const { isLoading, data: { data: lockSettings } = {} } = useQuery(
+    ['getLockSettings', lockAddress, network, updateSettingsMutation.isSuccess],
+    async () => await storage.getLockSettings(network, lockAddress),
+    {
+      enabled: lockAddress?.length > 0 && !!network && isManager,
+      onSuccess: (res: any) => {
+        setSendEmail(res?.data?.sendEmail ?? true)
+      },
+    }
+  )
+  const sendEmailValue = lockSettings?.sendEmail
   const disabledInput = disabled || isLoading || !isManager
 
   return (
@@ -81,6 +76,15 @@ export const SendEmailForm = ({
           Apply
         </Button>
       )}
+      <div className="w-full p-4 border border-gray-500 rounded-lg">
+        <EmailReplyToForm
+          lockAddress={lockAddress}
+          isManager={isManager}
+          network={network}
+          disabled={disabled || !sendEmailValue}
+          lockSettings={lockSettings}
+        />
+      </div>
     </div>
   )
 }
