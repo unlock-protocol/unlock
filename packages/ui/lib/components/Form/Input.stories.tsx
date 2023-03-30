@@ -35,7 +35,6 @@ export const Optional = {
   args: {
     optional: true,
     label: 'Full Name',
-    description: 'Enter your full name',
   },
 } satisfies Story
 

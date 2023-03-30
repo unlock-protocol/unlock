@@ -61,7 +61,7 @@ export function FieldLayout(props: Props) {
       )
     }
 
-    if (description) {
+    if (description || optional) {
       return (
         <div id={label} className={descriptionClass}>
           {optional && <span className="italic mr-1">(optional)</span>}
