@@ -35,7 +35,7 @@ export function createMessageToSignIn({
   clientId: string
   statement: string
   address: string
-  chainId: number
+  chainId?: number
 }) {
   const nonce = generateNonce()
   const expirationDate = new Date()

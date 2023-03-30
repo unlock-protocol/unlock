@@ -166,9 +166,10 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       // update unlock ref in this lock
       unlockProtocol = IUnlock(newUnlockAddress);
 
-      // update data version
-      schemaVersion = publicLockVersion();
     }
+    
+    // update data version
+    schemaVersion = publicLockVersion();
   }
 
   /**
