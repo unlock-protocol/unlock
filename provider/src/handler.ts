@@ -70,18 +70,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     })
   }
 
-  // Reject requests that are not POST
-  if (request.method !== 'POST') {
-    console.error(`Method ${request.method} not supported`)
-    return Response.json(
-      { message: `Method ${request.method} not supported` },
-      {
-        status: 400,
-        headers,
-      }
-    )
-  }
-
   const matched = pathname.match(/\/([0-9]*)/)
 
   // Missing network
@@ -107,6 +95,18 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       { message: `Unsupported network ID: ${networkId}` },
       {
         status: 404,
+        headers,
+      }
+    )
+  }
+
+  // Reject requests that are not POST
+  if (request.method !== 'POST') {
+    console.error(`Method ${request.method} not supported`)
+    return Response.json(
+      { message: `Method ${request.method} not supported` },
+      {
+        status: 400,
         headers,
       }
     )
