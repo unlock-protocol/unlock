@@ -85,7 +85,7 @@ export class SubgraphService {
     const items = await Promise.all(
       networks.map(async (config) => {
         const sdk = this.createSdk(config.id)
-        const results = await sdk.allLocksKeys(variables)
+        const results = await sdk.allLocksWithKeys(variables)
         return results.locks.map((item) => ({
           ...item,
           network: config.id,

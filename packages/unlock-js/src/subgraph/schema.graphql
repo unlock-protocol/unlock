@@ -88,7 +88,7 @@ query AllReceipts(
   }
 }
 
-query allLocksKeys(
+query allLocksWithKeys(
   $first: Int = 1
   $skip: Int
   $where: Lock_filter
