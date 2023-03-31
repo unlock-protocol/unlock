@@ -194,15 +194,27 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @dev Registers a new PublicLock template immplementation
    * The template is identified by a version number
    * Once registered, the template can be used to upgrade an existing Lock
+   * @dev This will initialize the template and revokeOwnership.
    */
   function addLockTemplate(
     address impl,
     uint16 version
   ) public onlyOwner {
+
+    // First claim the template so that no-one else could
+    // this will revert if the template was already initialized.
+    IPublicLock(impl).initialize(
+      address(this),
+      0,
+      address(0),
+      0,
+      0,
+      ""
+    );
+    IPublicLock(impl).renounceLockManager();
+
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
-    if (publicLockLatestVersion < version)
-      publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
   }
@@ -570,25 +582,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.
-   * @dev This will initialize the template and revokeOwnership.
    */
   function setLockTemplate(
     address _publicLockAddress
   ) external onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(_publicLockAddress).initialize(
-      address(this),
-      0,
-      address(0),
-      0,
-      0,
-      ""
-    );
-    IPublicLock(_publicLockAddress).renounceLockManager();
-
+    if(_publicLockVersions[_publicLockAddress] == 0) {
+      revert Unlock__MISSING_LOCK_TEMPLATE();
+    }
     publicLockAddress = _publicLockAddress;
-
     emit SetLockTemplate(_publicLockAddress);
   }
 
