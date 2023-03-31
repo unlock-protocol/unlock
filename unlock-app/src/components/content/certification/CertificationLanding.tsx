@@ -12,34 +12,34 @@ const customers = [
   {
     name: 'Web3 Academy',
     link: '',
-    image: '',
+    image: '/images/illustrations/certifications/logo-web3-academy.svg',
   },
   {
     name: 'CDAA',
     link: '',
-    image: '',
+    image: '/images/illustrations/certifications/logo-cdaa.svg',
   },
   {
     name: 'Hay There Social Media',
     link: '',
-    image: '',
+    image: '/images/illustrations/certifications/logo-heytheresocialmedia.svg',
   },
 ]
 
 const features = [
   {
-    image: '',
+    image: '/images/illustrations/certifications/img-continueedu.svg',
     name: 'Award certifications based on proven expertise',
     description:
       'You can grant certifications and credentials to individuals or organizations that pass exams, attend continuing education training, or meet specific criteria.',
   },
   {
-    image: '/images/illustrations/certifications/img-qr.svg',
+    image: '/images/illustrations/certifications/img-validation.svg',
     name: 'Validate certifications online and onchain',
     description: `Verify certifications and credentials through third parties or directly on the blockchain. Since certifications can't be transferred and can be set to expire (if required), you know the certification is valid.`,
   },
   {
-    image: '/images/illustrations/certifications/img-verifier.svg',
+    image: '/images/illustrations/certifications/img-sharelinkedin.svg',
     name: 'Share on LinkedIn and elsewhere',
     description:
       'Individuals can share their certifications on LinkedIn, on their personal websites or social media, as well as on their resume or CV.',
@@ -86,13 +86,13 @@ export const CertificationLanding = ({
       illustration={
         <Image
           className=""
-          width="769"
-          height="978"
-          alt="Out Metaverse"
-          src="/images/illustrations/events/outmetaverse.svg"
+          width="486"
+          height="652"
+          alt="Hand off doc"
+          src="/images/illustrations/certifications/img-handoffDoc.svg"
         ></Image>
       }
-      coverImage="/images/illustrations/events/party.svg"
+      coverImage="/images/illustrations/certifications/img-professionals.svg"
       subtitle="Bring your certification or credentialing program onchain with Unlock."
       description="Unlock Protocol brings certifications and credentials into web3. Deploy a contract, issue credentials, and perform verfication. All onchain, all in minutes."
       actions={
