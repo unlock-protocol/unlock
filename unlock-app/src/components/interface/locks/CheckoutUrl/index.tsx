@@ -55,6 +55,7 @@ export const CheckoutUrlPage = () => {
         oneYearRecurring: 0,
         gasRefund: 0,
       },
+      enabled: Boolean(network && lockAddress),
     }
   )
 
