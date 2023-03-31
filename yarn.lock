@@ -14346,6 +14346,7 @@ __metadata:
   dependencies:
     "@typescript-eslint/eslint-plugin": 5.56.0
     "@typescript-eslint/parser": 5.56.0
+    babel-eslint: 10.1.0
     eslint: 8.36.0
     eslint-config-next: 13.2.3
     eslint-config-prettier: 8.8.0
@@ -14581,7 +14582,6 @@ __metadata:
     "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
     bignumber.js: 9.1.1
@@ -14798,7 +14798,6 @@ __metadata:
     "@storybook/addon-links": 6.5.16
     "@storybook/react": 6.5.16
     "@svgr/cli": 6.5.1
-    babel-eslint: 10.1.0
     babel-loader: 9.1.2
     eslint: 8.35.0
     eslint-config-prettier: 8.6.0
@@ -14893,7 +14892,6 @@ __metadata:
     "@zeit/next-source-maps": 0.0.3
     apexcharts: 3.37.1
     autoprefixer: 10.4.13
-    babel-eslint: 10.1.0
     babel-loader: 9.1.2
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
@@ -14951,7 +14949,6 @@ __metadata:
     "@typescript-eslint/parser": 5.56.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@vitest/coverage-c8": 0.28.3
-    babel-eslint: 10.1.0
     babel-loader: 9.1.2
     babel-plugin-wildcard: 7.0.0
     dotenv: 16.0.3
@@ -50407,7 +50404,6 @@ __metadata:
     "@babel/core": 7.21.0
     "@typescript-eslint/eslint-plugin": 5.54.0
     "@typescript-eslint/parser": 5.54.0
-    babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.3
     eslint: 8.35.0
     eslint-plugin-prettier: latest
