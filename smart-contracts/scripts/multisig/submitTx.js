@@ -5,9 +5,9 @@ const {
   submitTxOldMultisig,
 } = require('./_helpers')
 
-const Safe = require('@gnosis.pm/safe-core-sdk').default
-const SafeServiceClient = require('@gnosis.pm/safe-service-client').default
-const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
+const Safe = require('@safe-global/safe-core-sdk').default
+const SafeServiceClient = require('@safe-global/safe-service-client').default
+const EthersAdapter = require('@safe-global/safe-ethers-lib').default
 
 // see https://docs.gnosis-safe.io/backend/available-services
 // possible changes in URLs hapenning
@@ -28,7 +28,7 @@ const gnosisServiceURLs = {
 }
 
 async function main({ safeAddress, tx, signer }) {
-  const { chainId } = await signer.provider.getNetwork()
+  const { chainId } = await ethers.provider.getNetwork()
   if (!safeAddress) {
     safeAddress = getSafeAddress(chainId)
   }
@@ -52,9 +52,13 @@ async function main({ safeAddress, tx, signer }) {
   })
 
   // get Gnosis service
-  const id = await ethAdapter.getChainId()
+  console.log(await ethAdapter.getSignerAddress());
+  console.log(await ethAdapter.getChainId())
+  // const id = await ethAdapter.getChainId()
+  const id = chainId
   const txServiceUrl = gnosisServiceURLs[id]
   console.log(`Using Gnosis Safe service at ${txServiceUrl} - chain ${id}`)
+  
   const safeService = new SafeServiceClient({
     txServiceUrl,
     ethAdapter,
