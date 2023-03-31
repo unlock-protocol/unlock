@@ -29,28 +29,12 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
-import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
-import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
-
-error Unlock__MANAGER_ONLY();   
-error Unlock__VERSION_TOO_HIGH();   
-error Unlock__MISSING_TEMPLATE();  
-error Unlock__ALREADY_DEPLOYED();
-error Unlock__MISSING_PROXY_ADMIN();
-error Unlock__MISSING_LOCK_TEMPLATE();
-
-// TODO: prefix errors
-error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
-error LockDoesNotExist(address lockAddress);
-error InsufficientBalance();
-error UnauthorizedBalanceChange();
-error LockCallFailed();
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -117,6 +101,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // protocol fee
   uint public protocolFee;
+
+  // errors
+  error Unlock__MANAGER_ONLY();   
+  error Unlock__VERSION_TOO_HIGH();   
+  error Unlock__MISSING_TEMPLATE();  
+  error Unlock__ALREADY_DEPLOYED();
+  error Unlock__MISSING_PROXY_ADMIN();
+  error Unlock__MISSING_LOCK_TEMPLATE();
+  error Unlock__LockDoesNotExist(address lockAddress);
 
   // Events
   event NewLock(
@@ -656,6 +649,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   // for doc, see IUnlock.sol
+  function getAdmin() public view returns (address) {
+      bytes32 _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
+      return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
+  }
+
+  // for doc, see IUnlock.sol
   function postLockUpgrade() public {
     // check if lock hasnot already been deployed here and version is correct
     if (
@@ -683,7 +682,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             yieldedDiscountTokens
           );
       } else {
-        revert LockDoesNotExist(msg.sender);
+        revert Unlock__LockDoesNotExist(msg.sender);
       }
     }
   }

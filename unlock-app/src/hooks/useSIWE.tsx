@@ -36,7 +36,7 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
-  const { connected, getWalletService } = useAuth()
+  const { connected, getWalletService, network } = useAuth()
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
@@ -83,7 +83,7 @@ export const SIWEProvider = ({ children }: Props) => {
         domain: window.location.hostname,
         uri: window.location.origin,
         address,
-        chainId: 1,
+        chainId: network,
         version: '1',
         statement: '',
         nonce,
