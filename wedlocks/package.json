@@ -10,7 +10,6 @@
     "@babel/preset-env": "7.20.2",
     "@typescript-eslint/parser": "5.56.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "babel-eslint": "10.1.0",
     "babel-loader": "9.1.2",
     "babel-plugin-wildcard": "7.0.0",
     "dotenv": "16.0.3",
