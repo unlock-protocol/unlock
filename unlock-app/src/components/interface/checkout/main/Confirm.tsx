@@ -30,6 +30,7 @@ import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../ViewContract'
 import { useClaim } from '~/hooks/useClaim'
 import { usePurchase } from '~/hooks/usePurchase'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 
 interface Props {
   injectedProvider: unknown
@@ -91,7 +92,6 @@ export function Confirm({
   const recaptchaRef = useRef<any>()
   const storage = useStorageService()
   const { captureChargeForCard } = useAccount(account!)
-
   const [isConfirming, setIsConfirming] = useState(false)
 
   const {
@@ -105,6 +105,7 @@ export function Confirm({
     password,
     promo,
     keyManagers,
+    metadata,
   } = state.context
 
   const {
@@ -141,6 +142,8 @@ export function Confirm({
     lockAddress,
     network: lockNetwork,
   })
+
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const { isInitialLoading: isFiatPriceLoading, data: fiatPricing } = useQuery(
     [quantity, lockAddress, lockNetwork],
@@ -243,17 +246,28 @@ export function Confirm({
           .toString(),
       }
 
-      const response = await storage.locksmith.price(
-        lockNetwork,
-        parseFloat(item.total),
-        lock?.currencyContractAddress
-          ? lock?.currencyContractAddress
-          : undefined
-      )
+      const response = await storage.locksmith
+        .price(
+          lockNetwork,
+          parseFloat(item.total),
+          lock?.currencyContractAddress
+            ? lock?.currencyContractAddress
+            : undefined
+        )
+        .catch((error) => {
+          // Important: we do not fail if locksmith can't retrieve $ price.
+          console.error(
+            `We could not retrieve $ price for ${lockAddress} on ${lockNetwork} for ${recipients.join(
+              ','
+            )}`
+          )
+          console.error(error)
+          return null
+        })
 
       return {
         ...item,
-        usdPrice: response.data.result,
+        usdPrice: response?.data?.result,
       }
     },
     {
@@ -299,7 +313,7 @@ export function Confirm({
     isInitialDataLoading ||
     isPayableLoading
 
-  const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
+  const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
   const formattedData = getLockProps(
     lock,
@@ -459,7 +473,7 @@ export function Confirm({
 
       const captcha = await recaptchaRef.current?.executeAsync()
 
-      const hash = await claim({
+      const { hash } = await claim({
         data: purchaseData?.[0],
         captcha,
       })
@@ -493,8 +507,11 @@ export function Confirm({
             <Button
               loading={isConfirming}
               disabled={isConfirming || isLoading}
-              onClick={(event) => {
+              onClick={async (event) => {
                 event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
                 onConfirmCard()
               }}
             >
@@ -532,6 +549,9 @@ export function Confirm({
               disabled={isConfirming || isLoading || !canAfford || isError}
               onClick={async (event) => {
                 event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
                 onConfirmCrypto()
               }}
             >
@@ -547,8 +567,8 @@ export function Confirm({
                 {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
                   <small className="text-center text-red-500">
                     You do not have enough{' '}
-                    {config.networks[lock!.network].baseCurrencySymbol} to pay
-                    transaction fees (gas).
+                    {config.networks[lock!.network].nativeCurrency.symbol} to
+                    pay transaction fees (gas).
                   </small>
                 )}
               </>
@@ -562,8 +582,11 @@ export function Confirm({
             <Button
               loading={isConfirming}
               disabled={isConfirming || isLoading || isError}
-              onClick={(event) => {
+              onClick={async (event) => {
                 event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
                 onConfirmClaim()
               }}
             >

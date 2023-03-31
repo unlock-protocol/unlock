@@ -10,7 +10,6 @@ export const mainnet: NetworkConfig = {
   keyManagerAddress: '0x9A1f43090307034DBFBE2ba20320Ce815ff046D4',
   name: 'Ethereum',
   chain: 'ethereum',
-  blockTime: 8000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
     endpointV2:
@@ -31,24 +30,18 @@ export const mainnet: NetworkConfig = {
       `https://opensea.io/assets/${lockAddress}/${tokenId}`,
     collectionUrl: (lockAddress) => `https://opensea.io/assets/${lockAddress}`,
   },
-  erc20: {
-    symbol: 'DAI',
-    address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-  },
-  requiredConfirmations: 12,
-  baseCurrencySymbol: 'Eth',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'Ether',
-    symbol: 'Eth',
+    symbol: 'ETH',
     decimals: 18,
     coingecko: 'ethereum',
   },
   startBlock: 7120795,
-  description: 'The most popular network',
+  description:
+    'The original and most secure EVM network. Gas fees are expensive on this network.',
+  url: 'https://ethereum.org/en/',
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  teamMultisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   uniswapV2: {
     oracle: '0xE118d797E1c44F2e2A2823191a51D8b46a4A1D51',
   },

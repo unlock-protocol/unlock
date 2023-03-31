@@ -17,9 +17,10 @@ import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
-
 import { useAutoLogin } from '../../hooks/useAutoLogin'
-import { ConnectModal } from './connect/ConnectModal'
+import { SIWEProvider } from '~/hooks/useSIWE'
+import { ConnectModalProvider } from '~/hooks/useConnectModal'
+import { ConnectModal } from './connect'
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -90,10 +91,9 @@ export const Authenticate = ({
     isUnlockAccount,
     watchAsset,
     providerSend,
-    setOpenConnectModal,
-    openConnectModal,
     getWalletService,
-    isConnected,
+    connected,
+    displayAccount,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -106,7 +106,7 @@ export const Authenticate = ({
   }
 
   const deAuthenticate = () => {
-    disconnectProvider()
+    return disconnectProvider()
   }
 
   return (
@@ -119,13 +119,12 @@ export const Authenticate = ({
         email,
         encryptedPrivateKey,
         authenticate,
-        setOpenConnectModal,
-        openConnectModal,
         isUnlockAccount,
         deAuthenticate,
         watchAsset,
         getWalletService,
-        isConnected,
+        connected,
+        displayAccount,
       }}
     >
       <WalletServiceContext.Provider value={walletService}>
@@ -137,8 +136,10 @@ export const Authenticate = ({
           encryptedPrivateKey={encryptedPrivateKey}
           authenticate={authenticate}
         >
-          {children}
-          <ConnectModal open={openConnectModal} setOpen={setOpenConnectModal} />
+          <SIWEProvider>
+            {children}
+            <ConnectModal />
+          </SIWEProvider>
         </Providers>
       </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>

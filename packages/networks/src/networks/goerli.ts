@@ -11,7 +11,6 @@ export const goerli: NetworkConfig = {
   id: 5,
   name: 'Goerli (Testnet)',
   chain: 'goerli',
-  blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
     endpointV2:
@@ -33,11 +32,8 @@ export const goerli: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://testnets.opensea.io/assets/goerli/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'ETH',
-  description: 'Main Ethereum test network. Do not use for production',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
+  description: 'Main Ethereum test network. Do not use for production.',
+  faucet: 'https://goerlifaucet.com/',
   nativeCurrency: {
     name: 'ETH',
     symbol: 'ETH',
@@ -47,8 +43,7 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
-  maxFreeClaimCost: 10000,
-  teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
+  maxFreeClaimCost: 100000,
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',

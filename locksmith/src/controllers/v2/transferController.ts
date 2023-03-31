@@ -74,12 +74,20 @@ export const createTransferCode: RequestHandler = async (request, response) => {
 
   const [part1, part2] = [transferCode.slice(0, 12), transferCode.slice(12)]
 
-  await sendEmail('transferCode', 'transferCode', email, {
-    lockName: key.lock.name || 'Unlock Lock',
-    network: network.toString(),
-    transferCode: part1,
-    keyId,
-    validPeriod: '15 minutes',
+  await sendEmail({
+    network,
+    template: 'transferCode',
+    failoverTemplate: 'transferCode',
+    recipient: 'email',
+    params: {
+      lockAddress: key.lock.address,
+      lockName: key.lock.name || 'Unlock Lock',
+      network: network.toString(),
+      transferCode: part1,
+      keyId,
+      validPeriod: '15 minutes',
+    },
+    attachments: [],
   })
 
   const responseBody = {

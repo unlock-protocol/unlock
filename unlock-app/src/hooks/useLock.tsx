@@ -26,11 +26,7 @@ export const processTransaction = async (
   network: number
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
-  const blockTime = config.networks[network].blockTime
-  if (
-    !transaction ||
-    (transaction?.confirmations || 0) <= config.requiredConfirmations
-  ) {
+  if (!transaction || (transaction?.confirmations || 0) <= 12) {
     // Polling if the transaction is not confirmed
     setTimeout(async () => {
       processTransaction(
@@ -42,7 +38,7 @@ export const processTransaction = async (
         hash,
         network
       )
-    }, blockTime / 2)
+    }, 1000) // every second
 
     setLock({
       ...lock,

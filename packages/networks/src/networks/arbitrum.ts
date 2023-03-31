@@ -10,7 +10,6 @@ export const arbitrum: NetworkConfig = {
   id: 42161,
   name: 'Arbitrum',
   chain: 'arbitrum',
-  blockTime: 1000,
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum',
@@ -34,10 +33,6 @@ export const arbitrum: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/arbitrum/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'ETH',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'ETH',
     symbol: 'ETH',
@@ -50,6 +45,7 @@ export const arbitrum: NetworkConfig = {
   maxFreeClaimCost: 100,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
+  url: 'https://arbitrum.io/',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
