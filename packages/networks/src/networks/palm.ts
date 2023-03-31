@@ -9,7 +9,6 @@ export const palm: NetworkConfig = {
   id: 11297108109,
   name: 'Palm',
   chain: 'palm',
-  blockTime: 5000,
   subgraph: {
     endpoint:
       'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet',
@@ -30,10 +29,7 @@ export const palm: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 1,
   erc20: null,
-  baseCurrencySymbol: 'PALM',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'PALM',
     symbol: 'PALM',
