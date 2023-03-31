@@ -13050,7 +13050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.0.0, @types/node@npm:>=6, @types/node@npm:>=8.1.0":
+"@types/node@npm:*, @types/node@npm:>=12.0.0, @types/node@npm:>=8.1.0":
   version: 18.15.11
   resolution: "@types/node@npm:18.15.11"
   checksum: 977b4ad04708897ff0eb049ecf82246d210939c82461922d20f7d2dcfd81bbc661582ba3af28869210f7e8b1934529dcd46bff7d448551400f9d48b9d3bddec3
@@ -13603,13 +13603,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 55d27ae5d346ea260e40121675c24e112ef0247649073848e5d4e03182713ae4ec8142b98f61a1c6cbe7d3b72fa99bbadb65d8b01873e5e605cdc30f1ff70ef2
-  languageName: node
-  linkType: hard
-
-"@types/zen-observable@npm:^0.8.0":
-  version: 0.8.3
-  resolution: "@types/zen-observable@npm:0.8.3"
-  checksum: 08c88354abcf03a2176a2ec32e07da1f25fdad94fbc2f419bea53d77deb04ad4759518b4fe3fc695e61065dd4bdf7c8bd26b5211a6cd5be2233872806bdee48d
   languageName: node
   linkType: hard
 
@@ -14346,6 +14339,7 @@ __metadata:
   dependencies:
     "@typescript-eslint/eslint-plugin": 5.56.0
     "@typescript-eslint/parser": 5.56.0
+    babel-eslint: 10.1.0
     eslint: 8.36.0
     eslint-config-next: 13.2.3
     eslint-config-prettier: 8.8.0
@@ -14445,10 +14439,6 @@ __metadata:
     "@unlock-protocol/ui": "workspace:^"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitest/coverage-c8": 0.28.4
-    apollo-cache-inmemory: 1.6.6
-    apollo-client: 2.6.10
-    apollo-datasource-graphql: 1.3.2
-    apollo-link-http: 1.5.17
     color-scheme: 1.0.1
     cookie-parser: 1.4.6
     cors: 2.8.5
@@ -14582,7 +14572,6 @@ __metadata:
     "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
     bignumber.js: 9.1.1
@@ -14799,7 +14788,6 @@ __metadata:
     "@storybook/addon-links": 6.5.16
     "@storybook/react": 6.5.16
     "@svgr/cli": 6.5.1
-    babel-eslint: 10.1.0
     babel-loader: 9.1.2
     eslint: 8.35.0
     eslint-config-prettier: 8.6.0
@@ -14894,7 +14882,6 @@ __metadata:
     "@zeit/next-source-maps": 0.0.3
     apexcharts: 3.37.1
     autoprefixer: 10.4.13
-    babel-eslint: 10.1.0
     babel-loader: 9.1.2
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
@@ -14952,7 +14939,6 @@ __metadata:
     "@typescript-eslint/parser": 5.56.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@vitest/coverage-c8": 0.28.3
-    babel-eslint: 10.1.0
     babel-loader: 9.1.2
     babel-plugin-wildcard: 7.0.0
     dotenv: 16.0.3
@@ -15778,16 +15764,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wry/context@npm:^0.4.0":
-  version: 0.4.4
-  resolution: "@wry/context@npm:0.4.4"
-  dependencies:
-    "@types/node": ">=6"
-    tslib: ^1.9.3
-  checksum: ad0a978ee23943b5fc3dbc087e935bd2bc477d688aeb1f88c161604d2b8f7bf7aefcfe61b585aeddc6fd3d1c0bbf77f501436d3c150dc8390a43a8ad57418831
-  languageName: node
-  linkType: hard
-
 "@wry/context@npm:^0.7.0":
   version: 0.7.0
   resolution: "@wry/context@npm:0.7.0"
@@ -16591,100 +16567,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-cache-inmemory@npm:1.6.6, apollo-cache-inmemory@npm:^1.2.5":
-  version: 1.6.6
-  resolution: "apollo-cache-inmemory@npm:1.6.6"
-  dependencies:
-    apollo-cache: ^1.3.5
-    apollo-utilities: ^1.3.4
-    optimism: ^0.10.0
-    ts-invariant: ^0.4.0
-    tslib: ^1.10.0
-  peerDependencies:
-    graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
-  checksum: 32ffde758d249b4cb56645ba7d60328c6d2580711c037c68e742074a9d75ebbfe351eab73970571bee340fe66471333f241331ac42548d07ab243454276ff7b1
-  languageName: node
-  linkType: hard
-
-"apollo-cache@npm:1.3.5, apollo-cache@npm:^1.3.5":
-  version: 1.3.5
-  resolution: "apollo-cache@npm:1.3.5"
-  dependencies:
-    apollo-utilities: ^1.3.4
-    tslib: ^1.10.0
-  peerDependencies:
-    graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
-  checksum: 99664f93950c4821b3ada8542730428f178a13767a0efc66d52678bafbd2543ccc292ffd2c30ad0321834b71becc6188891e76fff63a297e89d2bd0c6de75cfb
-  languageName: node
-  linkType: hard
-
-"apollo-client@npm:2.6.10":
-  version: 2.6.10
-  resolution: "apollo-client@npm:2.6.10"
-  dependencies:
-    "@types/zen-observable": ^0.8.0
-    apollo-cache: 1.3.5
-    apollo-link: ^1.0.0
-    apollo-utilities: 1.3.4
-    symbol-observable: ^1.0.2
-    ts-invariant: ^0.4.0
-    tslib: ^1.10.0
-    zen-observable: ^0.8.0
-  peerDependencies:
-    graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
-  checksum: 88a7cd10ac6ae8e18ac67d272ad497a06adb85de1fe5931b0968372fb0d68d27a44c616d725808fa8032b32ef3269012503a547c706ddaf724bc455a4355caef
-  languageName: node
-  linkType: hard
-
-"apollo-datasource-graphql@npm:1.3.2":
-  version: 1.3.2
-  resolution: "apollo-datasource-graphql@npm:1.3.2"
-  dependencies:
-    apollo-cache-inmemory: ^1.2.5
-    apollo-datasource: ^0.1.3
-    apollo-link: ^1.2.2
-    apollo-link-context: ^1.0.8
-    apollo-link-error: ^1.1.0
-    apollo-link-http: ^1.5.4
-    apollo-server-errors: ^2.0.0-rc.1
-    await-to-js: ^2.0.1
-    graphql: ^0.13.2
-    isomorphic-fetch: ^2.2.1
-  checksum: 4f2a8776a46c6d9a21715d269fd3827cc93b7a441a90df340660e4bef6bbd4d4025a683339e0bd1865764d78f2626623215af35ebdcb56ad5fd945e98f17b7a2
-  languageName: node
-  linkType: hard
-
-"apollo-datasource@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "apollo-datasource@npm:0.1.3"
-  dependencies:
-    apollo-server-caching: 0.1.2
-    apollo-server-env: 2.0.3
-  checksum: f8f806430170934cb5c8b1c90de5de2ea58a8553a54234ace2250b66d608110233a68aa8da74b51a817135248267b610f823ebb995dfbb096c458dd4fa7b8018
-  languageName: node
-  linkType: hard
-
-"apollo-link-context@npm:^1.0.8":
-  version: 1.0.20
-  resolution: "apollo-link-context@npm:1.0.20"
-  dependencies:
-    apollo-link: ^1.2.14
-    tslib: ^1.9.3
-  checksum: 5e905e3dd364dafb8683beb07d60cc84378a96247f21b735194bd2aa70c8f0f8b7b066177a9a7e5549ca08f60901c58243e56fa61a1969436a61fdb9d0cb582b
-  languageName: node
-  linkType: hard
-
-"apollo-link-error@npm:^1.1.0":
-  version: 1.1.13
-  resolution: "apollo-link-error@npm:1.1.13"
-  dependencies:
-    apollo-link: ^1.2.14
-    apollo-link-http-common: ^0.2.16
-    tslib: ^1.9.3
-  checksum: b417b77acbf464d8246eb79312c6d755f9d398c6c9f560c9e2270260519df639c3f0a8b9454ccc55c7f54eb57490706275ede120ecd7f475ec4627012feaf4b2
-  languageName: node
-  linkType: hard
-
 "apollo-link-http-common@npm:^0.2.16":
   version: 0.2.16
   resolution: "apollo-link-http-common@npm:0.2.16"
@@ -16698,7 +16580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-link-http@npm:1.5.17, apollo-link-http@npm:^1.5.17, apollo-link-http@npm:^1.5.4":
+"apollo-link-http@npm:^1.5.17":
   version: 1.5.17
   resolution: "apollo-link-http@npm:1.5.17"
   dependencies:
@@ -16711,7 +16593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-link@npm:^1.0.0, apollo-link@npm:^1.2.14, apollo-link@npm:^1.2.2":
+"apollo-link@npm:^1.2.14":
   version: 1.2.14
   resolution: "apollo-link@npm:1.2.14"
   dependencies:
@@ -16725,35 +16607,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-server-caching@npm:0.1.2":
-  version: 0.1.2
-  resolution: "apollo-server-caching@npm:0.1.2"
-  dependencies:
-    lru-cache: ^4.1.3
-  checksum: c753891c4d27b06aeb36781170007515053c5812a87a9ac69eac924088cbe71011cad1a84deb8c05843d05c5a6a661169000f4d422d4eb38d523e6a8419b341c
-  languageName: node
-  linkType: hard
-
-"apollo-server-env@npm:2.0.3":
-  version: 2.0.3
-  resolution: "apollo-server-env@npm:2.0.3"
-  dependencies:
-    node-fetch: ^2.1.2
-    util.promisify: ^1.0.0
-  checksum: dd77406aa5ab2896506bd2131d7404a4f9d1cf071acd267742a76ee9b8edc34563891a8127fa1f7f0f03388d859b85a21cd2eb4fa5d5b2a9918dc1bec06256f6
-  languageName: node
-  linkType: hard
-
-"apollo-server-errors@npm:^2.0.0-rc.1":
-  version: 2.5.0
-  resolution: "apollo-server-errors@npm:2.5.0"
-  peerDependencies:
-    graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
-  checksum: c93129f0b0a9a4aeb35dfdb958ee70c7a55b70eaa44cba9f177eaa95cdba44095db574e85bd9dc6ae96ed6dbb713fa16ad22dbc274f60e8f5272d4f446099244
-  languageName: node
-  linkType: hard
-
-"apollo-utilities@npm:1.3.4, apollo-utilities@npm:^1.3.0, apollo-utilities@npm:^1.3.4":
+"apollo-utilities@npm:^1.3.0":
   version: 1.3.4
   resolution: "apollo-utilities@npm:1.3.4"
   dependencies:
@@ -17508,13 +17362,6 @@ __metadata:
   version: 1.1.1
   resolution: "await-timeout@npm:1.1.1"
   checksum: 5013714477ed0691f17de468dca2ceb82534e1d089d45a79f9c2c97b5bcfafa81441b78da829462f71885e2989ab05b4f28eef37502a0d998af51d45e8ffa9e7
-  languageName: node
-  linkType: hard
-
-"await-to-js@npm:^2.0.1":
-  version: 2.1.1
-  resolution: "await-to-js@npm:2.1.1"
-  checksum: b8a4a6f825aa3430e005551c1fe1ea8df51e0a4a7ad730d73a065adc9f982bec4353a2540981ee16d12be4933e59a1e90b8327889f1ff8a37a20765a716d9219
   languageName: node
   linkType: hard
 
@@ -28848,7 +28695,7 @@ __metadata:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 
@@ -29140,15 +28987,6 @@ __metadata:
   version: 16.6.0
   resolution: "graphql@npm:16.6.0"
   checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
-  languageName: node
-  linkType: hard
-
-"graphql@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "graphql@npm:0.13.2"
-  dependencies:
-    iterall: ^1.2.1
-  checksum: 07c7c663c1f3e7cc482e63a0b33e0871f322a6eb45a5c62f015c79121fbf2b0997fb42b924b24c4477b0601292d00c6c4b04aff858da8086b51d42c090464d86
   languageName: node
   linkType: hard
 
@@ -32341,16 +32179,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isomorphic-fetch@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "isomorphic-fetch@npm:2.2.1"
-  dependencies:
-    node-fetch: ^1.0.1
-    whatwg-fetch: ">=0.10.0"
-  checksum: bb5daa7c3785d6742f4379a81e55b549a469503f7c9bf9411b48592e86632cf5e8fe8ea878dba185c0f33eb7c510c23abdeb55aebfdf5d3c70f031ced68c5424
-  languageName: node
-  linkType: hard
-
 "isomorphic-timers-promises@npm:^1.0.1":
   version: 1.0.1
   resolution: "isomorphic-timers-promises@npm:1.0.1"
@@ -32461,13 +32289,6 @@ __metadata:
   dependencies:
     string_decoder: ^1.2.0
   checksum: 15a64fdd33b92e0e1df49df50a2f838e0fdb3f7801ac04ae3c4931ac874e8105cf915c7cd4fb207bccac2435940e9b90b1564e29aa1ed31105d1dea529ab611b
-  languageName: node
-  linkType: hard
-
-"iterall@npm:^1.2.1":
-  version: 1.3.0
-  resolution: "iterall@npm:1.3.0"
-  checksum: c78b99678f8c99be488cca7f33e4acca9b72c1326e050afbaf023f086e55619ee466af0464af94a0cb3f292e60cb5bac53a8fd86bd4249ecad26e09f17bb158b
   languageName: node
   linkType: hard
 
@@ -35660,7 +35481,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^4.1.3, lru-cache@npm:^4.1.5":
+"lru-cache@npm:^4.1.5":
   version: 4.1.5
   resolution: "lru-cache@npm:4.1.5"
   dependencies:
@@ -38272,17 +38093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^1.0.1, node-fetch@npm:~1.7.1":
-  version: 1.7.3
-  resolution: "node-fetch@npm:1.7.3"
-  dependencies:
-    encoding: ^0.1.11
-    is-stream: ^1.0.1
-  checksum: 3bb0528c05d541316ebe52770d71ee25a6dce334df4231fd55df41a644143e07f068637488c18a5b0c43f05041dbd3346752f9e19b50df50569a802484544d5b
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.1.2, node-fetch@npm:^2.3.0, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.6, node-fetch@npm:^2.6.7":
+"node-fetch@npm:^2.3.0, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.6, node-fetch@npm:^2.6.7":
   version: 2.6.9
   resolution: "node-fetch@npm:2.6.9"
   dependencies:
@@ -38293,6 +38104,16 @@ __metadata:
     encoding:
       optional: true
   checksum: acb04f9ce7224965b2b59e71b33c639794d8991efd73855b0b250921382b38331ffc9d61bce502571f6cc6e11a8905ca9b1b6d4aeb586ab093e2756a1fd190d0
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:~1.7.1":
+  version: 1.7.3
+  resolution: "node-fetch@npm:1.7.3"
+  dependencies:
+    encoding: ^0.1.11
+    is-stream: ^1.0.1
+  checksum: 3bb0528c05d541316ebe52770d71ee25a6dce334df4231fd55df41a644143e07f068637488c18a5b0c43f05041dbd3346752f9e19b50df50569a802484544d5b
   languageName: node
   linkType: hard
 
@@ -39136,15 +38957,6 @@ __metadata:
     is-docker: ^2.1.1
     is-wsl: ^2.2.0
   checksum: 6388bfff21b40cb9bd8f913f9130d107f2ed4724ea81a8fd29798ee322b361ca31fa2cdfb491a5c31e43a3996cfe9566741238c7a741ada8d7af1cb78d85cf26
-  languageName: node
-  linkType: hard
-
-"optimism@npm:^0.10.0":
-  version: 0.10.3
-  resolution: "optimism@npm:0.10.3"
-  dependencies:
-    "@wry/context": ^0.4.0
-  checksum: 2e3fa158b5525fcc7bb09d0eede419913625868fadb9bf5f6723c63b816d361b9f0f2db3a12fba59b6a0604ba15367e8c2d6073d2700e7971d4ea56039d2810f
   languageName: node
   linkType: hard
 
@@ -48034,7 +47846,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"symbol-observable@npm:^1.0.2, symbol-observable@npm:^1.1.0":
+"symbol-observable@npm:^1.1.0":
   version: 1.2.0
   resolution: "symbol-observable@npm:1.2.0"
   checksum: 48ffbc22e3d75f9853b3ff2ae94a44d84f386415110aea5effc24d84c502e03a4a6b7a8f75ebaf7b585780bda34eb5d6da3121f826a6f93398429d30032971b6
@@ -50518,7 +50330,6 @@ __metadata:
     "@babel/core": 7.21.0
     "@typescript-eslint/eslint-plugin": 5.54.0
     "@typescript-eslint/parser": 5.54.0
-    babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.3
     eslint: 8.35.0
     eslint-plugin-prettier: latest
@@ -54174,17 +53985,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.4.1, whatwg-fetch@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "whatwg-fetch@npm:3.6.2"
-  checksum: ee976b7249e7791edb0d0a62cd806b29006ad7ec3a3d89145921ad8c00a3a67e4be8f3fb3ec6bc7b58498724fd568d11aeeeea1f7827e7e1e5eae6c8a275afed
-  languageName: node
-  linkType: hard
-
 "whatwg-fetch@npm:^2.0.4":
   version: 2.0.4
   resolution: "whatwg-fetch@npm:2.0.4"
   checksum: de7c65a68d7d62e2f144a6b30293370b3ad82b65ebcd68f2ac8e8bbe7ede90febd98ba9486b78c1cbc950e0e8838fa5c2727f939899ab3fc7b71a04be52d33a5
+  languageName: node
+  linkType: hard
+
+"whatwg-fetch@npm:^3.4.1, whatwg-fetch@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "whatwg-fetch@npm:3.6.2"
+  checksum: ee976b7249e7791edb0d0a62cd806b29006ad7ec3a3d89145921ad8c00a3a67e4be8f3fb3ec6bc7b58498724fd568d11aeeeea1f7827e7e1e5eae6c8a275afed
   languageName: node
   linkType: hard
 
