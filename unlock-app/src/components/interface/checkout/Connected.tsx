@@ -26,6 +26,7 @@ export function SignedIn({
   account,
   isDisconnecting,
 }: SignedInProps) {
+  console.log({ account })
   let userText: string
   let signOutText: string
 

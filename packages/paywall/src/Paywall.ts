@@ -12,6 +12,9 @@ import {
 } from './utils/enableInjectedProvider'
 import { unlockAppUrl } from './urls'
 
+console.log({ unlockAppUrl })
+console.log('GET STARTED!')
+
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
@@ -73,6 +76,7 @@ export class Paywall {
     networkConfigs: NetworkConfigs,
     provider?: any
   ) {
+    console.log('OK I WAS HERE!!!!')
     this.networkConfigs = networkConfigs
     // Use provider in parameter, fall back to injected provider in window (if any)
     this.provider = provider || getProvider(window as Web3Window)
@@ -151,7 +155,7 @@ export class Paywall {
   }
 
   shakeHands = async () => {
-    console.log(`Connecting to ${unlockAppUrl}`)
+    console.log(`Connecting to now ${unlockAppUrl}`)
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
@@ -197,7 +201,7 @@ export class Paywall {
   }
 
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
-    ;(this.provider! as any).sendAsync(
+    ;(this.provider! as any).request(
       { method, params, id },
       (error: any, response: any) => {
         this.child!.call('resolveMethodCall', { id, error, response })

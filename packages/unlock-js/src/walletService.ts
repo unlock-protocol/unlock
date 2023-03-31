@@ -31,8 +31,11 @@ export default class WalletService extends UnlockService {
     } else {
       this.signer = this.provider.getSigner(0)
     }
-
+    console.log(this.signer)
+    console.log('READY TI GO!!')
+    console.log(this.provider)
     const { chainId: networkId } = await this.provider.getNetwork()
+    console.log('WE PASSED!', networkId)
 
     if (this.networkId !== networkId) {
       this.networkId = networkId

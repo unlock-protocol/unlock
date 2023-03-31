@@ -43,15 +43,23 @@ export const useProvider = (config: any) => {
   const encryptedPrivateKey = provider?.passwordEncryptedPrivateKey
 
   const createWalletService = async (provider: any) => {
+    console.log('CREATE WALLET SERVICE')
     const _walletService = new WalletService(config.networks)
+    console.log('INITIALIZED')
     let _network = 1 // default
-    try {
-      _network = await _walletService.connect(provider)
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    console.log('CONNECT')
+    console.log(provider)
+    _network = await _walletService.connect(provider)
+    console.log('CONNECTED')
+    // } catch (error) {
+    //   console.log('I WAS HERE ND THERE WAS AN ERROR!')
+    //   console.log(error)
+    // }
+    console.log('NO ERROR CONTINUE')
 
     const _account = await _walletService.getAccount()
+    console.log(_account)
     return {
       walletService: _walletService,
       network: _network,
@@ -82,6 +90,7 @@ export const useProvider = (config: any) => {
   }
 
   const getWalletService = async (networkId?: number) => {
+    console.log('getWalletService')
     const currentNetworkId = Number(network)
     let pr = provider
     // If the user is not connected, we open the connect modal
@@ -110,6 +119,7 @@ export const useProvider = (config: any) => {
   }
 
   const resetProvider = async (provider: ethers.providers.Provider) => {
+    console.log('resetProvider')
     try {
       setProvider(provider)
       const {
