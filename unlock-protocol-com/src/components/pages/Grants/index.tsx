@@ -275,9 +275,9 @@ export function Grants() {
           <header className="flex flex-col items-center justify-center space-y-1 text-center">
             <h3 className="heading-small">A decentralized Grant Committee</h3>
             <p className="max-w-prose sub-heading-small">
-              Some of our earliest Unlock grantees and community members 
-              help review and provide feedback to Unlock Grant applicants
-              both during application and through the lifetime of the grant.
+              Some of our earliest Unlock grantees and community members help
+              review and provide feedback to Unlock Grant applicants both during
+              application and through the lifetime of the grant.
             </p>
           </header>
           <section>
@@ -307,8 +307,8 @@ export function Grants() {
             <header className="flex flex-col items-center justify-center space-y-1 text-center">
               <h3 className="heading-small">Grant Review Criteria</h3>
               <p className="sub-heading-small">
-                We have set some criteria to help the Unlock DAO find the best teams and
-                projects to support.
+                We have set some criteria to help the Unlock DAO find the best
+                teams and projects to support.
               </p>
             </header>
             <div className="grid gap-4 pt-8 sm:grid-cols-2 md:grid-cols-3">
