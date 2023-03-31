@@ -17,7 +17,7 @@ const UNLOCK_GRANT_HELP = [
   {
     Icon: TokenIcon,
     title: 'UDT token grant',
-    text: 'The Unlock DAO approves grants of 100, 200 or 300 UDT Tokens or other amounts to teams and individuals building with Unlock!',
+    text: 'The Unlock DAO approves grants of 100, 200 or 300 UDT tokens or other amounts to teams and individuals building with Unlock!',
   },
   {
     Icon: LaptopIcon,
