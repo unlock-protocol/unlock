@@ -3,6 +3,8 @@ import {
   AllLocksQueryVariables,
   AllKeysQueryVariables,
   AllReceiptsQueryVariables,
+  Key_Filter,
+  Key_OrderBy,
 } from '../@generated/subgraph'
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
@@ -52,6 +54,38 @@ export class SubgraphService {
       networks.map(async (config) => {
         const sdk = this.createSdk(config.id)
         const results = await sdk.allLocks(variables)
+        return results.locks.map((item) => ({
+          ...item,
+          network: config.id,
+        }))
+      })
+    )
+    return items.flat()
+  }
+
+  /**
+   * Get locks with keys from multiple networks. By default, all networks will be queried.
+   * If you want to query only specific network, you can pass options as the second parameter with network ids array.
+   * ```ts
+   * const service = new SubgraphService()
+   * const locksKeysOnMainnetAndGoerli = await service.locksKeys({ first: 100, skip: 50, where: {}}, { networks: [1, 5] })
+   * const locksKeysOnAllNetworks = await service.locksKeys({ first: 1000 })
+   * ```
+   */
+  async locksKeys(
+    variables: AllLocksQueryVariables & {
+      keyFilter?: Key_Filter
+      keyOrderBy?: Key_OrderBy
+    },
+    options?: QueryOptions
+  ) {
+    const networks =
+      options?.networks?.map((item) => this.networks[item]) ||
+      Object.values(this.networks).filter((item) => item.id !== 31337)
+    const items = await Promise.all(
+      networks.map(async (config) => {
+        const sdk = this.createSdk(config.id)
+        const results = await sdk.allLocksWithKeys(variables)
         return results.locks.map((item) => ({
           ...item,
           network: config.id,
