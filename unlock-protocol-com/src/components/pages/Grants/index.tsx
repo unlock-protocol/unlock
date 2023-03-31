@@ -32,7 +32,7 @@ const UNLOCK_GRANT_HELP = [
   {
     Icon: HelpingIcon,
     title: 'Connect with other developers and users',
-    text: 'Launch and connect with other grantees, community members and Unlock users at hackathons and our monthly virtual developer meetup!',
+    text: 'Launch and connect with other grantees, community members and Unlock users at hackathons and our virtual developer meetups!',
   },
 ]
 
