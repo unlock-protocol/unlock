@@ -17,7 +17,7 @@ const UNLOCK_GRANT_HELP = [
   {
     Icon: TokenIcon,
     title: 'UDT token grant',
-    text: 'We provide vesting grants of 100, 200 or 300 UDT Tokens to teams and individuals building with Unlock!',
+    text: 'The Unlock DAO approves grants of 100, 200 or 300 UDT tokens or other amounts to teams and individuals building with Unlock!',
   },
   {
     Icon: LaptopIcon,
@@ -32,7 +32,7 @@ const UNLOCK_GRANT_HELP = [
   {
     Icon: HelpingIcon,
     title: 'Connect with other developers and users',
-    text: 'Launch and connect with other grantees, community members and Unlock users at hackathons and our monthly virtual developer meetup!',
+    text: 'Launch and connect with other grantees, community members and Unlock users at hackathons and our virtual developer meetups!',
   },
 ]
 
@@ -275,10 +275,9 @@ export function Grants() {
           <header className="flex flex-col items-center justify-center space-y-1 text-center">
             <h3 className="heading-small">A decentralized Grant Committee</h3>
             <p className="max-w-prose sub-heading-small">
-              We have nominated some of our earliest Unlock Inc. investors,
-              grantees and community members to review and select Unlock Grant
-              recipients. Winners are chosen for their vision and potential
-              growth for the protocol.
+              Some of our earliest Unlock grantees and community members help
+              review and provide feedback to Unlock Grant applicants both during
+              application and through the lifetime of the grant.
             </p>
           </header>
           <section>
@@ -306,10 +305,10 @@ export function Grants() {
           </section>
           <section>
             <header className="flex flex-col items-center justify-center space-y-1 text-center">
-              <h3 className="heading-small">Grant Selection Criteria</h3>
+              <h3 className="heading-small">Grant Review Criteria</h3>
               <p className="sub-heading-small">
-                We have set some criteria to help our find the best teams and
-                projects to help.
+                We have set some criteria to help the Unlock DAO find the best
+                teams and projects to support.
               </p>
             </header>
             <div className="grid gap-4 pt-8 sm:grid-cols-2 md:grid-cols-3">
@@ -331,7 +330,7 @@ export function Grants() {
                 What are you waiting for? Apply today.
               </h3>
               <p className="sub-heading-small">
-                We review each application as fast as possible.
+                The community reviews each application as quickly as possible.
               </p>
             </header>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
