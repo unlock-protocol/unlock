@@ -19,6 +19,7 @@ import {
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
+import { useQuery } from '@tanstack/react-query'
 const Header = () => {
   return (
     <header className="flex flex-col gap-4">
@@ -37,10 +38,29 @@ export const CheckoutUrlPage = () => {
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const { getIsRecurringPossible } = useLockSettings()
+  const {
+    isPlaceholderData: isRecurringSettingPlaceholder,
+    data: recurringSetting,
+  } = useQuery(
+    ['isRecurringPossible', network, lockAddress],
+    async () => {
+      return getIsRecurringPossible({
+        lockAddress: lockAddress!.toString(),
+        network: Number(network!),
+      })
+    },
+    {
+      placeholderData: {
+        isRecurringPossible: false,
+        oneYearRecurring: 0,
+        gasRefund: 0,
+      },
+    }
+  )
 
   const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
     id: null as null | string,
-    name: 'default',
+    name: 'config',
     config: {
       locks:
         network && lockAddress
@@ -58,17 +78,10 @@ export const CheckoutUrlPage = () => {
 
   // retrieve recurringPayments when lock is present in url
   useEffect(() => {
-    if (!lockAddress && !network) return
+    if ((!lockAddress && !network) || isRecurringSettingPlaceholder) return
     const getDefaultConfig = async (): Promise<void> => {
-      // get recurring default value
-      const { isRecurringPossible = false, oneYearRecurring } =
-        await getIsRecurringPossible({
-          lockAddress: lockAddress as string,
-          network: Number(network),
-        })
-
-      const recurringPayments = isRecurringPossible
-        ? oneYearRecurring
+      const recurringPayments = recurringSetting?.isRecurringPossible
+        ? recurringSetting.oneYearRecurring
         : undefined
 
       setCheckoutConfig((state) => {
@@ -87,18 +100,12 @@ export const CheckoutUrlPage = () => {
       })
     }
     getDefaultConfig()
-  }, [])
+  }, [lockAddress, network, isRecurringSettingPlaceholder, recurringSetting])
 
-  const DEFAULT_CONFIG = useMemo(async () => {
-    // get recurring default value
-    const { isRecurringPossible = false, oneYearRecurring } =
-      await getIsRecurringPossible({
-        lockAddress: lockAddress as string,
-        network: Number(network),
-      })
-
-    const recurringPayments = isRecurringPossible ? oneYearRecurring : undefined
-
+  const DEFAULT_CONFIG = useMemo(() => {
+    const recurringPayments = recurringSetting?.isRecurringPossible
+      ? recurringSetting.oneYearRecurring
+      : undefined
     return {
       locks:
         network && lockAddress
@@ -113,7 +120,7 @@ export const CheckoutUrlPage = () => {
       pessimistic: true,
       skipRecipient: true,
     } as PaywallConfig
-  }, [getIsRecurringPossible, lockAddress, network])
+  }, [recurringSetting, lockAddress, network])
 
   const { data: checkoutConfigList, refetch: refetchConfig } =
     useCheckoutConfigsByUser()
@@ -152,11 +159,10 @@ export const CheckoutUrlPage = () => {
       await removeConfig(checkoutConfig.id)
       const { data: list } = await refetchConfig()
       const result = list?.[0]
-      if (!result) return
       setCheckoutConfig({
-        id: result.id,
-        name: result.name,
-        config: (result.config as PaywallConfig) || DEFAULT_CONFIG,
+        id: result?.id || null,
+        name: result?.name || 'config',
+        config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
       })
       setDeleteConfirmation(false)
     },
@@ -279,6 +285,7 @@ export const CheckoutUrlPage = () => {
             </div>
             <Button
               loading={isConfigUpdating}
+              disabled={isRecurringSettingPlaceholder}
               iconLeft={<SaveIcon />}
               onClick={onConfigSave}
               size="small"
