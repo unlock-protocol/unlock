@@ -12045,6 +12045,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:4.27.0":
+  version: 4.27.0
+  resolution: "@tanstack/query-core@npm:4.27.0"
+  checksum: 914b4f01ac75632f4603b650e9105f64c739b79250baf76aad16cee216f7bad6060c04eda0c70838fe61a5f6c17883e19fcc3075b2433a906539da95ce785796
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:4.24.10":
   version: 4.24.10
   resolution: "@tanstack/react-query@npm:4.24.10"
@@ -12061,6 +12068,25 @@ __metadata:
     react-native:
       optional: true
   checksum: 576a2c73e98cf6a3c9584283989383d5ac63b01efe546cc7580ec7b1edf0c0cb8958a3071778cb0af908f5269d45c7516fa388e5f856e37f5b2d3c6110974cbe
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:4.28.0":
+  version: 4.28.0
+  resolution: "@tanstack/react-query@npm:4.28.0"
+  dependencies:
+    "@tanstack/query-core": 4.27.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 7baa70d22b55cfa22f8a1d92ba9f8379c5436ee81fce3f0e7df4a8c29bb26bfef4a83759cf10f752b40ae2940099fcce88ce91a773240f4999ae91136980c6e3
   languageName: node
   linkType: hard
 
@@ -14697,7 +14723,7 @@ __metadata:
     "@tailwindcss/forms": 0.5.3
     "@tailwindcss/line-clamp": 0.4.4
     "@tailwindcss/typography": 0.5.9
-    "@tanstack/react-query": 4.24.10
+    "@tanstack/react-query": 4.28.0
     "@tw-classed/react": 1.4.3
     "@types/react": 18.0.28
     "@types/react-dom": 18.0.11
@@ -14713,16 +14739,16 @@ __metadata:
     react-dom: 18.2.0
     react-dropzone: 14.2.3
     react-hook-form: 7.43.9
-    react-icons: 4.7.1
+    react-icons: 4.8.0
     react-use-clipboard: 1.0.9
     storybook: 7.0.0
-    tailwind-merge: 1.10.0
-    tailwindcss: 3.2.7
-    tsup: 6.6.3
+    tailwind-merge: 1.11.0
+    tailwindcss: 3.3.1
+    tsup: 6.7.0
     tsx: 3.12.6
     typescript: 4.9.5
     url-loader: 4.1.1
-    vite: 4.1.4
+    vite: 4.2.1
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: 4.0.7
   peerDependencies:
@@ -43000,15 +43026,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:4.7.1":
-  version: 4.7.1
-  resolution: "react-icons@npm:4.7.1"
-  peerDependencies:
-    react: "*"
-  checksum: ed3cbdc5fc0c4d7d2debf78fdc8c4c80aeacf85a506a9a3c11b1d5922de393ac0a6542012b7fb81761e9280c54d0f26827d50a92b54ec8f0c8e52364d89970b5
-  languageName: node
-  linkType: hard
-
 "react-icons@npm:4.8.0":
   version: 4.8.0
   resolution: "react-icons@npm:4.8.0"
@@ -47894,6 +47911,13 @@ __metadata:
   version: 1.10.0
   resolution: "tailwind-merge@npm:1.10.0"
   checksum: 80eb30d0300ca912b4b910460497a1d5fb4e697c3aedb01513e633973328684fa7ddf9bfb8550dca28176971c93bcb7ecb7eec3097c01d9c55c191563c693aab
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:1.11.0":
+  version: 1.11.0
+  resolution: "tailwind-merge@npm:1.11.0"
+  checksum: f106dad1c05c51bb0f884bef297d5796820ca905369f0b365c478da7bc773fb85f00f84ff1587ab49eb33ec507d9009b81c49ca19d00e887028dc64548c31296
   languageName: node
   linkType: hard
 
