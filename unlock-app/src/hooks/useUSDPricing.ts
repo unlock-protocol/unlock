@@ -17,7 +17,7 @@ export const useUSDPricing = ({
   enabled = true,
 }: USDPricingOptions) => {
   return useQuery(
-    ['price', network, lockAddress, currencyContractAddress],
+    ['price', network, lockAddress, currencyContractAddress, amount],
     async () => {
       try {
         const response = await storage.price(
