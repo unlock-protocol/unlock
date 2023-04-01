@@ -454,7 +454,6 @@ export function Confirm({
       }
       case 'crypto': {
         let buttonLabel = ''
-        console.log({ isPricingDataAvailable, pricingData })
         const isFree =
           isPricingDataAvailable &&
           pricingData!.prices.reduce((previousTotal, item) => {
