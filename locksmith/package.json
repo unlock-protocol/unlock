@@ -113,7 +113,7 @@
     "eslint": "8.36.0",
     "eslint-config-standard": "17.0.0",
     "nock": "13.3.0",
-    "node-mocks-http": "1.12.1",
+    "node-mocks-http": "1.12.2",
     "nodemon": "2.0.20",
     "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
