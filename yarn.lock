@@ -14729,7 +14729,7 @@ __metadata:
     axios: 1.3.4
     blockies-react-svg: 0.0.12
     calendar-link: 2.4.0
-    csv: 6.2.7
+    csv: 6.2.8
     dayjs: 1.11.7
     deep-object-diff: 1.1.9
     dotenv: 16.0.3
@@ -22358,29 +22358,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.3.5":
+"csv-parse@npm:^5.3.6":
   version: 5.3.6
   resolution: "csv-parse@npm:5.3.6"
   checksum: a6dcb61a0676121e84a29cdee4978a0516d1412fbe8895057d17e1a95a2013e6283b253135465ad562222d095988a74587d92b2fa04192bef15090acce2a0433
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.2.4":
+"csv-stringify@npm:^6.3.0":
   version: 6.3.0
   resolution: "csv-stringify@npm:6.3.0"
   checksum: d2503ad298b6f432bae5932af365fb1a5f8f51b31a170d8e1c0735cb89193cb665976754612800c3302570bf7086749d60a30d97d820cc3a7c9b7cd4a49fd311
   languageName: node
   linkType: hard
 
-"csv@npm:6.2.7":
-  version: 6.2.7
-  resolution: "csv@npm:6.2.7"
+"csv@npm:6.2.8":
+  version: 6.2.8
+  resolution: "csv@npm:6.2.8"
   dependencies:
     csv-generate: ^4.2.2
-    csv-parse: ^5.3.5
-    csv-stringify: ^6.2.4
+    csv-parse: ^5.3.6
+    csv-stringify: ^6.3.0
     stream-transform: ^3.2.2
-  checksum: 0c8a310ddbe79ad78ff82ceeca72f2bc1090e876803c00fa43886c87a0bf5bd2ec5a51977dafe533acdec9da410ce84e70b66c756b47abe56b215c1379eaf92f
+  checksum: 26c963fc3f3c9c60ea5a455722cf94408865798f754449beda72cde26eed897b7c5bd18cd03ef1276bfe1e91c11aa679c32160acc4f7688073d2fd5426af92dc
   languageName: node
   linkType: hard
 
