@@ -28,7 +28,6 @@
     "eslint": "8.35.0",
     "eslint-plugin-mocha": "10.1.0",
     "ethers": "5.7.2",
-    "lint-staged": "13.1.2",
     "next": "13.1.6",
     "next-seo": "5.15.0",
     "numeral": "2.0.6",

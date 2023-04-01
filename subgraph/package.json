@@ -30,7 +30,6 @@
     "eslint": "8.36.0",
     "fs-extra": "11.1.0",
     "handlebars": "4.7.7",
-    "lint-staged": "13.2.0",
     "yargs": "17.7.1"
   },
   "installConfig": {
