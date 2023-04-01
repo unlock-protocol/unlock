@@ -14768,7 +14768,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-dropzone: 14.2.3
-    react-hook-form: 7.43.3
+    react-hook-form: 7.43.9
     react-icons: 4.7.1
     react-use-clipboard: 1.0.9
     storybook: 7.0.0-beta.62
@@ -14853,7 +14853,7 @@ __metadata:
     react-dropzone: 14.2.3
     react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
-    react-hook-form: 7.43.3
+    react-hook-form: 7.43.9
     react-hot-toast: 2.4.0
     react-icons: 4.8.0
     react-jazzicon: 1.0.4
@@ -43108,12 +43108,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.43.3":
-  version: 7.43.3
-  resolution: "react-hook-form@npm:7.43.3"
+"react-hook-form@npm:7.43.9":
+  version: 7.43.9
+  resolution: "react-hook-form@npm:7.43.9"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 16e03e42d07f696e36d67c0d60671df6d0bc73b9e48876ea99b85cf3aaa4cf40acb0c0e2870169d4a22504c7111c0f658b0b17a4f3fd191ef69c7eea70785a9d
+  checksum: 65b94de625f2b7921c4e856bf0abbe142bfe06c052217bd1bcc3a842e2cc37fa3a3e03758119dc038bbcf5edb49e02c29206528b80b201f9a4d601471ef78153
   languageName: node
   linkType: hard
 
