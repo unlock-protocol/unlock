@@ -15,7 +15,7 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "eslint": "8.35.0",
+    "eslint": "8.37.0",
     "eslint-plugin-prettier": "latest",
     "husky": "8.0.3",
     "lint-staged": "13.1.2",
