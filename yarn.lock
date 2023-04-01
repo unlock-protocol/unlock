@@ -14727,7 +14727,7 @@ __metadata:
     "@xstate/react": 3.2.1
     autoprefixer: 10.4.13
     axios: 1.3.4
-    blockies-react-svg: 0.0.12
+    blockies-react-svg: 0.0.13
     calendar-link: 2.4.0
     csv: 6.2.8
     dayjs: 1.11.7
@@ -18847,12 +18847,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blockies-react-svg@npm:0.0.12":
-  version: 0.0.12
-  resolution: "blockies-react-svg@npm:0.0.12"
+"blockies-react-svg@npm:0.0.13":
+  version: 0.0.13
+  resolution: "blockies-react-svg@npm:0.0.13"
   peerDependencies:
     react: ">=16.8.0"
-  checksum: 0f0744f0bc35c2d3c99feba837cd8d1295c512cdb069c24a97448b1351e0e9e7560643aaad6867ed15b67d25473d4412baacc56564687655f251310fb17b5d9d
+  checksum: 6b8b8159d163d008c51448e7e98416f66a1468a35b22d5e41cce8362bbe026eb3c624ca03c77239e32bd5276be79d9e03daa4b0bacb44935e7b81de0a91342de
   languageName: node
   linkType: hard
 
