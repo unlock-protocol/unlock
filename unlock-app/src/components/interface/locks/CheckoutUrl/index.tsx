@@ -123,7 +123,7 @@ export const CheckoutUrlPage = () => {
     } as PaywallConfig
   }, [recurringSetting, lockAddress, network])
 
-  const { data: checkoutConfigList, refetch: refetchConfig } =
+  const { data: checkoutConfigList, refetch: refetchConfigList } =
     useCheckoutConfigsByUser()
 
   const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
@@ -145,9 +145,9 @@ export const CheckoutUrlPage = () => {
         name: updated.name,
         config: updated.config as PaywallConfig,
       })
-      await refetchConfig()
+      await refetchConfigList()
     },
-    [checkoutConfig, updateConfig, refetchConfig]
+    [checkoutConfig, updateConfig, refetchConfigList]
   )
 
   const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
@@ -158,7 +158,7 @@ export const CheckoutUrlPage = () => {
         return
       }
       await removeConfig(checkoutConfig.id)
-      const { data: list } = await refetchConfig()
+      const { data: list } = await refetchConfigList()
       const result = list?.[0]
       setCheckoutConfig({
         id: result?.id || null,
@@ -170,7 +170,7 @@ export const CheckoutUrlPage = () => {
     [
       checkoutConfig,
       removeConfig,
-      refetchConfig,
+      refetchConfigList,
       DEFAULT_CONFIG,
       setDeleteConfirmation,
     ]
@@ -270,16 +270,26 @@ export const CheckoutUrlPage = () => {
           <div className="flex items-center w-full gap-4 p-2">
             <div className="w-full">
               <ConfigComboBox
+                disabled={isConfigUpdating}
                 items={
                   (checkoutConfigList as unknown as CheckoutConfig[]) ||
                   ([] as CheckoutConfig[])
                 }
-                onChange={(value) => {
-                  setCheckoutConfig({
-                    id: value.id,
-                    name: value.name,
-                    config: value.config || DEFAULT_CONFIG,
-                  })
+                onChange={async ({ config, ...rest }) => {
+                  const option = {
+                    ...rest,
+                    config: config || DEFAULT_CONFIG,
+                  }
+                  setCheckoutConfig(option)
+                  if (!option.id) {
+                    const response = await updateConfig(option)
+                    setCheckoutConfig({
+                      id: response.id,
+                      config: response.config as PaywallConfig,
+                      name: response.name,
+                    })
+                    await refetchConfigList()
+                  }
                 }}
                 value={checkoutConfig}
               />
