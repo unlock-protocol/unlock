@@ -173,7 +173,7 @@ export function Confirm({
   const {
     data: pricingData,
     isInitialLoading: isPricingDataLoading,
-    isError,
+    isError: isPricingDataError,
   } = usePricing({
     lockAddress: lock!.address,
     network: lock!.network,
@@ -183,14 +183,16 @@ export function Confirm({
     paywallConfig,
     enabled: !isInitialDataLoading,
   })
+  const isPricingDataAvailable =
+    !isPricingDataLoading && !isPricingDataError && !!pricingData
 
   const { data: USDPricingData, isLoading: isUSDPricingDataLoading } =
     useUSDPricing({
       network: lock!.network,
       lockAddress: lock!.address,
       currencyContractAddress: lock?.currencyContractAddress,
-      amount: pricingData!.total,
-      enabled: !isPricingDataLoading,
+      amount: pricingData?.total || 0,
+      enabled: isPricingDataAvailable,
     })
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
@@ -216,7 +218,7 @@ export function Confirm({
       }
     },
     {
-      enabled: !isPricingDataLoading,
+      enabled: isPricingDataAvailable,
     }
   )
 
@@ -452,9 +454,11 @@ export function Confirm({
       }
       case 'crypto': {
         let buttonLabel = ''
-        const isFree = pricingData!.prices.reduce((previousTotal, item) => {
-          return previousTotal && item.amount <= 0
-        }, true)
+        const isFree =
+          isPricingDataAvailable &&
+          pricingData!.prices.reduce((previousTotal, item) => {
+            return previousTotal && item.amount <= 0
+          }, true)
 
         if (isFree) {
           if (isConfirming) {
@@ -474,7 +478,9 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading || !canAfford || isError}
+              disabled={
+                isConfirming || isLoading || !canAfford || isPricingDataError
+              }
               onClick={async (event) => {
                 event.preventDefault()
                 if (metadata) {
@@ -485,7 +491,7 @@ export function Confirm({
             >
               {buttonLabel}
             </Button>
-            {!isLoading && !isError && !!isPayable && (
+            {!isLoading && !isPricingDataError && !!isPayable && (
               <>
                 {!isPayable?.isTokenPayable && (
                   <small className="text-center text-red-500">
@@ -509,7 +515,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading || isError}
+              disabled={isConfirming || isLoading || isPricingDataError}
               onClick={async (event) => {
                 event.preventDefault()
                 if (metadata) {
@@ -551,7 +557,7 @@ export function Confirm({
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
             <ViewContract lockAddress={lock!.address} network={lockNetwork} />
           </div>
-          {isError && (
+          {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>
               <p className="text-sm font-bold">
@@ -565,7 +571,7 @@ export function Confirm({
               )}
             </div>
           )}
-          {!isLoading && !isError && (
+          {!isLoading && isPricingDataAvailable && (
             <div>
               {!!pricingData?.prices?.length &&
                 pricingData.prices.map((item, index) => {
@@ -605,7 +611,7 @@ export function Confirm({
             </div>
           )}
         </div>
-        {!isError && (
+        {!isPricingDataAvailable && (
           <>
             {isLoading ? (
               <div className="flex flex-col items-center gap-2">
