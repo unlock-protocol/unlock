@@ -195,7 +195,6 @@ export function Connected({
         (isUnlockAccount || autoconnect)
       ) {
         setSigning(true)
-        console.log('SIGN!')
         await signIn()
         setSigning(false)
       }
