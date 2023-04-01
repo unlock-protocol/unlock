@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/cli": "7.21.0",
-    "@babel/core": "7.21.0",
+    "@babel/core": "7.21.4",
     "@babel/preset-env": "7.20.2",
     "@graphql-codegen/cli": "2.16.5",
     "@graphql-codegen/typescript": "2.8.8",
