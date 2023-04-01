@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "dependencies": {
     "@babel/cli": "7.21.0",
-    "@babel/core": "7.21.3",
+    "@babel/core": "7.21.4",
     "@babel/node": "7.20.7",
     "@babel/preset-env": "7.20.2",
     "@typescript-eslint/parser": "5.56.0",
@@ -39,7 +39,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "7.21.0",
+    "@babel/plugin-transform-runtime": "7.21.4",
     "@vitest/coverage-c8": "0.28.3",
     "regenerator-runtime": "0.13.11",
     "vitest": "0.28.3"
