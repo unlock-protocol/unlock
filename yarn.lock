@@ -8447,19 +8447,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-primitive@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@radix-ui/react-primitive@npm:1.0.1"
-  dependencies:
-    "@babel/runtime": ^7.13.10
-    "@radix-ui/react-slot": 1.0.1
-  peerDependencies:
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: 1cc86b72f926be4a42122e7e456e965de0906f16b0dc244b8448bac05905f208598c984a0dd40026f654b4a71d0235335d48a18e377b07b0ec6c6917576a8080
-  languageName: node
-  linkType: hard
-
 "@radix-ui/react-primitive@npm:1.0.2":
   version: 1.0.2
   resolution: "@radix-ui/react-primitive@npm:1.0.2"
@@ -14979,7 +14966,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@zeit/next-source-maps": 0.0.3
-    apexcharts: 3.37.1
+    apexcharts: 3.37.2
     autoprefixer: 10.4.14
     babel-loader: 9.1.2
     babel-plugin-require-context-hook: 1.0.0
@@ -16635,9 +16622,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:3.37.1":
-  version: 3.37.1
-  resolution: "apexcharts@npm:3.37.1"
+"apexcharts@npm:3.37.2":
+  version: 3.37.2
+  resolution: "apexcharts@npm:3.37.2"
   dependencies:
     svg.draggable.js: ^2.2.2
     svg.easing.js: ^2.0.0
@@ -16645,7 +16632,7 @@ __metadata:
     svg.pathmorphing.js: ^0.1.3
     svg.resize.js: ^1.4.3
     svg.select.js: ^3.0.1
-  checksum: 83afb447f4cc2598bb986a2c6839f70811bad5f945e984554ec81cf489f587efff5c85bb3d38040e3db5cb998ca095a60b72328804519e909229e144048633cf
+  checksum: 281f876c459cf22f882848c058d0395f0205ac1b812ff2c19f236dd751ad53ce43e0f7a372f5a050e7e5d41031ed0fada25888bc3540de8d99fe5c06d5ca69a7
   languageName: node
   linkType: hard
 
