@@ -13,10 +13,16 @@ interface Props {
   items: CheckoutConfig[]
   onChange(config: CheckoutConfig): void
   value: CheckoutConfig
+  disabled?: boolean
 }
 
 // TODO: Create reusable component if frequently used outside this
-export default function ConfigComboBox({ items, onChange, value }: Props) {
+export default function ConfigComboBox({
+  items,
+  onChange,
+  value,
+  disabled,
+}: Props) {
   const [query, setQuery] = useState('')
 
   const filteredItems =
@@ -30,11 +36,11 @@ export default function ConfigComboBox({ items, onChange, value }: Props) {
         )
 
   return (
-    <Combobox value={value} onChange={onChange}>
+    <Combobox value={value} disabled={disabled} onChange={onChange}>
       <div className="relative z-10 mt-1">
         <div className="relative w-full overflow-hidden text-left bg-white border border-gray-400 rounded-lg cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2">
           <Combobox.Input
-            className="w-full py-2 pl-3 pr-10 leading-5 text-gray-900 border-none focus:ring-0"
+            className="w-full py-2 pl-3 pr-10 leading-5 text-gray-900 border-none focus:ring-0 disabled:cursor-not-allowed disabled:opacity-75"
             displayValue={(item: CheckoutConfig) => item.name}
             onChange={(event) => setQuery(event.target.value)}
           />
