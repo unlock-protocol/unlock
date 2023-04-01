@@ -1,4 +1,4 @@
-let baseUrl = 'http://localhost:3000' // assume prod
+let baseUrl = 'https://paywall.unlock-protocol.com' // assume prod
 
 const getURL = (url: string) => {
   try {
