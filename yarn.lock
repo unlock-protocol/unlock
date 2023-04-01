@@ -9381,12 +9381,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.15.0":
-  version: 0.15.0
-  resolution: "@solidity-parser/parser@npm:0.15.0"
+"@solidity-parser/parser@npm:^0.16.0":
+  version: 0.16.0
+  resolution: "@solidity-parser/parser@npm:0.16.0"
   dependencies:
     antlr4ts: ^0.5.0-alpha.4
-  checksum: 19c3a4b0778020c2b73893d19844258dc15eddf2c4959f21ac583fa101a159a859b749b58a4a7af52ccc0daa0eb6fb2b51fdb6e6b4c5d9082e4f06d53c49d04b
+  checksum: 6ccbdab334331a58fde2a739cff76d5a99d836186b7899e8e027266f2af2a4bddc77c9c2abd01307cea6c470345d48edc470049e9672143b73f4aff3c8976183
   languageName: node
   linkType: hard
 
@@ -14593,7 +14593,7 @@ __metadata:
     hardlydifficult-ethereum-contracts: 0.11.1
     lint-staged: 13.1.0
     prettier: 2.8.7
-    prettier-plugin-solidity: 1.1.2
+    prettier-plugin-solidity: 1.1.3
     prompt: 1.3.0
     solhint: 3.3.8
     solidity-coverage: 0.8.2
@@ -41810,16 +41810,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-solidity@npm:1.1.2":
-  version: 1.1.2
-  resolution: "prettier-plugin-solidity@npm:1.1.2"
+"prettier-plugin-solidity@npm:1.1.3":
+  version: 1.1.3
+  resolution: "prettier-plugin-solidity@npm:1.1.3"
   dependencies:
-    "@solidity-parser/parser": ^0.15.0
+    "@solidity-parser/parser": ^0.16.0
     semver: ^7.3.8
     solidity-comments-extractor: ^0.0.7
   peerDependencies:
     prettier: ">=2.3.0 || >=3.0.0-alpha.0"
-  checksum: 1aabeb4876f64eb083f2dcb3f7c0c13702cddd960fcc64395a8f5fa00f32d7432b265a68ca1f8207a1a023d26c3e2b7402179d68f85802694442a06fdc744b5b
+  checksum: d5aadfa411a4d983a2bd204048726fd91fbcaffbfa26d818ef0d6001fb65f82d0eae082e935e96c79e65e09ed979b186311ddb8c38be2f0ce5dd5f5265df77fe
   languageName: node
   linkType: hard
 
