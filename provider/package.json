@@ -1,8 +1,8 @@
 {
   "name": "provider",
-  "packageManager": "yarn@3.4.1",
+  "packageManager": "yarn@3.5.0",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20230228.0",
+    "@cloudflare/workers-types": "4.20230321.0",
     "@types/node": "18.14.4",
     "@unlock-protocol/networks": "workspace:^",
     "ethers": "5.7.2",
