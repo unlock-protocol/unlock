@@ -6315,9 +6315,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/build@npm:^29.7.1":
-  version: 29.8.0
-  resolution: "@netlify/build@npm:29.8.0"
+"@netlify/build@npm:^29.8.0":
+  version: 29.9.0
+  resolution: "@netlify/build@npm:29.9.0"
   dependencies:
     "@bugsnag/js": ^7.0.0
     "@netlify/cache-utils": ^5.1.3
@@ -6374,7 +6374,7 @@ __metadata:
     yargs: ^17.6.0
   bin:
     netlify-build: bin.js
-  checksum: 1cdbbdb15c0030493e411de32706269a50c5cfbdfa36b5670ddf32b121b3d9387f0032ec1ce58a0b073ca0f20b54d27f9f80bd84f20d5cbdbde08f7a78ecf78e
+  checksum: 5b3515cd402462113015c3d2258392762442faaa8c5889fe9783244441d109165368e34ed76c03f875a752ae27fc068831fe10566ef53acc7e5802d3de0cba91
   languageName: node
   linkType: hard
 
@@ -6395,7 +6395,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/config@npm:^20.3.6, @netlify/config@npm:^20.3.7":
+"@netlify/config@npm:^20.3.7":
   version: 20.3.7
   resolution: "@netlify/config@npm:20.3.7"
   dependencies:
@@ -6428,7 +6428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/edge-bundler@npm:8.13.0, @netlify/edge-bundler@npm:^8.12.3":
+"@netlify/edge-bundler@npm:8.13.0, @netlify/edge-bundler@npm:^8.13.0":
   version: 8.13.0
   resolution: "@netlify/edge-bundler@npm:8.13.0"
   dependencies:
@@ -14945,7 +14945,7 @@ __metadata:
     eslint: 8.36.0
     handlebars: 4.7.7
     lint-staged: 13.2.0
-    netlify-cli: 13.2.1
+    netlify-cli: 13.2.2
     node-forge: 1.3.1
     nodemailer: 6.9.1
     prettier: 2.8.4
@@ -37610,14 +37610,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"netlify-cli@npm:13.2.1":
-  version: 13.2.1
-  resolution: "netlify-cli@npm:13.2.1"
+"netlify-cli@npm:13.2.2":
+  version: 13.2.2
+  resolution: "netlify-cli@npm:13.2.2"
   dependencies:
     "@fastify/static": ^6.6.0
-    "@netlify/build": ^29.7.1
-    "@netlify/config": ^20.3.6
-    "@netlify/edge-bundler": ^8.12.3
+    "@netlify/build": ^29.8.0
+    "@netlify/config": ^20.3.7
+    "@netlify/edge-bundler": ^8.13.0
     "@netlify/framework-info": ^9.8.5
     "@netlify/local-functions-proxy": ^1.1.1
     "@netlify/zip-it-and-ship-it": ^8.9.0
@@ -37683,7 +37683,7 @@ __metadata:
     log-update: ^5.0.0
     minimist: ^1.2.5
     multiparty: ^4.2.1
-    netlify: ^13.1.3
+    netlify: ^13.1.4
     netlify-headers-parser: ^7.1.2
     netlify-onegraph-internal: 0.10.1
     netlify-redirect-parser: ^14.1.2
@@ -37723,7 +37723,7 @@ __metadata:
   bin:
     netlify: bin/run.mjs
     ntl: bin/run.mjs
-  checksum: 11fa9ce4eebb964689ef40436596f99a1b76e69a6539c6de2684e5bf88535760aeb608c56597f9a325144eb80aa8d35ca4747417736aa40c492488123694e1b3
+  checksum: 3328c16e4d66795503b8a18b8590adcd991a1a5fcbe0fd360957c3edf30ec40933d662ea335c4f5342039f269578fa4dbfab1c32f30523151975f9fd9d07623e
   languageName: node
   linkType: hard
 
@@ -37773,7 +37773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"netlify@npm:^13.1.3, netlify@npm:^13.1.4":
+"netlify@npm:^13.1.4":
   version: 13.1.4
   resolution: "netlify@npm:13.1.4"
   dependencies:
