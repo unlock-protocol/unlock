@@ -14633,11 +14633,11 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: 8.35.0
+    eslint: 8.37.0
     postmate: 1.5.2
     typescript: 4.9.5
-    vite: 4.1.3
-    vite-plugin-css-injected-by-js: 3.0.1
+    vite: 4.2.1
+    vite-plugin-css-injected-by-js: 3.1.0
     vitest: 0.29.7
     vitest-fetch-mock: 0.2.2
   languageName: unknown
@@ -51119,12 +51119,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-css-injected-by-js@npm:3.0.1":
-  version: 3.0.1
-  resolution: "vite-plugin-css-injected-by-js@npm:3.0.1"
+"vite-plugin-css-injected-by-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "vite-plugin-css-injected-by-js@npm:3.1.0"
   peerDependencies:
     vite: ">2.0.0-0"
-  checksum: dceef11849434bcf95d07327cecd5a72a2f5e6f5e2116d030fb68ef5735e468ad58cfb6d29affbcf8e2235ef4bc8ba26279ac9b1fba72c47f8289a7af5b43690
+  checksum: 2f48b23a52d2c7e4d4a172107406e788bac5132c7b9650ab6e8f1906ed8c60fd4ff82b49f7e073233c348590d3a390173d482000faec8d2fee60e2bc915c5388
   languageName: node
   linkType: hard
 
@@ -51244,7 +51244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0 || ^4.0.0":
+"vite@npm:4.2.1, vite@npm:^3.0.0 || ^4.0.0":
   version: 4.2.1
   resolution: "vite@npm:4.2.1"
   dependencies:
