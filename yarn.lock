@@ -14311,7 +14311,7 @@ __metadata:
     react-dom: 18.2.0
     storybook: 7.0.0-beta.62
     tsup: 6.6.3
-    tsx: 3.12.3
+    tsx: 3.12.6
     typescript: 4.9.5
     vite: 4.1.4
     vite-plugin-svgr: 2.4.0
@@ -14482,7 +14482,7 @@ __metadata:
     siwe: 1.1.6
     stripe: 8.222.0
     supertest: 6.3.3
-    tsx: 3.12.3
+    tsx: 3.12.6
     typescript: 4.9.5
     unified: 10.1.2
     unlock-abi-1-1: 1.1.1
@@ -14676,7 +14676,7 @@ __metadata:
     tailwind-merge: 1.10.0
     tailwindcss: 3.2.7
     tsup: 6.6.3
-    tsx: 3.12.3
+    tsx: 3.12.6
     typescript: 4.9.5
     url-loader: 4.1.1
     vite: 4.1.4
@@ -49455,9 +49455,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:3.12.3":
-  version: 3.12.3
-  resolution: "tsx@npm:3.12.3"
+"tsx@npm:3.12.6":
+  version: 3.12.6
+  resolution: "tsx@npm:3.12.6"
   dependencies:
     "@esbuild-kit/cjs-loader": ^2.4.2
     "@esbuild-kit/core-utils": ^3.0.0
@@ -49468,7 +49468,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.js
-  checksum: fd04a164d543ff7df030e253280b509257f2d32f9d439d26f33beb1a7c23e91a36fd8d86f150e94187e0598ab58b12e6bc5b7c6798ef0bcc8ffcbc65a31597d2
+  checksum: f503096f3b56ea521eaf8ed65bf7ad6f04749f9251ce168981d7b7483fadd4a6247a35184099c3bc5d43574c6f4eef6f2a58e45e31f002e78ba94120765f95c5
   languageName: node
   linkType: hard
 
