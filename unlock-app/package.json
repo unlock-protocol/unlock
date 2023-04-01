@@ -13,7 +13,7 @@
     "@stripe/react-stripe-js": "1.16.5",
     "@stripe/stripe-js": "1.51.0",
     "@tanstack/react-query": "4.24.10",
-    "@tw-classed/react": "1.4.2",
+    "@tw-classed/react": "1.4.3",
     "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
