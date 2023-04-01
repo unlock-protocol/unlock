@@ -14889,7 +14889,7 @@ __metadata:
     dayjs: 1.11.7
     dotenv: 16.0.3
     embla-carousel-autoplay: 7.0.9
-    embla-carousel-react: 7.0.9
+    embla-carousel-react: 7.1.0
     eslint: 8.35.0
     eslint-config-next: 13.2.3
     eslint-plugin-mocha: 10.1.0
@@ -23866,21 +23866,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"embla-carousel-react@npm:7.0.9":
-  version: 7.0.9
-  resolution: "embla-carousel-react@npm:7.0.9"
+"embla-carousel-react@npm:7.1.0":
+  version: 7.1.0
+  resolution: "embla-carousel-react@npm:7.1.0"
   dependencies:
-    embla-carousel: 7.0.9
+    embla-carousel: 7.1.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.1 || ^18.0.0
-  checksum: 440157b5187428a214c4db25afff296d26ed2412cfcd424bafcccb2c12b468216534b31939486eef24f96e785b24732fb9084ab1a2a06e427b8f958a0e08cd8e
+  checksum: e5c914874e2acb4db26f7f4da9e7658522e0714fed8b72b3e99984a2e48ff1a3f618ae74855baea5da42d9dd65f4706d7bfe6384ff9f8b542060a0e17ca63264
   languageName: node
   linkType: hard
 
-"embla-carousel@npm:7.0.9":
-  version: 7.0.9
-  resolution: "embla-carousel@npm:7.0.9"
-  checksum: dabb371a44c2d67f21aa7a0ff3f452a5c2678b79e80cb251e0a83b707c4b684fbdbe010927142cdcae3d1c9711a269e05655bd05c39608337fd1b6f5d2c20371
+"embla-carousel@npm:7.1.0":
+  version: 7.1.0
+  resolution: "embla-carousel@npm:7.1.0"
+  checksum: fffb3d77cbd0866d4fcfa0247ead60297f57d62ee3dcf737a4f5708c0e6034ba308716d6a8a567ead55520c117de61b382fd040e4aec3daaee55bb5ba11fee7f
   languageName: node
   linkType: hard
 
