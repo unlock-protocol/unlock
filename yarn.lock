@@ -12298,14 +12298,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.4.2":
-  version: 1.4.2
-  resolution: "@tw-classed/react@npm:1.4.2"
+"@tw-classed/react@npm:1.4.3":
+  version: 1.4.3
+  resolution: "@tw-classed/react@npm:1.4.3"
   dependencies:
     "@tw-classed/core": 1.4.0
   peerDependencies:
     react: ">=16.8.0"
-  checksum: b174410cce6d6ccfaf35d771656fc8f797d9f51103b0f8717b464571ee733529d59cfa0787e1ed71b2f109009f8bf05faa54d117e78b3659f5733e25cf7d4d90
+  checksum: 093ab4aa2fc08b9f67fe2462e0b994695f77b38d2abc1eefdcbba5df5a3ef944b3bef88d8239ae89000ccaaf26b3a7eb741396d3801e6d7ad4ee2b4c464fdb66
   languageName: node
   linkType: hard
 
@@ -14655,7 +14655,7 @@ __metadata:
     "@tailwindcss/line-clamp": 0.4.2
     "@tailwindcss/typography": 0.5.9
     "@tanstack/react-query": 4.24.10
-    "@tw-classed/react": 1.4.2
+    "@tw-classed/react": 1.4.3
     "@types/react": 18.0.28
     "@types/react-dom": 18.0.11
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -14705,7 +14705,7 @@ __metadata:
     "@tanstack/react-query": 4.24.10
     "@testing-library/react": 14.0.0
     "@testing-library/react-hooks": 8.0.1
-    "@tw-classed/react": 1.4.2
+    "@tw-classed/react": 1.4.3
     "@types/file-saver": 2.0.5
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2

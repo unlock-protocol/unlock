@@ -35,7 +35,7 @@
     "@tailwindcss/line-clamp": "0.4.2",
     "@tailwindcss/typography": "0.5.9",
     "@tanstack/react-query": "4.24.10",
-    "@tw-classed/react": "1.4.2",
+    "@tw-classed/react": "1.4.3",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
