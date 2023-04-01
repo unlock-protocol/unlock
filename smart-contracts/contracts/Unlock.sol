@@ -688,5 +688,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   // required to withdraw WETH
-  receive() external payable {}
+  receive() external payable {
+    require(msg.value > 0, "Invalid amount");
+  }
 }
