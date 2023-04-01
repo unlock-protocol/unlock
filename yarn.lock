@@ -8245,19 +8245,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-avatar@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@radix-ui/react-avatar@npm:1.0.1"
+"@radix-ui/react-avatar@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@radix-ui/react-avatar@npm:1.0.2"
   dependencies:
     "@babel/runtime": ^7.13.10
     "@radix-ui/react-context": 1.0.0
-    "@radix-ui/react-primitive": 1.0.1
+    "@radix-ui/react-primitive": 1.0.2
     "@radix-ui/react-use-callback-ref": 1.0.0
     "@radix-ui/react-use-layout-effect": 1.0.0
   peerDependencies:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: 88f2367340685912da1dcf7ab95b0055271a3909bef0f7d51edead7be3fb77e019b9aa2db5c51df5f47c9fa8a1eb116893c48594bf03a3bd2d9920477fa16f44
+  checksum: 5351bd8763b1d0f2450e79a443b8525a652c89921321c25b93afad666b56a7eb00fcedfc801d5f284c78a7cbebea658f04e4fee6d305d7def57a562d9518dbdb
   languageName: node
   linkType: hard
 
@@ -8371,6 +8371,19 @@ __metadata:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
   checksum: 1cc86b72f926be4a42122e7e456e965de0906f16b0dc244b8448bac05905f208598c984a0dd40026f654b4a71d0235335d48a18e377b07b0ec6c6917576a8080
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-primitive@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@radix-ui/react-primitive@npm:1.0.2"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-slot": 1.0.1
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 070b1770749eb629425ef959c4cdbd86957b83c5286ae4423e55ab1a89fa286a51f5aeee44e3a13eb6ca44771415ac1acbaeb0ba03013b49ecb5253e1a5a8996
   languageName: node
   linkType: hard
 
@@ -14697,7 +14710,7 @@ __metadata:
     "@headlessui/react": 1.7.13
     "@hookform/error-message": 2.0.1
     "@hookform/resolvers": 2.9.11
-    "@radix-ui/react-avatar": 1.0.1
+    "@radix-ui/react-avatar": 1.0.2
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.44.2
     "@stripe/react-stripe-js": 1.16.5
@@ -14869,7 +14882,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.21.0
     "@headlessui/react": 1.7.13
-    "@radix-ui/react-avatar": 1.0.1
+    "@radix-ui/react-avatar": 1.0.2
     "@testing-library/react": 14.0.0
     "@types/next": 8.0.7
     "@types/node": 18.14.4
