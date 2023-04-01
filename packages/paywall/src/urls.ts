@@ -28,7 +28,6 @@ if (typeof window !== 'undefined') {
 const endpoint = new URL(baseUrl)
 
 export function getConfigUrl(url: string) {
-  console.log({ url })
   let unlockAppUrl: string
   let locksmithUri: string
   if (url.match('staging-paywall.unlock-protocol.com')) {

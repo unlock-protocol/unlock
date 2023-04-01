@@ -265,13 +265,6 @@ export function Checkout({
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
 
-  // Autoconnect
-  useEffect(() => {
-    if (paywallConfig?.autoconnect) {
-      authenticateWithProvider('METAMASK')
-    }
-  }, [paywallConfig?.autoconnect, authenticateWithProvider])
-
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
       <TopNavigation

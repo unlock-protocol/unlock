@@ -12,10 +12,10 @@ import {
 } from './utils/enableInjectedProvider'
 import { unlockAppUrl } from './urls'
 
-console.log({ unlockAppUrl })
-console.log('GET STARTED!')
-
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
+
+// TODO move to newer format for provider
+// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md#request
 
 /**
  * These type definitions come from `useCheckoutCommunication` in
@@ -76,8 +76,10 @@ export class Paywall {
     networkConfigs: NetworkConfigs,
     provider?: any
   ) {
-    console.log('OK I WAS HERE!!!!')
     this.networkConfigs = networkConfigs
+    if (provider) {
+      paywallConfig.autoconnect = true // force autoconnect
+    }
     // Use provider in parameter, fall back to injected provider in window (if any)
     this.provider = provider || getProvider(window as Web3Window)
     this.paywallConfig = injectProviderInfo(paywallConfig, this.provider)
@@ -201,7 +203,7 @@ export class Paywall {
   }
 
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
-    ;(this.provider! as any).request(
+    ;(this.provider! as any).sendAsync(
       { method, params, id },
       (error: any, response: any) => {
         this.child!.call('resolveMethodCall', { id, error, response })
@@ -216,8 +218,8 @@ export class Paywall {
   }
 
   handleEnable = async () => {
-    await enableInjectedProvider(this.provider)
-    this.child!.call('resolveOnEnable')
+    const result = await enableInjectedProvider(this.provider)
+    this.child!.call('resolveOnEnable', result)
   }
 
   showIframe = () => {
