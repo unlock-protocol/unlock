@@ -14347,7 +14347,7 @@ __metadata:
     eslint-plugin-json: 3.1.0
     eslint-plugin-mocha: 10.1.0
     eslint-plugin-prettier: 4.2.1
-    eslint-plugin-vitest: 0.0.54
+    eslint-plugin-vitest: 0.0.57
     typescript: 4.9.5
     vitest: 0.29.7
   languageName: unknown
@@ -24945,14 +24945,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vitest@npm:0.0.54":
-  version: 0.0.54
-  resolution: "eslint-plugin-vitest@npm:0.0.54"
+"eslint-plugin-vitest@npm:0.0.57":
+  version: 0.0.57
+  resolution: "eslint-plugin-vitest@npm:0.0.57"
   dependencies:
     "@typescript-eslint/utils": ^5.53.0
   peerDependencies:
     eslint: ">=8.0.0"
-  checksum: 4bb699f5ffc6077fd8d39b20391059681f40af37ea2741058fcb852d5ca057ffc007f0eedac1dd84f61d5e9515777da68be47b3c439e3d8baa204eae6361d808
+  checksum: f7f02b731a6e8463a001727209fdc24e222327463be72d97c1d00225ed62e8811723f21ab3c0fe07d4c12ce69d54f59903f2a96e38f578403d386c71d4ce01dc
   languageName: node
   linkType: hard
 
