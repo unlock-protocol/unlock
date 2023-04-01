@@ -14313,7 +14313,7 @@ __metadata:
     tsup: 6.6.3
     tsx: 3.12.3
     typescript: 4.9.5
-    vite: 4.1.4
+    vite: 4.2.1
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: ^4.0.5
   peerDependencies:
@@ -51155,7 +51155,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0 || ^4.0.0":
+"vite@npm:4.2.1, vite@npm:^3.0.0 || ^4.0.0":
   version: 4.2.1
   resolution: "vite@npm:4.2.1"
   dependencies:
