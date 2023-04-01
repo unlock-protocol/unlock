@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "./dist/unlock.latest.umd.js",
   "module": "./dist/unlock.latest.es.js",
   "exports": {
@@ -32,11 +32,11 @@
     "eslint": "8.37.0",
     "typescript": "4.9.5",
     "vite": "4.2.1",
+    "vite-plugin-css-injected-by-js": "3.1.0",
     "vitest": "0.29.7",
     "vitest-fetch-mock": "0.2.2"
   },
   "dependencies": {
-    "postmate": "1.5.2",
-    "vite-plugin-css-injected-by-js": "3.1.0"
+    "postmate": "1.5.2"
   }
 }
