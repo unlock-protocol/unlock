@@ -8447,19 +8447,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-primitive@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@radix-ui/react-primitive@npm:1.0.1"
-  dependencies:
-    "@babel/runtime": ^7.13.10
-    "@radix-ui/react-slot": 1.0.1
-  peerDependencies:
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: 1cc86b72f926be4a42122e7e456e965de0906f16b0dc244b8448bac05905f208598c984a0dd40026f654b4a71d0235335d48a18e377b07b0ec6c6917576a8080
-  languageName: node
-  linkType: hard
-
 "@radix-ui/react-primitive@npm:1.0.2":
   version: 1.0.2
   resolution: "@radix-ui/react-primitive@npm:1.0.2"
@@ -14355,7 +14342,7 @@ __metadata:
     typescript: 4.9.5
     vite: 4.1.4
     vite-plugin-svgr: 2.4.0
-    vite-tsconfig-paths: ^4.0.5
+    vite-tsconfig-paths: 4.0.7
   peerDependencies:
     react: 18.2.0
     react-dom: 18.2.0
@@ -14721,7 +14708,7 @@ __metadata:
     url-loader: 4.1.1
     vite: 4.1.4
     vite-plugin-svgr: 2.4.0
-    vite-tsconfig-paths: ^4.0.5
+    vite-tsconfig-paths: 4.0.7
   peerDependencies:
     "@headlessui/react": 1.7.13
     react: 18.2.0
@@ -51082,7 +51069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:^4.0.5":
+"vite-tsconfig-paths@npm:4.0.7":
   version: 4.0.7
   resolution: "vite-tsconfig-paths@npm:4.0.7"
   dependencies:
