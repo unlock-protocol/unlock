@@ -13415,14 +13415,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.0.28":
-  version: 18.0.28
-  resolution: "@types/react@npm:18.0.28"
+"@types/react@npm:18.0.32":
+  version: 18.0.32
+  resolution: "@types/react@npm:18.0.32"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: e752df961105e5127652460504785897ca6e77259e0da8f233f694f9e8f451cde7fa0709d4456ade0ff600c8ce909cfe29f9b08b9c247fa9b734e126ec53edd7
+  checksum: c8dbce83c455e520e75f3649988f46100e3a3c0bf7241281ea5bd9067a0368290f0d7c6102e12e6ec9d649134b29a3ef4c421f376ec5aa06ed78cbdd8c144b4c
   languageName: node
   linkType: hard
 
@@ -14337,7 +14337,7 @@ __metadata:
     "@storybook/addon-postcss": 3.0.0-alpha.1
     "@storybook/react": 7.0.0
     "@storybook/react-vite": 7.0.0
-    "@types/react": 18.0.28
+    "@types/react": 18.0.32
     "@types/react-dom": 18.0.11
     "@vitejs/plugin-react": 3.1.0
     react: 18.2.0
@@ -14685,7 +14685,7 @@ __metadata:
     "@tailwindcss/typography": 0.5.9
     "@tanstack/react-query": 4.24.10
     "@tw-classed/react": 1.4.3
-    "@types/react": 18.0.28
+    "@types/react": 18.0.32
     "@types/react-dom": 18.0.11
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
@@ -14738,7 +14738,7 @@ __metadata:
     "@types/file-saver": 2.0.5
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
-    "@types/react": 18.0.28
+    "@types/react": 18.0.32
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -14901,7 +14901,7 @@ __metadata:
     "@testing-library/react": 14.0.0
     "@types/next": 8.0.7
     "@types/node": 18.15.11
-    "@types/react": 18.0.28
+    "@types/react": 18.0.32
     "@types/styled-components": 5.1.26
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
