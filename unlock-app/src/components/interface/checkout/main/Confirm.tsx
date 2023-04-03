@@ -15,22 +15,21 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { fetchRecipientsData } from './utils'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
-import { networks } from '@unlock-protocol/networks'
 import ReCaptcha from 'react-google-recaptcha'
-import { useStorageService } from '~/utils/withStorageService'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../ViewContract'
 import { useClaim } from '~/hooks/useClaim'
 import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import { usePricing } from '~/hooks/usePricing'
+import { usePurchaseData } from '~/hooks/usePurchaseData'
+import { useUSDPricing } from '~/hooks/useUSDPricing'
 
 interface Props {
   injectedProvider: unknown
@@ -90,7 +89,6 @@ export function Confirm({
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
-  const storage = useStorageService()
   const { captureChargeForCard } = useAccount(account!)
   const [isConfirming, setIsConfirming] = useState(false)
 
@@ -162,120 +160,40 @@ export function Confirm({
   )
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
-    useQuery(
-      [
-        'purchaseData',
-        lockAddress,
-        lockNetwork,
-        recipients,
-        promo,
-        password,
-        captcha,
-      ],
-      async () => {
-        let purchaseData =
-          promo ||
-          password ||
-          captcha ||
-          Array.from({ length: recipients.length })
-        const dataBuilder =
-          paywallConfig.locks[lock!.address].dataBuilder ||
-          paywallConfig.dataBuilder
-        // if Data builder url is present, prioritize that above rest.
-        if (dataBuilder) {
-          const delegatedData = await fetchRecipientsData(dataBuilder, {
-            recipients,
-            lockAddress: lock!.address,
-            network: lock!.network,
-          })
-          if (delegatedData) {
-            purchaseData = delegatedData
-          }
-        }
-        return purchaseData
-      },
-      {
-        refetchInterval: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        refetchOnWindowFocus: false,
-        onError(error) {
-          console.error(error)
-        },
-      }
-    )
+    usePurchaseData({
+      lockAddress: lock!.address,
+      network: lock!.network,
+      promo,
+      password,
+      captcha,
+      paywallConfig,
+      recipients,
+    })
 
   const {
     data: pricingData,
     isInitialLoading: isPricingDataLoading,
-    isError,
-  } = useQuery(
-    ['purchasePriceFor', lockAddress, lockNetwork, recipients, purchaseData],
-    async () => {
-      const prices = await Promise.all(
-        recipients.map(async (recipient, index) => {
-          const referrer = getReferrer(recipient, paywallConfig)
+    isError: isPricingDataError,
+  } = usePricing({
+    lockAddress: lock!.address,
+    network: lock!.network,
+    recipients,
+    currencyContractAddress: lock?.currencyContractAddress,
+    data: purchaseData!,
+    paywallConfig,
+    enabled: !isInitialDataLoading,
+  })
+  const isPricingDataAvailable =
+    !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-          const options = {
-            lockAddress: lockAddress,
-            network: lockNetwork,
-            userAddress: recipient,
-            referrer,
-            data: purchaseData?.[index] || '0x',
-          }
-          const price = await web3Service.purchasePriceFor(options)
-
-          const decimals = lock!.currencyContractAddress
-            ? await web3Service.getTokenDecimals(
-                lock!.currencyContractAddress!,
-                lockNetwork
-              )
-            : networks[lockNetwork].nativeCurrency?.decimals
-
-          const amount = ethers.utils.formatUnits(price, decimals)
-          return {
-            userAddress: recipient,
-            amount: amount,
-          }
-        })
-      )
-      const item = {
-        prices,
-        total: prices
-          .reduce((acc, item) => acc + parseFloat(item.amount), 0)
-          .toString(),
-      }
-
-      const response = await storage.locksmith
-        .price(
-          lockNetwork,
-          parseFloat(item.total),
-          lock?.currencyContractAddress
-            ? lock?.currencyContractAddress
-            : undefined
-        )
-        .catch((error) => {
-          // Important: we do not fail if locksmith can't retrieve $ price.
-          console.error(
-            `We could not retrieve $ price for ${lockAddress} on ${lockNetwork} for ${recipients.join(
-              ','
-            )}`
-          )
-          console.error(error)
-          return null
-        })
-
-      return {
-        ...item,
-        usdPrice: response?.data?.result,
-      }
-    },
-    {
-      refetchInterval: 1000 * 60 * 5,
-      refetchOnMount: false,
-      enabled: !isInitialDataLoading,
-    }
-  )
+  const { data: USDPricingData, isLoading: isUSDPricingDataLoading } =
+    useUSDPricing({
+      network: lock!.network,
+      lockAddress: lock!.address,
+      currencyContractAddress: lock?.currencyContractAddress,
+      amount: pricingData?.total || 0,
+      enabled: isPricingDataAvailable,
+    })
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
   const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
@@ -291,15 +209,16 @@ export function Confirm({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const isTokenPayable =
-        pricingData?.total &&
-        parseFloat(pricingData?.total) <= parseFloat(balance)
+      const isTokenPayable = pricingData!.total <= parseFloat(balance)
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
 
       return {
         isTokenPayable,
         isGasPayable,
       }
+    },
+    {
+      enabled: isPricingDataAvailable,
     }
   )
 
@@ -311,7 +230,8 @@ export function Confirm({
     isPricingDataLoading ||
     isFiatPriceLoading ||
     isInitialDataLoading ||
-    isPayableLoading
+    isPayableLoading ||
+    isUSDPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -322,6 +242,19 @@ export function Confirm({
     lockName,
     quantity
   )
+
+  const onError = (error: any, message?: string) => {
+    console.error(error)
+    switch (error.code) {
+      case -32000:
+      case 4001:
+      case 'ACTION_REJECTED':
+        ToastHelper.error('Transaction rejected.')
+        break
+      default:
+        ToastHelper.error(message || error?.error?.message || error.message)
+    }
+  }
 
   const onConfirmCard = async () => {
     try {
@@ -393,13 +326,11 @@ export function Confirm({
         })
       }
     } catch (error) {
-      if (error instanceof Error) {
-        send({
-          type: 'CONFIRM_MINT',
-          status: 'ERROR',
-        })
-        ToastHelper.error(error.message)
-      }
+      send({
+        type: 'CONFIRM_MINT',
+        status: 'ERROR',
+      })
+      onError(error)
       setIsConfirming(false)
     }
   }
@@ -460,7 +391,7 @@ export function Confirm({
       )
     } catch (error: any) {
       setIsConfirming(false)
-      ToastHelper.error(error?.error?.message || error.message)
+      onError(error)
     }
   }
 
@@ -494,8 +425,7 @@ export function Confirm({
       setIsConfirming(false)
     } catch (error: any) {
       setIsConfirming(false)
-      console.error(error)
-      ToastHelper.error('Failed to claim the membership. Try again')
+      onError(error, 'Failed to claim membership. Try again.')
     }
   }
 
@@ -524,9 +454,11 @@ export function Confirm({
       }
       case 'crypto': {
         let buttonLabel = ''
-        const isFree = pricingData?.prices.reduce((previousTotal, item) => {
-          return previousTotal && parseFloat(item.amount) === 0
-        }, true)
+        const isFree =
+          isPricingDataAvailable &&
+          pricingData!.prices.reduce((previousTotal, item) => {
+            return previousTotal && item.amount <= 0
+          }, true)
 
         if (isFree) {
           if (isConfirming) {
@@ -546,7 +478,9 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading || !canAfford || isError}
+              disabled={
+                isConfirming || isLoading || !canAfford || isPricingDataError
+              }
               onClick={async (event) => {
                 event.preventDefault()
                 if (metadata) {
@@ -557,14 +491,14 @@ export function Confirm({
             >
               {buttonLabel}
             </Button>
-            {!isLoading && !isError && isPayable && (
+            {!isLoading && !isPricingDataError && !!isPayable && (
               <>
                 {!isPayable?.isTokenPayable && (
                   <small className="text-center text-red-500">
                     You do not have enough {symbol} to complete this purchase.
                   </small>
                 )}
-                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                {!!isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
                   <small className="text-center text-red-500">
                     You do not have enough{' '}
                     {config.networks[lock!.network].nativeCurrency.symbol} to
@@ -581,7 +515,7 @@ export function Confirm({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading || isError}
+              disabled={isConfirming || isLoading || isPricingDataError}
               onClick={async (event) => {
                 event.preventDefault()
                 if (metadata) {
@@ -623,7 +557,7 @@ export function Confirm({
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
             <ViewContract lockAddress={lock!.address} network={lockNetwork} />
           </div>
-          {isError && (
+          {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>
               <p className="text-sm font-bold">
@@ -637,14 +571,14 @@ export function Confirm({
               )}
             </div>
           )}
-          {!isLoading && !isError && (
+          {!isLoading && isPricingDataAvailable && (
             <div>
               {!!pricingData?.prices?.length &&
                 pricingData.prices.map((item, index) => {
                   const first = index <= 0
                   const discount =
                     Number(lock!.keyPrice) > 0
-                      ? (100 * (Number(lock!.keyPrice) - Number(item.amount))) /
+                      ? (100 * (Number(lock!.keyPrice) - item.amount)) /
                         Number(lock!.keyPrice)
                       : 0
                   return (
@@ -659,7 +593,7 @@ export function Confirm({
                         <span className="font-medium">
                           {minifyAddress(item.userAddress)}
                         </span>{' '}
-                        {Number(item.amount) < Number(lock!.keyPrice) ? (
+                        {item.amount < Number(lock!.keyPrice) ? (
                           <Badge variant="green" size="tiny">
                             {discount}% Discount
                           </Badge>
@@ -667,9 +601,9 @@ export function Confirm({
                       </div>
 
                       <div className="font-bold">
-                        {item.amount === '0'
+                        {item.amount <= 0
                           ? 'FREE'
-                          : Number(item.amount).toLocaleString() + ' ' + symbol}
+                          : item.amount.toLocaleString() + ' ' + symbol}
                       </div>
                     </div>
                   )
@@ -677,7 +611,7 @@ export function Confirm({
             </div>
           )}
         </div>
-        {!isError && (
+        {!isPricingDataAvailable && (
           <>
             {isLoading ? (
               <div className="flex flex-col items-center gap-2">
@@ -689,23 +623,19 @@ export function Confirm({
                 ))}
               </div>
             ) : (
-              <>
-                <Pricing
-                  keyPrice={
-                    pricingData?.total === '0'
-                      ? 'FREE'
-                      : `${Number(
-                          pricingData?.total
-                        )?.toLocaleString()} ${symbol}`
-                  }
-                  usdPrice={
-                    pricingData?.usdPrice?.priceInAmount
-                      ? `~${pricingData?.usdPrice?.priceInAmount?.toLocaleString()}`
-                      : ''
-                  }
-                  isCardEnabled={formattedData.cardEnabled}
-                />
-              </>
+              <Pricing
+                keyPrice={
+                  pricingData!.total <= 0
+                    ? 'FREE'
+                    : `${pricingData!.total.toLocaleString()} ${symbol}`
+                }
+                usdPrice={
+                  USDPricingData?.amount
+                    ? `~${USDPricingData.amount.toLocaleString()}`
+                    : ''
+                }
+                isCardEnabled={formattedData.cardEnabled}
+              />
             )}
             {isLoading ? (
               <div className="py-1.5 space-y-2 items-center">
