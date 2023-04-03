@@ -3,6 +3,7 @@ const {
   getSafeAddress,
   getSafeVersion,
   submitTxOldMultisig,
+  confirmMultisigTx,
 } = require('./_helpers')
 
 const Safe = require('@safe-global/safe-core-sdk').default
@@ -138,6 +139,14 @@ async function main({ safeAddress, tx, signer }) {
 
   const { nonce } = await safeService.getTransaction(safeTxHash)
   console.log(`Tx submitted to multisig with id: '${nonce}'`)
+
+  if (process.env.RUN_MAINNET_FORK) {
+      console.log(`Signing multisigs: ${nonce}`)
+      await confirmMultisigTx({
+        transactionId: nonce,
+        multisigAddress: safeAddress,
+      })
+    }
 }
 
 module.exports = main

@@ -103,10 +103,11 @@ task(
     'publicLockVersion',
     'Specify the template version to deploy (from contracts package)'
   )
-  .setAction(async ({ publicLockAddress, publicLockVersion }) => {
+  .addOptionalFlag('addOnly', 'Only add the template without setting it as default')
+  .setAction(async ({ publicLockAddress, publicLockVersion, addOnly }) => {
     // eslint-disable-next-line global-require
     const prepareLockUpgrade = require('../scripts/upgrade/submitLockVersion')
-    await prepareLockUpgrade({ publicLockAddress, publicLockVersion })
+    await prepareLockUpgrade({ publicLockAddress, publicLockVersion, addOnly })
   })
 
 task(
