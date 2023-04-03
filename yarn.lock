@@ -5451,72 +5451,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-core-sdk-types@npm:^1.7.0":
-  version: 1.7.0
-  resolution: "@gnosis.pm/safe-core-sdk-types@npm:1.7.0"
-  dependencies:
-    "@ethersproject/bignumber": ^5.7.0
-    "@ethersproject/contracts": ^5.7.0
-    "@gnosis.pm/safe-deployments": 1.17.0
-    web3-core: ^1.8.1
-    web3-utils: ^1.8.1
-  checksum: b9c12956c0ba0a614cff9336b574976e159d45e31b1481b232e6af7cbdfb378497dc36ebc84279c2c177c682f34eb2329e9ce3537d0387dff430c4e271c8ae40
-  languageName: node
-  linkType: hard
-
-"@gnosis.pm/safe-core-sdk-utils@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@gnosis.pm/safe-core-sdk-utils@npm:1.5.0"
-  dependencies:
-    "@gnosis.pm/safe-core-sdk-types": ^1.7.0
-    semver: ^7.3.8
-    web3-utils: ^1.8.1
-  checksum: 49e04cf276006167af1ea0882d9667b60a651ffb359415f980a26f37cd64d3c2664e15a0df6302d33121586dd45a11a3a6fd6345e9a9337b96134cb83386a63f
-  languageName: node
-  linkType: hard
-
-"@gnosis.pm/safe-core-sdk@npm:3.2.0":
-  version: 3.2.0
-  resolution: "@gnosis.pm/safe-core-sdk@npm:3.2.0"
-  dependencies:
-    "@ethersproject/solidity": ^5.7.0
-    "@gnosis.pm/safe-core-sdk-types": ^1.7.0
-    "@gnosis.pm/safe-deployments": 1.17.0
-    ethereumjs-util: ^7.1.5
-    semver: ^7.3.8
-    web3-utils: ^1.8.1
-  checksum: 9c2b7b5b364015804d8ae2246e03269bc8440035e0f3f7ad5fa4ab95b103ea2e0ea792651ecd1cb8490d9b1fcb6feaee31b804053cec3af07ca0720c4114a37f
-  languageName: node
-  linkType: hard
-
-"@gnosis.pm/safe-deployments@npm:1.17.0":
-  version: 1.17.0
-  resolution: "@gnosis.pm/safe-deployments@npm:1.17.0"
+"@gnosis.pm/safe-deployments@npm:1.19.0":
+  version: 1.19.0
+  resolution: "@gnosis.pm/safe-deployments@npm:1.19.0"
   dependencies:
     semver: ^7.3.7
-  checksum: fd77cb6d4bb4980941ffb2a9210a2b9a107fe6fccca23250d72dbc248c7dc0211d28cbb824f369e95050f3bd4a00764023acc3c6422d34dc89ddc25bcfd3591b
-  languageName: node
-  linkType: hard
-
-"@gnosis.pm/safe-ethers-lib@npm:1.7.0":
-  version: 1.7.0
-  resolution: "@gnosis.pm/safe-ethers-lib@npm:1.7.0"
-  dependencies:
-    "@gnosis.pm/safe-core-sdk-types": ^1.7.0
-    "@gnosis.pm/safe-core-sdk-utils": ^1.5.0
-    ethers: ^5.7.2
-  checksum: b8af4d538a1bfbfa949f0728748c8d8b92aacda2d0d3c74295ef2bd7ce076587b0b8d3a4d8c56a0b11dd4c49ab4416baa6b94c1dee967b5b79b13cbd3a3afbc3
-  languageName: node
-  linkType: hard
-
-"@gnosis.pm/safe-service-client@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@gnosis.pm/safe-service-client@npm:1.4.0"
-  dependencies:
-    "@ethersproject/abstract-signer": ^5.7.0
-    "@gnosis.pm/safe-core-sdk-types": ^1.7.0
-    node-fetch: ^2.6.6
-  checksum: 3467dbd27daffbd26f14b251e06f86009ed0e83276c912c29007e8fcf4074b79a1efa927ebc977d463c96b6e095316fb2b5e03339c4e0987656a0cd69f279c64
+  checksum: 9566179ad6e370166ea62d4f14ef0d7cd80f6e7aaa7360042973df1e6722e22d4e8845ea92f7740b01858ab514ea7000beb54569780abaf0f50279c03323db16
   languageName: node
   linkType: hard
 
@@ -8715,10 +8655,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.7.3":
-  version: 4.7.3
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.7.3"
-  checksum: c9ffb40cb847a975d440204fc6a811f43af960050242f707332b984d29bd16dc242ffa0935de61867aeb9e0357fadedb16b09b276deda5e9775582face831021
+"@openzeppelin/contracts-upgradeable@npm:4.8.2":
+  version: 4.8.2
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.8.2"
+  checksum: b1ad40e5d0c4d3bcfea7c74b772fb2c830562f2863ea8f816a603113146e0614dc806b32d9b1649f8c88ceb93dbf8b394abf8dbeb9022fc09e546858c4fe71e9
   languageName: node
   linkType: hard
 
@@ -8757,10 +8697,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.7.3":
-  version: 4.7.3
-  resolution: "@openzeppelin/contracts@npm:4.7.3"
-  checksum: 18382fcacf7cfd652f5dd0e70c08f08ea74eaa8ff11e9f9850639ada70198ae01a3f9493d89a52d724f2db394e9616bf6258017804612ba273167cf657fbb073
+"@openzeppelin/contracts@npm:4.8.2":
+  version: 4.8.2
+  resolution: "@openzeppelin/contracts@npm:4.8.2"
+  checksum: 1d362f0b9c880549cb82544e23fb70270fbbbe24a69e10bd5aa07649fd82347686173998ae484defafdc473d04004d519f839e3cd3d3e7733d0895b950622243
   languageName: node
   linkType: hard
 
@@ -9670,6 +9610,76 @@ __metadata:
   version: 1.2.0
   resolution: "@rushstack/eslint-patch@npm:1.2.0"
   checksum: faa749faae0e83c26ae9eb00ad36a897ac78f3cf27da8e8ff21c00bcf7973b598d823d8f2b3957ef66079288bcf577f94df831eae2d65f3f68d8ca32f18b6aff
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-core-sdk-types@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "@safe-global/safe-core-sdk-types@npm:1.9.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@gnosis.pm/safe-deployments": 1.19.0
+    web3-core: ^1.8.1
+    web3-utils: ^1.8.1
+  checksum: 4fe3f1b8b7e3d50f2a23e31c3e7769da66b9d67abcba7234a865388767b6532ea06b0e7b9ad60689eb63889d0539f83d3361bfde58e42b6544dcafd293c9e7ef
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-core-sdk-utils@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "@safe-global/safe-core-sdk-utils@npm:1.7.2"
+  dependencies:
+    "@safe-global/safe-core-sdk-types": ^1.9.0
+    semver: ^7.3.8
+    web3-utils: ^1.8.1
+  checksum: 44fa79ae811501ff074ea74b32e25ee7d6c4ad9fae39bf52d5986467f685e1a2cd5f5ce03f5e86b450170dc077cffa550fb33c69c45762014915c34300526a31
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-core-sdk@npm:3.3.2":
+  version: 3.3.2
+  resolution: "@safe-global/safe-core-sdk@npm:3.3.2"
+  dependencies:
+    "@ethersproject/solidity": ^5.7.0
+    "@safe-global/safe-core-sdk-types": ^1.9.0
+    "@safe-global/safe-core-sdk-utils": ^1.7.2
+    "@safe-global/safe-deployments": ^1.20.2
+    ethereumjs-util: ^7.1.5
+    semver: ^7.3.8
+    web3-utils: ^1.8.1
+  checksum: c8eccd0c75a986912b06c3c82c2a00902794d6254f5a150dbc09cf0fcb5984e904d5d4dce9fea2077e965407eada18065b0d8799547af066ec1dc88969c39c65
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-deployments@npm:^1.20.2":
+  version: 1.21.1
+  resolution: "@safe-global/safe-deployments@npm:1.21.1"
+  dependencies:
+    semver: ^7.3.7
+  checksum: f7a117b8267aaabc3620b067d4d0f31b1a9526460db55670d4baf29150d14ccfc41dce5069d7d78b5513a59f1256aa94f116130b2f9d8fb5e2517e05da2d5143
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-ethers-lib@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@safe-global/safe-ethers-lib@npm:1.9.2"
+  dependencies:
+    "@safe-global/safe-core-sdk-types": ^1.9.0
+    "@safe-global/safe-core-sdk-utils": ^1.7.2
+    ethers: 5.7.2
+  checksum: 76daf131fb12c2aa7b5d1ed3b69f0fb6a336c00d1bb3b1027ca2920be67a5c92747d79ce46ada3efa2fea4a27ade13a3b7b17ba06c7f78a44cc34433e145b99d
+  languageName: node
+  linkType: hard
+
+"@safe-global/safe-service-client@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@safe-global/safe-service-client@npm:2.0.0"
+  dependencies:
+    "@ethersproject/abstract-signer": ^5.7.0
+    "@safe-global/safe-core-sdk-types": ^1.9.0
+    node-fetch: ^2.6.6
+  checksum: 621e9790d666722095d04c09f6296a67428ede3e35cbb59425ded31078889e0313af56443d6510fa74700529e768fdcc67c23fe7c94067a6b3a4ad24f0213ddd
   languageName: node
   linkType: hard
 
@@ -14086,18 +14096,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16":
-  version: 18.0.32
-  resolution: "@types/react@npm:18.0.32"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: c8dbce83c455e520e75f3649988f46100e3a3c0bf7241281ea5bd9067a0368290f0d7c6102e12e6ec9d649134b29a3ef4c421f376ec5aa06ed78cbdd8c144b4c
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.0.32":
+"@types/react@npm:*, @types/react@npm:18.0.32, @types/react@npm:>=16":
   version: 18.0.32
   resolution: "@types/react@npm:18.0.32"
   dependencies:
@@ -15261,19 +15260,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
-    "@gnosis.pm/safe-core-sdk": 3.2.0
-    "@gnosis.pm/safe-ethers-lib": 1.7.0
-    "@gnosis.pm/safe-service-client": 1.4.0
     "@nomiclabs/hardhat-ethers": 2.2.2
     "@nomiclabs/hardhat-etherscan": 3.1.7
     "@nomiclabs/hardhat-truffle5": 2.0.7
     "@nomiclabs/hardhat-waffle": 2.0.5
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.7.3
-    "@openzeppelin/contracts-upgradeable": 4.7.3
+    "@openzeppelin/contracts": 4.8.2
+    "@openzeppelin/contracts-upgradeable": 4.8.2
     "@openzeppelin/hardhat-upgrades": 1.22.1
     "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.22.0
+    "@safe-global/safe-core-sdk": 3.3.2
+    "@safe-global/safe-ethers-lib": 1.9.2
+    "@safe-global/safe-service-client": 2.0.0
     "@uniswap/smart-order-router": 3.5.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
@@ -29413,7 +29412,7 @@ __metadata:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 
