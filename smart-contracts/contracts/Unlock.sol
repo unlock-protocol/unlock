@@ -655,12 +655,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   // for doc, see IUnlock.sol
-  function getAdmin() public view returns (address) {
-      bytes32 _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
-      return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
-  }
-
-  // for doc, see IUnlock.sol
   function postLockUpgrade() public {
     // check if lock hasnot already been deployed here and version is correct
     if (
