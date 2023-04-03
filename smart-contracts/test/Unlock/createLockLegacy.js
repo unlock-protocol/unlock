@@ -1,14 +1,14 @@
 const { ethers } = require('hardhat')
 
-const PublicLock = artifacts.require('PublicLock')
 const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 let unlock
 let lock
 let publicLockUpgraded
 
-contract('Unlock / createLock (Legacy)', (accounts) => {
+contract('Unlock / createLock (Legacy)', () => {
   before(async () => {
+    // setup Unlock
     ;({ unlock } = await deployContracts())
 
     // deploy new implementation
@@ -17,6 +17,11 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
     await publicLockUpgraded.deployed()
+    const currentVersion = await unlock.publicLockLatestVersion()
+    await unlock.addLockTemplate(
+      publicLockUpgraded.address,
+      currentVersion.toNumber() + 1
+    )
   })
 
   describe('Deploy correctly using legacy createLock method', () => {
@@ -43,11 +48,12 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
             100, // maxNumberOfKeys
             'Test Lock',
           ]
-          let tx = await unlock.createLock(...args, salt, {
-            from: accounts[0],
-          })
+          const tx = await unlock.createLock(...args, salt)
           const evt = tx.logs.find((v) => v.event === 'NewLock')
-          lock = await PublicLock.at(evt.args.newLockAddress)
+          lock = await ethers.getContractAt(
+            'contracts/PublicLock.sol:PublicLock'      
+            , evt.args.newLockAddress
+          )
         })
 
         it('Can read from the lock', async () => {
@@ -60,14 +66,9 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
         })
 
         it('lock is upgradeable', async () => {
-          const currentVersion = await lock.publicLockVersion()
-          await unlock.addLockTemplate(
-            publicLockUpgraded.address,
-            currentVersion.toNumber() + 1
-          )
           const tx = await unlock.upgradeLock(
             lock.address,
-            currentVersion.toNumber() + 1
+            await lock.publicLockVersion() + 1
           )
           assert.equal(tx.logs[0].event, 'LockUpgraded')
         })

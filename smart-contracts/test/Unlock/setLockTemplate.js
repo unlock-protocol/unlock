@@ -1,48 +1,68 @@
-const { ADDRESS_ZERO, deployContracts, reverts } = require('../helpers')
-const PublicLock = artifacts.require('PublicLock')
+const { ethers } = require('hardhat')
+const { deployContracts, reverts } = require('../helpers')
 
-let unlock
+let unlock, PublicLock
 let lockTemplate
-let unlockOwner
+let signer
 
-contract('Lock / setLockTemplate', (accounts) => {
+contract('Lock / setLockTemplate', () => {
   beforeEach(async () => {
-    ;({ unlock } = await deployContracts())
-    lockTemplate = await PublicLock.new()
-    unlockOwner = accounts[0]
+    ;({ unlockEthers: unlock } = await deployContracts())
+    
+    PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
+    lockTemplate = await PublicLock.deploy()
+    await lockTemplate.deployed()
+
+    ;[, signer] = await ethers.getSigners()
   })
 
-  describe('configuring the Unlock contract', () => {
-    it('should let the owner configure the Unlock contract', async () => {
-      await unlock.setLockTemplate(lockTemplate.address, {
-        from: unlockOwner,
-      })
-    })
+  
+  it('should set the latest version correctly', async () => {
+    // 1
+    await unlock.addLockTemplate(lockTemplate.address, 1)
+    await unlock.setLockTemplate(lockTemplate.address)
+    assert.equal(
+      await unlock.publicLockAddress(), 
+      lockTemplate.address
+    )
+    assert.equal(
+      await unlock.publicLockLatestVersion(), 1
+    )
 
-    it('should revert if the template was already initialized', async () => {
-      await lockTemplate.initialize(accounts[0], 0, ADDRESS_ZERO, 0, 0, '')
-      await reverts(
-        unlock.setLockTemplate(lockTemplate.address, {
-          from: unlockOwner,
-        })
-      )
-    })
+    // 2    
+    lockTemplate = await PublicLock.deploy()
+    await lockTemplate.deployed()
+    await unlock.addLockTemplate(lockTemplate.address, 2)
+    await unlock.setLockTemplate(lockTemplate.address)
+    assert.equal(
+      await unlock.publicLockAddress(), 
+      lockTemplate.address
+    )
+    assert.equal(
+      await unlock.publicLockLatestVersion(), 2
+    )
+  })
 
-    it('should revert if called by other than the owner', async () => {
-      await reverts(
-        unlock.setLockTemplate(lockTemplate.address, {
-          from: accounts[7],
-        }),
-        'ONLY_OWNER'
-      )
-    })
+  it('should revert if the template is missing', async () => {
+    await reverts(
+      unlock.setLockTemplate(lockTemplate.address),
+      'Unlock__MISSING_LOCK_TEMPLATE'
+    )
+  })
 
-    it('should revert if the lock template address is not a contract', async () => {
-      await reverts(
-        unlock.setLockTemplate(accounts[7], {
-          from: unlockOwner,
-        })
-      )
-    })
+  it('should revert if called by other than the owner', async () => {
+    await reverts(
+      unlock.connect(signer).setLockTemplate(lockTemplate.address),
+      'ONLY_OWNER'
+    )
+  })
+
+  it('should revert if the lock template address is not a contract', async () => {
+    const { address: randomAddress } = await ethers.Wallet.createRandom()
+    await reverts(
+      unlock.connect(signer).setLockTemplate(randomAddress)
+    )
   })
 })
