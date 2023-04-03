@@ -18,8 +18,11 @@ export default async function (
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const unlockSwapPurchaserContract =
-    await this.getUnlockSwapPurchaserContract()
+  const unlockSwapPurchaserContract = swap
+    ? this.getUnlockSwapPurchaserContract({
+        params: this.networkId,
+      })
+    : null
 
   if (!owner) {
     owner = await this.signer.getAddress()
@@ -50,7 +53,7 @@ export default async function (
   ])
 
   const transactionPromise = swap
-    ? unlockSwapPurchaserContract.swapAndCall(
+    ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress,
         swap.amountInMax,

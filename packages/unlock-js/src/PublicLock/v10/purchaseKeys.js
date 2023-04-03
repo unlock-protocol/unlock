@@ -29,11 +29,13 @@ export default async function (options, transactionOptions = {}, callback) {
     totalAmountToApprove,
   } = await getPurchaseKeysArguments.bind(this)(options)
 
-  const unlockSwapPurchaserContract = this.getUnlockSwapPurchaserContract({
-    params: {
-      network: this.networkId,
-    },
-  })
+  const unlockSwapPurchaserContract = swap
+    ? this.getUnlockSwapPurchaserContract({
+        params: {
+          network: this.networkId,
+        },
+      })
+    : null
 
   const purchaseArgs = [keyPrices, owners, referrers, keyManagers, data]
   const callData = lockContract.interface.encodeFunctionData(
@@ -66,7 +68,7 @@ export default async function (options, transactionOptions = {}, callback) {
       }
 
       const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract.estimateGas.swapAndCall(
+        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
             lockAddress,
             swap.srcTokenAddress,
             swap.amountInMax,
@@ -103,7 +105,7 @@ export default async function (options, transactionOptions = {}, callback) {
   const approvalOptions = swap
     ? {
         erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract.address,
+        address: unlockSwapPurchaserContract?.address,
         totalAmountToApprove,
       }
     : {
@@ -115,7 +117,7 @@ export default async function (options, transactionOptions = {}, callback) {
   await approveAllowance.bind(this)(approvalOptions)
 
   const transactionRequestPromise = swap
-    ? unlockSwapPurchaserContract.populateTransaction.swapAndCall(
+    ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress,
         swap.amountInMax,

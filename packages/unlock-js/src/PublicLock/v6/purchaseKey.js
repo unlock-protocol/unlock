@@ -30,11 +30,13 @@ export default async function (
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const unlockSwapPurchaserContract = this.getUnlockSwapPurchaserContract({
-    params: {
-      network: this.networkId,
-    },
-  })
+  const unlockSwapPurchaserContract = swap
+    ? this.getUnlockSwapPurchaserContract({
+        params: {
+          network: this.networkId,
+        },
+      })
+    : null
 
   if (!owner) {
     owner = await this.signer.getAddress()
@@ -84,7 +86,7 @@ export default async function (
   const approvalOptions = swap
     ? {
         erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract.address,
+        address: unlockSwapPurchaserContract?.address,
         totalAmountToApprove: actualAmount,
       }
     : {
@@ -111,7 +113,7 @@ export default async function (
       }
 
       const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract.estimateGas.swapAndCall(
+        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
             lockAddress,
             swap.srcTokenAddress,
             swap.amountInMax,
@@ -146,7 +148,7 @@ export default async function (
   }
 
   const transactionPromise = swap
-    ? unlockSwapPurchaserContract.swapAndCall(
+    ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress,
         swap.amountInMax,
