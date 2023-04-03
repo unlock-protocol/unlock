@@ -78,7 +78,7 @@ export default async function (
 
   const purchaseArgs = [actualAmount, owner, referrer, data]
   const callData = lockContract.interface.encodeFunctionData(
-    'purchaseFor',
+    'purchase',
     purchaseArgs
   )
 
