@@ -83,8 +83,8 @@ export const resolveMethodCall = (result: MethodCallResult) => {
   callback(result.error, result.response)
 }
 
-export const resolveOnEnable = () => {
-  enabled()
+export const resolveOnEnable = (accounts: string[]) => {
+  enabled(accounts)
 }
 
 export const resolveOnEvent = (name: string) => {

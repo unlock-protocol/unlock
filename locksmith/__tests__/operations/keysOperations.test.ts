@@ -6,8 +6,9 @@ import { loginRandomUser } from '../test-helpers/utils'
 import app from '../app'
 import { vi, expect, describe, it } from 'vitest'
 const network = 4
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
+
 const lock = {
   address: '0xxee',
   name: 'Alice in Borderlands',
@@ -102,13 +103,7 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 
 vi.mock('../../src/graphql/datasource/keysByQuery', () => {
   return {
-    keysByQuery: vi.fn().mockImplementation(() => {
-      return {
-        get: vi.fn().mockImplementation(() => {
-          return Promise.resolve([lock])
-        }),
-      }
-    }),
+    keysByQuery: async () => Promise.resolve([lock]),
   }
 })
 
@@ -243,7 +238,6 @@ describe('keysOperations operations', () => {
         {
           address: '0xxee',
           name: 'Alice in Borderlands',
-          owner: '0x445',
           keys: [],
         },
         []

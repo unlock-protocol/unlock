@@ -1,19 +1,28 @@
 import { Op } from 'sequelize'
 import { networks } from '@unlock-protocol/networks'
-import { Lock } from '../../graphql/datasource'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_LOCKS } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import { logger } from '../../logger'
+import { OrderDirection, SubgraphService } from '@unlock-protocol/unlock-js'
+import { LockOrderBy } from '@unlock-protocol/unlock-js'
 
 const FETCH_LIMIT = 25
 
 async function fetchUnprocessedLocks(network: number, page = 0) {
-  const lockSource = new Lock(network)
-  const locks = await lockSource.getLocks({
-    first: FETCH_LIMIT,
-    skip: page ? page * FETCH_LIMIT : 0,
-  })
+  const subgraph = new SubgraphService()
+
+  const locks = await subgraph.locks(
+    {
+      first: FETCH_LIMIT,
+      skip: page ? page * FETCH_LIMIT : 0,
+      orderBy: LockOrderBy.CreatedAtBlock,
+      orderDirection: OrderDirection.Desc,
+    },
+    {
+      networks: [network],
+    }
+  )
 
   const lockIds = locks.map((lock: any) => lock.id)
   const processedLocks = await ProcessedHookItem.findAll({

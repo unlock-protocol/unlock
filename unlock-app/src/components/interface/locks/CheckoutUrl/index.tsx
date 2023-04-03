@@ -19,6 +19,7 @@ import {
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
+import { useQuery } from '@tanstack/react-query'
 const Header = () => {
   return (
     <header className="flex flex-col gap-4">
@@ -37,10 +38,30 @@ export const CheckoutUrlPage = () => {
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const { getIsRecurringPossible } = useLockSettings()
+  const {
+    isPlaceholderData: isRecurringSettingPlaceholder,
+    data: recurringSetting,
+  } = useQuery(
+    ['isRecurringPossible', network, lockAddress],
+    async () => {
+      return getIsRecurringPossible({
+        lockAddress: lockAddress!.toString(),
+        network: Number(network!),
+      })
+    },
+    {
+      placeholderData: {
+        isRecurringPossible: false,
+        oneYearRecurring: 0,
+        gasRefund: 0,
+      },
+      enabled: Boolean(network && lockAddress),
+    }
+  )
 
   const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
     id: null as null | string,
-    name: 'default',
+    name: 'config',
     config: {
       locks:
         network && lockAddress
@@ -58,17 +79,10 @@ export const CheckoutUrlPage = () => {
 
   // retrieve recurringPayments when lock is present in url
   useEffect(() => {
-    if (!lockAddress && !network) return
+    if ((!lockAddress && !network) || isRecurringSettingPlaceholder) return
     const getDefaultConfig = async (): Promise<void> => {
-      // get recurring default value
-      const { isRecurringPossible = false, oneYearRecurring } =
-        await getIsRecurringPossible({
-          lockAddress: lockAddress as string,
-          network: Number(network),
-        })
-
-      const recurringPayments = isRecurringPossible
-        ? oneYearRecurring
+      const recurringPayments = recurringSetting?.isRecurringPossible
+        ? recurringSetting.oneYearRecurring
         : undefined
 
       setCheckoutConfig((state) => {
@@ -87,18 +101,12 @@ export const CheckoutUrlPage = () => {
       })
     }
     getDefaultConfig()
-  }, [])
+  }, [lockAddress, network, isRecurringSettingPlaceholder, recurringSetting])
 
-  const DEFAULT_CONFIG = useMemo(async () => {
-    // get recurring default value
-    const { isRecurringPossible = false, oneYearRecurring } =
-      await getIsRecurringPossible({
-        lockAddress: lockAddress as string,
-        network: Number(network),
-      })
-
-    const recurringPayments = isRecurringPossible ? oneYearRecurring : undefined
-
+  const DEFAULT_CONFIG = useMemo(() => {
+    const recurringPayments = recurringSetting?.isRecurringPossible
+      ? recurringSetting.oneYearRecurring
+      : undefined
     return {
       locks:
         network && lockAddress
@@ -113,9 +121,9 @@ export const CheckoutUrlPage = () => {
       pessimistic: true,
       skipRecipient: true,
     } as PaywallConfig
-  }, [getIsRecurringPossible, lockAddress, network])
+  }, [recurringSetting, lockAddress, network])
 
-  const { data: checkoutConfigList, refetch: refetchConfig } =
+  const { data: checkoutConfigList, refetch: refetchConfigList } =
     useCheckoutConfigsByUser()
 
   const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
@@ -137,9 +145,9 @@ export const CheckoutUrlPage = () => {
         name: updated.name,
         config: updated.config as PaywallConfig,
       })
-      await refetchConfig()
+      await refetchConfigList()
     },
-    [checkoutConfig, updateConfig, refetchConfig]
+    [checkoutConfig, updateConfig, refetchConfigList]
   )
 
   const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
@@ -150,20 +158,19 @@ export const CheckoutUrlPage = () => {
         return
       }
       await removeConfig(checkoutConfig.id)
-      const { data: list } = await refetchConfig()
+      const { data: list } = await refetchConfigList()
       const result = list?.[0]
-      if (!result) return
       setCheckoutConfig({
-        id: result.id,
-        name: result.name,
-        config: (result.config as PaywallConfig) || DEFAULT_CONFIG,
+        id: result?.id || null,
+        name: result?.name || 'config',
+        config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
       })
       setDeleteConfirmation(false)
     },
     [
       checkoutConfig,
       removeConfig,
-      refetchConfig,
+      refetchConfigList,
       DEFAULT_CONFIG,
       setDeleteConfirmation,
     ]
@@ -263,22 +270,33 @@ export const CheckoutUrlPage = () => {
           <div className="flex items-center w-full gap-4 p-2">
             <div className="w-full">
               <ConfigComboBox
+                disabled={isConfigUpdating}
                 items={
                   (checkoutConfigList as unknown as CheckoutConfig[]) ||
                   ([] as CheckoutConfig[])
                 }
-                onChange={(value) => {
-                  setCheckoutConfig({
-                    id: value.id,
-                    name: value.name,
-                    config: value.config || DEFAULT_CONFIG,
-                  })
+                onChange={async ({ config, ...rest }) => {
+                  const option = {
+                    ...rest,
+                    config: config || DEFAULT_CONFIG,
+                  }
+                  setCheckoutConfig(option)
+                  if (!option.id) {
+                    const response = await updateConfig(option)
+                    setCheckoutConfig({
+                      id: response.id,
+                      config: response.config as PaywallConfig,
+                      name: response.name,
+                    })
+                    await refetchConfigList()
+                  }
                 }}
                 value={checkoutConfig}
               />
             </div>
             <Button
               loading={isConfigUpdating}
+              disabled={isRecurringSettingPlaceholder}
               iconLeft={<SaveIcon />}
               onClick={onConfigSave}
               size="small"
