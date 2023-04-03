@@ -31,7 +31,6 @@ export const goerli: NetworkConfig = {
       `https://testnets.opensea.io/assets/goerli/${lockAddress}/${tokenId}`,
     collectionUrl: (lockAddress) =>
       `https://testnets.opensea.io/assets/goerli/${lockAddress}`,
-    profileUrl: (address) => `https://testnets.opensea.io/${address}`,
   },
   description: 'Main Ethereum test network. Do not use for production.',
   faucet: 'https://goerlifaucet.com/',

@@ -32,7 +32,6 @@ export const optimism: NetworkConfig = {
       `https://opensea.io/assets/optimism/${_lockAddress}/${_tokenId}`,
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/optimism/${lockAddress}`,
-    profileUrl: (address) => `https://opensea.io/${address}`,
   },
   nativeCurrency: {
     name: 'Ether',

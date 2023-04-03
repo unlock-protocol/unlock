@@ -29,7 +29,6 @@ export const mainnet: NetworkConfig = {
     tokenUrl: (lockAddress, tokenId) =>
       `https://opensea.io/assets/${lockAddress}/${tokenId}`,
     collectionUrl: (lockAddress) => `https://opensea.io/assets/${lockAddress}`,
-    profileUrl: (address) => `https://opensea.io/${address}`,
   },
   nativeCurrency: {
     name: 'Ether',
