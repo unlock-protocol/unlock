@@ -29,7 +29,11 @@ task('upgrade', 'Upgrade an existing contract with a new implementation (no mult
 task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
   .addParam('contract', 'The contract path')
   .addParam('proxy', 'The proxy contract address')
-  .setAction(async ({ contract, proxy }, { ethers, run }) => {
+  .addOptionalParam(
+    'contractVersion',
+    'If set, will fetch the contract version from contracts package'
+  )
+  .setAction(async ({ contract, proxy, contractVersion }, { ethers, run }) => {
     // first compile latest version
     await run('compile')
 
@@ -45,6 +49,7 @@ task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
     await prepareUpgrade({
       proxyAddress: proxy,
       contractName,
+      contractVersion
     })
   })
 
