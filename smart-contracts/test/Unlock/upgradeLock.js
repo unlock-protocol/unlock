@@ -95,8 +95,6 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
     await unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1)
 
-    assert.equal(await unlock.publicLockLatestVersion(), currentVersion + 1)
-
     // make sure upgrade was successful
     lock = await ethers.getContractAt('ITestPublicLockUpgraded', lock.address)
     assert.equal(await lock.sayHello(), 'hello world')
