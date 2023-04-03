@@ -1,5 +1,9 @@
 # Changes
 
+# 0.35.0
+
+- Add support for `swap` param in `purchaseKey` and `purchaseKeys` for swap and pay.
+
 # 0.34.1
 
 - add support for `setKeyManagerOf` to walletService
