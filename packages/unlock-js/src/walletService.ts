@@ -3,9 +3,7 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { UnlockSwapPurchaserABI } from './UnlockSwapPurchaserABI'
-import approveAllowance from './PublicLock/utils/approveAllowance'
-import { ZERO } from './constants'
+import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
