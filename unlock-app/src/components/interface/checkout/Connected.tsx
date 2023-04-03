@@ -211,8 +211,8 @@ export function Connected({
 
   useEffect(() => {
     if (!account) {
-      console.log('Not connected')
-    } else console.log(`Connected as ${account}`)
+      console.debug('Not connected')
+    } else console.debug(`Connected as ${account}`)
   }, [account])
 
   if (autoconnect) {

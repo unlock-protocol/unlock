@@ -163,7 +163,7 @@ export class Paywall {
   }
 
   shakeHands = async (unlockAppUrl: string) => {
-    console.log(`Connecting to ${unlockAppUrl}`)
+    console.debug(`Connecting to ${unlockAppUrl}`)
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
