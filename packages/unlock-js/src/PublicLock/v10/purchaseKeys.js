@@ -126,7 +126,7 @@ export default async function (options, transactionOptions = {}, callback) {
         callData,
         transactionOptions
       )
-    : lockContract.populateTransaction.purchase(
+    : lockContract.populateTransaction.purchase( // TODO consider passing `callData` directly!
         keyPrices,
         owners,
         referrers,
