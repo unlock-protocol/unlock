@@ -59,7 +59,6 @@ export default async function (address, provider) {
     update.currencyDecimals = 18
   } else {
     // Otherwise need to get the erc20's decimal and convert from there, as well as the symbol
-    // TODO : make these calls in parallel
     const [erc20Decimals, erc20Balance, erc20Symbol] = await Promise.all([
       getErc20Decimals(update.tokenAddress, provider),
       getErc20BalanceForAddress(update.tokenAddress, address, provider),
