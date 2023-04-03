@@ -209,6 +209,12 @@ export function Connected({
     }
   }, [autoconnect, authenticateWithProvider])
 
+  useEffect(() => {
+    if (!account) {
+      console.log('Not connected')
+    } else console.log(`Connected as ${account}`)
+  }, [account])
+
   if (autoconnect) {
     return <div className="space-y-2">{children}</div>
   }
