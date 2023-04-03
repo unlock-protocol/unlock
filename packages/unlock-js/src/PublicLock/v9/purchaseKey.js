@@ -37,12 +37,6 @@ export default async function (
       })
     : null
 
-  const purchaseArgs = [actualAmount, owner, referrer, keyManager, data]
-  const callData = lockContract.interface.encodeFunctionData(
-    'purchase',
-    purchaseArgs
-  )
-
   if (!owner) {
     owner = await this.signer.getAddress()
   }
@@ -75,10 +69,17 @@ export default async function (
       this.provider
     )
   }
+
   // tx options
   if (!erc20Address || erc20Address === ZERO) {
     transactionOptions.value = actualAmount
   }
+
+  const purchaseArgs = [actualAmount, owner, referrer, keyManager, data]
+  const callData = lockContract.interface.encodeFunctionData(
+    'purchase',
+    purchaseArgs
+  )
 
   // If the lock is priced in ERC20, we need to approve the transfer
   const approvalOptions = swap
