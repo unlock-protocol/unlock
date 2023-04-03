@@ -11,17 +11,17 @@ interface CertificationLandingProps {
 const customers = [
   {
     name: 'Web3 Academy',
-    link: '',
+    link: 'https://w3academy.io',
     image: '/images/illustrations/certifications/logo-web3-academy.svg',
   },
   {
     name: 'CDAA',
-    link: '',
+    link: 'https://unlock-protocol.com/blog/cdaa-unlock-case-study',
     image: '/images/illustrations/certifications/logo-cdaa.svg',
   },
   {
     name: 'Hay There Social Media',
-    link: '',
+    link: 'https://haytheresocialmedia.com/',
     image: '/images/illustrations/certifications/logo-heytheresocialmedia.svg',
   },
 ]
@@ -75,7 +75,7 @@ export const CertificationLanding = ({
   return (
     <LockDrivenLandingPage
       title={
-        <h1 className="uppercase text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#603DEB] to-[#27C1D6]">
+        <h1 className="uppercase text-4xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#603DEB] to-[#27C1D6]">
           Certifications
           <br />
           show <br />

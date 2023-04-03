@@ -95,22 +95,25 @@ export const LockDrivenLandingPage = ({
 
       <section className="absolute left-0 flex flex-col items-center content-center justify-center w-screen py-8 text-white bg-black justify-items-center">
         <h1 className="text-xl font-semibold">Used by</h1>
-        <ul className="flex flex-row my-8">
+        <ul className="flex gap-4 my-8 md:gap-0 md:flex-row">
           {customers?.map(({ link, image, name }: Customer) => {
             return (
               <li
                 key={name}
-                className="flex items-center w-24 h-24 mx-2 text-center rounded-full md:mx-12"
+                className="flex flex-col items-center h-24 max-w-xs gap-4 mx-2 text-center rounded-full md:mx-12"
               >
                 <Link target="_blank" href={link}>
-                  <Image
-                    width="100"
-                    height="100"
-                    alt={name}
-                    src={image}
-                  ></Image>
-                  <h4 className="mt-auto">{name}</h4>
+                  <div className="flex h-10 md:h-20">
+                    <Image
+                      width={100}
+                      height={100}
+                      className="object-contain w-full h-full mx-auto"
+                      src={image}
+                      alt={name}
+                    />
+                  </div>
                 </Link>
+                <h4 className="mt-auto text-xs md:text-base">{name}</h4>
               </li>
             )
           })}
