@@ -32,6 +32,7 @@ export default async function getPurchaseKeysArguments({
     (_keyPrices || defaultArray).map(async (kp) => {
       if (!kp) {
         // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+        // TODO: consider using `keyPurchasePriceFor`
         return await lockContract.keyPrice()
       }
       return formatKeyPrice(kp, erc20Address, decimals, this.provider)
