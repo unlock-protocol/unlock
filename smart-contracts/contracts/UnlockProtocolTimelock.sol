@@ -14,7 +14,8 @@ contract UnlockProtocolTimelock is
     __TimelockController_init(
       minDelay,
       proposers,
-      executors
+      executors,
+      msg.sender // param added when buymping to OZ 4.8.2 - not present in Unlock's deployed version
     );
   }
 }
