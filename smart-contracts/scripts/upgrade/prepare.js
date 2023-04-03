@@ -1,4 +1,4 @@
-const { ethers, upgrades } = require('hardhat')
+const { ethers, run, upgrades } = require('hardhat')
 
 const {
   copyAndBuildContractAtVersion,
@@ -21,6 +21,10 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract)
 
   console.log(`${contractName} implementation deployed at: ${implementation}`)
+
+  await run('verify:verify', {
+    address: implementation
+  })
 
   if(contractVersion) {
     await cleanupContractVersions()
