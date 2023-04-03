@@ -581,7 +581,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * @notice Upgrade the PublicLock template used for future calls to `createLock`.
+   * @notice Set the default PublicLock template to use when creating locks
    */
   function setLockTemplate(
     address _publicLockAddress
