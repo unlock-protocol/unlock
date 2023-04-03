@@ -686,7 +686,4 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       }
     }
   }
-
-  // required to withdraw WETH
-  receive() external payable {}
 }
