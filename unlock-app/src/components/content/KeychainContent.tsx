@@ -29,7 +29,7 @@ export const KeychainContent = () => {
 
             <Tooltip tip="View Opensea Profile" label="View Opensea Profile">
               <a
-                href={`https://testnets.opensea.io/${account}`}
+                href={`https://opensea.io/${account}`}
                 rel="noreferrer"
                 target="_blank"
                 className="hover:text-brand-ui-primary"
