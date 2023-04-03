@@ -9637,7 +9637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-core-sdk@npm:^3.3.2":
+"@safe-global/safe-core-sdk@npm:3.3.2":
   version: 3.3.2
   resolution: "@safe-global/safe-core-sdk@npm:3.3.2"
   dependencies:
@@ -9661,7 +9661,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-ethers-lib@npm:^1.9.2":
+"@safe-global/safe-ethers-lib@npm:1.9.2":
   version: 1.9.2
   resolution: "@safe-global/safe-ethers-lib@npm:1.9.2"
   dependencies:
@@ -9672,7 +9672,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-service-client@npm:^2.0.0":
+"@safe-global/safe-service-client@npm:2.0.0":
   version: 2.0.0
   resolution: "@safe-global/safe-service-client@npm:2.0.0"
   dependencies:
@@ -15270,9 +15270,9 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": 1.22.1
     "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.22.0
-    "@safe-global/safe-core-sdk": ^3.3.2
-    "@safe-global/safe-ethers-lib": ^1.9.2
-    "@safe-global/safe-service-client": ^2.0.0
+    "@safe-global/safe-core-sdk": 3.3.2
+    "@safe-global/safe-ethers-lib": 1.9.2
+    "@safe-global/safe-service-client": 2.0.0
     "@uniswap/smart-order-router": 3.5.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
