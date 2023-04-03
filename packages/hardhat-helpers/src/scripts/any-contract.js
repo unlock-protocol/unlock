@@ -7,10 +7,12 @@ async function main({ contract }) {
     throw Error(`Missing contract at ${contract}`)
   }
 
-  const contractName = path.basename(contract).replace('.sol', '')
+  const contractName = path.basename(contract).replace('.sol', '').split('V')[0]
+  const qualified = `${contract}:${contractName}`
+  console.log(`Deploying ${qualified}...`)
   await run('compile')
 
-  const Factory = await ethers.getContractFactory(contractName)
+  const Factory = await ethers.getContractFactory(qualified)
   const instance = await Factory.deploy()
   await instance.deployed()
 

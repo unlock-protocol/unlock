@@ -8,9 +8,6 @@
     "test": "test"
   },
   "dependencies": {
-    "@gnosis.pm/safe-core-sdk": "3.2.0",
-    "@gnosis.pm/safe-ethers-lib": "1.7.0",
-    "@gnosis.pm/safe-service-client": "1.4.0",
     "@nomiclabs/hardhat-ethers": "2.2.2",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
     "@nomiclabs/hardhat-truffle5": "2.0.7",
@@ -21,6 +18,9 @@
     "@openzeppelin/hardhat-upgrades": "1.22.1",
     "@openzeppelin/test-helpers": "0.5.16",
     "@openzeppelin/upgrades-core": "1.22.0",
+    "@safe-global/safe-core-sdk": "3.3.2",
+    "@safe-global/safe-ethers-lib": "1.9.2",
+    "@safe-global/safe-service-client": "2.0.0",
     "@uniswap/smart-order-router": "3.5.0",
     "@uniswap/v2-core": "1.0.1",
     "@uniswap/v2-periphery": "1.1.0-beta.0",

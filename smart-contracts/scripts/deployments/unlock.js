@@ -36,11 +36,9 @@ async function main({ unlockVersion } = {}) {
       pastUnlockPath,
       path.resolve(contractsPath, `UnlockV${unlockVersion}.sol`)
     )
+
     // re-compile contract
     await run('compile')
-
-    // delete .sol file now that we have artifact
-    await fs.remove(contractsPath)
 
     // get factory using fully qualified path
     Unlock = await ethers.getContractFactory(
@@ -53,21 +51,28 @@ async function main({ unlockVersion } = {}) {
 
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
-    unsafeAllow: ['delegatecall']
   })
   await unlock.deployed()
 
   // eslint-disable-next-line no-console
+  const implementation = await getImplementationAddress(
+    ethers.provider,
+    unlock.address
+  )
   console.log(
     `UNLOCK SETUP > Unlock proxy deployed to: ${unlock.address} (tx: ${unlock.deployTransaction.hash}) `,
-    `- implementation at: ${await getImplementationAddress(
-      ethers.provider,
-      unlock.address
-    )}`
+    `- implementation at: ${implementation}`
   )
 
-  // delete remaining artifact if using a packaged version
+  const { chainId } = await ethers.provider.getNetwork()
+  if(chainId !== 31337) {
+    await run('verify:verify', { address: implementation })
+  }
+
+  // delete remaining files if we are using a packaged version
   if (unlockVersion) {
+    // delete .sol file
+    await fs.remove(contractsPath)
     await fs.remove(artifactsPath)
   }
 
