@@ -109,7 +109,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__ALREADY_DEPLOYED();
   error Unlock__MISSING_PROXY_ADMIN();
   error Unlock__MISSING_LOCK_TEMPLATE();
-  error Unlock__LockDoesNotExist(address lockAddress);
+  error Unlock__MISSING_LOCK(address lockAddress);
 
   // Events
   event NewLock(
@@ -686,7 +686,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             yieldedDiscountTokens
           );
       } else {
-        revert Unlock__LockDoesNotExist(msg.sender);
+        revert Unlock__MISSING_LOCK(msg.sender);
       }
     }
   }
