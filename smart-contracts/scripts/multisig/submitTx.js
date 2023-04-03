@@ -48,14 +48,11 @@ async function main({ safeAddress, tx, signer }) {
   // Use Gnosis Safe v1+ with SDK
   const ethAdapter = new EthersAdapter({
     ethers,
-    signer,
+    signerOrProvider: signer,
   })
 
   // get Gnosis service
-  console.log(await ethAdapter.getSignerAddress());
-  console.log(await ethAdapter.getChainId())
-  // const id = await ethAdapter.getChainId()
-  const id = chainId
+  const id = await ethAdapter.getChainId()
   const txServiceUrl = gnosisServiceURLs[id]
   console.log(`Using Gnosis Safe service at ${txServiceUrl} - chain ${id}`)
   
