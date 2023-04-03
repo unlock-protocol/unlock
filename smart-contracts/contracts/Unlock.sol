@@ -589,6 +589,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     if(_publicLockVersions[_publicLockAddress] == 0) {
       revert Unlock__MISSING_LOCK_TEMPLATE();
     }
+    // set latest version
+    publicLockLatestVersion = _publicLockVersions[_publicLockAddress];
+    // set corresponding template
     publicLockAddress = _publicLockAddress;
     emit SetLockTemplate(_publicLockAddress);
   }
