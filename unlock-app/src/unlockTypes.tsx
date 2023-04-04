@@ -122,7 +122,8 @@ export interface Lock {
   key: Key
   currencyContractAddress: string | null
   currencyDecimals?: number | null
-  currrencySymbol?: string | null
+  currencySymbol?: string | null
+  currencyName?: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number

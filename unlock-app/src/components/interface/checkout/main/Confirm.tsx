@@ -30,6 +30,7 @@ import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
+import { ethers } from 'ethers'
 
 interface Props {
   injectedProvider: unknown
@@ -91,7 +92,6 @@ export function Confirm({
   const recaptchaRef = useRef<any>()
   const { captureChargeForCard } = useAccount(account!)
   const [isConfirming, setIsConfirming] = useState(false)
-
   const {
     lock,
     quantity,
@@ -112,6 +112,7 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
+  const swap = payment?.method === 'swap_and_purchase'
 
   const currencyContractAddress =
     payment.method === 'swap_and_purchase'
@@ -240,10 +241,9 @@ export function Confirm({
     isUSDPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
-  const symbol =
-    payment.method === 'swap_and_purchase'
-      ? payment.route.quote.currency.symbol
-      : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
+  const symbol = swap
+    ? payment.route.quote.currency.symbol
+    : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
 
   const formattedData = getLockProps(
     lock,
@@ -386,6 +386,26 @@ export function Confirm({
         }
       }
 
+      const swap =
+        payment.method === 'swap_and_purchase'
+          ? {
+              srcTokenAddress: payment.route.quote.currency.address,
+              uniswapRouter: payment.route.swapRouter,
+              swapCallData: payment.route.swapCalldata,
+              amountInMax: ethers.utils
+                .parseUnits(
+                  payment.route
+                    .convertToQuoteToken(pricingData!.total.toString())
+                    .toFixed(4),
+                  payment.route.quote.currency.decimals
+                )
+                // 1% slippage buffer
+                .mul(101)
+                .div(100)
+                .toString(),
+            }
+          : undefined
+
       const walletService = await getWalletService(lockNetwork)
       await walletService.purchaseKeys(
         {
@@ -397,15 +417,7 @@ export function Confirm({
           recurringPayments,
           referrers,
           totalApproval,
-          swap:
-            payment.method === 'swap_and_purchase'
-              ? {
-                  srcTokenAddress: payment.route.quote.currency.address,
-                  uniswapRouter: payment.route.swapRouter,
-                  swapCallData: payment.route.swapCalldata,
-                  amountInMax: payment.route.amountInMax,
-                }
-              : undefined,
+          swap,
         },
         {} /** Transaction params */,
         onErrorCallback
@@ -621,9 +633,15 @@ export function Confirm({
                       </div>
 
                       <div className="font-bold">
-                        {item.amount <= 0
+                        {(item.amount <= 0
                           ? 'FREE'
-                          : item.amount.toLocaleString() + ' ' + symbol}
+                          : swap
+                          ? payment.route
+                              .convertToQuoteToken(item.amount.toString())
+                              .toFixed(2)
+                          : item.amount.toLocaleString()) +
+                          ' ' +
+                          symbol}
                       </div>
                     </div>
                   )

@@ -3,7 +3,7 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
-import { PaywallConfig } from '~/unlockTypes'
+import { Lock, PaywallConfig } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 
 // as they only extend it with properties that may be undefined.
@@ -56,7 +56,7 @@ export const lockKeysAvailable = ({
 }
 
 export const lockTickerSymbol = (
-  lock: LockTickerSymbolLock,
+  lock: Partial<Lock>,
   baseCurrencySymbol: string
 ) => {
   if (lock.currencyContractAddress) {

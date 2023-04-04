@@ -10,7 +10,7 @@ import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { Fragment, useMemo } from 'react'
+import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
@@ -18,11 +18,11 @@ import {
 import { useCheckoutSteps } from './useCheckoutItems'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
-import { UniswapRoute, useUniswapRoutes } from '~/hooks/useUniswapRoutes'
+import {
+  useUniswapRoutes,
+  useUniswapRoutesUsingLock,
+} from '~/hooks/useUniswapRoutes'
 import { useBalance } from '~/hooks/useBalance'
-import { Token } from '@uniswap/sdk-core'
-import { nativeOnChain } from '@uniswap/smart-order-router'
-import { ethers } from 'ethers'
 import LoadingIcon from '../../Loading'
 interface Props {
   injectedProvider: unknown
@@ -52,7 +52,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
 
-  const cryptoPrice = Number(
+  const price = Number(
     parseFloat(lock.keyPrice) * recipients.length
   ).toLocaleString()
 
@@ -82,42 +82,17 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const networkConfig = config.networks[lock.network]
 
-  const uniswapRoutes = useMemo(() => {
-    return networkConfig?.tokens
-      ?.filter((item: any) =>
-        ['usdc', 'usdt'].includes(item.symbol?.toLowerCase()?.trim())
-      )
-      .map((item: any) => {
-        return {
-          tokenIn: new Token(
-            lock.network,
-            item.address,
-            item.decimals,
-            item.symbol,
-            item.name
-          ),
-          tokenOut: lock.currencyContractAddress
-            ? new Token(
-                lock.network,
-                lock.currencyContractAddress,
-                lock.currencyDecimals || 18,
-                lock.currrencySymbol || ''
-              )
-            : nativeOnChain(lock.network),
-          amountOut: ethers.utils
-            .parseUnits(cryptoPrice, lock.currencyDecimals || 18)
-            .toString(),
-          recipient: networkConfig?.swapPurchaser,
-          network: lock.network,
-        } as UniswapRoute
-      })
-  }, [lock, networkConfig, cryptoPrice])
+  const uniswapRoutes = useUniswapRoutesUsingLock({
+    lock,
+    price: price,
+  })
 
-  const isSwapAndPurchaseEnabled = parseFloat(cryptoPrice) > 0
+  const isSwapAndPurchaseEnabled =
+    parseFloat(price) > 0 && uniswapRoutes && uniswapRoutes.length > 0
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
-      routes: uniswapRoutes,
+      routes: uniswapRoutes!,
       enabled: isSwapAndPurchaseEnabled,
     })
 
@@ -172,7 +147,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay via cryptocurrency </h3>
-                  <AmountBadge amount={cryptoPrice} symbol={symbol} />
+                  <AmountBadge amount={price} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
@@ -194,6 +169,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
             {enableCreditCard && (
               <button
+                disabled={balance?.isGasPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -253,7 +229,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
             {isUniswapRoutesLoading && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
-                <LoadingIcon size={16} /> loading more options...
+                <LoadingIcon size={16} /> Loading payment options...
               </div>
             )}
             {!isUniswapRoutesLoading &&
