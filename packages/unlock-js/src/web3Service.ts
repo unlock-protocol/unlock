@@ -9,7 +9,13 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core'
+import {
+  CurrencyAmount,
+  NativeCurrency,
+  Percent,
+  Token,
+  TradeType,
+} from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
 
 /**
@@ -992,8 +998,8 @@ export default class Web3Service extends UnlockService {
     params: { tokenOut, amountOut, recipient, tokenIn, network },
   }: {
     params: {
-      tokenIn: Token
-      tokenOut: Token
+      tokenIn: Token | NativeCurrency
+      tokenOut: Token | NativeCurrency
       amountOut: string
       recipient: string
       network: number
@@ -1023,11 +1029,22 @@ export default class Web3Service extends UnlockService {
       throw new Error('No route found')
     }
 
-    const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } =
-      swapResponse
+    const {
+      methodParameters,
+      quote,
+      quoteGasAdjusted,
+      estimatedGasUsedUSD,
+      trade,
+    } = swapResponse
     // parse quote as BigNumber
     const amountInMax = utils.currencyAmountToBigNumber(quote)
     const { calldata: swapCalldata, value, to: swapRouter } = methodParameters!
+    const ratio = 1 / parseFloat(trade.executionPrice.toSignificant(6))
+
+    const convertToQuoteToken = (value: string) => {
+      const amount = parseFloat(value)
+      return amount * ratio
+    }
 
     return {
       swapCalldata,
@@ -1035,6 +1052,8 @@ export default class Web3Service extends UnlockService {
       amountInMax,
       swapRouter,
       quote,
+      trade,
+      convertToQuoteToken,
       quoteGasAdjusted,
       estimatedGasUsedUSD,
     }
