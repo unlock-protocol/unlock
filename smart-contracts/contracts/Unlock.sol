@@ -110,6 +110,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__MISSING_PROXY_ADMIN();
   error Unlock__MISSING_LOCK_TEMPLATE();
   error Unlock__MISSING_LOCK(address lockAddress);
+  error Unlock__INVALID_AMOUNT();
 
   // Events
   event NewLock(
@@ -691,6 +692,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     }
   }
 
-  // required to withdraw WETH
-  receive() external payable {}
+  // required to receive ETH / withdraw ETH
+  receive() external payable {
+    if(msg.value <= 0){
+      revert Unlock__INVALID_AMOUNT();
+    }
+  }
 }

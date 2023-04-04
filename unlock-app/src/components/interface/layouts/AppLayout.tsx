@@ -4,7 +4,7 @@ import Loading from '../Loading'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
@@ -13,7 +13,7 @@ import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface DashboardLayoutProps {
-  title?: string
+  title?: ReactNode
   description?: React.ReactNode
   children: React.ReactNode
   authRequired?: boolean
@@ -256,7 +256,11 @@ export const AppLayout = ({
               <div className="flex flex-col gap-10">
                 {(title || description) && (
                   <div className="flex flex-col gap-4">
-                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                    {title && typeof title === 'string' ? (
+                      <h1 className="text-4xl font-bold">{title}</h1>
+                    ) : (
+                      title
+                    )}
                     {description && (
                       <div className="w-full text-base text-gray-700">
                         {description}

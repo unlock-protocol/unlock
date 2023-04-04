@@ -87,22 +87,25 @@ export class Paywall {
     this.loadCache()
   }
 
-  authenticate = () => {
+  authenticate = (unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      this.shakeHands()
+      this.shakeHands(unlockUrl || unlockAppUrl)
     }
     this.sendOrBuffer('authenticate', {})
   }
 
-  loadCheckoutModal = (config?: PaywallConfig) => {
+  loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      this.shakeHands()
+      this.shakeHands(unlockUrl || unlockAppUrl)
     }
-    this.sendOrBuffer('setConfig', config || this.paywallConfig)
+    this.sendOrBuffer(
+      'setConfig',
+      injectProviderInfo(config || this.paywallConfig, this.provider)
+    )
   }
 
   getUserAccountAddress = () => {
@@ -112,7 +115,10 @@ export class Paywall {
   resetConfig = (config: PaywallConfig) => {
     this.paywallConfig = injectProviderInfo(config, this.provider)
     this.checkKeysAndLock()
-    this.sendOrBuffer('setConfig', config || this.paywallConfig)
+    this.sendOrBuffer(
+      'setConfig',
+      injectProviderInfo(config || this.paywallConfig, this.provider)
+    )
   }
 
   getState = () => {
@@ -156,8 +162,8 @@ export class Paywall {
     return this.lockPage()
   }
 
-  shakeHands = async () => {
-    console.log(`Connecting to now ${unlockAppUrl}`)
+  shakeHands = async (unlockAppUrl: string) => {
+    console.debug(`Connecting to ${unlockAppUrl}`)
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
