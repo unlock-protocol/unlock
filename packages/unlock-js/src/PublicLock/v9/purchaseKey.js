@@ -1,5 +1,5 @@
 import { ZERO } from '../../constants'
-import { approveTransfer, getAllowance } from '../../erc20'
+import approveAllowance from '../utils/approveAllowance'
 import formatKeyPrice from '../utils/formatKeyPrice'
 /**
  * Purchase key function. This implementation requires the following
@@ -23,11 +23,19 @@ export default async function (
     decimals,
     referrer,
     data,
+    swap,
   },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
+  const unlockSwapPurchaserContract = swap
+    ? this.getUnlockSwapPurchaserContract({
+        params: {
+          network: this.networkId,
+        },
+      })
+    : null
 
   if (!owner) {
     owner = await this.signer.getAddress()
@@ -62,27 +70,31 @@ export default async function (
     )
   }
 
-  if (erc20Address && erc20Address !== ZERO) {
-    const approvedAmount = await getAllowance(
-      erc20Address,
-      lockAddress,
-      this.provider,
-      this.signer.getAddress()
-    )
-    if (!approvedAmount || approvedAmount.lt(actualAmount)) {
-      await (
-        await approveTransfer(
-          erc20Address,
-          lockAddress,
-          actualAmount,
-          this.provider,
-          this.signer
-        )
-      ).wait()
-    }
-  } else {
+  // tx options
+  if (!erc20Address || erc20Address === ZERO) {
     transactionOptions.value = actualAmount
   }
+
+  const purchaseArgs = [actualAmount, owner, referrer, keyManager, data]
+  const callData = lockContract.interface.encodeFunctionData(
+    'purchase',
+    purchaseArgs
+  )
+
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = swap
+    ? {
+        erc20Address: swap.srcTokenAddress,
+        address: unlockSwapPurchaserContract?.address,
+        totalAmountToApprove: actualAmount,
+      }
+    : {
+        erc20Address,
+        totalAmountToApprove: actualAmount,
+        address: lockAddress,
+      }
+
+  await approveAllowance.bind(this)(approvalOptions)
 
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions.gasLimit) {
@@ -98,14 +110,28 @@ export default async function (
       } else {
         transactionOptions.gasPrice = gasPrice
       }
-      const gasLimit = await lockContract.estimateGas.purchase(
-        actualAmount,
-        owner,
-        referrer,
-        keyManager,
-        data,
-        transactionOptions
-      )
+
+      const gasLimitPromise = swap
+        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
+            lockAddress,
+            swap.srcTokenAddress,
+            swap.amountInMax,
+            swap.uniswapRouter,
+            swap.swapCallData,
+            callData,
+            transactionOptions
+          )
+        : lockContract.estimateGas.purchase(
+            actualAmount,
+            owner,
+            referrer,
+            keyManager,
+            data,
+            transactionOptions
+          )
+
+      const gasLimit = await gasLimitPromise
+
       // Remove the gas prices settings for the actual transaction (the wallet will set them)
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
@@ -122,19 +148,29 @@ export default async function (
     }
   }
 
-  const transactionPromise = lockContract.purchase(
-    actualAmount,
-    owner,
-    referrer,
-    keyManager,
-    data,
-    transactionOptions
-  )
+  const transactionRequestPromise = swap
+    ? unlockSwapPurchaserContract?.swapAndCall(
+        lockAddress,
+        swap.srcTokenAddress,
+        swap.amountInMax,
+        swap.uniswapRouter,
+        swap.swapCallData,
+        callData,
+        transactionOptions
+      )
+    : lockContract.purchase(
+        actualAmount,
+        owner,
+        referrer,
+        keyManager,
+        data,
+        transactionOptions
+      )
 
-  const hash = await this._handleMethodCall(transactionPromise)
+  const hash = await this._handleMethodCall(transactionRequestPromise)
 
   if (callback) {
-    callback(null, hash, await transactionPromise)
+    callback(null, hash, await transactionRequestPromise)
   }
 
   // Let's now wait for the transaction to go thru to return the token id

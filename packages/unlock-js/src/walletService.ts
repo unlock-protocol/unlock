@@ -1,8 +1,9 @@
 import { ethers } from 'ethers'
-import { Lock, WalletServiceCallback, TransactionOptions } from './types'
+import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -12,6 +13,54 @@ interface CreateLockOptions {
   currencyContractAddress?: string | null
   keyPrice?: string | number
   creator?: string
+}
+
+interface PurchaseKeyParams {
+  lockAddress: string
+  owner?: string
+  keyPrice?: string
+  data?: string | null
+  erc20Address?: string
+  decimals?: number
+  recurringPayments?: number
+  referrer?: string
+  totalApproval?: string
+  swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface PurchaseKeysParams {
+  lockAddress: string
+  owners: string[]
+  keyPrices?: string[]
+  data?: string[] | null
+  erc20Address?: string
+  decimals?: number
+  referrers?: (string | null)[]
+  recurringPayments?: number[] | string[]
+  totalApproval?: string
+  keyManagers?: string[]
+  swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface SwapOptions {
+  srcTokenAddress?: string
+  amountInMax: string
+  uniswapRouter: string
+  swapCallData: string
+  callData: string
+}
+
+interface ExtendKeyParams {
+  lockAddress: string
+  tokenId: string
+  referrer?: string
+  data?: string
+  decimals?: number
+  erc20Address?: string
+  keyPrice?: string
+  recurringPayment?: string | number
+  totalApproval?: string
+  swap?: Omit<SwapOptions, 'callData'>
 }
 
 /**
@@ -180,17 +229,7 @@ export default class WalletService extends UnlockService {
    * @param {function} callback : callback invoked with the transaction hash
    */
   async purchaseKey(
-    params: {
-      lockAddress: string
-      owner?: string
-      keyPrice?: string
-      data?: string | null
-      erc20Address?: string
-      decimals?: number
-      recurringPayments?: number
-      referrer?: string
-      totalApproval?: string
-    },
+    params: PurchaseKeyParams,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
@@ -211,18 +250,7 @@ export default class WalletService extends UnlockService {
    * @param {function} callback : callback invoked with the transaction hash
    */
   async purchaseKeys(
-    params: {
-      lockAddress: string
-      owners?: string[]
-      keyPrices?: string[]
-      data?: string[] | null
-      erc20Address?: string
-      decimals?: number
-      referrers?: (string | null)[]
-      recurringPayments?: number[] | string[]
-      totalApproval?: string
-      keyManagers?: string[]
-    },
+    params: PurchaseKeysParams,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
@@ -260,17 +288,7 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async extendKey(
-    params: {
-      lockAddress: string
-      tokenId: string
-      referrer?: string
-      data?: string
-      decimals?: number
-      erc20Address?: string
-      keyPrice?: string
-      recurringPayment?: string | number
-      totalApproval?: string
-    },
+    params: ExtendKeyParams,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
@@ -749,7 +767,11 @@ export default class WalletService extends UnlockService {
       throw new Error('Missing lockAddress')
     }
 
-    if (params.expirationDuration && params.expirationDuration < 1) {
+    if (
+      params.expirationDuration &&
+      typeof params.expirationDuration === 'number' &&
+      params.expirationDuration < 1
+    ) {
       throw new Error('Expiration duration must be greater than 0')
     }
 
@@ -995,5 +1017,24 @@ export default class WalletService extends UnlockService {
       transactionOptions,
       callback
     )
+  }
+  getUnlockSwapPurchaserContract({
+    params: { network },
+  }: {
+    params: { network: number }
+  }) {
+    const networkConfig = this.networks[network]
+    const UnlockSwapPurchaser = networkConfig?.swapPurchaser
+    if (!UnlockSwapPurchaser) {
+      throw new Error('SwapPurchaser not available for this network')
+    }
+    const provider = this.providerForNetwork(network)
+    const swapPurchaserContract = new ethers.Contract(
+      UnlockSwapPurchaser,
+      UnlockSwapPurchaserABI,
+      provider
+    )
+    const swapPurchaser = swapPurchaserContract.connect(this.signer)
+    return swapPurchaser
   }
 }

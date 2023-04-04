@@ -2,6 +2,7 @@
 
 # 0.35.0
 
+- Add support for `swap` param in `purchaseKey` and `purchaseKeys` for swap and pay.
 - add support for Unlock v12
 
 # 0.34.1
