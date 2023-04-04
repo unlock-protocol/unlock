@@ -9,8 +9,8 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core'
-import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
+// import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core'
+// import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -134,7 +134,7 @@ export default class Web3Service extends UnlockService {
     )
 
     const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
-      (d) => ethers.utils.getAddress(d.unlockAddress)
+      (d: any) => ethers.utils.getAddress(d.unlockAddress)
     )
     const isPreviousUnlockContract = previousDeployAddresses.includes(
       lock.unlockContractAddress
@@ -988,55 +988,55 @@ export default class Web3Service extends UnlockService {
     return contract.signers(lockAddress)
   }
 
-  async getUniswapRoute({
-    params: { tokenOut, amountOut, recipient, tokenIn, network },
-  }: {
-    params: {
-      tokenIn: Token
-      tokenOut: Token
-      amountOut: string
-      recipient: string
-      network: number
-    }
-  }) {
-    const provider: any = this.providerForNetwork(network)
-    const router = new AlphaRouter({
-      chainId: network,
-      provider,
-    })
-    const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, amountOut)
-    const routeArgs = [
-      outputAmount,
-      tokenIn,
-      TradeType.EXACT_OUTPUT,
-      {
-        type: SwapType.UNIVERSAL_ROUTER,
-        recipient,
-        slippageTolerance: new Percent(10, 100),
-        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
-      },
-    ] as const
-    // call router
-    const swapResponse = await router.route(...routeArgs)
+  // async getUniswapRoute({
+  //   params: { tokenOut, amountOut, recipient, tokenIn, network },
+  // }: {
+  //   params: {
+  //     tokenIn: Token
+  //     tokenOut: Token
+  //     amountOut: string
+  //     recipient: string
+  //     network: number
+  //   }
+  // }) {
+  //   const provider: any = this.providerForNetwork(network)
+  //   const router = new AlphaRouter({
+  //     chainId: network,
+  //     provider,
+  //   })
+  //   const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, amountOut)
+  //   const routeArgs = [
+  //     outputAmount,
+  //     tokenIn,
+  //     TradeType.EXACT_OUTPUT,
+  //     {
+  //       type: SwapType.UNIVERSAL_ROUTER,
+  //       recipient,
+  //       slippageTolerance: new Percent(10, 100),
+  //       deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
+  //     },
+  //   ] as const
+  //   // call router
+  //   const swapResponse = await router.route(...routeArgs)
 
-    if (!swapResponse) {
-      throw new Error('No route found')
-    }
+  //   if (!swapResponse) {
+  //     throw new Error('No route found')
+  //   }
 
-    const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } =
-      swapResponse
-    // parse quote as BigNumber
-    const amountInMax = utils.currencyAmountToBigNumber(quote)
-    const { calldata: swapCalldata, value, to: swapRouter } = methodParameters!
+  //   const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } =
+  //     swapResponse
+  //   // parse quote as BigNumber
+  //   const amountInMax = utils.currencyAmountToBigNumber(quote)
+  //   const { calldata: swapCalldata, value, to: swapRouter } = methodParameters!
 
-    return {
-      swapCalldata,
-      value,
-      amountInMax,
-      swapRouter,
-      quote,
-      quoteGasAdjusted,
-      estimatedGasUsedUSD,
-    }
-  }
+  //   return {
+  //     swapCalldata,
+  //     value,
+  //     amountInMax,
+  //     swapRouter,
+  //     quote,
+  //     quoteGasAdjusted,
+  //     estimatedGasUsedUSD,
+  //   }
+  // }
 }
