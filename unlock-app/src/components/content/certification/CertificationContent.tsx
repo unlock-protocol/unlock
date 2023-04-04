@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import CertificationDetails from './CertificationDetails'
+import { CertificationDetails } from './CertificationDetails'
 import { CertificationLanding } from './CertificationLanding'
 import { useRouter } from 'next/router'
 import LoadingIcon from '~/components/interface/Loading'
@@ -14,7 +14,7 @@ export const CertificationContent = () => {
   }
 
   const { lockAddress, network, tokenId } = router.query
-  const showDetails = lockAddress && network && tokenId
+  const showDetails = lockAddress && network
 
   const handleCreateCertification = () => {
     router.push('/certification/new')

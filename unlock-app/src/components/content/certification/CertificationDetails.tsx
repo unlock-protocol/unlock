@@ -109,9 +109,13 @@ export const CertificationDetails = ({
           for on-chain validation.
         </span>
         <div className="relative grid grid-cols-1 overflow-hidden border border-gray-200 shadow-md md:grid-cols-3">
-          <div className="absolute flex bg-gradient-to-t from-[#603DEB] to-[#27C1D6] h-12 w-80 text-center -rotate-45 bottom-[50px] -right-[80px]">
-            <span className="m-auto text-3xl font-bold text-white">Sample</span>
-          </div>
+          {!tokenId && (
+            <div className="absolute flex bg-gradient-to-t from-[#603DEB] to-[#27C1D6] h-12 w-80 text-center -rotate-45 bottom-[50px] -right-[80px]">
+              <span className="m-auto text-3xl font-bold text-white">
+                Sample
+              </span>
+            </div>
+          )}
           <div className="flex flex-col col-span-2 gap-10 px-6 py-6 md:gap-24 md:px-12 md:py-11">
             <div>
               <h2 className="text-xl font-bold uppercase md:text-4xl">
@@ -263,5 +267,3 @@ export const CertificationDetails = ({
     </main>
   )
 }
-
-export default CertificationDetails
