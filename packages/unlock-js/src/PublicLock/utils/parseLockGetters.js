@@ -57,7 +57,6 @@ export default async function (address, provider) {
     update.balance = utils.fromWei(balance, 'ether')
   } else {
     // Otherwise need to get the erc20's decimal and convert from there, as well as the symbol
-    // TODO : make these calls in parallel
     const erc20Decimals = await getErc20Decimals(update.tokenAddress, provider)
     const erc20Balance = await getErc20BalanceForAddress(
       update.tokenAddress,
@@ -65,7 +64,6 @@ export default async function (address, provider) {
       provider
     )
     const erc20Symbol = await getErc20TokenSymbol(update.tokenAddress, provider)
-
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
     update.currencySymbol = erc20Symbol
