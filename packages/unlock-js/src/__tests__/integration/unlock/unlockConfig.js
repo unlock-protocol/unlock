@@ -32,6 +32,7 @@ export default () => () => {
     const receipt = await configureUnlock(
       unlockAddress,
       {
+        publicLockVersion,
         publicLockTemplateAddress,
         globalTokenSymbol: 'TESTK',
         globalBaseTokenURI: 'https://locksmith.unlock-protocol.com/api/key/',

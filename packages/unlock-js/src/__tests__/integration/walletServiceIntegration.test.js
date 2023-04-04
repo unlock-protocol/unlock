@@ -50,8 +50,7 @@ jest.setTimeout(3000000)
 
 // Unlock versions to test
 export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
-  (v) => v !== 'v6' && v !== 'v12' // 'v6' is disabled it required erc1820
-  // TODO: disabled v12 tests so we can move forward faster
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
 )
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
