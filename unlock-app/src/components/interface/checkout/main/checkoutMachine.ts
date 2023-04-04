@@ -90,11 +90,6 @@ export interface SelectPaymentMethodEvent {
   payment: Payment
 }
 
-export interface SelectCardToChargeEvent {
-  type: 'SELECT_CARD_TO_CHARGE'
-  cardId: string
-}
-
 export interface DisconnectEvent {
   type: 'DISCONNECT'
 }
@@ -133,7 +128,6 @@ export type CheckoutMachineEvents =
   | SelectQuantityEvent
   | SelectPaymentMethodEvent
   | SelectRecipientsEvent
-  | SelectCardToChargeEvent
   | SignMessageEvent
   | SubmitPasswordEvent
   | SubmitPromoEvent
@@ -157,6 +151,10 @@ type Payment =
     }
   | {
       method: 'claim'
+    }
+  | {
+      method: 'swap_and_purchase'
+      route: any
     }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
@@ -392,30 +390,30 @@ export const checkoutMachine = createMachine(
       },
       CARD: {
         on: {
-          SELECT_CARD_TO_CHARGE: [
+          SELECT_PAYMENT_METHOD: [
             {
               target: 'MESSAGE_TO_SIGN',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requireMessageToSign',
             },
             {
               target: 'PASSWORD',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requirePassword',
             },
             {
               target: 'PROMO',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requirePromo',
             },
             {
               target: 'CAPTCHA',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
             },
           ],
           DISCONNECT: {
@@ -674,14 +672,6 @@ export const checkoutMachine = createMachine(
         },
         metadata: (_, event) => {
           return event.metadata
-        },
-      }),
-      selectCardToCharge: assign({
-        payment: (context, event) => {
-          return {
-            method: context.payment.method,
-            cardId: event.cardId,
-          } as const
         },
       }),
       signMessage: assign({

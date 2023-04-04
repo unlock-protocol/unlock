@@ -28,6 +28,10 @@ export const usePricing = ({
   return useQuery(
     ['purchasePriceFor', network, lockAddress, recipients, data],
     async () => {
+      const decimals = currencyContractAddress
+        ? await web3Service.getTokenDecimals(currencyContractAddress!, network)
+        : networks[network].nativeCurrency?.decimals || 18
+
       const prices = await Promise.all(
         recipients.map(async (userAddress, index) => {
           const referrer = getReferrer(userAddress, paywallConfig)
@@ -39,14 +43,6 @@ export const usePricing = ({
             data: data?.[index] || '0x',
           }
           const price = await web3Service.purchasePriceFor(options)
-
-          const decimals = currencyContractAddress
-            ? await web3Service.getTokenDecimals(
-                currencyContractAddress!,
-                network
-              )
-            : networks[network].nativeCurrency?.decimals || 18
-
           const amount = parseFloat(ethers.utils.formatUnits(price, decimals))
           return {
             userAddress,
