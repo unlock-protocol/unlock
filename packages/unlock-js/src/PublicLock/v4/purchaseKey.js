@@ -1,6 +1,7 @@
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 import { getErc20Decimals } from '../../erc20'
+import approveAllowance from '../utils/approveAllowance'
 
 /**
  * Purchase key function. This implementation requires the following
@@ -54,6 +55,21 @@ export default async function (
   const callData = lockContract.interface.encodeFunctionData('purchaseFor', [
     owner,
   ])
+
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = swap
+    ? {
+        erc20Address: swap.srcTokenAddress,
+        address: unlockSwapPurchaserContract?.address,
+        totalAmountToApprove: actualAmount,
+      }
+    : {
+        erc20Address,
+        address: lockAddress,
+        totalAmountToApprove: actualAmount,
+      }
+
+  await approveAllowance.bind(this)(approvalOptions)
 
   const transactionPromise = swap
     ? unlockSwapPurchaserContract?.swapAndCall(
