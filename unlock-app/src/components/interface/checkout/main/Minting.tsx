@@ -103,7 +103,7 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </a>
       )}
-      {hasTokenId && account === owner && isEthPassSupported(network) && (
+      {hasTokenId && isEthPassSupported(network) && (
         <ul className="grid grid-cols-2 gap-3 pt-4">
           {!isIOS && (
             <li className="">
