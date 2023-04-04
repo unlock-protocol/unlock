@@ -62,6 +62,21 @@ export const CertificationDetails = ({
     )
   }
 
+  if (isLoading || isMetadataLoading) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line size="sm" />
+        <Placeholder.Image className="h-[600px] w-full"></Placeholder.Image>
+        <Placeholder.Root>
+          <div className="flex justify-center gap-6">
+            <Placeholder.Image className="w-9 h-9" />
+            <Placeholder.Image className="w-9 h-9" />
+          </div>
+        </Placeholder.Root>
+      </Placeholder.Root>
+    )
+  }
+
   if (!metadata?.attributes) {
     if (isLockManager) {
       return (
@@ -84,21 +99,6 @@ export const CertificationDetails = ({
   const certificationData = toFormData(metadata)
 
   const transactionsHash: string = key?.transactionsHash?.[0] || ''
-
-  if (isLoading || isMetadataLoading) {
-    return (
-      <Placeholder.Root>
-        <Placeholder.Line size="sm" />
-        <Placeholder.Image className="h-[400px] w-full"></Placeholder.Image>
-        <Placeholder.Root>
-          <div className="flex justify-center gap-6">
-            <Placeholder.Image className="w-9 h-9" />
-            <Placeholder.Image className="w-9 h-9" />
-          </div>
-        </Placeholder.Root>
-      </Placeholder.Root>
-    )
-  }
 
   return (
     <main className="mt-8 ">
