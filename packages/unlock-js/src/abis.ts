@@ -1178,9 +1178,10 @@ const abis = {
     "v12": {
       "contractName": "Unlock",
       "abi": [
-        "error LockDoesNotExist(address lockAddress)",
         "error Unlock__ALREADY_DEPLOYED()",
+        "error Unlock__INVALID_AMOUNT()",
         "error Unlock__MANAGER_ONLY()",
+        "error Unlock__MISSING_LOCK(address lockAddress)",
         "error Unlock__MISSING_LOCK_TEMPLATE()",
         "error Unlock__MISSING_PROXY_ADMIN()",
         "error Unlock__MISSING_TEMPLATE()",
@@ -1236,7 +1237,7 @@ const abis = {
         "function upgradeLock(address lockAddress,uint16 version) returns (address)",
         "function weth() view returns (address)"
       ],
-      "bytecodeHash": "0xdef074f1ac209a23308cd468f9e1cf5dd1810a8e8ead73f2cf6fd5419a14adfb"
+      "bytecodeHash": "0x386fb5916ed51f9eb6b3d33a37447a3c93c2cfccc9ee6eb4772f86a735e953fa"
     }
   }
 }
