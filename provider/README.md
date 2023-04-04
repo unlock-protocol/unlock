@@ -10,13 +10,17 @@ The Ethereum JSON RPC API specification [can be found there](https://github.com/
 
 # Development
 
-You can use the `wrangler` CLI (version 2) from Cloudflare to run locally with `wrangler dev`.
+You can use the `yarn wrangler` CLI (version 2) from Cloudflare to run locally with `yarn wrangler dev`.
 
 To add support for a new network, just update `src/index.ts`
 
 # Deployment
 
-You can use the `wrangler` CLI (version 2) from Cloudflare to run locally with `wrangler publish`.
+You can use the `yarn wrangler` CLI (version 2) from Cloudflare to run locally with `yarn wrangler publish`.
+
+# Adding new networks
+
+To add a new network, make sure you first add it to `supportedNetworks` (you will need its chain id), and then set the environment variable accordingly through the dashboard. (Adding to the `wrangler.toml` file would make these public...)
 
 ## TODO
 
