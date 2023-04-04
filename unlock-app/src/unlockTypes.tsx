@@ -121,6 +121,8 @@ export interface Lock {
   expirationDuration: number
   key: Key
   currencyContractAddress: string | null
+  currencyDecimals?: number | null
+  currrencySymbol?: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number

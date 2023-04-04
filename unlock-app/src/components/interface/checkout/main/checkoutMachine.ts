@@ -158,6 +158,10 @@ type Payment =
   | {
       method: 'claim'
     }
+  | {
+      method: 'swap_and_purchase'
+      route: any
+    }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 

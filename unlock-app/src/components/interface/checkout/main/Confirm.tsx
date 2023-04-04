@@ -113,6 +113,11 @@ export function Confirm({
     keyPrice,
   } = lock!
 
+  const currencyContractAddress =
+    payment.method === 'swap_and_purchase'
+      ? payment.route.quote.currency?.address
+      : lock?.currencyContractAddress
+
   const recurringPayment =
     paywallConfig?.recurringPayments ||
     paywallConfig?.locks[lockAddress]?.recurringPayments
@@ -183,6 +188,7 @@ export function Confirm({
     paywallConfig,
     enabled: !isInitialDataLoading,
   })
+
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
@@ -190,7 +196,7 @@ export function Confirm({
     useUSDPricing({
       network: lock!.network,
       lockAddress: lock!.address,
-      currencyContractAddress: lock?.currencyContractAddress,
+      currencyContractAddress,
       amount: pricingData?.total || 0,
       enabled: isPricingDataAvailable,
     })
@@ -203,7 +209,7 @@ export function Confirm({
         getAccountTokenBalance(
           web3Service,
           account!,
-          lock!.currencyContractAddress,
+          currencyContractAddress,
           lock!.network
         ),
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
@@ -234,7 +240,11 @@ export function Confirm({
     isUSDPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
-  const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
+  const symbol =
+    payment.method === 'swap_and_purchase'
+      ? payment.route.quote.currency.symbol
+      : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
+
   const formattedData = getLockProps(
     lock,
     lockNetwork,
@@ -338,7 +348,7 @@ export function Confirm({
   const onConfirmCrypto = async () => {
     try {
       setIsConfirming(true)
-      if (payment.method !== 'crypto') {
+      if (!['swap_and_purchase', 'crypto'].includes(payment.method)) {
         return
       }
       const keyPrices: string[] =
@@ -348,6 +358,33 @@ export function Confirm({
       const referrers: string[] = recipients.map((recipient) => {
         return getReferrer(recipient, paywallConfig)
       })
+
+      const onErrorCallback = (error: Error | null, hash: string | null) => {
+        setIsConfirming(false)
+        if (error) {
+          send({
+            type: 'CONFIRM_MINT',
+            status: 'ERROR',
+            transactionHash: hash!,
+          })
+        } else {
+          if (!paywallConfig.pessimistic && hash) {
+            communication?.emitTransactionInfo({
+              hash,
+              lock: lockAddress,
+            })
+            communication?.emitUserInfo({
+              address: account,
+              signedMessage: messageToSign?.signature,
+            })
+          }
+          send({
+            type: 'CONFIRM_MINT',
+            status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
+            transactionHash: hash!,
+          })
+        }
+      }
 
       const walletService = await getWalletService(lockNetwork)
       await walletService.purchaseKeys(
@@ -360,34 +397,18 @@ export function Confirm({
           recurringPayments,
           referrers,
           totalApproval,
+          swap:
+            payment.method === 'swap_and_purchase'
+              ? {
+                  srcTokenAddress: payment.route.quote.currency.address,
+                  uniswapRouter: payment.route.swapRouter,
+                  swapCallData: payment.route.swapCalldata,
+                  amountInMax: payment.route.amountInMax,
+                }
+              : undefined,
         },
         {} /** Transaction params */,
-        (error, hash) => {
-          setIsConfirming(false)
-          if (error) {
-            send({
-              type: 'CONFIRM_MINT',
-              status: 'ERROR',
-              transactionHash: hash!,
-            })
-          } else {
-            if (!paywallConfig.pessimistic && hash) {
-              communication?.emitTransactionInfo({
-                hash,
-                lock: lockAddress,
-              })
-              communication?.emitUserInfo({
-                address: account,
-                signedMessage: messageToSign?.signature,
-              })
-            }
-            send({
-              type: 'CONFIRM_MINT',
-              status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
-              transactionHash: hash!,
-            })
-          }
-        }
+        onErrorCallback
       )
     } catch (error: any) {
       setIsConfirming(false)
@@ -430,111 +451,110 @@ export function Confirm({
   }
 
   const Payment = () => {
-    switch (payment.method) {
-      case 'card': {
-        return (
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCard()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using credit card'
-                : 'Pay using credit card'}
-            </Button>
-          </div>
-        )
-      }
-      case 'crypto': {
-        let buttonLabel = ''
-        const isFree =
-          isPricingDataAvailable &&
-          pricingData!.prices.reduce((previousTotal, item) => {
-            return previousTotal && item.amount <= 0
-          }, true)
-
-        if (isFree) {
-          if (isConfirming) {
-            buttonLabel = 'Claiming'
-          } else {
-            buttonLabel = 'Claim'
-          }
-        } else {
-          if (isConfirming) {
-            buttonLabel = 'Paying using crypto'
-          } else {
-            buttonLabel = 'Pay using crypto'
-          }
-        }
-
-        return (
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={
-                isConfirming || isLoading || !canAfford || isPricingDataError
+    if (payment.method === 'card') {
+      return (
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
               }
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCrypto()
-              }}
-            >
-              {buttonLabel}
-            </Button>
-            {!isLoading && !isPricingDataError && !!isPayable && (
-              <>
-                {!isPayable?.isTokenPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough {symbol} to complete this purchase.
-                  </small>
-                )}
-                {!!isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough{' '}
-                    {config.networks[lock!.network].nativeCurrency.symbol} to
-                    pay transaction fees (gas).
-                  </small>
-                )}
-              </>
-            )}
-          </div>
-        )
-      }
-      case 'claim': {
-        return (
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isPricingDataError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmClaim()
-              }}
-            >
-              {isConfirming
-                ? 'Claiming your membership'
-                : 'Claim your membership'}
-            </Button>
-          </div>
-        )
-      }
-      default: {
-        return null
-      }
+              onConfirmCard()
+            }}
+          >
+            {isConfirming
+              ? 'Paying using credit card'
+              : 'Pay using credit card'}
+          </Button>
+        </div>
+      )
     }
+
+    if (payment.method === 'crypto' || payment.method === 'swap_and_purchase') {
+      let buttonLabel = ''
+      const isFree = pricingData?.prices.reduce((previousTotal, item) => {
+        return previousTotal && item.amount === 0
+      }, true)
+
+      if (isFree) {
+        if (isConfirming) {
+          buttonLabel = 'Claiming'
+        } else {
+          buttonLabel = 'Claim'
+        }
+      } else {
+        if (isConfirming) {
+          buttonLabel = 'Paying using crypto'
+        } else {
+          buttonLabel = 'Pay using crypto'
+        }
+      }
+
+      return (
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={
+              isConfirming || isLoading || !canAfford || isPricingDataError
+            }
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirmCrypto()
+            }}
+          >
+            {buttonLabel}
+          </Button>
+          {!isLoading && !isPricingDataError && isPayable && (
+            <>
+              {!isPayable?.isTokenPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough{' '}
+                  {payment.method === 'swap_and_purchase'
+                    ? payment.route.quote?.symbol || 'amount'
+                    : symbol}{' '}
+                  to complete this purchase.
+                </small>
+              )}
+              {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough{' '}
+                  {config.networks[lock!.network].nativeCurrency.symbol} to pay
+                  transaction fees (gas).
+                </small>
+              )}
+            </>
+          )}
+        </div>
+      )
+    }
+    if (payment.method === 'claim') {
+      return (
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isPricingDataError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirmClaim()
+            }}
+          >
+            {isConfirming
+              ? 'Claiming your membership'
+              : 'Claim your membership'}
+          </Button>
+        </div>
+      )
+    }
+    return null
   }
 
   const stepItems = useCheckoutSteps(checkoutService)
