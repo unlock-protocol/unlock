@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
-import { LandingPage } from './event/LandingPage'
+import { EventLandingPage } from './event/EventLandingPage'
 
 export const EventContent = () => {
   const router = useRouter()
@@ -26,7 +26,9 @@ export const EventContent = () => {
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-      {!showDetails && <LandingPage handleCreateEvent={handleCreateEvent} />}
+      {!showDetails && (
+        <EventLandingPage handleCreateEvent={handleCreateEvent} />
+      )}
       {showDetails && (
         <div className="m-auto md:w-3/4">
           <EventDetails

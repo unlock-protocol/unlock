@@ -46,7 +46,7 @@ const Accordion = ({ title, children }: AccordionProps) => {
   )
 }
 
-interface LockDrivenLandingPageProps {
+interface LockTypeLandingPageProps {
   title: ReactNode
   subtitle: string
   description: string
@@ -63,7 +63,7 @@ interface LockDrivenLandingPageProps {
   }
 }
 
-export const LockDrivenLandingPage = ({
+export const LockTypeLandingPage = ({
   title,
   subtitle,
   description,
@@ -74,7 +74,7 @@ export const LockDrivenLandingPage = ({
   features,
   customers,
   callToAction,
-}: LockDrivenLandingPageProps) => {
+}: LockTypeLandingPageProps) => {
   return (
     <div>
       <section className="flex flex-col my-8 md:flex-row">

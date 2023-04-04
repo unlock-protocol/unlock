@@ -2,7 +2,7 @@ import React from 'react'
 import EventContent from '../EventContent'
 import { Button } from '@unlock-protocol/ui'
 import Image from 'next/image'
-import { LockDrivenLandingPage } from '~/components/interface/LockDrivenLandingPage'
+import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 
 interface CertificationLandingProps {
   handleCreateCertification: () => void
@@ -73,7 +73,7 @@ export const CertificationLanding = ({
   handleCreateCertification,
 }: CertificationLandingProps) => {
   return (
-    <LockDrivenLandingPage
+    <LockTypeLandingPage
       title={
         <h1 className="uppercase text-4xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#603DEB] to-[#27C1D6]">
           Certifications

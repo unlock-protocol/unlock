@@ -1,7 +1,7 @@
 import { Button } from '@unlock-protocol/ui'
 import Image from 'next/image'
 import Link from 'next/link'
-import { LockDrivenLandingPage } from '~/components/interface/LockDrivenLandingPage'
+import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 
 const customers = [
   {
@@ -82,9 +82,9 @@ interface LandingPage {
   handleCreateEvent: () => void
 }
 
-export const LandingPage = ({ handleCreateEvent }: LandingPage) => {
+export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
   return (
-    <LockDrivenLandingPage
+    <LockTypeLandingPage
       title={
         <h1 className="uppercase text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-ui-primary to-[#F19077]">
           Web3 is
