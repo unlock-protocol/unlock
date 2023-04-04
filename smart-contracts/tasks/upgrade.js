@@ -84,7 +84,6 @@ task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
  */
 
 task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
-  .addParam('contract', 'The contract path')
   .addParam('proxyAddress', 'The proxy contract address')
   .addParam('implementation', 'The implementation contract path')
   .setAction(async ({ proxyAddress, implementation }, { network }) => {
@@ -111,8 +110,8 @@ task(
   .addFlag('addOnly', 'Only add the template without setting it as default')
   .setAction(async ({ publicLockAddress, publicLockVersion, addOnly }) => {
     // eslint-disable-next-line global-require
-    const prepareLockUpgrade = require('../scripts/upgrade/submitLockVersion')
-    await prepareLockUpgrade({ publicLockAddress, publicLockVersion, addOnly })
+    const submitLockVersion = require('../scripts/upgrade/submitLockVersion')
+    await submitLockVersion({ publicLockAddress, publicLockVersion, addOnly })
   })
 
 task(

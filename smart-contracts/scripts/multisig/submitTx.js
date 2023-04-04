@@ -65,7 +65,7 @@ async function main({ safeAddress, tx, signer }) {
   // create tx
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
 
-  const txs = !Array.isArray(tx) === [tx] || tx
+  const txs = !Array.isArray(tx) ? [tx] : tx
 
   const explainer = txs
     .map(
