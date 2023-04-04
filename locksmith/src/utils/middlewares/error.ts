@@ -7,6 +7,9 @@ export const errorHandler: ErrorRequestHandler = (
   response,
   _next
 ) => {
+  if (response.headersSent) {
+    return _next(error)
+  }
   if (error instanceof ZodError) {
     return response.status(400).send({
       message: error.message,

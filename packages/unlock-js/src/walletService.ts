@@ -25,6 +25,7 @@ interface PurchaseKeyParams {
   recurringPayments?: number
   referrer?: string
   totalApproval?: string
+  keyManager?: string
   swap?: Omit<SwapOptions, 'callData'>
 }
 

@@ -113,12 +113,15 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  await fulfillmentDispatcher.purchaseKey(
+  const keyManagerAddress = networks[network].keyManagerAddress
+
+  return fulfillmentDispatcher.purchaseKey(
     {
       lockAddress,
       owner,
       network,
       data,
+      keyManager: email ? keyManagerAddress : owner,
     },
     async (_: any, transactionHash: string) => {
       return response.send({
@@ -127,5 +130,4 @@ export const claim: RequestHandler = async (request, response: Response) => {
       })
     }
   )
-  return response.sendStatus(200)
 }
