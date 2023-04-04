@@ -1,5 +1,9 @@
 # Changes
 
+# 0.35.0
+
+- add support for Unlock v12
+
 # 0.34.1
 
 - add support for `setKeyManagerOf` to walletService
