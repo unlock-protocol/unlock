@@ -25,6 +25,7 @@ export const useUniswapRoutes = ({
   enabled = true,
 }: UniswapRoutesOption) => {
   const web3Service = useWeb3Service()
+  console.log(routes)
   return useQuery(
     ['uniswapRoutes'],
     async () => {
@@ -71,56 +72,53 @@ export const useUniswapRoutesUsingLock = ({
       return []
     }
     const recipient = networkConfig.swapPurchaser
-    const allowList = ['usdc', 'usdt']
     const network = lock.network
-    const tokenOut = lock.currencyContractAddress
+    const isErc20 =
+      lock.currencyContractAddress &&
+      lock.currencyContractAddress !== ethers.constants.AddressZero
+
+    const tokenOut = isErc20
       ? new Token(
           lock.network,
-          lock.currencyContractAddress,
+          lock.currencyContractAddress!,
           lock.currencyDecimals || 18,
           lock.currencySymbol || '',
           lock.currencyName || ''
         )
       : nativeOnChain(lock.network)
 
-    const routes = (networkConfig.tokens || [])
-      .filter((item: any) =>
-        allowList.includes(item.symbol?.toLowerCase()?.trim())
+    const amountOut = ethers.utils
+      .parseUnits(price, lock.currencyDecimals || 18)
+      .toString()
+
+    const routes = (networkConfig.tokens || []).map((item: any) => {
+      const tokenIn = new Token(
+        lock.network,
+        item.address,
+        item.decimals,
+        item.symbol,
+        item.name
       )
-      .map((item: any) => {
-        const tokenIn = new Token(
-          lock.network,
-          item.address,
-          item.decimals,
-          item.symbol,
-          item.name
-        )
-        const amountOut = ethers.utils
-          .parseUnits(price, lock.currencyDecimals || 18)
-          .toString()
 
-        return {
-          tokenIn,
-          tokenOut,
-          amountOut,
-          recipient,
-          network,
-        } as UniswapRoute
-      })
+      return {
+        tokenIn,
+        tokenOut,
+        amountOut,
+        recipient,
+        network,
+      } as UniswapRoute
+    })
 
-    if (
-      lock.currencyContractAddress &&
-      lock.currencyContractAddress !== ethers.constants.AddressZero
-    ) {
+    // Add native currency as a route if the lock is an ERC20
+    if (isErc20) {
       routes.push({
         tokenIn: nativeOnChain(lock.network),
         tokenOut,
-        amountOut: price,
+        amountOut,
         recipient,
         network,
       })
     }
-    console.log(routes)
     return routes
   }, [lock, price])
 }

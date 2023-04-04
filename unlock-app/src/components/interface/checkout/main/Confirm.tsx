@@ -193,12 +193,19 @@ export function Confirm({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
+  const amountToConvert = pricingData?.total || 0
+
   const { data: USDPricingData, isLoading: isUSDPricingDataLoading } =
     useUSDPricing({
       network: lock!.network,
       lockAddress: lock!.address,
       currencyContractAddress,
-      amount: pricingData?.total || 0,
+      amount:
+        amountToConvert > 0 && swap
+          ? parseFloat(
+              payment.route.convertToQuoteToken(amountToConvert).toFixed(4)
+            )
+          : amountToConvert,
       enabled: isPricingDataAvailable,
     })
 
