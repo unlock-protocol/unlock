@@ -25,7 +25,6 @@ export const useUniswapRoutes = ({
   enabled = true,
 }: UniswapRoutesOption) => {
   const web3Service = useWeb3Service()
-  console.log(routes)
   return useQuery(
     ['uniswapRoutes'],
     async () => {
