@@ -29,7 +29,11 @@ task('upgrade', 'Upgrade an existing contract with a new implementation (no mult
 task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
   .addParam('contract', 'The contract path')
   .addParam('proxy', 'The proxy contract address')
-  .setAction(async ({ contract, proxy }, { ethers, run }) => {
+  .addOptionalParam(
+    'contractVersion',
+    'If set, will fetch the contract version from contracts package'
+  )
+  .setAction(async ({ contract, proxy, contractVersion }, { ethers, run }) => {
     // first compile latest version
     await run('compile')
 
@@ -45,6 +49,7 @@ task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
     await prepareUpgrade({
       proxyAddress: proxy,
       contractName,
+      contractVersion
     })
   })
 
@@ -79,7 +84,6 @@ task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
  */
 
 task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
-  .addParam('contract', 'The contract path')
   .addParam('proxyAddress', 'The proxy contract address')
   .addParam('implementation', 'The implementation contract path')
   .setAction(async ({ proxyAddress, implementation }, { network }) => {
@@ -103,10 +107,11 @@ task(
     'publicLockVersion',
     'Specify the template version to deploy (from contracts package)'
   )
-  .setAction(async ({ publicLockAddress, publicLockVersion }) => {
+  .addFlag('addOnly', 'Only add the template without setting it as default')
+  .setAction(async ({ publicLockAddress, publicLockVersion, addOnly }) => {
     // eslint-disable-next-line global-require
-    const prepareLockUpgrade = require('../scripts/upgrade/submitLockVersion')
-    await prepareLockUpgrade({ publicLockAddress, publicLockVersion })
+    const submitLockVersion = require('../scripts/upgrade/submitLockVersion')
+    await submitLockVersion({ publicLockAddress, publicLockVersion, addOnly })
   })
 
 task(
