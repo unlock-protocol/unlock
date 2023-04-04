@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { CertificationDetails } from './CertificationDetails'
+import CertificationDetails from './CertificationDetails'
 import { CertificationLanding } from './CertificationLanding'
 import { useRouter } from 'next/router'
 import LoadingIcon from '~/components/interface/Loading'
@@ -13,8 +13,8 @@ export const CertificationContent = () => {
     return <LoadingIcon></LoadingIcon>
   }
 
-  const { lockAddress, network } = router.query
-  const showDetails = lockAddress && network
+  const { lockAddress, network, tokenId } = router.query
+  const showDetails = lockAddress && network && tokenId
 
   const handleCreateCertification = () => {
     router.push('/certification/new')
@@ -23,7 +23,7 @@ export const CertificationContent = () => {
   return (
     <AppLayout showLinks={false} authRequired={false} title="">
       <Head>
-        <title>{pageTitle('Event')}</title>
+        <title>{pageTitle('Certification')}</title>
       </Head>
       {!showDetails && (
         <CertificationLanding
@@ -32,7 +32,11 @@ export const CertificationContent = () => {
       )}
       {showDetails && (
         <div className="m-auto md:w-3/4">
-          <CertificationDetails />
+          <CertificationDetails
+            lockAddress={lockAddress as string}
+            network={Number(network)}
+            tokenId={tokenId as string}
+          />
         </div>
       )}
     </AppLayout>
