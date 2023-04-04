@@ -4,12 +4,10 @@ import { isUnlocked } from '../../utils/isUnlocked'
 import * as timeStampUtil from '../../utils/hasValidKey'
 
 const provider = 'https://rpc.endpoint'
-const locksmithUri = 'https://locksmith.unlock-protocol.com'
 
 const networkConfigs = {
   31337: {
     provider,
-    locksmithUri,
   },
 }
 
