@@ -67,7 +67,7 @@ task(TASK_JEST_SINGLE_INTEGRATION, 'Runs jest integration tests separately')
   .addOptionalParam('unlockVersion', 'the version of the Unlock contract')
   .setAction(
     async (
-      { file, lockVersion = 11, unlockVersion = 11 },
+      { file, lockVersion = 12, unlockVersion = 12 },
       { run, network }
     ) => {
       // pass args to jest test runner using env vars

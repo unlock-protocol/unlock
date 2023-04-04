@@ -146,11 +146,6 @@ export default ({ publicLockVersion }) =>
           chainId,
           lock.currencyContractAddress
         )
-        console.log({
-          before,
-          amount,
-          after,
-        })
         expect(parseFloat(after)).toBeGreaterThanOrEqual(parseFloat(amount))
       })
     }
