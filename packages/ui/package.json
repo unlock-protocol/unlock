@@ -34,7 +34,7 @@
     "@tailwindcss/forms": "0.5.3",
     "@tailwindcss/line-clamp": "0.4.4",
     "@tailwindcss/typography": "0.5.9",
-    "@tanstack/react-query": "4.28.0",
+    "@tanstack/react-query": "4.24.10",
     "@tw-classed/react": "1.4.3",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
@@ -43,10 +43,10 @@
     "prism-react-renderer": "1.3.5",
     "react-dropzone": "14.2.3",
     "react-hook-form": "7.43.9",
-    "react-icons": "4.8.0",
+    "react-icons": "4.7.1",
     "react-use-clipboard": "1.0.9",
-    "tailwind-merge": "1.11.0",
-    "tailwindcss": "3.3.1"
+    "tailwind-merge": "1.10.0",
+    "tailwindcss": "3.2.7"
   },
   "peerDependencies": {
     "@headlessui/react": "1.7.13",
@@ -77,12 +77,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "7.0.0",
-    "tailwindcss": "3.3.1",
-    "tsup": "6.7.0",
+    "tailwindcss": "3.2.7",
+    "tsup": "6.6.3",
     "tsx": "3.12.6",
     "typescript": "4.9.5",
     "url-loader": "4.1.1",
-    "vite": "4.2.1",
+    "vite": "4.1.4",
     "vite-plugin-svgr": "2.4.0",
     "vite-tsconfig-paths": "4.0.7"
   }
