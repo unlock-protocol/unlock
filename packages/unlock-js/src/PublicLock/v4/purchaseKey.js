@@ -46,7 +46,10 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  transactionOptions.value = actualAmount
+  // tx options
+  if (!erc20Address || erc20Address === ZERO) {
+    transactionOptions.value = actualAmount
+  }
 
   const callData = lockContract.interface.encodeFunctionData('purchaseFor', [
     owner,
