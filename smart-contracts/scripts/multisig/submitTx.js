@@ -3,11 +3,12 @@ const {
   getSafeAddress,
   getSafeVersion,
   submitTxOldMultisig,
+  confirmMultisigTx,
 } = require('./_helpers')
 
-const Safe = require('@gnosis.pm/safe-core-sdk').default
-const SafeServiceClient = require('@gnosis.pm/safe-service-client').default
-const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
+const Safe = require('@safe-global/safe-core-sdk').default
+const SafeServiceClient = require('@safe-global/safe-service-client').default
+const EthersAdapter = require('@safe-global/safe-ethers-lib').default
 
 // see https://docs.gnosis-safe.io/backend/available-services
 // possible changes in URLs hapenning
@@ -28,7 +29,7 @@ const gnosisServiceURLs = {
 }
 
 async function main({ safeAddress, tx, signer }) {
-  const { chainId } = await signer.provider.getNetwork()
+  const { chainId } = await ethers.provider.getNetwork()
   if (!safeAddress) {
     safeAddress = getSafeAddress(chainId)
   }
@@ -48,13 +49,14 @@ async function main({ safeAddress, tx, signer }) {
   // Use Gnosis Safe v1+ with SDK
   const ethAdapter = new EthersAdapter({
     ethers,
-    signer,
+    signerOrProvider: signer,
   })
 
   // get Gnosis service
   const id = await ethAdapter.getChainId()
   const txServiceUrl = gnosisServiceURLs[id]
   console.log(`Using Gnosis Safe service at ${txServiceUrl} - chain ${id}`)
+  
   const safeService = new SafeServiceClient({
     txServiceUrl,
     ethAdapter,
@@ -63,7 +65,7 @@ async function main({ safeAddress, tx, signer }) {
   // create tx
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
 
-  const txs = !Array.isArray(tx) === [tx] || tx
+  const txs = !Array.isArray(tx) ? [tx] : tx
 
   const explainer = txs
     .map(
@@ -137,6 +139,14 @@ async function main({ safeAddress, tx, signer }) {
 
   const { nonce } = await safeService.getTransaction(safeTxHash)
   console.log(`Tx submitted to multisig with id: '${nonce}'`)
+
+  if (process.env.RUN_MAINNET_FORK) {
+      console.log(`Signing multisigs: ${nonce}`)
+      await confirmMultisigTx({
+        transactionId: nonce,
+        multisigAddress: safeAddress,
+      })
+    }
 }
 
 module.exports = main

@@ -1,6 +1,7 @@
 import utils from '../../utils'
 import { ZERO } from '../../constants'
-import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
+import { getErc20Decimals } from '../../erc20'
+import approveAllowance from '../utils/approveAllowance'
 
 /**
  * Purchase key function. This implementation requires the following
@@ -13,11 +14,16 @@ import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, owner, keyPrice, erc20Address, decimals },
+  { lockAddress, owner, keyPrice, erc20Address, decimals, swap },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
+  const unlockSwapPurchaserContract = swap
+    ? this.getUnlockSwapPurchaserContract({
+        params: this.networkId,
+      })
+    : null
 
   if (!owner) {
     owner = await this.signer.getAddress()
@@ -41,30 +47,41 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  if (erc20Address && erc20Address !== ZERO) {
-    const approvedAmount = await getAllowance(
-      erc20Address,
-      lockAddress,
-      this.provider,
-      this.signer.getAddress()
-    )
-    if (!approvedAmount || approvedAmount.lt(actualAmount)) {
-      // We must wait for the transaction to pass if we want the next one to succeed!
-      await (
-        await approveTransfer(
-          erc20Address,
-          lockAddress,
-          actualAmount,
-          this.provider,
-          this.signer
-        )
-      ).wait()
-    }
-  } else {
+  // tx options
+  if (!erc20Address || erc20Address === ZERO) {
     transactionOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract.purchaseFor(owner, transactionOptions)
+  const callData = lockContract.interface.encodeFunctionData('purchaseFor', [
+    owner,
+  ])
+
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = swap
+    ? {
+        erc20Address: swap.srcTokenAddress,
+        address: unlockSwapPurchaserContract?.address,
+        totalAmountToApprove: actualAmount,
+      }
+    : {
+        erc20Address,
+        address: lockAddress,
+        totalAmountToApprove: actualAmount,
+      }
+
+  await approveAllowance.bind(this)(approvalOptions)
+
+  const transactionPromise = swap
+    ? unlockSwapPurchaserContract?.swapAndCall(
+        lockAddress,
+        swap.srcTokenAddress,
+        swap.amountInMax,
+        swap.uniswapRouter,
+        swap.swapCallData,
+        callData,
+        transactionOptions
+      )
+    : lockContract.purchaseFor(owner, transactionOptions)
 
   const hash = await this._handleMethodCall(transactionPromise)
 

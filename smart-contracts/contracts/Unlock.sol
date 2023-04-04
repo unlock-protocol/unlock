@@ -109,7 +109,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__ALREADY_DEPLOYED();
   error Unlock__MISSING_PROXY_ADMIN();
   error Unlock__MISSING_LOCK_TEMPLATE();
-  error Unlock__LockDoesNotExist(address lockAddress);
+  error Unlock__MISSING_LOCK(address lockAddress);
+  error Unlock__INVALID_AMOUNT();
 
   // Events
   event NewLock(
@@ -194,15 +195,27 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @dev Registers a new PublicLock template immplementation
    * The template is identified by a version number
    * Once registered, the template can be used to upgrade an existing Lock
+   * @dev This will initialize the template and revokeOwnership.
    */
   function addLockTemplate(
     address impl,
     uint16 version
   ) public onlyOwner {
+
+    // First claim the template so that no-one else could
+    // this will revert if the template was already initialized.
+    IPublicLock(impl).initialize(
+      address(this),
+      0,
+      address(0),
+      0,
+      0,
+      ""
+    );
+    IPublicLock(impl).renounceLockManager();
+
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
-    if (publicLockLatestVersion < version)
-      publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
   }
@@ -569,26 +582,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * @notice Upgrade the PublicLock template used for future calls to `createLock`.
-   * @dev This will initialize the template and revokeOwnership.
+   * @notice Set the default PublicLock template to use when creating locks
    */
   function setLockTemplate(
     address _publicLockAddress
   ) external onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(_publicLockAddress).initialize(
-      address(this),
-      0,
-      address(0),
-      0,
-      0,
-      ""
-    );
-    IPublicLock(_publicLockAddress).renounceLockManager();
-
+    if(_publicLockVersions[_publicLockAddress] == 0) {
+      revert Unlock__MISSING_LOCK_TEMPLATE();
+    }
+    // set latest version
+    publicLockLatestVersion = _publicLockVersions[_publicLockAddress];
+    // set corresponding template
     publicLockAddress = _publicLockAddress;
-
     emit SetLockTemplate(_publicLockAddress);
   }
 
@@ -682,11 +687,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             yieldedDiscountTokens
           );
       } else {
-        revert Unlock__LockDoesNotExist(msg.sender);
+        revert Unlock__MISSING_LOCK(msg.sender);
       }
     }
   }
 
-  // required to withdraw WETH
-  receive() external payable {}
+  // required to receive ETH / withdraw ETH
+  receive() external payable {
+    if(msg.value <= 0){
+      revert Unlock__INVALID_AMOUNT();
+    }
+  }
 }

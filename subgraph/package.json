@@ -27,10 +27,9 @@
     "@graphprotocol/graph-ts": "0.29.3",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "8.36.0",
-    "fs-extra": "11.1.0",
+    "eslint": "8.37.0",
+    "fs-extra": "11.1.1",
     "handlebars": "4.7.7",
-    "lint-staged": "13.2.0",
     "yargs": "17.7.1"
   },
   "installConfig": {
