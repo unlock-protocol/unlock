@@ -32,7 +32,7 @@ const attributes = {
 
 export default async function (address, provider) {
   const network = await provider.getNetwork()
-  const networkConfig = this.networks[network.chainId]
+  const networkConfig = this.networks?.[network.chainId]
   const contract = await this.getLockContract(address, provider)
   // Let's load the current block to use to compare versions
   const getBlockNumber = async () => {
@@ -57,9 +57,9 @@ export default async function (address, provider) {
     update.keyPrice = utils.fromWei(update.keyPrice, 'ether')
     const balance = await provider.getBalance(address)
     update.balance = utils.fromWei(balance, 'ether')
-    update.currencySymbol = networkConfig.nativeCurrency.symbol
-    update.currencyDecimals = networkConfig.nativeCurrency.decimals
-    update.currencyName = networkConfig.nativeCurrency.name
+    update.currencySymbol = networkConfig?.nativeCurrency?.symbol
+    update.currencyDecimals = networkConfig?.nativeCurrency?.decimals
+    update.currencyName = networkConfig?.nativeCurrency?.name
   } else {
     // Otherwise need to get the erc20's decimal and convert from there, as well as the symbol
     const [erc20Decimals, erc20Balance, erc20Symbol] = await Promise.all([
