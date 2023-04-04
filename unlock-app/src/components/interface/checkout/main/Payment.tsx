@@ -253,7 +253,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold"> Swap and purchase </h3>
                       <AmountBadge
-                        amount={route!.quote.toFixed(2)}
+                        amount={route!.quote.toSignificant(6)}
                         symbol={
                           route!.quote.currency.symbol?.toLowerCase() ?? ''
                         }

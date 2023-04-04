@@ -116,7 +116,7 @@ export function Confirm({
 
   const currencyContractAddress =
     payment.method === 'swap_and_purchase'
-      ? payment.route.quote.currency?.address
+      ? payment.route.trade.inputAmount.currency?.address
       : lock?.currencyContractAddress
 
   const recurringPayment =
@@ -225,7 +225,6 @@ export function Confirm({
 
       const isTokenPayable = pricingData!.total <= parseFloat(balance)
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
-
       return {
         isTokenPayable,
         isGasPayable,
@@ -238,7 +237,7 @@ export function Confirm({
 
   // By default, until fully loaded we assume payable.
   const canAfford =
-    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
+    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable) || true
 
   const isLoading =
     isPricingDataLoading ||
@@ -396,14 +395,14 @@ export function Confirm({
       const swap =
         payment.method === 'swap_and_purchase'
           ? {
-              srcTokenAddress: payment.route.quote.currency.address,
+              srcTokenAddress: currencyContractAddress,
               uniswapRouter: payment.route.swapRouter,
               swapCallData: payment.route.swapCalldata,
               amountInMax: ethers.utils
                 .parseUnits(
                   payment.route
                     .convertToQuoteToken(pricingData!.total.toString())
-                    .toFixed(4),
+                    .toFixed(6),
                   payment.route.quote.currency.decimals
                 )
                 // 1% slippage buffer
@@ -645,7 +644,7 @@ export function Confirm({
                           : swap
                           ? payment.route
                               .convertToQuoteToken(item.amount.toString())
-                              .toFixed(2)
+                              .toFixed(6)
                           : item.amount.toLocaleString()) +
                           ' ' +
                           symbol}

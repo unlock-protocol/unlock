@@ -17,7 +17,6 @@ import {
   TradeType,
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
-
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -1018,8 +1017,8 @@ export default class Web3Service extends UnlockService {
       {
         type: SwapType.UNIVERSAL_ROUTER,
         recipient,
-        slippageTolerance: new Percent(10, 100),
-        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
+        slippageTolerance: new Percent(15, 100),
+        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24), // 24 hour
       },
     ] as const
     // call router

@@ -93,8 +93,10 @@ export default async function (
         totalAmountToApprove: actualAmount,
         address: lockAddress,
       }
-
-  await approveAllowance.bind(this)(approvalOptions)
+  // Only ask for approval if the lock or swap is priced in ERC20
+  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
+    await approveAllowance.bind(this)(approvalOptions)
+  }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions.gasLimit) {
@@ -114,7 +116,7 @@ export default async function (
       const gasLimitPromise = swap
         ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
             lockAddress,
-            swap.srcTokenAddress,
+            swap.srcTokenAddress || ZERO,
             swap.amountInMax,
             swap.uniswapRouter,
             swap.swapCallData,
@@ -151,7 +153,7 @@ export default async function (
   const transactionRequestPromise = swap
     ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
-        swap.srcTokenAddress,
+        swap.srcTokenAddress || ZERO,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,

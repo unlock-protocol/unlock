@@ -69,12 +69,15 @@ export default async function (
         totalAmountToApprove: actualAmount,
       }
 
-  await approveAllowance.bind(this)(approvalOptions)
+  // Only ask for approval if the lock or swap is priced in ERC20
+  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
+    await approveAllowance.bind(this)(approvalOptions)
+  }
 
   const transactionPromise = swap
     ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
-        swap.srcTokenAddress,
+        swap.srcTokenAddress || ZERO,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,
