@@ -45,10 +45,11 @@ interface PurchaseKeysParams {
 
 interface SwapOptions {
   srcTokenAddress?: string
-  amountInMax: string
+  amountInMax: ethers.BigNumberish
   uniswapRouter: string
   swapCallData: string
   callData: string
+  value: ethers.BigNumberish
 }
 
 interface ExtendKeyParams {

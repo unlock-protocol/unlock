@@ -47,14 +47,19 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
+  const callData = lockContract.interface.encodeFunctionData('purchaseFor', [
+    owner,
+  ])
+
   // tx options
   if (!erc20Address || erc20Address === ZERO) {
     transactionOptions.value = actualAmount
   }
 
-  const callData = lockContract.interface.encodeFunctionData('purchaseFor', [
-    owner,
-  ])
+  // if swap is provided, we need to override the value
+  if (swap && swap?.value) {
+    transactionOptions.value = swap.value
+  }
 
   // If the lock is priced in ERC20, we need to approve the transfer
   const approvalOptions = swap
@@ -69,12 +74,15 @@ export default async function (
         totalAmountToApprove: actualAmount,
       }
 
-  await approveAllowance.bind(this)(approvalOptions)
+  // Only ask for approval if the lock or swap is priced in ERC20
+  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
+    await approveAllowance.bind(this)(approvalOptions)
+  }
 
   const transactionPromise = swap
     ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
-        swap.srcTokenAddress,
+        swap.srcTokenAddress || ZERO,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,
