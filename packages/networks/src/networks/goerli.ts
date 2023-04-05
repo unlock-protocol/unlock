@@ -47,6 +47,7 @@ export const goerli: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
+    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   wrappedNativeCurrency: {

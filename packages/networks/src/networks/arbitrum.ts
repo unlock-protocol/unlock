@@ -50,6 +50,7 @@ export const arbitrum: NetworkConfig = {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
+    universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },
   swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
   wrappedNativeCurrency: {

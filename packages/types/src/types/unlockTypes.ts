@@ -86,7 +86,8 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    oracle?: string
+    oracle: string
+    universalRouterAddress: string
   }>
   swapPurchaser?: string
   ethersProvider?: ethers.providers.Provider

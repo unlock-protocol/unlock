@@ -44,6 +44,7 @@ export const celo: NetworkConfig = {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    universalRouterAddress: '0xC73d61d192FB994157168Fb56730FdEc64C9Cb8F',
   },
   swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   wrappedNativeCurrency: {

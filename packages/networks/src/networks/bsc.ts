@@ -33,6 +33,9 @@ export const bsc: NetworkConfig = {
     decimals: 18,
     coingecko: 'binancecoin',
   },
+  uniswapV3: {
+    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
+  },
   startBlock: 13079000, // 12368889,
   previousDeploys: [
     {
