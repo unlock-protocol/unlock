@@ -121,7 +121,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const NetworkDescription = () => {
     return (
       <p>
-        This is the network on which your ticketing contract will be deployed.{' '}
+        This is the network on which your certification contract will be
+        deployed.{' '}
         {details.network && <>{networkDescription(details.network)}</>}
       </p>
     )
@@ -294,7 +295,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     setEnabled={setUnlimitedCapacity}
                     onChange={(enable: boolean) => {
                       if (enable) {
-                        setValue('lock.maxNumberOfKeys', 0)
+                        setValue('lock.maxNumberOfKeys', undefined)
                       }
                     }}
                   />
@@ -321,7 +322,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
-          <Disclosure label="Additional">
+          <Disclosure label="Network" defaultOpen>
             <div className="grid gap-6">
               <Select
                 onChange={(newValue) => {

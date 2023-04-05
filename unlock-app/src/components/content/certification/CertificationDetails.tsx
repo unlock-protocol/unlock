@@ -30,7 +30,7 @@ export const CertificationDetails = ({
     network,
   })
 
-  const { isLoading, data: key } = useQuery(
+  const { data: key, isPlaceholderData } = useQuery(
     ['getLockKey', lockAddress, network],
     async () => {
       const subgraph = new SubgraphService()
@@ -48,6 +48,15 @@ export const CertificationDetails = ({
     },
     {
       enabled: !!lockAddress && !!network && !!tokenId,
+      placeholderData: {
+        id: '1',
+        network,
+        tokenId: '{Token ID}',
+        owner: `{Recipient's wallet address, or ENS}`,
+        expiration: new Date().toLocaleDateString(),
+        createdAtBlock: undefined,
+        lock: {} as any,
+      },
     }
   )
 
@@ -62,7 +71,7 @@ export const CertificationDetails = ({
     )
   }
 
-  if (isLoading || isMetadataLoading) {
+  if (isMetadataLoading) {
     return (
       <Placeholder.Root>
         <Placeholder.Line size="sm" />
@@ -122,13 +131,15 @@ export const CertificationDetails = ({
                 Certificate
               </h2>
               <div className="flex flex-col gap-6 mt-3">
-                <span className="text-sm font-semibold">Apr 1, 2023</span>
+                <span className="text-sm font-semibold">
+                  {isPlaceholderData ? '{Issue date}' : 'Apr 1, 2023'}
+                </span>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-gray-700">
                     This is to certify
                   </span>
                   <span className="text-base font-bold text-brand-dark">
-                    {addressMinify(key?.owner)}
+                    {isPlaceholderData ? key?.owner : addressMinify(key?.owner)}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -155,7 +166,9 @@ export const CertificationDetails = ({
                     </span>
                   }
                 >
-                  {expirationAsDate(key?.expiration)}
+                  {isPlaceholderData
+                    ? key?.expiration
+                    : expirationAsDate(key?.expiration)}
                 </Detail>
                 <Detail
                   valueSize="small"
@@ -171,7 +184,7 @@ export const CertificationDetails = ({
                     </span>
                   }
                 >
-                  {tokenId}
+                  {key?.tokenId}
                 </Detail>
               </div>
               <Detail
@@ -183,7 +196,9 @@ export const CertificationDetails = ({
                   </span>
                 }
               >
-                {addressMinify(transactionsHash)}
+                {isPlaceholderData
+                  ? '{Transaction hash}'
+                  : addressMinify(transactionsHash)}
               </Detail>
               <small className="block mt-10 text-xs text-gray-600">
                 This image is an off-chain image, Powered by Unlock. <br />{' '}
