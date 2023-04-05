@@ -229,7 +229,7 @@ export const LockDetailCard = ({
               </Detail>
             </div>
             <div className="py-2">
-              <Detail label="Key Quantity" loading={loading} inline>
+              <Detail label="Keys for sale" loading={loading} inline>
                 {numbersOfKeys}
               </Detail>
             </div>

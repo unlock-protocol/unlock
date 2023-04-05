@@ -1,4 +1,4 @@
-'use strict'
+// eslint-disable-next-line reserved-reserved
 import { test, expect } from 'vitest'
 
 test('entry point parse', () => {

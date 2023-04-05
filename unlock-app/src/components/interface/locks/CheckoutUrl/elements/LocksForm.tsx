@@ -405,7 +405,7 @@ export const LocksForm = ({
               <div className="flex flex-col gap-1">
                 <div className="flex flex-col gap-1">
                   <span className="flex items-center justify-between">
-                    <span className="px-1 text-sm">Recurring frequency</span>
+                    <span className="px-1 text-sm">Number of renewals</span>
                     <ToggleSwitch
                       title="Unlimited"
                       enabled={recurringUnlimited}

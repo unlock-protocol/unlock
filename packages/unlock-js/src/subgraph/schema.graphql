@@ -87,3 +87,37 @@ query AllReceipts(
     amountTransferred
   }
 }
+
+query allLocksWithKeys(
+  $first: Int = 1
+  $skip: Int
+  $where: Lock_filter
+  $keyFilter: Key_filter
+  $orderBy: Lock_orderBy
+  $keyOrderBy: Key_orderBy
+  $orderDirection: OrderDirection
+) {
+  locks(where: $where, orderBy: $orderBy, orderDirection: $orderDirection) {
+    id
+    address
+    name
+    expirationDuration
+    tokenAddress
+    price
+    lockManagers
+    version
+    createdAtBlock
+    totalKeys
+    keys(where: $keyFilter, orderBy: $keyOrderBy, first: $first, skip: $skip) {
+      id
+      tokenId
+      owner
+      manager
+      expiration
+      tokenURI
+      createdAtBlock
+      cancelled
+      transactionsHash
+    }
+  }
+}

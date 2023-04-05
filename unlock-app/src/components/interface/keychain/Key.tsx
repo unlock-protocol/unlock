@@ -158,8 +158,10 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
+  const { opensea } = networks[network] ?? {}
+
   const isAvailableOnOpenSea =
-    networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+    opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
 
   const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
@@ -316,7 +318,7 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {isEthPassSupported(network) && (
+                  {tokenId && isEthPassSupported(network) && (
                     <>
                       <Menu.Item>
                         {({ active, disabled }) => (

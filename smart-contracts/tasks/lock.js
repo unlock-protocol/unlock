@@ -49,16 +49,16 @@ task('lock:clone', 'Redeploy an identical lock')
   )
 
 task('lock:samples', 'Deploy a sample lock')
-  .addParam('unlockAddress', 'The Unlock contract address')
+  .addOptionalParam('unlockAddress', 'The Unlock contract address')
   .addOptionalParam('tokenAddress', 'The ERC20 token address')
   .addOptionalParam(
-    'unlockVersion',
-    'The Unlock version to use to deploy the contract'
+    'lockVersion',
+    'The PublicLock version to use when deploying the lock'
   )
-  .setAction(async ({ unlockAddress, unlockVersion }) => {
+  .setAction(async ({ unlockAddress, lockVersion }) => {
     // eslint-disable-next-line global-require
     const deploySampleLocks = require('../scripts/lock/samples')
-    await deploySampleLocks({ unlockAddress, unlockVersion })
+    await deploySampleLocks({ unlockAddress, lockVersion })
   })
 
 task('lock:create', 'Deploy a lock')
