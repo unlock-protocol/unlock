@@ -10,7 +10,7 @@ module.exports = {
       },
       network: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING, // TODO: FIX ME. THIS SHOULD BE BIGINT
       },
       topic: {
         allowNull: false,
