@@ -58,6 +58,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       },
       currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
+        external_url: '',
         description: '',
         image: '',
         certification: {
@@ -155,7 +156,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   }
                 }}
               />
-              <div className="grid gap-4">
+              <div className="grid gap-2">
                 <Input
                   {...register('lock.name', {
                     required: {
@@ -199,6 +200,13 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     // @ts-ignore
                     errors.metadata?.certification?.issuer?.message as string
                   }
+                />
+
+                <Input
+                  {...register('metadata.external_url')}
+                  label="External URL"
+                  description="Included a link in your certification, so members can learn about it through metadata"
+                  error={errors.metadata?.external_url?.message as string}
                 />
 
                 <div>

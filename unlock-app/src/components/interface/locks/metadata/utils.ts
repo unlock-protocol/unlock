@@ -1,3 +1,7 @@
+export interface Certification {
+  issuer?: string
+}
+
 export interface Ticket {
   event_start_date?: string
   event_start_time?: string
@@ -15,6 +19,7 @@ export interface MetadataFormData {
   youtube_url?: string
   animation_url?: string
   background_color?: string
+  certification?: Certification
   ticket?: Ticket
   properties?: Attribute[]
   levels?: Attribute[]
@@ -134,11 +139,19 @@ export const formDataToMetadata = ({
   levels,
   stats,
   image,
+  certification,
 }: MetadataFormData) => {
   const metadata: Metadata & { attributes: Attribute[] } = {
     name,
     image,
     attributes: [] as Attribute[],
+  }
+
+  if (certification?.issuer) {
+    metadata.attributes.push({
+      trait_type: 'issuer',
+      value: certification.issuer,
+    })
   }
 
   if (ticket?.event_start_date) {

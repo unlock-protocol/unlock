@@ -245,7 +245,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             variant="primary"
             size="medium"
-            className="md:w-1/2 mt-4"
+            className="mt-4 md:w-1/2"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`

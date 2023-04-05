@@ -79,7 +79,9 @@ export const CertificationDetails = ({
     )
   }
 
-  if (isMetadataLoading || !isFetched) {
+  const loading = isMetadataLoading || (tokenId ? isFetched : false)
+
+  if (loading) {
     return (
       <Placeholder.Root>
         <Placeholder.Line size="sm" />
@@ -156,7 +158,7 @@ export const CertificationDetails = ({
             You are viewing the certificate issued to the recipient.{' '}
             <Link
               className="font-semibold text-gray-800 hover:text-brand-ui-primary"
-              href=""
+              href="/certification"
             >
               Learn more
             </Link>{' '}
@@ -180,7 +182,7 @@ export const CertificationDetails = ({
             your wallet if you have received the certificate NFT or{' '}
             <Link
               className="font-semibold text-gray-800 hover:text-brand-ui-primary"
-              href=""
+              href="/certification"
             >
               Learn more
             </Link>{' '}
@@ -328,11 +330,16 @@ export const CertificationDetails = ({
                         Unlock Protocol
                       </h3>
                     </div>
-                    <div className="mx-auto">
-                      <Link className="hover:text-brand-ui-primary" href="#">
-                        <Icon icon={ExternalLinkIcon} size={24} />
-                      </Link>
-                    </div>
+                    {metadata?.external_link && (
+                      <div className="mx-auto">
+                        <Link
+                          className="hover:text-brand-ui-primary"
+                          href={metadata.external_link}
+                        >
+                          <Icon icon={ExternalLinkIcon} size={24} />
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
