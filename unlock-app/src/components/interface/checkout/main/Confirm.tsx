@@ -114,15 +114,14 @@ export function Confirm({
   } = lock!
   const swap = payment?.method === 'swap_and_purchase'
 
-  const currencyContractAddress =
-    payment.method === 'swap_and_purchase'
-      ? payment.route.trade.inputAmount.currency?.address
-      : lock?.currencyContractAddress
+  const currencyContractAddress = swap
+    ? payment.route.trade.inputAmount.currency?.address
+    : lock?.currencyContractAddress
 
-  console.log(currencyContractAddress)
   const recurringPayment =
     paywallConfig?.recurringPayments ||
     paywallConfig?.locks[lockAddress]?.recurringPayments
+
   const totalApproval =
     typeof recurringPayment === 'string' &&
     recurringPayment.toLowerCase() === 'forever' &&
