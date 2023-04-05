@@ -1,15 +1,15 @@
 const { ethers } = require('hardhat')
-const { SafeFactory } = require('@gnosis.pm/safe-core-sdk')
-const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
+const { SafeFactory } = require('@safe-global/safe-core-sdk')
+const EthersAdapter = require('@safe-global/safe-ethers-lib').default
 const getOwners = require('./owners')
 
 async function main({ owners, threshold = 4 }) {
   if (owners && owners.length % 2 == 0) {
-    throw new Error('GNOSIS SAFE SETUP > Number of owners should be odd.')
+    throw new Error('SAFE SETUP > Number of owners should be odd.')
   }
   if (owners && owners.length < threshold) {
     throw new Error(
-      'GNOSIS SAFE SETUP > Threshold is greater than number of owners.'
+      'SAFE SETUP > Threshold is greater than number of owners.'
     )
   }
 
@@ -29,13 +29,13 @@ async function main({ owners, threshold = 4 }) {
     threshold,
   }
 
-  console.log('GNOSIS SAFE SETUP > Deploying new safe...')
+  console.log('SAFE SETUP > Deploying new safe...')
 
   const safe = await safeFactory.deploySafe({ safeAccountConfig })
   const safeAddress = safe.getAddress()
 
-  console.log('GNOSIS SAFE SETUP > New safe deployed at: ', safeAddress)
-  console.log('GNOSIS SAFE SETUP > Owners: ')
+  console.log('SAFE SETUP > New safe deployed at: ', safeAddress)
+  console.log('SAFE SETUP > Owners: ')
   owners.forEach((owner) => console.log(`${owner}`))
 
   return safeAddress
