@@ -2,16 +2,23 @@ const { ethers } = require('hardhat')
 const Locks = require('../../test/fixtures/locks')
 const createLock = require('../deployments/lock.js')
 const contracts = require('@unlock-protocol/contracts')
+const { networks } = require('@unlock-protocol/networks')
 
 const { AddressZero } = ethers.constants
 
 async function main({
   unlockAddress,
-  unlockVersion,
   lockVersion,
   tokenAddress = AddressZero,
 }) {
   const signers = await ethers.getSigners()
+
+  const { chainId } = await ethers.provider.getNetwork()
+  if(!unlockAddress && chainId !== 31337) {
+    ;({ unlockAddress } = networks[chainId])
+  }
+  if(!unlockAddress) { throw Error('Missing Unlock address')}
+  console.log(`Deploying on chain ${chainId} with Unlock at: ${unlockAddress}`)
 
   // loop through all locks and deploy them
   const serializedLocks = Object.keys(Locks).map((name, i) => ({
@@ -24,7 +31,6 @@ async function main({
   for (const serializedLock of serializedLocks) {
     const newLockAddress = await createLock({
       unlockAddress,
-      unlockVersion,
       serializedLock,
       lockVersion,
       salt: web3.utils.randomHex(12),
@@ -35,7 +41,7 @@ async function main({
     if (!lockVersion) {
       Lock = await ethers.getContractFactory('PublicLock')
     } else {
-      const { abi, bytecode } = contracts[`UnlockV${unlockVersion}`]
+      const { abi, bytecode } = contracts[`PublicLockV${lockVersion}`]
       Lock = await ethers.getContractFactory(abi, bytecode)
     }
     const lock = Lock.attach(newLockAddress)
