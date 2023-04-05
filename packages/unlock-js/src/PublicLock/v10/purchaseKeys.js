@@ -50,7 +50,7 @@ export default async function (options, transactionOptions = {}, callback) {
   }
 
   // if swap is provided, we need to override the value
-  if (swap && swap.value) {
+  if (swap && swap?.value) {
     transactionOptions.value = swap.value
   }
 
