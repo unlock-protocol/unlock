@@ -116,9 +116,10 @@ export function Confirm({
 
   const currencyContractAddress =
     payment.method === 'swap_and_purchase'
-      ? payment.route.quote.currency?.address
+      ? payment.route.trade.inputAmount.currency?.address
       : lock?.currencyContractAddress
 
+  console.log(currencyContractAddress)
   const recurringPayment =
     paywallConfig?.recurringPayments ||
     paywallConfig?.locks[lockAddress]?.recurringPayments
@@ -225,7 +226,6 @@ export function Confirm({
 
       const isTokenPayable = pricingData!.total <= parseFloat(balance)
       const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
-
       return {
         isTokenPayable,
         isGasPayable,
@@ -238,7 +238,7 @@ export function Confirm({
 
   // By default, until fully loaded we assume payable.
   const canAfford =
-    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
+    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable) || true
 
   const isLoading =
     isPricingDataLoading ||
@@ -249,7 +249,7 @@ export function Confirm({
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = swap
-    ? payment.route.quote.currency.symbol
+    ? payment.route.trade.inputAmount.currency.symbol
     : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
 
   const formattedData = getLockProps(
@@ -396,15 +396,16 @@ export function Confirm({
       const swap =
         payment.method === 'swap_and_purchase'
           ? {
-              srcTokenAddress: payment.route.quote.currency.address,
+              srcTokenAddress: currencyContractAddress,
               uniswapRouter: payment.route.swapRouter,
               swapCallData: payment.route.swapCalldata,
+              value: payment.route.value,
               amountInMax: ethers.utils
                 .parseUnits(
                   payment.route
                     .convertToQuoteToken(pricingData!.total.toString())
-                    .toFixed(4),
-                  payment.route.quote.currency.decimals
+                    .toFixed(6),
+                  payment.route.trade.inputAmount.currency.decimals
                 )
                 // 1% slippage buffer
                 .mul(101)
@@ -533,11 +534,7 @@ export function Confirm({
             <>
               {!isPayable?.isTokenPayable && (
                 <small className="text-center text-red-500">
-                  You do not have enough{' '}
-                  {payment.method === 'swap_and_purchase'
-                    ? payment.route.quote?.symbol || 'amount'
-                    : symbol}{' '}
-                  to complete this purchase.
+                  You do not have enough {symbol} to complete this purchase.
                 </small>
               )}
               {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
@@ -645,7 +642,7 @@ export function Confirm({
                           : swap
                           ? payment.route
                               .convertToQuoteToken(item.amount.toString())
-                              .toFixed(2)
+                              .toFixed(6)
                           : item.amount.toLocaleString()) +
                           ' ' +
                           symbol}
