@@ -433,20 +433,20 @@ URI: https://locksmith.unlock-protocol.com/api/key/<chainId>
 chainId: <chainId>
 ```
 
-### Create a gnosis safe and transfer Unlock ownership there
+### Create a Safe and transfer Unlock ownership there
 
 1. Run this command to create a safe with the same owners as the mainnet wallet
 
 ```
-yarn hardhat gnosis:create --network goerli
+yarn hardhat safe:create --network goerli
 ```
 
-2. Go to https://gnosis-safe.io/app/load and follow the steps to add the new wallet.
+1. Go to https://safe.global/app/load and follow the steps to add the new wallet.
 
-3. Transfer the ownership of the Unlock instance to the multisig
+2. Transfer the ownership of the Unlock instance to the multisig
 
 ```
-yarn hardhat gnosis:transfer --safe-address <GNOSIS_SAFE_ADDRESS> \
+yarn hardhat safe:transfer --safe-address <SAFE_GLOBAL_ADDRESS> \
   --contract-address <UNLOCK_ADDRESS>
   --network goerli
 ```
@@ -457,7 +457,7 @@ Add info about unlock and multisig to the network file
 
 - edit `packages/networks/src/goerli.ts`
 - add the unlock address to `unlockAddress`
-- add the gnosis safe address to `multisig`
+- add the multisig safe address to `multisig`
 - add the block number before Unlock contract creation as `startBlock`
 - rebuild the package with `yarn build`
 
