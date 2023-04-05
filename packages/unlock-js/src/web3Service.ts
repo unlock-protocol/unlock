@@ -1018,7 +1018,7 @@ export default class Web3Service extends UnlockService {
         type: SwapType.UNIVERSAL_ROUTER,
         recipient,
         slippageTolerance: new Percent(15, 100),
-        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24), // 24 hour
+        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
       },
     ] as const
     // call router
