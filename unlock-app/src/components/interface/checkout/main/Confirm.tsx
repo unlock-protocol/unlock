@@ -203,7 +203,7 @@ export function Confirm({
       amount:
         amountToConvert > 0 && swap
           ? parseFloat(
-              payment.route.convertToQuoteToken(amountToConvert).toFixed(4)
+              payment.route.convertToQuoteToken(amountToConvert).toFixed(8)
             )
           : amountToConvert,
       enabled: isPricingDataAvailable,
@@ -223,8 +223,16 @@ export function Confirm({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const isTokenPayable = pricingData!.total <= parseFloat(balance)
-      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
+      const totalAmount = swap
+        ? Number(
+            payment.route
+              .convertToQuoteToken(pricingData!.total.toString())
+              .toFixed(8)
+          )
+        : pricingData!.total
+
+      const isTokenPayable = totalAmount <= Number(balance)
+      const isGasPayable = Number(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
       return {
         isTokenPayable,
         isGasPayable,
@@ -403,7 +411,7 @@ export function Confirm({
                 .parseUnits(
                   payment.route
                     .convertToQuoteToken(pricingData!.total.toString())
-                    .toFixed(6),
+                    .toFixed(8), // Total Amount
                   payment.route.trade.inputAmount.currency.decimals
                 )
                 // 1% slippage buffer
@@ -639,13 +647,9 @@ export function Confirm({
                         {(item.amount <= 0
                           ? 'FREE'
                           : swap
-                          ? Number(payment.route!.quote.toFixed()) > 1
-                            ? Number(payment.route!.quote.toFixed())
-                            : parseFloat(
-                                Number(
-                                  payment.route!.quote.toFixed()
-                                ).toPrecision(3)
-                              )
+                          ? payment.route
+                              .convertToQuoteToken(item.amount.toString())
+                              .toFixed(8)
                           : item.amount.toLocaleString()) +
                           ' ' +
                           symbol}
