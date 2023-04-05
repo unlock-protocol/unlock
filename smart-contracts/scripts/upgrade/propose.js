@@ -10,31 +10,30 @@ const { submitTx, getOwners } = require('../multisig')
 async function main({ proxyAddress, proxyAdminAddress, implementation }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
-  const isDev = chainId === 31337
-  if (isDev) console.log('Dev mode ON')
-
   const { multisig } = networks[chainId]
+  let [signer] = await ethers.getSigners()
 
-
-  // get proper credentials
-  let signer
-  if (isDev) {
-    // impersonate multisig owner
+  // impersonate multisig owner
+  if (chainId === 31337) {
     const owners = await getOwners(chainId)
     signer = await ethers.getSigner(owners[0])
     await impersonate(owners[0])
-  } else {
-    ;[signer] = await ethers.getSigners()
   }
-  console.log(`Signer: ${signer.address}`)
 
+  console.log(`Submitting contract upgrade on chain ${chainId}: 
+  - proxy: ${proxyAddress}
+  - proxyAdmin: ${proxyAdminAddress}
+  - implementation: ${implementation}
+  - multisig: ${multisig}
+  - signer: ${signer.address}
+  `)
+  
   // build upgrade tx
   const { interface } = await ethers.getContractAt(proxyABI, proxyAdminAddress)
-
   const args = [
-      proxyAddress,
-      implementation,
-    ]
+    proxyAddress,
+    implementation,
+  ]
   const data = interface.encodeFunctionData('upgrade', args)
 
   // submit proxy upgrade tx to proxyAdmin
@@ -51,7 +50,7 @@ async function main({ proxyAddress, proxyAdminAddress, implementation }) {
   })
 
   // make sure it doesnt revert
-  if (isDev) {
+  if (chainId === 31337) {
     await confirmMultisigTx({ transactionId })
   }
 }
