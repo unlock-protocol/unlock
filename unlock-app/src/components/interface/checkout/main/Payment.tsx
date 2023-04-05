@@ -257,7 +257,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                       <AmountBadge
                         amount={
                           amount > 1
-                            ? `~${amount.toPrecision(3)}`
+                            ? `~${parseFloat(amount.toPrecision(3))}`
                             : amount > 0.1
                             ? `~${amount.toPrecision(2)}`
                             : `~${amount.toPrecision(1)}`

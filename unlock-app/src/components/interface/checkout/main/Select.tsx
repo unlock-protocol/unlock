@@ -110,17 +110,18 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                         : formattedData.formattedKeysAvailable
                     }
                   />
-                  {parseInt(lock.recurringPayments.toString()) > 1 && (
-                    <LabeledItem
-                      label="Renew"
-                      icon={RecurringIcon}
-                      value={
-                        typeof lock.recurringPayments === 'number'
-                          ? `${lock.recurringPayments} times`
-                          : lock.recurringPayments
-                      }
-                    />
-                  )}
+                  {lock.recurringPayments &&
+                    parseInt(lock.recurringPayments.toString()) > 1 && (
+                      <LabeledItem
+                        label="Renew"
+                        icon={RecurringIcon}
+                        value={
+                          typeof lock.recurringPayments === 'number'
+                            ? `${lock.recurringPayments} times`
+                            : lock.recurringPayments
+                        }
+                      />
+                    )}
                 </div>
                 <div>
                   {checked ? (

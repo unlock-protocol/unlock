@@ -644,9 +644,13 @@ export function Confirm({
                         {(item.amount <= 0
                           ? 'FREE'
                           : swap
-                          ? Number(payment.route!.quote.toFixed()).toPrecision(
-                              3
-                            )
+                          ? Number(payment.route!.quote.toFixed()) > 1
+                            ? Number(payment.route!.quote.toFixed())
+                            : parseFloat(
+                                Number(
+                                  payment.route!.quote.toFixed()
+                                ).toPrecision(3)
+                              )
                           : item.amount.toLocaleString()) +
                           ' ' +
                           symbol}
