@@ -13,7 +13,7 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { expirationAsDate } from '~/utils/durations'
 import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
 import { RiDownloadLine as DownloadIcon } from 'react-icons/ri'
-import { account } from '~/propTypes'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -26,12 +26,17 @@ export const CertificationDetails = ({
   network,
   tokenId,
 }: CertificationDetailsProps) => {
+  const { account } = useAuth()
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
   })
 
-  const { data: key, isPlaceholderData } = useQuery(
+  const {
+    data: key,
+    isPlaceholderData,
+    isFetched,
+  } = useQuery(
     ['getLockKey', lockAddress, network],
     async () => {
       const subgraph = new SubgraphService()
@@ -73,7 +78,7 @@ export const CertificationDetails = ({
     )
   }
 
-  if (isMetadataLoading) {
+  if (isMetadataLoading || !isFetched) {
     return (
       <Placeholder.Root>
         <Placeholder.Line size="sm" />
@@ -113,28 +118,39 @@ export const CertificationDetails = ({
 
   const hasValidKey = (key && !isPlaceholderData) || (isPlaceholderData && !key)
 
-  const isSample = isPlaceholderData && !tokenId
-
-  if (!key) {
-    return <span>No certification</span>
+  const Badge = () => {
+    if (isLockManager || !account) {
+      return (
+        <div className="absolute flex bg-gradient-to-t from-[#603DEB] to-[#27C1D6] h-12 w-80 text-center -rotate-45 bottom-[50px] -right-[80px]">
+          <span className="m-auto text-3xl font-bold text-white">
+            {isLockManager ? 'Template' : 'Sample'}
+          </span>
+        </div>
+      )
+    }
+    return null
   }
 
-  return (
-    <main className="mt-8 ">
-      <div className="flex flex-col gap-6">
-        {key?.owner === account && (
-          <span className="text-base md:text-lg">
+  const Header = () => {
+    if (tokenId && key) {
+      if (isLockManager) {
+        return (
+          <span>
+            Here is the certificate that you issued to the recipient. This image
+            is as off-chain image which allow recipient to share on their
+            professional network.
+          </span>
+        )
+      } else if (account === key?.owner) {
+        return (
+          <span>
             Here is the certificate you have received. This image is as
             off-chain image to display in a certificate format. Please refer the
             NFT link for on-chain validation.
           </span>
-        )}
-        {isSample && (
-          <span className="text-base md:text-lg">
-            Here is a sample of the certification.
-          </span>
-        )}
-        {tokenId && (
+        )
+      } else {
+        return (
           <span>
             You are viewing the certificate issued to the recipient.{' '}
             <Link
@@ -145,15 +161,46 @@ export const CertificationDetails = ({
             </Link>{' '}
             about Certification by Unlock Labs.
           </span>
-        )}
+        )
+      }
+    } else if (key) {
+      if (isLockManager) {
+        return (
+          <span>
+            Here is the template when recipient receive certificate from you.
+            They can connect wallet at this page & share the certification image
+            to the professional network.
+          </span>
+        )
+      } else {
+        return (
+          <span>
+            You are viewing a off-chain certification sample. Please connect
+            your wallet if you have received the certificate NFT or{' '}
+            <Link
+              className="font-semibold text-gray-800 hover:text-brand-ui-primary"
+              href=""
+            >
+              Learn more
+            </Link>{' '}
+            about Certification by Unlock Labs.
+          </span>
+        )
+      }
+    } else {
+      return <span>No valid certification</span>
+    }
+  }
+
+  const showCertificate = tokenId && key
+  const canShareOrDownload = key?.owner === account || isLockManager
+
+  return (
+    <main className="mt-8 ">
+      <div className="flex flex-col gap-6">
+        <Header />
         <div className="relative grid grid-cols-1 overflow-hidden border border-gray-200 shadow-md md:grid-cols-3">
-          {isSample && (
-            <div className="absolute flex bg-gradient-to-t from-[#603DEB] to-[#27C1D6] h-12 w-80 text-center -rotate-45 bottom-[50px] -right-[80px]">
-              <span className="m-auto text-3xl font-bold text-white">
-                Sample
-              </span>
-            </div>
-          )}
+          <Badge />
           <div className="flex flex-col col-span-2 gap-10 px-6 py-6 md:gap-24 md:px-12 md:py-11">
             <div>
               <h2 className="text-xl font-bold uppercase md:text-4xl">
@@ -225,9 +272,23 @@ export const CertificationDetails = ({
                   </span>
                 }
               >
-                {isPlaceholderData
-                  ? transactionsHash
-                  : addressMinify(transactionsHash)}
+                {isPlaceholderData ? (
+                  transactionsHash
+                ) : (
+                  <Link
+                    className="flex items-center gap-2 hover:text-brand-ui-primary"
+                    target="_blank"
+                    rel="noreferrer"
+                    href={
+                      networks[network].explorer?.urls?.transaction(
+                        transactionsHash
+                      ) || '#'
+                    }
+                  >
+                    <span>{addressMinify(transactionsHash)}</span>
+                    <Icon icon={ExternalLinkIcon} size={18} />
+                  </Link>
+                )}
               </Detail>
               <small className="block mt-10 text-xs text-gray-600">
                 This image is an off-chain image, Powered by Unlock. <br />{' '}
@@ -260,7 +321,7 @@ export const CertificationDetails = ({
             </div>
           </div>
         </div>
-        {!isSample && (
+        {canShareOrDownload && (
           <ul className="flex gap-4 mx-auto">
             <li>
               <LinkedinIcon
