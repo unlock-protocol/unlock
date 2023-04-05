@@ -59,7 +59,7 @@ export default async function (options, transactionOptions = {}, callback) {
     ? {
         erc20Address: swap.srcTokenAddress,
         address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove,
+        totalAmountToApprove: swap.amountInMax,
       }
     : {
         erc20Address,
