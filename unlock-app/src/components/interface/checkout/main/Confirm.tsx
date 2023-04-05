@@ -639,9 +639,13 @@ export function Confirm({
                         {(item.amount <= 0
                           ? 'FREE'
                           : swap
-                          ? payment.route
-                              .convertToQuoteToken(item.amount.toString())
-                              .toFixed(6)
+                          ? Number(payment.route!.quote.toFixed()) > 1
+                            ? Number(payment.route!.quote.toFixed())
+                            : parseFloat(
+                                Number(
+                                  payment.route!.quote.toFixed()
+                                ).toPrecision(3)
+                              )
                           : item.amount.toLocaleString()) +
                           ' ' +
                           symbol}

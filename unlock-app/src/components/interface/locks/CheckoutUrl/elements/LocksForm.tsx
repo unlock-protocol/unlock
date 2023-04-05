@@ -454,9 +454,7 @@ export const LocksForm = ({
                   {isRecurringPossible && (
                     <>
                       <span className="flex items-center justify-between">
-                        <span className="px-1 text-sm">
-                          Number of renewals
-                        </span>
+                        <span className="px-1 text-sm">Number of renewals</span>
                         <ToggleSwitch
                           title="Unlimited"
                           enabled={recurringUnlimited}
