@@ -13,6 +13,7 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { expirationAsDate } from '~/utils/durations'
 import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
 import { RiDownloadLine as DownloadIcon } from 'react-icons/ri'
+import { account } from '~/propTypes'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -53,8 +54,9 @@ export const CertificationDetails = ({
         network,
         tokenId: '{Token ID}',
         owner: `{Recipient's wallet address, or ENS}`,
-        expiration: new Date().toLocaleDateString(),
+        expiration: '{Expiration date}',
         createdAtBlock: undefined,
+        transactionsHash: ['{Transaction hash}'],
         lock: {} as any,
       },
     }
@@ -107,18 +109,45 @@ export const CertificationDetails = ({
 
   const certificationData = toFormData(metadata)
 
-  const transactionsHash: string = key?.transactionsHash?.[0] || ''
+  const transactionsHash: string = key?.transactionsHash?.[0] || '22'
+
+  const hasValidKey = (key && !isPlaceholderData) || (isPlaceholderData && !key)
+
+  const isSample = isPlaceholderData && !tokenId
+
+  if (!key) {
+    return <span>No certification</span>
+  }
 
   return (
     <main className="mt-8 ">
       <div className="flex flex-col gap-6">
-        <span className="text-base md:text-lg">
-          Here is the certificate you have received. This image is as off-chain
-          image to display in a certificate format. Please refer the NFT link
-          for on-chain validation.
-        </span>
+        {key?.owner === account && (
+          <span className="text-base md:text-lg">
+            Here is the certificate you have received. This image is as
+            off-chain image to display in a certificate format. Please refer the
+            NFT link for on-chain validation.
+          </span>
+        )}
+        {isSample && (
+          <span className="text-base md:text-lg">
+            Here is a sample of the certification.
+          </span>
+        )}
+        {tokenId && (
+          <span>
+            You are viewing the certificate issued to the recipient.{' '}
+            <Link
+              className="font-semibold text-gray-800 hover:text-brand-ui-primary"
+              href=""
+            >
+              Learn more
+            </Link>{' '}
+            about Certification by Unlock Labs.
+          </span>
+        )}
         <div className="relative grid grid-cols-1 overflow-hidden border border-gray-200 shadow-md md:grid-cols-3">
-          {!tokenId && (
+          {isSample && (
             <div className="absolute flex bg-gradient-to-t from-[#603DEB] to-[#27C1D6] h-12 w-80 text-center -rotate-45 bottom-[50px] -right-[80px]">
               <span className="m-auto text-3xl font-bold text-white">
                 Sample
@@ -132,14 +161,14 @@ export const CertificationDetails = ({
               </h2>
               <div className="flex flex-col gap-6 mt-3">
                 <span className="text-sm font-semibold">
-                  {isPlaceholderData ? '{Issue date}' : 'Apr 1, 2023'}
+                  {!hasValidKey ? '{Issue date}' : 'Apr 1, 2023'}
                 </span>
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-gray-700">
                     This is to certify
                   </span>
                   <span className="text-base font-bold text-brand-dark">
-                    {isPlaceholderData ? key?.owner : addressMinify(key?.owner)}
+                    {!hasValidKey ? key?.owner : addressMinify(key?.owner)}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -167,7 +196,7 @@ export const CertificationDetails = ({
                   }
                 >
                   {isPlaceholderData
-                    ? key?.expiration
+                    ? key.expiration
                     : expirationAsDate(key?.expiration)}
                 </Detail>
                 <Detail
@@ -197,7 +226,7 @@ export const CertificationDetails = ({
                 }
               >
                 {isPlaceholderData
-                  ? '{Transaction hash}'
+                  ? transactionsHash
                   : addressMinify(transactionsHash)}
               </Detail>
               <small className="block mt-10 text-xs text-gray-600">
@@ -231,21 +260,25 @@ export const CertificationDetails = ({
             </div>
           </div>
         </div>
-        <ul className="flex gap-4 mx-auto">
-          <li>
-            <LinkedinIcon
-              className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
-              size={30}
-            />
-          </li>
-          <li className="text-gray-900">
-            <DownloadIcon
-              className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
-              size={30}
-            />
-          </li>
-        </ul>
+        {!isSample && (
+          <ul className="flex gap-4 mx-auto">
+            <li>
+              <LinkedinIcon
+                className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
+                size={30}
+              />
+            </li>
+            <li className="text-gray-900">
+              <DownloadIcon
+                className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
+                size={30}
+              />
+            </li>
+          </ul>
+        )}
       </div>
+
+      <div></div>
 
       <section className="flex flex-col mb-8">
         {isLockManager && (

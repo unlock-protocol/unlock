@@ -17,12 +17,11 @@ import { networkDescription } from '~/components/interface/locks/Create/elements
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
-export interface NewEventForm {
+export interface NewCertificationForm {
   network: number
   lock: Omit<Lock, 'address' | 'key'>
   currencySymbol: string
@@ -30,7 +29,7 @@ export interface NewEventForm {
 }
 
 interface FormProps {
-  onSubmit: (data: NewEventForm) => void
+  onSubmit: (data: NewCertificationForm) => void
 }
 
 export const CertificationForm = ({ onSubmit }: FormProps) => {
@@ -39,20 +38,20 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
   const [isFree, setIsFree] = useState(true)
   const [unlimitedCapacity, setUnlimitedCapacity] = useState(false)
-  const [forever, setForever] = useState(false)
+  const [forever, setForever] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
   const web3Service = useWeb3Service()
 
-  const methods = useForm<NewEventForm>({
+  const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
     shouldUnregister: false,
     defaultValues: {
       network,
       lock: {
         name: '',
-        expirationDuration: UNLIMITED_KEYS_DURATION,
+        expirationDuration: undefined,
         maxNumberOfKeys: 100,
         currencyContractAddress: null,
         keyPrice: '0',
@@ -60,11 +59,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
         description: '',
+        image: '',
         certification: {
           issuer: '',
-          expire_date: null,
         },
-        image: '',
       },
     },
   })
@@ -178,7 +176,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   {...register('metadata.description', {
                     required: {
                       value: true,
-                      message: 'Please add a description for your event',
+                      message: 'Please add a description for your certificate',
                     },
                   })}
                   label="Description"
@@ -192,34 +190,42 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   {...register('metadata.certification.issuer', {
                     required: {
                       value: true,
-                      message: 'Please add a description for your event',
+                      message: 'Please add an issuer name',
                     },
                   })}
                   label="Official Name of the Issuer"
                   description="This is part of metadata to store the official name of issuer"
-                  error={errors.metadata?.description?.message as string}
+                  error={
+                    // @ts-ignore
+                    errors.metadata?.certification?.issuer?.message as string
+                  }
                 />
 
                 <div>
                   <div className="flex items-center justify-between">
                     <label className="px-1 mb-2 text-base" htmlFor="">
-                      Certificate Expire Date
+                      Certificate Duration (days)
                     </label>
                     <ToggleSwitch
                       title="Forever"
                       enabled={forever}
                       setEnabled={setForever}
-                      onChange={(enable: boolean) => {
-                        if (enable) {
-                          setValue('metadata.certification.expire_date', null)
+                      onChange={(enabled) => {
+                        if (enabled) {
+                          setValue('lock.expirationDuration', '' as any)
                         }
                       }}
                     />
                   </div>
                   <Input
-                    type="date"
                     disabled={forever}
-                    {...register('metadata.certification.expire_date')}
+                    error={errors.lock?.expirationDuration?.message as string}
+                    {...register('lock.expirationDuration', {
+                      required: {
+                        value: !forever,
+                        message: 'Please add a duration',
+                      },
+                    })}
                   />
                 </div>
               </div>
@@ -315,7 +321,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   type="number"
                   placeholder="Capacity"
                   description={
-                    'This is the maximum number of tickets for your event. '
+                    'This is the maximum number of tickets for your certificate. '
                   }
                 />
               </div>

@@ -8,6 +8,7 @@ import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CertificationForm } from './CertificationForm'
 import { CertificationDeploying } from './CertificationDeploying'
+import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 
 export interface TransactionDetails {
   hash: string
@@ -30,6 +31,10 @@ export const NewCertification = () => {
           ...formData.lock,
           name: formData.lock.name,
           publicLockVersion: config.publicLockVersion,
+          maxNumberOfKeys:
+            formData?.lock?.maxNumberOfKeys || UNLIMITED_KEYS_COUNT,
+          expirationDuration:
+            formData?.lock?.expirationDuration || UNLIMITED_KEYS_DURATION,
         },
         {} /** transactionParams */,
         async (createLockError, transactionHash) => {
