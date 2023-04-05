@@ -29,28 +29,12 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
-import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
-import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
-
-error Unlock__MANAGER_ONLY();   
-error Unlock__VERSION_TOO_HIGH();   
-error Unlock__MISSING_TEMPLATE();  
-error Unlock__ALREADY_DEPLOYED();
-error Unlock__MISSING_PROXY_ADMIN();
-error Unlock__MISSING_LOCK_TEMPLATE();
-
-// TODO: prefix errors
-error SwapFailed(address uniswapRouter, address tokenIn, address tokenOut, uint amountInMax, bytes callData);
-error LockDoesNotExist(address lockAddress);
-error InsufficientBalance();
-error UnauthorizedBalanceChange();
-error LockCallFailed();
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -117,6 +101,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // protocol fee
   uint public protocolFee;
+
+  // errors
+  error Unlock__MANAGER_ONLY();   
+  error Unlock__VERSION_TOO_HIGH();   
+  error Unlock__MISSING_TEMPLATE();  
+  error Unlock__ALREADY_DEPLOYED();
+  error Unlock__MISSING_PROXY_ADMIN();
+  error Unlock__MISSING_LOCK_TEMPLATE();
+  error Unlock__MISSING_LOCK(address lockAddress);
+  error Unlock__INVALID_AMOUNT();
 
   // Events
   event NewLock(
@@ -201,15 +195,27 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @dev Registers a new PublicLock template immplementation
    * The template is identified by a version number
    * Once registered, the template can be used to upgrade an existing Lock
+   * @dev This will initialize the template and revokeOwnership.
    */
   function addLockTemplate(
     address impl,
     uint16 version
   ) public onlyOwner {
+
+    // First claim the template so that no-one else could
+    // this will revert if the template was already initialized.
+    IPublicLock(impl).initialize(
+      address(this),
+      0,
+      address(0),
+      0,
+      0,
+      ""
+    );
+    IPublicLock(impl).renounceLockManager();
+
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
-    if (publicLockLatestVersion < version)
-      publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
   }
@@ -576,26 +582,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
-   * @notice Upgrade the PublicLock template used for future calls to `createLock`.
-   * @dev This will initialize the template and revokeOwnership.
+   * @notice Set the default PublicLock template to use when creating locks
    */
   function setLockTemplate(
     address _publicLockAddress
   ) external onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(_publicLockAddress).initialize(
-      address(this),
-      0,
-      address(0),
-      0,
-      0,
-      ""
-    );
-    IPublicLock(_publicLockAddress).renounceLockManager();
-
+    if(_publicLockVersions[_publicLockAddress] == 0) {
+      revert Unlock__MISSING_LOCK_TEMPLATE();
+    }
+    // set latest version
+    publicLockLatestVersion = _publicLockVersions[_publicLockAddress];
+    // set corresponding template
     publicLockAddress = _publicLockAddress;
-
     emit SetLockTemplate(_publicLockAddress);
   }
 
@@ -689,11 +687,15 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             yieldedDiscountTokens
           );
       } else {
-        revert LockDoesNotExist(msg.sender);
+        revert Unlock__MISSING_LOCK(msg.sender);
       }
     }
   }
 
-  // required to withdraw WETH
-  receive() external payable {}
+  // required to receive ETH / withdraw ETH
+  receive() external payable {
+    if(msg.value <= 0){
+      revert Unlock__INVALID_AMOUNT();
+    }
+  }
 }

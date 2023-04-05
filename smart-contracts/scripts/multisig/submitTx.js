@@ -3,32 +3,31 @@ const {
   getSafeAddress,
   getSafeVersion,
   submitTxOldMultisig,
+  confirmMultisigTx,
 } = require('./_helpers')
 
-const Safe = require('@gnosis.pm/safe-core-sdk').default
-const SafeServiceClient = require('@gnosis.pm/safe-service-client').default
-const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
+const Safe = require('@safe-global/safe-core-sdk').default
+const SafeServiceClient = require('@safe-global/safe-service-client').default
+const EthersAdapter = require('@safe-global/safe-ethers-lib').default
 
-// see https://docs.gnosis-safe.io/backend/available-services
-// possible changes in URLs hapenning
-// see https://forum.gnosis-safe.io/t/transaction-service-migration-october-2022/1550
-const gnosisServiceURLs = {
-  1: 'https://safe-transaction.mainnet.gnosis.io/',
+// see https://docs.safe.global/learn/safe-core/safe-core-api/available-services
+const safeServiceURLs = {
+  1: 'https://safe-transaction-mainnet.safe.global/',
   5: 'https://safe-transaction-goerli.safe.global/',
   10: 'https://safe-transaction-optimism.safe.global/',
-  56: 'https://safe-transaction.bsc.gnosis.io/',
-  100: 'https://safe-transaction.xdai.gnosis.io/',
-  137: 'https://safe-transaction.polygon.gnosis.io/',
+  56: 'https://safe-transaction-bsc.safe.global/',
+  100: 'https://safe-transaction-gnosis-chain.safe.global/',
+  137: 'https://safe-transaction-polygon.safe.global/',
   42161: 'https://safe-transaction-arbitrum.safe.global',
   43114: 'https://safe-transaction-avalanche.safe.global/',
   42220:
     'https://transaction-service.gnosis-safe-staging.celo-networks-dev.org',
-  // mumbai isnt supported by Gnosis, you need to run Gnosis safe infrastructure locally
+  // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
   80001: 'http://localhost:8000/cgw/',
 }
 
 async function main({ safeAddress, tx, signer }) {
-  const { chainId } = await signer.provider.getNetwork()
+  const { chainId } = await ethers.provider.getNetwork()
   if (!safeAddress) {
     safeAddress = getSafeAddress(chainId)
   }
@@ -45,16 +44,17 @@ async function main({ safeAddress, tx, signer }) {
     return nonce
   }
 
-  // Use Gnosis Safe v1+ with SDK
+  // Use Safe v1+ with SDK
   const ethAdapter = new EthersAdapter({
     ethers,
-    signer,
+    signerOrProvider: signer,
   })
 
-  // get Gnosis service
+  // get Safe service
   const id = await ethAdapter.getChainId()
-  const txServiceUrl = gnosisServiceURLs[id]
-  console.log(`Using Gnosis Safe service at ${txServiceUrl} - chain ${id}`)
+  const txServiceUrl = safeServiceURLs[id]
+  console.log(`Using Safe Global service at ${txServiceUrl} - chain ${id}`)
+  
   const safeService = new SafeServiceClient({
     txServiceUrl,
     ethAdapter,
@@ -63,7 +63,7 @@ async function main({ safeAddress, tx, signer }) {
   // create tx
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
 
-  const txs = !Array.isArray(tx) === [tx] || tx
+  const txs = !Array.isArray(tx) ? [tx] : tx
 
   const explainer = txs
     .map(
@@ -123,7 +123,7 @@ async function main({ safeAddress, tx, signer }) {
     options: txOptions,
   })
 
-  // now send tx via Gnosis web service
+  // now send tx via Safe Global web service
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
   const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
   // const nonce = await safeService.getNextNonce(safeAddress)
@@ -137,6 +137,14 @@ async function main({ safeAddress, tx, signer }) {
 
   const { nonce } = await safeService.getTransaction(safeTxHash)
   console.log(`Tx submitted to multisig with id: '${nonce}'`)
+
+  if (process.env.RUN_MAINNET_FORK) {
+      console.log(`Signing multisigs: ${nonce}`)
+      await confirmMultisigTx({
+        transactionId: nonce,
+        multisigAddress: safeAddress,
+      })
+    }
 }
 
 module.exports = main

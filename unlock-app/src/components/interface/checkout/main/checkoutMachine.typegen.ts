@@ -16,7 +16,6 @@ export interface Typegen0 {
     confirmMint: 'CONFIRM_MINT'
     confirmRenew: 'CONFIRM_RENEW'
     disconnect: 'DISCONNECT'
-    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
     selectLock: 'SELECT_LOCK'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'
@@ -30,22 +29,10 @@ export interface Typegen0 {
   }
   eventsCausingDelays: {}
   eventsCausingGuards: {
-    requireCaptcha:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-    requireMessageToSign:
-      | 'BACK'
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-    requirePassword:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-    requirePromo:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
+    requireCaptcha: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
+    requireMessageToSign: 'BACK' | 'SELECT_PAYMENT_METHOD'
+    requirePassword: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
+    requirePromo: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
   }
   eventsCausingServices: {
     unlockAccount: 'UNLOCK_ACCOUNT'

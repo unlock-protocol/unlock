@@ -130,7 +130,7 @@ const MENU = {
           title: 'Membership Dashboard',
           src: '/images/marketing/dashboard.png',
           description: 'Deploy your membership contract with few clicks.',
-          url: 'https://app.unlock-protocol.com/locks',
+          url: `${unlockConfig.appURL}/locks`,
         },
         {
           title: 'Events By Unlock',
@@ -190,7 +190,7 @@ const MENU = {
   actions: [
     {
       title: 'Launch App',
-      url: 'https://app.unlock-protocol.com/locks',
+      url: `${unlockConfig.appURL}/locks`,
       icon: ArrowRight,
     },
   ],
@@ -248,7 +248,7 @@ export function Layout({ children }: Props) {
         options: [
           {
             label: 'Membership Dashboard',
-            url: 'https://app.unlock-protocol.com/locks',
+            url: `${unlockConfig.appURL}/locks`,
           },
           {
             label: 'Events By Unlock',

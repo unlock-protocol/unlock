@@ -1,7 +1,7 @@
-import utils from '../../utils'
 import { ZERO } from '../../constants'
-import { approveTransfer, getAllowance } from '../../erc20'
-import formatKeyPrice from '../utils/formatKeyPrice'
+import getPurchaseKeysArguments from './getPurchaseKeysArguments'
+import approveAllowance from '../utils/approveAllowance'
+import { ethers } from 'ethers'
 
 /**
  * Purchase key function. This implementation requires the following
@@ -16,111 +16,60 @@ import formatKeyPrice from '../utils/formatKeyPrice'
  * - {PropTypes.arrayOf(PropTypes.array[bytes])} _data (array of array of bytes, not used in transaction but can be used by hooks)
  * @param {function} callback invoked with the transaction hash
  */
-export default async function (
-  {
-    owners: _owners,
-    keyManagers: _keyManagers,
-    keyPrices: _keyPrices,
-    referrers: _referrers,
-    lockAddress,
-    erc20Address,
-    recurringPayments,
-    decimals,
-    totalApproval, // explicit approval amount
-    data: _data,
-  },
-  transactionOptions = {},
-  callback
-) {
+export default async function (options, transactionOptions = {}, callback) {
+  const { lockAddress, swap } = options
   const lockContract = await this.getLockContract(lockAddress)
+  const {
+    owners,
+    keyPrices,
+    keyManagers,
+    referrers,
+    data,
+    totalPrice,
+    erc20Address,
+    totalAmountToApprove,
+  } = await getPurchaseKeysArguments.bind(this)(options)
 
-  // If erc20Address was not provided, get it
-  if (!erc20Address) {
-    erc20Address = await lockContract.tokenAddress()
-  }
+  const unlockSwapPurchaserContract = swap
+    ? this.getUnlockSwapPurchaserContract({
+        params: {
+          network: this.networkId,
+        },
+      })
+    : null
 
-  // owners default to a single key for current signer
-  const defaultOwner = await this.signer.getAddress()
-  const owners = _owners || [defaultOwner]
-
-  // we parse by default a length corresponding to the owners length
-  const defaultArray = Array(owners.length).fill(null)
-
-  const keyPrices = await Promise.all(
-    (_keyPrices || defaultArray).map(async (kp) => {
-      if (!kp) {
-        // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-        return await lockContract.keyPrice()
-      }
-      return formatKeyPrice(kp, erc20Address, decimals, this.provider)
-    })
+  const purchaseArgs = [keyPrices, owners, referrers, keyManagers, data]
+  const callData = lockContract.interface.encodeFunctionData(
+    'purchase',
+    purchaseArgs
   )
-  const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
-  const referrers = (_referrers || defaultArray).map((km) => km || ZERO)
-  const data = (_data || defaultArray).map((d) => d || [])
-
-  if (
-    !(
-      keyManagers.length === owners.length &&
-      keyPrices.length === owners.length &&
-      referrers.length === owners.length &&
-      data.length === owners.length
-    )
-  ) {
-    throw new Error(
-      'Params mismatch. All purchaseKeys params array should have the same length'
-    )
-  }
-
-  // calculate total price for all keys
-  const totalPrice = keyPrices.reduce(
-    (total, kp) => total.add(kp),
-    utils.bigNumberify(0)
-  )
-
-  // fix ERC20 allowance
-  if (erc20Address && erc20Address !== ZERO) {
-    const approvedAmount = await getAllowance(
-      erc20Address,
-      lockAddress,
-      this.provider,
-      this.signer.getAddress()
-    )
-
-    let totalAmountToApprove = totalApproval
-
-    if (!totalAmountToApprove) {
-      // total amount to approve
-      totalAmountToApprove = recurringPayments
-        ? keyPrices // for reccuring payments
-            .map((kp, i) => kp.mul(recurringPayments[i]))
-            .reduce(
-              (total, approval) => total.add(approval),
-              utils.bigNumberify(0)
-            )
-        : totalPrice
-    }
-
-    if (
-      !approvedAmount ||
-      utils.bigNumberify(approvedAmount).lt(totalAmountToApprove)
-    ) {
-      // We must wait for the transaction to pass if we want the next one to succeed!
-      await (
-        await approveTransfer(
-          erc20Address,
-          lockAddress,
-          totalAmountToApprove,
-          this.provider,
-          this.signer
-        )
-      ).wait()
-    }
-  }
 
   // tx options
   if (!erc20Address || erc20Address === ZERO) {
     transactionOptions.value = totalPrice
+  }
+
+  // if swap is provided, we need to override the value
+  if (swap && swap?.value) {
+    transactionOptions.value = swap.value
+  }
+
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = swap
+    ? {
+        erc20Address: swap.srcTokenAddress,
+        address: unlockSwapPurchaserContract?.address,
+        totalAmountToApprove,
+      }
+    : {
+        erc20Address,
+        totalAmountToApprove,
+        address: lockAddress,
+      }
+
+  // Only ask for approval if the lock or swap is priced in ERC20
+  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
+    await approveAllowance.bind(this)(approvalOptions)
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
@@ -141,14 +90,27 @@ export default async function (
           transactionOptions.gasPrice = gasPrice
         }
       }
-      const gasLimit = await lockContract.estimateGas.purchase(
-        keyPrices,
-        owners,
-        referrers,
-        keyManagers,
-        data,
-        transactionOptions
-      )
+
+      const gasLimitPromise = swap
+        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
+            lockAddress,
+            swap.srcTokenAddress || ZERO,
+            swap.amountInMax,
+            swap.uniswapRouter,
+            swap.swapCallData,
+            callData,
+            transactionOptions
+          )
+        : lockContract.estimateGas.purchase(
+            keyPrices,
+            owners,
+            referrers,
+            keyManagers,
+            data,
+            transactionOptions
+          )
+
+      const gasLimit = await gasLimitPromise
       transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
     } catch (error) {
       console.error(
@@ -163,14 +125,26 @@ export default async function (
     }
   }
 
-  const transactionRequest = await lockContract.populateTransaction.purchase(
-    keyPrices,
-    owners,
-    referrers,
-    keyManagers,
-    data,
-    transactionOptions
-  )
+  const transactionRequestPromise = swap
+    ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
+        lockAddress,
+        swap.srcTokenAddress || ZERO,
+        swap.amountInMax,
+        swap.uniswapRouter,
+        swap.swapCallData,
+        callData,
+        transactionOptions
+      )
+    : lockContract.populateTransaction.purchase(
+        keyPrices,
+        owners,
+        referrers,
+        keyManagers,
+        data,
+        transactionOptions
+      )
+
+  const transactionRequest = await transactionRequestPromise
 
   if (transactionOptions.runEstimate) {
     const estimate = lockContract.signer.estimateGas(transactionRequest)

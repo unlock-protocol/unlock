@@ -15,11 +15,15 @@ import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
-import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
+import {
+  useUniswapRoutes,
+  useUniswapRoutesUsingLock,
+} from '~/hooks/useUniswapRoutes'
+import { useBalance } from '~/hooks/useBalance'
+import LoadingIcon from '../../Loading'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -33,8 +37,8 @@ interface AmountBadgeProps {
 const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-      {amount + ' '} {symbol.toUpperCase()}
-      <CryptoIcon symbol={symbol} />
+      {parseFloat(amount) <= 0 ? 'FREE' : `${amount} ${symbol.toUpperCase()}`}
+      <CryptoIcon size={16} symbol={symbol} />
     </div>
   )
 }
@@ -42,20 +46,24 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { quantity, recipients } = state.context
+  const { recipients } = state.context
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
   const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-  const web3Service = useWeb3Service()
+
+  const price = Number(
+    parseFloat(lock.keyPrice) * recipients.length
+  ).toLocaleString()
+
   const { isLoading, data: fiatPricing } = useQuery(
-    ['fiat', quantity, lock.address, lock.network],
+    ['fiat', lock.network, lock.address, recipients.length],
     async () => {
       const pricing = await getFiatPricing(
         config,
         lock.address,
         lock.network,
-        quantity
+        recipients.length
       )
       return pricing
     }
@@ -66,39 +74,29 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     network: lock.network,
   })
 
-  const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
-    ['balance', account, lock.address],
-    async () => {
-      const [balance, networkBalance] = await Promise.all([
-        getAccountTokenBalance(
-          web3Service,
-          account!,
-          lock.currencyContractAddress,
-          lock.network
-        ),
-        getAccountTokenBalance(web3Service, account!, null, lock.network),
-      ])
-
-      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
-
-      const isPayable = isGasPayable
-      /** Note: we won't really know if user can afford because there could be discounts... */
-      /* userCanAffordKey(lock, balance, recipients.length) && isGasPayable */
-
-      const options = {
-        balance,
-        networkBalance,
-        isPayable,
-        isGasPayable,
-      }
-
-      return options
-    }
-  )
-
-  const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
+  const { isLoading: isBalanceLoading, data: balance } = useBalance({
+    account: account!,
+    network: lock.network,
+    currencyContractAddress: lock.currencyContractAddress,
+  })
 
   const networkConfig = config.networks[lock.network]
+
+  const uniswapRoutes = useUniswapRoutesUsingLock({
+    lock,
+    price: price,
+  })
+
+  const isSwapAndPurchaseEnabled =
+    parseFloat(price) > 0 && uniswapRoutes && uniswapRoutes.length > 0
+
+  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
+    useUniswapRoutes({
+      routes: uniswapRoutes!,
+      enabled: isSwapAndPurchaseEnabled,
+    })
+
+  const isWaiting = isLoading || isClaimableLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
@@ -106,7 +104,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
-  const enableCrypto = !isUnlockAccount || !!walletInfo?.isPayable
+  const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
   const forceClaim = lock.network === 42161
 
@@ -114,7 +112,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    (!walletInfo?.isPayable || forceClaim)
+    (!balance?.isPayable || forceClaim)
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -122,7 +120,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     (item) => !item
   )
 
-  const keyPrice = Number(parseFloat(lock.keyPrice)).toLocaleString()
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
@@ -136,7 +133,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div className="space-y-6">
             {enableCrypto && (
               <button
-                disabled={!walletInfo?.isPayable}
+                disabled={!balance?.isPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -150,13 +147,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay via cryptocurrency </h3>
-                  <AmountBadge amount={keyPrice} symbol={symbol} />
+                  <AmountBadge amount={price} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
                     Your balance of {symbol.toUpperCase()} on{' '}
                     {networkConfig.name}:{' ~'}
-                    {parseFloat(walletInfo?.balance).toFixed(3)}{' '}
+                    {parseFloat(balance?.balance).toFixed(3)}{' '}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -164,13 +161,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   />
                 </div>
                 <div className="inline-flex text-sm text-start">
-                  {!walletInfo?.isGasPayable &&
+                  {!balance?.isGasPayable &&
                     `You don't have enough ${networkConfig.nativeCurrency.symbol} for gas fee.`}
                 </div>
               </button>
             )}
+
             {enableCreditCard && (
               <button
+                disabled={balance?.isGasPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -228,6 +227,59 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
+            {isUniswapRoutesLoading && (
+              <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
+                <LoadingIcon size={16} /> Loading payment options...
+              </div>
+            )}
+            {!isUniswapRoutesLoading &&
+              isSwapAndPurchaseEnabled &&
+              routes?.map((route, index) => {
+                const amount = Number(route!.quote.toFixed())
+
+                return (
+                  <button
+                    key={index}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      send({
+                        type: 'SELECT_PAYMENT_METHOD',
+                        payment: {
+                          route,
+                          method: 'swap_and_purchase',
+                        },
+                      })
+                    }}
+                    className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                  >
+                    <div className="flex justify-between w-full">
+                      <h3 className="font-bold"> Swap and purchase </h3>
+                      <AmountBadge
+                        amount={
+                          amount > 1
+                            ? `~${parseFloat(amount.toPrecision(3))}`
+                            : amount > 0.1
+                            ? `~${amount.toPrecision(2)}`
+                            : `~${amount.toPrecision(1)}`
+                        }
+                        symbol={
+                          route!.quote.currency.symbol?.toLowerCase() ?? ''
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center w-full text-sm text-left text-gray-500">
+                        Swap {route!.trade.inputAmount.currency.symbol} for{' '}
+                        {symbol.toUpperCase()} on {networkConfig.name} and pay{' '}
+                      </div>
+                      <RightArrowIcon
+                        className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                        size={20}
+                      />
+                    </div>
+                  </button>
+                )
+              })}
 
             {allDisabled && (
               <div className="text-sm">
