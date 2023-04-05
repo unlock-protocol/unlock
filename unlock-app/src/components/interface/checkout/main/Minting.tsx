@@ -39,7 +39,6 @@ export const MintingScreen = ({
 }: MintingScreenProps) => {
   const web3Service = useWeb3Service()
   const config = useConfig()
-  const { account } = useAuth()
 
   const { data: tokenId } = useQuery(
     ['userTokenId', mint, owner, lockAddress, network, web3Service],
@@ -103,7 +102,7 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </a>
       )}
-      {hasTokenId && account === owner && isEthPassSupported(network) && (
+      {hasTokenId && isEthPassSupported(network) && (
         <ul className="grid grid-cols-2 gap-3 pt-4">
           {!isIOS && (
             <li className="">

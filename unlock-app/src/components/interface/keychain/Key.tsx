@@ -318,7 +318,7 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {isEthPassSupported(network) && (
+                  {tokenId && isEthPassSupported(network) && (
                     <>
                       <Menu.Item>
                         {({ active, disabled }) => (

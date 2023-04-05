@@ -112,7 +112,7 @@ export function Returning({
             See in the block explorer
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
-          {isEthPassSupported(lock!.network) && (
+          {tokenId && isEthPassSupported(lock!.network) && (
             <ul className="grid h-12 grid-cols-2 gap-3 pt-4">
               {!isIOS && tokenId && (
                 <li className="">
