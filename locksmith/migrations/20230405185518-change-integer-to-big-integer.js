@@ -4,6 +4,9 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     return Promise.all([
+      queryInterface.changeColumn('Blocks', 'chain', {
+        type: Sequelize.BIGINT,
+      }),
       queryInterface.changeColumn('Transactions', 'chain', {
         type: Sequelize.BIGINT,
       }),
@@ -69,6 +72,9 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     return Promise.all([
+      queryInterface.changeColumn('Blocks', 'chain', {
+        type: Sequelize.INTEGER,
+      }),
       queryInterface.changeColumn('Transactions', 'chain', {
         type: Sequelize.INTEGER,
       }),
