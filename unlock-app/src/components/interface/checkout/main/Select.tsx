@@ -110,7 +110,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                         : formattedData.formattedKeysAvailable
                     }
                   />
-                  {lock.recurringPayments &&
+                  {!!lock.recurringPayments &&
                     parseInt(lock.recurringPayments.toString()) > 1 && (
                       <LabeledItem
                         label="Renew"

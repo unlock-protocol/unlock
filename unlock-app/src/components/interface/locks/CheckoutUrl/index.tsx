@@ -77,9 +77,47 @@ export const CheckoutUrlPage = () => {
     },
   })
 
+  const DEFAULT_CONFIG = useMemo(() => {
+    const recurringPayments = recurringSetting?.isRecurringPossible
+      ? recurringSetting.oneYearRecurring
+      : undefined
+    return {
+      locks:
+        network && lockAddress
+          ? {
+              [lockAddress as string]: {
+                network: parseInt(`${network!}`),
+                skipRecipient: true,
+                recurringPayments,
+              },
+            }
+          : {},
+      pessimistic: true,
+      skipRecipient: true,
+    } as PaywallConfig
+  }, [recurringSetting, lockAddress, network])
+
+  const {
+    isLoading: isLoadingConfigList,
+    data: checkoutConfigList,
+    refetch: refetchConfigList,
+  } = useCheckoutConfigsByUser()
+
+  const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
+    useCheckoutConfigUpdate()
+
+  const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
+    useCheckoutConfigRemove()
+
   // retrieve recurringPayments when lock is present in url
   useEffect(() => {
-    if ((!lockAddress && !network) || isRecurringSettingPlaceholder) return
+    if (
+      (!lockAddress && !network) ||
+      isRecurringSettingPlaceholder ||
+      isLoadingConfigList ||
+      (checkoutConfigList || [])?.length > 0
+    )
+      return
     const getDefaultConfig = async (): Promise<void> => {
       const recurringPayments = recurringSetting?.isRecurringPossible
         ? recurringSetting.oneYearRecurring
@@ -101,36 +139,14 @@ export const CheckoutUrlPage = () => {
       })
     }
     getDefaultConfig()
-  }, [lockAddress, network, isRecurringSettingPlaceholder, recurringSetting])
-
-  const DEFAULT_CONFIG = useMemo(() => {
-    const recurringPayments = recurringSetting?.isRecurringPossible
-      ? recurringSetting.oneYearRecurring
-      : undefined
-    return {
-      locks:
-        network && lockAddress
-          ? {
-              [lockAddress as string]: {
-                network: parseInt(`${network!}`),
-                skipRecipient: true,
-                recurringPayments,
-              },
-            }
-          : {},
-      pessimistic: true,
-      skipRecipient: true,
-    } as PaywallConfig
-  }, [recurringSetting, lockAddress, network])
-
-  const { data: checkoutConfigList, refetch: refetchConfigList } =
-    useCheckoutConfigsByUser()
-
-  const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
-    useCheckoutConfigUpdate()
-
-  const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
-    useCheckoutConfigRemove()
+  }, [
+    lockAddress,
+    network,
+    isRecurringSettingPlaceholder,
+    recurringSetting,
+    isLoadingConfigList,
+    checkoutConfigList,
+  ])
 
   const onConfigSave = useCallback<MouseEventHandler<HTMLButtonElement>>(
     async (event) => {
