@@ -132,6 +132,18 @@ export const useUniswapRoutesUsingLock = ({
         network,
       })
     }
-    return routes
+    return routes.filter((route) => {
+      // Filter out duplicates if any
+      if (route.tokenIn.isNative) {
+        return !route.tokenOut.isNative
+      }
+      if (route.tokenOut.isNative) {
+        return !route.tokenIn.isNative
+      }
+      return (
+        route.tokenOut!.address.toLowerCase() !==
+        route.tokenIn!.address.toLowerCase()
+      )
+    })
   }, [lock, price])
 }

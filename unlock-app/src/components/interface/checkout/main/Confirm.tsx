@@ -122,6 +122,7 @@ export function Confirm({
   const recurringPayment =
     paywallConfig?.recurringPayments ||
     paywallConfig?.locks[lockAddress]?.recurringPayments
+
   const totalApproval =
     typeof recurringPayment === 'string' &&
     recurringPayment.toLowerCase() === 'forever' &&
