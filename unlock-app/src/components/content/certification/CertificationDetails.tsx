@@ -14,6 +14,7 @@ import { expirationAsDate } from '~/utils/durations'
 import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
 import { RiDownloadLine as DownloadIcon } from 'react-icons/ri'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { MAX_UINT } from '~/constants'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -192,134 +193,151 @@ export const CertificationDetails = ({
     }
   }
 
-  const showCertificate = tokenId && key
   const canShareOrDownload = key?.owner === account || isLockManager
+
+  const showCertification = key || (tokenId && key)
 
   return (
     <main className="mt-8 ">
       <div className="flex flex-col gap-6">
         <Header />
-        <div className="relative grid grid-cols-1 overflow-hidden border border-gray-200 shadow-md md:grid-cols-3">
+        <div
+          className={`relative grid grid-cols-1 overflow-hidden  md:grid-cols-3 ${
+            showCertification ? 'border border-gray-200 shadow-md' : ''
+          }`}
+        >
           <Badge />
-          <div className="flex flex-col col-span-2 gap-10 px-6 py-6 md:gap-24 md:px-12 md:py-11">
-            <div>
-              <h2 className="text-xl font-bold uppercase md:text-4xl">
-                Certificate
-              </h2>
-              <div className="flex flex-col gap-6 mt-3">
-                <span className="text-sm font-semibold">
-                  {!hasValidKey ? '{Issue date}' : 'Apr 1, 2023'}
-                </span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs text-gray-700">
-                    This is to certify
-                  </span>
-                  <span className="text-base font-bold text-brand-dark">
-                    {!hasValidKey ? key?.owner : addressMinify(key?.owner)}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs text-gray-700">has completed</span>
-                  <span className="text-base font-bold text-brand-dark">
-                    {certificationData.name}
-                  </span>
-                  {certificationData.description && (
-                    <div className="text-xs text-gray-700 markdown">
-                      {/* eslint-disable-next-line react/no-children-prop */}
-                      <ReactMarkdown children={certificationData.description} />
+          {showCertification && (
+            <>
+              <div className="flex flex-col col-span-2 gap-10 px-6 py-6 md:gap-24 md:px-12 md:py-11">
+                <div>
+                  <h2 className="text-xl font-bold uppercase md:text-4xl">
+                    Certificate
+                  </h2>
+                  <div className="flex flex-col gap-6 mt-3">
+                    <span className="text-sm font-semibold">
+                      {!hasValidKey ? '{Issue date}' : 'Apr 1, 2023'}
+                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs text-gray-700">
+                        This is to certify
+                      </span>
+                      <span className="text-base font-bold text-brand-dark">
+                        {!hasValidKey ? key?.owner : addressMinify(key?.owner)}
+                      </span>
                     </div>
-                  )}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs text-gray-700">
+                        has completed
+                      </span>
+                      <span className="text-base font-bold text-brand-dark">
+                        {certificationData.name}
+                      </span>
+                      {certificationData.description && (
+                        <div className="text-xs text-gray-700 markdown">
+                          <ReactMarkdown>
+                            {certificationData.description}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div>
-              <div className="flex flex-col gap-4 md:gap-0 md:justify-between md:flex-row">
-                <Detail
-                  valueSize="small"
-                  label={
-                    <span className="text-xs text-gray-600">
-                      Expiration Date
-                    </span>
-                  }
-                >
-                  {isPlaceholderData
-                    ? key.expiration
-                    : expirationAsDate(key?.expiration)}
-                </Detail>
-                <Detail
-                  valueSize="small"
-                  label={<span className="text-xs text-gray-600">Network</span>}
-                >
-                  {networks[network].name}
-                </Detail>
-                <Detail
-                  valueSize="small"
-                  label={
-                    <span className="text-xs text-gray-600">
-                      Certification/Token ID
-                    </span>
-                  }
-                >
-                  {key?.tokenId}
-                </Detail>
-              </div>
-              <Detail
-                className="mt-2"
-                valueSize="small"
-                label={
-                  <span className="text-xs text-gray-600">
-                    Transaction Hash
-                  </span>
-                }
-              >
-                {isPlaceholderData ? (
-                  transactionsHash
-                ) : (
-                  <Link
-                    className="flex items-center gap-2 hover:text-brand-ui-primary"
-                    target="_blank"
-                    rel="noreferrer"
-                    href={
-                      networks[network].explorer?.urls?.transaction(
+                <div>
+                  <div className="grid gap-4 md:grid-cols-3 md:gap-0 md:justify-between md:flex-row">
+                    {key?.expiration !== MAX_UINT && (
+                      <Detail
+                        valueSize="small"
+                        label={
+                          <span className="text-xs text-gray-600">
+                            Expiration Date
+                          </span>
+                        }
+                      >
+                        {isPlaceholderData
+                          ? key?.expiration
+                          : expirationAsDate(key?.expiration)}
+                      </Detail>
+                    )}
+                    <Detail
+                      valueSize="small"
+                      label={
+                        <span className="text-xs text-gray-600">Network</span>
+                      }
+                    >
+                      {networks[network].name}
+                    </Detail>
+                    <Detail
+                      valueSize="small"
+                      label={
+                        <span className="text-xs text-gray-600">
+                          Certification/Token ID
+                        </span>
+                      }
+                    >
+                      {key?.tokenId}
+                    </Detail>
+                    <Detail
+                      className="mt-2"
+                      valueSize="small"
+                      label={
+                        <span className="text-xs text-gray-600">
+                          Transaction Hash
+                        </span>
+                      }
+                    >
+                      {isPlaceholderData ? (
                         transactionsHash
-                      ) || '#'
-                    }
-                  >
-                    <span>{addressMinify(transactionsHash)}</span>
-                    <Icon icon={ExternalLinkIcon} size={18} />
-                  </Link>
-                )}
-              </Detail>
-              <small className="block mt-10 text-xs text-gray-600">
-                This image is an off-chain image, Powered by Unlock. <br />{' '}
-                Please verify transaction hash for validation.
-              </small>
-            </div>
-          </div>
-          <div className="h-full col-span-1">
-            <div className="flex flex-col h-full">
-              <div className="flex flex-col gap-4 w-full md:w-4/5 h-full bg-[#FAFBFC] md:border-l md:border-r md:border-gray-400 px-4 pb-10 md:px-6 md:pt-10">
-                <img
-                  alt={certificationData.title}
-                  className="w-full mb-4 overflow-hidden aspect-auto rounded-2xl"
-                  src={certificationData.image}
-                />
-                <div className="text-center">
-                  <span className="text-xs font-semibold text-gray-600">
-                    This certification is issued by
-                  </span>
-                  <h3 className="text-sm font-semibold text-brand-dark">
-                    Unlock Protocol
-                  </h3>
-                </div>
-                <div className="mx-auto">
-                  <Link className="hover:text-brand-ui-primary" href="#">
-                    <Icon icon={ExternalLinkIcon} size={24} />
-                  </Link>
+                      ) : (
+                        <Link
+                          className="flex items-center gap-2 hover:text-brand-ui-primary"
+                          target="_blank"
+                          rel="noreferrer"
+                          href={
+                            networks[network].explorer?.urls?.transaction(
+                              transactionsHash
+                            ) || '#'
+                          }
+                        >
+                          <span>{addressMinify(transactionsHash)}</span>
+                          <Icon icon={ExternalLinkIcon} size={18} />
+                        </Link>
+                      )}
+                    </Detail>
+                  </div>
+
+                  <small className="block mt-10 text-xs text-gray-600">
+                    This image is an off-chain image, Powered by Unlock. <br />{' '}
+                    Please verify transaction hash for validation.
+                  </small>
                 </div>
               </div>
-            </div>
-          </div>
+              <div className="h-full col-span-1">
+                <div className="flex flex-col h-full">
+                  <div className="flex flex-col gap-4 w-full md:w-4/5 h-full bg-[#FAFBFC] md:border-l md:border-r md:border-gray-400 px-4 pb-10 md:px-6 md:pt-10">
+                    <img
+                      alt={certificationData.title}
+                      className="w-full mb-4 overflow-hidden aspect-auto rounded-2xl"
+                      src={certificationData.image}
+                    />
+                    <div className="text-center">
+                      <span className="text-xs font-semibold text-gray-600">
+                        This certification is issued by
+                      </span>
+                      <h3 className="text-sm font-semibold text-brand-dark">
+                        Unlock Protocol
+                      </h3>
+                    </div>
+                    <div className="mx-auto">
+                      <Link className="hover:text-brand-ui-primary" href="#">
+                        <Icon icon={ExternalLinkIcon} size={24} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
         {canShareOrDownload && (
           <ul className="flex gap-4 mx-auto">
