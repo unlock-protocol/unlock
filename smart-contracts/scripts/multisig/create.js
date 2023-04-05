@@ -20,7 +20,7 @@ async function main({ owners, threshold = 4 }) {
   }
 
   const [deployer] = await ethers.getSigners()
-  const ethAdapter = new EthersAdapter({ ethers, signer: deployer })
+  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: deployer })
 
   const safeFactory = await SafeFactory.create({ ethAdapter })
 
