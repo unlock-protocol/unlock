@@ -235,6 +235,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {!isUniswapRoutesLoading &&
               isSwapAndPurchaseEnabled &&
               routes?.map((route, index) => {
+                const amount = Number(route!.quote.toFixed())
+
                 return (
                   <button
                     key={index}
@@ -253,8 +255,16 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold"> Swap and purchase </h3>
                       <AmountBadge
-                        amount={route!.quote.toSignificant(6)}
-                        symbol={route!.trade.inputAmount.currency.symbol ?? ''}
+                        amount={
+                          amount > 1
+                            ? `~${parseFloat(amount.toPrecision(3))}`
+                            : amount > 0.1
+                            ? `~${amount.toPrecision(2)}`
+                            : `~${amount.toPrecision(1)}`
+                        }
+                        symbol={
+                          route!.quote.currency.symbol?.toLowerCase() ?? ''
+                        }
                       />
                     </div>
                     <div className="flex items-center justify-between w-full">
