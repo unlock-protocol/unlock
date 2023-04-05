@@ -238,7 +238,7 @@ export function Confirm({
 
   // By default, until fully loaded we assume payable.
   const canAfford =
-    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable) || true
+    !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
 
   const isLoading =
     isPricingDataLoading ||
