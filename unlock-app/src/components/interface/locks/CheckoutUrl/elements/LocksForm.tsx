@@ -80,7 +80,7 @@ const SelectPlaceholder = () => {
 }
 
 type RecurringByLock = Record<
-  string,
+  string, // lockAddress
   {
     isRecurringPossible: boolean
     oneYearRecurring?: number
