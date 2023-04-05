@@ -269,7 +269,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Swap {route?.quote.currency.symbol} for{' '}
+                        Swap {route!.trade.inputAmount.currency.symbol} for{' '}
                         {symbol.toUpperCase()} on {networkConfig.name} and pay{' '}
                       </div>
                       <RightArrowIcon

@@ -44,6 +44,7 @@ export const useUniswapRoutes = ({
             const response = await web3Service.getUniswapRoute({
               params,
             })
+
             const balance = await getAccountTokenBalance(
               web3Service,
               account!,
@@ -87,7 +88,7 @@ export const useUniswapRoutesUsingLock = ({
     if (!networkConfig || !networkConfig.swapPurchaser) {
       return []
     }
-    const recipient = networkConfig.swapPurchaser
+    const recipient = networkConfig.swapPurchaser.toLowerCase().trim()
     const network = lock.network
     const isErc20 =
       lock.currencyContractAddress &&
@@ -96,12 +97,12 @@ export const useUniswapRoutesUsingLock = ({
     const tokenOut = isErc20
       ? new Token(
           lock.network,
-          lock.currencyContractAddress!,
+          lock.currencyContractAddress!.toLowerCase().trim(),
           lock.currencyDecimals || 18,
           lock.currencySymbol || '',
           lock.currencyName || ''
         )
-      : nativeOnChain(lock.network)
+      : nativeOnChain(network)
 
     const amountOut = ethers.utils
       .parseUnits(price, lock.currencyDecimals || 18)
@@ -110,7 +111,7 @@ export const useUniswapRoutesUsingLock = ({
     const routes = (networkConfig.tokens || []).map((item: any) => {
       const tokenIn = new Token(
         lock.network,
-        item.address,
+        item.address.toLowerCase().trim(),
         item.decimals,
         item.symbol,
         item.name
@@ -128,7 +129,7 @@ export const useUniswapRoutesUsingLock = ({
     // Add native currency as a route if the lock is an ERC20
     if (isErc20) {
       routes.push({
-        tokenIn: nativeOnChain(lock.network),
+        tokenIn: nativeOnChain(network),
         tokenOut,
         amountOut,
         recipient,
