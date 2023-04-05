@@ -11,7 +11,7 @@ image: /images/blog/swap-and-purchase/swap-and-purchase.png
 
 We're thrilled to announce the latest addition to Unlock: Swap & Purchase in Unlock Checkout.
 
-By leveraging an external contract powered by Uniswap, Swap & Purchase in Unlock Checkout enables a user to buy a membership NFT even if it’s priced in a different currency than the currency a purchaser holds in their wallet. There's no need for users to perform the swap, as it happens natively. For example, if an NFT is priced in USDC but the purchaser only holds MATIC in their wallet, Swap & Purchase will swap enough MATIC for the correct amount of UDDC in a single step, making things easier for the purchaser and enabling the creator to be paid in the currency of their choice. This simplifies the process and reduces friction for both creators and purchasers.
+By leveraging an external contract powered by Uniswap, Swap & Purchase in Unlock Checkout enables a user to buy a membership NFT even if it’s priced in a different currency than the currency a purchaser holds in their wallet. There's no need for users to perform the swap, as it happens natively. For example, if an NFT is priced in USDC but the purchaser only holds MATIC in their wallet, Swap & Purchase will swap enough MATIC for the correct amount of USDC in a single step, making things easier for the purchaser and enabling the creator to be paid in the currency of their choice. This simplifies the process and reduces friction for both creators and purchasers.
 
 [Try it out now](https://app.unlock-protocol.com/checkout?id=bb4a2ae0-2fca-4bdf-bd40-f0c41cde2510)
 
