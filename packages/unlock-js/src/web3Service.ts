@@ -1005,6 +1005,7 @@ export default class Web3Service extends UnlockService {
     }
   }) {
     const provider: any = this.providerForNetwork(network)
+    const networkConfig = this.networks[network]
     const router = new AlphaRouter({
       chainId: network,
       provider,
@@ -1049,7 +1050,9 @@ export default class Web3Service extends UnlockService {
       swapCalldata,
       value,
       amountInMax,
-      swapRouter,
+      swapRouter:
+        // use hard coded router when available
+        networkConfig?.uniswapV3?.universalRouterAddress || swapRouter,
       quote,
       trade,
       convertToQuoteToken,
