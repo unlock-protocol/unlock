@@ -51,8 +51,11 @@ export const useUniswapRoutes = ({
               route.network
             )
             // If the balance is less than the quote, we cannot make the swap.
-            if (parseFloat(balance) < parseFloat(response.quote.toFixed(2))) {
-              throw new Error('Insufficient balance')
+            if (Number(balance) < Number(response.quote.toFixed())) {
+              console.log(
+                `Insufficient balance of ${response.quote.currency.symbol}`
+              )
+              return null
             }
             return response
           } catch (error) {
@@ -132,7 +135,7 @@ export const useUniswapRoutesUsingLock = ({
         network,
       })
     }
-    return routes.filter((route) => {
+    return routes.filter((route: UniswapRoute) => {
       // Filter out duplicates if any
       if (route.tokenIn.isNative) {
         return !route.tokenOut.isNative

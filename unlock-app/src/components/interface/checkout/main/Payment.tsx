@@ -258,6 +258,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                         amount={
                           amount > 1
                             ? `~${amount.toPrecision(3)}`
+                            : amount > 0.1
+                            ? `~${amount.toPrecision(2)}`
                             : `~${amount.toPrecision(1)}`
                         }
                         symbol={
