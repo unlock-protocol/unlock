@@ -10,16 +10,14 @@ const Safe = require('@safe-global/safe-core-sdk').default
 const SafeServiceClient = require('@safe-global/safe-service-client').default
 const EthersAdapter = require('@safe-global/safe-ethers-lib').default
 
-// see https://docs.gnosis-safe.io/backend/available-services
-// possible changes in URLs hapenning
-// see https://forum.gnosis-safe.io/t/transaction-service-migration-october-2022/1550
+// see https://docs.safe.global/learn/safe-core/safe-core-api/available-services
 const gnosisServiceURLs = {
-  1: 'https://safe-transaction.mainnet.gnosis.io/',
+  1: 'https://safe-transaction-mainnet.safe.global/',
   5: 'https://safe-transaction-goerli.safe.global/',
   10: 'https://safe-transaction-optimism.safe.global/',
-  56: 'https://safe-transaction.bsc.gnosis.io/',
-  100: 'https://safe-transaction.xdai.gnosis.io/',
-  137: 'https://safe-transaction.polygon.gnosis.io/',
+  56: 'https://safe-transaction-bsc.safe.global/',
+  100: 'https://safe-transaction-gnosis-chain.safe.global/',
+  137: 'https://safe-transaction-polygon.safe.global/',
   42161: 'https://safe-transaction-arbitrum.safe.global',
   43114: 'https://safe-transaction-avalanche.safe.global/',
   42220:
