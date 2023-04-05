@@ -14,7 +14,8 @@ task('unlock:upgrade', 'Deploy a new version of the Unlock contract and submit t
   .addOptionalParam('unlockAddress', 'The address of the Unlock contract')
   .addOptionalParam('unlockVersion', 'The version of the implementation to deploy')
   .addOptionalParam('impl', 'The address of the implementation contract')
-  .setAction(async ({ unlockAddress, unlockVersion, impl }, { ethers, network }) => {
+  .addOptionalParam('multisig', 'The address of the Safe multisig')
+  .setAction(async ({ unlockAddress, unlockVersion, impl, multisig }, { ethers, network }) => {
     const { chainId } = await ethers.provider.getNetwork()
 
     if(! unlockAddress) {
@@ -42,6 +43,7 @@ task('unlock:upgrade', 'Deploy a new version of the Unlock contract and submit t
     await proposeUpgrade({
       proxyAddress : unlockAddress,
       proxyAdminAddress,
+      multisig,
       implementation: impl,
     })
   })

@@ -7,11 +7,13 @@ const { confirmMultisigTx, impersonate } = require('../../test/helpers')
 const { submitTx, getOwners } = require('../multisig')
 
 // used to update contract implementation address in proxy admin using multisig
-async function main({ proxyAddress, proxyAdminAddress, implementation }) {
+async function main({ proxyAddress, proxyAdminAddress, implementation, multisig }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
-  const { multisig } = networks[chainId]
   let [signer] = await ethers.getSigners()
+  if(!multisig) {
+    ;({ multisig } = networks[chainId])
+  }
 
   // impersonate multisig owner
   if (chainId === 31337) {
