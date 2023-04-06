@@ -26,7 +26,6 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
 import { useValidKey } from '~/hooks/useKey'
-import { DownloadCertificateButton } from './DownloadCertificateButton'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -328,9 +327,6 @@ export const CertificationDetails = ({
                 />
               </li>
             )}
-            <li className="text-gray-900">
-              <DownloadCertificateButton />
-            </li>
           </ul>
         )}
 
