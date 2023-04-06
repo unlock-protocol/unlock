@@ -9,11 +9,9 @@ import satori from 'satori'
 import dayjs from 'dayjs'
 
 import { readFileSync } from 'fs'
+import { MAX_UINT } from '../../constants'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
-
-export const MAX_UINT =
-  '115792089237316195423570985008687907853269984665640564039457584007913129639935'
 
 interface Options {
   network: number
