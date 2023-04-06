@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class LockMetadata extends Model<
   InferAttributes<LockMetadata>,
@@ -22,23 +22,23 @@ LockMetadata.init(
     address: {
       allowNull: false,
       primaryKey: true,
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
     },
     data: {
       allowNull: false,
-      type: DataTypes.JSON,
+      type: LocksmithDataTypes.JSON,
     },
     chain: {
       allowNull: false,
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

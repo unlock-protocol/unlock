@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class Session extends Model<
   InferAttributes<Session>,
@@ -23,27 +23,27 @@ Session.init(
     id: {
       allowNull: false,
       primaryKey: true,
-      type: DataTypes.TEXT,
+      type: LocksmithDataTypes.TEXT,
     },
     nonce: {
       allowNull: false,
-      type: DataTypes.TEXT,
+      type: LocksmithDataTypes.TEXT,
     },
     walletAddress: {
       allowNull: false,
-      type: DataTypes.TEXT,
+      type: LocksmithDataTypes.TEXT,
     },
     expireAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

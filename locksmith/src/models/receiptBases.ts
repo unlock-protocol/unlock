@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class ReceiptBase extends Model<
   InferAttributes<ReceiptBase>,
@@ -35,59 +35,59 @@ ReceiptBase.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
     },
     lockAddress: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     network: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
       allowNull: true,
     },
     supplierName: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     vat: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     servicePerformed: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     addressLine1: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     addressLine2: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     city: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     zip: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     state: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     country: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

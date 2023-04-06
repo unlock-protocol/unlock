@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, DataTypes, CreationOptional } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model, CreationOptional } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class KeySubscription extends Model<
   InferAttributes<KeySubscription>,
@@ -26,52 +26,52 @@ KeySubscription.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
     },
     keyId: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
       allowNull: false,
     },
     lockAddress: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: false,
     },
     userAddress: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: false,
     },
     network: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
       allowNull: false,
     },
     stripeCustomerId: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: false,
     },
     connectedCustomer: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: false,
     },
     amount: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
       allowNull: false,
     },
     unlockServiceFee: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
       allowNull: false,
     },
     recurring: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

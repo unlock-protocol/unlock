@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, DataTypes, CreationOptional } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model, CreationOptional } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class LockSetting extends Model<
   InferAttributes<LockSetting>,
@@ -18,28 +18,28 @@ LockSetting.init(
   {
     lockAddress: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       primaryKey: true,
     },
     network: {
       allowNull: false,
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     sendEmail: {
-      type: DataTypes.BOOLEAN,
+      type: LocksmithDataTypes.BOOLEAN,
       defaultValue: true,
     },
     replyTo: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

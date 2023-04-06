@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, DataTypes, CreationOptional } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model, CreationOptional } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class KeyMetadata extends Model<
   InferAttributes<KeyMetadata>,
@@ -18,29 +18,29 @@ KeyMetadata.init(
   {
     id: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       unique: 'id_unique',
       primaryKey: true,
     },
     address: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       unique: 'id_unique',
     },
     data: {
-      type: DataTypes.JSON,
+      type: LocksmithDataTypes.JSON,
     },
     chain: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

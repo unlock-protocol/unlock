@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class LockIcons extends Model<
   InferAttributes<LockIcons>,
@@ -24,26 +24,26 @@ LockIcons.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.INTEGER,
     },
     lock: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       unique: 'lock_chain_index',
     },
     chain: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
       unique: 'lock_chain_index',
     },
     icon: {
-      type: DataTypes.TEXT,
+      type: LocksmithDataTypes.TEXT,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

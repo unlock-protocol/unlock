@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model } from 'sequelize'
+import { sequelize, LocksmithLocksmithDataTypes } from './sequelize'
 
 export class User extends Model<
   InferAttributes<User>,
@@ -21,30 +21,30 @@ export class User extends Model<
 User.init(
   {
     publicKey: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       primaryKey: true,
       allowNull: false,
       unique: true,
     },
     recoveryPhrase: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: false,
     },
     passwordEncryptedPrivateKey: {
-      type: DataTypes.JSON,
+      type: LocksmithDataTypes.JSON,
       allowNull: false,
     },
     ejection: {
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
       allowNull: true,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {

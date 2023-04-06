@@ -5,6 +5,8 @@ import config from '../config/config'
 
 logger.info(`Connecting to database`)
 
+export const LocksmithDataTypes = DataTypes
+
 /**
  * We need a custom type for networks.
  * The chain/network id can be larger than the max INTEGER value in postgres, so we need to use BIGINT...
@@ -12,10 +14,9 @@ logger.info(`Connecting to database`)
  * these are numbers.
  *
  */
-class NETWORK_ID extends DataTypes.INTEGER {
+class NETWORK_ID extends DataTypes.BIGINT {
   // Optional: parser for values received from the database
-  static parse(value) {
-    console.log('I WAS HERE!!!')
+  static parse(value: string): number {
     return Number.parseInt(value)
   }
 }
@@ -23,5 +24,14 @@ class NETWORK_ID extends DataTypes.INTEGER {
 NETWORK_ID.prototype.key = NETWORK_ID.key = 'NETWORK_ID'
 DataTypes.NETWORK_ID = Utils.classToInvokable(NETWORK_ID)
 
-// We assume config from an object of {username, password, database, host, dialect}
+const PgTypes = DataTypes.postgres
+
+class PgNetworkId extends PgTypes.BIGINT {
+  static parse(x: string): number {
+    return Number.parseInt(x)
+  }
+}
+
+PgTypes.NETWORK_ID = PgNetworkId
+
 export const sequelize = new Sequelize(config.database)

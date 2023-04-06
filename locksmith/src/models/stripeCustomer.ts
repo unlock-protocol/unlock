@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { Model } from 'sequelize'
+import { sequelize, LocksmithDataTypes } from './sequelize'
 
 export class StripeCustomer extends Model<
   InferAttributes<StripeCustomer>,
@@ -20,27 +20,27 @@ export class StripeCustomer extends Model<
 StripeCustomer.init(
   {
     publicKey: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       primaryKey: true,
       allowNull: false,
       unique: 'stripe_customers_pkey',
     },
     StripeCustomerId: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: false,
     },
     stripeConnectedAccountId: {
-      type: DataTypes.STRING,
+      type: LocksmithDataTypes.STRING,
       allowNull: true,
       unique: 'stripe_customers_pkey',
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: LocksmithDataTypes.DATE,
     },
   },
   {
