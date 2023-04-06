@@ -203,7 +203,7 @@ export function Confirm({
       amount:
         amountToConvert > 0 && swap
           ? parseFloat(
-              payment.route.convertToQuoteToken(amountToConvert).toFixed(8)
+              payment.route.convertToQuoteToken(amountToConvert).toFixed(6)
             )
           : amountToConvert,
       enabled: isPricingDataAvailable,
@@ -227,7 +227,7 @@ export function Confirm({
         ? Number(
             payment.route
               .convertToQuoteToken(pricingData!.total.toString())
-              .toFixed(8)
+              .toFixed(6)
           )
         : pricingData!.total
 
@@ -644,15 +644,16 @@ export function Confirm({
                       </div>
 
                       <div className="font-bold">
-                        {(item.amount <= 0
+                        {item.amount <= 0
                           ? 'FREE'
                           : swap
-                          ? payment.route
+                          ? `${payment.route
                               .convertToQuoteToken(item.amount.toString())
-                              .toFixed(8)
-                          : item.amount.toLocaleString()) +
-                          ' ' +
-                          symbol}
+                              .toFixed(
+                                payment.route.trade.inputAmount.currency
+                                  .decimals
+                              )} ${symbol}`
+                          : `${item.amount.toLocaleString()} ${symbol}`}
                       </div>
                     </div>
                   )

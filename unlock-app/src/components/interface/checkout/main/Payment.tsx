@@ -153,7 +153,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
                     Your balance of {symbol.toUpperCase()} on{' '}
                     {networkConfig.name}:{' ~'}
-                    {parseFloat(balance?.balance).toFixed(3)}{' '}
+                    {parseFloat(balance?.balance).toFixed(6)}{' '}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -253,7 +253,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold"> Swap and purchase </h3>
                       <AmountBadge
-                        amount={route!.quote.toSignificant(8)}
+                        amount={route!.quote.toSignificant(6)}
                         symbol={route!.trade.inputAmount.currency.symbol ?? ''}
                       />
                     </div>
