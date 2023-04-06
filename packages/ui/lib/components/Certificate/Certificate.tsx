@@ -37,7 +37,7 @@ export const Certificate = ({
   image,
 }: CertificateProps) => {
   return (
-    <div className="relative grid grid-cols-1 overflow-hidden border border-gray-200 shadow-md lg:grid-cols-3">
+    <div className="relative grid grid-cols-1 overflow-hidden border border-gray-200 shadow-md md:grid-cols-3">
       {badge && (
         <div className="absolute flex bg-gradient-to-t from-[#603DEB] to-[#27C1D6] h-12 w-80 text-center -rotate-45 bottom-[50px] -right-[80px]">
           <span className="m-auto text-3xl font-bold text-white">{badge}</span>
