@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
 import { Model, CreationOptional, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class Charge extends Model<
   InferAttributes<Charge>,
@@ -52,7 +52,7 @@ Charge.init(
       type: DataTypes.INTEGER,
     },
     chain: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     transactionHash: {
       type: DataTypes.STRING,

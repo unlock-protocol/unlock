@@ -5,7 +5,7 @@ import config from '../config/config'
 
 logger.info(`Connecting to database`)
 
-export const LocksmithDataTypes = DataTypes
+type LocksmithDataTypesType = typeof DataTypes & { NETWORK_ID: any }
 
 /**
  * We need a custom type for networks.
@@ -14,6 +14,7 @@ export const LocksmithDataTypes = DataTypes
  * these are numbers.
  *
  */
+// @ts-expect-error Base constructors must all have the same return type.
 class NETWORK_ID extends DataTypes.BIGINT {
   // Optional: parser for values received from the database
   static parse(value: string): number {
@@ -22,14 +23,19 @@ class NETWORK_ID extends DataTypes.BIGINT {
 }
 
 NETWORK_ID.prototype.key = NETWORK_ID.key = 'NETWORK_ID'
-DataTypes.NETWORK_ID = Utils.classToInvokable(NETWORK_ID)
 
+// @ts-expect-error Property 'postgres' does not exist on type 'typeof import("/Users/julien/repos/unlock/node_modules/sequelize/types/data-types")'.
 const PgTypes = DataTypes.postgres
 
 class PgNetworkId extends PgTypes.BIGINT {
   static parse(x: string): number {
     return Number.parseInt(x)
   }
+}
+
+export const LocksmithDataTypes: LocksmithDataTypesType = {
+  ...DataTypes,
+  NETWORK_ID: Utils.classToInvokable(NETWORK_ID),
 }
 
 PgTypes.NETWORK_ID = PgNetworkId

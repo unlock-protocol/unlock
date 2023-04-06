@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class ReceiptBase extends Model<
   InferAttributes<ReceiptBase>,
@@ -42,7 +42,7 @@ ReceiptBase.init(
       allowNull: true,
     },
     network: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
       allowNull: true,
     },
     supplierName: {

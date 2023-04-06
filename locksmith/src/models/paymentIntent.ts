@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class PaymentIntent extends Model<
   InferAttributes<PaymentIntent>,
@@ -35,7 +35,7 @@ PaymentIntent.init(
       type: DataTypes.STRING,
     },
     chain: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     userAddress: {
       type: DataTypes.STRING,

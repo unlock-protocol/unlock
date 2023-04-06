@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
 import { Model, CreationOptional, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class CustomEmailContent extends Model<
   InferAttributes<CustomEmailContent>,
@@ -28,7 +28,7 @@ CustomEmailContent.init(
       allowNull: false,
     },
     network: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
       allowNull: false,
     },
     template: {

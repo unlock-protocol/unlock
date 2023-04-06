@@ -4,7 +4,7 @@ import type {
   CreationOptional,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class StripeConnectLock extends Model<
   InferAttributes<StripeConnectLock>,
@@ -34,7 +34,7 @@ StripeConnectLock.init(
       type: DataTypes.STRING,
     },
     chain: {
-      type: DataTypes.NETWORK_ID,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     stripeAccount: {
       type: DataTypes.STRING,
