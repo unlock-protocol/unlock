@@ -52,7 +52,7 @@ Charge.init(
       type: DataTypes.INTEGER,
     },
     chain: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     transactionHash: {
       type: DataTypes.STRING,

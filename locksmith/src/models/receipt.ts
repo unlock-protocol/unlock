@@ -43,7 +43,7 @@ Receipt.init(
       allowNull: false,
     },
     network: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
       allowNull: false,
     },
     hash: {

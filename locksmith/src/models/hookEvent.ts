@@ -30,7 +30,7 @@ HookEvent.init(
     },
     network: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     topic: {
       allowNull: false,

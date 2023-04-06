@@ -30,7 +30,7 @@ LockMetadata.init(
     },
     chain: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,

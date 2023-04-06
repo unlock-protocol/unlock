@@ -31,7 +31,7 @@ LockIcons.init(
       unique: 'lock_chain_index',
     },
     chain: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
       unique: 'lock_chain_index',
     },
     icon: {

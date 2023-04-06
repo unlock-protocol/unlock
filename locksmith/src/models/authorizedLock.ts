@@ -33,7 +33,7 @@ AuthorizedLock.init(
       type: DataTypes.STRING,
     },
     chain: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,

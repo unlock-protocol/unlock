@@ -34,7 +34,7 @@ StripeConnectLock.init(
       type: DataTypes.STRING,
     },
     chain: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     stripeAccount: {
       type: DataTypes.STRING,

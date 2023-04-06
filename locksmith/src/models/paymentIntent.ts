@@ -35,7 +35,7 @@ PaymentIntent.init(
       type: DataTypes.STRING,
     },
     chain: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     userAddress: {
       type: DataTypes.STRING,

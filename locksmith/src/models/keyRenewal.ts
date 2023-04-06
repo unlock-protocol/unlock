@@ -26,7 +26,7 @@ KeyRenewal.init(
     },
     network: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     lockAddress: {
       type: DataTypes.STRING,

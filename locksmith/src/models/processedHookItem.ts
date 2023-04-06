@@ -28,7 +28,7 @@ ProcessedHookItem.init(
     },
     network: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
     },
     type: {
       allowNull: false,

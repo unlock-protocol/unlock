@@ -42,7 +42,7 @@ ReceiptBase.init(
       allowNull: true,
     },
     network: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NETWORK_ID,
       allowNull: true,
     },
     supplierName: {

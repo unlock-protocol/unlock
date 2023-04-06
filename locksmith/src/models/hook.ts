@@ -28,7 +28,7 @@ Hook.init(
     },
     network: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.NETWORK_ID,
     },
     topic: {
       allowNull: false,
