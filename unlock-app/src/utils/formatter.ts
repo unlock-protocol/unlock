@@ -1,3 +1,3 @@
 export function formatNumber(number: number) {
-  return parseFloat(Number(number).toPrecision(3))
+  return Number(Number(number).toPrecision(4))
 }

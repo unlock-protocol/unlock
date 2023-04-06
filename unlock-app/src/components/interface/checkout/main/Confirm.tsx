@@ -201,12 +201,11 @@ export function Confirm({
       network: lock!.network,
       lockAddress: lock!.address,
       currencyContractAddress,
-      amount:
+      amount: formatNumber(
         amountToConvert > 0 && swap
-          ? parseFloat(
-              payment.route.convertToQuoteToken(amountToConvert).toFixed()
-            )
-          : amountToConvert,
+          ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
+          : amountToConvert
+      ),
       enabled: isPricingDataAvailable,
     })
 
@@ -225,10 +224,12 @@ export function Confirm({
       ])
 
       const totalAmount = swap
-        ? Number(
-            payment.route
-              .convertToQuoteToken(pricingData!.total.toString())
-              .toFixed()
+        ? formatNumber(
+            Number(
+              payment.route
+                .convertToQuoteToken(pricingData!.total.toString())
+                .toFixed()
+            )
           )
         : pricingData!.total
 
