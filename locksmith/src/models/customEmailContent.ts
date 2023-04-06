@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, CreationOptional, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class CustomEmailContent extends Model<
   InferAttributes<CustomEmailContent>,
@@ -21,32 +21,32 @@ CustomEmailContent.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     lockAddress: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     network: {
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
       allowNull: false,
     },
     template: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     content: {
-      type: LocksmithDataTypes.TEXT,
+      type: DataTypes.TEXT,
       allowNull: false,
       defaultValue: '',
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

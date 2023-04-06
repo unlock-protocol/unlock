@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class AuthorizedLock extends Model<
   InferAttributes<AuthorizedLock>,
@@ -21,27 +21,27 @@ AuthorizedLock.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     address: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     authorizedAt: {
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     stripe_account_id: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     chain: {
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

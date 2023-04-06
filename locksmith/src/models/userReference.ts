@@ -7,8 +7,8 @@ import type {
   InferCreationAttributes,
   NonAttribute,
 } from 'sequelize'
-import { Model } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class UserReference extends Model<
   InferAttributes<UserReference>,
@@ -26,12 +26,12 @@ export class UserReference extends Model<
 UserReference.init(
   {
     emailAddress: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
     publicKey: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       references: {
         model: 'Users',
         key: 'publicKey',
@@ -40,16 +40,16 @@ UserReference.init(
       onDelete: 'SET NULL',
     },
     stripe_customer_id: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

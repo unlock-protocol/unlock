@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model } from 'sequelize'
-import { LocksmithDataTypes, sequelize } from './sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class Verifier extends Model<
   InferAttributes<Verifier>,
@@ -25,31 +25,31 @@ Verifier.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     address: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     lockAddress: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     network: {
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     lockManager: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

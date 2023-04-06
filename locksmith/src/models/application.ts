@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class Application extends Model<
   InferAttributes<Application>,
@@ -20,27 +20,27 @@ Application.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     name: {
       allowNull: false,
-      type: LocksmithDataTypes.TEXT,
+      type: DataTypes.TEXT,
     },
     walletAddress: {
       allowNull: false,
-      type: LocksmithDataTypes.TEXT,
+      type: DataTypes.TEXT,
     },
     key: {
       allowNull: false,
-      type: LocksmithDataTypes.TEXT,
+      type: DataTypes.TEXT,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

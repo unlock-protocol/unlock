@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, CreationOptional, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class HookEvent extends Model<
   InferAttributes<HookEvent>,
@@ -26,45 +26,45 @@ HookEvent.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     network: {
       allowNull: false,
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     topic: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     lock: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     state: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     body: {
-      type: LocksmithDataTypes.JSON,
+      type: DataTypes.JSON,
     },
     hookId: {
       allowNull: false,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     attempts: {
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     key: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     lastError: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

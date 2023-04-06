@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class PaymentIntent extends Model<
   InferAttributes<PaymentIntent>,
@@ -29,40 +29,40 @@ PaymentIntent.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     lockAddress: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     chain: {
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     userAddress: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     intentId: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     stripeCustomerId: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     connectedStripeId: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     connectedCustomerId: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     recipients: {
-      type: LocksmithDataTypes.JSONB,
+      type: DataTypes.JSONB,
       allowNull: true,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

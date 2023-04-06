@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, CreationOptional, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class Hook extends Model<
   InferAttributes<Hook>,
@@ -24,42 +24,42 @@ Hook.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     network: {
       allowNull: false,
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     topic: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     lock: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     expiration: {
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     mode: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       validate: {
         isIn: [['subscribe', 'unsubscribe']],
       },
     },
     callback: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     secret: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

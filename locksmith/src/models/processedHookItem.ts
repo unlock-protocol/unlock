@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class ProcessedHookItem extends Model<
   InferAttributes<ProcessedHookItem>,
@@ -24,30 +24,30 @@ ProcessedHookItem.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     network: {
       allowNull: false,
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     type: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     objectId: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       validate: {
         isIn: [['lock', 'key']],
       },
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

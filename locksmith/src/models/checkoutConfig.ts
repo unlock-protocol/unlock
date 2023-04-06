@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
+import { sequelize } from './sequelize'
 import { PaywallConfigType } from '@unlock-protocol/core'
 
 export class CheckoutConfig extends Model<
@@ -19,29 +19,29 @@ CheckoutConfig.init(
   {
     id: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       primaryKey: true,
     },
     name: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     config: {
-      type: LocksmithDataTypes.JSONB,
+      type: DataTypes.JSONB,
       allowNull: false,
       defaultValue: {},
     },
     createdBy: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

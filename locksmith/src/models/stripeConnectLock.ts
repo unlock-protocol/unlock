@@ -3,8 +3,8 @@ import type {
   InferCreationAttributes,
   CreationOptional,
 } from 'sequelize'
-import { Model } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class StripeConnectLock extends Model<
   InferAttributes<StripeConnectLock>,
@@ -25,27 +25,27 @@ StripeConnectLock.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     lock: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     manager: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     chain: {
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     stripeAccount: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

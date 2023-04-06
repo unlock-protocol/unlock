@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './sequelize'
+import { Model, CreationOptional, DataTypes } from 'sequelize'
+import { sequelize } from './sequelize'
 
 export class Charge extends Model<
   InferAttributes<Charge>,
@@ -28,45 +28,45 @@ Charge.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     lock: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     userAddress: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     stripeCharge: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     stripeCustomerId: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     connectedCustomer: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     totalPriceInCents: {
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     unlockServiceFee: {
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     chain: {
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     transactionHash: {
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     recurring: {
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
   },
   {

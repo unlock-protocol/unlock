@@ -3,8 +3,8 @@ import type {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize'
-import { Model } from 'sequelize'
-import { sequelize, LocksmithDataTypes } from './index'
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from './index'
 
 export class UserTokenMetadata extends Model<
   InferAttributes<UserTokenMetadata>,
@@ -26,35 +26,35 @@ UserTokenMetadata.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: LocksmithDataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     },
     tokenAddress: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     userAddress: {
       allowNull: false,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
     data: {
       allowNull: false,
-      type: LocksmithDataTypes.JSONB,
+      type: DataTypes.JSONB,
     },
     chain: {
       allowNull: false,
-      type: LocksmithDataTypes.NETWORK_ID,
+      type: DataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: LocksmithDataTypes.DATE,
+      type: DataTypes.DATE,
     },
     updatedBy: {
       allowNull: true,
-      type: LocksmithDataTypes.STRING,
+      type: DataTypes.STRING,
     },
   },
   {
