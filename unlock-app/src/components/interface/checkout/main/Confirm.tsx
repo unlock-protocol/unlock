@@ -31,6 +31,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { ethers } from 'ethers'
+import { formatNumber } from '~/utils/formatter'
 
 interface Props {
   injectedProvider: unknown
@@ -200,12 +201,11 @@ export function Confirm({
       network: lock!.network,
       lockAddress: lock!.address,
       currencyContractAddress,
-      amount:
+      amount: formatNumber(
         amountToConvert > 0 && swap
-          ? parseFloat(
-              payment.route.convertToQuoteToken(amountToConvert).toFixed(8)
-            )
-          : amountToConvert,
+          ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
+          : amountToConvert
+      ),
       enabled: isPricingDataAvailable,
     })
 
@@ -224,10 +224,12 @@ export function Confirm({
       ])
 
       const totalAmount = swap
-        ? Number(
-            payment.route
-              .convertToQuoteToken(pricingData!.total.toString())
-              .toFixed(8)
+        ? formatNumber(
+            Number(
+              payment.route
+                .convertToQuoteToken(pricingData!.total.toString())
+                .toFixed()
+            )
           )
         : pricingData!.total
 
@@ -411,7 +413,7 @@ export function Confirm({
                 .parseUnits(
                   payment.route
                     .convertToQuoteToken(pricingData!.total.toString())
-                    .toFixed(8), // Total Amount
+                    .toFixed(payment.route.trade.inputAmount.currency.decimals), // Total Amount
                   payment.route.trade.inputAmount.currency.decimals
                 )
                 // 1% slippage buffer
@@ -644,15 +646,17 @@ export function Confirm({
                       </div>
 
                       <div className="font-bold">
-                        {(item.amount <= 0
+                        {item.amount <= 0
                           ? 'FREE'
                           : swap
-                          ? payment.route
-                              .convertToQuoteToken(item.amount.toString())
-                              .toFixed(8)
-                          : item.amount.toLocaleString()) +
-                          ' ' +
-                          symbol}
+                          ? `${formatNumber(
+                              payment.route
+                                .convertToQuoteToken(item.amount.toString())
+                                .toFixed()
+                            ).toLocaleString()} ${symbol}`
+                          : `${formatNumber(
+                              item.amount
+                            ).toLocaleString()} ${symbol}`}
                       </div>
                     </div>
                   )
@@ -676,11 +680,13 @@ export function Confirm({
                 keyPrice={
                   pricingData!.total <= 0
                     ? 'FREE'
-                    : `${pricingData!.total.toLocaleString()} ${symbol}`
+                    : `${formatNumber(
+                        pricingData!.total
+                      ).toLocaleString()} ${symbol}`
                 }
                 usdPrice={
                   USDPricingData?.amount
-                    ? `~${USDPricingData.amount.toLocaleString()}`
+                    ? `~${formatNumber(USDPricingData.amount).toLocaleString()}`
                     : ''
                 }
                 isCardEnabled={formattedData.cardEnabled}

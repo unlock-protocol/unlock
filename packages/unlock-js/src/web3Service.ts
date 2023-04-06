@@ -1039,11 +1039,10 @@ export default class Web3Service extends UnlockService {
     // parse quote as BigNumber
     const amountInMax = utils.currencyAmountToBigNumber(quote)
     const { calldata: swapCalldata, value, to: swapRouter } = methodParameters!
-    const ratio = 1 / parseFloat(trade.executionPrice.toSignificant(6))
+    const ratio = 1 / Number(trade.executionPrice.toFixed(6))
 
     const convertToQuoteToken = (value: string) => {
-      const amount = parseFloat(value)
-      return amount * ratio
+      return Number(value) * ratio
     }
 
     return {

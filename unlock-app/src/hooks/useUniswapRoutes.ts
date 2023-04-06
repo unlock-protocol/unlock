@@ -29,7 +29,7 @@ export const useUniswapRoutes = ({
   const { account } = useAuth()
   const web3Service = useWeb3Service()
   return useQuery(
-    ['uniswapRoutes', routes],
+    ['uniswapRoutes', account, routes],
     async () => {
       const result = await Promise.all(
         routes.map(async (route) => {
