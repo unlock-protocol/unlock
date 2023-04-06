@@ -45,6 +45,7 @@ interface Key {
     address: string
     name: string
   }
+  manager: string
   tokenId?: string
   owner: string
   keyId?: string
@@ -270,6 +271,7 @@ export const notifyNewKeyToWedlocks = async (
   const lockAddress = Normalizer.ethereumAddress(key.lock.address)
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
   const tokenId = key?.tokenId
+  const manager = key?.manager
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
@@ -300,7 +302,9 @@ export const notifyNewKeyToWedlocks = async (
   })
 
   const isAirdroppedRecipient =
-    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase()
+    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase() &&
+    manager.toLowerCase().trim() ===
+      networks[network]?.keyManagerAddress?.toLowerCase()?.trim()
 
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
