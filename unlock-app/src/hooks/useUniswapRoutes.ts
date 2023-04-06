@@ -104,6 +104,8 @@ export const useUniswapRoutesUsingLock = ({
         )
       : nativeOnChain(network)
 
+    console.log({ price, lock })
+
     const amountOut = ethers.utils
       .parseUnits(price, lock.currencyDecimals || 18)
       .toString()
