@@ -114,10 +114,7 @@ export const sendEmail = async ({
  * Resolves when all new keys have been processed
  * @param keys
  */
-export const notifyNewKeysToWedlocks = async (
-  keys: any[],
-  network?: number
-) => {
+export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
   logger.info('Notifying following keys to wedlock', {
     keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
@@ -264,7 +261,7 @@ const getLockSettings = async (
 
 export const notifyNewKeyToWedlocks = async (
   key: Key,
-  network?: number,
+  network: number,
   includeQrCode = true
 ) => {
   const keyManager = new KeyManager()
