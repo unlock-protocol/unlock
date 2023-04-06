@@ -411,7 +411,7 @@ export function Confirm({
                 .parseUnits(
                   payment.route
                     .convertToQuoteToken(pricingData!.total.toString())
-                    .toFixed(8), // Total Amount
+                    .toFixed(payment.route.trade.inputAmount.currency.decimals), // Total Amount
                   payment.route.trade.inputAmount.currency.decimals
                 )
                 // 1% slippage buffer
