@@ -62,7 +62,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
         description: '',
         image: '',
         certification: {
-          issuer: '',
+          certification_issuer: '',
         },
       },
     },
@@ -139,23 +139,25 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
             </p>
 
             <div className="grid grid-cols-2 gap-4">
-              <ImageUpload
-                description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
-                isUploading={isUploading}
-                preview={metadataImage!}
-                onChange={async (fileOrFileUrl: any) => {
-                  if (typeof fileOrFileUrl === 'string') {
-                    setValue('metadata.image', fileOrFileUrl)
-                  } else {
-                    const items = await uploadImage(fileOrFileUrl[0])
-                    const image = items?.[0]?.publicUrl
-                    if (!image) {
-                      return
+              <div>
+                <ImageUpload
+                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                  isUploading={isUploading}
+                  preview={metadataImage!}
+                  onChange={async (fileOrFileUrl: any) => {
+                    if (typeof fileOrFileUrl === 'string') {
+                      setValue('metadata.image', fileOrFileUrl)
+                    } else {
+                      const items = await uploadImage(fileOrFileUrl[0])
+                      const image = items?.[0]?.publicUrl
+                      if (!image) {
+                        return
+                      }
+                      setValue('metadata.image', image)
                     }
-                    setValue('metadata.image', image)
-                  }
-                }}
-              />
+                  }}
+                />
+              </div>
               <div className="grid gap-2">
                 <Input
                   {...register('lock.name', {
@@ -188,7 +190,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 />
 
                 <Input
-                  {...register('metadata.certification.issuer', {
+                  {...register('metadata.certification.certification_issuer', {
                     required: {
                       value: true,
                       message: 'Please add an issuer name',

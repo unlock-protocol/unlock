@@ -1,5 +1,5 @@
 export interface Certification {
-  issuer?: string
+  certification_issuer?: string
 }
 
 export interface Ticket {
@@ -106,6 +106,11 @@ export const categorizeAttributes = (
     return item
   }, {} as Ticket)
 
+  const certification = attributes.reduce((item, { trait_type, value }) => {
+    item[trait_type as keyof Certification] = value as string
+    return item
+  }, {} as Certification)
+
   const stats = attributes.filter(
     (item) => item.display_type === 'number' && typeof item.value === 'number'
   )
@@ -121,6 +126,7 @@ export const categorizeAttributes = (
 
   return {
     ticket,
+    certification,
     levels,
     properties,
     stats,
@@ -147,10 +153,10 @@ export const formDataToMetadata = ({
     attributes: [] as Attribute[],
   }
 
-  if (certification?.issuer) {
+  if (certification?.certification_issuer) {
     metadata.attributes.push({
-      trait_type: 'issuer',
-      value: certification.issuer,
+      trait_type: 'certification_issuer',
+      value: certification.certification_issuer,
     })
   }
 

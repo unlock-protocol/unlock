@@ -1,5 +1,5 @@
 import { Disclosure, Input } from '@unlock-protocol/ui'
-import { useFormContext, useWatch } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
@@ -17,15 +17,8 @@ export function CertificationMetadataForm({
 }: Props) {
   const {
     register,
-    control,
     formState: { errors },
   } = useFormContext<MetadataFormData>()
-
-  const { certification } = useWatch({
-    control,
-  })
-
-  console.log('certification', certification)
 
   const certificationPageUrl = new URL(
     `${window.location.origin}/certification?lockAddress=${lockAddress}&network=${network}`
@@ -53,14 +46,14 @@ export function CertificationMetadataForm({
           <div className="grid items-center gap-4 mt-4">
             <div className="flex flex-col self-start justify-top">
               <Input
-                {...register('certification.issuer')}
+                {...register('certification.certification_issuer')}
                 disabled={disabled}
                 type="text"
                 label="Official Name Of The Issuer"
                 description="This is part of metadata to store the official name of issuer"
                 error={
                   // @ts-ignore
-                  errors.certification?.issuer?.message
+                  errors.certification?.certification_issuer?.message
                 }
               />
             </div>

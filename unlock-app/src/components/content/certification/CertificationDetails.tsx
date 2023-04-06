@@ -68,10 +68,11 @@ export const CertificationDetails = ({
     }
   )
 
-  const { isManager: isLockManager } = useLockManager({
-    lockAddress,
-    network,
-  })
+  const { isManager: isLockManager, isLoading: isLoadingLockManager } =
+    useLockManager({
+      lockAddress,
+      network,
+    })
 
   const onEdit = () => {
     return router.push(
@@ -79,11 +80,12 @@ export const CertificationDetails = ({
     )
   }
 
-  const loading = isMetadataLoading || (tokenId ? isFetched : false)
+  const loading = (isMetadataLoading && !isFetched) || isLoadingLockManager
 
   if (loading) {
     return (
       <Placeholder.Root>
+        <Placeholder.Line size="sm" />
         <Placeholder.Line size="sm" />
         <Placeholder.Image className="h-[600px] w-full"></Placeholder.Image>
         <Placeholder.Root>
@@ -204,7 +206,7 @@ export const CertificationDetails = ({
       <div className="flex flex-col gap-6">
         <Header />
         <div
-          className={`relative grid grid-cols-1 overflow-hidden  md:grid-cols-3 ${
+          className={`relative grid grid-cols-1 overflow-hidden lg:grid-cols-3 ${
             showCertification ? 'border border-gray-200 shadow-md' : ''
           }`}
         >
@@ -327,14 +329,15 @@ export const CertificationDetails = ({
                         This certification is issued by
                       </span>
                       <h3 className="text-sm font-semibold text-brand-dark">
-                        Unlock Protocol
+                        {certificationData?.certification?.certification_issuer}
                       </h3>
                     </div>
-                    {metadata?.external_link && (
+                    {metadata?.external_url && (
                       <div className="mx-auto">
                         <Link
                           className="hover:text-brand-ui-primary"
-                          href={metadata.external_link}
+                          href={metadata.external_url}
+                          target="_blank"
                         >
                           <Icon icon={ExternalLinkIcon} size={24} />
                         </Link>
