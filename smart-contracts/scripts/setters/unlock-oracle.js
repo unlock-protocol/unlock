@@ -1,19 +1,33 @@
 const { ethers } = require('hardhat')
+const { networks } = require('@unlock-protocol/networks')
 
-async function main({ unlockAddress, udtAddress, oracleAddress }) {
+async function main({ unlockAddress, tokenAddress, oracleAddress }) {
+  const { chainId } = await ethers.provider.getNetwork()
+  if (!oracleAddress) {
+    oracleAddress = networks[chainId].uniswapV3.oracle
+  }
+  if (!unlockAddress) {
+    unlockAddress = networks[chainId].unlockAddress
+  }
+  
   if (!unlockAddress) {
     throw new Error(
       'UNLOCK ORACLE CONFIG > Missing Unlock address... aborting.'
     )
-  }
-  if (!udtAddress) {
-    throw new Error('UNLOCK ORACLE CONFIG > Missing UDT address... aborting.')
   }
   if (!oracleAddress) {
     throw new Error(
       'UNLOCK ORACLE CONFIG > Missing oracle address... aborting.'
     )
   }
+
+  if (!tokenAddress) {
+    throw new Error('UNLOCK ORACLE CONFIG > Missing UDT address... aborting.')
+  }
+
+  console.log(
+    `UNLOCK ORACLE CONFIG > Configuring oracle on chain ${chainId} at ${oracleAddress} for ${tokenAddress}`
+  )
 
   const [deployer] = await ethers.getSigners()
 
@@ -22,7 +36,7 @@ async function main({ unlockAddress, udtAddress, oracleAddress }) {
   const unlock = Unlock.attach(unlockAddress)
 
   // set oracle
-  const tx = await unlock.connect(deployer).setOracle(udtAddress, oracleAddress)
+  const tx = await unlock.connect(deployer).setOracle(tokenAddress, oracleAddress)
   const { transactionHash } = await tx.wait()
 
   console.log(
