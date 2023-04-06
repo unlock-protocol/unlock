@@ -31,6 +31,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { ethers } from 'ethers'
+import { formatNumber } from '~/utils/formatter'
 
 interface Props {
   injectedProvider: unknown
@@ -203,7 +204,7 @@ export function Confirm({
       amount:
         amountToConvert > 0 && swap
           ? parseFloat(
-              payment.route.convertToQuoteToken(amountToConvert).toFixed(6)
+              payment.route.convertToQuoteToken(amountToConvert).toFixed()
             )
           : amountToConvert,
       enabled: isPricingDataAvailable,
@@ -227,7 +228,7 @@ export function Confirm({
         ? Number(
             payment.route
               .convertToQuoteToken(pricingData!.total.toString())
-              .toFixed(6)
+              .toFixed()
           )
         : pricingData!.total
 
@@ -647,13 +648,14 @@ export function Confirm({
                         {item.amount <= 0
                           ? 'FREE'
                           : swap
-                          ? `${payment.route
-                              .convertToQuoteToken(item.amount.toString())
-                              .toFixed(
-                                payment.route.trade.inputAmount.currency
-                                  .decimals
-                              )} ${symbol}`
-                          : `${item.amount.toLocaleString()} ${symbol}`}
+                          ? `${formatNumber(
+                              payment.route
+                                .convertToQuoteToken(item.amount.toString())
+                                .toFixed()
+                            ).toLocaleString()} ${symbol}`
+                          : `${formatNumber(
+                              item.amount
+                            ).toLocaleString()} ${symbol}`}
                       </div>
                     </div>
                   )
@@ -677,11 +679,13 @@ export function Confirm({
                 keyPrice={
                   pricingData!.total <= 0
                     ? 'FREE'
-                    : `${pricingData!.total.toLocaleString()} ${symbol}`
+                    : `${formatNumber(
+                        pricingData!.total
+                      ).toLocaleString()} ${symbol}`
                 }
                 usdPrice={
                   USDPricingData?.amount
-                    ? `~${USDPricingData.amount.toLocaleString()}`
+                    ? `~${formatNumber(USDPricingData.amount).toLocaleString()}`
                     : ''
                 }
                 isCardEnabled={formattedData.cardEnabled}

@@ -24,6 +24,7 @@ import {
 } from '~/hooks/useUniswapRoutes'
 import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
+import { formatNumber } from '~/utils/formatter'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -37,7 +38,9 @@ interface AmountBadgeProps {
 const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-      {parseFloat(amount) <= 0 ? 'FREE' : `${amount} ${symbol.toUpperCase()}`}
+      {Number(amount) <= 0
+        ? 'FREE'
+        : `${formatNumber(Number(amount))} ${symbol.toUpperCase()}`}
       <CryptoIcon size={16} symbol={symbol} />
     </div>
   )
@@ -153,7 +156,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
                     Your balance of {symbol.toUpperCase()} on{' '}
                     {networkConfig.name}:{' ~'}
-                    {parseFloat(balance?.balance).toFixed(6)}{' '}
+                    {formatNumber(Number(balance?.balance))}{' '}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -253,7 +256,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold"> Swap and purchase </h3>
                       <AmountBadge
-                        amount={route!.quote.toSignificant(6)}
+                        amount={route!.quote.toFixed()}
                         symbol={route!.trade.inputAmount.currency.symbol ?? ''}
                       />
                     </div>
