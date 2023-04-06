@@ -18,7 +18,10 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
-import { useAccountBalance } from '~/hooks/useAccount'
+import { getAccountTokenBalance } from '~/hooks/useAccount'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { useQuery } from '@tanstack/react-query'
+
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
   network: number
@@ -92,10 +95,12 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     </p>
   )
 
-  const { isLoading: isLoadingBalance, data: balance } = useAccountBalance({
-    account: account!,
-    network: network!,
-  })
+  const { data: balance, isLoading: isLoadingBalance } = useQuery(
+    ['getBalance', account, network],
+    async () => {
+      return await getAccountTokenBalance(Web3Service, account!, null, network!)
+    }
+  )
 
   const networkOptions = Object.values(networks || {})?.map(
     ({ name, id }: any) => {
