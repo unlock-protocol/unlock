@@ -3,7 +3,13 @@ import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { useMetadata } from '~/hooks/metadata'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Detail, Icon, Placeholder } from '@unlock-protocol/ui'
+import {
+  Button,
+  Detail,
+  Disclosure,
+  Icon,
+  Placeholder,
+} from '@unlock-protocol/ui'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
@@ -15,11 +21,59 @@ import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
 import { RiDownloadLine as DownloadIcon } from 'react-icons/ri'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
+import { AirdropForm } from '~/components/interface/members/airdrop/AirdropDrawer'
 
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
-  tokenId: string
+  tokenId?: string
+}
+
+const CertificationManagerOptions = ({
+  lockAddress,
+  network,
+  isManager,
+  onEdit,
+}: CertificationDetailsProps & { isManager: boolean; onEdit: () => void }) => {
+  if (!isManager) return null
+
+  return (
+    <div className="grid gap-6 mt-12">
+      <span className="text-2xl font-bold text-brand-dark">
+        Tools for you, the certificate issuer
+      </span>
+      <div className="grid gap-4">
+        <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
+          <div className="flex flex-col md:col-span-2">
+            <span className="text-lg font-bold text-brand-ui-primary">
+              Certification detail
+            </span>
+            <span>
+              Need to change something? Access your contract (Lock) & update
+              detail
+            </span>
+          </div>
+          <div className="md:col-span-1">
+            <Button
+              onClick={onEdit}
+              variant="black"
+              className="w-full border"
+              size="small"
+            >
+              Edit Details
+            </Button>
+          </div>
+        </div>
+        <Disclosure
+          label=" Airdrop certificates"
+          description="Automatically send certification to recipient by wallet address or
+              email"
+        >
+          <AirdropForm lockAddress={lockAddress} network={network} />
+        </Disclosure>
+      </div>
+    </div>
+  )
 }
 
 export const CertificationDetails = ({
@@ -32,6 +86,12 @@ export const CertificationDetails = ({
     lockAddress,
     network,
   })
+
+  const onEdit = () => {
+    return router.push(
+      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
+    )
+  }
 
   const {
     data: key,
@@ -58,7 +118,7 @@ export const CertificationDetails = ({
       placeholderData: {
         id: '1',
         network,
-        tokenId: '{Token ID}',
+        tokenId: '#',
         owner: `{Recipient's wallet address, or ENS}`,
         expiration: '{Expiration date}',
         createdAtBlock: undefined,
@@ -73,12 +133,6 @@ export const CertificationDetails = ({
       lockAddress,
       network,
     })
-
-  const onEdit = () => {
-    return router.push(
-      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-    )
-  }
 
   const loading = (isMetadataLoading && !isFetched) || isLoadingLockManager
 
@@ -329,20 +383,41 @@ export const CertificationDetails = ({
                         This certification is issued by
                       </span>
                       <h3 className="text-sm font-semibold text-brand-dark">
-                        {certificationData?.certification?.certification_issuer}
-                      </h3>
-                    </div>
-                    {metadata?.external_url && (
-                      <div className="mx-auto">
                         <Link
-                          className="hover:text-brand-ui-primary"
-                          href={metadata.external_url}
+                          className="flex hover:text-brand-ui-primary"
+                          href={metadata.external_url ?? '#'}
                           target="_blank"
                         >
-                          <Icon icon={ExternalLinkIcon} size={24} />
+                          <div className="flex items-center gap-1 mx-auto">
+                            <span>
+                              {
+                                certificationData?.certification
+                                  ?.certification_issuer
+                              }
+                            </span>
+                            {metadata.external_url && (
+                              <Icon icon={ExternalLinkIcon} size={20} />
+                            )}
+                          </div>
                         </Link>
-                      </div>
-                    )}
+                      </h3>
+                    </div>
+                    <div className="mx-auto">
+                      <Link
+                        className="hover:text-brand-ui-primary"
+                        href={
+                          networks[network]?.explorer?.urls.address(
+                            lockAddress
+                          ) || '#'
+                        }
+                        target="_blank"
+                      >
+                        <div className="flex items-center gap-1">
+                          <span>View contact</span>
+                          <Icon icon={ExternalLinkIcon} size={20} />
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -371,34 +446,13 @@ export const CertificationDetails = ({
 
       <section className="flex flex-col mb-8">
         {isLockManager && (
-          <div className="grid gap-6 mt-12">
-            <span className="text-2xl font-bold text-brand-dark">
-              Tools for you, the certificate issuer
-            </span>
-            <div className="grid gap-4">
-              <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
-                <div className="flex flex-col md:col-span-2">
-                  <span className="text-lg font-bold text-brand-ui-primary">
-                    Certification detail
-                  </span>
-                  <span>
-                    Need to change something? Access your contract (Lock) &
-                    update detail
-                  </span>
-                </div>
-                <div className="md:col-span-1">
-                  <Button
-                    onClick={onEdit}
-                    variant="black"
-                    className="w-full border"
-                    size="small"
-                  >
-                    Edit Details
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CertificationManagerOptions
+            lockAddress={lockAddress}
+            isManager={isLockManager}
+            network={network}
+            tokenId={tokenId}
+            onEdit={onEdit}
+          />
         )}
       </section>
     </main>
