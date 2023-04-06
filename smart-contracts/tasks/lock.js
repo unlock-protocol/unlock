@@ -55,10 +55,14 @@ task('lock:samples', 'Deploy a sample lock')
     'lockVersion',
     'The PublicLock version to use when deploying the lock'
   )
-  .setAction(async ({ unlockAddress, lockVersion }) => {
+  .addOptionalParam(
+    'count',
+    'The number of sample locks to deploy'
+  )
+  .setAction(async ({ unlockAddress, lockVersion, count }) => {
     // eslint-disable-next-line global-require
     const deploySampleLocks = require('../scripts/lock/samples')
-    await deploySampleLocks({ unlockAddress, lockVersion })
+    await deploySampleLocks({ unlockAddress, lockVersion, lockCount: count })
   })
 
 task('lock:create', 'Deploy a lock')
