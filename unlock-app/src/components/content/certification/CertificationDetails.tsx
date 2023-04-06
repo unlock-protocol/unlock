@@ -48,7 +48,7 @@ const CertificationManagerOptions = ({
       </span>
       <div className="grid gap-4">
         <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
-          <div className="flex flex-col md:col-span-2">
+          <div className="flex flex-col gap-2 md:col-span-2">
             <span className="text-lg font-bold text-brand-ui-primary">
               Certification detail
             </span>

@@ -13,7 +13,7 @@ export const useCertification = ({
   tokenId,
 }: CertificationProps) => {
   return useQuery(
-    ['getCertification', lockAddress, network],
+    ['getCertification', lockAddress, network, tokenId],
     async () => {
       const subgraph = new SubgraphService()
       return await subgraph.key(
