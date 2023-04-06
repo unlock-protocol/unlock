@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { useMetadata } from '~/hooks/metadata'
@@ -15,13 +14,13 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { networks } from '@unlock-protocol/networks'
 import { addressMinify } from '~/utils/strings'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { expirationAsDate } from '~/utils/durations'
-import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
 import { RiDownloadLine as DownloadIcon } from 'react-icons/ri'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
 import { AirdropForm } from '~/components/interface/members/airdrop/AirdropDrawer'
+import LinkedinShareButton from './LinkedInShareButton'
+import { useCertification } from '~/hooks/useCertification'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -97,36 +96,11 @@ export const CertificationDetails = ({
     data: key,
     isPlaceholderData,
     isFetched,
-  } = useQuery(
-    ['getLockKey', lockAddress, network],
-    async () => {
-      const subgraph = new SubgraphService()
-      return await subgraph.key(
-        {
-          where: {
-            tokenId,
-            lock_in: [lockAddress.toLowerCase()],
-          },
-        },
-        {
-          network,
-        }
-      )
-    },
-    {
-      enabled: !!lockAddress && !!network && !!tokenId,
-      placeholderData: {
-        id: '1',
-        network,
-        tokenId: '#',
-        owner: `{Recipient's wallet address, or ENS}`,
-        expiration: '{Expiration date}',
-        createdAtBlock: undefined,
-        transactionsHash: ['{Transaction hash}'],
-        lock: {} as any,
-      },
-    }
-  )
+  } = useCertification({
+    lockAddress,
+    network,
+    tokenId,
+  })
 
   const { isManager: isLockManager, isLoading: isLoadingLockManager } =
     useLockManager({
@@ -426,12 +400,16 @@ export const CertificationDetails = ({
         </div>
         {canShareOrDownload && (
           <ul className="flex gap-4 mx-auto">
-            <li>
-              <LinkedinIcon
-                className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
-                size={30}
-              />
-            </li>
+            {tokenId && (
+              <li>
+                <LinkedinShareButton
+                  metadata={metadata}
+                  lockAddress={lockAddress}
+                  network={network}
+                  tokenId={tokenId}
+                />
+              </li>
+            )}
             <li className="text-gray-900">
               <DownloadIcon
                 className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
