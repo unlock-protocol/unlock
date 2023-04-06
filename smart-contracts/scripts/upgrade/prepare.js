@@ -3,9 +3,9 @@ const { ethers, run, upgrades } = require('hardhat')
 const {
   copyAndBuildContractAtVersion,
   cleanupContractVersions
-} = require('../upgrade/_helpers')
+} = require('./_helpers')
 
-// used to update contract implementation address in proxy admin using multisig
+// used to update contract implementation address in proxy admin
 async function main({ proxyAddress, contractName, contractVersion }) {
 
   // need to fetch previous 
@@ -15,7 +15,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     Contract = await copyAndBuildContractAtVersion(contractName, contractVersion)
   } else {
     console.log(`Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`)
-    Contract = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
+    Contract = await ethers.getContractFactory(`contracts/${contractName}.sol:${contractName}`)
   }
 
   const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract)

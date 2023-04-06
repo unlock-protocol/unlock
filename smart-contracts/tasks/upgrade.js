@@ -26,9 +26,9 @@ task('upgrade', 'Upgrade an existing contract with a new implementation (no mult
     })
   })
 
-task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
-  .addParam('contract', 'The contract path')
-  .addParam('proxy', 'The proxy contract address')
+task('upgrade:prepare', 'Deploy the implementation of an upgradeable contract')
+  .addParam('contract', 'The contract path (default to Unlock)')
+  .addOptionalParam('proxy', 'The proxy contract address')
   .addOptionalParam(
     'contractVersion',
     'If set, will fetch the contract version from contracts package'
@@ -46,6 +46,7 @@ task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
     // eslint-disable-next-line global-require
     const prepareUpgrade = require('../scripts/upgrade/prepare')
     const contractName = contract.split('/')[1].replace('.sol', '')
+
     await prepareUpgrade({
       proxyAddress: proxy,
       contractName,
