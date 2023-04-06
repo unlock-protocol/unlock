@@ -120,7 +120,6 @@ export const PaywallConfig = z
           'The URL for a icon to display in the top left corner of the modal.',
       })
       .optional(),
-    callToAction: z.any().optional(),
     locks: z.record(PaywallLockConfig),
     metadataInputs: z.array(MetadataInput).optional(),
     persistentCheckout: z
@@ -148,6 +147,11 @@ export const PaywallConfig = z
       .string({
         description:
           '(Optional) If supplied, the user is prompted to sign this message using their wallet. Your application needs to handle the signature to identify the user.',
+      })
+      .optional(),
+    endCta: z
+      .string({
+        description: 'Show a custom text for redirect URL.',
       })
       .optional(),
     pessimistic: z

@@ -191,9 +191,15 @@ export function Returning({
                 Sign message
               </Button>
             ) : (
-              <div className="flex justify-between gap-4">
+              <div
+                className={`gap-4 ${
+                  paywallConfig?.endCta
+                    ? 'grid grid-cols-1'
+                    : 'flex justify-between '
+                }`}
+              >
                 <Button className="w-full" onClick={() => onClose()}>
-                  Return
+                  {paywallConfig?.endCta || 'Return'}
                 </Button>
                 {!lock?.isSoldOut && (
                   <Button

@@ -13,6 +13,7 @@ export type PaywallConfig = PaywallConfigType
 
 export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   redirectUri: true,
+  endCta: true,
   title: true,
   icon: true,
   persistentCheckout: true,
