@@ -14,12 +14,11 @@ import {
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { networkDescription } from '~/components/interface/locks/Create/elements/CreateLockForm'
-import { useQuery } from '@tanstack/react-query'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { useAccountBalance } from '~/hooks/useAccount'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
   network: number
@@ -38,11 +37,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
   const [isFree, setIsFree] = useState(true)
   const [unlimitedCapacity, setUnlimitedCapacity] = useState(false)
+  const [allowPurchase, setAllowPurchase] = useState(false)
   const [forever, setForever] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
-
-  const web3Service = useWeb3Service()
 
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
@@ -52,7 +50,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       lock: {
         name: '',
         expirationDuration: undefined,
-        maxNumberOfKeys: 100,
+        maxNumberOfKeys: 0,
         currencyContractAddress: null,
         keyPrice: '0',
       },
@@ -94,17 +92,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     </p>
   )
 
-  const { isLoading: isLoadingBalance, data: balance } = useQuery(
-    ['getBalance', account, details.network],
-    async () => {
-      if (!details.network) {
-        return 1.0
-      }
-      return parseFloat(
-        await web3Service.getAddressBalance(account!, details.network!)
-      )
-    }
-  )
+  const { isLoading: isLoadingBalance, data: balance } = useAccountBalance({
+    account: account!,
+    network: network!,
+  })
 
   const networkOptions = Object.values(networks || {})?.map(
     ({ name, id }: any) => {
@@ -115,7 +106,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     }
   )
 
-  const noBalance = balance === 0 && !isLoadingBalance
+  const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
 
   const NetworkDescription = () => {
     return (
@@ -300,12 +291,34 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 </div>
               </div>
 
+              <div className="flex flex-col gap-0.5">
+                <div className="flex items-center justify-between">
+                  <label className="px-1 mb-2 text-base">
+                    Allow to be purchase?
+                  </label>
+                  <ToggleSwitch
+                    enabled={allowPurchase}
+                    setEnabled={setAllowPurchase}
+                    onChange={(enable: boolean) => {
+                      if (!enable) {
+                        setValue('lock.maxNumberOfKeys', 0)
+                      }
+                    }}
+                  />
+                </div>
+                <span className="text-sm text-gray-600">
+                  Enable this if you want anyone who viewing the certificate to
+                  be able purchase it.
+                </span>
+              </div>
+
               <div>
                 <div className="flex items-center justify-between">
                   <label className="px-1 mb-2 text-base" htmlFor="">
                     Capacity
                   </label>
                   <ToggleSwitch
+                    disabled={!allowPurchase}
                     title="Unlimited"
                     enabled={unlimitedCapacity}
                     setEnabled={setUnlimitedCapacity}
@@ -324,7 +337,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       message: 'Capacity is required. ',
                     },
                   })}
-                  disabled={unlimitedCapacity}
+                  disabled={unlimitedCapacity || !allowPurchase}
                   autoComplete="off"
                   step={1}
                   pattern="\d+"
@@ -358,7 +371,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 {noBalance && (
                   <BalanceWarning
                     network={details.network!}
-                    balance={balance}
+                    balance={parseFloat(balance)}
                   />
                 )}
               </div>

@@ -9,6 +9,27 @@ import {
   reEncryptPrivateKey,
 } from '../utils/accounts'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from '@tanstack/react-query'
+
+export const useAccountBalance = ({
+  account,
+  network,
+}: {
+  account: string
+  network: number
+}) => {
+  const web3Service = useWeb3Service()
+  return useQuery(
+    ['useAccountBalance', account, network],
+    async () => {
+      return await web3Service.getAddressBalance(account!, network)
+    },
+    {
+      enabled: !!account && !!network,
+    }
+  )
+}
 
 export const getAccountTokenBalance = async (
   web3Service: any,

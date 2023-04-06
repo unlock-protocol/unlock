@@ -7,6 +7,7 @@ import {
   Detail,
   Disclosure,
   Icon,
+  Modal,
   Placeholder,
 } from '@unlock-protocol/ui'
 import router from 'next/router'
@@ -21,6 +22,11 @@ import { MAX_UINT } from '~/constants'
 import { AirdropForm } from '~/components/interface/members/airdrop/AirdropDrawer'
 import LinkedinShareButton from './LinkedInShareButton'
 import { useCertification } from '~/hooks/useCertification'
+import { useState } from 'react'
+import { Checkout } from '~/components/interface/checkout/main'
+import { selectProvider } from '~/hooks/useAuthenticate'
+import { useConfig } from '~/utils/withConfig'
+import { useValidKey } from '~/hooks/useKey'
 
 interface CertificationDetailsProps {
   lockAddress: string
@@ -81,6 +87,8 @@ export const CertificationDetails = ({
   tokenId,
 }: CertificationDetailsProps) => {
   const { account } = useAuth()
+  const config = useConfig()
+  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
@@ -108,7 +116,17 @@ export const CertificationDetails = ({
       network,
     })
 
-  const loading = (isMetadataLoading && !isFetched) || isLoadingLockManager
+  const { data: accountHasKey, isInitialLoading: isHasValidKeyLoading } =
+    useValidKey({
+      lockAddress,
+      network,
+      account,
+    })
+
+  const loading =
+    (isMetadataLoading && !isFetched) ||
+    isLoadingLockManager ||
+    isHasValidKeyLoading
 
   if (loading) {
     return (
@@ -229,8 +247,26 @@ export const CertificationDetails = ({
 
   const showCertification = key || (tokenId && key)
 
+  const injectedProvider = selectProvider(config)
+  const paywallConfig = {
+    locks: {
+      [lockAddress]: {
+        network,
+        emailRequired: true,
+      },
+    },
+  }
+
   return (
-    <main className="mt-8 ">
+    <main className="mt-8">
+      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+        <Checkout
+          injectedProvider={injectedProvider as any}
+          paywallConfig={paywallConfig}
+          handleClose={() => setCheckoutOpen(false)}
+        />
+      </Modal>
+
       <div className="flex flex-col gap-6">
         <Header />
         <div
@@ -398,6 +434,7 @@ export const CertificationDetails = ({
             </>
           )}
         </div>
+
         {canShareOrDownload && (
           <ul className="flex gap-4 mx-auto">
             {tokenId && (
@@ -418,9 +455,19 @@ export const CertificationDetails = ({
             </li>
           </ul>
         )}
-      </div>
 
-      <div></div>
+        {Number(key?.lock?.maxNumberOfKeys) > 0 && !accountHasKey && (
+          <div>
+            <Button
+              onClick={() => setCheckoutOpen(true)}
+              className="mx-auto"
+              variant="outlined-primary"
+            >
+              Claim this certificate
+            </Button>
+          </div>
+        )}
+      </div>
 
       <section className="flex flex-col mb-8">
         {isLockManager && (

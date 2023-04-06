@@ -22,19 +22,11 @@ export const LinkedinShareButton = ({
   if (!metadata.name || !certificateData) {
     return null
   }
-  const certificationUrl = new URL(
-    `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
-  )
+  const certificationUrl = `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
 
   const linkedinIntent = new URL('https://www.linkedin.com/shareArticle')
   linkedinIntent.searchParams.set('mini', 'true')
-  linkedinIntent.searchParams.set('url', certificationUrl.toString())
-  linkedinIntent.searchParams.set(
-    'title',
-    `🎉 Check my ${metadata.name} certification`
-  )
-
-  console.log(linkedinIntent.toString())
+  linkedinIntent.searchParams.set('url', certificationUrl)
 
   return (
     <Tooltip
