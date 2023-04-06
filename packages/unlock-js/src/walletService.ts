@@ -25,6 +25,7 @@ interface PurchaseKeyParams {
   recurringPayments?: number
   referrer?: string
   totalApproval?: string
+  keyManager?: string
   swap?: Omit<SwapOptions, 'callData'>
 }
 
@@ -44,10 +45,11 @@ interface PurchaseKeysParams {
 
 interface SwapOptions {
   srcTokenAddress?: string
-  amountInMax: string
+  amountInMax: ethers.BigNumberish
   uniswapRouter: string
   swapCallData: string
   callData: string
+  value: ethers.BigNumberish
 }
 
 interface ExtendKeyParams {

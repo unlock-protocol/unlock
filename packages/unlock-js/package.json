@@ -62,11 +62,11 @@
     "typescript": "4.9.5"
   },
   "dependencies": {
+    "@uniswap/sdk-core": "3.2.2",
+    "@uniswap/smart-order-router": "3.10.1",
     "graphql": "16.6.0",
     "graphql-request": "5.1.0",
     "react-to-print": "2.14.12",
-    "siwe": "1.1.6",
-    "@uniswap/sdk-core": "3.2.2",
-    "@uniswap/smart-order-router": "3.4.0"
+    "siwe": "1.1.6"
   }
 }

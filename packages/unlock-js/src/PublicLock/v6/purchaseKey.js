@@ -71,23 +71,28 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  // tx options
-  if (!erc20Address || erc20Address === ZERO) {
-    transactionOptions.value = actualAmount
-  }
-
   const purchaseArgs = [actualAmount, owner, referrer, data]
   const callData = lockContract.interface.encodeFunctionData(
     'purchase',
     purchaseArgs
   )
 
+  // tx options
+  if (!erc20Address || erc20Address === ZERO) {
+    transactionOptions.value = actualAmount
+  }
+
+  // if swap is provided, we need to override the value
+  if (swap && swap?.value) {
+    transactionOptions.value = swap.value
+  }
+
   // If the lock is priced in ERC20, we need to approve the transfer
   const approvalOptions = swap
     ? {
         erc20Address: swap.srcTokenAddress,
         address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove: actualAmount,
+        totalAmountToApprove: swap.amountInMax,
       }
     : {
         erc20Address,
@@ -95,7 +100,10 @@ export default async function (
         totalAmountToApprove: actualAmount,
       }
 
-  await approveAllowance.bind(this)(approvalOptions)
+  // Only ask for approval if the lock or swap is priced in ERC20
+  if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
+    await approveAllowance.bind(this)(approvalOptions)
+  }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions.gasLimit) {
@@ -115,7 +123,7 @@ export default async function (
       const gasLimitPromise = swap
         ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
             lockAddress,
-            swap.srcTokenAddress,
+            swap.srcTokenAddress || ZERO,
             swap.amountInMax,
             swap.uniswapRouter,
             swap.swapCallData,
@@ -150,7 +158,7 @@ export default async function (
   const transactionPromise = swap
     ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
-        swap.srcTokenAddress,
+        swap.srcTokenAddress || ZERO,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,

@@ -156,9 +156,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // only for mainnet
     if (block.chainid == 1) {
-      // TODO !
-      // Hardcoding mainnet Unlock address
-      address newUnlockAddress = 0x84d085898F6ae4ae8c4225f2601F29a10335F653;
+      // Hardcoded address for the redeployed Unlock contract on mainnet
+      address newUnlockAddress = 0xe79B93f8E22676774F2A8dAd469175ebd00029FA;
 
       // trigger migration from the new Unlock
       IUnlock(newUnlockAddress).postLockUpgrade();
