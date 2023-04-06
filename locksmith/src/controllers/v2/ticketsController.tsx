@@ -109,12 +109,10 @@ export class TicketsController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const keyId = request.params.keyId.toLowerCase()
-
-      const keyOwner = await this.web3Service.ownerOf(
-        lockAddress,
-        keyId,
-        network
-      )
+      const [keyManager, keyOwner] = await Promise.all([
+        this.web3Service.keyManagerOf(lockAddress, keyId, network),
+        this.web3Service.ownerOf(lockAddress, keyId, network),
+      ])
 
       const lock: Lock = await this.web3Service.getLock(lockAddress, network)
 
@@ -125,6 +123,7 @@ export class TicketsController {
             address: lockAddress,
             name: lock.name,
           },
+          manager: keyManager,
           owner: keyOwner,
         },
         network,
