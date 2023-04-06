@@ -61,7 +61,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
   }
 
   const required = useEmail ? 'Email is required' : 'Wallet Address is required'
-  const label = useEmail ? 'Email' : 'Wallet'
+  const label = useEmail ? 'Email' : 'Wallet Address'
 
   const description = useEmail
     ? 'Enter the email address that will receive the membership NFT'
@@ -182,7 +182,6 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                         <AddressInput
                           withIcon
                           value={wallet}
-                          label="Address"
                           onChange={(value: any) => {
                             setValue('wallet', value)
                           }}
