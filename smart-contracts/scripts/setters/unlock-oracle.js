@@ -25,18 +25,22 @@ async function main({ unlockAddress, tokenAddress, oracleAddress }) {
     throw new Error('UNLOCK ORACLE CONFIG > Missing UDT address... aborting.')
   }
 
-  console.log(
-    `UNLOCK ORACLE CONFIG > Configuring oracle on chain ${chainId} at ${oracleAddress} for ${tokenAddress}`
-  )
-
-  const [deployer] = await ethers.getSigners()
-
   // get unlock instance
-  const Unlock = await ethers.getContractFactory('Unlock')
-  const unlock = Unlock.attach(unlockAddress)
+  const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+  
+  const [owner] = await ethers.getSigners()
 
+  console.log(
+    `UNLOCK ORACLE CONFIG > Configuring oracle on chain ${chainId} 
+    - unlock: ${unlockAddress}
+    - oracle: ${oracleAddress} 
+    - token: ${tokenAddress}
+    - signer: ${owner.address}
+    `
+  )
+  
   // set oracle
-  const tx = await unlock.connect(deployer).setOracle(tokenAddress, oracleAddress)
+  const tx = await unlock.connect(owner).setOracle(tokenAddress, oracleAddress)
   const { transactionHash } = await tx.wait()
 
   console.log(
