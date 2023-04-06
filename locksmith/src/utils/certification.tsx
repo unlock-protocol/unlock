@@ -1,10 +1,9 @@
 import normalizer from './normalizer'
 import config from '../config/config'
 import { generateKeyMetadata } from '../operations/metadataOperations'
-import { Certificate } from '@unlock-protocol/ui'
+import { Certificate, minifyAddress } from '@unlock-protocol/ui'
 
 import { SubgraphKey } from '@unlock-protocol/unlock-js'
-import { addressMinify } from './strings'
 import satori from 'satori'
 import dayjs from 'dayjs'
 
@@ -72,9 +71,9 @@ export const createCertificate = async ({
         owner={metadata?.owner}
         issuer={object?.certification_issuer}
         image={metadata?.image}
-        lockAddress={addressMinify(lockAddress)}
+        lockAddress={minifyAddress(lockAddress)}
         network={network}
-        transactionsHash={transactionHash ? addressMinify(transactionHash) : ''}
+        transactionsHash={transactionHash ? minifyAddress(transactionHash) : ''}
         expiration={expiration}
         externalUrl={metadata?.external_url}
       />
