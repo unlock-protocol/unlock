@@ -121,7 +121,8 @@ export const categorizeAttributes = (
     (item) =>
       typeof item.value === 'string' &&
       !item.max_value &&
-      !item.trait_type.startsWith('event_')
+      !item.trait_type.startsWith('event_') &&
+      !item.trait_type.startsWith('certification_')
   )
 
   return {
