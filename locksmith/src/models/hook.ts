@@ -1,5 +1,5 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional, DataTypes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
 import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class Hook extends Model<

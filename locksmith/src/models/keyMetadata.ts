@@ -1,5 +1,5 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
-import { Model, CreationOptional, DataTypes } from 'sequelize'
+import { Model, DataTypes, CreationOptional } from 'sequelize'
 import { sequelize } from './sequelize'
 
 export class KeyMetadata extends Model<
