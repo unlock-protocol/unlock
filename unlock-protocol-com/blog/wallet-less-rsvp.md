@@ -6,9 +6,9 @@ description: 'We’ve got a number of new features for events that use Unlock: r
 image: /images/blog/walletless-rsvp/no-wallet-needed.png
 ---
 
-Earlier this year we announced a feature we called [wallet-less airdrops](http://localhost:3002/blog/email-recipient). We realized that too many web3 experiences required users to first go through too many complicated steps before they could start enjoying the fun experiences web3 provides. So we introduced wallet-less airdrops, through which users receive an NFT *before* they actually configure a wallet.
+Earlier this year we announced a feature we called [wallet-less airdrops](https://unlock-protocol.com/blog/email-recipient). We realized that too many web3 experiences required users to first go through too many complicated steps before they could start enjoying the fun experiences web3 provides. So we introduced wallet-less airdrops, through which users receive an NFT *before* they actually configure a wallet.
 
-Similarly, a few weeks ago, we announced our [web3 event hosting application](http://localhost:3002/blog/events-launch)! It was used by a dozen events at [ETHDenver](http://localhost:3002/blog/ethdenver2023), from DIDDay, to a very cool ShakeShack activation!
+Similarly, a few weeks ago, we announced our [web3 event hosting application](https://unlock-protocol.com/blog/events-launch)! It was used by a dozen events at [ETHDenver](https://unlock-protocol.com/blog/ethdenver2023), from DIDDay, to a very cool ShakeShack activation!
 
 One of the pieces of feedback we received from several organizers was that they wanted to also make it trivial for non-crypto users to quickly RSVP for their events, provided that these events were indeed free. So today, we're introducing wallet-less RSVP!
 
