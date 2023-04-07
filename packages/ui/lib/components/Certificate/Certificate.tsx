@@ -341,7 +341,7 @@ export const Certificate = ({
                       color: '#6b7280',
                     }}
                   >
-                    View contact
+                    View contract
                   </span>
                   <svg
                     style={{
