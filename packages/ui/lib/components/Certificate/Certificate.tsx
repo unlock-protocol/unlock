@@ -111,8 +111,7 @@ export const Certificate = ({
           </div>
 
           <small className="block mt-10 text-xs text-gray-600">
-            This image is an off-chain image, Powered by Unlock. <br /> Please
-            verify transaction hash for validation.
+            This image is an off-chain image, powered by Unlock.
           </small>
         </div>
       </div>
