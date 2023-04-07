@@ -24,7 +24,7 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      external: isCDN ? [] : external,
+      external: isCDN ? Object.keys(peerDependencies) : external,
       shimMissingExports: true,
     },
     sourcemap: true,

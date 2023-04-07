@@ -9,9 +9,18 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.2.0",
+          "react-dom": "https://esm.sh/react-dom@18.2.0",
+          "@headlessui/react": "https://esm.sh/@headlessui/react"
+        }
+      }
+    </script>
     <script type="module">
-      import React from 'https://esm.sh/react@18.2.0'
-      import ReactDOM from 'https://esm.sh/react-dom@18.2.0'
+      import React from 'react'
+      import ReactDOM from 'react-dom'
       import { Button } from '../dist/cdn/index.es.js'
       const buttonElement = React.createElement(Button, null, 'Hello, world!')
       const root = document.getElementById('root')
