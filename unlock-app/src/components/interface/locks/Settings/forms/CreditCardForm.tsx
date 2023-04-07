@@ -1,5 +1,5 @@
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
-import { Button, Badge } from '@unlock-protocol/ui'
+import { Button, Badge, Select } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -10,6 +10,7 @@ import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
 import Link from 'next/link'
 import { useStripeConnect, useStripeDisconnect } from '~/hooks/useStripeConnect'
+import { storage } from '~/config/storage'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -22,6 +23,10 @@ interface CardPaymentProps {
   network: number
   isManager: boolean
   disabled: boolean
+}
+
+interface ConnectStripeProps {
+  previouslyConnectedLocks: any
 }
 
 const CardPaymentPlaceholder = () => {
@@ -124,11 +129,20 @@ export const CreditCardForm = ({
     }
   )
 
+  const {
+    isFetching: isFetchingPreviouslyConnectedLocks,
+    data: previouslyConnectedLocks,
+  } = useQuery(['connectedLocks'], async () => {
+    const connections = await storage.getStripeConnections()
+    return connections.data || []
+  })
+
   const loading =
     isLoading ||
     isLoadingKeyGranter ||
     isLoadingCheckGrantedStatus ||
-    isLoadingPricing
+    isLoadingPricing ||
+    isFetchingPreviouslyConnectedLocks
 
   const grantKeyGrantorRole = async (): Promise<any> => {
     const walletService = await getWalletService(network)
@@ -152,13 +166,14 @@ export const CreditCardForm = ({
     })
   }
 
-  const ConnectStripe = () => {
+  const ConnectStripe = ({ previouslyConnectedLocks }: ConnectStripeProps) => {
+    const [stripeAccount, setStripeAccount] = useState<string>()
     return (
       <div className="flex flex-col gap-4">
         {isGranted ? (
           <SettingCardDetail
             title="Connect Stripe to Your Account"
-            description="In your application, please refrain from mentioning NFT, amd focus on your use case: subscriptions, tickets... etc"
+            description="In your application, please refrain from mentioning NFT, and focus on your use case: subscriptions, tickets... etc"
           />
         ) : (
           <SettingCardDetail
@@ -196,28 +211,57 @@ export const CreditCardForm = ({
         {isManager && (
           <div className="flex flex-col gap-3">
             {isGranted ? (
-              <Button
-                variant="outlined-primary"
-                size="small"
-                className="w-full md:w-1/3"
-                loading={connectStripeMutation.isLoading}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  connectStripeMutation.mutate(undefined, {
-                    onSuccess: (connect) => {
-                      if (connect?.url) {
-                        window.location.assign(connect.url)
+              <form className="grid gap-4">
+                {previouslyConnectedLocks.length > 0 && (
+                  <Select
+                    onChange={(value: any) => {
+                      setStripeAccount(value.toString())
+                    }}
+                    options={previouslyConnectedLocks
+                      .map(
+                        ({
+                          lock,
+                          stripeAccount,
+                        }: {
+                          lock: string
+                          stripeAccount: string
+                        }) => {
+                          return { label: lock, value: stripeAccount }
+                        }
+                      )
+                      .concat({
+                        label: 'Connect a new Stripe account',
+                        value: '',
+                      })}
+                    label="Use the same account as one of your previously connected locks:"
+                  />
+                )}
+                <Button
+                  className="w-full md:w-1/3"
+                  loading={connectStripeMutation.isLoading}
+                  onClick={async (event: any) => {
+                    event.preventDefault()
+                    connectStripeMutation.mutate(
+                      { stripeAccount },
+                      {
+                        onSuccess: (connect) => {
+                          if (connect?.url) {
+                            window.location.assign(connect.url)
+                          } else {
+                            ToastHelper.success('Stripe connection succeeded!')
+                          }
+                        },
+                        onError: () => {
+                          ToastHelper.error('Stripe connection failed')
+                        },
                       }
-                    },
-                    onError: () => {
-                      ToastHelper.error('Stripe connection failed')
-                    },
-                  })
-                }}
-                disabled={disabled}
-              >
-                Connect
-              </Button>
+                    )
+                  }}
+                  disabled={disabled}
+                >
+                  Connect Stripe
+                </Button>
+              </form>
             ) : (
               <Button
                 size="small"
@@ -281,7 +325,9 @@ export const CreditCardForm = ({
     if (
       [ConnectStatus.NOT_READY, ConnectStatus.NO_ACCOUNT].includes(isConnected)
     ) {
-      return <ConnectStripe />
+      return (
+        <ConnectStripe previouslyConnectedLocks={previouslyConnectedLocks} />
+      )
     }
 
     if ([ConnectStatus.CONNECTED].includes(isConnected)) {

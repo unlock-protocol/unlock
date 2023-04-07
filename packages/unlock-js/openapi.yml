@@ -2371,9 +2371,48 @@ paths:
               properties:
                 baseUrl:
                   type: string
+                stripeAccount:
+                  type: string
+
       responses:
         200:
           description: Successfully connected stripe account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  # stripe account links
+                  url: # The url to redirect the user to
+                    type: string
+                  created:
+                    type: number
+                  expiresAt:
+                    type: number
+                  object:
+                    type: string
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/stripe/connections:
+    get:
+      operationId: getStripeConnections
+      security:
+        - User: []
+      description: Lists the locks connected to Stripe for a user
+      responses:
+        200:
+          description: List of locks previously connected to Stripe
           content:
             application/json:
               schema:
