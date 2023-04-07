@@ -304,7 +304,7 @@ export const CertificationDetails = ({
                 </ReactMarkdown>
               </>
             }
-            image={certificationData.image}
+            image={certificationData?.image as string}
             lockAddress={lockAddress}
             badge={badge}
             issuer={
