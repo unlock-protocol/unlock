@@ -159,7 +159,7 @@ export const CertificationDetails = ({
         </>
       )
     }
-    return <p>This contract is not configured.</p>
+    return <p>This contract is not configured for certifications.</p>
   }
 
   const certificationData = toFormData(metadata)
@@ -196,17 +196,15 @@ export const CertificationDetails = ({
       if (isLockManager) {
         return (
           <span>
-            Here is the certificate that you issued to the recipient. This image
-            is as off-chain image which allow recipient to share on their
-            professional network.
+            Here is the certificate that you issued. This image is an off-chain
+            image that the recipient can share with their professional network.
           </span>
         )
       } else if (account === key?.owner) {
         return (
           <span>
-            Here is the certificate you have received. This image is as
-            off-chain image to display in a certificate format. Please refer the
-            NFT link for on-chain validation.
+            {`Here is the certificate you have received. This image is just an
+            "off-chain" representation of the NFT.`}
           </span>
         )
       } else {
@@ -219,7 +217,7 @@ export const CertificationDetails = ({
             >
               Learn more
             </Link>{' '}
-            about Certification by Unlock Labs.
+            about Certifications by Unlock Labs.
           </span>
         )
       }
@@ -227,9 +225,10 @@ export const CertificationDetails = ({
       if (isLockManager) {
         return (
           <span>
-            Here is the template when recipient receive certificate from you.
-            They can connect wallet at this page & share the certification image
-            to the professional network.
+            Here is the template of one of your certifications. Once you
+            airdropped one to a recipient, they can connect their wallet on this
+            page and share the certification image with their professional
+            network.
           </span>
         )
       } else {
@@ -243,12 +242,12 @@ export const CertificationDetails = ({
             >
               Learn more
             </Link>{' '}
-            about Certification by Unlock Labs.
+            about Certifications by Unlock Labs.
           </span>
         )
       }
     } else {
-      return <span>No valid certification</span>
+      return <span>This is not a valid certificate.</span>
     }
   }
 
@@ -299,8 +298,12 @@ export const CertificationDetails = ({
             network={network}
             name={certificationData.name}
             description={
-              // @ts-expect-error
-              <ReactMarkdown>{certificationData.description}</ReactMarkdown>
+              <>
+                {/* eslint-disable-next-line react/no-children-prop */}
+                <ReactMarkdown>
+                  {certificationData?.description as string}
+                </ReactMarkdown>
+              </>
             }
             image={certificationData.image}
             lockAddress={lockAddress}

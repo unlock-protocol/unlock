@@ -60,8 +60,8 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
     }
   }
 
-  const required = useEmail ? 'Email is required' : 'Wallet Address is required'
-  const label = useEmail ? 'Email' : 'Wallet Address'
+  const required = useEmail ? 'Email is required' : 'Wallet address is required'
+  const label = useEmail ? 'Email' : 'Wallet address'
 
   const description = useEmail
     ? 'Enter the email address that will receive the membership NFT'

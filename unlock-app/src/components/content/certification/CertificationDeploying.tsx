@@ -35,8 +35,7 @@ export const CertificationDeploying = ({
   if (lockAddress) {
     status = 'deployed'
     title = '🚀​ Contract is successfully deployed'
-    message =
-      'Did you know that you can airdrop certifications by email, even if you don't know the recipient's wallet address?'
+    message = `Did you know that you can airdrop certifications by email, even if you don't know the recipient's wallet address?`
   }
 
   const goToCertification = () => {

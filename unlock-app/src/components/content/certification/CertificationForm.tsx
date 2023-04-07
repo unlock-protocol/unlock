@@ -10,6 +10,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
+  Icon,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -21,6 +22,8 @@ import { BalanceWarning } from '~/components/interface/locks/Create/elements/Bal
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
+import { FaArrowLeft as ArrowLeftIcon } from 'react-icons/fa'
+import Link from 'next/link'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -83,7 +86,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
   const DescDescription = () => (
     <p>
-      Give detail about this certificate to increase the credibility.{' '}
+      Provide a description for the certification. This will be part of the NFT
+      metadata.{' '}
       <a
         className="text-brand-ui-primary hover:underline"
         target="_blank"
@@ -127,6 +131,14 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
   return (
     <FormProvider {...methods}>
+      <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
+        <Link href="/certification">
+          <Icon icon={ArrowLeftIcon} />
+        </Link>
+        <h1 className="text-xl font-bold text-center text-brand-dark">
+          Creating Certification
+        </h1>
+      </div>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
           <Disclosure label="Basic Information" defaultOpen>
@@ -137,7 +149,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <ImageUpload
-                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                  description="This illustration will be used for the NFT certificate. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
                   onChange={async (fileOrFileUrl: any) => {
@@ -164,9 +176,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   })}
                   type="text"
                   placeholder="Name"
-                  label="Certification Name"
+                  label="Certification name"
                   description={
-                    'Enter program, course name to have recipient show off what they have completed.'
+                    'Enter the program or course name that was completed by the recipient of the certification.'
                   }
                   error={errors.lock?.name?.message}
                 />
@@ -192,25 +204,26 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       message: 'Please add an issuer name',
                     },
                   })}
-                  label="Official Name of the Issuer"
-                  description="This is part of metadata to store the official name of issuer"
+                  label="Official name of the issuer"
+                  description="This is part of NFT metadata."
                   error={
-                    // @ts-ignore
-                    errors.metadata?.certification?.issuer?.message as string
+                    // @ts-expect-error Property 'certification_issuer' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                    errors.metadata?.certification?.certification_issuer
+                      ?.message as string
                   }
                 />
 
                 <Input
                   {...register('metadata.external_url')}
                   label="External URL"
-                  description="Included a link in your certification, so members can learn about it through metadata"
+                  description="Include a link to the organization that performed the certification. This will be included in the NFT metadata."
                   error={errors.metadata?.external_url?.message as string}
                 />
 
                 <div>
                   <div className="flex items-center justify-between">
                     <label className="px-1 mb-2 text-base" htmlFor="">
-                      Certificate Duration (days)
+                      Certificate duration (in days)
                     </label>
                     <ToggleSwitch
                       title="Forever"
@@ -240,15 +253,12 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
           <Disclosure label="Price & Quantity" defaultOpen>
             <div className="grid gap-6">
-              <p>
-                These settings can also be changed, but only by sending on-chain
-                transactions.
-              </p>
+              <p>These settings can also be changed later.</p>
 
               <div className="flex flex-col gap-0.5">
                 <div className="flex items-center justify-between">
                   <label className="px-1 mb-2 text-base">
-                    Certification purchaseable?
+                    Can certifications be purchased?
                   </label>
                   <ToggleSwitch
                     enabled={allowPurchase}

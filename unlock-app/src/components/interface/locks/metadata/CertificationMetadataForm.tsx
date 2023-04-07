@@ -29,8 +29,8 @@ export function CertificationMetadataForm({
       <Disclosure label="Certification">
         <>
           <p>
-            Add NFT properties for certification. These will be displayed on NFT
-            marketplaces and wallets that support them.
+            Add NFT properties if your NFTs are certifications. These will be
+            displayed on NFT marketplaces and wallets that support them.
           </p>
           <p className="">
             These properties will also be displayed on{' '}
@@ -49,12 +49,9 @@ export function CertificationMetadataForm({
                 {...register('certification.certification_issuer')}
                 disabled={disabled}
                 type="text"
-                label="Official Name Of The Issuer"
-                description="This is part of metadata to store the official name of issuer"
-                error={
-                  // @ts-ignore
-                  errors.certification?.certification_issuer?.message
-                }
+                label="Official name of the issuer"
+                description="Please enter the name of the organization that issues the certificates."
+                error={errors.certification?.certification_issuer?.message}
               />
             </div>
           </div>
