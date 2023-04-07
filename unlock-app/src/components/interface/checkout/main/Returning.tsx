@@ -193,13 +193,13 @@ export function Returning({
             ) : (
               <div
                 className={`gap-4 ${
-                  paywallConfig?.endCta
+                  paywallConfig?.endingCallToAction
                     ? 'grid grid-cols-1'
                     : 'flex justify-between '
                 }`}
               >
                 <Button className="w-full" onClick={() => onClose()}>
-                  {paywallConfig?.endCta || 'Return'}
+                  {paywallConfig?.endingCallToAction || 'Return'}
                 </Button>
                 {!lock?.isSoldOut && (
                   <Button

@@ -42,7 +42,7 @@ export const LabelMapping: Record<string, string> = {
   dataBuilder: 'Data builder',
   redirectUri: 'Redirect URL',
   skipRecipient: 'Skip Recipient',
-  endCta: 'Return button CTA.',
+  endingCallToAction: 'Return button CTA.',
 }
 
 interface DynamicFormProps {

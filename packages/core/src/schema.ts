@@ -149,7 +149,7 @@ export const PaywallConfig = z
           '(Optional) If supplied, the user is prompted to sign this message using their wallet. Your application needs to handle the signature to identify the user.',
       })
       .optional(),
-    endCta: z
+    endingCallToAction: z
       .string({
         description: 'Show a custom text for redirect URL.',
       })
