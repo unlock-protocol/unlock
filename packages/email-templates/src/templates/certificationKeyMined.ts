@@ -15,7 +15,7 @@ export default {
   </section>
 {{/if}}
 
-<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
+<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and its metadata.</p>
 
 {{links txUrl openSeaUrl true}}
 `,
