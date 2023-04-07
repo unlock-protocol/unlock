@@ -5,7 +5,11 @@ import { TOPIC_KEYS_ON_LOCK, TOPIC_KEYS_ON_NETWORK } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
 import { logger } from '../../logger'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
+import {
+  SubgraphService,
+  KeyOrderBy,
+  OrderDirection,
+} from '@unlock-protocol/unlock-js'
 
 const FETCH_LIMIT = 25
 
@@ -17,6 +21,8 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
     {
       first: FETCH_LIMIT,
       skip,
+      orderBy: KeyOrderBy.CreatedAtBlock,
+      orderDirection: OrderDirection.Desc,
     },
     {
       networks: [network],
