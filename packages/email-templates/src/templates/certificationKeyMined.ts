@@ -7,7 +7,7 @@ handlebars.registerHelper('links', links)
 export default {
   subject: `Your certification for {{{lockName}}}`,
   html: `<h1>A NFT certification for "{{lockName}}" was added to your wallet!</h1>
-<p><a href="{{certificationUrl}}">Here</a> is your NFT certification (#{{keyId}}) for <strong>{{lockName}}</strong> was just minted!</p>
+<p>Your NFT certification (#{{keyId}}) for <strong>{{lockName}}</strong> was just mined. You can <a href="{{certificationUrl}}">consult it directly</a> on this web page.</p>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
