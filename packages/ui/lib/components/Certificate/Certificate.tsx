@@ -123,8 +123,8 @@ export const Certificate = ({
   externalUrl,
   image,
 }: CertificateProps) => {
-  const mediaMatch = window.matchMedia('(min-width: 500px)')
-  const isMobile = !mediaMatch.matches
+  const mediaMatch = window?.matchMedia('(min-width: 768px)')
+  const isMobile = !mediaMatch?.matches
 
   return (
     <div
