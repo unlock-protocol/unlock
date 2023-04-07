@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { IconButton } from '../IconButton/IconButton'
 import { AiOutlineClose as CloseIcon } from 'react-icons/ai'
 
-interface DrawerProps {
+export interface DrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   children: React.ReactNode

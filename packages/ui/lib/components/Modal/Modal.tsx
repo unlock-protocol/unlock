@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-interface Props {
+export interface Props {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   children?: ReactNode

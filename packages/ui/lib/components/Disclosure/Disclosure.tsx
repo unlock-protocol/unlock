@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { FiChevronDown as ArrowDownIcon } from 'react-icons/fi'
 import { Disclosure as HeadlessDisclosure } from '@headlessui/react'
 
-interface DisclosureProps {
+export interface DisclosureProps {
   label: string
   description?: ReactNode
   children?: ReactNode

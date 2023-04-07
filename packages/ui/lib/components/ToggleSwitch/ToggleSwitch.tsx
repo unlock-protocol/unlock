@@ -3,7 +3,7 @@ import { Size } from '~/types'
 import { FieldLayout } from '../Form'
 import { Toggle } from '../Toggle/Toggle'
 
-interface ToggleSwitchProps {
+export interface ToggleSwitchProps {
   enabled: boolean
   setEnabled: (enabled: boolean) => void
   title?: string

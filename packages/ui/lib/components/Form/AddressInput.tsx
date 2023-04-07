@@ -10,9 +10,7 @@ import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { isAddressOrEns, minifyAddress } from '../../utils'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useMutation } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
 import { Input } from './Input'
 export interface Props
   extends Omit<
@@ -25,6 +23,7 @@ export interface Props
   withIcon?: boolean
   isTruncated?: boolean
   optional?: boolean
+  onResolveName: (address: string) => any
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -55,26 +54,20 @@ export const AddressInput = forwardRef(
       withIcon = true,
       isTruncated = false, // address not truncated by default
       onChange,
+      onResolveName,
       ...inputProps
     } = props
-
-    const web3Service = new Web3Service(networks)
 
     const [error, setError] = useState<any>('')
     const [success, setSuccess] = useState('')
     const [address, setAddress] = useState<string>(value as string)
-
-    const resolveName = async (address: string) => {
-      if (address.length === 0) return
-      return await web3Service.resolveName(address)
-    }
 
     const onReset = () => {
       setError('')
       setSuccess('')
     }
 
-    const resolveNameMutation = useMutation(resolveName, {
+    const resolveNameMutation = useMutation(onResolveName, {
       onMutate: () => {
         onReset() // restore state when typing
       },

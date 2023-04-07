@@ -9,18 +9,18 @@ import {
   EmailSubscriptionFormProps,
 } from './EmailSubscriptionForm'
 
-interface FooterItem {
+export interface FooterItem {
   label: ReactNode
   url: string
   target?: HTMLAnchorElement['target']
 }
 
-interface MenuItemsProps {
+export interface MenuItemsProps {
   title: string
   options: FooterItem[]
 }
 
-type ActionsProps =
+export type ActionsProps =
   | {
       label: string
       url: string
@@ -30,7 +30,7 @@ type ActionsProps =
       onClick: () => void
     }
 
-interface FooterProps {
+export interface FooterProps {
   logo: {
     url: string // url of the website to redirect when logo is clicked
     src?: string // custom logo image

@@ -16,7 +16,7 @@ export interface Option {
   disabled?: boolean
 }
 
-interface SelectProps<T> {
+export interface SelectProps<T> {
   label?: string
   description?: ReactNode
   tooltip?: ReactNode
@@ -37,7 +37,7 @@ const SIZE_STYLES: SizeStyleProp = {
 
 const CUSTOM_VALUE = 'custom'
 
-interface SelectOptionProps {
+export interface SelectOptionProps {
   selected?: boolean
   disabled?: boolean
   size?: Size

@@ -2,7 +2,7 @@ import { Dialog } from '@headlessui/react'
 import { Modal } from '../Modal/Modal'
 import { IconButton } from '../IconButton/IconButton'
 import { AiOutlineClose as CloseIcon } from 'react-icons/ai'
-interface Props {
+export interface Props {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   text: string

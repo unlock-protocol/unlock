@@ -6,7 +6,7 @@ import { Box, Props as BoxProps } from '../Box/Box'
 import { Icon } from '../Icon/Icon'
 import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 
-type Variant =
+export type Variant =
   | 'primary'
   | 'secondary'
   | 'outlined-primary'
@@ -14,7 +14,7 @@ type Variant =
   | 'black'
   | 'borderless'
 
-interface Props extends BoxProps {
+export interface Props extends BoxProps {
   iconRight?: ReactNode
   iconLeft?: ReactNode
   loading?: boolean
@@ -58,19 +58,25 @@ export const Button = forwardRef(
     } = props
 
     // If loading, button should be disabled
-    if(loading) {
+    if (loading) {
       disabled = true
     }
-    
+
     const buttonClass = twMerge(
       'rounded-full flex justify-center box-border cursor-pointer font-semibold items-center gap-2 disabled:bg-opacity-75  disabled:cursor-not-allowed',
       SIZE_STYLES[size],
       VARIANTS_STYLES[variant],
       className
     )
-    
+
     return (
-      <Box as={as} className={buttonClass} {...restProps} disabled={disabled} ref={ref}>
+      <Box
+        as={as}
+        className={buttonClass}
+        {...restProps}
+        disabled={disabled}
+        ref={ref}
+      >
         {loading ? (
           <Icon
             icon={SpinnerIcon}

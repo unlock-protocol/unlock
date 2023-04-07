@@ -2,7 +2,7 @@ import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import { twMerge } from 'tailwind-merge'
 import { UnlockPrismTheme } from './theme'
 
-interface Props {
+export interface Props {
   lang: Language
   code: string
 }

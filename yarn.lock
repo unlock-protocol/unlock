@@ -15907,7 +15907,6 @@ __metadata:
     "@types/react": 18.0.32
     "@types/react-dom": 18.0.11
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": 3.1.0
     autoprefixer: 10.4.14
@@ -15928,6 +15927,7 @@ __metadata:
     typescript: 4.9.5
     url-loader: 4.1.1
     vite: 4.1.4
+    vite-plugin-node-polyfills: ^0.7.0
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: 4.0.7
   peerDependencies:
@@ -52470,7 +52470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-node-polyfills@npm:0.7.0":
+"vite-plugin-node-polyfills@npm:0.7.0, vite-plugin-node-polyfills@npm:^0.7.0":
   version: 0.7.0
   resolution: "vite-plugin-node-polyfills@npm:0.7.0"
   dependencies:

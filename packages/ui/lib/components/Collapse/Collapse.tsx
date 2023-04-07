@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '../Button/Button'
 import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
 
-interface CollapseProps {
+export interface CollapseProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   content: React.ReactNode

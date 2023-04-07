@@ -11,6 +11,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { storage } from '~/config/storage'
+import { onResolveName } from '~/utils/resolvers'
 
 interface VerifierProps {
   address: string
@@ -232,6 +233,7 @@ export const VerifierForm = ({
                       onChange={(value: any) => {
                         setValue('verifier', value)
                       }}
+                      onResolveName={onResolveName}
                     />
                   </>
                 )
