@@ -10,6 +10,8 @@ import {
 import { useConfig } from '~/utils/withConfig'
 import { useEffect } from 'react'
 import { TransactionDetails } from './NewCertification'
+import { useTransferFee } from '~/hooks/useTransferFee'
+import { useMutation } from '@tanstack/react-query'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
@@ -27,6 +29,15 @@ export const CertificationDeploying = ({
   let status: DeployStatus = 'progress'
   let title = 'Waiting for your transaction to be mined'
   let message = 'Please do not close this window'
+
+  const { updateTransferFee } = useTransferFee({
+    lockAddress: lockAddress!,
+    network,
+  })
+
+  const updateTransferFeeMutation = useMutation(updateTransferFee)
+
+  const transferFeeUpdated = updateTransferFeeMutation.isSuccess
 
   useEffect(() => {
     window?.scrollTo(0, 0) // force scroll start of page
@@ -77,10 +88,31 @@ export const CertificationDeploying = ({
         <span className="mb-4 font-base">{message}</span>
         {status === 'deployed' && lockAddress && (
           <div className="flex flex-col items-center content-center text-center">
-            <p>We have also built a page for you!</p>
-            <Button className="my-4" onClick={goToCertification}>
-              View certification page
-            </Button>
+            {!transferFeeUpdated ? (
+              <>
+                <p>
+                  Almost here, you need to make you certification
+                  non-transferable
+                </p>
+                <Button
+                  className="my-4"
+                  disabled={updateTransferFeeMutation.isLoading}
+                  loading={updateTransferFeeMutation.isLoading}
+                  onClick={() => {
+                    updateTransferFeeMutation.mutateAsync(100) // Make tokens non-transferable
+                  }}
+                >
+                  Make tokens non-transferable
+                </Button>
+              </>
+            ) : (
+              <>
+                <p>We have also built a page for you!</p>
+                <Button className="my-4" onClick={goToCertification}>
+                  View certification page
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>
