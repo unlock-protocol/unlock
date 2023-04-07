@@ -15731,7 +15731,7 @@ __metadata:
     sequelize: 6.30.0
     sequelize-cli: 6.6.0
     siwe: 1.1.6
-    stripe: 8.222.0
+    stripe: 12.0.0
     supertest: 6.3.3
     tsx: 3.12.6
     typescript: 4.9.5
@@ -15907,7 +15907,6 @@ __metadata:
     "@types/react": 18.0.32
     "@types/react-dom": 18.0.11
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": 3.1.0
     autoprefixer: 10.4.14
@@ -15928,6 +15927,7 @@ __metadata:
     typescript: 4.9.5
     url-loader: 4.1.1
     vite: 4.1.4
+    vite-plugin-node-polyfills: 0.7.0
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: 4.0.7
   peerDependencies:
@@ -43913,7 +43913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.4.0, qs@npm:^6.5.2, qs@npm:^6.7.0, qs@npm:^6.9.6":
+"qs@npm:^6.10.0, qs@npm:^6.11.0, qs@npm:^6.4.0, qs@npm:^6.5.2, qs@npm:^6.7.0, qs@npm:^6.9.6":
   version: 6.11.1
   resolution: "qs@npm:6.11.1"
   dependencies:
@@ -48796,13 +48796,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:8.222.0":
-  version: 8.222.0
-  resolution: "stripe@npm:8.222.0"
+"stripe@npm:12.0.0":
+  version: 12.0.0
+  resolution: "stripe@npm:12.0.0"
   dependencies:
     "@types/node": ">=8.1.0"
-    qs: ^6.10.3
-  checksum: ac9a5b569abf274a9f10cf5bad09d6cf47d457dad21191e8fc896c356608e75337b2e39b6e39526579d39f5b29c74a34e61c55e706def2498a079f7b4dbaea17
+    qs: ^6.11.0
+  checksum: 0a23417d878606b25e17a70504be0b842c9e795739405d8cd4886818d7f98c6555e8945cde6d40b741938ae617f25586b20c63e7d8863993cc4c946711dc40bd
   languageName: node
   linkType: hard
 

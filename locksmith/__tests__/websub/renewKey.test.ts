@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 import { renewKey, isWorthRenewing } from '../../src/websub/helpers/renewKey'
 
 const renewalInfo = {
-  network: 31137,
+  network: 11297108109,
   keyId: '1',
   lockAddress: '0xaaa',
 }
@@ -64,15 +64,6 @@ const mockWalletService = {
     hash: 'txhash',
   }),
 }
-
-vi.mock('@unlock-protocol/networks', () => {
-  return {
-    default: {
-      1: {},
-      31137: {},
-    },
-  }
-})
 
 vi.mock('ethers', async () => {
   const original = await vi.importActual<any>('ethers')
