@@ -10,7 +10,7 @@ module.exports = {
       },
       network: {
         allowNull: false,
-        type: DataTypes.NETWORK_ID
+        type: Sequelize.STRING,
       },
       topic: {
         allowNull: false,
