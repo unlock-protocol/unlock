@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class ProcessedHookItem extends Model<
   InferAttributes<ProcessedHookItem>,
@@ -28,7 +28,7 @@ ProcessedHookItem.init(
     },
     network: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     type: {
       allowNull: false,

@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class LockIcons extends Model<
   InferAttributes<LockIcons>,
@@ -31,7 +31,7 @@ LockIcons.init(
       unique: 'lock_chain_index',
     },
     chain: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
       unique: 'lock_chain_index',
     },
     icon: {

@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './index'
+import { LocksmithDataTypes, sequelize } from './index'
 
 export class UserTokenMetadata extends Model<
   InferAttributes<UserTokenMetadata>,
@@ -42,7 +42,7 @@ UserTokenMetadata.init(
     },
     chain: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,
