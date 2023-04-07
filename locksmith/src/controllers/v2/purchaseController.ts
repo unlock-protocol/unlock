@@ -10,7 +10,6 @@ import logger from '../../logger'
 import { z } from 'zod'
 import { isSoldOut } from '../../operations/lockOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
-import config from '../../config/config'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -22,7 +21,7 @@ const createPaymentIntentBody = z.object({
   recurring: z.number().optional(),
 })
 
-const Processor = new PaymentProcessor(config.stripeSecret!)
+const Processor = new PaymentProcessor()
 
 export const createSetupIntent: RequestHandler = async (request, response) => {
   try {
@@ -119,7 +118,7 @@ export const createPaymentIntent: RequestHandler = async (
       error: `Purchaser does not have enough to pay for gas on ${network}`,
     })
   }
-  const processor = new PaymentProcessor(config.stripeSecret!)
+  const processor = new PaymentProcessor()
   const paymentIntentDetails = await processor.createPaymentIntent(
     userAddress,
     recipients,
@@ -146,7 +145,7 @@ export const removePaymentMethods: RequestHandler = async (
       .send({ message: 'Missing Stripe customer info' })
   }
 
-  const processor = new PaymentProcessor(config.stripeSecret!)
+  const processor = new PaymentProcessor()
   await processor.removePaymentMethods({
     customerId,
   })

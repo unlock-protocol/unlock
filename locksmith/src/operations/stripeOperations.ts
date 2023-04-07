@@ -1,11 +1,10 @@
-import Stripe from 'stripe'
 import { StripeConnectLock } from '../models/stripeConnectLock'
 import { ethereumAddress } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
-import config from '../config/config'
+import stripe from '../config/stripe'
 import logger from '../logger'
 
 const { Op } = Sequelize
@@ -14,9 +13,6 @@ export const createStripeCustomer = async (
   stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
   const customer = await stripe.customers.create({
     source: stripeToken,
     metadata: {
@@ -105,10 +101,6 @@ export const disconnectStripe = async ({
   lockAddress: string
   chain: number
 }) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock },
   })
@@ -145,10 +137,6 @@ export const connectStripe = async (
   chain: number,
   baseUrl: string
 ) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock },
   })
@@ -193,9 +181,6 @@ export const connectStripe = async (
  * Returns the stripeAccount if all fully enabled
  */
 export const getStripeConnectForLock = async (lock: string, chain: number) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock, chain },
   })

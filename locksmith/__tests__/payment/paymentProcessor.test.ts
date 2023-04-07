@@ -73,7 +73,7 @@ describe('PaymentProcessor', () => {
     nockBack.setMode('lockdown')
 
     const { nockDone } = await nockBack('setup.json')
-    paymentProcessor = new PaymentProcessor(stripeToken)
+    paymentProcessor = new PaymentProcessor()
 
     await User.truncate({ cascade: true })
     await UserReference.create(
