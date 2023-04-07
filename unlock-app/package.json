@@ -10,7 +10,7 @@
     "@radix-ui/react-avatar": "1.0.2",
     "@rehooks/local-storage": "2.4.4",
     "@sentry/nextjs": "7.44.2",
-    "@stripe/react-stripe-js": "2.1.0",
+    "@stripe/react-stripe-js": "1.16.5",
     "@stripe/stripe-js": "1.51.0",
     "@tanstack/react-query": "4.24.10",
     "@tw-classed/react": "1.4.3",
