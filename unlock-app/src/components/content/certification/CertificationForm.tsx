@@ -223,7 +223,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 <div>
                   <div className="flex items-center justify-between">
                     <label className="px-1 mb-2 text-base" htmlFor="">
-                      Certificate duration (in days)
+                      Certification duration (in days)
                     </label>
                     <ToggleSwitch
                       title="Forever"

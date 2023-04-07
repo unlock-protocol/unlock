@@ -77,7 +77,7 @@ export const CertificationDeploying = ({
         <span className="mb-4 font-base">{message}</span>
         {status === 'deployed' && lockAddress && (
           <div className="flex flex-col items-center content-center text-center">
-            <p>We have also made a page for you!</p>
+            <p>We have also built a page for you!</p>
             <Button className="my-4" onClick={goToCertification}>
               View certification page
             </Button>

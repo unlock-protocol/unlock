@@ -53,8 +53,8 @@ const CertificationManagerOptions = ({
               Certification detail
             </span>
             <span>
-              Need to change something? Access your contract (Lock) & update
-              detail
+              Need to change something? Access your contract (Lock) & update its
+              details.
             </span>
           </div>
           <div className="md:col-span-1">
@@ -70,8 +70,7 @@ const CertificationManagerOptions = ({
         </div>
         <Disclosure
           label=" Airdrop certificates"
-          description="Automatically send certification to recipient by wallet address or
-              email"
+          description="Automatically send NFT certifications to wallets or by email"
         >
           <AirdropForm lockAddress={lockAddress} network={network} />
         </Disclosure>
