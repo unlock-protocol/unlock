@@ -13,6 +13,7 @@ import {
   useFormContext,
 } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { onResolveName } from '~/utils/resolvers'
 
 // TODO: move to zod config when supported there!
 export const LabelMapping: Record<string, string> = {
@@ -189,6 +190,7 @@ const AddressInputComponent = ({
                   [name]: isValid ? address : '',
                 })
               }}
+              onResolveName={onResolveName}
             />
             {description && (
               <span className="text-xs text-gray-600 ">{description}</span>
