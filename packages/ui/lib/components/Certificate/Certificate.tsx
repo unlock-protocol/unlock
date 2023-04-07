@@ -99,6 +99,7 @@ const Badge = ({ children }: Props) => {
           fontSize: '30px',
           lineHeight: '36px',
           color: 'white',
+          fontWeight: 700,
         }}
       >
         {children}
