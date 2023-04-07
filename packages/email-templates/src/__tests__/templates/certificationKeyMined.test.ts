@@ -19,7 +19,7 @@ describe('certificationKeyMinded', () => {
   })
 
   it('should have the right content', () => {
-    expect.assertions(2)
+    expect.assertions(3)
 
     const content = asHtml(
       prepareAll(certificationKeyMined).html({
@@ -32,10 +32,13 @@ describe('certificationKeyMinded', () => {
     )
 
     expect(content.textContent).toContain(
-      `Here is your NFT certification (#1337) for How To Deploy a Lock was just minted!`
+      `Your NFT certification (#1337) for How To Deploy a Lock was just mined. You can consult it directly on this web page.`
     )
     expect(content.innerHTML).toContain(
-      `<a href="https://app.unlock-protocol.com/certification">Here</a>`
+      `<a href="https://app.unlock-protocol.com/keychain">Unlock Keychain</a>`
+    )
+    expect(content.innerHTML).toContain(
+      `<a href="https://app.unlock-protocol.com/certification">consult it directly</a>`
     )
   })
 })
