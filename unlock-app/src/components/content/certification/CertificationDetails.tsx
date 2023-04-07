@@ -26,11 +26,16 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
 import { useValidKey } from '~/hooks/useKey'
+import { useTransferFee } from '~/hooks/useTransferFee'
+import { useQuery } from '@tanstack/react-query'
+import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
 
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
   tokenId?: string
+  expiration?: string | number
 }
 
 const CertificationManagerOptions = ({
@@ -39,6 +44,18 @@ const CertificationManagerOptions = ({
   isManager,
   onEdit,
 }: CertificationDetailsProps & { isManager: boolean; onEdit: () => void }) => {
+  const { getTransferFeeBasisPoints } = useTransferFee({
+    lockAddress,
+    network,
+  })
+
+  const { data: transferFeeBasisPoints } = useQuery(
+    ['getTransferFeeBasisPoints', lockAddress, network],
+    async () => getTransferFeeBasisPoints()
+  )
+
+  const certificationIsTransferable = transferFeeBasisPoints !== 10_000
+
   if (!isManager) return null
 
   return (
@@ -47,6 +64,27 @@ const CertificationManagerOptions = ({
         Tools for you, the certificate issuer
       </span>
       <div className="grid gap-4">
+        {certificationIsTransferable && (
+          <div className="flex flex-col gap-2">
+            <WarningBar>
+              Your certification is transferable! disable it to prevent transfer
+              between users.
+            </WarningBar>
+            <Disclosure
+              label="Make tokens non-transferable (soulbound)."
+              description=" Your certification is transferable! disable it to prevent transfer
+              between users."
+            >
+              <UpdateTransferFee
+                lockAddress={lockAddress}
+                network={network}
+                isManager={isManager}
+                disabled={!isManager}
+                unlimitedDuration={false}
+              />
+            </Disclosure>
+          </div>
+        )}
         <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
           <div className="flex flex-col gap-2 md:col-span-2">
             <span className="text-lg font-bold text-brand-ui-primary">
