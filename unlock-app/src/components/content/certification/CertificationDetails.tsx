@@ -49,7 +49,7 @@ const CertificationManagerOptions = ({
     network,
   })
 
-  const { data: transferFeeBasisPoints } = useQuery(
+  const { isLoading, data: transferFeeBasisPoints } = useQuery(
     ['getTransferFeeBasisPoints', lockAddress, network],
     async () => getTransferFeeBasisPoints()
   )
@@ -64,7 +64,7 @@ const CertificationManagerOptions = ({
         Tools for you, the certificate issuer
       </span>
       <div className="grid gap-4">
-        {certificationIsTransferable && (
+        {certificationIsTransferable && !isLoading && (
           <div className="flex flex-col gap-2">
             <WarningBar>
               Your certification is transferable! disable it to prevent transfer
