@@ -68,6 +68,9 @@ module.exports = {
       }),
       queryInterface.changeColumn('LockSettings', 'network', {
         type: 'pg_chain_id',
+      }),
+      queryInterface.changeColumn('HookEvents', 'network', {
+        type: 'pg_chain_id',
       })
     ])
   },
@@ -136,6 +139,9 @@ module.exports = {
         type: Sequelize.INTEGER,
       }),
       queryInterface.changeColumn('LockSettings', 'network', {
+        type: Sequelize.INTEGER,
+      }),
+      queryInterface.changeColumn('HookEvents', 'network', {
         type: Sequelize.INTEGER,
       })
     ])
