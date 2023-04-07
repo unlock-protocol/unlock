@@ -6,7 +6,6 @@ import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode, generateQrCodeUrl } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
-import { Lock } from '@unlock-protocol/types'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
@@ -109,22 +108,28 @@ export class TicketsController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const keyId = request.params.keyId.toLowerCase()
-      const [keyManager, keyOwner] = await Promise.all([
-        this.web3Service.keyManagerOf(lockAddress, keyId, network),
-        this.web3Service.ownerOf(lockAddress, keyId, network),
-      ])
-
-      const lock: Lock = await this.web3Service.getLock(lockAddress, network)
+      const subgraph = new SubgraphService()
+      const key = await subgraph.key(
+        {
+          where: {
+            lock: lockAddress.toLowerCase(),
+            id: keyId,
+          },
+        },
+        {
+          network,
+        }
+      )
 
       await notifyNewKeyToWedlocks(
         {
           tokenId: keyId,
           lock: {
             address: lockAddress,
-            name: lock.name,
+            name: key.lock.name || 'Unlock Lock',
           },
-          manager: keyManager,
-          owner: keyOwner,
+          manager: key.manager,
+          owner: key.owner,
         },
         network,
         true
