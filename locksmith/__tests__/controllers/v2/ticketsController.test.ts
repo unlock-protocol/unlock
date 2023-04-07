@@ -33,6 +33,20 @@ vi.mock('@unlock-protocol/unlock-js', () => {
           lockAddress === lock && network,
       }
     }),
+    SubgraphService: vi.fn().mockImplementation(() => {
+      return {
+        key(filters: any, options: any) {
+          return {
+            id: tokenId,
+            manager: owner,
+            owner: owner,
+            lock: {
+              name: 'Test Lock',
+            },
+          }
+        },
+      }
+    }),
   }
 })
 

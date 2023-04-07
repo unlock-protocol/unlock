@@ -45,6 +45,7 @@ interface Key {
     address: string
     name: string
   }
+  manager: string
   tokenId?: string
   owner: string
   keyId?: string
@@ -113,10 +114,7 @@ export const sendEmail = async ({
  * Resolves when all new keys have been processed
  * @param keys
  */
-export const notifyNewKeysToWedlocks = async (
-  keys: any[],
-  network?: number
-) => {
+export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
   logger.info('Notifying following keys to wedlock', {
     keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
@@ -263,13 +261,14 @@ const getLockSettings = async (
 
 export const notifyNewKeyToWedlocks = async (
   key: Key,
-  network?: number,
+  network: number,
   includeQrCode = true
 ) => {
   const keyManager = new KeyManager()
   const lockAddress = Normalizer.ethereumAddress(key.lock.address)
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
   const tokenId = key?.tokenId
+  const manager = key?.manager
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
@@ -300,7 +299,9 @@ export const notifyNewKeyToWedlocks = async (
   })
 
   const isAirdroppedRecipient =
-    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase()
+    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase() &&
+    manager.toLowerCase().trim() ===
+      networks[network!]?.keyManagerAddress?.toLowerCase()?.trim()
 
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
