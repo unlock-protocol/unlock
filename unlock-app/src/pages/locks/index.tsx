@@ -19,7 +19,9 @@ const Locks: NextPage = () => {
         </span>
         {account && (
           <Link href="/locks/create">
-            <Button size="large">Create Lock</Button>
+            <Button className="w-full md:auto" size="large">
+              Create Lock
+            </Button>
           </Link>
         )}
       </div>
