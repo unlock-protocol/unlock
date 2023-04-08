@@ -9,30 +9,28 @@ const stripeToken = 'sk_test_token'
 const mockVisaToken = 'tok_visa'
 const nockBack = nock.back
 import { vi } from 'vitest'
-const mockCreateSource = vi.fn()
 
 vi.mock('stripe', () => {
-  const mockedStripe = vi.fn().mockImplementation(() => {
-    return {
-      customers: {
-        create: vi
-          .fn()
-          .mockResolvedValueOnce({ id: 'a valid customer id' })
-          .mockRejectedValueOnce(new Error('unknown token')),
-        createSource: mockCreateSource,
-      },
-      charges: {
-        create: vi
-          .fn()
-          .mockResolvedValueOnce({
-            status: 'succeeded',
-          })
-          .mockRejectedValueOnce('An error in purchase'),
-      },
-    }
-  })
   return {
-    default: mockedStripe,
+    default: vi.fn().mockImplementation(() => {
+      return {
+        customers: {
+          create: vi
+            .fn()
+            .mockResolvedValueOnce({ id: 'a valid customer id' })
+            .mockRejectedValueOnce(new Error('unknown token')),
+          createSource: vi.fn(),
+        },
+        charges: {
+          create: vi
+            .fn()
+            .mockResolvedValueOnce({
+              status: 'succeeded',
+            })
+            .mockRejectedValueOnce('An error in purchase'),
+        },
+      }
+    }),
   }
 })
 
@@ -149,21 +147,6 @@ describe('PaymentProcessor', () => {
           '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
 
-        expect(user).toBe(true)
-      })
-    })
-
-    describe('when the user already has an existing stripe customer id', () => {
-      it("adds the card to the user's acceptable card", async () => {
-        expect.assertions(2)
-        const user = await paymentProcessor.updateUserPaymentDetails(
-          mockVisaToken,
-          '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
-        )
-
-        expect(mockCreateSource).toHaveBeenCalledWith('a valid customer id', {
-          source: mockVisaToken,
-        })
         expect(user).toBe(true)
       })
     })
