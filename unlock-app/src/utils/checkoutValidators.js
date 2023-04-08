@@ -1,3 +1,5 @@
+// TODO: remove, some part related to old checkout (callToAction)
+
 import isURL from 'validator/lib/isURL'
 import isDataURI from 'validator/lib/isDataURI'
 import isDecimal from 'validator/lib/isDecimal'
