@@ -21,7 +21,8 @@ export default {
     })
 
     try {
-      await handler(request, env)
+      const response = await handler(request, env)
+      return response
     } catch (error) {
       sentry.captureException(error)
       return new Response('Something went wrong! Team has been notified.', {
