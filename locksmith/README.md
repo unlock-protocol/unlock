@@ -31,8 +31,6 @@ Alternatively, you could set these variables:
 - `DB_NAME` - Database Name
 - `DB_HOSTNAME` - Database Host
 
-You will also need to add the following env var: `DEFAULT_NETWORK=1`
-
 ### Configure file storage
 
 Locksmith uses S3 to store various files. To configure this, you will need to set the following environment variables:
