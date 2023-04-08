@@ -38,7 +38,7 @@ const router = express.Router({ mergeParams: true })
 // Set the chain!
 router.use((request, _, next) => {
   const match = request.path.match(/^\/([0-9]*)\/.*/)
-  let chain = parseInt(config.defaultNetwork || '31337')
+  let chain = config.defaultNetwork || 1
   if (match) {
     // When the route starts with the chain (deprecated?)
     chain = parseInt(match[1])

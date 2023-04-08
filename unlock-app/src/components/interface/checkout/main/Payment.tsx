@@ -170,7 +170,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
             {enableCreditCard && (
               <button
-                disabled={balance?.isGasPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({

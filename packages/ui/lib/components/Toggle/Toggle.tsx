@@ -3,7 +3,7 @@ import { classed } from '@tw-classed/react'
 import { ButtonHTMLAttributes } from 'react'
 import { Size } from '~/types'
 
-interface Props
+export interface Props
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
     'size' | 'ref' | 'children' | 'value' | 'onChange'
