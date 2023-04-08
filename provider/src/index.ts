@@ -21,10 +21,12 @@ export default {
     })
 
     try {
-      return handler(request, env)
+      await handler(request, env)
     } catch (error) {
       sentry.captureException(error)
-      throw error // thow again
+      return new Response('Something went wrong! Team has been notified.', {
+        status: 500,
+      })
     }
   },
-}
+} as ExportedHandler<Env>

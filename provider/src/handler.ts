@@ -22,6 +22,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   const headers = {
     'access-control-allow-origin': '*',
   }
+
   if (pathname === '/resolve-redirect' && queryURL) {
     const endpoint = new URL(queryURL)
     const result = await fetch(endpoint.toString(), {
