@@ -91,6 +91,7 @@ export class PaymentProcessor {
       network,
       recipients.length
     )
+
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
     const maxPriceInCents = maxPrice * 100
     if (
