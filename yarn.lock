@@ -15987,6 +15987,7 @@ __metadata:
     ethers: 5.7.2
     file-saver: 2.0.5
     font-color-contrast: 11.1.0
+    from-exponential: 1.1.1
     graphql: 16.6.0
     lottie-react: 2.4.0
     next: 13.1.6
@@ -29080,6 +29081,13 @@ __metadata:
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
   checksum: 13ea8b08f91e669a64e3ba3a20eb79d7ca5379a81f1ff7f4310d54e2320645503cc0c78daedc93dfb6191287295f6479544a649c64d8e41a1c0fb0c221552346
+  languageName: node
+  linkType: hard
+
+"from-exponential@npm:1.1.1":
+  version: 1.1.1
+  resolution: "from-exponential@npm:1.1.1"
+  checksum: af2765bd4f78836153c46cf4aff51ba9f2d1ac6b7d9568d69901d2045ba5b80a47de4f2a693bcc2006a7516cef71f636a4e42596cdd77a0addcc739539eb0f48
   languageName: node
   linkType: hard
 
