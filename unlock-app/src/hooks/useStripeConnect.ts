@@ -7,15 +7,20 @@ interface Options {
   backTo?: string
 }
 
+interface useStripeConnectMutationArgs {
+  stripeAccount?: string
+}
+
 export const useStripeConnect = ({ lockAddress, network, backTo }: Options) => {
-  return useMutation(
+  return useMutation<any, any, useStripeConnectMutationArgs>(
     ['stripeConnect', network, lockAddress, backTo],
-    async () => {
+    async ({ stripeAccount }) => {
       const response = await storage.connectStripeAccount(
         network,
         lockAddress,
         {
           baseUrl: backTo || window.location.origin,
+          stripeAccount,
         }
       )
       return response?.data
