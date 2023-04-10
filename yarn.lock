@@ -15539,7 +15539,9 @@ __metadata:
   resolution: "@unlock-protocol/core@workspace:packages/core"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@vitest/coverage-c8": 0.28.3
     typescript: 4.9.5
+    vitest: 0.28.3
   peerDependencies:
     zod: 3.21.4
   languageName: unknown

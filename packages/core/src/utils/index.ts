@@ -6,7 +6,7 @@ const LockTypeSchema = z.object({
   isStamp: z.boolean().default(false),
 })
 
-export const getLockTypeByMetadata = (metadata: any): LockType => {
+export const getLockTypeByMetadata = (metadata?: any): LockType => {
   const attributes: Record<string, string>[] = metadata?.attributes || []
 
   const hasAttribute = (name: 'event' | 'certification' | 'stamp') => {

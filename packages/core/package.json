@@ -4,7 +4,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "UNLOCK_ENV=test vitest run --coverage --environment=node"
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
@@ -12,5 +13,9 @@
   },
   "peerDependencies": {
     "zod": "3.21.4"
+  },
+  "dependencies": {
+    "@vitest/coverage-c8": "0.28.3",
+    "vitest": "0.28.3"
   }
 }
