@@ -16,7 +16,7 @@ export default {
 {{/if}}
 
 {{#if isUserAddress}}
-  <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
+  <p>It has also been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 {{else}}
   <p>You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>.</p>
 {{/if}}
