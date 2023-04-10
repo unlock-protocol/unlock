@@ -7,6 +7,7 @@ import {
   getBulkKeysMetadata,
   updateUsersMetadata,
   updateUserMetadata,
+  getLockTypeByMetadata,
 } from '../../controllers/v2/metadataController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
@@ -14,6 +15,7 @@ import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 const router = express.Router({ mergeParams: true })
 
 router.get('/:network/locks/:lockAddress', getLockMetadata)
+router.get('/:network/locks/:lockAddress/types', getLockTypeByMetadata)
 router.get('/:network/locks/:lockAddress/keys/:keyId', getKeyMetadata)
 
 router.post(

@@ -41,6 +41,12 @@ export interface Metadata {
   [key: string]: any
 }
 
+export interface LockType {
+  isEvent: boolean
+  isCertification: boolean
+  [key: string]: boolean
+}
+
 export function toFormData({
   name,
   description,

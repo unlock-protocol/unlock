@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { Metadata } from '~/components/interface/locks/metadata/utils'
+import { Metadata, LockType } from '~/components/interface/locks/metadata/utils'
 import { storage } from '~/config/storage'
 
 interface Options {
@@ -79,6 +79,29 @@ export const useMetadata = ({
         }
       } catch (error) {
         return {} as Metadata
+      }
+    },
+    {
+      enabled: !!lockAddress && !!network,
+    }
+  )
+}
+
+export const useLockMetadataType = ({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) => {
+  return useQuery(
+    ['metadataLockType', network, lockAddress],
+    async (): Promise<Partial<LockType>> => {
+      try {
+        const types = await storage.lockMetadataTypes(network!, lockAddress!)
+        return types.data as LockType
+      } catch (error) {
+        return {} as LockType
       }
     },
     {

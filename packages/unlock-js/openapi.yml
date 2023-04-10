@@ -1038,6 +1038,29 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/api/metadata/{network}/locks/{lockAddress}/types:
+    get:
+      operationId: lockMetadataTypes
+      description: Get lock type for lock address.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: JSON metadata containing lock types (event, certification, more..)
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties: true
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/metadata/{network}/locks/{lockAddress}/keys/{keyId}:
     get:
       operationId: keyMetadata

@@ -246,3 +246,17 @@ export const updateUsersMetadata: RequestHandler = async (
     error,
   })
 }
+
+export const getLockTypeByMetadata: RequestHandler = async (
+  request: Request,
+  response: Response
+) => {
+  const network = Number(request.params.network)
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+
+  const types = await metadataOperations.getLockTypeByMetadata({
+    lockAddress,
+    network,
+  })
+  return response.status(200).send(types)
+}

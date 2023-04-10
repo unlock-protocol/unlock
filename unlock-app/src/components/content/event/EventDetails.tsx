@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useMetadata } from '~/hooks/metadata'
+import { useLockMetadataType, useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { selectProvider } from '~/hooks/useAuthenticate'
@@ -43,6 +43,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
+  const { data: types, isLoading: isLoadingLockType } = useLockMetadataType({
+    lockAddress,
+    network,
+  })
+
   const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
@@ -64,7 +69,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
-  if (isMetadataLoading || isHasValidKeyLoading) {
+  if (isMetadataLoading || isHasValidKeyLoading || isLoadingLockType) {
     return <LoadingIcon></LoadingIcon>
   }
 
@@ -74,7 +79,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!metadata && !types?.isEvent) {
     if (isLockManager) {
       return (
         <>
@@ -96,7 +101,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     return <p>This contract is not configured.</p>
   }
 
-  const eventData = toFormData(metadata)
+  const eventData = toFormData(metadata!)
   const eventDate = getEventDate(eventData.ticket)
   const eventEndDate = getEventEndDate(eventData.ticket)
 
@@ -245,7 +250,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             variant="primary"
             size="medium"
-            className="md:w-1/2 mt-4"
+            className="mt-4 md:w-1/2"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`
