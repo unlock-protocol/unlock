@@ -2,7 +2,6 @@
 
 import eventKeyAirdropped from '../../templates/eventKeyAirdropped'
 import { prepareAll } from '../../templates/prepare'
-import { asHtml } from '../utils'
 import { expect, it, describe } from 'vitest'
 
 describe('eventKeyAirdropped', () => {
