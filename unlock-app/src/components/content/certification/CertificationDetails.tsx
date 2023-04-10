@@ -107,7 +107,7 @@ const CertificationManagerOptions = ({
           </div>
         </div>
         <Disclosure
-          label=" Airdrop certificates"
+          label="Airdrop certificates"
           description="Automatically send NFT certifications to wallets or by email"
         >
           <AirdropForm lockAddress={lockAddress} network={network} />
