@@ -32,8 +32,12 @@ async function _getKeyPrice(lock, provider) {
 export default async function (lock, transactionOptions = {}, callback) {
   const unlockContract = await this.getUnlockContract()
 
-  const lockVersion =
-    lock.publicLockVersion || (await unlockContract.publicLockLatestVersion())
+  const publicLockLatestVersion =
+    unlockContract.getAddress() === '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
+      ? 12
+      : await unlockContract.publicLockLatestVersion()
+
+  const lockVersion = lock.publicLockVersion || publicLockLatestVersion
 
   let { maxNumberOfKeys, expirationDuration } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
