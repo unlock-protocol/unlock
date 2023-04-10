@@ -2418,15 +2418,18 @@ paths:
               schema:
                 type: object
                 properties:
-                  # stripe account links
-                  url: # The url to redirect the user to
+                  result:
+                    type: object
+                    properties:
+                      lock:
+                        type: string
+                      chain:
+                        type: number
+                      stripeAccount:
+                        type: string
+                  error:
                     type: string
-                  created:
-                    type: number
-                  expiresAt:
-                    type: number
-                  object:
-                    type: string
+                    nullable: true
 
         400:
           description: Invalid request

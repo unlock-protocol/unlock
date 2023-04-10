@@ -48,13 +48,15 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
     userAddress
   )
   if (!connections) {
-    return []
+    return {
+      result: [],
+    }
   }
-  return res.json(
-    connections.map(({ lock, chain, stripeAccount }) => ({
+  return res.json({
+    result: connections.map(({ lock, chain, stripeAccount }) => ({
       lock,
       chain,
       stripeAccount,
-    }))
-  )
+    })),
+  })
 }

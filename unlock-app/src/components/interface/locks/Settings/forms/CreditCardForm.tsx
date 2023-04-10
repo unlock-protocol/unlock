@@ -133,8 +133,11 @@ export const CreditCardForm = ({
     isFetching: isFetchingPreviouslyConnectedLocks,
     data: previouslyConnectedLocks,
   } = useQuery(['connectedLocks', account], async () => {
-    const connections = await storage.getStripeConnections()
-    return connections.data || []
+    const response = await storage.getStripeConnections()
+    if (response.data.error) {
+      throw new Error(response.data.error)
+    }
+    return response.data.result || []
   })
 
   const loading =
