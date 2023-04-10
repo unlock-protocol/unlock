@@ -106,8 +106,8 @@ export const AddToDeviceWallet = ({
       )
 
       const passUrl = await addToPhoneWallet(
-        signatureMessage,
         signature,
+        signatureMessage,
         true /** signedByOwner */,
         lockAddress,
         tokenId,
