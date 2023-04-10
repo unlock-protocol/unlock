@@ -1,6 +1,13 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
 
+interface RpcRequest {
+  id: number
+  jsonrpc: string
+  method: string
+  params: string[]
+}
+
 const handler = async (request: Request, env: Env): Promise<Response> => {
   // Handling CORS
   if (request.method === 'OPTIONS') {
@@ -114,10 +121,29 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     )
   }
 
+  const body: RpcRequest = await request.json()
+
+  // Handling chainId locally
+  if (
+    body?.method?.toLocaleLowerCase().trim() ===
+    'eth_chainId'.toLocaleLowerCase()
+  ) {
+    return Response.json(
+      {
+        id: body.id || 42,
+        jsonrpc: '2.0',
+        result: `0x${parseInt(networkId).toString(16)}`,
+      },
+      {
+        headers,
+      }
+    )
+  }
+
   // Make JSON RPC request
   const response = await fetch(supportedNetwork, {
     method: 'POST',
-    body: request.body,
+    body: JSON.stringify(body),
     headers: new Headers({
       Accept: '*/*',
       Origin: 'https://rpc.unlock-protocol.com/', // required to add this to allowlists
