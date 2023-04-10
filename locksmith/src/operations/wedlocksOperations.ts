@@ -22,7 +22,8 @@ import {
   DEFAULT_LOCK_SETTINGS,
   LockSettingProps,
 } from '../controllers/v2/lockSettingController'
-import { getLockTypeByMetadata, LockTypes } from './metadataOperations'
+import { getLockMetadata } from './metadataOperations'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -136,7 +137,7 @@ interface GetAttachmentProps {
   owner: string
   includeQrCode?: boolean
   event?: Partial<EventProps>
-  types?: LockTypes
+  types?: LockType
 }
 
 const getCustomContent = async (
@@ -289,7 +290,6 @@ export const notifyNewKeyToWedlocks = async (
   const protectedData = Normalizer.toLowerCaseKeys({
     ...userTokenMetadataRecord?.data?.userMetadata?.protected,
   })
-
   const recipient = protectedData?.email as string
 
   if (!recipient) {
@@ -326,12 +326,10 @@ export const notifyNewKeyToWedlocks = async (
   transferUrl.searchParams.set('keyId', tokenId ?? '')
   transferUrl.searchParams.set('network', network?.toString() ?? '')
 
-  const lockTypes = await getLockTypeByMetadata({
-    lockAddress,
-    network,
-  })
-  const { isEvent } = lockTypes ?? {}
+  const metadata = await getLockMetadata({ lockAddress, network })
+  const types = getLockTypeByMetadata(metadata)
 
+  const { isEvent } = types
   let eventDetail: EventProps | undefined = undefined
 
   // get event details only when lock is event
@@ -347,7 +345,7 @@ export const notifyNewKeyToWedlocks = async (
     owner: ownerAddress,
     includeQrCode,
     event: eventDetail,
-    types: lockTypes,
+    types,
   })
 
   // email templates

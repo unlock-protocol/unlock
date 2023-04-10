@@ -272,32 +272,3 @@ export const getLockMetadata = async ({
 
   return lockData?.data
 }
-
-export interface LockTypes {
-  isEvent: boolean
-  isCertification: boolean
-  isStamp: boolean
-}
-
-export const getLockTypeByMetadata = async ({
-  lockAddress,
-  network,
-}: {
-  lockAddress: string
-  network: number
-}): Promise<LockTypes> => {
-  const metadata = await getLockMetadata({ lockAddress, network })
-  const attributes: Record<string, string>[] = metadata?.attributes || []
-
-  const hasAttribute = (name: 'event' | 'certification' | 'stamp') => {
-    return attributes.some((attribute) =>
-      attribute?.trait_type?.startsWith(name)
-    )
-  }
-
-  return {
-    isEvent: hasAttribute('event'),
-    isCertification: hasAttribute('certification'),
-    isStamp: hasAttribute('stamp'),
-  }
-}
