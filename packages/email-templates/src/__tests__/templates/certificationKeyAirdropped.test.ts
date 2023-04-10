@@ -32,7 +32,7 @@ describe('certificationKeyAirdropped', () => {
     )
 
     expect(content.textContent).toContain(
-      `Here is your NFT certification (#1337) for How To Deploy a Lock. It was also just airdropped to your address.`
+      `Here is your NFT certification (#1337) for How To Deploy a Lock. It was just airdropped to your address.`
     )
     expect(content.innerHTML).toContain(
       `<a href="https://app.unlock-protocol.com/certification">Here</a>`
@@ -53,7 +53,7 @@ describe('certificationKeyAirdropped', () => {
     )
 
     expect(content.textContent).toContain(
-      `Here is your NFT certification (#1337) for How To Deploy a Lock. It was also just airdropped to your address.`
+      `Here is your NFT certification (#1337) for How To Deploy a Lock. It was just airdropped to your address.`
     )
     expect(content.innerHTML).toContain(
       `<a href="https://app.unlock-protocol.com/certification">Here</a>`
@@ -75,7 +75,7 @@ describe('certificationKeyAirdropped', () => {
     )
 
     expect(content.textContent).toContain(
-      `It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!`
+      `It has also been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!`
     )
   })
 
