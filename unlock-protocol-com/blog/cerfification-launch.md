@@ -53,7 +53,7 @@ Once the above settings are specified, you can deploy the certificate and see th
 
 ![certifica-deploy-gif.gif](/images/blog/certifications/certifica-deploy-gif.gif)
 
-## Certificate Overview
+## Certificate overview
 
 Each certification has a dedicated page where information for that certification is visible. 
 
