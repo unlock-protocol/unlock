@@ -8,6 +8,7 @@ export const connectStripe = async (req: Request, res: Response) => {
   const network = Number(req.params.network)
   const userAddress = req.user!.walletAddress
   const baseUrl = Normalizer.getURL(req.body.baseUrl)?.toString()
+  const stripeAccount = req.body.stripeAccount
   if (!baseUrl) {
     return res.status(400).send({
       message: `baseUrl is invalid or missing.`,
@@ -18,14 +19,18 @@ export const connectStripe = async (req: Request, res: Response) => {
       userAddress,
       Normalizer.ethereumAddress(lockAddress),
       network,
-      baseUrl
+      baseUrl,
+      stripeAccount
     )
-    return res.json({
-      url: connected.url,
-      created: connected.created,
-      object: connected.object,
-      expiresAt: connected.expires_at,
-    })
+    if (connected) {
+      return res.json({
+        url: connected.url,
+        created: connected.created,
+        object: connected.object,
+        expiresAt: connected.expires_at,
+      })
+    }
+    return res.json({})
   } catch (error) {
     logger.error(
       `Failed to connect Stripe: there was an error ${lockAddress}, ${network}`,
@@ -35,4 +40,23 @@ export const connectStripe = async (req: Request, res: Response) => {
       message: `Cannot connect stripe: ${error.message}`,
     })
   }
+}
+
+export const getConnectionsForManager = async (req: Request, res: Response) => {
+  const userAddress = req.user!.walletAddress
+  const connections = await stripeOperations.getConnectionsForManager(
+    userAddress
+  )
+  if (!connections) {
+    return {
+      result: [],
+    }
+  }
+  return res.json({
+    result: connections.map(({ lock, chain, stripeAccount }) => ({
+      lock,
+      chain,
+      stripeAccount,
+    })),
+  })
 }
