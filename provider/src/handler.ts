@@ -124,7 +124,10 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   const body: RpcRequest = await request.json()
 
   // Handling chainId locally
-  if (body?.method === 'eth_chainId') {
+  if (
+    body?.method?.toLocaleLowerCase().trim() ===
+    'eth_chainId'.toLocaleLowerCase()
+  ) {
     return Response.json(
       {
         id: body.id || 42,
