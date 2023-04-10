@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -8,6 +9,17 @@ export const queryClient = new QueryClient({
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       refetchIntervalInBackground: false,
+      retry: (failureCount, error) => {
+        if (failureCount > 3) {
+          return false
+        }
+        if (error instanceof AxiosError) {
+          return ![400, 401, 403, 404, 500].includes(
+            error.response?.status || 0
+          )
+        }
+        return true
+      },
     },
   },
 })
