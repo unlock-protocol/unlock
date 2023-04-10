@@ -49,25 +49,27 @@ export function DetailForm({ disabled }: Props) {
   return (
     <Disclosure label="Basic" defaultOpen>
       <div className="grid gap-6">
-        <div className="grid grid-cols-2 gap-6">
-          <ImageUpload
-            description="This will appear as each NFT's image on OpenSea on other marketplaces. Use 512 by 512 pixels for best results."
-            isUploading={isUploading}
-            preview={image!}
-            onChange={async (fileOrFileUrl: any) => {
-              if (typeof fileOrFileUrl === 'string') {
-                setValue('image', fileOrFileUrl)
-              } else {
-                const items = await uploadImage(fileOrFileUrl[0])
-                const image = items?.[0]?.publicUrl
-                if (!image) {
-                  return
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="order-2 md:order-1">
+            <ImageUpload
+              description="This will appear as each NFT's image on OpenSea on other marketplaces. Use 512 by 512 pixels for best results."
+              isUploading={isUploading}
+              preview={image!}
+              onChange={async (fileOrFileUrl: any) => {
+                if (typeof fileOrFileUrl === 'string') {
+                  setValue('image', fileOrFileUrl)
+                } else {
+                  const items = await uploadImage(fileOrFileUrl[0])
+                  const image = items?.[0]?.publicUrl
+                  if (!image) {
+                    return
+                  }
+                  setValue('image', image)
                 }
-                setValue('image', image)
-              }
-            }}
-          />
-          <div className="grid gap-6">
+              }}
+            />
+          </div>
+          <div className="grid order-1 gap-6 md:order-2">
             <Input
               {...register('name', {
                 required: {
