@@ -32,7 +32,9 @@ async function _getKeyPrice(lock, provider) {
 export default async function (lock, transactionOptions = {}, callback) {
   const unlockContract = await this.getUnlockContract()
 
+  // prevent "old" Unlock on mainnet from deploying versions higher than 12
   const publicLockLatestVersion =
+    this.networkId === 1 &&
     unlockContract.getAddress() === '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
       ? 12
       : await unlockContract.publicLockLatestVersion()
