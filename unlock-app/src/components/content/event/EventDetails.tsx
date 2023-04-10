@@ -18,7 +18,7 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
-import { getEventDate, getEventEndDate } from './utils'
+import { getEventDate, getEventEndDate, getLockTypeByMetadata } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
@@ -42,12 +42,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
-
-  const { data: types, isLoading: isLoadingLockType } = useLockMetadataType({
-    lockAddress,
-    network,
-  })
-
   const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
@@ -69,7 +63,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
-  if (isMetadataLoading || isHasValidKeyLoading || isLoadingLockType) {
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
+  if (isMetadataLoading || isHasValidKeyLoading) {
     return <LoadingIcon></LoadingIcon>
   }
 
@@ -79,7 +75,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
-  if (!metadata && !types?.isEvent) {
+  if (!metadata && isEvent) {
     if (isLockManager) {
       return (
         <>

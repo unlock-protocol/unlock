@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import { Metadata } from '~/components/interface/locks/metadata/utils'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -23,4 +24,27 @@ export const getEventEndDate = (ticket: any): Date | null => {
   }
 
   return null
+}
+
+export interface LockTypes {
+  isEvent: boolean
+  isCertification: boolean
+  isStamp: boolean
+}
+
+export const getLockTypeByMetadata = (
+  metadata?: Partial<Metadata>
+): LockTypes => {
+  const attributes: Metadata['attributes'] = metadata?.attributes ?? []
+  const hasAttribute = (name: 'event' | 'certification' | 'stamp') => {
+    return attributes.some((attribute) =>
+      attribute?.trait_type?.startsWith(name)
+    )
+  }
+
+  return {
+    isEvent: hasAttribute('event'),
+    isCertification: hasAttribute('certification'),
+    isStamp: hasAttribute('stamp'),
+  }
 }
