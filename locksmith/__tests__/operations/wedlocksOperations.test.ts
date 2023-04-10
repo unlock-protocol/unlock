@@ -9,6 +9,7 @@ import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
 
 const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
+const network = 80001
 
 vi.mock('@unlock-protocol/unlock-js', async () => {
   const actual: any = await vi.importActual('@unlock-protocol/unlock-js')
@@ -43,13 +44,17 @@ describe('Wedlocks operations', () => {
           },
         },
       })
-      await notifyNewKeyToWedlocks({
-        lock: {
-          address: lockAddress,
-          name: lockName,
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          owner: ownerAddress,
+          manager: ownerAddress,
         },
-        owner: ownerAddress,
-      })
+        network
+      )
       const transferUrl = `${[
         process.env.UNLOCK_ENV !== 'prod'
           ? 'https://staging-app.unlock-protocol.com'
@@ -70,13 +75,17 @@ describe('Wedlocks operations', () => {
       const ownerAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const lockName = 'Alice in Wonderland'
 
-      await notifyNewKeyToWedlocks({
-        lock: {
-          address: lockAddress,
-          name: lockName,
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          manager: ownerAddress,
+          owner: ownerAddress,
         },
-        owner: ownerAddress,
-      })
+        network
+      )
       expect(fetch).not.toHaveBeenCalled()
     })
 
@@ -98,13 +107,17 @@ describe('Wedlocks operations', () => {
         },
       })
 
-      await notifyNewKeyToWedlocks({
-        lock: {
-          address: lockAddress,
-          name: lockName,
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          owner: ownerAddress,
+          manager: ownerAddress,
         },
-        owner: ownerAddress,
-      })
+        network
+      )
       expect(fetch).not.toHaveBeenCalled()
     })
   })
