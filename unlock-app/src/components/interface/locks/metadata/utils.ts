@@ -44,6 +44,7 @@ export interface Metadata {
 export interface LockType {
   isEvent: boolean
   isCertification: boolean
+  isStamp: boolean
   [key: string]: boolean
 }
 
