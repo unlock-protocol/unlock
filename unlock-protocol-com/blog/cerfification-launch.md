@@ -39,7 +39,7 @@ By default, your certification can't be purchased. By default, it can only be gr
 
 ![price-quantity-min.png](/images/blog/certifications/price-quantity-min.png)
 
-If the case where you do choose to make your certification purchasable, you will need to set a price and a maximum supply of certifications.
+In case you do choose to make your certification purchasable, you will need to set a price and a maximum supply of certifications.
 
 ![price-quantity-2-min.png](/images/blog/certifications/price-quantity-2-min.png)
 
