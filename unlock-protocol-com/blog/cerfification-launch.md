@@ -3,7 +3,7 @@ title: Oh Yeah? Prove it! Certifications by Unlock
 authorName: Kalidou Diagne
 publishDate: April 11, 2023
 description: Unlock introduces an easy way to issue transparent, provable credentials for professional certifications, continuing education credits, industry expertise, and more.
-image: /images/blog/events-by-unlock/certification-cover-min.png
+image: /images/blog/certifications/certification-cover-min.png
 ---
 
 ![certification-cover-min.png](/images/blog/certifications/certification-cover-min.png)
