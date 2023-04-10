@@ -55,9 +55,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
 
-  const price = Number(
-    parseFloat(lock.keyPrice) * recipients.length
-  ).toLocaleString()
+  const price = Number(parseFloat(lock.keyPrice) * recipients.length)
 
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', lock.network, lock.address, recipients.length],
@@ -87,11 +85,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const uniswapRoutes = useUniswapRoutesUsingLock({
     lock,
-    price: price,
+    price: price.toString(),
   })
 
   const isSwapAndPurchaseEnabled =
-    parseFloat(price) > 0 && uniswapRoutes && uniswapRoutes.length > 0
+    price > 0 && uniswapRoutes && uniswapRoutes.length > 0
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
@@ -150,7 +148,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay via cryptocurrency </h3>
-                  <AmountBadge amount={price} symbol={symbol} />
+                  <AmountBadge amount={price.toString()} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
@@ -172,7 +170,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
             {enableCreditCard && (
               <button
-                disabled={balance?.isGasPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({

@@ -28,5 +28,5 @@ export * from './utils'
 export {
   UnlockUIProvider,
   useUnlockUI,
-  UnlocUIContext,
+  UnlockUIContext,
 } from '~/components/Provider'

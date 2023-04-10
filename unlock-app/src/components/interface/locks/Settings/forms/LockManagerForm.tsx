@@ -12,6 +12,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
+import { onResolveName } from '~/utils/resolvers'
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -325,6 +326,7 @@ export const LockManagerForm = ({
                       onChange={(value: any) => {
                         setValue('manager', value)
                       }}
+                      onResolveName={onResolveName}
                     />
                   </>
                 )

@@ -28,7 +28,7 @@ const ImageUploadWrapper = classed.div('grid gap-6 p-2 bg-white rounded-xl', {
   },
 })
 
-type ImageUploadWrapperProps = React.ComponentProps<
+export type ImageUploadWrapperProps = React.ComponentProps<
   typeof ImageUploadWrapper
 > & {
   preview: string

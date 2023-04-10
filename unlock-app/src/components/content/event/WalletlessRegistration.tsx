@@ -17,6 +17,7 @@ import { useConfig } from '~/utils/withConfig'
 import { MintingScreen } from '~/components/interface/checkout/main/Minting'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
+import { onResolveName } from '~/utils/resolvers'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -139,7 +140,7 @@ export const WalletlessRegistration = ({
             network={network}
           />
           {transactionStatus === 'FINISHED' && (
-            <p className="my-16 font-bold text-3xl text-center">
+            <p className="my-16 text-3xl font-bold text-center">
               🎉 You have been added to the attendees list!
             </p>
           )}
@@ -187,6 +188,7 @@ export const WalletlessRegistration = ({
                       setValue('recipient', value)
                     }}
                     description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
+                    onResolveName={onResolveName}
                   />
                 </>
               )

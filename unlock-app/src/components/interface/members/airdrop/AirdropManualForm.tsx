@@ -19,6 +19,7 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { twMerge } from 'tailwind-merge'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { onResolveName } from '~/utils/resolvers'
 export interface Props {
   add(member: AirdropMember): void
   lock: Lock
@@ -185,6 +186,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                           onChange={(value: any) => {
                             setValue('wallet', value)
                           }}
+                          onResolveName={onResolveName}
                         />
                       </>
                     )
