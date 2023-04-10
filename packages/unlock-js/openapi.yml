@@ -1053,7 +1053,17 @@ paths:
               schema:
                 nullable: false
                 type: object
-                additionalProperties: true
+                additionalProperties: false
+                properties:
+                  isEvent:
+                    type: boolean
+                    nullable: false
+                  isCertification:
+                    type: boolean
+                    nullable: false
+                  isStamp:
+                    type: boolean
+                    nullable: false
 
         404:
           $ref: '#/components/responses/404.NotFound'
