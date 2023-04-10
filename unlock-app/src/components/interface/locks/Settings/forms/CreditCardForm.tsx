@@ -50,7 +50,7 @@ export const CreditCardForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
-  const { getWalletService } = useAuth()
+  const { getWalletService, account } = useAuth()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const { isStripeConnected, getCreditCardPricing } = useLock(
@@ -132,7 +132,7 @@ export const CreditCardForm = ({
   const {
     isFetching: isFetchingPreviouslyConnectedLocks,
     data: previouslyConnectedLocks,
-  } = useQuery(['connectedLocks'], async () => {
+  } = useQuery(['connectedLocks', account], async () => {
     const connections = await storage.getStripeConnections()
     return connections.data || []
   })
