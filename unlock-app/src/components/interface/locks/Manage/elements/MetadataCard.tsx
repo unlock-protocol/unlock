@@ -26,6 +26,7 @@ import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
+import { onResolveName } from '~/utils/resolvers'
 
 interface MetadataCardProps {
   metadata: any
@@ -197,6 +198,7 @@ const ChangeManagerModal = ({
                           shouldValidate: true,
                         })
                       }}
+                      onResolveName={onResolveName}
                     />
                     {managerUnchanged && (
                       <span className="text-sm text-red-500">

@@ -112,7 +112,7 @@ export function Returning({
             See in the block explorer
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
-          {isEthPassSupported(lock!.network) && (
+          {tokenId && isEthPassSupported(lock!.network) && (
             <ul className="grid h-12 grid-cols-2 gap-3 pt-4">
               {!isIOS && tokenId && (
                 <li className="">
@@ -191,9 +191,15 @@ export function Returning({
                 Sign message
               </Button>
             ) : (
-              <div className="flex justify-between gap-4">
+              <div
+                className={`gap-4 ${
+                  paywallConfig?.endingCallToAction
+                    ? 'grid grid-cols-1'
+                    : 'flex justify-between '
+                }`}
+              >
                 <Button className="w-full" onClick={() => onClose()}>
-                  Return
+                  {paywallConfig?.endingCallToAction || 'Return'}
                 </Button>
                 {!lock?.isSoldOut && (
                   <Button

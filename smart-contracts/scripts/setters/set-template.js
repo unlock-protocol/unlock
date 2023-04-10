@@ -1,7 +1,11 @@
 const { ethers } = require('hardhat')
-
+const { networks } = require('@unlock-protocol/networks')
 
 async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
+  const { chainId } = await ethers.provider.getNetwork()
+  if (!unlockAddress) {
+    ({unlockAddress} = networks[chainId])
+  }
   if (!publicLockAddress) {
     // eslint-disable-next-line no-console
     throw new Error(

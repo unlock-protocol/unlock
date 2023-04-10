@@ -26,6 +26,7 @@ export const createStripeCustomer = async (
   await saveStripeCustomerIdForAddress(publicKey, customer.id)
   return customer.id
 }
+
 /**
  * Method, which, given a publicKey, returns the stripe token id
  * This does a double look up as we changed how stripe token ids are stored (used to be in UserReferences and are now in their own table)
@@ -135,7 +136,6 @@ export const disconnectStripe = async ({
 }
 
 /**
- * @deprecated
  * Connects a Stripe account to a lock
  * Do we want to store this?
  */
@@ -143,46 +143,67 @@ export const connectStripe = async (
   lockManager: string,
   lock: string,
   chain: number,
-  baseUrl: string
+  baseUrl: string,
+  stripeAccount?: string
 ) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
-  const stripeConnectLockDetails = await StripeConnectLock.findOne({
-    where: { lock },
-  })
-
-  let account
-  if (!stripeConnectLockDetails) {
-    // This is a new one
-    account = await stripe.accounts.create({
-      type: 'standard',
-      metadata: {
-        lock,
-        manager: lockManager,
-        chain,
-      },
-    })
-
+  if (stripeAccount) {
     await StripeConnectLock.create({
       lock,
       manager: lockManager,
-      stripeAccount: account.id,
+      stripeAccount,
       chain,
     })
+    // Nothing expected!
+    return
   } else {
-    // Retrieve it from Stripe!
-    account = await stripe.accounts.retrieve(
-      stripeConnectLockDetails.stripeAccount
-    )
-  }
+    // Link new Stripe account
+    const stripe = new Stripe(config.stripeSecret!, {
+      apiVersion: '2020-08-27',
+    })
 
-  return await stripe.accountLinks.create({
-    account: account.id,
-    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
-    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
-    type: 'account_onboarding',
+    const stripeConnectLockDetails = await StripeConnectLock.findOne({
+      where: { lock },
+    })
+
+    let account
+    if (!stripeConnectLockDetails) {
+      // This is a new one
+      account = await stripe.accounts.create({
+        type: 'standard',
+        metadata: {
+          manager: lockManager,
+        },
+      })
+
+      await StripeConnectLock.create({
+        lock,
+        manager: lockManager,
+        stripeAccount: account.id,
+        chain,
+      })
+    } else {
+      // Retrieve it from Stripe!
+      account = await stripe.accounts.retrieve(
+        stripeConnectLockDetails.stripeAccount
+      )
+    }
+
+    return await stripe.accountLinks.create({
+      account: account.id,
+      refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
+      return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
+      type: 'account_onboarding',
+    })
+  }
+}
+
+/**
+ * Lists the connects by a lock manager
+ * @param manager
+ */
+export const getConnectionsForManager = async (manager: string) => {
+  return StripeConnectLock.findAll({
+    where: { manager },
   })
 }
 
@@ -222,4 +243,5 @@ export default {
   connectStripe,
   getStripeConnectForLock,
   disconnectStripe,
+  getConnectionsForManager,
 }

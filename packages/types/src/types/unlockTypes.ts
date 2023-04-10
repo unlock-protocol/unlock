@@ -86,7 +86,8 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    oracle?: string
+    oracle: string
+    universalRouterAddress: string
   }>
   swapPurchaser?: string
   ethersProvider?: ethers.providers.Provider
@@ -173,6 +174,7 @@ export interface ChainExplorerURLBuilders {
   [site: string]: (_address: string) => string
 }
 
+// TODO: to remove, deprecated
 export interface PaywallCallToAction {
   default: string
   expired: string
@@ -203,7 +205,7 @@ export interface PaywallConfig {
   pessimistic?: boolean
   icon?: string
   unlockUserAccounts?: true | 'true' | false
-  callToAction: PaywallCallToAction
+  callToAction: PaywallCallToAction // TODO: to remove, deprecated
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean

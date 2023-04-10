@@ -44,6 +44,7 @@ export const mumbai: NetworkConfig = {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
   wrappedNativeCurrency: {
