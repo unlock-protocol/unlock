@@ -22,6 +22,11 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   const headers = {
     'access-control-allow-origin': '*',
   }
+
+  if (pathname === '/throw') {
+    throw new Error('Test Error')
+  }
+
   if (pathname === '/resolve-redirect' && queryURL) {
     const endpoint = new URL(queryURL)
     const result = await fetch(endpoint.toString(), {
@@ -73,8 +78,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   const matched = pathname.match(/\/([0-9]*)/)
 
   // Missing network
-  if (!matched) {
-    console.error('Bad Request, missing chain id')
+  if (!pathname || pathname === '/' || !matched) {
     return Response.json(
       { message: 'Bad Request, missing chain id' },
       {
@@ -90,7 +94,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   // Network not supported
   if (!supportedNetwork) {
-    console.error(`Unsupported network ID: ${networkId}`)
     return Response.json(
       { message: `Unsupported network ID: ${networkId}` },
       {
@@ -102,7 +105,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   // Reject requests that are not POST
   if (request.method !== 'POST') {
-    console.error(`Method ${request.method} not supported`)
     return Response.json(
       { message: `Method ${request.method} not supported` },
       {
