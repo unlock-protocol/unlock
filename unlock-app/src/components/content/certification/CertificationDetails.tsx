@@ -26,11 +26,16 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
 import { useValidKey } from '~/hooks/useKey'
+import { useTransferFee } from '~/hooks/useTransferFee'
+import { useQuery } from '@tanstack/react-query'
+import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
 
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
   tokenId?: string
+  expiration?: string | number
 }
 
 const CertificationManagerOptions = ({
@@ -39,6 +44,18 @@ const CertificationManagerOptions = ({
   isManager,
   onEdit,
 }: CertificationDetailsProps & { isManager: boolean; onEdit: () => void }) => {
+  const { getTransferFeeBasisPoints } = useTransferFee({
+    lockAddress,
+    network,
+  })
+
+  const { isLoading, data: transferFeeBasisPoints } = useQuery(
+    ['getTransferFeeBasisPoints', lockAddress, network],
+    async () => getTransferFeeBasisPoints()
+  )
+
+  const certificationIsTransferable = transferFeeBasisPoints !== 10_000
+
   if (!isManager) return null
 
   return (
@@ -47,14 +64,35 @@ const CertificationManagerOptions = ({
         Tools for you, the certificate issuer
       </span>
       <div className="grid gap-4">
+        {certificationIsTransferable && !isLoading && (
+          <div className="flex flex-col gap-2">
+            <WarningBar>
+              Your certification is transferable! disable it to prevent transfer
+              between users.
+            </WarningBar>
+            <Disclosure
+              label="Make tokens non-transferable (soulbound)."
+              description=" Your certification is transferable! disable it to prevent transfer
+              between users."
+            >
+              <UpdateTransferFee
+                lockAddress={lockAddress}
+                network={network}
+                isManager={isManager}
+                disabled={!isManager}
+                unlimitedDuration={false}
+              />
+            </Disclosure>
+          </div>
+        )}
         <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
           <div className="flex flex-col gap-2 md:col-span-2">
             <span className="text-lg font-bold text-brand-ui-primary">
               Certification detail
             </span>
             <span>
-              Need to change something? Access your contract (Lock) & update
-              detail
+              Need to change something? Access your contract (Lock) & update its
+              details.
             </span>
           </div>
           <div className="md:col-span-1">
@@ -70,8 +108,7 @@ const CertificationManagerOptions = ({
         </div>
         <Disclosure
           label=" Airdrop certificates"
-          description="Automatically send certification to recipient by wallet address or
-              email"
+          description="Automatically send NFT certifications to wallets or by email"
         >
           <AirdropForm lockAddress={lockAddress} network={network} />
         </Disclosure>
@@ -159,7 +196,7 @@ export const CertificationDetails = ({
         </>
       )
     }
-    return <p>This contract is not configured.</p>
+    return <p>This contract is not configured for certifications.</p>
   }
 
   const certificationData = toFormData(metadata)
@@ -196,17 +233,15 @@ export const CertificationDetails = ({
       if (isLockManager) {
         return (
           <span>
-            Here is the certificate that you issued to the recipient. This image
-            is as off-chain image which allow recipient to share on their
-            professional network.
+            Here is the certificate that you issued. This image is an off-chain
+            image that the recipient can share with their professional network.
           </span>
         )
       } else if (account === key?.owner) {
         return (
           <span>
-            Here is the certificate you have received. This image is as
-            off-chain image to display in a certificate format. Please refer the
-            NFT link for on-chain validation.
+            {`Here is the certificate you have received. This image is just an
+            "off-chain" representation of the NFT.`}
           </span>
         )
       } else {
@@ -219,7 +254,7 @@ export const CertificationDetails = ({
             >
               Learn more
             </Link>{' '}
-            about Certification by Unlock Labs.
+            about Certifications by Unlock Labs.
           </span>
         )
       }
@@ -227,9 +262,10 @@ export const CertificationDetails = ({
       if (isLockManager) {
         return (
           <span>
-            Here is the template when recipient receive certificate from you.
-            They can connect wallet at this page & share the certification image
-            to the professional network.
+            Here is the template of one of your certifications. Once you
+            airdropped one to a recipient, they can connect their wallet on this
+            page and share the certification image with their professional
+            network.
           </span>
         )
       } else {
@@ -243,12 +279,12 @@ export const CertificationDetails = ({
             >
               Learn more
             </Link>{' '}
-            about Certification by Unlock Labs.
+            about Certifications by Unlock Labs.
           </span>
         )
       }
     } else {
-      return <span>No valid certification</span>
+      return <span>This is not a valid certificate.</span>
     }
   }
 
@@ -299,10 +335,14 @@ export const CertificationDetails = ({
             network={network}
             name={certificationData.name}
             description={
-              // @ts-expect-error
-              <ReactMarkdown>{certificationData.description}</ReactMarkdown>
+              <>
+                {/* eslint-disable-next-line react/no-children-prop */}
+                <ReactMarkdown>
+                  {certificationData?.description as string}
+                </ReactMarkdown>
+              </>
             }
-            image={certificationData.image}
+            image={certificationData?.image as string}
             lockAddress={lockAddress}
             badge={badge}
             issuer={
