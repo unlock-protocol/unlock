@@ -15,7 +15,7 @@ interface CertificateProps {
   image: string
   issueDate?: string
   tokenId?: string | number
-  badge?: string
+  badge?: ReactNode
   transactionsHash?: ReactNode
   externalUrl?: string
 }
@@ -100,6 +100,8 @@ const Badge = ({ children }: Props) => {
           lineHeight: '36px',
           color: 'white',
           fontWeight: 700,
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         {children}

@@ -308,11 +308,13 @@ export const CertificationDetails = ({
   }
 
   const badge =
-    isLockManager || !account
-      ? isLockManager
-        ? 'Template'
-        : 'Sample'
-      : undefined
+    isLockManager || !account ? (
+      isLockManager ? (
+        <span className="text-xl">Here is a preview</span>
+      ) : (
+        'Sample'
+      )
+    ) : undefined
 
   const expiration =
     key?.expiration !== MAX_UINT
