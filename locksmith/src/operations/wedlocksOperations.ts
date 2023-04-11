@@ -125,7 +125,7 @@ export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
   }
 }
 interface GetTemplateProps {
-  isEvent: boolean
+  types?: LockType
   isAirdropped: boolean
   lockAddress?: string
 }
@@ -217,27 +217,75 @@ const getAttachments = async ({
   return attachments
 }
 
-const getCustomTemplate = ({
-  isEvent = false,
+export const getCustomTemplate = ({
+  types,
   isAirdropped = false,
 }: GetTemplateProps) => {
-  if (isAirdropped) {
-    return isEvent ? 'eventKeyAirdropped' : `keyAirdropped`
+  const MappingByType: Record<string, { minted: string; airdropped: string }> =
+    {
+      isCertification: {
+        minted: 'certificationKeyMined',
+        airdropped: 'certificationKeyAirdropped',
+      },
+      isEvent: {
+        minted: 'eventKeyMined',
+        airdropped: 'eventKeyAirdropped',
+      },
+    }
+
+  // find lock type
+  const [template] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
+
+  // return template based on lock type if found
+  if (template) {
+    const { minted, airdropped } = MappingByType[template]
+    return isAirdropped ? airdropped : minted
   }
 
-  return isEvent ? `eventKeyMined` : `keyMined`
+  // return default template
+  return isAirdropped ? 'keyAirdropped' : `keyMined`
 }
 
-const getTemplates = ({
-  isEvent = false,
+export const getTemplates = ({
+  types,
   isAirdropped = false,
   lockAddress = '',
 }: GetTemplateProps): [string, string] => {
-  if (isEvent) {
-    // Lock address to find the specific template
-    return isAirdropped
-      ? [`eventKeyAirdropped${lockAddress.trim()}`, `eventKeyAirdropped`]
-      : [`eventKeyMined${lockAddress.trim()}`, 'eventKeyMined']
+  const MappingByType: Record<
+    string,
+    {
+      minted: [string, string]
+      airdropped: [string, string]
+    }
+  > = {
+    isEvent: {
+      minted: [`eventKeyMined${lockAddress.trim()}`, 'eventKeyMined'],
+      airdropped: [
+        `eventKeyAirdropped${lockAddress.trim()}`,
+        `eventKeyAirdropped`,
+      ],
+    },
+    isCertification: {
+      minted: [
+        `certificationKeyMined${lockAddress.trim()}`,
+        'certificationKeyMined',
+      ],
+      airdropped: [
+        `certificationKeyAirdropped${lockAddress.trim()}`,
+        `certificationKeyAirdropped`,
+      ],
+    },
+  }
+
+  // find lock type
+  const [template] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
+
+  // return template based on lock type if found
+  if (template) {
+    const { minted, airdropped } = MappingByType[template]
+    return isAirdropped ? airdropped : minted
   }
 
   // Lock address to find the specific template
@@ -329,12 +377,16 @@ export const notifyNewKeyToWedlocks = async (
   const metadata = await getLockMetadata({ lockAddress, network })
   const types = getLockTypeByMetadata(metadata)
 
-  const { isEvent } = types
+  const { isEvent, isCertification } = types
   let eventDetail: EventProps | undefined = undefined
 
   // get event details only when lock is event
   if (isEvent) {
     eventDetail = await getEventDetail(lockAddress, network)
+  }
+
+  if (isCertification) {
+    // TODO: get certification details for email
   }
 
   // attachments list
@@ -350,14 +402,14 @@ export const notifyNewKeyToWedlocks = async (
 
   // email templates
   const templates = getTemplates({
-    isEvent,
+    types,
     isAirdropped: isAirdroppedRecipient,
     lockAddress,
   })
 
   // get custom email content
   const template = getCustomTemplate({
-    isEvent,
+    types,
     isAirdropped: isAirdroppedRecipient,
   })
 
