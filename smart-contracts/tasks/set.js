@@ -110,22 +110,22 @@ task('set:unlock-config', 'Configure Unlock contract')
     }
   )
 
-task('set:unlock-oracle', 'Set UDT <> WETH oracle address in Unlock contract')
+task('set:unlock-oracle', 'Set ERC20 <> WETH oracle address in Unlock contract')
+  .addParam('tokenAddress', 'the address of an existing UDT contract')
   .addOptionalParam(
     'unlockAddress',
     'the address of an existing Unlock contract'
   )
-  .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
   .addOptionalParam(
     'oracleAddress',
     'the address of the Uniswap Oracle contract'
   )
-  .setAction(async ({ unlockAddress, udtAddress, oracleAddress }) => {
+  .setAction(async ({ unlockAddress, tokenAddress, oracleAddress }) => {
     // eslint-disable-next-line global-require
     const unlockOracleSetter = require('../scripts/setters/unlock-oracle')
     await unlockOracleSetter({
       unlockAddress,
-      udtAddress,
+      tokenAddress,
       oracleAddress,
     })
   })
