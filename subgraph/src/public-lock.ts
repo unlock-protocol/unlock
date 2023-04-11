@@ -39,6 +39,7 @@ function newKey(event: TransferEvent): void {
   key.lock = event.address.toHexString()
   key.tokenId = event.params.tokenId
   key.owner = event.params.to
+  key.createdAt = event.block.timestamp
   key.createdAtBlock = event.block.number
   key.cancelled = false
 
