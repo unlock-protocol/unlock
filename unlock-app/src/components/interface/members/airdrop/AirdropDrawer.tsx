@@ -22,12 +22,14 @@ export interface Props {
   network: number
   isOpen: boolean
   setIsOpen(value: boolean): void
+  emailRequired?: boolean
 }
 
 export const AirdropForm = ({
   lockAddress,
   network,
-}: Pick<Props, 'lockAddress' | 'network'>) => {
+  emailRequired,
+}: Pick<Props, 'lockAddress' | 'network' | 'emailRequired'>) => {
   const { account, getWalletService } = useAuth()
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
@@ -162,10 +164,18 @@ export const AirdropForm = ({
           </Tab.List>
           <Tab.Panels className="mt-6">
             <Tab.Panel>
-              <AirdropManualForm lock={lockData!} onConfirm={handleConfirm} />
+              <AirdropManualForm
+                emailRequired={emailRequired}
+                lock={lockData!}
+                onConfirm={handleConfirm}
+              />
             </Tab.Panel>
             <Tab.Panel>
-              <AirdropBulkForm lock={lockData!} onConfirm={handleConfirm} />
+              <AirdropBulkForm
+                lock={lockData!}
+                onConfirm={handleConfirm}
+                emailRequired={emailRequired}
+              />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
