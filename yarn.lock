@@ -15542,6 +15542,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@vitest/coverage-c8": 0.28.3
     eslint: 8.36.0
+    tsup: ^6.7.0
     typescript: 4.9.5
     vitest: 0.28.3
   peerDependencies:
@@ -50807,7 +50808,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:6.7.0":
+"tsup@npm:6.7.0, tsup@npm:^6.7.0":
   version: 6.7.0
   resolution: "tsup@npm:6.7.0"
   dependencies:
