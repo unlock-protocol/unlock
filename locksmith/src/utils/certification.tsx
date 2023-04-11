@@ -9,6 +9,8 @@ import dayjs from 'dayjs'
 
 import { readFileSync } from 'fs'
 import { MAX_UINT } from '../../constants'
+import { imageToBase64 } from './image'
+import { networks } from '@unlock-protocol/networks'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 
@@ -47,12 +49,14 @@ export const createCertificate = async ({
     {}
   )
 
-  const transactionHash = key?.transactionsHash?.[0]
+  const transactionHash = minifyAddress(key?.transactionsHash?.[0]) ?? ''
 
   const expiration =
     key?.expiration && key?.expiration === MAX_UINT
       ? ''
       : dayjs.unix(key?.expiration).format('DD MMM YYYY') // example ('18 Apr 2023')
+
+  const imageBase64 = await imageToBase64(metadata?.image)
 
   const certificate = await satori(
     <div
@@ -70,17 +74,17 @@ export const createCertificate = async ({
         tokenId={metadata?.tokenId}
         owner={metadata?.owner}
         issuer={object?.certification_issuer}
-        image={metadata?.image}
+        image={imageBase64}
         lockAddress={minifyAddress(lockAddress)}
-        network={network}
-        transactionsHash={transactionHash ? minifyAddress(transactionHash) : ''}
+        network={networks[network]?.name}
+        transactionsHash={transactionHash}
         expiration={expiration}
         externalUrl={metadata?.external_url}
       />
     </div>,
     {
-      width: 500,
-      height: 1000,
+      width: 1200,
+      height: 600,
       fonts: [
         {
           name: 'Inter',
