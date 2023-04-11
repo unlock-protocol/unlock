@@ -7,8 +7,8 @@ const router = express.Router({ mergeParams: true })
 
 router.get(
   '/:network/lock/:lockAddress/key/:keyId/generate',
-  lockManagerOrKeyOwnerMiddleware,
   authenticatedMiddleware,
+  lockManagerOrKeyOwnerMiddleware,
   generateCertificate
 )
 
