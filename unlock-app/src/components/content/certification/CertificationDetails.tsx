@@ -9,6 +9,7 @@ import {
   Modal,
   Placeholder,
   Certificate,
+  minifyAddress,
 } from '@unlock-protocol/ui'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
@@ -110,7 +111,11 @@ const CertificationManagerOptions = ({
           label="Airdrop certificates"
           description="Automatically send NFT certifications to wallets or by email"
         >
-          <AirdropForm lockAddress={lockAddress} network={network} />
+          <AirdropForm
+            lockAddress={lockAddress}
+            network={network}
+            emailRequired
+          />
         </Disclosure>
       </div>
     </div>
@@ -249,7 +254,11 @@ export const CertificationDetails = ({
       } else {
         return (
           <span>
-            You are viewing the certificate issued to the recipient.{' '}
+            You are viewing the certificate issued to{' '}
+            <span className="font-semibold ">{`${minifyAddress(
+              key?.owner
+            )}`}</span>
+            . <br />
             <Link
               className="font-semibold text-gray-800 hover:text-brand-ui-primary"
               href="/certification"
