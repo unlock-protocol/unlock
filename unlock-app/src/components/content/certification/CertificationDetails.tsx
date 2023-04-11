@@ -30,7 +30,7 @@ import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
 import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
-
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
@@ -164,6 +164,8 @@ export const CertificationDetails = ({
     isLoadingLockManager ||
     isHasValidKeyLoading
 
+  const { isCertification } = getLockTypeByMetadata(metadata)
+
   if (loading) {
     return (
       <Placeholder.Root>
@@ -180,7 +182,7 @@ export const CertificationDetails = ({
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!isCertification) {
     if (isLockManager) {
       return (
         <>
@@ -199,7 +201,7 @@ export const CertificationDetails = ({
     return <p>This contract is not configured for certifications.</p>
   }
 
-  const certificationData = toFormData(metadata)
+  const certificationData = toFormData(metadata!)
 
   const transactionsHash: string = key?.transactionsHash?.[0] || '22'
 
@@ -228,6 +230,8 @@ export const CertificationDetails = ({
     )
   }
 
+  const viewerIsOwner = account?.toLowerCase() === key?.owner?.toLowerCase()
+
   const Header = () => {
     if (tokenId && key) {
       if (isLockManager) {
@@ -237,7 +241,7 @@ export const CertificationDetails = ({
             image that the recipient can share with their professional network.
           </span>
         )
-      } else if (account === key?.owner) {
+      } else if (viewerIsOwner) {
         return (
           <span>
             {`Here is the certificate you have received. This image is just an
@@ -289,7 +293,7 @@ export const CertificationDetails = ({
   }
 
   const canShareOrDownload =
-    (key?.owner === account || isLockManager) && key && !isPlaceholderData
+    (viewerIsOwner || isLockManager) && key && !isPlaceholderData
 
   const showCertification = key || (tokenId && key)
 
@@ -360,7 +364,7 @@ export const CertificationDetails = ({
             {tokenId && (
               <li>
                 <LinkedinShareButton
-                  metadata={metadata}
+                  metadata={metadata!}
                   lockAddress={lockAddress}
                   network={network}
                   tokenId={tokenId}

@@ -151,7 +151,8 @@ export const PaywallConfig = z
       .optional(),
     endingCallToAction: z
       .string({
-        description: 'Show a custom text on the final button that triggers a redirect',
+        description:
+          'Show a custom text on the final button that triggers a redirect',
       })
       .optional(),
     pessimistic: z
