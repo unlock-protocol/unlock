@@ -7,7 +7,8 @@ interface CertificateProps {
   description: ReactNode
   owner: string
   lockAddress: string
-  network: number | string
+  network: number
+  networkName?: string
   expiration?: string
   issuer: string
   image: string
@@ -31,6 +32,8 @@ const ValueWrapper = ({ children }: Props) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '8px',
+        textAlign: 'left',
+        flex: 1,
       }}
     >
       {children}
@@ -124,8 +127,11 @@ export const Certificate = ({
   transactionsHash,
   externalUrl,
   image,
+  networkName,
   isMobile = false,
 }: CertificateProps) => {
+  const networkNameById = networks[network]?.name
+
   return (
     <div
       style={{
@@ -231,7 +237,9 @@ export const Certificate = ({
             )}
             <ValueWrapper>
               <CertificateLabel>Network</CertificateLabel>
-              <CertificateValue>{name}</CertificateValue>
+              <CertificateValue>
+                {networkName || networkNameById}
+              </CertificateValue>
             </ValueWrapper>
             <ValueWrapper>
               <CertificateLabel>Certification/Token ID</CertificateLabel>
@@ -245,9 +253,7 @@ export const Certificate = ({
                     display: 'flex',
                   }}
                 >
-                  {typeof transactionsHash === 'string'
-                    ? minifyAddress(transactionsHash)
-                    : transactionsHash}
+                  {transactionsHash}
                 </div>
               </CertificateValue>
             </ValueWrapper>
@@ -287,17 +293,18 @@ export const Certificate = ({
               height: '100%',
               flexDirection: 'column',
               gap: '16px',
-              width: isMobile ? '100%' : '80%',
+              width: isMobile ? '100%' : '300px',
               background: '#FAFBFC',
               borderRight: isMobile ? 'none' : '1px solid #9ca3af',
               borderLeft: isMobile ? 'none' : '1px solid #9ca3af',
               padding: isMobile ? '0 16px 40px 16px' : '40px 24px 0 24px',
+              marginLeft: 'auto',
+              marginRight: isMobile ? 'none' : '50px',
             }}
           >
             <img
               style={{
                 width: '100%',
-                marginBottom: '10px',
                 borderRadius: '16px',
                 overflow: 'hidden',
               }}
@@ -312,6 +319,7 @@ export const Certificate = ({
                   display: 'flex',
                   flexDirection: 'column',
                   textAlign: 'center',
+                  marginTop: '24px',
                 }}
               >
                 <div
@@ -343,6 +351,7 @@ export const Certificate = ({
                         marginRight: 'auto',
                         gap: '4px',
                         alignItems: 'center',
+                        fontSize: '14px',
                       }}
                     >
                       <span>{minifyAddress(issuer)}</span>

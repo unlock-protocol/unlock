@@ -1,8 +1,7 @@
 import normalizer from './normalizer'
 import config from '../config/config'
-import { generateKeyMetadata } from '../operations/metadataOperations'
+import * as metadataOperations from '../operations/metadataOperations'
 import { Certificate, minifyAddress } from '@unlock-protocol/ui'
-
 import { SubgraphKey } from '@unlock-protocol/unlock-js'
 import satori from 'satori'
 import dayjs from 'dayjs'
@@ -11,6 +10,7 @@ import { readFileSync } from 'fs'
 import { MAX_UINT } from '../../constants'
 import { imageToBase64 } from './image'
 import { networks } from '@unlock-protocol/networks'
+import { generateKeyMetadata } from '../operations/metadataOperations'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 
@@ -31,15 +31,22 @@ export const createCertificate = async ({
   key,
 }: Options) => {
   const lockAddress = normalizer.ethereumAddress(lock)
-  const metadata = await generateKeyMetadata(
-    lockAddress,
-    tokenId,
-    true,
-    config.services.locksmith,
-    network
-  )
 
-  const attributes: Record<string, string>[] = metadata?.attributes || []
+  const [lockData, metadata] = await Promise.all([
+    metadataOperations.getLockMetadata({
+      lockAddress,
+      network,
+    }),
+    generateKeyMetadata(
+      lockAddress,
+      tokenId,
+      true,
+      config.services.locksmith,
+      network
+    ),
+  ])
+
+  const attributes: Record<string, string>[] = lockData?.attributes || []
 
   const object = attributes.reduce<Record<string, string>>(
     (item, { trait_type, value }) => {
@@ -49,7 +56,7 @@ export const createCertificate = async ({
     {}
   )
 
-  const transactionHash = minifyAddress(key?.transactionsHash?.[0]) ?? ''
+  const transactionHash = key?.transactionsHash?.[0] ?? ''
 
   const expiration =
     key?.expiration && key?.expiration === MAX_UINT
@@ -64,8 +71,8 @@ export const createCertificate = async ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
+        height: '100%',
+        width: '100%',
       }}
     >
       <Certificate
@@ -76,8 +83,13 @@ export const createCertificate = async ({
         issuer={object?.certification_issuer}
         image={imageBase64}
         lockAddress={minifyAddress(lockAddress)}
-        network={networks[network]?.name}
-        transactionsHash={transactionHash}
+        network={network}
+        networkName={networks[network]?.name}
+        // can't use minifyAddress because is checking if the address is valid
+        transactionsHash={`${transactionHash.slice(
+          0,
+          5
+        )}...${transactionHash.slice(transactionHash.length - 5)}`}
         expiration={expiration}
         externalUrl={metadata?.external_url}
       />
