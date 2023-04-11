@@ -21,6 +21,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
+import { CertificationMetadataForm } from './CertificationMetadataForm'
 
 interface Props {
   lockAddress?: string
@@ -62,7 +63,7 @@ export const Form = ({
     })
   }, [defaultValues, methods, image])
 
-  const { mutateAsync: updateMetadata, isLoading: isMetadataUpating } =
+  const { mutateAsync: updateMetadata, isLoading: isMetadataUpdating } =
     useUpdateMetadata({
       lockAddress,
       network,
@@ -87,7 +88,12 @@ export const Form = ({
           <TicketForm
             lockAddress={lockAddress}
             network={network}
-            disabled={isMetadataUpating}
+            disabled={isMetadataUpdating}
+          />
+          <CertificationMetadataForm
+            lockAddress={lockAddress}
+            network={network}
+            disabled={isMetadataUpdating}
           />
           <AdvancedForm />
           <LockCustomForm />
@@ -99,8 +105,8 @@ export const Form = ({
               </div>
             )}
             <Button
-              disabled={isMetadataUpating || errorFields.length > 0}
-              loading={isMetadataUpating}
+              disabled={isMetadataUpdating || errorFields.length > 0}
+              loading={isMetadataUpdating}
               className="w-full"
             >
               Save Properties

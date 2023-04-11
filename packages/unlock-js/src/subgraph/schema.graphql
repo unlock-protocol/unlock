@@ -51,6 +51,7 @@ query AllKeys(
       version
       createdAtBlock
       totalKeys
+      maxNumberOfKeys
     }
     tokenId
     owner

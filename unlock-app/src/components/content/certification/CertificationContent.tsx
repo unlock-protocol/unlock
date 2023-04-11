@@ -6,24 +6,41 @@ import { useRouter } from 'next/router'
 import LoadingIcon from '~/components/interface/Loading'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
+import { useMetadata } from '~/hooks/metadata'
 
 export const CertificationContent = () => {
   const router = useRouter()
-  if (!router.query) {
-    return <LoadingIcon></LoadingIcon>
-  }
 
-  const { lockAddress, network } = router.query
+  const { lockAddress, network, tokenId } = router.query as any
   const showDetails = lockAddress && network
+
+  const { data: metadata } = useMetadata({
+    lockAddress: lockAddress as string,
+    network: network as number,
+  })
 
   const handleCreateCertification = () => {
     router.push('/certification/new')
   }
 
+  if (!router.query) {
+    return <LoadingIcon />
+  }
+
   return (
     <AppLayout showLinks={false} authRequired={false} title="">
       <Head>
-        <title>{pageTitle('Event')}</title>
+        <title>
+          {metadata
+            ? pageTitle(`${metadata?.name} | 'Certification`)
+            : 'Certification'}
+        </title>
+        {metadata && (
+          <>
+            <meta property="og:title" content={metadata?.name} />
+            <meta property="og:image" content={metadata.image} />
+          </>
+        )}
       </Head>
       {!showDetails && (
         <CertificationLanding
@@ -32,7 +49,11 @@ export const CertificationContent = () => {
       )}
       {showDetails && (
         <div className="m-auto md:w-3/4">
-          <CertificationDetails />
+          <CertificationDetails
+            lockAddress={lockAddress as string}
+            network={Number(network)}
+            tokenId={tokenId as string}
+          />
         </div>
       )}
     </AppLayout>
