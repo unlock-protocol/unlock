@@ -193,7 +193,7 @@ describe('Wedlocks operations', () => {
       expect(customContent.body.content).toBe(undefined)
     })
 
-    it('Correctly get default custom email templates', () => {
+    it('Correctly get default email templates', () => {
       expect.assertions(6)
 
       const defaultTemplate = {
@@ -242,7 +242,7 @@ describe('Wedlocks operations', () => {
       ).toStrictEqual(['keyAirdropped0x123', 'keyAirdropped'])
     })
 
-    it('Correctly get event custom email templates', () => {
+    it('Correctly get event email templates', () => {
       expect.assertions(6)
 
       const eventTemplate = {
@@ -293,7 +293,7 @@ describe('Wedlocks operations', () => {
       ).toStrictEqual(['eventKeyAirdropped0x123', 'eventKeyAirdropped'])
     })
 
-    it('Correctly get certification custom email templates', () => {
+    it('Correctly get certification email templates', () => {
       expect.assertions(6)
       const certificationTemplate = {
         types: {
