@@ -49,7 +49,7 @@ describe('utils - getLockTypeByMetadata', () => {
     expect(types.isStamp).toBe(false)
   })
 
-  it('should has isCertification set when event attributes are present', () => {
+  it('should has isStamp set when event attributes are present', () => {
     expect.assertions(3)
     const types = getLockTypeByMetadata({
       name: 'Test',

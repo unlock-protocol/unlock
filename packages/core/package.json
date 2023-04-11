@@ -5,7 +5,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
-    "test": "UNLOCK_ENV=test vitest run --coverage --environment=node"
+    "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "ci": "yarn test && yarn lint && yarn build"
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
@@ -15,7 +17,9 @@
     "zod": "3.21.4"
   },
   "dependencies": {
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@vitest/coverage-c8": "0.28.3",
+    "eslint": "8.36.0",
     "vitest": "0.28.3"
   }
 }
