@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import networks from '@unlock-protocol/networks'
 import { minifyAddress } from '~/utils'
+import { Size } from '~/types'
 
 interface CertificateProps {
   name: string
@@ -22,7 +23,7 @@ interface CertificateProps {
 
 interface Props {
   children?: ReactNode
-  size?: string
+  size?: Size
 }
 
 const ValueWrapper = ({ children }: Props) => {
