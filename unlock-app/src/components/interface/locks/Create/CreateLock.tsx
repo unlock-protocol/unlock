@@ -95,6 +95,7 @@ export const CreateLockSteps = () => {
             : maxNumberOfKeys,
           currencyContractAddress,
           keyPrice: keyPrice?.toString(),
+          publicLockVersion: 12, // default to latest version supported by Unlock JS
         },
         {},
         (error: any, transactionHash) => {
