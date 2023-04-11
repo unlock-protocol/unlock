@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { SubgraphKey, SubgraphService } from '@unlock-protocol/unlock-js'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface CertificationProps {
