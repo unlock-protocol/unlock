@@ -23,6 +23,7 @@ import { VerifierForm } from '~/components/interface/locks/Settings/forms/Verifi
 import dayjs from 'dayjs'
 import { WalletlessRegistration } from './WalletlessRegistration'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useValidKey } from '~/hooks/useKey'
 
 interface EventDetailsProps {
@@ -40,7 +41,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
-
   const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
@@ -58,6 +58,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
   if (isMetadataLoading || isHasValidKeyLoading) {
     return <LoadingIcon></LoadingIcon>
   }
@@ -68,7 +70,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!isEvent) {
     if (isLockManager) {
       return (
         <>
@@ -90,7 +92,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     return <p>This contract is not configured.</p>
   }
 
-  const eventData = toFormData(metadata)
+  const eventData = toFormData(metadata!)
   const eventDate = getEventDate(eventData.ticket)
   const eventEndDate = getEventEndDate(eventData.ticket)
 

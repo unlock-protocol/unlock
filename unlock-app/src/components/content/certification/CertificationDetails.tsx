@@ -30,7 +30,7 @@ import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
 import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
-
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
@@ -164,6 +164,8 @@ export const CertificationDetails = ({
     isLoadingLockManager ||
     isHasValidKeyLoading
 
+  const { isCertification } = getLockTypeByMetadata(metadata)
+
   if (loading) {
     return (
       <Placeholder.Root>
@@ -180,7 +182,7 @@ export const CertificationDetails = ({
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!isCertification) {
     if (isLockManager) {
       return (
         <>
@@ -199,7 +201,7 @@ export const CertificationDetails = ({
     return <p>This contract is not configured for certifications.</p>
   }
 
-  const certificationData = toFormData(metadata)
+  const certificationData = toFormData(metadata!)
 
   const transactionsHash: string = key?.transactionsHash?.[0] || '22'
 
@@ -362,7 +364,7 @@ export const CertificationDetails = ({
             {tokenId && (
               <li>
                 <LinkedinShareButton
-                  metadata={metadata}
+                  metadata={metadata!}
                   lockAddress={lockAddress}
                   network={network}
                   tokenId={tokenId}
