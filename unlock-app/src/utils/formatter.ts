@@ -1,3 +1,5 @@
+import fromExponential from 'from-exponential'
+
 export function formatNumber(number: number) {
-  return Number(Number(number).toPrecision(4))
+  return fromExponential(Number(number).toPrecision(4))
 }

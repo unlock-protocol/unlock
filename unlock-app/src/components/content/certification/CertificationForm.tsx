@@ -365,7 +365,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       type="number"
                       placeholder="Number of certifications for sale"
                       description={
-                        'This is the maximum number of tickets for your certificate. '
+                        'This is the maximum number of certifications available.'
                       }
                     />
                   </div>

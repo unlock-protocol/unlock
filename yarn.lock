@@ -15538,8 +15538,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/core@workspace:packages/core"
   dependencies:
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@vitest/coverage-c8": 0.28.3
+    eslint: 8.36.0
+    tsup: ^6.7.0
     typescript: 4.9.5
+    vitest: 0.28.3
   peerDependencies:
     zod: 3.21.4
   languageName: unknown
@@ -15987,6 +15992,7 @@ __metadata:
     ethers: 5.7.2
     file-saver: 2.0.5
     font-color-contrast: 11.1.0
+    from-exponential: 1.1.1
     graphql: 16.6.0
     lottie-react: 2.4.0
     next: 13.1.6
@@ -29083,6 +29089,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"from-exponential@npm:1.1.1":
+  version: 1.1.1
+  resolution: "from-exponential@npm:1.1.1"
+  checksum: af2765bd4f78836153c46cf4aff51ba9f2d1ac6b7d9568d69901d2045ba5b80a47de4f2a693bcc2006a7516cef71f636a4e42596cdd77a0addcc739539eb0f48
+  languageName: node
+  linkType: hard
+
 "from2-array@npm:^0.0.4":
   version: 0.0.4
   resolution: "from2-array@npm:0.0.4"
@@ -30086,7 +30099,7 @@ __metadata:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 
@@ -50803,7 +50816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:6.7.0":
+"tsup@npm:6.7.0, tsup@npm:^6.7.0":
   version: 6.7.0
   resolution: "tsup@npm:6.7.0"
   dependencies:

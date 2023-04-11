@@ -9,6 +9,7 @@ import {
   Modal,
   Placeholder,
   Certificate,
+  minifyAddress,
 } from '@unlock-protocol/ui'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
@@ -30,7 +31,7 @@ import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
 import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
-
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
@@ -110,7 +111,11 @@ const CertificationManagerOptions = ({
           label="Airdrop certificates"
           description="Automatically send NFT certifications to wallets or by email"
         >
-          <AirdropForm lockAddress={lockAddress} network={network} />
+          <AirdropForm
+            lockAddress={lockAddress}
+            network={network}
+            emailRequired
+          />
         </Disclosure>
       </div>
     </div>
@@ -165,6 +170,8 @@ export const CertificationDetails = ({
     isLoadingLockManager ||
     isHasValidKeyLoading
 
+  const { isCertification } = getLockTypeByMetadata(metadata)
+
   if (loading) {
     return (
       <Placeholder.Root>
@@ -181,7 +188,7 @@ export const CertificationDetails = ({
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!isCertification) {
     if (isLockManager) {
       return (
         <>
@@ -200,7 +207,7 @@ export const CertificationDetails = ({
     return <p>This contract is not configured for certifications.</p>
   }
 
-  const certificationData = toFormData(metadata)
+  const certificationData = toFormData(metadata!)
 
   const transactionsHash: string = key?.transactionsHash?.[0] || '22'
 
@@ -230,6 +237,8 @@ export const CertificationDetails = ({
   }
 
   const viewerIsOwner = account?.toLowerCase() === key?.owner?.toLowerCase()
+  const issuer = certificationData?.certification
+    ?.certification_issuer as string
 
   const Header = () => {
     if (tokenId && key) {
@@ -250,7 +259,14 @@ export const CertificationDetails = ({
       } else {
         return (
           <span>
-            You are viewing the certificate issued to the recipient.{' '}
+            You are viewing a{' '}
+            <span className="font-semibold">{`"${certificationData.name}"`}</span>{' '}
+            issue by {issuer} for{' '}
+            <Link
+              href={networks[network].explorer?.urls.address(key?.owner) ?? '#'}
+              className="font-semibold hover:text-brand-ui-primary"
+            >{`${minifyAddress(key?.owner)}`}</Link>
+            . <br />
             <Link
               className="font-semibold text-gray-800 hover:text-brand-ui-primary"
               href="/certification"
@@ -348,9 +364,7 @@ export const CertificationDetails = ({
             image={certificationData?.image as string}
             lockAddress={lockAddress}
             badge={badge}
-            issuer={
-              certificationData.certification?.certification_issuer as string
-            }
+            issuer={issuer}
             owner={!hasValidKey ? key?.owner : addressMinify(key?.owner)}
             expiration={expiration}
             transactionsHash={<TransactionHashButton />}
@@ -363,7 +377,7 @@ export const CertificationDetails = ({
             {tokenId && (
               <li>
                 <LinkedinShareButton
-                  metadata={metadata}
+                  metadata={metadata!}
                   lockAddress={lockAddress}
                   network={network}
                   tokenId={tokenId}
