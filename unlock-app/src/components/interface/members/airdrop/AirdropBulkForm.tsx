@@ -162,7 +162,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
 
       if (missingEmail.length > 0) {
         errors.push(
-          `The following recipients have missing email and have been discarted: ${missingEmail
+          `The following recipients are missing a required email address and have been discarded: ${missingEmail
             .map((m) => `${minifyAddress(m.wallet)} -  (line ${m.line})`)
             .join(', ')}`
         )
