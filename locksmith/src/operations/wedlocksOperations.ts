@@ -313,6 +313,10 @@ const getLockSettings = async (
  * @param key
  */
 
+export interface CertificationProps {
+  certificationUrl: string
+}
+
 export const notifyNewKeyToWedlocks = async (
   key: Key,
   network: number,
@@ -379,6 +383,7 @@ export const notifyNewKeyToWedlocks = async (
 
   const { isEvent, isCertification } = types
   let eventDetail: EventProps | undefined = undefined
+  let certificationDetail: CertificationProps | undefined = undefined
 
   // get event details only when lock is event
   if (isEvent) {
@@ -386,7 +391,10 @@ export const notifyNewKeyToWedlocks = async (
   }
 
   if (isCertification) {
-    // TODO: get certification details for email
+    const certificationUrl = `${config.services.locksmith}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+    certificationDetail = {
+      certificationUrl,
+    }
   }
 
   // attachments list
@@ -439,6 +447,8 @@ export const notifyNewKeyToWedlocks = async (
       eventDescription: eventDetail?.eventDescription,
       eventTime: eventDetail?.eventTime,
       eventAddress: eventDetail?.eventAddress,
+      // add certification props
+      ...certificationDetail,
     },
   })
 }
