@@ -25,9 +25,15 @@ export interface Props {
   lock: Lock
   list: AirdropMember[]
   defaultValues?: Partial<AirdropMember>
+  emailRequired?: boolean
 }
 
-export function AirdropForm({ add, defaultValues, lock }: Props) {
+export function AirdropForm({
+  add,
+  defaultValues,
+  lock,
+  emailRequired = false,
+}: Props) {
   const config = useConfig()
   const [useEmail, setUseEmail] = useState(false)
   const {
@@ -193,7 +199,6 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                   }}
                 />
               )}
-
               {description && !error && (
                 <p className="text-sm text-gray-600"> {description} </p>
               )}
@@ -208,7 +213,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
           label="Email Address"
           {...register('email', {
             required: {
-              value: useEmail,
+              value: useEmail || emailRequired,
               message: 'Email is required',
             },
           })}
@@ -285,9 +290,14 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
 interface AirdropManualFormProps {
   lock: Lock
   onConfirm(members: AirdropMember[]): void | Promise<void>
+  emailRequired?: boolean
 }
 
-export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
+export function AirdropManualForm({
+  onConfirm,
+  lock,
+  emailRequired = false,
+}: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
   const expiration = formatDate(lock.expirationDuration || 0)
@@ -296,6 +306,7 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
   return (
     <div className="space-y-6 overflow-y-auto">
       <AirdropForm
+        emailRequired={emailRequired}
         lock={lock}
         add={(member) => push(member)}
         list={list}
