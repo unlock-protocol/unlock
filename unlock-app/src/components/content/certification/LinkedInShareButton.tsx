@@ -23,9 +23,6 @@ export const LinkedinShareButton = ({
   }
   const certificationUrl = `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
 
-  //
-  console.log({ metadata, certificateData })
-
   const linkedinIntent = new URL('https://www.linkedin.com/profile/add')
   linkedinIntent.searchParams.set('startTask', 'CERTIFICATION_NAME')
   linkedinIntent.searchParams.set('name', metadata.name)
@@ -33,12 +30,14 @@ export const LinkedinShareButton = ({
     'organizationName',
     certificateData?.certification?.certification_issuer || 'Unlock Labs'
   )
-  // Get the mint date?
+  linkedinIntent.searchParams.set('certUrl', certificationUrl)
+  linkedinIntent.searchParams.set('certId', tokenId)
+
+  // Expiration date
   if (certificateData?.certification?.Expiration) {
     const expirationDate = new Date(
       certificateData?.certification?.Expiration * 1000
     )
-    console.log(expirationDate)
     linkedinIntent.searchParams.set(
       'expirationYear',
       expirationDate.getFullYear().toString()
@@ -48,6 +47,8 @@ export const LinkedinShareButton = ({
       `${expirationDate.getMonth() + 1}`
     )
   }
+
+  // Mint date
   if (certificateData?.certification?.Minted) {
     const issueDate = new Date(certificateData?.certification?.Minted * 1000)
     console.log(issueDate)
@@ -58,8 +59,6 @@ export const LinkedinShareButton = ({
     )
     linkedinIntent.searchParams.set('issueMonth', `${issueDate.getMonth() + 1}`)
   }
-  linkedinIntent.searchParams.set('certUrl', certificationUrl)
-  linkedinIntent.searchParams.set('certId', tokenId)
 
   return (
     <Button
@@ -69,11 +68,6 @@ export const LinkedinShareButton = ({
       iconLeft={<LinkedinIcon size={30} />}
     >
       Share on LinkedIn
-      {/* <Link
-        target="_blank"
-        href={linkedinIntent.toString()}
-        className="flex items-center justify-center"
-      ></Link> */}
     </Button>
   )
 }

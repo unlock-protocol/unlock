@@ -64,38 +64,12 @@ export const useMetadata = ({
     async (): Promise<Partial<Metadata>> => {
       try {
         if (keyId) {
-          // const keyResponse = await storage.keyMetadata(
-          //   network!,
-          //   lockAddress!,
-          //   keyId
-          // )
-          // return keyResponse.data as Metadata
-          return {
-            name: 'Unlock Key',
-            description:
-              'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
-            image:
-              'http://localhost:8080/lock/0xd9C2A39DE41b1a16AF18317e4bA64bdf9ea44d18/icon?id=2',
-            expiration: 1681539669,
-            tokenId: '2',
-            owner: '0x81dd955d02d337db81ba6c9c5f6213e647672052',
-            minted: 1681239669,
-            attributes: [
-              {
-                trait_type: 'Expiration',
-                display_type: 'date',
-                value: 1681539669,
-              },
-              {
-                trait_type: 'Minted',
-                display_type: 'date',
-                value: 1681239669,
-              },
-            ],
-            keyId: '2',
-            lockAddress: '0xd9C2A39DE41b1a16AF18317e4bA64bdf9ea44d18',
-            network: 80001,
-          }
+          const keyResponse = await storage.keyMetadata(
+            network!,
+            lockAddress!,
+            keyId
+          )
+          return keyResponse.data as Metadata
         } else {
           const lockResponse = await storage.lockMetadata(
             network!,
