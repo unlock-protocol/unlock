@@ -34,23 +34,32 @@ export const LinkedinShareButton = ({
     certificateData?.certification?.certification_issuer || 'Unlock Labs'
   )
   // Get the mint date?
-  linkedinIntent.searchParams.set('issueYear', 'xxx')
-  linkedinIntent.searchParams.set('issueMonth', 'xxx')
-  linkedinIntent.searchParams.set('expirationYear', 'xxx')
-  linkedinIntent.searchParams.set('expirationMonth', 'xxx')
+  if (certificateData?.certification?.Expiration) {
+    const expirationDate = new Date(
+      certificateData?.certification?.Expiration * 1000
+    )
+    console.log(expirationDate)
+    linkedinIntent.searchParams.set(
+      'expirationYear',
+      expirationDate.getFullYear().toString()
+    )
+    linkedinIntent.searchParams.set(
+      'expirationMonth',
+      `${expirationDate.getMonth() + 1}`
+    )
+  }
+  if (certificateData?.certification?.Minted) {
+    const issueDate = new Date(certificateData?.certification?.Minted * 1000)
+    console.log(issueDate)
+
+    linkedinIntent.searchParams.set(
+      'issueYear',
+      issueDate.getFullYear().toString()
+    )
+    linkedinIntent.searchParams.set('issueMonth', `${issueDate.getMonth() + 1}`)
+  }
   linkedinIntent.searchParams.set('certUrl', certificationUrl)
   linkedinIntent.searchParams.set('certId', tokenId)
-
-  // https://www.linkedin.com/profile/add?
-  // startTask=CERTIFICATION_NAME
-  // &name=Test%20Certificate
-  // &organizationName=LinkedIn
-  // &issueYear=2018
-  // &issueMonth=2
-  // &expirationYear=2020
-  // &expirationMonth=5
-  // &certUrl=https%3A%2F%2Fdocs.microsoft.com%2Fen-us%2Flearn%2Fcertifications%2Fd365-functional-consultant-sales
-  // &certId=1234
 
   return (
     <Button

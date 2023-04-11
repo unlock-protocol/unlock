@@ -128,6 +128,7 @@ export const CertificationDetails = ({
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
+    keyId: tokenId,
   })
 
   const onEdit = () => {

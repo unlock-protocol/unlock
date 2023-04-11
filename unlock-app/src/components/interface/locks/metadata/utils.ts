@@ -1,5 +1,7 @@
 export interface Certification {
   certification_issuer?: string
+  Expiration?: number
+  Minted?: number
 }
 
 export interface Ticket {
