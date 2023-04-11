@@ -24,6 +24,20 @@ vi.mock('@unlock-protocol/unlock-js', async () => {
     }),
   }
 })
+
+vi.mock('../../src/operations/userMetadataOperations.ts', async () => {
+  const actual: any = await vi.importActual(
+    '../../src/operations/userMetadataOperations.ts'
+  )
+  return {
+    ...actual,
+    getLockMetadata: async () =>
+      Promise.resolve({
+        chain: network,
+        data: {},
+      }),
+  }
+})
 describe('Wedlocks operations', () => {
   afterEach(() => {
     vi.clearAllMocks()
@@ -37,7 +51,7 @@ describe('Wedlocks operations', () => {
       const lockName = 'Alice in Wonderland'
 
       await addMetadata({
-        chain: 1,
+        chain: network,
         tokenAddress: lockAddress,
         userAddress: ownerAddress,
         data: {
@@ -61,10 +75,10 @@ describe('Wedlocks operations', () => {
         process.env.UNLOCK_ENV !== 'prod'
           ? 'https://staging-app.unlock-protocol.com'
           : 'https://app.unlock-protocol.com',
-      ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=`
+      ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=${network}`
 
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"","transferUrl":"${transferUrl}"},"attachments":[]}`,
+        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"Mumbai (Polygon)","transferUrl":"${transferUrl}"},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
