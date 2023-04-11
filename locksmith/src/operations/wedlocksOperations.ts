@@ -22,6 +22,8 @@ import {
   DEFAULT_LOCK_SETTINGS,
   LockSettingProps,
 } from '../controllers/v2/lockSettingController'
+import { getLockMetadata } from './metadataOperations'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -135,6 +137,7 @@ interface GetAttachmentProps {
   owner: string
   includeQrCode?: boolean
   event?: Partial<EventProps>
+  types?: LockType
 }
 
 const getCustomContent = async (
@@ -174,6 +177,7 @@ const getAttachments = async ({
   owner,
   includeQrCode = false,
   event,
+  types,
 }: GetAttachmentProps): Promise<Attachment[]> => {
   const attachments: Attachment[] = []
 
@@ -192,8 +196,10 @@ const getAttachments = async ({
     attachments.push({ path: dataURI })
   }
 
+  const { isEvent } = types ?? {}
+
   // Add ICS attachment when event is present
-  if (event) {
+  if (isEvent && event) {
     const file: Buffer | undefined = await createEventIcs({
       title: event?.eventName ?? '',
       description: event?.eventDescription ?? '',
@@ -284,7 +290,6 @@ export const notifyNewKeyToWedlocks = async (
   const protectedData = Normalizer.toLowerCaseKeys({
     ...userTokenMetadataRecord?.data?.userMetadata?.protected,
   })
-
   const recipient = protectedData?.email as string
 
   if (!recipient) {
@@ -321,8 +326,16 @@ export const notifyNewKeyToWedlocks = async (
   transferUrl.searchParams.set('keyId', tokenId ?? '')
   transferUrl.searchParams.set('network', network?.toString() ?? '')
 
-  const eventDetail = await getEventDetail(lockAddress, network)
-  const isEvent = !!eventDetail
+  const metadata = await getLockMetadata({ lockAddress, network })
+  const types = getLockTypeByMetadata(metadata)
+
+  const { isEvent } = types
+  let eventDetail: EventProps | undefined = undefined
+
+  // get event details only when lock is event
+  if (isEvent) {
+    eventDetail = await getEventDetail(lockAddress, network)
+  }
 
   // attachments list
   const attachments = await getAttachments({
@@ -332,6 +345,7 @@ export const notifyNewKeyToWedlocks = async (
     owner: ownerAddress,
     includeQrCode,
     event: eventDetail,
+    types,
   })
 
   // email templates
@@ -351,9 +365,6 @@ export const notifyNewKeyToWedlocks = async (
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
-  const { eventDescription, eventTime, eventDate, eventAddress, eventName } =
-    eventDetail ?? {}
-
   await sendEmail({
     network: network!,
     template: templates[0],
@@ -371,11 +382,11 @@ export const notifyNewKeyToWedlocks = async (
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
       // add event details props
-      eventName,
-      eventDate,
-      eventDescription,
-      eventTime,
-      eventAddress,
+      eventName: eventDetail?.eventName,
+      eventDate: eventDetail?.eventDate,
+      eventDescription: eventDetail?.eventDescription,
+      eventTime: eventDetail?.eventTime,
+      eventAddress: eventDetail?.eventAddress,
     },
   })
 }

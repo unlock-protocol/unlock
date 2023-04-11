@@ -9,6 +9,7 @@ import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
 
 const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
+const network = 80001
 
 vi.mock('@unlock-protocol/unlock-js', async () => {
   const actual: any = await vi.importActual('@unlock-protocol/unlock-js')
@@ -19,6 +20,20 @@ vi.mock('@unlock-protocol/unlock-js', async () => {
         isLockManager: (lock: string) => lockAddressMock === lock,
       }
     }),
+  }
+})
+
+vi.mock('../../src/operations/userMetadataOperations.ts', async () => {
+  const actual: any = await vi.importActual(
+    '../../src/operations/userMetadataOperations.ts'
+  )
+  return {
+    ...actual,
+    getLockMetadata: async () =>
+      Promise.resolve({
+        chain: network,
+        data: {},
+      }),
   }
 })
 describe('Wedlocks operations', () => {
@@ -34,7 +49,7 @@ describe('Wedlocks operations', () => {
       const lockName = 'Alice in Wonderland'
 
       await addMetadata({
-        chain: 1,
+        chain: network,
         tokenAddress: lockAddress,
         userAddress: ownerAddress,
         data: {
@@ -43,21 +58,25 @@ describe('Wedlocks operations', () => {
           },
         },
       })
-      await notifyNewKeyToWedlocks({
-        lock: {
-          address: lockAddress,
-          name: lockName,
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          owner: ownerAddress,
+          manager: ownerAddress,
         },
-        owner: ownerAddress,
-      })
+        network
+      )
       const transferUrl = `${[
         process.env.UNLOCK_ENV !== 'prod'
           ? 'https://staging-app.unlock-protocol.com'
           : 'https://app.unlock-protocol.com',
-      ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=`
+      ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=${network}`
 
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"","transferUrl":"${transferUrl}"},"attachments":[]}`,
+        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"Mumbai (Polygon)","transferUrl":"${transferUrl}"},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
@@ -70,13 +89,17 @@ describe('Wedlocks operations', () => {
       const ownerAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const lockName = 'Alice in Wonderland'
 
-      await notifyNewKeyToWedlocks({
-        lock: {
-          address: lockAddress,
-          name: lockName,
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          manager: ownerAddress,
+          owner: ownerAddress,
         },
-        owner: ownerAddress,
-      })
+        network
+      )
       expect(fetch).not.toHaveBeenCalled()
     })
 
@@ -98,13 +121,17 @@ describe('Wedlocks operations', () => {
         },
       })
 
-      await notifyNewKeyToWedlocks({
-        lock: {
-          address: lockAddress,
-          name: lockName,
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+            name: lockName,
+          },
+          owner: ownerAddress,
+          manager: ownerAddress,
         },
-        owner: ownerAddress,
-      })
+        network
+      )
       expect(fetch).not.toHaveBeenCalled()
     })
   })

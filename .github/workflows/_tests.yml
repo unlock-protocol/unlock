@@ -18,7 +18,8 @@ on:
           "subgraph",
           "unlock-protocol-com",
           "wedlocks",
-          "unlock-app"
+          "unlock-app",
+          "packages/core"
           ]'
 
 jobs:

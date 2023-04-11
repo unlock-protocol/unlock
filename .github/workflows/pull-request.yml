@@ -18,7 +18,8 @@ jobs:
         "subgraph",
         "unlock-protocol-com",
         "wedlocks",
-        "unlock-app"
+        "unlock-app",
+        "packages/core"
         ]'
       # run all tests if PR contains the 'run-all-tests' tag
       bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
