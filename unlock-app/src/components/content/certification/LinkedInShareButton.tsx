@@ -49,9 +49,9 @@ export const LinkedinShareButton = ({
   }
 
   // Mint date
+
   if (certificateData?.certification?.minted) {
     const issueDate = new Date(certificateData?.certification?.minted * 1000)
-    console.log(issueDate)
 
     linkedinIntent.searchParams.set(
       'issueYear',
