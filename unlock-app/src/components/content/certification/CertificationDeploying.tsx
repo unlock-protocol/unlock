@@ -37,8 +37,6 @@ export const CertificationDeploying = ({
 
   const updateTransferFeeMutation = useMutation(updateTransferFee)
 
-  const transferFeeUpdated = updateTransferFeeMutation.isSuccess
-
   useEffect(() => {
     window?.scrollTo(0, 0) // force scroll start of page
   }, [])
@@ -88,7 +86,7 @@ export const CertificationDeploying = ({
         <span className="mb-4 font-base">{message}</span>
         {status === 'deployed' && lockAddress && (
           <div className="flex flex-col items-center content-center text-center">
-            {!transferFeeUpdated ? (
+            {!updateTransferFeeMutation.isLoading ? (
               <>
                 <p>
                   {`We're almost there, but it's essential to make sure your

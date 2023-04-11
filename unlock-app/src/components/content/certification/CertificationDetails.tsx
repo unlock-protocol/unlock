@@ -321,19 +321,18 @@ export const CertificationDetails = ({
     },
   }
 
-  const badge =
-    isLockManager || !account
-      ? isLockManager
-        ? 'Template'
-        : 'Sample'
-      : undefined
+  const showBadge = isLockManager || !account
+  const showExpiration = key?.expiration !== MAX_UINT
 
-  const expiration =
-    key?.expiration !== MAX_UINT
-      ? isPlaceholderData
-        ? key?.expiration
-        : expirationAsDate(key?.expiration)
-      : undefined
+  const badge = isLockManager ? (
+    <span className="text-xl">Here is a preview</span>
+  ) : (
+    'Sample'
+  )
+
+  const expiration = isPlaceholderData
+    ? key?.expiration
+    : expirationAsDate(key?.expiration)
 
   return (
     <main className="mt-8">
@@ -362,10 +361,10 @@ export const CertificationDetails = ({
             }
             image={certificationData?.image as string}
             lockAddress={lockAddress}
-            badge={badge}
+            badge={showBadge ? badge : undefined}
             issuer={issuer}
             owner={!hasValidKey ? key?.owner : addressMinify(key?.owner)}
-            expiration={expiration}
+            expiration={showExpiration ? expiration : undefined}
             transactionsHash={<TransactionHashButton />}
             externalUrl={certificationData.external_url}
           />
