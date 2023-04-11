@@ -234,6 +234,8 @@ export const CertificationDetails = ({
   }
 
   const viewerIsOwner = account?.toLowerCase() === key?.owner?.toLowerCase()
+  const issuer = certificationData?.certification
+    ?.certification_issuer as string
 
   const Header = () => {
     if (tokenId && key) {
@@ -254,10 +256,13 @@ export const CertificationDetails = ({
       } else {
         return (
           <span>
-            You are viewing the certificate issued to{' '}
-            <span className="font-semibold ">{`${minifyAddress(
-              key?.owner
-            )}`}</span>
+            You are viewing a{' '}
+            <span className="font-semibold">{`"${certificationData.name}"`}</span>{' '}
+            issue by {issuer} for{' '}
+            <Link
+              href={networks[network].explorer?.urls.address(key?.owner) ?? '#'}
+              className="font-semibold hover:text-brand-ui-primary"
+            >{`${minifyAddress(key?.owner)}`}</Link>
             . <br />
             <Link
               className="font-semibold text-gray-800 hover:text-brand-ui-primary"
@@ -314,6 +319,8 @@ export const CertificationDetails = ({
     },
   }
 
+  console.log(key)
+
   const badge =
     isLockManager || !account
       ? isLockManager
@@ -356,9 +363,7 @@ export const CertificationDetails = ({
             image={certificationData?.image as string}
             lockAddress={lockAddress}
             badge={badge}
-            issuer={
-              certificationData.certification?.certification_issuer as string
-            }
+            issuer={issuer}
             owner={!hasValidKey ? key?.owner : addressMinify(key?.owner)}
             expiration={expiration}
             transactionsHash={<TransactionHashButton />}

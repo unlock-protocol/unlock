@@ -32,7 +32,7 @@ export const useCertification = ({
       if (key) {
         return key
       }
-      return {} as SubgraphKey
+      return null
     },
     {
       enabled: !!lockAddress && !!network && !!tokenId,
