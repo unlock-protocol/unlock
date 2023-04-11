@@ -1,4 +1,4 @@
-export const imageToBase64 = async (url: string) => {
+export const imageUrlToBase64 = async (url: string) => {
   const response = await fetch(url, {
     method: 'GET',
     headers: {

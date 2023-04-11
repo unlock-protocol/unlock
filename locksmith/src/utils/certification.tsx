@@ -7,10 +7,10 @@ import satori from 'satori'
 import dayjs from 'dayjs'
 
 import { readFileSync } from 'fs'
-import { imageToBase64 } from './image'
 import { networks } from '@unlock-protocol/networks'
 import { generateKeyMetadata } from '../operations/metadataOperations'
 import { ethers } from 'ethers'
+import { imageUrlToBase64 } from './image'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 
@@ -64,7 +64,7 @@ export const createCertificate = async ({
       ? ''
       : dayjs.unix(key?.expiration).format('DD MMM YYYY') // example ('18 Apr 2023')
 
-  const imageBase64 = await imageToBase64(metadata?.image)
+  const imageBase64 = await imageUrlToBase64(metadata?.image)
 
   const certificate = await satori(
     <div
@@ -114,5 +114,6 @@ export const createCertificate = async ({
       ],
     }
   )
+  console.log('certificate', certificate)
   return certificate
 }

@@ -9,6 +9,7 @@ import { Ticket } from '@unlock-protocol/ui'
 import normalizer from './normalizer'
 import logger from '../logger'
 import lockIcon from './lockIcon'
+import { imageUrlToBase64 } from './image'
 
 interface Options {
   network: number
@@ -20,17 +21,7 @@ interface Options {
 
 const imageURLToBase64 = async (url: string, lockAddress: string) => {
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'image/png',
-      },
-    })
-    const contentType = response.headers.get('content-type')
-    const arrayBuffer = await response.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
-    const imageURL = `data:${contentType};base64,${buffer.toString('base64')}`
-    return imageURL
+    return imageUrlToBase64(url)
   } catch (error) {
     logger.info(error)
     // Fallback to the lock icon if the image is not available
