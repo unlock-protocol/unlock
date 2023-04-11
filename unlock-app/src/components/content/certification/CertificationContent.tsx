@@ -24,7 +24,7 @@ export const CertificationContent = () => {
   }
 
   if (!router.query) {
-    return <LoadingIcon></LoadingIcon>
+    return <LoadingIcon />
   }
 
   return (
