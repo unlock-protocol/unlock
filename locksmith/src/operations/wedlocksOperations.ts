@@ -391,7 +391,7 @@ export const notifyNewKeyToWedlocks = async (
   }
 
   if (isCertification) {
-    const certificationUrl = `${config.services.locksmith}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+    const certificationUrl = `${config.unlockApp}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
     certificationDetail = {
       certificationUrl,
     }
