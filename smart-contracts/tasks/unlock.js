@@ -15,7 +15,8 @@ task('unlock:upgrade', 'Deploy a new version of the Unlock contract and submit t
   .addOptionalParam('unlockVersion', 'The version of the implementation to deploy')
   .addOptionalParam('impl', 'The address of the implementation contract')
   .addOptionalParam('multisig', 'The address of the Safe multisig')
-  .setAction(async ({ unlockAddress, unlockVersion, impl, multisig }, { ethers, network }) => {
+  .addOptionalParam('proxyAdminAddress', 'The address of the proxy admin that manages upgradeability for the Unlock contract')
+  .setAction(async ({ unlockAddress, unlockVersion, impl, multisig, proxyAdminAddress }, { ethers, network }) => {
     const { chainId } = await ethers.provider.getNetwork()
 
     if(! unlockAddress) {
@@ -36,7 +37,9 @@ task('unlock:upgrade', 'Deploy a new version of the Unlock contract and submit t
       })
     }
 
-    const proxyAdminAddress = await getProxyAdminAddress({ network })
+    if(!proxyAdminAddress) {
+      proxyAdminAddress = await getProxyAdminAddress({ network })
+    }
 
     // eslint-disable-next-line global-require
     const proposeUpgrade = require('../scripts/upgrade/propose')
