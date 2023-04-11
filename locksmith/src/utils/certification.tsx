@@ -7,10 +7,10 @@ import satori from 'satori'
 import dayjs from 'dayjs'
 
 import { readFileSync } from 'fs'
-import { MAX_UINT } from '../../constants'
 import { imageToBase64 } from './image'
 import { networks } from '@unlock-protocol/networks'
 import { generateKeyMetadata } from '../operations/metadataOperations'
+import { ethers } from 'ethers'
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 
@@ -59,7 +59,8 @@ export const createCertificate = async ({
   const transactionHash = key?.transactionsHash?.[0] ?? ''
 
   const expiration =
-    key?.expiration && key?.expiration === MAX_UINT
+    key?.expiration &&
+    key?.expiration === ethers.constants.MaxUint256.toString()
       ? ''
       : dayjs.unix(key?.expiration).format('DD MMM YYYY') // example ('18 Apr 2023')
 

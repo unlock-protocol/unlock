@@ -171,6 +171,14 @@ const getCustomContent = async (
   return customContent
 }
 
+const svgStringToDataURI = (svgString: string) => {
+  const svg = new resvg.Resvg(svgString)
+  const pngData = svg.render()
+  const pngBuffer = pngData.asPng()
+  const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+  return dataURI
+}
+
 const getAttachments = async ({
   tokenId,
   network,
@@ -190,11 +198,7 @@ const getAttachments = async ({
       network,
       owner,
     })
-    const svg = new resvg.Resvg(ticket)
-    const pngData = svg.render()
-    const pngBuffer = pngData.asPng()
-    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-    attachments.push({ path: dataURI })
+    attachments.push({ path: svgStringToDataURI(ticket) })
   }
 
   const { isEvent, isCertification } = types ?? {}
@@ -222,11 +226,7 @@ const getAttachments = async ({
       lockAddress,
       tokenId,
     })
-    const svg = new resvg.Resvg(certificate)
-    const pngData = svg.render()
-    const pngBuffer = pngData.asPng()
-    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-    attachments.push({ path: dataURI })
+    attachments.push({ path: svgStringToDataURI(certificate) })
   }
 
   return attachments
