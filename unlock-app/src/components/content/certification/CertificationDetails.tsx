@@ -319,8 +319,6 @@ export const CertificationDetails = ({
     },
   }
 
-  console.log(key)
-
   const badge =
     isLockManager || !account
       ? isLockManager
