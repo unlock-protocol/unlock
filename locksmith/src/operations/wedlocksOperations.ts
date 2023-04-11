@@ -24,6 +24,7 @@ import {
 } from '../controllers/v2/lockSettingController'
 import { getLockMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { createCertificate } from '../utils/certification'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -196,7 +197,7 @@ const getAttachments = async ({
     attachments.push({ path: dataURI })
   }
 
-  const { isEvent } = types ?? {}
+  const { isEvent, isCertification } = types ?? {}
 
   // Add ICS attachment when event is present
   if (isEvent && event) {
@@ -212,6 +213,20 @@ const getAttachments = async ({
       const dataURI = `data:text/calendar;base64,${url}`
       attachments.push({ path: dataURI })
     }
+  }
+
+  // Add certificate when lock is certificate
+  if (isCertification && network && tokenId) {
+    const certificate = await createCertificate({
+      network,
+      lockAddress,
+      tokenId,
+    })
+    const svg = new resvg.Resvg(certificate)
+    const pngData = svg.render()
+    const pngBuffer = pngData.asPng()
+    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+    attachments.push({ path: dataURI })
   }
 
   return attachments
