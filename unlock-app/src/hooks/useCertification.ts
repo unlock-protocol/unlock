@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface CertificationProps {
   lockAddress: string
@@ -16,7 +17,7 @@ export const useCertification = ({
     ['getCertification', lockAddress, network, tokenId],
     async () => {
       const subgraph = new SubgraphService()
-      return await subgraph.key(
+      const key = await subgraph.key(
         {
           where: {
             tokenId,
@@ -27,6 +28,11 @@ export const useCertification = ({
           network,
         }
       )
+
+      if (key) {
+        return key
+      }
+      return null
     },
     {
       enabled: !!lockAddress && !!network && !!tokenId,
@@ -39,6 +45,10 @@ export const useCertification = ({
         createdAtBlock: undefined,
         transactionsHash: ['{Transaction hash}'],
         lock: {} as any,
+      },
+      onError: (error) => {
+        console.error(error)
+        ToastHelper.error('No valid certification')
       },
     }
   )
