@@ -34,9 +34,9 @@ export const LinkedinShareButton = ({
   linkedinIntent.searchParams.set('certId', tokenId)
 
   // Expiration date
-  if (certificateData?.certification?.Expiration) {
+  if (certificateData?.certification?.expiration) {
     const expirationDate = new Date(
-      certificateData?.certification?.Expiration * 1000
+      certificateData?.certification?.expiration * 1000
     )
     linkedinIntent.searchParams.set(
       'expirationYear',
@@ -49,8 +49,8 @@ export const LinkedinShareButton = ({
   }
 
   // Mint date
-  if (certificateData?.certification?.Minted) {
-    const issueDate = new Date(certificateData?.certification?.Minted * 1000)
+  if (certificateData?.certification?.minted) {
+    const issueDate = new Date(certificateData?.certification?.minted * 1000)
     console.log(issueDate)
 
     linkedinIntent.searchParams.set(
