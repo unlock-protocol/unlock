@@ -228,6 +228,8 @@ export const CertificationDetails = ({
     )
   }
 
+  const viewerIsOwner = account?.toLowerCase() === key?.owner?.toLowerCase()
+
   const Header = () => {
     if (tokenId && key) {
       if (isLockManager) {
@@ -237,7 +239,7 @@ export const CertificationDetails = ({
             image that the recipient can share with their professional network.
           </span>
         )
-      } else if (account === key?.owner) {
+      } else if (viewerIsOwner) {
         return (
           <span>
             {`Here is the certificate you have received. This image is just an
@@ -289,7 +291,7 @@ export const CertificationDetails = ({
   }
 
   const canShareOrDownload =
-    (key?.owner === account || isLockManager) && key && !isPlaceholderData
+    (viewerIsOwner || isLockManager) && key && !isPlaceholderData
 
   const showCertification = key || (tokenId && key)
 
