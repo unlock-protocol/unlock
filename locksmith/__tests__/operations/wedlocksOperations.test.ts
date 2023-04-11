@@ -2,6 +2,8 @@ import { addMetadata } from '../../src/operations/userMetadataOperations'
 import {
   sendEmail,
   notifyNewKeyToWedlocks,
+  getCustomTemplate,
+  getTemplates,
 } from '../../src/operations/wedlocksOperations'
 import { vi, expect } from 'vitest'
 import app from '../app'
@@ -203,6 +205,161 @@ describe('Wedlocks operations', () => {
 
       expect(customContent.status).toBe(404)
       expect(customContent.body.content).toBe(undefined)
+    })
+
+    it('Correctly get default email templates', () => {
+      expect.assertions(6)
+
+      const defaultTemplate = {
+        types: {
+          isEvent: false,
+          isCertification: false,
+          isStamp: false,
+        },
+        isAirdropped: false,
+      }
+
+      const defaultTemplateAirdropped = {
+        types: {
+          isEvent: false,
+          isCertification: false,
+          isStamp: false,
+        },
+        isAirdropped: true,
+      }
+
+      expect(getCustomTemplate(defaultTemplate)).toBe('keyMined')
+      expect(getCustomTemplate(defaultTemplateAirdropped)).toBe('keyAirdropped')
+
+      expect(getTemplates(defaultTemplate)).toStrictEqual([
+        'keyMined',
+        'keyMined',
+      ])
+
+      expect(getTemplates(defaultTemplateAirdropped)).toStrictEqual([
+        'keyAirdropped',
+        'keyAirdropped',
+      ])
+
+      expect(
+        getTemplates({
+          ...defaultTemplate,
+          lockAddress: '0x123',
+        })
+      ).toStrictEqual(['keyMined0x123', 'keyMined'])
+
+      expect(
+        getTemplates({
+          ...defaultTemplateAirdropped,
+          lockAddress: '0x123',
+        })
+      ).toStrictEqual(['keyAirdropped0x123', 'keyAirdropped'])
+    })
+
+    it('Correctly get event email templates', () => {
+      expect.assertions(6)
+
+      const eventTemplate = {
+        types: {
+          isEvent: true,
+          isCertification: false,
+          isStamp: false,
+        },
+        isAirdropped: false,
+      }
+
+      const eventTemplateAirdropped = {
+        types: {
+          isEvent: true,
+          isCertification: false,
+          isStamp: false,
+        },
+        isAirdropped: true,
+      }
+
+      expect(getCustomTemplate(eventTemplate)).toBe('eventKeyMined')
+      expect(getCustomTemplate(eventTemplateAirdropped)).toBe(
+        'eventKeyAirdropped'
+      )
+
+      expect(getTemplates(eventTemplate)).toStrictEqual([
+        'eventKeyMined',
+        'eventKeyMined',
+      ])
+
+      expect(getTemplates(eventTemplateAirdropped)).toStrictEqual([
+        'eventKeyAirdropped',
+        'eventKeyAirdropped',
+      ])
+
+      expect(
+        getTemplates({
+          ...eventTemplate,
+          lockAddress: '0x123',
+        })
+      ).toStrictEqual(['eventKeyMined0x123', 'eventKeyMined'])
+
+      expect(
+        getTemplates({
+          ...eventTemplateAirdropped,
+          lockAddress: '0x123',
+        })
+      ).toStrictEqual(['eventKeyAirdropped0x123', 'eventKeyAirdropped'])
+    })
+
+    it('Correctly get certification email templates', () => {
+      expect.assertions(6)
+      const certificationTemplate = {
+        types: {
+          isEvent: false,
+          isCertification: true,
+          isStamp: false,
+        },
+        isAirdropped: false,
+      }
+
+      const certificationAirdropped = {
+        types: {
+          isEvent: false,
+          isCertification: true,
+          isStamp: false,
+        },
+        isAirdropped: true,
+      }
+
+      expect(getCustomTemplate(certificationTemplate)).toBe(
+        'certificationKeyMined'
+      )
+      expect(getCustomTemplate(certificationAirdropped)).toBe(
+        'certificationKeyAirdropped'
+      )
+
+      expect(getTemplates(certificationTemplate)).toStrictEqual([
+        'certificationKeyMined',
+        'certificationKeyMined',
+      ])
+
+      expect(getTemplates(certificationAirdropped)).toStrictEqual([
+        'certificationKeyAirdropped',
+        'certificationKeyAirdropped',
+      ])
+
+      expect(
+        getTemplates({
+          ...certificationTemplate,
+          lockAddress: '0x123',
+        })
+      ).toStrictEqual(['certificationKeyMined0x123', 'certificationKeyMined'])
+
+      expect(
+        getTemplates({
+          ...certificationAirdropped,
+          lockAddress: '0x123',
+        })
+      ).toStrictEqual([
+        'certificationKeyAirdropped0x123',
+        'certificationKeyAirdropped',
+      ])
     })
   })
 })
