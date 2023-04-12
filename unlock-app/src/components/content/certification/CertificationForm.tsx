@@ -333,7 +333,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                             type="number"
                             autoComplete="off"
                             placeholder="0.00"
-                            step={0.01}
                             disabled={isFree}
                             {...register('lock.keyPrice', {
                               required: {
