@@ -107,26 +107,24 @@ async function main({ safeAddress, tx, signer }) {
   )
   console.log(transactions)
 
+  const nonce = await safeService.getNextNonce(safeAddress)
   const txOptions = {
     origin: explainer,
-    // safeTxGas, // Optional
-    // baseGas, // Optional
-    // gasPrice, // Optional
-    // gasToken, // Optional
-    // refundReceiver, // Optional
-    // nonce // Optional
+    nonce // make sure we get the correct nonce, so we dont override
+          // txs that havent been executed yet
   }
 
   // create a MultiSend tx
   const safeTransaction = await safeSdk.createTransaction({
     safeTransactionData: transactions,
-    options: txOptions,
+    options: txOptions, 
   })
 
   // now send tx via Safe Global web service
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
   const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
   // const nonce = await safeService.getNextNonce(safeAddress)
+  
   await safeService.proposeTransaction({
     safeAddress,
     safeTransactionData: safeTransaction.data,
@@ -135,8 +133,8 @@ async function main({ safeAddress, tx, signer }) {
     senderSignature: senderSignature.data,
   })
 
-  const { nonce } = await safeService.getTransaction(safeTxHash)
-  console.log(`Tx submitted to multisig with id: '${nonce}'`)
+  const { nonce: actualNonce } = await safeService.getTransaction(safeTxHash)
+  console.log(`Tx submitted to multisig with id: '${actualNonce}'`)
 
   if (process.env.RUN_MAINNET_FORK) {
       console.log(`Signing multisigs: ${nonce}`)
