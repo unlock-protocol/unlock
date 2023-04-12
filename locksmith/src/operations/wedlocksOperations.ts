@@ -24,6 +24,7 @@ import {
 } from '../controllers/v2/lockSettingController'
 import { getLockMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { createCertificate } from '../utils/certification'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -170,6 +171,14 @@ const getCustomContent = async (
   return customContent
 }
 
+const svgStringToDataURI = (svgString: string) => {
+  const svg = new resvg.Resvg(svgString)
+  const pngData = svg.render()
+  const pngBuffer = pngData.asPng()
+  const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+  return dataURI
+}
+
 const getAttachments = async ({
   tokenId,
   network,
@@ -189,14 +198,10 @@ const getAttachments = async ({
       network,
       owner,
     })
-    const svg = new resvg.Resvg(ticket)
-    const pngData = svg.render()
-    const pngBuffer = pngData.asPng()
-    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-    attachments.push({ path: dataURI })
+    attachments.push({ path: svgStringToDataURI(ticket) })
   }
 
-  const { isEvent } = types ?? {}
+  const { isEvent, isCertification } = types ?? {}
 
   // Add ICS attachment when event is present
   if (isEvent && event) {
@@ -211,6 +216,18 @@ const getAttachments = async ({
       const url = file.toString('base64')
       const dataURI = `data:text/calendar;base64,${url}`
       attachments.push({ path: dataURI })
+    }
+  }
+
+  // Add certificate when lock is certificate
+  if (isCertification && network && tokenId) {
+    const certificate = await createCertificate({
+      network,
+      lockAddress,
+      tokenId,
+    })
+    if (certificate) {
+      attachments.push({ path: svgStringToDataURI(certificate) })
     }
   }
 
