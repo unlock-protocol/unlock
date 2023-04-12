@@ -74,6 +74,7 @@ export const createCertificate = async ({
   const transactionHash = key?.transactionsHash?.[0] ?? ''
 
   const expiration =
+    key?.expiration &&
     key?.expiration === ethers.constants.MaxUint256.toString()
       ? ''
       : dayjs.unix(key?.expiration).format('DD MMM YYYY') // example ('18 Apr 2023')
