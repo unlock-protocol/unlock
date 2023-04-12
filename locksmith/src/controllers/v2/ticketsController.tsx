@@ -113,13 +113,19 @@ export class TicketsController {
         {
           where: {
             lock: lockAddress.toLowerCase(),
-            id: keyId,
+            tokenId: keyId,
           },
         },
         {
           network,
         }
       )
+
+      if (!key) {
+        return response.status(404).send({
+          message: 'No key found for this lock and keyId',
+        })
+      }
 
       await notifyNewKeyToWedlocks(
         {
