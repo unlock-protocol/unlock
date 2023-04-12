@@ -226,7 +226,9 @@ const getAttachments = async ({
       lockAddress,
       tokenId,
     })
-    attachments.push({ path: svgStringToDataURI(certificate) })
+    if (certificate) {
+      attachments.push({ path: svgStringToDataURI(certificate) })
+    }
   }
 
   return attachments
