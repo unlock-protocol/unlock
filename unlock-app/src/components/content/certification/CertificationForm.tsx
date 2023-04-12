@@ -231,7 +231,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       setEnabled={setForever}
                       onChange={(enabled) => {
                         if (enabled) {
-                          setValue('lock.expirationDuration', '' as any)
+                          setValue('lock.expirationDuration', '' as any, {
+                            shouldValidate: true,
+                          })
                         }
                       }}
                     />
@@ -265,8 +267,12 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     setEnabled={setAllowPurchase}
                     onChange={(enable: boolean) => {
                       if (!enable) {
-                        setValue('lock.maxNumberOfKeys', 0)
-                        setValue('lock.keyPrice', '0')
+                        setValue('lock.maxNumberOfKeys', 0, {
+                          shouldValidate: true,
+                        })
+                        setValue('lock.keyPrice', '0', {
+                          shouldValidate: true,
+                        })
                       }
                     }}
                   />
@@ -290,7 +296,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                         setEnabled={setIsFree}
                         onChange={(enable: boolean) => {
                           if (enable) {
-                            setValue('lock.keyPrice', '0')
+                            setValue('lock.keyPrice', '0', {
+                              shouldValidate: true,
+                            })
                           }
                         }}
                       />
@@ -320,16 +328,25 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           <div className="pl-1"></div>
                         </div>
 
-                        <Input
-                          type="number"
-                          autoComplete="off"
-                          placeholder="0.00"
-                          step={0.01}
-                          disabled={isFree}
-                          {...register('lock.keyPrice', {
-                            required: !isFree,
-                          })}
-                        />
+                        <div className="relative">
+                          <Input
+                            type="number"
+                            autoComplete="off"
+                            placeholder="0.00"
+                            disabled={isFree}
+                            {...register('lock.keyPrice', {
+                              required: {
+                                value: !isFree,
+                                message: 'This value is required',
+                              },
+                            })}
+                          />
+                          {errors?.lock?.keyPrice?.message && (
+                            <span className="absolute -mb-4 text-sm text-red-500">
+                              {errors?.lock?.keyPrice?.message}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -345,7 +362,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                         setEnabled={setUnlimitedCapacity}
                         onChange={(enable: boolean) => {
                           if (enable) {
-                            setValue('lock.maxNumberOfKeys', undefined)
+                            setValue('lock.maxNumberOfKeys', undefined, {
+                              shouldValidate: true,
+                            })
                           }
                         }}
                       />
