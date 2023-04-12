@@ -35,7 +35,7 @@ router.put(
   }
 )
 
-// TODO: refactor, this is now sending email attachments based on lockType and not specific for ticket
+// TODO: move on lock level, this is now sending email attachments based on lockType and not specific for ticket
 router.post(
   '/:network/:lockAddress/:keyId/email',
   authenticatedMiddleware,
