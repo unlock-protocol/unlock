@@ -133,6 +133,7 @@ export const CertificationDetails = ({
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
+    keyId: tokenId,
   })
 
   const onEdit = () => {
@@ -252,7 +253,7 @@ export const CertificationDetails = ({
         return (
           <span>
             {`Here is the certificate you have received. This image is just an
-            "off-chain" representation of the NFT.`}
+            offchain representation of the NFT.`}
           </span>
         )
       } else {

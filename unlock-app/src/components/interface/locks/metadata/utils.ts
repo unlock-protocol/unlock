@@ -1,5 +1,7 @@
 export interface Certification {
   certification_issuer?: string
+  expiration?: number
+  minted?: number
 }
 
 export interface Ticket {
@@ -11,6 +13,7 @@ export interface Ticket {
   event_url?: string
   event_timezone?: string
 }
+
 export interface MetadataFormData {
   name: string
   image?: string
@@ -102,12 +105,13 @@ export const categorizeAttributes = (
   }
 
   const ticket = attributes.reduce((item, { trait_type, value }) => {
-    item[trait_type as keyof Ticket] = value as string
+    item[trait_type.toLowerCase() as keyof Ticket] = value as string
     return item
   }, {} as Ticket)
 
   const certification = attributes.reduce((item, { trait_type, value }) => {
-    item[trait_type as keyof Certification] = value as string
+    // @ts-expect-error Type 'string' is not assignable to type 'undefined'.
+    item[trait_type.toLowerCase() as keyof Certification] = value as string
     return item
   }, {} as Certification)
 

@@ -1,6 +1,5 @@
-import { Tooltip } from '@unlock-protocol/ui'
-import { toFormData } from 'axios'
-import Link from 'next/link'
+import { Button } from '@unlock-protocol/ui'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
 
@@ -24,28 +23,52 @@ export const LinkedinShareButton = ({
   }
   const certificationUrl = `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
 
-  const linkedinIntent = new URL('https://www.linkedin.com/shareArticle')
-  linkedinIntent.searchParams.set('mini', 'true')
-  linkedinIntent.searchParams.set('url', certificationUrl)
+  const linkedinIntent = new URL('https://www.linkedin.com/profile/add')
+  linkedinIntent.searchParams.set('startTask', 'CERTIFICATION_NAME')
+  linkedinIntent.searchParams.set('name', metadata.name)
+  linkedinIntent.searchParams.set(
+    'organizationName',
+    certificateData?.certification?.certification_issuer || 'Unlock Labs'
+  )
+  linkedinIntent.searchParams.set('certUrl', certificationUrl)
+  linkedinIntent.searchParams.set('certId', tokenId)
+
+  // Expiration date
+  if (certificateData?.certification?.expiration) {
+    const expirationDate = new Date(
+      certificateData?.certification?.expiration * 1000
+    )
+    linkedinIntent.searchParams.set(
+      'expirationYear',
+      expirationDate.getFullYear().toString()
+    )
+    linkedinIntent.searchParams.set(
+      'expirationMonth',
+      `${expirationDate.getMonth() + 1}`
+    )
+  }
+
+  // Mint date
+
+  if (certificateData?.certification?.minted) {
+    const issueDate = new Date(certificateData?.certification?.minted * 1000)
+
+    linkedinIntent.searchParams.set(
+      'issueYear',
+      issueDate.getFullYear().toString()
+    )
+    linkedinIntent.searchParams.set('issueMonth', `${issueDate.getMonth() + 1}`)
+  }
 
   return (
-    <Tooltip
-      delay={0}
-      label="Share on LinkedIn"
-      tip="Share on LinkedIn"
-      side="bottom"
+    <Button
+      target="_blank"
+      as="a"
+      href={linkedinIntent.toString()}
+      iconLeft={<LinkedinIcon size={30} />}
     >
-      <Link
-        target="_blank"
-        href={linkedinIntent.toString()}
-        className="flex items-center justify-center"
-      >
-        <LinkedinIcon
-          className="text-gray-900 opacity-50 cursor-pointer hover:opacity-100"
-          size={30}
-        />
-      </Link>
-    </Tooltip>
+      Share on LinkedIn
+    </Button>
   )
 }
 
