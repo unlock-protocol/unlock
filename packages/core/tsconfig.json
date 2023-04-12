@@ -4,7 +4,8 @@
         "declaration": true,
         "outDir": "dist",
         "forceConsistentCasingInFileNames": true,
-        "declarationDir": "dist"
+        "declarationDir": "dist",
+        "emitDecoratorMetadata": false
     },
     "exclude": [
         "dist",

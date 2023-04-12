@@ -37,6 +37,7 @@
     "ethers": "5.7.2",
     "file-saver": "2.0.5",
     "font-color-contrast": "11.1.0",
+    "from-exponential": "1.1.1",
     "graphql": "16.6.0",
     "lottie-react": "2.4.0",
     "next": "13.1.6",
