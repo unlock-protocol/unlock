@@ -181,6 +181,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                       navigator.language || 'en-US',
                       {
                         timeZone: eventData.ticket.event_timezone,
+                        hour: '2-digit',
+                        minute: '2-digit',
                       }
                     )}
                   </span>
@@ -192,6 +194,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                           navigator.language || 'en-US',
                           {
                             timeZone: eventData.ticket.event_timezone,
+                            hour: '2-digit',
+                            minute: '2-digit',
                           }
                         )}
                       </span>
