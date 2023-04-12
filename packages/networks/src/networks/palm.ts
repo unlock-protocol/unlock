@@ -1,6 +1,7 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const palm: NetworkConfig = {
+  fullySubsidizedGas: true,
   publicProvider:
     'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/11297108109',

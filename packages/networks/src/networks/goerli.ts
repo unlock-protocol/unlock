@@ -43,6 +43,7 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
+  fullySubsidizedGas: true,
   maxFreeClaimCost: 100000,
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',

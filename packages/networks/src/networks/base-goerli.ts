@@ -43,6 +43,7 @@ export const baseGoerli: NetworkConfig = {
   },
   startBlock: 2247300,
   isTestNetwork: true,
+  fullySubsidizedGas: true,
   maxFreeClaimCost: 10000,
 }
 

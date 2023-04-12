@@ -18,6 +18,11 @@ export default class GasPrice {
 
   // Gas price denominated in cents
   async gasPriceUSD(network: number, gasCost: number): Promise<number> {
+    // Adding an excption for chains for which gas is fully subsidized
+    if (networks[network].fullySubsidizedGas) {
+      return 0
+    }
+
     const gasPrice = await this.gasPriceETH(network, gasCost)
     // Cost in currency
     let symbol = 'ETH'

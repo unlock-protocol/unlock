@@ -19,4 +19,5 @@ export const localhost: NetworkConfig = {
   serializerAddress: '0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1',
   description: 'Localhost network.',
   isTestNetwork: true,
+  fullySubsidizedGas: true,
 }
