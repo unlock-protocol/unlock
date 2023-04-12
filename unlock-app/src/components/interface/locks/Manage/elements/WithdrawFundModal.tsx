@@ -15,6 +15,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import { useState } from 'react'
+import { onResolveName } from '~/utils/resolvers'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
@@ -208,6 +209,7 @@ export const WithdrawFundModal = ({
                         onChange={(value: any) => {
                           setValue('beneficiary', value)
                         }}
+                        onResolveName={onResolveName}
                       />
                     </>
                   )

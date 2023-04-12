@@ -6,7 +6,7 @@ const config = {
     dialect: 'postgres',
   },
   stripeSecret: process.env.STRIPE_SECRET,
-  defaultNetwork: process.env.DEFAULT_NETWORK,
+  defaultNetwork: 1,
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',

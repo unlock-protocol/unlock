@@ -3,14 +3,35 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsup src/index.ts --format=esm,cjs --dts",
+    "test": "UNLOCK_ENV=test vitest run --coverage --environment=node",
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
+    "ci": "yarn test && yarn lint && yarn build"
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+    "tsup": "6.7.0",
     "typescript": "4.9.5"
   },
   "peerDependencies": {
     "zod": "3.21.4"
+  },
+  "dependencies": {
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@vitest/coverage-c8": "0.28.3",
+    "eslint": "8.36.0",
+    "vitest": "0.28.3"
   }
 }

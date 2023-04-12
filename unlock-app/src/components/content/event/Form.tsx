@@ -144,25 +144,27 @@ export const Form = ({ onSubmit }: FormProps) => {
               All of these fields can also be adjusted later.
             </p>
 
-            <div className="grid grid-cols-2 gap-4">
-              <ImageUpload
-                description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
-                isUploading={isUploading}
-                preview={metadataImage!}
-                onChange={async (fileOrFileUrl: any) => {
-                  if (typeof fileOrFileUrl === 'string') {
-                    setValue('metadata.image', fileOrFileUrl)
-                  } else {
-                    const items = await uploadImage(fileOrFileUrl[0])
-                    const image = items?.[0]?.publicUrl
-                    if (!image) {
-                      return
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="order-2 md:order-1">
+                <ImageUpload
+                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                  isUploading={isUploading}
+                  preview={metadataImage!}
+                  onChange={async (fileOrFileUrl: any) => {
+                    if (typeof fileOrFileUrl === 'string') {
+                      setValue('metadata.image', fileOrFileUrl)
+                    } else {
+                      const items = await uploadImage(fileOrFileUrl[0])
+                      const image = items?.[0]?.publicUrl
+                      if (!image) {
+                        return
+                      }
+                      setValue('metadata.image', image)
                     }
-                    setValue('metadata.image', image)
-                  }
-                }}
-              />
-              <div className="grid gap-6">
+                  }}
+                />
+              </div>
+              <div className="grid order-1 md:order-2">
                 <Input
                   {...register('lock.name', {
                     required: {
@@ -172,7 +174,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   })}
                   type="text"
                   placeholder="Name"
-                  label="Event Name"
+                  label="Event name"
                   description={
                     'Enter the name of your event. It will appear on the NFT tickets.'
                   }
@@ -241,7 +243,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       type="date"
-                      label="Star Date"
+                      label="Start date"
                       error={
                         // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_start_date?.message || ''
@@ -250,7 +252,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     <Input
                       {...register('metadata.ticket.event_start_time')}
                       type="time"
-                      label="Start Time"
+                      label="Start time"
                     />
                   </div>
 
@@ -263,7 +265,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       type="date"
-                      label="End Date"
+                      label="End date"
                       error={
                         // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_end_date?.message || ''
@@ -272,7 +274,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     <Input
                       {...register('metadata.ticket.event_end_time')}
                       type="time"
-                      label="End Time"
+                      label="End time"
                     />
                   </div>
 

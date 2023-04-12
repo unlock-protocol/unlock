@@ -97,7 +97,7 @@ const LockIcon = ({ lock }: LockIconProps) => {
     <div className="relative block overflow-hidden rounded-full h-14 w-14 group">
       <img
         alt="logo"
-        className="object-cover w-full h-full"
+        className="object-cover h-full aspect-1"
         src={imageSrc}
         onError={handleError}
       />
@@ -172,7 +172,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     <>
       <div className="px-12 py-4 bg-white shadow-lg rounded-2xl">
         <div className="grid items-center justify-between grid-cols-1 gap-7 md:gap-4 md:grid-cols-7">
-          <div className="flex gap-3 md:col-span-3">
+          <div className="grid grid-cols-[56px_1fr] md:flex gap-3 md:col-span-3">
             <LockIcon lock={lock} />
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-bold">{lock.name}</span>

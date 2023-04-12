@@ -2371,6 +2371,9 @@ paths:
               properties:
                 baseUrl:
                   type: string
+                stripeAccount:
+                  type: string
+
       responses:
         200:
           description: Successfully connected stripe account
@@ -2388,6 +2391,45 @@ paths:
                     type: number
                   object:
                     type: string
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/stripe/connections:
+    get:
+      operationId: getStripeConnections
+      security:
+        - User: []
+      description: Lists the locks connected to Stripe for a user
+      responses:
+        200:
+          description: List of locks previously connected to Stripe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      lock:
+                        type: string
+                      chain:
+                        type: number
+                      stripeAccount:
+                        type: string
+                  error:
+                    type: string
+                    nullable: true
 
         400:
           description: Invalid request
@@ -2485,3 +2527,32 @@ paths:
                     type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/certificate/{network}/lock/{lockAddress}/key/{keyId}/generate:
+    get:
+      operationId: generateCertificate
+      description: Generate certificate for specific key
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Successfully get certification for a key
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
