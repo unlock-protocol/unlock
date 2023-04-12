@@ -123,6 +123,7 @@ export interface NetworkConfig {
   faucet?: string
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
+  fullySubsidizedGas?: boolean
 }
 
 export interface NetworkConfigs {
