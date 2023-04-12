@@ -101,6 +101,14 @@ export const EmailTemplatePreview = ({
       transferUrl: '',
       lockImage,
       customContent: customContentHtml,
+      // event details
+      eventName: '{Event name}',
+      eventDescription: '{Email description}',
+      eventDate: '{Event date}',
+      eventTime: '{Event time}',
+      eventAddress: '{Event address }',
+      // certificate details
+      certificationDetail: 'https://example.it',
     }
 
     return params
