@@ -3,8 +3,7 @@ import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useTransferFee } from '~/hooks/useTransferFee'
 
 interface UpdateTransferFeeProps {
   lockAddress: string
@@ -25,8 +24,6 @@ export const UpdateTransferFee = ({
   disabled,
   unlimitedDuration,
 }: UpdateTransferFeeProps) => {
-  const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
   const [allowTransfer, setAllowTransfer] = useState(false)
 
   const {
@@ -40,24 +37,18 @@ export const UpdateTransferFee = ({
     },
   })
 
-  const getTransferFeeBasisPoints = async () => {
-    return await web3Service.transferFeeBasisPoints(lockAddress, network)
-  }
-
-  const updateTransferFee = async (fields: FormProps) => {
-    const walletService = await getWalletService(network)
-    await walletService.updateTransferFee({
-      lockAddress,
-      transferFeeBasisPoints: fields?.transferFeePercentage * 100,
-    })
-  }
+  const { updateTransferFee, getTransferFeeBasisPoints } = useTransferFee({
+    lockAddress,
+    network,
+  })
 
   const updateTransferFeeMutation = useMutation(updateTransferFee)
 
   const onSubmit = async (fields: FormProps) => {
     if (isValid) {
-      const updateTransferFeePromise =
-        updateTransferFeeMutation.mutateAsync(fields)
+      const updateTransferFeePromise = updateTransferFeeMutation.mutateAsync(
+        fields?.transferFeePercentage
+      )
 
       await ToastHelper.promise(updateTransferFeePromise, {
         loading: 'Updating transfer fee',

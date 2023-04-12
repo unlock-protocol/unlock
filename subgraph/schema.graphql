@@ -50,6 +50,8 @@ type Key @entity {
   tokenURI: String
   "Block key was created"
   createdAtBlock: BigInt!
+  "Timestamp of the block in which the key was created"
+  createdAt: BigInt!
   "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key"
   cancelled: Boolean
   "list of transaction hashes for purchase/extensions of a specific token"

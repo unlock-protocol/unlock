@@ -22,14 +22,14 @@ export interface Props {
   network: number
   isOpen: boolean
   setIsOpen(value: boolean): void
+  emailRequired?: boolean
 }
 
-export function AirdropKeysDrawer({
+export const AirdropForm = ({
   lockAddress,
   network,
-  isOpen,
-  setIsOpen,
-}: Props) {
+  emailRequired,
+}: Pick<Props, 'lockAddress' | 'network' | 'emailRequired'>) => {
   const { account, getWalletService } = useAuth()
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
@@ -139,40 +139,61 @@ export function AirdropKeysDrawer({
   }
 
   return (
+    <div className="mt-2 space-y-6">
+      {isLockDataLoading ? (
+        <Placeholder.Root>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <Placeholder.Line key={index} />
+          ))}
+        </Placeholder.Root>
+      ) : (
+        <Tab.Group defaultIndex={0}>
+          <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
+            {['Manual', 'Bulk'].map((text) => (
+              <Tab
+                key={text}
+                className={({ selected }) => {
+                  return `font-medium ${
+                    selected ? 'text-brand-ui-primary' : ''
+                  }`
+                }}
+              >
+                {text}
+              </Tab>
+            ))}
+          </Tab.List>
+          <Tab.Panels className="mt-6">
+            <Tab.Panel>
+              <AirdropManualForm
+                emailRequired={emailRequired}
+                lock={lockData!}
+                onConfirm={handleConfirm}
+              />
+            </Tab.Panel>
+            <Tab.Panel>
+              <AirdropBulkForm
+                lock={lockData!}
+                onConfirm={handleConfirm}
+                emailRequired={emailRequired}
+              />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+      )}
+    </div>
+  )
+}
+
+export function AirdropKeysDrawer({
+  lockAddress,
+  network,
+  isOpen,
+  setIsOpen,
+}: Props) {
+  return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Airdrop Keys">
       <div className="mt-2 space-y-6">
-        {isLockDataLoading ? (
-          <Placeholder.Root>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <Placeholder.Line key={index} />
-            ))}
-          </Placeholder.Root>
-        ) : (
-          <Tab.Group defaultIndex={0}>
-            <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
-              {['Manual', 'Bulk'].map((text) => (
-                <Tab
-                  key={text}
-                  className={({ selected }) => {
-                    return `font-medium ${
-                      selected ? 'text-brand-ui-primary' : ''
-                    }`
-                  }}
-                >
-                  {text}
-                </Tab>
-              ))}
-            </Tab.List>
-            <Tab.Panels className="mt-6">
-              <Tab.Panel>
-                <AirdropManualForm lock={lockData!} onConfirm={handleConfirm} />
-              </Tab.Panel>
-              <Tab.Panel>
-                <AirdropBulkForm lock={lockData!} onConfirm={handleConfirm} />
-              </Tab.Panel>
-            </Tab.Panels>
-          </Tab.Group>
-        )}
+        <AirdropForm lockAddress={lockAddress} network={network}></AirdropForm>
       </div>
     </Drawer>
   )
