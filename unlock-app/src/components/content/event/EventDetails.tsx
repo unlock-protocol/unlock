@@ -1,5 +1,4 @@
 import fontColorContrast from 'font-color-contrast'
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { GoLocation } from 'react-icons/go'
 import { FaCalendar, FaClock } from 'react-icons/fa'
@@ -9,7 +8,6 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
@@ -25,6 +23,8 @@ import { VerifierForm } from '~/components/interface/locks/Settings/forms/Verifi
 import dayjs from 'dayjs'
 import { WalletlessRegistration } from './WalletlessRegistration'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { useValidKey } from '~/hooks/useKey'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -33,7 +33,6 @@ interface EventDetailsProps {
 
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
-  const web3Service = useWeb3Service()
 
   const config = useConfig()
 
@@ -42,27 +41,24 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
-
   const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
   })
 
   const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =
-    useQuery(
-      ['hasValidKey', network, lockAddress, account],
-      async () => {
-        return web3Service.getHasValidKey(lockAddress, account!, network)
-      },
-      {
-        enabled: !!account,
-      }
-    )
+    useValidKey({
+      lockAddress,
+      network,
+      account,
+    })
 
   const { isManager: isLockManager } = useLockManager({
     lockAddress,
     network,
   })
+
+  const { isEvent } = getLockTypeByMetadata(metadata)
 
   if (isMetadataLoading || isHasValidKeyLoading) {
     return <LoadingIcon></LoadingIcon>
@@ -74,7 +70,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!isEvent) {
     if (isLockManager) {
       return (
         <>
@@ -96,7 +92,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     return <p>This contract is not configured.</p>
   }
 
-  const eventData = toFormData(metadata)
+  const eventData = toFormData(metadata!)
   const eventDate = getEventDate(eventData.ticket)
   const eventEndDate = getEventEndDate(eventData.ticket)
 
@@ -185,6 +181,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                       navigator.language || 'en-US',
                       {
                         timeZone: eventData.ticket.event_timezone,
+                        hour: '2-digit',
+                        minute: '2-digit',
                       }
                     )}
                   </span>
@@ -196,6 +194,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                           navigator.language || 'en-US',
                           {
                             timeZone: eventData.ticket.event_timezone,
+                            hour: '2-digit',
+                            minute: '2-digit',
                           }
                         )}
                       </span>
@@ -245,7 +245,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <Button
             variant="primary"
             size="medium"
-            className="md:w-1/2 mt-4"
+            className="mt-4 md:w-1/2"
             style={{
               backgroundColor: `#${eventData.background_color}`,
               color: `#${eventData.background_color}`

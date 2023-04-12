@@ -15538,8 +15538,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/core@workspace:packages/core"
   dependencies:
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@vitest/coverage-c8": 0.28.3
+    eslint: 8.36.0
+    tsup: ^6.7.0
     typescript: 4.9.5
+    vitest: 0.28.3
   peerDependencies:
     zod: 3.21.4
   languageName: unknown
@@ -15907,7 +15912,6 @@ __metadata:
     "@types/react": 18.0.32
     "@types/react-dom": 18.0.11
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": 3.1.0
     autoprefixer: 10.4.14
@@ -15928,6 +15932,7 @@ __metadata:
     typescript: 4.9.5
     url-loader: 4.1.1
     vite: 4.1.4
+    vite-plugin-node-polyfills: 0.7.0
     vite-plugin-svgr: 2.4.0
     vite-tsconfig-paths: 4.0.7
   peerDependencies:
@@ -15987,6 +15992,7 @@ __metadata:
     ethers: 5.7.2
     file-saver: 2.0.5
     font-color-contrast: 11.1.0
+    from-exponential: 1.1.1
     graphql: 16.6.0
     lottie-react: 2.4.0
     next: 13.1.6
@@ -29080,6 +29086,13 @@ __metadata:
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
   checksum: 13ea8b08f91e669a64e3ba3a20eb79d7ca5379a81f1ff7f4310d54e2320645503cc0c78daedc93dfb6191287295f6479544a649c64d8e41a1c0fb0c221552346
+  languageName: node
+  linkType: hard
+
+"from-exponential@npm:1.1.1":
+  version: 1.1.1
+  resolution: "from-exponential@npm:1.1.1"
+  checksum: af2765bd4f78836153c46cf4aff51ba9f2d1ac6b7d9568d69901d2045ba5b80a47de4f2a693bcc2006a7516cef71f636a4e42596cdd77a0addcc739539eb0f48
   languageName: node
   linkType: hard
 
@@ -50803,7 +50816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:6.7.0":
+"tsup@npm:6.7.0, tsup@npm:^6.7.0":
   version: 6.7.0
   resolution: "tsup@npm:6.7.0"
   dependencies:

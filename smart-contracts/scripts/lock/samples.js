@@ -10,6 +10,7 @@ async function main({
   unlockAddress,
   lockVersion,
   tokenAddress = AddressZero,
+  lockCount = 1
 }) {
   const signers = await ethers.getSigners()
 
@@ -24,11 +25,15 @@ async function main({
   const serializedLocks = Object.keys(Locks).map((name, i) => ({
     ...Locks[name],
     tokenAddress,
-    name: `Lock ${i}`,
+    name: `Lock ${i} (${(new Date()).toLocaleString()})`,
   }))
 
+  let deployed = 0
   // eslint-disable-next-line no-restricted-syntax
   for (const serializedLock of serializedLocks) {
+    // deploy only so much locks as `lockCount` specified
+    if(deployed >= lockCount) return
+    
     const newLockAddress = await createLock({
       unlockAddress,
       serializedLock,
@@ -73,6 +78,8 @@ async function main({
         console.log(`LOCK SAMPLES > key (${tokenId}) purchased by ${to}`)
       })
     
+    // keep track of how many logs have been deployed
+    deployed++
   }
 }
 
