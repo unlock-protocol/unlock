@@ -79,15 +79,26 @@ export const SIWEProvider = ({ children }: Props) => {
 
       const address = await walletService.signer.getAddress()
       const { data: nonce } = await storage.nonce()
+      const parent = new URL(
+        window.location != window.parent.location
+          ? document.referrer
+          : document.location.href
+      )
+      const resources = []
+      if (parent.host !== window.location.hostname) {
+        resources.push(window.location.origin)
+      }
       const siwe = new SiweMessage({
-        domain: window.location.hostname,
-        uri: window.location.origin,
+        domain: parent.host,
+        uri: parent.origin,
         address,
         chainId: network,
         version: '1',
         statement: '',
         nonce,
+        resources,
       })
+
       const message = siwe.prepareMessage()
       const signature = await walletService.signMessage(
         message,
