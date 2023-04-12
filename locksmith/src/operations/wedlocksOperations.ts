@@ -226,7 +226,9 @@ const getAttachments = async ({
       lockAddress,
       tokenId,
     })
-    attachments.push({ path: svgStringToDataURI(certificate) })
+    if (certificate) {
+      attachments.push({ path: svgStringToDataURI(certificate) })
+    }
   }
 
   return attachments
@@ -337,6 +339,7 @@ export const notifyNewKeyToWedlocks = async (
   network: number,
   includeQrCode = true
 ) => {
+  console.table(key.lock)
   const keyManager = new KeyManager()
   const lockAddress = Normalizer.ethereumAddress(key.lock.address)
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
@@ -357,7 +360,7 @@ export const notifyNewKeyToWedlocks = async (
   const protectedData = Normalizer.toLowerCaseKeys({
     ...userTokenMetadataRecord?.data?.userMetadata?.protected,
   })
-  const recipient = protectedData?.email as string
+  const recipient = 'kld.diagne@gmail.com' //protectedData?.email as string
 
   if (!recipient) {
     return

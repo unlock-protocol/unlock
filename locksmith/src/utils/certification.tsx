@@ -2,7 +2,7 @@ import normalizer from './normalizer'
 import config from '../config/config'
 import * as metadataOperations from '../operations/metadataOperations'
 import { Certificate, minifyAddress } from '@unlock-protocol/ui'
-import { SubgraphKey } from '@unlock-protocol/unlock-js'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import satori from 'satori'
 import dayjs from 'dayjs'
 
@@ -18,7 +18,6 @@ interface Options {
   network: number
   lockAddress: string
   tokenId: string
-  key?: Omit<SubgraphKey, 'lock'>
 }
 
 /**
@@ -28,8 +27,24 @@ export const createCertificate = async ({
   network,
   lockAddress: lock,
   tokenId,
-  key,
 }: Options) => {
+  const subgraph = new SubgraphService()
+  const key = await subgraph.key(
+    {
+      where: {
+        lock: lock.toLowerCase(),
+        tokenId,
+      },
+    },
+    {
+      network,
+    }
+  )
+
+  if (!key) {
+    return null
+  }
+
   const lockAddress = normalizer.ethereumAddress(lock)
 
   const [lockData, metadata] = await Promise.all([
@@ -59,7 +74,6 @@ export const createCertificate = async ({
   const transactionHash = key?.transactionsHash?.[0] ?? ''
 
   const expiration =
-    key?.expiration &&
     key?.expiration === ethers.constants.MaxUint256.toString()
       ? ''
       : dayjs.unix(key?.expiration).format('DD MMM YYYY') // example ('18 Apr 2023')
@@ -91,7 +105,7 @@ export const createCertificate = async ({
           0,
           5
         )}...${transactionHash.slice(transactionHash.length - 5)}`}
-        expiration={expiration}
+        expiration={key?.expiration ? expiration : undefined}
         externalUrl={metadata?.external_url}
       />
     </div>,
@@ -114,6 +128,5 @@ export const createCertificate = async ({
       ],
     }
   )
-  console.log('certificate', certificate)
   return certificate
 }
