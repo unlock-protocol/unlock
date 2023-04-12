@@ -39,6 +39,7 @@ export const mumbai: NetworkConfig = {
   url: 'https://mumbai.polygonscan.com/',
   faucet: 'https://faucet.polygon.technology/',
   isTestNetwork: true,
+  fullySubsidizedGas: true,
   maxFreeClaimCost: 500,
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
