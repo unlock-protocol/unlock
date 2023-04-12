@@ -354,8 +354,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       {...register('lock.maxNumberOfKeys', {
                         min: 0,
                         required: {
-                          value: true,
-                          message: 'Capacity is required. ',
+                          value: !unlimitedCapacity,
+                          message: 'This value is required',
                         },
                       })}
                       disabled={unlimitedCapacity || !allowPurchase}
@@ -367,6 +367,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       description={
                         'This is the maximum number of certifications available.'
                       }
+                      error={errors?.lock?.maxNumberOfKeys?.message}
                     />
                   </div>
                 </>
