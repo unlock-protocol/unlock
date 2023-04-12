@@ -7,8 +7,6 @@ const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import { Ticket } from '@unlock-protocol/ui'
 import normalizer from './normalizer'
-import logger from '../logger'
-import lockIcon from './lockIcon'
 import { imageUrlToBase64 } from './image'
 
 interface Options {
@@ -17,20 +15,6 @@ interface Options {
   tokenId: string
   owner: string
   name?: string
-}
-
-const imageURLToBase64 = async (url: string, lockAddress: string) => {
-  try {
-    return imageUrlToBase64(url)
-  } catch (error) {
-    logger.info(error)
-    // Fallback to the lock icon if the image is not available
-    const icon = lockIcon.lockIcon(lockAddress)
-    const dataURI = `data:image/svg+xml; charset=utf-8;base64,${Buffer.from(
-      icon
-    ).toString('base64')}`
-    return dataURI
-  }
 }
 
 /**
@@ -75,7 +59,7 @@ export const createTicket = async ({
   const imageURL: string =
     metadata?.image ||
     `${config.services.locksmith}/lock/${lockAddress}/icon?id=${tokenId}`
-  const iconURL = await imageURLToBase64(imageURL, lockAddress)
+  const iconURL = await imageUrlToBase64(imageURL, lockAddress)
 
   const ticket = await satori(
     <div

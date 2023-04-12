@@ -64,7 +64,7 @@ export const createCertificate = async ({
       ? ''
       : dayjs.unix(key?.expiration).format('DD MMM YYYY') // example ('18 Apr 2023')
 
-  const imageBase64 = await imageUrlToBase64(metadata?.image)
+  const imageBase64 = await imageUrlToBase64(metadata?.image, lockAddress)
 
   const certificate = await satori(
     <div
