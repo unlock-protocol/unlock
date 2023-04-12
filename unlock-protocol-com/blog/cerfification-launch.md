@@ -35,7 +35,7 @@ Enter the basic information for your certification including:
 
 ### Price and quantity
 
-By default, your certification can't be purchased. By default, it can only be granted (”airdropped”) to a recipient. (We’ll explore how to perform the airdrop later in this article.)
+By default, your certification can't be purchased: it can only be granted (”airdropped”) to a recipient. (We’ll explore how to perform the airdrop later in this article.)
 
 ![price-quantity-min.png](/images/blog/certifications/price-quantity-min.png)
 
