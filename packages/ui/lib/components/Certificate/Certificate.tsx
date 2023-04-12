@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 import networks from '@unlock-protocol/networks'
-import { Link } from '../Link/Link'
 import { minifyAddress } from '~/utils'
 import { Size } from '~/types'
 
@@ -10,14 +9,16 @@ interface CertificateProps {
   owner: string
   lockAddress: string
   network: number
+  networkName?: string
   expiration?: string
   issuer: string
   image: string
   issueDate?: string
   tokenId?: string | number
-  badge?: string
+  badge?: ReactNode
   transactionsHash?: ReactNode
   externalUrl?: string
+  isMobile?: boolean
 }
 
 interface Props {
@@ -32,6 +33,8 @@ const ValueWrapper = ({ children }: Props) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '8px',
+        textAlign: 'left',
+        flex: 1,
       }}
     >
       {children}
@@ -42,6 +45,8 @@ const CertificateLabel = ({ children }: Props) => {
   return (
     <span
       style={{
+        display: 'flex',
+        flexDirection: 'column',
         color: '#374151',
         fontSize: '12px',
         lineHeight: '16px',
@@ -52,14 +57,14 @@ const CertificateLabel = ({ children }: Props) => {
   )
 }
 const CertificateValue = ({ children, size = 'medium' }: Props) => {
-  const sizes: Record<Size, any> = {
+  const sizes: Record<any, any> = {
     tiny: '12px',
     small: '14px',
     medium: '16px',
     large: '24px',
   }
 
-  const weights: Record<Size, any> = {
+  const weights: Record<any, any> = {
     tiny: 500,
     small: 600,
     medium: 600,
@@ -69,6 +74,7 @@ const CertificateValue = ({ children, size = 'medium' }: Props) => {
   return (
     <span
       style={{
+        display: 'flex',
         fontSize: sizes[size],
         fontWeight: weights[size],
       }}
@@ -100,6 +106,8 @@ const Badge = ({ children }: Props) => {
           lineHeight: '36px',
           color: 'white',
           fontWeight: 700,
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         {children}
@@ -122,18 +130,24 @@ export const Certificate = ({
   transactionsHash,
   externalUrl,
   image,
+  networkName,
+  isMobile = false,
 }: CertificateProps) => {
-  const mediaMatch = window?.matchMedia('(min-width: 768px)')
-  const isMobile = !mediaMatch?.matches
+  const networkNameById = networks[network]?.name
 
   return (
     <div
       style={{
+        background: '#FFFDF8',
+        display: 'flex',
         position: 'relative',
         border: '1px solid #e5e7eb',
         overflow: 'hidden',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+        flexDirection: isMobile ? 'column' : 'row',
+        width: '100%',
+        minHeight: '500px',
+        height: '100%',
+        alignItems: 'stretch',
       }}
     >
       {badge && <Badge>{badge}</Badge>}
@@ -141,15 +155,17 @@ export const Certificate = ({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gridColumn: 'span 2 / span 2',
           gap: isMobile ? '40px' : '96px',
           padding: isMobile ? '24px' : '44px 48px',
           marginTop: '12px',
+          height: '100%',
+          flex: 2,
         }}
       >
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h2
             style={{
+              display: 'flex',
               fontSize: isMobile ? '20px' : '36px',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -188,25 +204,32 @@ export const Certificate = ({
               {description && (
                 <div
                   style={{
+                    display: 'flex',
                     marginTop: '10px',
                   }}
                 >
-                  <CertificateLabel>{description}</CertificateLabel>
+                  <CertificateLabel>
+                    <span
+                      style={{
+                        display: 'flex',
+                      }}
+                    >
+                      {description}
+                    </span>
+                  </CertificateLabel>
                 </div>
               )}
             </div>
           </div>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile
-                ? '1fr'
-                : 'repeat(3, minmax(0, 1fr))',
+              display: 'flex',
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               gap: isMobile ? '16px' : 0,
+              marginTop: isMobile ? '30px' : '100px',
             }}
           >
             {expiration && (
@@ -217,7 +240,9 @@ export const Certificate = ({
             )}
             <ValueWrapper>
               <CertificateLabel>Network</CertificateLabel>
-              <CertificateValue> {networks[network].name}</CertificateValue>
+              <CertificateValue>
+                {networkName || networkNameById}
+              </CertificateValue>
             </ValueWrapper>
             <ValueWrapper>
               <CertificateLabel>Certification/Token ID</CertificateLabel>
@@ -225,12 +250,21 @@ export const Certificate = ({
             </ValueWrapper>
             <ValueWrapper>
               <CertificateLabel>Transaction Hash</CertificateLabel>
-              <CertificateValue>{transactionsHash}</CertificateValue>
+              <CertificateValue>
+                <div
+                  style={{
+                    display: 'flex',
+                  }}
+                >
+                  {transactionsHash}
+                </div>
+              </CertificateValue>
             </ValueWrapper>
           </div>
 
           <div
             style={{
+              display: 'flex',
               marginTop: '40px',
             }}
           >
@@ -242,8 +276,10 @@ export const Certificate = ({
       </div>
       <div
         style={{
-          height: '100%',
-          gridColumn: 'span 1 / span 1',
+          display: 'flex',
+          width: '100%',
+          minWidth: '300px',
+          flex: 1,
         }}
       >
         <div
@@ -251,6 +287,7 @@ export const Certificate = ({
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
+            width: '100%',
           }}
         >
           <div
@@ -259,44 +296,52 @@ export const Certificate = ({
               height: '100%',
               flexDirection: 'column',
               gap: '16px',
-              width: isMobile ? '100%' : '80%',
+              width: isMobile ? '100%' : '300px',
               background: '#FAFBFC',
               borderRight: isMobile ? 'none' : '1px solid #9ca3af',
               borderLeft: isMobile ? 'none' : '1px solid #9ca3af',
               padding: isMobile ? '0 16px 40px 16px' : '40px 24px 0 24px',
+              marginLeft: 'auto',
+              marginRight: isMobile ? 'none' : '50px',
             }}
           >
             <img
               style={{
                 width: '100%',
-                marginBottom: '10px',
-                aspectRatio: 'auto',
                 borderRadius: '16px',
                 overflow: 'hidden',
               }}
+              width={200}
+              height={200}
               alt={name}
               src={image}
             />
             {issuer && (
               <div
                 style={{
+                  display: 'flex',
+                  flexDirection: 'column',
                   textAlign: 'center',
+                  marginTop: '24px',
                 }}
               >
                 <div
                   style={{
+                    display: 'flex',
                     color: '#4b5563',
                     fontSize: '12px',
                     lineHeight: '16px',
                     fontWeight: 600,
+                    margin: 'auto',
                   }}
                 >
                   This certification is issued by
                 </div>
                 <CertificateValue>
-                  <Link
+                  <a
                     style={{
                       display: 'flex',
+                      margin: 'auto',
                     }}
                     className="hover:text-brand-ui-primary"
                     href={externalUrl ?? '#'}
@@ -309,21 +354,23 @@ export const Certificate = ({
                         marginRight: 'auto',
                         gap: '4px',
                         alignItems: 'center',
+                        fontSize: '14px',
                       }}
                     >
                       <span>{minifyAddress(issuer)}</span>
                     </div>
-                  </Link>
+                  </a>
                 </CertificateValue>
               </div>
             )}
             <div
               style={{
+                display: 'flex',
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
             >
-              <Link
+              <a
                 className="hover:text-brand-ui-primary"
                 href={
                   networks[network]?.explorer?.urls.address(lockAddress) || '#'
@@ -361,7 +408,7 @@ export const Certificate = ({
                     </g>
                   </svg>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

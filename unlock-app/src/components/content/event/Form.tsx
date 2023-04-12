@@ -243,7 +243,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       type="date"
-                      label="Star date"
+                      label="Start date"
                       error={
                         // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_start_date?.message || ''
