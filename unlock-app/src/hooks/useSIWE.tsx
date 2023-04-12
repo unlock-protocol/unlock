@@ -85,7 +85,7 @@ export const SIWEProvider = ({ children }: Props) => {
           : document.location.href
       )
       const resources = []
-      if (parent.host !== window.location.hostname) {
+      if (parent.host !== window.location.host) {
         resources.push(window.location.origin)
       }
       const siwe = new SiweMessage({
