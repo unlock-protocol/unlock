@@ -15508,7 +15508,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@vitest/coverage-c8": 0.28.3
     eslint: 8.36.0
-    tsup: ^6.7.0
+    tsup: 6.7.0
     typescript: 4.9.5
     vitest: 0.28.3
   peerDependencies:
@@ -15533,7 +15533,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     storybook: 7.0.0
-    tsup: 6.6.3
+    tsup: 6.7.0
     tsx: 3.12.6
     typescript: 4.9.5
     vite: 4.2.1
@@ -50932,7 +50932,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:6.7.0, tsup@npm:^6.7.0":
+"tsup@npm:6.7.0":
   version: 6.7.0
   resolution: "tsup@npm:6.7.0"
   dependencies:
