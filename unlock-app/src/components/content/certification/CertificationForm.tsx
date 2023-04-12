@@ -327,8 +327,12 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           step={0.01}
                           disabled={isFree}
                           {...register('lock.keyPrice', {
-                            required: !isFree,
+                            required: {
+                              value: !isFree,
+                              message: 'This value is required',
+                            },
                           })}
+                          error={errors?.lock?.keyPrice?.message}
                         />
                       </div>
                     </div>
