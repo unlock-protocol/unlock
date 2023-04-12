@@ -1,17 +1,14 @@
 import fontColorContrast from 'font-color-contrast'
-import { useState } from 'react'
-import { GoLocation } from 'react-icons/go'
-import { FaCalendar, FaClock } from 'react-icons/fa'
+import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
+import { Button, Icon, Modal } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -23,18 +20,86 @@ import { VerifierForm } from '~/components/interface/locks/Settings/forms/Verifi
 import dayjs from 'dayjs'
 import { WalletlessRegistration } from './WalletlessRegistration'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
+import { FiMapPin as MapPinIcon } from 'react-icons/fi'
+import { IconType } from 'react-icons'
 import { useValidKey } from '~/hooks/useKey'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { ethers } from 'ethers'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useLockData } from '~/hooks/useLockData'
+import { useQueries } from '@tanstack/react-query'
+import networks from '@unlock-protocol/networks'
+import { useGetLockSymbol } from '~/hooks/useSymbol'
+import { useGetPrice } from '~/hooks/usePrice'
 
 interface EventDetailsProps {
   lockAddress: string
   network: number
 }
 
+interface EventDetailProps {
+  icon: IconType
+  label: string
+  children?: ReactNode
+}
+
+const EventDetail = ({ label, icon, children }: EventDetailProps) => {
+  return (
+    <div className="flex gap-4">
+      <div className="flex w-16 h-16 bg-white border border-gray-200 rounded-2xl">
+        <Icon className="m-auto" icon={icon} size={32} />
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-xl font-bold text-black">{label}</span>
+        <div>{children}</div>
+      </div>
+    </div>
+  )
+}
+
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
+  const web3service = useWeb3Service()
 
   const config = useConfig()
+  const { lock } = useLockData({
+    lockAddress,
+    network,
+  })
+
+  const { data: symbol } = useGetLockSymbol({
+    lockAddress,
+    network,
+    contractAddress: lock?.currencyContractAddress,
+  })
+
+  const { data: priceTest } = useGetPrice({
+    network,
+    amount: lock?.keyPrice || 0,
+    currencyContractAddress: lock?.currencyContractAddress || undefined,
+  })
+
+  const tokenAddress =
+    lock?.currencyContractAddress || networks?.[network].nativeCurrency.symbol
+  const lockKeyPrice = lock?.keyPrice || 0
+
+  const getKeyPrice = async () => {
+    const decimals = await web3service.getTokenDecimals(tokenAddress, network)
+    return ethers.utils.formatUnits(lockKeyPrice, decimals)
+  }
+
+  console.log('tokenAddress', symbol, priceTest, lock?.keyPrice)
+  const [{ isLoading: loadingPrice, data: keyPrice }] = useQueries({
+    queries: [
+      {
+        queryKey: ['getKeyPrice', lockAddress, network, tokenAddress],
+        queryFn: async () => await getKeyPrice(),
+      },
+    ],
+  })
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
@@ -61,7 +126,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { isEvent } = getLockTypeByMetadata(metadata)
 
   if (isMetadataLoading || isHasValidKeyLoading) {
-    return <LoadingIcon></LoadingIcon>
+    return <LoadingIcon />
   }
 
   const onEdit = () => {
@@ -109,8 +174,43 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     },
   }
 
+  const startDate = eventDate
+    ? eventDate.toLocaleDateString(undefined, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    : null
+
+  const startTime =
+    eventDate && eventData.ticket?.event_start_time
+      ? eventDate.toLocaleTimeString(navigator.language || 'en-US', {
+          timeZone: eventData.ticket.event_timezone,
+        })
+      : undefined
+
+  const endDate =
+    eventEndDate && eventEndDate && !isSameDay
+      ? eventEndDate.toLocaleDateString(undefined, {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })
+      : null
+
+  const endTime =
+    eventDate && eventData.ticket?.event_end_time && eventEndDate && isSameDay
+      ? eventEndDate.toLocaleTimeString(navigator.language || 'en-US', {
+          timeZone: eventData.ticket.event_timezone,
+        })
+      : null
+
+  const hasLocation = (eventData?.ticket?.event_address || '')?.length > 0
+
   return (
-    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] mt-8">
+    <div>
       <Modal
         isOpen={isCheckoutOpen && !isClaimable}
         setIsOpen={setCheckoutOpen}
@@ -123,141 +223,130 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         />
       </Modal>
 
-      <section className="">
-        <h1 className="mb-4 text-5xl font-bold md:text-7xl">
-          {eventData.name}
-        </h1>
-        <div className="flex gap-2 mb-4 flex-rows">
-          <span className="text-brand-gray">Ticket contract</span>
-          <AddressLink
-            lockAddress={lockAddress}
-            network={network}
-          ></AddressLink>
+      <div className="relative">
+        <div className="relative h-28 md:h-80 bg-slate-200 rounded-3xl">
+          <div className="absolute z-10 bottom-3 right-3 md:bottom-8 nd:right-9">
+            <Button variant="secondary" size="tiny">
+              Upload Image
+            </Button>
+          </div>
+          <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
+            <section className="flex justify-between">
+              <div className="flex w-24 h-24 p-2 bg-white md:w-48 md:h-48 rounded-3xl">
+                <img
+                  alt={eventData.title}
+                  className="w-full m-auto aspect-1"
+                  src={eventData.image}
+                />
+              </div>
+              <ul className="flex items-center gap-4 mt-auto">
+                <li>
+                  <AddToCalendarButton event={eventData} />
+                </li>
+                <li>
+                  <TweetItButton event={eventData} />
+                </li>
+              </ul>
+            </section>
+          </div>
         </div>
-        <ul
-          className="mb-6 text-xl bold md:text-2xl"
-          style={{ color: `#${eventData.background_color}` }}
-        >
-          {eventDate && (
-            <li className="flex items-center mb-2 ">
-              <FaCalendar className="inline mr-2" />
-              <div className="flex flex-col gap-1 text-lg md:flex-row md:items-center md:text-2xl">
-                <span>
-                  {eventDate.toLocaleDateString(undefined, {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </span>
-                {eventEndDate && !isSameDay && (
-                  <>
-                    <span className="hidden md:block">to</span>
-                    <span>
-                      {eventEndDate.toLocaleDateString(undefined, {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </span>
-                  </>
+
+        <section className="grid items-start grid-cols-3 mt-14 md:px-12 md:mt-28">
+          <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
+            <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
+            <div className="flex gap-2 flex-rows">
+              <span className="text-brand-gray">Ticket contract</span>
+              <AddressLink
+                lockAddress={lockAddress}
+                network={network}
+              ></AddressLink>
+            </div>
+            <section className="mt-1">
+              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
+                {
+                  <EventDetail label="Date & Time" icon={CalendarIcon}>
+                    <div
+                      style={{ color: `#${eventData.background_color}` }}
+                      className="flex flex-col text-lg font-normal capitalize text-brand-dark"
+                    >
+                      <span>
+                        {startDate} {endDate && <>to {endDate}</>}
+                      </span>
+                      <span>
+                        {startTime} {endTime && <>to {endTime}</>}
+                      </span>
+                    </div>
+                  </EventDetail>
+                }
+                {hasLocation && (
+                  <EventDetail label="Location" icon={MapPinIcon}>
+                    <div
+                      style={{ color: `#${eventData.background_color}` }}
+                      className="flex flex-col gap-0.5"
+                    >
+                      <span className="text-lg font-normal capitalize text-brand-dark">
+                        {eventData.ticket?.event_address}
+                      </span>
+                      <Link
+                        target="_blank"
+                        className="text-base font-bold"
+                        href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
+                      >
+                        Show map
+                      </Link>
+                    </div>
+                  </EventDetail>
                 )}
               </div>
-            </li>
-          )}
-          {eventDate && eventData.ticket?.event_start_time && (
-            <li className="flex items-center mb-2">
-              <FaClock className="inline mr-2" />
-              <Tooltip
-                delay={0}
-                label={eventData.ticket.event_timezone}
-                tip={eventData.ticket.event_timezone}
-                side="bottom"
-              >
-                <div className="flex items-center gap-1 text-lg md:text-2xl">
-                  <span>
-                    {eventDate.toLocaleTimeString(
-                      navigator.language || 'en-US',
-                      {
-                        timeZone: eventData.ticket.event_timezone,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      }
-                    )}
-                  </span>
-                  {eventEndDate && isSameDay && (
-                    <>
-                      <span>to</span>
-                      <span>
-                        {eventEndDate.toLocaleTimeString(
-                          navigator.language || 'en-US',
-                          {
-                            timeZone: eventData.ticket.event_timezone,
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          }
-                        )}
-                      </span>
-                    </>
-                  )}
-                </div>
-              </Tooltip>
-            </li>
-          )}
-          {(eventData?.ticket?.event_address || '')?.length > 0 && (
-            <li className="mb-2">
-              <Link
-                target="_blank"
-                href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
-              >
-                <GoLocation className="inline mr-2" />
-                {eventData.ticket?.event_address}
-              </Link>
-            </li>
-          )}
-        </ul>
-        {eventData.description && (
-          <div className="markdown">
-            {/* eslint-disable-next-line react/no-children-prop */}
-            <ReactMarkdown children={eventData.description} />
+              <div className="mt-6">
+                <h2 className="text-2xl font-bold">Event Information</h2>
+                {eventData.description && (
+                  <div className="mt-4 markdown">
+                    {/* eslint-disable-next-line react/no-children-prop */}
+                    <ReactMarkdown children={eventData.description} />
+                  </div>
+                )}
+              </div>
+            </section>
           </div>
-        )}
-      </section>
+          {!hasValidKey && !isCheckoutOpen && (
+            <div className="flex flex-col col-span-3 gap-6 p-6 bg-white border border-gray-200 md:col-span-1 rounded-3xl">
+              <span className="text-2xl font-bold text-gray-900">
+                Registration
+              </span>
+              <div className="flex items-center gap-5">
+                <div className="flex items-center gap-2">
+                  <>
+                    {symbol && <CryptoIcon symbol={symbol} size={30} />}
+                    <span>{keyPrice}</span>
+                  </>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon icon={TicketIcon} size={30} />
+                  <span className="text-base font-bold">29</span>
+                  <span className="text-gray-600">Left</span>
+                </div>
+              </div>
+              <Button
+                variant="primary"
+                size="medium"
+                style={{
+                  backgroundColor: `#${eventData.background_color}`,
+                  color: `#${eventData.background_color}`
+                    ? fontColorContrast(`#${eventData.background_color}`)
+                    : 'white',
+                }}
+                disabled={isClaimableLoading}
+                onClick={() => setCheckoutOpen(true)}
+              >
+                Register
+              </Button>
+            </div>
+          )}
+        </section>
+      </div>
 
-      <section className="flex flex-col items-center">
-        <img
-          alt={eventData.title}
-          className="mb-4 aspect-auto "
-          src={eventData.image}
-        />
-        <ul className="flex justify-around w-1/2">
-          <li className="bg-gray-200 rounded-full">
-            <AddToCalendarButton event={eventData} />
-          </li>
-          <li className="bg-gray-200 rounded-full">
-            <TweetItButton event={eventData} />
-          </li>
-        </ul>
-      </section>
       <section className="flex flex-col mb-8">
-        {!hasValidKey && !isCheckoutOpen && (
-          <Button
-            variant="primary"
-            size="medium"
-            className="mt-4 md:w-1/2"
-            style={{
-              backgroundColor: `#${eventData.background_color}`,
-              color: `#${eventData.background_color}`
-                ? fontColorContrast(`#${eventData.background_color}`)
-                : 'white',
-            }}
-            disabled={isClaimableLoading}
-            onClick={() => setCheckoutOpen(true)}
-          >
-            Register
-          </Button>
-        )}
         {!hasValidKey && isClaimable && isCheckoutOpen && (
           <WalletlessRegistration lockAddress={lockAddress} network={network} />
         )}
@@ -318,7 +407,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         )}
       </section>
-    </main>
+    </div>
   )
 }
 
