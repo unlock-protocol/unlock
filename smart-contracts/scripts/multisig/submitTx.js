@@ -21,7 +21,7 @@ const safeServiceURLs = {
   42161: 'https://safe-transaction-arbitrum.safe.global',
   43114: 'https://safe-transaction-avalanche.safe.global/',
   42220:
-    'https://transaction-service.gnosis-safe-staging.celo-networks-dev.org',
+    'https://safe-transaction-celo.safe.global/',
   // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
   80001: 'http://localhost:8000/cgw/',
 }
