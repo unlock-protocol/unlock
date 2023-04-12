@@ -8,7 +8,7 @@ import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Icon, Modal } from '@unlock-protocol/ui'
+import { Button, Drawer, Icon, Modal } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -27,13 +27,8 @@ import { useValidKey } from '~/hooks/useKey'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { ethers } from 'ethers'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useLockData } from '~/hooks/useLockData'
-import { useQueries } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
 import { useGetLockSymbol } from '~/hooks/useSymbol'
-import { useGetPrice } from '~/hooks/usePrice'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -60,9 +55,30 @@ const EventDetail = ({ label, icon, children }: EventDetailProps) => {
   )
 }
 
+const CoverImageDrawer = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="relative inset-0 z-1">
+      <Button
+        className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
+        variant="secondary"
+        size="tiny"
+        onClick={() => setIsOpen(true)}
+      >
+        Upload Image
+      </Button>
+      <div className="relative">
+        <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Cover image">
+          <div className="z-10 mt-2 space-y-6">lorem</div>
+        </Drawer>
+      </div>
+    </div>
+  )
+}
+
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
-  const web3service = useWeb3Service()
 
   const config = useConfig()
   const { lock } = useLockData({
@@ -74,31 +90,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
     contractAddress: lock?.currencyContractAddress,
-  })
-
-  const { data: priceTest } = useGetPrice({
-    network,
-    amount: lock?.keyPrice || 0,
-    currencyContractAddress: lock?.currencyContractAddress || undefined,
-  })
-
-  const tokenAddress =
-    lock?.currencyContractAddress || networks?.[network].nativeCurrency.symbol
-  const lockKeyPrice = lock?.keyPrice || 0
-
-  const getKeyPrice = async () => {
-    const decimals = await web3service.getTokenDecimals(tokenAddress, network)
-    return ethers.utils.formatUnits(lockKeyPrice, decimals)
-  }
-
-  console.log('tokenAddress', symbol, priceTest, lock?.keyPrice)
-  const [{ isLoading: loadingPrice, data: keyPrice }] = useQueries({
-    queries: [
-      {
-        queryKey: ['getKeyPrice', lockAddress, network, tokenAddress],
-        queryFn: async () => await getKeyPrice(),
-      },
-    ],
   })
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
@@ -225,11 +216,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
       <div className="relative">
         <div className="relative h-28 md:h-80 bg-slate-200 rounded-3xl">
-          <div className="absolute z-10 bottom-3 right-3 md:bottom-8 nd:right-9">
-            <Button variant="secondary" size="tiny">
-              Upload Image
-            </Button>
-          </div>
+          <CoverImageDrawer />
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
               <div className="flex w-24 h-24 p-2 bg-white md:w-48 md:h-48 rounded-3xl">
@@ -318,7 +305,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 <div className="flex items-center gap-2">
                   <>
                     {symbol && <CryptoIcon symbol={symbol} size={30} />}
-                    <span>{keyPrice}</span>
+                    <span>{lock?.keyPrice}</span>
                   </>
                 </div>
                 <div className="flex items-center gap-2">
