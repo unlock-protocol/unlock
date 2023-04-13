@@ -56,7 +56,7 @@ const Card = ({
       padding={padding}
       shadow={shadow}
       className={className}
-      as={as}
+      as={as || 'div'}
     >
       {children}
     </CardBase>
