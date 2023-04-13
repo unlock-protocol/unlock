@@ -53,7 +53,7 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
 
     // If empty, break the loop and return as there are no more new keys to process.
     if (!keys.length) {
-      logger.info('No new keys for', { network })
+      logger.info(`No new keys for ${network}`)
       break
     }
     logger.info('Found new keys', {

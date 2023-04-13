@@ -371,7 +371,7 @@ export const notifyNewKeyToWedlocks = async (
   })
 
   const isAirdroppedRecipient =
-    airdroppedRecipient?.toLowerCase() === ownerAddress?.toLowerCase() &&
+    airdroppedRecipient?.toLowerCase() === ownerAddress?.toLowerCase() ||
     manager?.toLowerCase().trim() ===
       networks[network!]?.keyManagerAddress?.toLowerCase()?.trim()
 
