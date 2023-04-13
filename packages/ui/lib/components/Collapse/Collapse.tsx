@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '../Button/Button'
 import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
+import { Card } from '../Card/Card'
 
 export interface CollapseProps {
   isOpen: boolean
@@ -22,8 +23,8 @@ export const Collapse = ({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl">
-      <div className="flex items-start gap-3 p-4">
+    <Card padding="xs">
+      <div className="flex items-start gap-3">
         <div className="col-span-full md:col-span-1">
           <Button
             variant="transparent"
@@ -42,7 +43,7 @@ export const Collapse = ({
         </div>
         <div className="w-full">{content}</div>
       </div>
-      {isOpen && <div className="p-6">{children}</div>}
-    </div>
+      {isOpen && <div className="p-4">{children}</div>}
+    </Card>
   )
 }

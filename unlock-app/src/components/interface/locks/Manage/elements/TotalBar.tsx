@@ -1,4 +1,4 @@
-import { Button, Detail } from '@unlock-protocol/ui'
+import { Button, Detail, Card } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
@@ -59,12 +59,12 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const symbol = lock?.currencySymbol || baseCurrencySymbol
 
   const wrapperClass =
-    'pt-4 first-of-type:pt-0 md:py-0 md:pl-4 grow shrink-0 basis-0'
+    'pt-4 pb-4 md:pb-0 first-of-type:pt-0 md:py-0 md:pl-4 grow shrink-0 basis-0'
 
   const Stats = () => {
     return (
       <>
-        <div className="grid w-full grid-cols-3 divide-y md:p-8 md:divide-y-0 md:divide-x divide-x-gray-500">
+        <div className="grid w-full grid-cols-1 divide-y md:gap-0 md:grid-cols-3 md:divide-y-0 md:divide-x divide-x-gray-500">
           <div className={wrapperClass}>
             <Detail label="Total members" loading={loading} valueSize="large">
               {numberOfOwners}
@@ -109,7 +109,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   }
 
   return (
-    <div className="flex flex-col border border-gray-500 rounded-2xl">
+    <Card variant="transparent" className="flex flex-col">
       {withdrawModal && (
         <WithdrawFundModal
           isOpen={withdrawModal}
@@ -144,6 +144,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
         </button>
         {showStats && <Stats />}
       </div>
-    </div>
+    </Card>
   )
 }

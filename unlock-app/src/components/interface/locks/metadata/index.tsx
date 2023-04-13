@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Card } from '@unlock-protocol/ui'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
@@ -218,58 +218,62 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
           </a>
         </div>
       </div>
-      <div className="grid gap-6 p-6 border border-ui-secondary-600 bg-ui-secondary-400 rounded-xl">
-        <div className="space-y-1">
-          <h3 className="text-lg font-bold">Metadata</h3>
-          <p className="text-gray-600">
-            Select the Lock or Key you want to edit properties for. If you save
-            metadata for lock only, it will be used for all keys which do not
-            have any metadata set.
-          </p>
+      <Card variant="secondary">
+        <div className="grid gap-6">
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold">Metadata</h3>
+            <p className="text-gray-600">
+              Select the Lock or Key you want to edit properties for. If you
+              save metadata for lock only, it will be used for all keys which do
+              not have any metadata set.
+            </p>
+          </div>
+          <Picker
+            userAddress={account!}
+            lockAddress={lockAddress}
+            network={network}
+            keyId={keyId}
+            collect={{
+              lockAddress: true,
+              network: true,
+              key: true,
+            }}
+            onChange={(selected) => {
+              setSelected(selected)
+            }}
+          />
         </div>
-        <Picker
-          userAddress={account!}
-          lockAddress={lockAddress}
-          network={network}
-          keyId={keyId}
-          collect={{
-            lockAddress: true,
-            network: true,
-            key: true,
-          }}
-          onChange={(selected) => {
-            setSelected(selected)
-          }}
-        />
-      </div>
+      </Card>
       {isLoading && <LoadingIcon />}
       {!isLoading && !isTokenURIEditable && isLockSelected && (
-        <div className="grid gap-6 p-6 border border-red-300 bg-red-50 rounded-xl">
-          <div className="flex items-center gap-4">
-            <div className="hidden p-2 bg-red-200 rounded-full sm:block">
-              <ErrorIcon size={24} className="fill-red-900" />
+        <Card variant="danger">
+          <div className="grid gap-6">
+            <div className="flex items-center gap-4">
+              <div className="hidden p-2 bg-red-200 rounded-full sm:block">
+                <ErrorIcon size={24} className="fill-red-900" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-red-900">
+                  Unexpected Base Token URI
+                </h3>
+                <p className="text-gray-600">
+                  You need to change your base token URI to be editable by the
+                  Unlock Dashboard.
+                </p>
+              </div>
             </div>
-            <div className="space-y-1">
-              <h3 className="text-xl font-bold text-red-900">
-                Unexpected Base Token URI
-              </h3>
-              <p className="text-gray-600">
-                You need to change your base token URI to be editable by the
-                Unlock Dashboard.
-              </p>
-            </div>
+            <Button
+              disabled={isUpdatingBaseTokenURI}
+              loading={isUpdatingBaseTokenURI}
+              onClick={async (event) => {
+                event.preventDefault()
+                await update(baseTokenURI)
+              }}
+            >
+              Change Base Token URI
+            </Button>
           </div>
-          <Button
-            disabled={isUpdatingBaseTokenURI}
-            loading={isUpdatingBaseTokenURI}
-            onClick={async (event) => {
-              event.preventDefault()
-              await update(baseTokenURI)
-            }}
-          >
-            Change Base Token URI
-          </Button>
-        </div>
+        </Card>
       )}
       {!isLoading && isTokenURIEditable && isLockSelected && (
         <Form

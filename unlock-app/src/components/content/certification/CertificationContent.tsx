@@ -28,7 +28,12 @@ export const CertificationContent = () => {
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={false} title="">
+    <AppLayout
+      showLinks={false}
+      authRequired={false}
+      logoRedirectUrl="/certification"
+      logoImageUrl="/images/svg/logo-unlock-certificate.svg"
+    >
       <Head>
         <title>
           {metadata

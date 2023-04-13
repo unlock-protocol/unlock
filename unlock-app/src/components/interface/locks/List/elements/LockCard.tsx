@@ -12,7 +12,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
-import { Detail, Icon } from '@unlock-protocol/ui'
+import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockCardProps {
   lock: any
@@ -170,7 +170,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
 
   return (
     <>
-      <div className="px-12 py-4 bg-white shadow-lg rounded-2xl">
+      <Card variant="simple" shadow="lg" padding="sm">
         <div className="grid items-center justify-between grid-cols-1 gap-7 md:gap-4 md:grid-cols-7">
           <div className="grid grid-cols-[56px_1fr] md:flex gap-3 md:col-span-3">
             <LockIcon lock={lock} />
@@ -251,7 +251,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             </Link>
           </div>
         </div>
-      </div>
+      </Card>
     </>
   )
 }
