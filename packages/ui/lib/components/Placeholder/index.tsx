@@ -1,8 +1,9 @@
 import { Line } from './Line'
 import { Image } from './Image'
+import { Card } from './Card'
 import { classed } from '@tw-classed/react'
 
-export const Root = classed.div('grid', {
+export const Root = classed.div('flex', {
   variants: {
     spaced: {
       sm: 'gap-2',
@@ -10,9 +11,13 @@ export const Root = classed.div('grid', {
       lg: 'gap-6',
       xl: 'gap-8',
     },
+    inline: {
+      false: 'flex-col',
+    },
   },
   defaultVariants: {
     spaced: 'md',
+    inline: false,
   },
 })
 
@@ -22,4 +27,5 @@ export const Placeholder = {
   Line,
   Image,
   Root,
+  Card,
 }

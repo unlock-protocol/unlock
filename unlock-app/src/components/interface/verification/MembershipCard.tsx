@@ -13,7 +13,7 @@ import {
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Placeholder } from '@unlock-protocol/ui'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -161,21 +161,16 @@ export function MetadataItems({
 
 export function MembershipCardPlaceholder() {
   return (
-    <div className="w-full max-w-sm bg-white rounded-xl">
+    <Placeholder.Root className="w-full max-w-sm bg-white rounded-xl">
       <div className="h-32 bg-gray-100 rounded-t-xl"></div>
-      <div className="p-6 space-y-6">
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center justify-center w-20 h-20 uppercase rounded-full bg-gray-50 animate-pulse"></div>
-        </div>
-        <div className="grid gap-2">
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-        </div>
-        <div className="w-full h-12 rounded-full bg-gray-50 animate-pulse"></div>
-      </div>
-    </div>
+      <Placeholder.Root className="p-6">
+        <Placeholder.Image size="sm" />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line size="md" />
+      </Placeholder.Root>
+    </Placeholder.Root>
   )
 }

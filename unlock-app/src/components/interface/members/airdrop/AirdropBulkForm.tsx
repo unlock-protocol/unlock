@@ -1,4 +1,4 @@
-import { Button, minifyAddress } from '@unlock-protocol/ui'
+import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { useList } from 'react-use'
 import { AirdropMember, AirdropListItem } from './AirdropElements'
 import { useDropzone } from 'react-dropzone'
@@ -184,10 +184,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
           {isLoadingMembers && (
             <div className="space-y-6">
               {Array.from({ length: 8 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-full h-8 bg-gray-100 rounded-lg animate-pulse"
-                />
+                <Placeholder.Line size="md" key={index} />
               ))}
             </div>
           )}

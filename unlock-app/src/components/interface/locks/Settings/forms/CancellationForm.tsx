@@ -1,5 +1,5 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -22,20 +22,15 @@ interface FormProps {
 const CancellationFormPlaceholder = () => {
   const FormPlaceholder = () => {
     return (
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <div className="w-20 h-5 animate-pulse bg-slate-200"></div>
-          <div className="w-full h-4 animate-pulse bg-slate-200"></div>
-          <div className="w-1/3 h-4 animate-pulse bg-slate-200"></div>
-        </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <div className="w-20 h-5 animate-pulse bg-slate-200"></div>
-            <div className="w-12 rounded-full h-7 animate-pulse bg-slate-200"></div>
-          </div>
-          <div className="w-full h-10 rounded-lg animate-pulse bg-slate-200"></div>
-        </div>
-      </div>
+      <Placeholder.Root spaced="sm">
+        <Placeholder.Line size="sm" width="sm" />
+        <Placeholder.Line size="sm" />
+        <Placeholder.Line size="sm" width="md" />
+        <Placeholder.Root inline className="justify-between">
+          <Placeholder.Line size="sm" width="sm" />
+          <Placeholder.Line size="sm" width="sm" />
+        </Placeholder.Root>
+      </Placeholder.Root>
     )
   }
   return (

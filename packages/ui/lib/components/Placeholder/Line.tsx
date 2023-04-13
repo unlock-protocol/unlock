@@ -1,6 +1,6 @@
 import { classed } from '@tw-classed/react'
 
-export const Line = classed.div('w-full bg-gray-100 rounded-xl animate-pulse', {
+export const Line = classed.div('bg-gray-100 rounded-xl animate-pulse', {
   variants: {
     size: {
       sm: 'h-4',
@@ -13,10 +13,12 @@ export const Line = classed.div('w-full bg-gray-100 rounded-xl animate-pulse', {
       md: 'w-1/3',
       lg: 'w-1/2',
       xl: 'w-3/4',
+      full: 'w-full',
     },
   },
   defaultVariants: {
     size: 'md',
+    width: 'full',
   },
 })
 
