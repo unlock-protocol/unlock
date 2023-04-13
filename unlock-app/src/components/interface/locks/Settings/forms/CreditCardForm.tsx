@@ -328,7 +328,7 @@ export const CreditCardForm = ({
     return (
       <Placeholder.Root>
         <Placeholder.Line width="sm" />
-        <Placeholder.Line width="ms" />
+        <Placeholder.Line width="sm" />
         <Placeholder.Line size="xl" width="sm" />
       </Placeholder.Root>
     )
