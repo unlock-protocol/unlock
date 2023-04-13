@@ -268,7 +268,7 @@ interface IPublicLock {
 
   /**
    * _gasRefundValue price in wei or token in smallest price unit
-   * @dev Returns the value/rpice to be refunded to the sender on purchase
+   * @dev Returns the value/price to be refunded to the sender on purchase
    */
   function gasRefundValue()
     external
@@ -326,6 +326,7 @@ interface IPublicLock {
    * @dev allows the key manager to expire a given tokenId
    * and send a refund to the keyOwner based on the amount of time remaining.
    * @param _tokenId The id of the key to cancel.
+   * @notice cancel is enabled with a 10% penalty by default on all Locks.
    */
   function cancelAndRefund(uint _tokenId) external;
 
@@ -642,7 +643,11 @@ interface IPublicLock {
     bytes calldata data
   ) external;
 
-  function totalSupply() external view returns (uint256);
+  /**
+   * Returns the total number of keys, including non-valid ones
+   * @return _totalKeysCreated the total number of keys, valid or not
+   */
+  function totalSupply() external view returns (uint256 _totalKeysCreated);
 
   function tokenOfOwnerByIndex(
     address _owner,

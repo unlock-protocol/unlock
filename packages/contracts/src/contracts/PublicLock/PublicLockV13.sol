@@ -1368,9 +1368,11 @@ interface IERC20Upgradeable {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
     /**
-     * @dev Returns the amount of tokens in existence.
+     * Returns the total number of keys, including non-valid ones
+     * @return _totalKeysCreated the total number of keys, valid or not
      */
-    function totalSupply() external view returns (uint256);
+    function totalSupply() external view returns (uint256 _totalKeysCreated);
+  
 
     /**
      * @dev Returns the amount of tokens owned by `account`.
@@ -1922,12 +1924,12 @@ interface IUnlock {
 
   /**
    * Retrieve the contract address of the proxy admin that manages the locks
-   * @return the address of the ProxyAdmin instance
+   * @return _proxyAdminAddress the address of the ProxyAdmin instance
    */
   function proxyAdminAddress()
     external
     view
-    returns (address);
+    returns (address _proxyAdminAddress);
 
   /**
    * @notice Create lock (legacy)
@@ -2087,11 +2089,11 @@ interface IUnlock {
   /**
    * Match lock templates addresses with version numbers
    * @param _version the number of the version of the template
-   * @return address of the lock templates
+   * @return _implAddress address of the lock templates
    */
   function publicLockImpls(
     uint16 _version
-  ) external view returns (address);
+  ) external view returns (address _implAddress);
 
   /**
    * Match version numbers with lock templates addresses
@@ -2103,13 +2105,13 @@ interface IUnlock {
   ) external view returns (uint16);
 
   /**
-   * Retrive the latest existing lock template version
-   * @return the version number of the latest template (used to deploy contracts)
+   * Retrieve the latest existing lock template version
+   * @return _version the version number of the latest template (used to deploy contracts)
    */
   function publicLockLatestVersion()
     external
     view
-    returns (uint16);
+    returns (uint16 _version);
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.

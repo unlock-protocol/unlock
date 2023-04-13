@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.19
+
+- improve docstrings and fix some typo in IUnlock and IPublicLock interfaces
+
 ## 0.0.18
 
 - PublicLockV13: update hardcoded Unlock mainnet address with redeployed version
