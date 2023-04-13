@@ -1,4 +1,5 @@
 import { Response, Request } from 'express'
+import stripe from '../config/stripe'
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -16,7 +17,6 @@ import { isSoldOut } from '../operations/lockOperations'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
-import config from '../config/config'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 
 export class PurchaseController {
@@ -94,7 +94,7 @@ export class PurchaseController {
     }
 
     try {
-      const processor = new PaymentProcessor(config.stripeSecret!)
+      const processor = new PaymentProcessor()
       const paymentIntentDetails = await processor.createPaymentIntent(
         Normalizer.ethereumAddress(userAddress),
         normalizedRecipients,
@@ -151,7 +151,7 @@ export class PurchaseController {
     }
 
     try {
-      const processor = new PaymentProcessor(config.stripeSecret!)
+      const processor = new PaymentProcessor()
       const { charge, paymentIntent, paymentIntentRecord } =
         await processor.getPaymentIntentRecordAndCharge({
           userAddress,
@@ -178,7 +178,7 @@ export class PurchaseController {
             await charge.save()
 
             // Update Stripe's payment Intent
-            await processor.stripe.paymentIntents.update(
+            await stripe.paymentIntents.update(
               paymentIntentId,
               {
                 metadata: {
@@ -191,7 +191,7 @@ export class PurchaseController {
             )
 
             // We only charge the card when everything else was successful
-            await processor.stripe.paymentIntents.capture(paymentIntentId, {
+            await stripe.paymentIntents.capture(paymentIntentId, {
               stripeAccount: paymentIntentRecord.connectedStripeId,
             })
             // Send the transaction hash without waiting.
