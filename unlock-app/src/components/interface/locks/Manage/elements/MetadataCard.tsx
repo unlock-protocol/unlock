@@ -27,6 +27,8 @@ import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
 import { onResolveName } from '~/utils/resolvers'
+import { useMetadata } from '~/hooks/metadata'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface MetadataCardProps {
   metadata: any
@@ -243,6 +245,14 @@ export const MetadataCard = ({
     return !keysToIgnore.includes(key)
   })
 
+  const { data: lockMetadata } = useMetadata({
+    lockAddress: metadata.lockAddress,
+    network,
+  })
+  const types = getLockTypeByMetadata(lockMetadata)
+  const [eventType] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
+
   const { lockAddress, token: tokenId } = data ?? {}
 
   const { isManager: isLockManager } = useLockManager({
@@ -294,9 +304,9 @@ export const MetadataCard = ({
   const onSendQrCode = async () => {
     if (!network) return
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
-      success: 'QR-code sent by email',
-      loading: 'Sending QR-code by email',
-      error: 'We could not send the QR-code.',
+      success: 'Email sent',
+      loading: 'Sending email...',
+      error: 'We could not send email.',
     })
   }
 
@@ -421,19 +431,25 @@ export const MetadataCard = ({
                       >
                         Edit email
                       </Button>
-                      {lockSettings?.sendEmail && (
-                        <Button
-                          size="tiny"
-                          variant="outlined-primary"
-                          onClick={onSendQrCode}
-                          disabled={
-                            sendEmailMutation.isLoading ||
-                            sendEmailMutation.isSuccess
-                          }
-                        >
-                          {sendEmailMutation.isSuccess
-                            ? 'QR-code sent by email'
-                            : 'Send QR-code by email'}
+                      {lockSettings?.sendEmail ? (
+                        SendEmailMapping[eventType as keyof LockType] && (
+                          <Button
+                            size="tiny"
+                            variant="outlined-primary"
+                            onClick={onSendQrCode}
+                            disabled={
+                              sendEmailMutation.isLoading ||
+                              sendEmailMutation.isSuccess
+                            }
+                          >
+                            {sendEmailMutation.isSuccess
+                              ? 'Email sent'
+                              : SendEmailMapping[eventType as keyof LockType]}
+                          </Button>
+                        )
+                      ) : (
+                        <Button size="tiny" variant="outlined-primary" disabled>
+                          Email are disabled
                         </Button>
                       )}
                     </div>
@@ -571,6 +587,11 @@ export const MetadataCard = ({
   )
 }
 
+const SendEmailMapping: Record<keyof LockType, string> = {
+  isCertification: 'Send Certificate by email',
+  isEvent: 'Send QR-code by email',
+  isStamp: 'Send Stamp by email',
+}
 const UpdateEmailModal = ({
   isOpen,
   setIsOpen,

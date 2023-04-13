@@ -137,8 +137,7 @@ export class TicketsController {
           manager: key.manager,
           owner: key.owner,
         },
-        network,
-        true
+        network
       )
       return response.status(200).send({
         sent: true,
