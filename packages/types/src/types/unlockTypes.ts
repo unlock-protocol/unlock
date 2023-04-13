@@ -74,6 +74,7 @@ export interface NetworkConfig {
   serializerAddress?: string
   multisig?: string
   keyManagerAddress?: string
+  publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string
     endpointV2?: string

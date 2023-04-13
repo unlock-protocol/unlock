@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const polygon: NetworkConfig = {
+  publicLockVersionToDeploy: 12,
   featured: true,
   publicProvider: 'https://polygon-rpc.com/',
   provider: 'https://rpc.unlock-protocol.com/137',

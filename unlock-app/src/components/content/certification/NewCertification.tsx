@@ -1,6 +1,6 @@
+import { networks } from '@unlock-protocol/networks'
 import { useState } from 'react'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { useConfig } from '~/utils/withConfig'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 
@@ -16,7 +16,6 @@ export interface TransactionDetails {
 }
 
 export const NewCertification = () => {
-  const config = useConfig()
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
   const [lockAddress, setLockAddress] = useState<string>()
@@ -30,7 +29,9 @@ export const NewCertification = () => {
         {
           ...formData.lock,
           name: formData.lock.name,
-          publicLockVersion: config.publicLockVersion,
+
+          publicLockVersion:
+            networks[formData.network].publicLockVersionToDeploy,
           maxNumberOfKeys: formData?.lock?.maxNumberOfKeys || 0,
           expirationDuration:
             formData?.lock?.expirationDuration * 60 * 60 * 24 ||

@@ -1,6 +1,7 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const palm: NetworkConfig = {
+  publicLockVersionToDeploy: 12,
   fullySubsidizedGas: true,
   publicProvider:
     'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',

@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { useConfig } from '~/utils/withConfig'
 import { Form, NewEventForm } from './Form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { LockDeploying } from './LockDeploying'
 import { storage } from '~/config/storage'
+import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -15,7 +15,6 @@ export interface TransactionDetails {
 }
 
 export const NewEvent = () => {
-  const config = useConfig()
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
   const [lockAddress, setLockAddress] = useState<string>()
@@ -29,7 +28,8 @@ export const NewEvent = () => {
         {
           ...formData.lock,
           name: formData.lock.name,
-          publicLockVersion: config.publicLockVersion,
+          publicLockVersion:
+            networks[formData.network].publicLockVersionToDeploy,
         },
         {} /** transactionParams */,
         async (createLockError, transactionHash) => {

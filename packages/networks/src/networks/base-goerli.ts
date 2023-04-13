@@ -1,7 +1,7 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const baseGoerli: NetworkConfig = {
-  featured: true,
+  publicLockVersionToDeploy: 12,
   publicProvider: 'https://goerli.base.org',
   provider: 'https://goerli.base.org', //'https://rpc.unlock-protocol.com/84531',
   unlockAddress: '0x51A1ceB83B83F1985a81C295d1fF28Afef186E02',
