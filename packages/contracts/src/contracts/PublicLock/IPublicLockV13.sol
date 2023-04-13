@@ -6,7 +6,7 @@ pragma experimental ABIEncoderV2;
  * @title The PublicLock Interface
  */
 
-interface IPublicLock {
+interface IPublicLockV13 {
   /// Functions
   function initialize(
     address _lockCreator,
