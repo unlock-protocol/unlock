@@ -35,26 +35,6 @@ const sampleCards = [
   },
 ]
 
-const mockStripeCards = {
-  customers: {
-    listSources: vi.fn().mockImplementation(() => {
-      return {
-        data: sampleCards,
-      }
-    }),
-  },
-}
-
-const mockStripeWithoutCards = {
-  customers: {
-    listSources: vi.fn().mockImplementation(() => {
-      return {
-        data: [],
-      }
-    }),
-  },
-}
-
 vi.mock('../../src/utils/recoveryPhrase', () => {
   return { default: {} }
 })
@@ -63,8 +43,24 @@ vi.mock('stripe', () => {
   return {
     default: vi
       .fn()
-      .mockImplementationOnce(() => mockStripeCards)
-      .mockImplementationOnce(() => mockStripeWithoutCards),
+      .mockImplementationOnce(() => ({
+        customers: {
+          listSources: vi.fn().mockImplementation(() => {
+            return {
+              data: sampleCards,
+            }
+          }),
+        },
+      }))
+      .mockImplementationOnce(() => ({
+        customers: {
+          listSources: vi.fn().mockImplementation(() => {
+            return {
+              data: [],
+            }
+          }),
+        },
+      })),
   }
 })
 
