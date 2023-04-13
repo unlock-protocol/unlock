@@ -25,14 +25,22 @@ const CardBase = classed.div('w-full rounded-2xl', {
   },
 })
 
-export const CardTitle = classed.span('text-xl font-bold text-brand-ui-primary')
-export const CardDescription = classed.span('text-base text-brand-dark"')
+const CardTitle = classed.span('text-xl font-bold text-brand-ui-primary')
+const CardDescription = classed.span('text-base text-brand-dark"')
 
 type CardBaseProps = React.ComponentProps<typeof CardBase> & {
   icon?: React.ReactNode
 }
 
-export const Card = ({
+const CardLabel = ({ title, description }: CardLabelProps) => {
+  return (
+    <div className="flex flex-col gap-2 md:col-span-2">
+      <CardTitle>{title}</CardTitle>
+      {description && <CardDescription>{description}</CardDescription>}
+    </div>
+  )
+}
+const Card = ({
   variant,
   shadow,
   padding,
@@ -55,11 +63,9 @@ interface CardLabelProps {
   title: string
   description?: string
 }
-export const CardLabel = ({ title, description }: CardLabelProps) => {
-  return (
-    <div className="flex flex-col gap-2 md:col-span-2">
-      <CardTitle>{title}</CardTitle>
-      {description && <CardDescription>{description}</CardDescription>}
-    </div>
-  )
-}
+
+Card.Title = CardTitle
+Card.Description = CardDescription
+Card.Label = CardLabel
+
+export { Card }

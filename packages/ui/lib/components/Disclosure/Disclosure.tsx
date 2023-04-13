@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { FiChevronDown as ArrowDownIcon } from 'react-icons/fi'
 import { Disclosure as HeadlessDisclosure } from '@headlessui/react'
-import { Card, CardDescription, CardTitle } from '../Card/Card'
+import { Card } from '../Card/Card'
 
 export interface DisclosureProps {
   label: string
@@ -39,7 +39,7 @@ export const Disclosure = ({
             disabled={disabled}
           >
             <div className="flex justify-between w-full">
-              <CardTitle>{label}</CardTitle>
+              <Card.Title>{label}</Card.Title>
               <ArrowDownIcon
                 className={`transition duration-200 ease-in-out text-brand-ui-primary ${
                   open ? 'rotate-180' : ''
@@ -48,7 +48,7 @@ export const Disclosure = ({
             </div>
             {description && (
               <div className="w-full text-left">
-                <CardDescription>{description}</CardDescription>
+                <Card.Description>{description}</Card.Description>
               </div>
             )}
           </HeadlessDisclosure.Button>

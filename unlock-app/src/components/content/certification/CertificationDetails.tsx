@@ -11,7 +11,6 @@ import {
   Certificate,
   minifyAddress,
   Card,
-  CardLabel,
 } from '@unlock-protocol/ui'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
@@ -89,7 +88,7 @@ const CertificationManagerOptions = ({
           </div>
         )}
         <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3 rounded-2xl">
-          <CardLabel
+          <Card.Label
             title="Certification detail"
             description="Need to change something? Access your contract (Lock) & update its
               details."
