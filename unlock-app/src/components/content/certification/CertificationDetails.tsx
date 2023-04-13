@@ -320,7 +320,7 @@ export const CertificationDetails = ({
     },
   }
 
-  const showBadge = isLockManager || !account
+  const showBadge = isLockManager || !account || !viewerIsOwner
   const showExpiration = key?.expiration !== MAX_UINT
 
   const badge = isLockManager ? (
