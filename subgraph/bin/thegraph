@@ -130,7 +130,7 @@ const deploy = async (network, graphLabel) => {
 // Note: the palm network is not supported by
 //
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'localhost', 'default', 'palm'].includes(d)
+  (d) => !['networks', 'default', 'palm'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
