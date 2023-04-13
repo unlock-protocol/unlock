@@ -1,4 +1,3 @@
-import { ReactTag } from '@headlessui/react/dist/types'
 import { classed } from '@tw-classed/react'
 
 const CardBase = classed.div('w-full rounded-2xl', {
@@ -31,7 +30,7 @@ const CardDescription = classed.span('text-base text-brand-dark"')
 
 type CardBaseProps = React.ComponentProps<typeof CardBase> & {
   icon?: React.ReactNode
-  as?: ReactTag
+  as?: keyof JSX.IntrinsicElements
 }
 
 const CardLabel = ({ title, description }: CardLabelProps) => {
