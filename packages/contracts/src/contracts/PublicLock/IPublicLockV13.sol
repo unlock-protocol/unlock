@@ -643,7 +643,11 @@ interface IPublicLockV13 {
     bytes calldata data
   ) external;
 
-  function totalSupply() external view returns (uint256);
+  /**
+   * Returns the total number of keys, including non-valid ones
+   * @return _totalKeysCreated the total number of keys, valid or not
+   */
+  function totalSupply() external view returns (uint256 _totalKeysCreated);
 
   function tokenOfOwnerByIndex(
     address _owner,
