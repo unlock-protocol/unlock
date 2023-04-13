@@ -12,6 +12,7 @@ export type CheckoutPage =
   | 'METADATA'
   | 'CONFIRM'
   | 'CARD'
+  | 'UNIVERSAL_CARD'
   | 'MINTING'
   | 'MESSAGE_TO_SIGN'
   | 'CAPTCHA'
@@ -155,6 +156,10 @@ type Payment =
   | {
       method: 'swap_and_purchase'
       route: any
+    }
+  | {
+      method: 'universal_card'
+      cardId?: string
     }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
@@ -349,6 +354,11 @@ export const checkoutMachine = createMachine(
               cond: (_, event) => event.payment.method === 'card',
             },
             {
+              target: 'UNIVERSAL_CARD',
+              actions: ['selectPaymentMethod'],
+              cond: (_, event) => event.payment.method === 'universal_card',
+            },
+            {
               target: 'MESSAGE_TO_SIGN',
               actions: ['selectPaymentMethod'],
               cond: 'requireMessageToSign',
@@ -389,6 +399,41 @@ export const checkoutMachine = createMachine(
         },
       },
       CARD: {
+        on: {
+          SELECT_PAYMENT_METHOD: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireCaptcha',
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['selectPaymentMethod'],
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+          BACK: 'PAYMENT',
+        },
+      },
+      UNIVERSAL_CARD: {
         on: {
           SELECT_PAYMENT_METHOD: [
             {

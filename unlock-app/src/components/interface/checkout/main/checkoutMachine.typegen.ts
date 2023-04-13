@@ -1,11 +1,12 @@
 // This file was automatically generated. Edits will be overwritten
 
+// HAHA RIGH!
 export interface Typegen0 {
   '@@xstate/typegen': true
   internalEvents: {
     'xstate.init': { type: 'xstate.init' }
   }
-  invokeSrcNameMap: {}
+  invokeSrcNameMap: {} // PLEASE OVERWRITE
   missingImplementations: {
     actions: never
     delays: never
@@ -40,6 +41,7 @@ export interface Typegen0 {
   matchesStates:
     | 'CAPTCHA'
     | 'CARD'
+    | 'UNIVERSAL_CARD'
     | 'CONFIRM'
     | 'MESSAGE_TO_SIGN'
     | 'METADATA'

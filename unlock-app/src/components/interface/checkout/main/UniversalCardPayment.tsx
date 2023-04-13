@@ -32,7 +32,10 @@ interface Props {
   checkoutService: CheckoutService
 }
 
-export function CardPayment({ checkoutService, injectedProvider }: Props) {
+export function UniversalCardPayment({
+  checkoutService,
+  injectedProvider,
+}: Props) {
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
   const [isSaving, setIsSaving] = useState(false)
@@ -48,39 +51,21 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
   const payment = methods?.[0]
   const card = payment?.card
 
+  useEffect(() => {
+    const stripeOnramp = StripeOnramp('pk_test_BHXKmScocCfrQ1oW8HTmnVrB')
+    // IMPORTANT: replace with your logic of how to mint/retrieve client secret
+    const clientSecret =
+      'cos_1Lb6vsAY1pjOSNXVWF3nUtkV_secret_8fuPvTzBaxj3XRh14C6tqvdl600rpW7hG4G'
+    const onrampSession = stripeOnramp.createSession({ clientSecret })
+    onrampSession.mount('#onramp-element')
+  })
+
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isMethodLoading ? (
-          <CardPlaceholder />
-        ) : !card ? (
-          <SetupForm
-            stripe={stripe}
-            onSubmit={() => {
-              setIsSaving(true)
-            }}
-            onError={() => {
-              setIsSaving(false)
-            }}
-            onSuccess={async () => {
-              setIsSaving(false)
-              await refetchPaymentMethods()
-            }}
-          />
-        ) : (
-          <Card
-            name={payment!.billing_details?.name || ''}
-            last4={card.last4!}
-            exp_month={card.exp_month!}
-            exp_year={card.exp_year!}
-            country={card.country!}
-            onChange={async () => {
-              await removePaymentMethods()
-              await refetchPaymentMethods()
-            }}
-          />
-        )}
+        GREAT WE WILL LOAD THE CRYPTO ONBOARD BY STRIPE!
+        <div id="onramp-element"></div>
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">

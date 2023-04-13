@@ -151,3 +151,30 @@ export const removePaymentMethods: RequestHandler = async (
   })
   return response.status(200).send({ success: true })
 }
+
+/**
+ * Create session for universal credit card support
+ * @param request
+ * @param response
+ * @returns
+ */
+export const createOnRampSession: RequestHandler = async (
+  request,
+  response
+) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const userAddress = Normalizer.ethereumAddress(request.user!.walletAddress)
+
+  // TODO: check that user has approved amount first
+
+  // curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
+  // -u sk_test_PhFSsotkdy7DHU5cn8o2pT6A00SINuUpuR: \
+  // -d "transaction_details[wallet_addresses][ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
+  // -d "transaction_details[source_currency]"="usd" \
+  // -d "transaction_details[destination_currency]"="eth" \
+  // -d "transaction_details[destination_network]"="ethereum" \
+  // -d "transaction_details[destination_exchange_amount]"="0.1234"
+
+  return response.status(200).send({ session })
+}

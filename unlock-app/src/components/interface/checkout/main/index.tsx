@@ -21,6 +21,7 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { UniversalCardPayment } from './UniversalCardPayment'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
@@ -42,6 +43,7 @@ export function Checkout({
       paywallConfig,
     },
   })
+  console.log(checkoutService)
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
 
@@ -149,6 +151,14 @@ export function Checkout({
       case 'CARD': {
         return (
           <CardPayment
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
+      case 'UNIVERSAL_CARD': {
+        return (
+          <UniversalCardPayment
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
