@@ -1368,9 +1368,11 @@ interface IERC20Upgradeable {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
     /**
-     * @dev Returns the amount of tokens in existence.
+     * Returns the total number of keys, including non-valid ones
+     * @return _totalKeysCreated the total number of keys, valid or not
      */
-    function totalSupply() external view returns (uint256);
+    function totalSupply() external view returns (uint256 _totalKeysCreated);
+  
 
     /**
      * @dev Returns the amount of tokens owned by `account`.
