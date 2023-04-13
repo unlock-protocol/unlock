@@ -14,6 +14,7 @@ import {
   baseTokenURI,
   maxNumberOfKeys,
   maxKeysPerAddress,
+  lockManagers,
 } from './constants'
 
 createMockedFunction(
@@ -112,6 +113,14 @@ createMockedFunction(
 )
   .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'keyManagerOf',
+  'keyManagerOf(uint256):(address)'
+)
+  .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(tokenId))])
+  .returns([ethereum.Value.fromAddress(Address.fromString(lockManagers[0]))])
 
 /**
  * Mocks function for v8 locks
@@ -217,3 +226,11 @@ createMockedFunction(
       Address.fromString('0x0000000000000000000000000000000000000000')
     ),
   ])
+
+createMockedFunction(
+  Address.fromString(lockAddressV8),
+  'keyManagerOf',
+  'keyManagerOf(uint256):(address)'
+)
+  .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(tokenId))])
+  .returns([ethereum.Value.fromAddress(Address.fromString(lockManagers[0]))])
