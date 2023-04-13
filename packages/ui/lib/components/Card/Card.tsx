@@ -1,3 +1,4 @@
+import { ReactTag } from '@headlessui/react/dist/types'
 import { classed } from '@tw-classed/react'
 
 const CardBase = classed.div('w-full rounded-2xl', {
@@ -30,6 +31,7 @@ const CardDescription = classed.span('text-base text-brand-dark"')
 
 type CardBaseProps = React.ComponentProps<typeof CardBase> & {
   icon?: React.ReactNode
+  as?: ReactTag
 }
 
 const CardLabel = ({ title, description }: CardLabelProps) => {
@@ -46,6 +48,7 @@ const Card = ({
   padding,
   children,
   className,
+  as,
 }: CardBaseProps) => {
   return (
     <CardBase
@@ -53,6 +56,7 @@ const Card = ({
       padding={padding}
       shadow={shadow}
       className={className}
+      as={as}
     >
       {children}
     </CardBase>
