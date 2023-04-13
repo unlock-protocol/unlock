@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { FiChevronDown as ArrowDownIcon } from 'react-icons/fi'
 import { Disclosure as HeadlessDisclosure } from '@headlessui/react'
+import { Card, CardDescription, CardTitle } from '../Card/Card'
 
 export interface DisclosureProps {
   label: string
@@ -32,15 +33,13 @@ export const Disclosure = ({
   return (
     <HeadlessDisclosure defaultOpen={defaultOpen}>
       {({ open }) => (
-        <div className="w-full p-6 bg-white border border-gray-200 rounded-2xl">
+        <Card variant="primary">
           <HeadlessDisclosure.Button
             className="flex flex-col w-full gap-2 outline-none"
             disabled={disabled}
           >
             <div className="flex justify-between w-full">
-              <span className="text-xl font-bold text-brand-ui-primary">
-                {label}
-              </span>
+              <CardTitle>{label}</CardTitle>
               <ArrowDownIcon
                 className={`transition duration-200 ease-in-out text-brand-ui-primary ${
                   open ? 'rotate-180' : ''
@@ -49,14 +48,14 @@ export const Disclosure = ({
             </div>
             {description && (
               <div className="w-full text-left">
-                <span className="text-base text-brand-dark">{description}</span>
+                <CardDescription>{description}</CardDescription>
               </div>
             )}
           </HeadlessDisclosure.Button>
           <HeadlessDisclosure.Panel unmount={false} className="pt-6">
             {children}
           </HeadlessDisclosure.Panel>
-        </div>
+        </Card>
       )}
     </HeadlessDisclosure>
   )

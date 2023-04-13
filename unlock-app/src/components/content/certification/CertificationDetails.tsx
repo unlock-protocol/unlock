@@ -10,6 +10,8 @@ import {
   Placeholder,
   Certificate,
   minifyAddress,
+  Card,
+  CardLabel,
 } from '@unlock-protocol/ui'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
@@ -86,16 +88,12 @@ const CertificationManagerOptions = ({
             </Disclosure>
           </div>
         )}
-        <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
-          <div className="flex flex-col gap-2 md:col-span-2">
-            <span className="text-lg font-bold text-brand-ui-primary">
-              Certification detail
-            </span>
-            <span>
-              Need to change something? Access your contract (Lock) & update its
-              details.
-            </span>
-          </div>
+        <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3 rounded-2xl">
+          <CardLabel
+            title="Certification detail"
+            description="Need to change something? Access your contract (Lock) & update its
+              details."
+          />
           <div className="md:col-span-1">
             <Button
               onClick={onEdit}
@@ -106,7 +104,7 @@ const CertificationManagerOptions = ({
               Edit Details
             </Button>
           </div>
-        </div>
+        </Card>
         <Disclosure
           label="Airdrop certificates"
           description="Automatically send NFT certifications to wallets or by email"

@@ -16,7 +16,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
-import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
+import { Badge, Button, Card, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
@@ -188,7 +188,7 @@ function Key({ ownedKey, account, network }: Props) {
   }
 
   return (
-    <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
+    <Card className="grid gap-6" shadow="lg" padding="xs">
       <KeyInfoDrawer
         isOpen={showMoreInfo}
         setIsOpen={setShowMoreInfo}
@@ -503,7 +503,7 @@ function Key({ ownedKey, account, network }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   )
 }
 export default Key
