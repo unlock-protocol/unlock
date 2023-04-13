@@ -8,7 +8,15 @@ import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Drawer, Icon, ImageUpload, Modal } from '@unlock-protocol/ui'
+import {
+  Button,
+  Card,
+  Disclosure,
+  Drawer,
+  Icon,
+  ImageUpload,
+  Modal,
+} from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -279,15 +287,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-3 mt-14 md:px-12 md:mt-28">
+        <section className="grid items-start grid-cols-1 md:grid-cols-3 mt-14 md:px-12 md:mt-28">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
             <div className="flex gap-2 flex-rows">
               <span className="text-brand-gray">Ticket contract</span>
-              <AddressLink
-                lockAddress={lockAddress}
-                network={network}
-              ></AddressLink>
+              <AddressLink lockAddress={lockAddress} network={network} />
             </div>
             <section className="mt-1">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
@@ -338,7 +343,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             </section>
           </div>
           {!hasValidKey && !isCheckoutOpen && (
-            <div className="flex flex-col col-span-3 gap-6 p-6 bg-white border border-gray-200 md:col-span-1 rounded-3xl">
+            <Card className="grid gap-6 mt-4 md:mt-0">
               <span className="text-2xl font-bold text-gray-900">
                 Registration
               </span>
@@ -369,7 +374,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               >
                 Register
               </Button>
-            </div>
+            </Card>
           )}
         </section>
       </div>
@@ -393,15 +398,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               Tools for you, the lock manager
             </span>
             <div className="grid gap-4">
-              <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
-                <div className="flex flex-col md:col-span-2">
-                  <span className="text-lg font-bold text-brand-ui-primary">
-                    Event detail
-                  </span>
-                  <span>
-                    Need to change something? Access your contract (Lock) &
-                    update detail
-                  </span>
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
+                    title="Event detail"
+                    description="Need to change something? Access your contract (Lock) & update detail"
+                  />
                 </div>
                 <div className="md:col-span-1">
                   <Button
@@ -413,24 +415,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                     Edit Details
                   </Button>
                 </div>
-              </div>
-              <div className="w-full p-6 bg-white border border-gray-200 rounded-2xl">
-                <div className="flex flex-col mb-2">
-                  <span className="text-lg font-bold text-brand-ui-primary">
-                    Verifiers
-                  </span>
-                  <span>
-                    Add & manage trusted users at the event to help check-in
-                    attendees
-                  </span>
-                </div>
+              </Card>
+
+              <Disclosure
+                label="Verifiers"
+                description="Add & manage trusted users at the event to help check-in attendees"
+              >
                 <VerifierForm
                   lockAddress={lockAddress}
                   network={network}
                   isManager={isLockManager}
                   disabled={!isLockManager}
                 />
-              </div>
+              </Disclosure>
             </div>
           </div>
         )}
