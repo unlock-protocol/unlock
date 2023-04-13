@@ -62,7 +62,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
 
   // get fees from network provider
   const provider = new ethers.providers.JsonRpcBatchProvider(
-    networks[network]?.publicProvider
+    networks[network]?.provider
   )
 
   let feedata
