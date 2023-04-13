@@ -108,11 +108,9 @@ export const Members = ({
     return (
       <>
         <Placeholder.Root>
-          <Placeholder.Card />
-          <Placeholder.Card />
-          <Placeholder.Card />
-          <Placeholder.Card />
-          <Placeholder.Card />
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Placeholder.Card key={index} />
+          ))}
         </Placeholder.Root>
       </>
     )
