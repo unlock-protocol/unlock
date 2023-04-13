@@ -14,9 +14,7 @@ export const queryClient = new QueryClient({
           return false
         }
         if (error instanceof AxiosError) {
-          return ![400, 401, 403, 404, 500].includes(
-            error.response?.status || 0
-          )
+          return ![400, 401, 403, 404].includes(error.response?.status || 0)
         }
         return true
       },
