@@ -33,7 +33,8 @@ export const NewCertification = () => {
           publicLockVersion: config.publicLockVersion,
           maxNumberOfKeys: formData?.lock?.maxNumberOfKeys || 0,
           expirationDuration:
-            formData?.lock?.expirationDuration || UNLIMITED_KEYS_DURATION,
+            formData?.lock?.expirationDuration * 60 * 60 * 24 ||
+            UNLIMITED_KEYS_DURATION,
         },
         {} /** transactionParams */,
         async (createLockError, transactionHash) => {

@@ -51,6 +51,10 @@ export default class KeyPricer {
       )
       throw new Error(`Missing currency`)
     }
+    // If key is free, no need to convert!
+    if (lock.keyPrice === '0') {
+      return 0
+    }
     const priceConversion = new PriceConversion()
     const usdPrice = await priceConversion.convertToUSD(
       symbol.toUpperCase(),
