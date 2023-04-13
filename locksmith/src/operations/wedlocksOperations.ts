@@ -374,7 +374,7 @@ export const notifyNewKeyToWedlocks = async (
 
   const isAirdroppedRecipient =
     airdroppedRecipient?.toLowerCase() === ownerAddress?.toLowerCase() ||
-     manager?.toLowerCase()?.trim() ===
+    manager?.toLowerCase()?.trim() ===
       networks[network!]?.keyManagerAddress?.toLowerCase()?.trim()
 
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
