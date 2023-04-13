@@ -9,6 +9,7 @@ import { ExpirationStatus } from './FilterBar'
 import Link from 'next/link'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
+import { Placeholder } from '@unlock-protocol/ui'
 
 interface MembersProps {
   lockAddress: string
@@ -18,22 +19,6 @@ interface MembersProps {
   page: number
   filters?: FilterProps
   onAirdropKeys?: () => void
-}
-
-const MembersPlaceholder = () => {
-  const placeHolderCardStyle =
-    'h-[130px] md:h-[92px] border-2 rounded-lg bg-slate-200 animate-pulse'
-  return (
-    <div className="flex flex-col gap-3">
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-    </div>
-  )
 }
 
 export interface FilterProps {
@@ -120,7 +105,17 @@ export const Members = ({
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
 
   if (loading) {
-    return <MembersPlaceholder />
+    return (
+      <>
+        <Placeholder.Root>
+          <Placeholder.Card />
+          <Placeholder.Card />
+          <Placeholder.Card />
+          <Placeholder.Card />
+          <Placeholder.Card />
+        </Placeholder.Root>
+      </>
+    )
   }
 
   if (noItems && !hasActiveFilter) {

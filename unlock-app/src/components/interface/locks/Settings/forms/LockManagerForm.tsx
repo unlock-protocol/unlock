@@ -5,6 +5,7 @@ import {
   AddressInput,
   isAddressOrEns,
   minifyAddress,
+  Placeholder,
 } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Controller, useForm, useWatch } from 'react-hook-form'
@@ -201,14 +202,6 @@ const LockManagerCard = ({
   )
 }
 
-const LockManagerCardPlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="h-10 border border-gray-200 rounded-lg bg-slate-200 animate-pulse"></div>
-    </div>
-  )
-}
-
 export const LockManagerForm = ({
   lockAddress,
   network,
@@ -299,7 +292,7 @@ export const LockManagerForm = ({
           />
         ))}
         {(isLoading || addLockManagerMutation.isLoading) && (
-          <LockManagerCardPlaceholder />
+          <Placeholder.Line size="xl" />
         )}
       </div>
       {isManager && (
