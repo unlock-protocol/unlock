@@ -2,8 +2,7 @@ import { getStripeConnectForLock } from '../../operations/stripeOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { logger } from '../../logger'
 import { Charge, KeyRenewal, KeySubscription } from '../../models'
-import Stripe from 'stripe'
-import config from '../../config/config'
+import stripe from '../../config/stripe'
 import { Op } from 'sequelize'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
@@ -35,10 +34,6 @@ export async function renewFiatKey({
       network,
       lockAddress,
     }
-
-    const stripe = new Stripe(config.stripeSecret!, {
-      apiVersion: '2020-08-27',
-    })
 
     const stripeAccount = await getStripeConnectForLock(lockAddress, network)
 

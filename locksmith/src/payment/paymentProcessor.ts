@@ -1,4 +1,5 @@
-import Stripe from 'stripe'
+import stripe from '../config/stripe'
+
 import { User } from '../models/user'
 import { Charge } from '../models/charge'
 import { PaymentIntent } from '../models/paymentIntent'
@@ -14,14 +15,9 @@ import logger from '../logger'
 import { Op, Sequelize } from 'sequelize'
 
 export class PaymentProcessor {
-  stripe: Stripe
-
   keyPricer: KeyPricer
 
-  constructor(apiKey: string) {
-    this.stripe = new Stripe(apiKey, {
-      apiVersion: '2020-08-27',
-    })
+  constructor() {
     this.keyPricer = new KeyPricer()
   }
 
@@ -50,14 +46,14 @@ export class PaymentProcessor {
 
       // If we already have a stripe customer id
       if (stripeCustomerId) {
-        await this.stripe.customers.createSource(stripeCustomerId, {
+        await stripe.customers.createSource(stripeCustomerId, {
           source: token,
         })
 
         return true
       }
 
-      const customer = await this.stripe.customers.create({
+      const customer = await stripe.customers.create({
         email: user ? user.emailAddress : '', // The stripe API does not require a valid email to be passed
         source: token,
       })
@@ -123,7 +119,7 @@ export class PaymentProcessor {
         recipients.includes(recipient)
       )
     ) {
-      const stripeIntent = await this.stripe.paymentIntents.retrieve(
+      const stripeIntent = await stripe.paymentIntents.retrieve(
         existingIntent.intentId,
         {
           stripeAccount: existingIntent.connectedStripeId,
@@ -139,7 +135,7 @@ export class PaymentProcessor {
       }
     }
 
-    const globalPaymentMethods = await this.stripe.paymentMethods.list({
+    const globalPaymentMethods = await stripe.paymentMethods.list({
       customer: stripeCustomerId,
       type: 'card',
     })
@@ -147,7 +143,7 @@ export class PaymentProcessor {
     const primaryMethod = globalPaymentMethods.data[0]
 
     // Clone payment method
-    const method = await this.stripe.paymentMethods.create(
+    const method = await stripe.paymentMethods.create(
       {
         payment_method: primaryMethod.id,
         customer: stripeCustomerId,
@@ -158,7 +154,7 @@ export class PaymentProcessor {
     )
 
     // Find existing customer with the user address in the metadata
-    const customers = await this.stripe.customers.search(
+    const customers = await stripe.customers.search(
       {
         query: `metadata["userAddress"]:"${userAddress}"`,
       },
@@ -171,7 +167,7 @@ export class PaymentProcessor {
 
     if (!connectedCustomer) {
       // Clone customer if no customer with user address in the metadata exists.
-      connectedCustomer = await this.stripe.customers.create(
+      connectedCustomer = await stripe.customers.create(
         {
           payment_method: method.id,
           metadata: {
@@ -182,7 +178,7 @@ export class PaymentProcessor {
       )
     }
 
-    const intent = await this.stripe.paymentIntents.create(
+    const intent = await stripe.paymentIntents.create(
       {
         amount: totalPriceInCents,
         currency: 'usd',
@@ -225,7 +221,7 @@ export class PaymentProcessor {
   }
 
   async createSetupIntent({ customerId }: { customerId: string }) {
-    const setupIntent = await this.stripe.setupIntents.create({
+    const setupIntent = await stripe.setupIntents.create({
       customer: customerId,
       payment_method_types: ['card', 'link'],
     })
@@ -235,7 +231,7 @@ export class PaymentProcessor {
   }
 
   async listCardMethods({ customerId }: { customerId: string }) {
-    const methods = await this.stripe.paymentMethods.list({
+    const methods = await stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
     })
@@ -270,7 +266,7 @@ export class PaymentProcessor {
       throw new Error('Could not find payment intent.')
     }
 
-    const paymentIntent = await this.stripe.paymentIntents.retrieve(
+    const paymentIntent = await stripe.paymentIntents.retrieve(
       paymentIntentId,
       {
         stripeAccount: paymentIntentRecord.connectedStripeId,
@@ -334,12 +330,12 @@ export class PaymentProcessor {
   }
 
   async removePaymentMethods({ customerId }: { customerId: string }) {
-    const methods = await this.stripe.paymentMethods.list({
+    const methods = await stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
     })
     for (const method of methods.data) {
-      await this.stripe.paymentMethods.detach(method.id)
+      await stripe.paymentMethods.detach(method.id)
     }
   }
 }
