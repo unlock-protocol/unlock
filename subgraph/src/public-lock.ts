@@ -30,6 +30,7 @@ import {
   genKeyID,
   getKeyExpirationTimestampFor,
   loadOrCreateUnlockDailyData,
+  getKeyManagerOf,
   LOCK_MANAGER,
 } from './helpers'
 
@@ -49,6 +50,12 @@ function newKey(event: TransferEvent): void {
     key.tokenURI = tokenURI.value
   }
   key.expiration = getKeyExpirationTimestampFor(
+    event.address,
+    event.params.tokenId,
+    event.params.to
+  )
+
+  key.manager = getKeyManagerOf(
     event.address,
     event.params.tokenId,
     event.params.to
