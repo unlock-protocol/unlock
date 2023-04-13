@@ -19,6 +19,8 @@ interface DashboardLayoutProps {
   authRequired?: boolean
   showLinks?: boolean
   showHeader?: boolean
+  logoImageUrl?: string
+  logoRedirectUrl?: string
 }
 
 export const WalletNotConnected = () => {
@@ -141,6 +143,8 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
+  logoImageUrl, // replace default logo
+  logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -152,12 +156,15 @@ export const AppLayout = ({
 
   const showLogin = authRequired && !account
 
+  const logoSrc = logoImageUrl || '/images/svg/unlock-logo.svg'
+  const logoRedirectUri = logoRedirectUrl || '/locks'
+
   const MENU = {
     extraClass: {
       mobile: 'bg-ui-secondary-200 px-6',
     },
     showSocialIcons: false,
-    logo: { url: '/locks', src: '/images/svg/unlock-logo.svg' },
+    logo: { url: logoRedirectUri, src: logoSrc },
     menuSections: showLinks
       ? [
           {
