@@ -8,7 +8,7 @@ import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CertificationForm } from './CertificationForm'
 import { CertificationDeploying } from './CertificationDeploying'
-import { UNLIMITED_KEYS_DURATION } from '~/constants'
+import { ONE_DAY_IN_SECONDS, UNLIMITED_KEYS_DURATION } from '~/constants'
 
 export interface TransactionDetails {
   hash: string
@@ -25,6 +25,11 @@ export const NewCertification = () => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
 
+    const duration = formData?.lock?.expirationDuration
+    const expirationInSeconds = duration
+      ? duration * ONE_DAY_IN_SECONDS
+      : UNLIMITED_KEYS_DURATION
+
     try {
       lockAddress = await walletService.createLock(
         {
@@ -32,8 +37,7 @@ export const NewCertification = () => {
           name: formData.lock.name,
           publicLockVersion: config.publicLockVersion,
           maxNumberOfKeys: formData?.lock?.maxNumberOfKeys || 0,
-          expirationDuration:
-            formData?.lock?.expirationDuration || UNLIMITED_KEYS_DURATION,
+          expirationDuration: expirationInSeconds,
         },
         {} /** transactionParams */,
         async (createLockError, transactionHash) => {
