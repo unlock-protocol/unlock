@@ -8,7 +8,7 @@ import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Drawer, Icon, Modal } from '@unlock-protocol/ui'
+import { Button, Drawer, Icon, ImageUpload, Modal } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -29,6 +29,7 @@ import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockData } from '~/hooks/useLockData'
 import { useGetLockSymbol } from '~/hooks/useSymbol'
+import { useImageUpload } from '~/hooks/useImageUpload'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -55,22 +56,55 @@ const EventDetail = ({ label, icon, children }: EventDetailProps) => {
   )
 }
 
-const CoverImageDrawer = () => {
+const CoverImageDrawer = ({ image, setImage }: any) => {
   const [isOpen, setIsOpen] = useState(false)
 
+  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+
   return (
-    <div className="relative inset-0 z-1">
-      <Button
-        className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
-        variant="secondary"
-        size="tiny"
-        onClick={() => setIsOpen(true)}
-      >
-        Upload Image
-      </Button>
+    <div className="relative inset-0 z-[1]">
+      {!isOpen && (
+        <Button
+          className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
+          variant="secondary"
+          size="tiny"
+          onClick={() => setIsOpen(true)}
+        >
+          Upload Image
+        </Button>
+      )}
       <div className="relative">
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Cover image">
-          <div className="z-10 mt-2 space-y-6">lorem</div>
+          <div className="z-10 mt-2 space-y-6">
+            <ImageUpload
+              size="full"
+              description="This illustration will be used as cover image for your event page"
+              preview={image}
+              isUploading={isUploading}
+              onChange={async (fileOrFileUrl: any) => {
+                if (typeof fileOrFileUrl === 'string') {
+                  setImage(fileOrFileUrl)
+                } else {
+                  const items = await uploadImage(fileOrFileUrl[0])
+                  const image = items?.[0]?.publicUrl
+                  if (!image) {
+                    return
+                  }
+                  setImage(image)
+                }
+              }}
+            />
+          </div>
+          <Button
+            className="w-full"
+            size="small"
+            variant="outlined-primary"
+            onClick={() => {
+              setIsOpen(false)
+            }}
+          >
+            Save
+          </Button>
         </Drawer>
       </div>
     </div>
@@ -79,6 +113,7 @@ const CoverImageDrawer = () => {
 
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { account } = useAuth()
+  const [image, setImage] = useState('')
 
   const config = useConfig()
   const { lock } = useLockData({
@@ -215,8 +250,14 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       </Modal>
 
       <div className="relative">
-        <div className="relative h-28 md:h-80 bg-slate-200 rounded-3xl">
-          <CoverImageDrawer />
+        <div className="relative">
+          <div className="w-full overflow-hidden -z-0 bg-slate-200 md:h-80 h-28 rounded-3xl">
+            {image && (
+              <img className="object-cover " src={image} alt="Cover image" />
+            )}
+          </div>
+
+          <CoverImageDrawer image={image} setImage={setImage} />
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
               <div className="flex w-24 h-24 p-2 bg-white md:w-48 md:h-48 rounded-3xl">
