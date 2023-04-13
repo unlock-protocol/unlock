@@ -12754,6 +12754,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stripe/crypto@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@stripe/crypto@npm:0.0.4"
+  peerDependencies:
+    "@stripe/stripe-js": ^1.46.0
+  checksum: 9d543fb39fdc13350a00794dafe1d60b7ba80841f6f218ad72c15400064a77d5f02dc3fa23b6019e958252398c6f588ac04eb606242a63ee7bc556c7bc5d8e6d
+  languageName: node
+  linkType: hard
+
 "@stripe/react-stripe-js@npm:2.1.0":
   version: 2.1.0
   resolution: "@stripe/react-stripe-js@npm:2.1.0"
@@ -15919,6 +15928,7 @@ __metadata:
     "@radix-ui/react-avatar": 1.0.2
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.47.0
+    "@stripe/crypto": ^0.0.4
     "@stripe/react-stripe-js": 2.1.0
     "@stripe/stripe-js": 1.52.0
     "@tanstack/react-query": 4.29.1

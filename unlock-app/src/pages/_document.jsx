@@ -7,6 +7,11 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <script defer src="https://js.stripe.com/v3/" />
+          <script
+            defer
+            src="https://crypto-js.stripe.com/crypto-onramp-outer.js"
+          />
           <Fonts />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
