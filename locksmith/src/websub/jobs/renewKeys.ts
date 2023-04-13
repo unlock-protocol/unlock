@@ -22,7 +22,7 @@ export async function renewKeys(network: number, within?: number) {
 
     // If empty, break the loop and return as there are no more new keys to process.
     if (!keys.length) {
-      logger.info('No keys to renew for', { network })
+      logger.info(`No keys to renew for ${network}`)
       break
     }
 

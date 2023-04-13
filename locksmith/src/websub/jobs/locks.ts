@@ -50,7 +50,7 @@ async function notifyHooksOfAllUnprocessedLocks(
 
     // If empty, break the loop and return as there are no more new locks to process.
     if (!locks.length) {
-      logger.info('No new locks for', { network })
+      logger.info(`No new locks for, ${network}`)
       break
     }
 
