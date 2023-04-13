@@ -32,7 +32,7 @@ export const CertificationContent = () => {
       <Head>
         <title>
           {metadata
-            ? pageTitle(`${metadata?.name} | 'Certification`)
+            ? pageTitle(`${metadata?.name}`) || 'Certification'
             : 'Certification'}
         </title>
         {metadata && (
