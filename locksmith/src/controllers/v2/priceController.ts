@@ -8,8 +8,8 @@ const PriceBody = z.object({
   network: z.number(),
   lockAddress: z.string(),
   recipients: z.array(nullOrString),
-  data: z.array(nullOrString).optional().default([]),
-  referrers: z.array(nullOrString).optional().default([]),
+  data: z.array(nullOrString).nullish(),
+  referrers: z.array(nullOrString).nullish(),
 })
 
 export const amount: RequestHandler = async (request, response) => {
@@ -33,6 +33,7 @@ export const amount: RequestHandler = async (request, response) => {
 export const price: RequestHandler = async (request, response) => {
   const { network, lockAddress, recipients, data, referrers } =
     await PriceBody.parseAsync(request.body)
+
   const pricing = await createPricingForPurchase({
     network,
     lockAddress,

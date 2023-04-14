@@ -81,11 +81,10 @@ export async function defiLammaPrice({
   }
 }
 
-type NullOrString = string | null
 interface KeyPricingOptions {
-  recipients: NullOrString[]
-  data: NullOrString[]
-  referrers: NullOrString[]
+  recipients: (string | null)[]
+  data?: (string | null)[] | null | undefined
+  referrers?: (string | null)[] | null | undefined
   network: number
   lockAddress: string
 }
