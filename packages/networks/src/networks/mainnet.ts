@@ -1,11 +1,18 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
+  publicLockVersionToDeploy: 12,
   featured: true,
   id: 1,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   provider: 'https://rpc.unlock-protocol.com/1',
-  unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
+  unlockAddress: '0xe79B93f8E22676774F2A8dAd469175ebd00029FA',
+  previousDeploys: [
+    {
+      unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
+      startBlock: 7120795,
+    },
+  ],
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   keyManagerAddress: '0x9A1f43090307034DBFBE2ba20320Ce815ff046D4',
   name: 'Ethereum',
@@ -40,7 +47,7 @@ export const mainnet: NetworkConfig = {
     decimals: 18,
     coingecko: 'ethereum',
   },
-  startBlock: 7120795,
+  startBlock: 16989000,
   description:
     'The original and most secure EVM network. Gas fees are expensive on this network.',
   url: 'https://ethereum.org/en/',

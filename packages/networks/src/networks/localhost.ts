@@ -1,6 +1,7 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const localhost: NetworkConfig = {
+  publicLockVersionToDeploy: 12,
   id: 31337,
   name: 'localhost',
   chain: 'localhost',

@@ -1,4 +1,4 @@
-import { Disclosure } from '@unlock-protocol/ui'
+import { Disclosure, Placeholder } from '@unlock-protocol/ui'
 import { ReactNode } from 'react'
 
 interface SettingCardProps {
@@ -12,12 +12,6 @@ interface SettingCardProps {
 interface SettingCardDetailProps {
   title: string
   description: ReactNode
-}
-
-export const SettingCardPlaceholder = () => {
-  return (
-    <div className="w-full h-32 p-6 border border-gray-100 bg-slate-200 rounded-2xl animate-pulse"></div>
-  )
 }
 
 export const SettingCardDetail = ({
@@ -40,7 +34,7 @@ export const SettingCard = ({
   disabled,
 }: SettingCardProps) => {
   if (isLoading) {
-    return <SettingCardPlaceholder />
+    return <Placeholder.Card size="md" />
   }
 
   return (
