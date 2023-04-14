@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
 import { subgraph } from '~/config/subgraph'
 import { LockImage } from '../locks/Manage/elements/LockPicker'
-import LoadingIcon from '../Loading'
 import Link from 'next/link'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -126,6 +125,7 @@ export function Picker({
       ? tokenUrl(lockAddress, state.keyId)
       : ''
 
+  const showLocks = state.network && collect.lockAddress && lockExists
   return (
     <div className="grid gap-4">
       {collect.network && (
@@ -141,34 +141,32 @@ export function Picker({
           description="Select the network your lock is on."
         />
       )}
-      {state.network &&
-        collect.lockAddress &&
-        (lockExists || isLoadingLocks ? (
-          isLoadingLocks ? (
-            <Placeholder.Line size="xl" />
-          ) : (
-            <Select
-              key={state.network}
-              label="Lock"
-              options={locksOptions}
-              defaultValue={lockAddress}
-              onChange={(lockAddress: any) => {
-                handleOnChange(lockAddress)
-              }}
-              customOption={customOption}
-              description="Select the lock you want to use."
-            />
-          )
+      {showLocks ? (
+        isLoadingLocks ? (
+          <Placeholder.Line size="xl" />
         ) : (
-          <div>
-            You have not deployed locks on this network yet.{' '}
-            <Link href="/locks/create">
-              <span className="font-medium underline cursor-pointer">
-                Deploy one now
-              </span>
-            </Link>
-          </div>
-        ))}
+          <Select
+            key={state.network}
+            label="Lock"
+            options={locksOptions}
+            defaultValue={lockAddress}
+            onChange={(lockAddress: any) => {
+              handleOnChange(lockAddress)
+            }}
+            customOption={customOption}
+            description="Select the lock you want to use."
+          />
+        )
+      ) : (
+        <div>
+          You have not deployed locks on this network yet.{' '}
+          <Link href="/locks/create">
+            <span className="font-medium underline cursor-pointer">
+              Deploy one now
+            </span>
+          </Link>
+        </div>
+      )}
       {state.lockAddress && lockExists && collect.key && (
         <Input
           className="w-full"
