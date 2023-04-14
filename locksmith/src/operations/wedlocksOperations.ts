@@ -122,7 +122,7 @@ export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
     keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
   for await (const key of keys) {
-    notifyNewKeyToWedlocks(key, network, true)
+    notifyNewKeyToWedlocks(key, network)
   }
 }
 interface GetTemplateProps {
@@ -136,7 +136,6 @@ interface GetAttachmentProps {
   network?: number
   lockAddress: string
   owner: string
-  includeQrCode?: boolean
   event?: Partial<EventProps>
   types?: LockType
 }
@@ -184,14 +183,14 @@ const getAttachments = async ({
   network,
   lockAddress,
   owner,
-  includeQrCode = false,
   event,
   types,
 }: GetAttachmentProps): Promise<Attachment[]> => {
+  const { isEvent, isCertification } = types ?? {}
   const attachments: Attachment[] = []
 
-  // QR-code attachment
-  if (includeQrCode && network && tokenId) {
+  // QR-code attachment for event
+  if (isEvent && network && tokenId) {
     const ticket = await createTicket({
       lockAddress,
       tokenId,
@@ -200,8 +199,6 @@ const getAttachments = async ({
     })
     attachments.push({ path: svgStringToDataURI(ticket) })
   }
-
-  const { isEvent, isCertification } = types ?? {}
 
   // Add ICS attachment when event is present
   if (isEvent && event) {
@@ -226,7 +223,9 @@ const getAttachments = async ({
       lockAddress,
       tokenId,
     })
-    attachments.push({ path: svgStringToDataURI(certificate) })
+    if (certificate) {
+      attachments.push({ path: svgStringToDataURI(certificate) })
+    }
   }
 
   return attachments
@@ -332,11 +331,7 @@ export interface CertificationProps {
   certificationUrl: string
 }
 
-export const notifyNewKeyToWedlocks = async (
-  key: Key,
-  network: number,
-  includeQrCode = true
-) => {
+export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const keyManager = new KeyManager()
   const lockAddress = Normalizer.ethereumAddress(key.lock.address)
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
@@ -418,7 +413,6 @@ export const notifyNewKeyToWedlocks = async (
     lockAddress,
     network,
     owner: ownerAddress,
-    includeQrCode,
     event: eventDetail,
     types,
   })

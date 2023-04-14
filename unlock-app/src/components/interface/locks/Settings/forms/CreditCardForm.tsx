@@ -1,5 +1,5 @@
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
-import { Button, Badge, Select } from '@unlock-protocol/ui'
+import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -27,21 +27,6 @@ interface CardPaymentProps {
 
 interface ConnectStripeProps {
   previouslyConnectedLocks: any
-}
-
-const CardPaymentPlaceholder = () => {
-  return (
-    <>
-      <div className="flex flex-col gap-4">
-        <div className="h-5 w-44 bg-slate-200 animate-pulse"></div>
-        <div className="flex flex-col gap-1">
-          <div className="w-1/3 h-3 bg-slate-200 animate-pulse"></div>
-          <div className="w-2/3 h-3 bg-slate-200 animate-pulse"></div>
-        </div>
-        <div className="w-1/3 h-10 rounded-full bg-slate-200 animate-pulse"></div>
-      </div>
-    </>
-  )
 }
 
 export const CreditCardForm = ({
@@ -339,7 +324,14 @@ export const CreditCardForm = ({
     return null
   }
 
-  if (loading) return <CardPaymentPlaceholder />
+  if (loading)
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line size="xl" width="sm" />
+      </Placeholder.Root>
+    )
 
   return (
     <div className="flex flex-col gap-2">

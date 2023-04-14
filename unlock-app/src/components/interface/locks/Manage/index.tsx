@@ -123,35 +123,19 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   )
 }
 
-const PopoverItemPlaceholder = () => {
-  return (
-    <div className="flex w-full gap-2">
-      <div className="w-6 h-6 bg-slate-200 animate-pulse"></div>
-      <div className="flex flex-col w-full gap-2">
-        <div className="w-1/2 h-3 bg-slate-200 animate-pulse"></div>
-        <div className="w-full h-3 bg-slate-200 animate-pulse"></div>
-        <div className="w-1/3 h-3 bg-slate-200 animate-pulse"></div>
-      </div>
-    </div>
-  )
-}
-
 interface PopoverItemProps {
   label: string
   description?: string
   icon?: IconType
-  isLoading?: boolean
   onClick?: any
 }
 
 const PopoverItem = ({
   label,
   description,
-  isLoading,
   icon,
   ...props
 }: PopoverItemProps) => {
-  if (isLoading) return <PopoverItemPlaceholder />
   return (
     <>
       <div className="flex gap-3 cursor-pointer" {...props}>
@@ -325,7 +309,8 @@ export const ManageLockPage = () => {
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
-  const withoutParams = !lockAddress && !lockNetwork
+  const withoutParams =
+    !query?.lockAddress && !query.network && !(lockAddress && network)
 
   const { isManager, isLoading: isLoadingLockManager } = useLockManager({
     lockAddress,
@@ -349,13 +334,6 @@ export const ManageLockPage = () => {
     setAirdropKeys(!airdropKeys)
   }
 
-  const onLockPick = (lockAddress?: string, network?: string | number) => {
-    if (lockAddress && network) {
-      setLockAddress(lockAddress)
-      setNetwork(`${network}`)
-    }
-  }
-
   const LockSelection = () => {
     const resetLockSelection = () => {
       setLockAddress('')
@@ -371,13 +349,16 @@ export const ManageLockPage = () => {
         {withoutParams ? (
           <>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-              Select a lock to start manage it
+              Select a lock to start manage it s
             </h2>
             <div className="w-1/2">
               <Picker
                 userAddress={owner!}
-                onChange={(state) => {
-                  onLockPick(state.lockAddress, state.network)
+                onChange={({ lockAddress, network }) => {
+                  if (lockAddress && network) {
+                    setLockAddress(lockAddress)
+                    setNetwork(`${network}`)
+                  }
                 }}
               />
             </div>
