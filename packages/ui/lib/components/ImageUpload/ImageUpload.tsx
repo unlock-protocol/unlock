@@ -28,14 +28,30 @@ const ImageUploadWrapper = classed.div('grid gap-6 p-2 bg-white rounded-xl', {
   },
 })
 
+const ImageContainer = classed.div(
+  'flex flex-col items-center justify-center border border-dashed rounded-lg',
+  {
+    variants: {
+      imageRatio: {
+        cover: 'aspect-[16/9] py-5',
+        box: 'aspect-1 p-1',
+      },
+    },
+    defaultVariants: {
+      imageRatio: 'box',
+    },
+  }
+)
+
 export type ImageUploadWrapperProps = React.ComponentProps<
   typeof ImageUploadWrapper
-> & {
-  preview: string
-  isUploading?: boolean
-  onChange: (fileOrFileUrl: File[] | string) => Promise<unknown> | unknown
-  description?: string
-}
+> &
+  React.ComponentProps<typeof ImageContainer> & {
+    preview: string
+    isUploading?: boolean
+    onChange: (fileOrFileUrl: File[] | string) => Promise<unknown> | unknown
+    description?: string
+  }
 
 export const ImageUpload = ({
   onChange,
@@ -43,6 +59,7 @@ export const ImageUpload = ({
   isUploading,
   description,
   size,
+  imageRatio,
 }: ImageUploadWrapperProps) => {
   const { getInputProps, getRootProps } = useDropzone({
     accept: {
@@ -55,9 +72,9 @@ export const ImageUpload = ({
   })
   return (
     <ImageUploadWrapper size={size}>
-      <div className="flex flex-col items-center justify-center p-1 border border-dashed rounded-lg aspect-1">
+      <ImageContainer imageRatio={imageRatio}>
         {isUploading && (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center h-full ">
             <SpinnerIcon
               size={24}
               title="loading"
@@ -75,7 +92,7 @@ export const ImageUpload = ({
           ) : (
             <div className="text-xs">No image selected</div>
           ))}
-      </div>
+      </ImageContainer>
       <Tab.Group>
         <div className="grid gap-4">
           {description && (
