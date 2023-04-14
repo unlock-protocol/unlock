@@ -136,6 +136,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   })
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+  const [isClaimOpen, setClaimOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
@@ -243,6 +244,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const hasLocation = (eventData?.ticket?.event_address || '')?.length > 0
 
+  const price =
+    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
+
+  const keysLeft = (lock?.maxNumberOfKeys || 0) - (lock?.outstandingKeys || 0)
+
   return (
     <div>
       <Modal
@@ -257,11 +263,26 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         />
       </Modal>
 
+      <Modal isOpen={isClaimOpen && !!isClaimable} setIsOpen={setClaimOpen}>
+        {!hasValidKey && isClaimable && (
+          <WalletlessRegistration lockAddress={lockAddress} network={network} />
+        )}
+        {hasValidKey && (
+          <p className="text-lg">
+            🎉 You already have a ticket! You can view it in{' '}
+            <Link className="underline" href="/keychain">
+              your keychain
+            </Link>
+            .
+          </p>
+        )}
+      </Modal>
+
       <div className="relative">
         <div className="relative">
           <div className="w-full overflow-hidden -z-0 bg-slate-200 md:h-80 h-28 rounded-3xl">
             {image && (
-              <img className="object-cover " src={image} alt="Cover image" />
+              <img className="object-cover" src={image} alt="Cover image" />
             )}
           </div>
 
@@ -271,7 +292,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <div className="flex w-24 h-24 p-2 bg-white md:w-48 md:h-48 rounded-3xl">
                 <img
                   alt={eventData.title}
-                  className="w-full m-auto aspect-1"
+                  className="w-full m-auto aspect-1 rounded-2xl"
                   src={eventData.image}
                 />
               </div>
@@ -287,7 +308,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:grid-cols-3 mt-14 md:px-12 md:mt-28">
+        <section className="grid items-start grid-cols-1 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
             <div className="flex gap-2 flex-rows">
@@ -351,12 +372,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 <div className="flex items-center gap-2">
                   <>
                     {symbol && <CryptoIcon symbol={symbol} size={30} />}
-                    <span>{lock?.keyPrice}</span>
+                    <span>{price}</span>
                   </>
                 </div>
                 <div className="flex items-center gap-2">
                   <Icon icon={TicketIcon} size={30} />
-                  <span className="text-base font-bold">29</span>
+                  <span className="text-base font-bold">{keysLeft}</span>
                   <span className="text-gray-600">Left</span>
                 </div>
               </div>
@@ -370,7 +391,13 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                     : 'white',
                 }}
                 disabled={isClaimableLoading}
-                onClick={() => setCheckoutOpen(true)}
+                onClick={() => {
+                  if (isClaimable) {
+                    setClaimOpen(true)
+                  } else {
+                    setCheckoutOpen(true)
+                  }
+                }}
               >
                 Register
               </Button>
@@ -380,18 +407,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       </div>
 
       <section className="flex flex-col mb-8">
-        {!hasValidKey && isClaimable && isCheckoutOpen && (
-          <WalletlessRegistration lockAddress={lockAddress} network={network} />
-        )}
-        {hasValidKey && (
-          <p className="text-lg">
-            🎉 You already have a ticket! You can view it in{' '}
-            <Link className="underline" href="/keychain">
-              your keychain
-            </Link>
-            .
-          </p>
-        )}
         {isLockManager && (
           <div className="grid gap-6 mt-12">
             <span className="text-2xl font-bold text-brand-dark">
