@@ -2,6 +2,7 @@ import { networks } from '@unlock-protocol/networks'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import logger from '../logger'
+import GasPrice from './gasPrice'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
@@ -31,9 +32,6 @@ export async function defiLammaPrice({
   Partial<
     Price & {
       priceInAmount: number
-      creditCardProcessingFee: number
-      unlockServiceFee: number
-      inclusive: number
     }
   >
 > {
@@ -76,15 +74,10 @@ export async function defiLammaPrice({
   }
 
   const priceInAmount = item.price * amount
-  const unlockServiceFee = getUnlockServiceFee(priceInAmount)
-  const creditCardProcessingFee = getCreditCardProcessingFee(priceInAmount)
 
   return {
     ...item,
-    creditCardProcessingFee,
-    unlockServiceFee,
     priceInAmount,
-    inclusive: creditCardProcessingFee + unlockServiceFee + priceInAmount,
   }
 }
 
@@ -217,9 +210,21 @@ export const getKeyPricingInUSD = async ({
   return result
 }
 
+export const getGastCost = async ({ network }: KeyPricingOptions) => {
+  const gas = new GasPrice()
+  const amount = await gas.gasPriceETH(network, GAS_COST)
+  const price = await defiLammaPrice({
+    network,
+    amount,
+  })
+  return Math.round((price.priceInAmount || 0) * 100)
+}
+
 // Fee denominated in cents
-export const getCreditCardProcessingFee = (subtotal: number) => {
-  const serviceFee = getUnlockServiceFee(subtotal)
+export const getCreditCardProcessingFee = (
+  subtotal: number,
+  serviceFee: number
+) => {
   const total = subtotal + serviceFee
   // This is rounded up to an integer number of cents.
   const percentageFee = Math.ceil(total * stripePercentage)
@@ -237,12 +242,17 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     (sum, item) => sum + (item.price?.amountInCents || 0),
     0
   )
-  const unlockServiceFee = getUnlockServiceFee(totalCost)
-  const creditCardProcessingFee = getCreditCardProcessingFee(totalCost)
-  const total = totalCost + unlockServiceFee + creditCardProcessingFee
+  const gasCost = await getGastCost(options)
+  const unlockServiceFee = getUnlockServiceFee(totalCost + gasCost)
+  const creditCardProcessingFee = getCreditCardProcessingFee(
+    totalCost,
+    unlockServiceFee
+  )
+  const total = totalCost + unlockServiceFee + creditCardProcessingFee + gasCost
   return {
     recipients,
     total,
+    gasCost,
     unlockServiceFee,
     creditCardProcessingFee,
     isCreditPurchasable: total > 50,
