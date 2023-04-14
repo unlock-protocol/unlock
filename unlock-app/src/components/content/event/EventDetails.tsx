@@ -32,8 +32,6 @@ interface EventDetailsProps {
 }
 
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
-  const { account } = useAuth()
-
   const config = useConfig()
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
@@ -50,7 +48,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     useValidKey({
       lockAddress,
       network,
-      account,
     })
 
   const { isManager: isLockManager } = useLockManager({

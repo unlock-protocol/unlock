@@ -159,7 +159,6 @@ export const CertificationDetails = ({
     useValidKey({
       lockAddress,
       network,
-      account,
     })
 
   const loading =
