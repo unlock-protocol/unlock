@@ -295,7 +295,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         <div className="relative">
           <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
             {image && (
-              <img className="object-cover" src={image} alt="Cover image" />
+              <img
+                className="object-cover w-full h-full"
+                src={image}
+                alt="Cover image"
+              />
             )}
           </div>
 
