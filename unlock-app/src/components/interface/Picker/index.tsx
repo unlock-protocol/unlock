@@ -10,6 +10,7 @@ import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+import { Placeholder } from '@unlock-protocol/ui'
 
 export interface PickerState {
   network?: number
@@ -45,7 +46,7 @@ export function Picker({
     keyId,
   })
 
-  const { data: locks, isInitialLoading } = useQuery(
+  const { data: locks, isLoading: isLoadingLocks } = useQuery(
     ['locks', userAddress, network],
     async () => {
       const locks = await subgraph.locks(
@@ -89,10 +90,6 @@ export function Picker({
   }, [state.network, locks])
 
   const lockExists = locksOptions.length > 0
-
-  if (isInitialLoading) {
-    return <LoadingIcon />
-  }
 
   const onChangeFn = (lockAddress: string) => {
     setState((state) => ({
@@ -146,18 +143,22 @@ export function Picker({
       )}
       {state.network &&
         collect.lockAddress &&
-        (lockExists ? (
-          <Select
-            key={state.network}
-            label="Lock"
-            options={locksOptions}
-            defaultValue={lockAddress}
-            onChange={(lockAddress: any) => {
-              handleOnChange(lockAddress)
-            }}
-            customOption={customOption}
-            description="Select the lock you want to use."
-          />
+        (lockExists || isLoadingLocks ? (
+          isLoadingLocks ? (
+            <Placeholder.Line size="xl" />
+          ) : (
+            <Select
+              key={state.network}
+              label="Lock"
+              options={locksOptions}
+              defaultValue={lockAddress}
+              onChange={(lockAddress: any) => {
+                handleOnChange(lockAddress)
+              }}
+              customOption={customOption}
+              description="Select the lock you want to use."
+            />
+          )
         ) : (
           <div>
             You have not deployed locks on this network yet.{' '}
