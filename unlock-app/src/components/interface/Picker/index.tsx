@@ -46,14 +46,19 @@ export function Picker({
   })
 
   const { data: locks, isInitialLoading } = useQuery(
-    ['locks', userAddress],
+    ['locks', userAddress, network],
     async () => {
-      const locks = await subgraph.locks({
-        first: 100,
-        where: {
-          lockManagers_contains: [userAddress.toLowerCase()],
+      const locks = await subgraph.locks(
+        {
+          first: 100,
+          where: {
+            lockManagers_contains: [userAddress.toLowerCase()],
+          },
         },
-      })
+        {
+          networks: [network],
+        }
+      )
       return locks
     }
   )
