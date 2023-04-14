@@ -10,6 +10,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { Placeholder } from '@unlock-protocol/ui'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 export interface PickerState {
   network?: number
@@ -27,7 +28,7 @@ interface Props extends PickerState {
 }
 
 export function Picker({
-  network = 1,
+  network,
   lockAddress,
   keyId,
   userAddress,
@@ -39,14 +40,17 @@ export function Picker({
   },
   customOption = false,
 }: Props) {
+  const { network: connectedNetwork } = useAuth()
   const [state, setState] = useState<Partial<PickerState>>({
     lockAddress,
     network,
     keyId,
   })
 
+  const currentNetwork = state.network || connectedNetwork || 1
+
   const { data: locks, isLoading: isLoadingLocks } = useQuery(
-    ['locks', userAddress, network],
+    ['locks', userAddress, currentNetwork],
     async () => {
       const locks = await subgraph.locks(
         {
@@ -56,10 +60,13 @@ export function Picker({
           },
         },
         {
-          networks: [network],
+          networks: [currentNetwork],
         }
       )
       return locks
+    },
+    {
+      enabled: !!currentNetwork,
     }
   )
 
@@ -116,7 +123,7 @@ export function Picker({
       }))
     }
   }
-  const { collectionUrl, tokenUrl } = networks[network]?.opensea ?? {}
+  const { collectionUrl, tokenUrl } = networks[currentNetwork]?.opensea ?? {}
 
   const openSeaCollectionUrl =
     lockAddress && collectionUrl ? collectionUrl(lockAddress) : ''
@@ -125,15 +132,17 @@ export function Picker({
       ? tokenUrl(lockAddress, state.keyId)
       : ''
 
-  const showLocks = state.network && collect.lockAddress && lockExists
+  const showLocks =
+    state.network && collect.lockAddress && (lockExists || isLoadingLocks)
+
   return (
     <div className="grid gap-4">
       {collect.network && (
         <Select
           label="Network"
           options={networkOptions}
-          defaultValue={network}
-          onChange={(id) => {
+          defaultValue={currentNetwork}
+          onChange={(id: any) => {
             setState({
               network: Number(id),
             })
@@ -194,7 +203,7 @@ export function Picker({
             </>
           }
           value={state.keyId}
-          onChange={(event) => {
+          onChange={(event: any) => {
             event.preventDefault()
             const { value } = event.target
             setState((state) => ({

@@ -354,17 +354,9 @@ export const ManageLockPage = () => {
             <div className="w-1/2">
               <Picker
                 userAddress={owner!}
-                network={Number(network)}
-                lockAddress={lockAddress}
-                collect={{
-                  network: true,
-                  lockAddress: true,
-                }}
                 onChange={({ lockAddress, network }) => {
-                  if (lockAddress) {
+                  if (lockAddress && network) {
                     setLockAddress(lockAddress)
-                  }
-                  if (network) {
                     setNetwork(`${network}`)
                   }
                 }}
