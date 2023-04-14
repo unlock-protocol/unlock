@@ -83,7 +83,7 @@ describe('updating address holder metadata', () => {
     )
 
     const response = await request(app)
-      .put(`/api/key/${lockAddress}/user/${keyHolder[0]}`)
+      .put(`/api/key/5/${lockAddress}/user/${keyHolder[0]}`)
       .set('Accept', 'json')
       .set('Authorization', `Bearer ${Base64.encode(sig)}`)
       .send(typedData)
