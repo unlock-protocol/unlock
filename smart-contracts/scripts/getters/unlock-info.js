@@ -18,7 +18,7 @@ async function main({ unlockAddress }) {
     `Unlock deployed on ${name} \n`,
     `-  address: ${unlockAddress} \n`,
     `-  version: ${await unlock.unlockVersion()} \n`,
-    `-  owner: ${await unlock.owner()} \n`
+    `-  owner: ${await unlock.owner()} \n`,
     `-  proxyAdminAddress: ${proxyAdminAddress} \n`
   )
 }
