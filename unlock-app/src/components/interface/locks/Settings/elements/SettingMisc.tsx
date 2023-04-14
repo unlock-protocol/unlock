@@ -91,7 +91,7 @@ export const SettingMisc = ({
         />
       </SettingCard>
 
-      {(updatedVersion ?? 0) >= 10 && (
+      {false && (updatedVersion ?? 0) >= 10 && (
         <SettingCard
           label="Versioning"
           description={<UpgradeCard isLastVersion={isLastVersion} />}
