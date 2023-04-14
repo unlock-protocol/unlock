@@ -16,6 +16,7 @@ import {
   Icon,
   ImageUpload,
   Modal,
+  Placeholder,
 } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
@@ -161,7 +162,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const { isEvent } = getLockTypeByMetadata(metadata)
 
   if (isMetadataLoading || isHasValidKeyLoading) {
-    return <LoadingIcon />
+    return (
+      <Placeholder.Root>
+        <Placeholder.Card />
+      </Placeholder.Root>
+    )
   }
 
   const onEdit = () => {
@@ -267,20 +272,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         {!hasValidKey && isClaimable && (
           <WalletlessRegistration lockAddress={lockAddress} network={network} />
         )}
-        {hasValidKey && (
-          <p className="text-lg">
-            🎉 You already have a ticket! You can view it in{' '}
-            <Link className="underline" href="/keychain">
-              your keychain
-            </Link>
-            .
-          </p>
-        )}
       </Modal>
 
       <div className="relative">
         <div className="relative">
-          <div className="w-full overflow-hidden -z-0 bg-slate-200 md:h-80 h-28 rounded-3xl">
+          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
             {image && (
               <img className="object-cover" src={image} alt="Cover image" />
             )}
@@ -296,7 +292,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   src={eventData.image}
                 />
               </div>
-              <ul className="flex items-center gap-4 mt-auto">
+              <ul className="flex items-center gap-2 mt-auto md:gap-2">
                 <li>
                   <AddToCalendarButton event={eventData} />
                 </li>
@@ -315,7 +311,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <span className="text-brand-gray">Ticket contract</span>
               <AddressLink lockAddress={lockAddress} network={network} />
             </div>
-            <section className="mt-1">
+            <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
                 {
                   <EventDetail label="Date & Time" icon={CalendarIcon}>
@@ -352,7 +348,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   </EventDetail>
                 )}
               </div>
-              <div className="mt-6">
+              <div className="mt-14">
                 <h2 className="text-2xl font-bold">Event Information</h2>
                 {eventData.description && (
                   <div className="mt-4 markdown">
@@ -363,44 +359,56 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               </div>
             </section>
           </div>
-          {!hasValidKey && !isCheckoutOpen && (
-            <Card className="grid gap-6 mt-4 md:mt-0">
+          {!isCheckoutOpen && (
+            <Card className="grid gap-6 mt-10 lg:mt-0">
               <span className="text-2xl font-bold text-gray-900">
                 Registration
               </span>
-              <div className="flex items-center gap-5">
-                <div className="flex items-center gap-2">
-                  <>
-                    {symbol && <CryptoIcon symbol={symbol} size={30} />}
-                    <span>{price}</span>
-                  </>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Icon icon={TicketIcon} size={30} />
-                  <span className="text-base font-bold">{keysLeft}</span>
-                  <span className="text-gray-600">Left</span>
-                </div>
-              </div>
-              <Button
-                variant="primary"
-                size="medium"
-                style={{
-                  backgroundColor: `#${eventData.background_color}`,
-                  color: `#${eventData.background_color}`
-                    ? fontColorContrast(`#${eventData.background_color}`)
-                    : 'white',
-                }}
-                disabled={isClaimableLoading}
-                onClick={() => {
-                  if (isClaimable) {
-                    setClaimOpen(true)
-                  } else {
-                    setCheckoutOpen(true)
-                  }
-                }}
-              >
-                Register
-              </Button>
+              {hasValidKey ? (
+                <p className="text-lg">
+                  🎉 You already have a ticket! You can view it in{' '}
+                  <Link className="underline" href="/keychain">
+                    your keychain
+                  </Link>
+                  .
+                </p>
+              ) : (
+                <>
+                  <div className="flex items-center gap-5">
+                    <div className="flex items-center gap-2">
+                      <>
+                        {symbol && <CryptoIcon symbol={symbol} size={30} />}
+                        <span>{price}</span>
+                      </>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Icon icon={TicketIcon} size={30} />
+                      <span className="text-base font-bold">{keysLeft}</span>
+                      <span className="text-gray-600">Left</span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="medium"
+                    style={{
+                      backgroundColor: `#${eventData.background_color}`,
+                      color: `#${eventData.background_color}`
+                        ? fontColorContrast(`#${eventData.background_color}`)
+                        : 'white',
+                    }}
+                    disabled={isClaimableLoading}
+                    onClick={() => {
+                      if (isClaimable) {
+                        setClaimOpen(true)
+                      } else {
+                        setCheckoutOpen(true)
+                      }
+                    }}
+                  >
+                    Register
+                  </Button>
+                </>
+              )}
             </Card>
           )}
         </section>

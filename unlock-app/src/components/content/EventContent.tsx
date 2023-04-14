@@ -30,12 +30,10 @@ export const EventContent = () => {
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}
       {showDetails && (
-        <div className="m-auto lg:w-3/4">
-          <EventDetails
-            lockAddress={lockAddress.toString()}
-            network={parseInt(network.toString(), 10)}
-          />
-        </div>
+        <EventDetails
+          lockAddress={lockAddress.toString()}
+          network={parseInt(network.toString(), 10)}
+        />
       )}
     </AppLayout>
   )
