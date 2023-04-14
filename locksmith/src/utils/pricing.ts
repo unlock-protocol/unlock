@@ -1,7 +1,12 @@
 import { networks } from '@unlock-protocol/networks'
-import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import {
+  WalletService,
+  Web3Service,
+  getErc20Decimals,
+} from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import logger from '../logger'
+import Dispatcher from '../fulfillment/dispatcher'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
@@ -88,11 +93,10 @@ export async function defiLammaPrice({
   }
 }
 
-type NullOrString = string | null
 interface KeyPricingOptions {
-  recipients: NullOrString[]
-  data: NullOrString[]
-  referrers: NullOrString[]
+  recipients: string[]
+  data?: string[]
+  referrers?: string[]
   network: number
   lockAddress: string
 }
@@ -217,6 +221,37 @@ export const getKeyPricingInUSD = async ({
   return result
 }
 
+export const getGasCost = async ({
+  recipients,
+  data,
+  referrers,
+  network,
+  lockAddress,
+}: KeyPricingOptions) => {
+  const walletService = new WalletService(networks)
+  const dispatcher = new Dispatcher()
+  const { provider, wallet } = await dispatcher.getPurchaser(network)
+  await walletService.connect(provider, wallet)
+  console.log({
+    data,
+    owners: recipients,
+    referrers,
+    lockAddress,
+  })
+  const result = await walletService.purchaseKeys(
+    {
+      data: data?.length ? data : recipients.map(() => '0x'),
+      owners: recipients,
+      referrers: referrers?.length ? referrers : recipients,
+      lockAddress,
+    },
+    {
+      runEstimate: true,
+    }
+  )
+  return result
+}
+
 // Fee denominated in cents
 export const getCreditCardProcessingFee = (subtotal: number) => {
   const serviceFee = getUnlockServiceFee(subtotal)
@@ -232,7 +267,10 @@ export const getUnlockServiceFee = (cost: number) => {
 }
 
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
-  const recipients = await getKeyPricingInUSD(options)
+  const [recipients, gasCost] = await Promise.all([
+    getKeyPricingInUSD(options),
+    getGasCost(options),
+  ])
   const totalCost = recipients.reduce(
     (sum, item) => sum + (item.price?.amountInCents || 0),
     0
@@ -246,5 +284,6 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     unlockServiceFee,
     creditCardProcessingFee,
     isCreditPurchasable: total > 50,
+    gasCost,
   }
 }
