@@ -65,7 +65,7 @@ To set up a network for deployment, change `networks.js` to add your networks an
 
 ### Setup account
 
-We use the `DEPLOYER_PRIVATE_KEY` environment variable to interract with contract.
+We use the `DEPLOYER_PRIVATE_KEY` environment variable to interact with contracts. Please set it.
 
 ### Run the UDT contract upgrade
 
@@ -366,12 +366,6 @@ yarn hardhat verify <address> --network binance
 ```
 
 ## How to deploy the Protocol on a new network
-
-### Create accounts file
-
-Get tokens and add your account. In the smart contracts folder, create an `accounts.<xxx>.js` file.
-
-ex. `accounts.goerli.ts`
 
 ### Add network to `@unlock-protocol/networks`
 
