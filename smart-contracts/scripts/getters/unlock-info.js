@@ -11,14 +11,21 @@ async function main({ unlockAddress }) {
 
   const { name } = networks[chainId]
   const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-  const proxyAdminAddress = await getProxyAdminAddress({ network })
+  
+  let proxyAdminAddress 
+  try {
+    proxyAdminAddress = await getProxyAdminAddress({ network })
+  } catch (error) {
+    console.log(`ERROR: Failed to fetch ProxyAdmin address`)
+  }
 
   // eslint-disable-next-line no-console
   console.log(
     `Unlock deployed on ${name} \n`,
     `-  address: ${unlockAddress} \n`,
-    `-  version: ${await unlock.unlockVersion()} \n`,
-    `-  owner: ${await unlock.owner()} \n`
+    `-  unlockVersion: ${await unlock.unlockVersion()} \n`,
+    `-  publicLockVersion: ${await unlock.publicLockLatestVersion()} \n`,
+    `-  owner: ${await unlock.owner()} \n`,
     `-  proxyAdminAddress: ${proxyAdminAddress} \n`
   )
 }
