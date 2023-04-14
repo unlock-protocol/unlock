@@ -3,7 +3,9 @@ import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, CardPlaceholder } from '../Card'
+// import { Card, CardPlaceholder } from '../Card'
+import { loadStripeOnramp } from '@stripe/crypto'
+
 import {
   Elements,
   PaymentElement,
@@ -26,6 +28,7 @@ import {
   usePaymentMethodList,
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
+import { CryptoElements, OnrampElement } from '../utils/CryptoElements'
 
 interface Props {
   injectedProvider: unknown
@@ -37,35 +40,52 @@ export function UniversalCardPayment({
   injectedProvider,
 }: Props) {
   const config = useConfig()
-  const stripe = loadStripe(config.stripeApiKey, {})
+  const [onrampSession, setOnrampSession] = useState<any>(null)
+  const stripeOnrampPromise = loadStripeOnramp(config.stripeApiKey)
   const [isSaving, setIsSaving] = useState(false)
 
-  const {
-    data: methods,
-    isInitialLoading: isMethodLoading,
-    refetch: refetchPaymentMethods,
-  } = usePaymentMethodList()
-  const { mutateAsync: removePaymentMethods } = useRemovePaymentMethods()
   const stepItems = useCheckoutSteps(checkoutService)
 
-  const payment = methods?.[0]
-  const card = payment?.card
-
   useEffect(() => {
-    const stripeOnramp = StripeOnramp('pk_test_BHXKmScocCfrQ1oW8HTmnVrB')
-    // IMPORTANT: replace with your logic of how to mint/retrieve client secret
-    const clientSecret =
-      'cos_1Lb6vsAY1pjOSNXVWF3nUtkV_secret_8fuPvTzBaxj3XRh14C6tqvdl600rpW7hG4G'
-    const onrampSession = stripeOnramp.createSession({ clientSecret })
-    onrampSession.mount('#onramp-element')
-  })
+    // technically we want to get the user's signatures first...
+    // so that we take no risk having the funds on the account
+    // but no signature to spend them...
+    const getOnrampSession = async () => {
+      const response = await storage.onramp()
+      console.log(response)
+      setOnrampSession(response.data.session)
+    }
+    getOnrampSession()
+    // const stripeOnramp = StripeOnramp('pk_test_BHXKmScocCfrQ1oW8HTmnVrB')
+    // // IMPORTANT: replace with your logic of how to mint/retrieve client secret
+    // const clientSecret =
+    //   'cos_1Lb6vsAY1pjOSNXVWF3nUtkV_secret_8fuPvTzBaxj3XRh14C6tqvdl600rpW7hG4G'
+    // const onrampSession = stripeOnramp.createSession({ clientSecret })
+    // onrampSession.mount('#onramp-element')
+  }, [])
+
+  console.log(onrampSession)
 
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         GREAT WE WILL LOAD THE CRYPTO ONBOARD BY STRIPE!
-        <div id="onramp-element"></div>
+        <ul>
+          <li>1. First get the amount that will be spent in USDC </li>
+          <li>2. Ask for user to approve the spend in USDC</li>
+          <li>3. show onramp element!</li>
+        </ul>
+        <CryptoElements stripeOnramp={stripeOnrampPromise}>
+          {clientSecret && (
+            <OnrampElement
+              id="onramp-element"
+              clientSecret={clientSecret}
+              appearance={{ theme: 'dark' }}
+              onChange={onChange}
+            />
+          )}
+        </CryptoElements>
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
@@ -73,7 +93,7 @@ export function UniversalCardPayment({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          {!card ? (
+          {/* {!card ? (
             <Button
               loading={isSaving}
               disabled={isMethodLoading || isSaving || !stripe}
@@ -99,7 +119,7 @@ export function UniversalCardPayment({
             >
               Continue
             </Button>
-          )}
+          )} */}
         </Connected>
         <PoweredByUnlock />
       </footer>

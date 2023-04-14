@@ -17,7 +17,7 @@ router.use('/', authenticatedMiddleware, userOnlyMiddleware)
 router.post('/setup', createSetupIntent)
 router.get('/list', list)
 router.post('/intent/:network/locks/:lockAddress', createPaymentIntent)
-router.post('/onranmp/:network/locks/:lockAddress', createOnRampSession)
+router.post('/onramp', createOnRampSession)
 router.delete('/payment-methods', removePaymentMethods)
 
 export default router

@@ -10,6 +10,8 @@ import logger from '../../logger'
 import { z } from 'zod'
 import { isSoldOut } from '../../operations/lockOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
+import Stripe from 'stripe'
+import stripe from '../../config/stripe'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -162,19 +164,32 @@ export const createOnRampSession: RequestHandler = async (
   request,
   response
 ) => {
-  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-  const network = Number(request.params.network)
+  // const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  // const network = Number(request.params.network)
   const userAddress = Normalizer.ethereumAddress(request.user!.walletAddress)
 
   // TODO: check that user has approved amount first
+  // TODO: use swap and purchase
 
-  // curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  // -u sk_test_PhFSsotkdy7DHU5cn8o2pT6A00SINuUpuR: \
-  // -d "transaction_details[wallet_addresses][ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
-  // -d "transaction_details[source_currency]"="usd" \
-  // -d "transaction_details[destination_currency]"="eth" \
-  // -d "transaction_details[destination_network]"="ethereum" \
-  // -d "transaction_details[destination_exchange_amount]"="0.1234"
+  const OnrampSessionResource = Stripe.StripeResource.extend({
+    create: Stripe.StripeResource.method({
+      method: 'POST',
+      path: 'crypto/onramp_sessions',
+    }),
+  })
+
+  // Create an OnrampSession with the order amount and currency
+  const session = await new OnrampSessionResource(stripe).create({
+    transaction_details: {
+      destination_currency: 'eth',
+      destination_exchange_amount: '0.01',
+      destination_network: 'ethereum',
+      wallet_addresses: {
+        ethereum: userAddress,
+      },
+    },
+    customer_ip_address: request.socket.remoteAddress,
+  })
 
   return response.status(200).send({ session })
 }

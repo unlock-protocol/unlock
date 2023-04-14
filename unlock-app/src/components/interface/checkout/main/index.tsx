@@ -43,7 +43,6 @@ export function Checkout({
       paywallConfig,
     },
   })
-  console.log(checkoutService)
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
 
