@@ -209,7 +209,7 @@ export const getKeyPricingInUSD = async ({
   return result
 }
 
-export const getGastCost = async ({ network }: KeyPricingOptions) => {
+export const getGastCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
   const price = await defiLammaPrice({
@@ -235,25 +235,80 @@ export const getUnlockServiceFee = (cost: number) => {
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 
+export const getFees = ({
+  subtotal,
+  gasCost,
+}: Record<'subtotal' | 'gasCost', number>) => {
+  const unlockServiceFee = getUnlockServiceFee(subtotal)
+  const creditCardProcessingFee = getCreditCardProcessingFee(
+    subtotal + gasCost,
+    unlockServiceFee
+  )
+  return {
+    unlockServiceFee,
+    creditCardProcessingFee,
+    gasCost,
+    total: unlockServiceFee + creditCardProcessingFee + subtotal + gasCost,
+  }
+}
+
+export const createTotalCharges = async ({
+  amount,
+  network,
+  address,
+}: {
+  network: number
+  amount: number
+  address?: string
+}) => {
+  const [pricing, gasCost] = await Promise.all([
+    defiLammaPrice({
+      network,
+      amount,
+      address,
+    }),
+    getGastCost({ network }),
+  ])
+
+  if (pricing.priceInAmount === undefined) {
+    return {
+      total: 0,
+      subtotal: 0,
+      gasCost,
+      unlockServiceFee: 0,
+      creditCardProcessingFee: 0,
+      isCreditPurchasable: false,
+    }
+  }
+  const subtotal = Math.round(pricing.priceInAmount * 100)
+  const fees = getFees({
+    subtotal,
+    gasCost,
+  })
+  const result = {
+    ...fees,
+    subtotal,
+    isCreditPurchasable: fees.total > 50,
+  }
+  return result
+}
+
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInUSD(options)
-  const totalCost = recipients.reduce(
+  const subtotal = recipients.reduce(
     (sum, item) => sum + (item.price?.amountInCents || 0),
     0
   )
   const gasCost = await getGastCost(options)
-  const unlockServiceFee = getUnlockServiceFee(totalCost + gasCost)
-  const creditCardProcessingFee = getCreditCardProcessingFee(
-    totalCost,
-    unlockServiceFee
-  )
-  const total = totalCost + unlockServiceFee + creditCardProcessingFee + gasCost
-  return {
-    recipients,
-    total,
+  const fees = getFees({
+    subtotal,
     gasCost,
-    unlockServiceFee,
-    creditCardProcessingFee,
-    isCreditPurchasable: total > 50,
+  })
+
+  return {
+    ...fees,
+    recipients,
+    gasCost,
+    isCreditPurchasable: fees.total > 50,
   }
 }

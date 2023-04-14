@@ -1,16 +1,5 @@
 import { RequestHandler } from 'express'
-import { createPricingForPurchase, defiLammaPrice } from '../../utils/pricing'
-import { z } from 'zod'
-
-const nullOrString = z.union([z.string(), z.null()])
-
-const PriceBody = z.object({
-  network: z.number(),
-  lockAddress: z.string(),
-  recipients: z.array(nullOrString),
-  data: z.array(nullOrString).nullish(),
-  referrers: z.array(nullOrString).nullish(),
-})
+import { createTotalCharges, defiLammaPrice } from '../../utils/pricing'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -30,17 +19,18 @@ export const amount: RequestHandler = async (request, response) => {
   })
 }
 
-export const price: RequestHandler = async (request, response) => {
-  const { network, lockAddress, recipients, data, referrers } =
-    await PriceBody.parseAsync(request.body)
+export const total: RequestHandler = async (request, response) => {
+  const network = Number(request.query.network?.toString() || 1)
+  const amount = parseFloat(request.query.amount?.toString() || '1')
+  const address =
+    typeof request.query.address === 'string'
+      ? request.query.address
+      : undefined
 
-  const pricing = await createPricingForPurchase({
+  const charge = await createTotalCharges({
     network,
-    lockAddress,
-    recipients,
-    referrers,
-    data,
+    amount,
+    address,
   })
-
-  return response.send(pricing)
+  return response.send(charge)
 }

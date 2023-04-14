@@ -1,9 +1,9 @@
 import express from 'express'
-import { amount, price } from '../../controllers/v2/priceController'
+import { amount, total } from '../../controllers/v2/priceController'
 
 const router = express.Router({ mergeParams: true })
 
 router.get('/:network/price', amount)
-router.post('/purchase/price', price)
+router.get('/purchase/total', total)
 
 export default router
