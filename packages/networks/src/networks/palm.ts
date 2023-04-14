@@ -11,6 +11,7 @@ export const palm: NetworkConfig = {
   id: 11297108109,
   name: 'Palm',
   chain: 'palm',
+  keyManagerAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
   subgraph: {
     endpoint:
       'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet',
