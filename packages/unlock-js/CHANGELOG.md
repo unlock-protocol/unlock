@@ -1,5 +1,9 @@
 # Changes
 
+# 0.35.1
+
+- fixed upgrade function
+
 # 0.35.0
 
 - Add support for `swap` param in `purchaseKey` and `purchaseKeys` for swap and pay.
