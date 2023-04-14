@@ -10,7 +10,7 @@ image: /images/blog/v13/v13-cover.png
 
 We are pleased to announce that a new version of the Unlock Protocol is now available. These improvements and new capabilities are sure to make the Unlock Protocol even more powerful and user-friendly than before. We fixed a few bugs, added some gas optimisations and shipped a bunch of new features. 
 
-You can review the original conversation in the Unlock DAO forum regarding these features [here](https://unlock.community/t/unlock-protocol-upgrade-proposal/368).
+You can review the original conversation in the Unlock DAO community forum regarding these features [here](https://unlock.community/t/unlock-protocol-upgrade-proposal/368).
 
 If you are a Lock Manager, you can upgrade your contract by following the instructions below to take advantage of these new features!
 
