@@ -30,7 +30,7 @@ export const CoverImage = {
   args: {
     preview: '/images/image_upload.png',
     description:
-      'Upload an image or select an external URL. Recommend using a square of at least 600x200 pixels.',
+      'Upload an image or select an external URL. We recommend using a square of at least 600x200 pixels.',
     imageRatio: 'cover',
   },
 } satisfies Story
