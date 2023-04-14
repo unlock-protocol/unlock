@@ -14,7 +14,7 @@ We are pleased to announce that a new version of the Unlock Protocol is now avai
 
 If you are a Lock Manager, you can upgrade your contract by following the instructions below to take advantage of these new features!
 
-## A general upgrade of the based Unlock smart contracts
+## A general upgrade of the base Unlock smart contracts
 
 Unlock Protocol has recently undergone two important smart contract upgrades. 
 
