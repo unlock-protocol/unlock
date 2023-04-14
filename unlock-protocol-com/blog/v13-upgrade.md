@@ -1,0 +1,39 @@
+---
+title: Unlock Protocol Smart Contracts Upgrade v13
+authorName: Clément Renaud
+publishDate: April 14, 2023
+description: An updated version of Unlock’s core contract and a new template contract for managing memberships
+image: /images/blog/v13/v13-cover.png
+---
+
+![v13-cover.png](/images/blog/v13/v13-cover.png)
+
+We are pleased to announce that a new version of the Unlock Protocol is now available. These improvements and new capabilities are sure to make the Unlock Protocol even more powerful and user-friendly than before. We fixed a few bugs, added some gas optimisations and shipped a bunch of new features. 
+
+>Refer back to the conversations in the fall around these features
+
+If you are a Lock Manager, you can upgrade your contract by following the instructions below to take advantage of these new features!
+
+## A general upgrade of the based Unlock smart contracts
+
+Unlock Protocol has recently undergone two important smart contract upgrades. 
+
+First, a new version of the Unlock core contract has been released. This contract takes care of deploying and upgrading new locks, as well as tracking growth of protocol usage. The new version added the *ability* for the protocol to include a protocol fee on transactions, while leaving its *activation* to the discretion of the governance DAO. 
+
+Within the Unlock core contract, we also improved gas consumption of most functions (by using [Solidity custom errors](https://blog.soliditylang.org/2021/04/21/custom-errors/) instead of require statements).
+
+The second important upgrade was the release of a new version of the PublicLock contract. This contract acts as a template for each lock deployed. This latest version (v13) fixes issues that appeared when canceling or burning keys, and makes renewals easier. It is now available as the default version for all new locks. You can also [upgrade](https://docs.unlock-protocol.com/core-protocol/public-lock/deploying-locks/#upgrading-locks) an existing version 12 lock to version 13. (To determine the current version of your lock, please check the `publicLockVersion` of your lock in your block explorer.)
+
+## Upgrading across chains
+
+The Unlock Protocol is currently available on [9 different production chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks) and several test networks. To perform a protocol upgrade means to redeploy contracts on all chains. We are very careful about consistency of the protocol across the board, so we can offer the best experience for users of various communities. To make the process smoother and more transparent, we are currently working on a way to unify our governance across the various chain we supported and handle it all to the DAO (more on that soon).
+
+The only noticeable change this time happened on the Ethereum mainnet, where the main Unlock contract has been redeployed to reflect change in the way [UDT tokens rewards](https://docs.unlock-protocol.com/governance/frequently-asked-questions/#what-is-%CA%89dt) are distributed. While we originally minted new UDT for referrers, we now distribute tokens directly from our existing supply. This goal of this change in tokenomics is to make the UDT supply less inflationary by keeping the supply to a fixed amount.
+
+## Upgrading your lock contract
+
+If you are a lock manager, you will need to upgrade your lock contract to take advantage of the new features and improvements. To do so, follow the instructions provided in the [Unlock documentation](https://unlock-protocol.com/blog/lock-v12-release).  
+
+**What if I find an issue or bug in the Unlock Protocol v13 upgrade?**
+
+Please open an issue on Github or tell us in Discord and we'll fix it ASAP.
