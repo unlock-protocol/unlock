@@ -25,3 +25,22 @@ export const Loading = {
     isUploading: true,
   },
 }
+
+export const CoverImage = {
+  args: {
+    preview: '/images/image_upload.png',
+    description:
+      'Upload an image or select an external URL. Recommend using a square of at least 600x200 pixels.',
+    imageRatio: 'cover',
+  },
+} satisfies Story
+
+export const CoverImageLoading = {
+  args: {
+    preview: '/images/image_upload.png',
+    description:
+      'Upload an image or select an external URL. Recommend using a square of at least 600x200 pixels.',
+    imageRatio: 'cover',
+    isUploading: true,
+  },
+} satisfies Story
