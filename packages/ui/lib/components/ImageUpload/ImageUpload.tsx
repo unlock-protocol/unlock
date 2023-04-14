@@ -33,7 +33,7 @@ const ImageContainer = classed.div(
   {
     variants: {
       imageRatio: {
-        cover: 'aspect-2 py-5',
+        cover: 'aspect-[16/9] py-5',
         box: 'aspect-1 p-1',
       },
     },
