@@ -18,6 +18,7 @@ import { MintingScreen } from '~/components/interface/checkout/main/Minting'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
+import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -39,11 +40,13 @@ type RsvpFormProps = z.infer<typeof rsvpForm>
 interface WalletlessRegistrationProps {
   lockAddress: string
   network: number
+  handleClose: () => void
 }
 
 export const WalletlessRegistration = ({
   lockAddress,
   network,
+  handleClose,
 }: WalletlessRegistrationProps) => {
   const { account } = useAuth()
   const [claimResult, setClaimResult] = useState<any>()
@@ -120,7 +123,12 @@ export const WalletlessRegistration = ({
   }, [transactionStatus, network, claimResult?.hash, config.networks])
 
   return (
-    <>
+    <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[35rem] max-h-[42rem] p-4">
+      <CloseIcon
+        className="ml-auto cursor-pointer fill-black group-hover:fill-brand-ui-primary hover:text-brand-ui-primary"
+        size={24}
+        onClick={() => handleClose()}
+      />
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
@@ -128,7 +136,7 @@ export const WalletlessRegistration = ({
         badge="bottomleft"
       />
       {claimResult && transactionStatus && (
-        <div className="h-72 mb-36">
+        <div className="m-auto h-72 mb-36">
           <MintingScreen
             mint={{
               status: transactionStatus,
@@ -200,6 +208,6 @@ export const WalletlessRegistration = ({
           </Button>
         </form>
       )}
-    </>
+    </div>
   )
 }

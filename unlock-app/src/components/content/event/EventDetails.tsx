@@ -6,7 +6,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import LoadingIcon from '~/components/interface/Loading'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import {
   Button,
@@ -107,7 +106,6 @@ const CoverImageDrawer = ({ image, setImage }: any) => {
           <Button
             className="w-full"
             size="small"
-            variant="outlined-primary"
             onClick={() => {
               setIsOpen(false)
             }}
@@ -164,7 +162,17 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   if (isMetadataLoading || isHasValidKeyLoading) {
     return (
       <Placeholder.Root>
-        <Placeholder.Card />
+        <Placeholder.Card size="lg" />
+        <Placeholder.Root inline>
+          <Placeholder.Image size="sm" />
+          <Placeholder.Image size="sm" />
+          <div className="w-1/3 ml-auto">
+            <Placeholder.Card size="md" />
+          </div>
+        </Placeholder.Root>
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
       </Placeholder.Root>
     )
   }
@@ -268,9 +276,17 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         />
       </Modal>
 
-      <Modal isOpen={isClaimOpen && !!isClaimable} setIsOpen={setClaimOpen}>
-        {!hasValidKey && isClaimable && (
-          <WalletlessRegistration lockAddress={lockAddress} network={network} />
+      <Modal
+        isOpen={isClaimOpen && !!isClaimable}
+        setIsOpen={setClaimOpen}
+        empty={true}
+      >
+        {((!hasValidKey && isClaimable) || true) && (
+          <WalletlessRegistration
+            lockAddress={lockAddress}
+            network={network}
+            handleClose={() => setClaimOpen(false)}
+          />
         )}
       </Modal>
 
@@ -364,7 +380,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <span className="text-2xl font-bold text-gray-900">
                 Registration
               </span>
-              {hasValidKey ? (
+              {false ? (
                 <p className="text-lg">
                   🎉 You already have a ticket! You can view it in{' '}
                   <Link className="underline" href="/keychain">
