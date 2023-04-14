@@ -13,7 +13,7 @@ export const mainnet: NetworkConfig = {
       startBlock: 7120795,
     },
   ],
-  multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
+  multisig: '0x9168EABE624e9515f3836bA1716EC1DDd4C461D4',
   keyManagerAddress: '0x9A1f43090307034DBFBE2ba20320Ce815ff046D4',
   name: 'Ethereum',
   chain: 'ethereum',
