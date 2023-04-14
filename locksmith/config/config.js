@@ -13,7 +13,7 @@ const config = {
   unlockApp: process.env.UNLOCK_APP || 'https://app.unlock-protocol.com',
   logging: false,
   services: {
-    wedlocks: 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
