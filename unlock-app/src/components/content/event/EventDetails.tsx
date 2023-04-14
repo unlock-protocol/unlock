@@ -89,6 +89,7 @@ const CoverImageDrawer = ({ image, setImage }: any) => {
               description="This illustration will be used as cover image for your event page"
               preview={image}
               isUploading={isUploading}
+              imageRatio="cover"
               onChange={async (fileOrFileUrl: any) => {
                 if (typeof fileOrFileUrl === 'string') {
                   setImage(fileOrFileUrl)
