@@ -21,14 +21,14 @@ import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
 
 const PaymentCaptureBody = z.object({
-  data: z.array(z.string()).default([]).optional(),
+  data: z.array(z.union([z.null(), z.string()])).nullish(),
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   network: z.number(),
   userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   recipients: z.array(
     z.string().transform((item) => Normalizer.ethereumAddress(item))
   ),
-  referrers: z.array(z.string()).default([]).optional(),
+  referrers: z.array(z.union([z.null(), z.string()])).nullish(),
   paymentIntent: z.string(),
 })
 
@@ -113,7 +113,7 @@ export class PurchaseController {
         normalizedRecipients,
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
-        pricing,
+        pricing * 100,
         network,
         stripeConnectApiKey,
         recurring

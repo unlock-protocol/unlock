@@ -2587,6 +2587,11 @@ paths:
                 - 'paymentIntent'
 
               properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+
                 network: # The network the lock is on
                   type: number
 
@@ -2619,7 +2624,7 @@ paths:
                   transactionHash:
                     type: string
 
-  /v2/purchase/total:
+  /v2/api/purchase/total:
     get:
       description: Get the total price for a purchase (including fees)
       operationId: getTotalPrice
@@ -2658,7 +2663,7 @@ paths:
                   - 'gasCost'
                   - 'unlockServiceFee'
                   - 'creditCardProcessingFee'
-                  - 'isCreditPurchasable'
+                  - 'isCreditCardPurchasable'
                 properties:
                   total:
                     type: number
@@ -2670,5 +2675,5 @@ paths:
                     type: number
                   creditCardProcessingFee:
                     type: number
-                  isCreditPurchasable:
+                  isCreditCardPurchasable:
                     type: boolean

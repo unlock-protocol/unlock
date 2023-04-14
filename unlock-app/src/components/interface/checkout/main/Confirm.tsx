@@ -51,8 +51,8 @@ export function CreditCardPricingBreakdown({
   creditCardProcessingFee,
 }: CreditCardPricingBreakdownProps) {
   return (
-    <div className="mt-6 text-sm">
-      <h4 className="text-gray-600 ">
+    <div className="flex flex-col gap-2 pt-4 text-sm">
+      <h3 className="font-medium">
         Credit Card Fees{' '}
         <a
           href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
@@ -62,18 +62,20 @@ export function CreditCardPricingBreakdown({
         >
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
-      </h4>
-      <div className="flex justify-between w-full pt-2 text-xs border-t border-gray-300">
-        <span className="text-gray-600">Service Fee</span>
-        <div>${(unlockServiceFee / 100).toLocaleString()}</div>
-      </div>
-      <div className="flex justify-between w-full pb-2 text-xs ">
-        <span className="text-gray-600"> Payment Processor </span>
-        <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
-      </div>
-      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-        <h4 className="text-gray-600"> Total </h4>
-        <div className="font-bold">${(total / 100).toLocaleString()}</div>
+      </h3>
+      <div className="divide-y">
+        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+          <span className="text-gray-600">Service Fee</span>
+          <div>${(unlockServiceFee / 100).toLocaleString()}</div>
+        </div>
+        <div className="flex justify-between w-full py-2 text-sm">
+          <span className="text-gray-600"> Payment Processor </span>
+          <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
+        </div>
+        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+          <span className="text-gray-600"> Total </span>
+          <div className="font-bold">${(total / 100).toLocaleString()}</div>
+        </div>
       </div>
     </div>
   )
@@ -226,6 +228,7 @@ export function Confirm({
     lockAddress: lock!.address,
     data: purchaseData,
     referrers: recipients.map((recipient) => getReferrer(recipient)),
+    recipients,
   })
 
   // By default, until fully loaded we assume payable.
@@ -273,7 +276,7 @@ export function Confirm({
       }
 
       const stripeIntent = await createPurchaseIntent({
-        pricing: pricingData!.total / 100,
+        pricing: totalPricing!.total,
         stripeTokenId: payment.cardId!,
         recipients,
         recurring: recurringPaymentAmount || 0,
@@ -560,8 +563,9 @@ export function Confirm({
   const stepItems = useCheckoutSteps(checkoutService)
 
   const payingWithCard =
-    totalPricing?.isCreditPurchasable && payment?.method === 'card'
-
+    !isLoading &&
+    totalPricing?.isCreditCardPurchasable &&
+    payment?.method === 'card'
   return (
     <Fragment>
       <ReCaptcha
@@ -640,7 +644,7 @@ export function Confirm({
           )}
         </div>
         {!isPricingDataAvailable && (
-          <>
+          <div>
             {isLoading ? (
               <div className="flex flex-col items-center gap-2">
                 {recipients.map((user) => (
@@ -667,26 +671,14 @@ export function Confirm({
                 isCardEnabled={formattedData.cardEnabled}
               />
             )}
-            {isLoading ? (
-              <div className="py-1.5 space-y-2 items-center">
-                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-              </div>
-            ) : (
-              <div>
-                {!isLoading && payingWithCard && (
-                  <CreditCardPricingBreakdown
-                    total={totalPricing!.total}
-                    creditCardProcessingFee={
-                      totalPricing!.creditCardProcessingFee
-                    }
-                    unlockServiceFee={totalPricing!.unlockServiceFee}
-                  />
-                )}
-              </div>
-            )}
-          </>
+          </div>
+        )}
+        {payingWithCard && (
+          <CreditCardPricingBreakdown
+            total={totalPricing!.total}
+            creditCardProcessingFee={totalPricing!.creditCardProcessingFee}
+            unlockServiceFee={totalPricing!.unlockServiceFee}
+          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

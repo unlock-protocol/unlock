@@ -277,7 +277,7 @@ export const createTotalCharges = async ({
       gasCost,
       unlockServiceFee: 0,
       creditCardProcessingFee: 0,
-      isCreditPurchasable: false,
+      isCreditCardPurchasable: false,
     }
   }
   const subtotal = Math.round(pricing.priceInAmount * 100)
@@ -288,7 +288,7 @@ export const createTotalCharges = async ({
   const result = {
     ...fees,
     subtotal,
-    isCreditPurchasable: fees.total > 50,
+    isCreditCardPurchasable: fees.total > 50,
   }
   return result
 }
@@ -309,6 +309,6 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     ...fees,
     recipients,
     gasCost,
-    isCreditPurchasable: fees.total > 50,
+    isCreditCardPurchasable: fees.total > 50,
   }
 }

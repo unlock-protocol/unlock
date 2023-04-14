@@ -78,7 +78,7 @@ export class PaymentProcessor {
     recipients: ethereumAddress[],
     stripeCustomerId: string, // Stripe token of the buyer
     lock: ethereumAddress,
-    maxPrice: any,
+    maxPrice: number,
     network: number,
     stripeAccount: string,
     recurring = 0,
@@ -93,8 +93,7 @@ export class PaymentProcessor {
       data: data || [],
     })
 
-    const maxPriceInCents = maxPrice * 100
-    if (Math.abs(pricing.total - maxPriceInCents) > 0.03 * maxPriceInCents) {
+    if (Math.abs(pricing.total - maxPrice) > 0.03 * maxPrice) {
       // if price diverged by more than 3%, we fail!
       throw new Error('Price diverged by more than 3%. Aborting')
     }

@@ -5,6 +5,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 interface Options {
   network: number
   lockAddress: string
+  recipients: string[]
   data?: (string | null)[] | null
   referrers?: (string | null)[] | null
 }
@@ -14,10 +15,19 @@ export const useCapturePayment = ({
   lockAddress,
   data,
   referrers,
+  recipients,
 }: Options) => {
   const { account } = useAuth()
   return useMutation(
-    ['capturePayment', account, network, lockAddress, data, referrers],
+    [
+      'capturePayment',
+      account,
+      network,
+      lockAddress,
+      recipients,
+      data,
+      referrers,
+    ],
     async ({ paymentIntent }: Record<'paymentIntent', string>) => {
       const response = await storage.capturePurchase({
         data: data as string[],
@@ -26,6 +36,7 @@ export const useCapturePayment = ({
         paymentIntent,
         lock: lockAddress,
         network,
+        recipients,
       })
       return response.data.transactionHash
     }
