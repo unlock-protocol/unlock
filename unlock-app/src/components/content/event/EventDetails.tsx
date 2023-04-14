@@ -124,7 +124,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const [image, setImage] = useState('')
 
   const config = useConfig()
-  const { lock } = useLockData({
+  const { lock, isLockLoading } = useLockData({
     lockAddress,
     network,
   })
@@ -263,6 +263,63 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const keysLeft = (lock?.maxNumberOfKeys || 0) - (lock?.outstandingKeys || 0)
 
+  const RegistrationCard = () => {
+    if (isLockLoading) {
+      return <Placeholder.Card size="md" />
+    }
+
+    return (
+      <Card className="grid gap-6 mt-10 lg:mt-0">
+        <span className="text-2xl font-bold text-gray-900">Registration</span>
+        {false ? (
+          <p className="text-lg">
+            🎉 You already have a ticket! You can view it in{' '}
+            <Link className="underline" href="/keychain">
+              your keychain
+            </Link>
+            .
+          </p>
+        ) : (
+          <>
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2">
+                <>
+                  {symbol && <CryptoIcon symbol={symbol} size={30} />}
+                  <span>{price}</span>
+                </>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon icon={TicketIcon} size={30} />
+                <span className="text-base font-bold">{keysLeft}</span>
+                <span className="text-gray-600">Left</span>
+              </div>
+            </div>
+            <Button
+              variant="primary"
+              size="medium"
+              style={{
+                backgroundColor: `#${eventData.background_color}`,
+                color: `#${eventData.background_color}`
+                  ? fontColorContrast(`#${eventData.background_color}`)
+                  : 'white',
+              }}
+              disabled={isClaimableLoading}
+              onClick={() => {
+                if (isClaimable) {
+                  setClaimOpen(true)
+                } else {
+                  setCheckoutOpen(true)
+                }
+              }}
+            >
+              Register
+            </Button>
+          </>
+        )}
+      </Card>
+    )
+  }
+
   return (
     <div>
       <Modal
@@ -380,58 +437,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               </div>
             </section>
           </div>
-          {!isCheckoutOpen && (
-            <Card className="grid gap-6 mt-10 lg:mt-0">
-              <span className="text-2xl font-bold text-gray-900">
-                Registration
-              </span>
-              {false ? (
-                <p className="text-lg">
-                  🎉 You already have a ticket! You can view it in{' '}
-                  <Link className="underline" href="/keychain">
-                    your keychain
-                  </Link>
-                  .
-                </p>
-              ) : (
-                <>
-                  <div className="flex items-center gap-5">
-                    <div className="flex items-center gap-2">
-                      <>
-                        {symbol && <CryptoIcon symbol={symbol} size={30} />}
-                        <span>{price}</span>
-                      </>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Icon icon={TicketIcon} size={30} />
-                      <span className="text-base font-bold">{keysLeft}</span>
-                      <span className="text-gray-600">Left</span>
-                    </div>
-                  </div>
-                  <Button
-                    variant="primary"
-                    size="medium"
-                    style={{
-                      backgroundColor: `#${eventData.background_color}`,
-                      color: `#${eventData.background_color}`
-                        ? fontColorContrast(`#${eventData.background_color}`)
-                        : 'white',
-                    }}
-                    disabled={isClaimableLoading}
-                    onClick={() => {
-                      if (isClaimable) {
-                        setClaimOpen(true)
-                      } else {
-                        setCheckoutOpen(true)
-                      }
-                    }}
-                  >
-                    Register
-                  </Button>
-                </>
-              )}
-            </Card>
-          )}
+          {!isCheckoutOpen && <RegistrationCard />}
         </section>
       </div>
 
