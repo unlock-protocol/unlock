@@ -44,7 +44,7 @@ const config = {
   unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
-    wedlocks: 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
     locksmith: defaultConfig.services.locksmith,
   },
   storage: {
