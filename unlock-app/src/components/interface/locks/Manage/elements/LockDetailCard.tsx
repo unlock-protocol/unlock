@@ -1,7 +1,7 @@
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button, Detail, Tooltip } from '@unlock-protocol/ui'
+import { Button, Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import React, { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -28,18 +28,6 @@ interface LockInfoCardProps {
   version?: string
 }
 
-const LockInfoCardPlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="w-full h-10 animate-pulse bg-slate-200"></div>
-      <div className="flex gap-3">
-        <div className="w-40 h-4 animate-pulse bg-slate-200"></div>
-        <div className="w-5 h-4 animate-pulse bg-slate-200"></div>
-      </div>
-    </div>
-  )
-}
-
 const LockInfoCard = ({
   name,
   lockAddress,
@@ -61,7 +49,18 @@ const LockInfoCard = ({
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
 
-  if (loading) return <LockInfoCardPlaceholder />
+  if (loading)
+    return (
+      <>
+        <Placeholder.Root spaced="sm">
+          <Placeholder.Line size="lg" />
+          <Placeholder.Root inline>
+            <Placeholder.Line size="sm" width="md" />
+            <Placeholder.Line size="sm" width="sm" />
+          </Placeholder.Root>
+        </Placeholder.Root>
+      </>
+    )
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const celo: NetworkConfig = {
+  publicLockVersionToDeploy: 12,
   publicProvider: 'https://forno.celo.org',
   provider: 'https://rpc.unlock-protocol.com/42220',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
