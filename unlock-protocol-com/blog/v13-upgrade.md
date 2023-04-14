@@ -28,7 +28,7 @@ The second important upgrade was the release of a new version of the PublicLock 
 
 The Unlock Protocol is currently available on [9 different production chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks) and several test networks. To perform a protocol upgrade means to redeploy contracts on all chains. We are very careful about consistency of the protocol across the board, so we can offer the best experience for users of various communities. To make the process smoother and more transparent, we are currently working on a way to unify our governance across the various chain we supported and handle it all to the DAO (more on that soon).
 
-The only noticeable change this time happened on the Ethereum mainnet, where the main Unlock contract has been redeployed to reflect change in the way [UDT tokens rewards](https://docs.unlock-protocol.com/governance/frequently-asked-questions/#what-is-%CA%89dt) are distributed. While we originally minted new UDT for referrers, we now distribute tokens directly from our existing supply. This goal of this change in tokenomics is to make the UDT supply less inflationary by keeping the supply to a fixed amount.
+The only noticeable change this time happened on the Ethereum mainnet, where the main Unlock contract has been redeployed to reflect change in the way [UDT token rewards](https://docs.unlock-protocol.com/governance/frequently-asked-questions/#what-is-%CA%89dt) are distributed. While we originally minted new UDT for referrers, we now distribute tokens directly from our existing supply. This goal of this change in tokenomics is to make the UDT supply less inflationary by keeping the supply to a fixed amount.
 
 ## Upgrading your lock contract
 
