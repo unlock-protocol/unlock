@@ -29,12 +29,12 @@ const ImageUploadWrapper = classed.div('grid gap-6 p-2 bg-white rounded-xl', {
 })
 
 const ImageContainer = classed.div(
-  'flex flex-col items-center justify-center p-1 border border-dashed rounded-lg',
+  'flex flex-col items-center justify-center border border-dashed rounded-lg',
   {
     variants: {
       imageRatio: {
-        cover: 'aspect-2',
-        box: 'aspect-1',
+        cover: 'aspect-2 py-5',
+        box: 'aspect-1 p-1',
       },
     },
     defaultVariants: {
