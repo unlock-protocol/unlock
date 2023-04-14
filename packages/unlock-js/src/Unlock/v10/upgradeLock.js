@@ -27,9 +27,11 @@ export default async function (lockAddress, lockVersion, callback) {
   const parser = unlockContract.interface
   const upgradeLockEvent = receipt.logs
     .map((log) => {
+      if (log.address.toLowerCase() !== unlockContract.address.toLowerCase())
+        return
       return parser.parseLog(log)
     })
-    .filter((event) => event.name === 'UpgradeLock')[0]
+    .filter((event) => event && event.name === 'UpgradeLock')[0]
 
   if (upgradeLockEvent) {
     return upgradeLockEvent.args.version

@@ -11,6 +11,7 @@ interface UpdateVersionFormProps {
   disabled: boolean
   version: number
   isLastVersion: boolean
+  onUpdatedVersion: (version: number) => void
 }
 
 const UpgradeHooksAlert = () => {
@@ -34,6 +35,7 @@ export const UpdateVersionForm = ({
   version,
   isLastVersion,
   network,
+  onUpdatedVersion,
 }: UpdateVersionFormProps) => {
   const nextVersion = version + 1
   const { getWalletService } = useAuth()
@@ -49,11 +51,15 @@ export const UpdateVersionForm = ({
 
   const onUpgradeLockVersion = async () => {
     const upgradeLockVersionPromise = upgradeLockVersionMutation.mutateAsync()
-    await ToastHelper.promise(upgradeLockVersionPromise, {
-      success: `Lock upgraded to ${nextVersion} version.`,
-      error: 'Impossible to upgrade version',
-      loading: 'Upgrading lock version.',
-    })
+    const upgradedVersion = await ToastHelper.promise(
+      upgradeLockVersionPromise,
+      {
+        success: `Lock upgraded to ${nextVersion} version.`,
+        error: 'Impossible to upgrade version',
+        loading: 'Upgrading lock version.',
+      }
+    )
+    onUpdatedVersion(upgradedVersion || version)
   }
 
   const disabledInput = disabled || upgradeLockVersionMutation.isLoading

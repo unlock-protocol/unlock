@@ -1,15 +1,17 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const palm: NetworkConfig = {
+  publicLockVersionToDeploy: 12,
   fullySubsidizedGas: true,
   publicProvider:
     'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/11297108109',
   unlockAddress: '0x0314E34345C2327aC753C5Bf0D0751Cf6C1BfdE2',
-  multisig: '0x',
+  multisig: '0xABEAf8F93bEA2a2E65866CccC3060626eEc7d304',
   id: 11297108109,
   name: 'Palm',
   chain: 'palm',
+  keyManagerAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
   subgraph: {
     endpoint:
       'https://graph.palm.io/subgraphs/name/unlock-protocol/Palm-mainnet',

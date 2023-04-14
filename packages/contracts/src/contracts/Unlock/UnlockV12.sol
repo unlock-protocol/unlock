@@ -1308,7 +1308,7 @@ interface IPublicLock {
 
   /**
    * _gasRefundValue price in wei or token in smallest price unit
-   * @dev Returns the value/rpice to be refunded to the sender on purchase
+   * @dev Returns the value/price to be refunded to the sender on purchase
    */
   function gasRefundValue()
     external
@@ -1366,6 +1366,7 @@ interface IPublicLock {
    * @dev allows the key manager to expire a given tokenId
    * and send a refund to the keyOwner based on the amount of time remaining.
    * @param _tokenId The id of the key to cancel.
+   * @notice cancel is enabled with a 10% penalty by default on all Locks.
    */
   function cancelAndRefund(uint _tokenId) external;
 
@@ -1832,12 +1833,12 @@ interface IUnlock {
 
   /**
    * Retrieve the contract address of the proxy admin that manages the locks
-   * @return the address of the ProxyAdmin instance
+   * @return _proxyAdminAddress the address of the ProxyAdmin instance
    */
   function proxyAdminAddress()
     external
     view
-    returns (address);
+    returns (address _proxyAdminAddress);
 
   /**
    * @notice Create lock (legacy)
@@ -1997,11 +1998,11 @@ interface IUnlock {
   /**
    * Match lock templates addresses with version numbers
    * @param _version the number of the version of the template
-   * @return address of the lock templates
+   * @return _implAddress address of the lock templates
    */
   function publicLockImpls(
     uint16 _version
-  ) external view returns (address);
+  ) external view returns (address _implAddress);
 
   /**
    * Match version numbers with lock templates addresses
@@ -2014,12 +2015,12 @@ interface IUnlock {
 
   /**
    * Retrive the latest existing lock template version
-   * @return the version number of the latest template (used to deploy contracts)
+   * @return _version the version number of the latest template (used to deploy contracts)
    */
   function publicLockLatestVersion()
     external
     view
-    returns (uint16);
+    returns (uint16 _version);
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.

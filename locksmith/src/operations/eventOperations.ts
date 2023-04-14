@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import * as metadataOperations from './metadataOperations'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface AttributeProps {
   value: string
@@ -43,6 +44,8 @@ export const getEventDetail = async (
     network: network!,
   })
 
+  const types = getLockTypeByMetadata(lockMetadata)
+
   const attributes: AttributeProps[] = lockMetadata?.attributes
 
   const getAttribute = (name: string): string | undefined => {
@@ -52,8 +55,7 @@ export const getEventDetail = async (
     )
   }
 
-  // This is an event, collect event information
-  if (attributes) {
+  if (types.isEvent) {
     const timeZone = getAttribute('event_timezone')
 
     const startDate =

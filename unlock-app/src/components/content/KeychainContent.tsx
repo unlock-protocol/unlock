@@ -19,7 +19,7 @@ export const KeychainContent = () => {
       title={
         <div className="flex justify-between">
           <h1 className="text-4xl font-bold">Member Keychain</h1>
-          {networkConfig && (
+          {networkConfig && account && (
             <div className="flex gap-3">
               {networkConfig.blockScan && networkConfig.blockScan.url && (
                 <Tooltip tip="Show Blockscan" label="Show Blockscan">

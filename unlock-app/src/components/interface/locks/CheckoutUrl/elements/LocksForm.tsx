@@ -73,12 +73,6 @@ const MetadataDetail = ({ title, value }: MetadataDetailProps) => {
   )
 }
 
-const SelectPlaceholder = () => {
-  return (
-    <span className="w-full h-8 rounded-lg animate-pulse bg-slate-200"></span>
-  )
-}
-
 type RecurringByLock = Record<
   string, // lockAddress
   {
@@ -416,7 +410,7 @@ export const LocksForm = ({
             </h2>
             <div className="flex flex-col w-full gap-4">
               {isLoadingLocksByNetwork ? (
-                <SelectPlaceholder />
+                <Placeholder.Line size="lg" />
               ) : (
                 <>
                   <Picker
