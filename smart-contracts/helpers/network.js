@@ -39,9 +39,13 @@ const getAccounts = () => {
     return [DEPLOYER_PRIVATE_KEY]
   }
 
-  throw new Error(
-    `Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one.`
+  console.error(
+    `Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
   )
+  return {
+    mnemonic: 'test test test test test test test test test test test junk',
+    initialIndex: 0,
+  }
 }
 
 const getHardhatNetwork = () => {
