@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const PublicLock = artifacts.require('PublicLock')
+const PublicLock = artifacts.require('contracts/PublicLock.sol:PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
 const deployContracts = require('../fixtures/deploy')
@@ -14,7 +14,7 @@ async function deployLock({
   isEthers,
 } = {}) {
   if (!unlock) {
-    ;({ unlock } = await deployContracts())
+    ; ({ unlock } = await deployContracts())
   }
   if (!deployer) {
     const [defaultDeployer] = await ethers.getSigners()
