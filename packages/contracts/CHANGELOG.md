@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.20
+
+- release storage slot fix for PublicLock V13 #11665
+
 ## 0.0.19
 
 - improve docstrings and fix some typo in IUnlock and IPublicLock interfaces
