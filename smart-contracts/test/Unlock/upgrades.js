@@ -312,17 +312,17 @@ contract('Unlock / upgrades', async (accounts) => {
               assert.equal(name, lockName)
             })
 
-            it('should persisy the keyPrice between upgrades', async () => {
+            it('should persist the keyPrice between upgrades', async () => {
               const price = await publicLock.keyPrice()
               assert.equal(price.toString(), lockKeyPrice.toString())
             })
 
-            it('should persisy the expirationDuration between upgrades', async () => {
+            it('should persist the expirationDuration between upgrades', async () => {
               const expirationDuration = await publicLock.expirationDuration()
               assert.equal(expirationDuration.toString(), lockExpirationDuration.toString())
             })
 
-            it('should persisy the maxNumberOfKeys between upgrades', async () => {
+            it('should persist the maxNumberOfKeys between upgrades', async () => {
               const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
               assert.equal(maxNumberOfKeys.toString(), lockMaxNumberOfKeys.toString())
             })
