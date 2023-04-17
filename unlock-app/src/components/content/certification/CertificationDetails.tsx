@@ -266,7 +266,7 @@ export const CertificationDetails = ({
             issued by {issuer} for{' '}
             <Link
               href={networks[network].explorer?.urls.address(key?.owner) ?? '#'}
-              className="font-semibold hover:text-brand-ui-primary"
+              className="font-semibold text-brand-ui-primary hover:underline"
             >{`${minifyAddress(key?.owner)}`}</Link>
             . <br />
             <Link
@@ -401,7 +401,7 @@ export const CertificationDetails = ({
               className="mx-auto"
               variant="outlined-primary"
             >
-              Claim this certificate
+              Claim your {certificationData.name} certificate
             </Button>
           </div>
         )}
