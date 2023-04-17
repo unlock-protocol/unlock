@@ -332,6 +332,8 @@ export const CertificationDetails = ({
     ? key?.expiration
     : expirationAsDate(key?.expiration)
 
+  const isMobile = window?.innerWidth < 768
+
   return (
     <main className="mt-8">
       <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
@@ -365,6 +367,7 @@ export const CertificationDetails = ({
             expiration={showExpiration ? expiration : undefined}
             transactionsHash={<TransactionHashButton />}
             externalUrl={certificationData.external_url}
+            isMobile={isMobile}
           />
         )}
 
