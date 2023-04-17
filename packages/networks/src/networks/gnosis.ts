@@ -1,7 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const gnosis: NetworkConfig = {
-  publicLockVersionToDeploy: 12,
+  publicLockVersionToDeploy: 13,
   featured: true,
   publicProvider: 'https://rpc.gnosischain.com',
   provider: 'https://rpc.unlock-protocol.com/100',

@@ -1,7 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
-  publicLockVersionToDeploy: 12,
+  publicLockVersionToDeploy: 13,
   featured: true,
   id: 1,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
