@@ -35,6 +35,7 @@ const ValueWrapper = ({ children }: Props) => {
         gap: '8px',
         textAlign: 'left',
         flex: 1,
+        minWidth: '150px',
       }}
     >
       {children}
@@ -228,8 +229,9 @@ export const Certificate = ({
               display: 'flex',
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
-              gap: isMobile ? '16px' : 0,
+              gap: isMobile ? '16px' : '8px',
               marginTop: isMobile ? '30px' : '100px',
+              flexWrap: 'wrap',
             }}
           >
             {expiration && (
