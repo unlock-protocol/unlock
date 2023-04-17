@@ -12,7 +12,7 @@ export const CertificationContent = () => {
   const router = useRouter()
 
   const { lockAddress, network, tokenId } = router.query as any
-  const showDetails = lockAddress && network
+  const showDetails = !!(router.query && lockAddress && network)
 
   const { data: metadata } = useMetadata({
     lockAddress: lockAddress as string,
