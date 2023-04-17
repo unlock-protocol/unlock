@@ -9,7 +9,6 @@ import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { Placeholder } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 export interface PickerState {
