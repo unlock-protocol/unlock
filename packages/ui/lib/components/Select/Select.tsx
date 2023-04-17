@@ -8,6 +8,7 @@ import { Button } from '../Button/Button'
 import { FieldLayout, Input } from '../Form'
 import { Tooltip } from '../Tooltip/Tooltip'
 import { HiQuestionMarkCircle as QuestionMark } from 'react-icons/hi'
+import { Placeholder } from '../Placeholder'
 export interface Option {
   label: string
   value: string | number
@@ -26,6 +27,7 @@ export interface SelectProps<T> {
   defaultValue?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
+  loading?: boolean
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -97,6 +99,7 @@ export const Select = <T extends unknown>({
   defaultValue,
   customOption = false,
   disabled: fieldDisabled = false,
+  loading = false,
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
@@ -141,10 +144,17 @@ export const Select = <T extends unknown>({
 
   // Set default value if present
   useEffect(() => {
+    if (loading) return
+    if (defaultValue && selected?.value) return
+
     onChangeOption(defaultValue as string)
-  }, [defaultValue])
+  }, [defaultValue, loading, selected])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
+
+  if (loading) {
+    return <Placeholder.Line size="xl" />
+  }
 
   return (
     <FieldLayout
