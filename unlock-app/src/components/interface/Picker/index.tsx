@@ -9,7 +9,6 @@ import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { Placeholder } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 export interface PickerState {
@@ -151,21 +150,18 @@ export function Picker({
         />
       )}
       {showLocks ? (
-        isLoadingLocks ? (
-          <Placeholder.Line size="xl" />
-        ) : (
-          <Select
-            key={state.network}
-            label="Lock"
-            options={locksOptions}
-            defaultValue={lockAddress}
-            onChange={(lockAddress: any) => {
-              handleOnChange(lockAddress)
-            }}
-            customOption={customOption}
-            description="Select the lock you want to use."
-          />
-        )
+        <Select
+          key={state.network}
+          label="Lock"
+          options={locksOptions}
+          defaultValue={lockAddress}
+          loading={isLoadingLocks}
+          onChange={(lockAddress: any) => {
+            handleOnChange(lockAddress)
+          }}
+          customOption={customOption}
+          description="Select the lock you want to use."
+        />
       ) : (
         <div>
           You have not deployed locks on this network yet.{' '}
