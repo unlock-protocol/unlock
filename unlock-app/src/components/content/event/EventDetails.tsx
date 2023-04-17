@@ -5,7 +5,6 @@ import { FaCalendar, FaClock } from 'react-icons/fa'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
