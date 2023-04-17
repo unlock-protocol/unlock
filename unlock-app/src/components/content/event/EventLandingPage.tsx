@@ -86,7 +86,13 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
   return (
     <LockTypeLandingPage
       title={
-        <h1 className="uppercase text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-ui-primary to-[#F19077]">
+        <h1
+          style={{
+            backgroundImage:
+              'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
+          }}
+          className="text-6xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+        >
           Web3 is
           <br />
           better in <br />

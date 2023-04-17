@@ -75,7 +75,13 @@ export const CertificationLanding = ({
   return (
     <LockTypeLandingPage
       title={
-        <h1 className="uppercase text-4xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#603DEB] to-[#27C1D6]">
+        <h1
+          style={{
+            backgroundImage:
+              'linear-gradient(85.7deg, #603DEB 3.25%, #27C1D6 90.24%)',
+          }}
+          className="text-4xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+        >
           Certifications
           <br />
           show <br />
