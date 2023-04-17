@@ -1,7 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mumbai: NetworkConfig = {
-  publicLockVersionToDeploy: 12,
+  publicLockVersionToDeploy: 13,
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
   provider: 'https://rpc.unlock-protocol.com/80001',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
