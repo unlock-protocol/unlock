@@ -230,8 +230,8 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
           </div>
           <Picker
             userAddress={account!}
-            lockAddress={lockAddress}
-            network={network}
+            lockAddress={selected.lockAddress}
+            network={selected.network}
             keyId={keyId}
             collect={{
               lockAddress: true,
