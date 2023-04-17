@@ -254,8 +254,8 @@ export class PaymentProcessor {
     recipients: ethereumAddress[]
     network: number
     paymentIntentId: string
-    referrers: string[]
-    data: string[]
+    referrers: (string | null)[]
+    data: (string | null)[]
   }) {
     const pricing = await createPricingForPurchase({
       lockAddress,

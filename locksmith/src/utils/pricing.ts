@@ -3,12 +3,7 @@ import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
-
-// Stripe's fee is 30 cents plus 2.9% of the transaction.
-const baseStripeFee = 30
-const stripePercentage = 0.029
-export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
-export const GAS_COST_TO_GRANT = 250000
+import { GAS_COST, stripePercentage, baseStripeFee } from './constants'
 
 export interface Options {
   amount?: number
