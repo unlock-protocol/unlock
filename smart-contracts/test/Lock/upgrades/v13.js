@@ -9,6 +9,12 @@ const keyPrice = ethers.utils.parseEther('0.01')
 const previousVersionNumber = 12
 const nextVersionNumber = 13
 
+const duration = 60 * 60 * 24 * 30 // 30 days
+const currency = ADDRESS_ZERO
+const price = ethers.utils.parseEther('0.01')
+const maxKeys = 20
+const name = 'A neat upgradeable lock!'
+
 describe('PublicLock upgrade v12 > v13', () => {
   let lock
   let PublicLockLatest
@@ -36,14 +42,13 @@ describe('PublicLock upgrade v12 > v13', () => {
 
     // deploy a simple lock
     const [, lockOwner] = await ethers.getSigners()
-    const duration = 60 * 60 * 24 * 30 // 30 days
     const args = [
       lockOwner.address,
       duration,
-      ADDRESS_ZERO,
+      currency,
       keyPrice,
-      130,
-      'A neat upgradeable lock!',
+      maxKeys,
+      name
     ]
 
     lock = await upgrades.deployProxy(PublicLockPast, args)
@@ -101,7 +106,8 @@ describe('PublicLock upgrade v12 > v13', () => {
 
       // deploy new implementation
       lock = await upgrades.upgradeProxy(lock.address, PublicLockLatest, {
-        unsafeSkipStorageCheck: true, // UNSECURE - but we need the flag as we are resizing the `__gap`
+        // UNSECURE - but we need the flag as we are resizing the `__gap`
+        // unsafeSkipStorageCheck: true, 
       })
 
       // make sure ownership is preserved
@@ -110,6 +116,11 @@ describe('PublicLock upgrade v12 > v13', () => {
 
     it('upgraded successfully ', async () => {
       assert.equal(await lock.publicLockVersion(), nextVersionNumber)
+      assert.equal(await lock.name(), name)
+      assert.equal(await lock.expirationDuration(), duration)
+      assert.equal((await lock.keyPrice()).toString(), price.toString())
+      assert.equal((await lock.maxNumberOfKeys()).toString(), maxKeys.toString())
+      assert.equal(await lock.tokenAddress(), currency)
     })
 
     it('totalSupply is preserved', async () => {

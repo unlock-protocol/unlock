@@ -1,7 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const optimism: NetworkConfig = {
-  publicLockVersionToDeploy: 12,
+  publicLockVersionToDeploy: 13,
   featured: true,
   publicProvider: 'https://mainnet.optimism.io',
   provider: 'https://rpc.unlock-protocol.com/10',

@@ -3422,8 +3422,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
-  // decrease 996 to 995 when adding PrevUnlock in v13
-  uint256[995] private __safe_upgrade_gap;
+  uint256[996] private __safe_upgrade_gap;
 }
 
 

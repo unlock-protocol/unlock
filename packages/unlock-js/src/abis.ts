@@ -1043,7 +1043,7 @@ const abis = {
         "function tokenOfOwnerByIndex(address _keyOwner,uint256 _index) view returns (uint256)",
         "function tokenURI(uint256 _tokenId) view returns (string)",
         "function totalKeys(address _keyOwner) view returns (uint256)",
-        "function totalSupply() view returns (uint256)",
+        "function totalSupply() view returns (uint256 _totalKeysCreated)",
         "function transferFeeBasisPoints() view returns (uint256)",
         "function transferFrom(address _from,address _recipient,uint256 _tokenId)",
         "function unlendKey(address _recipient,uint256 _tokenId)",
@@ -1055,7 +1055,7 @@ const abis = {
         "function updateTransferFee(uint256 _transferFeeBasisPoints)",
         "function withdraw(address _tokenAddress,address _recipient,uint256 _amount)"
       ],
-      "bytecodeHash": "0x363551a7e8051fe1a13a8430e2277433660616ebf20394bf1c7c7001f949e2d7"
+      "bytecodeHash": "0x80041134ce431f1adb2b2dfe00df82753d269761cbf9bac1232e0523fa787ed2"
     }
   },
   "Unlock": {
