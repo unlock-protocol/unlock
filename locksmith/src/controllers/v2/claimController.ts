@@ -10,6 +10,7 @@ import { upsertUserMetadata } from '../../operations/userMetadataOperations'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
+  recipient: z.string().optional(),
 })
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
@@ -24,11 +25,11 @@ export const LOCKS_WITH_DISABLED_CLAIMS = [
  * @returns
  */
 export const claim: RequestHandler = async (request, response: Response) => {
-  const { data } = await ClaimBody.parseAsync(request.body)
+  const { data, recipient } = await ClaimBody.parseAsync(request.body)
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
 
-  let owner = data ? normalizer.ethereumAddress(data) : '' // recipient as default owner if present
+  let owner = recipient ? normalizer.ethereumAddress(recipient) : '' // recipient as default owner if present
 
   if (request.user && !owner) {
     owner = normalizer.ethereumAddress(request.user.walletAddress)
