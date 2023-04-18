@@ -22,7 +22,12 @@ export const EventContent = () => {
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={false} title="">
+    <AppLayout
+      showLinks={false}
+      authRequired={false}
+      logoRedirectUrl="/event"
+      logoImageUrl="/images/svg/logo-unlock-events.svg"
+    >
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
