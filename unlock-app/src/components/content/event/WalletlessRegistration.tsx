@@ -162,12 +162,13 @@ export const WalletlessRegistrationForm = ({
     control,
   })
 
-  const onSubmit = async (form: RsvpFormProps) => {
+  const onSubmit = async ({ email, recipient: data }: RsvpFormProps) => {
     setLoading(true)
     try {
       const captcha = await recaptchaRef.current?.executeAsync()
       const { hash, owner } = await claim({
-        ...form,
+        email,
+        data,
         captcha,
       })
       setClaimResult({ hash, owner })
