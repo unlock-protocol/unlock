@@ -27,10 +27,15 @@ export const claim: RequestHandler = async (request, response: Response) => {
   const { data } = await ClaimBody.parseAsync(request.body)
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-  let owner = ''
-  if (request.user) {
+
+  const recipient = data ? normalizer.ethereumAddress(data) : ''
+
+  let owner = recipient // recipient as default owner if present
+
+  if (request.user && !owner) {
     owner = normalizer.ethereumAddress(request.user.walletAddress)
   }
+
   const email = request.body.email?.toString().toLowerCase()
 
   if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
