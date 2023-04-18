@@ -25,7 +25,7 @@ import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
-import { WalletlessRegistration } from './WalletlessRegistration'
+import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { FiMapPin as MapPinIcon } from 'react-icons/fi'
@@ -120,8 +120,8 @@ const CoverImageDrawer = ({ image, setImage }: any) => {
 
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const [image, setImage] = useState('')
-
   const config = useConfig()
+
   const { lock, isLockLoading } = useLockData({
     lockAddress,
     network,
@@ -133,8 +133,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     contractAddress: lock?.currencyContractAddress,
   })
 
+  const price =
+    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
+
+  const keysLeft = (lock?.maxNumberOfKeys || 0) - (lock?.outstandingKeys || 0)
+
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const [isClaimOpen, setClaimOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
@@ -254,21 +258,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       : null
 
   const hasLocation = (eventData?.ticket?.event_address || '')?.length > 0
+  const hasDate = startDate || startTime || endDate || endTime
 
-  const price =
-    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
-
-  const keysLeft = (lock?.maxNumberOfKeys || 0) - (lock?.outstandingKeys || 0)
+  const showWalletLess = !hasValidKey && isClaimable
 
   const RegistrationCard = () => {
-    if (isLockLoading) {
+    if (isClaimableLoading || isLockLoading) {
       return <Placeholder.Card size="md" />
     }
 
     return (
       <Card className="grid gap-6 mt-10 lg:mt-0">
         <span className="text-2xl font-bold text-gray-900">Registration</span>
-        {false ? (
+        {hasValidKey ? (
           <p className="text-lg">
             🎉 You already have a ticket! You can view it in{' '}
             <Link className="underline" href="/keychain">
@@ -285,32 +287,37 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <span>{price}</span>
                 </>
               </div>
-              <div className="flex items-center gap-2">
-                <Icon icon={TicketIcon} size={30} />
-                <span className="text-base font-bold">{keysLeft}</span>
-                <span className="text-gray-600">Left</span>
-              </div>
+              {(lock?.maxNumberOfKeys || 0) >= 0 && (
+                <div className="flex items-center gap-2">
+                  <Icon icon={TicketIcon} size={30} />
+                  <span className="text-base font-bold">{keysLeft}</span>
+                  <span className="text-gray-600">Left</span>
+                </div>
+              )}
             </div>
-            <Button
-              variant="primary"
-              size="medium"
-              style={{
-                backgroundColor: `#${eventData.background_color}`,
-                color: `#${eventData.background_color}`
-                  ? fontColorContrast(`#${eventData.background_color}`)
-                  : 'white',
-              }}
-              disabled={isClaimableLoading}
-              onClick={() => {
-                if (isClaimable) {
-                  setClaimOpen(true)
-                } else {
+            {showWalletLess ? (
+              <WalletlessRegistrationForm
+                lockAddress={lockAddress}
+                network={network}
+              />
+            ) : (
+              <Button
+                variant="primary"
+                size="medium"
+                style={{
+                  backgroundColor: `#${eventData.background_color}`,
+                  color: `#${eventData.background_color}`
+                    ? fontColorContrast(`#${eventData.background_color}`)
+                    : 'white',
+                }}
+                disabled={isClaimableLoading}
+                onClick={() => {
                   setCheckoutOpen(true)
-                }
-              }}
-            >
-              Register
-            </Button>
+                }}
+              >
+                Register
+              </Button>
+            )}
           </>
         )}
       </Card>
@@ -329,20 +336,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           paywallConfig={paywallConfig}
           handleClose={() => setCheckoutOpen(false)}
         />
-      </Modal>
-
-      <Modal
-        isOpen={isClaimOpen && !!isClaimable}
-        setIsOpen={setClaimOpen}
-        empty={true}
-      >
-        {((!hasValidKey && isClaimable) || true) && (
-          <WalletlessRegistration
-            lockAddress={lockAddress}
-            network={network}
-            handleClose={() => setClaimOpen(false)}
-          />
-        )}
       </Modal>
 
       <div className="relative">
@@ -388,21 +381,25 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             </div>
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
-                {
+                {hasDate && (
                   <EventDetail label="Date & Time" icon={CalendarIcon}>
                     <div
                       style={{ color: `#${eventData.background_color}` }}
                       className="flex flex-col text-lg font-normal capitalize text-brand-dark"
                     >
-                      <span>
-                        {startDate} {endDate && <>to {endDate}</>}
-                      </span>
-                      <span>
-                        {startTime} {endTime && <>to {endTime}</>}
-                      </span>
+                      {(startDate || endDate) && (
+                        <span>
+                          {startDate} {endDate && <>to {endDate}</>}
+                        </span>
+                      )}
+                      {startTime && endTime && (
+                        <span>
+                          {startTime} {endTime && <>to {endTime}</>}
+                        </span>
+                      )}
                     </div>
                   </EventDetail>
-                }
+                )}
                 {hasLocation && (
                   <EventDetail label="Location" icon={MapPinIcon}>
                     <div

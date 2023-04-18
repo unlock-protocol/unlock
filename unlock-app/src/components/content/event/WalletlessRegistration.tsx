@@ -9,6 +9,7 @@ import {
   Input,
   AddressInput,
   isAddressOrEns,
+  Modal,
 } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Controller, useForm, useWatch } from 'react-hook-form'
@@ -41,63 +42,24 @@ interface WalletlessRegistrationProps {
   lockAddress: string
   network: number
   handleClose: () => void
+  claimResult: any
 }
 
-export const WalletlessRegistration = ({
+interface FormProps {
+  lockAddress: string
+  network: number
+}
+
+const WalletlessRegistrationClaiming = ({
   lockAddress,
   network,
   handleClose,
+  claimResult,
 }: WalletlessRegistrationProps) => {
-  const { account } = useAuth()
-  const [claimResult, setClaimResult] = useState<any>()
   const [transactionStatus, setTransactionStatus] =
     useState<TransactionStatus>('PROCESSING')
-  const [loading, setLoading] = useState<boolean>(false)
-  const recaptchaRef = useRef<any>()
+
   const config = useConfig()
-
-  const { mutateAsync: claim } = useClaim({
-    lockAddress,
-    network,
-  })
-
-  const localForm = useForm<RsvpFormProps>({
-    mode: 'onChange',
-    defaultValues: {
-      email: '',
-      recipient: account || '',
-    },
-  })
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    control,
-  } = localForm
-
-  const onSubmit = async (form: RsvpFormProps) => {
-    setLoading(true)
-    try {
-      const captcha = await recaptchaRef.current?.executeAsync()
-      const { hash, owner } = await claim({
-        ...form,
-        captcha,
-      })
-      setClaimResult({ hash, owner })
-      ToastHelper.success('Transaction successful sent!')
-    } catch (error) {
-      console.error(error)
-      ToastHelper.error(
-        'There was an error during registration. Please try again.'
-      )
-    }
-    setLoading(false)
-  }
-
-  const { recipient = '' } = useWatch({
-    control,
-  })
 
   useEffect(() => {
     if (
@@ -129,12 +91,7 @@ export const WalletlessRegistration = ({
         size={24}
         onClick={() => handleClose()}
       />
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={config.recaptchaKey}
-        size="invisible"
-        badge="bottomleft"
-      />
+
       {claimResult && transactionStatus && (
         <div className="m-auto h-72 mb-36">
           <MintingScreen
@@ -154,60 +111,129 @@ export const WalletlessRegistration = ({
           )}
         </div>
       )}
-      {!claimResult && (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col w-full gap-6 py-4"
-        >
-          <Input
-            {...register('email', {
-              required: {
-                value: true,
-                message: 'This field is required.',
-              },
-            })}
-            required
-            type="email"
-            placeholder="your@email.com"
-            label="Email address"
-            description={
-              'Please enter your email address to get a QR code by email.'
-            }
-            error={errors?.email?.message}
-          />
-          <Controller
-            name="recipient"
-            control={control}
-            rules={{
-              validate: (address: string) => {
-                return !address || isAddressOrEns(address)
-              },
-            }}
-            render={() => {
-              return (
-                <>
-                  <AddressInput
-                    optional
-                    value={recipient}
-                    withIcon
-                    placeholder="0x..."
-                    label="Wallet address or ENS"
-                    onChange={(value: any) => {
-                      setValue('recipient', value)
-                    }}
-                    description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
-                    onResolveName={onResolveName}
-                  />
-                </>
-              )
-            }}
-          />
-
-          <Button disabled={loading} loading={loading} type="submit">
-            RSVP
-          </Button>
-        </form>
-      )}
     </div>
+  )
+}
+
+export const WalletlessRegistrationForm = ({
+  lockAddress,
+  network,
+}: FormProps) => {
+  const [claimResult, setClaimResult] = useState<any>()
+  const [isClaimOpen, setClaimOpen] = useState(false)
+  const config = useConfig()
+  const recaptchaRef = useRef<any>()
+  const [loading, setLoading] = useState<boolean>(false)
+  const { account } = useAuth()
+  const { mutateAsync: claim } = useClaim({
+    lockAddress,
+    network,
+  })
+
+  const localForm = useForm<RsvpFormProps>({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      recipient: account || '',
+    },
+  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    control,
+  } = localForm
+
+  const { recipient = '' } = useWatch({
+    control,
+  })
+
+  const onSubmit = async (form: RsvpFormProps) => {
+    setLoading(true)
+    try {
+      const captcha = await recaptchaRef.current?.executeAsync()
+      const { hash, owner } = await claim({
+        ...form,
+        captcha,
+      })
+      setClaimResult({ hash, owner })
+      setClaimOpen(true)
+      ToastHelper.success('Transaction successful sent!')
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error(
+        'There was an error during registration. Please try again.'
+      )
+    }
+    setLoading(false)
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col w-full gap-6 py-4"
+    >
+      <Modal isOpen={isClaimOpen} setIsOpen={setClaimOpen} empty={true}>
+        <WalletlessRegistrationClaiming
+          lockAddress={lockAddress}
+          network={network}
+          handleClose={() => setClaimOpen(false)}
+          claimResult={claimResult}
+        />
+      </Modal>
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
+      <Input
+        {...register('email', {
+          required: {
+            value: true,
+            message: 'This field is required.',
+          },
+        })}
+        required
+        type="email"
+        placeholder="your@email.com"
+        label="Email address"
+        description={
+          'Please enter your email address to get a QR code by email.'
+        }
+        error={errors?.email?.message}
+      />
+      <Controller
+        name="recipient"
+        control={control}
+        rules={{
+          validate: (address: string) => {
+            return !address || isAddressOrEns(address)
+          },
+        }}
+        render={() => {
+          return (
+            <>
+              <AddressInput
+                optional
+                value={recipient}
+                withIcon
+                placeholder="0x..."
+                label="Wallet address or ENS"
+                onChange={(value: any) => {
+                  setValue('recipient', value)
+                }}
+                description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
+                onResolveName={onResolveName}
+              />
+            </>
+          )
+        }}
+      />
+      <Button disabled={loading} loading={loading} type="submit">
+        RSVP now
+      </Button>
+    </form>
   )
 }
