@@ -1545,6 +1545,13 @@ paths:
           schema:
             type: string
 
+        - name: recipient
+          in: header
+          required: false
+          description: Recipient address for key
+          schema:
+            type: string
+
       requestBody:
         required: true
         content:
