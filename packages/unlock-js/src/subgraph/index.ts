@@ -52,12 +52,17 @@ export class SubgraphService {
       Object.values(this.networks).filter((item) => item.id !== 31337)
     const items = await Promise.all(
       networks.map(async (config) => {
-        const sdk = this.createSdk(config.id)
-        const results = await sdk.allLocks(variables)
-        return results.locks.map((item) => ({
-          ...item,
-          network: config.id,
-        }))
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.allLocks(variables)
+          return results.locks.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
       })
     )
     return items.flat()
@@ -84,12 +89,17 @@ export class SubgraphService {
       Object.values(this.networks).filter((item) => item.id !== 31337)
     const items = await Promise.all(
       networks.map(async (config) => {
-        const sdk = this.createSdk(config.id)
-        const results = await sdk.allLocksWithKeys(variables)
-        return results.locks.map((item) => ({
-          ...item,
-          network: config.id,
-        }))
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.allLocksWithKeys(variables)
+          return results.locks.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
       })
     )
     return items.flat()
@@ -124,12 +134,17 @@ export class SubgraphService {
 
     const items = await Promise.all(
       networks.map(async (config) => {
-        const sdk = this.createSdk(config.id)
-        const results = await sdk.AllKeys(variables)
-        return results.keys.map((item) => ({
-          ...item,
-          network: config.id,
-        }))
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.AllKeys(variables)
+          return results.keys.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
       })
     )
 
@@ -155,12 +170,17 @@ export class SubgraphService {
 
     const items = await Promise.all(
       networks.map(async (config) => {
-        const sdk = this.createSdk(config.id)
-        const results = await sdk.AllReceipts(variables)
-        return results.receipts.map((item) => ({
-          ...item,
-          network: config.id,
-        }))
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.AllReceipts(variables)
+          return results.receipts.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
       })
     )
     return items.flat()
