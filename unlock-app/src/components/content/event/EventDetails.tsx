@@ -72,7 +72,7 @@ interface CoverImageDrawerProps {
   setImage: (image: string) => void
   lockAddress: string
   network: number
-  metadata?: Partial<MetadataFormData>
+  metadata: MetadataFormData
   handleClose: () => void
 }
 const CoverImageDrawer = ({
@@ -92,13 +92,11 @@ const CoverImageDrawer = ({
     network,
   })
 
-  const eventData = toFormData(metadata!)
-
-  const coverImage = eventData.ticket?.event_cover_image
+  const coverImage = metadata.ticket?.event_cover_image
 
   const onSubmit = async () => {
     const metadataObj = formDataToMetadata({
-      ...eventData,
+      ...metadata,
       ticket: {
         ...metadata?.ticket,
         event_cover_image: image,
@@ -153,6 +151,7 @@ const CoverImageDrawer = ({
             type="submit"
             onClick={onSubmit}
             loading={isLoading}
+            disabled={image === coverImage}
           >
             Save
           </Button>
@@ -406,7 +405,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           <CoverImageDrawer
             image={image}
             setImage={setImage}
-            metadata={metadata}
+            metadata={eventData}
             lockAddress={lockAddress}
             network={network}
             handleClose={() => {
