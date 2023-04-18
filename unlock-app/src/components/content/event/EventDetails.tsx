@@ -2,10 +2,14 @@ import fontColorContrast from 'font-color-contrast'
 import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-import { useMetadata } from '~/hooks/metadata'
+import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import { toFormData } from '~/components/interface/locks/metadata/utils'
+import {
+  MetadataFormData,
+  formDataToMetadata,
+  toFormData,
+} from '~/components/interface/locks/metadata/utils'
 import {
   Button,
   Card,
@@ -51,8 +55,8 @@ interface EventDetailProps {
 
 const EventDetail = ({ label, icon, children }: EventDetailProps) => {
   return (
-    <div className="flex gap-4">
-      <div className="flex w-16 h-16 bg-white border border-gray-200 rounded-2xl">
+    <div className="grid grid-cols-[64px_1fr] gap-4">
+      <div className="flex w-16 h-16 bg-white border border-gray-200 min-w-16 rounded-2xl">
         <Icon className="m-auto" icon={icon} size={32} />
       </div>
       <div className="flex flex-col gap-0.5">
@@ -63,10 +67,47 @@ const EventDetail = ({ label, icon, children }: EventDetailProps) => {
   )
 }
 
-const CoverImageDrawer = ({ image, setImage }: any) => {
+interface CoverImageDrawerProps {
+  image: string
+  setImage: (image: string) => void
+  lockAddress: string
+  network: number
+  metadata?: Partial<MetadataFormData>
+  handleClose: () => void
+}
+const CoverImageDrawer = ({
+  image,
+  setImage,
+  lockAddress,
+  network,
+  metadata,
+  handleClose,
+}: CoverImageDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+
+  const { mutateAsync: updateMetadata, isLoading } = useUpdateMetadata({
+    lockAddress,
+    network,
+  })
+
+  const eventData = toFormData(metadata!)
+
+  const coverImage = eventData.ticket?.event_cover_image
+
+  const onSubmit = async () => {
+    const metadataObj = formDataToMetadata({
+      ...eventData,
+      ticket: {
+        ...metadata?.ticket,
+        event_cover_image: image,
+      },
+    })
+    await updateMetadata(metadataObj)
+    setIsOpen(false)
+    handleClose()
+  }
 
   return (
     <div className="relative inset-0 z-[1]">
@@ -75,9 +116,12 @@ const CoverImageDrawer = ({ image, setImage }: any) => {
           className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
           variant="secondary"
           size="tiny"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true)
+            setImage(coverImage || '')
+          }}
         >
-          Upload Image
+          {coverImage ? 'Change image' : 'Upload Image'}
         </Button>
       )}
       <div className="relative">
@@ -106,9 +150,9 @@ const CoverImageDrawer = ({ image, setImage }: any) => {
           <Button
             className="w-full"
             size="small"
-            onClick={() => {
-              setIsOpen(false)
-            }}
+            type="submit"
+            onClick={onSubmit}
+            loading={isLoading}
           >
             Save
           </Button>
@@ -141,7 +185,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const isSoldOut = keysLeft === 0
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+  const {
+    data: metadata,
+    isInitialLoading: isMetadataLoading,
+    refetch,
+  } = useMetadata({
     lockAddress,
     network,
   })
@@ -264,6 +312,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const showWalletLess = !hasValidKey && isClaimable
 
+  const coverImage = eventData.ticket?.event_cover_image
+
   const RegistrationCard = () => {
     if (isClaimableLoading || isLockLoading) {
       return <Placeholder.Card size="md" />
@@ -344,22 +394,32 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       <div className="relative">
         <div className="relative">
           <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
-            {image && (
+            {coverImage && (
               <img
                 className="object-cover w-full h-full"
-                src={image}
+                src={coverImage}
                 alt="Cover image"
               />
             )}
           </div>
 
-          <CoverImageDrawer image={image} setImage={setImage} />
+          <CoverImageDrawer
+            image={image}
+            setImage={setImage}
+            metadata={metadata}
+            lockAddress={lockAddress}
+            network={network}
+            handleClose={() => {
+              refetch()
+            }}
+          />
+
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
-              <div className="flex w-24 h-24 p-2 bg-white md:w-48 md:h-48 rounded-3xl">
+              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
                 <img
                   alt={eventData.title}
-                  className="w-full m-auto aspect-1 rounded-2xl"
+                  className="object-cover w-full m-auto aspect-1 rounded-2xl"
                   src={eventData.image}
                 />
               </div>
@@ -375,7 +435,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
+        <section className="grid items-start grid-cols-1 gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
             <div className="flex gap-2 flex-rows">
