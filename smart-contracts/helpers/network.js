@@ -1,13 +1,9 @@
 /* eslint-disable global-require */
-const fs = require('fs')
-const resolve = require('path').resolve
-const debug = require('debug')
 const {
   networks: networksConfigs,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const { DEPLOYER_PRIVATE_KEY } = process.env
-const log = debug('hardhat:config')
 
 const getNetworkName = (chainId) => {
   const networkName = Object.keys(networksConfigs).find((name) => {
@@ -32,7 +28,7 @@ const getNetworkName = (chainId) => {
  * + An array of the initial accounts that the Hardhat Network will create. Each of them must be an object with privateKey and balance fields.
  * @returns
  */
-const getAccounts = (networkName) => {
+const getAccounts = () => {
   if (process.env.CI === 'true') {
     return {
       mnemonic: 'test test test test test test test test test test test junk',
@@ -43,29 +39,13 @@ const getAccounts = (networkName) => {
     return [DEPLOYER_PRIVATE_KEY]
   }
 
-  const networkAccountsFile = resolve(`./accounts.${networkName}.js`)
-  if (fs.existsSync(networkAccountsFile)) {
-    const accounts = require(networkAccountsFile)
-    if (accounts) {
-      return accounts
-    }
-  }
-
-  const accountsFile = resolve('./accounts.js')
-  if (fs.existsSync(accountsFile)) {
-    log(
-      `No ${networkAccountsFile} file. Trying with the default one: ${accountsFile}.`
-    )
-
-    const accounts = require(accountsFile)
-    if (accounts) {
-      return accounts
-    }
-  }
-
-  throw new Error(
-    `Missing accounts file: '${accountsFile}'. Please create it with an 'accounts' value from https://hardhat.org/hardhat-network/reference/#config`
+  console.error(
+    `Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
   )
+  return {
+    mnemonic: 'test test test test test test test test test test test junk',
+    initialIndex: 0,
+  }
 }
 
 const getHardhatNetwork = () => {

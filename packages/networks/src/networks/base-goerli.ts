@@ -1,7 +1,7 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const baseGoerli: NetworkConfig = {
-  publicLockVersionToDeploy: 12,
+  publicLockVersionToDeploy: 13,
   publicProvider: 'https://goerli.base.org',
   provider: 'https://goerli.base.org', //'https://rpc.unlock-protocol.com/84531',
   unlockAddress: '0x51A1ceB83B83F1985a81C295d1fF28Afef186E02',
@@ -13,9 +13,9 @@ export const baseGoerli: NetworkConfig = {
   subgraph: {
     networkName: 'base-testnet',
     endpoint:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.1',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
     endpointV2:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.1',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
   },
   explorer: {
     name: 'Base Goerli',

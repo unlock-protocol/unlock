@@ -35,6 +35,7 @@ const ValueWrapper = ({ children }: Props) => {
         gap: '8px',
         textAlign: 'left',
         flex: 1,
+        minWidth: '150px',
       }}
     >
       {children}
@@ -228,8 +229,9 @@ export const Certificate = ({
               display: 'flex',
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
-              gap: isMobile ? '16px' : 0,
+              gap: isMobile ? '16px' : '8px',
               marginTop: isMobile ? '30px' : '100px',
+              flexWrap: 'wrap',
             }}
           >
             {expiration && (
@@ -400,7 +402,7 @@ export const Certificate = ({
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g clip-path="url(#clip0_285_201)">
+                    <g clipPath="url(#clip0_285_201)">
                       <path
                         d="M7.79287 4.44529V5.81384H4.37148V13.3409H11.8985V9.9195H13.2671V14.0252C13.2671 14.2066 13.195 14.3807 13.0667 14.509C12.9383 14.6373 12.7643 14.7094 12.5828 14.7094H3.68721C3.50572 14.7094 3.33168 14.6373 3.20335 14.509C3.07502 14.3807 3.00293 14.2066 3.00293 14.0252V5.12956C3.00293 4.94808 3.07502 4.77403 3.20335 4.64571C3.33168 4.51738 3.50572 4.44529 3.68721 4.44529H7.79287ZM15.3199 2.39246V7.86667H13.9514V4.72789L8.61879 10.0611L7.65122 9.09358L12.9831 3.76101H9.8457V2.39246H15.3199Z"
                         fill="#75797E"
