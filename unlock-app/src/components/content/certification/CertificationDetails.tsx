@@ -33,6 +33,7 @@ import { useQuery } from '@tanstack/react-query'
 import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { useLockData } from '~/hooks/useLockData'
 interface CertificationDetailsProps {
   lockAddress: string
   network: number
@@ -62,9 +63,9 @@ const CertificationManagerOptions = ({
 
   return (
     <div className="grid gap-6 mt-12">
-      <span className="text-2xl font-bold text-brand-dark">
+      <p className="text-2xl font-bold text-brand-dark">
         Tools for you, the certificate issuer
-      </span>
+      </p>
       <div className="grid gap-4">
         {certificationIsTransferable && !isLoading && (
           <div className="flex flex-col gap-2">
@@ -127,6 +128,12 @@ export const CertificationDetails = ({
   const { account } = useAuth()
   const config = useConfig()
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+
+  const { lock, isLockLoading: isLockDataLoading } = useLockData({
+    lockAddress,
+    network,
+  })
+
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
     lockAddress,
     network,
@@ -139,11 +146,7 @@ export const CertificationDetails = ({
     )
   }
 
-  const {
-    data: key,
-    isPlaceholderData,
-    isFetched,
-  } = useCertification({
+  const { data: key, isFetched } = useCertification({
     lockAddress,
     network,
     tokenId,
@@ -159,10 +162,10 @@ export const CertificationDetails = ({
     useValidKey({
       lockAddress,
       network,
-      account,
     })
 
   const loading =
+    isLockDataLoading ||
     (isMetadataLoading && !isFetched) ||
     isLoadingLockManager ||
     isHasValidKeyLoading
@@ -208,6 +211,8 @@ export const CertificationDetails = ({
 
   const transactionsHash: string = key?.transactionsHash?.[0] || '22'
 
+  const isPlaceholderData = key?.tokenId === '#'
+
   const hasValidKey = (key && !isPlaceholderData) || (isPlaceholderData && !key)
 
   const TransactionHashButton = () => {
@@ -238,7 +243,7 @@ export const CertificationDetails = ({
     ?.certification_issuer as string
 
   const Header = () => {
-    if (tokenId && key) {
+    if (key && !isPlaceholderData) {
       if (isLockManager) {
         return (
           <span>
@@ -255,13 +260,13 @@ export const CertificationDetails = ({
         )
       } else {
         return (
-          <span>
+          <p>
             You are viewing a{' '}
             <span className="font-semibold">{`"${certificationData.name}"`}</span>{' '}
-            issue by {issuer} for{' '}
+            issued by {issuer} for{' '}
             <Link
               href={networks[network].explorer?.urls.address(key?.owner) ?? '#'}
-              className="font-semibold hover:text-brand-ui-primary"
+              className="font-semibold text-brand-ui-primary hover:underline"
             >{`${minifyAddress(key?.owner)}`}</Link>
             . <br />
             <Link
@@ -271,36 +276,44 @@ export const CertificationDetails = ({
               Learn more
             </Link>{' '}
             about Certifications by Unlock Labs.
-          </span>
+          </p>
         )
       }
-    } else if (key) {
+    } else if (isPlaceholderData) {
       if (isLockManager) {
         return (
-          <span>
+          <p>
             Here is the template of one of your certifications. Once you
             airdropped one to a recipient, they can connect their wallet on this
             page and share the certification image with their professional
             network.
-          </span>
+          </p>
         )
       } else {
         return (
-          <span>
-            You are viewing a off-chain certification sample. Please connect
-            your wallet if you have received the certificate NFT or{' '}
+          <p>
+            You are viewing an off-chain{' '}
+            <span className="font-semibold">{`"${certificationData.name}"`}</span>{' '}
+            certification sample issued by {issuer}.{' '}
             <Link
-              className="font-semibold text-gray-800 hover:text-brand-ui-primary"
+              className="font-semibold text-brand-ui-primary hover:underline"
               href="/certification"
             >
               Learn more
             </Link>{' '}
-            about Certifications by Unlock Labs.
-          </span>
+            about Certifications by Unlock Labs.{' '}
+            {!account && (
+              <p>
+                Connect your wallet to see if you have received a{' '}
+                <span className="font-semibold">{`"${certificationData.name}"`}</span>{' '}
+                issued by {issuer}.
+              </p>
+            )}
+          </p>
         )
       }
     } else {
-      return <span>This is not a valid certificate.</span>
+      return <p>This is not a valid certificate.</p>
     }
   }
 
@@ -331,6 +344,8 @@ export const CertificationDetails = ({
   const expiration = isPlaceholderData
     ? key?.expiration
     : expirationAsDate(key?.expiration)
+
+  const isMobile = window?.innerWidth < 768
 
   return (
     <main className="mt-8">
@@ -365,32 +380,31 @@ export const CertificationDetails = ({
             expiration={showExpiration ? expiration : undefined}
             transactionsHash={<TransactionHashButton />}
             externalUrl={certificationData.external_url}
+            isMobile={isMobile}
           />
         )}
 
         {canShareOrDownload && (
           <ul className="flex gap-4 mx-auto">
-            {tokenId && (
-              <li>
-                <LinkedinShareButton
-                  metadata={metadata!}
-                  lockAddress={lockAddress}
-                  network={network}
-                  tokenId={tokenId}
-                />
-              </li>
-            )}
+            <li>
+              <LinkedinShareButton
+                metadata={metadata!}
+                lockAddress={lockAddress}
+                network={network}
+                tokenId={key?.tokenId}
+              />
+            </li>
           </ul>
         )}
 
-        {Number(key?.lock?.maxNumberOfKeys) > 0 && !accountHasKey && (
+        {Number(lock?.maxNumberOfKeys) !== 0 && !accountHasKey && (
           <div>
             <Button
               onClick={() => setCheckoutOpen(true)}
               className="mx-auto"
               variant="outlined-primary"
             >
-              Claim this certificate
+              Claim your {certificationData.name} certificate
             </Button>
           </div>
         )}

@@ -31,12 +31,12 @@ export default async function (lockAddress, lockVersion, callback) {
         return
       return parser.parseLog(log)
     })
-    .filter((event) => event && event.name === 'UpgradeLock')[0]
+    .filter((event) => event && event.name === 'LockUpgraded')[0]
 
   if (upgradeLockEvent) {
     return upgradeLockEvent.args.version
   }
 
-  // There was no UpgradeLock log (transaction failed?)
+  // There was no LockUpgraded log (transaction failed?)
   return null
 }
