@@ -13,6 +13,7 @@ import {
 } from '../operations/stripeOperations'
 import logger from '../logger'
 import { Op, Sequelize } from 'sequelize'
+import { createPricingForPurchase } from '../utils/pricing'
 
 export class PaymentProcessor {
   keyPricer: KeyPricer
@@ -77,23 +78,22 @@ export class PaymentProcessor {
     recipients: ethereumAddress[],
     stripeCustomerId: string, // Stripe token of the buyer
     lock: ethereumAddress,
-    maxPrice: any,
+    maxPrice: number,
     network: number,
     stripeAccount: string,
-    recurring = 0
+    recurring = 0,
+    data?: string[],
+    referrers?: string[]
   ) {
-    const pricing = await new KeyPricer().generate(
-      lock,
+    const pricing = await createPricingForPurchase({
+      lockAddress: lock,
+      recipients,
       network,
-      recipients.length
-    )
+      referrers: referrers || [],
+      data: data || [],
+    })
 
-    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
-    const maxPriceInCents = maxPrice * 100
-    if (
-      Math.abs(totalPriceInCents - maxPriceInCents) >
-      0.03 * maxPriceInCents
-    ) {
+    if (Math.abs(pricing.total - maxPrice) > 0.03 * maxPrice) {
       // if price diverged by more than 3%, we fail!
       throw new Error('Price diverged by more than 3%. Aborting')
     }
@@ -130,7 +130,7 @@ export class PaymentProcessor {
           clientSecret: stripeIntent.client_secret,
           stripeAccount,
           pricing,
-          totalPriceInCents,
+          totalPriceInCents: pricing.total,
         }
       }
     }
@@ -180,7 +180,7 @@ export class PaymentProcessor {
 
     const intent = await stripe.paymentIntents.create(
       {
-        amount: totalPriceInCents,
+        amount: pricing.total,
         currency: 'usd',
         customer: connectedCustomer.id,
         payment_method: method.id,
@@ -189,6 +189,8 @@ export class PaymentProcessor {
           purchaser: userAddress,
           lock,
           recurring,
+          data: (data || []).join(','),
+          referrers: (referrers || []).join(','),
           // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
           recipient: recipients.join(','),
           network,
@@ -215,7 +217,7 @@ export class PaymentProcessor {
     return {
       clientSecret: intent.client_secret,
       stripeAccount,
-      totalPriceInCents,
+      totalPriceInCents: pricing.total,
       pricing,
     }
   }
@@ -244,19 +246,26 @@ export class PaymentProcessor {
     recipients,
     network,
     paymentIntentId,
+    data,
+    referrers,
   }: {
     userAddress: ethereumAddress
     lockAddress: ethereumAddress
     recipients: ethereumAddress[]
     network: number
     paymentIntentId: string
+    referrers: (string | null)[]
+    data: (string | null)[]
   }) {
-    const pricing = await new KeyPricer().generate(
+    const pricing = await createPricingForPurchase({
       lockAddress,
+      recipients,
       network,
-      recipients.length
-    )
-    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+      referrers,
+      data,
+    })
+
+    const totalPriceInCents = pricing.total
 
     const paymentIntentRecord = await PaymentIntent.findOne({
       where: { intentId: paymentIntentId },
