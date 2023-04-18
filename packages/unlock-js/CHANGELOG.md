@@ -1,5 +1,9 @@
 # Changes
 
+# 0.36.0
+
+- adding support functions for Transfer With Authorization
+
 # 0.35.1
 
 - fixed upgrade function

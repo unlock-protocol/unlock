@@ -45,6 +45,13 @@ interface CreditCardPricingBreakdownProps {
   unlockServiceFee: number
 }
 
+interface PricingDataProps {
+  pricingData: any
+  lock: Lock
+  network: number
+  payment?: any
+}
+
 export function CreditCardPricingBreakdown({
   unlockServiceFee,
   total,
@@ -68,15 +75,69 @@ export function CreditCardPricingBreakdown({
           <span className="text-gray-600">Service Fee</span>
           <div>${(unlockServiceFee / 100).toLocaleString()}</div>
         </div>
-        <div className="flex justify-between w-full py-2 text-sm">
-          <span className="text-gray-600"> Payment Processor </span>
-          <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
-        </div>
+        {creditCardProcessingFee > 0 && (
+          <div className="flex justify-between w-full py-2 text-sm">
+            <span className="text-gray-600"> Payment Processor </span>
+            <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
+          </div>
+        )}
         <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
           <span className="text-gray-600"> Total </span>
           <div className="font-bold">${(total / 100).toLocaleString()}</div>
         </div>
       </div>
+    </div>
+  )
+}
+
+export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
+  return (
+    <div>
+      {!!pricingData?.prices?.length &&
+        pricingData.prices.map((item: any, index: number) => {
+          const first = index <= 0
+          const discount =
+            Number(lock!.keyPrice) > 0
+              ? (100 * (Number(lock!.keyPrice) - item.amount)) /
+                Number(lock!.keyPrice)
+              : 0
+          const symbol = payment?.route
+            ? payment.route.trade.inputAmount.currency.symbol
+            : item.symbol
+
+          return (
+            <div
+              key={index}
+              className={`flex border-b ${
+                first ? 'border-t' : null
+              } items-center justify-between text-sm px-0 py-2`}
+            >
+              <div>
+                1 Key for{' '}
+                <span className="font-medium">
+                  {minifyAddress(item.userAddress)}
+                </span>{' '}
+                {item.amount < Number(lock!.keyPrice) ? (
+                  <Badge variant="green" size="tiny">
+                    {discount}% Discount
+                  </Badge>
+                ) : null}
+              </div>
+
+              <div className="font-bold">
+                {item.amount <= 0
+                  ? 'FREE'
+                  : payment?.route
+                  ? `${formatNumber(
+                      payment.route
+                        .convertToQuoteToken(item.amount.toString())
+                        .toFixed()
+                    ).toLocaleString()} ${symbol}`
+                  : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+              </div>
+            </div>
+          )
+        })}
     </div>
   )
 }
@@ -172,6 +233,10 @@ export function Confirm({
     data: purchaseData!,
     paywallConfig,
     enabled: !isInitialDataLoading,
+    symbol: lockTickerSymbol(
+      lock as Lock,
+      config.networks[lock!.network].nativeCurrency.symbol
+    ),
   })
 
   const isPricingDataAvailable =
@@ -596,51 +661,12 @@ export function Confirm({
             </div>
           )}
           {!isLoading && isPricingDataAvailable && (
-            <div>
-              {!!pricingData?.prices?.length &&
-                pricingData.prices.map((item, index) => {
-                  const first = index <= 0
-                  const discount =
-                    Number(lock!.keyPrice) > 0
-                      ? (100 * (Number(lock!.keyPrice) - item.amount)) /
-                        Number(lock!.keyPrice)
-                      : 0
-                  return (
-                    <div
-                      key={index}
-                      className={`flex border-b ${
-                        first ? 'border-t' : null
-                      } items-center justify-between text-sm px-0 py-2`}
-                    >
-                      <div>
-                        1 Key for{' '}
-                        <span className="font-medium">
-                          {minifyAddress(item.userAddress)}
-                        </span>{' '}
-                        {item.amount < Number(lock!.keyPrice) ? (
-                          <Badge variant="green" size="tiny">
-                            {discount}% Discount
-                          </Badge>
-                        ) : null}
-                      </div>
-
-                      <div className="font-bold">
-                        {item.amount <= 0
-                          ? 'FREE'
-                          : swap
-                          ? `${formatNumber(
-                              payment.route
-                                .convertToQuoteToken(item.amount.toString())
-                                .toFixed()
-                            ).toLocaleString()} ${symbol}`
-                          : `${formatNumber(
-                              item.amount
-                            ).toLocaleString()} ${symbol}`}
-                      </div>
-                    </div>
-                  )
-                })}
-            </div>
+            <PricingData
+              network={lockNetwork}
+              lock={lock!}
+              pricingData={pricingData}
+              payment={payment}
+            />
           )}
         </div>
         {!isPricingDataAvailable && (

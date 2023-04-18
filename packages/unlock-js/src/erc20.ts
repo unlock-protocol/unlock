@@ -93,6 +93,66 @@ export async function approveTransfer(
   return contract.approve(lockContractAddress, value)
 }
 
+interface TransferAuthorizationMessage {
+  from: string
+  to: string
+  value: any
+  validAfter: number
+  validBefore: number
+  nonce: string
+}
+
+export async function signTransferAuthorization(
+  erc20ContractAddress: string,
+  message: TransferAuthorizationMessage,
+  signer: ethers.Signer
+) {
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
+  const { chainId } = await signer.provider!.getNetwork()
+
+  const domain = {
+    name: 'Unlock',
+    version: '1',
+    chainId,
+    verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+  }
+
+  const types = {
+    TransferWithAuthorization: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'validAfter', type: 'uint256' },
+      { name: 'validBefore', type: 'uint256' },
+      { name: 'nonce', type: 'bytes32' },
+    ],
+  }
+  // @ts-expect-error _signTypedData does not exist on signer (even tho it does)
+  return signer._signTypedData(domain, types, message)
+}
+
+export async function transferWithAuthorization(
+  erc20ContractAddress: string,
+  message: TransferAuthorizationMessage,
+  signature: string,
+  signer: ethers.Signer
+) {
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
+  const { v, r, s } = ethers.utils.splitSignature(signature)
+
+  return contract.transferWithAuthorization(
+    message.from,
+    message.to,
+    message.value,
+    message.validAfter,
+    message.validBefore,
+    message.nonce,
+    v,
+    r,
+    s
+  )
+}
+
 export default {
   approveTransfer,
   getAllowance,

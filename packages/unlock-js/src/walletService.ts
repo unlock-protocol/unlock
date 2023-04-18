@@ -4,6 +4,7 @@ import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import { signTransferAuthorization } from './erc20'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -698,25 +699,6 @@ export default class WalletService extends UnlockService {
     return this.provider.send(method, [firstParam, secondParam])
   }
 
-  async signDataPersonal(
-    account: string,
-    data: any,
-    callback: WalletServiceCallback
-  ) {
-    try {
-      let method = 'eth_sign'
-      if (this.web3Provider || this.provider.isUnlock) {
-        method = 'personal_sign'
-      }
-      const signature = await this.signMessage(data, method)
-      callback(null, Buffer.from(signature).toString('base64'))
-    } catch (error) {
-      if (error instanceof Error) {
-        callback(error, null)
-      }
-    }
-  }
-
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
@@ -1020,6 +1002,12 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Returns the ethers contract object for the UnlockSwapPurchaser contract
+   * @param param0
+   * @returns
+   */
   getUnlockSwapPurchaserContract({
     params: { network },
   }: {
@@ -1038,5 +1026,53 @@ export default class WalletService extends UnlockService {
     )
     const swapPurchaser = swapPurchaserContract.connect(this.signer)
     return swapPurchaser
+  }
+
+  async getAndSignUSDCTransferAuthorization({
+    amount,
+  }: {
+    amount: number // this is in cents
+  }) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('SwapPurchaser not available for this network')
+    }
+
+    let usdcContractAddress
+    if (networkConfig?.tokens) {
+      usdcContractAddress = networkConfig.tokens.find(
+        (token: any) => token.symbol === 'USDC'
+      ).address
+    }
+
+    if (!usdcContractAddress) {
+      throw new Error('USDC not available for this network')
+    }
+
+    const value = ethers.utils.parseUnits(amount.toString(), 6) // 6 decimals for USDC
+
+    const now = Math.floor(new Date().getTime() / 1000)
+    const message = {
+      from: await this.signer.getAddress(),
+      to: ethers.utils.getAddress(cardPurchaserAddress),
+      value,
+      validAfter: now,
+      validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
+      nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
+    }
+
+    console.log(this.signer)
+
+    const signature = await signTransferAuthorization(
+      usdcContractAddress,
+      message,
+      this.provider
+    )
+    return {
+      signature,
+      message,
+    }
   }
 }

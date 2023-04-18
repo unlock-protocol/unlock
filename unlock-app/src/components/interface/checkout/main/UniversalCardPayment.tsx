@@ -24,11 +24,17 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
-import {
-  usePaymentMethodList,
-  useRemovePaymentMethods,
-} from '~/hooks/usePaymentMethods'
 import { CryptoElements, OnrampElement } from '../utils/CryptoElements'
+import Link from 'next/link'
+import { CreditCardPricingBreakdown, PricingData } from './Confirm'
+import { useActor } from '@xstate/react'
+import { usePricing } from '~/hooks/usePricing'
+import { usePurchaseData } from '~/hooks/usePurchaseData'
+import { useTotalPrice } from '~/hooks/useTotalPrice'
+import { ViewContract } from '../ViewContract'
+import { useUniversalCardPrice } from '~/hooks/useUniversalCardPrice'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { ethers } from 'ethers'
 
 interface Props {
   injectedProvider: unknown
@@ -39,78 +45,153 @@ export function UniversalCardPayment({
   checkoutService,
   injectedProvider,
 }: Props) {
+  const { getWalletService, account } = useAuth()
+  const [state] = useActor(checkoutService)
   const config = useConfig()
   const [onrampSession, setOnrampSession] = useState<any>(null)
   const stripeOnrampPromise = loadStripeOnramp(config.stripeApiKey)
 
+  const {
+    lock,
+    // TODO: how do we handle these?
+    // quantity,
+    recipients,
+    // payment,
+    captcha,
+    // messageToSign,
+    paywallConfig,
+    password,
+    promo,
+    // keyManagers,
+    // metadata,
+  } = state.context
+
   const stepItems = useCheckoutSteps(checkoutService)
 
-  useEffect(() => {
-    // TODO: we want to get the user's signature first...
-    // so that we take no risk having the funds on the account
-    // but no signature to spend them...
-    const getOnrampSession = async () => {
-      const response = await storage.onramp()
-      setOnrampSession(response.data.session)
-    }
-    getOnrampSession()
-  }, [])
+  // Build the `purchaseData` field that gets passed to the contract
+  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
+    usePurchaseData({
+      lockAddress: lock!.address,
+      network: lock!.network,
+      promo,
+      password,
+      captcha,
+      paywallConfig,
+      recipients,
+    })
+
+  // And now get the price to pay by card.
+  // do we need the step above in fact?
+  // Not really...
+  const { data: cardPricing, isInitialLoading: isCardPricingLoading } =
+    useUniversalCardPrice({
+      network: lock!.network,
+      lockAddress: lock!.address,
+      recipients,
+      purchaseData: purchaseData!,
+      enabled: !isInitialDataLoading,
+    })
 
   const onChange = (event: any) => {
     console.log('changed', event)
+    // when event.session.status === "fulfillment_complete", we're done!
+    // We now just need to submit the request to locksmith to actually process the transaction
+    // once we have the transaction hash, we resume our "regular" flow (showing the transaction in progress)
+  }
+
+  const signPermit = async () => {
+    // TODO: Sign the permit
+    // Pass it to the server as part of the onramp request!
+    // Note: we must use permit on
+    const walletService = await getWalletService(lock!.network)
+
+    const { signature, message } =
+      await walletService.getAndSignUSDCTransferAuthorization({
+        network: lock!.network,
+        amount: cardPricing!.total, // value in cents
+      })
+    const response = await storage.onramp({ message, signature })
+    setOnrampSession(response.data.session)
+  }
+
+  if (isCardPricingLoading || !cardPricing) {
+    return null
   }
 
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
-      <main className="">
-        <CryptoElements stripeOnramp={stripeOnrampPromise}>
-          {onrampSession?.client_secret && (
+      {/* Show confirmation first */}
+      {!onrampSession?.client_secret && (
+        <>
+          <main className="h-full px-6 py-2 overflow-auto">
+            <div className="grid gap-y-2">
+              <div>
+                <h4 className="text-xl font-bold"> {lock!.name}</h4>
+                <ViewContract
+                  lockAddress={lock!.address}
+                  network={lock!.network}
+                />
+              </div>
+
+              <p className="text-sm">
+                We use{' '}
+                <Link
+                  target="_blank"
+                  className="text-brand-ui-primary hover:underline"
+                  href="https://stripe.com/"
+                >
+                  Stripe
+                </Link>{' '}
+                to support payment by card. You can use any card, including
+                Visa, Mastercard or even Apple Pay and Google Pay.
+              </p>
+              <PricingData
+                network={lock!.network}
+                lock={lock!}
+                pricingData={cardPricing}
+              />
+            </div>
+            <CreditCardPricingBreakdown
+              total={cardPricing!.total}
+              creditCardProcessingFee={cardPricing!.creditCardProcessingFee}
+              unlockServiceFee={cardPricing!.unlockServiceFee}
+            />
+          </main>
+          <footer className="grid items-center px-6 pt-6 border-t">
+            <Connected
+              injectedProvider={injectedProvider}
+              service={checkoutService}
+            >
+              <Button
+                // loading={isSaving}
+                disabled={isCardPricingLoading}
+                type="submit"
+                form="payment"
+                className="w-full"
+                onClick={signPermit}
+              >
+                Checkout with Stripe
+              </Button>
+            </Connected>
+            <PoweredByUnlock />
+          </footer>
+        </>
+      )}
+
+      {/* Show Stripe form first */}
+      {onrampSession?.client_secret && (
+        <main className="">
+          <CryptoElements stripeOnramp={stripeOnrampPromise}>
             <OnrampElement
               clientSecret={onrampSession.client_secret}
               onChange={onChange}
               appearance={{}}
               onReady={console.log}
             />
-          )}
-        </CryptoElements>
-      </main>
-
-      <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          {/* {!card ? (
-            <Button
-              loading={isSaving}
-              disabled={isMethodLoading || isSaving || !stripe}
-              type="submit"
-              form="payment"
-              className="w-full"
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              className="w-full"
-              disabled={!card}
-              onClick={() => {
-                checkoutService.send({
-                  type: 'SELECT_PAYMENT_METHOD',
-                  payment: {
-                    method: 'card',
-                    cardId: payment!.id!,
-                  },
-                })
-              }}
-            >
-              Continue
-            </Button>
-          )} */}
-        </Connected>
-        <PoweredByUnlock />
-      </footer>
+          </CryptoElements>
+        </main>
+      )}
     </Fragment>
   )
 }
