@@ -20,6 +20,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { useValidKey } from '~/hooks/useKey'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -48,6 +49,7 @@ interface WalletlessRegistrationProps {
 interface FormProps {
   lockAddress: string
   network: number
+  disabled: boolean
 }
 
 const WalletlessRegistrationClaiming = ({
@@ -73,7 +75,10 @@ const WalletlessRegistrationClaiming = ({
         config.networks[network].provider
       )
 
-      const transaction = await provider.waitForTransaction(claimResult.hash, 2)
+      const transaction = await provider.waitForTransaction(
+        claimResult?.hash,
+        2
+      )
 
       if (transaction.status !== 1) {
         setTransactionStatus('ERROR')
@@ -86,14 +91,21 @@ const WalletlessRegistrationClaiming = ({
 
   return (
     <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[35rem] max-h-[42rem] p-4">
-      <CloseIcon
-        className="ml-auto cursor-pointer fill-black group-hover:fill-brand-ui-primary hover:text-brand-ui-primary"
-        size={24}
-        onClick={() => handleClose()}
-      />
+      <div className="flex">
+        {transactionStatus === 'FINISHED' && (
+          <p className="mt-10 text-lg font-bold text-center">
+            🎉 You have been added to the attendees list!
+          </p>
+        )}
+        <CloseIcon
+          className="ml-auto cursor-pointer fill-black group-hover:fill-brand-ui-primary hover:text-brand-ui-primary"
+          size={24}
+          onClick={() => handleClose()}
+        />
+      </div>
 
       {claimResult && transactionStatus && (
-        <div className="m-auto h-72 mb-36">
+        <div className="m-auto mt-20 h-72 mb-36">
           <MintingScreen
             mint={{
               status: transactionStatus,
@@ -104,11 +116,6 @@ const WalletlessRegistrationClaiming = ({
             lockAddress={lockAddress}
             network={network}
           />
-          {transactionStatus === 'FINISHED' && (
-            <p className="my-16 text-3xl font-bold text-center">
-              🎉 You have been added to the attendees list!
-            </p>
-          )}
         </div>
       )}
     </div>
@@ -118,6 +125,7 @@ const WalletlessRegistrationClaiming = ({
 export const WalletlessRegistrationForm = ({
   lockAddress,
   network,
+  disabled,
 }: FormProps) => {
   const [claimResult, setClaimResult] = useState<any>()
   const [isClaimOpen, setClaimOpen] = useState(false)
@@ -126,6 +134,11 @@ export const WalletlessRegistrationForm = ({
   const [loading, setLoading] = useState<boolean>(false)
   const { account } = useAuth()
   const { mutateAsync: claim } = useClaim({
+    lockAddress,
+    network,
+  })
+
+  const { refetch } = useValidKey({
     lockAddress,
     network,
   })
@@ -178,7 +191,10 @@ export const WalletlessRegistrationForm = ({
         <WalletlessRegistrationClaiming
           lockAddress={lockAddress}
           network={network}
-          handleClose={() => setClaimOpen(false)}
+          handleClose={() => {
+            setClaimOpen(false)
+            refetch()
+          }}
           claimResult={claimResult}
         />
       </Modal>
@@ -195,6 +211,7 @@ export const WalletlessRegistrationForm = ({
             message: 'This field is required.',
           },
         })}
+        disabled={disabled}
         required
         type="email"
         placeholder="your@email.com"
@@ -224,6 +241,7 @@ export const WalletlessRegistrationForm = ({
                 onChange={(value: any) => {
                   setValue('recipient', value)
                 }}
+                disabled={disabled}
                 description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
                 onResolveName={onResolveName}
               />
@@ -231,7 +249,7 @@ export const WalletlessRegistrationForm = ({
           )
         }}
       />
-      <Button disabled={loading} loading={loading} type="submit">
+      <Button disabled={loading || disabled} loading={loading} type="submit">
         RSVP now
       </Button>
     </form>

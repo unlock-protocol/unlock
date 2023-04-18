@@ -136,7 +136,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const price =
     lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
 
-  const keysLeft = (lock?.maxNumberOfKeys || 0) - (lock?.outstandingKeys || 0)
+  const keysLeft =
+    Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
+  const isSoldOut = keysLeft === 0
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
@@ -287,18 +289,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <span>{price}</span>
                 </>
               </div>
-              {(lock?.maxNumberOfKeys || 0) >= 0 && (
-                <div className="flex items-center gap-2">
-                  <Icon icon={TicketIcon} size={30} />
-                  <span className="text-base font-bold">{keysLeft}</span>
-                  <span className="text-gray-600">Left</span>
-                </div>
-              )}
+              <div className="flex items-center gap-2">
+                <Icon icon={TicketIcon} size={30} />
+                <span className="text-base font-bold">
+                  {isSoldOut ? 'Sold out' : keysLeft}
+                </span>
+                {!isSoldOut && <span className="text-gray-600">Left</span>}
+              </div>
             </div>
             {showWalletLess ? (
               <WalletlessRegistrationForm
                 lockAddress={lockAddress}
                 network={network}
+                disabled={isSoldOut}
               />
             ) : (
               <Button
@@ -310,7 +313,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                     ? fontColorContrast(`#${eventData.background_color}`)
                     : 'white',
                 }}
-                disabled={isClaimableLoading}
+                disabled={isClaimableLoading || isSoldOut}
                 onClick={() => {
                   setCheckoutOpen(true)
                 }}
