@@ -1564,6 +1564,9 @@ paths:
                 email:
                   type: string
                   description: Email address of the recipient
+                recipient:
+                  type: string
+                  description: Recipient address for key
 
       responses:
         200:
