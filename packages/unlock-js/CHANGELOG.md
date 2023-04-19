@@ -1,6 +1,6 @@
 # Changes
 
-# 0.35.2
+# 0.35.3
 
 - Expose more fields such as `symbol`, `maxKeysPerAddress` and `maxNumberOfKeys` in subgraph service for locks fields.
 
