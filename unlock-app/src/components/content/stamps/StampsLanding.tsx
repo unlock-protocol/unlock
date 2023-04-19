@@ -11,18 +11,18 @@ const customers: any[] = []
 
 const features = [
   {
-    image: '/images/illustrations/certifications/img-continueedu.svg',
+    image: '',
     name: 'No-code smart contract deployment',
     description:
       'Simply fill up the form and hit the deploy button. All the metadata information will automatically be included in the NFT tickets. You can always add and modify other properties at later date.',
   },
   {
-    image: '/images/illustrations/certifications/img-validation.svg',
+    image: '',
     name: 'Pair with Unlock Events',
     description: `We make it easy to go from creating an event, to getting attendees checked in at the event, and finally sending them stamps as attendance NFTs. Unlock makes your event from beginning to end a breeze.`,
   },
   {
-    image: '/images/illustrations/certifications/img-sharelinkedin.svg',
+    image: '',
     name: 'Airdrop or email',
     description: `You can airdrop or email stamps to attendees or they can claim it themselves. Do what's easiest for you and your attendees!`,
   },

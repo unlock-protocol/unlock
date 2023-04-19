@@ -30,7 +30,7 @@ export const StampContent = () => {
     <AppLayout
       showLinks={false}
       authRequired={false}
-      logoRedirectUrl="/certification"
+      logoRedirectUrl="/stamps"
       logoImageUrl="/images/svg/logo-unlock-stamps.svg"
     >
       <Head>
