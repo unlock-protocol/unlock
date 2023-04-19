@@ -34,7 +34,6 @@ import {
   getKeyManagerOf,
   LOCK_MANAGER,
 } from './helpers'
-import { TransferAbi } from './abis'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -444,12 +443,15 @@ export function createReceipt(event: ethereum.Event): void {
         const txLog = logs[i]
 
         const hashedSignature = txLog.topics[0].toHexString()
-        const decodedSignature = ethereum
-          .decode('(address,address,uint256)', TransferAbi)
-          ?.toAddress()
-          .toHexString()
+        const decodedSignature = ethereum.decode(
+          '(address,address,uint256)',
+          txLog.data
+        )
 
-        if (hashedSignature === decodedSignature?.toString()) {
+        const isTransfer =
+          hashedSignature === decodedSignature!.toAddress().toHexString()
+
+        if (isTransfer) {
           receipt.payer = ethereum
             .decode('address', txLog.topics[1])!
             .toAddress()
