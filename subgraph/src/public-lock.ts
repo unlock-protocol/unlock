@@ -5,6 +5,7 @@ import {
   Bytes,
   ethereum,
   store,
+  ByteArray,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
@@ -33,6 +34,7 @@ import {
   getKeyManagerOf,
   LOCK_MANAGER,
 } from './helpers'
+import { TransferAbi } from './abis'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -429,8 +431,8 @@ export function createReceipt(event: ethereum.Event): void {
 
   // TODO: compile from contract ABI
   // WARNING : For some tokens it may be different. In that case we would move to a list!
-  const ERC20_TRANSFER_TOPIC0 =
-    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+  /*const ERC20_TRANSFER_TOPIC0 =
+    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'*/
 
   if (lock && tokenAddress.toString().length > 0) {
     const txReceipt = event.receipt!
@@ -440,11 +442,14 @@ export function createReceipt(event: ethereum.Event): void {
       // including one for the ERC20 transfer
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
-        if (
-          txLog.address == tokenAddress &&
-          // Do we always have txLog.topics[0] ?
-          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
-        ) {
+
+        const hashedSignature = txLog.topics[0].toHexString()
+        const decodedSignature = ethereum
+          .decode('(address,address,uint256)', TransferAbi)
+          ?.toAddress()
+          .toHexString()
+
+        if (hashedSignature === decodedSignature?.toString()) {
           receipt.payer = ethereum
             .decode('address', txLog.topics[1])!
             .toAddress()
