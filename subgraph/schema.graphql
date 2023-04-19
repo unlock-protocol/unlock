@@ -112,4 +112,6 @@ type Receipt @entity {
   amountTransferred: BigInt
   "Total gas paid"
   gasTotal: BigInt!
+  "Increasing number of receipt"
+  receiptNumber: BigInt
 }
