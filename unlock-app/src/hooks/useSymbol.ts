@@ -7,7 +7,7 @@ interface GetLockSymbolProps {
   network: number
   contractAddress?: string | null
 }
-export const useGetLockSymbol = ({
+export const useGetLockCurrencySymbol = ({
   lockAddress,
   network,
   contractAddress,

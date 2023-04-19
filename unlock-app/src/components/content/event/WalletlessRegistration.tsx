@@ -232,21 +232,19 @@ export const WalletlessRegistrationForm = ({
         }}
         render={() => {
           return (
-            <>
-              <AddressInput
-                optional
-                value={recipient}
-                withIcon
-                placeholder="0x..."
-                label="Wallet address or ENS"
-                onChange={(value: any) => {
-                  setValue('recipient', value)
-                }}
-                disabled={disabled}
-                description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
-                onResolveName={onResolveName}
-              />
-            </>
+            <AddressInput
+              optional
+              value={recipient}
+              withIcon
+              placeholder="0x..."
+              label="Wallet address or ENS"
+              onChange={(value: any) => {
+                setValue('recipient', value)
+              }}
+              disabled={disabled}
+              description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
+              onResolveName={onResolveName}
+            />
           )
         }}
       />

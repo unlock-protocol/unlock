@@ -39,7 +39,7 @@ import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockData } from '~/hooks/useLockData'
-import { useGetLockSymbol } from '~/hooks/useSymbol'
+import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
 import { useImageUpload } from '~/hooks/useImageUpload'
 
 interface EventDetailsProps {
@@ -170,7 +170,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
-  const { data: symbol } = useGetLockSymbol({
+  const { data: symbol } = useGetLockCurrencySymbol({
     lockAddress,
     network,
     contractAddress: lock?.currencyContractAddress,
