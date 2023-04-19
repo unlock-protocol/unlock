@@ -12,6 +12,7 @@ export interface Ticket {
   event_address?: string
   event_url?: string
   event_timezone?: string
+  event_cover_image?: string
 }
 
 export interface MetadataFormData {
@@ -162,6 +163,13 @@ export const formDataToMetadata = ({
     metadata.attributes.push({
       trait_type: 'certification_issuer',
       value: certification.certification_issuer,
+    })
+  }
+
+  if (ticket?.event_cover_image) {
+    metadata.attributes.push({
+      trait_type: 'event_cover_image',
+      value: ticket.event_cover_image,
     })
   }
 

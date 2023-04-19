@@ -62,7 +62,12 @@ export const NewEvent = () => {
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={true}>
+    <AppLayout
+      showLinks={false}
+      authRequired={true}
+      logoRedirectUrl="/event"
+      logoImageUrl="/images/svg/logo-unlock-events.svg"
+    >
       <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
         {transactionDetails && (
           <LockDeploying

@@ -22,7 +22,12 @@ export const EventContent = () => {
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={false} title="">
+    <AppLayout
+      showLinks={false}
+      authRequired={false}
+      logoRedirectUrl="/event"
+      logoImageUrl="/images/svg/logo-unlock-events.svg"
+    >
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
@@ -30,12 +35,10 @@ export const EventContent = () => {
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}
       {showDetails && (
-        <div className="m-auto md:w-3/4">
-          <EventDetails
-            lockAddress={lockAddress.toString()}
-            network={parseInt(network.toString(), 10)}
-          />
-        </div>
+        <EventDetails
+          lockAddress={lockAddress.toString()}
+          network={parseInt(network.toString(), 10)}
+        />
       )}
     </AppLayout>
   )
