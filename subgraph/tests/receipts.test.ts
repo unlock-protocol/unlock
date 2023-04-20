@@ -59,6 +59,7 @@ describe('Receipts for non-ERC20', () => {
     lock.version = BigInt.fromU32(12)
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.receiptCount = BigInt.fromU32(0)
     lock.save()
 
     // transfer event

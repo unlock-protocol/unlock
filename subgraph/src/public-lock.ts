@@ -424,6 +424,13 @@ export function createReceipt(event: ethereum.Event): void {
 
   const lock = Lock.load(lockAddress)
 
+  if (lock) {
+    const newReceiptCount = lock.receiptCount.plus(BigInt.fromI32(1))
+    lock.receiptCount = newReceiptCount
+    receipt.receiptNumber = newReceiptCount
+    lock.save()
+  }
+
   const tokenAddress =
     lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
 
@@ -468,9 +475,6 @@ export function createReceipt(event: ethereum.Event): void {
   receipt.sender = event.transaction.from.toHexString()
   receipt.tokenAddress = tokenAddress.toHexString()
   receipt.gasTotal = BigInt.fromString(totalGas.toString())
-  if (lock && lock.totalKeys && !receipt.receiptNumber) {
-    receipt.receiptNumber = lock.totalKeys.plus(BigInt.fromI32(1))
-  }
 
   receipt.save()
 }

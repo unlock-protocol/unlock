@@ -31,6 +31,8 @@ type Lock @entity {
   lastKeyMintedAt: BigInt
   "Address of the lock deployer"
   deployer: Bytes!
+  "Receipts number of lock"
+  receiptCount: BigInt!
 }
 
 type Key @entity {
