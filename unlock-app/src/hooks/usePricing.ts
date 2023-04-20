@@ -7,6 +7,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface Options {
   currencyContractAddress?: string | null
+  symbol: string
   lockAddress: string
   network: number
   recipients: string[]
@@ -22,6 +23,7 @@ export const usePricing = ({
   data,
   paywallConfig,
   currencyContractAddress,
+  symbol,
   enabled = true,
 }: Options) => {
   const web3Service = useWeb3Service()
@@ -45,6 +47,7 @@ export const usePricing = ({
           const price = await web3Service.purchasePriceFor(options)
           const amount = parseFloat(ethers.utils.formatUnits(price, decimals))
           return {
+            symbol,
             userAddress,
             amount,
             decimals,
