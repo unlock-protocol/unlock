@@ -420,16 +420,9 @@ export function createReceipt(event: ethereum.Event): void {
   const lockAddress = event.address.toHexString()
   const hash = event.transaction.hash.toHexString()
 
-  const receipt = new Receipt(hash)
-
   const lock = Lock.load(lockAddress)
 
-  if (lock) {
-    const newReceiptNumber = lock.receiptCount.plus(BigInt.fromI32(1))
-    lock.receiptCount = newReceiptNumber
-    receipt.receiptNumber = newReceiptNumber
-    lock.save()
-  }
+  const receipt = new Receipt(hash)
 
   const tokenAddress =
     lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
@@ -439,7 +432,7 @@ export function createReceipt(event: ethereum.Event): void {
   const ERC20_TRANSFER_TOPIC0 =
     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 
-  if (lock && tokenAddress.toString().length > 0) {
+  if (lock && tokenAddress.toString().length > 0 && receipt) {
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
     if (logs) {
@@ -463,7 +456,7 @@ export function createReceipt(event: ethereum.Event): void {
         }
       }
     }
-  } else {
+  } else if (receipt) {
     receipt.payer = event.transaction.from.toHexString()
     receipt.amountTransferred = event.transaction.value
   }
@@ -475,6 +468,13 @@ export function createReceipt(event: ethereum.Event): void {
   receipt.sender = event.transaction.from.toHexString()
   receipt.tokenAddress = tokenAddress.toHexString()
   receipt.gasTotal = BigInt.fromString(totalGas.toString())
+
+  if (lock) {
+    const newReceiptNumber = lock.receiptCount.plus(BigInt.fromI32(1))
+    lock.receiptCount = newReceiptNumber
+    receipt.receiptNumber = newReceiptNumber
+    lock.save()
+  }
 
   receipt.save()
 }
