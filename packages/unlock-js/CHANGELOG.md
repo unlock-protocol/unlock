@@ -4,6 +4,10 @@
 
 - adding support functions for Transfer With Authorization
 
+# 0.35.3
+
+- Expose more fields such as `symbol`, `maxKeysPerAddress` and `maxNumberOfKeys` in subgraph service for locks fields.
+
 # 0.35.1
 
 - fixed upgrade function

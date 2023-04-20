@@ -31,6 +31,8 @@ type Lock @entity {
   lastKeyMintedAt: BigInt
   "Address of the lock deployer"
   deployer: Bytes!
+  "Total number of receipts of lock"
+  numberOfReceipts: BigInt!
 }
 
 type Key @entity {
@@ -112,4 +114,6 @@ type Receipt @entity {
   amountTransferred: BigInt
   "Total gas paid"
   gasTotal: BigInt!
+  "Increasing number of receipt"
+  numberOfReceipt: BigInt
 }
