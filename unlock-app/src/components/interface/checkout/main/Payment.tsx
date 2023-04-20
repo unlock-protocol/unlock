@@ -182,7 +182,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via universal card </h3>
+                  <h3 className="font-bold"> Pay via Stripe </h3>
                   <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />

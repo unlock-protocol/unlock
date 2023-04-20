@@ -1,12 +1,11 @@
 // This file was automatically generated. Edits will be overwritten
 
-// HAHA RIGH!
 export interface Typegen0 {
   '@@xstate/typegen': true
   internalEvents: {
     'xstate.init': { type: 'xstate.init' }
   }
-  invokeSrcNameMap: {} // PLEASE OVERWRITE
+  invokeSrcNameMap: {}
   missingImplementations: {
     actions: never
     delays: never

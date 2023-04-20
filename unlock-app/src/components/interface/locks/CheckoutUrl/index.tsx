@@ -312,6 +312,7 @@ export const CheckoutUrlPage = () => {
             </div>
             <Button
               loading={isConfigUpdating}
+              disabled={isRecurringSettingPlaceholder}
               iconLeft={<SaveIcon />}
               onClick={onConfigSave}
               size="small"

@@ -54,8 +54,6 @@ export function UniversalCardPayment({
     })
 
   // And now get the price to pay by card
-  // do we need the step above in fact?
-  // Not really...
   const { data: cardPricing, isInitialLoading: isCardPricingLoading } =
     useUniversalCardPrice({
       network: lock!.network,
@@ -80,12 +78,7 @@ export function UniversalCardPayment({
       session.quote.destination_amount &&
       session.quote.destination_amount !== expectedAmount
     ) {
-      console.error(
-        `Amount changed!`,
-        expectedAmount,
-        session.quote.destination_amount
-      )
-      setSessionError('You cannot change the amount.')
+      setSessionError('You cannot change the amount. Pleaase start again.')
     }
 
     if (session.status === 'fulfillment_complete') {
@@ -120,7 +113,7 @@ export function UniversalCardPayment({
       await walletService.getAndSignUSDCTransferAuthorization({
         amount: cardPricing!.total * 100, // amount needs to be in cents
       })
-    // We need to pass recipients and purchaseData as well... as these will be used for the onchain transaction!
+    // We pass recipients and purchaseData as these will be used for the onchain transaction
     const response = await storage.createOnRampSession(
       lock!.network,
       lock!.address,
