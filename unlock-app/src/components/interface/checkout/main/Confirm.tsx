@@ -242,7 +242,6 @@ export function Confirm({
 
   const amountToConvert = pricingData?.total || 0
 
-  // TOFIX: @searchableguy This does not seem accurate when there are multiple recipients...
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
     useFiatChargePrice({
       tokenAddress: currencyContractAddress,
