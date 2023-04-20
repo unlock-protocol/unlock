@@ -41,7 +41,6 @@ export const total: RequestHandler = async (request, response) => {
 
 /**
  * Gets the pricing for the universal card payment method
- * TODO: actually implement this!
  * TODO: support swap and purchase to get the route in USDC if the lock is not USDC
  * @param request
  * @param response
