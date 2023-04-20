@@ -1028,7 +1028,14 @@ export default class WalletService extends UnlockService {
     return swapPurchaser
   }
 
-  async getAndSignUSDCTransferAuthorization({
+  /**
+   * This yields the authorizations required to spend USDC on behalf of the user
+   * to buy a key from a specific lock. This is mostly used for the universal
+   * card support!
+   * @param param0
+   * @returns
+   */
+  async getAndSignAuthorizationsForTransferAndPurchase({
     amount,
   }: {
     amount: number // this is in cents
@@ -1051,11 +1058,12 @@ export default class WalletService extends UnlockService {
       throw new Error('USDC not available for this network')
     }
 
+    // first, get the authorization to spend USDC
+
     // 6 decimals for USDC - 2 as amount is in cents
     const value = ethers.utils.parseUnits(amount.toString(), 4).toHexString()
-
     const now = Math.floor(new Date().getTime() / 1000)
-    const message = {
+    const transferMessage = {
       from: await this.signer.getAddress(),
       to: ethers.utils.getAddress(cardPurchaserAddress),
       value,
@@ -1064,15 +1072,18 @@ export default class WalletService extends UnlockService {
       nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
     }
 
-    const signature = await signTransferAuthorization(
+    const transferSignature = await signTransferAuthorization(
       usdcContractAddress,
-      message,
+      transferMessage,
       this.provider,
       this.signer
     )
+
+    // then, get the authorization to buy a key
+
     return {
-      signature,
-      message,
+      transferSignature,
+      transferMessage,
     }
   }
 }

@@ -109,10 +109,11 @@ export async function signTransferAuthorization(
   signer: ethers.Signer
 ) {
   const { chainId } = await provider.getNetwork()
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
 
   const domain = {
-    name: 'Unlock',
-    version: '1',
+    name: await contract.name(),
+    version: await contract.version(),
     chainId,
     verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
   }

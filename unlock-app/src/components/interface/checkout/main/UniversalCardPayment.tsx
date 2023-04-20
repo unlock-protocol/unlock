@@ -110,7 +110,9 @@ export function UniversalCardPayment({
   const signPermit = async () => {
     const walletService = await getWalletService(lock!.network)
     const { signature, message } =
-      await walletService.getAndSignUSDCTransferAuthorization({
+      await walletService.getAndSignAuthorizationsForTransferAndPurchase({
+        lockAddress: lock!.address,
+        network: lock!.network,
         amount: cardPricing!.total * 100, // amount needs to be in cents
       })
     // We pass recipients and purchaseData as these will be used for the onchain transaction
