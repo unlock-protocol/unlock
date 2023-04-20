@@ -30,7 +30,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
-import { useTotalPrice } from '~/hooks/useTotalPrice'
+import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
 
 interface Props {
@@ -180,7 +180,7 @@ export function Confirm({
   const amountToConvert = pricingData?.total || 0
 
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useTotalPrice({
+    useFiatChargePrice({
       tokenAddress: currencyContractAddress,
       amount:
         amountToConvert > 0 && swap

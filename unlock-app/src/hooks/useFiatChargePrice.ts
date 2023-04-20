@@ -8,7 +8,13 @@ interface Options {
   enabled?: boolean
 }
 
-export const useTotalPrice = ({
+/**
+ * This should actually be called getFiatPrice!
+ * It includes fees (processor, ours... etc) in fiat.
+ * @param param0
+ * @returns
+ */
+export const useFiatChargePrice = ({
   network,
   tokenAddress,
   amount,
