@@ -9,7 +9,6 @@ interface Options {
 }
 
 /**
- * This should actually be called getFiatPrice!
  * It includes fees (processor, ours... etc) in fiat.
  * @param param0
  * @returns
