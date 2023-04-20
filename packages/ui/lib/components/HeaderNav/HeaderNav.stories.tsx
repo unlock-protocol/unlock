@@ -9,6 +9,57 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+export const CustomLogoSize = {
+  args: {
+    extraClass: {
+      mobile: 'bg-[#fff7e9] px-6',
+    },
+    showSocialIcons: true,
+    actions: [
+      {
+        content: (
+          <a
+            className="rounded-full flex justify-center box-border cursor-pointer font-semibold items-center gap-2 disabled:bg-opacity-75  disabled:cursor-not-allowed px-6 py-2.5 text-base border-2  border-brand-ui-primary hover:bg-ui-main-50 text-brand-ui-primary disabled:text-opacity-50 disabled:hover:text-opacity-50 disabled:hover:bg-inherit disabled:border-opacity-25"
+            href="https://app.unlock-protocol.com/dashboard"
+            role="button"
+          >
+            Launch App
+          </a>
+        ),
+      },
+    ],
+    logo: {
+      url: '/',
+      src: 'https://www.drupal.org/files/styles/grid-3-2x/public/project-images/unlock-u.png?itok=i9eEAwoA',
+      size: 100,
+    },
+    menuSections: [
+      {
+        title: 'About Unlock',
+        url: '/',
+      },
+      {
+        title: 'Devs',
+        small: true,
+        options: [
+          {
+            title: '',
+            options: [
+              {
+                title: 'Documentation',
+                url: 'https://docs.unlock-protocol.com/',
+              },
+              {
+                title: 'Roadmap',
+                url: 'https://docs.unlock-protocol.com/governance/roadmap/',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+} satisfies Story
 
 export const Normal = {
   args: {
