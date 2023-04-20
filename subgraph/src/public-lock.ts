@@ -472,7 +472,7 @@ export function createReceipt(event: ethereum.Event): void {
   if (lock) {
     const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
     lock.numberOfReceipts = newReceiptNumber
-    receipt.receiptNumber = newReceiptNumber
+    receipt.numberOfReceipt = newReceiptNumber
     lock.save()
   }
 

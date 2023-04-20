@@ -89,7 +89,7 @@ describe('Receipts for non-ERC20', () => {
     assert.fieldEquals('Receipt', hash, 'sender', msgSender)
     assert.fieldEquals('Receipt', hash, 'payer', msgSender)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', amount.toString())
-    assert.fieldEquals('Receipt', hash, 'receiptNumber', '1')
+    assert.fieldEquals('Receipt', hash, 'numberOfReceipt', '1')
 
     dataSourceMock.resetValues()
   })
@@ -126,7 +126,7 @@ describe('Receipts for non-ERC20', () => {
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
-    assert.fieldEquals('Receipt', hash, 'receiptNumber', '2')
+    assert.fieldEquals('Receipt', hash, 'numberOfReceipt', '2')
 
     dataSourceMock.resetValues()
   })
