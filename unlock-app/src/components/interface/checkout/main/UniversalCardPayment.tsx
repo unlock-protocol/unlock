@@ -75,11 +75,16 @@ export function UniversalCardPayment({
       )
     }
 
-    const expectedAmount = (cardPricing!.total / 100).toString()
+    const expectedAmount = cardPricing!.total.toString()
     if (
       session.quote.destination_amount &&
       session.quote.destination_amount !== expectedAmount
     ) {
+      console.error(
+        `Amount changed!`,
+        expectedAmount,
+        session.quote.destination_amount
+      )
       setSessionError('You cannot change the amount.')
     }
 
@@ -108,11 +113,12 @@ export function UniversalCardPayment({
     }
   }
 
+  // User triggers the payment!
   const signPermit = async () => {
     const walletService = await getWalletService(lock!.network)
     const { signature, message } =
       await walletService.getAndSignUSDCTransferAuthorization({
-        amount: cardPricing!.total, // value in cents
+        amount: cardPricing!.total * 100, // amount needs to be in cents
       })
     // We need to pass recipients and purchaseData as well... as these will be used for the onchain transaction!
     const response = await storage.createOnRampSession(
@@ -153,11 +159,6 @@ export function UniversalCardPayment({
                 pricingData={cardPricing}
               />
             </div>
-            <CreditCardPricingBreakdown
-              total={cardPricing!.total}
-              creditCardProcessingFee={cardPricing!.creditCardProcessingFee}
-              unlockServiceFee={cardPricing!.unlockServiceFee}
-            />
           </main>
           <footer className="grid items-center px-6 pt-6 border-t">
             <Connected

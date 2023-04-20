@@ -122,7 +122,6 @@ export function Checkout({
   }, [state, checkoutService])
 
   const Content = useCallback(() => {
-    console.log({ matched })
     switch (matched) {
       case 'SELECT': {
         return (

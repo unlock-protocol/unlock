@@ -75,12 +75,10 @@ export function CreditCardPricingBreakdown({
           <span className="text-gray-600">Service Fee</span>
           <div>${(unlockServiceFee / 100).toLocaleString()}</div>
         </div>
-        {creditCardProcessingFee > 0 && (
-          <div className="flex justify-between w-full py-2 text-sm">
-            <span className="text-gray-600"> Payment Processor </span>
-            <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
-          </div>
-        )}
+        <div className="flex justify-between w-full py-2 text-sm">
+          <span className="text-gray-600"> Payment Processor </span>
+          <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
+        </div>
         <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
           <span className="text-gray-600"> Total </span>
           <div className="font-bold">${(total / 100).toLocaleString()}</div>
@@ -244,6 +242,7 @@ export function Confirm({
 
   const amountToConvert = pricingData?.total || 0
 
+  // TOFIX: @searchableguy This does not seem accurate when there are multiple recipients...
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
     useTotalPrice({
       tokenAddress: currencyContractAddress,
@@ -254,6 +253,7 @@ export function Confirm({
       network: lock!.network,
       enabled: isPricingDataAvailable,
     })
+
   // TODO: run full estimate so we can catch all errors, rather just check balances
   const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
     ['canAfford', account, lock, pricingData],

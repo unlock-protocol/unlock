@@ -47,7 +47,8 @@ export const universalCard: RequestHandler = async (request, response) => {
   // const network = Number(request.params.network)
   const recipients = request.query.recipients || []
 
-  return response.send({
+  // Fake data!
+  const result = {
     prices: recipients.map((r: string) => {
       return {
         userAddress: r,
@@ -57,5 +58,11 @@ export const universalCard: RequestHandler = async (request, response) => {
       }
     }),
     total: 1234 + 123, // in cents!
-  })
+  }
+  result.total = result.prices.reduce(
+    (sum: number, p: any) => sum + p.amount,
+    0
+  )
+
+  return response.send(result)
 }

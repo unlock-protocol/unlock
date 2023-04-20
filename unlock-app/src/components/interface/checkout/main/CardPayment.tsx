@@ -82,7 +82,6 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           />
         )}
       </main>
-
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
@@ -226,7 +225,6 @@ export function PaymentForm({
       onSuccess(intent)
     }
   }
-
   return (
     <form
       className="space-y-2"
