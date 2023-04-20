@@ -72,7 +72,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
     assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
-    assert.fieldEquals('Lock', lockAddress, 'receiptCount', '0')
+    assert.fieldEquals('Lock', lockAddress, 'numberOfReceipts', '0')
     assert.fieldEquals(
       'Lock',
       lockAddress,
@@ -236,7 +236,7 @@ describe('Describe Locks events (v8)', () => {
     assert.fieldEquals('Lock', lockAddressV8, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddressV8, 'lockManagers', `[${lockOwner}]`)
     assert.fieldEquals('Lock', lockAddressV8, 'totalKeys', '0')
-    assert.fieldEquals('Lock', lockAddressV8, 'receiptCount', '0')
+    assert.fieldEquals('Lock', lockAddressV8, 'numberOfReceipts', '0')
     assert.fieldEquals(
       'Lock',
       lockAddressV8,
