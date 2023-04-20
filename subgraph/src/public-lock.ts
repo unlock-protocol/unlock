@@ -432,7 +432,7 @@ export function createReceipt(event: ethereum.Event): void {
   const ERC20_TRANSFER_TOPIC0 =
     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 
-  if (lock && tokenAddress.toString().length > 0 && receipt) {
+  if (lock && tokenAddress.toString().length > 0) {
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
     if (logs) {
@@ -456,7 +456,7 @@ export function createReceipt(event: ethereum.Event): void {
         }
       }
     }
-  } else if (receipt) {
+  } else {
     receipt.payer = event.transaction.from.toHexString()
     receipt.amountTransferred = event.transaction.value
   }
