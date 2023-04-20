@@ -55,7 +55,6 @@ const useOnrampSessionListener = (type, session, callback) => {
 export const OnrampElement = ({
   clientSecret,
   appearance,
-  onReady,
   onChange,
   ...props
 }) => {
@@ -84,7 +83,6 @@ export const OnrampElement = ({
     }
   }, [appearanceJSON, clientSecret, stripeOnramp])
 
-  useOnrampSessionListener('onramp_ui_loaded', session, onReady)
   useOnrampSessionListener('onramp_session_updated', session, onChange)
 
   return <div {...props} ref={onrampElementRef}></div>

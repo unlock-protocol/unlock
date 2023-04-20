@@ -122,6 +122,7 @@ export function Checkout({
   }, [state, checkoutService])
 
   const Content = useCallback(() => {
+    console.log({ matched })
     switch (matched) {
       case 'SELECT': {
         return (
@@ -160,6 +161,7 @@ export function Checkout({
           <UniversalCardPayment
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
+            communication={communication}
           />
         )
       }

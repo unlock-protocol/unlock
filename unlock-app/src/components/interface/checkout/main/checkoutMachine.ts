@@ -435,32 +435,38 @@ export const checkoutMachine = createMachine(
       },
       UNIVERSAL_CARD: {
         on: {
-          SELECT_PAYMENT_METHOD: [
-            {
-              target: 'MESSAGE_TO_SIGN',
-              actions: ['selectPaymentMethod'],
-              cond: 'requireMessageToSign',
-            },
-            {
-              target: 'PASSWORD',
-              actions: ['selectPaymentMethod'],
-              cond: 'requirePassword',
-            },
-            {
-              target: 'PROMO',
-              actions: ['selectPaymentMethod'],
-              cond: 'requirePromo',
-            },
-            {
-              target: 'CAPTCHA',
-              actions: ['selectPaymentMethod'],
-              cond: 'requireCaptcha',
-            },
-            {
-              target: 'CONFIRM',
-              actions: ['selectPaymentMethod'],
-            },
-          ],
+          // TODO: How do we handle these?
+          // We should probably haved asked _before_ we selected the payment option
+          // SELECT_PAYMENT_METHOD: [
+          // {
+          //   target: 'MESSAGE_TO_SIGN',
+          //   actions: ['selectPaymentMethod'],
+          //   cond: 'requireMessageToSign',
+          // },
+          // {
+          //   target: 'PASSWORD',
+          //   actions: ['selectPaymentMethod'],
+          //   cond: 'requirePassword',
+          // },
+          // {
+          //   target: 'PROMO',
+          //   actions: ['selectPaymentMethod'],
+          //   cond: 'requirePromo',
+          // },
+          // {
+          //   target: 'CAPTCHA',
+          //   actions: ['selectPaymentMethod'],
+          //   cond: 'requireCaptcha',
+          // },
+          // {
+          //   target: 'CONFIRM',
+          //   actions: ['selectPaymentMethod'],
+          // },
+          // ],
+          CONFIRM_MINT: {
+            target: 'MINTING',
+            actions: ['confirmMint'],
+          },
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],

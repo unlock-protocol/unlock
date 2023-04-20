@@ -1444,13 +1444,55 @@ paths:
         400:
           $ref: '#/components/responses/400.Invalid'
 
-  /v2/purchase/onramp:
+  /v2/purchase/onramp/{network}/locks/{lockAddress}:
     post:
-      operationId: onramp
+      operationId: createOnRampSession
       security:
         - User: []
       description: Setup an onramp session for the user.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                signature:
+                  type: string
+                message:
+                  type: object
+                  properties:
+                    from:
+                      type: string
+                    nonce:
+                      type: string
+                    to:
+                      type: string
+                    validAfter:
+                      type: number
+                    validBefore:
+                      type: number
+                    value:
+                      type: string
+                  required:
+                    - from
+                    - nonce
+                    - to
+                    - validAfter
+                    - validBefore
+                    - value
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                purchaseData:
+                  type: array
+                  items:
+                    type: string
       responses:
         200:
           description: Created onramp session.
@@ -1460,6 +1502,42 @@ paths:
                 type: object
                 properties:
                   clientSecret:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/onramp/{session}/capture:
+    post:
+      operationId: captureOnRampSession
+      security:
+        - User: []
+      description: Setup an onramp session for the user.
+      parameters:
+        - name: session
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the onramp session
+        - in: query
+          name: transactionHash
+          required: true
+          description: The transacttion hash for the deposit
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfully sent purchase transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+                  owner:
                     type: string
 
         401:
@@ -2670,6 +2748,58 @@ paths:
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
             type: string
+
+      responses:
+        200:
+          description: Successfully got price
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'total'
+                  - 'subtotal'
+                  - 'gasCost'
+                  - 'unlockServiceFee'
+                  - 'creditCardProcessingFee'
+                  - 'isCreditCardPurchasable'
+                properties:
+                  total:
+                    type: number
+                  subtotal:
+                    type: number
+                  gasCost:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  isCreditCardPurchasable:
+                    type: boolean
+
+  /v2/api/price/{network}/{lockAddress}/card:
+    get:
+      description: Get the price breakdown for universal credit card
+      operationId: getUniversalCardPrice
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: purchaseData[]
+          description: The purchase data passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: recipients[]
+          description: The recipients passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
 
       responses:
         200:

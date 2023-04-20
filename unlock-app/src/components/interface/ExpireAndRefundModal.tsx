@@ -48,6 +48,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
       onCloseCallback()
       ToastHelper.success('Key successfully refunded.')
       // reload page to show updated list of keys
+      // TODO: yikes. we should _never_ do that. cc @kalidou
       setTimeout(() => {
         window.location.reload()
       }, 2000)

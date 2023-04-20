@@ -105,10 +105,10 @@ interface TransferAuthorizationMessage {
 export async function signTransferAuthorization(
   erc20ContractAddress: string,
   message: TransferAuthorizationMessage,
+  provider: ethers.providers.Provider,
   signer: ethers.Signer
 ) {
-  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
-  const { chainId } = await signer.provider!.getNetwork()
+  const { chainId } = await provider.getNetwork()
 
   const domain = {
     name: 'Unlock',
@@ -127,8 +127,34 @@ export async function signTransferAuthorization(
       { name: 'nonce', type: 'bytes32' },
     ],
   }
-  // @ts-expect-error _signTypedData does not exist on signer (even tho it does)
+  // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'.
   return signer._signTypedData(domain, types, message)
+}
+
+export async function recoverTransferAuthorization(
+  erc20ContractAddress: string,
+  message: TransferAuthorizationMessage,
+  chainId: number,
+  signature: string
+) {
+  const domain = {
+    name: 'Unlock',
+    version: '1',
+    chainId,
+    verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+  }
+
+  const types = {
+    TransferWithAuthorization: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'validAfter', type: 'uint256' },
+      { name: 'validBefore', type: 'uint256' },
+      { name: 'nonce', type: 'bytes32' },
+    ],
+  }
+  return ethers.utils.verifyTypedData(domain, types, message, signature)
 }
 
 export async function transferWithAuthorization(

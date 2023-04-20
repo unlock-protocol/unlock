@@ -226,6 +226,7 @@ export function PaymentForm({
       onSuccess(intent)
     }
   }
+
   return (
     <form
       className="space-y-2"

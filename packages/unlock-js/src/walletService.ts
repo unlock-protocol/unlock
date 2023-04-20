@@ -1044,14 +1044,15 @@ export default class WalletService extends UnlockService {
     if (networkConfig?.tokens) {
       usdcContractAddress = networkConfig.tokens.find(
         (token: any) => token.symbol === 'USDC'
-      ).address
+      )?.address
     }
 
     if (!usdcContractAddress) {
       throw new Error('USDC not available for this network')
     }
 
-    const value = ethers.utils.parseUnits(amount.toString(), 6) // 6 decimals for USDC
+    // 6 decimals for USDC - 2 as amount is in cents
+    const value = ethers.utils.parseUnits(amount.toString(), 4).toHexString()
 
     const now = Math.floor(new Date().getTime() / 1000)
     const message = {
@@ -1063,12 +1064,11 @@ export default class WalletService extends UnlockService {
       nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
     }
 
-    console.log(this.signer)
-
     const signature = await signTransferAuthorization(
       usdcContractAddress,
       message,
-      this.provider
+      this.provider,
+      this.signer
     )
     return {
       signature,

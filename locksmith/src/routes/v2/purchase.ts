@@ -5,6 +5,7 @@ import {
   list,
   createSetupIntent,
   removePaymentMethods,
+  captureOnRamp,
 } from '../../controllers/v2/purchaseController'
 import {
   authenticatedMiddleware,
@@ -17,7 +18,8 @@ router.use('/', authenticatedMiddleware, userOnlyMiddleware)
 router.post('/setup', createSetupIntent)
 router.get('/list', list)
 router.post('/intent/:network/locks/:lockAddress', createPaymentIntent)
-router.post('/onramp', createOnRampSession)
+router.post('/onramp/:network/locks/:lockAddress', createOnRampSession)
+router.post('/onramp/:session/capture', captureOnRamp)
 router.delete('/payment-methods', removePaymentMethods)
 
 export default router

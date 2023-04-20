@@ -3,13 +3,12 @@ import { storage } from '~/config/storage'
 
 interface Options {
   network: number
-  lockAddress?: string
+  lockAddress: string
   purchaseData: string[]
-  enabled?: boolean
   recipients: string[]
+  enabled?: boolean
 }
 
-// TODO: replace with an actual API call!
 export const useUniversalCardPrice = ({
   network,
   lockAddress,
@@ -20,25 +19,13 @@ export const useUniversalCardPrice = ({
   return useQuery(
     ['useUniversalCardPrice', network, lockAddress, purchaseData, recipients],
     async () => {
-      // const response = await storage.getTotalPrice(
-      //   network,
-      //   amount,
-      //   tokenAddress
-      // )
-      // return response.data
-      return {
-        prices: recipients.map((r) => {
-          return {
-            userAddress: r,
-            amount: 12.34,
-            symbol: '$',
-            decimals: 0,
-          }
-        }),
-        total: 1234 + 123, // in cents!
-        creditCardProcessingFee: 0, // Stripe adds their own fees later!
-        unlockServiceFee: 123, // in cents
-      }
+      const response = await storage.getUniversalCardPrice(
+        network,
+        lockAddress,
+        purchaseData,
+        recipients
+      )
+      return response.data
     },
     {
       enabled,
