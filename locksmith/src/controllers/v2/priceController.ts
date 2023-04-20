@@ -1,5 +1,9 @@
 import { RequestHandler } from 'express'
-import { createTotalCharges, defiLammaPrice } from '../../utils/pricing'
+import {
+  createPricingForPurchase,
+  createTotalCharges,
+  defiLammaPrice,
+} from '../../utils/pricing'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -44,25 +48,39 @@ export const total: RequestHandler = async (request, response) => {
  * @returns
  */
 export const universalCard: RequestHandler = async (request, response) => {
-  // const network = Number(request.params.network)
-  const recipients = request.query.recipients || []
+  const network = Number(request.params.network)
+  const lockAddress = request.params.lock
+  const { recipients: recipientQ = [], purchaseData = [] } = request.query
 
-  // Fake data!
+  // Setup values
+  const recipients: string[] = Array.isArray(recipientQ)
+    ? recipientQ.map((x) => x.toString())
+    : [recipientQ.toString()]
+  const data: string[] = Array.isArray(purchaseData)
+    ? purchaseData.map((x) => x.toString())
+    : [purchaseData.toString()]
+
+  // Ok so now we use the pricing API to get the price for each recipient!
+  const pricing = await createPricingForPurchase({
+    lockAddress,
+    recipients,
+    network,
+    referrers: Array.from({ length: recipients.length }).map(() => ''),
+    data,
+  })
+
+  // For universal card, we actually apply the unlock fee to each lock
+  // And split gas between them all
+  const fees = (pricing.total - pricing.creditCardProcessingFee) / 100
   const result = {
-    prices: recipients.map((r: string) => {
+    prices: pricing.recipients.map((recipient: any) => {
       return {
-        userAddress: r,
-        amount: 12.34,
+        userAddress: recipient.address,
+        amount: recipient.amountInUSD + fees / pricing.recipients.length,
         symbol: '$',
-        decimals: 0,
       }
     }),
-    total: 1234 + 123, // in cents!
   }
-  result.total = result.prices.reduce(
-    (sum: number, p: any) => sum + p.amount,
-    0
-  )
 
   return response.send(result)
 }
