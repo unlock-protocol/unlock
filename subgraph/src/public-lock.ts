@@ -470,8 +470,8 @@ export function createReceipt(event: ethereum.Event): void {
   receipt.gasTotal = BigInt.fromString(totalGas.toString())
 
   if (lock) {
-    const newReceiptNumber = lock.receiptCount.plus(BigInt.fromI32(1))
-    lock.receiptCount = newReceiptNumber
+    const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
+    lock.numberOfReceipts = newReceiptNumber
     receipt.receiptNumber = newReceiptNumber
     lock.save()
   }
