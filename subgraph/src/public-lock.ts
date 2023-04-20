@@ -420,9 +420,9 @@ export function createReceipt(event: ethereum.Event): void {
   const lockAddress = event.address.toHexString()
   const hash = event.transaction.hash.toHexString()
 
-  const lock = Lock.load(lockAddress)
-
   const receipt = new Receipt(hash)
+
+  const lock = Lock.load(lockAddress)
 
   const tokenAddress =
     lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
