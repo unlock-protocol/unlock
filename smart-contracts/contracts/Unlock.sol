@@ -410,7 +410,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       // version 13 is the first version for which locks can be paying the fee. Prior versions should not distribute UDT if they don't "pay" the fee.
       if (
         _referrer != address(0) &&
-        IPublicLock(msg.sender).publicLockVersion() <= 13
+        IPublicLock(msg.sender).publicLockVersion() >= 13
       ) {
         IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
@@ -610,10 +610,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     if (
       locks[msg.sender].deployed == false &&
       IPublicLock(msg.sender).publicLockVersion() == 13 &&
-      IPublicLock(msg.sender).unlockProtocol() != address(this)
+      block.chainid == 1 &&
+      IPublicLock(msg.sender).unlockProtocol() ==
+      0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13 // hardcoded address of previous Unlock
     ) {
       IUnlock previousUnlock = IUnlock(
-        IPublicLock(msg.sender).unlockProtocol()
+        0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13
       );
 
       (
@@ -633,6 +635,36 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
         revert Unlock__MISSING_LOCK(msg.sender);
       }
     }
+  }
+
+  /**
+   * Functions which transfers tokens held by the contract
+   * It handles both ERC20 and the base currency.
+   * @dev This function is onlyOwner
+   * @param token the address of the token to transfer (pass the 0x0 address for the base currency)
+   * @param to the address to transfer the tokens to
+   * @param amount the amount of tokens to transfer
+   */
+  function transferTokens(
+    address token,
+    address to,
+    uint256 amount
+  ) public onlyOwner {
+    if (token != address(0)) {
+      IMintableERC20(token).transfer(to, amount);
+    } else {
+      payable(to).transfer(amount);
+    }
+  }
+
+  /**
+   * Removes a lock from the list of locks. This will prevent the lock from being able to receive governance tokens.
+   * The lock will still be able to sell its memberships.
+   * @dev This function is onlyOwner
+   * @param lock address of the lock to remove
+   */
+  function removeLock(address lock) external onlyOwner {
+    delete locks[lock];
   }
 
   // required to receive ETH / withdraw ETH

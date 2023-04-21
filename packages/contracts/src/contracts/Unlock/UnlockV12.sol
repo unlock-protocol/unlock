@@ -1683,7 +1683,11 @@ interface IPublicLock {
     bytes calldata data
   ) external;
 
-  function totalSupply() external view returns (uint256);
+  /**
+   * Returns the total number of keys, including non-valid ones
+   * @return _totalKeysCreated the total number of keys, valid or not
+   */
+  function totalSupply() external view returns (uint256 _totalKeysCreated);
 
   function tokenOfOwnerByIndex(
     address _owner,
@@ -1878,9 +1882,7 @@ interface IUnlock {
    *  );
    * @return address of the create lock
    */
-  function createUpgradeableLock(
-    bytes memory data
-  ) external returns (address);
+  function createUpgradeableLock(bytes memory data) external returns (address);
 
   /**
    * Create an upgradeable lock using a specific PublicLock version
@@ -1944,24 +1946,15 @@ interface IUnlock {
   ) external pure returns (uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
-  function globalBaseTokenURI()
-    external
-    view
-    returns (string memory);
+  function globalBaseTokenURI() external view returns (string memory);
 
   /**
    * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalBaseTokenURI()
-    external
-    view
-    returns (string memory);
+  function getGlobalBaseTokenURI() external view returns (string memory);
 
   // Function to read the globalTokenSymbol field.
-  function globalTokenSymbol()
-    external
-    view
-    returns (string memory);
+  function globalTokenSymbol() external view returns (string memory);
 
   // Function to read the chainId field.
   function chainId() external view returns (uint);
@@ -1969,10 +1962,7 @@ interface IUnlock {
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory);
+  function getGlobalTokenSymbol() external view returns (string memory);
 
   /**
    * @notice Allows the owner to update configuration variables
@@ -1990,10 +1980,7 @@ interface IUnlock {
    * @notice Add a PublicLock template to be used for future calls to `createLock`.
    * @dev This is used to upgrade conytract per version number
    */
-  function addLockTemplate(
-    address impl,
-    uint16 version
-  ) external;
+  function addLockTemplate(address impl, uint16 version) external;
 
   /**
    * Match lock templates addresses with version numbers
@@ -2009,26 +1996,19 @@ interface IUnlock {
    * @param _impl the address of the deployed template contract (PublicLock)
    * @return number of the version corresponding to this address
    */
-  function publicLockVersions(
-    address _impl
-  ) external view returns (uint16);
+  function publicLockVersions(address _impl) external view returns (uint16);
 
   /**
    * Retrive the latest existing lock template version
    * @return _version the version number of the latest template (used to deploy contracts)
    */
-  function publicLockLatestVersion()
-    external
-    view
-    returns (uint16 _version);
+  function publicLockLatestVersion() external view returns (uint16 _version);
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.
    * @dev This will initialize the template and revokeOwnership.
    */
-  function setLockTemplate(
-    address payable _publicLockAddress
-  ) external;
+  function setLockTemplate(address payable _publicLockAddress) external;
 
   // Allows the owner to change the value tracking variables as needed.
   function resetTrackedValue(
@@ -2036,38 +2016,23 @@ interface IUnlock {
     uint _totalDiscountGranted
   ) external;
 
-  function grossNetworkProduct()
-    external
-    view
-    returns (uint);
+  function grossNetworkProduct() external view returns (uint);
 
-  function totalDiscountGranted()
-    external
-    view
-    returns (uint);
+  function totalDiscountGranted() external view returns (uint);
 
   function locks(
     address
   )
     external
     view
-    returns (
-      bool deployed,
-      uint totalSales,
-      uint yieldedDiscountTokens
-    );
+    returns (bool deployed, uint totalSales, uint yieldedDiscountTokens);
 
   // The address of the public lock template, used when `createLock` is called
-  function publicLockAddress()
-    external
-    view
-    returns (address);
+  function publicLockAddress() external view returns (address);
 
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
-  function uniswapOracles(
-    address
-  ) external view returns (address);
+  function uniswapOracles(address) external view returns (address);
 
   // The WETH token address, used for value calculations
   function weth() external view returns (address);
@@ -2076,10 +2041,7 @@ interface IUnlock {
   function udt() external view returns (address);
 
   // The approx amount of gas required to purchase a key
-  function estimatedGasForPurchase()
-    external
-    view
-    returns (uint);
+  function estimatedGasForPurchase() external view returns (uint);
 
   /**
    * Helper to get the network mining basefee as introduced in EIP-1559
@@ -2096,10 +2058,7 @@ interface IUnlock {
    * setting the _oracleAddress to address(0) removes support for the token
    * @dev This will also call update to ensure at least one datapoint has been recorded.
    */
-  function setOracle(
-    address _tokenAddress,
-    address _oracleAddress
-  ) external;
+  function setOracle(address _tokenAddress, address _oracleAddress) external;
 
   // Initialize the Ownable contract, granting contract ownership to the specified sender
   function __initializeOwnable(address sender) external;
@@ -2142,23 +2101,40 @@ interface IUnlock {
    */
   function protocolFee() external view returns (uint);
 
-  
   /**
-   * Returns the ProxyAdmin contract address that manage upgrades for 
+   * Returns the ProxyAdmin contract address that manage upgrades for
    * the current Unlock contract.
-   * @dev this reads the address directly from storage, at the slot `_ADMIN_SLOT` 
+   * @dev this reads the address directly from storage, at the slot `_ADMIN_SLOT`
    * defined by Open Zeppelin's EIP1967 Proxy implementation which corresponds
    * to the keccak-256 hash of "eip1967.proxy.admin" subtracted by 1
    */
-   function getAdmin() external view returns (address);
+  function getAdmin() external view returns (address);
 
   /**
    * Call executed by a lock after its version upgrade triggred by `upgradeLock`
-   * - PublicLock v12 > v13 (mainnet): migrate an existing Lock to another instance 
+   * - PublicLock v12 > v13 (mainnet): migrate an existing Lock to another instance
    * of the Unlock contract
    * @dev The `msg.sender` will be the upgraded lock
    */
   function postLockUpgrade() external;
+
+  /**
+   * Functions which transfers tokens held by the contract
+   * It handles both ERC20 and the base currency.
+   * @dev This function is onlyOwner
+   * @param token the address of the token to transfer (pass the 0x0 address for the base currency)
+   * @param to the address to transfer the tokens to
+   * @param amount the amount of tokens to transfer
+   */
+  function transferTokens(address token, address to, uint256 amount) external;
+
+  /**
+   * Removes a lock from the list of locks. This will prevent the lock from being able to receive governance tokens.
+   * The lock will still be able to sell its memberships.
+   * @dev This function is onlyOwner
+   * @param lock address of the lock to remove
+   */
+  function removeLock(address lock) external;
 }
 
 
@@ -2725,9 +2701,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   uint public protocolFee;
 
   // errors
-  error Unlock__MANAGER_ONLY();   
-  error Unlock__VERSION_TOO_HIGH();   
-  error Unlock__MISSING_TEMPLATE();  
+  error Unlock__MANAGER_ONLY();
+  error Unlock__VERSION_TOO_HIGH();
+  error Unlock__MISSING_TEMPLATE();
   error Unlock__ALREADY_DEPLOYED();
   error Unlock__MISSING_PROXY_ADMIN();
   error Unlock__MISSING_LOCK_TEMPLATE();
@@ -2735,10 +2711,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__INVALID_AMOUNT();
 
   // Events
-  event NewLock(
-    address indexed lockOwner,
-    address indexed newLockAddress
-  );
+  event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
   event LockUpgraded(address lockAddress, uint16 version);
 
@@ -2761,27 +2734,22 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address lockAddress
   );
 
-  event ResetTrackedValue(
-    uint grossNetworkProduct,
-    uint totalDiscountGranted
-  );
+  event ResetTrackedValue(uint grossNetworkProduct, uint totalDiscountGranted);
 
-  event UnlockTemplateAdded(
-    address indexed impl,
-    uint16 indexed version
-  );
+  event UnlockTemplateAdded(address indexed impl, uint16 indexed version);
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
-  function initialize(
-    address _unlockOwner
-  ) public initializer {
+  function initialize(address _unlockOwner) public initializer {
     // We must manually initialize Ownable
     UnlockOwnable.__initializeOwnable(_unlockOwner);
     // add a proxy admin on deployment
     _deployProxyAdmin();
   }
+
   function initializeProxyAdmin() public onlyOwner {
-    if(proxyAdminAddress != address(0)){revert Unlock__ALREADY_DEPLOYED();}
+    if (proxyAdminAddress != address(0)) {
+      revert Unlock__ALREADY_DEPLOYED();
+    }
     _deployProxyAdmin();
   }
 
@@ -2798,18 +2766,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * @dev Helper to get the version number of a template from his address
    */
-  function publicLockVersions(
-    address _impl
-  ) external view returns (uint16) {
+  function publicLockVersions(address _impl) external view returns (uint16) {
     return _publicLockVersions[_impl];
   }
 
   /**
    * @dev Helper to get the address of a template based on its version number
    */
-  function publicLockImpls(
-    uint16 _version
-  ) external view returns (address) {
+  function publicLockImpls(uint16 _version) external view returns (address) {
     return _publicLockImpls[_version];
   }
 
@@ -2819,21 +2783,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Once registered, the template can be used to upgrade an existing Lock
    * @dev This will initialize the template and revokeOwnership.
    */
-  function addLockTemplate(
-    address impl,
-    uint16 version
-  ) public onlyOwner {
-
+  function addLockTemplate(address impl, uint16 version) public onlyOwner {
     // First claim the template so that no-one else could
     // this will revert if the template was already initialized.
-    IPublicLock(impl).initialize(
-      address(this),
-      0,
-      address(0),
-      0,
-      0,
-      ""
-    );
+    IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "");
     IPublicLock(impl).renounceLockManager();
 
     _publicLockVersions[impl] = version;
@@ -2892,9 +2845,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    *  );
    * @return address of the create lock
    */
-  function createUpgradeableLock(
-    bytes memory data
-  ) public returns (address) {
+  function createUpgradeableLock(bytes memory data) public returns (address) {
     address newLock = createUpgradeableLockAtVersion(
       data,
       publicLockLatestVersion
@@ -2912,22 +2863,22 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     bytes memory data,
     uint16 _lockVersion
   ) public returns (address) {
-    if(proxyAdminAddress == address(0)){
+    if (proxyAdminAddress == address(0)) {
       revert Unlock__MISSING_PROXY_ADMIN();
     }
 
     // get lock version
     address publicLockImpl = _publicLockImpls[_lockVersion];
-    if(publicLockImpl == address(0)){
+    if (publicLockImpl == address(0)) {
       revert Unlock__MISSING_LOCK_TEMPLATE();
     }
 
     // deploy a proxy pointing to impl
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
-        publicLockImpl,
-        proxyAdminAddress,
-        data
-      );
+      publicLockImpl,
+      proxyAdminAddress,
+      data
+    );
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
@@ -2949,13 +2900,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @custom:oz-upgrades-unsafe-allow-reachable delegatecall
    */
 
-  function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
-    if(proxyAdminAddress == address(0)){
+  function upgradeLock(
+    address payable lockAddress,
+    uint16 version
+  ) external returns (address) {
+    if (proxyAdminAddress == address(0)) {
       revert Unlock__MISSING_PROXY_ADMIN();
     }
 
     // check perms
-    if(_isLockManager(lockAddress, msg.sender) != true){
+    if (_isLockManager(lockAddress, msg.sender) != true) {
       revert Unlock__MANAGER_ONLY();
     }
 
@@ -2963,16 +2917,18 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     IPublicLock lock = IPublicLock(lockAddress);
     uint16 currentVersion = lock.publicLockVersion();
 
-    if(version != currentVersion + 1){
+    if (version != currentVersion + 1) {
       revert Unlock__VERSION_TOO_HIGH();
     }
 
     // make our upgrade
     address impl = _publicLockImpls[version];
-    if(impl == address(0)){revert Unlock__MISSING_TEMPLATE();}
+    if (impl == address(0)) {
+      revert Unlock__MISSING_TEMPLATE();
+    }
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
-        lockAddress
+      lockAddress
     );
 
     proxyAdmin.upgrade(proxy, impl);
@@ -3012,7 +2968,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function networkBaseFee() external view returns (uint) {
     return block.basefee;
   }
-  
+
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
@@ -3026,21 +2982,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   ) public onlyFromDeployedLock {
     if (_value > 0) {
       uint valueInETH;
-      address tokenAddress = IPublicLock(msg.sender)
-        .tokenAddress();
-      if (
-        tokenAddress != address(0) && tokenAddress != weth
-      ) {
+      address tokenAddress = IPublicLock(msg.sender).tokenAddress();
+      if (tokenAddress != address(0) && tokenAddress != weth) {
         // If priced in an ERC-20 token, find the supported uniswap oracle
-        IUniswapOracleV3 oracle = uniswapOracles[
-          tokenAddress
-        ];
+        IUniswapOracleV3 oracle = uniswapOracles[tokenAddress];
         if (address(oracle) != address(0)) {
-          valueInETH = oracle.updateAndConsult(
-            tokenAddress,
-            _value,
-            weth
-          );
+          valueInETH = oracle.updateAndConsult(tokenAddress, _value, weth);
         }
       } else {
         // If priced in ETH (or value is 0), no conversion is required
@@ -3059,25 +3006,20 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
       // Distribute UDT
       // version 13 is the first version for which locks can be paying the fee. Prior versions should not distribute UDT if they don't "pay" the fee.
-      if (_referrer != address(0) && IPublicLock(msg.sender).publicLockVersion() <= 13) {
+      if (
+        _referrer != address(0) &&
+        IPublicLock(msg.sender).publicLockVersion() >= 13
+      ) {
         IUniswapOracleV3 udtOracle = uniswapOracles[udt];
         if (address(udtOracle) != address(0)) {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint udtPrice = udtOracle.updateAndConsult(
-            udt,
-            10 ** 18,
-            weth
-          );
+          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
-          uint balance = IMintableERC20(udt).balanceOf(
-            address(this)
-          );
+          uint balance = IMintableERC20(udt).balanceOf(address(this));
 
           // base fee default to 100 GWEI for chains that does
           uint baseFee;
-          try this.networkBaseFee() returns (
-            uint _basefee
-          ) {
+          try this.networkBaseFee() returns (uint _basefee) {
             // no assigned value
             if (_basefee == 0) {
               baseFee = 100;
@@ -3090,10 +3032,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           }
 
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToDistribute = ((estimatedGasForPurchase *
-              baseFee) * (125 * 10 ** 18)) /
-              100 /
-              udtPrice;
+          uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
+            (125 * 10 ** 18)) /
+            100 /
+            udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           // we distribute tokens using asymptotic curve between 0 and 0.5
@@ -3109,17 +3051,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           if (tokensToDistribute > 0) {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
             uint devReward = (tokensToDistribute * 20) / 100;
-            
+
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
               IMintableERC20(udt).transfer(
                 _referrer,
                 tokensToDistribute - devReward
               );
-              IMintableERC20(udt).transfer(
-                owner(),
-                devReward
-              );
+              IMintableERC20(udt).transfer(owner(), devReward);
             }
           }
         }
@@ -3206,10 +3145,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * @notice Set the default PublicLock template to use when creating locks
    */
-  function setLockTemplate(
-    address _publicLockAddress
-  ) external onlyOwner {
-    if(_publicLockVersions[_publicLockAddress] == 0) {
+  function setLockTemplate(address _publicLockAddress) external onlyOwner {
+    if (_publicLockVersions[_publicLockAddress] == 0) {
       revert Unlock__MISSING_LOCK_TEMPLATE();
     }
     // set latest version
@@ -3228,14 +3165,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address _tokenAddress,
     address _oracleAddress
   ) external onlyOwner {
-    uniswapOracles[_tokenAddress] = IUniswapOracleV3(
-      _oracleAddress
-    );
+    uniswapOracles[_tokenAddress] = IUniswapOracleV3(_oracleAddress);
     if (_oracleAddress != address(0)) {
-      IUniswapOracleV3(_oracleAddress).update(
-        _tokenAddress,
-        weth
-      );
+      IUniswapOracleV3(_oracleAddress).update(_tokenAddress, weth);
     }
   }
 
@@ -3247,76 +3179,95 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     grossNetworkProduct = _grossNetworkProduct;
     totalDiscountGranted = _totalDiscountGranted;
 
-    emit ResetTrackedValue(
-      _grossNetworkProduct,
-      _totalDiscountGranted
-    );
+    emit ResetTrackedValue(_grossNetworkProduct, _totalDiscountGranted);
   }
 
   /**
    * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalBaseTokenURI()
-    external
-    view
-    returns (string memory)
-  {
+  function getGlobalBaseTokenURI() external view returns (string memory) {
     return globalBaseTokenURI;
   }
 
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory)
-  {
+  function getGlobalTokenSymbol() external view returns (string memory) {
     return globalTokenSymbol;
   }
 
   // for doc, see IUnlock.sol
   function getAdmin() public view returns (address) {
-      bytes32 _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
-      return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
+    bytes32 _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
+    return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
   }
 
   // for doc, see IUnlock.sol
   function postLockUpgrade() public {
     // check if lock hasnot already been deployed here and version is correct
     if (
-      locks[msg.sender].deployed == false
-      && 
-      IPublicLock(msg.sender).publicLockVersion() == 13 
-      && 
-      IPublicLock(msg.sender).unlockProtocol() != address(this)
+      locks[msg.sender].deployed == false &&
+      IPublicLock(msg.sender).publicLockVersion() == 13 &&
+      block.chainid == 1 &&
+      IPublicLock(msg.sender).unlockProtocol() ==
+      0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13 // hardcoded address of previous Unlock
     ) {
       IUnlock previousUnlock = IUnlock(
-        IPublicLock(msg.sender).unlockProtocol()
+        0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13
       );
 
       (
-        bool deployed, 
-        uint totalSales, 
+        bool deployed,
+        uint totalSales,
         uint yieldedDiscountTokens
       ) = previousUnlock.locks(msg.sender);
 
       // record lock from old Unlock in this one
       if (deployed) {
-          locks[msg.sender] = LockBalances(
-            deployed, 
-            totalSales, 
-            yieldedDiscountTokens
-          );
+        locks[msg.sender] = LockBalances(
+          deployed,
+          totalSales,
+          yieldedDiscountTokens
+        );
       } else {
         revert Unlock__MISSING_LOCK(msg.sender);
       }
     }
   }
 
+  /**
+   * Functions which transfers tokens held by the contract
+   * It handles both ERC20 and the base currency.
+   * @dev This function is onlyOwner
+   * @param token the address of the token to transfer (pass the 0x0 address for the base currency)
+   * @param to the address to transfer the tokens to
+   * @param amount the amount of tokens to transfer
+   */
+  function transferTokens(
+    address token,
+    address to,
+    uint256 amount
+  ) public onlyOwner {
+    if (token != address(0)) {
+      IMintableERC20(token).transfer(to, amount);
+    } else {
+      payable(to).transfer(amount);
+    }
+  }
+
+  /**
+   * Removes a lock from the list of locks. This will prevent the lock from being able to receive governance tokens.
+   * The lock will still be able to sell its memberships.
+   * @dev This function is onlyOwner
+   * @param lock address of the lock to remove
+   */
+  function removeLock(address lock) external onlyOwner {
+    delete locks[lock];
+  }
+
   // required to receive ETH / withdraw ETH
   receive() external payable {
-    if(msg.value <= 0){
+    if (msg.value <= 0) {
       revert Unlock__INVALID_AMOUNT();
     }
   }
