@@ -437,7 +437,7 @@ export const HeaderNav = ({
                       height: logo.size ? `${logo.size}px` : undefined,
                     }}
                   />
-                  {logo.domain && (
+                  {logo?.domain && (
                     <span className="pl-1 text-sm font-semibold md:pl-2 md:text-xl">
                       {logo.domain}
                     </span>
