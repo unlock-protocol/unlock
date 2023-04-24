@@ -16,6 +16,11 @@ const LockSettingSchema = z.object({
         'Set the email address that will appear on the Reply-To: field.',
     })
     .optional(),
+  creditCardPrice: z
+    .number({
+      description: 'Credit card default price to use on checkout,',
+    })
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -23,6 +28,7 @@ export type LockSettingProps = z.infer<typeof LockSettingSchema>
 export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
   replyTo: undefined,
+  creditCardPrice: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
@@ -42,6 +48,7 @@ export const updateSettings: RequestHandler = async (
     })
     return response.status(200).send(settings)
   } catch (err: any) {
+    console.log('errore', err)
     logger.error(err.message)
     return response.status(500).send({
       message: 'Could not save setting, please try again.',
