@@ -403,6 +403,8 @@ export const HeaderNav = ({
   const logoUrl = logo.url || '/'
   const logoImageSrc = logo.src || DefaultLogo
 
+  const hasDomain = logo?.domain?.length
+
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!
     // disable scroll of contents when menu mobile is expanded
@@ -428,7 +430,11 @@ export const HeaderNav = ({
                 />
               </div>
               <Link href={logoUrl}>
-                <div className="grid items-center grid-cols-2 gap-1 divide-x md:gap-2">
+                <div
+                  className={`grid items-center gap-1 divide-x md:gap-2 ${
+                    hasDomain ? 'grid-cols-2' : ''
+                  }`}
+                >
                   <img
                     src={logoImageSrc}
                     alt="logo"
