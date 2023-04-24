@@ -48,7 +48,6 @@ export const updateSettings: RequestHandler = async (
     })
     return response.status(200).send(settings)
   } catch (err: any) {
-    console.log('errore', err)
     logger.error(err.message)
     return response.status(500).send({
       message: 'Could not save setting, please try again.',
