@@ -428,7 +428,7 @@ export const HeaderNav = ({
                 />
               </div>
               <Link href={logoUrl}>
-                <div className="grid items-center grid-cols-2 gap-2 divide-x">
+                <div className="grid items-center grid-cols-2 gap-1 divide-x md:gap-2">
                   <img
                     src={logoImageSrc}
                     alt="logo"
@@ -438,7 +438,7 @@ export const HeaderNav = ({
                     }}
                   />
                   {logo.domain && (
-                    <span className="pl-2 text-xl font-semibold">
+                    <span className="pl-1 text-sm font-semibold md:pl-2 md:text-xl">
                       {logo.domain}
                     </span>
                   )}
