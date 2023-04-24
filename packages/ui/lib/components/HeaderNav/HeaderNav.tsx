@@ -73,6 +73,7 @@ export interface NavbarProps {
     url: string
     src?: string
     size?: number // custom logo size
+    domain?: string
   }
   extraClass?: {
     mobile?: string
@@ -427,14 +428,21 @@ export const HeaderNav = ({
                 />
               </div>
               <Link href={logoUrl}>
-                <img
-                  src={logoImageSrc}
-                  alt="logo"
-                  className="h-5 lg:h-6"
-                  style={{
-                    height: logo.size ? `${logo.size}px` : undefined,
-                  }}
-                />
+                <div className="grid items-center grid-cols-2 gap-1 divide-x md:gap-2">
+                  <img
+                    src={logoImageSrc}
+                    alt="logo"
+                    className="h-5 lg:h-6"
+                    style={{
+                      height: logo.size ? `${logo.size}px` : undefined,
+                    }}
+                  />
+                  {logo?.domain && (
+                    <span className="pl-1 text-sm font-semibold md:pl-2 md:text-xl">
+                      {logo.domain}
+                    </span>
+                  )}
+                </div>
               </Link>
             </div>
           </div>
