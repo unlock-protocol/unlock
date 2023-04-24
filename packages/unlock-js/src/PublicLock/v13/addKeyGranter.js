@@ -1,10 +1,12 @@
+import { ethers } from 'ethers'
+
 export default async function (
   { lockAddress, keyGranter },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const keyGranterRole = await lockContract.KEY_GRANTER_ROLE()
+  const keyGranterRole = ethers.utils.keccak256('KEY_GRANTER')
   const transactionPromise = lockContract.grantRole(keyGranterRole, keyGranter)
 
   const hash = await this._handleMethodCall(transactionPromise)

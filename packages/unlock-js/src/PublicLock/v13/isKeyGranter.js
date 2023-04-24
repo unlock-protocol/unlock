@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 /**
  * Yields true if the user is a key granter
  * In this version, only the lock owner is a manager
@@ -6,7 +8,7 @@
  */
 export default async function (lockAddress, address, provider) {
   const lockContract = await this.getLockContract(lockAddress, provider)
-  const keyGranterRole = await lockContract.KEY_GRANTER_ROLE()
+  const keyGranterRole = ethers.utils.keccak256('KEY_GRANTER')
 
   return lockContract.hasRole(keyGranterRole, address)
 }
