@@ -18,7 +18,7 @@ const LockSettingSchema = z.object({
     .optional(),
   creditCardPrice: z
     .number({
-      description: 'Credit card default price to use on checkout,',
+      description: 'Credit card default price to use on checkout.',
     })
     .optional(),
 })
