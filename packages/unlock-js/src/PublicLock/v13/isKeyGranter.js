@@ -8,7 +8,9 @@ import { ethers } from 'ethers'
  */
 export default async function (lockAddress, address, provider) {
   const lockContract = await this.getLockContract(lockAddress, provider)
-  const keyGranterRole = ethers.utils.keccak256('KEY_GRANTER')
+  const keyGranterRole = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes('KEY_GRANTER')
+  )
 
   return lockContract.hasRole(keyGranterRole, address)
 }

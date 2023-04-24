@@ -6,7 +6,9 @@ export default async function (
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const keyGranterRole = ethers.utils.keccak256('KEY_GRANTER')
+  const keyGranterRole = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes('KEY_GRANTER')
+  )
   const transactionPromise = lockContract.grantRole(keyGranterRole, keyGranter)
 
   const hash = await this._handleMethodCall(transactionPromise)
