@@ -18,6 +18,7 @@ export async function saveSettings({
   network,
   sendEmail,
   replyTo,
+  creditCardPrice,
 }: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
@@ -25,6 +26,7 @@ export async function saveSettings({
       network,
       sendEmail,
       replyTo,
+      creditCardPrice,
     },
     {
       returning: true,

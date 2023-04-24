@@ -16,6 +16,11 @@ const LockSettingSchema = z.object({
         'Set the email address that will appear on the Reply-To: field.',
     })
     .optional(),
+  creditCardPrice: z
+    .number({
+      description: 'Credit card default price to use on checkout.',
+    })
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -23,6 +28,7 @@ export type LockSettingProps = z.infer<typeof LockSettingSchema>
 export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
   replyTo: undefined,
+  creditCardPrice: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
