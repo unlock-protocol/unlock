@@ -1,5 +1,18 @@
 # Changes
 
+# 0.35.3
+
+- Expose more fields such as `symbol`, `maxKeysPerAddress` and `maxNumberOfKeys` in subgraph service for locks fields.
+
+# 0.35.1
+
+- fixed upgrade function
+
+# 0.35.0
+
+- Add support for `swap` param in `purchaseKey` and `purchaseKeys` for swap and pay.
+- add support for Unlock v12
+
 # 0.34.1
 
 - add support for `setKeyManagerOf` to walletService

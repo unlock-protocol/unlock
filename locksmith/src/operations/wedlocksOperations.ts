@@ -22,6 +22,9 @@ import {
   DEFAULT_LOCK_SETTINGS,
   LockSettingProps,
 } from '../controllers/v2/lockSettingController'
+import { getLockMetadata } from './metadataOperations'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { createCertificate } from '../utils/certification'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -44,6 +47,7 @@ interface Key {
     address: string
     name: string
   }
+  manager: string
   tokenId?: string
   owner: string
   keyId?: string
@@ -114,19 +118,16 @@ export const sendEmail = async ({
  * Resolves when all new keys have been processed
  * @param keys
  */
-export const notifyNewKeysToWedlocks = async (
-  keys: any[],
-  network?: number
-) => {
+export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
   logger.info('Notifying following keys to wedlock', {
     keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
   for await (const key of keys) {
-    notifyNewKeyToWedlocks(key, network, true)
+    notifyNewKeyToWedlocks(key, network)
   }
 }
 interface GetTemplateProps {
-  isEvent: boolean
+  types?: LockType
   isAirdropped: boolean
   lockAddress?: string
 }
@@ -136,8 +137,8 @@ interface GetAttachmentProps {
   network?: number
   lockAddress: string
   owner: string
-  includeQrCode?: boolean
   event?: Partial<EventProps>
+  types?: LockType
 }
 
 const getCustomContent = async (
@@ -170,33 +171,38 @@ const getCustomContent = async (
   return customContent
 }
 
+const svgStringToDataURI = (svgString: string) => {
+  const svg = new resvg.Resvg(svgString)
+  const pngData = svg.render()
+  const pngBuffer = pngData.asPng()
+  const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+  return dataURI
+}
+
 const getAttachments = async ({
   tokenId,
   network,
   lockAddress,
   owner,
-  includeQrCode = false,
   event,
+  types,
 }: GetAttachmentProps): Promise<Attachment[]> => {
+  const { isEvent, isCertification } = types ?? {}
   const attachments: Attachment[] = []
 
-  // QR-code attachment
-  if (includeQrCode && network && tokenId) {
+  // QR-code attachment for event
+  if (isEvent && network && tokenId) {
     const ticket = await createTicket({
       lockAddress,
       tokenId,
       network,
       owner,
     })
-    const svg = new resvg.Resvg(ticket)
-    const pngData = svg.render()
-    const pngBuffer = pngData.asPng()
-    const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-    attachments.push({ path: dataURI })
+    attachments.push({ path: svgStringToDataURI(ticket) })
   }
 
   // Add ICS attachment when event is present
-  if (event) {
+  if (isEvent && event) {
     const file: Buffer | undefined = await createEventIcs({
       title: event?.eventName ?? '',
       description: event?.eventDescription ?? '',
@@ -211,30 +217,90 @@ const getAttachments = async ({
     }
   }
 
+  // Add certificate when lock is certificate
+  if (isCertification && network && tokenId) {
+    const certificate = await createCertificate({
+      network,
+      lockAddress,
+      tokenId,
+    })
+    if (certificate) {
+      attachments.push({ path: svgStringToDataURI(certificate) })
+    }
+  }
+
   return attachments
 }
 
-const getCustomTemplate = ({
-  isEvent = false,
+export const getCustomTemplate = ({
+  types,
   isAirdropped = false,
 }: GetTemplateProps) => {
-  if (isAirdropped) {
-    return isEvent ? 'eventKeyAirdropped' : `keyAirdropped`
+  const MappingByType: Record<string, { minted: string; airdropped: string }> =
+    {
+      isCertification: {
+        minted: 'certificationKeyMined',
+        airdropped: 'certificationKeyAirdropped',
+      },
+      isEvent: {
+        minted: 'eventKeyMined',
+        airdropped: 'eventKeyAirdropped',
+      },
+    }
+
+  // find lock type
+  const [template] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
+
+  // return template based on lock type if found
+  if (template) {
+    const { minted, airdropped } = MappingByType[template]
+    return isAirdropped ? airdropped : minted
   }
 
-  return isEvent ? `eventKeyMined` : `keyMined`
+  // return default template
+  return isAirdropped ? 'keyAirdropped' : `keyMined`
 }
 
-const getTemplates = ({
-  isEvent = false,
+export const getTemplates = ({
+  types,
   isAirdropped = false,
   lockAddress = '',
 }: GetTemplateProps): [string, string] => {
-  if (isEvent) {
-    // Lock address to find the specific template
-    return isAirdropped
-      ? [`eventKeyAirdropped${lockAddress.trim()}`, `eventKeyAirdropped`]
-      : [`eventKeyMined${lockAddress.trim()}`, 'eventKeyMined']
+  const MappingByType: Record<
+    string,
+    {
+      minted: [string, string]
+      airdropped: [string, string]
+    }
+  > = {
+    isEvent: {
+      minted: [`eventKeyMined${lockAddress.trim()}`, 'eventKeyMined'],
+      airdropped: [
+        `eventKeyAirdropped${lockAddress.trim()}`,
+        `eventKeyAirdropped`,
+      ],
+    },
+    isCertification: {
+      minted: [
+        `certificationKeyMined${lockAddress.trim()}`,
+        'certificationKeyMined',
+      ],
+      airdropped: [
+        `certificationKeyAirdropped${lockAddress.trim()}`,
+        `certificationKeyAirdropped`,
+      ],
+    },
+  }
+
+  // find lock type
+  const [template] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
+
+  // return template based on lock type if found
+  if (template) {
+    const { minted, airdropped } = MappingByType[template]
+    return isAirdropped ? airdropped : minted
   }
 
   // Lock address to find the specific template
@@ -262,21 +328,21 @@ const getLockSettings = async (
  * @param key
  */
 
-export const notifyNewKeyToWedlocks = async (
-  key: Key,
-  network?: number,
-  includeQrCode = true
-) => {
+export interface CertificationProps {
+  certificationUrl: string
+}
+
+export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const keyManager = new KeyManager()
   const lockAddress = Normalizer.ethereumAddress(key.lock.address)
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
   const tokenId = key?.tokenId
+  const manager = key?.manager
 
   const protectedData = await metadataOperations.getUserProtectedMetadata({
     lockAddress,
     userAddress: ownerAddress,
   })
-
   const recipient = protectedData?.email as string
 
   if (!recipient) {
@@ -291,7 +357,9 @@ export const notifyNewKeyToWedlocks = async (
   })
 
   const isAirdroppedRecipient =
-    airdroppedRecipient.toLowerCase() === ownerAddress.toLowerCase()
+    airdroppedRecipient?.toLowerCase() === ownerAddress?.toLowerCase() ||
+    manager?.toLowerCase()?.trim() ===
+      networks[network!]?.keyManagerAddress?.toLowerCase()?.trim()
 
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
@@ -311,8 +379,24 @@ export const notifyNewKeyToWedlocks = async (
   transferUrl.searchParams.set('keyId', tokenId ?? '')
   transferUrl.searchParams.set('network', network?.toString() ?? '')
 
-  const eventDetail = await getEventDetail(lockAddress, network)
-  const isEvent = !!eventDetail
+  const metadata = await getLockMetadata({ lockAddress, network })
+  const types = getLockTypeByMetadata(metadata)
+
+  const { isEvent, isCertification } = types
+  let eventDetail: EventProps | undefined = undefined
+  let certificationDetail: CertificationProps | undefined = undefined
+
+  // get event details only when lock is event
+  if (isEvent) {
+    eventDetail = await getEventDetail(lockAddress, network)
+  }
+
+  if (isCertification) {
+    const certificationUrl = `${config.unlockApp}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+    certificationDetail = {
+      certificationUrl,
+    }
+  }
 
   // attachments list
   const attachments = await getAttachments({
@@ -320,29 +404,26 @@ export const notifyNewKeyToWedlocks = async (
     lockAddress,
     network,
     owner: ownerAddress,
-    includeQrCode,
     event: eventDetail,
+    types,
   })
 
   // email templates
   const templates = getTemplates({
-    isEvent,
+    types,
     isAirdropped: isAirdroppedRecipient,
     lockAddress,
   })
 
   // get custom email content
   const template = getCustomTemplate({
-    isEvent,
+    types,
     isAirdropped: isAirdroppedRecipient,
   })
 
   const customContent = await getCustomContent(lockAddress, network!, template)
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
-
-  const { eventDescription, eventTime, eventDate, eventAddress, eventName } =
-    eventDetail ?? {}
 
   await sendEmail({
     lockAddress: key.lock.address ?? '',
@@ -361,11 +442,13 @@ export const notifyNewKeyToWedlocks = async (
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
       // add event details props
-      eventName,
-      eventDate,
-      eventDescription,
-      eventTime,
-      eventAddress,
+      eventName: eventDetail?.eventName,
+      eventDate: eventDetail?.eventDate,
+      eventDescription: eventDetail?.eventDescription,
+      eventTime: eventDetail?.eventTime,
+      eventAddress: eventDetail?.eventAddress,
+      // add certification props
+      ...certificationDetail,
     },
   })
 }

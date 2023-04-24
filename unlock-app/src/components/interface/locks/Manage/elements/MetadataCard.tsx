@@ -26,6 +26,9 @@ import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
+import { onResolveName } from '~/utils/resolvers'
+import { useMetadata } from '~/hooks/metadata'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface MetadataCardProps {
   metadata: any
@@ -197,6 +200,7 @@ const ChangeManagerModal = ({
                           shouldValidate: true,
                         })
                       }}
+                      onResolveName={onResolveName}
                     />
                     {managerUnchanged && (
                       <span className="text-sm text-red-500">
@@ -240,6 +244,14 @@ export const MetadataCard = ({
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
+
+  const { data: lockMetadata } = useMetadata({
+    lockAddress: metadata.lockAddress,
+    network,
+  })
+  const types = getLockTypeByMetadata(lockMetadata)
+  const [eventType] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
   const { lockAddress, token: tokenId } = data ?? {}
 
@@ -292,9 +304,9 @@ export const MetadataCard = ({
   const onSendQrCode = async () => {
     if (!network) return
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
-      success: 'QR-code sent by email',
-      loading: 'Sending QR-code by email',
-      error: 'We could not send the QR-code.',
+      success: 'Email sent',
+      loading: 'Sending email...',
+      error: 'We could not send email.',
     })
   }
 
@@ -409,7 +421,7 @@ export const MetadataCard = ({
                   <span>Email:</span>
                   {hasEmail ? (
                     <div className="flex flex-col w-full gap-3 md:flex-row">
-                      <span className="block font-semibold text-black ">
+                      <span className="block text-base font-semibold text-black">
                         {data?.email}
                       </span>
                       <Button
@@ -419,19 +431,25 @@ export const MetadataCard = ({
                       >
                         Edit email
                       </Button>
-                      {lockSettings?.sendEmail && (
-                        <Button
-                          size="tiny"
-                          variant="outlined-primary"
-                          onClick={onSendQrCode}
-                          disabled={
-                            sendEmailMutation.isLoading ||
-                            sendEmailMutation.isSuccess
-                          }
-                        >
-                          {sendEmailMutation.isSuccess
-                            ? 'QR-code sent by email'
-                            : 'Send QR-code by email'}
+                      {lockSettings?.sendEmail ? (
+                        SendEmailMapping[eventType as keyof LockType] && (
+                          <Button
+                            size="tiny"
+                            variant="outlined-primary"
+                            onClick={onSendQrCode}
+                            disabled={
+                              sendEmailMutation.isLoading ||
+                              sendEmailMutation.isSuccess
+                            }
+                          >
+                            {sendEmailMutation.isSuccess
+                              ? 'Email sent'
+                              : SendEmailMapping[eventType as keyof LockType]}
+                          </Button>
+                        )
+                      ) : (
+                        <Button size="tiny" variant="outlined-primary" disabled>
+                          Email are disabled
                         </Button>
                       )}
                     </div>
@@ -466,7 +484,7 @@ export const MetadataCard = ({
                 <div className="flex items-center gap-2">
                   <span>Key Holder:</span>
                   {/* show full address on desktop */}
-                  <div className="text-base font-bold break-words">
+                  <div className="text-base font-semibold text-black break-words">
                     <span className="hidden md:block">{owner}</span>
                     {/* show minified address on mobile */}
                     <span className="block md:hidden">
@@ -525,7 +543,7 @@ export const MetadataCard = ({
                     <div className="flex items-center gap-2">
                       <span>Key Manager:</span>
                       {/* show full address on desktop */}
-                      <div className="text-base font-bold break-words">
+                      <div className="text-base font-semibold text-black break-words">
                         <span className="hidden md:block">{manager}</span>
                         {/* show minified address on mobile */}
                         <span className="block md:hidden">
@@ -569,6 +587,11 @@ export const MetadataCard = ({
   )
 }
 
+const SendEmailMapping: Record<keyof LockType, string> = {
+  isCertification: 'Send Certificate by email',
+  isEvent: 'Send QR-code by email',
+  isStamp: 'Send Stamp by email',
+}
 const UpdateEmailModal = ({
   isOpen,
   setIsOpen,

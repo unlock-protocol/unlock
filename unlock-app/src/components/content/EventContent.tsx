@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
-import { LandingPage } from './event/LandingPage'
+import { EventLandingPage } from './event/EventLandingPage'
 
 export const EventContent = () => {
   const router = useRouter()
@@ -22,18 +22,23 @@ export const EventContent = () => {
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={false} title="">
+    <AppLayout
+      showLinks={false}
+      authRequired={false}
+      logoRedirectUrl="/event"
+      logoImageUrl="/images/svg/logo-unlock-events.svg"
+    >
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-      {!showDetails && <LandingPage handleCreateEvent={handleCreateEvent} />}
+      {!showDetails && (
+        <EventLandingPage handleCreateEvent={handleCreateEvent} />
+      )}
       {showDetails && (
-        <div className="md:w-3/4 m-auto">
-          <EventDetails
-            lockAddress={lockAddress.toString()}
-            network={parseInt(network.toString(), 10)}
-          />
-        </div>
+        <EventDetails
+          lockAddress={lockAddress.toString()}
+          network={parseInt(network.toString(), 10)}
+        />
       )}
     </AppLayout>
   )

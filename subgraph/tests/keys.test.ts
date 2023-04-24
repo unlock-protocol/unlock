@@ -41,6 +41,7 @@ import {
   expiration,
   lockAddress,
   lockAddressV8,
+  lockManagers,
 } from './constants'
 
 // mock contract functions
@@ -66,6 +67,8 @@ describe('Key transfers (v8)', () => {
     assert.fieldEquals('Key', keyIDV8, 'tokenURI', `${tokenURI}`)
     assert.fieldEquals('Key', keyIDV8, 'expiration', `${expiration}`)
     assert.fieldEquals('Key', keyIDV8, 'createdAtBlock', '1')
+    assert.fieldEquals('Key', keyIDV8, 'createdAt', '1')
+    assert.fieldEquals('Key', keyIDV8, 'manager', lockManagers[0])
   })
 
   afterAll(() => {

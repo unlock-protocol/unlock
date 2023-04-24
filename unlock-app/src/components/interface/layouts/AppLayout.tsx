@@ -4,7 +4,7 @@ import Loading from '../Loading'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
@@ -13,12 +13,14 @@ import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface DashboardLayoutProps {
-  title?: string
+  title?: ReactNode
   description?: React.ReactNode
   children: React.ReactNode
   authRequired?: boolean
   showLinks?: boolean
   showHeader?: boolean
+  logoImageUrl?: string
+  logoRedirectUrl?: string
 }
 
 export const WalletNotConnected = () => {
@@ -141,6 +143,8 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
+  logoImageUrl, // replace default logo
+  logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -152,12 +156,15 @@ export const AppLayout = ({
 
   const showLogin = authRequired && !account
 
+  const logoSrc = logoImageUrl || '/images/svg/unlock-logo.svg'
+  const logoRedirectUri = logoRedirectUrl || '/locks'
+
   const MENU = {
     extraClass: {
       mobile: 'bg-ui-secondary-200 px-6',
     },
     showSocialIcons: false,
-    logo: { url: '/locks', src: '/images/svg/unlock-logo.svg' },
+    logo: { url: logoRedirectUri, src: logoSrc },
     menuSections: showLinks
       ? [
           {
@@ -256,7 +263,11 @@ export const AppLayout = ({
               <div className="flex flex-col gap-10">
                 {(title || description) && (
                   <div className="flex flex-col gap-4">
-                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                    {title && typeof title === 'string' ? (
+                      <h1 className="text-4xl font-bold">{title}</h1>
+                    ) : (
+                      title
+                    )}
                     {description && (
                       <div className="w-full text-base text-gray-700">
                         {description}

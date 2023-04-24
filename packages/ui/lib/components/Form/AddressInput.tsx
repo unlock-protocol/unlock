@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import {
   InputHTMLAttributes,
   ForwardedRef,
@@ -10,10 +11,35 @@ import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
 import { isAddressOrEns, minifyAddress } from '../../utils'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { useMutation } from '@tanstack/react-query'
-import networks from '@unlock-protocol/networks'
+import {
+  useMutation,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
 import { Input } from './Input'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 10,
+      refetchInterval: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
+      retry: (failureCount, error) => {
+        if (error instanceof AxiosError) {
+          return ![400, 401, 403, 404].includes(error.response?.status || 0)
+        }
+        if (failureCount > 3) {
+          return false
+        }
+        return true
+      },
+    },
+  },
+})
+
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -24,6 +50,8 @@ export interface Props
   description?: ReactNode
   withIcon?: boolean
   isTruncated?: boolean
+  optional?: boolean
+  onResolveName: (address: string) => any
 }
 
 const WalletIcon = (props: IconBaseProps) => (
@@ -32,6 +60,105 @@ const WalletIcon = (props: IconBaseProps) => (
 const LoadingIcon = (props: IconBaseProps) => (
   <FaSpinner {...props} className="fill-gray-500" />
 )
+
+export const WrappedAddressInput = ({
+  size = 'medium',
+  value,
+  defaultValue,
+  className,
+  description,
+  label,
+  withIcon = true,
+  isTruncated = false, // address not truncated by default
+  onChange,
+  onResolveName,
+  ...inputProps
+}: Props) => {
+  const [error, setError] = useState<any>('')
+  const [success, setSuccess] = useState('')
+  const [address, setAddress] = useState<string>(value as string)
+
+  const onReset = () => {
+    setError('')
+    setSuccess('')
+  }
+
+  const resolveNameMutation = useMutation(onResolveName, {
+    onMutate: () => {
+      onReset() // restore state when typing
+    },
+  })
+
+  const handleResolver = async (address: string) => {
+    try {
+      const res: any = await resolveNameMutation.mutateAsync(address)
+      if (res) {
+        const isError = res?.type === 'error'
+
+        setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
+
+        if (res && (res?.type || '')?.length > 0) {
+          if (res.type === 'address') {
+            setSuccess(res.name)
+          }
+
+          if (res.type === 'name') {
+            setSuccess(res.address)
+          }
+        }
+        return res.address
+      }
+      return ''
+    } catch (err) {
+      onReset()
+      setError(`It's not a valid ens name or address`)
+      return ''
+    }
+  }
+
+  useEffect(() => {
+    if (
+      (typeof defaultValue === 'string' && defaultValue.length === 0) ||
+      (typeof value === 'string' && value === '')
+    ) {
+      setAddress('')
+      onReset()
+    }
+  }, [defaultValue, value])
+
+  return (
+    <Input
+      {...inputProps}
+      type="address"
+      value={address}
+      label={label}
+      error={error}
+      success={isTruncated ? minifyAddress(success) : success}
+      description={description}
+      iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
+      icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
+      onChange={async (e) => {
+        const value: string = e.target.value
+        await resolveNameMutation.reset() // reset mutation
+        setAddress(value)
+
+        if (isAddressOrEns(value)) {
+          try {
+            const res = await handleResolver(value)
+            if (typeof onChange === 'function' && res) {
+              onChange(res)
+            }
+          } catch (_err) {}
+        } else {
+          setError(`It's not a valid ens name or address`)
+          if (typeof onChange === 'function') {
+            onChange(value as any)
+          }
+        }
+      }}
+    />
+  )
+}
 
 /**
  * Primary Input component for React Hook Form
@@ -54,101 +181,13 @@ export const AddressInput = forwardRef(
       withIcon = true,
       isTruncated = false, // address not truncated by default
       onChange,
+      onResolveName,
       ...inputProps
     } = props
-
-    const web3Service = new Web3Service(networks)
-
-    const [error, setError] = useState<any>('')
-    const [success, setSuccess] = useState('')
-    const [address, setAddress] = useState<string>(value as string)
-
-    const resolveName = async (address: string) => {
-      if (address.length === 0) return
-      return await web3Service.resolveName(address)
-    }
-
-    const onReset = () => {
-      setError('')
-      setSuccess('')
-    }
-
-    const resolveNameMutation = useMutation(resolveName, {
-      onMutate: () => {
-        onReset() // restore state when typing
-      },
-    })
-
-    const handleResolver = async (address: string) => {
-      try {
-        const res: any = await resolveNameMutation.mutateAsync(address)
-        if (res) {
-          const isError = res?.type === 'error'
-
-          setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
-
-          if (res && (res?.type || '')?.length > 0) {
-            if (res.type === 'address') {
-              setSuccess(res.name)
-            }
-
-            if (res.type === 'name') {
-              setSuccess(res.address)
-            }
-          }
-          return res.address
-        }
-        return ''
-      } catch (err) {
-        onReset()
-        setError(`It's not a valid ens name or address`)
-        return ''
-      }
-    }
-
-    useEffect(() => {
-      if (
-        (typeof defaultValue === 'string' && defaultValue.length === 0) ||
-        (typeof value === 'string' && value === '')
-      ) {
-        setAddress('')
-        onReset()
-      }
-    }, [defaultValue, value])
-
     return (
-      <>
-        <Input
-          {...inputProps}
-          type="address"
-          value={address}
-          label={label}
-          error={error}
-          success={isTruncated ? minifyAddress(success) : success}
-          description={description}
-          iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
-          icon={resolveNameMutation.isLoading ? LoadingIcon : WalletIcon}
-          onChange={async (e) => {
-            const value: string = e.target.value
-            await resolveNameMutation.reset() // reset mutation
-            setAddress(value)
-
-            if (isAddressOrEns(value)) {
-              try {
-                const res = await handleResolver(value)
-                if (typeof onChange === 'function' && res) {
-                  onChange(res)
-                }
-              } catch (_err) {}
-            } else {
-              setError(`It's not a valid ens name or address`)
-              if (typeof onChange === 'function') {
-                onChange(value as any)
-              }
-            }
-          }}
-        />
-      </>
+      <QueryClientProvider client={queryClient}>
+        <WrappedAddressInput {...props} />
+      </QueryClientProvider>
     )
   }
 )

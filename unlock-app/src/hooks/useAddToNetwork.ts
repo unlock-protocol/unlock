@@ -9,7 +9,7 @@ export const useAddToNetwork = (account?: string | null) => {
 
   useEffect(() => {
     if (!provider) return
-    setCurrentNetwork(provider.network.chainId)
+    setCurrentNetwork(provider?.network?.chainId)
   }, [])
 
   const getCurrentNetwork = (network: number) => {

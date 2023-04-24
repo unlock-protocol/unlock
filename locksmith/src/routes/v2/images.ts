@@ -31,7 +31,7 @@ export const upload = multer({
     }
   },
   storage: multerS3({
-    // @ts-expect-error The types of 'middlewareStack.concat' are incompatible between these types.
+    // @ts-expect-error
     s3: storageClient,
     // Cloudflare R2 does not support other ACLs schemes. See: https://developers.cloudflare.com/r2/data-access/s3-api/api/
     // That said, we only require public-read.

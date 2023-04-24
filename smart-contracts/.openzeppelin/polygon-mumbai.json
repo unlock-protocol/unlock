@@ -1,0 +1,645 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x604fA8712E61fe65db326F97905Efcb087C631Cc",
+    "txHash": "0x04de7798ef07ee0ede77c378ea24c2b6071999089b7cbf301aceb85d628c29ae"
+  },
+  "proxies": [
+    {
+      "address": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+      "txHash": "0x13583b130de563e21b7cdc456e52a2baeccc49754d5cd684a17c500d0abcf3d0",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC",
+      "txHash": "0x08b3b4dee1de1508132e6bb5ca2b5027dd8e737bed797f69bf9639a73f43bdbf",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "a67e3500d3600fbb1c50b6bf1a136c260a89e34e54c0a78655c6cfbdb28085d8": {
+      "address": "0x893F6B2A4A8CebeEDE4f1DeECDc39Bb7023DB902",
+      "txHash": "0x336de190d523e9466b713a525d56cb0544a5fe82c10b9002b019a668127d53dd",
+      "layout": {
+        "storage": [
+          {
+            "label": "initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "UnlockInitializable",
+            "src": "contracts/utils/UnlockInitializable.sol:39"
+          },
+          {
+            "label": "initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "UnlockInitializable",
+            "src": "contracts/utils/UnlockInitializable.sol:44"
+          },
+          {
+            "label": "______gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UnlockContextUpgradeable",
+            "src": "contracts/utils/UnlockContextUpgradeable.sol:31"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "UnlockOwnable",
+            "src": "contracts/utils/UnlockOwnable.sol:23"
+          },
+          {
+            "label": "______gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UnlockOwnable",
+            "src": "contracts/utils/UnlockOwnable.sol:86"
+          },
+          {
+            "label": "grossNetworkProduct",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:63"
+          },
+          {
+            "label": "totalDiscountGranted",
+            "offset": 0,
+            "slot": "103",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:65"
+          },
+          {
+            "label": "locks",
+            "offset": 0,
+            "slot": "104",
+            "type": "t_mapping(t_address,t_struct(LockBalances)12268_storage)",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:68"
+          },
+          {
+            "label": "globalBaseTokenURI",
+            "offset": 0,
+            "slot": "105",
+            "type": "t_string_storage",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:72"
+          },
+          {
+            "label": "globalTokenSymbol",
+            "offset": 0,
+            "slot": "106",
+            "type": "t_string_storage",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:76"
+          },
+          {
+            "label": "publicLockAddress",
+            "offset": 0,
+            "slot": "107",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:79"
+          },
+          {
+            "label": "uniswapOracles",
+            "offset": 0,
+            "slot": "108",
+            "type": "t_mapping(t_address,t_contract(IUniswapOracle)27721)",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:83"
+          },
+          {
+            "label": "weth",
+            "offset": 0,
+            "slot": "109",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:86"
+          },
+          {
+            "label": "udt",
+            "offset": 0,
+            "slot": "110",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:89"
+          },
+          {
+            "label": "estimatedGasForPurchase",
+            "offset": 0,
+            "slot": "111",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:92"
+          },
+          {
+            "label": "chainId",
+            "offset": 0,
+            "slot": "112",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:95"
+          },
+          {
+            "label": "proxyAdminAddress",
+            "offset": 0,
+            "slot": "113",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:98"
+          },
+          {
+            "label": "proxyAdmin",
+            "offset": 0,
+            "slot": "114",
+            "type": "t_contract(ProxyAdmin)7791",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:99"
+          },
+          {
+            "label": "_publicLockVersions",
+            "offset": 0,
+            "slot": "115",
+            "type": "t_mapping(t_address,t_uint16)",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:102"
+          },
+          {
+            "label": "_publicLockImpls",
+            "offset": 0,
+            "slot": "116",
+            "type": "t_mapping(t_uint16,t_address)",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:103"
+          },
+          {
+            "label": "publicLockLatestVersion",
+            "offset": 0,
+            "slot": "117",
+            "type": "t_uint16",
+            "contract": "Unlock",
+            "src": "contracts/Unlock.sol:104"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IUniswapOracle)27721": {
+            "label": "contract IUniswapOracle",
+            "numberOfBytes": "20"
+          },
+          "t_contract(ProxyAdmin)7791": {
+            "label": "contract ProxyAdmin",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_contract(IUniswapOracle)27721)": {
+            "label": "mapping(address => contract IUniswapOracle)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(LockBalances)12268_storage)": {
+            "label": "mapping(address => struct Unlock.LockBalances)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint16)": {
+            "label": "mapping(address => uint16)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint16,t_address)": {
+            "label": "mapping(uint16 => address)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(LockBalances)12268_storage": {
+            "label": "struct Unlock.LockBalances",
+            "members": [
+              {
+                "label": "deployed",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "totalSales",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "yieldedDiscountTokens",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint16": {
+            "label": "uint16",
+            "numberOfBytes": "2"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "2c9597ca86f576ca3b0b050dffb605382a92703e98ab1467ba70b9d00202eb29": {
+      "address": "0x6878Ae3c863f6Ebd27B47C02F6B32aAC8B0BA07E",
+      "txHash": "0xef57494f7d24a4ea72cc608abf75b6cc946daa358a4cff563512690311a09e3d",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_HASHED_NAME",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_bytes32",
+            "contract": "EIP712Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol:32"
+          },
+          {
+            "label": "_HASHED_VERSION",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_bytes32",
+            "contract": "EIP712Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol:33"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "103",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "EIP712Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol:120"
+          },
+          {
+            "label": "locksmiths",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "KeyManager",
+            "src": "contracts/KeyManager.sol:19"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "0f687bccb5600119016c5e403896dfbb6108bfaba56b3f786736b64293444ea8": {
+      "address": "0xA5978Df9a664C56d62313EE9EAaC7930977164E4",
+      "txHash": "0x68e280ea00e405cb4ec809f1ab4655f58b319e6cd21b11d96847aef03e070b33",
+      "layout": {
+        "solcVersion": "0.8.13",
+        "storage": [
+          {
+            "label": "initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "UnlockInitializable",
+            "src": "contracts/past-versions/UnlockV12.sol:2425"
+          },
+          {
+            "label": "initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "UnlockInitializable",
+            "src": "contracts/past-versions/UnlockV12.sol:2430"
+          },
+          {
+            "label": "______gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UnlockContextUpgradeable",
+            "src": "contracts/past-versions/UnlockV12.sol:2519"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "UnlockOwnable",
+            "src": "contracts/past-versions/UnlockV12.sol:2548"
+          },
+          {
+            "label": "______gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UnlockOwnable",
+            "src": "contracts/past-versions/UnlockV12.sol:2618"
+          },
+          {
+            "label": "grossNetworkProduct",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2680"
+          },
+          {
+            "label": "totalDiscountGranted",
+            "offset": 0,
+            "slot": "103",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2682"
+          },
+          {
+            "label": "locks",
+            "offset": 0,
+            "slot": "104",
+            "type": "t_mapping(t_address,t_struct(LockBalances)34341_storage)",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2685"
+          },
+          {
+            "label": "globalBaseTokenURI",
+            "offset": 0,
+            "slot": "105",
+            "type": "t_string_storage",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2689"
+          },
+          {
+            "label": "globalTokenSymbol",
+            "offset": 0,
+            "slot": "106",
+            "type": "t_string_storage",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2693"
+          },
+          {
+            "label": "publicLockAddress",
+            "offset": 0,
+            "slot": "107",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2696"
+          },
+          {
+            "label": "uniswapOracles",
+            "offset": 0,
+            "slot": "108",
+            "type": "t_mapping(t_address,t_contract(IUniswapOracleV3)33508)",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2700"
+          },
+          {
+            "label": "weth",
+            "offset": 0,
+            "slot": "109",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2703"
+          },
+          {
+            "label": "udt",
+            "offset": 0,
+            "slot": "110",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2706"
+          },
+          {
+            "label": "estimatedGasForPurchase",
+            "offset": 0,
+            "slot": "111",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2709"
+          },
+          {
+            "label": "chainId",
+            "offset": 0,
+            "slot": "112",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2712"
+          },
+          {
+            "label": "proxyAdminAddress",
+            "offset": 0,
+            "slot": "113",
+            "type": "t_address",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2715"
+          },
+          {
+            "label": "proxyAdmin",
+            "offset": 0,
+            "slot": "114",
+            "type": "t_contract(ProxyAdmin)32776",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2716"
+          },
+          {
+            "label": "_publicLockVersions",
+            "offset": 0,
+            "slot": "115",
+            "type": "t_mapping(t_address,t_uint16)",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2719"
+          },
+          {
+            "label": "_publicLockImpls",
+            "offset": 0,
+            "slot": "116",
+            "type": "t_mapping(t_uint16,t_address)",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2720"
+          },
+          {
+            "label": "publicLockLatestVersion",
+            "offset": 0,
+            "slot": "117",
+            "type": "t_uint16",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2721"
+          },
+          {
+            "label": "protocolFee",
+            "offset": 0,
+            "slot": "118",
+            "type": "t_uint256",
+            "contract": "Unlock",
+            "src": "contracts/past-versions/UnlockV12.sol:2724"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IUniswapOracleV3)33508": {
+            "label": "contract IUniswapOracleV3",
+            "numberOfBytes": "20"
+          },
+          "t_contract(ProxyAdmin)32776": {
+            "label": "contract ProxyAdmin",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_contract(IUniswapOracleV3)33508)": {
+            "label": "mapping(address => contract IUniswapOracleV3)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(LockBalances)34341_storage)": {
+            "label": "mapping(address => struct Unlock.LockBalances)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint16)": {
+            "label": "mapping(address => uint16)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint16,t_address)": {
+            "label": "mapping(uint16 => address)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(LockBalances)34341_storage": {
+            "label": "struct Unlock.LockBalances",
+            "members": [
+              {
+                "label": "deployed",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "totalSales",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "yieldedDiscountTokens",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint16": {
+            "label": "uint16",
+            "numberOfBytes": "2"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   AddressInput,
   Button,
+  Placeholder,
   isAddressOrEns,
   minifyAddress,
 } from '@unlock-protocol/ui'
@@ -11,6 +12,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { storage } from '~/config/storage'
+import { onResolveName } from '~/utils/resolvers'
 
 interface VerifierProps {
   address: string
@@ -38,14 +40,6 @@ interface VerifierCardProps {
 
 interface VerifierFormDataProps {
   verifier: string
-}
-
-const VerifierCardPlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="border border-gray-200 rounded-lg bg-slate-200 animate-pulse h-14"></div>
-    </div>
-  )
 }
 
 const VerifierCard = ({
@@ -205,7 +199,7 @@ export const VerifierForm = ({
           />
         ))}
         {(isLoadingItems || addVerifierMutation.isLoading) &&
-          !deleteVerifierMutation.isLoading && <VerifierCardPlaceholder />}
+          !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
       </div>
       {isManager && (
         <form
@@ -232,6 +226,7 @@ export const VerifierForm = ({
                       onChange={(value: any) => {
                         setValue('verifier', value)
                       }}
+                      onResolveName={onResolveName}
                     />
                   </>
                 )

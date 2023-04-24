@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const bsc: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   publicProvider: 'https://bsc-dataseed.binance.org/',
   provider: 'https://rpc.unlock-protocol.com/56',
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
@@ -32,6 +33,9 @@ export const bsc: NetworkConfig = {
     symbol: 'BNB',
     decimals: 18,
     coingecko: 'binancecoin',
+  },
+  uniswapV3: {
+    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   startBlock: 13079000, // 12368889,
   previousDeploys: [

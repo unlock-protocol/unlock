@@ -1,4 +1,4 @@
-import { Button, Modal } from '@unlock-protocol/ui'
+import { Button, Modal, Placeholder } from '@unlock-protocol/ui'
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -14,18 +14,6 @@ export interface CancelAndRefundProps {
   tokenId: string
   network: number
   onExpireAndRefund?: () => void
-}
-
-const CancelAndRefundModalPlaceHolder = () => {
-  return (
-    <div data-testid="placeholder" className="flex flex-col w-full gap-5 p-4">
-      <div className="flex flex-col gap-2">
-        <div className="h-[24px] w-2/3 bg-slate-200 animate-pulse"></div>
-        <div className="h-[14px] w-1/2 bg-slate-200 animate-pulse"></div>
-      </div>
-      <div className="h-[50px] w-full rounded-full bg-slate-200 animate-pulse"></div>
-    </div>
-  )
 }
 
 const MAX_TRANSFER_FEE = 10000
@@ -112,7 +100,12 @@ export const CancelAndRefundModal = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {isLoading ? (
-        <CancelAndRefundModalPlaceHolder />
+        <Placeholder.Root>
+          <Placeholder.Line width="md" />
+          <Placeholder.Line width="sm" size="sm" />
+          <Placeholder.Line width="xl" size="sm" />
+          <Placeholder.Line size="xl" />
+        </Placeholder.Root>
       ) : (
         isOpen && (
           <div className="flex flex-col w-full gap-5">

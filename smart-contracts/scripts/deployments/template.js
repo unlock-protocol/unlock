@@ -1,4 +1,4 @@
-const { ethers } = require('hardhat')
+const { ethers, run } = require('hardhat')
 const { getNetworkName } = require('../../helpers/network')
 const contracts = require('@unlock-protocol/contracts')
 
@@ -27,6 +27,10 @@ async function main({ publicLockVersion }) {
     `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLock.address
     } (tx: ${publicLock.deployTransaction.hash})`
   )
+
+  if(chainId !== 31337) {
+    await run('verify:verify', { address: publicLock.address })
+  }
 
   return publicLock.address
 }

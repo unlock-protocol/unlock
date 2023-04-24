@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.3.0",
+  "version": "0.3.4",
   "main": "./dist/unlock.latest.umd.js",
   "module": "./dist/unlock.latest.es.js",
   "exports": {
@@ -22,6 +22,9 @@
     "clean": "rm -rf build dist coverage",
     "ci": "yarn test && yarn build"
   },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/postmate": "1.5.2",
@@ -29,14 +32,14 @@
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "eslint": "8.35.0",
-    "typescript": "4.9.5",
-    "vite": "4.1.3",
+    "eslint": "8.37.0",
+    "typescript": "5.0.4",
+    "vite": "4.2.1",
+    "vite-plugin-css-injected-by-js": "3.1.0",
     "vitest": "0.29.7",
     "vitest-fetch-mock": "0.2.2"
   },
   "dependencies": {
-    "postmate": "1.5.2",
-    "vite-plugin-css-injected-by-js": "3.0.1"
+    "postmate": "1.5.2"
   }
 }

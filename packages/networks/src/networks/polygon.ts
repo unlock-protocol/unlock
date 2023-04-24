@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const polygon: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   featured: true,
   publicProvider: 'https://polygon-rpc.com/',
   provider: 'https://rpc.unlock-protocol.com/137',
@@ -58,6 +59,7 @@ export const polygon: NetworkConfig = {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
+    universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },
   swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   wrappedNativeCurrency: {

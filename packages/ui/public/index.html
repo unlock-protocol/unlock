@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../dist/cdn/style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.2.0",
+          "react-dom": "https://esm.sh/react-dom@18.2.0",
+          "@headlessui/react": "https://esm.sh/@headlessui/react@1.7.13"
+        }
+      }
+    </script>
+    <script type="module">
+      import React from 'react'
+      import ReactDOM from 'react-dom'
+      import { Button } from '../dist/cdn/index.es.js'
+      const buttonElement = React.createElement(Button, null, 'Hello, world!')
+      const root = document.getElementById('root')
+      ReactDOM.createRoot(root).render(buttonElement)
+    </script>
+  </body>
+</html>

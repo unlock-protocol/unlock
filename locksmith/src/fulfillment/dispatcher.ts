@@ -6,7 +6,7 @@ import {
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
-import { GAS_COST } from '../utils/keyPricer'
+import { GAS_COST } from '../utils/constants'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
 import executeAndRetry from './retries'
@@ -182,10 +182,11 @@ export default class Dispatcher {
       owner: string
       network: number
       data?: string
+      keyManager?: string
     },
     cb?: any
   ) {
-    const { network, lockAddress, owner, data } = options
+    const { network, lockAddress, owner, data, keyManager } = options
     const walletService = new WalletService(networks)
 
     const { wallet, provider } = await this.getPurchaser(network)
@@ -200,6 +201,7 @@ export default class Dispatcher {
           lockAddress,
           owner,
           data,
+          keyManager,
         },
         { maxFeePerGas, maxPriorityFeePerGas },
         cb

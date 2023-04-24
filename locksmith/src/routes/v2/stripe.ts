@@ -1,7 +1,10 @@
 import express from 'express'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
-import { connectStripe } from '../../controllers/v2/stripeController'
+import {
+  connectStripe,
+  getConnectionsForManager,
+} from '../../controllers/v2/stripeController'
 
 const router = express.Router({ mergeParams: true })
 
@@ -11,5 +14,7 @@ router.post(
   lockManagerMiddleware,
   connectStripe
 )
+
+router.get('/connections', authenticatedMiddleware, getConnectionsForManager)
 
 export default router

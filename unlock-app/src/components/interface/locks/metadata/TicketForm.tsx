@@ -90,7 +90,7 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
           <p className="">
             These properties will also be displayed on{' '}
             <Link
-              className="underline inline-flex items-center "
+              className="inline-flex items-center underline "
               target="newline"
               href={eventPageUrl}
             >
@@ -98,8 +98,8 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
             </Link>
             .
           </p>
-          <div className="grid items-center align-top	gap-4 mt-4 sm:grid-cols-2">
-            <div className="flex flex-col self-start justify-top gap-4">
+          <div className="grid items-center gap-4 mt-4 align-top sm:grid-cols-2">
+            <div className="flex flex-col self-start gap-4 justify-top">
               <div className="h-80">
                 <iframe width="100%" height="300" src={mapAddress}></iframe>
               </div>
@@ -115,21 +115,40 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
                 Preview ticket
               </Button>
             </div>
-            <div className="flex flex-col self-start justify-top">
-              <Input
-                {...register('ticket.event_start_date')}
-                disabled={disabled}
-                type="date"
-                label="Date"
-                error={errors.ticket?.event_start_date?.message}
-              />
-              <Input
-                {...register('ticket.event_start_time')}
-                disabled={disabled}
-                type="time"
-                label="Time"
-                error={errors.ticket?.event_start_time?.message}
-              />
+            <div className="flex flex-col self-start gap-2 justify-top">
+              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                <Input
+                  {...register('ticket.event_start_date')}
+                  disabled={disabled}
+                  type="date"
+                  label="Start date"
+                  error={errors.ticket?.event_start_date?.message}
+                />
+                <Input
+                  {...register('ticket.event_end_date')}
+                  disabled={disabled}
+                  type="date"
+                  label="End date"
+                  error={errors.ticket?.event_end_date?.message}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                <Input
+                  {...register('ticket.event_start_time')}
+                  disabled={disabled}
+                  type="time"
+                  label="Start time"
+                  error={errors.ticket?.event_start_time?.message}
+                />
+                <Input
+                  {...register('ticket.event_end_time')}
+                  disabled={disabled}
+                  type="time"
+                  label="End time"
+                  error={errors.ticket?.event_end_time?.message}
+                />
+              </div>
 
               <Controller
                 name="ticket.event_timezone"

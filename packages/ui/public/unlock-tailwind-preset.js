@@ -6,6 +6,7 @@ const aspectRatio = require('@tailwindcss/aspect-ratio')
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
+  important: true,
   content: ['./lib/**/*.{tsx,jsx,ts,js}'],
   theme: {
     extend: {

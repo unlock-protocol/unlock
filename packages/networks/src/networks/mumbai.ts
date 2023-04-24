@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const mumbai: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
   provider: 'https://rpc.unlock-protocol.com/80001',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
@@ -39,11 +40,13 @@ export const mumbai: NetworkConfig = {
   url: 'https://mumbai.polygonscan.com/',
   faucet: 'https://faucet.polygon.technology/',
   isTestNetwork: true,
+  fullySubsidizedGas: true,
   maxFreeClaimCost: 500,
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
   wrappedNativeCurrency: {

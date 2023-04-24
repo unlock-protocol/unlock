@@ -103,8 +103,11 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
               disabled={!card}
               onClick={() => {
                 checkoutService.send({
-                  type: 'SELECT_CARD_TO_CHARGE',
-                  cardId: payment.id!,
+                  type: 'SELECT_PAYMENT_METHOD',
+                  payment: {
+                    method: 'card',
+                    cardId: payment!.id!,
+                  },
                 })
               }}
             >

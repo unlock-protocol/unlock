@@ -58,8 +58,8 @@ describe('Receipts for non-ERC20', () => {
     lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
     lock.version = BigInt.fromU32(12)
     lock.totalKeys = BigInt.fromU32(0)
-    lock.keys = []
     lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
     lock.save()
 
     // transfer event
@@ -89,6 +89,7 @@ describe('Receipts for non-ERC20', () => {
     assert.fieldEquals('Receipt', hash, 'sender', msgSender)
     assert.fieldEquals('Receipt', hash, 'payer', msgSender)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', amount.toString())
+    assert.fieldEquals('Receipt', hash, 'numberOfReceipt', '1')
 
     dataSourceMock.resetValues()
   })
@@ -125,6 +126,7 @@ describe('Receipts for non-ERC20', () => {
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
+    assert.fieldEquals('Receipt', hash, 'numberOfReceipt', '2')
 
     dataSourceMock.resetValues()
   })

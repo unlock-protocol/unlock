@@ -19,23 +19,27 @@ const HOURLY_CRON_SCHEDULE = '0 * * * *' // every hour
 const FREQUENT_CRON_SCHEDULE = '*/5 * * * *' // every 5 minutes
 
 const run = async () => {
-  logger.info('Running keys and locks job')
+  try {
+    logger.info('Running keys and locks job')
 
-  const subscribers = await Hook.findAll({
-    where: {
-      mode: 'subscribe',
-      expiration: {
-        [Op.gte]: new Date(),
+    const subscribers = await Hook.findAll({
+      where: {
+        mode: 'subscribe',
+        expiration: {
+          [Op.gte]: new Date(),
+        },
       },
-    },
-  })
+    })
 
-  await Promise.allSettled([
-    notifyOfKeys(subscribers),
-    notifyOfLocks(subscribers),
-  ])
+    await Promise.allSettled([
+      notifyOfKeys(subscribers),
+      notifyOfLocks(subscribers),
+    ])
 
-  logger.info('Finished running keys and locks job')
+    logger.info('Finished running keys and locks job')
+  } catch (error) {
+    logger.error('Error running keys and locks job', error)
+  }
 }
 
 run()

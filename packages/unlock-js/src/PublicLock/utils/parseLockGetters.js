@@ -31,6 +31,8 @@ const attributes = {
 }
 
 export default async function (address, provider) {
+  const network = await provider.getNetwork()
+  const networkConfig = this.networks?.[network.chainId]
   const contract = await this.getLockContract(address, provider)
   // Let's load the current block to use to compare versions
   const getBlockNumber = async () => {
@@ -55,20 +57,21 @@ export default async function (address, provider) {
     update.keyPrice = utils.fromWei(update.keyPrice, 'ether')
     const balance = await provider.getBalance(address)
     update.balance = utils.fromWei(balance, 'ether')
+    update.currencySymbol = networkConfig?.nativeCurrency?.symbol
+    update.currencyDecimals = networkConfig?.nativeCurrency?.decimals
+    update.currencyName = networkConfig?.nativeCurrency?.name
   } else {
     // Otherwise need to get the erc20's decimal and convert from there, as well as the symbol
-    // TODO : make these calls in parallel
-    const erc20Decimals = await getErc20Decimals(update.tokenAddress, provider)
-    const erc20Balance = await getErc20BalanceForAddress(
-      update.tokenAddress,
-      address,
-      provider
-    )
-    const erc20Symbol = await getErc20TokenSymbol(update.tokenAddress, provider)
-
+    const [erc20Decimals, erc20Balance, erc20Symbol] = await Promise.all([
+      getErc20Decimals(update.tokenAddress, provider),
+      getErc20BalanceForAddress(update.tokenAddress, address, provider),
+      getErc20TokenSymbol(update.tokenAddress, provider),
+    ])
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
     update.currencySymbol = erc20Symbol
+    update.currencyDecimals = erc20Decimals
+    update.currencyName = erc20Symbol
   }
 
   // totalSupply was previously called outstandingKeys. In order to keep compatibility
