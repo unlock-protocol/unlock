@@ -339,10 +339,16 @@ export function Confirm({
         return
       }
 
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig)
+      })
+
       const stripeIntent = await createPurchaseIntent({
         pricing: totalPricing!.total,
         stripeTokenId: payment.cardId!,
         recipients,
+        referrers,
+        data: purchaseData!,
         recurring: recurringPaymentAmount || 0,
       })
 

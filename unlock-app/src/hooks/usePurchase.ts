@@ -10,6 +10,8 @@ interface PurchaseOptions {
   pricing: number
   recurring?: number
   stripeTokenId: string
+  data?: string[]
+  referrers?: string[]
 }
 export const usePurchase = ({ lockAddress, network }: Options) => {
   return useMutation(
@@ -19,12 +21,16 @@ export const usePurchase = ({ lockAddress, network }: Options) => {
       recipients,
       recurring = 0,
       stripeTokenId,
+      data,
+      referrers,
     }: PurchaseOptions) => {
       const response = await storage.purchase(network, lockAddress, {
         stripeTokenId,
         pricing,
         recipients,
         recurring,
+        data,
+        referrers,
       })
       return response.data
     },
