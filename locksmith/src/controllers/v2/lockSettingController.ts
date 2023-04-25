@@ -102,8 +102,6 @@ export const getLockBySlug: RequestHandler = async (
     return response.status(404).send({
       message: 'Settings not found for this slug',
     })
-
-    // return default settings
   } catch (err: any) {
     logger.error(err.message)
     return response.status(500).send({
