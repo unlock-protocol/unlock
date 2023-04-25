@@ -82,8 +82,8 @@ export class PaymentProcessor {
     network: number,
     stripeAccount: string,
     recurring = 0,
-    data?: (string | null)[],
-    referrers?: (string | null)[]
+    data?: (string | null)[] | null,
+    referrers?: (string | null)[] | null
   ) {
     const pricing = await createPricingForPurchase({
       lockAddress: lock,
