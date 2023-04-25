@@ -78,9 +78,9 @@ export const createTransferCode: RequestHandler = async (request, response) => {
     network,
     template: 'transferCode',
     failoverTemplate: 'transferCode',
-    lockAddress: key.lock.address,
     recipient,
     params: {
+      lockAddress: key.lock.address,
       lockName: key.lock.name || 'Unlock Lock',
       network: network.toString(),
       transferCode: part1,
