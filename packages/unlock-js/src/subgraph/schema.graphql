@@ -17,9 +17,12 @@ query allLocks(
     name
     expirationDuration
     tokenAddress
+    symbol
     price
     lockManagers
     version
+    maxNumberOfKeys
+    maxKeysPerAddress
     createdAtBlock
     totalKeys
   }
@@ -46,12 +49,14 @@ query AllKeys(
       name
       expirationDuration
       tokenAddress
+      symbol
       price
       lockManagers
       version
+      maxNumberOfKeys
+      maxKeysPerAddress
       createdAtBlock
       totalKeys
-      maxNumberOfKeys
     }
     tokenId
     owner
@@ -104,9 +109,12 @@ query allLocksWithKeys(
     name
     expirationDuration
     tokenAddress
+    symbol
     price
     lockManagers
     version
+    maxNumberOfKeys
+    maxKeysPerAddress
     createdAtBlock
     totalKeys
     keys(where: $keyFilter, orderBy: $keyOrderBy, first: $first, skip: $skip) {
