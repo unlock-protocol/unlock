@@ -281,6 +281,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const { isLoading: isLoadingHook, lockHookMapping } =
     useCheckoutHook(checkoutService)
 
+  const hookType = useMemo(() => {
+    if (!lock) return undefined
+
+    const hook =
+      lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ?? undefined
+    return hook
+  }, [lockHookMapping, lock])
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -300,11 +308,13 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
   }, [locks])
 
+  const isLoading = isLocksLoading || isLoadingHook
+
   return (
     <Fragment>
       <Stepper position={1} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isLocksLoading ? (
+        {isLoading ? (
           <div className="mt-6 space-y-4">
             {Array.from({ length: lockOptions.length }).map((_, index) => (
               <LockOptionPlaceholder key={index} />
@@ -374,10 +384,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                 if (!lock) {
                   return
                 }
-
-                const hookType =
-                  lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ??
-                  undefined
 
                 send({
                   type: 'SELECT_LOCK',
