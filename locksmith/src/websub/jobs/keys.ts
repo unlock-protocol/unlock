@@ -7,6 +7,7 @@ import {
   notifyNewKeysToWedlocks,
   sendEmail,
 } from '../../operations/wedlocksOperations'
+import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'
 import { logger } from '../../logger'
 import * as Normalizer from '../../utils/normalizer'
 import * as metadataOperations from './../../operations/metadataOperations'
@@ -274,6 +275,21 @@ export async function notifyKeyExpiration() {
                 'D MMMM YYYY - HH:mm'
               )
 
+              const reminderAlreadySent = await hasReminderAlreadySent({
+                address: lockAddress,
+                network: networkId,
+                tokenId: keyId,
+                type: 'keyExpiring',
+                expiration: key.expiration,
+              })
+
+              if (reminderAlreadySent) {
+                logger.info(
+                  `Email reminder already sent for ${lockAddress} - token ${keyId}`
+                )
+                return
+              }
+
               // send expiring email
               await sendEmail({
                 lockAddress,
@@ -359,6 +375,21 @@ export async function notifyKeyExpired() {
             const recipient = protectedData?.email as string
 
             if (!recipient) return
+
+            const reminderAlreadySent = await hasReminderAlreadySent({
+              address: lockAddress,
+              network: networkId,
+              tokenId: keyId,
+              type: 'keyExpired',
+              expiration: key.expiration,
+            })
+
+            if (reminderAlreadySent) {
+              logger.info(
+                `Email reminder already sent for ${lockAddress} - token ${keyId}`
+              )
+              return
+            }
 
             // send expiring email
             await sendEmail({
