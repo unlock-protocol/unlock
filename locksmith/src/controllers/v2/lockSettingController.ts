@@ -88,13 +88,13 @@ export const getSettings: RequestHandler = async (
   }
 }
 
-export const getLockBySlug: RequestHandler = async (
+export const getLockSettingsBySlug: RequestHandler = async (
   request: Request,
   response: Response
 ) => {
   try {
     const slug = request.params.slug
-    const settings = await lockSettingOperations.getLockBySlug(slug)
+    const settings = await lockSettingOperations.getLockSettingsBySlug(slug)
 
     if (settings) {
       return response.status(200).send(settings)

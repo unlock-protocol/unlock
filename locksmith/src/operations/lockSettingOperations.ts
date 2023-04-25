@@ -53,7 +53,9 @@ export async function getSettings({
   return settings || DEFAULT_LOCK_SETTINGS
 }
 
-export async function getLockBySlug(slug: string): Promise<LockSetting | null> {
+export async function getLockSettingsBySlug(
+  slug: string
+): Promise<LockSetting | null> {
   const settings = await LockSetting.findOne({
     where: {
       slug,
