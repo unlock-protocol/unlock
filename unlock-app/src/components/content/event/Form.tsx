@@ -165,7 +165,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   }}
                 />
               </div>
-              <div className="grid order-1 md:order-2">
+              <div className="grid order-1 gap-4 md:order-2">
                 <Input
                   {...register('lock.name', {
                     required: {
