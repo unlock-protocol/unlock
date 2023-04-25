@@ -22,6 +22,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { CertificationMetadataForm } from './CertificationMetadataForm'
+import { storage } from '~/config/storage'
 
 interface Props {
   lockAddress?: string
@@ -76,6 +77,12 @@ export const Form = ({
       image: formData.image || image,
       ...formData,
     })
+    const slug = formData?.slug
+    if (slug) {
+      await storage.saveLockSetting(network, lockAddress, {
+        slug,
+      })
+    }
     await updateMetadata(metadata)
   }
 

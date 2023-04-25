@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
+import { storage } from '~/config/storage'
 import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -42,4 +44,13 @@ export function useLockSettings() {
   return {
     getIsRecurringPossible,
   }
+}
+
+export function useGetLockSettingsBySlug(slug?: string) {
+  return useQuery(['getLockSettingsBySlug', slug], async () => {
+    if (slug) {
+      return (await storage.getLockSettingsBySlug(slug)).data
+    }
+    return null
+  })
 }

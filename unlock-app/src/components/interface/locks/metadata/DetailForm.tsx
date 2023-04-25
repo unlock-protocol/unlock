@@ -46,6 +46,7 @@ export function DetailForm({ disabled }: Props) {
       </a>
     </p>
   )
+
   return (
     <Disclosure label="Basic" defaultOpen>
       <div className="grid gap-6">
@@ -92,6 +93,19 @@ export function DetailForm({ disabled }: Props) {
               description={<DescDescription />}
               error={errors.description?.message}
               rows={4}
+            />
+            <Input
+              {...register('slug', {
+                pattern: {
+                  value: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+                  message: 'Slug format is not valid',
+                },
+              })}
+              disabled={disabled}
+              type="text"
+              label="Slug"
+              error={errors.slug?.message}
+              description="Slug that will be used for the URL."
             />
             <Input
               {...register('external_url')}
