@@ -28,7 +28,7 @@ export async function saveSettings({
       sendEmail,
       replyTo,
       creditCardPrice,
-      slug,
+      slug: slug?.toLowerCase().trim(),
     },
     {
       returning: true,
