@@ -22,14 +22,17 @@ export function usePasswordHookSigner({
       network,
     })
 
-    return await web3Service.getPasswordHookSigners(
-      {
-        lockAddress,
-        contractAddress,
-        network,
-      },
-      walletService.signer
-    )
+    if (contractAddress) {
+      return await web3Service.getPasswordHookSigners(
+        {
+          lockAddress,
+          contractAddress,
+          network,
+        },
+        walletService.signer
+      )
+    }
+    return ''
   }
 
   return useQuery(
