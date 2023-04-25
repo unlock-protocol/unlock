@@ -93,7 +93,7 @@ export const getLockSettingsBySlug: RequestHandler = async (
   response: Response
 ) => {
   try {
-    const slug = request.params.slug
+    const slug = request.params.slug.toLowerCase().trim()
     const settings = await lockSettingOperations.getLockSettingsBySlug(slug)
 
     if (settings) {

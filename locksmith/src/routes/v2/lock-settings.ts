@@ -1,6 +1,6 @@
 import express from 'express'
 import {
-  getLockBySlug,
+  getLockSettingsBySlug,
   getSettings,
   updateSettings,
 } from '../../controllers/v2/lockSettingController'
@@ -27,7 +27,7 @@ router.get(
   '/slug/:slug',
   authenticatedMiddleware,
   lockManagerMiddleware,
-  getLockBySlug
+  getLockSettingsBySlug
 )
 
 export default router

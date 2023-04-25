@@ -28,7 +28,7 @@ export async function saveSettings({
       sendEmail,
       replyTo,
       creditCardPrice,
-      slug,
+      slug: slug?.toLowerCase().trim(),
     },
     {
       returning: true,
@@ -58,7 +58,7 @@ export async function getLockSettingsBySlug(
 ): Promise<LockSetting | null> {
   const settings = await LockSetting.findOne({
     where: {
-      slug,
+      slug: slug.toLowerCase().trim(),
     },
   })
 
