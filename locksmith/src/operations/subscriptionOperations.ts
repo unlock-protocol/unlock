@@ -90,12 +90,12 @@ export const getSubscriptionsForLockByOwner = async ({
       : parseInt(key.expiration)
 
   // Approved renewals
-  const approvedRenewalsAmount =
+  const numberOfRenewalsApprovedValue =
     userAllowance.gt(0) && parseFloat(price) > 0
       ? userAllowance.div(price)
       : ethers.BigNumber.from(0)
 
-  const numberOfRenewalsApproved = approvedRenewalsAmount.toString()
+  const numberOfRenewalsApproved = numberOfRenewalsApprovedValue.toString()
 
   const info = {
     next,
