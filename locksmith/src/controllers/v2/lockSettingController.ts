@@ -34,6 +34,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
   replyTo: undefined,
   creditCardPrice: undefined,
+  slug: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
