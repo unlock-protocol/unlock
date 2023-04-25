@@ -13,6 +13,7 @@ const lockSettingMock = {
   network,
   sendEmail: true,
   creditCardPrice: 0.04,
+  slug: 'slug-test',
   replyTo: 'example@gmail.com',
   createdAt: '2023-03-24T15:40:54.509Z',
   updatedAt: '2023-03-24T15:40:54.509Z',
@@ -118,7 +119,7 @@ describe('LockSettings v2 endpoints for lock', () => {
   })
 
   it('should correctly save settings when user is lockManager', async () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     const { loginResponse } = await loginRandomUser(app)
     const saveSettingResponse = await request(app)
@@ -127,6 +128,7 @@ describe('LockSettings v2 endpoints for lock', () => {
       .send({
         sendEmail: false,
         replyTo: 'example@gmail.com',
+        slug: 'slug-demo',
       })
 
     const response = saveSettingResponse.body
@@ -134,10 +136,11 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.sendEmail).toBe(false)
     expect(response.creditCardPrice).toBe(null)
     expect(response.replyTo).toBe('example@gmail.com')
+    expect(response.slug).toBe('slug-demo')
   })
 
   it('should save and retrieve setting when user is lockManager', async () => {
-    expect.assertions(9)
+    expect.assertions(11)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -149,6 +152,7 @@ describe('LockSettings v2 endpoints for lock', () => {
         sendEmail: false,
         replyTo: 'example@gmail.com',
         creditCardPrice: 0.04,
+        slug: 'slug-test',
       })
 
     const response = saveSettingResponse.body
@@ -156,6 +160,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.sendEmail).toBe(false)
     expect(response.replyTo).toBe('example@gmail.com')
     expect(response.creditCardPrice).toBe(0.04)
+    expect(response.slug).toBe('slug-test')
 
     // retrieve settings
     const getSettingResponse = await request(app)
@@ -171,10 +176,11 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(getSettingResponse.body.creditCardPrice).toBe(
       lockSettingMock.creditCardPrice
     )
+    expect(getSettingResponse.body.slug).toBe(lockSettingMock.slug)
   })
 
   it('should retrieve default settings for a lock', async () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -188,5 +194,6 @@ describe('LockSettings v2 endpoints for lock', () => {
     )
     expect(getSettingResponse.body.replyTo).toBe(undefined)
     expect(getSettingResponse.body.creditCardPrice).toBe(undefined)
+    expect(getSettingResponse.body.slug).toBe(undefined)
   })
 })
