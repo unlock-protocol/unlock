@@ -4,7 +4,7 @@ import logger from '../../logger'
 import Dispatcher from '../../fulfillment/dispatcher'
 import * as z from 'zod'
 import GasPrice from '../../utils/gasPrice'
-import { GAS_COST_TO_GRANT } from '../../utils/keyPricer'
+import { GAS_COST_TO_GRANT } from '../../utils/constants'
 
 const Key = z.object({
   recipient: z.string(),

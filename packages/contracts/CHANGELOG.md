@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.21
+
+- release fix post-attack on Fri Apr 21st 2023 #11690
+
 ## 0.0.20
 
 - release storage slot fix for PublicLock V13 #11665

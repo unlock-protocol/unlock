@@ -1,15 +1,14 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutService, FiatPricing } from './checkoutMachine'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from '@tanstack/react-query'
-import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import useAccount, { getAccountTokenBalance } from '~/hooks/useAccount'
+import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
@@ -29,9 +28,10 @@ import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
+import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
+import { useCapturePayment } from '~/hooks/useCapturePayment'
 
 interface Props {
   injectedProvider: unknown
@@ -39,10 +39,27 @@ interface Props {
   communication?: CheckoutCommunication
 }
 
-export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
+interface CreditCardPricingBreakdownProps {
+  total: number
+  creditCardProcessingFee: number
+  unlockServiceFee: number
+}
+
+interface PricingDataProps {
+  pricingData: any
+  lock: Lock
+  network: number
+  payment?: any
+}
+
+export function CreditCardPricingBreakdown({
+  unlockServiceFee,
+  total,
+  creditCardProcessingFee,
+}: CreditCardPricingBreakdownProps) {
   return (
-    <div className="mt-6 text-sm">
-      <h4 className="text-gray-600 ">
+    <div className="flex flex-col gap-2 pt-4 text-sm">
+      <h3 className="font-medium">
         Credit Card Fees{' '}
         <a
           href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
@@ -52,31 +69,73 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
         >
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
-      </h4>
-      <div className="flex justify-between w-full pt-2 text-xs border-t border-gray-300">
-        <span className="text-gray-600">Service Fee</span>
-        <div>
-          ${(fiatPricing?.usd?.unlockServiceFee / 100).toLocaleString()}
+      </h3>
+      <div className="divide-y">
+        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+          <span className="text-gray-600">Service Fee</span>
+          <div>${(unlockServiceFee / 100).toLocaleString()}</div>
+        </div>
+        <div className="flex justify-between w-full py-2 text-sm">
+          <span className="text-gray-600"> Payment Processor </span>
+          <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
+        </div>
+        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+          <span className="text-gray-600"> Total </span>
+          <div className="font-bold">${(total / 100).toLocaleString()}</div>
         </div>
       </div>
-      <div className="flex justify-between w-full pb-2 text-xs ">
-        <span className="text-gray-600"> Payment Processor </span>
-        <div>
-          ${(fiatPricing?.usd?.creditCardProcessing / 100).toLocaleString()}
-        </div>
-      </div>
-      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-        <h4 className="text-gray-600"> Total </h4>
-        <div className="font-bold">
-          $
-          {(
-            Object.values(fiatPricing.usd).reduce<number>(
-              (t, amount) => t + Number(amount),
-              0
-            ) / 100
-          ).toLocaleString()}
-        </div>
-      </div>
+    </div>
+  )
+}
+
+export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
+  return (
+    <div>
+      {!!pricingData?.prices?.length &&
+        pricingData.prices.map((item: any, index: number) => {
+          const first = index <= 0
+          const discount =
+            Number(lock!.keyPrice) > 0
+              ? (100 * (Number(lock!.keyPrice) - item.amount)) /
+                Number(lock!.keyPrice)
+              : 0
+          const symbol = payment?.route
+            ? payment.route.trade.inputAmount.currency.symbol
+            : item.symbol
+
+          return (
+            <div
+              key={index}
+              className={`flex border-b ${
+                first ? 'border-t' : null
+              } items-center justify-between text-sm px-0 py-2`}
+            >
+              <div>
+                1 Key for{' '}
+                <span className="font-medium">
+                  {minifyAddress(item.userAddress)}
+                </span>{' '}
+                {item.amount < Number(lock!.keyPrice) ? (
+                  <Badge variant="green" size="tiny">
+                    {discount}% Discount
+                  </Badge>
+                ) : null}
+              </div>
+
+              <div className="font-bold">
+                {item.amount <= 0
+                  ? 'FREE'
+                  : payment?.route
+                  ? `${formatNumber(
+                      payment.route
+                        .convertToQuoteToken(item.amount.toString())
+                        .toFixed()
+                    ).toLocaleString()} ${symbol}`
+                  : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+              </div>
+            </div>
+          )
+        })}
     </div>
   )
 }
@@ -91,7 +150,6 @@ export function Confirm({
   const config = useConfig()
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
-  const { captureChargeForCard } = useAccount(account!)
   const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
@@ -150,22 +208,6 @@ export function Confirm({
 
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const { isInitialLoading: isFiatPriceLoading, data: fiatPricing } = useQuery(
-    [quantity, lockAddress, lockNetwork],
-    async () => {
-      const pricing = await getFiatPricing(
-        config,
-        lockAddress,
-        lockNetwork,
-        quantity
-      )
-      return pricing
-    },
-    {
-      refetchInterval: Infinity,
-    }
-  )
-
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
       lockAddress: lock!.address,
@@ -189,6 +231,10 @@ export function Confirm({
     data: purchaseData!,
     paywallConfig,
     enabled: !isInitialDataLoading,
+    symbol: lockTickerSymbol(
+      lock as Lock,
+      config.networks[lock!.network].nativeCurrency.symbol
+    ),
   })
 
   const isPricingDataAvailable =
@@ -196,15 +242,14 @@ export function Confirm({
 
   const amountToConvert = pricingData?.total || 0
 
-  const { data: USDPricingData, isLoading: isUSDPricingDataLoading } =
-    useUSDPricing({
-      network: lock!.network,
-      lockAddress: lock!.address,
-      currencyContractAddress,
+  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
+    useFiatChargePrice({
+      tokenAddress: currencyContractAddress,
       amount:
         amountToConvert > 0 && swap
           ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
           : amountToConvert,
+      network: lock!.network,
       enabled: isPricingDataAvailable,
     })
 
@@ -242,16 +287,23 @@ export function Confirm({
     }
   )
 
+  const { mutateAsync: capturePayment } = useCapturePayment({
+    network: lock!.network,
+    lockAddress: lock!.address,
+    data: purchaseData,
+    referrers: recipients.map((recipient) => getReferrer(recipient)),
+    recipients,
+  })
+
   // By default, until fully loaded we assume payable.
   const canAfford =
     !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
 
   const isLoading =
     isPricingDataLoading ||
-    isFiatPriceLoading ||
     isInitialDataLoading ||
     isPayableLoading ||
-    isUSDPricingDataLoading
+    isTotalPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = swap
@@ -287,21 +339,23 @@ export function Confirm({
         return
       }
 
-      const pricing =
-        Object.values(fiatPricing.usd).reduce<number>(
-          (t, amount) => t + Number(amount),
-          0
-        ) / 100
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig)
+      })
 
       const stripeIntent = await createPurchaseIntent({
-        pricing,
+        pricing: totalPricing!.total,
         stripeTokenId: payment.cardId!,
         recipients,
+        referrers,
+        data: purchaseData!,
         recurring: recurringPaymentAmount || 0,
       })
+
       if (!stripeIntent?.clientSecret) {
         throw new Error('Creating payment intent failed')
       }
+
       const stripe = await loadStripe(config.stripeApiKey, {
         stripeAccount: stripeIntent.stripeAccount,
       })
@@ -329,22 +383,19 @@ export function Confirm({
           throw new Error('We could not confirm your payment.')
         }
       }
-      const response = await captureChargeForCard(
-        lockAddress,
-        lockNetwork,
-        recipients,
-        paymentIntent.id
-      )
+      const transactionHash = await capturePayment({
+        paymentIntent: paymentIntent.id,
+      })
 
       setIsConfirming(false)
-      if (response.transactionHash) {
+      if (transactionHash) {
         send({
           type: 'CONFIRM_MINT',
-          transactionHash: response.transactionHash,
+          transactionHash,
           status: 'PROCESSING',
         })
         communication?.emitTransactionInfo({
-          hash: response.transactionHash,
+          hash: transactionHash,
           lock: lockAddress,
         })
       }
@@ -582,8 +633,9 @@ export function Confirm({
   const stepItems = useCheckoutSteps(checkoutService)
 
   const payingWithCard =
-    fiatPricing?.creditCardEnabled && payment?.method === 'card'
-
+    !isLoading &&
+    totalPricing?.isCreditCardPurchasable &&
+    payment?.method === 'card'
   return (
     <Fragment>
       <ReCaptcha
@@ -614,55 +666,16 @@ export function Confirm({
             </div>
           )}
           {!isLoading && isPricingDataAvailable && (
-            <div>
-              {!!pricingData?.prices?.length &&
-                pricingData.prices.map((item, index) => {
-                  const first = index <= 0
-                  const discount =
-                    Number(lock!.keyPrice) > 0
-                      ? (100 * (Number(lock!.keyPrice) - item.amount)) /
-                        Number(lock!.keyPrice)
-                      : 0
-                  return (
-                    <div
-                      key={index}
-                      className={`flex border-b ${
-                        first ? 'border-t' : null
-                      } items-center justify-between text-sm px-0 py-2`}
-                    >
-                      <div>
-                        1 Key for{' '}
-                        <span className="font-medium">
-                          {minifyAddress(item.userAddress)}
-                        </span>{' '}
-                        {item.amount < Number(lock!.keyPrice) ? (
-                          <Badge variant="green" size="tiny">
-                            {discount}% Discount
-                          </Badge>
-                        ) : null}
-                      </div>
-
-                      <div className="font-bold">
-                        {item.amount <= 0
-                          ? 'FREE'
-                          : swap
-                          ? `${formatNumber(
-                              payment.route
-                                .convertToQuoteToken(item.amount.toString())
-                                .toFixed()
-                            ).toLocaleString()} ${symbol}`
-                          : `${formatNumber(
-                              item.amount
-                            ).toLocaleString()} ${symbol}`}
-                      </div>
-                    </div>
-                  )
-                })}
-            </div>
+            <PricingData
+              network={lockNetwork}
+              lock={lock!}
+              pricingData={pricingData}
+              payment={payment}
+            />
           )}
         </div>
         {!isPricingDataAvailable && (
-          <>
+          <div>
             {isLoading ? (
               <div className="flex flex-col items-center gap-2">
                 {recipients.map((user) => (
@@ -682,27 +695,21 @@ export function Confirm({
                       ).toLocaleString()} ${symbol}`
                 }
                 usdPrice={
-                  USDPricingData?.amount
-                    ? `~${formatNumber(USDPricingData.amount).toLocaleString()}`
+                  totalPricing?.total
+                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
                     : ''
                 }
                 isCardEnabled={formattedData.cardEnabled}
               />
             )}
-            {isLoading ? (
-              <div className="py-1.5 space-y-2 items-center">
-                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-                <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
-              </div>
-            ) : (
-              <div>
-                {!isLoading && payingWithCard && (
-                  <CreditCardPricingBreakdown {...fiatPricing} />
-                )}
-              </div>
-            )}
-          </>
+          </div>
+        )}
+        {payingWithCard && (
+          <CreditCardPricingBreakdown
+            total={totalPricing!.total}
+            creditCardProcessingFee={totalPricing!.creditCardProcessingFee}
+            unlockServiceFee={totalPricing!.unlockServiceFee}
+          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

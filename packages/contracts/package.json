@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/contracts",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist docs",
@@ -35,7 +35,7 @@
     "eslint": "8.37.0",
     "fs-extra": "11.1.1",
     "hardhat": "2.13.0",
-    "typescript": "4.9.5"
+    "typescript": "5.0.4"
   },
   "files": [
     "dist"

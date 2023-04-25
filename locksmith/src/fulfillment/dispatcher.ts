@@ -6,7 +6,7 @@ import {
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
-import { GAS_COST } from '../utils/keyPricer'
+import { GAS_COST } from '../utils/constants'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
 import executeAndRetry from './retries'
