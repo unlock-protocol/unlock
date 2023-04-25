@@ -2,6 +2,7 @@ import { Disclosure, Input, TextBox, ImageUpload } from '@unlock-protocol/ui'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { SLUG_REGEXP } from '~/constants'
 
 interface Props {
   disabled?: boolean
@@ -97,7 +98,7 @@ export function DetailForm({ disabled }: Props) {
             <Input
               {...register('slug', {
                 pattern: {
-                  value: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+                  value: SLUG_REGEXP,
                   message: 'Slug format is not valid',
                 },
               })}
