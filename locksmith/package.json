@@ -44,6 +44,7 @@
     "@resvg/resvg-js": "2.4.1",
     "@sentry/node": "7.48.0",
     "@sentry/tracing": "7.48.0",
+    "@types/connect-timeout": "^0.0.36",
     "@types/random-words": "1.1.2",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/core": "workspace:./packages/core",

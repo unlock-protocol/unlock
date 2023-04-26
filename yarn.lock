@@ -13916,6 +13916,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/connect-timeout@npm:^0.0.36":
+  version: 0.0.36
+  resolution: "@types/connect-timeout@npm:0.0.36"
+  dependencies:
+    "@types/express": "*"
+  checksum: 2c52ea5ac6fcf3226cfabb9a0e1a6737b18c20beb29771760e6232c3acda22f97c7906c09a861b290f0e111db9588ee3a38fe423cbbd87ded20ac24687eb19e6
+  languageName: node
+  linkType: hard
+
 "@types/connect@npm:*, @types/connect@npm:^3.4.33":
   version: 3.4.35
   resolution: "@types/connect@npm:3.4.35"
@@ -15571,6 +15580,7 @@ __metadata:
     "@resvg/resvg-js": 2.4.1
     "@sentry/node": 7.48.0
     "@sentry/tracing": 7.48.0
+    "@types/connect-timeout": ^0.0.36
     "@types/cookie-parser": 1.4.3
     "@types/cors": 2.8.13
     "@types/geoip-country": 4.0.0
