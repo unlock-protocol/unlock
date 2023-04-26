@@ -379,7 +379,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       })}
                       disabled={unlimitedCapacity || !allowPurchase}
                       autoComplete="off"
-                      step="any"
+                      step={1}
                       pattern="\d+"
                       type="number"
                       placeholder="Number of certifications for sale"
