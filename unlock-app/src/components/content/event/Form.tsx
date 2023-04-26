@@ -202,6 +202,14 @@ export const Form = ({ onSubmit }: FormProps) => {
                       value: SLUG_REGEXP,
                       message: 'Slug format is not valid',
                     },
+                    validate: async (slug: string | undefined) => {
+                      if (slug) {
+                        const data = (await storage.getLockSettingsBySlug(slug))
+                          .data
+                        return data ? 'Slug already used.' : false
+                      }
+                      return false
+                    },
                   })}
                   type="text"
                   label="Slug"

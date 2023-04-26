@@ -8,7 +8,7 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
-import { getSlugParamsFromUrl } from '~/utils/strings'
+import { getSlugParamsFromUrl } from '~/utils/url'
 
 interface EventContentProps {
   lockAddress?: string

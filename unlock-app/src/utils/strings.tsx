@@ -51,13 +51,3 @@ export const getEthersWalletFromPassword = (
   const privateKeyAccount = new ethers.Wallet(privateKey)
   return privateKeyAccount
 }
-
-export const getSlugParamsFromUrl = (url: string) => {
-  const [hash, query] = url?.split('#')[1]?.split('?') ?? []
-  const params = Object.fromEntries(new URLSearchParams(query))
-
-  return {
-    hash,
-    params,
-  }
-}

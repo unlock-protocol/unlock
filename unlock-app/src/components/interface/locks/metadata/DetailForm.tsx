@@ -3,6 +3,7 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { SLUG_REGEXP } from '~/constants'
+import { storage } from '~/config/storage'
 
 interface Props {
   disabled?: boolean
@@ -100,6 +101,14 @@ export function DetailForm({ disabled }: Props) {
                 pattern: {
                   value: SLUG_REGEXP,
                   message: 'Slug format is not valid',
+                },
+                validate: async (slug: string | undefined) => {
+                  if (slug) {
+                    const data = (await storage.getLockSettingsBySlug(slug))
+                      .data
+                    return data ? 'Slug already used.' : false
+                  }
+                  return false
                 },
               })}
               disabled={disabled}

@@ -8,7 +8,7 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
 import { useMetadata } from '~/hooks/metadata'
 import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
-import { getSlugParamsFromUrl } from '~/utils/strings'
+import { getSlugParamsFromUrl } from '~/utils/url'
 
 interface CertificationContentProps {
   lockAddress?: string

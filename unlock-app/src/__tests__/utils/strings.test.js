@@ -5,7 +5,6 @@ import {
   getValidNumber,
   addressMinify,
   minifyEmail,
-  getSlugParamsFromUrl,
 } from '../../utils/strings'
 
 describe('camelCaseToTitle helper', () => {
@@ -46,39 +45,5 @@ describe('minifyEmail helper', () => {
   it('returns minified email', () => {
     expect.assertions(1)
     expect(minifyEmail('example@gmail.com')).toEqual('ex..@g..l.com')
-  })
-})
-
-describe('getSlugParamsFromUrl helper', () => {
-  it('returns hash and params', () => {
-    expect.assertions(4)
-    expect(
-      getSlugParamsFromUrl('/certification#test-event-2?tokenId=2')
-    ).toStrictEqual({
-      hash: 'test-event-2',
-      params: {
-        tokenId: '2',
-      },
-    })
-
-    expect(
-      getSlugParamsFromUrl('/certification#test-event-2?tokenId=2&domain=test')
-    ).toStrictEqual({
-      hash: 'test-event-2',
-      params: {
-        tokenId: '2',
-        domain: 'test',
-      },
-    })
-
-    expect(getSlugParamsFromUrl('/event#test')).toStrictEqual({
-      hash: 'test',
-      params: {},
-    })
-
-    expect(getSlugParamsFromUrl('/event')).toStrictEqual({
-      hash: undefined,
-      params: {},
-    })
   })
 })

@@ -25,6 +25,8 @@ import { useQuery } from '@tanstack/react-query'
 import { FaArrowLeft as ArrowLeftIcon } from 'react-icons/fa'
 import Link from 'next/link'
 import { SLUG_REGEXP } from '~/constants'
+import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
+import { storage } from '~/config/storage'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -130,6 +132,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   }
 
   const metadataImage = watch('metadata.image')
+  const slug = watch('metadata.slug')
+
+  const { data: lockSettings } = useGetLockSettingsBySlug(slug)
 
   return (
     <FormProvider {...methods}>
@@ -204,6 +209,14 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     pattern: {
                       value: SLUG_REGEXP,
                       message: 'Slug format is not valid',
+                    },
+                    validate: async (slug: string | undefined) => {
+                      if (slug) {
+                        const data = (await storage.getLockSettingsBySlug(slug))
+                          .data
+                        return data ? 'Slug already used.' : false
+                      }
+                      return false
                     },
                   })}
                   type="text"
