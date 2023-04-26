@@ -22,6 +22,7 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { SLUG_REGEXP, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { storage } from '~/config/storage'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
