@@ -207,7 +207,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       if (slug) {
                         const data = (await storage.getLockSettingsBySlug(slug))
                           .data
-                        return data ? 'Slug already used.' : true
+                        return data
+                          ? 'Slug already used, please use another one'
+                          : true
                       }
                       return true
                     },
@@ -389,7 +391,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       type="number"
                       autoComplete="off"
                       placeholder="0.00"
-                      step={0.01}
+                      step="any"
                       disabled={isFree}
                       {...register('lock.keyPrice', {
                         required: !isFree,

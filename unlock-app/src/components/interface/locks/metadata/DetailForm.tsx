@@ -109,7 +109,9 @@ export function DetailForm({ disabled, defaultValues }: Props) {
                   if (slugChanged && slug) {
                     const data = (await storage.getLockSettingsBySlug(slug))
                       .data
-                    return data ? 'Slug already used.' : true
+                    return data
+                      ? 'Slug already used, please use another one'
+                      : true
                   }
                   return true
                 },

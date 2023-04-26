@@ -210,7 +210,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       if (slug) {
                         const data = (await storage.getLockSettingsBySlug(slug))
                           .data
-                        return data ? 'Slug already used, please use another one.' : true
+                        return data
+                          ? 'Slug already used, please use another one.'
+                          : true
                       }
                       return true
                     },
