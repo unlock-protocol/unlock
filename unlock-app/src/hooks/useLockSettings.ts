@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 import { storage } from '~/config/storage'
 import { secondsAsDays } from '~/utils/durations'
@@ -59,4 +59,20 @@ export function useGetLockSettingsBySlug(slug = '') {
       enabled: slug?.length > 0,
     }
   )
+}
+
+interface SaveSlugProps {
+  slug: string
+  lockAddress: string
+  network: number
+}
+
+export function useSaveSlugSetting() {
+  return useMutation(async ({ slug, lockAddress, network }: SaveSlugProps) => {
+    if (slug) {
+      return storage.saveLockSetting(network, lockAddress, {
+        slug,
+      })
+    }
+  })
 }
