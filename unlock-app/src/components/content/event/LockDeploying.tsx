@@ -10,6 +10,7 @@ import {
 import { useConfig } from '~/utils/withConfig'
 import { TransactionDetails } from './NewEvent'
 import { useEffect } from 'react'
+import { getEventUrl } from './utils'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
@@ -42,11 +43,18 @@ export const LockDeploying = ({
   }
 
   const goToEventPage = () => {
-    if (!lockAddress) return
-    if (slug) {
-      router.push(`/event?s=${slug}`)
+    if (!lockAddress && !network) return
+    if (slug && lockAddress && network) {
+      router.push(
+        getEventUrl({
+          lockAddress,
+          network,
+          metadata: {
+            slug,
+          },
+        })
+      )
     }
-    router.push(`/event?lockAddress=${lockAddress}&network=${network}`)
   }
 
   return (

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import { Metadata } from '~/components/interface/locks/metadata/utils'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -23,4 +24,23 @@ export const getEventEndDate = (ticket: any): Date | null => {
   }
 
   return null
+}
+
+interface EventUrlProps {
+  metadata?: Partial<Metadata>
+  lockAddress: string
+  network: string | number
+}
+
+export const getEventUrl = ({
+  metadata,
+  lockAddress,
+  network,
+}: EventUrlProps): string => {
+  const slug = metadata?.slug
+
+  if (slug) {
+    return `/event?s=${slug}`
+  }
+  return `/event?lockAddress=${lockAddress}&network=${network}`
 }

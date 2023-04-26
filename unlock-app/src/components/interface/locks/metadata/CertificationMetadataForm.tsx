@@ -3,6 +3,7 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { getCertificationUrl } from '~/components/content/certification/utils'
 
 interface Props {
   disabled?: boolean
@@ -24,17 +25,16 @@ export function CertificationMetadataForm({
   const { slug } = useWatch({
     control,
   })
-  let certificationPageUrl: URL | undefined
 
-  if (slug) {
-    certificationPageUrl = new URL(
-      `${window.location.origin}/certification?slug=${slug}`
-    )
-  } else {
-    certificationPageUrl = new URL(
-      `${window.location.origin}/certification?lockAddress=${lockAddress}&network=${network}`
-    )
-  }
+  const certificationPageUrl = new URL(
+    `${window.location.origin}${getCertificationUrl({
+      lockAddress,
+      network,
+      metadata: {
+        slug,
+      },
+    })}`
+  )
 
   return (
     <div>

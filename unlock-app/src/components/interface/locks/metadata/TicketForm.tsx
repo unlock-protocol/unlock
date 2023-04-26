@@ -6,6 +6,7 @@ import { config } from '~/config/app'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { getEventUrl } from '~/components/content/event/utils'
 
 interface Props {
   disabled?: boolean
@@ -25,14 +26,15 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
     control,
   })
 
-  let eventPageUrl: URL | undefined
-  if (slug) {
-    eventPageUrl = new URL(`${window.location.origin}/event?s=${slug}`)
-  } else {
-    eventPageUrl = new URL(
-      `${window.location.origin}/event?lockAddress=${lockAddress}&network=${network}`
-    )
-  }
+  const eventPageUrl = new URL(
+    `${window.location.origin}${getEventUrl({
+      lockAddress,
+      network,
+      metadata: {
+        slug,
+      },
+    })}`
+  )
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     ticket?.event_address || 'Ethereum'

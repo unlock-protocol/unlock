@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import { TransactionDetails } from './NewCertification'
 import { useTransferFee } from '~/hooks/useTransferFee'
 import { useMutation } from '@tanstack/react-query'
+import { getCertificationUrl } from './utils'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
@@ -51,10 +52,15 @@ export const CertificationDeploying = ({
 
   const goToCertification = () => {
     if (!lockAddress) return
-    if (slug) {
-      router.push(`/certification?s=${slug}`)
-    }
-    router.push(`/certification?lockAddress=${lockAddress}&network=${network}`)
+    router.push(
+      getCertificationUrl({
+        metadata: {
+          slug,
+        },
+        lockAddress,
+        network,
+      })
+    )
   }
 
   return (
