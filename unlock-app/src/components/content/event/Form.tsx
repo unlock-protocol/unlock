@@ -207,9 +207,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       if (slug) {
                         const data = (await storage.getLockSettingsBySlug(slug))
                           .data
-                        return data ? 'Slug already used.' : false
+                        return data ? 'Slug already used.' : true
                       }
-                      return false
+                      return true
                     },
                   })}
                   type="text"

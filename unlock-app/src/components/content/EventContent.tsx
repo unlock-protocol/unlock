@@ -25,7 +25,6 @@ export const EventContent = () => {
     router.push('/event/new')
   }
 
-  console.table(router.query)
   if (!router.query || loading) {
     return <LoadingIcon />
   }

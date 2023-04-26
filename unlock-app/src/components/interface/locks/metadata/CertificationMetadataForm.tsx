@@ -1,5 +1,5 @@
 import { Disclosure, Input } from '@unlock-protocol/ui'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
@@ -18,11 +18,23 @@ export function CertificationMetadataForm({
   const {
     register,
     formState: { errors },
+    control,
   } = useFormContext<MetadataFormData>()
 
-  const certificationPageUrl = new URL(
-    `${window.location.origin}/certification?lockAddress=${lockAddress}&network=${network}`
-  )
+  const { slug } = useWatch({
+    control,
+  })
+  let certificationPageUrl: URL | undefined
+
+  if (slug) {
+    certificationPageUrl = new URL(
+      `${window.location.origin}/certification?slug=${slug}`
+    )
+  } else {
+    certificationPageUrl = new URL(
+      `${window.location.origin}/certification?lockAddress=${lockAddress}&network=${network}`
+    )
+  }
 
   return (
     <div>

@@ -21,7 +21,14 @@ export const LinkedinShareButton = ({
   if (!metadata.name || !certificateData) {
     return null
   }
-  const certificationUrl = `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+
+  const slug = metadata.slug
+  let certificationUrl = ''
+  if (slug) {
+    certificationUrl = `${window?.location?.origin}/certification?s=${slug}`
+  } else {
+    certificationUrl = `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+  }
 
   const linkedinIntent = new URL('https://www.linkedin.com/profile/add')
   linkedinIntent.searchParams.set('startTask', 'CERTIFICATION_NAME')

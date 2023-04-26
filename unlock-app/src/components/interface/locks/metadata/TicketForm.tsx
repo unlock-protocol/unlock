@@ -21,13 +21,18 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
   } = useFormContext<MetadataFormData>()
 
   const [previewTicket, setPreviewTicket] = useState(false)
-  const { ticket, name } = useWatch({
+  const { ticket, name, slug } = useWatch({
     control,
   })
 
-  const eventPageUrl = new URL(
-    `${window.location.origin}/event?lockAddress=${lockAddress}&network=${network}`
-  )
+  let eventPageUrl: URL | undefined
+  if (slug) {
+    eventPageUrl = new URL(`${window.location.origin}/event?s=${slug}`)
+  } else {
+    eventPageUrl = new URL(
+      `${window.location.origin}/event?lockAddress=${lockAddress}&network=${network}`
+    )
+  }
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     ticket?.event_address || 'Ethereum'
