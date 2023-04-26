@@ -8,6 +8,7 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
+import { getSlugParamsFromUrl } from '~/utils/strings'
 
 interface EventContentProps {
   lockAddress?: string
@@ -18,7 +19,7 @@ export const EventContent = () => {
   const router = useRouter()
   const [params, setParams] = useState<EventContentProps>()
 
-  const [, slug] = router?.asPath?.split('#') ?? []
+  const { hash: slug } = getSlugParamsFromUrl(router.asPath)
 
   const {
     isFetching,

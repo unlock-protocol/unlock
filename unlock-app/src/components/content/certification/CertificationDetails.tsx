@@ -39,6 +39,7 @@ interface CertificationDetailsProps {
   network: number
   tokenId?: string
   expiration?: string | number
+  isLoading?: boolean
 }
 
 const CertificationManagerOptions = ({
@@ -124,6 +125,7 @@ export const CertificationDetails = ({
   lockAddress,
   network,
   tokenId,
+  isLoading,
 }: CertificationDetailsProps) => {
   const { account } = useAuth()
   const config = useConfig()
@@ -168,7 +170,8 @@ export const CertificationDetails = ({
     isLockDataLoading ||
     (isMetadataLoading && !isFetched) ||
     isLoadingLockManager ||
-    isHasValidKeyLoading
+    isHasValidKeyLoading ||
+    isLoading
 
   const { isCertification } = getLockTypeByMetadata(metadata)
 
