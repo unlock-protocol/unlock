@@ -27,6 +27,7 @@ export const LinkedinShareButton = ({
     metadata,
     lockAddress,
     network,
+    tokenId,
   })
 
   const linkedinIntent = new URL('https://www.linkedin.com/profile/add')
