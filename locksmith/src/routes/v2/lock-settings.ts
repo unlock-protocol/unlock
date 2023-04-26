@@ -23,6 +23,6 @@ router.get(
   getSettings
 )
 
-router.get('/slug/:slug', authenticatedMiddleware, getLockSettingsBySlug)
+router.get('/slug/:slug', getLockSettingsBySlug)
 
 export default router
