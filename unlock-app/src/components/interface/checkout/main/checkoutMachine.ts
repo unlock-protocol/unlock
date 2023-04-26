@@ -778,24 +778,9 @@ export const checkoutMachine = createMachine(
     },
     guards: {
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
-      requireCaptcha: (context) => {
-        return (
-          context?.hook === 'captcha' &&
-          ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
-      requirePassword: (context) => {
-        return (
-          context?.hook === 'password' &&
-          ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
-      requirePromo: (context) => {
-        return (
-          context?.hook === 'promocode' &&
-          ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
+      requireCaptcha: (context) => context && context?.hook === 'captcha',
+      requirePassword: (context) => context && context?.hook === 'password',
+      requirePromo: (context) => context && context?.hook === 'promocode',
     },
   }
 )

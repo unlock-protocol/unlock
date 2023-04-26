@@ -431,6 +431,14 @@ components:
       schema:
         type: string
 
+    Slug:
+      in: path
+      name: slug
+      required: true
+      description: Slug
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -2565,6 +2573,34 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/lock-settings/slug/{slug}:
+    get:
+      operationId: getLockSettingsBySlug
+      description: Get lock setting by slug
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+                  replyTo:
+                    type: string
+                  creditCardPrice:
+                    type: number
+                  slug:
+                    type: string
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+
   /v2/lock-settings/{network}/locks/{lockAddress}:
     get:
       operationId: getLockSettings
@@ -2585,6 +2621,14 @@ paths:
                     type: boolean
                   replyTo:
                     type: string
+                  creditCardPrice:
+                    type: number
+                  slug:
+                    type: string
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
 
         404:
           description: Setting not found
@@ -2626,6 +2670,14 @@ paths:
                   type: boolean
                 replyTo:
                   type: string
+                creditCardPrice:
+                  type: number
+                slug:
+                  type: string
+                lockAddress:
+                  type: string
+                network:
+                  type: number
 
       responses:
         200:

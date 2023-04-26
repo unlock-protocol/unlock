@@ -10,6 +10,8 @@ export class LockSetting extends Model<
   declare network: number
   declare sendEmail: boolean
   declare replyTo?: string
+  declare creditCardPrice?: number
+  declare slug?: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -29,9 +31,20 @@ LockSetting.init(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    creditCardPrice: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: null,
+    },
     replyTo: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+      defaultValue: null,
     },
     createdAt: {
       allowNull: false,

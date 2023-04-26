@@ -24,8 +24,14 @@ const createPaymentIntentBody = z.object({
   stripeTokenId: z.string(),
   pricing: z.number(),
   recurring: z.number().optional(),
-  referrers: z.array(z.string()).optional().default([]),
-  data: z.array(z.string()).optional().default([]),
+  referrers: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
 })
 
 const Processor = new PaymentProcessor()

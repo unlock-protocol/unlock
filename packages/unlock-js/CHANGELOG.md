@@ -4,6 +4,10 @@
 
 - adding support functions for Transfer With Authorization
 
+# 0.35.4
+
+- Adding missing implementations for v13: addKeyGranter, isKeyGranter
+
 # 0.35.3
 
 - Expose more fields such as `symbol`, `maxKeysPerAddress` and `maxNumberOfKeys` in subgraph service for locks fields.
