@@ -5,6 +5,7 @@ import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { loadStripeOnramp } from '@stripe/crypto'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -32,7 +33,7 @@ export function UniversalCardPayment({
   const { getWalletService, account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const [sessionError, setSessionError] = useState<string>(null)
+  const [sessionError, setSessionError] = useState<string>('')
   const [onrampSession, setOnrampSession] = useState<any>(null)
   const stripeOnrampPromise = loadStripeOnramp(config.stripeApiKey)
 
@@ -73,12 +74,18 @@ export function UniversalCardPayment({
       )
     }
 
-    const expectedAmount = cardPricing!.total.toString()
+    const expectedAmount = cardPricing!.total
     if (
       session.quote.destination_amount &&
-      session.quote.destination_amount !== expectedAmount
+      (100 * parseFloat(session.quote.destination_amount)).toString() !==
+        expectedAmount
     ) {
-      setSessionError('You cannot change the amount. Pleaase start again.')
+      console.error(
+        'Price changed',
+        session.quote.destination_amount,
+        expectedAmount
+      )
+      setSessionError('You cannot change the amount. Please start again.')
     }
 
     if (session.status === 'fulfillment_complete') {
@@ -108,25 +115,38 @@ export function UniversalCardPayment({
 
   // User triggers the payment!
   const signPermit = async () => {
-    const walletService = await getWalletService(lock!.network)
-    const { signature, message } =
-      await walletService.getAndSignAuthorizationsForTransferAndPurchase({
+    try {
+      const walletService = await getWalletService(lock!.network)
+      const {
+        transferSignature,
+        transferMessage,
+        purchaseSignature,
+        purchaseMessage,
+      } = await walletService.getAndSignAuthorizationsForTransferAndPurchase({
         lockAddress: lock!.address,
         network: lock!.network,
-        amount: cardPricing!.total * 100, // amount needs to be in cents
+        amount: cardPricing!.total, // amount is a string in cents
       })
-    // We pass recipients and purchaseData as these will be used for the onchain transaction
-    const response = await storage.createOnRampSession(
-      lock!.network,
-      lock!.address,
-      {
-        signature,
-        message,
-        recipients,
-        purchaseData: purchaseData!,
-      }
-    )
-    setOnrampSession(response.data.session)
+      // We pass recipients and purchaseData as these will be used for the onchain transaction
+      const response = await storage.createOnRampSession(
+        lock!.network,
+        lock!.address,
+        {
+          transferSignature,
+          transferMessage,
+          purchaseSignature,
+          purchaseMessage,
+          recipients,
+          purchaseData: purchaseData!,
+        }
+      )
+      setOnrampSession(response.data)
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error(
+        `We could not initiate the card payment. Please try again!`
+      )
+    }
   }
 
   if (isCardPricingLoading || !cardPricing) {

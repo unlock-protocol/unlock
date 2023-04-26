@@ -168,14 +168,22 @@ export const removePaymentMethods: RequestHandler = async (
 }
 
 const createOnRampSessionBody = z.object({
-  signature: z.string(),
-  message: z.object({
+  purchaseData: z.array(z.string()),
+  recipients: z.array(z.string()),
+  transferSignature: z.string(),
+  transferMessage: z.object({
     from: z.string(),
     nonce: z.string(),
     to: z.string(),
     validAfter: z.number(),
     validBefore: z.number(),
     value: z.string(),
+  }),
+  purchaseSignature: z.string(),
+  purchaseMessage: z.object({
+    lock: z.string(),
+    sender: z.string(),
+    expiration: z.number(),
   }),
 })
 
@@ -193,9 +201,8 @@ export const createOnRampSession: RequestHandler = async (
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const userAddress = Normalizer.ethereumAddress(request.user!.walletAddress)
-  const { signature, message } = await createOnRampSessionBody.parseAsync(
-    request.body
-  )
+  const { transferSignature, transferMessage } =
+    await createOnRampSessionBody.parseAsync(request.body)
 
   let usdcContractAddress
   const networkConfig = networks[network]
@@ -209,11 +216,15 @@ export const createOnRampSession: RequestHandler = async (
     throw new Error('USDC not available for this network')
   }
 
+  const providerUrl = networks[network].provider
+  const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
+
   const recovered = await recoverTransferAuthorization(
     usdcContractAddress,
-    message,
+    transferMessage,
     network,
-    signature
+    transferSignature,
+    provider
   )
 
   if (recovered.toLowerCase() !== userAddress.toLowerCase()) {
@@ -229,7 +240,7 @@ export const createOnRampSession: RequestHandler = async (
 
   // Value is in 6 decimals (USDC)
   const amount = ethers.utils.formatUnits(
-    ethers.BigNumber.from(message.value),
+    ethers.BigNumber.from(transferMessage.value),
     6
   )
 
@@ -249,13 +260,16 @@ export const createOnRampSession: RequestHandler = async (
   })
 
   // TODO: save everything to DB?
-  console.log(lockAddress, network, recovered, userAddress, {
-    signature,
-    message,
-    session,
-  })
+  console.log(
+    lockAddress,
+    network,
+    recovered,
+    userAddress,
+    request.body,
+    session
+  )
 
-  return response.status(200).send({ session })
+  return response.status(200).send(session)
 }
 
 /**

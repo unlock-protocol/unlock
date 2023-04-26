@@ -88,11 +88,19 @@ export class CardPurchaser {
       provider
     )
 
+    // Replace me when contract is live!
+    // const domain = {
+    //   name: await contract.name(),
+    //   version: await contract.version(),
+    //   chainId,
+    //   verifyingContract: contract.address,
+    // }
+
     const domain = {
-      name: await contract.name(),
-      version: await contract.version(),
+      name: 'Card Purchaser',
+      version: '1',
       chainId,
-      verifyingContract: contract.address,
+      verifyingContract: cardPurchaserAddress,
     }
 
     const types = {
@@ -111,7 +119,7 @@ export class CardPurchaser {
       expiration: now + 60 * 60 * 24, // 1 hour!
     }
 
-    const signature = signer._signTypedData(domain, types, message)
+    const signature = await signer._signTypedData(domain, types, message)
     return { signature, message }
   }
 }

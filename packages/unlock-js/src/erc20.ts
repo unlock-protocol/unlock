@@ -136,11 +136,14 @@ export async function recoverTransferAuthorization(
   erc20ContractAddress: string,
   message: TransferAuthorizationMessage,
   chainId: number,
-  signature: string
+  signature: string,
+  provider: any
 ) {
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
+
   const domain = {
-    name: 'Unlock',
-    version: '1',
+    name: await contract.name(),
+    version: await contract.version(),
     chainId,
     verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
   }

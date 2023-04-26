@@ -72,6 +72,7 @@ export const universalCard: RequestHandler = async (request, response) => {
   // And split gas between them all
   const fees = (pricing.total - pricing.creditCardProcessingFee) / 100
   const result = {
+    total: '0',
     prices: pricing.recipients.map((recipient: any) => {
       return {
         userAddress: recipient.address,
@@ -80,6 +81,14 @@ export const universalCard: RequestHandler = async (request, response) => {
       }
     }),
   }
+
+  // Compute the total as a string in cents
+  result.total = Math.ceil(
+    100 *
+      result.prices
+        .map((price) => price.amount)
+        .reduce((total: number, price: number) => total + price, 0)
+  ).toString()
 
   return response.send(result)
 }

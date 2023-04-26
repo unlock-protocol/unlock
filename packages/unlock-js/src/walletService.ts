@@ -5,6 +5,7 @@ import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
 import { signTransferAuthorization } from './erc20'
+import { CardPurchaser } from './CardPurchaser'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -64,6 +65,12 @@ interface ExtendKeyParams {
   recurringPayment?: string | number
   totalApproval?: string
   swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
+  amount: string // this is in cents
+  lockAddress: string
+  network: number
 }
 
 /**
@@ -1037,9 +1044,9 @@ export default class WalletService extends UnlockService {
    */
   async getAndSignAuthorizationsForTransferAndPurchase({
     amount,
-  }: {
-    amount: number // this is in cents
-  }) {
+    lockAddress,
+    network,
+  }: GetAndSignAuthorizationsForTransferAndPurchaseParams) {
     const networkConfig = this.networks[this.networkId]
     const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
 
@@ -1059,9 +1066,8 @@ export default class WalletService extends UnlockService {
     }
 
     // first, get the authorization to spend USDC
-
     // 6 decimals for USDC - 2 as amount is in cents
-    const value = ethers.utils.parseUnits(amount.toString(), 4).toHexString()
+    const value = ethers.utils.parseUnits(amount, 4).toHexString()
     const now = Math.floor(new Date().getTime() / 1000)
     const transferMessage = {
       from: await this.signer.getAddress(),
@@ -1080,10 +1086,19 @@ export default class WalletService extends UnlockService {
     )
 
     // then, get the authorization to buy a key
+    const cardPurchaser = new CardPurchaser()
+    const { signature: purchaseSignature, message: purchaseMessage } =
+      await cardPurchaser.getPurchaseAuthorizationSignature(
+        network,
+        lockAddress,
+        this.signer
+      )
 
     return {
       transferSignature,
       transferMessage,
+      purchaseSignature,
+      purchaseMessage,
     }
   }
 }

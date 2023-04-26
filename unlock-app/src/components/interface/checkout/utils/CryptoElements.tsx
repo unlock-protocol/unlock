@@ -2,11 +2,25 @@
 
 import { createContext, useEffect, useState, useRef, useContext } from 'react'
 
+interface CryptoElementsContext {
+  onramp: any
+}
+
 // ReactContext to simplify access of StripeOnramp object
-const CryptoElementsContext = createContext(null)
+const CryptoElementsContext = createContext<CryptoElementsContext | undefined>(
+  undefined
+)
 CryptoElementsContext.displayName = 'CryptoElementsContext'
 
-export const CryptoElements = ({ stripeOnramp, children }) => {
+interface CryptoElementsProps {
+  stripeOnramp: any
+  children: React.ReactNode
+}
+
+export const CryptoElements = ({
+  stripeOnramp,
+  children,
+}: CryptoElementsProps) => {
   const [ctx, setContext] = useState(() => ({
     onramp: null,
   }))
@@ -39,10 +53,14 @@ export const useStripeOnramp = () => {
 }
 
 // React element to render Onramp UI
-const useOnrampSessionListener = (type, session, callback) => {
+const useOnrampSessionListener = (
+  type: string,
+  session: any,
+  callback: any
+) => {
   useEffect(() => {
     if (session && callback) {
-      const listener = (e) => callback(e.payload)
+      const listener = (e: any) => callback(e.payload)
       session.addEventListener(type, listener)
       return () => {
         session.removeEventListener(type, listener)
@@ -52,12 +70,18 @@ const useOnrampSessionListener = (type, session, callback) => {
   }, [session, callback, type])
 }
 
+interface OnrampElementProps {
+  clientSecret: string
+  appearance: any
+  onChange: (payload: any) => void
+}
+
 export const OnrampElement = ({
   clientSecret,
   appearance,
   onChange,
   ...props
-}) => {
+}: OnrampElementProps) => {
   const stripeOnramp = useStripeOnramp()
   const onrampElementRef = useRef(null)
   const [session, setSession] = useState()
@@ -68,6 +92,7 @@ export const OnrampElement = ({
     if (containerRef) {
       // NB: ideally we want to be able to hot swap/update onramp iframe
       // This currently results a flash if one needs to mint a new session when they need to udpate fixed transaction details
+      // @ts-expect-error Property 'innerHTML' does not exist on type 'never'.
       containerRef.innerHTML = ''
 
       if (clientSecret && stripeOnramp) {
