@@ -21,6 +21,7 @@ export const NewCertification = () => {
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
   const [slug, setSlug] = useState<string | undefined>(undefined)
+
   const onSubmit = async (formData: NewCertificationForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
