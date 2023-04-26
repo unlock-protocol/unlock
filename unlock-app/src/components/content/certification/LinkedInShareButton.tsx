@@ -2,7 +2,7 @@ import { Button } from '@unlock-protocol/ui'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
-import { getCertificationUrl } from './utils'
+import { getCertificationPath } from './utils'
 
 interface LinkedinShareProps {
   metadata: Partial<Metadata>
@@ -23,7 +23,7 @@ export const LinkedinShareButton = ({
     return null
   }
 
-  const certificationUrl = getCertificationUrl({
+  const certificationUrl = getCertificationPath({
     metadata,
     lockAddress,
     network,

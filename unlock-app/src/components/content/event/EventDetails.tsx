@@ -45,7 +45,6 @@ import { useImageUpload } from '~/hooks/useImageUpload'
 interface EventDetailsProps {
   lockAddress: string
   network: number
-  isLoading?: boolean
 }
 
 interface EventDetailProps {
@@ -162,11 +161,7 @@ const CoverImageDrawer = ({
   )
 }
 
-export const EventDetails = ({
-  lockAddress,
-  network,
-  isLoading,
-}: EventDetailsProps) => {
+export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
 
@@ -215,7 +210,7 @@ export const EventDetails = ({
 
   const { isEvent } = getLockTypeByMetadata(metadata)
 
-  if (isMetadataLoading || isHasValidKeyLoading || isLoading) {
+  if (isMetadataLoading || isHasValidKeyLoading) {
     return (
       <Placeholder.Root>
         <Placeholder.Card size="lg" />

@@ -3,7 +3,7 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { getCertificationUrl } from '~/components/content/certification/utils'
+import { getCertificationPath } from '~/components/content/certification/utils'
 
 interface Props {
   disabled?: boolean
@@ -27,7 +27,7 @@ export function CertificationMetadataForm({
   })
 
   const certificationPageUrl = new URL(
-    `${window.location.origin}${getCertificationUrl({
+    `${window.location.origin}${getCertificationPath({
       lockAddress,
       network,
       metadata: {

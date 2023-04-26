@@ -7,7 +7,7 @@ interface CertificationUrlProps {
   tokenId?: string | number
 }
 
-export const getCertificationUrl = ({
+export const getCertificationPath = ({
   metadata,
   lockAddress,
   network,

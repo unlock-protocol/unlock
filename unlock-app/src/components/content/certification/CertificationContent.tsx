@@ -7,12 +7,12 @@ import LoadingIcon from '~/components/interface/Loading'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
 import { useMetadata } from '~/hooks/metadata'
-import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouter'
+import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 
 export const CertificationContent = () => {
   const router = useRouter()
 
-  const { isLoading, lockAddress, network, tokenId } =
+  const { lockAddress, network, tokenId } =
     useRouterQueryForLockAddressAndNetworks()
 
   const { data: metadata } = useMetadata({
@@ -61,7 +61,6 @@ export const CertificationContent = () => {
             lockAddress={lockAddress}
             network={network}
             tokenId={tokenId as string}
-            isLoading={isLoading}
           />
         </div>
       )}

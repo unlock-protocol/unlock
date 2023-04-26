@@ -10,7 +10,7 @@ import {
 import { useConfig } from '~/utils/withConfig'
 import { TransactionDetails } from './NewEvent'
 import { useEffect } from 'react'
-import { getEventUrl } from './utils'
+import { getEventPath } from './utils'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
@@ -45,7 +45,7 @@ export const LockDeploying = ({
   const goToEventPage = () => {
     if (lockAddress && network) {
       router.push(
-        getEventUrl({
+        getEventPath({
           lockAddress,
           network,
           metadata: {

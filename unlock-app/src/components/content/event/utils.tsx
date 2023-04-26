@@ -32,7 +32,7 @@ interface EventUrlProps {
   network: string | number
 }
 
-export const getEventUrl = ({
+export const getEventPath = ({
   metadata,
   lockAddress,
   network,

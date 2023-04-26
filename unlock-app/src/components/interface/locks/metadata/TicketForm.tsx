@@ -6,7 +6,7 @@ import { config } from '~/config/app'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { getEventUrl } from '~/components/content/event/utils'
+import { getEventPath } from '~/components/content/event/utils'
 
 interface Props {
   disabled?: boolean
@@ -27,7 +27,7 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
   })
 
   const eventPageUrl = new URL(
-    `${window.location.origin}${getEventUrl({
+    `${window.location.origin}${getEventPath({
       lockAddress,
       network,
       metadata: {
