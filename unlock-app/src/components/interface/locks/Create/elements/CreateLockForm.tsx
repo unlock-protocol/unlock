@@ -299,7 +299,7 @@ export const CreateLockForm = ({
                   placeholder="Enter quantity"
                   type="number"
                   autoComplete="off"
-                  step="any"
+                  step={1}
                   disabled={unlimitedQuantity}
                   {...register('maxNumberOfKeys', {
                     min: 0,

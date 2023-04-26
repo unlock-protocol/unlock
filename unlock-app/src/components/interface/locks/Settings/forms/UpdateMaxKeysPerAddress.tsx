@@ -87,7 +87,7 @@ export const UpdateMaxKeysPerAddress = ({
             placeholder="Enter quantity"
             type="number"
             autoComplete="off"
-            step="any"
+            step={1}
             disabled={disabledInput}
             description={
               !canUpdateMaxKeysPerAddress && (

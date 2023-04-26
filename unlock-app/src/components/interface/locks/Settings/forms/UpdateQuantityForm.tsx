@@ -111,7 +111,7 @@ export const UpdateQuantityForm = ({
             placeholder="Enter quantity"
             type="number"
             autoComplete="off"
-            step="any"
+            step={1}
             disabled={unlimitedQuantity || disabledInput}
             error={
               errors?.maxNumberOfKeys &&
