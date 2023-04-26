@@ -42,7 +42,7 @@ export const CertificationContent = () => {
       setParams({
         lockAddress: lockSettings?.lockAddress,
         network: lockSettings?.network,
-        tokenId: queryParams.tokenId as string,
+        tokenId: queryParams?.tokenId as string,
       })
     }
   }, [lockSettings, queryParams.tokenId, router.query])
@@ -50,6 +50,8 @@ export const CertificationContent = () => {
   const lockAddress = params?.lockAddress?.toString() as string
   const network = parseInt(params?.network?.toString() as string, 10)
   const tokenId = params?.tokenId as string
+
+  console.table(params)
 
   const { data: metadata } = useMetadata({
     lockAddress: lockAddress as string,
@@ -59,7 +61,8 @@ export const CertificationContent = () => {
   const loading = isFetching && isLoading
 
   const showDetails =
-    (params?.lockAddress && params?.network) || (slug && !loading)
+    (!!params?.lockAddress && !!params?.network) ||
+    (slug?.length > 0 && !loading)
 
   if (!router.query || loading) {
     return <LoadingIcon />

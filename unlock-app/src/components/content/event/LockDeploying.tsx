@@ -14,11 +14,13 @@ import { useEffect } from 'react'
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
   lockAddress?: string
+  slug?: string
 }
 
 export const LockDeploying = ({
   transactionDetails,
   lockAddress,
+  slug,
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
@@ -40,9 +42,11 @@ export const LockDeploying = ({
   }
 
   const goToEventPage = () => {
-    if (lockAddress) {
-      router.push(`/event?lockAddress=${lockAddress}&network=${network}`)
+    if (!lockAddress) return
+    if (slug) {
+      router.push(`/event#${slug}`)
     }
+    router.push(`/event?lockAddress=${lockAddress}&network=${network}`)
   }
 
   return (

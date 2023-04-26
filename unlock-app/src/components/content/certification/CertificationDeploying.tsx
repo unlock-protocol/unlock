@@ -16,11 +16,13 @@ import { useMutation } from '@tanstack/react-query'
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
   lockAddress?: string
+  slug?: string
 }
 
 export const CertificationDeploying = ({
   transactionDetails,
   lockAddress,
+  slug,
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
@@ -48,11 +50,11 @@ export const CertificationDeploying = ({
   }
 
   const goToCertification = () => {
-    if (lockAddress) {
-      router.push(
-        `/certification?lockAddress=${lockAddress}&network=${network}`
-      )
+    if (!lockAddress) return
+    if (slug) {
+      router.push(`/certification/#${slug}`)
     }
+    router.push(`/certification?lockAddress=${lockAddress}&network=${network}`)
   }
 
   return (
