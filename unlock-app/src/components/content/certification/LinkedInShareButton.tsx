@@ -23,12 +23,12 @@ export const LinkedinShareButton = ({
     return null
   }
 
-  const certificationUrl = getCertificationPath({
+  const certificationUrl = `${window?.location?.origin}${getCertificationPath({
     metadata,
     lockAddress,
     network,
     tokenId,
-  })
+  })}`
 
   const linkedinIntent = new URL('https://www.linkedin.com/profile/add')
   linkedinIntent.searchParams.set('startTask', 'CERTIFICATION_NAME')

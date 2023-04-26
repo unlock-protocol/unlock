@@ -206,7 +206,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     validate: async (slug: string | undefined) => {
                       if (slug) {
                         const data = (await storage.getLockSettingsBySlug(slug))
-                          .data
+                          ?.data
                         return data
                           ? 'Slug already used, please use another one'
                           : true
