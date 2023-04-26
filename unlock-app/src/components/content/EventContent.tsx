@@ -7,38 +7,23 @@ import { AppLayout } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
-import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
+import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouter'
 
 export const EventContent = () => {
   const router = useRouter()
 
-  const { s: slug } = router.query
-  const {
-    isFetching,
-    isLoading,
-    data: lockSettings,
-  } = useGetLockSettingsBySlug(slug as string)
-
-  const loading = isFetching && isLoading
+  const { isLoading, lockAddress, network } =
+    useRouterQueryForLockAddressAndNetworks()
 
   const handleCreateEvent = () => {
     router.push('/event/new')
   }
 
-  if (!router.query || loading) {
+  if (!lockAddress && network) {
     return <LoadingIcon />
   }
 
-  const lockAddress = lockSettings
-    ? lockSettings.lockAddress
-    : (router.query.lockAddress as string)
-
-  const network = lockSettings
-    ? lockSettings.network
-    : parseInt(router.query?.network?.toString() as string, 10)
-
-  const showDetails =
-    (router.query?.lockAddress && router.query?.network) || (slug && !loading)
+  const showDetails = lockAddress && network
 
   return (
     <AppLayout
@@ -57,7 +42,7 @@ export const EventContent = () => {
         <EventDetails
           lockAddress={lockAddress}
           network={network}
-          isLoading={loading}
+          isLoading={isLoading}
         />
       )}
     </AppLayout>

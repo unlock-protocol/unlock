@@ -43,8 +43,7 @@ export const LockDeploying = ({
   }
 
   const goToEventPage = () => {
-    if (!lockAddress && !network) return
-    if (slug && lockAddress && network) {
+    if (lockAddress && network) {
       router.push(
         getEventUrl({
           lockAddress,

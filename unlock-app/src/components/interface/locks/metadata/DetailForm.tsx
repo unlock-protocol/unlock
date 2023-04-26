@@ -114,7 +114,7 @@ export function DetailForm({ disabled, defaultValues }: Props) {
                   return true
                 },
               })}
-              disabled={disabled}
+              disabled={disabled || defaultValues?.slug}
               type="text"
               label="Slug"
               error={errors.slug?.message}

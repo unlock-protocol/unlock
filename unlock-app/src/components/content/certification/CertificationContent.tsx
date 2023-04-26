@@ -7,42 +7,22 @@ import LoadingIcon from '~/components/interface/Loading'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
 import { useMetadata } from '~/hooks/metadata'
-import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
+import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouter'
 
 export const CertificationContent = () => {
   const router = useRouter()
 
-  const { s: slug = '', tokenId } = router.query
-
-  const {
-    isFetching,
-    isLoading,
-    data: lockSettings,
-  } = useGetLockSettingsBySlug(slug as string)
-
-  const lockAddress = (
-    lockSettings
-      ? lockSettings?.lockAddress?.toString()
-      : router.query.lockAddress
-  ) as string
-
-  const network = (
-    lockSettings
-      ? lockSettings.network
-      : parseInt(router.query?.network?.toString() as string, 10)
-  ) as number
+  const { isLoading, lockAddress, network, tokenId } =
+    useRouterQueryForLockAddressAndNetworks()
 
   const { data: metadata } = useMetadata({
     lockAddress: lockAddress as string,
     network: network as number,
   })
 
-  const loading = isFetching && isLoading
+  const showDetails = lockAddress && network
 
-  const showDetails =
-    (router.query?.lockAddress && router.query?.network) || (slug && !loading)
-
-  if (!router.query || loading) {
+  if (!lockAddress && !network) {
     return <LoadingIcon />
   }
 
@@ -81,7 +61,7 @@ export const CertificationContent = () => {
             lockAddress={lockAddress}
             network={network}
             tokenId={tokenId as string}
-            isLoading={loading}
+            isLoading={isLoading}
           />
         </div>
       )}
