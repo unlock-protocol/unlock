@@ -18,7 +18,7 @@ export const EventContent = () => {
     router.push('/event/new')
   }
 
-  if (!lockAddress && !network) {
+  if (!lockAddress || !network) {
     return <LoadingIcon />
   }
 

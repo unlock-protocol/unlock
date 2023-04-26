@@ -22,7 +22,7 @@ export const CertificationContent = () => {
 
   const showDetails = lockAddress && network
 
-  if (!lockAddress && !network) {
+  if (!lockAddress || !network) {
     return <LoadingIcon />
   }
 
