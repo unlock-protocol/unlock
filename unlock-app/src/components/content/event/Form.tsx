@@ -385,7 +385,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   },
                 })}
                 autoComplete="off"
-                step="any"
+                step={1}
                 pattern="\d+"
                 type="number"
                 placeholder="Capacity"
