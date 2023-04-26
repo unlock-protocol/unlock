@@ -7,9 +7,10 @@ import { storage } from '~/config/storage'
 
 interface Props {
   disabled?: boolean
+  defaultValues?: any
 }
 
-export function DetailForm({ disabled }: Props) {
+export function DetailForm({ disabled, defaultValues }: Props) {
   const {
     register,
     setValue,
@@ -21,6 +22,7 @@ export function DetailForm({ disabled }: Props) {
   const { image } = useWatch({
     control,
   })
+
   const NameDescription = () => (
     <p>
       This will appear as each NFT&apos;s name on OpenSea on other marketplaces.{' '}
@@ -103,12 +105,13 @@ export function DetailForm({ disabled }: Props) {
                   message: 'Slug format is not valid',
                 },
                 validate: async (slug: string | undefined) => {
-                  if (slug) {
+                  const slugChanged = defaultValues?.slug !== slug
+                  if (slugChanged && slug) {
                     const data = (await storage.getLockSettingsBySlug(slug))
                       .data
-                    return data ? 'Slug already used.' : false
+                    return data ? 'Slug already used.' : true
                   }
-                  return false
+                  return true
                 },
               })}
               disabled={disabled}

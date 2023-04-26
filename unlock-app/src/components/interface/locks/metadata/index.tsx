@@ -80,8 +80,8 @@ export const Form = ({
     })
     await updateMetadata(metadata)
 
-    // save slug if present
-    if (metadata.slug) {
+    // save slug if present and changed
+    if (metadata?.slug && defaultValues?.slug !== metadata?.slug) {
       await saveSlugSetting({
         slug: metadata?.slug,
         lockAddress,
@@ -95,7 +95,7 @@ export const Form = ({
     <FormProvider {...methods}>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
-          <DetailForm />
+          <DetailForm defaultValues={defaultValues} />
           <TicketForm
             lockAddress={lockAddress}
             network={network}
