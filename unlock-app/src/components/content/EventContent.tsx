@@ -20,9 +20,11 @@ export const EventContent = () => {
 
   const [, slug] = router?.asPath?.split('#') ?? []
 
-  const { isLoading, data: lockSettings } = useGetLockSettingsBySlug(slug)
-
-  console.log(lockSettings, isLoading)
+  const {
+    isFetching,
+    isLoading,
+    data: lockSettings,
+  } = useGetLockSettingsBySlug(slug)
 
   useEffect(() => {
     if (router.query.lockAddress && router.query.network) {
@@ -38,15 +40,21 @@ export const EventContent = () => {
     }
   }, [lockSettings, router.query])
 
-  const showDetails = (params?.lockAddress && params?.network) || slug
+  const loading = isFetching && isLoading
+
+  const showDetails =
+    (params?.lockAddress && params?.network) || (slug && !loading)
 
   const handleCreateEvent = () => {
     router.push('/event/new')
   }
 
-  if (!router.query) {
+  if (!router.query || loading) {
     return <LoadingIcon />
   }
+
+  const lockAddress = params?.lockAddress?.toString() as string
+  const network = parseInt(params?.network?.toString() as string, 10)
 
   return (
     <AppLayout
@@ -61,11 +69,11 @@ export const EventContent = () => {
       {!showDetails && (
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}
-      {showDetails && (
+      {showDetails && lockAddress && network && (
         <EventDetails
-          lockAddress={params?.lockAddress?.toString() as string}
-          network={parseInt(params?.network?.toString() as string, 10)}
-          isLoading={isLoading}
+          lockAddress={lockAddress}
+          network={network}
+          isLoading={loading}
         />
       )}
     </AppLayout>

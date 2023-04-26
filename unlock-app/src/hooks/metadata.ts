@@ -18,6 +18,13 @@ export const useUpdateMetadata = ({
   return useMutation(
     ['updateMetadata', network, lockAddress, keyId],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
+      const slug = metadata.slug
+      // save slug for page url
+      if (slug && network && lockAddress) {
+        await storage.saveLockSetting(network, lockAddress, {
+          slug,
+        })
+      }
       if (keyId) {
         const keyResponse = await storage.updateKeyMetadata(
           network!,

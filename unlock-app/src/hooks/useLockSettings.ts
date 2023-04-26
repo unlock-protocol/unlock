@@ -46,11 +46,17 @@ export function useLockSettings() {
   }
 }
 
-export function useGetLockSettingsBySlug(slug?: string) {
-  return useQuery(['getLockSettingsBySlug', slug], async () => {
-    if (slug) {
-      return (await storage.getLockSettingsBySlug(slug)).data
+export function useGetLockSettingsBySlug(slug = '') {
+  return useQuery(
+    ['getLockSettingsBySlug', slug],
+    async () => {
+      if (slug) {
+        return (await storage.getLockSettingsBySlug(slug)).data
+      }
+      return null
+    },
+    {
+      enabled: slug?.length > 0,
     }
-    return null
-  })
+  )
 }
