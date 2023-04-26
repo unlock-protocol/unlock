@@ -51,8 +51,6 @@ export const CertificationContent = () => {
   const network = parseInt(params?.network?.toString() as string, 10)
   const tokenId = params?.tokenId as string
 
-  console.table(params)
-
   const { data: metadata } = useMetadata({
     lockAddress: lockAddress as string,
     network: network as number,
