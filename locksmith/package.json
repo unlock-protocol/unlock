@@ -52,6 +52,7 @@
     "@unlock-protocol/ui": "workspace:^",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "color-scheme": "1.0.1",
+    "connect-timeout": "1.9.0",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
     "dayjs": "1.11.7",

@@ -7,8 +7,11 @@ import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
 import router from './routes'
 import { errorHandler } from './utils/middlewares/error'
+import timeout from 'connect-timeout'
 
 const app = express()
+
+app.use(timeout('3s'))
 
 // Enable proxy support
 app.enable('trust proxy')

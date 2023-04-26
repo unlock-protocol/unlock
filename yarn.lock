@@ -15412,13 +15412,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@npm:0.0.12":
-  version: 0.0.12
-  resolution: "@unlock-protocol/contracts@npm:0.0.12"
-  checksum: 827acc0bd291beafba84732363150fa366d307d916a0620d63f83bc7a4e3c51201e3acde7706a8bd81412f1c96cea12e99b27a78255f946958400bd61212bced
-  languageName: node
-  linkType: hard
-
 "@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
@@ -15534,7 +15527,6 @@ __metadata:
     "@types/fs-extra": 11.0.1
     "@types/mocha": 10.0.1
     "@types/node": 18.15.11
-    "@unlock-protocol/contracts": 0.0.12
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -15551,6 +15543,7 @@ __metadata:
     tslint-plugin-prettier: 2.3.0
     typescript: 5.0.4
   peerDependencies:
+    "@unlock-protocol/contracts": "*"
     ethers: ^5.7.x
     hardhat: ^2.12.x
   languageName: unknown
@@ -15601,6 +15594,7 @@ __metadata:
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitest/coverage-c8": 0.30.1
     color-scheme: 1.0.1
+    connect-timeout: 1.9.0
     cookie-parser: 1.4.6
     cors: 2.8.5
     dayjs: 1.11.7
@@ -22599,6 +22593,18 @@ __metadata:
   version: 2.0.0
   resolution: "connect-history-api-fallback@npm:2.0.0"
   checksum: dc5368690f4a5c413889792f8df70d5941ca9da44523cde3f87af0745faee5ee16afb8195434550f0504726642734f2683d6c07f8b460f828a12c45fbd4c9a68
+  languageName: node
+  linkType: hard
+
+"connect-timeout@npm:1.9.0":
+  version: 1.9.0
+  resolution: "connect-timeout@npm:1.9.0"
+  dependencies:
+    http-errors: ~1.6.1
+    ms: 2.0.0
+    on-finished: ~2.3.0
+    on-headers: ~1.0.1
+  checksum: 233021f2dba5e95df012a05ed6692b8b669d57f4cdf498029ab8de2fb1b24cc89609897cb12426d6dc5b50c7a0813768ae750385f0bc444d468b9f3adb7b1017
   languageName: node
   linkType: hard
 
@@ -31587,7 +31593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-errors@npm:~1.6.2":
+"http-errors@npm:~1.6.1, http-errors@npm:~1.6.2":
   version: 1.6.3
   resolution: "http-errors@npm:1.6.3"
   dependencies:
@@ -40290,7 +40296,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"on-headers@npm:^1.0.0, on-headers@npm:~1.0.2":
+"on-headers@npm:^1.0.0, on-headers@npm:~1.0.1, on-headers@npm:~1.0.2":
   version: 1.0.2
   resolution: "on-headers@npm:1.0.2"
   checksum: 2bf13467215d1e540a62a75021e8b318a6cfc5d4fc53af8e8f84ad98dbcea02d506c6d24180cd62e1d769c44721ba542f3154effc1f7579a8288c9f7873ed8e5
