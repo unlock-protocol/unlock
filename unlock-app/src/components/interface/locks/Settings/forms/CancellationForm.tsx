@@ -189,7 +189,7 @@ export const CancellationForm = ({
           <Input
             type="number"
             disabled={disabledInput || !allowTrial}
-            step={1}
+            step="any"
             error={errors?.freeTrialLength && 'This field is required'}
             {...register('freeTrialLength', {
               required: true,
@@ -215,7 +215,7 @@ export const CancellationForm = ({
           <Input
             type="number"
             disabled={disabledInput || !cancelPenalty}
-            step={0.01}
+            step="any"
             error={
               errors?.refundPenaltyPercentage &&
               'This field accept percentage value between 0 and 100.'

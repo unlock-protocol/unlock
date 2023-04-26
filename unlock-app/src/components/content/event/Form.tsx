@@ -366,7 +366,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       type="number"
                       autoComplete="off"
                       placeholder="0.00"
-                      step={0.01}
+                      step="any"
                       disabled={isFree}
                       {...register('lock.keyPrice', {
                         required: !isFree,
@@ -385,7 +385,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   },
                 })}
                 autoComplete="off"
-                step={1}
+                step="any"
                 pattern="\d+"
                 type="number"
                 placeholder="Capacity"
