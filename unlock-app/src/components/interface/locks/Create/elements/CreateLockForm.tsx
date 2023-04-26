@@ -259,7 +259,7 @@ export const CreateLockForm = ({
                 <Input
                   tabIndex={-1}
                   autoComplete="off"
-                  step={0.01}
+                  step="any"
                   disabled={unlimitedDuration}
                   {...register('expirationDuration', {
                     min: 0,
@@ -348,7 +348,7 @@ export const CreateLockForm = ({
                     type="number"
                     autoComplete="off"
                     placeholder="0.00"
-                    step={0.01}
+                    step="any"
                     disabled={isFree}
                     {...register('keyPrice', {
                       required: !isFree,

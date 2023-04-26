@@ -68,7 +68,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
         <Input
           className="my-2 text-right"
           type="number"
-          step="0.01"
+          step="any"
           value={refundAmount}
           onChange={onAmountChange}
           min={0}
