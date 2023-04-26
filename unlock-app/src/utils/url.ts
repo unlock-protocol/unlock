@@ -31,13 +31,3 @@ export const getURL = (url?: string) => {
     return
   }
 }
-
-export const getSlugParamsFromUrl = (url: string) => {
-  const [hash, query] = url?.split('#')[1]?.split('?') ?? []
-  const params = Object.fromEntries(new URLSearchParams(query))
-
-  return {
-    hash,
-    params,
-  }
-}

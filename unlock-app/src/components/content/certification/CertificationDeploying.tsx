@@ -52,7 +52,7 @@ export const CertificationDeploying = ({
   const goToCertification = () => {
     if (!lockAddress) return
     if (slug) {
-      router.push(`/certification/#${slug}`)
+      router.push(`/certification?s=${slug}`)
     }
     router.push(`/certification?lockAddress=${lockAddress}&network=${network}`)
   }

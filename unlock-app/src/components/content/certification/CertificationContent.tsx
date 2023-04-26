@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import { CertificationDetails } from './CertificationDetails'
 import { CertificationLanding } from './CertificationLanding'
@@ -8,48 +8,29 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
 import { useMetadata } from '~/hooks/metadata'
 import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
-import { getSlugParamsFromUrl } from '~/utils/url'
-
-interface CertificationContentProps {
-  lockAddress?: string
-  network?: string | number
-  tokenId?: string
-}
 
 export const CertificationContent = () => {
   const router = useRouter()
 
-  const [params, setParams] = useState<CertificationContentProps>()
-
-  const { hash: slug, params: queryParams } = getSlugParamsFromUrl(
-    router.asPath
-  )
+  const { s: slug = '', tokenId } = router.query
 
   const {
     isFetching,
     isLoading,
     data: lockSettings,
-  } = useGetLockSettingsBySlug(slug)
+  } = useGetLockSettingsBySlug(slug as string)
 
-  useEffect(() => {
-    if (router.query.lockAddress && router.query.network) {
-      setParams({
-        lockAddress: router.query.lockAddress as string,
-        network: router.query.network as string,
-        tokenId: router.query.tokenId as string,
-      })
-    } else {
-      setParams({
-        lockAddress: lockSettings?.lockAddress,
-        network: lockSettings?.network,
-        tokenId: queryParams?.tokenId as string,
-      })
-    }
-  }, [lockSettings, queryParams.tokenId, router.query])
+  const lockAddress = (
+    lockSettings
+      ? lockSettings?.lockAddress?.toString()
+      : router.query.lockAddress
+  ) as string
 
-  const lockAddress = params?.lockAddress?.toString() as string
-  const network = parseInt(params?.network?.toString() as string, 10)
-  const tokenId = params?.tokenId as string
+  const network = (
+    lockSettings
+      ? lockSettings.network
+      : parseInt(router.query?.network?.toString() as string, 10)
+  ) as number
 
   const { data: metadata } = useMetadata({
     lockAddress: lockAddress as string,
@@ -59,8 +40,7 @@ export const CertificationContent = () => {
   const loading = isFetching && isLoading
 
   const showDetails =
-    (!!params?.lockAddress && !!params?.network) ||
-    (slug?.length > 0 && !loading)
+    (router.query?.lockAddress && router.query?.network) || (slug && !loading)
 
   if (!router.query || loading) {
     return <LoadingIcon />
@@ -100,7 +80,7 @@ export const CertificationContent = () => {
           <CertificationDetails
             lockAddress={lockAddress}
             network={network}
-            tokenId={tokenId}
+            tokenId={tokenId as string}
             isLoading={loading}
           />
         </div>

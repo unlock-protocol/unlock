@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import Head from 'next/head'
 import { pageTitle } from '../../constants'
@@ -8,54 +8,38 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useGetLockSettingsBySlug } from '~/hooks/useLockSettings'
-import { getSlugParamsFromUrl } from '~/utils/url'
-
-interface EventContentProps {
-  lockAddress?: string
-  network?: string | number
-}
 
 export const EventContent = () => {
   const router = useRouter()
-  const [params, setParams] = useState<EventContentProps>()
 
-  const { hash: slug } = getSlugParamsFromUrl(router.asPath)
-
+  const { s: slug } = router.query
   const {
     isFetching,
     isLoading,
     data: lockSettings,
-  } = useGetLockSettingsBySlug(slug)
-
-  useEffect(() => {
-    if (router.query.lockAddress && router.query.network) {
-      setParams({
-        lockAddress: router.query.lockAddress as string,
-        network: router.query.network as string,
-      })
-    } else {
-      setParams({
-        lockAddress: lockSettings?.lockAddress,
-        network: lockSettings?.network,
-      })
-    }
-  }, [lockSettings, router.query])
+  } = useGetLockSettingsBySlug(slug as string)
 
   const loading = isFetching && isLoading
-
-  const showDetails =
-    (params?.lockAddress && params?.network) || (slug && !loading)
 
   const handleCreateEvent = () => {
     router.push('/event/new')
   }
 
+  console.table(router.query)
   if (!router.query || loading) {
     return <LoadingIcon />
   }
 
-  const lockAddress = params?.lockAddress?.toString() as string
-  const network = parseInt(params?.network?.toString() as string, 10)
+  const lockAddress = lockSettings
+    ? lockSettings.lockAddress
+    : (router.query.lockAddress as string)
+
+  const network = lockSettings
+    ? lockSettings.network
+    : parseInt(router.query?.network?.toString() as string, 10)
+
+  const showDetails =
+    (router.query?.lockAddress && router.query?.network) || (slug && !loading)
 
   return (
     <AppLayout
