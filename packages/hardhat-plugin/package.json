@@ -56,9 +56,9 @@
     "typescript": "5.0.4"
   },
   "peerDependencies": {
+    "@unlock-protocol/contracts": "*",
     "ethers": "^5.7.x",
-    "hardhat": "^2.12.x",
-    "@unlock-protocol/contracts": "*"
+    "hardhat": "^2.12.x"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.2",
