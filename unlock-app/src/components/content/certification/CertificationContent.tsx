@@ -12,7 +12,7 @@ import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryF
 export const CertificationContent = () => {
   const router = useRouter()
 
-  const { lockAddress, network, tokenId } =
+  const { lockAddress, network, tokenId, isLoading } =
     useRouterQueryForLockAddressAndNetworks()
 
   const { data: metadata } = useMetadata({
@@ -22,7 +22,7 @@ export const CertificationContent = () => {
 
   const showDetails = lockAddress && network
 
-  if (!lockAddress || !network) {
+  if (isLoading) {
     return <LoadingIcon />
   }
 

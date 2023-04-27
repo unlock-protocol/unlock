@@ -11,9 +11,12 @@ export const useRouterQueryForLockAddressAndNetworks = () => {
   }
   const { lockAddress, network, s: slug = '', tokenId } = query
 
-  const { data: lockSettings } = useGetLockSettingsBySlug(slug as string)
+  const { data: lockSettings, isLoading } = useGetLockSettingsBySlug(
+    slug as string
+  )
 
   return {
+    isLoading,
     lockAddress: (lockSettings
       ? lockSettings?.lockAddress
       : lockAddress) as string,
