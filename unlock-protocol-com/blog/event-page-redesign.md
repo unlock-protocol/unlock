@@ -7,17 +7,17 @@ description: A re-designed events page with a modern and fresh look!
 image: /images/blog/event-page-redesign/new-events-cover.png
 ---
 
-The Events by Unlock Labs page has an updated, modern and fresh look!
+The [Events by Unlock Labs](https://events.unlock-protocol.com/) page has an updated, modern and fresh look!
+
 There are a number of changes included with the redesign:
 
 - Cover image
 - Walletless RSVP
-- URL slugs for your certification/event page
+- URL slugs for your event page (this also applies to [certifications](https://certifications.unlock-protocol.com)!)
 
 ## Cover image
 
-You now have the option to add a cover image for your event page!
-Simply click the `Upload Image` button and follow the steps from the modal.
+You now have the option to add a cover image for your event page! Simply click the `Upload Image` button and follow the steps from the modal.
 
 ![add cover](/images/blog/event-page-redesign/add-cover-image.png)
 
@@ -42,4 +42,4 @@ Great news — you can now define a custom slug for your events page. Instead of
 
 ## What if I find an issue or bug in new event page redesign?
 
-Please open an issue on Github or tell us in the Discord and we'll fix it ASAP.
+Please [open an issue on Github](https://github.com/unlock-protocol/unlock) or tell us [in the Discord](https://discord.unlock-protocol.com/) and we'll fix it ASAP.
