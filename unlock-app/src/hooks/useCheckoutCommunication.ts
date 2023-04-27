@@ -212,7 +212,6 @@ export const useCheckoutCommunication = () => {
           // Assigning an id because they may be returned in a different order
           request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
         }
-        console.log('request', request)
         return new Promise((resolve, reject) => {
           waitingMethodCalls[request.id] = (error: any, response: any) => {
             if (error) {
