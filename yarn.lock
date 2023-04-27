@@ -13916,7 +13916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-timeout@npm:^0.0.36":
+"@types/connect-timeout@npm:0.0.36":
   version: 0.0.36
   resolution: "@types/connect-timeout@npm:0.0.36"
   dependencies:
@@ -15580,7 +15580,7 @@ __metadata:
     "@resvg/resvg-js": 2.4.1
     "@sentry/node": 7.48.0
     "@sentry/tracing": 7.48.0
-    "@types/connect-timeout": ^0.0.36
+    "@types/connect-timeout": 0.0.36
     "@types/cookie-parser": 1.4.3
     "@types/cors": 2.8.13
     "@types/geoip-country": 4.0.0
