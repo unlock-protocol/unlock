@@ -54,6 +54,11 @@ export interface MethodCallResult {
 }
 /* end type definitions */
 
+/**
+ * Using a single child object
+ */
+let postmateChild: any
+
 export class Paywall {
   childCallBuffer: [string, any?][] = []
 
@@ -164,26 +169,32 @@ export class Paywall {
 
   shakeHands = async (unlockAppUrl: string) => {
     console.debug(`Connecting to ${unlockAppUrl}`)
-    const child = await new Postmate({
-      url: `${unlockAppUrl}/checkout`,
-      classListArray: [checkoutIframeClassName, 'show'],
-    })
+    if (!postmateChild) {
+      postmateChild = await new Postmate({
+        url: `${unlockAppUrl}/checkout`,
+        classListArray: [checkoutIframeClassName],
+      })
+    }
 
-    this.child = child
-
+    this.child = postmateChild
     this.iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
-
-    child.on(CheckoutEvents.closeModal, this.hideIframe)
-    child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
-    child.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
-    child.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
-    child.on(CheckoutEvents.enable, this.handleEnable)
+    this.showIframe()
+    this.child!.on(CheckoutEvents.closeModal, this.hideIframe)
+    this.child!.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
+    this.child!.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
+    this.child!.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
+    this.child!.on(CheckoutEvents.enable, this.handleEnable)
 
     // transactionInfo event also carries transaction hash.
-    child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
+    this.child!.on(
+      CheckoutEvents.transactionInfo,
+      this.handleTransactionInfoEvent
+    )
 
     // flush the buffer of child calls from before the iframe was ready
-    this.childCallBuffer.forEach((bufferedCall) => child.call(...bufferedCall))
+    this.childCallBuffer.forEach((bufferedCall) =>
+      this.child!.call(...bufferedCall)
+    )
   }
 
   sendOrBuffer = (method: string, args: any) => {
