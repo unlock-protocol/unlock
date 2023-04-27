@@ -222,8 +222,10 @@ export class Paywall {
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
     const provider = this.provider as any
     if (provider.request) {
-      provider.request({ method, params, id }, (error: any, response: any) => {
-        this.child!.call('resolveMethodCall', { id, error, response })
+      return provider.request({ method, params, id }).then((response) => {
+        this.child!.call('resolveMethodCall', { id, error: null, response })
+      }).catch((error) => {
+        this.child!.call('resolveMethodCall', { id, error, response: null })
       })
     } else if (provider.sendAsync) {
       provider.sendAsync(
@@ -243,7 +245,6 @@ export class Paywall {
     const provider = this.provider as any
 
     provider.on(eventName, () => {
-      console.log('on', eventName)
       this.child!.call('resolveOnEvent', eventName)
     })
   }

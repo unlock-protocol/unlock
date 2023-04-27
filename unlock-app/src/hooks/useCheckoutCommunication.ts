@@ -51,6 +51,10 @@ export type AsyncSendable = {
     request: any,
     callback: (error: any, response: any) => void
   ) => void
+  request?: (
+    request: any,
+    callback: (error: any, response: any) => void
+  ) => void
   send?: (request: any, callback: (error: any, response: any) => void) => void
   on?: (name: string, callback: () => void) => void
 }
@@ -195,10 +199,30 @@ export const useCheckoutCommunication = () => {
         })
       },
       sendAsync: (request: MethodCall, callback) => {
+        if (!request.id) {
+          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        }
         waitingMethodCalls[request.id] = (error: any, response: any) => {
           callback(error, response)
         }
         emitMethodCall(request)
+      },
+      request: async (request: MethodCall) => {
+        if (!request.id) {
+          // Assigning an id because they may be returned in a different order
+          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        }
+        console.log('request', request)
+        return new Promise((resolve, reject) => {
+          waitingMethodCalls[request.id] = (error: any, response: any) => {
+            if (error) {
+              reject(error)
+            } else {
+              resolve(response)
+            }
+          }
+          emitMethodCall(request)
+        })
       },
       on: (event: string, callback: any) => {
         eventHandlers[event] = callback
