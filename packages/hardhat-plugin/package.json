@@ -56,12 +56,12 @@
     "typescript": "5.0.4"
   },
   "peerDependencies": {
+    "@unlock-protocol/contracts": "*",
     "ethers": "^5.7.x",
     "hardhat": "^2.12.x"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.2",
-    "@unlock-protocol/contracts": "0.0.12",
     "eslint-plugin-mocha": "10.1.0"
   }
 }

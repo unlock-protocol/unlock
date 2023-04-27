@@ -19,6 +19,7 @@ export async function saveSettings({
   sendEmail,
   replyTo,
   creditCardPrice,
+  slug,
 }: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
@@ -27,6 +28,7 @@ export async function saveSettings({
       sendEmail,
       replyTo,
       creditCardPrice,
+      slug: slug?.toLowerCase().trim(),
     },
     {
       returning: true,
@@ -49,4 +51,16 @@ export async function getSettings({
   })
 
   return settings || DEFAULT_LOCK_SETTINGS
+}
+
+export async function getLockSettingsBySlug(
+  slug: string
+): Promise<LockSetting | null> {
+  const settings = await LockSetting.findOne({
+    where: {
+      slug: slug.toLowerCase().trim(),
+    },
+  })
+
+  return settings || null
 }

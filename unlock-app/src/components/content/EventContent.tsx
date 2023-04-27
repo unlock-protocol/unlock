@@ -7,19 +7,22 @@ import { AppLayout } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
+import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 
 export const EventContent = () => {
   const router = useRouter()
-  if (!router.query) {
-    return <LoadingIcon></LoadingIcon>
-  }
 
-  const { lockAddress, network } = router.query
-  const showDetails = lockAddress && network
+  const { lockAddress, network } = useRouterQueryForLockAddressAndNetworks()
 
   const handleCreateEvent = () => {
     router.push('/event/new')
   }
+
+  if (!lockAddress || !network) {
+    return <LoadingIcon />
+  }
+
+  const showDetails = lockAddress && network
 
   return (
     <AppLayout
@@ -34,11 +37,8 @@ export const EventContent = () => {
       {!showDetails && (
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}
-      {showDetails && (
-        <EventDetails
-          lockAddress={lockAddress.toString()}
-          network={parseInt(network.toString(), 10)}
-        />
+      {showDetails && lockAddress && network && (
+        <EventDetails lockAddress={lockAddress} network={network} />
       )}
     </AppLayout>
   )
