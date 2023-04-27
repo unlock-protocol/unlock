@@ -7,8 +7,14 @@ import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
 import router from './routes'
 import { errorHandler } from './utils/middlewares/error'
+import timeout from 'connect-timeout'
+import config from './config/config'
 
 const app = express()
+
+if (config.requestTimeout) {
+  app.use(timeout(config.requestTimeout))
+}
 
 // Enable proxy support
 app.enable('trust proxy')
