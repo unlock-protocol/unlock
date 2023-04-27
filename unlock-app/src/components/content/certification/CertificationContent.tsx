@@ -7,24 +7,27 @@ import LoadingIcon from '~/components/interface/Loading'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { pageTitle } from '~/constants'
 import { useMetadata } from '~/hooks/metadata'
+import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 
 export const CertificationContent = () => {
   const router = useRouter()
 
-  const { lockAddress, network, tokenId } = router.query as any
-  const showDetails = !!(router.query && lockAddress && network)
+  const { lockAddress, network, tokenId } =
+    useRouterQueryForLockAddressAndNetworks()
 
   const { data: metadata } = useMetadata({
     lockAddress: lockAddress as string,
     network: network as number,
   })
 
-  const handleCreateCertification = () => {
-    router.push('/certification/new')
+  const showDetails = lockAddress && network
+
+  if (!lockAddress || !network) {
+    return <LoadingIcon />
   }
 
-  if (!router.query) {
-    return <LoadingIcon />
+  const handleCreateCertification = () => {
+    router.push('/certification/new')
   }
 
   return (
@@ -55,8 +58,8 @@ export const CertificationContent = () => {
       {showDetails && (
         <div className="m-auto md:w-3/4">
           <CertificationDetails
-            lockAddress={lockAddress as string}
-            network={Number(network)}
+            lockAddress={lockAddress}
+            network={network}
             tokenId={tokenId as string}
           />
         </div>

@@ -17,6 +17,7 @@ export interface TransactionDetails {
 export const NewEvent = () => {
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
+  const [slug, setSlug] = useState<string | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
   const onSubmit = async (formData: NewEventForm) => {
@@ -56,6 +57,16 @@ export const NewEvent = () => {
           ...formData.metadata,
         }),
       })
+
+      // Save slug for URL if present
+      setSlug(formData?.metadata?.slug)
+
+      const slug = formData?.metadata.slug
+      if (slug) {
+        await storage.saveLockSetting(formData.network, lockAddress, {
+          slug,
+        })
+      }
       // Finally
       setLockAddress(lockAddress)
     }
@@ -73,6 +84,7 @@ export const NewEvent = () => {
           <LockDeploying
             transactionDetails={transactionDetails}
             lockAddress={lockAddress}
+            slug={slug}
           />
         )}
         {!transactionDetails && <Form onSubmit={onSubmit} />}

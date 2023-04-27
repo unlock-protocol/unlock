@@ -58,6 +58,7 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
+  requestTimeout: '25s',
 }
 
 if (process.env.ON_HEROKU) {
