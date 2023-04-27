@@ -6,6 +6,7 @@ import { config } from '~/config/app'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { getEventPath } from '~/components/content/event/utils'
 
 interface Props {
   disabled?: boolean
@@ -21,12 +22,18 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
   } = useFormContext<MetadataFormData>()
 
   const [previewTicket, setPreviewTicket] = useState(false)
-  const { ticket, name } = useWatch({
+  const { ticket, name, slug } = useWatch({
     control,
   })
 
   const eventPageUrl = new URL(
-    `${window.location.origin}/event?lockAddress=${lockAddress}&network=${network}`
+    `${window.location.origin}${getEventPath({
+      lockAddress,
+      network,
+      metadata: {
+        slug,
+      },
+    })}`
   )
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
