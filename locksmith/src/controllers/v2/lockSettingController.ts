@@ -96,13 +96,7 @@ export const getLockSettingsBySlug: RequestHandler = async (
     const slug = request.params.slug.toLowerCase().trim()
     const settings = await lockSettingOperations.getLockSettingsBySlug(slug)
 
-    if (settings) {
-      return response.status(200).send(settings)
-    }
-
-    return response.status(404).send({
-      message: 'Settings not found for this slug',
-    })
+    return response.status(200).send(settings)
   } catch (err: any) {
     logger.error(err.message)
     return response.status(500).send({

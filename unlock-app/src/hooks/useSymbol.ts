@@ -13,7 +13,7 @@ export const useGetLockCurrencySymbol = ({
   contractAddress,
 }: GetLockSymbolProps) => {
   const web3service = useWeb3Service()
-  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
+  const baseCurrencySymbol = networks?.[network]?.nativeCurrency?.symbol
 
   return useQuery(
     ['getLockSymbol', lockAddress, network, contractAddress],

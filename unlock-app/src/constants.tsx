@@ -26,10 +26,14 @@ export const pageTitle = (title?: string): string => {
 // used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
 const accountRegex = '0x[a-fA-F0-9]{40}'
 
+// regex for slug eg. demo-test-22
+const slugRegex = '[a-z0-9]+(?:-[a-z0-9]+)*'
+
 /**
  * Matches any valid ethereum account address
  */
 export const ACCOUNT_REGEXP = new RegExp(`^${accountRegex}$`)
+export const SLUG_REGEXP = new RegExp(`^${slugRegex}$`)
 
 // helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'

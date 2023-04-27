@@ -2,6 +2,7 @@ import { Button } from '@unlock-protocol/ui'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { IoLogoLinkedin as LinkedinIcon } from 'react-icons/io'
+import { getCertificationPath } from './utils'
 
 interface LinkedinShareProps {
   metadata: Partial<Metadata>
@@ -21,7 +22,13 @@ export const LinkedinShareButton = ({
   if (!metadata.name || !certificateData) {
     return null
   }
-  const certificationUrl = `${window?.location?.origin}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
+
+  const certificationUrl = `${window?.location?.origin}${getCertificationPath({
+    metadata,
+    lockAddress,
+    network,
+    tokenId,
+  })}`
 
   const linkedinIntent = new URL('https://www.linkedin.com/profile/add')
   linkedinIntent.searchParams.set('startTask', 'CERTIFICATION_NAME')
