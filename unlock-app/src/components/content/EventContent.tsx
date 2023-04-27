@@ -12,13 +12,14 @@ import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryF
 export const EventContent = () => {
   const router = useRouter()
 
-  const { lockAddress, network } = useRouterQueryForLockAddressAndNetworks()
+  const { lockAddress, network, isLoading } =
+    useRouterQueryForLockAddressAndNetworks()
 
   const handleCreateEvent = () => {
     router.push('/event/new')
   }
 
-  if (!lockAddress || !network) {
+  if (isLoading) {
     return <LoadingIcon />
   }
 
