@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
@@ -13,12 +13,15 @@ import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { PaywallConfig } from '~/unlockTypes'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
 
 export function CheckoutPage() {
   const { query } = useRouter()
   const config = useConfig()
+  const { provider } = useContext(AuthenticationContext)
+
   // Fetch config from parent in iframe context
-  const communication = useCheckoutCommunication()
+  const communication = useCheckoutCommunication(provider)
   const { isInitialLoading, data: checkout } = useCheckoutConfig({
     id: query.id?.toString(),
   })

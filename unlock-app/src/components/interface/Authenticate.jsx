@@ -94,6 +94,7 @@ export const Authenticate = ({
     getWalletService,
     connected,
     displayAccount,
+    provider,
   } = useProvider(config)
 
   const authenticate = async (provider) => {
@@ -112,6 +113,7 @@ export const Authenticate = ({
   return (
     <AuthenticationContext.Provider
       value={{
+        provider,
         providerSend,
         signMessage,
         account,

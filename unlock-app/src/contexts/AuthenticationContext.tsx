@@ -15,6 +15,7 @@ interface AuthenticationContextType {
   getWalletService(network?: number): Promise<WalletService>
   providerSend(method: string, params: string[]): void
   displayAccount?: string
+  provider?: any
 }
 
 export const defaultValues = {

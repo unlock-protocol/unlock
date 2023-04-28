@@ -11,6 +11,7 @@ import {
   enableInjectedProvider,
 } from './utils/enableInjectedProvider'
 import { unlockAppUrl } from './urls'
+import { Provider } from './utils/Provider'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
@@ -99,6 +100,7 @@ export class Paywall {
       this.shakeHands(unlockUrl || unlockAppUrl)
     }
     this.sendOrBuffer('authenticate', {})
+    return new Provider(this)
   }
 
   loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {

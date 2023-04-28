@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useReducer } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
@@ -104,7 +104,7 @@ export const resolveOnEvent = (name: string) => {
 // buffer. After that, once the handle to the parent is available, all
 // the buffered events are emitted and future events are emitted
 // directly.
-export const useCheckoutCommunication = () => {
+export const useCheckoutCommunication = (provider: any) => {
   const [providerAdapter, setProviderAdapter] = useState<
     AsyncSendable | undefined
   >(undefined)
@@ -116,13 +116,43 @@ export const useCheckoutCommunication = () => {
     undefined
   )
   const [user, setUser] = useState<string | undefined>(undefined)
+
+  const [stack, pushOnStack] = useReducer((stack, request) => {
+    return [...stack, request]
+  }, [])
+
+  useEffect(() => {
+    console.log({ provider })
+  }, [provider])
+
+  const providerRequest = useCallback(
+    (...args: any[]) => {
+      // Here we need to pass messages to our connected provider
+      // These messages are coming from the parent window.
+      console.log('providerRequest', args)
+      if (provider) {
+        provider.request(...args)
+      } else {
+        // Let's stack requests!
+        pushOnStack(args)
+      }
+    },
+    [provider]
+  )
+
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setPaywallConfig(config)
     },
+    providerRequest,
     authenticate: () => {
+      const parent = new URL(
+        window.location != window.parent.location
+          ? document.referrer
+          : document.location.href
+      )
       setOauthConfig({
-        clientId: window.parent.location.host,
+        clientId: parent.host,
         responseType: '',
         state: '',
         redirectUri: '',
