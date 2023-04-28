@@ -220,16 +220,31 @@ export class Paywall {
   }
 
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
-    ;(this.provider! as any).sendAsync(
-      { method, params, id },
-      (error: any, response: any) => {
-        this.child!.call('resolveMethodCall', { id, error, response })
-      }
-    )
+    const provider = this.provider as any
+    if (provider.request) {
+      return provider.request({ method, params, id }).then((response) => {
+        this.child!.call('resolveMethodCall', { id, error: null, response })
+      }).catch((error) => {
+        this.child!.call('resolveMethodCall', { id, error, response: null })
+      })
+    } else if (provider.sendAsync) {
+      provider.sendAsync(
+        { method, params, id },
+        (error: any, response: any) => {
+          this.child!.call('resolveMethodCall', { id, error, response })
+        }
+      )
+    } else {
+      console.error(
+        'unknown method to call provider! Please make sure you use and EIP1193 provider!'
+      )
+    }
   }
 
   handleOnEventEvent = async (eventName: string) => {
-    ;(this.provider! as any).on(eventName, () => {
+    const provider = this.provider as any
+
+    provider.on(eventName, () => {
       this.child!.call('resolveOnEvent', eventName)
     })
   }
