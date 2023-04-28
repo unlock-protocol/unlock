@@ -16,9 +16,13 @@ contract CardPurchaser is Ownable, EIP712 {
   error INSUFFICIENT_AUTHORIZATION();
   error TOO_LATE();
   error PURCHASER_DOES_NOT_MATCH();
+  error SIGNER_DOES_NOT_MATCH();
 
   // Unlock address on current chain
   address public unlockAddress;
+
+  // Address of USDC contract
+  address public usdc;
 
   struct ApprovalMessage {
     address from;
@@ -38,23 +42,22 @@ contract CardPurchaser is Ownable, EIP712 {
   /**
    * Constructor
    */
-  constructor(address _unlockAddress) EIP712("Card Purchaser", "1") Ownable() {
+  constructor(
+    address _unlockAddress,
+    address _usdc
+  ) EIP712("Card Purchaser", "1") Ownable() {
     unlockAddress = _unlockAddress;
+    usdc = _usdc;
   }
 
   /**
    * The function that withdraws the USDC tokens from the user, and then uses them to perform a purchase
    */
   function purchase(
-    address usdc,
     ApprovalMessage memory approvalMessage,
-    uint8 approvalSignatureV,
-    bytes32 approvalSignatureR,
-    bytes32 approvalSignatureS,
+    bytes memory approvalSignature,
     PurchaseMessage memory purchaseMessage,
-    uint8 purchaseSignatureV,
-    bytes32 purchaseSignatureR,
-    bytes32 purchaseSignatureS,
+    bytes memory purchaseSignature,
     bytes memory callData
   ) public returns (bytes memory) {
     // This works only for locks
@@ -63,30 +66,35 @@ contract CardPurchaser is Ownable, EIP712 {
       revert MISSING_LOCK();
     }
 
+    // Check the purchase is not expired
     if (purchaseMessage.expiration < block.timestamp) {
       revert TOO_LATE();
     }
 
-    uint balanceBefore = IUSDC(usdc).balanceOf(address(this));
-
-    // Check the signer of purchaseMessage is approvalMessage.from,
-    // this means that whoever signed the purchase message also matches the approval
+    // Check the purchaseMessage.sender is approvalMessage.from (purchaser is the spender)
     if (purchaseMessage.sender != approvalMessage.from) {
       revert PURCHASER_DOES_NOT_MATCH();
     }
 
-    // Get the tokens from the user
-    IUSDC(usdc).transferWithAuthorization(
-      approvalMessage.from,
-      address(this), // We explicitly don't use approvalMessage.to, just in case it was compromised!
-      approvalMessage.value,
-      approvalMessage.validAfter,
-      approvalMessage.validBefore,
-      approvalMessage.nonce,
-      approvalSignatureV,
-      approvalSignatureR,
-      approvalSignatureS
+    // Check the signature on the purchase matches its sender
+    bytes32 hash = keccak256(
+      abi.encode(
+        keccak256("Purchase(address lock,address sender,uint256 expiration)"),
+        purchaseMessage.lock,
+        purchaseMessage.sender,
+        purchaseMessage.expiration
+      )
     );
+    address signer = ECDSA.recover(hash, purchaseSignature);
+    if (signer != approvalMessage.from) {
+      revert SIGNER_DOES_NOT_MATCH();
+    }
+
+    // Get the balance to make sure no extra token are spent!
+    uint balanceBefore = IUSDC(usdc).balanceOf(address(this));
+
+    // Get the tokens from the user
+    transferTokens(approvalMessage, approvalSignature);
 
     // Approve the lock to spend all of the USDC (but it should spend less!)
     IUSDC(usdc).approve(purchaseMessage.lock, approvalMessage.value);
@@ -131,5 +139,51 @@ contract CardPurchaser is Ownable, EIP712 {
         revert WITHDRAW_FAILED();
       }
     }
+  }
+
+  // Helper
+  function splitSignature(
+    bytes memory sig
+  ) private pure returns (bytes32 r, bytes32 s, uint8 v) {
+    require(sig.length == 65, "invalid signature length");
+
+    assembly {
+      /*
+            First 32 bytes stores the length of the signature
+
+            add(sig, 32) = pointer of sig + 32
+            effectively, skips first 32 bytes of signature
+
+            mload(p) loads next 32 bytes starting at the memory address p into memory
+            */
+
+      // first 32 bytes, after the length prefix
+      r := mload(add(sig, 32))
+      // second 32 bytes
+      s := mload(add(sig, 64))
+      // final byte (first byte of the next 32 bytes)
+      v := byte(0, mload(add(sig, 96)))
+    }
+
+    // implicitly return (r, s, v)
+  }
+
+  // Helper
+  function transferTokens(
+    ApprovalMessage memory approvalMessage,
+    bytes memory approvalSignature
+  ) private {
+    (bytes32 ra, bytes32 sa, uint8 va) = splitSignature(approvalSignature);
+    IUSDC(usdc).transferWithAuthorization(
+      approvalMessage.from,
+      address(this), // We explicitly don't use approvalMessage.to, just in case it was compromised!
+      approvalMessage.value,
+      approvalMessage.validAfter,
+      approvalMessage.validBefore,
+      approvalMessage.nonce,
+      va,
+      ra,
+      sa
+    );
   }
 }
