@@ -1,4 +1,6 @@
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { ethers } from 'ethers'
+import { storage } from '~/config/storage'
 import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -42,4 +44,29 @@ export function useLockSettings() {
   return {
     getIsRecurringPossible,
   }
+}
+
+export function useGetLockSettingsBySlug(slug = '') {
+  return useQuery(['getLockSettingsBySlug', slug], async () => {
+    if (slug) {
+      return (await storage.getLockSettingsBySlug(slug)).data
+    }
+    return null
+  })
+}
+
+interface SaveSlugProps {
+  slug: string
+  lockAddress: string
+  network: number
+}
+
+export function useSaveSlugSetting() {
+  return useMutation(async ({ slug, lockAddress, network }: SaveSlugProps) => {
+    if (slug) {
+      return storage.saveLockSetting(network, lockAddress, {
+        slug,
+      })
+    }
+  })
 }
