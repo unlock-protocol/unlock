@@ -8,6 +8,9 @@ import "./interfaces/IUSDC.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
+// TODO: remove me!
+import "hardhat/console.sol";
+
 /// @custom:security-contact hello@unlock-protocol.com
 contract CardPurchaser is Ownable, EIP712 {
   error WITHDRAW_FAILED();
@@ -15,7 +18,7 @@ contract CardPurchaser is Ownable, EIP712 {
   error LOCK_CALL_FAILED();
   error INSUFFICIENT_AUTHORIZATION();
   error TOO_LATE();
-  error PURCHASER_DOES_NOT_MATCH();
+  error PURCHASER_DOES_NOT_MATCH_PAYER();
   error SIGNER_DOES_NOT_MATCH();
 
   // Unlock address on current chain
@@ -23,6 +26,12 @@ contract CardPurchaser is Ownable, EIP712 {
 
   // Address of USDC contract
   address public usdc;
+
+  // Name of contract (OZ's EIP712 does not expose it)
+  string public name;
+
+  // VErsion of contract (OZ's EIP712 does not expose it)
+  string public version;
 
   struct ApprovalMessage {
     address from;
@@ -43,11 +52,15 @@ contract CardPurchaser is Ownable, EIP712 {
    * Constructor
    */
   constructor(
+    address _owner,
     address _unlockAddress,
     address _usdc
   ) EIP712("Card Purchaser", "1") Ownable() {
+    name = "Card Purchaser";
+    version = "1";
     unlockAddress = _unlockAddress;
     usdc = _usdc;
+    transferOwnership(_owner);
   }
 
   /**
@@ -73,11 +86,11 @@ contract CardPurchaser is Ownable, EIP712 {
 
     // Check the purchaseMessage.sender is approvalMessage.from (purchaser is the spender)
     if (purchaseMessage.sender != approvalMessage.from) {
-      revert PURCHASER_DOES_NOT_MATCH();
+      revert PURCHASER_DOES_NOT_MATCH_PAYER();
     }
 
     // Check the signature on the purchase matches its sender
-    bytes32 hash = keccak256(
+    bytes32 structHash = keccak256(
       abi.encode(
         keccak256("Purchase(address lock,address sender,uint256 expiration)"),
         purchaseMessage.lock,
@@ -85,8 +98,10 @@ contract CardPurchaser is Ownable, EIP712 {
         purchaseMessage.expiration
       )
     );
-    address signer = ECDSA.recover(hash, purchaseSignature);
-    if (signer != approvalMessage.from) {
+    bytes32 hash = _hashTypedDataV4(structHash);
+    address recovered = ECDSA.recover(hash, purchaseSignature);
+
+    if (recovered != approvalMessage.from) {
       revert SIGNER_DOES_NOT_MATCH();
     }
 
@@ -108,11 +123,18 @@ contract CardPurchaser is Ownable, EIP712 {
     IUSDC(usdc).approve(purchaseMessage.lock, 0);
 
     if (lockCallSuccess == false) {
-      revert LOCK_CALL_FAILED();
+      // If there is return data, the call reverted without a reason or a custom error.
+      if (returnData.length == 0) revert();
+      assembly {
+        // We use Yul's revert() to bubble up errors from the target contract.
+        revert(add(32, returnData), mload(returnData))
+      }
     }
 
     uint balanceAfter = IUSDC(usdc).balanceOf(address(this));
-    if (balanceAfter <= balanceBefore) {
+    if (balanceAfter < balanceBefore) {
+      console.log(balanceBefore);
+      console.log(balanceAfter);
       revert INSUFFICIENT_AUTHORIZATION();
     }
 
