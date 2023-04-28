@@ -10,8 +10,8 @@ dataSources:
     name: Unlock
     source:
       abi: Unlock
-      address: "0x51A1ceB83B83F1985a81C295d1fF28Afef186E02"
-      startBlock: 2247300
+      address: "0xe79B93f8E22676774F2A8dAd469175ebd00029FA"
+      startBlock: 16989000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,7 +35,7 @@ dataSources:
         - event: GNPChanged(uint256,uint256,address,uint256,address)
           handler: handleGNPChanged
       file: ./src/unlock.ts
-    network: base-testnet
+    network: mainnet
 templates:
   - kind: ethereum
     name: PublicLock
@@ -110,4 +110,4 @@ templates:
           handler: handleLockMetadata
           receipt: true
       file: ./src/public-lock.ts
-    network: base-testnet
+    network: mainnet
