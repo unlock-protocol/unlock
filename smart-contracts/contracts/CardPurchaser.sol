@@ -8,15 +8,12 @@ import "./interfaces/IUSDC.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 
-// TODO: remove me!
-import "hardhat/console.sol";
-
 /// @custom:security-contact hello@unlock-protocol.com
 contract CardPurchaser is Ownable, EIP712 {
   error WITHDRAW_FAILED();
   error MISSING_LOCK();
   error LOCK_CALL_FAILED();
-  error INSUFFICIENT_AUTHORIZATION();
+  error TOO_MUCH_SPENT();
   error TOO_LATE();
   error PURCHASER_DOES_NOT_MATCH_PAYER();
   error SIGNER_DOES_NOT_MATCH();
@@ -50,6 +47,7 @@ contract CardPurchaser is Ownable, EIP712 {
 
   /**
    * Constructor
+   * We double the `name` and `version` fields from EIP712 so we can query the contract to get them and OZ's Ownable does not expose them
    */
   constructor(
     address _owner,
@@ -64,7 +62,8 @@ contract CardPurchaser is Ownable, EIP712 {
   }
 
   /**
-   * The function that withdraws the USDC tokens from the user, and then uses them to perform a purchase
+   * The function that withdraws the USDC tokens from the user,
+   * and then uses them to perform a purchase
    */
   function purchase(
     ApprovalMessage memory approvalMessage,
@@ -100,7 +99,6 @@ contract CardPurchaser is Ownable, EIP712 {
     );
     bytes32 hash = _hashTypedDataV4(structHash);
     address recovered = ECDSA.recover(hash, purchaseSignature);
-
     if (recovered != approvalMessage.from) {
       revert SIGNER_DOES_NOT_MATCH();
     }
@@ -122,6 +120,7 @@ contract CardPurchaser is Ownable, EIP712 {
     // Reset approval
     IUSDC(usdc).approve(purchaseMessage.lock, 0);
 
+    // Bubble up any error
     if (lockCallSuccess == false) {
       // If there is return data, the call reverted without a reason or a custom error.
       if (returnData.length == 0) revert();
@@ -131,11 +130,10 @@ contract CardPurchaser is Ownable, EIP712 {
       }
     }
 
+    // Check that balance only increased!
     uint balanceAfter = IUSDC(usdc).balanceOf(address(this));
     if (balanceAfter < balanceBefore) {
-      console.log(balanceBefore);
-      console.log(balanceAfter);
-      revert INSUFFICIENT_AUTHORIZATION();
+      revert TOO_MUCH_SPENT();
     }
 
     return returnData;

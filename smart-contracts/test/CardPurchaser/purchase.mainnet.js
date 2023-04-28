@@ -228,13 +228,18 @@ describe(`purchase`, function () {
   })
 
   it('should succeed with a purchase', async () => {
-    await addSomeUSDC(USDC, signer.address, keyPrice)
-    const transfer = await signUSDCTransfer({ chainId, signer, recipient: cardPurchaser.address, amount: keyPrice })
+    await addSomeUSDC(USDC, signer.address, ethers.utils.parseUnits('6', 6))
+    const transfer = await signUSDCTransfer({ chainId, signer, recipient: cardPurchaser.address, amount: ethers.utils.parseUnits('6', 6) })
     const purchase = await signLockPurchase({ chainId, signer, cardPurchaser, lockAddress: lock.address })
 
+    // Balance of USDC has increased (fees collected by Unlock!)
+    const usdcContract = new ethers.Contract(USDC, USDC_ABI, signer);
+    const balanceBefore = (await usdcContract.balanceOf(cardPurchaser.address))
     expect((await lock.balanceOf(signer.address)).toNumber()).to.equal(0)
     await (await cardPurchaser.purchase(transfer.message, transfer.signature, purchase.message, purchase.signature, await purchaseCallData(lock, signer.address))).wait()
     expect((await lock.balanceOf(signer.address)).toNumber()).to.equal(1)
+
+    expect((await usdcContract.balanceOf(cardPurchaser.address)).toNumber()).to.equal(balanceBefore.add(ethers.utils.parseUnits('1', 6)).toNumber())
   })
 
   it('should reset the approval to 0', async () => {
@@ -242,9 +247,6 @@ describe(`purchase`, function () {
     const transfer = await signUSDCTransfer({ chainId, signer, recipient: cardPurchaser.address, amount: keyPrice })
     const purchase = await signLockPurchase({ chainId, signer, cardPurchaser, lockAddress: lock.address })
     const usdcContract = new ethers.Contract(USDC, USDC_ABI, signer);
-
-    console.log(usdcContract.address)
-
     await (await cardPurchaser.purchase(transfer.message, transfer.signature, purchase.message, purchase.signature, await purchaseCallData(lock, signer.address))).wait()
     expect((await usdcContract.allowance(cardPurchaser.address, lock.address)).toNumber()).to.equal(0)
 
