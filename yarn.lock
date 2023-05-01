@@ -15641,7 +15641,7 @@ __metadata:
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
     satori: 0.4.4
-    sequelize: 6.31.0
+    sequelize: 6.31.1
     sequelize-cli: 6.6.0
     siwe: 1.1.6
     stripe: 12.1.1
@@ -46991,9 +46991,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:6.31.0":
-  version: 6.31.0
-  resolution: "sequelize@npm:6.31.0"
+"sequelize@npm:6.31.1":
+  version: 6.31.1
+  resolution: "sequelize@npm:6.31.1"
   dependencies:
     "@types/debug": ^4.1.7
     "@types/validator": ^13.7.1
@@ -47030,7 +47030,7 @@ __metadata:
       optional: true
     tedious:
       optional: true
-  checksum: 7964a9415b154c0f6ba25321c068909c896bdbd76457579e622f004db514aeb35731ccc9ad237035ac6c7ccad62e74c6d679019ef18eb3a9ece11381b2713f4a
+  checksum: e281c4da8c9ffa6e69a877d2a631dbb243776bdf38556a03d403d98d95c391612507a96f4cc332fd94e3ae1a64ca4fb03c51961831ecf65f95509359f956b933
   languageName: node
   linkType: hard
 
