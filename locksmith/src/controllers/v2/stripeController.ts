@@ -69,6 +69,7 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
   ).filter((connection) => !!connection)
 
   return res.json({
+    // @ts-expect-error Property 'lock' | 'chain' | 'stripeAccount' does not exist on type 'false | StripeConnectLock'.
     result: activeStripeAccounts.map(({ lock, chain, stripeAccount }) => ({
       lock,
       chain,
