@@ -4,6 +4,10 @@
 
 - adding support functions for Transfer With Authorization
 
+# 0.35.5
+
+- Removed signDataPersonal
+
 # 0.35.4
 
 - Adding missing implementations for v13: addKeyGranter, isKeyGranter
