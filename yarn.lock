@@ -43630,7 +43630,7 @@ __metadata:
     toucan-js: 3.1.0
     typescript: 5.0.4
     vitest: 0.29.7
-    wrangler: 2.14.0
+    wrangler: 2.17.0
   languageName: unknown
   linkType: soft
 
@@ -56092,9 +56092,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:2.14.0":
-  version: 2.14.0
-  resolution: "wrangler@npm:2.14.0"
+"wrangler@npm:2.17.0":
+  version: 2.17.0
+  resolution: "wrangler@npm:2.17.0"
   dependencies:
     "@cloudflare/kv-asset-handler": ^0.2.0
     "@esbuild-plugins/node-globals-polyfill": ^0.1.1
@@ -56118,7 +56118,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: c7cdd467f4c1eb8e83f1f21713310c20405aa5f4bd5adfb4230c56003f7edbbeffccf1df0e4f53c890781709139d742b08ef501c402d43e8aaa519a5b2b21c8c
+  checksum: e1d8b143ffbd0e788e15005ca7c564dc62d242e70ad2560c9ce6766e5aea8b198042e6b32dbab8473019419106cd6e15dc8ea8298b14b98b4d131b92a5af5ad7
   languageName: node
   linkType: hard
 

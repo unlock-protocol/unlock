@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "toucan-js": "3.1.0",
-    "wrangler": "2.14.0"
+    "wrangler": "2.17.0"
   },
   "scripts": {
     "test": "vitest"
