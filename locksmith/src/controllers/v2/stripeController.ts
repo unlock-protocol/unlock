@@ -1,5 +1,5 @@
 import stripeOperations, {
-  stripeConnectionReady,
+  stripeConnection,
 } from '../../operations/stripeOperations'
 import * as Normalizer from '../../utils/normalizer'
 import { Request, Response } from 'express'
@@ -58,9 +58,9 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
   // let's filter the ones which indeed connected!
   const activeStripeAccounts = (
     await Promise.all(
-      connections.map(async (connection) => {
-        const ready = await stripeConnectionReady(connection.stripeAccount)
-        if (ready) {
+      connections.map(async ({ stripeAccount }) => {
+        const connection = await stripeConnection(stripeAccount)
+        if (connection.charges_enabled) {
           return connection
         }
         return false
@@ -69,11 +69,6 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
   ).filter((connection) => !!connection)
 
   return res.json({
-    // @ts-expect-error Property 'lock' | 'chain' | 'stripeAccount' does not exist on type 'false | StripeConnectLock'.
-    result: activeStripeAccounts.map(({ lock, chain, stripeAccount }) => ({
-      lock,
-      chain,
-      stripeAccount,
-    })),
+    result: activeStripeAccounts,
   })
 }
