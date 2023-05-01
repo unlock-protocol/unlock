@@ -84,7 +84,7 @@
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
     "satori": "0.4.4",
-    "sequelize": "6.31.0",
+    "sequelize": "6.31.1",
     "sequelize-cli": "6.6.0",
     "siwe": "1.1.6",
     "stripe": "12.1.1",
