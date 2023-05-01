@@ -93,7 +93,7 @@
     "vitest-fetch-mock": "0.2.2",
     "winston": "3.8.2",
     "winston-transport-sentry-node": "2.7.0",
-    "yargs": "17.7.1",
+    "yargs": "17.7.2",
     "zod": "3.21.4"
   },
   "devDependencies": {
