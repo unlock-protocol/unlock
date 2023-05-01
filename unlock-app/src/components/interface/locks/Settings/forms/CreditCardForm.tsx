@@ -26,7 +26,6 @@ interface CardPaymentProps {
 }
 
 interface ConnectStripeProps {
-  previouslyConnectedLocks: any
   connectStripeMutation: any
   lockAddress: string
   network: number
@@ -88,7 +87,6 @@ const DisconnectStripe = ({
 }
 
 const ConnectStripe = ({
-  previouslyConnectedLocks,
   connectStripeMutation,
   lockAddress,
   network,
@@ -96,29 +94,29 @@ const ConnectStripe = ({
   isManager,
   disabled,
 }: ConnectStripeProps) => {
-  const [reuseLock, setReuseLock] = useState<string>(lockAddress)
-  const { getWalletService } = useAuth()
+  const [stripeAccount, setReuseLock] = useState<string>(lockAddress)
+  const { getWalletService, account } = useAuth()
   const web3Service = useWeb3Service()
 
-  console.log('render!')
-  const [hasRole, setHasRole] = useState(false)
+  const { data: stripeConnections, isLoading: isLoadingStripeConnections } =
+    useQuery(['stripeConnections', account], async () => {
+      const response = await storage.getStripeConnections()
+      if (response.data.error) {
+        throw new Error(response.data.error)
+      }
+      return response.data.result || []
+    })
 
   const checkIsKeyGranter = async (keyGranter: string) => {
     return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
   }
 
-  const grantKeyGrantorRole = async (): Promise<any> => {
+  const grantKeyGrantorRoleMutation = useMutation(async (): Promise<any> => {
     const walletService = await getWalletService(network)
-    return await walletService.addKeyGranter({
+    return walletService.addKeyGranter({
       lockAddress,
       keyGranter,
     })
-  }
-
-  const grantKeyGrantorRoleMutation = useMutation(grantKeyGrantorRole, {
-    onSuccess: (hasRole: boolean) => {
-      setHasRole(hasRole)
-    },
   })
 
   const onGrantKeyRole = async () => {
@@ -131,16 +129,10 @@ const ConnectStripe = ({
 
   const connectStripe = async (event: any) => {
     event.preventDefault()
-    console.log({ reuseLock })
-    const previouslyConnected = reuseLock
-      ? previouslyConnectedLocks.find((previouslyConnected: any) => {
-          return previouslyConnected.lock === reuseLock
-        })
-      : ''
     connectStripeMutation.mutate(
-      { stripeAccount: previouslyConnected?.stripeAccount },
+      { stripeAccount },
       {
-        onSuccess: (connect) => {
+        onSuccess: (connect: any) => {
           if (connect?.url) {
             window.location.assign(connect.url)
           } else {
@@ -161,66 +153,73 @@ const ConnectStripe = ({
     }
   )
 
+  const isLoading = isLoadingCheckGrantedStatus || isLoadingStripeConnections
+
+  if (isLoading) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line size="xl" width="sm" />
+      </Placeholder.Root>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      {isGranted ? (
-        <SettingCardDetail
-          title="Connect Stripe to Your Account"
-          description="In your application, please refrain from mentioning NFT, and focus on your use case: subscriptions, tickets... etc"
-        />
-      ) : (
-        <SettingCardDetail
-          title="Enable Contract to Accept Credit Card"
-          description={
-            <div className="flex flex-col gap-2">
-              <span>
-                {`Credit card processing is not part of the core protocol.
+      <SettingCardDetail
+        title="Enable Contract to Accept Credit Card"
+        description={
+          <div className="flex flex-col gap-2">
+            <span>
+              {`Credit card processing is not part of the core protocol.
                 Unlock Labs processes non-crypto payments via our Stripe
                 integration and includes fees that are applied on top of your
                 lock's key price.`}
-              </span>
-              <span>
-                If you enable credit card payments for your lock, your members
-                will usually be charged a higher amount than the amount for your
-                lock. The Unlock Labs fee is 10%, which must be added to the
-                Stripe fees and gas costs.
-              </span>
-              <span>
-                For more details see{' '}
-                <Link
-                  className="font-semibold text-brand-ui-primary"
-                  href="https://unlock-protocol.com/guides/enabling-credit-cards/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Enabling Credit Cards guide
-                </Link>
-              </span>
-            </div>
-          }
-        />
-      )}
+            </span>
+            <span>
+              If you enable credit card payments for your lock, your members
+              will usually be charged a higher amount than the amount for your
+              lock. The Unlock Labs fee is 10%, which must be added to the
+              Stripe fees and gas costs.
+            </span>
+            <span>
+              For more details see{' '}
+              <Link
+                className="font-semibold text-brand-ui-primary"
+                href="https://unlock-protocol.com/guides/enabling-credit-cards/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Enabling Credit Cards guide
+              </Link>
+              .
+            </span>
+          </div>
+        }
+      />
       {isManager && (
         <div className="flex flex-col gap-3">
           {isGranted ? (
             <form className="grid gap-4" onSubmit={connectStripe}>
-              {previouslyConnectedLocks.length > 0 && (
+              {stripeConnections!.length > 0 && (
                 <Select
-                  defaultValue={reuseLock}
+                  defaultValue={stripeAccount}
                   onChange={(value: any) => {
                     setReuseLock(value.toString())
                   }}
-                  options={previouslyConnectedLocks
-                    .map(
-                      ({ lock }: { lock: string; stripeAccount: string }) => {
-                        return { label: lock, value: lock }
+                  options={stripeConnections!
+                    .map((connection: any) => {
+                      return {
+                        label: connection.settings.dashboard.display_name,
+                        value: connection.id,
                       }
-                    )
+                    })
                     .concat({
                       label: 'Connect a new Stripe account',
                       value: '',
                     })}
-                  label="Use the same Stripe account as one of your previously connected locks:"
+                  label="Use a Stripe account you previously connected to another contract:"
                 />
               )}
               <Button
@@ -255,7 +254,6 @@ export const CreditCardForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
-  const { account } = useAuth()
   const storageService = useStorageService()
   const { isStripeConnected, getCreditCardPricing } = useLock(
     { address: lockAddress },
@@ -304,22 +302,7 @@ export const CreditCardForm = ({
 
   const isPricingLow = fiatPricing?.usd?.keyPrice < 50
 
-  const {
-    isFetching: isFetchingPreviouslyConnectedLocks,
-    data: previouslyConnectedLocks,
-  } = useQuery(['connectedLocks', account], async () => {
-    const response = await storage.getStripeConnections()
-    if (response.data.error) {
-      throw new Error(response.data.error)
-    }
-    return response.data.result || []
-  })
-
-  const loading =
-    isLoading ||
-    isLoadingKeyGranter ||
-    isLoadingPricing ||
-    isFetchingPreviouslyConnectedLocks
+  const loading = isLoading || isLoadingKeyGranter || isLoadingPricing
 
   const Status = () => {
     if (
@@ -332,7 +315,6 @@ export const CreditCardForm = ({
           network={network}
           isManager={isManager}
           keyGranter={keyGranter}
-          previouslyConnectedLocks={previouslyConnectedLocks}
           disabled={disabled}
         />
       )

@@ -55,6 +55,10 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
     }
   }
 
+  const seen: {
+    [key: string]: boolean
+  } = {}
+
   // let's filter the ones which indeed connected!
   const activeStripeAccounts = (
     await Promise.all(
@@ -66,7 +70,11 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
         return false
       })
     )
-  ).filter((connection) => !!connection)
+  ).filter((connection) => {
+    if (!connection || seen[connection.id]) return false
+    seen[connection.id] = true
+    return connection
+  })
 
   return res.json({
     result: activeStripeAccounts,
