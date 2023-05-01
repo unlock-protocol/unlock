@@ -71,6 +71,8 @@ export function Checkout({
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
+      // Reset the Paywall State!
+      checkoutService.send('DISCONNECT')
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
@@ -103,6 +105,7 @@ export function Checkout({
       mint,
       messageToSign,
       paywallConfig.messageToSign,
+      checkoutService,
     ]
   )
 

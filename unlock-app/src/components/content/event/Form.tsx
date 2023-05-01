@@ -19,9 +19,10 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { UNLIMITED_KEYS_DURATION } from '~/constants'
+import { SLUG_REGEXP, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { storage } from '~/config/storage'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
@@ -67,6 +68,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
+        slug: '',
         image: '',
       },
     },
@@ -164,7 +166,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   }}
                 />
               </div>
-              <div className="grid order-1 md:order-2">
+              <div className="grid order-1 gap-4 md:order-2">
                 <Input
                   {...register('lock.name', {
                     required: {
@@ -193,6 +195,29 @@ export const Form = ({ onSubmit }: FormProps) => {
                   description={<DescDescription />}
                   rows={4}
                   error={errors.metadata?.description?.message as string}
+                />
+
+                <Input
+                  {...register('metadata.slug', {
+                    pattern: {
+                      value: SLUG_REGEXP,
+                      message: 'Slug format is not valid',
+                    },
+                    validate: async (slug: string | undefined) => {
+                      if (slug) {
+                        const data = (await storage.getLockSettingsBySlug(slug))
+                          ?.data
+                        return data
+                          ? 'Slug already used, please use another one'
+                          : true
+                      }
+                      return true
+                    },
+                  })}
+                  type="text"
+                  label="Slug"
+                  error={errors?.metadata?.slug?.message as string}
+                  description="Slug that will be used for the URL."
                 />
 
                 <Select
@@ -366,7 +391,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       type="number"
                       autoComplete="off"
                       placeholder="0.00"
-                      step={0.01}
+                      step="any"
                       disabled={isFree}
                       {...register('lock.keyPrice', {
                         required: !isFree,

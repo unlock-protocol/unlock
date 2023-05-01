@@ -2564,14 +2564,9 @@ paths:
                 type: object
                 properties:
                   result:
-                    type: object
-                    properties:
-                      lock:
-                        type: string
-                      chain:
-                        type: number
-                      stripeAccount:
-                        type: string
+                    type: array
+                    items:
+                      type: object
                   error:
                     type: string
                     nullable: true

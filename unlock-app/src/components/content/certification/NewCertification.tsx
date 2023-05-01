@@ -6,7 +6,7 @@ import { storage } from '~/config/storage'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CertificationForm } from './CertificationForm'
+import { CertificationForm, NewCertificationForm } from './CertificationForm'
 import { CertificationDeploying } from './CertificationDeploying'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
@@ -20,7 +20,9 @@ export const NewCertification = () => {
     useState<TransactionDetails>()
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
-  const onSubmit = async (formData: any) => {
+  const [slug, setSlug] = useState<string | undefined>(undefined)
+
+  const onSubmit = async (formData: NewCertificationForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
 
@@ -62,6 +64,17 @@ export const NewCertification = () => {
           ...formData.metadata,
         }),
       })
+
+      // Save slug for URL if present
+      setSlug(formData?.metadata?.slug)
+
+      const slug = formData?.metadata.slug
+      if (slug) {
+        await storage.saveLockSetting(formData.network, lockAddress, {
+          slug,
+        })
+      }
+
       // Finally
       setLockAddress(lockAddress)
     }
@@ -74,6 +87,7 @@ export const NewCertification = () => {
           <CertificationDeploying
             transactionDetails={transactionDetails}
             lockAddress={lockAddress}
+            slug={slug}
           />
         )}
         {!transactionDetails && <CertificationForm onSubmit={onSubmit} />}

@@ -22,7 +22,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { CertificationMetadataForm } from './CertificationMetadataForm'
-
+import { useSaveSlugSetting } from '~/hooks/useLockSettings'
 interface Props {
   lockAddress?: string
   network?: number
@@ -70,6 +70,8 @@ export const Form = ({
       keyId,
     })
 
+  const { mutateAsync: saveSlugSetting } = useSaveSlugSetting()
+
   const onSubmit = async (formData: MetadataFormData) => {
     const metadata = formDataToMetadata({
       // Handle ID in image URL
@@ -77,6 +79,15 @@ export const Form = ({
       ...formData,
     })
     await updateMetadata(metadata)
+
+    // save slug if present and changed
+    if (metadata?.slug && defaultValues?.slug !== metadata?.slug) {
+      await saveSlugSetting({
+        slug: metadata?.slug,
+        lockAddress,
+        network,
+      })
+    }
   }
 
   const errorFields = Object.keys(errors)
@@ -84,7 +95,7 @@ export const Form = ({
     <FormProvider {...methods}>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
-          <DetailForm />
+          <DetailForm defaultValues={defaultValues} />
           <TicketForm
             lockAddress={lockAddress}
             network={network}
