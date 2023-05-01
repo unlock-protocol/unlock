@@ -16288,7 +16288,7 @@ __metadata:
     "@storybook/react": 6.5.16
     "@svgr/cli": 7.0.0
     babel-loader: 9.1.2
-    eslint: 8.37.0
+    eslint: 8.39.0
     eslint-config-prettier: 8.8.0
     eslint-config-standard: 17.0.0
     eslint-config-standard-react: 13.0.0
