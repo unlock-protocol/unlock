@@ -30,7 +30,7 @@
     "eslint": "8.37.0",
     "fs-extra": "11.1.1",
     "handlebars": "4.7.7",
-    "yargs": "17.7.1"
+    "yargs": "17.7.2"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"

@@ -16068,7 +16068,7 @@ __metadata:
     vitest-fetch-mock: 0.2.2
     winston: 3.8.2
     winston-transport-sentry-node: 2.7.0
-    yargs: 17.7.1
+    yargs: 17.7.2
     zod: 3.21.4
   languageName: unknown
   linkType: soft
@@ -16190,7 +16190,7 @@ __metadata:
     fs-extra: 11.1.1
     handlebars: 4.7.7
     matchstick-as: 0.5.2
-    yargs: 17.7.1
+    yargs: 17.7.2
   languageName: unknown
   linkType: soft
 
@@ -57290,9 +57290,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:17.7.1":
-  version: 17.7.1
-  resolution: "yargs@npm:17.7.1"
+"yargs@npm:17.7.2":
+  version: 17.7.2
+  resolution: "yargs@npm:17.7.2"
   dependencies:
     cliui: ^8.0.1
     escalade: ^3.1.1
@@ -57301,7 +57301,7 @@ __metadata:
     string-width: ^4.2.3
     y18n: ^5.0.5
     yargs-parser: ^21.1.1
-  checksum: 3d8a43c336a4942bc68080768664aca85c7bd406f018bad362fd255c41c8f4e650277f42fd65d543fce99e084124ddafee7bbfc1a5c6a8fda4cec78609dcf8d4
+  checksum: 73b572e863aa4a8cbef323dd911d79d193b772defd5a51aab0aca2d446655216f5002c42c5306033968193bdbf892a7a4c110b0d77954a7fdf563e653967b56a
   languageName: node
   linkType: hard
 
