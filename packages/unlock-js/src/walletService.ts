@@ -698,25 +698,6 @@ export default class WalletService extends UnlockService {
     return this.provider.send(method, [firstParam, secondParam])
   }
 
-  async signDataPersonal(
-    account: string,
-    data: any,
-    callback: WalletServiceCallback
-  ) {
-    try {
-      let method = 'eth_sign'
-      if (this.web3Provider || this.provider.isUnlock) {
-        method = 'personal_sign'
-      }
-      const signature = await this.signMessage(data, method)
-      callback(null, Buffer.from(signature).toString('base64'))
-    } catch (error) {
-      if (error instanceof Error) {
-        callback(error, null)
-      }
-    }
-  }
-
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
