@@ -1,4 +1,6 @@
-import stripeOperations from '../../operations/stripeOperations'
+import stripeOperations, {
+  stripeConnectionReady,
+} from '../../operations/stripeOperations'
 import * as Normalizer from '../../utils/normalizer'
 import { Request, Response } from 'express'
 import logger from '../../logger'
@@ -52,8 +54,22 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
       result: [],
     }
   }
+
+  // let's filter the ones which indeed connected!
+  const activeStripeAccounts = (
+    await Promise.all(
+      connections.map(async (connection) => {
+        const ready = await stripeConnectionReady(connection.stripeAccount)
+        if (ready) {
+          return connection
+        }
+        return false
+      })
+    )
+  ).filter((connection) => !!connection)
+
   return res.json({
-    result: connections.map(({ lock, chain, stripeAccount }) => ({
+    result: activeStripeAccounts.map(({ lock, chain, stripeAccount }) => ({
       lock,
       chain,
       stripeAccount,

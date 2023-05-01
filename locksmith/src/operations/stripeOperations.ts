@@ -209,15 +209,20 @@ export const getStripeConnectForLock = async (lock: string, chain: number) => {
     return -1
   }
 
-  const account = await stripe.accounts.retrieve(
+  const isReady = await stripeConnectionReady(
     stripeConnectLockDetails.stripeAccount
   )
 
-  if (account.charges_enabled) {
+  if (isReady) {
     return stripeConnectLockDetails.stripeAccount
   }
 
   return 0
+}
+
+export const stripeConnectionReady = async (stripeAccount: string) => {
+  const account = await stripe.accounts.retrieve(stripeAccount)
+  return account.charges_enabled
 }
 
 export default {
