@@ -15813,7 +15813,7 @@ __metadata:
     typescript: 5.0.4
     vite: 4.2.1
     vite-plugin-svgr: 2.4.0
-    vite-tsconfig-paths: 4.0.7
+    vite-tsconfig-paths: 4.2.0
   peerDependencies:
     react: 18.2.0
     react-dom: 18.2.0
@@ -51171,7 +51171,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfck@npm:^2.0.1":
+"tsconfck@npm:^2.0.1, tsconfck@npm:^2.1.0":
   version: 2.1.1
   resolution: "tsconfck@npm:2.1.1"
   peerDependencies:
@@ -53068,6 +53068,22 @@ __metadata:
     vite:
       optional: true
   checksum: 490123daa28dcf0b1290c2374876041e0ed2964d5244f08ad2cb8354436eff110592d5ffec0960276552943b46361b6a98f2363406e89ae0988287769188f5e8
+  languageName: node
+  linkType: hard
+
+"vite-tsconfig-paths@npm:4.2.0":
+  version: 4.2.0
+  resolution: "vite-tsconfig-paths@npm:4.2.0"
+  dependencies:
+    debug: ^4.1.1
+    globrex: ^0.1.2
+    tsconfck: ^2.1.0
+  peerDependencies:
+    vite: "*"
+  peerDependenciesMeta:
+    vite:
+      optional: true
+  checksum: 73a8467de72d7ac502328454fd00c19571cd4bad2dd5982643b24718bb95e449a3f4153cfc2d58a358bfc8f37e592fb442fc10884b59ae82138c1329160cd952
   languageName: node
   linkType: hard
 
