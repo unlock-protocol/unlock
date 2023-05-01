@@ -99,6 +99,8 @@ export const SIWEProvider = ({ children }: Props) => {
         resources,
       })
 
+      console.log(siwe)
+
       const message = siwe.prepareMessage()
       const signature = await walletService.signMessage(
         message,
