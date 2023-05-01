@@ -82,7 +82,7 @@ export function UniversalCardPayment({
     ) {
       console.error(
         'Price changed',
-        session.quote.destination_amount,
+        (100 * parseFloat(session.quote.destination_amount)).toString(),
         expectedAmount
       )
       setSessionError('You cannot change the amount. Please start again.')

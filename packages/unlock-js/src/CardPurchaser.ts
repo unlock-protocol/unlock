@@ -4,15 +4,6 @@ import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 
-export const TransferTypes = {
-  Transfer: [
-    { name: 'lock', type: 'address' },
-    { name: 'token', type: 'uint256' },
-    { name: 'owner', type: 'address' },
-    { name: 'deadline', type: 'uint256' },
-  ],
-}
-
 export interface GetContractOptions {
   network: number
   signer?: Signer
@@ -88,19 +79,11 @@ export class CardPurchaser {
       provider
     )
 
-    // Replace me when contract is live!
-    // const domain = {
-    //   name: await contract.name(),
-    //   version: await contract.version(),
-    //   chainId,
-    //   verifyingContract: contract.address,
-    // }
-
     const domain = {
-      name: 'Card Purchaser',
-      version: '1',
+      name: await contract.name(),
+      version: await contract.version(),
       chainId,
-      verifyingContract: cardPurchaserAddress,
+      verifyingContract: contract.address,
     }
 
     const types = {
