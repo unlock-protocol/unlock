@@ -23,7 +23,8 @@ const LockSettingSchema = z.object({
     .optional(),
   emailSender: z
     .string({
-      description: 'Custom name for email sender',
+      description:
+        'Custom name used as the email sender. This is the name that most email clients will show to readers.',
     })
     .optional(),
   slug: z

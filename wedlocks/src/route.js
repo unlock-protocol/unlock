@@ -60,7 +60,7 @@ export const route = async (args) => {
   const email = {
     from: config.sender,
     to: args.recipient,
-    replyTo: args?.replyTo || undefined,
+    replyTo: args?.replyTo || 'Unlock Labs',
     sender: args?.emailSender || undefined,
     subject: await template.subject(templateParams),
     text: template.text ? await template.text(templateParams) : undefined,
