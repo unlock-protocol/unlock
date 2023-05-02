@@ -21,6 +21,12 @@ const LockSettingSchema = z.object({
       description: 'Credit card default price to use on checkout.',
     })
     .optional(),
+  emailSender: z
+    .string({
+      description:
+        'Custom name used as the email sender. This is the name that most email clients will show to readers.',
+    })
+    .optional(),
   slug: z
     .string({
       description: 'Slug that will be used to retrieve the lock',
@@ -34,6 +40,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
   replyTo: undefined,
   creditCardPrice: undefined,
+  emailSender: undefined,
   slug: undefined,
 }
 

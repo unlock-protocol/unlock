@@ -88,7 +88,10 @@ describe('route', () => {
       const transporter = {
         sendMail: vi.fn((options) => {
           expect(options).toEqual({
-            from: config.sender,
+            from: {
+              name: 'Unlock Labs',
+              address: config.sender,
+            },
             html: undefined,
             subject: 'subject',
             text: 'text',

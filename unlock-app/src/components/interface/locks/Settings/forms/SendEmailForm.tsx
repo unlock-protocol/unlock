@@ -1,8 +1,8 @@
 import { storage } from '~/config/storage'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import { useState } from 'react'
-import { EmailReplyToForm } from './EmailReplyToForm'
+import { EmailSettingsForm } from './EmailSettingsForm'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -46,6 +46,17 @@ export const SendEmailForm = ({
   const sendEmailValue = lockSettings?.sendEmail
   const disabledInput = disabled || isLoading || !isManager
 
+  if (isLoading) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Card size="lg" />
+      </Placeholder.Root>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <ToggleSwitch
@@ -76,15 +87,17 @@ export const SendEmailForm = ({
           Apply
         </Button>
       )}
-      <div className="w-full p-4 border border-gray-500 rounded-lg">
-        <EmailReplyToForm
-          lockAddress={lockAddress}
-          isManager={isManager}
-          network={network}
-          disabled={disabled || !sendEmailValue}
-          lockSettings={lockSettings}
-        />
-      </div>
+      {sendEmail && (
+        <div className="w-full p-4 border border-gray-500 rounded-lg">
+          <EmailSettingsForm
+            lockAddress={lockAddress}
+            isManager={isManager}
+            network={network}
+            disabled={disabled || !sendEmailValue}
+            lockSettings={lockSettings}
+          />
+        </div>
+      )}
     </div>
   )
 }

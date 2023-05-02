@@ -13,22 +13,14 @@ interface SendEmailProps {
 /**
  * Set if a Lock is enabled to send emails
  */
-export async function saveSettings({
-  lockAddress,
-  network,
-  sendEmail,
-  replyTo,
-  creditCardPrice,
-  slug,
-}: SendEmailProps & LockSettingProps) {
+export async function saveSettings(options: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
-      lockAddress: Normalizer.ethereumAddress(lockAddress),
-      network,
-      sendEmail,
-      replyTo,
-      creditCardPrice,
-      slug: slug?.toLowerCase().trim(),
+      // save rest of settings
+      ...options,
+      // normalize values
+      lockAddress: Normalizer.ethereumAddress(options.lockAddress),
+      slug: options?.slug?.toLowerCase().trim(),
     },
     {
       returning: true,

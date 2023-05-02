@@ -9,14 +9,15 @@ interface EmailReplyToFormProps {
   network: number
   isManager: boolean
   disabled: boolean
-  lockSettings?: Record<string, any>
+  lockSettings?: FormProps
 }
 
 interface FormProps {
   replyTo?: string
+  emailSender?: string
 }
 
-export const EmailReplyToForm = ({
+export const EmailSettingsForm = ({
   lockAddress,
   network,
   isManager,
@@ -27,13 +28,15 @@ export const EmailReplyToForm = ({
   const { handleSubmit, register, setValue } = useForm<FormProps>({
     defaultValues: {
       replyTo: lockSettings?.replyTo,
+      emailSender: lockSettings?.emailSender,
     },
   })
 
-  const updateReplyTo = async ({ replyTo }: FormProps) => {
+  const updateReplyTo = async ({ replyTo, emailSender }: FormProps) => {
     if (!isManager) return
     return await storage.saveLockSetting(network, lockAddress, {
       replyTo,
+      emailSender,
     })
   }
 
@@ -46,7 +49,7 @@ export const EmailReplyToForm = ({
   }
 
   useEffect(() => {
-    const replyTo = lockSettings?.replyTo
+    const replyTo = lockSettings?.replyTo ?? ''
     setValue('replyTo', replyTo, {
       shouldDirty: true,
     })
@@ -57,28 +60,41 @@ export const EmailReplyToForm = ({
     <div className="relative">
       {isManager && (
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <ToggleSwitch
-            title="Enable Reply-to"
-            disabled={disabledInput}
-            enabled={enabled}
-            setEnabled={(enabled) => {
-              setEnabled(enabled)
-              setValue('replyTo', enabled ? lockSettings?.replyTo : '', {
-                shouldDirty: true,
-              })
-            }}
-          />
+          <div>
+            <ToggleSwitch
+              title="Enable Reply-to"
+              disabled={disabledInput}
+              enabled={enabled}
+              setEnabled={(enabled) => {
+                setEnabled(enabled)
+                setValue('replyTo', enabled ? lockSettings?.replyTo : '', {
+                  shouldDirty: true,
+                })
+              }}
+            />
+            <div className="flex flex-col gap-1">
+              <Input
+                type="email"
+                placeholder="your@email.com"
+                label="Reply-to"
+                disabled={disabledInput || !enabled}
+                {...register('replyTo')}
+              />
+              <span className="text-sm text-gray-600">
+                Set the email address that will appear on the Reply-To: field.
+              </span>
+            </div>
+          </div>
           <div className="flex flex-col gap-1">
             <Input
-              type="email"
-              placeholder="your@email.com"
-              label="Reply-to"
-              disabled={disabledInput || !enabled}
-              {...register('replyTo')}
+              type="text"
+              placeholder="Example Name"
+              label="Email sender"
+              disabled={disabledInput}
+              autoComplete="off"
+              description="Set the email sender that will appear on the email sent."
+              {...register('emailSender')}
             />
-            <span className="text-xs text-gray-600">
-              Set the email address that will appear on the Reply-To: field.
-            </span>
           </div>
           <Button
             className="w-full md:w-1/3"
