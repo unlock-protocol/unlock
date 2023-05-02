@@ -1043,7 +1043,7 @@ const abis = {
         "function tokenOfOwnerByIndex(address _keyOwner,uint256 _index) view returns (uint256)",
         "function tokenURI(uint256 _tokenId) view returns (string)",
         "function totalKeys(address _keyOwner) view returns (uint256)",
-        "function totalSupply() view returns (uint256)",
+        "function totalSupply() view returns (uint256 _totalKeysCreated)",
         "function transferFeeBasisPoints() view returns (uint256)",
         "function transferFrom(address _from,address _recipient,uint256 _tokenId)",
         "function unlendKey(address _recipient,uint256 _tokenId)",
