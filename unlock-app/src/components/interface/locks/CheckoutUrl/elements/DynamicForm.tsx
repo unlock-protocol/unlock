@@ -225,12 +225,22 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
       </div>
       <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
         <ConnectForm>
-          {({ watch, setValue }: any) => {
+          {({ watch, setValue, handleSubmit }: any) => {
             const image = watch(name) ?? ''
             const fields = watch()
 
+            const onSubmit = () => {
+              onChange({
+                ...fields,
+                [name]: image,
+              })
+              setIsOpen(false)
+            }
             return (
-              <div className="grid grid-cols-1">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="grid grid-cols-1"
+              >
                 <ImageUpload
                   size="full"
                   className="mx-auto"
@@ -240,10 +250,6 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
                   onChange={async (fileOrFileUrl: any) => {
                     if (typeof fileOrFileUrl === 'string') {
                       setValue(name, fileOrFileUrl)
-                      onChange({
-                        ...fields,
-                        [name]: image,
-                      })
                     } else {
                       const items = await uploadImage(fileOrFileUrl[0])
                       const image = items?.[0]?.publicUrl
@@ -251,17 +257,13 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
                         return
                       }
                       setValue(name, image)
-                      onChange({
-                        ...fields,
-                        [name]: image,
-                      })
                     }
                   }}
                 />
-                <Button size="small" onClick={() => setIsOpen(false)}>
+                <Button size="small" type="submit">
                   Save
                 </Button>
-              </div>
+              </form>
             )
           }}
         </ConnectForm>
