@@ -58,10 +58,7 @@ export const route = async (args) => {
   const [template, templateParams] = await getTemplateAndParams(args)
 
   const email = {
-    from: {
-      name: args?.emailSender || 'Unlock Labs',
-      address: config.sender,
-    },
+    from: `${args?.emailSender} <${config.sender}>`,
     to: args.recipient,
     replyTo: args?.replyTo || undefined,
     subject: await template.subject(templateParams),
