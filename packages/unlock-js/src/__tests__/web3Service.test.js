@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import Web3Service from '../web3Service'
 import PublicLockVersions from '../PublicLock'
 import networks from '@unlock-protocol/networks'
@@ -29,7 +30,7 @@ describe('Web3Service', () => {
             return result
           },
         }
-        web3Service.lockContractAbiVersion = jest.fn(() => version)
+        web3Service.lockContractAbiVersion = vi.fn(() => version)
         const r = await web3Service[method](...args)
         expect(r).toBe(result)
       }
