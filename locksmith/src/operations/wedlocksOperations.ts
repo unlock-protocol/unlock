@@ -75,10 +75,11 @@ export const sendEmail = async ({
   attachments = [],
 }: SendEmailProps) => {
   // prevent send email when is not enabled
-  const { sendEmail: canSendEmail, replyTo } = await getLockSettings(
-    params.lockAddress,
-    network
-  )
+  const {
+    sendEmail: canSendEmail,
+    replyTo,
+    emailSender,
+  } = await getLockSettings(params.lockAddress, network)
 
   if (!canSendEmail) {
     return
@@ -91,6 +92,7 @@ export const sendEmail = async ({
     params,
     attachments,
     replyTo,
+    emailSender,
   }
 
   try {
