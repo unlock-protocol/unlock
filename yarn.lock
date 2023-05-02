@@ -10218,14 +10218,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-service-client@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@safe-global/safe-service-client@npm:2.0.0"
+"@safe-global/safe-service-client@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@safe-global/safe-service-client@npm:2.0.1"
   dependencies:
     "@ethersproject/abstract-signer": ^5.7.0
-    "@safe-global/safe-core-sdk-types": ^1.9.0
+    "@safe-global/safe-core-sdk-types": ^1.9.1
     node-fetch: ^2.6.6
-  checksum: 621e9790d666722095d04c09f6296a67428ede3e35cbb59425ded31078889e0313af56443d6510fa74700529e768fdcc67c23fe7c94067a6b3a4ad24f0213ddd
+  checksum: 216b79c0e5190632ccc01c45a1352f02ab18421f52504582e513e1cc7e74528e093f06c5ab7a0243a102a4cde70d25639bae1c4d4225af17d63ef40516ca8e84
   languageName: node
   linkType: hard
 
@@ -16018,7 +16018,7 @@ __metadata:
     "@openzeppelin/upgrades-core": 1.22.0
     "@safe-global/safe-core-sdk": 3.3.3
     "@safe-global/safe-ethers-lib": 1.9.2
-    "@safe-global/safe-service-client": 2.0.0
+    "@safe-global/safe-service-client": 2.0.1
     "@uniswap/smart-order-router": 3.5.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
