@@ -46,7 +46,7 @@ import setBaseTokenURI from './lock/setBaseTokenURI'
 import setEventHooks from './lock/setEventHooks'
 
 // Increasing timeouts
-jest.setTimeout(3000000)
+// jest.setTimeout(3000000)
 
 // Unlock versions to test
 export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(

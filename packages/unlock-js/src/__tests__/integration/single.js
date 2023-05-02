@@ -18,7 +18,7 @@ import {
 } from '../helpers/integration'
 
 // Increasing timeouts
-jest.setTimeout(3000000)
+// jest.setTimeout(3000000)
 
 const unlockVersion = process.env.UNLOCK_JS_JEST_RUN_UNLOCK_VERSION || 'v11'
 const publicLockVersion =

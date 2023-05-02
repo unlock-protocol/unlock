@@ -9,8 +9,6 @@ const lock = {
   network: 5,
 }
 
-jest.setTimeout(100000)
-
 describe('Web3Service', () => {
   describe('versions', () => {
     const versionSpecificLockMethods = ['getLock']
