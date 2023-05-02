@@ -16111,7 +16111,7 @@ __metadata:
     "@vitejs/plugin-react": 3.1.0
     autoprefixer: 10.4.14
     ethers: 5.7.2
-    postcss: 8.4.21
+    postcss: 8.4.23
     prism-react-renderer: 1.3.5
     react: 18.2.0
     react-dom: 18.2.0
@@ -16193,7 +16193,7 @@ __metadata:
     next: 13.3.0
     node-forge: 1.3.1
     parse-domain: 7.0.1
-    postcss: 8.4.21
+    postcss: 8.4.23
     postmate: 1.5.2
     prettier: 2.8.7
     prop-types: 15.8.1
@@ -16353,7 +16353,7 @@ __metadata:
     next-transpile-modules: 10.0.0
     numeral: 2.0.6
     path-match: 1.2.4
-    postcss: 8.4.21
+    postcss: 8.4.23
     prettier: 2.8.7
     raw-loader: 4.0.2
     react: 18.2.0
@@ -43485,14 +43485,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.21, postcss@npm:^8.0.9, postcss@npm:^8.3.5, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.4":
-  version: 8.4.21
-  resolution: "postcss@npm:8.4.21"
+"postcss@npm:8.4.23, postcss@npm:^8.4.23":
+  version: 8.4.23
+  resolution: "postcss@npm:8.4.23"
   dependencies:
-    nanoid: ^3.3.4
+    nanoid: ^3.3.6
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: e39ac60ccd1542d4f9d93d894048aac0d686b3bb38e927d8386005718e6793dbbb46930f0a523fe382f1bbd843c6d980aaea791252bf5e176180e5a4336d9679
+  checksum: 8bb9d1b2ea6e694f8987d4f18c94617971b2b8d141602725fedcc2222fdc413b776a6e1b969a25d627d7b2681ca5aabb56f59e727ef94072e1b6ac8412105a2f
   languageName: node
   linkType: hard
 
@@ -43517,14 +43517,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.23":
-  version: 8.4.23
-  resolution: "postcss@npm:8.4.23"
+"postcss@npm:^8.0.9, postcss@npm:^8.3.5, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.4":
+  version: 8.4.21
+  resolution: "postcss@npm:8.4.21"
   dependencies:
-    nanoid: ^3.3.6
+    nanoid: ^3.3.4
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: 8bb9d1b2ea6e694f8987d4f18c94617971b2b8d141602725fedcc2222fdc413b776a6e1b969a25d627d7b2681ca5aabb56f59e727ef94072e1b6ac8412105a2f
+  checksum: e39ac60ccd1542d4f9d93d894048aac0d686b3bb38e927d8386005718e6793dbbb46930f0a523fe382f1bbd843c6d980aaea791252bf5e176180e5a4336d9679
   languageName: node
   linkType: hard
 
