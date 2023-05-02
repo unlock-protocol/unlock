@@ -5,7 +5,7 @@ const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
-  locksmithHost: 'https://staging-locksmith.unlock-protocol.com',
+  locksmithHost: 'http://localhost:8080', //'https://staging-locksmith.unlock-protocol.com',
   unlockStaticUrl: 'https://staging.unlock-protocol.com',
   wedlocksUri:
     'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler',

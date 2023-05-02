@@ -1043,7 +1043,7 @@ const abis = {
         "function tokenOfOwnerByIndex(address _keyOwner,uint256 _index) view returns (uint256)",
         "function tokenURI(uint256 _tokenId) view returns (string)",
         "function totalKeys(address _keyOwner) view returns (uint256)",
-        "function totalSupply() view returns (uint256 _totalKeysCreated)",
+        "function totalSupply() view returns (uint256)",
         "function transferFeeBasisPoints() view returns (uint256)",
         "function transferFrom(address _from,address _recipient,uint256 _tokenId)",
         "function unlendKey(address _recipient,uint256 _tokenId)",
@@ -1055,7 +1055,7 @@ const abis = {
         "function updateTransferFee(uint256 _transferFeeBasisPoints)",
         "function withdraw(address _tokenAddress,address _recipient,uint256 _amount)"
       ],
-      "bytecodeHash": "0x80041134ce431f1adb2b2dfe00df82753d269761cbf9bac1232e0523fa787ed2"
+      "bytecodeHash": "0x363551a7e8051fe1a13a8430e2277433660616ebf20394bf1c7c7001f949e2d7"
     }
   },
   "Unlock": {
@@ -1375,7 +1375,6 @@ const abis = {
         "function publicLockVersions(address _impl) view returns (uint16)",
         "function recordConsumedDiscount(uint256,uint256) view",
         "function recordKeyPurchase(uint256 _value,address _referrer)",
-        "function removeLock(address lock)",
         "function renounceOwnership()",
         "function resetTrackedValue(uint256 _grossNetworkProduct,uint256 _totalDiscountGranted)",
         "function setLockTemplate(address _publicLockAddress)",
@@ -1383,14 +1382,13 @@ const abis = {
         "function setProtocolFee(uint256 _protocolFee)",
         "function totalDiscountGranted() view returns (uint256)",
         "function transferOwnership(address newOwner)",
-        "function transferTokens(address token,address to,uint256 amount)",
         "function udt() view returns (address)",
         "function uniswapOracles(address) view returns (address)",
         "function unlockVersion() pure returns (uint16)",
         "function upgradeLock(address lockAddress,uint16 version) returns (address)",
         "function weth() view returns (address)"
       ],
-      "bytecodeHash": "0x461d3c895d16600884d7cf2a9d05727c467e59a93d606cff28a33e2d76d8fc0b"
+      "bytecodeHash": "0x386fb5916ed51f9eb6b3d33a37447a3c93c2cfccc9ee6eb4772f86a735e953fa"
     }
   }
 }
