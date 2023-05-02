@@ -60,7 +60,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   return (
     <Fragment>
       <Stepper
-        position={renew ? 2 : 6}
+        position={renew ? 2 : 5}
         service={checkoutService}
         items={stepItems}
       />
