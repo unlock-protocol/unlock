@@ -231,6 +231,7 @@ const IconInputComponent = ({ name, label, description }: any) => {
             const onSubmit = () => {
               setIsOpen(false)
             }
+
             return (
               <form
                 onSubmit={handleSubmit(onSubmit)}
