@@ -127,6 +127,10 @@ contract('Lock / cancelAndRefund', (accounts) => {
       const isValid = await lock.getHasValidKey(keyOwners[0])
       assert.equal(isValid, false)
     })
+    
+    it('should retain ownership info', async () => {
+      assert.equal(await lock.ownerOf(tokenIds[0]), keyOwners[0])
+    })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
       const txHash = await ethers.provider.getTransaction(txObj.tx)

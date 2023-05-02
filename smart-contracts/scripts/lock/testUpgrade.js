@@ -10,7 +10,7 @@ const { ethers, upgrades, run } = require('hardhat')
 const fs = require('fs-extra')
 const path = require('path')
 
-const LATEST_PUBLIC_LOCK_VERSION = 11
+const LATEST_PUBLIC_LOCK_VERSION = 13
 
 async function main() {
   const [, lockOwner] = await ethers.getSigners()

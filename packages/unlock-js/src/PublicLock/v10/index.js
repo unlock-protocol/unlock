@@ -12,6 +12,7 @@ import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 import getLock from './getLock'
 import renewMembershipFor from './renewMembershipFor'
 import v9 from '../v9'
+import getPurchaseKeysArguments from './getPurchaseKeysArguments'
 
 const {
   grantKey,
@@ -36,6 +37,7 @@ const {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
 } = v9
 
 export default {
@@ -43,6 +45,7 @@ export default {
   PublicLock: abis.PublicLock.v10,
   grantKey,
   grantKeys,
+  getPurchaseKeysArguments,
   extendKey,
   updateKeyPrice,
   withdrawFromLock,
@@ -75,4 +78,5 @@ export default {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
 }

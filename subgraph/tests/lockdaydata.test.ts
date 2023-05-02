@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll,
 } from 'matchstick-as/assembly/index'
-import { Address } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { lockAddress, lockOwner } from './constants'
 import { createNewLockEvent } from './locks-utils'
 import { handleNewLock } from '../src/unlock'
@@ -28,7 +28,7 @@ describe('Describe UnlockDailyData Events', () => {
   })
 
   test('Creation of a unlockDailyData', () => {
-    const lockDayID = 1 / 86400
+    const lockDayID = BigInt.fromI32(0).toI32() / 86400
     assert.entityCount('UnlockDailyData', 1)
     assert.fieldEquals(
       'UnlockDailyData',
@@ -43,6 +43,11 @@ describe('Describe UnlockDailyData Events', () => {
       'activeLocks',
       `[]`
     )
-    assert.fieldEquals('UnlockDailyData', lockDayID.toString(), 'grossNetworkProduct', '0')
+    assert.fieldEquals(
+      'UnlockDailyData',
+      lockDayID.toString(),
+      'grossNetworkProduct',
+      '0'
+    )
   })
 })

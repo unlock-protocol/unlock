@@ -2,6 +2,9 @@ import {
   getSdk,
   AllLocksQueryVariables,
   AllKeysQueryVariables,
+  AllReceiptsQueryVariables,
+  Key_Filter,
+  Key_OrderBy,
 } from '../@generated/subgraph'
 import { GraphQLClient } from 'graphql-request'
 import { NetworkConfigs } from '@unlock-protocol/types'
@@ -49,12 +52,54 @@ export class SubgraphService {
       Object.values(this.networks).filter((item) => item.id !== 31337)
     const items = await Promise.all(
       networks.map(async (config) => {
-        const sdk = this.createSdk(config.id)
-        const results = await sdk.allLocks(variables)
-        return results.locks.map((item) => ({
-          ...item,
-          network: config.id,
-        }))
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.allLocks(variables)
+          return results.locks.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      })
+    )
+    return items.flat()
+  }
+
+  /**
+   * Get locks with keys from multiple networks. By default, all networks will be queried.
+   * If you want to query only specific network, you can pass options as the second parameter with network ids array.
+   * ```ts
+   * const service = new SubgraphService()
+   * const locksKeysOnMainnetAndGoerli = await service.locksKeys({ first: 100, skip: 50, where: {}}, { networks: [1, 5] })
+   * const locksKeysOnAllNetworks = await service.locksKeys({ first: 1000 })
+   * ```
+   */
+  async locksKeys(
+    variables: AllLocksQueryVariables & {
+      keyFilter?: Key_Filter
+      keyOrderBy?: Key_OrderBy
+    },
+    options?: QueryOptions
+  ) {
+    const networks =
+      options?.networks?.map((item) => this.networks[item]) ||
+      Object.values(this.networks).filter((item) => item.id !== 31337)
+    const items = await Promise.all(
+      networks.map(async (config) => {
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.allLocksWithKeys(variables)
+          return results.locks.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
       })
     )
     return items.flat()
@@ -89,12 +134,17 @@ export class SubgraphService {
 
     const items = await Promise.all(
       networks.map(async (config) => {
-        const sdk = this.createSdk(config.id)
-        const results = await sdk.AllKeys(variables)
-        return results.keys.map((item) => ({
-          ...item,
-          network: config.id,
-        }))
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.AllKeys(variables)
+          return results.keys.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
       })
     )
 
@@ -110,5 +160,40 @@ export class SubgraphService {
   ) {
     const keys = await this.keys(variables, { networks: [options.network] })
     return keys?.[0]
+  }
+
+  /** Get list or receipts from multiple networks */
+  async receipts(variables: AllReceiptsQueryVariables, options?: QueryOptions) {
+    const networks =
+      options?.networks?.map((item) => this.networks[item]) ||
+      Object.values(this.networks).filter((item) => item.id !== 31337)
+
+    const items = await Promise.all(
+      networks.map(async (config) => {
+        try {
+          const sdk = this.createSdk(config.id)
+          const results = await sdk.AllReceipts(variables)
+          return results.receipts.map((item) => ({
+            ...item,
+            network: config.id,
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      })
+    )
+    return items.flat()
+  }
+
+  /** Get a single receipt for a specific network */
+  async receipt(
+    variables: Omit<AllReceiptsQueryVariables, 'first'>,
+    options: { network: number }
+  ) {
+    const receipts = await this.receipts(variables, {
+      networks: [options.network],
+    })
+    return receipts?.[0]
   }
 }

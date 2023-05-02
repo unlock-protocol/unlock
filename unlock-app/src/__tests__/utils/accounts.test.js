@@ -1,12 +1,11 @@
+import { vi, describe, beforeAll, expect, it } from 'vitest'
+
 import {
   createAccountAndPasswordEncryptKey,
   getAccountFromPrivateKey,
   reEncryptPrivateKey,
 } from '../../utils/accounts'
-
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
-
-jest.setTimeout(20000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {

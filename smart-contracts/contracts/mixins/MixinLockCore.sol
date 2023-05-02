@@ -59,6 +59,16 @@ contract MixinLockCore is
     uint256 indexed tokenId
   );
 
+  event EventHooksUpdated(
+    address onKeyPurchaseHook,
+    address onKeyCancelHook,
+    address onValidKeyHook,
+    address onTokenURIHook,
+    address onKeyTransferHook,
+    address onKeyExtendHook,
+    address onKeyGrantHook
+  );
+
   /**
    * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
    */
@@ -140,7 +150,7 @@ contract MixinLockCore is
     pure
     returns (uint16)
   {
-    return 12;
+    return 13;
   }
 
   /**
@@ -277,9 +287,24 @@ contract MixinLockCore is
     );
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
     onKeyGrantHook = ILockKeyGrantHook(_onKeyGrantHook);
+
+
+    emit EventHooksUpdated(
+      _onKeyPurchaseHook,
+      _onKeyCancelHook,
+      _onValidKeyHook,
+      _onTokenURIHook,
+      _onKeyTransferHook,
+      _onKeyExtendHook,
+      _onKeyGrantHook
+    );
   }
 
-  function totalSupply() public view returns (uint256) {
+  /**
+   * Returns the total number of keys, including non-valid ones
+   * @return _totalKeysCreated the total number of keys, valid or not
+   */
+  function totalSupply() public view returns (uint256 _totalKeysCreated) {
     return _totalSupply;
   }
 

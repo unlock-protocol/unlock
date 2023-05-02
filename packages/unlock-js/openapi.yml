@@ -26,25 +26,18 @@ components:
 
   schemas:
     Auth:
+      required:
+        - 'walletAddress'
       type: object
       properties:
-        type:
-          type: string
-          default: user
-          nullable: false
-
         walletAddress:
           type: string
           nullable: false
 
-        id:
-          type: string
-          nullable: true
-
     AuthResult:
       required:
         - 'accessToken'
-        - 'refreshToken'
+        - 'walletAddress'
 
       type: object
       properties:
@@ -53,10 +46,6 @@ components:
           nullable: true
 
         accessToken:
-          type: string
-          nullable: false
-
-        refreshToken:
           type: string
           nullable: false
 
@@ -95,6 +84,32 @@ components:
         walletAddress:
           type: string
           nullable: false
+
+    CheckoutConfig:
+      type: object
+      required:
+        - 'id'
+        - 'by'
+        - 'config'
+        - 'name'
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        by:
+          type: string
+        config:
+          type: object
+          additionalProperties: true
+
+        createdAt:
+          type: string
+          format: date-time
+
+        updatedAt:
+          type: string
+          format: date-time
 
     Verifier:
       type: object
@@ -159,7 +174,16 @@ components:
     UserMetadata:
       type: object
       nullable: false
+      required:
+        - 'lockAddress'
+        - 'userAddress'
+        - 'metadata'
+        - 'network'
       properties:
+        network:
+          type: integer
+          nullable: false
+
         lockAddress:
           type: string
           nullable: false
@@ -391,6 +415,30 @@ components:
       schema:
         type: string
 
+    Hash:
+      in: path
+      name: hash
+      required: true
+      description: Hash
+      schema:
+        type: string
+
+    TemplateId:
+      in: path
+      name: template
+      required: true
+      description: Template id for email
+      schema:
+        type: string
+
+    Slug:
+      in: path
+      name: slug
+      required: true
+      description: Slug
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -494,53 +542,12 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/auth/token:
-    post:
-      operationId: refreshToken
-      description: Refresh access token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
-      responses:
-        200:
-          description: New creditionals.
-          content:
-            application/json:
-              schema:
-                required:
-                  - 'walletAddress'
-                  - 'accessToken'
-                type: object
-                properties:
-                  walletAddress:
-                    type: string
-
-                  accessToken:
-                    type: string
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
   /v2/auth/logout:
     post:
       operationId: logout
       security:
         - User: []
-      description: Logout from locksmith. This will invalidate all your refresh tokens.
+      description: Logout from locksmith. This will invalidate all your session tokens.
 
       responses:
         200:
@@ -552,24 +559,9 @@ paths:
   /v2/auth/revoke:
     post:
       operationId: revoke
-      description: Invalidate a refresh token.
-      parameters:
-        - in: header
-          name: refresh-token
-          schema:
-            type: string
-            nullable: true
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
-              properties:
-                refreshToken:
-                  type: string
-                  nullable: false
+      security:
+        - User: []
+      description: Invalidate a session.
       responses:
         200:
           $ref: '#/components/responses/200.GenericSuccess'
@@ -933,7 +925,7 @@ paths:
     get:
       operationId: ticketQRCode
       security:
-        - Application: ['lockManager']
+        - User: ['user', 'lockManager']
       description: Get QR code for the key.
       parameters:
         - $ref: '#/components/parameters/Network'
@@ -946,6 +938,38 @@ paths:
             'image/gif':
               schema:
                 nullable: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/verification:
+    get:
+      operationId: ticketVerificationUrl
+      security:
+        - User: ['user', 'lockManager']
+      description: Get the verification URL for the key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: JSON object containing the verification url
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  verificationUrl:
+                    type: string
+                    nullable: false
+
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 
@@ -1094,48 +1118,12 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}:
-    post:
-      operationId: createUserMetadata
-      description: Store user metadata for lock.
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/UserAddress'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                metadata:
-                  $ref: '#/components/schemas/UserMetadataInput'
-
-      responses:
-        201:
-          description: Return user metadata saved.
-          content:
-            application/json:
-              schema:
-                type: object
-                nullable: false
-                additionalProperties: true
-
-        400:
-          $ref: '#/components/responses/400.Invalid'
-
-        409:
-          $ref: '#/components/responses/409.Conflict'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
     put:
       operationId: updateUserMetadata
       security:
         - User: ['user', 'lockManager']
 
-      description: Update user metadata for lock.
+      description: Update or create user metadata for lock.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1176,15 +1164,13 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/metadata/{network}/users:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-    post:
-      operationId: createUsersMetadata
+  /v2/api/metadata/users:
+    put:
+      operationId: updateUsersMetadata
       security:
         - User: []
         - {}
-      description: Bulk endpoint for storing user metadata.
+      description: Update or create user metadata for lock.
       requestBody:
         required: true
         description: users array containing user metadata.
@@ -1212,6 +1198,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserMetadata'
+
+                  error:
+                    description: Array containing user addresses for which metadata was not created.
+                    type: array
+                    items:
+                      type: string
         400:
           $ref: '#/components/responses/400.Invalid'
 
@@ -1382,7 +1374,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/purchase/intent/{network}/locks/{lockAdddress}:
+  /v2/purchase/intent/{network}/locks/{lockAddress}:
     post:
       operationId: purchase
       security:
@@ -1397,6 +1389,11 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - recipients
+                - stripeTokenId
+                - pricing
+
               type: object
               properties:
                 recipients:
@@ -1404,13 +1401,26 @@ paths:
                   items:
                     type: string
                   minItems: 1
+
                 stripeTokenId:
                   type: string
+
                 pricing:
                   type: number
+
                 recurring:
                   type: number
                   nullable: true
+
+                data:
+                  type: array
+                  items:
+                    type: string
+
+                referrers:
+                  type: array
+                  items:
+                    type: string
 
       responses:
         200:
@@ -1532,10 +1542,24 @@ paths:
       security:
         - User: []
       operationId: claim
-      description: Claim a membership key for a lock.
+      description: Claim a membership key for a lock. If not authenticated, requires an email in the body.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+
+        - name: recipient
+          in: header
+          required: false
+          description: Recipient address for key
+          schema:
+            type: string
+
       requestBody:
         required: true
         content:
@@ -1545,6 +1569,12 @@ paths:
               properties:
                 data:
                   type: string
+                email:
+                  type: string
+                  description: Email address of the recipient
+                recipient:
+                  type: string
+                  description: Recipient address for key
 
       responses:
         200:
@@ -1555,6 +1585,8 @@ paths:
                 type: object
                 properties:
                   transactionHash:
+                    type: string
+                  owner:
                     type: string
 
         401:
@@ -1603,7 +1635,7 @@ paths:
           $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/generate:
-    get: 
+    get:
       operationId: generateTicket
       security:
         - User: []
@@ -1615,7 +1647,83 @@ paths:
       responses:
         200:
           description: Successfully generated the ticket.
-            
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}:
+    get:
+      operationId: getTicket
+      security:
+        - User: []
+      description: get a ticket for a key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully retrieved the ticket.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                required:
+                  - name
+                  - lockAddress
+                  - keyId
+                  - publicLockVersion
+                  - userMetadata
+                  - isVerifier
+                  - attributes
+                  - image
+                  - description
+                  - owner
+                  - expiration
+
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  lockAddress:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+                  checkedInAt:
+                    type: number
+                  userMetadata:
+                    type: object
+                    additionalProperties: true
+                  expiration:
+                    type: string
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - 'value'
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          type: string
+                        display_type:
+                          type: string
+                  publicLockVersion:
+                    type: string
+                  isVerifier:
+                    description: Whether the user who requested the ticket can verify the ticket.
+                    type: boolean
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
   /{network}/lock/{lockAddress}/stripe:
     delete:
       operationId: disconnectStripe
@@ -1631,3 +1739,998 @@ paths:
 
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/images/upload:
+    post:
+      operationId: uploadImages
+      security:
+        - User: []
+      description: Upload images to locksmith
+
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        201:
+          description: Successfully uploaded images.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                        publicUrl:
+                          type: string
+                        originamName:
+                          type: string
+                        mimetype:
+                          type: string
+                        contentType:
+                          type: string
+                        size:
+                          type: number
+                        key:
+                          type: string
+                        metadata:
+                          type: object
+                          properties:
+                            fieldName:
+                              type: string
+                            createdBy:
+                              type: string
+                        encoding:
+                          type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/transfer/{network}/locks/{lockAddress}/keys/{keyId}:
+    post:
+      operationId: createTransferCode
+      security:
+        - User: []
+      description: Create a transfer code to transfer an airdropped key to an email address.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Successfully created transfer code and sent an email to the recipient.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'owner'
+                  - 'lock'
+                  - 'token'
+                  - 'deadline'
+                  - 'transferCode'
+                properties:
+                  owner:
+                    type: string
+                  lock:
+                    type: string
+                  token:
+                    type: string
+                  deadline:
+                    type: number
+                  transferCode:
+                    type: string
+                    description: Part of the transfer code that is required to be used with the part sent to the recipient.
+
+        404:
+          description: Key not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/transfer/done:
+    post:
+      operationId: transferDone
+      security:
+        - User: []
+      description: Finalize the transfer of a key to a recipient. This is to copy over any locksmith related data to the recipient's account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'transferSignature'
+                - 'owner'
+                - 'lock'
+                - 'token'
+                - 'network'
+                - 'deadline'
+              properties:
+                transferSignature:
+                  type: string
+                  description: The signature of the transfer code sent to the recipient.
+                owner:
+                  type: string
+                lock:
+                  type: string
+                token:
+                  type: string
+                network:
+                  type: number
+                deadline:
+                  type: number
+      responses:
+        200:
+          description: Successfully transferred key to recipient.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        403:
+          description: Transfer not authorized by locksmith
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Key not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/receipts/{network}/{lockAddress}/{hash}:
+    get:
+      operationId: getReceipt
+      security:
+        - User: []
+      description: Get receipt details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
+
+      responses:
+        200:
+          description: Successfully receipt details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  purchaser:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+                      businessName:
+                        type: string
+                      addressLine1:
+                        type: string
+                      addressLine2:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                      country:
+                        type: string
+                  supplier:
+                    type: object
+                    properties:
+                      supplierName:
+                        type: string
+                      vat:
+                        type: string
+                      servicePerformed:
+                        type: string
+                      addressLine1:
+                        type: string
+                      addressLine2:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                      country:
+                        type: string
+                  receipt:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      timestamp:
+                        type: number
+                      sender:
+                        type: string
+                      payer:
+                        type: string
+                      lockAddress:
+                        type: string
+                      tokenAddress:
+                        type: string
+                      gasTotal:
+                        type: number
+                      amountTransferred:
+                        type: number
+
+        500:
+          description: Failed to retrieve receipt details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Impossible to retrieve receipt details.
+
+    post:
+      operationId: saveReceipt
+      security:
+        - User: []
+      description: Create purchaser details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Hash'
+
+      responses:
+        200:
+          description: Successfully creates purchaser details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fullname:
+                    type: string
+                  businessName:
+                    type: string
+                  addressLine1:
+                    type: string
+                  addressLine2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+
+        500:
+          description: Failed to update or create purchaser details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/receipts-base/{network}/{lockAddress}:
+    get:
+      operationId: getReceiptsBase
+      security:
+        - User: []
+      description: Get supplier details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  supplierName:
+                    type: string
+                  vat:
+                    type: string
+                  servicePerformed:
+                    type: string
+                  addressLine1:
+                    type: string
+                  addressLine2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+
+        500:
+          description: Failed to retrieve supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Impossible to retrieve supplier details.
+
+    post:
+      operationId: saveReceiptsBase
+      security:
+        - User: []
+      description: Create supplier details.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully creates supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  supplierName:
+                    type: string
+                  vat:
+                    type: string
+                  servicePerformed:
+                    type: string
+                  addressLine1:
+                    type: string
+                  addressLine2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+
+        500:
+          description: Failed to update or create supplier details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/email/{network}/locks/{lockAddress}/custom/{template}:
+    get:
+      operationId: getCustomEmailContent
+      security:
+        - User: []
+      description: Get custom email content for a specific template and lock details
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/TemplateId'
+
+      responses:
+        200:
+          description: Successfully get custom template content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  template:
+                    type: string
+                  content:
+                    type: string
+
+        500:
+          description: Could not get custom email content.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Custom email content not found for this template.
+
+    post:
+      operationId: saveCustomEmailContent
+      security:
+        - User: []
+      description: Save custom email content for a specif lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/TemplateId'
+
+      responses:
+        200:
+          description: Custom email content successfully saved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  template:
+                    type: string
+                  content:
+                    type: string
+
+        500:
+          description: Could not save custom email content.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/{id}:
+    delete:
+      operationId: deleteCheckoutConfig
+      security:
+        - User: []
+      description: Delete a checkout config
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+    get:
+      operationId: getCheckoutConfig
+      security:
+        - User: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the checkout config
+
+      responses:
+        200:
+          description: Checkout config for the given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+    put:
+      operationId: updateCheckoutConfig
+      security:
+        - User: []
+      description: A new checkout config is created or updated if it already exists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            nullable: true
+            type: string
+          description: This is optional. If you don't pass an ID, a new config will be created. If you pass an ID, the config will be created.
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'config'
+                - 'name'
+              properties:
+                name:
+                  type: string
+                config:
+                  type: object
+                  additionalProperties: true
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutConfig'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/checkout/list:
+    get:
+      operationId: listCheckoutConfigs
+      security:
+        - User: []
+      description: A list of all checkout configs created by the user
+
+      responses:
+        200:
+          description: Checkout config for the updated id.
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CheckoutConfig'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/payment-methods:
+    delete:
+      operationId: removePaymentMethods
+      security:
+        - User: []
+      description: Remove all payment methods for a user
+      responses:
+        200:
+          description: Successfully removed all payment methods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/stripe/connect/{network}/locks/{lockAddress}:
+    post:
+      operationId: connectStripeAccount
+      security:
+        - User: []
+      description: Connect a stripe account to a lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - baseUrl
+              type: object
+              properties:
+                baseUrl:
+                  type: string
+                stripeAccount:
+                  type: string
+
+      responses:
+        200:
+          description: Successfully connected stripe account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  # stripe account links
+                  url: # The url to redirect the user to
+                    type: string
+                  created:
+                    type: number
+                  expiresAt:
+                    type: number
+                  object:
+                    type: string
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/stripe/connections:
+    get:
+      operationId: getStripeConnections
+      security:
+        - User: []
+      description: Lists the locks connected to Stripe for a user
+      responses:
+        200:
+          description: List of locks previously connected to Stripe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
+                  error:
+                    type: string
+                    nullable: true
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/lock-settings/slug/{slug}:
+    get:
+      operationId: getLockSettingsBySlug
+      description: Get lock setting by slug
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+                  replyTo:
+                    type: string
+                  creditCardPrice:
+                    type: number
+                  slug:
+                    type: string
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+
+  /v2/lock-settings/{network}/locks/{lockAddress}:
+    get:
+      operationId: getLockSettings
+      description: Get saved lock settings
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+                  replyTo:
+                    type: string
+                  creditCardPrice:
+                    type: number
+                  slug:
+                    type: string
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+
+        404:
+          description: Setting not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        500:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    post:
+      operationId: saveLockSetting
+      security:
+        - User: []
+      description: Save lock settings
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sendEmail:
+                  type: boolean
+                replyTo:
+                  type: string
+                creditCardPrice:
+                  type: number
+                slug:
+                  type: string
+                lockAddress:
+                  type: string
+                network:
+                  type: number
+
+      responses:
+        200:
+          description: Successfully saved settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+
+        500:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/certificate/{network}/lock/{lockAddress}/key/{keyId}/generate:
+    get:
+      operationId: generateCertificate
+      description: Generate certificate for specific key
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+
+      responses:
+        200:
+          description: Successfully get certification for a key
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /purchase/capture:
+    post:
+      operationId: capturePurchase
+      security:
+        - User: []
+      description: Capture a purchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - 'network'
+                - 'lock'
+                - 'userAddress'
+                - 'paymentIntent'
+
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+
+                network: # The network the lock is on
+                  type: number
+
+                lock:
+                  type: string
+
+                userAddress:
+                  type: string
+
+                paymentIntent:
+                  type: string
+
+                data:
+                  type: array
+                  items:
+                    type: string
+
+                referrers:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Successfully captured purchase
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+
+  /v2/api/purchase/total:
+    get:
+      description: Get the total price for a purchase (including fees)
+      operationId: getTotalPrice
+      parameters:
+        - in: query
+          name: network
+          required: true
+          description: The network the lock is on
+          schema:
+            type: number
+
+        - in: query
+          name: amount
+          required: false
+          description: Amount of tokens you want to get the price for in USD.
+          schema:
+            type: number
+
+        - in: query
+          name: address
+          required: false
+          description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfully got price
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'total'
+                  - 'subtotal'
+                  - 'gasCost'
+                  - 'unlockServiceFee'
+                  - 'creditCardProcessingFee'
+                  - 'isCreditCardPurchasable'
+                properties:
+                  total:
+                    type: number
+                  subtotal:
+                    type: number
+                  gasCost:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  isCreditCardPurchasable:
+                    type: boolean

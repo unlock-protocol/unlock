@@ -3,6 +3,8 @@ import WalletLink from 'walletlink'
 import { useConfig } from '../utils/withConfig'
 import { useAuth } from '../contexts/AuthenticationContext'
 import { useAppStorage } from './useAppStorage'
+import { useConnectModal } from './useConnectModal'
+import { useCallback } from 'react'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
@@ -11,6 +13,8 @@ export interface EthereumWindow extends Window {
 interface RpcType {
   [network: string]: string
 }
+
+export const RECENTLY_USED_PROVIDER = 'recently_used_provider'
 
 export const rpcForWalletConnect = (config: any) => {
   const rpc: RpcType = {}
@@ -54,25 +58,28 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const config = useConfig()
   const { authenticate } = useAuth()
   const { setStorage, removeKey } = useAppStorage()
-
+  const { send } = useConnectModal()
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
-  const handleInjectProvider = async () => {
+  const handleInjectProvider = useCallback(async () => {
     return authenticate(injectedOrDefaultProvider)
-  }
+  }, [authenticate, injectedOrDefaultProvider])
 
-  const handleUnlockProvider = async (provider: any) => {
-    return authenticate(provider)
-  }
+  const handleUnlockProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
 
-  const handleWalletConnectProvider = async () => {
+  const handleWalletConnectProvider = useCallback(async () => {
     const walletConnectProvider = new WalletConnectProvider({
       rpc: rpcForWalletConnect(config),
     })
     return authenticate(walletConnectProvider)
-  }
+  }, [authenticate, config])
 
-  const handleCoinbaseWalletProvider = async () => {
+  const handleCoinbaseWalletProvider = useCallback(async () => {
     const walletLink = new WalletLink({
       appName: 'Unlock',
       appLogoUrl: '/static/images/svg/default-lock-logo.svg',
@@ -80,7 +87,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
 
     const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
     return authenticate(ethereum)
-  }
+  }, [authenticate, config])
 
   const walletHandlers: {
     [key in WalletProvider]: (provider?: any) => Promise<any | void>
@@ -91,28 +98,30 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     UNLOCK: handleUnlockProvider,
   }
 
-  async function authenticateWithProvider(
-    providerType: WalletProvider,
-    provider?: any
-  ) {
-    if (!walletHandlers[providerType]) {
-      removeKey('provider')
-    }
-    const connectedProvider = walletHandlers[providerType](provider)
+  const authenticateWithProvider = useCallback(
+    async (providerType: WalletProvider, provider?: any) => {
+      if (!walletHandlers[providerType]) {
+        removeKey('provider')
+      }
+      const connectedProvider = walletHandlers[providerType](provider)
 
-    connectedProvider.then((p) => {
-      if (!p?.account) {
-        return console.error('Unable to get provider')
-      }
-      if (p?.isUnlock && p?.email) {
-        setStorage('email', p.email)
-      } else {
-        removeKey('email')
-      }
-      setStorage('provider', providerType)
-    })
-    return connectedProvider
-  }
+      connectedProvider.then((p) => {
+        if (!p?.account) {
+          return console.error('Unable to get provider')
+        }
+        if (p?.isUnlock && p?.email) {
+          setStorage('email', p.email)
+        } else {
+          removeKey('email')
+        }
+        localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
+        setStorage('provider', providerType)
+      })
+      send(connectedProvider)
+      return connectedProvider
+    },
+    [setStorage, removeKey, send]
+  )
 
   return {
     handleUnlockProvider,

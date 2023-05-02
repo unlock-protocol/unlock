@@ -1,6 +1,69 @@
 # Changes
 
-# 0.32.16
+# 0.35.5
+
+- Removed signDataPersonal
+
+# 0.35.4
+
+- Adding missing implementations for v13: addKeyGranter, isKeyGranter
+
+# 0.35.3
+
+- Expose more fields such as `symbol`, `maxKeysPerAddress` and `maxNumberOfKeys` in subgraph service for locks fields.
+
+# 0.35.1
+
+- fixed upgrade function
+
+# 0.35.0
+
+- Add support for `swap` param in `purchaseKey` and `purchaseKeys` for swap and pay.
+- add support for Unlock v12
+
+# 0.34.1
+
+- add support for `setKeyManagerOf` to walletService
+
+# 0.33.4
+
+- move `customHookService` to web3Service
+- add `getPasswordHookSigners` to web3Service
+- move `setPasswordHookSigner` to walletService
+
+# 0.33.4
+
+- add `customHookService`
+
+# 0.33.3
+
+- remove `getEthAddressType` to web3Service
+- remove `isValidEOA` to web3Service
+- refactor `resolveName`
+
+# 0.33.2
+
+- add `getEthAddressType` to web3Service
+- add `isValidEOA` to web3Service
+- add `resolveName` to web3Service
+
+# 0.33.1
+
+- ensuring we return a contract or throw!
+
+# 0.33.1
+
+- Move to ethers.JsonRpcBatchProvider instead of ethers.JsonRpcProvider
+
+# 0.33.0
+
+- Remove subgraph service
+
+# 0.32.18
+
+- Add KeyManager for interacting with key manager contracts.
+
+# 0.32.17
 
 - Add getBaseTokenURI to web3Service
 

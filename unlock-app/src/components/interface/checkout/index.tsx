@@ -11,18 +11,26 @@ import { Container } from './Container'
 import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
+import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
+import { PaywallConfig } from '~/unlockTypes'
 
 export function CheckoutPage() {
   const { query } = useRouter()
   const config = useConfig()
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
-
+  const { isInitialLoading, data: checkout } = useCheckoutConfig({
+    id: query.id?.toString(),
+  })
   // Get paywallConfig or oauthConfig from the query parameters.
   const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
-  const oauthConfig = getOauthConfigFromQuery(query)
+  const oauthConfigFromQuery = getOauthConfigFromQuery(query)
 
-  const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
+  const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
+  const paywallConfig =
+    (checkout?.config as PaywallConfig) ||
+    communication.paywallConfig ||
+    paywallConfigFromQuery
 
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
@@ -44,7 +52,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig)) {
+  if (!(paywallConfig || oauthConfig) || isInitialLoading) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />
@@ -59,7 +67,6 @@ export function CheckoutPage() {
           injectedProvider={injectedProvider}
           communication={communication}
           oauthConfig={oauthConfig}
-          paywallConfig={paywallConfig}
         />
       </Container>
     )

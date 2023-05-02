@@ -3,10 +3,8 @@ import { useConfig } from '~/utils/withConfig'
 import { LockFormProps } from './CreateLockForm'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { KeyPrice } from '../../elements/KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
@@ -14,45 +12,51 @@ import deployingAnimation from '~/animations/deploying.json'
 import deployErrorAnimation from '~/animations/deploy-error.json'
 import { durationsAsTextFromSeconds } from '~/utils/durations'
 import { ONE_DAY_IN_SECONDS } from '~/constants'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface DeployStatusProps {
   title: string
   description: string
   status: string
-  backText: string
+  nextNext: string
+  nextUrl: (...params: any) => string
 }
 
 interface CreateLockFormSummaryProps {
   formData: LockFormProps
-  network: number
   showStatus?: boolean
   transactionHash?: string
+  lockAddress?: string
 }
 
-type DeployStatus = 'progress' | 'deployed' | 'txError'
+export type DeployStatus = 'progress' | 'deployed' | 'txError'
 
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
-    title: 'This will take few minutes...',
+    title: 'This will take few seconds...',
     description: 'Feel free to wait here or return to main page.',
     status: 'In progress...',
-    backText: 'Return to Lock list',
+    nextNext: 'Return to Lock list',
+    nextUrl: () => '/locks',
   },
   deployed: {
     title: '🚀​ Lock has successfully been deployed',
-    description: 'Redirecting you back to main page...',
+    description: "Let's start configuring it!",
     status: 'Completed!',
-    backText: 'Return to Lock list',
+    nextNext: 'Start managing it!',
+    nextUrl: (lockAddress: string, network: string) =>
+      `/locks/lock?address=${lockAddress}&network=${network}`,
   },
   txError: {
     title: 'Something went wrong...',
     description: 'Please try again.',
     status: 'Not completed.',
-    backText: 'Close',
+    nextNext: 'Close',
+    nextUrl: () => '/locks',
   },
 }
 
-function AnimationContent({ status }: { status: DeployStatus }) {
+export function AnimationContent({ status }: { status: DeployStatus }) {
   const animationClass = `h-60 md:h-96`
   switch (status) {
     case 'progress':
@@ -83,35 +87,29 @@ function AnimationContent({ status }: { status: DeployStatus }) {
 
 export const CreateLockFormSummary = ({
   formData,
-  network,
   showStatus = false,
   transactionHash,
+  lockAddress,
 }: CreateLockFormSummaryProps) => {
+  const { network } = useAuth()
   const requiredConfirmations = 2 // Required confirmations block to switch to 'deployed' status
-  const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks } = useConfig()
-  const {
-    unlimitedDuration = false,
-    unlimitedQuantity = false,
-    network: lockNetwork,
-  } = formData ?? {}
-
-  // when lock is deploying use form network to avoid error when user switch network
-  const defaultNetwork = showStatus ? lockNetwork : network
+  const { unlimitedDuration = false, unlimitedQuantity = false } =
+    formData ?? {}
 
   const {
     name: networkName,
     explorer,
-    baseCurrencySymbol,
-  } = networks[defaultNetwork!] ?? {}
+    nativeCurrency,
+  } = networks[formData.network!] ?? {}
 
   const transactionDetailUrl = transactionHash
     ? explorer?.urls?.transaction(transactionHash)
     : null
 
   const getTransactionDetails = async (hash: string) => {
-    return await web3Service.getTransaction(hash, defaultNetwork)
+    return await web3Service.getTransaction(hash, formData.network)
   }
 
   const { data, isError } = useQuery(
@@ -134,18 +132,9 @@ export const CreateLockFormSummary = ({
     ? 'deployed'
     : 'progress'
 
-  const { title, description, status, backText } =
+  const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]
-  const symbol = formData?.symbol || baseCurrencySymbol
-
-  useEffect(() => {
-    // redirect to dashboard after the key is deployed
-    if (isDeployed) {
-      setTimeout(() => {
-        router.push('/locks')
-      }, 5000)
-    }
-  }, [isDeployed, router])
+  const symbol = formData?.symbol || nativeCurrency.symbol
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(
@@ -219,9 +208,9 @@ export const CreateLockFormSummary = ({
         <div className="flex flex-col items-center my-12 text-center">
           <h3 className="block mb-4 text-2xl font-bold md:text-4xl">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
-          <Link href={'/locks'}>
+          <Link href={nextUrl(lockAddress, network)}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
-              {backText}
+              {nextNext}
             </Button>
           </Link>
         </div>

@@ -11,6 +11,12 @@ import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
+import Image from 'next/image'
+import { isAndroid, isIOS } from 'react-device-detect'
+import { isEthPassSupported, Platform } from '~/services/ethpass'
+import { useQuery } from '@tanstack/react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface Props {
   injectedProvider: unknown
@@ -25,9 +31,9 @@ export function Returning({
 }: Props) {
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-
+  const web3Service = useWeb3Service()
   const { paywallConfig, lock, messageToSign: signedMessage } = state.context
-  const { account, signMessage } = useAuth()
+  const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
   )
@@ -36,7 +42,12 @@ export function Returning({
   const onSign = async () => {
     try {
       setIsSigningMessage(true)
-      const signature = await signMessage(paywallConfig.messageToSign!)
+      const walletService = await getWalletService()
+
+      const signature = await walletService.signMessage(
+        paywallConfig.messageToSign!,
+        'personal_sign'
+      )
       setIsSigningMessage(false)
       send({
         type: 'SIGN_MESSAGE',
@@ -64,6 +75,20 @@ export function Returning({
     },
   ]
 
+  const { data: tokenId } = useQuery(
+    ['userTokenId', account, lock, web3Service],
+    async () => {
+      return web3Service.getTokenIdForOwner(
+        lock!.address,
+        account!,
+        lock!.network
+      )
+    },
+    {
+      enabled: !!(account && lock),
+    }
+  )
+
   return (
     <Fragment>
       <Stepper position={2} service={checkoutService} items={stepItems} />
@@ -87,6 +112,67 @@ export function Returning({
             See in the block explorer
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
+          {tokenId && isEthPassSupported(lock!.network) && (
+            <ul className="grid h-12 grid-cols-2 gap-3 pt-4">
+              {!isIOS && tokenId && (
+                <li className="">
+                  <AddToDeviceWallet
+                    className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                    iconLeft={
+                      <Image
+                        width="20"
+                        height="20"
+                        alt="Google Wallet"
+                        src={`/images/illustrations/google-wallet.svg`}
+                      />
+                    }
+                    size="small"
+                    variant="secondary"
+                    platform={Platform.GOOGLE}
+                    as={Button}
+                    network={lock!.network}
+                    lockAddress={lock!.address}
+                    tokenId={tokenId}
+                    name={lock!.name}
+                    handlePassUrl={(url: string) => {
+                      window.location.assign(url)
+                    }}
+                  >
+                    Add to Google Wallet
+                  </AddToDeviceWallet>
+                </li>
+              )}
+              {!isAndroid && tokenId && (
+                <li className="">
+                  <AddToDeviceWallet
+                    className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                    platform={Platform.APPLE}
+                    size="small"
+                    variant="secondary"
+                    as={Button}
+                    iconLeft={
+                      <Image
+                        className="justify-self-left"
+                        width="20"
+                        height="20"
+                        alt="Apple Wallet"
+                        src={`/images/illustrations/apple-wallet.svg`}
+                      />
+                    }
+                    network={lock!.network}
+                    lockAddress={lock!.address}
+                    tokenId={tokenId}
+                    name={lock!.name}
+                    handlePassUrl={(url: string) => {
+                      window.location.assign(url)
+                    }}
+                  >
+                    Add to Apple Wallet
+                  </AddToDeviceWallet>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
@@ -105,9 +191,15 @@ export function Returning({
                 Sign message
               </Button>
             ) : (
-              <div className="flex justify-between gap-4">
+              <div
+                className={`gap-4 ${
+                  paywallConfig?.endingCallToAction
+                    ? 'grid grid-cols-1'
+                    : 'flex justify-between '
+                }`}
+              >
                 <Button className="w-full" onClick={() => onClose()}>
-                  Return
+                  {paywallConfig?.endingCallToAction || 'Return'}
                 </Button>
                 {!lock?.isSoldOut && (
                   <Button

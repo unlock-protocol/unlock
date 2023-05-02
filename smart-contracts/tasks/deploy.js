@@ -36,6 +36,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
   .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
   .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
   .addOptionalParam('locksmithURI', 'the URL locksmith to use in Unlock config')
+  .addOptionalParam('owner', 'address of the owner. defaults to the multisig address set for the network, it uses it')
   .addFlag('setTemplate', 'set the PublicLock instance in Unlock')
   .setAction(
     async (
@@ -54,6 +55,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
         estimatedGasForPurchase,
         locksmithURI,
         uniswapRouterAddress,
+        owner,
       },
       { ethers }
     ) => {
@@ -82,6 +84,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
         setTemplate,
         estimatedGasForPurchase,
         locksmithURI,
+        owner,
       })
     }
   )
@@ -146,3 +149,15 @@ task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
     return await govDeployer()
   }
 )
+
+task('deploy:keyManager', 'Deploy KeyManager contract')
+  .addOptionalParam('locksmiths', 'addresses for the locksmith signers, comma separated')
+  .setAction(
+    async ({ locksmiths }) => {
+      const locksmithsArray = !locksmiths ? [] : locksmiths.split(',')
+
+      // eslint-disable-next-line global-require
+      const keyManagerDeployer = require('../scripts/deployments/keyManager')
+      return await keyManagerDeployer(locksmithsArray)
+    }
+  )

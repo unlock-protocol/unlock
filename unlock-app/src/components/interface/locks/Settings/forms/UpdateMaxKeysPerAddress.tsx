@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
-import { ToggleSwitch, Input, Button } from '@unlock-protocol/ui'
-import React, { useEffect, useState } from 'react'
+import { Input, Button } from '@unlock-protocol/ui'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface UpdateMaxKeysPerAddressProps {
   lockAddress: string
@@ -25,17 +25,15 @@ export const UpdateMaxKeysPerAddress = ({
   disabled,
   isManager,
   publicLockVersion,
-  maxKeysPerAddress: maxKeysPerAddressValue,
+  maxKeysPerAddress: maxKeysPerAddressValue = DEFAULT_KEYS_PER_ADDRESS,
 }: UpdateMaxKeysPerAddressProps) => {
-  const [maxKeysPerAddress, setMaxKeysPerAddress] = useState(false)
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
 
   const {
     register,
     handleSubmit,
     getValues,
     reset,
-    setValue,
     formState: { isValid, errors },
   } = useForm<FormProps>({
     mode: 'onChange',
@@ -44,14 +42,10 @@ export const UpdateMaxKeysPerAddress = ({
     },
   })
 
-  useEffect(() => {
-    setMaxKeysPerAddress(maxKeysPerAddressValue > DEFAULT_KEYS_PER_ADDRESS)
-  }, [maxKeysPerAddressValue])
-
   const updateMaxKeysPerAddress = async (): Promise<any> => {
     if (!isManager) return
     const { maxKeysPerAddress = 1 } = getValues()
-
+    const walletService = await getWalletService(network)
     return await walletService.setMaxKeysPerAddress({
       lockAddress,
       maxKeysPerAddress: maxKeysPerAddress.toString(),
@@ -88,31 +82,13 @@ export const UpdateMaxKeysPerAddress = ({
       onSubmit={handleSubmit(onHandleSubmit)}
     >
       <div className="flex flex-col gap-4">
-        <div className="flex items-center">
-          <ToggleSwitch
-            title="Enable max keys per address"
-            enabled={maxKeysPerAddress}
-            setEnabled={setMaxKeysPerAddress}
-            disabled={disabledInput}
-            onChange={(enabled: boolean) => {
-              setMaxKeysPerAddress(enabled)
-              setValue(
-                'maxKeysPerAddress',
-                enabled ? maxKeysPerAddressValue : DEFAULT_KEYS_PER_ADDRESS,
-                {
-                  shouldValidate: true,
-                }
-              )
-            }}
-          />
-        </div>
         <div className="relative">
           <Input
             placeholder="Enter quantity"
             type="number"
             autoComplete="off"
             step={1}
-            disabled={!maxKeysPerAddress || disabledInput}
+            disabled={disabledInput}
             description={
               !canUpdateMaxKeysPerAddress && (
                 <>
@@ -126,14 +102,13 @@ export const UpdateMaxKeysPerAddress = ({
                 </>
               )
             }
-            min={0}
+            min={1}
             error={
               errors?.maxKeysPerAddress &&
               'Please enter a positive numeric value'
             }
             {...register('maxKeysPerAddress', {
-              min: 0,
-              required: !maxKeysPerAddress,
+              min: 1,
             })}
           />
         </div>

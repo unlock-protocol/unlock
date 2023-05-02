@@ -1,15 +1,13 @@
 import React from 'react'
-import Drawer from '../../interface/Drawer'
-
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useMutation } from '@tanstack/react-query'
 import { addressMinify } from '~/utils/strings'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useEns from '~/hooks/useEns'
 import { useForm } from 'react-hook-form'
 import { MAX_UINT } from '~/constants'
 import dayjs from 'dayjs'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface ExtendKeyDrawerProps {
   isOpen: boolean
@@ -23,6 +21,7 @@ export interface ExtendKeyItem {
   lockName: string
   tokenId: string
   owner: string
+  network: number
   expiration: string
 }
 
@@ -42,18 +41,22 @@ const formatDate = (timestamp: number) => {
   return date.toISOString().slice(0, 16)
 }
 
+interface ExtendKeyDurationProps {
+  lockAddress: string
+  tokenId: string
+  onComplete: () => void
+  currentExpiration: string
+  network: number
+}
+
 const ExtendKeyDurationForm = ({
   lockAddress,
   tokenId,
   onComplete,
   currentExpiration,
-}: {
-  lockAddress: string
-  tokenId: string
-  onComplete: () => void
-  currentExpiration: string
-}) => {
-  const walletService = useWalletService()
+  network,
+}: ExtendKeyDurationProps) => {
+  const { getWalletService } = useAuth()
 
   const defaultValues = {
     // expiration date as default
@@ -86,8 +89,7 @@ const ExtendKeyDurationForm = ({
     tokenId: string
     extendDuration: number | string
   }) => {
-    if (!walletService) return
-
+    const walletService = await getWalletService(network)
     return await walletService.grantKeyExtension(
       {
         lockAddress,
@@ -111,7 +113,10 @@ const ExtendKeyDurationForm = ({
       const timeDiffFromNow = newExpiration.diff(now, 'second')
 
       const extendDuration = neverExpires ? MAX_UINT : timeDiffFromNow
-      if (extendDuration > 0 || extendDuration === MAX_UINT) {
+      if (
+        (typeof extendDuration === 'number' && extendDuration > 0) ||
+        extendDuration === MAX_UINT
+      ) {
         const keyMutationPromise = extendKeyMutation.mutateAsync({
           extendDuration,
           lockAddress,
@@ -186,6 +191,7 @@ export const ExtendKeysDrawer = ({
   const {
     lockAddress,
     tokenId,
+    network,
     expiration: currentExpiration,
   } = selectedKey ?? {}
 
@@ -225,6 +231,7 @@ export const ExtendKeysDrawer = ({
         tokenId={tokenId}
         onComplete={onComplete}
         currentExpiration={currentExpiration}
+        network={network}
       />
     </Drawer>
   )

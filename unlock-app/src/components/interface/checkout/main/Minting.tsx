@@ -13,7 +13,161 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { TransactionAnimation } from '../Shell'
-interface Props {
+import Link from 'next/link'
+import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
+import { isEthPassSupported, Platform } from '~/services/ethpass'
+import { isAndroid, isIOS } from 'react-device-detect'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image'
+import type { Transaction } from './checkoutMachine'
+
+interface MintingScreenProps {
+  lockName: string
+  mint: Transaction
+  owner: string
+  lockAddress: string
+  network: number
+}
+
+export const MintingScreen = ({
+  lockName,
+  mint,
+  owner,
+  lockAddress,
+  network,
+}: MintingScreenProps) => {
+  const web3Service = useWeb3Service()
+  const config = useConfig()
+
+  const { data: tokenId } = useQuery(
+    ['userTokenId', mint, owner, lockAddress, network, web3Service],
+    async () => {
+      return web3Service.getTokenIdForOwner(lockAddress, owner!, network)
+    },
+    {
+      enabled: mint?.status === 'FINISHED',
+    }
+  )
+  const hasTokenId = !!tokenId
+
+  const content = useMemo(() => {
+    switch (mint?.status) {
+      case 'PROCESSING': {
+        return {
+          title: 'Minting NFT',
+          text: 'Minting NFT...',
+        }
+      }
+      case 'FINISHED': {
+        return {
+          title: 'You have NFT!',
+          text: 'Successfully minted NFT',
+        }
+      }
+      case 'ERROR': {
+        return {
+          title: 'Minting failed',
+          text: 'Failed to mint NFT',
+        }
+      }
+    }
+  }, [mint?.status])
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full space-y-2">
+      <TransactionAnimation status={mint?.status} />
+      <p className="text-lg font-bold text-brand-ui-primary">{content?.text}</p>
+      {mint?.status === 'FINISHED' && hasTokenId && (
+        <Link
+          href="/keychain"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+        >
+          Open keychain
+          <Icon icon={ExternalLinkIcon} size="small" />
+        </Link>
+      )}
+      {mint?.transactionHash && (
+        <a
+          href={config.networks[network].explorer.urls.transaction(
+            mint.transactionHash
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+        >
+          See in the block explorer
+          <Icon icon={ExternalLinkIcon} size="small" />
+        </a>
+      )}
+      {hasTokenId && isEthPassSupported(network) && (
+        <ul className="grid grid-cols-2 gap-3 pt-4">
+          {!isIOS && (
+            <li className="">
+              <AddToDeviceWallet
+                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                iconLeft={
+                  <Image
+                    width="20"
+                    height="20"
+                    alt="Google Wallet"
+                    src={`/images/illustrations/google-wallet.svg`}
+                  />
+                }
+                size="small"
+                variant="secondary"
+                platform={Platform.GOOGLE}
+                as={Button}
+                network={network}
+                lockAddress={lockAddress}
+                tokenId={tokenId}
+                name={lockName}
+                handlePassUrl={(url: string) => {
+                  window.location.assign(url)
+                }}
+              >
+                Add to Google Wallet
+              </AddToDeviceWallet>
+            </li>
+          )}
+          {!isAndroid && (
+            <li className="">
+              <AddToDeviceWallet
+                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                platform={Platform.APPLE}
+                size="small"
+                variant="secondary"
+                as={Button}
+                iconLeft={
+                  <Image
+                    className="justify-self-left"
+                    width="20"
+                    height="20"
+                    alt="Apple Wallet"
+                    src={`/images/illustrations/apple-wallet.svg`}
+                  />
+                }
+                network={network}
+                lockAddress={lockAddress}
+                tokenId={tokenId}
+                name={lockName}
+                handlePassUrl={(url: string) => {
+                  window.location.assign(url)
+                }}
+              >
+                Add to Apple Wallet
+              </AddToDeviceWallet>
+            </li>
+          )}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+interface MintingProps {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
@@ -25,13 +179,12 @@ export function Minting({
   onClose,
   checkoutService,
   communication,
-}: Props) {
+}: MintingProps) {
   const { account } = useAuth()
-  const config = useConfig()
   const [state, send] = useActor(checkoutService)
+  const config = useConfig()
   const { mint, lock, messageToSign } = state.context
   const processing = mint?.status === 'PROCESSING'
-  const status = mint?.status
 
   useEffect(() => {
     if (mint?.status !== 'PROCESSING') {
@@ -41,12 +194,13 @@ export function Minting({
       try {
         const network = config.networks[lock!.network]
         if (network) {
-          const provider = new ethers.providers.JsonRpcProvider(
+          const provider = new ethers.providers.JsonRpcBatchProvider(
             network.provider
           )
 
           const transaction = await provider.waitForTransaction(
-            mint!.transactionHash!
+            mint!.transactionHash!,
+            2
           )
 
           if (transaction.status !== 1) {
@@ -82,29 +236,6 @@ export function Minting({
     waitForConfirmation()
   }, [mint, lock, config, send, communication, account, messageToSign])
 
-  const content = useMemo(() => {
-    switch (status) {
-      case 'PROCESSING': {
-        return {
-          title: 'Minting NFT',
-          text: 'Purchasing NFT...',
-        }
-      }
-      case 'FINISHED': {
-        return {
-          title: 'You have NFT!',
-          text: 'Successfully purchased NFT',
-        }
-      }
-      case 'ERROR': {
-        return {
-          title: 'Minting failed',
-          text: 'Failed to purchase NFT',
-        }
-      }
-    }
-  }, [status])
-
   const stepItems = useCheckoutSteps(checkoutService)
 
   return (
@@ -116,36 +247,13 @@ export function Minting({
         items={stepItems}
       />
       <main className="h-full px-6 py-2 overflow-auto">
-        <div className="flex flex-col items-center justify-center h-full space-y-2">
-          <TransactionAnimation status={status} />
-          <p className="text-lg font-bold text-brand-ui-primary">
-            {content?.text}
-          </p>
-          {mint?.status === 'FINISHED' && (
-            <a
-              href="/keychain"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-            >
-              Open keychain
-              <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
-          )}
-          {mint?.transactionHash && (
-            <a
-              href={config.networks[lock!.network].explorer.urls.transaction(
-                mint.transactionHash
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-            >
-              See in the block explorer
-              <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
-          )}
-        </div>
+        <MintingScreen
+          mint={mint!}
+          owner={account!} // TODO: are we minting for someone else?
+          lockAddress={lock!.address}
+          lockName={lock!.name}
+          network={lock!.network}
+        ></MintingScreen>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected

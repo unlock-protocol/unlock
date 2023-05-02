@@ -1,0 +1,53 @@
+{
+  "name": "@unlock-protocol/crypto-icon",
+  "description": "Universal crypto icon component by Unlock",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "version": "0.1.0",
+  "scripts": {
+    "preview": "yarn build && vite --config ./vite.config.ts src",
+    "build": "tsx scripts/build.ts && vite build && tsup ./lib/index.ts --dts-only",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "peerDependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/ui"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "7.0.0",
+    "@storybook/addon-docs": "7.0.0",
+    "@storybook/addon-essentials": "7.0.0",
+    "@storybook/addon-links": "7.0.0",
+    "@storybook/addon-postcss": "3.0.0-alpha.1",
+    "@storybook/react": "7.0.0",
+    "@storybook/react-vite": "7.0.0",
+    "@types/react": "18.0.32",
+    "@types/react-dom": "18.0.11",
+    "@vitejs/plugin-react": "3.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "storybook": "7.0.0",
+    "tsup": "6.7.0",
+    "tsx": "3.12.7",
+    "typescript": "5.0.4",
+    "vite": "4.3.3",
+    "vite-plugin-svgr": "2.4.0",
+    "vite-tsconfig-paths": "4.2.0"
+  }
+}

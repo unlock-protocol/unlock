@@ -1,7 +1,10 @@
+// TODO: remove, some part related to old checkout (callToAction)
+
 import { getPaywallConfigFromQuery } from '../../utils/paywallConfig'
+import { vi, beforeAll, afterAll, it, describe, expect } from 'vitest'
 
 let originalConsole: any
-let error = jest.fn()
+let error = vi.fn()
 
 const lock = '0x1234567890123456789012345678901234567890'
 const validConfig = {
@@ -24,7 +27,7 @@ describe('getConfigFromSearch', () => {
     originalConsole = global.console
   })
   beforeEach(() => {
-    error = jest.fn()
+    error = vi.fn()
     ;(global.console as any) = { error }
   })
   afterAll(() => {

@@ -1,58 +1,58 @@
 import { Button } from './Button'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { FaLock as LockIcon } from 'react-icons/fa'
-import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 
-export default {
+const meta = {
   component: Button,
   title: 'Button',
-} as ComponentMeta<typeof Button>
+} satisfies Meta<typeof Button>
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const PrimaryButton = Template.bind({})
+export const PrimaryButton = {
+  args: {
+    children: 'Connect',
+    iconLeft: <LockIcon size={12} />,
+  },
+} satisfies Story
 
-PrimaryButton.args = {
-  children: 'Connect',
-  iconLeft: <LockIcon size={12} />,
-}
+export const SecondaryButton = {
+  args: {
+    children: 'Create Lock',
+    size: 'large',
+    variant: 'secondary',
+    iconLeft: <LockIcon size={14} />,
+  },
+} satisfies Story
 
-export const SecondaryButton = Template.bind({})
+export const DisabledButton = {
+  args: {
+    children: 'Disabled',
+    disabled: true,
+    iconRight: <LockIcon size={12} />,
+  },
+} satisfies Story
 
-SecondaryButton.args = {
-  children: 'Create Lock',
-  size: 'large',
-  variant: 'secondary',
-  iconLeft: <LockIcon size={14} />,
-}
+export const LoadingButton = {
+  args: {
+    children: 'Loading Locks...',
+    disabled: true,
+    loading: true,
+  },
+} satisfies Story
 
-export const DisabledButton = Template.bind({})
+export const OutlinedPrimaryButton = {
+  args: {
+    children: 'Outlined Primary Button',
+    variant: 'outlined-primary',
+  },
+} satisfies Story
 
-DisabledButton.args = {
-  children: 'Disabled',
-  disabled: true,
-  iconRight: <LockIcon size={12} />,
-}
-
-export const LoadingButton = Template.bind({})
-
-LoadingButton.args = {
-  children: 'Loading Locks...',
-  disabled: true,
-  loading: true,
-}
-
-export const OutlinedPrimaryButton = Template.bind({})
-
-OutlinedPrimaryButton.args = {
-  children: 'Outlined Primary Button',
-  variant: 'outlined-primary',
-}
-
-export const DisabledOutlinedPrimaryButton = Template.bind({})
-
-DisabledOutlinedPrimaryButton.args = {
-  children: 'Disabled Outlined Primary Button',
-  variant: 'outlined-primary',
-  disabled: true,
-}
+export const DisabledOutlinedPrimaryButton = {
+  args: {
+    children: 'Disabled Outlined Primary Button',
+    variant: 'outlined-primary',
+    disabled: true,
+  },
+} satisfies Story

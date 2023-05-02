@@ -1,80 +1,89 @@
 import { Input } from './Input'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { MdPerson as PersonIcon } from 'react-icons/md'
 import { FiAtSign as AtSignIcon } from 'react-icons/fi'
 import { IconBaseProps } from 'react-icons'
 
-export default {
+const meta = {
   component: Input,
   title: 'Input',
-} as ComponentMeta<typeof Input>
+} satisfies Meta<typeof Input>
 
-const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />
+export default meta
+type Story = StoryObj<typeof meta>
 
-export const Normal = Template.bind({})
+export const Normal = {
+  args: {
+    icon: PersonIcon,
+    label: 'Email address',
+    size: 'small',
+    value: 'email@email.com',
+    description:
+      'If you have previously created account with Unlock, please enter the same email to continue',
+  },
+} satisfies Story
 
-Normal.args = {
-  icon: PersonIcon,
-  label: 'Email address',
-  size: 'small',
-  value: 'email@email.com',
-  description:
-    'If you have previously created account with Unlock, please enter the same email to contine',
-}
+export const Required = {
+  args: {
+    required: true,
+    label: 'Full Name',
+    description: 'Enter your full name',
+  },
+} satisfies Story
 
-export const Password = Template.bind({})
+export const Optional = {
+  args: {
+    optional: true,
+    label: 'Full Name',
+  },
+} satisfies Story
 
 function CustomizedIcon(props: IconBaseProps) {
   return <PersonIcon {...props} className="fill-gray-500" />
 }
 
-Password.args = {
-  icon: CustomizedIcon,
-  label: 'Password',
-  size: 'medium',
-  type: 'password',
-  value: 'email@email.com',
-  description: 'Use a long password.',
-}
+export const Password = {
+  args: {
+    icon: CustomizedIcon,
+    label: 'Password',
+    size: 'medium',
+    type: 'password',
+    value: 'email@email.com',
+    description: 'Use a long password.',
+  },
+} satisfies Story
 
-export const Success = Template.bind({})
+export const Success = {
+  args: {
+    icon: AtSignIcon,
+    label: 'Choose username',
+    size: 'medium',
+    description: 'Pick a nice username',
+    success: 'Username is available',
+    value: 'unlock',
+  },
+} satisfies Story
 
-Success.args = {
-  icon: AtSignIcon,
-  label: 'Choose username',
-  size: 'medium',
-  description: 'Pick a nice username',
-  success: 'Username is available',
-  value: 'unlock',
-}
+export const Error = {
+  args: {
+    icon: AtSignIcon,
+    label: 'Type your username',
+    size: 'large',
+    error: 'Invalid username',
+    value: 'unlock',
+    description: 'Type a good username',
+    copy: true,
+  },
+} satisfies Story
 
-export const Error = Template.bind({})
-
-Error.args = {
-  icon: AtSignIcon,
-  label: 'Type your username',
-  size: 'large',
-  error: 'Invalid username',
-  value: 'unlock',
-  description: 'Type a good username',
-  copy: true,
-}
-
-export const CustomDescription = Template.bind({})
-
-const Description = () => (
-  <div>
-    Check out this{' '}
-    <a className="underline" href="https://example.com" target="#">
-      link
-    </a>
-  </div>
-)
-
-CustomDescription.args = {
-  icon: AtSignIcon,
-  label: 'Type your username',
-  value: 'unlock',
-  description: <Description />,
-  copy: true,
-}
+export const CustomDescription = {
+  args: {
+    icon: AtSignIcon,
+    label: 'Type your username',
+    size: 'large',
+    error: 'Invalid username',
+    value: 'unlock',
+    description: 'Type a good username',
+    copy: true,
+  },
+} satisfies Story

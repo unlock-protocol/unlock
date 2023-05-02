@@ -16,9 +16,14 @@
   "peerDependencies": {
     "passport": "^0.6.x"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git",
+    "directory": "packages/unlock-express"
+  },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "8.31.0",
-    "prettier": "2.8.1"
+    "eslint": "8.39.0",
+    "prettier": "2.8.7"
   }
 }

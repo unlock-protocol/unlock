@@ -1,5 +1,5 @@
-import { Button } from '@unlock-protocol/ui'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { Button, Card } from '@unlock-protocol/ui'
+import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
@@ -19,10 +19,10 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { Picker, PickerState } from '../../Picker'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-
+import { CertificationMetadataForm } from './CertificationMetadataForm'
+import { useSaveSlugSetting } from '~/hooks/useLockSettings'
 interface Props {
   lockAddress?: string
   network?: number
@@ -47,13 +47,13 @@ export const Form = ({
     shouldUnregister: false,
   })
 
-  const {
-    formState: { errors },
-  } = methods
-
   const image = `${config.locksmithHost}/lock/${lockAddress}/icon${
     keyId ? `?id=${keyId}` : ''
   }`
+
+  const {
+    formState: { errors },
+  } = methods
 
   useEffect(() => {
     methods.reset()
@@ -63,12 +63,14 @@ export const Form = ({
     })
   }, [defaultValues, methods, image])
 
-  const { mutateAsync: updateMetadata, isLoading: isMetadataUpating } =
+  const { mutateAsync: updateMetadata, isLoading: isMetadataUpdating } =
     useUpdateMetadata({
       lockAddress,
       network,
       keyId,
     })
+
+  const { mutateAsync: saveSlugSetting } = useSaveSlugSetting()
 
   const onSubmit = async (formData: MetadataFormData) => {
     const metadata = formDataToMetadata({
@@ -77,6 +79,15 @@ export const Form = ({
       ...formData,
     })
     await updateMetadata(metadata)
+
+    // save slug if present and changed
+    if (metadata?.slug && defaultValues?.slug !== metadata?.slug) {
+      await saveSlugSetting({
+        slug: metadata?.slug,
+        lockAddress,
+        network,
+      })
+    }
   }
 
   const errorFields = Object.keys(errors)
@@ -84,11 +95,16 @@ export const Form = ({
     <FormProvider {...methods}>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
-          <DetailForm />
+          <DetailForm defaultValues={defaultValues} />
           <TicketForm
             lockAddress={lockAddress}
             network={network}
-            disabled={isMetadataUpating}
+            disabled={isMetadataUpdating}
+          />
+          <CertificationMetadataForm
+            lockAddress={lockAddress}
+            network={network}
+            disabled={isMetadataUpdating}
           />
           <AdvancedForm />
           <LockCustomForm />
@@ -100,8 +116,8 @@ export const Form = ({
               </div>
             )}
             <Button
-              disabled={isMetadataUpating || errorFields.length > 0}
-              loading={isMetadataUpating}
+              disabled={isMetadataUpdating || errorFields.length > 0}
+              loading={isMetadataUpdating}
               className="w-full"
             >
               Save Properties
@@ -113,57 +129,9 @@ export const Form = ({
   )
 }
 
-interface SwitchNetworkProps {
-  network: number
-  children: ReactNode
-}
-
-export const SwitchNetwork = ({
-  network = 1,
-  children,
-}: SwitchNetworkProps) => {
-  const { network: connectedNetwork, changeNetwork } = useAuth()
-  const [isNetworkSwitching, setIsNetworkSwitching] = useState(false)
-
-  const isIncorrectNetwork = network !== connectedNetwork
-
-  if (!isIncorrectNetwork) {
-    return <>{children}</>
-  }
-  const connectedNetworkName = config.networks?.[connectedNetwork!]?.name
-  const networkName = config.networks?.[network]?.name
-
-  return (
-    <div className="grid gap-6 p-6 border border-ui-secondary-600 rounded-xl">
-      <div className="space-y-1">
-        <h3 className="text-xl font-bold">
-          You are connected to the wrong network
-        </h3>
-        <p className="text-gray-600">
-          You are connected to the {connectedNetworkName} network. Please switch
-          to the {networkName} network to change token URI.
-        </p>
-      </div>
-      <Button
-        loading={isNetworkSwitching}
-        disabled={isNetworkSwitching}
-        onClick={async (event) => {
-          event.preventDefault()
-          setIsNetworkSwitching(true)
-          await changeNetwork(network)
-          setIsNetworkSwitching(false)
-        }}
-      >
-        Switch network to {networkName}
-      </Button>
-    </div>
-  )
-}
-
 export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
-  const { account } = useAuth()
+  const { account, getWalletService } = useAuth()
   const web3Service = useWeb3Service()
-  const walletService = useWalletService()
 
   const [selected, setSelected] = useState<PickerState>({
     lockAddress,
@@ -209,6 +177,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
         selected.lockAddress,
       ],
       mutationFn: async (baseTokenURI: string) => {
+        const walletService = await getWalletService(selected.network!)
         await walletService.setBaseTokenURI({
           lockAddress: selected.lockAddress!,
           baseTokenURI,
@@ -260,34 +229,36 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
           </a>
         </div>
       </div>
-      <div className="grid gap-6 p-6 border border-ui-secondary-600 bg-ui-secondary-400 rounded-xl">
-        <div className="space-y-1">
-          <h3 className="text-lg font-bold">Metadata</h3>
-          <p className="text-gray-600">
-            Select the Lock or Key you want to edit properties for. If you save
-            metadata for lock only, it will be used for all keys which do not
-            have any metadata set.
-          </p>
+      <Card variant="secondary">
+        <div className="grid gap-6">
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold">Metadata</h3>
+            <p className="text-gray-600">
+              Select the Lock or Key you want to edit properties for. If you
+              save metadata for lock only, it will be used for all keys which do
+              not have any metadata set.
+            </p>
+          </div>
+          <Picker
+            userAddress={account!}
+            lockAddress={lockAddress}
+            network={network}
+            keyId={keyId}
+            collect={{
+              lockAddress: true,
+              network: true,
+              key: true,
+            }}
+            onChange={(selected) => {
+              setSelected(selected)
+            }}
+          />
         </div>
-        <Picker
-          userAddress={account!}
-          lockAddress={lockAddress}
-          network={network}
-          keyId={keyId}
-          collect={{
-            lockAddress: true,
-            network: true,
-            key: true,
-          }}
-          onChange={(selected) => {
-            setSelected(selected)
-          }}
-        />
-      </div>
+      </Card>
       {isLoading && <LoadingIcon />}
       {!isLoading && !isTokenURIEditable && isLockSelected && (
-        <SwitchNetwork network={selected.network!}>
-          <div className="grid gap-6 p-6 border border-red-300 bg-red-50 rounded-xl">
+        <Card variant="danger">
+          <div className="grid gap-6">
             <div className="flex items-center gap-4">
               <div className="hidden p-2 bg-red-200 rounded-full sm:block">
                 <ErrorIcon size={24} className="fill-red-900" />
@@ -313,7 +284,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
               Change Base Token URI
             </Button>
           </div>
-        </SwitchNetwork>
+        </Card>
       )}
       {!isLoading && isTokenURIEditable && isLockSelected && (
         <Form

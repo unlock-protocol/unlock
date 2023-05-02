@@ -1,20 +1,22 @@
 import { Button, Tooltip } from '@unlock-protocol/ui'
 import { useActor } from '@xstate/react'
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
-import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../DownloadWallet'
+import { detectInjectedProvider } from '~/utils/wallet'
+import { useSIWE } from '~/hooks/useSIWE'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
   email?: string
   account?: string
+  isDisconnecting?: boolean
 }
 
 export function SignedIn({
@@ -22,6 +24,7 @@ export function SignedIn({
   isUnlockAccount,
   email,
   account,
+  isDisconnecting,
 }: SignedInProps) {
   let userText: string
   let signOutText: string
@@ -38,20 +41,21 @@ export function SignedIn({
     <div className="flex items-center justify-between text-sm">
       <p> {userText}</p>
       <Tooltip
-        delay={50}
         side="top"
         tip={`${
           isUnlockAccount ? 'Signing out' : 'Disconnecting'
         } will reset the flow`}
       >
         {onDisconnect && (
-          <button
-            className="font-medium text-gray-600 hover:text-black"
+          <Button
+            variant="borderless"
+            size="small"
+            loading={isDisconnecting}
             onClick={onDisconnect}
             type="button"
           >
             {signOutText}
-          </button>
+          </Button>
         )}
       </Tooltip>
     </div>
@@ -64,12 +68,14 @@ interface SignedOutProps {
   ): Promise<void>
   onUnlockAccount(): void
   injectedProvider: any
+  title?: string
 }
 
 export function SignedOut({
   onUnlockAccount,
   authenticateWithProvider,
   injectedProvider,
+  title = 'Have a crypto wallet?',
 }: SignedOutProps) {
   const iconButtonClass =
     'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
@@ -81,26 +87,9 @@ export function SignedOut({
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
       frame: <SvgComponents.Frame width={24} />,
       status: <SvgComponents.Status width={32} />,
-      default: <WalletIcon size={20} className="m-1.5" />,
     }
-
-    if (injectedProvider?.isMetaMask) {
-      return walletIcons.metamask
-    }
-
-    if (injectedProvider?.isBraveWallet) {
-      return walletIcons.brave
-    }
-
-    if (injectedProvider?.isFrame) {
-      return walletIcons.frame
-    }
-
-    if (injectedProvider?.isStatus) {
-      return walletIcons.status
-    }
-
-    return walletIcons.default
+    const detected = detectInjectedProvider(injectedProvider)
+    return walletIcons[detected]
   }, [injectedProvider])
 
   const onInjectedHandler = () => {
@@ -121,7 +110,7 @@ export function SignedOut({
   return (
     <div className="grid w-full grid-flow-col grid-cols-11">
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm"> Have a crypto wallet? </h4>
+        <h4 className="text-sm">{title}</h4>
         <DownloadWallet
           isOpen={isDownloadWallet}
           setIsOpen={setIsDownloadWallet}
@@ -157,7 +146,7 @@ export function SignedOut({
         <div className="h-full border-l"></div>
       </div>
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm"> Don&apos;t have a crypto wallet? </h4>
+        <h4 className="text-sm">No crypto wallet?</h4>
         <Button
           onClick={(event) => {
             event.preventDefault()
@@ -185,25 +174,81 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const [state, send] = useActor(service)
-  const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
+  const [state, send] = useActor<CheckoutService>(service as CheckoutService)
+  const { account, email, isUnlockAccount, deAuthenticate, connected } =
+    useAuth()
+  const [signing, setSigning] = useState(false)
+
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
+  const { signIn, signOut, isSignedIn } = useSIWE()
+  const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const autoconnect = state.context?.paywallConfig?.autoconnect
 
-  const onDisconnect = () => {
-    send('DISCONNECT')
-    deAuthenticate()
+  useEffect(() => {
+    const autoSignIn = async () => {
+      if (
+        !isSignedIn &&
+        !signing &&
+        connected &&
+        (isUnlockAccount || autoconnect)
+      ) {
+        setSigning(true)
+        await signIn()
+        setSigning(false)
+      }
+    }
+    autoSignIn()
+  }, [connected, autoconnect, isUnlockAccount, signIn, signing, isSignedIn])
+
+  // Autoconnect
+  useEffect(() => {
+    if (autoconnect) {
+      authenticateWithProvider('METAMASK')
+    }
+  }, [autoconnect, authenticateWithProvider])
+
+  useEffect(() => {
+    if (!account) {
+      console.debug('Not connected')
+    } else console.debug(`Connected as ${account}`)
+  }, [account])
+
+  if (autoconnect) {
+    return <div className="space-y-2">{children}</div>
   }
+
+  const onDisconnect = async () => {
+    setIsDisconnecting(true)
+    await signOut()
+    await deAuthenticate()
+    send('DISCONNECT')
+    setIsDisconnecting(false)
+  }
+
   return account ? (
     <div className="space-y-2">
       {children}
       <SignedIn
+        isDisconnecting={isDisconnecting}
         account={account}
         email={email}
         isUnlockAccount={!!isUnlockAccount}
         onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
       />
+    </div>
+  ) : connected ? (
+    <div className="grid">
+      <Button
+        loading={status === 'loading'}
+        onClick={(event) => {
+          event.preventDefault()
+          signIn()
+        }}
+      >
+        Sign message to Continue
+      </Button>
     </div>
   ) : (
     <div>
@@ -213,6 +258,7 @@ export function Connected({
           send('UNLOCK_ACCOUNT')
         }}
         authenticateWithProvider={authenticateWithProvider}
+        title="Have a crypto wallet?"
       />
     </div>
   )

@@ -3,7 +3,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 // files path
-const LATEST_PUBLIC_LOCK_VERSION = 11
+const LATEST_PUBLIC_LOCK_VERSION = 13
 
 const contractsPath = path.resolve(
   __dirname,

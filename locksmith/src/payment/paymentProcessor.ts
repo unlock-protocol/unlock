@@ -1,4 +1,5 @@
-import Stripe from 'stripe'
+import stripe from '../config/stripe'
+
 import { User } from '../models/user'
 import { Charge } from '../models/charge'
 import { PaymentIntent } from '../models/paymentIntent'
@@ -12,16 +13,12 @@ import {
 } from '../operations/stripeOperations'
 import logger from '../logger'
 import { Op, Sequelize } from 'sequelize'
+import { createPricingForPurchase } from '../utils/pricing'
 
 export class PaymentProcessor {
-  stripe: Stripe
-
   keyPricer: KeyPricer
 
-  constructor(apiKey: string) {
-    this.stripe = new Stripe(apiKey, {
-      apiVersion: '2020-08-27',
-    })
+  constructor() {
     this.keyPricer = new KeyPricer()
   }
 
@@ -50,14 +47,14 @@ export class PaymentProcessor {
 
       // If we already have a stripe customer id
       if (stripeCustomerId) {
-        await this.stripe.customers.createSource(stripeCustomerId, {
+        await stripe.customers.createSource(stripeCustomerId, {
           source: token,
         })
 
         return true
       }
 
-      const customer = await this.stripe.customers.create({
+      const customer = await stripe.customers.create({
         email: user ? user.emailAddress : '', // The stripe API does not require a valid email to be passed
         source: token,
       })
@@ -76,93 +73,27 @@ export class PaymentProcessor {
     }
   }
 
-  /**
-   *  DEPRECATED
-   *  Charges an appropriately configured user with purchasing details, with the amount specified
-   *  in the purchase details
-   * @param userAddress
-   * @param purchaseDetails
-   */
-  async chargeUserForConnectedAccount(
-    userAddress: ethereumAddress,
-    stripeCustomerId: string,
-    lock: ethereumAddress,
-    // eslint-disable-next-line no-unused-vars
-    connectedStripeId: string,
-    network: number,
-    maxPrice: number // Agreed to by user!
-  ) {
-    const pricing = await new KeyPricer().generate(lock, network)
-    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
-    const maxPriceInCents = maxPrice * 100
-    if (
-      Math.abs(totalPriceInCents - maxPriceInCents) >
-      0.03 * maxPriceInCents
-    ) {
-      // if price diverged by more than 3%, we fail!
-      throw new Error('Price diverged by more than 3%. Aborting')
-    }
-    // We need to create a new customer specifically for this stripe connected account
-
-    const token = await this.stripe.tokens.create(
-      { customer: stripeCustomerId },
-      { stripeAccount: connectedStripeId }
-    )
-
-    const connectedCustomer = await this.stripe.customers.create(
-      { source: token.id },
-      { stripeAccount: connectedStripeId }
-    )
-
-    const charge = await this.stripe.charges.create(
-      {
-        amount: totalPriceInCents,
-        currency: 'USD',
-        customer: connectedCustomer.id,
-        metadata: {
-          lock,
-          userAddress,
-          network,
-          maxPrice,
-        },
-        application_fee_amount: pricing.unlockServiceFee,
-      },
-      {
-        stripeAccount: connectedStripeId,
-      }
-    )
-    return {
-      userAddress,
-      lock,
-      charge: charge.id,
-      connectedCustomer: connectedCustomer.id,
-      stripeCustomerId,
-      totalPriceInCents,
-      unlockServiceFee: pricing.unlockServiceFee,
-    }
-  }
-
   async createPaymentIntent(
     userAddress: ethereumAddress,
     recipients: ethereumAddress[],
     stripeCustomerId: string, // Stripe token of the buyer
     lock: ethereumAddress,
-    maxPrice: any,
+    maxPrice: number,
     network: number,
     stripeAccount: string,
-    recurring = 0
+    recurring = 0,
+    data?: (string | null)[] | null,
+    referrers?: (string | null)[] | null
   ) {
-    const pricing = await new KeyPricer().generate(
-      lock,
+    const pricing = await createPricingForPurchase({
+      lockAddress: lock,
+      recipients,
       network,
-      recipients.length
-    )
-    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
-    const maxPriceInCents = maxPrice * 100
-    if (
-      Math.abs(totalPriceInCents - maxPriceInCents) >
-      0.03 * maxPriceInCents
-    ) {
+      referrers: referrers || [],
+      data: data || [],
+    })
+
+    if (Math.abs(pricing.total - maxPrice) > 0.03 * maxPrice) {
       // if price diverged by more than 3%, we fail!
       throw new Error('Price diverged by more than 3%. Aborting')
     }
@@ -188,7 +119,7 @@ export class PaymentProcessor {
         recipients.includes(recipient)
       )
     ) {
-      const stripeIntent = await this.stripe.paymentIntents.retrieve(
+      const stripeIntent = await stripe.paymentIntents.retrieve(
         existingIntent.intentId,
         {
           stripeAccount: existingIntent.connectedStripeId,
@@ -199,12 +130,12 @@ export class PaymentProcessor {
           clientSecret: stripeIntent.client_secret,
           stripeAccount,
           pricing,
-          totalPriceInCents,
+          totalPriceInCents: pricing.total,
         }
       }
     }
 
-    const globalPaymentMethods = await this.stripe.paymentMethods.list({
+    const globalPaymentMethods = await stripe.paymentMethods.list({
       customer: stripeCustomerId,
       type: 'card',
     })
@@ -212,7 +143,7 @@ export class PaymentProcessor {
     const primaryMethod = globalPaymentMethods.data[0]
 
     // Clone payment method
-    const method = await this.stripe.paymentMethods.create(
+    const method = await stripe.paymentMethods.create(
       {
         payment_method: primaryMethod.id,
         customer: stripeCustomerId,
@@ -223,7 +154,7 @@ export class PaymentProcessor {
     )
 
     // Find existing customer with the user address in the metadata
-    const customers = await this.stripe.customers.search(
+    const customers = await stripe.customers.search(
       {
         query: `metadata["userAddress"]:"${userAddress}"`,
       },
@@ -236,7 +167,7 @@ export class PaymentProcessor {
 
     if (!connectedCustomer) {
       // Clone customer if no customer with user address in the metadata exists.
-      connectedCustomer = await this.stripe.customers.create(
+      connectedCustomer = await stripe.customers.create(
         {
           payment_method: method.id,
           metadata: {
@@ -247,9 +178,9 @@ export class PaymentProcessor {
       )
     }
 
-    const intent = await this.stripe.paymentIntents.create(
+    const intent = await stripe.paymentIntents.create(
       {
-        amount: totalPriceInCents,
+        amount: pricing.total,
         currency: 'usd',
         customer: connectedCustomer.id,
         payment_method: method.id,
@@ -258,6 +189,8 @@ export class PaymentProcessor {
           purchaser: userAddress,
           lock,
           recurring,
+          data: (data || []).join(','),
+          referrers: (referrers || []).join(','),
           // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
           recipient: recipients.join(','),
           network,
@@ -284,13 +217,13 @@ export class PaymentProcessor {
     return {
       clientSecret: intent.client_secret,
       stripeAccount,
-      totalPriceInCents,
+      totalPriceInCents: pricing.total,
       pricing,
     }
   }
 
   async createSetupIntent({ customerId }: { customerId: string }) {
-    const setupIntent = await this.stripe.setupIntents.create({
+    const setupIntent = await stripe.setupIntents.create({
       customer: customerId,
       payment_method_types: ['card', 'link'],
     })
@@ -300,7 +233,7 @@ export class PaymentProcessor {
   }
 
   async listCardMethods({ customerId }: { customerId: string }) {
-    const methods = await this.stripe.paymentMethods.list({
+    const methods = await stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
     })
@@ -313,19 +246,26 @@ export class PaymentProcessor {
     recipients,
     network,
     paymentIntentId,
+    data,
+    referrers,
   }: {
     userAddress: ethereumAddress
     lockAddress: ethereumAddress
     recipients: ethereumAddress[]
     network: number
     paymentIntentId: string
+    referrers: (string | null)[]
+    data: (string | null)[]
   }) {
-    const pricing = await new KeyPricer().generate(
+    const pricing = await createPricingForPurchase({
       lockAddress,
+      recipients,
       network,
-      recipients.length
-    )
-    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+      referrers,
+      data,
+    })
+
+    const totalPriceInCents = pricing.total
 
     const paymentIntentRecord = await PaymentIntent.findOne({
       where: { intentId: paymentIntentId },
@@ -335,7 +275,7 @@ export class PaymentProcessor {
       throw new Error('Could not find payment intent.')
     }
 
-    const paymentIntent = await this.stripe.paymentIntents.retrieve(
+    const paymentIntent = await stripe.paymentIntents.retrieve(
       paymentIntentId,
       {
         stripeAccount: paymentIntentRecord.connectedStripeId,
@@ -395,6 +335,16 @@ export class PaymentProcessor {
       paymentIntent,
       paymentIntentRecord,
       charge,
+    }
+  }
+
+  async removePaymentMethods({ customerId }: { customerId: string }) {
+    const methods = await stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
+    })
+    for (const method of methods.data) {
+      await stripe.paymentMethods.detach(method.id)
     }
   }
 }

@@ -71,7 +71,7 @@ export function ErrorFallback(props: Props) {
           size="small"
           as="a"
           iconLeft={<GithubIcon key="github" />}
-          href="https://discord.com/invite/Ah6ZEJyTDp"
+          href="https://github.com/unlock-protocol/unlock/issues/new?template=bug_report.md"
         >
           Report it on github
         </Button>

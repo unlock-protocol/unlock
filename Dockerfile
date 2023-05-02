@@ -1,12 +1,12 @@
 # syntax = docker/dockerfile:experimental
 
-ARG NODE_VERSION=16
+ARG NODE_VERSION=18
 
 ###################################################################
 # Stage 1: Install all workspaces (dev)dependencies               #
 #          and generates node_modules folder(s)                   #
 ###################################################################
-FROM node:${NODE_VERSION}-bullseye as deps
+FROM node:$NODE_VERSION as deps
 LABEL Unlock <ops@unlock-protocol.com>
 
 # Setting user as root to handle apt install
@@ -58,7 +58,7 @@ USER node
 RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
 # Dedupe deps
-RUN yarn dedupe
+# RUN yarn dedupe # disabled as it may cause issues
 
 ###################################################################
 # Stage 2: Build packages and app
@@ -80,9 +80,6 @@ RUN --mount=type=cache,target=${DEST_FOLDER}/yarn-cache,uid=1000,gid=1000 yarn
 
 # build all packages in packages/**
 RUN yarn build
-
-# Build locksmith and other apps separately to reduce startup time on heroku
-RUN yarn apps:build
 
 # Cleanup up image to make it lighter
 USER root

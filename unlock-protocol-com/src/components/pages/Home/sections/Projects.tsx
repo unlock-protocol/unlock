@@ -10,43 +10,59 @@ import { twMerge } from 'tailwind-merge'
 export const UNLOCK_PROJECTS = [
   {
     coverClass:
-      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/agora-guild.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/agora-guild.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'February 2022',
-    title: 'Guild.xyz',
-    text: 'Guild.xyz is a tool for token-curated communities, powered by Agora Space.',
-    href: 'https://unlock-protocol.com/blog/guildxyz-launch',
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cointelegraph.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cointelegraph.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'March 2023',
+    title: 'Cointelegraph',
+    text: "Why Didn't Crypto Walk the Walk at ETHDenver?",
+    href: 'https://cointelegraph.com/news/why-didn-t-crypto-walk-the-walk-at-ethdenver/',
   },
   {
     coverClass:
-      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/bakery.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/bakery.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'December 2021',
-    title: 'The Bakery',
-    text: 'The Bakery is a media community of researchers, writers, and crypto enthusiasts.',
-    href: 'https://bakery.fyi/bakery-nft/',
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/torquelogo.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/torquelogo.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'March 2023',
+    title: 'Torque Magazine',
+    text: 'What is the Creator Economy (And How Can You Join It?)',
+    href: 'https://torquemag.io/2023/03/creator-economy/',
   },
   {
     coverClass:
-      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cdaa.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cdaa.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'January 2022',
-    title: 'CDAA',
-    text: 'CDAA provides industry certification and credentials for digital asset advisors.',
-    href: 'https://unlock-protocol.com/blog/cdaa-unlock-case-study',
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/socialmediaexaminer.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/socialmediaexaminer.jpg)] [background-blend-mode:normal,screen,normal]',
+    published: 'January 2023',
+    title: 'Social Media Examiner',
+    text: 'Web3 Business Trends for 2023: Predictions From the Pros',
+    href: 'https://www.socialmediaexaminer.com/web3-business-trends-for-2023-predictions-from-the-pros/',
   },
   {
     coverClass:
-      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/ethanglia.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/ethanglia.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'February 2022',
-    title: 'ETHAnglia',
-    text: 'ETHAnglia is bringing web3 to the East of England.',
-    href: 'https://ethanglia.org/',
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/wired.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/wired.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'May 2022',
+    title: 'Wired',
+    text: 'Inside the Web3 Revolution',
+    href: 'https://www.wired.com/story/web3-paradise-crypto-arcade/',
   },
   {
     coverClass:
-      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/willow.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/willow.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'January 2022',
-    title: 'The Willow Tree',
-    text: 'The Willow Tree is a  community for bridging web3 and rave culture.',
-    href: 'https://www.twtdao.xyz/',
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/coindesk.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/coindesk.jpg)] [background-blend-mode:normal,screen,normal]',
+    published: 'April 2022',
+    title: 'Coindesk',
+    text: 'NFT Subscriptions are Better Paywalls',
+    href: 'https://www.coindesk.com/layer2/paymentsweek/2022/04/28/nft-subscriptions-are-better-paywalls/',
+  },
+  {
+    coverClass:
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/techcrunch.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/techcrunch.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'September 2021',
+    title: 'TechCrunch',
+    text: 'Guardian Owner Invests in Unlock',
+    href: 'https://techcrunch.com/2021/09/28/guardian-owner-invests-in-unlock-an-nft-protocol-designed-for-subscriptions-and-memberships/',
+  },
+  {
+    coverClass:
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/forbes.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/forbes.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'December 2019',
+    title: 'Forbes',
+    text: 'Forbes Experiments With Paywall Solution Unlock Protocol',
+    href: 'https://cryptomode.com/forbes-experiments-with-crypto-paywall-solution-unlock-protocol/',
   },
 ]
 
@@ -89,7 +105,7 @@ export function Projects() {
           src="/images/svg/desktop-frame-5.svg"
         />
         <div className="flex items-center justify-between pl-1">
-          <h1 className="heading">Explore Active Projects</h1>
+          <h1 className="heading">Unlock in the news</h1>
           <div className="hidden gap-2 sm:flex">
             <button
               className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"

@@ -1,3 +1,4 @@
+import { vi, describe, beforeAll, beforeEach, expect, it } from 'vitest'
 import pingPoap from '../../utils/poap'
 
 describe('pingPoap', () => {
@@ -40,7 +41,7 @@ describe('pingPoap', () => {
     }
     const signature = 'signature'
     const timestamp = 123
-    const consoleSpy = jest.spyOn(global.console, 'error')
+    const consoleSpy = vi.spyOn(global.console, 'error')
     fetch.mockReject(() => {
       throw new Error('fake error message')
     })

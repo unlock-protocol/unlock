@@ -7,6 +7,8 @@ export interface Props {
   size?: Size
   error?: string
   success?: string
+  required?: boolean
+  optional?: boolean
   description?: ReactNode
   children: ReactNode
   append?: ReactNode
@@ -33,6 +35,8 @@ export function FieldLayout(props: Props) {
     success,
     description,
     append,
+    required,
+    optional,
   } = props
   const labelSizeStyle = SIZE_STYLES[size!]
   const labelClass = twMerge('px-1', labelSizeStyle)
@@ -57,11 +61,12 @@ export function FieldLayout(props: Props) {
       )
     }
 
-    if (description) {
+    if (description || optional) {
       return (
-        <p id={label} className={descriptionClass}>
+        <div id={label} className={descriptionClass}>
+          {optional && <span className="mr-1 italic">(optional)</span>}
           {description}
-        </p>
+        </div>
       )
     }
 
@@ -72,6 +77,7 @@ export function FieldLayout(props: Props) {
       {label && (
         <label className={labelClass} htmlFor={label}>
           {label}
+          {required ? ' * ' : ''}
         </label>
       )}
       {children}

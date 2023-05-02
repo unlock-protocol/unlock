@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { AiOutlineAlert as AlertIcon } from 'react-icons/ai'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface UpdateVersionFormProps {
   lockAddress: string
@@ -11,6 +11,7 @@ interface UpdateVersionFormProps {
   disabled: boolean
   version: number
   isLastVersion: boolean
+  onUpdatedVersion: (version: number) => void
 }
 
 const UpgradeHooksAlert = () => {
@@ -33,11 +34,13 @@ export const UpdateVersionForm = ({
   isManager,
   version,
   isLastVersion,
+  network,
+  onUpdatedVersion,
 }: UpdateVersionFormProps) => {
-  const walletService = useWalletService()
   const nextVersion = version + 1
-
+  const { getWalletService } = useAuth()
   const upgradeLockVersion = async () => {
+    const walletService = await getWalletService(network)
     return await walletService.upgradeLock({
       lockAddress,
       lockVersion: nextVersion,
@@ -48,11 +51,15 @@ export const UpdateVersionForm = ({
 
   const onUpgradeLockVersion = async () => {
     const upgradeLockVersionPromise = upgradeLockVersionMutation.mutateAsync()
-    await ToastHelper.promise(upgradeLockVersionPromise, {
-      success: `Lock upgraded to ${nextVersion} version.`,
-      error: 'Impossible to upgrade version',
-      loading: 'Upgrading lock version.',
-    })
+    const upgradedVersion = await ToastHelper.promise(
+      upgradeLockVersionPromise,
+      {
+        success: `Lock upgraded to ${nextVersion} version.`,
+        error: 'Impossible to upgrade version',
+        loading: 'Upgrading lock version.',
+      }
+    )
+    onUpdatedVersion(upgradedVersion || version)
   }
 
   const disabledInput = disabled || upgradeLockVersionMutation.isLoading

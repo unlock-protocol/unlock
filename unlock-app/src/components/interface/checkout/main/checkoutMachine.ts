@@ -1,4 +1,8 @@
-import { Lock, PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
+import {
+  PaywallConfigType as PaywallConfig,
+  PaywallLockConfigType as PaywallConfigLock,
+} from '@unlock-protocol/core'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
@@ -28,6 +32,8 @@ export interface FiatPricing {
   }
 }
 
+export type CheckoutHookType = 'password' | 'promocode' | 'captcha'
+
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
   isMember: boolean
@@ -42,6 +48,8 @@ export interface SelectLockEvent {
   skipQuantity?: boolean
   skipRecipient?: boolean
   recipients?: string[]
+  keyManagers?: string[]
+  hook?: CheckoutHookType
 }
 
 export interface SignMessageEvent {
@@ -73,16 +81,13 @@ export interface SubmitPromoEvent {
 export interface SelectRecipientsEvent {
   type: 'SELECT_RECIPIENTS'
   recipients: string[]
+  keyManagers?: string[]
+  metadata?: any[]
 }
 
 export interface SelectPaymentMethodEvent {
   type: 'SELECT_PAYMENT_METHOD'
   payment: Payment
-}
-
-export interface SelectCardToChargeEvent {
-  type: 'SELECT_CARD_TO_CHARGE'
-  cardId: string
 }
 
 export interface DisconnectEvent {
@@ -123,7 +128,6 @@ export type CheckoutMachineEvents =
   | SelectQuantityEvent
   | SelectPaymentMethodEvent
   | SelectRecipientsEvent
-  | SelectCardToChargeEvent
   | SignMessageEvent
   | SubmitPasswordEvent
   | SubmitPromoEvent
@@ -146,13 +150,17 @@ type Payment =
       method: 'crypto'
     }
   | {
-      method: 'superfluid'
-    }
-  | {
       method: 'claim'
     }
+  | {
+      method: 'swap_and_purchase'
+      route: any
+    }
+
+export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
+
 export interface Transaction {
-  status: 'ERROR' | 'PROCESSING' | 'FINISHED'
+  status: TransactionStatus
   transactionHash?: string
 }
 
@@ -167,16 +175,38 @@ interface CheckoutMachineContext {
   }
   quantity: number
   recipients: string[]
+  keyManagers?: string[]
   mint?: Transaction
   renewed?: Transaction
   skipQuantity: boolean
   skipRecipient: boolean
   password?: string[]
+  metadata?: any[]
   promo?: string[]
   data?: string[]
+  hook?: CheckoutHookType
   renew: boolean
 }
 
+const DEFAULT_CONTEXT: CheckoutMachineContext = {
+  paywallConfig: {} as PaywallConfig,
+  skipRecipient: true,
+  lock: undefined,
+  messageToSign: undefined,
+  mint: undefined,
+  captcha: undefined,
+  payment: {
+    method: 'crypto',
+  },
+  quantity: 1,
+  renewed: undefined,
+  recipients: [],
+  keyManagers: [],
+  skipQuantity: false,
+  renew: false,
+  hook: undefined,
+  metadata: undefined,
+}
 export const checkoutMachine = createMachine(
   {
     id: 'checkout',
@@ -186,22 +216,7 @@ export const checkoutMachine = createMachine(
       context: {} as CheckoutMachineContext,
       events: {} as CheckoutMachineEvents,
     },
-    context: {
-      paywallConfig: {} as PaywallConfig,
-      skipRecipient: true,
-      lock: undefined,
-      messageToSign: undefined,
-      mint: undefined,
-      captcha: undefined,
-      payment: {
-        method: 'crypto',
-      },
-      quantity: 1,
-      renewed: undefined,
-      recipients: [],
-      skipQuantity: false,
-      renew: false,
-    },
+    context: DEFAULT_CONTEXT,
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
       SELECT: 'SELECT',
@@ -231,9 +246,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
-                const isPassword =
-                  ctx.paywallConfig.password ||
-                  ctx.paywallConfig.locks?.[event.lock.address].password
+                const isPassword = ctx?.hook === 'password'
                 return !!isPassword && event.expiredMember
               },
             },
@@ -241,9 +254,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PROMO',
               cond: (ctx, event) => {
-                const isPromo =
-                  ctx.paywallConfig.promo ||
-                  ctx.paywallConfig.locks?.[event.lock.address].promo
+                const isPromo = ctx?.hook === 'promocode'
                 return !!isPromo && event.expiredMember
               },
             },
@@ -251,9 +262,7 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'CAPTCHA',
               cond: (ctx, event) => {
-                const isCaptcha =
-                  ctx.paywallConfig.captcha ||
-                  ctx.paywallConfig.locks?.[event.lock.address].captcha
+                const isCaptcha = ctx?.hook === 'captcha'
                 return !!isCaptcha && event.expiredMember
               },
             },
@@ -380,30 +389,30 @@ export const checkoutMachine = createMachine(
       },
       CARD: {
         on: {
-          SELECT_CARD_TO_CHARGE: [
+          SELECT_PAYMENT_METHOD: [
             {
               target: 'MESSAGE_TO_SIGN',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requireMessageToSign',
             },
             {
               target: 'PASSWORD',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requirePassword',
             },
             {
               target: 'PROMO',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requirePromo',
             },
             {
               target: 'CAPTCHA',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
               cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
-              actions: ['selectCardToCharge'],
+              actions: ['selectPaymentMethod'],
             },
           ],
           DISCONNECT: {
@@ -548,11 +557,11 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'PASSWORD',
-              cond: (ctx) => !!ctx.paywallConfig.password,
+              cond: (ctx) => ctx.hook === 'password',
             },
             {
               target: 'CAPTCHA',
-              cond: (ctx) => !!ctx.paywallConfig.captcha,
+              cond: (ctx) => ctx.hook === 'captcha',
             },
             {
               target: 'MESSAGE_TO_SIGN',
@@ -588,12 +597,6 @@ export const checkoutMachine = createMachine(
       RETURNING: {
         on: {
           MAKE_ANOTHER_PURCHASE: [
-            {
-              target: 'PAYMENT',
-              cond: (ctx) => {
-                return ctx.skipQuantity && ctx.skipRecipient
-              },
-            },
             {
               target: 'METADATA',
               cond: (ctx) => {
@@ -631,22 +634,11 @@ export const checkoutMachine = createMachine(
   },
   {
     actions: {
-      disconnect: assign((context) => {
+      disconnect: assign((_context) => {
         return {
-          paywallConfig: context.paywallConfig,
-          lock: context.lock,
-          payment: {
-            method: 'crypto',
-          },
-          quantity: context.quantity,
-          messageToSign: undefined,
-          recipients: [],
-          mint: undefined,
-          renewed: undefined,
-          skipQuantity: false,
-          renew: false,
-          skipRecipient: true,
-        } as CheckoutMachineContext
+          ...DEFAULT_CONTEXT,
+          paywallConfig: _context.paywallConfig,
+        }
       }),
       selectLock: assign((context, event) => {
         return {
@@ -656,6 +648,8 @@ export const checkoutMachine = createMachine(
           skipQuantity: event.skipQuantity,
           skipRecipient: event.skipRecipient,
           recipients: event.recipients,
+          keyManagers: event.keyManagers,
+          hook: event.hook,
         }
       }),
       selectQuantity: assign({
@@ -672,13 +666,11 @@ export const checkoutMachine = createMachine(
         recipients: (_, event) => {
           return event.recipients
         },
-      }),
-      selectCardToCharge: assign({
-        payment: (context, event) => {
-          return {
-            method: context.payment.method,
-            cardId: event.cardId,
-          } as const
+        keyManagers: (_, event) => {
+          return event.keyManagers
+        },
+        metadata: (_, event) => {
+          return event.metadata
         },
       }),
       signMessage: assign({
@@ -707,20 +699,8 @@ export const checkoutMachine = createMachine(
       }),
       updatePaywallConfig: assign((_, event) => {
         return {
+          ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
-          lock: undefined,
-          messageToSign: undefined,
-          mint: undefined,
-          captcha: undefined,
-          payment: {
-            method: 'crypto',
-          },
-          quantity: 1,
-          recipients: [],
-          renewed: undefined,
-          skipQuantity: false,
-          renew: false,
-          skipRecipient: true,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
@@ -746,30 +726,9 @@ export const checkoutMachine = createMachine(
     },
     guards: {
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
-      requireCaptcha: (context) => {
-        return (
-          !!(
-            context.paywallConfig.captcha ||
-            context.paywallConfig.locks?.[context.lock!.address]?.captcha
-          ) && ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
-      requirePassword: (context) => {
-        return (
-          !!(
-            context.paywallConfig.password ||
-            context.paywallConfig.locks?.[context.lock!.address]?.password
-          ) && ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
-      requirePromo: (context) => {
-        return (
-          !!(
-            context.paywallConfig.promo ||
-            context.paywallConfig.locks?.[context.lock!.address]?.promo
-          ) && ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
+      requireCaptcha: (context) => context && context?.hook === 'captcha',
+      requirePassword: (context) => context && context?.hook === 'password',
+      requirePromo: (context) => context && context?.hook === 'promocode',
     },
   }
 )

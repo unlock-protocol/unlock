@@ -2,6 +2,10 @@
 // RawLock in unlockTypes. TODO: we should really tighten up our lock
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
+
+import { Lock, PaywallConfig } from '~/unlockTypes'
+import { isAccount } from '../utils/checkoutValidators'
+
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
   unlimitedKeys?: boolean
@@ -52,7 +56,7 @@ export const lockKeysAvailable = ({
 }
 
 export const lockTickerSymbol = (
-  lock: LockTickerSymbolLock,
+  lock: Partial<Lock>,
   baseCurrencySymbol: string
 ) => {
   if (lock.currencyContractAddress) {
@@ -117,4 +121,24 @@ export const inClaimDisallowList = (address: string) => {
     '0xBB19b9E39cB06402bf17886708506dba0B8Eb2f2', // Defi Arena
   ]
   return claimDisallowList.indexOf(address) > -1
+}
+
+/**
+ * Helper function that returns a valid referrer address
+ * @param recipient
+ * @param paywallConfig
+ * @returns
+ */
+export const getReferrer = (
+  recipient: string,
+  paywallConfig?: PaywallConfig
+): string => {
+  if (
+    paywallConfig &&
+    paywallConfig.referrer &&
+    isAccount(paywallConfig.referrer)
+  ) {
+    return paywallConfig.referrer
+  }
+  return recipient
 }

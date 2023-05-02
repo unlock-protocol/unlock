@@ -1,11 +1,11 @@
-import Stripe from 'stripe'
 import { StripeConnectLock } from '../models/stripeConnectLock'
 import { ethereumAddress } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
-import config from '../config/config'
+import stripe from '../config/stripe'
+import logger from '../logger'
 
 const { Op } = Sequelize
 
@@ -13,9 +13,6 @@ export const createStripeCustomer = async (
   stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
   const customer = await stripe.customers.create({
     source: stripeToken,
     metadata: {
@@ -25,6 +22,7 @@ export const createStripeCustomer = async (
   await saveStripeCustomerIdForAddress(publicKey, customer.id)
   return customer.id
 }
+
 /**
  * Method, which, given a publicKey, returns the stripe token id
  * This does a double look up as we changed how stripe token ids are stored (used to be in UserReferences and are now in their own table)
@@ -59,12 +57,13 @@ export const saveStripeCustomerIdForAddress = async (
       StripeCustomerId: stripeCustomerId,
     })
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     return false
   }
 }
 
 /**
+ * @deprecated
  * Method which delets the stripe customer id for an address
  */
 export const deletePaymentDetailsForAddress = async (
@@ -103,10 +102,6 @@ export const disconnectStripe = async ({
   lockAddress: string
   chain: number
 }) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock },
   })
@@ -140,46 +135,62 @@ export const connectStripe = async (
   lockManager: string,
   lock: string,
   chain: number,
-  baseUrl: string
+  baseUrl: string,
+  stripeAccount?: string
 ) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
-  const stripeConnectLockDetails = await StripeConnectLock.findOne({
-    where: { lock },
-  })
-
-  let account
-  if (!stripeConnectLockDetails) {
-    // This is a new one
-    account = await stripe.accounts.create({
-      type: 'standard',
-      metadata: {
-        lock,
-        manager: lockManager,
-        chain,
-      },
-    })
-
+  if (stripeAccount) {
     await StripeConnectLock.create({
       lock,
       manager: lockManager,
-      stripeAccount: account.id,
+      stripeAccount,
       chain,
     })
+    // Nothing expected!
+    return
   } else {
-    // Retrieve it from Stripe!
-    account = await stripe.accounts.retrieve(
-      stripeConnectLockDetails.stripeAccount
-    )
-  }
+    const stripeConnectLockDetails = await StripeConnectLock.findOne({
+      where: { lock },
+    })
 
-  return await stripe.accountLinks.create({
-    account: account.id,
-    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
-    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
-    type: 'account_onboarding',
+    let account
+    if (!stripeConnectLockDetails) {
+      // This is a new one
+      account = await stripe.accounts.create({
+        type: 'standard',
+        metadata: {
+          manager: lockManager,
+        },
+      })
+
+      await StripeConnectLock.create({
+        lock,
+        manager: lockManager,
+        stripeAccount: account.id,
+        chain,
+      })
+    } else {
+      // Retrieve it from Stripe!
+      account = await stripe.accounts.retrieve(
+        stripeConnectLockDetails.stripeAccount
+      )
+    }
+
+    return await stripe.accountLinks.create({
+      account: account.id,
+      refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
+      return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
+      type: 'account_onboarding',
+    })
+  }
+}
+
+/**
+ * Lists the connects by a lock manager
+ * @param manager
+ */
+export const getConnectionsForManager = async (manager: string) => {
+  return StripeConnectLock.findAll({
+    where: { manager },
   })
 }
 
@@ -190,9 +201,6 @@ export const connectStripe = async (
  * Returns the stripeAccount if all fully enabled
  */
 export const getStripeConnectForLock = async (lock: string, chain: number) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock, chain },
   })
@@ -201,15 +209,17 @@ export const getStripeConnectForLock = async (lock: string, chain: number) => {
     return -1
   }
 
-  const account = await stripe.accounts.retrieve(
-    stripeConnectLockDetails.stripeAccount
-  )
+  const account = await stripeConnection(stripeConnectLockDetails.stripeAccount)
 
   if (account.charges_enabled) {
     return stripeConnectLockDetails.stripeAccount
   }
 
   return 0
+}
+
+export const stripeConnection = async (stripeAccount: string) => {
+  return await stripe.accounts.retrieve(stripeAccount)
 }
 
 export default {
@@ -219,4 +229,5 @@ export default {
   connectStripe,
   getStripeConnectForLock,
   disconnectStripe,
+  getConnectionsForManager,
 }

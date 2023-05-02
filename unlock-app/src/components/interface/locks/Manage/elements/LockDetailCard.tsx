@@ -1,7 +1,7 @@
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button, Tooltip } from '@unlock-protocol/ui'
+import { Button, Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import React, { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -11,22 +11,13 @@ import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
-import { CryptoIcon } from '../../elements/KeyPrice'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
 import { storage } from '~/config/storage'
-
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
-}
-
-interface DetailProps {
-  label: string
-  value?: React.ReactNode
-  prepend?: React.ReactNode
-  append?: React.ReactNode
-  loading?: boolean
 }
 
 interface LockInfoCardProps {
@@ -35,39 +26,6 @@ interface LockInfoCardProps {
   network: number
   loading?: boolean
   version?: string
-}
-
-const LockInfoCardPlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="w-full h-10 animate-pulse bg-slate-200"></div>
-      <div className="flex gap-3">
-        <div className="w-40 h-4 animate-pulse bg-slate-200"></div>
-        <div className="w-5 h-4 animate-pulse bg-slate-200"></div>
-      </div>
-    </div>
-  )
-}
-
-const DetailValuePlaceholder = () => {
-  return <div className="w-10 h-5 animate-pulse bg-slate-200"></div>
-}
-
-const Detail = ({ label, value, prepend, loading, append }: DetailProps) => {
-  return (
-    <div className="flex justify-between py-2 border-b border-black last-of-type:border-0">
-      <span className="text-base">{label}</span>
-      {loading ? (
-        <DetailValuePlaceholder />
-      ) : (
-        <div className="flex items-center gap-2 text-right">
-          {prepend && <>{prepend}</>}
-          <span className="text-base font-bold text-black">{value ?? '-'}</span>
-          {append && <>{append}</>}
-        </div>
-      )}
-    </div>
-  )
 }
 
 const LockInfoCard = ({
@@ -91,7 +49,18 @@ const LockInfoCard = ({
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
 
-  if (loading) return <LockInfoCardPlaceholder />
+  if (loading)
+    return (
+      <>
+        <Placeholder.Root spaced="sm">
+          <Placeholder.Line size="lg" />
+          <Placeholder.Root inline>
+            <Placeholder.Line size="sm" width="md" />
+            <Placeholder.Line size="sm" width="sm" />
+          </Placeholder.Root>
+        </Placeholder.Root>
+      </>
+    )
 
   return (
     <>
@@ -169,7 +138,7 @@ export const LockDetailCard = ({
 
   const { keyPrice, maxNumberOfKeys, expirationDuration } = lock ?? {}
 
-  const { name: networkName, baseCurrencySymbol } = networks?.[network] ?? {}
+  const { name: networkName, nativeCurrency } = networks?.[network] ?? {}
   const numbersOfKeys =
     maxNumberOfKeys === UNLIMITED_KEYS_COUNT ? 'Unlimited' : maxNumberOfKeys
   const duration =
@@ -181,7 +150,7 @@ export const LockDetailCard = ({
 
   const loading = isLoading || isLoadingStripe
 
-  const symbol = lock?.currencySymbol || baseCurrencySymbol
+  const symbol = lock?.currencySymbol || nativeCurrency.symbol
   const priceLabel =
     keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
 
@@ -202,16 +171,27 @@ export const LockDetailCard = ({
     )
 
   const settingsPageUrl = `/locks/settings?address=${lockAddress}&network=${network}`
-
+  const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   return (
     <>
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
-          <LockIcon
-            lockAddress={lockAddress}
-            network={network}
-            loading={loading}
-          />
+          <div className="grid gap-2">
+            <LockIcon
+              lockAddress={lockAddress}
+              network={network}
+              loading={loading}
+            />
+            <p className="p-2 text-sm leading-tight text-gray-500 ">
+              Need to update the icon? Use the{' '}
+              <Link
+                href={metadataPageUrl}
+                className="text-brand-ui-primary hover:underline"
+              >
+                Metadata Editor
+              </Link>
+            </p>
+          </div>
           <LockInfoCard
             lockAddress={lockAddress}
             network={network}
@@ -236,30 +216,40 @@ export const LockDetailCard = ({
               )}
             </div>
           )}
-          <div className="flex flex-col mt-6">
-            <Detail label="Network" value={networkName} loading={loading} />
-            <Detail label="Key Duration" value={duration} loading={loading} />
-            <Detail
-              label="Key Quantity"
-              value={numbersOfKeys}
-              loading={loading}
-            />
-            <Detail
-              label="Price"
-              value={priceLabel}
-              prepend={<CryptoIcon symbol={symbol} size={22} />}
-              loading={loading}
-            />
-            <Detail
-              label="Recurring"
-              value={isRecurring ? 'YES' : 'NO'}
-              loading={loading}
-            />
-            <Detail
-              label="Credit Card Payment"
-              value={isConnected === 1 ? 'YES' : 'NO'}
-              loading={loading}
-            />
+          <div className="flex flex-col mt-6 divide-y divide-black">
+            <div className="py-2">
+              <Detail label="Network" loading={loading} inline>
+                {networkName}
+              </Detail>
+            </div>
+            <div className="py-2">
+              <Detail label="Key Duration" loading={loading} inline>
+                {duration}
+              </Detail>
+            </div>
+            <div className="py-2">
+              <Detail label="Keys for sale" loading={loading} inline>
+                {numbersOfKeys}
+              </Detail>
+            </div>
+            <div className="py-2">
+              <Detail label="Price" loading={loading} inline>
+                <div className="flex items-center gap-2">
+                  <CryptoIcon symbol={symbol} />
+                  <span>{priceLabel}</span>
+                </div>
+              </Detail>
+            </div>
+            <div className="py-2">
+              <Detail label="Recurring" loading={loading} inline>
+                {isRecurring ? 'YES' : 'NO'}
+              </Detail>
+            </div>
+            <div className="py-2">
+              <Detail label="Credit Card Payment" loading={loading} inline>
+                {isConnected === 1 ? 'YES' : 'NO'}
+              </Detail>
+            </div>
           </div>
           <div className="mt-8">
             <span className="text-sm leading-tight text-gray-500">

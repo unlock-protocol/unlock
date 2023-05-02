@@ -1,9 +1,12 @@
 import nodemailer from 'nodemailer'
-import templates from './templates'
 import config from '../config'
 import encrypter from './encrypter'
 import wrap from './wrap'
-import prepare, { prepareAll } from './templates/prepare'
+import templates from '@unlock-protocol/email-templates'
+
+import { prepareAll } from './templates/prepare'
+
+console.log({ config })
 
 /**
  * Builds the template and params
@@ -57,6 +60,7 @@ export const route = async (args) => {
   const email = {
     from: config.sender,
     to: args.recipient,
+    replyTo: args?.replyTo || undefined,
     subject: await template.subject(templateParams),
     text: template.text ? await template.text(templateParams) : undefined,
     html: template.html ? await template.html(templateParams) : undefined,
@@ -64,7 +68,6 @@ export const route = async (args) => {
       .concat(args.attachments, template.attachments)
       .filter((x) => !!x),
   }
-
   const transporter = nodemailer.createTransport(config)
   return transporter.sendMail(email)
 }

@@ -34,20 +34,47 @@ export interface Token {
   symbol: string
   decimals: number
   coingecko?: string
+  coinbase?: string
   mainnetAddress?: string
 }
+
+export enum HookType {
+  CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
+  PASSWORD = 'PASSWORD',
+  CAPTCHA = 'CAPTCHA',
+}
+
+export const HooksName = [
+  'onKeyPurchaseHook',
+  'onKeyCancelHook',
+  'onValidKeyHook',
+  'onTokenURIHook',
+  'onKeyTransferHook',
+  'onKeyExtendHook',
+  'onKeyGrantHook',
+] as const
+
+export type HookName = (typeof HooksName)[number]
+
+export interface Hook {
+  id: HookType
+  name: string
+  address: string
+  description?: string
+}
+
 export interface NetworkConfig {
   id: number
+  featured?: boolean
   name: string
   chain?: string
   provider: string
   publicProvider: string
-  locksmithUri?: string // TODO: remove as this should not be network specific
-  unlockAppUrl?: string // TODO: remove as this should not be network specific
-  blockTime?: number
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
+  keyManagerAddress?: string
+  publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string
     endpointV2?: string
@@ -60,8 +87,10 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    oracle?: string
+    oracle: string
+    universalRouterAddress: string
   }>
+  swapPurchaser?: string
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
@@ -74,22 +103,28 @@ export interface NetworkConfig {
   }
   opensea?: {
     tokenUrl: (lockAddress: string, tokenId: string) => string | null
+    collectionUrl?: (lockAddress: string) => string
+    profileUrl?: (address: string) => string
+  }
+  blockScan?: {
+    url?: (address: string) => string
   }
   isTestNetwork?: boolean
   erc20?: {
     symbol: string
     address: string
   } | null
-  maxFreeClaimCost?: number 
-  requiredConfirmations?: number
-  baseCurrencySymbol?: string
-  nativeCurrency?: Omit<Token, 'address'>
+  maxFreeClaimCost?: number
+  nativeCurrency: Omit<Token, 'address'>
   wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
-  description?: string
-  teamMultisig?: string
+  description: string
+  url?: string
+  faucet?: string
   tokens?: Token[]
+  hooks?: Partial<Record<HookName, Hook[]>>
+  fullySubsidizedGas?: boolean
 }
 
 export interface NetworkConfigs {
@@ -141,6 +176,7 @@ export interface ChainExplorerURLBuilders {
   [site: string]: (_address: string) => string
 }
 
+// TODO: to remove, deprecated
 export interface PaywallCallToAction {
   default: string
   expired: string
@@ -171,12 +207,13 @@ export interface PaywallConfig {
   pessimistic?: boolean
   icon?: string
   unlockUserAccounts?: true | 'true' | false
-  callToAction: PaywallCallToAction
+  callToAction: PaywallCallToAction // TODO: to remove, deprecated
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
   network: number
+  autoconnect?: boolean
 }
 
 export enum KeyStatus {
@@ -210,6 +247,8 @@ export interface Lock {
   expirationDuration: number
   key: Key
   currencyContractAddress: string | null
+  currencyDecimals?: number | null
+  currencySymbol?: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number

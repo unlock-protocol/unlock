@@ -1,11 +1,11 @@
 import { useMutation, useQueries } from '@tanstack/react-query'
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingCardDetail } from '../elements/SettingCard'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface CancellationFormProps {
   lockAddress: string
@@ -22,20 +22,15 @@ interface FormProps {
 const CancellationFormPlaceholder = () => {
   const FormPlaceholder = () => {
     return (
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <div className="w-20 h-5 animate-pulse bg-slate-200"></div>
-          <div className="w-full h-4 animate-pulse bg-slate-200"></div>
-          <div className="w-1/3 h-4 animate-pulse bg-slate-200"></div>
-        </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <div className="w-20 h-5 animate-pulse bg-slate-200"></div>
-            <div className="w-12 rounded-full h-7 animate-pulse bg-slate-200"></div>
-          </div>
-          <div className="w-full h-10 rounded-lg animate-pulse bg-slate-200"></div>
-        </div>
-      </div>
+      <Placeholder.Root spaced="sm">
+        <Placeholder.Line size="sm" width="sm" />
+        <Placeholder.Line size="sm" />
+        <Placeholder.Line size="sm" width="md" />
+        <Placeholder.Root inline className="justify-between">
+          <Placeholder.Line size="sm" width="sm" />
+          <Placeholder.Line size="sm" width="sm" />
+        </Placeholder.Root>
+      </Placeholder.Root>
     )
   }
   return (
@@ -54,9 +49,8 @@ export const CancellationForm = ({
 }: CancellationFormProps) => {
   const [allowTrial, setAllowTrial] = useState(false)
   const [cancelPenalty, setCancelPenalty] = useState(false)
-  const walletService = useWalletService()
   const web3Service = useWeb3Service()
-
+  const { getWalletService } = useAuth()
   const {
     register,
     handleSubmit,
@@ -69,6 +63,7 @@ export const CancellationForm = ({
     refundPenaltyPercentage = 0,
   }: FormProps) => {
     const refundPenaltyBasisPoints = refundPenaltyPercentage * 100 // convert to basis points
+    const walletService = await getWalletService(network)
     await walletService.updateRefundPenalty({
       lockAddress,
       freeTrialLength,
@@ -220,7 +215,7 @@ export const CancellationForm = ({
           <Input
             type="number"
             disabled={disabledInput || !cancelPenalty}
-            step={0.01}
+            step={1}
             error={
               errors?.refundPenaltyPercentage &&
               'This field accept percentage value between 0 and 100.'

@@ -5,7 +5,7 @@ const UnlockTruffle = artifacts.require('Unlock')
 
 module.exports = async () => {
   // when running a mainnet fork
-  if (process.env.RUN_MAINNET_FORK) {
+  if (process.env.RUN_FORK) {
     // copy .oppenzeppelin mainnet network manifest
     copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
     // skip contracts setup
@@ -19,7 +19,7 @@ module.exports = async () => {
   const Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
 
   const unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-    initializer: 'initialize(address)',
+    initializer: 'initialize(address)'
   })
   await unlock.deployed()
 

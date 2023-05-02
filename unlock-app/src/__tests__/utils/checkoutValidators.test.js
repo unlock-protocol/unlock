@@ -1,3 +1,6 @@
+// TODO: remove, some part related to old checkout (callToAction)
+
+import { vi, describe, beforeAll, expect, it } from 'vitest'
 import * as validators from '../../utils/checkoutValidators'
 
 describe('Form field validators', () => {

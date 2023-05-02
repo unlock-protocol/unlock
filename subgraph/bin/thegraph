@@ -24,12 +24,23 @@ const executeCommand = async (command) => {
   }
 }
 
-const checkAccessToken = () => {
+const checkHostedServiceAccessToken = () => {
   if (!process.env.SUBGRAPH_DEPLOY_KEY) {
     throw new Error(
       `
       Missing access token in SUBGRAPH_DEPLOY_KEY env.
       You can get a token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol
+      `
+    )
+  }
+}
+
+const checkStudioAccessToken = () => {
+  if (!process.env.SUBGRAPH_STUDIO_DEPLOY_KEY) {
+    throw new Error(
+      `
+      Missing access token in SUBGRAPH_STUDIO_DEPLOY_KEY env.
+      You can get a token from https://thegraph.com/studio/
       `
     )
   }
@@ -43,10 +54,47 @@ const codegen = async () => {
 // Creating subgraphs is only available from hosted-service dashboard
 // yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
 const build = async (network) => {
+  await executeCommand(`yarn run prepare`)
   console.log(`Building subgraph for ${network} (${networkName(network)})`)
   await executeCommand(`yarn graph build --network ${networkName(network)}`)
 }
 
+/**
+ * Deploys subgraph with hosted service
+ * @param graphLabel
+ * @param subgraphName
+ * @param graphNode
+ * @param ipfs
+ * @returns
+ */
+const deployHosted = async (graphLabel, subgraphName, graphNode, ipfs) => {
+  checkHostedServiceAccessToken()
+  const label = graphLabel ? `--version-label ${graphLabel}` : ''
+  const cmd = `yarn graph deploy --product hosted-service --access-token ${process.env.SUBGRAPH_DEPLOY_KEY} --node ${graphNode} --ipfs ${ipfs} ${label} ${subgraphName}`
+  return executeCommand(cmd)
+}
+
+/**
+ * Deploys subgraph with studio
+ * @param version
+ * @param subgraphName
+ * @returns
+ */
+const deployStudio = async (version, subgraphName) => {
+  checkStudioAccessToken()
+  await executeCommand(
+    `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
+  )
+  const cmd = `yarn graph deploy --studio ${subgraphName} --version-label=${version}`
+  return executeCommand(cmd)
+}
+
+/**
+ * deploy command
+ * @param network 
+ * @param graphLabel 
+ * @returns 
+ */
 const deploy = async (network, graphLabel) => {
   if (!network) {
     throw new Error('Missing network name')
@@ -55,18 +103,35 @@ const deploy = async (network, graphLabel) => {
   const graphNode = 'https://api.thegraph.com/deploy/'
   const ipfs = 'https://api.thegraph.com/ipfs/'
 
-  const subgraphName = `unlock-protocol/${
-    network === 'xdai' ? 'gnosis' : network
-  }-v2`
-  console.log(`Deploying subgraph ${subgraphName}`)
+  if (!networks[network]?.subgraph?.endpointV2) {
+    throw new Error(`Missing subgraph configuration for ${network}`)
+  }
 
-  const label = graphLabel ? `--version-label ${graphLabel}` : ''
-  const cmd = `yarn graph deploy --product hosted-service --access-token ${process.env.SUBGRAPH_DEPLOY_KEY} --node ${graphNode} --ipfs ${ipfs} ${label} ${subgraphName}`
-  await executeCommand(cmd)
+  const matchHosted = networks[network].subgraph.endpointV2.match(
+    'https://api.thegraph.com/subgraphs/name/(.*)'
+  )
+  if (matchHosted) {
+    return deployHosted(graphLabel, matchHosted[1], graphNode, ipfs)
+  }
+
+  const matchStudio = networks[network].subgraph.endpointV2.match(
+    'https://api.studio.thegraph.com/query/44190/(.*)/(.*)'
+  )
+  if (matchStudio) {
+    const [major, minor, patch] = matchStudio[2]
+      .split('.')
+      .map((x) => parseInt(x))
+    return deployStudio(`${major}.${minor}.${patch + 1}`, matchStudio[1])
+  }
+  throw new Error(
+    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2})`
+  )
 }
 
+// Note: the palm network is not supported by
+//
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d)
+  (d) => !['networks', 'default', 'palm'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
@@ -98,7 +163,6 @@ require('yargs/yargs')(hideBin(process.argv))
         choices,
       }),
     async ({ network, label }) => {
-      checkAccessToken()
       await codegen()
       await build(network)
       await deploy(network, label)
@@ -113,7 +177,6 @@ require('yargs/yargs')(hideBin(process.argv))
       console.log(
         `Deploying subgraphs for:\n${choices.map((c) => ` - ${c}\n`).join('')}`
       )
-      checkAccessToken()
 
       // generate code
       await codegen()

@@ -6,10 +6,10 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useConfig } from '~/utils/withConfig'
-import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
-import { CryptoIcon } from '../../elements/KeyPrice'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   keyPrice?: string
@@ -39,11 +39,11 @@ export const UpdatePriceForm = ({
 
   const [isFree, setIsFree] = useState(isFreeKey)
   const { networks } = useConfig()
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const [changeCurrencyOpen, setChangeCurrencyModal] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const { baseCurrencySymbol } = networks[network!] ?? {}
+  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
 
   const {
     register,
@@ -77,7 +77,7 @@ export const UpdatePriceForm = ({
       currencyContractAddress || lock?.currencyContractAddress || 0
 
     const price = isFree ? 0 : keyPrice
-
+    const walletService = await getWalletService(network)
     return await walletService.updateKeyPrice({
       lockAddress,
       keyPrice: `${price}`,
@@ -123,7 +123,6 @@ export const UpdatePriceForm = ({
         setIsOpen={setChangeCurrencyModal}
         network={network}
         onSelect={onSelectToken}
-        defaultCurrency={symbol}
       />
 
       <form
@@ -171,7 +170,7 @@ export const UpdatePriceForm = ({
                 type="number"
                 autoComplete="off"
                 placeholder="0.00"
-                step={0.01}
+                step="any"
                 disabled={isFree || disabledInput}
                 {...register('keyPrice', {
                   required: !isFree,

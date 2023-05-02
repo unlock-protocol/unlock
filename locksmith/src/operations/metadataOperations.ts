@@ -7,10 +7,10 @@ import networks from '@unlock-protocol/networks'
 import { Verifier } from '../models/verifier'
 import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
-import * as Asset from '../utils/assets'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
-const baseURIFragement = 'https://assets.unlock-protocol.com'
+import { getDefaultLockData } from '../utils/metadata'
+
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -51,27 +51,24 @@ export const generateKeyMetadata = async (
     return {}
   }
 
-  const userMetadata = onChainKeyMetadata.owner
-    ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
-    : {}
-
-  const [keyCentricData, baseTokenData] = await Promise.all([
+  const [keyCentricData, baseTokenData, userMetadata] = await Promise.all([
     getKeyCentricData(address, keyId),
     getBaseTokenData(address, host, keyId),
+    onChainKeyMetadata.owner
+      ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
+      : {},
   ])
 
   const attributes: Attribute[] = []
 
-  // Check if key metadata exists. If it does, we don't want to include the base token data.
-  const keyMetadataExists =
-    Object.keys(keyCentricData).filter((item) => !['image'].includes(item))
-      .length > 0
+  // Check if key attributes exists. If it does, we don't want to include the base token data.
+  const keyAttributesExist = keyCentricData?.attributes?.length > 0
 
   if (Array.isArray(onChainKeyMetadata?.attributes)) {
     attributes.push(...onChainKeyMetadata.attributes)
   }
 
-  if (Array.isArray(baseTokenData?.attributes) && !keyMetadataExists) {
+  if (Array.isArray(baseTokenData?.attributes) && !keyAttributesExist) {
     attributes.push(...baseTokenData.attributes)
   }
 
@@ -80,7 +77,7 @@ export const generateKeyMetadata = async (
   }
 
   const data = {
-    ...(keyMetadataExists ? {} : baseTokenData),
+    ...(keyAttributesExist ? {} : baseTokenData),
     ...keyCentricData,
     ...onChainKeyMetadata,
     ...userMetadata,
@@ -108,15 +105,6 @@ export const getBaseTokenData = async (
     ...(persistedBasedMetadata?.data || {}),
   }
 
-  const assetLocation = Asset.tokenMetadataDefaultImage({
-    base: baseURIFragement,
-    address,
-  })
-
-  if (await Asset.exists(assetLocation)) {
-    result.image = assetLocation
-  }
-
   return result
 }
 
@@ -128,17 +116,7 @@ export const getKeyCentricData = async (address: string, tokenId: string) => {
     },
   })
 
-  const assetLocation = Asset.tokenCentricImage({
-    base: baseURIFragement,
-    address,
-    tokenId,
-  })
-
   const result: Record<string, any> = keyCentricData ? keyCentricData.data : {}
-
-  if (await Asset.exists(assetLocation)) {
-    result.image = assetLocation
-  }
 
   return result
 }
@@ -268,4 +246,29 @@ export const getKeysMetadata = async ({
 
   const mergedData = await Promise.all(mergedDataList)
   return mergedData.filter(Boolean)
+}
+
+export const getLockMetadata = async ({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) => {
+  const lockData = await LockMetadata.findOne({
+    where: {
+      chain: network,
+      address: lockAddress,
+    },
+  })
+
+  if (!lockData) {
+    const defaultLockData = await getDefaultLockData({
+      lockAddress,
+      network,
+    })
+    return defaultLockData
+  }
+
+  return lockData?.data
 }

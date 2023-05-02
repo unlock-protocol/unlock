@@ -1,5 +1,5 @@
 import { rewriteIpfsUrl } from '../../utils/url'
-
+import { it, describe, expect } from 'vitest'
 describe('url', () => {
   it('correctly parse url', () => {
     expect.assertions(1)

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { UpdateHooksForm } from '../forms/UpdateHooksForm'
 import { UpdateReferralFee } from '../forms/UpdateReferralFee'
 import { UpdateVersionForm } from '../forms/UpdateVersionForm'
@@ -40,10 +41,12 @@ export const SettingMisc = ({
   publicLockVersion,
   publicLockLatestVersion,
 }: SettingMiscProps) => {
+  const [updatedVersion, setUpdatedVersion] = useState(publicLockVersion)
+
   const isLastVersion =
-    publicLockVersion !== undefined &&
+    updatedVersion !== undefined &&
     publicLockLatestVersion !== undefined &&
-    publicLockVersion === publicLockLatestVersion
+    updatedVersion === publicLockLatestVersion
 
   return (
     <div className="grid grid-cols-1 gap-6">
@@ -68,7 +71,7 @@ export const SettingMisc = ({
             itself is called. Whether it'd be for password protected purchase,
             or other use case. You can also learn more from our`}{' '}
             <a
-              href=""
+              href="https://docs.unlock-protocol.com/core-protocol/public-lock/hooks"
               target="_blank"
               rel="noreferrer"
               className="font-bold text-brand-ui-primary"
@@ -84,11 +87,11 @@ export const SettingMisc = ({
           network={network}
           isManager={isManager}
           disabled={!isManager}
-          version={publicLockVersion!}
+          version={updatedVersion!}
         />
       </SettingCard>
 
-      {(publicLockVersion ?? 0) >= 10 && (
+      {(updatedVersion ?? 0) >= 10 && (
         <SettingCard
           label="Versioning"
           description={<UpgradeCard isLastVersion={isLastVersion} />}
@@ -100,8 +103,9 @@ export const SettingMisc = ({
             network={network}
             isManager={isManager}
             disabled={!isManager}
-            version={publicLockVersion ?? 0}
+            version={updatedVersion ?? 0}
             isLastVersion={isLastVersion}
+            onUpdatedVersion={setUpdatedVersion}
           />
         </SettingCard>
       )}

@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./MixinLockCore.sol";
 import "./MixinErrors.sol";
+import "../interfaces/IUnlock.sol";
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -29,15 +30,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   );
 
   // fire when a key is extended
-  event KeyExtended(
-    uint indexed tokenId,
-    uint newTimestamp
-  );
+  event KeyExtended(uint indexed tokenId, uint newTimestamp);
 
-  event KeyManagerChanged(
-    uint indexed _tokenId,
-    address indexed _newManager
-  );
+  event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
 
   event KeysMigrated(uint updatedRecordsCount);
 
@@ -82,8 +77,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   mapping(uint256 => Key) internal _keys;
 
   // store ownership: owner => array of tokens owned by that owner
-  mapping(address => mapping(uint256 => uint256))
-    private _ownedKeyIds;
+  mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
 
   // store indexes: owner => list of tokenIds
   mapping(uint256 => uint256) private _ownedKeysIndex;
@@ -97,17 +91,15 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * for ownership of that key
    * @dev This is a modifier
    */
-  function _onlyKeyManagerOrApproved(
-    uint _tokenId
-  ) internal view {
-    address realKeyOwner = keyManagerOf[_tokenId] ==
-      address(0)
+  function _onlyKeyManagerOrApproved(uint _tokenId) internal view {
+    address realKeyManager = keyManagerOf[_tokenId] == address(0)
       ? _ownerOf[_tokenId]
       : keyManagerOf[_tokenId];
     if (
+      !isLockManager(msg.sender) &&
       !_isKeyManager(_tokenId, msg.sender) &&
       approved[_tokenId] != msg.sender &&
-      !isApprovedForAll(realKeyOwner, msg.sender)
+      !isApprovedForAll(realKeyManager, msg.sender)
     ) {
       revert ONLY_KEY_MANAGER_OR_APPROVED();
     }
@@ -144,16 +136,38 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     emit Transfer(_ownerOf[_tokenId], address(0), _tokenId);
 
-    // delete ownership and expire key
+    // expire key
     _cancelKey(_tokenId);
+
+    // delete owner
+    _ownerOf[_tokenId] = address(0);
   }
 
   /**
    * Migrate data from the previous single owner => key mapping to
    * the new data structure w multiple tokens.
-   * No data migration needed for v10 > v11
    */
-  function migrate(bytes calldata) public virtual {
+  function migrate(bytes calldata /*_calldata*/) public virtual {
+    // make sure we have correct data version before migrating
+    require(
+      ((schemaVersion == publicLockVersion() - 1) || schemaVersion == 0),
+      "SCHEMA_VERSION_NOT_CORRECT"
+    );
+
+    // only for mainnet
+    if (block.chainid == 1) {
+      // Hardcoded address for the redeployed Unlock contract on mainnet
+      address newUnlockAddress = 0xe79B93f8E22676774F2A8dAd469175ebd00029FA;
+
+      // trigger migration from the new Unlock
+      IUnlock(newUnlockAddress).postLockUpgrade();
+
+      // update unlock ref in this lock
+      unlockProtocol = IUnlock(newUnlockAddress);
+
+    }
+    
+    // update data version
     schemaVersion = publicLockVersion();
   }
 
@@ -230,8 +244,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     uint _tokenId,
     uint _duration
   ) internal returns (uint newTimestamp) {
-    uint expirationTimestamp = _keys[_tokenId]
-      .expirationTimestamp;
+    uint expirationTimestamp = _keys[_tokenId].expirationTimestamp;
 
     // prevent extending a valid non-expiring key
     if (expirationTimestamp == type(uint).max) {
@@ -239,9 +252,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     }
 
     // if non-expiring but not valid then extend
-    uint duration = _duration == 0
-      ? expirationDuration
-      : _duration;
+    uint duration = _duration == 0 ? expirationDuration : _duration;
     if (duration == type(uint).max) {
       newTimestamp = type(uint).max;
     } else {
@@ -274,10 +285,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _tokenId the id of the token to cancel
    * @param _recipient the address of the new owner
    */
-  function _createOwnershipRecord(
-    uint _tokenId,
-    address _recipient
-  ) internal {
+  function _createOwnershipRecord(uint _tokenId, address _recipient) internal {
     uint length = totalKeys(_recipient);
 
     // make sure address does not have more keys than allowed
@@ -300,11 +308,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _tokenIdTo the id of the destination token  to add time
    * @param _amount the amount of time to transfer (in seconds)
    */
-  function mergeKeys(
-    uint _tokenIdFrom,
-    uint _tokenIdTo,
-    uint _amount
-  ) public {
+  function mergeKeys(uint _tokenIdFrom, uint _tokenIdTo, uint _amount) public {
     // checks
     _isKey(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
@@ -312,11 +316,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _isKey(_tokenIdTo);
 
     // make sure there is enough time remaining
-    if (
-      _amount >
-      keyExpirationTimestampFor(_tokenIdFrom) -
-        block.timestamp
-    ) {
+    if (_amount > keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp) {
       revert NOT_ENOUGH_TIME();
     }
 
@@ -341,9 +341,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // When the token to delete is the last token, the swap operation is unnecessary
     if (index != lastTokenIndex) {
-      uint256 lastTokenId = _ownedKeyIds[previousOwner][
-        lastTokenIndex
-      ];
+      uint256 lastTokenId = _ownedKeyIds[previousOwner][lastTokenIndex];
       _ownedKeyIds[previousOwner][index] = lastTokenId; // Move the last token to the slot of the to-delete token
       _ownedKeysIndex[lastTokenId] = index; // Update the moved token's index
     }
@@ -367,21 +365,15 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function _cancelKey(uint _tokenId) internal {
     // expire the key
     _keys[_tokenId].expirationTimestamp = block.timestamp;
-
-    // delete previous owner
-    _ownerOf[_tokenId] = address(0);
   }
 
   /**
    * @return The number of keys owned by `_keyOwner` (expired or not)
    */
-  function totalKeys(
-    address _keyOwner
-  ) public view returns (uint) {
+  function totalKeys(address _keyOwner) public view returns (uint) {
     if (_keyOwner == address(0)) {
       revert INVALID_ADDRESS();
     }
-
     return _balances[_keyOwner];
   }
 
@@ -389,9 +381,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
    * @return balance The number of valid keys owned by `_keyOwner`
    */
-  function balanceOf(
-    address _keyOwner
-  ) public view returns (uint balance) {
+  function balanceOf(address _keyOwner) public view returns (uint balance) {
     uint length = totalKeys(_keyOwner);
     for (uint i = 0; i < length; i++) {
       if (isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
@@ -405,11 +395,20 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _tokenId the id of the key to check validity
    * @notice this makes use of the onValidKeyHook if it is set
    */
-  function isValidKey(
-    uint _tokenId
-  ) public view returns (bool) {
-    bool isValid = _keys[_tokenId].expirationTimestamp >
-      block.timestamp;
+  function isValidKey(uint _tokenId) public view returns (bool) {
+    bool isValid = _keys[_tokenId].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if (address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.isValidKey(
+        address(this),
+        msg.sender,
+        _tokenId,
+        _keys[_tokenId].expirationTimestamp,
+        _ownerOf[_tokenId],
+        isValid
+      );
+    }
     return isValid;
   }
 
@@ -420,20 +419,22 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function getHasValidKey(
     address _keyOwner
   ) public view returns (bool isValid) {
-    // `balanceOf` returns only valid keys
-    isValid = balanceOf(_keyOwner) > 0;
-
-    // use hook if it exists
-    if (address(onValidKeyHook) != address(0)) {
-      isValid = onValidKeyHook.hasValidKey(
-        address(this),
-        _keyOwner,
-        0, // no timestamp needed (we use tokenId)
-        isValid
-      );
+    // check hook directly with address if user has no valid keys
+    if (balanceOf(_keyOwner) == 0) {
+      if (address(onValidKeyHook) != address(0)) {
+        return
+          onValidKeyHook.isValidKey(
+            address(this),
+            msg.sender,
+            0, // no token specified
+            0, // no token specified
+            _keyOwner,
+            false
+          );
+      }
     }
-
-    return isValid;
+    // `balanceOf` returns only valid keys
+    return balanceOf(_keyOwner) >= 1;
   }
 
   /**
@@ -441,9 +442,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _tokenId the tokenId of the key
    * @dev Returns 0 if the owner has never owned a key for this lock
    */
-  function keyExpirationTimestampFor(
-    uint _tokenId
-  ) public view returns (uint) {
+  function keyExpirationTimestampFor(uint _tokenId) public view returns (uint) {
     return _keys[_tokenId].expirationTimestamp;
   }
 
@@ -452,9 +451,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _tokenId the id of the token
    * @return the address of the owner
    */
-  function ownerOf(
-    uint _tokenId
-  ) public view returns (address) {
+  function ownerOf(uint _tokenId) public view returns (address) {
     return _ownerOf[_tokenId];
   }
 
@@ -464,10 +461,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _keyManager the address with the manager's rights for the given key.
    * Setting _keyManager to address(0) means the keyOwner is also the keyManager
    */
-  function setKeyManagerOf(
-    uint _tokenId,
-    address _keyManager
-  ) public {
+  function setKeyManagerOf(uint _tokenId, address _keyManager) public {
     _isKey(_tokenId);
     if (
       // is already key manager
@@ -480,10 +474,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _setKeyManagerOf(_tokenId, _keyManager);
   }
 
-  function _setKeyManagerOf(
-    uint _tokenId,
-    address _keyManager
-  ) internal {
+  function _setKeyManagerOf(uint _tokenId, address _keyManager) internal {
     if (keyManagerOf[_tokenId] != _keyManager) {
       keyManagerOf[_tokenId] = _keyManager;
       _clearApproval(_tokenId);
@@ -496,10 +487,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Note: that since this is used for both purchase and transfer approvals
    * the approved token may not exist.
    */
-  function approve(
-    address _approved,
-    uint _tokenId
-  ) public {
+  function approve(address _approved, uint _tokenId) public {
     _onlyKeyManagerOrApproved(_tokenId);
     if (msg.sender == _approved) {
       revert CANNOT_APPROVE_SELF();
@@ -515,9 +503,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @param _tokenId The NFT to find the approved address for
    * @return The approved address for this NFT, or the zero address if there is none
    */
-  function getApproved(
-    uint _tokenId
-  ) public view returns (address) {
+  function getApproved(uint _tokenId) public view returns (address) {
     _isKey(_tokenId);
     address approvedRecipient = approved[_tokenId];
     return approvedRecipient;
@@ -575,25 +561,18 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   ) internal {
     _isKey(_tokenId);
 
-    uint formerTimestamp = _keys[_tokenId]
-      .expirationTimestamp;
+    uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
 
     if (_addTime) {
       if (formerTimestamp > block.timestamp) {
         // append to valid key
-        _keys[_tokenId].expirationTimestamp =
-          formerTimestamp +
-          _deltaT;
+        _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
       } else {
         // add from now if key is expired
-        _keys[_tokenId].expirationTimestamp =
-          block.timestamp +
-          _deltaT;
+        _keys[_tokenId].expirationTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      _keys[_tokenId].expirationTimestamp =
-        formerTimestamp -
-        _deltaT;
+      _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
 
     emit ExpirationChanged(
@@ -652,11 +631,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   /**
    * @return the maximum number of key allowed for a single address
    */
-  function maxKeysPerAddress()
-    external
-    view
-    returns (uint)
-  {
+  function maxKeysPerAddress() external view returns (uint) {
     return _maxKeysPerAddress;
   }
 

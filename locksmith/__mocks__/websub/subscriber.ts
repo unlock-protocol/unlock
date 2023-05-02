@@ -1,29 +1,35 @@
-import { setupServer } from 'msw/node'
-import { rest } from 'msw'
 import { createSignature } from '../../src/websub/helpers'
+import { Request } from 'express'
 
-const handlers = [
-  rest.post('http://localhost:4000/callback', (req, res, ctx) => {
-    const signature = req.headers.get('x-hub-signature')
+export const handler = (req: Request) => {
+  // @ts-expect-error  Argument of type 'IncomingHttpHeaders' is not assignable to parameter of type 'Iterable<readonly [PropertyKey, any]>'.
+  const headers = Object.fromEntries(req.headers)
+  const signature = headers['x-hub-signature']
 
-    if (!signature) {
-      return res(ctx.status(400), ctx.text('Missing signature'))
+  if (!signature) {
+    return {
+      status: 400,
+      body: 'Missing signature',
     }
+  }
 
-    const [algo, hash] = signature.split('=')
+  const [algo, hash] = signature.split('=')
+  const body = JSON.parse(req.body)
+  const computedHash = createSignature({
+    content: JSON.stringify(body),
+    algorithm: algo,
+    secret: 'websub',
+  })
 
-    const computedHash = createSignature({
-      content: JSON.stringify(req.body),
-      algorithm: algo,
-      secret: 'websub',
-    })
-
-    if (hash !== computedHash) {
-      return res(ctx.status(400), ctx.text('Invalid signature'))
+  if (hash !== computedHash) {
+    return {
+      status: 400,
+      body: 'Invalid signature',
     }
+  }
 
-    return res(ctx.status(200), ctx.text('Acknowledged'))
-  }),
-]
-
-export const subscriberServer = setupServer(...handlers)
+  return {
+    status: 200,
+    body: 'Acknowledged',
+  }
+}

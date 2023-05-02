@@ -39,26 +39,31 @@ contract MixinTransfer is
   uint public transferFeeBasisPoints;
 
   /**
+   * @dev helper to check if transfer have been disabled
+   */
+  function _transferNotDisabled() internal view {
+    if (
+      transferFeeBasisPoints >= BASIS_POINTS_DEN && !isLockManager(msg.sender)
+    ) {
+      revert KEY_TRANSFERS_DISABLED();
+    }
+  }
+
+  /**
    * @notice Allows the key owner to safely transfer a portion of the remaining time
    * from their key to a new key
    * @param _tokenIdFrom the key to share
    * @param _to The recipient of the shared time
    * @param _timeShared The amount of time shared
    */
-  function shareKey(
-    address _to,
-    uint _tokenIdFrom,
-    uint _timeShared
-  ) public {
+  function shareKey(address _to, uint _tokenIdFrom, uint _timeShared) public {
     _lockIsUpToDate();
     if (maxNumberOfKeys <= _totalSupply) {
       revert LOCK_SOLD_OUT();
     }
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
-    }
+    _transferNotDisabled();
 
     address keyOwner = _ownerOf[_tokenIdFrom];
 
@@ -66,9 +71,8 @@ contract MixinTransfer is
     uint time;
 
     // get the remaining time for the origin key
-    uint timeRemaining = keyExpirationTimestampFor(
-      _tokenIdFrom
-    ) - block.timestamp;
+    uint timeRemaining = keyExpirationTimestampFor(_tokenIdFrom) -
+      block.timestamp;
 
     // get the transfer fee based on amount of time wanted share
     uint fee = getTransferFee(_tokenIdFrom, _timeShared);
@@ -84,24 +88,17 @@ contract MixinTransfer is
       // we have to recalculate the fee here
       fee = getTransferFee(_tokenIdFrom, timeRemaining);
       time = timeRemaining - fee;
-      _keys[_tokenIdFrom].expirationTimestamp = block
-        .timestamp; // Effectively expiring the key
+      _keys[_tokenIdFrom].expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenIdFrom);
     }
 
     // create new key
-    uint tokenIdTo = _createNewKey(
-      _to,
-      address(0),
-      block.timestamp + time
-    );
+    uint tokenIdTo = _createNewKey(_to, address(0), block.timestamp + time);
 
     // trigger event
     emit Transfer(keyOwner, _to, tokenIdTo);
 
-    if (
-      !_checkOnERC721Received(keyOwner, _to, tokenIdTo, "")
-    ) {
+    if (!_checkOnERC721Received(keyOwner, _to, tokenIdTo, "")) {
       revert NON_COMPLIANT_ERC721_RECEIVER();
     }
   }
@@ -120,7 +117,6 @@ contract MixinTransfer is
     address _recipient,
     uint _tokenId
   ) public {
-    _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
 
     // reset key manager to address zero
@@ -139,11 +135,7 @@ contract MixinTransfer is
    * After calling the function, the `_recipient` will be the new owner, and the sender of the tx
    * will become the key manager.
    */
-  function lendKey(
-    address _from,
-    address _recipient,
-    uint _tokenId
-  ) public {
+  function lendKey(address _from, address _recipient, uint _tokenId) public {
     // make sure caller is either owner or key manager
     if (!_isKeyManager(_tokenId, msg.sender)) {
       revert UNAUTHORIZED();
@@ -162,12 +154,7 @@ contract MixinTransfer is
    * @param _tokenId the id of the token
    * @dev Only the key manager of the token can call this function
    */
-  function unlendKey(
-    address _recipient,
-    uint _tokenId
-  ) public {
-    _isValidKey(_tokenId);
-
+  function unlendKey(address _recipient, uint _tokenId) public {
     if (msg.sender != keyManagerOf[_tokenId]) {
       revert UNAUTHORIZED();
     }
@@ -184,15 +171,13 @@ contract MixinTransfer is
     uint _tokenId
   ) private {
     _isValidKey(_tokenId);
+    _transferNotDisabled();
 
     // incorrect _from field
     if (ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
 
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
-    }
     if (_recipient == address(0)) {
       revert INVALID_ADDRESS();
     }
@@ -201,19 +186,13 @@ contract MixinTransfer is
     }
 
     // subtract the fee from the senders key before the transfer
-    _timeMachine(
-      _tokenId,
-      getTransferFee(_tokenId, 0),
-      false
-    );
+    _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);
 
     // transfer a token
     Key storage key = _keys[_tokenId];
 
     // update expiration
-    key.expirationTimestamp = keyExpirationTimestampFor(
-      _tokenId
-    );
+    key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
 
     // increase total number of unique owners
     if (totalKeys(_recipient) == 0) {
@@ -250,27 +229,6 @@ contract MixinTransfer is
   }
 
   /**
-   * @notice An ERC-20 style transfer.
-   * @param _tokenId the Id of the token to send
-   * @param _to the destination address
-   * @param _valueBasisPoint a percentage (expressed as basis points) of the time to be transferred
-   * @return success bool success/failure of the transfer
-   */
-  function transfer(
-    uint _tokenId,
-    address _to,
-    uint _valueBasisPoint
-  ) public returns (bool success) {
-    _isValidKey(_tokenId);
-    uint timeShared = ((keyExpirationTimestampFor(
-      _tokenId
-    ) - block.timestamp) * _valueBasisPoint) /
-      BASIS_POINTS_DEN;
-    shareKey(_to, _tokenId, timeShared);
-    return true;
-  }
-
-  /**
    * @notice Transfers the ownership of an NFT from one address to another address
    * @dev This works identically to the other function with an extra data parameter,
    *  except this function just sets data to ''
@@ -278,11 +236,7 @@ contract MixinTransfer is
    * @param _to The new owner
    * @param _tokenId The NFT to transfer
    */
-  function safeTransferFrom(
-    address _from,
-    address _to,
-    uint _tokenId
-  ) public {
+  function safeTransferFrom(address _from, address _to, uint _tokenId) public {
     safeTransferFrom(_from, _to, _tokenId, "");
   }
 
@@ -293,15 +247,10 @@ contract MixinTransfer is
    * @param _approved representing the status of the approval to be set
    * @notice disabled when transfers are disabled
    */
-  function setApprovalForAll(
-    address _to,
-    bool _approved
-  ) public {
+  function setApprovalForAll(address _to, bool _approved) public {
+    _transferNotDisabled();
     if (_to == msg.sender) {
       revert CANNOT_APPROVE_SELF();
-    }
-    if (transferFeeBasisPoints >= BASIS_POINTS_DEN) {
-      revert KEY_TRANSFERS_DISABLED();
     }
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
@@ -325,9 +274,7 @@ contract MixinTransfer is
     bytes memory _data
   ) public {
     transferFrom(_from, _to, _tokenId);
-    if (
-      !_checkOnERC721Received(_from, _to, _tokenId, _data)
-    ) {
+    if (!_checkOnERC721Received(_from, _to, _tokenId, _data)) {
       revert NON_COMPLIANT_ERC721_RECEIVER();
     }
   }
@@ -335,9 +282,7 @@ contract MixinTransfer is
   /**
    * Allow the Lock owner to change the transfer fee.
    */
-  function updateTransferFee(
-    uint _transferFeeBasisPoints
-  ) external {
+  function updateTransferFee(uint _transferFeeBasisPoints) external {
     _onlyLockManager();
     emit TransferFeeChanged(_transferFeeBasisPoints);
     transferFeeBasisPoints = _transferFeeBasisPoints;
@@ -357,23 +302,17 @@ contract MixinTransfer is
     uint _time
   ) public view returns (uint) {
     _isKey(_tokenId);
-    uint expirationTimestamp = keyExpirationTimestampFor(
-      _tokenId
-    );
+    uint expirationTimestamp = keyExpirationTimestampFor(_tokenId);
     if (expirationTimestamp < block.timestamp) {
       return 0;
     } else {
       uint timeToTransfer;
       if (_time == 0) {
-        timeToTransfer =
-          expirationTimestamp -
-          block.timestamp;
+        timeToTransfer = expirationTimestamp - block.timestamp;
       } else {
         timeToTransfer = _time;
       }
-      return
-        (timeToTransfer * transferFeeBasisPoints) /
-        BASIS_POINTS_DEN;
+      return (timeToTransfer * transferFeeBasisPoints) / BASIS_POINTS_DEN;
     }
   }
 
@@ -395,8 +334,12 @@ contract MixinTransfer is
     if (!to.isContract()) {
       return true;
     }
-    bytes4 retval = IERC721ReceiverUpgradeable(to)
-      .onERC721Received(msg.sender, from, tokenId, _data);
+    bytes4 retval = IERC721ReceiverUpgradeable(to).onERC721Received(
+      msg.sender,
+      from,
+      tokenId,
+      _data
+    );
     return (retval == _ERC721_RECEIVED);
   }
 

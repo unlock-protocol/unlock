@@ -1,5 +1,0 @@
-# This file is custom to netlify and used to perform redirects and URL rewrites
-# See https://www.netlify.com/docs/redirects/#rewrites-and-proxying
-
-/                           /index 200
-/static/unlock.1.0.min.js   /static/unlock.latest.min.js 200

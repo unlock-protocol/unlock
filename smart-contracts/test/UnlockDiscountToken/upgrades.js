@@ -172,7 +172,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       const { events } = await tx.wait()
       const evt = events.find((v) => v.event === 'NewLock')
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
@@ -225,6 +225,12 @@ contract('UnlockDiscountToken upgrade', async () => {
         ethers.utils.parseUnits('1', 'ether'),
         weth.address
       )
+
+       // Give unlock contract some tokens
+      await udt.mint(
+        unlock.address,
+        ethers.utils.parseUnits('1000000', 'ether')
+      )
     })
 
     it('exchange rate is > 0', async () => {
@@ -255,6 +261,9 @@ contract('UnlockDiscountToken upgrade', async () => {
             value: await lock.keyPrice(),
           }
         )
+        
+        assert.equal((await lock.balanceOf(keyBuyer.address)).toString(), '1')
+
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
         gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)

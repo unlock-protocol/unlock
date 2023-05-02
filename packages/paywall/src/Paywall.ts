@@ -4,7 +4,6 @@ import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from './utils/localStorage'
 import { isUnlocked } from './utils/isUnlocked'
-import { willUnlock } from './utils/optimisticUnlocking'
 import {
   Enabler,
   getProvider,
@@ -14,6 +13,9 @@ import {
 import { unlockAppUrl } from './urls'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
+
+// TODO move to newer format for provider
+// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md#request
 
 /**
  * These type definitions come from `useCheckoutCommunication` in
@@ -52,6 +54,11 @@ export interface MethodCallResult {
 }
 /* end type definitions */
 
+/**
+ * Using a single child object
+ */
+let postmateChild: any
+
 export class Paywall {
   childCallBuffer: [string, any?][] = []
 
@@ -75,20 +82,35 @@ export class Paywall {
     provider?: any
   ) {
     this.networkConfigs = networkConfigs
+    if (provider) {
+      paywallConfig.autoconnect = true // force autoconnect
+    }
     // Use provider in parameter, fall back to injected provider in window (if any)
     this.provider = provider || getProvider(window as Web3Window)
-    this.resetConfig(paywallConfig)
+    this.paywallConfig = injectProviderInfo(paywallConfig, this.provider)
     // Always do this last!
     this.loadCache()
   }
 
-  loadCheckoutModal = (config?: PaywallConfig) => {
+  authenticate = (unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      this.shakeHands()
+      this.shakeHands(unlockUrl || unlockAppUrl)
     }
-    this.sendOrBuffer('setConfig', config || this.paywallConfig)
+    this.sendOrBuffer('authenticate', {})
+  }
+
+  loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {
+    if (this.iframe) {
+      this.showIframe()
+    } else {
+      this.shakeHands(unlockUrl || unlockAppUrl)
+    }
+    this.sendOrBuffer(
+      'setConfig',
+      injectProviderInfo(config || this.paywallConfig, this.provider)
+    )
   }
 
   getUserAccountAddress = () => {
@@ -98,7 +120,10 @@ export class Paywall {
   resetConfig = (config: PaywallConfig) => {
     this.paywallConfig = injectProviderInfo(config, this.provider)
     this.checkKeysAndLock()
-    this.sendOrBuffer('setConfig', config || this.paywallConfig)
+    this.sendOrBuffer(
+      'setConfig',
+      injectProviderInfo(config || this.paywallConfig, this.provider)
+    )
   }
 
   getState = () => {
@@ -121,7 +146,7 @@ export class Paywall {
   }
 
   // Will lock or unlock the page based on the current state
-  checkKeysAndLock = async () => {
+  async checkKeysAndLock() {
     // For each lock.
 
     if (!this.userAccountAddress) {
@@ -142,27 +167,34 @@ export class Paywall {
     return this.lockPage()
   }
 
-  shakeHands = async () => {
-    const child = await new Postmate({
-      url: `${unlockAppUrl}/checkout`,
-      classListArray: [checkoutIframeClassName, 'show'],
-    })
+  shakeHands = async (unlockAppUrl: string) => {
+    console.debug(`Connecting to ${unlockAppUrl}`)
+    if (!postmateChild) {
+      postmateChild = await new Postmate({
+        url: `${unlockAppUrl}/checkout`,
+        classListArray: [checkoutIframeClassName],
+      })
+    }
 
-    this.child = child
-
+    this.child = postmateChild
     this.iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
-
-    child.on(CheckoutEvents.closeModal, this.hideIframe)
-    child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
-    child.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
-    child.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
-    child.on(CheckoutEvents.enable, this.handleEnable)
+    this.showIframe()
+    this.child!.on(CheckoutEvents.closeModal, this.hideIframe)
+    this.child!.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
+    this.child!.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
+    this.child!.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
+    this.child!.on(CheckoutEvents.enable, this.handleEnable)
 
     // transactionInfo event also carries transaction hash.
-    child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
+    this.child!.on(
+      CheckoutEvents.transactionInfo,
+      this.handleTransactionInfoEvent
+    )
 
     // flush the buffer of child calls from before the iframe was ready
-    this.childCallBuffer.forEach((bufferedCall) => child.call(...bufferedCall))
+    this.childCallBuffer.forEach((bufferedCall) =>
+      this.child!.call(...bufferedCall)
+    )
   }
 
   sendOrBuffer = (method: string, args: any) => {
@@ -174,23 +206,9 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const network =
-      this.paywallConfig.locks[lock]?.network || this.paywallConfig.network
-
-    const { provider } =
-      this.networkConfigs[network.toString()] || this.networkConfigs[network]
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
-    if (!this.paywallConfig.pessimistic) {
-      const optimistic = await willUnlock(
-        provider,
-        this.userAccountAddress!,
-        lock,
-        hash,
-        true // Optimistic if missing
-      )
-      if (optimistic) {
-        this.unlockPage([lock])
-      }
+    if (!this.paywallConfig.pessimistic && hash && lock) {
+      this.unlockPage([lock])
     }
   }
 
@@ -202,23 +220,38 @@ export class Paywall {
   }
 
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
-    ;(this.provider! as any).sendAsync(
-      { method, params, id },
-      (error: any, response: any) => {
-        this.child!.call('resolveMethodCall', { id, error, response })
-      }
-    )
+    const provider = this.provider as any
+    if (provider.request) {
+      return provider.request({ method, params, id }).then((response) => {
+        this.child!.call('resolveMethodCall', { id, error: null, response })
+      }).catch((error) => {
+        this.child!.call('resolveMethodCall', { id, error, response: null })
+      })
+    } else if (provider.sendAsync) {
+      provider.sendAsync(
+        { method, params, id },
+        (error: any, response: any) => {
+          this.child!.call('resolveMethodCall', { id, error, response })
+        }
+      )
+    } else {
+      console.error(
+        'unknown method to call provider! Please make sure you use and EIP1193 provider!'
+      )
+    }
   }
 
   handleOnEventEvent = async (eventName: string) => {
-    ;(this.provider! as any).on(eventName, () => {
+    const provider = this.provider as any
+
+    provider.on(eventName, () => {
       this.child!.call('resolveOnEvent', eventName)
     })
   }
 
   handleEnable = async () => {
-    await enableInjectedProvider(this.provider)
-    this.child!.call('resolveOnEnable')
+    const result = await enableInjectedProvider(this.provider)
+    this.child!.call('resolveOnEnable', result)
   }
 
   showIframe = () => {

@@ -6,6 +6,7 @@ import { UpdateMaxKeysPerAddress } from '../forms/UpdateMaxKeysPerAddress'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { UpdateTransferFee } from '../forms/UpdateTransferFee'
 import { SettingCard } from './SettingCard'
+import { UNLIMITED_KEYS_DURATION } from '~/constants'
 
 interface SettingTermsProps {
   lockAddress: string
@@ -20,6 +21,7 @@ interface SettingProps {
   label: string
   description?: string
   children: ReactNode
+  active?: boolean
 }
 
 export const SettingTerms = ({
@@ -30,7 +32,23 @@ export const SettingTerms = ({
   isLoading,
   publicLockVersion,
 }: SettingTermsProps) => {
+  const unlimitedDuration = lock?.expirationDuration === UNLIMITED_KEYS_DURATION
+
   const settings: SettingProps[] = [
+    {
+      label: 'Transfers',
+      description:
+        'Make tokens non-transferable (soulbound) or apply fees on transfers.',
+      children: (
+        <UpdateTransferFee
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+          unlimitedDuration={unlimitedDuration}
+        />
+      ),
+    },
     {
       label: 'Duration',
       description: 'Set up how long each membership lasts. ',
@@ -54,6 +72,7 @@ export const SettingTerms = ({
           maxNumberOfKeys={lock?.maxNumberOfKeys ?? 0}
           isManager={isManager}
           disabled={!isManager}
+          network={network}
         />
       ),
     },
@@ -69,18 +88,6 @@ export const SettingTerms = ({
           lockAddress={lockAddress}
           network={network}
           publicLockVersion={publicLockVersion}
-        />
-      ),
-    },
-    {
-      label: 'Transfer',
-      description: 'Allow members to transfer memberships.',
-      children: (
-        <UpdateTransferFee
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
         />
       ),
     },
@@ -101,18 +108,21 @@ export const SettingTerms = ({
 
   return (
     <div className="grid grid-cols-1 gap-6">
-      {settings?.map(({ label, description, children }, index) => {
-        return (
-          <SettingCard
-            key={index}
-            label={label}
-            description={description}
-            isLoading={isLoading}
-          >
-            {children}
-          </SettingCard>
-        )
-      })}
+      {settings?.map(
+        ({ label, description, children, active = true }, index) => {
+          if (!active) return null
+          return (
+            <SettingCard
+              key={index}
+              label={label}
+              description={description}
+              isLoading={isLoading}
+            >
+              {children}
+            </SettingCard>
+          )
+        }
+      )}
     </div>
   )
 }

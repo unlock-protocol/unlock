@@ -11,7 +11,7 @@ export const prepareAll = (template, opts = {}) => {
       prepared[format] = (args) => {
         const content = compiled(args)
         const images = getImages()
-        images.forEach((image) => {
+        images?.forEach((image) => {
           prepared.attachments.push(image)
         })
         return content
@@ -22,9 +22,10 @@ export const prepareAll = (template, opts = {}) => {
 }
 
 export const prepare = (content, opts = {}) => {
-  let images = []
+  const images = []
   handlebars.registerHelper('inlineImage', function (filename) {
     const path = join(__dirname, `/../../../static/attachments/${filename}`)
+
     if (opts?.context === 'web') {
       // Read file as base64, serve1
       return `data:image/png;base64,${readFileSync(path, 'base64')}`

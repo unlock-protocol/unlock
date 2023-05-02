@@ -13,35 +13,19 @@ import {
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Placeholder } from '@unlock-protocol/ui'
 
 dayjs.extend(relativeTimePlugin)
 
-export interface MembershipData {
-  expiration: number
-  image: string
-  keyId: string | number
-  owner: string
-  userMetadata?: {
-    public?: Record<string, string>
-    protected?: Record<string, string>
-  }
-  network: number
-  metadata?: Record<string, string>
-  lockAddress: number
-  attributes: Record<string, string>[]
-}
-
 interface Props {
   timestamp: number
-  lock: {
-    name: string
-    address: string
-  }
-  membershipData: MembershipData
+  name: string
+  image: string
+  lockAddress: string
+  userMetadata: Record<string, any>
   network: number
   invalid?: string
-  checkedInAt?: string
+  checkedInAt?: number
   owner: string
   keyId: string
   children?: ReactNode
@@ -50,10 +34,12 @@ interface Props {
 }
 
 export function MembershipCard({
-  lock,
+  name,
+  lockAddress,
+  image,
   timestamp,
   network,
-  membershipData,
+  userMetadata,
   checkedInAt,
   invalid,
   owner,
@@ -104,7 +90,7 @@ export function MembershipCard({
               ? invalid
               : checkedInAt
               ? `Checked-in ${timeSinceCheckedIn} ago`
-              : `${lock.name}`}
+              : `${name}`}
           </p>
         </div>
       </div>
@@ -113,30 +99,30 @@ export function MembershipCard({
           <Avatar>
             <AvatarImage
               className="flex items-center justify-center w-16 h-16 rounded-full"
-              alt={lock?.name}
-              src={membershipData?.image}
+              alt={name}
+              src={image}
               width={50}
               height={50}
             />
             <AvatarFallback className="flex items-center justify-center w-20 h-20 uppercase rounded-full">
-              {lock?.name.slice(0, 2)}
+              {name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <div className="space-y-2">
-            <h3 className="font-medium"> {lock.name} </h3>
+            <h3 className="font-medium"> {name} </h3>
             <Item label="ID" value={keyId} />
           </div>
         </div>
         <div className="space-y-2">
-          <Item label="Lock Address" value={addressMinify(lock.address)} />
+          <Item label="Lock Address" value={addressMinify(lockAddress)} />
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
           <Item label="Owner" value={addressMinify(owner)} />
-          {!!membershipData?.userMetadata?.public && (
-            <MetadataItems metadata={membershipData.userMetadata.public} />
+          {!!userMetadata?.public && (
+            <MetadataItems metadata={userMetadata.public} />
           )}
-          {!!membershipData?.userMetadata?.protected && (
-            <MetadataItems metadata={membershipData.userMetadata.protected} />
+          {!!userMetadata?.protected && (
+            <MetadataItems metadata={userMetadata.protected} />
           )}
         </div>
         {children}
@@ -175,21 +161,16 @@ export function MetadataItems({
 
 export function MembershipCardPlaceholder() {
   return (
-    <div className="w-full max-w-sm bg-white rounded-xl">
+    <Placeholder.Root className="w-full max-w-sm bg-white rounded-xl">
       <div className="h-32 bg-gray-100 rounded-t-xl"></div>
-      <div className="p-6 space-y-6">
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center justify-center w-20 h-20 uppercase rounded-full bg-gray-50 animate-pulse"></div>
-        </div>
-        <div className="grid gap-2">
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-          <div className="w-full h-6 bg-gray-50 animate-pulse rounded-xl"></div>
-        </div>
-        <div className="w-full h-12 rounded-full bg-gray-50 animate-pulse"></div>
-      </div>
-    </div>
+      <Placeholder.Root className="p-6">
+        <Placeholder.Image size="sm" />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line size="md" />
+      </Placeholder.Root>
+    </Placeholder.Root>
   )
 }

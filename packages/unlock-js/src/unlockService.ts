@@ -1,6 +1,5 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { ethers } from 'ethers'
+import { ContractInterface, ethers } from 'ethers'
 
 import PublicLockVersions from './PublicLock/index'
 import UnlockVersions from './Unlock/index'
@@ -33,9 +32,10 @@ export default class UnlockService {
 
     // for convenience, pass directly an ethers provider in the `networks` contructor
     if (this.networks[networkId].ethersProvider) {
-      return this.networks[networkId].ethersProvider as JsonRpcProvider
+      return this.networks[networkId]
+        .ethersProvider as ethers.providers.Provider
     }
-    return new ethers.providers.JsonRpcProvider(
+    return new ethers.providers.JsonRpcBatchProvider(
       this.networks[networkId].provider,
       networkId
     )
@@ -52,7 +52,7 @@ export default class UnlockService {
     }
 
     let opCode = await (
-      this.providerForNetwork(network) as JsonRpcProvider
+      this.providerForNetwork(network) as ethers.providers.Provider
     ).getCode(this.networks[network].unlockAddress!)
     return opCode !== '0x'
   }
@@ -82,15 +82,17 @@ export default class UnlockService {
       ? 'PublicLock'
       : 'Unlock'
 
-    if (contractName === 'PublicLock') {
+    if (contractName === 'PublicLock' && PublicLockVersions[`v${version}`]) {
       return PublicLockVersions[`v${version}`]
     }
-    if (contractName === 'Unlock') {
+    if (contractName === 'Unlock' && UnlockVersions[`v${version}`]) {
       return UnlockVersions[`v${version}`]
     }
 
     throw new Error(
-      `Contract ${address} not deployed, or unknown version ${version}`
+      `Contract ${address} not deployed, or unknown version ${version} with provider ${JSON.stringify(
+        provider
+      )}`
     )
   }
 
@@ -139,6 +141,7 @@ export default class UnlockService {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
     } catch (error) {
+      console.error(error)
       console.error(
         `We could not retrieve the version of the Unlock contract ${address} on this network.`
       )
@@ -200,5 +203,18 @@ export default class UnlockService {
   ) {
     const version = await this.unlockContractAbiVersion(unlockAddress, provider)
     return this.getContract(unlockAddress, version.Unlock, provider)
+  }
+
+  async getHookContract({
+    network,
+    address,
+    abi,
+  }: {
+    network: number
+    address: string
+    abi: ContractInterface
+  }) {
+    const provider = this.providerForNetwork(network)
+    return new ethers.Contract(address, abi, provider)
   }
 }

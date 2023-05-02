@@ -1,9 +1,13 @@
-const { config, run, ethers } = require('hardhat')
+const contracts = require('@unlock-protocol/contracts')
+const { config, ethers, run } = require('hardhat')
+const { TASK_COMPILE } = require('hardhat/builtin-tasks/task-names')
 const path = require('path')
 const fs = require('fs-extra')
-const { TASK_COMPILE } = require('hardhat/builtin-tasks/task-names')
+const { abi : proxyAbi, bytecode: proxyBytecode } = require('./ABIs/TransparentUpgradeableProxy.json')
+const { abi : proxyAdminAbi, bytecode: proxyAdminBytecode } = require('./ABIs/ProxyAdmin.json')
 
-const { LATEST_UNLOCK_VERSION } = require('../helpers/constants')
+const LATEST_UNLOCK_VERSION = 12
+const LATEST_PUBLIC_LOCK_VERSION = 13
 
 // files path
 const CONTRACTS_PATH = path.resolve(
@@ -39,12 +43,15 @@ function getMatchingLockVersion(unlockVersion) {
   )
   // after v10, they start decoupling
   publicLockVersions[10] = 9
-  publicLockVersions[11] = 10
+  publicLockVersions[11] = 11
+  publicLockVersions[12] = 11
 
   return publicLockVersions[unlockVersion]
 }
 
-async function getContractFactoryAtVersion(contractName, versionNumber) {
+
+
+async function getContractFactoryFromSolFiles(contractName, versionNumber) {
   // copy contract file
   await fs.copy(
     require.resolve(
@@ -52,14 +59,92 @@ async function getContractFactoryAtVersion(contractName, versionNumber) {
     ),
     path.resolve(CONTRACTS_PATH, `${contractName}V${versionNumber}.sol`)
   )
-
   // Recompile
   await run(TASK_COMPILE, { quiet: true })
-
   // return factory
   return await ethers.getContractFactory(
     `contracts/past-versions/${contractName}V${versionNumber}.sol:${contractName}`
   )
+}
+
+
+async function getContractFactoryAtVersion(contractName, versionNumber) {
+  const contractVersion = `${contractName}V${versionNumber}`
+  
+  // make sure contract exists
+  if (!Object.keys(contracts).includes(contractVersion)) {
+    throw Error(
+      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
+    )
+  }
+  
+  // get contract factory
+  const { bytecode, abi } = contracts[contractVersion]
+  const factory = await ethers.getContractFactory(abi, bytecode)
+  return factory
+}
+
+async function deployUpgreadableContract(
+  Factory,
+  initializerArguments = [],
+  initializer = 'initialize'
+) {
+  // deploy implementation
+  const impl = await Factory.deploy()
+  await impl.deployTransaction.wait()
+  
+  // encode initializer data
+  const fragment = impl.interface.getFunction(initializer)
+  const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
+
+  // deploy proxyAdmin
+  const ProxyAdmin = await ethers.getContractFactory(
+    proxyAdminAbi,
+    proxyAdminBytecode
+  )
+  const proxyAdmin = await ProxyAdmin.deploy()
+  await proxyAdmin.deployTransaction.wait()
+
+  // deploy proxy
+  const TransparentUpgradeableProxy = await ethers.getContractFactory(
+    proxyAbi,
+    proxyBytecode
+  )
+  const proxy = await TransparentUpgradeableProxy.deploy(
+    impl.address, 
+    proxyAdmin.address, 
+    data
+  )
+  await proxy.deployTransaction.wait()
+
+  // wait for proxy deployment
+  const contract = await ethers.getContractAt(Factory.interface.format(ethers.utils.FormatTypes.full), proxy.address)
+  return {
+    proxyAdmin,
+    contract 
+  }
+}
+
+async function upgradeUpgreadableContract( 
+  proxyAddress,
+  proxyAdminAddress,
+  Factory,
+) {
+  // deploy implementation
+  const impl = await Factory.deploy()
+  await impl.deployTransaction.wait()
+
+  // get proxyAdmin
+  const proxyAdmin = await ethers.getContractAt(
+    proxyAdminAbi,
+    proxyAdminAddress
+  )
+
+  // do the upgrade
+  await proxyAdmin.upgrade(proxyAddress, impl.address)
+
+  const upgraded = await ethers.getContractAt(Factory.interface.format(ethers.utils.FormatTypes.full), proxyAddress)
+  return upgraded
 }
 
 async function getContractAtVersion(
@@ -79,9 +164,14 @@ async function cleanupPastContracts() {
 }
 
 module.exports = {
+  LATEST_UNLOCK_VERSION,
+  LATEST_PUBLIC_LOCK_VERSION,
   getContractAtVersion,
   getUnlockVersionNumbers,
   getMatchingLockVersion,
   getContractFactoryAtVersion,
+  getContractFactoryFromSolFiles,
   cleanupPastContracts,
+  deployUpgreadableContract,
+  upgradeUpgreadableContract,
 }

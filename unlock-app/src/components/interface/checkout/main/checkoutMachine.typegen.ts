@@ -8,15 +8,14 @@ export interface Typegen0 {
   invokeSrcNameMap: {}
   missingImplementations: {
     actions: never
-    services: never
-    guards: never
     delays: never
+    guards: never
+    services: 'unlockAccount'
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
     confirmRenew: 'CONFIRM_RENEW'
     disconnect: 'DISCONNECT'
-    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
     selectLock: 'SELECT_LOCK'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'
@@ -28,26 +27,16 @@ export interface Typegen0 {
     submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
-  eventsCausingServices: {}
-  eventsCausingGuards: {
-    requireCaptcha:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-    requireMessageToSign:
-      | 'BACK'
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-    requirePassword:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-    requirePromo:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-  }
   eventsCausingDelays: {}
+  eventsCausingGuards: {
+    requireCaptcha: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
+    requireMessageToSign: 'BACK' | 'SELECT_PAYMENT_METHOD'
+    requirePassword: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
+    requirePromo: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
+  }
+  eventsCausingServices: {
+    unlockAccount: 'UNLOCK_ACCOUNT'
+  }
   matchesStates:
     | 'CAPTCHA'
     | 'CARD'
@@ -56,8 +45,8 @@ export interface Typegen0 {
     | 'METADATA'
     | 'MINTING'
     | 'PASSWORD'
-    | 'PROMO'
     | 'PAYMENT'
+    | 'PROMO'
     | 'QUANTITY'
     | 'RENEW'
     | 'RENEWED'

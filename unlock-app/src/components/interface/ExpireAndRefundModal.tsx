@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../helpers/toast.helper'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface ExpireAndRefundProps {
   isOpen: boolean
@@ -9,6 +9,7 @@ interface ExpireAndRefundProps {
   keyOwner: string
   tokenId: string
   setIsOpen: (open: boolean) => void
+  network: number
 }
 
 export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
@@ -17,9 +18,9 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   keyOwner,
   tokenId,
   setIsOpen,
+  network,
 }) => {
-  const walletService = useWalletService()
-
+  const { getWalletService } = useAuth()
   const [refundAmount, setRefundAmount] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -37,6 +38,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
     setLoading(true)
 
     try {
+      const walletService = await getWalletService(network)
       await walletService.expireAndRefundFor({
         lockAddress,
         keyOwner,
@@ -66,7 +68,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
         <Input
           className="my-2 text-right"
           type="number"
-          step="0.01"
+          step="any"
           value={refundAmount}
           onChange={onAmountChange}
           min={0}

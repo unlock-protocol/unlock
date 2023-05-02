@@ -1,9 +1,4 @@
-import {
-  InputHTMLAttributes,
-  ForwardedRef,
-  ComponentType,
-  ReactNode,
-} from 'react'
+import { InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -24,16 +19,19 @@ export interface Props
   error?: string
   description?: ReactNode
   icon?: IconType
+  iconClass?: string
   copy?: boolean
+  actions?: ReactNode
+  optional?: boolean
 }
 
-const SIZE_STYLES: SizeStyleProp = {
-  small: 'pl-2.5 py-1.5 text-sm',
+export const SIZE_STYLES: SizeStyleProp = {
+  small: 'pl-2.5 py-1.5 text-base md:text-sm',
   medium: 'pl-4 py-2 text-base',
-  large: 'pl-4 py-2.5',
+  large: 'pl-4 py-2.5 text-base',
 }
 
-const STATE_STYLES = {
+export const STATE_STYLES = {
   error:
     'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary',
   success:
@@ -58,6 +56,10 @@ export const Input = forwardRef(
       description,
       label,
       icon,
+      iconClass,
+      actions,
+      required,
+      optional,
       ...inputProps
     } = props
     const [isCopied, setCopy] = useClipboard(props.value as string)
@@ -86,6 +88,8 @@ export const Input = forwardRef(
     return (
       <FieldLayout
         label={label}
+        optional={optional}
+        required={required}
         size={size}
         error={error}
         success={success}
@@ -94,22 +98,26 @@ export const Input = forwardRef(
         <div className="relative">
           {icon && (
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Icon size={size} icon={icon} />
+              <div className={iconClass}>
+                <Icon size={size} icon={icon} />
+              </div>
             </span>
           )}
           <input
+            required={required}
             {...inputProps}
             id={label}
             value={value}
             ref={ref}
             className={inputClass}
           />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-1 ml-4">
+          <div className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1">
             {copy && !hidden && (
               <button onClick={() => setCopy()} className={inputButtonClass}>
                 <CopyIcon /> {isCopied ? 'Copied' : 'Copy'}
               </button>
             )}
+            {actions}
           </div>
         </div>
       </FieldLayout>

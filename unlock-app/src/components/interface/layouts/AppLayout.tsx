@@ -1,32 +1,30 @@
 import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
 import Loading from '../Loading'
-import { Button, Footer, Modal } from '@unlock-protocol/ui'
-import { AppHeader } from '../AppHeader'
+import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import React, { ReactNode } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
-import React from 'react'
 import { EMAIL_SUBSCRIPTION_FORM } from '~/constants'
 import { config } from '~/config/app'
+import { addressMinify } from '~/utils/strings'
+import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface DashboardLayoutProps {
-  title?: string
+  title?: ReactNode
   description?: React.ReactNode
   children: React.ReactNode
   authRequired?: boolean
   showLinks?: boolean
   showHeader?: boolean
+  logoImageUrl?: string
+  logoRedirectUrl?: string
 }
 
-const WalletNotConnected = () => {
-  const [loginUrl, setLoginUrl] = useState<string>('')
-  useEffect(() => {
-    setLoginUrl(`/login?redirect=${encodeURIComponent(window.location.href)}`)
-  }, [])
-
+export const WalletNotConnected = () => {
+  const { openConnectModal } = useConnectModal()
   return (
     <ImageBar
       src="/images/illustrations/wallet-not-connected.svg"
@@ -34,11 +32,15 @@ const WalletNotConnected = () => {
         <>
           <span>
             Wallet is not connected yet.{' '}
-            <Link href={loginUrl}>
-              <span className="cursor-pointer text-brand-ui-primary">
-                Connect it now
-              </span>
-            </Link>
+            <button
+              onClick={(event) => {
+                event.preventDefault()
+                openConnectModal()
+              }}
+              className="cursor-pointer text-brand-ui-primary"
+            >
+              Connect it now
+            </button>
           </span>
         </>
       }
@@ -141,16 +143,45 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
+  logoImageUrl, // replace default logo
+  logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
-
+  const { openConnectModal } = useConnectModal()
   if (termsLoading) {
     return <Loading />
   }
 
   const showLogin = authRequired && !account
+
+  const logoSrc = logoImageUrl || '/images/svg/unlock-logo.svg'
+  const logoRedirectUri = logoRedirectUrl || '/locks'
+
+  const MENU = {
+    extraClass: {
+      mobile: 'bg-ui-secondary-200 px-6',
+    },
+    showSocialIcons: false,
+    logo: { url: logoRedirectUri, src: logoSrc },
+    menuSections: showLinks
+      ? [
+          {
+            title: 'Locks',
+            url: '/locks',
+          },
+          {
+            title: 'Keys',
+            url: '/keychain',
+          },
+          {
+            title: 'Settings',
+            url: '/settings',
+          },
+        ]
+      : [],
+  }
 
   return (
     <div className="bg-ui-secondary-200">
@@ -186,18 +217,61 @@ export const AppLayout = ({
         </div>
       </Modal>
       <div className="w-full">
-        {showHeader && <AppHeader showLinks={showLinks} />}
+        {showHeader && (
+          <div className="px-4 mx-auto lg:container">
+            <HeaderNav
+              {...MENU}
+              actions={[
+                {
+                  content: account ? (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={(event) => {
+                          event.preventDefault()
+                          openConnectModal()
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-brand-ui-primary">
+                            {addressMinify(account)}
+                          </span>
+                          <DisconnectIcon
+                            className="text-brand-ui-primary"
+                            size={20}
+                          />
+                        </div>
+                      </button>
+                    </div>
+                  ) : (
+                    <Button
+                      onClick={(event) => {
+                        event.preventDefault()
+                        openConnectModal()
+                      }}
+                    >
+                      Connect
+                    </Button>
+                  ),
+                },
+              ]}
+            />
+          </div>
+        )}
         <div className="min-w-full min-h-screen">
           <div className="pt-8">
             <Container>
               <div className="flex flex-col gap-10">
                 {(title || description) && (
                   <div className="flex flex-col gap-4">
-                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                    {title && typeof title === 'string' ? (
+                      <h1 className="text-4xl font-bold">{title}</h1>
+                    ) : (
+                      title
+                    )}
                     {description && (
-                      <p className="w-full text-base text-gray-700">
+                      <div className="w-full text-base text-gray-700">
                         {description}
-                      </p>
+                      </div>
                     )}
                   </div>
                 )}

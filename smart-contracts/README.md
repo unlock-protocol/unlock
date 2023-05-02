@@ -1,5 +1,9 @@
 # Smart Contracts
 
+**This folder contains versions of Unlock protocol contracts that are currently UNDER DEVELOPMENT. For applications, please refer to the code in [@unlock-protocol/contracts](../packages/contracts) or directly use the npm package [`@unlock-protocol/contracts`](https://npmjs.com/package/@unlock-protocol/contracts)**
+
+---
+
 See [our docs](https://docs.unlock-protocol.com/developers/smart-contracts-architecture) for an overview of the smart contracts and [the smart-contract-extensions repo](https://github.com/unlock-protocol/unlock/tree/master/smart-contract-extensions) for integration examples. The deployment process itself is [on our wiki](https://github.com/unlock-protocol/unlock/wiki/Releasing-a-new-version-of-the-contracts).
 
 ## Run locally
@@ -61,15 +65,7 @@ To set up a network for deployment, change `networks.js` to add your networks an
 
 ### Setup account
 
-You can create a "global" `accounts.js` that will be used for all networks or customize each network by using `accounts.<NETWORK NAME>.js`.
-The format of the file is:
-
-```
-module.exports = {
-  mnemonic: 'test test test test test test test test test test test junk',
-  initialIndex: 0,
-}
-```
+We use the `DEPLOYER_PRIVATE_KEY` environment variable to interact with contracts. Please set it.
 
 ### Run the UDT contract upgrade
 
@@ -128,7 +124,7 @@ should allow to detect changes in storage layout.
 
 #### Test the PublicLock template on mainnet fork
 
-Make a dry run of the upgrade on a mainnet fork by 
+Make a dry run of the upgrade on a mainnet fork by
 
 - deploy the specified PublicLock tempalte
 - parse the calldata for `addLockTemplate`
@@ -143,7 +139,7 @@ RUN_FORK=1 yarn hardhat submit:version --public-lock-version 12
 RUN_FORK=1 yarn hardhat submit:version
 ```
 
-#### Update the PublicLock template 
+#### Update the PublicLock template
 
 Export all block explorers api keys into the terminal
 
@@ -152,7 +148,7 @@ cp .env.copy .env
 source .env
 ```
 
-Deploy a template 
+Deploy a template
 
 ```
 # deploy and submit tx to the multisig
@@ -168,10 +164,8 @@ Deploy on all networks at once
 sh scripts/all_networks.sh submit:version --public-lock-version 12
 ```
 
-
-
-
 #### Deploy a PublicLock upgrade (step by step)
+
 ```
 # deploy a new template
 yarn hardhat deploy:template
@@ -249,7 +243,7 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
     functionName, // the function to be executed - ex. 'transfer'
     functionArgs, // args of the function - ex. [ 0x000, 10000 ]
     proposalName, // ex 'wire Worpdress plugin grant`
-    proposerAddress // the proposer (you)
+    proposerAddress; // the proposer (you)
 }
 ```
 
@@ -373,12 +367,6 @@ yarn hardhat verify <address> --network binance
 
 ## How to deploy the Protocol on a new network
 
-### Create accounts file
-
-Get tokens and add your account. In the smart contracts folder, create an `accounts.<xxx>.js` file.
-
-ex. `accounts.goerli.ts`
-
 ### Add network to `@unlock-protocol/networks`
 
 - add `goerli.ts` to `packages/networks/src`
@@ -439,20 +427,20 @@ URI: https://locksmith.unlock-protocol.com/api/key/<chainId>
 chainId: <chainId>
 ```
 
-### Create a gnosis safe and transfer Unlock ownership there
+### Create a Safe and transfer Unlock ownership there
 
 1. Run this command to create a safe with the same owners as the mainnet wallet
 
 ```
-yarn hardhat gnosis:create --network goerli
+yarn hardhat safe:create --network goerli
 ```
 
-2. Go to https://gnosis-safe.io/app/load and follow the steps to add the new wallet.
+1. Go to https://safe.global/app/load and follow the steps to add the new wallet.
 
-3. Transfer the ownership of the Unlock instance to the multisig
+2. Transfer the ownership of the Unlock instance to the multisig
 
 ```
-yarn hardhat gnosis:transfer --safe-address <GNOSIS_SAFE_ADDRESS> \
+yarn hardhat safe:transfer --safe-address <SAFE_GLOBAL_ADDRESS> \
   --contract-address <UNLOCK_ADDRESS>
   --network goerli
 ```
@@ -463,7 +451,7 @@ Add info about unlock and multisig to the network file
 
 - edit `packages/networks/src/goerli.ts`
 - add the unlock address to `unlockAddress`
-- add the gnosis safe address to `multisig`
+- add the multisig safe address to `multisig`
 - add the block number before Unlock contract creation as `startBlock`
 - rebuild the package with `yarn build`
 

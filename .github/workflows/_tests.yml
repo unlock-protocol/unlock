@@ -18,19 +18,19 @@ on:
           "subgraph",
           "unlock-protocol-com",
           "wedlocks",
-          "unlock-app"
+          "unlock-app",
+          "packages/core"
           ]'
 
 jobs:
   unit-tests:
     name: Unit Tests ${{ matrix.target }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ inputs.changed != '[]' }}
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
       BUILDKIT_STEP_LOG_MAX_SIZE: 50000000
-      BLOCKTIME: 0
       # below env vars are just used by locksmith
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
@@ -47,7 +47,7 @@ jobs:
 
   integration-tests:
     name: Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain

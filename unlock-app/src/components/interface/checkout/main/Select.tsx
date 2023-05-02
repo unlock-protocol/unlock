@@ -17,7 +17,6 @@ import {
   RiCheckboxCircleFill as CheckIcon,
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
-  RiExternalLinkLine as ExternalLinkIcon,
   RiRepeatFill as RecurringIcon,
   RiCheckboxCircleFill as CheckMarkIcon,
 } from 'react-icons/ri'
@@ -26,10 +25,139 @@ import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { useCheckoutSteps } from './useCheckoutItems'
-
+import { minifyAddress } from '@unlock-protocol/ui'
+import { ViewContract } from '../ViewContract'
+import { useCheckoutHook } from './useCheckoutHook'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+}
+
+interface LockOptionProps {
+  lock: LockState
+  disabled: boolean
+}
+
+const LockOption = ({ disabled, lock }: LockOptionProps) => {
+  const config = useConfig()
+  return (
+    <RadioGroup.Option
+      disabled={disabled}
+      key={lock.address}
+      value={lock}
+      className={({ checked, disabled }) =>
+        `flex flex-col p-2 w-full gap-2 items-center border border-gray-200 rounded-xl cursor-pointer relative ${
+          checked && 'border-ui-main-100 bg-gray-100'
+        } ${disabled && `opacity-80 bg-gray-100 cursor-not-allowed`}`
+      }
+    >
+      {({ checked }) => {
+        const formattedData = getLockProps(
+          lock,
+          lock.network,
+          config.networks[lock.network].nativeCurrency.symbol,
+          lock.name
+        )
+        const lockImageURL = `${config.services.storage.host}/lock/${lock?.address}/icon`
+
+        return (
+          <Fragment>
+            <div className="flex w-full gap-x-4">
+              <div>
+                <Avatar.Root className="inline-flex items-center justify-center w-14 h-14 rounded-xl">
+                  <Avatar.Image src={lockImageURL} alt={lock.name} />
+                  <Avatar.Fallback className="bg-gray-50">
+                    {lock.name.slice(0, 2).toUpperCase()}
+                  </Avatar.Fallback>
+                </Avatar.Root>
+              </div>
+              <div className="flex items-start justify-between w-full">
+                <div className="flex flex-col gap-1">
+                  <RadioGroup.Label
+                    className="text-lg font-bold line-clamp-1"
+                    as="p"
+                  >
+                    {lock.name}
+                  </RadioGroup.Label>
+                  <ViewContract
+                    network={lock.network}
+                    lockAddress={lock.address}
+                  />
+                </div>
+
+                <Pricing
+                  keyPrice={formattedData.formattedKeyPrice}
+                  usdPrice={formattedData.convertedKeyPrice}
+                  isCardEnabled={formattedData.cardEnabled}
+                />
+              </div>
+            </div>
+
+            <div className="w-full space-y-2">
+              <div className="flex justify-between w-full place-items-center">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                  <LabeledItem
+                    label="Duration"
+                    icon={DurationIcon}
+                    value={formattedData.formattedDuration}
+                  />
+                  <LabeledItem
+                    label="Quantity"
+                    icon={QuantityIcon}
+                    value={
+                      formattedData.isSoldOut
+                        ? 'Sold out'
+                        : formattedData.formattedKeysAvailable
+                    }
+                  />
+                  {!!lock.recurringPayments &&
+                    parseInt(lock.recurringPayments.toString()) > 1 && (
+                      <LabeledItem
+                        label="Renew"
+                        icon={RecurringIcon}
+                        value={
+                          typeof lock.recurringPayments === 'number'
+                            ? `${lock.recurringPayments} times`
+                            : lock.recurringPayments
+                        }
+                      />
+                    )}
+                </div>
+                <div>
+                  {checked ? (
+                    <Icon
+                      size={25}
+                      className="fill-brand-ui-primary"
+                      icon={CheckIcon}
+                    />
+                  ) : (
+                    <Icon
+                      size={25}
+                      className="fill-brand-ui-primary"
+                      icon={CheckBlankIcon}
+                    />
+                  )}
+                </div>
+              </div>
+              {lock.isMember && (
+                <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
+                  You already have this membership{' '}
+                  <Badge
+                    size="tiny"
+                    iconRight={<CheckMarkIcon />}
+                    variant="green"
+                  >
+                    {' '}
+                    Valid{' '}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          </Fragment>
+        )
+      }}
+    </RadioGroup.Option>
+  )
 }
 
 export function Select({ checkoutService, injectedProvider }: Props) {
@@ -109,8 +237,15 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   }, [lock, paywallConfig])
 
   const config = useConfig()
-  const { account, changeNetwork, isUnlockAccount } = useAuth()
+  const { account, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
+  const expectedAddress = paywallConfig.expectedAddress
+
+  const isNotExpectedAddress = !!(
+    account &&
+    expectedAddress &&
+    expectedAddress.toLowerCase() !== account.toLowerCase()
+  )
 
   const { isInitialLoading: isMembershipsLoading, data: memberships } =
     useQuery(
@@ -142,16 +277,26 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       }
     )
 
-  const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
-
   const membership = memberships?.find((item) => item.lock === lock?.address)
+  const { isLoading: isLoadingHook, lockHookMapping } =
+    useCheckoutHook(checkoutService)
+
+  const hookType = useMemo(() => {
+    if (!lock) return undefined
+
+    const hook =
+      lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ?? undefined
+    return hook
+  }, [lockHookMapping, lock])
 
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
-    (lock?.isSoldOut && !(membership?.member || membership?.expired))
+    (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
+    isNotExpectedAddress ||
+    isLoadingHook
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -163,11 +308,13 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
   }, [locks])
 
+  const isLoading = isLocksLoading || isLoadingHook
+
   return (
     <Fragment>
       <Stepper position={1} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isLocksLoading ? (
+        {isLoading ? (
           <div className="mt-6 space-y-4">
             {Array.from({ length: lockOptions.length }).map((_, index) => (
               <LockOptionPlaceholder key={index} />
@@ -177,162 +324,43 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           <RadioGroup
             key="select"
             className="box-content space-y-6"
-            value={lock}
+            value={lock || {}}
             onChange={setLock}
           >
             {locksGroupedByNetwork &&
-              Object.entries(locksGroupedByNetwork).map(([network, items]) => (
-                <section key={network} className="space-y-4">
-                  <header>
-                    <p className="text-lg font-bold text-brand-ui-primary">
-                      {config?.networks[network]?.name}
-                    </p>
-                  </header>
-                  {items.map((item) => {
-                    const disabled = item.isSoldOut && !item.isMember
-                    return (
-                      <RadioGroup.Option
-                        disabled={disabled}
-                        key={item.address}
-                        value={item}
-                        className={({ checked, disabled }) =>
-                          `flex flex-col p-2 w-full gap-4 items-center border border-gray-200 rounded-xl cursor-pointer relative ${
-                            checked && 'border-ui-main-100 bg-gray-100'
-                          } ${
-                            disabled &&
-                            `opacity-80 bg-gray-100  ${
-                              isMembershipsLoading
-                                ? 'cursor-wait'
-                                : 'cursor-not-allowed'
-                            }`
-                          }`
-                        }
-                      >
-                        {({ checked }) => {
-                          const formattedData = getLockProps(
-                            item,
-                            item.network,
-                            config.networks[item.network].baseCurrencySymbol,
-                            item.name
-                          )
-                          const lockImageURL = `${config.services.storage.host}/lock/${item?.address}/icon`
-                          const isMember = memberships?.find(
-                            (m) => m.lock === item.address
-                          )?.member
-                          return (
-                            <Fragment>
-                              <div className="flex w-full gap-x-4">
-                                <div>
-                                  <Avatar.Root className="inline-flex items-center justify-center w-14 h-14 rounded-xl">
-                                    <Avatar.Image
-                                      src={lockImageURL}
-                                      alt={item.name}
-                                    />
-                                    <Avatar.Fallback className="bg-gray-50">
-                                      {item.name.slice(0, 2).toUpperCase()}
-                                    </Avatar.Fallback>
-                                  </Avatar.Root>
-                                </div>
-                                <div className="flex items-start justify-between w-full">
-                                  <div className="flex flex-col gap-1">
-                                    <RadioGroup.Label
-                                      className="text-lg font-bold line-clamp-1"
-                                      as="p"
-                                    >
-                                      {item.name}
-                                    </RadioGroup.Label>
-                                    <a
-                                      href={config.networks[
-                                        item.network
-                                      ].explorer.urls.address(item.address)}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-2 text-sm cursor-pointer text-brand-ui-primary hover:opacity-75"
-                                    >
-                                      View Contract
-                                      <Icon
-                                        icon={ExternalLinkIcon}
-                                        size="small"
-                                      />
-                                    </a>
-                                  </div>
+              Object.entries(locksGroupedByNetwork).map(([network, locks]) => {
+                const showNetworkSection =
+                  Object.keys(locksGroupedByNetwork).length > 1
 
-                                  <Pricing
-                                    keyPrice={formattedData.formattedKeyPrice}
-                                    usdPrice={formattedData.convertedKeyPrice}
-                                    isCardEnabled={formattedData.cardEnabled}
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="w-full space-y-2">
-                                <div className="flex justify-between w-full place-items-center">
-                                  <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-                                    <LabeledItem
-                                      label="Duration"
-                                      icon={DurationIcon}
-                                      value={formattedData.formattedDuration}
-                                    />
-                                    <LabeledItem
-                                      label="Quantity"
-                                      icon={QuantityIcon}
-                                      value={
-                                        formattedData.isSoldOut
-                                          ? 'Sold out'
-                                          : formattedData.formattedKeysAvailable
-                                      }
-                                    />
-                                    {item.recurringPayments && (
-                                      <LabeledItem
-                                        label="Renew"
-                                        icon={RecurringIcon}
-                                        value={
-                                          typeof item.recurringPayments ===
-                                          'number'
-                                            ? `${item.recurringPayments} times`
-                                            : item.recurringPayments
-                                        }
-                                      />
-                                    )}
-                                  </div>
-                                  <div>
-                                    {checked ? (
-                                      <Icon
-                                        size={25}
-                                        className="fill-brand-ui-primary"
-                                        icon={CheckIcon}
-                                      />
-                                    ) : (
-                                      <Icon
-                                        size={25}
-                                        className="fill-brand-ui-primary"
-                                        icon={CheckBlankIcon}
-                                      />
-                                    )}
-                                  </div>
-                                </div>
-                                {isMember && (
-                                  <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
-                                    You already have this membership{' '}
-                                    <Badge
-                                      size="tiny"
-                                      iconRight={<CheckMarkIcon />}
-                                      variant="green"
-                                    >
-                                      {' '}
-                                      Valid{' '}
-                                    </Badge>
-                                  </div>
-                                )}
-                              </div>
-                            </Fragment>
-                          )
-                        }}
-                      </RadioGroup.Option>
-                    )
-                  })}
-                </section>
-              ))}
+                return (
+                  <section
+                    key={network}
+                    className={
+                      showNetworkSection ? 'grid gap-4' : 'grid gap-4 pt-2'
+                    }
+                  >
+                    {showNetworkSection && (
+                      <p className="text-lg font-bold text-brand-ui-primary">
+                        {config?.networks[network]?.name}
+                      </p>
+                    )}
+                    {locks.map((lock) => {
+                      const disabled = lock.isSoldOut && !lock.isMember
+                      const isMember = memberships?.find(
+                        (m) => m.lock === lock.address
+                      )?.member
+                      lock.isMember = lock.isMember ?? isMember
+                      return (
+                        <LockOption
+                          key={lock.address}
+                          lock={lock}
+                          disabled={disabled}
+                        />
+                      )
+                    })}
+                  </section>
+                )
+              })}
           </RadioGroup>
         )}
       </main>
@@ -342,14 +370,16 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           injectedProvider={injectedProvider}
         >
           <div className="grid">
+            {isNotExpectedAddress && (
+              <p className="mb-2 text-sm text-center">
+                Switch to wallet address {minifyAddress(expectedAddress)} to
+                continue.
+              </p>
+            )}
             <Button
               disabled={isDisabled}
               onClick={async (event) => {
                 event.preventDefault()
-                // Silently change network to the correct one in the background
-                if (isUnlockAccount) {
-                  await changeNetwork(lockNetwork)
-                }
 
                 if (!lock) {
                   return
@@ -366,6 +396,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     ? false
                     : !!membership?.expired,
                   recipients: account ? [account] : [],
+                  hook: hookType,
                 })
               }}
             >

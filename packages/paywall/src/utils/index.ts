@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { PaywallConfig } from '@unlock-protocol/types'
 import { Enabler } from './enableInjectedProvider'
 
@@ -8,11 +7,13 @@ import { Enabler } from './enableInjectedProvider'
  * @param params
  */
 export const dispatchEvent = (eventName: string, params: any) => {
+  let event: any
+
+  // Keep because it will break legacy integrations
   if (eventName === unlockEvents.status) {
-    // Supporting legacy unlockProtocol event
     dispatchEvent('unlockProtocol', params.state)
   }
-  let event: any
+
   try {
     event = new window.CustomEvent(eventName, { detail: params })
   } catch (e) {
@@ -43,7 +44,7 @@ export const unlockEvents = {
 export const setupUnlockProtocolVariable = (properties: {
   [name: string]: any
 }) => {
-  const unlockProtocol: Object = {}
+  const unlockProtocol: any = {}
 
   const immutable = {
     writable: false,
@@ -91,6 +92,10 @@ export const injectProviderInfo = (
   provider?: Enabler
 ) => {
   const newConfig = { ...config }
+
+  if (newConfig.autoconnect) {
+    newConfig.useDelegatedProvider = !!provider
+  }
 
   // We want to inform the checkout iframe about the availability of a
   // delegated provider. However, we will not overwrite an existing

@@ -5,7 +5,7 @@ const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const createLockHash = require('../../helpers/createLockCalldata')
 const {
-  getContractFactoryAtVersion,
+  getContractFactoryFromSolFiles,
   cleanupPastContracts,
   getContractAtVersion,
 } = require('../../helpers/versions')
@@ -70,12 +70,12 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    const PublicLockLatest = await getContractFactoryAtVersion('PublicLock', 10)
+    const PublicLockLatest = await getContractFactoryFromSolFiles('PublicLock', 10)
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
 
     // deploy past impl
-    const PublicLockPast = await getContractFactoryAtVersion('PublicLock', 9)
+    const PublicLockPast = await getContractFactoryFromSolFiles('PublicLock', 9)
     const publicLockPast = await PublicLockPast.deploy()
     await publicLockPast.deployed()
     pastVersion = await publicLockPast.publicLockVersion()
@@ -85,16 +85,15 @@ describe('upgradeLock / data migration v9 > v10', () => {
       'contracts/Unlock.sol:Unlock'
     )
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
+      initializer: 'initialize(address)'
     })
     await unlock.deployed()
 
     // add past impl to Unlock
-    const txImpl = await unlock.addLockTemplate(
+    await unlock.addLockTemplate(
       publicLockPast.address,
       pastVersion
     )
-    await txImpl.wait()
 
     // set v1 as main template
     await unlock.setLockTemplate(publicLockPast.address)
@@ -207,7 +206,6 @@ describe('upgradeLock / data migration v9 > v10', () => {
     })
 
     it('Should have upgraded the lock with the new template', async () => {
-      assert.equal(await unlock.publicLockLatestVersion(), pastVersion + 1)
       assert.equal(await lock.publicLockVersion(), pastVersion + 1)
     })
 

@@ -1,3 +1,4 @@
+import { networks } from '@unlock-protocol/networks'
 import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
@@ -8,7 +9,6 @@ import {
   UNLIMITED_KEYS_DURATION,
 } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import useLocks from '~/hooks/useLocks'
 import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
 import { CreateLockFormSummary } from './elements/CreateLockFormSummary'
 import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
@@ -16,16 +16,8 @@ import { useRouter } from 'next/router'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
-interface LockCreatePayloadProps {
-  name: string
-  expirationDuration?: number
-  maxNumberOfKeys?: number
-  currencyContractAddress?: string
-  keyPrice?: string | number
-}
 interface CreateLockSummaryProps {
   formData: LockFormProps
-  network: number
   setStep: (step: Step, data: LockFormProps) => void
   onSubmit: (data: LockFormProps) => void
 }
@@ -55,10 +47,10 @@ const TITLE_BY_STATUS_MAPPING: Record<Step, StatusMappingProps> = {
 }
 
 export const CreateLockSteps = () => {
-  const { account: owner, network } = useAuth()
+  const { getWalletService } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
-  const { addLock } = useLocks(owner!, network!)
+  const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined
   )
@@ -75,21 +67,12 @@ export const CreateLockSteps = () => {
   }
 
   const onSummarySubmit = async (data: LockFormProps) => {
-    await createLockMutation.mutateAsync(data)
-  }
-
-  const createLockPromise = async (data: LockCreatePayloadProps) => {
-    return await addLock(data, (_: any, lock: any) => {
-      if (step !== 'deploy') {
-        const [transactionHash] = Object.keys(lock?.transactions ?? {})
-        changeStep('deploy', values)
-        setTransactionHash(transactionHash) // keep transaction hash to retrieve transaction details
-      }
-    })
+    const address = await createLockMutation.mutateAsync(data)
+    setLockAddress(address)
   }
 
   const createLockMutation = useMutation(
-    ({
+    async ({
       name,
       unlimitedDuration,
       unlimitedQuantity,
@@ -97,21 +80,38 @@ export const CreateLockSteps = () => {
       currencyContractAddress,
       maxNumberOfKeys,
       expirationDuration,
+      network,
     }: LockFormProps) => {
+      const walletService = await getWalletService(network)
       const expirationInSeconds =
         (expirationDuration as number) * ONE_DAY_IN_SECONDS
-      const payload: LockCreatePayloadProps = {
-        name,
-        expirationDuration: unlimitedDuration
-          ? UNLIMITED_KEYS_DURATION
-          : expirationInSeconds,
-        maxNumberOfKeys: unlimitedQuantity
-          ? UNLIMITED_KEYS_COUNT
-          : maxNumberOfKeys,
-        currencyContractAddress,
-        keyPrice: `${keyPrice}`, // must be a string
-      }
-      return createLockPromise(payload)
+      const lockAddress = await walletService.createLock(
+        {
+          name,
+          expirationDuration: unlimitedDuration
+            ? UNLIMITED_KEYS_DURATION
+            : expirationInSeconds,
+          maxNumberOfKeys: unlimitedQuantity
+            ? UNLIMITED_KEYS_COUNT
+            : maxNumberOfKeys,
+          currencyContractAddress,
+          keyPrice: keyPrice?.toString(),
+          publicLockVersion: networks[network].publicLockVersionToDeploy,
+        },
+        {},
+        (error: any, transactionHash) => {
+          if (error) {
+            console.error(error)
+            ToastHelper.error(
+              'Unexpected issue on lock creation, please try again'
+            )
+          } else {
+            setTransactionHash(transactionHash!) // keep transaction hash to retrieve transaction details
+            changeStep('deploy', values)
+          }
+        }
+      )
+      return lockAddress
     },
     {
       onError: (error) => {
@@ -140,7 +140,6 @@ export const CreateLockSteps = () => {
           <CreateLockSummary
             setStep={setStep}
             formData={values!}
-            network={network!}
             onSubmit={onSummarySubmit}
           />
         )
@@ -150,7 +149,7 @@ export const CreateLockSteps = () => {
         return (
           <CreateLockFormSummary
             formData={values!}
-            network={network!}
+            lockAddress={lockAddress}
             transactionHash={transactionHash}
             showStatus
           />
@@ -209,7 +208,6 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
 
 const CreateLockSummary = ({
   formData,
-  network,
   setStep,
   onSubmit,
 }: CreateLockSummaryProps) => {
@@ -235,7 +233,7 @@ const CreateLockSummary = ({
           />
         </div>
         <div className="md:max-w-lg">
-          <CreateLockFormSummary formData={formData} network={network} />
+          <CreateLockFormSummary formData={formData} />
           <div className="flex flex-col justify-between w-full gap-4 mt-8 md:mt-12 md:px-12">
             <Button onClick={onHandleSubmit}>Looks good to me</Button>
             <Button

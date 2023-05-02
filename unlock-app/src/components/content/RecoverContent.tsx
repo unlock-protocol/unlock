@@ -25,7 +25,6 @@ export const RestoreAccount = ({
   config,
   email,
   recoveryKey,
-  network,
 }: RestoreAccountProps) => {
   const { setProvider, provider } = useContext(ProviderContext)
   const [loading, setLoading] = useState(false)
@@ -48,7 +47,7 @@ export const RestoreAccount = ({
 
           // We need to log the user in from the recoveryPhrase + recoveryKey!
           // TODO: what network do we pick???
-          const unlockProvider = new UnlockProvider(config.networks[network])
+          const unlockProvider = new UnlockProvider(config.networks[1])
           try {
             await unlockProvider.connect({
               key: recoveryKey,
@@ -104,10 +103,7 @@ export const RestoreAccount = ({
         <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
         <span className="mt-1 text-sm font-thin">
           Your password was successfuly changed. Visit{' '}
-          <Link href="/settings">
-            <a>your settings page</a>
-          </Link>
-          .
+          <Link href="/settings">your settings page</Link>.
         </span>
       </div>
     )

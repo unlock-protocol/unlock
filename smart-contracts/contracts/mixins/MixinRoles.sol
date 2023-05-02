@@ -12,10 +12,8 @@ contract MixinRoles is
   MixinErrors
 {
   // roles
-  bytes32 public constant LOCK_MANAGER_ROLE =
-    keccak256("LOCK_MANAGER");
-  bytes32 public constant KEY_GRANTER_ROLE =
-    keccak256("KEY_GRANTER");
+  bytes32 internal constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
+  bytes32 internal constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
 
   // events
   event LockManagerAdded(address indexed account);
@@ -34,7 +32,7 @@ contract MixinRoles is
     if (!isLockManager(sender)) {
       _setupRole(LOCK_MANAGER_ROLE, sender);
     }
-    if (!isKeyGranter(sender)) {
+    if (!hasRole(KEY_GRANTER_ROLE, sender)) {
       _setupRole(KEY_GRANTER_ROLE, sender);
     }
   }
@@ -62,25 +60,6 @@ contract MixinRoles is
   function renounceLockManager() public {
     renounceRole(LOCK_MANAGER_ROLE, msg.sender);
     emit LockManagerRemoved(msg.sender);
-  }
-
-  // key granter functions
-  function isKeyGranter(
-    address account
-  ) public view returns (bool) {
-    return hasRole(KEY_GRANTER_ROLE, account);
-  }
-
-  function addKeyGranter(address account) public {
-    _onlyLockManager();
-    grantRole(KEY_GRANTER_ROLE, account);
-    emit KeyGranterAdded(account);
-  }
-
-  function revokeKeyGranter(address _granter) public {
-    _onlyLockManager();
-    revokeRole(KEY_GRANTER_ROLE, _granter);
-    emit KeyGranterRemoved(_granter);
   }
 
   uint256[1000] private __safe_upgrade_gap;

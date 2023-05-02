@@ -10,6 +10,8 @@ import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { getEthersWalletFromPassword } from '~/utils/strings'
+import { usePasswordHookSigner } from '~/hooks/useHooks'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -22,24 +24,26 @@ interface FormData {
 export function Password({ injectedProvider, checkoutService }: Props) {
   const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
-  const { recipients, renew } = state.context
+  const { recipients, renew, lock } = state.context
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    mode: 'onSubmit',
+  })
   const users = recipients.length > 0 ? recipients : [account!]
+
+  const { isLoading: isLoadingSigner, data: passwordSigner } =
+    usePasswordHookSigner({
+      lockAddress: lock!.address,
+      network: lock!.network,
+    })
 
   const onSubmit = async (formData: FormData) => {
     try {
       const { password } = formData
-      const encoded = ethers.utils.defaultAbiCoder.encode(
-        ['bytes32'],
-        [ethers.utils.id(password)]
-      )
-
-      const privateKey = ethers.utils.keccak256(encoded)
-      const privateKeyAccount = new ethers.Wallet(privateKey)
+      const privateKeyAccount = getEthersWalletFromPassword(password)
       const data = await Promise.all(
         users.map((address) => {
           const messageHash = ethers.utils.solidityKeccak256(
@@ -79,6 +83,14 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             {...register('password', {
               required: true,
               min: 1,
+              validate: (password: string) => {
+                const { address } = getEthersWalletFromPassword(password) ?? {}
+                // check if password match
+                if (passwordSigner && passwordSigner !== address) {
+                  return 'Wrong password...'
+                }
+                return true
+              },
             })}
             error={errors.password?.message}
           />
@@ -93,8 +105,8 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={isSubmitting}
-            loading={isSubmitting}
+            disabled={isSubmitting || isLoadingSigner}
+            loading={isSubmitting || isLoadingSigner}
             onClick={handleSubmit(onSubmit)}
           >
             Submit password

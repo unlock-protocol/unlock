@@ -6,7 +6,9 @@ import { twMerge } from 'tailwind-merge'
 import { Size, SizeStyleProp } from '~/types'
 import { Button } from '../Button/Button'
 import { FieldLayout, Input } from '../Form'
-
+import { Tooltip } from '../Tooltip/Tooltip'
+import { HiQuestionMarkCircle as QuestionMark } from 'react-icons/hi'
+import { Placeholder } from '../Placeholder'
 export interface Option {
   label: string
   value: string | number
@@ -15,15 +17,17 @@ export interface Option {
   disabled?: boolean
 }
 
-interface SelectProps<T> {
+export interface SelectProps<T> {
   label?: string
   description?: ReactNode
+  tooltip?: ReactNode
   options: Option[]
   size?: Size
-  onChange?: (value: string | number) => void
+  onChange?: (value: string | number, isCustom?: boolean) => void
   defaultValue?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
+  loading?: boolean
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -35,7 +39,7 @@ const SIZE_STYLES: SizeStyleProp = {
 
 const CUSTOM_VALUE = 'custom'
 
-interface SelectOptionProps {
+export interface SelectOptionProps {
   selected?: boolean
   disabled?: boolean
   size?: Size
@@ -89,11 +93,13 @@ export const Select = <T extends unknown>({
   options,
   onChange,
   label = '',
+  tooltip = '',
   description = '',
   size = 'medium',
   defaultValue,
   customOption = false,
   disabled: fieldDisabled = false,
+  loading = false,
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
@@ -105,17 +111,21 @@ export const Select = <T extends unknown>({
       const currentItem = options?.find((option) => option.value == value)
       setSelected(currentItem || null)
       if (currentItem && typeof onChange === 'function') {
-        onChange(currentItem?.value)
+        onChange(currentItem?.value, false)
       }
     } else {
       setCustom(true)
+      // reset value when custom value is selected
+      if (typeof onChange === 'function') {
+        onChange('', true)
+      }
     }
   }
 
   const onChangeCustomValue = () => {
     setCustomValue(customValue)
     if (customValue && typeof onChange === 'function') {
-      onChange(customValue)
+      onChange(customValue, custom)
       setEnableCustomConfirm(false)
     }
   }
@@ -134,12 +144,17 @@ export const Select = <T extends unknown>({
 
   // Set default value if present
   useEffect(() => {
-    const defaultSelection =
-      options?.find((option) => option.value == `${defaultValue}`) || null
-    setSelected(defaultSelection)
-  }, [defaultValue])
+    if (loading) return
+    if (defaultValue && selected?.value) return
+
+    onChangeOption(defaultValue as string)
+  }, [defaultValue, loading, selected])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
+
+  if (loading) {
+    return <Placeholder.Line size="xl" />
+  }
 
   return (
     <FieldLayout
@@ -176,7 +191,14 @@ export const Select = <T extends unknown>({
         <div className="relative">
           {label?.length > 0 && (
             <label className="block px-1 mb-1 text-base" htmlFor="">
-              {label}
+              {tooltip && (
+                <Tooltip delay={0} tip={tooltip} side="top" theme="dark">
+                  <span>
+                    {label} <QuestionMark className="inline" />
+                  </span>
+                </Tooltip>
+              )}
+              {!tooltip && <span>{label}</span>}
             </label>
           )}
           {custom ? (
