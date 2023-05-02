@@ -31,33 +31,33 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
     },
     {
       id: 4,
-      name: 'Payment method',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
       name: 'Sign message',
       skip: !paywallConfig.messageToSign,
       to: 'MESSAGE_TO_SIGN',
     },
     isPassword
       ? {
-          id: 6,
+          id: 5,
           name: 'Submit password',
           to: 'PASSWORD',
         }
       : isPromo
       ? {
-          id: 6,
+          id: 5,
           name: 'Enter promo code',
           to: 'PROMO',
         }
       : {
-          id: 6,
+          id: 5,
           name: 'Solve captcha',
           to: 'CAPTCHA',
           skip: !isCaptcha || ['card'].includes(payment.method),
         },
+    {
+      id: 6,
+      name: 'Payment method',
+      to: 'PAYMENT',
+    },
     {
       id: 7,
       name: 'Confirm',
