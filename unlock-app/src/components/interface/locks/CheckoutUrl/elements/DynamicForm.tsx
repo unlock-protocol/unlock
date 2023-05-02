@@ -4,7 +4,7 @@ import {
   AddressInput,
   isAddressOrEns,
   ImageUpload,
-  Disclosure,
+  Modal,
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
@@ -17,6 +17,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { onResolveName } from '~/utils/resolvers'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { useState } from 'react'
 
 // TODO: move to zod config when supported there!
 export const LabelMapping: Record<string, string> = {
@@ -24,7 +25,7 @@ export const LabelMapping: Record<string, string> = {
   network: 'Network',
   lock: 'Lock',
   title: 'Title',
-  icon: 'Image icon',
+  icon: 'Change image icon',
   persistentCheckout: 'Persistent Checkout',
   referrer: 'Referrer',
   messageToSign: 'Message to sign',
@@ -204,45 +205,67 @@ const AddressInputComponent = ({
 
 const IconInputComponent = ({ name, label, description, onChange }: any) => {
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const [modalOpen, setModalOpen] = useState(false)
 
   return (
-    <Disclosure label={label} description={description}>
-      <ConnectForm>
-        {({ watch, setValue }: any) => {
-          const image = watch(name) ?? ''
-          const fields = watch()
+    <>
+      <div className="flex flex-col gap-1">
+        <Button
+          variant="outlined-primary"
+          size="small"
+          onClick={() => {
+            setModalOpen(true)
+          }}
+        >
+          {label}
+        </Button>
+        {description && (
+          <span className="text-xs text-gray-600">{description}</span>
+        )}
+      </div>
+      <Modal isOpen={modalOpen} setIsOpen={setModalOpen}>
+        <ConnectForm>
+          {({ watch, setValue }: any) => {
+            const image = watch(name) ?? ''
+            const fields = watch()
 
-          return (
-            <ImageUpload
-              className="mx-auto"
-              description={description}
-              isUploading={isUploading}
-              preview={image}
-              onChange={async (fileOrFileUrl: any) => {
-                if (typeof fileOrFileUrl === 'string') {
-                  setValue(name, fileOrFileUrl)
-                  onChange({
-                    ...fields,
-                    [name]: image,
-                  })
-                } else {
-                  const items = await uploadImage(fileOrFileUrl[0])
-                  const image = items?.[0]?.publicUrl
-                  if (!image) {
-                    return
-                  }
-                  setValue(name, image)
-                  onChange({
-                    ...fields,
-                    [name]: image,
-                  })
-                }
-              }}
-            />
-          )
-        }}
-      </ConnectForm>
-    </Disclosure>
+            return (
+              <div className="grid grid-cols-1">
+                <ImageUpload
+                  className="mx-auto"
+                  description={description}
+                  isUploading={isUploading}
+                  preview={image}
+                  onChange={async (fileOrFileUrl: any) => {
+                    if (typeof fileOrFileUrl === 'string') {
+                      setValue(name, fileOrFileUrl)
+                      onChange({
+                        ...fields,
+                        [name]: image,
+                      })
+                    } else {
+                      const items = await uploadImage(fileOrFileUrl[0])
+                      const image = items?.[0]?.publicUrl
+                      if (!image) {
+                        return
+                      }
+                      setValue(name, image)
+                      onChange({
+                        ...fields,
+                        [name]: image,
+                      })
+                    }
+                  }}
+                />
+                <Button size="small" onClick={() => setModalOpen(false)}>
+                  Set image
+                </Button>
+              </div>
+            )
+          }}
+        </ConnectForm>
+      </Modal>
+    </>
   )
 }
 
