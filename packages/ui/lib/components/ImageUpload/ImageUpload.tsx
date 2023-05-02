@@ -60,6 +60,7 @@ export const ImageUpload = ({
   description,
   size,
   imageRatio,
+  className,
 }: ImageUploadWrapperProps) => {
   const { getInputProps, getRootProps } = useDropzone({
     accept: {
@@ -71,7 +72,7 @@ export const ImageUpload = ({
     onDropAccepted: onChange,
   })
   return (
-    <ImageUploadWrapper size={size}>
+    <ImageUploadWrapper size={size} className={className}>
       <ImageContainer imageRatio={imageRatio}>
         {isUploading && (
           <div className="flex flex-col items-center justify-center h-full ">

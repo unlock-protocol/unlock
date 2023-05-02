@@ -218,9 +218,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     },
                   })}
                   type="text"
-                  label="Slug"
+                  label="Custom URL"
                   error={errors?.metadata?.slug?.message as string}
-                  description="Slug that will be used for the URL."
+                  description="Custom URL that will be used for the page."
                 />
 
                 <Input
