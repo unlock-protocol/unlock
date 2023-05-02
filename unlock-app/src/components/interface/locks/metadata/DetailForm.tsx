@@ -118,9 +118,9 @@ export function DetailForm({ disabled, defaultValues }: Props) {
               })}
               disabled={disabled || defaultValues?.slug}
               type="text"
-              label="Slug"
+              label="Custom URL"
               error={errors.slug?.message}
-              description="Slug that will be used for the URL."
+              description="Custom URL that will be used for the page."
             />
             <Input
               {...register('external_url')}
