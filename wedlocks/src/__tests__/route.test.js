@@ -88,7 +88,43 @@ describe('route', () => {
       const transporter = {
         sendMail: vi.fn((options) => {
           expect(options).toEqual({
-            from: config.sender,
+            from: `Unlock Labs <${config.sender}>`,
+            html: undefined,
+            subject: 'subject',
+            text: 'text',
+            to: args.recipient,
+            attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+          })
+          return Promise.resolve({ sent: true })
+        }),
+      }
+      nodemailer.createTransport = vi.fn((params) => {
+        expect(params).toEqual(config)
+        return transporter
+      })
+
+      await route(args)
+    })
+
+    it('should send the email using the transporter with custom sender', async () => {
+      expect.assertions(2)
+      templates.template = {
+        subject: 'subject',
+        text: 'text',
+      }
+
+      const args = {
+        template: 'template',
+        params: { hello: 'world' },
+        recipient: 'julien@unlock-protocol.com',
+        attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+        emailSender: 'Custom Sender',
+      }
+
+      const transporter = {
+        sendMail: vi.fn((options) => {
+          expect(options).toEqual({
+            from: `Custom Sender <${config.sender}>`,
             html: undefined,
             subject: 'subject',
             text: 'text',
