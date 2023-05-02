@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@babel/core": "7.21.4",
-    "@typescript-eslint/eslint-plugin": "5.57.0",
-    "@typescript-eslint/parser": "5.57.0",
+    "@typescript-eslint/eslint-plugin": "5.59.1",
+    "@typescript-eslint/parser": "5.59.1",
     "babel-plugin-polyfill-corejs2": "0.3.3",
     "typescript": "5.0.4"
   },
