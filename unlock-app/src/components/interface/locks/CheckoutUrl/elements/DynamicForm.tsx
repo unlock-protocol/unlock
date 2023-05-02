@@ -3,6 +3,8 @@ import {
   Input,
   AddressInput,
   isAddressOrEns,
+  ImageUpload,
+  Disclosure,
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
@@ -14,6 +16,7 @@ import {
 } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { onResolveName } from '~/utils/resolvers'
+import { useImageUpload } from '~/hooks/useImageUpload'
 
 // TODO: move to zod config when supported there!
 export const LabelMapping: Record<string, string> = {
@@ -56,10 +59,6 @@ interface DynamicFormProps {
   submitLabel?: string
   defaultValues?: any
   showSubmit?: boolean
-}
-
-interface ComponentByTypeMapProps {
-  [type: string]: any
 }
 
 interface FieldProps {
@@ -203,11 +202,59 @@ const AddressInputComponent = ({
   )
 }
 
-const ComponentByTypeMap: ComponentByTypeMapProps = {
+const IconInputComponent = ({ name, label, description, onChange }: any) => {
+  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+
+  return (
+    <Disclosure label={label} description={description}>
+      <ConnectForm>
+        {({ watch, setValue }: any) => {
+          const image = watch(name) ?? ''
+          const fields = watch()
+
+          return (
+            <ImageUpload
+              className="mx-auto"
+              description={description}
+              isUploading={isUploading}
+              preview={image}
+              onChange={async (fileOrFileUrl: any) => {
+                if (typeof fileOrFileUrl === 'string') {
+                  setValue(name, fileOrFileUrl)
+                  onChange({
+                    ...fields,
+                    [name]: image,
+                  })
+                } else {
+                  const items = await uploadImage(fileOrFileUrl[0])
+                  const image = items?.[0]?.publicUrl
+                  if (!image) {
+                    return
+                  }
+                  setValue(name, image)
+                  onChange({
+                    ...fields,
+                    [name]: image,
+                  })
+                }
+              }}
+            />
+          )
+        }}
+      </ConnectForm>
+    </Disclosure>
+  )
+}
+
+const ComponentByTypeMap: Record<string, any> = {
   string: TextInput,
   integer: TextInput,
   boolean: BooleanInput,
   address: AddressInputComponent,
+}
+
+const ComponentByNameMap: Record<string, any> = {
+  icon: IconInputComponent,
 }
 
 const NameMap: Record<string, string> = {
@@ -224,7 +271,12 @@ const getFieldLabel = (fieldName: string, required = false) => {
   return required ? `*${label}` : label
 }
 
-const getComponentByType = (type: string) => {
+// Get components by name or fallback to type
+const getComponentByNameOrType = (type: string, name: string) => {
+  const componentByName = ComponentByNameMap?.[name] ?? undefined
+  if (componentByName) {
+    return componentByName
+  }
   // return Input component based on input type
   return ComponentByTypeMap?.[type] ?? undefined
 }
@@ -265,7 +317,7 @@ export const DynamicForm = ({
           </h2>
         )}
         <form
-          className="flex flex-col gap-3 outline-none"
+          className="grid grid-cols-1 gap-3 outline-none"
           onSubmit={methods.handleSubmit(onSubmit)}
           onChange={async () => {
             const values = await methods.getValues()
@@ -280,7 +332,7 @@ export const DynamicForm = ({
               description = anyOf[0].description
             }
 
-            let Component = getComponentByType(type)
+            let Component = getComponentByNameOrType(type, fieldName)
             let inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
             const isUnionType =
@@ -322,7 +374,7 @@ export const DynamicForm = ({
                   {Object.entries((props as any)?.items?.properties ?? {})?.map(
                     ([name, fieldProps], index) => {
                       const { type, description } = (fieldProps ?? {}) as any
-                      Component = getComponentByType(type)
+                      Component = getComponentByNameOrType(type, name)
                       if (!Component) return null
                       return (
                         <>
@@ -334,6 +386,7 @@ export const DynamicForm = ({
                             name={name}
                             description={description}
                             props={fieldProps}
+                            onChange={onChange}
                           />
                         </>
                       )
@@ -355,6 +408,7 @@ export const DynamicForm = ({
                   required={fieldRequired}
                   description={description}
                   size="small"
+                  onChange={onChange}
                 />
               </div>
             )
