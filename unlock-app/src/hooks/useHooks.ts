@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface PasswordHookSignersProps {
@@ -11,26 +11,20 @@ export function usePasswordHookSigner({
   network,
 }: PasswordHookSignersProps) {
   const web3Service = useWeb3Service()
-  const { getWalletService } = useAuth()
 
   const getSigners = async (): Promise<string> => {
-    const walletService = await getWalletService(network)
-
     // get password hook contract by network
     const contractAddress = await web3Service.onKeyPurchaseHook({
       lockAddress,
       network,
     })
 
-    if (contractAddress) {
-      return await web3Service.getPasswordHookSigners(
-        {
-          lockAddress,
-          contractAddress,
-          network,
-        },
-        walletService.signer
-      )
+    if (contractAddress && contractAddress !== ethers.constants.AddressZero) {
+      return await web3Service.getPasswordHookSigners({
+        lockAddress,
+        contractAddress,
+        network,
+      })
     }
     return ''
   }

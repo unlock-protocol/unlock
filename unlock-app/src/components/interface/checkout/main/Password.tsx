@@ -86,7 +86,10 @@ export function Password({ injectedProvider, checkoutService }: Props) {
               validate: (password: string) => {
                 const { address } = getEthersWalletFromPassword(password) ?? {}
                 // check if password match
-                return passwordSigner === address || 'Wrong password...'
+                if (passwordSigner && passwordSigner !== address) {
+                  return 'Wrong password...'
+                }
+                return true
               },
             })}
             error={errors.password?.message}

@@ -975,20 +975,16 @@ export default class Web3Service extends UnlockService {
   /**
    * Get signer for `Password hook contract`
    */
-  async getPasswordHookSigners(
-    params: {
-      lockAddress: string
-      contractAddress: string
-      network: number
-    },
-    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
-  ) {
+  async getPasswordHookSigners(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+  }) {
     const { lockAddress, contractAddress, network } = params ?? {}
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
       abi: passwordHookAbi,
-      signer,
     })
     return contract.signers(lockAddress)
   }
