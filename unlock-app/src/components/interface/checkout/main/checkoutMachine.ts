@@ -207,8 +207,10 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   hook: undefined,
   metadata: undefined,
 }
+
 export const checkoutMachine = createMachine(
   {
+    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'checkout',
     initial: 'SELECT',
     tsTypes: {} as import('./checkoutMachine.typegen').Typegen0,
@@ -387,7 +389,6 @@ export const checkoutMachine = createMachine(
           },
         },
       },
-      //
       PASSWORD: {
         on: {
           SUBMIT_PASSWORD: [
@@ -472,8 +473,6 @@ export const checkoutMachine = createMachine(
           },
         },
       },
-
-      // Next
       PAYMENT: {
         on: {
           SELECT_PAYMENT_METHOD: [

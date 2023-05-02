@@ -16183,7 +16183,6 @@ __metadata:
     "@walletconnect/client": 1.8.0
     "@walletconnect/web3-provider": 1.8.0
     "@xstate/react": 3.2.2
-    "@xstate/test": ^0.5.1
     autoprefixer: 10.4.14
     axios: 1.4.0
     blockies-react-svg: 0.0.13
@@ -17344,15 +17343,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xstate/graph@npm:^1.4.1":
-  version: 1.4.2
-  resolution: "@xstate/graph@npm:1.4.2"
-  peerDependencies:
-    xstate: ^4.30.3
-  checksum: 5ac706718d0330128f560f1611c15cfd717c83e1ccf7ecded1dfa74cb7b8c5acc116fcd1652e90c84038240e8b769fa1d79ff59456a947eae004d15b913e6e99
-  languageName: node
-  linkType: hard
-
 "@xstate/react@npm:3.2.2":
   version: 3.2.2
   resolution: "@xstate/react@npm:3.2.2"
@@ -17369,18 +17359,6 @@ __metadata:
     xstate:
       optional: true
   checksum: b5dbc10bf8f0b131417c792631430156480a75190d144a9a7fdf007cd14ee9fd7d89a5cfecd4ff1e1431e9e1cf7cc10db0c73977c8e06a26285db2f75cdfd1c7
-  languageName: node
-  linkType: hard
-
-"@xstate/test@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@xstate/test@npm:0.5.1"
-  dependencies:
-    "@xstate/graph": ^1.4.1
-    chalk: ^2.4.2
-  peerDependencies:
-    xstate: ^4.29.0
-  checksum: be1d239a9c778d95b831b4b75f8daf226c1ca759d24310eac65065c8f2bf8a003f548d71a481773f74c936406c3cb7ff2242321a229b33954a60f73cf96bc71d
   languageName: node
   linkType: hard
 
