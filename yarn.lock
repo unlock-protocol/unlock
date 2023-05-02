@@ -15184,23 +15184,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:5.57.0, @typescript-eslint/parser@npm:^5.42.0, @typescript-eslint/parser@npm:^5.5.0":
-  version: 5.57.0
-  resolution: "@typescript-eslint/parser@npm:5.57.0"
-  dependencies:
-    "@typescript-eslint/scope-manager": 5.57.0
-    "@typescript-eslint/types": 5.57.0
-    "@typescript-eslint/typescript-estree": 5.57.0
-    debug: ^4.3.4
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: b7e8345631911f721591ba970fea5c888f0f3bf2e2ea2dbc3e5b0dc345c0776b62b92c534edfde1379b4b182958a421f35ac26d84705fe6ae7dd37aa675d9493
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/parser@npm:5.59.1":
   version: 5.59.1
   resolution: "@typescript-eslint/parser@npm:5.59.1"
@@ -15215,6 +15198,23 @@ __metadata:
     typescript:
       optional: true
   checksum: d324d32a69e06ab12aacb72cd3e2a8eb8ade6c2a4d4e6bb013941588a675e818a8ebd973bef1cd818da6a76eb00908bf66d84ef214c3f015dfcb40f8067a335e
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/parser@npm:^5.42.0, @typescript-eslint/parser@npm:^5.5.0":
+  version: 5.57.0
+  resolution: "@typescript-eslint/parser@npm:5.57.0"
+  dependencies:
+    "@typescript-eslint/scope-manager": 5.57.0
+    "@typescript-eslint/types": 5.57.0
+    "@typescript-eslint/typescript-estree": 5.57.0
+    debug: ^4.3.4
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: b7e8345631911f721591ba970fea5c888f0f3bf2e2ea2dbc3e5b0dc345c0776b62b92c534edfde1379b4b182958a421f35ac26d84705fe6ae7dd37aa675d9493
   languageName: node
   linkType: hard
 
@@ -16183,6 +16183,7 @@ __metadata:
     "@walletconnect/client": 1.8.0
     "@walletconnect/web3-provider": 1.8.0
     "@xstate/react": 3.2.2
+    "@xstate/test": ^0.5.1
     autoprefixer: 10.4.14
     axios: 1.4.0
     blockies-react-svg: 0.0.13
@@ -17343,6 +17344,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@xstate/graph@npm:^1.4.1":
+  version: 1.4.2
+  resolution: "@xstate/graph@npm:1.4.2"
+  peerDependencies:
+    xstate: ^4.30.3
+  checksum: 5ac706718d0330128f560f1611c15cfd717c83e1ccf7ecded1dfa74cb7b8c5acc116fcd1652e90c84038240e8b769fa1d79ff59456a947eae004d15b913e6e99
+  languageName: node
+  linkType: hard
+
 "@xstate/react@npm:3.2.2":
   version: 3.2.2
   resolution: "@xstate/react@npm:3.2.2"
@@ -17359,6 +17369,18 @@ __metadata:
     xstate:
       optional: true
   checksum: b5dbc10bf8f0b131417c792631430156480a75190d144a9a7fdf007cd14ee9fd7d89a5cfecd4ff1e1431e9e1cf7cc10db0c73977c8e06a26285db2f75cdfd1c7
+  languageName: node
+  linkType: hard
+
+"@xstate/test@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@xstate/test@npm:0.5.1"
+  dependencies:
+    "@xstate/graph": ^1.4.1
+    chalk: ^2.4.2
+  peerDependencies:
+    xstate: ^4.29.0
+  checksum: be1d239a9c778d95b831b4b75f8daf226c1ca759d24310eac65065c8f2bf8a003f548d71a481773f74c936406c3cb7ff2242321a229b33954a60f73cf96bc71d
   languageName: node
   linkType: hard
 
