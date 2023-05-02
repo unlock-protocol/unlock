@@ -45,22 +45,14 @@ export const PasswordContractHook = ({
     return tx.wait()
   }
 
-  const getSigners = async () => {
-    const walletService = await getWalletService(network)
-    return await web3Service.getPasswordHookSigners(
-      {
-        lockAddress,
-        contractAddress: hookAddress,
-        network,
-      },
-      walletService.signer
-    )
-  }
-
   const { data: signers = DEFAULT_USER_ACCOUNT_ADDRESS, isLoading } = useQuery(
     ['getSigners', lockAddress, network],
     async () => {
-      return getSigners()
+      return web3Service.getPasswordHookSigners({
+        lockAddress,
+        contractAddress: hookAddress,
+        network,
+      })
     },
     {
       onSuccess: (signers: string) => {

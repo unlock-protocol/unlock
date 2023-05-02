@@ -988,9 +988,10 @@ export default class WalletService extends UnlockService {
       network,
       address: contractAddress,
       abi: passwordHookAbi,
-      signer,
     })
-    const tx = await contract.setSigner(lockAddress, signerAddress)
+    const tx = await contract
+      .connect(this.signer)
+      .setSigner(lockAddress, signerAddress)
     return tx
   }
 
