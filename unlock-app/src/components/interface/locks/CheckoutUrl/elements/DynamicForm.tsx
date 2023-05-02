@@ -4,7 +4,7 @@ import {
   AddressInput,
   isAddressOrEns,
   ImageUpload,
-  Modal,
+  Drawer,
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
@@ -205,7 +205,7 @@ const AddressInputComponent = ({
 
 const IconInputComponent = ({ name, label, description, onChange }: any) => {
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
-  const [modalOpen, setModalOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
@@ -214,7 +214,7 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
           variant="outlined-primary"
           size="small"
           onClick={() => {
-            setModalOpen(true)
+            setIsOpen(true)
           }}
         >
           {label}
@@ -223,7 +223,7 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
           <span className="text-xs text-gray-600">{description}</span>
         )}
       </div>
-      <Modal isOpen={modalOpen} setIsOpen={setModalOpen}>
+      <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
         <ConnectForm>
           {({ watch, setValue }: any) => {
             const image = watch(name) ?? ''
@@ -232,6 +232,7 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
             return (
               <div className="grid grid-cols-1">
                 <ImageUpload
+                  size="full"
                   className="mx-auto"
                   description={description}
                   isUploading={isUploading}
@@ -257,14 +258,14 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
                     }
                   }}
                 />
-                <Button size="small" onClick={() => setModalOpen(false)}>
-                  Set image
+                <Button size="small" onClick={() => setIsOpen(false)}>
+                  Save
                 </Button>
               </div>
             )
           }}
         </ConnectForm>
-      </Modal>
+      </Drawer>
     </>
   )
 }

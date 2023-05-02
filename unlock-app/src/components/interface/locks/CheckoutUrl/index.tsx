@@ -275,7 +275,7 @@ export const CheckoutUrlPage = () => {
       </Modal>
       <TopBar />
       <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
-        <div className="order-2 md:w-1/2 md:order-1">
+        <div className="z-0 order-2 md:w-1/2 md:order-1">
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
@@ -283,7 +283,7 @@ export const CheckoutUrlPage = () => {
         </div>
         <div className="flex flex-col order-1 gap-4 md:w-1/2 md:order-2">
           <Header />
-          <div className="flex items-center w-full gap-4 p-2">
+          <div className="z-0 flex items-center w-full gap-4 p-2">
             <div className="w-full">
               <ConfigComboBox
                 disabled={isConfigUpdating}
