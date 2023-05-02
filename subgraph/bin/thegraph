@@ -54,6 +54,7 @@ const codegen = async () => {
 // Creating subgraphs is only available from hosted-service dashboard
 // yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
 const build = async (network) => {
+  await executeCommand(`yarn run prepare`)
   console.log(`Building subgraph for ${network} (${networkName(network)})`)
   await executeCommand(`yarn graph build --network ${networkName(network)}`)
 }
