@@ -400,7 +400,7 @@ export const DynamicForm = ({
                   {Object.entries((props as any)?.items?.properties ?? {})?.map(
                     ([name, fieldProps], index) => {
                       const { type, description } = (fieldProps ?? {}) as any
-                      Component = getComponentByNameOrType(type, name)
+                      Component = getComponentByNameOrType(type, fieldName)
                       if (!Component) return null
                       return (
                         <>
