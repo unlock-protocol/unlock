@@ -32,8 +32,6 @@ export const EmailSettingsForm = ({
     },
   })
 
-  console.log(lockSettings)
-
   const updateReplyTo = async ({ replyTo, emailSender }: FormProps) => {
     if (!isManager) return
     return await storage.saveLockSetting(network, lockAddress, {
