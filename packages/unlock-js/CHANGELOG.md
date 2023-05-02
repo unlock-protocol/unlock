@@ -3,6 +3,7 @@
 # 0.36.0
 
 - adding support functions for Transfer With Authorization
+- adding support for CardPurchaser contract
 
 # 0.35.5
 

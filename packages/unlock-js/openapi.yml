@@ -2610,6 +2610,8 @@ paths:
                     type: string
                   network:
                     type: number
+                  emailSender:
+                    type: string
 
   /v2/lock-settings/{network}/locks/{lockAddress}:
     get:
@@ -2639,6 +2641,8 @@ paths:
                     type: string
                   network:
                     type: number
+                  emailSender:
+                    type: string
 
         404:
           description: Setting not found
@@ -2688,6 +2692,8 @@ paths:
                   type: string
                 network:
                   type: number
+                emailSender:
+                  type: string
 
       responses:
         200:

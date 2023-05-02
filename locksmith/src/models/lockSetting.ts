@@ -11,6 +11,7 @@ export class LockSetting extends Model<
   declare sendEmail: boolean
   declare replyTo?: string
   declare creditCardPrice?: number
+  declare emailSender?: string
   declare slug?: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -33,6 +34,11 @@ LockSetting.init(
     },
     creditCardPrice: {
       type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: null,
+    },
+    emailSender: {
+      type: DataTypes.STRING,
       allowNull: true,
       defaultValue: null,
     },

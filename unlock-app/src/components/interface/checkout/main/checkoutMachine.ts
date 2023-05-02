@@ -327,7 +327,6 @@ export const checkoutMachine = createMachine(
             target: 'PAYMENT',
             actions: ['selectRecipients'],
           },
-
           BACK: [
             {
               target: 'SELECT',
