@@ -203,7 +203,7 @@ const AddressInputComponent = ({
   )
 }
 
-const IconInputComponent = ({ name, label, description, onChange }: any) => {
+const IconInputComponent = ({ name, label, description }: any) => {
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -227,15 +227,11 @@ const IconInputComponent = ({ name, label, description, onChange }: any) => {
         <ConnectForm>
           {({ watch, setValue, handleSubmit }: any) => {
             const image = watch(name) ?? ''
-            const fields = watch()
 
             const onSubmit = () => {
-              onChange({
-                ...fields,
-                [name]: image,
-              })
               setIsOpen(false)
             }
+
             return (
               <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -412,7 +408,6 @@ export const DynamicForm = ({
                             name={name}
                             description={description}
                             props={fieldProps}
-                            onChange={onChange}
                           />
                         </>
                       )
@@ -434,7 +429,6 @@ export const DynamicForm = ({
                   required={fieldRequired}
                   description={description}
                   size="small"
-                  onChange={onChange}
                 />
               </div>
             )
