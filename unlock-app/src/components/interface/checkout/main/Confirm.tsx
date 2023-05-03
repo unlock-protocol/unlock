@@ -30,7 +30,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
-import { useTotalPrice } from '~/hooks/useTotalPrice'
+import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
 
 interface Props {
@@ -43,6 +43,13 @@ interface CreditCardPricingBreakdownProps {
   total: number
   creditCardProcessingFee: number
   unlockServiceFee: number
+}
+
+interface PricingDataProps {
+  pricingData: any
+  lock: Lock
+  network: number
+  payment?: any
 }
 
 export function CreditCardPricingBreakdown({
@@ -77,6 +84,58 @@ export function CreditCardPricingBreakdown({
           <div className="font-bold">${(total / 100).toLocaleString()}</div>
         </div>
       </div>
+    </div>
+  )
+}
+
+export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
+  return (
+    <div>
+      {!!pricingData?.prices?.length &&
+        pricingData.prices.map((item: any, index: number) => {
+          const first = index <= 0
+          const discount =
+            Number(lock!.keyPrice) > 0
+              ? (100 * (Number(lock!.keyPrice) - item.amount)) /
+                Number(lock!.keyPrice)
+              : 0
+          const symbol = payment?.route
+            ? payment.route.trade.inputAmount.currency.symbol
+            : item.symbol
+
+          return (
+            <div
+              key={index}
+              className={`flex border-b ${
+                first ? 'border-t' : null
+              } items-center justify-between text-sm px-0 py-2`}
+            >
+              <div>
+                1 Key for{' '}
+                <span className="font-medium">
+                  {minifyAddress(item.userAddress)}
+                </span>{' '}
+                {item.amount < Number(lock!.keyPrice) ? (
+                  <Badge variant="green" size="tiny">
+                    {discount}% Discount
+                  </Badge>
+                ) : null}
+              </div>
+
+              <div className="font-bold">
+                {item.amount <= 0
+                  ? 'FREE'
+                  : payment?.route
+                  ? `${formatNumber(
+                      payment.route
+                        .convertToQuoteToken(item.amount.toString())
+                        .toFixed()
+                    ).toLocaleString()} ${symbol}`
+                  : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+              </div>
+            </div>
+          )
+        })}
     </div>
   )
 }
@@ -172,6 +231,10 @@ export function Confirm({
     data: purchaseData!,
     paywallConfig,
     enabled: !isInitialDataLoading,
+    symbol: lockTickerSymbol(
+      lock as Lock,
+      config.networks[lock!.network].nativeCurrency.symbol
+    ),
   })
 
   const isPricingDataAvailable =
@@ -180,7 +243,7 @@ export function Confirm({
   const amountToConvert = pricingData?.total || 0
 
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useTotalPrice({
+    useFiatChargePrice({
       tokenAddress: currencyContractAddress,
       amount:
         amountToConvert > 0 && swap
@@ -189,6 +252,7 @@ export function Confirm({
       network: lock!.network,
       enabled: isPricingDataAvailable,
     })
+
   // TODO: run full estimate so we can catch all errors, rather just check balances
   const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
     ['canAfford', account, lock, pricingData],
@@ -275,10 +339,16 @@ export function Confirm({
         return
       }
 
+      const referrers: string[] = recipients.map((recipient) => {
+        return getReferrer(recipient, paywallConfig)
+      })
+
       const stripeIntent = await createPurchaseIntent({
         pricing: totalPricing!.total,
         stripeTokenId: payment.cardId!,
         recipients,
+        referrers,
+        data: purchaseData!,
         recurring: recurringPaymentAmount || 0,
       })
 
@@ -596,51 +666,12 @@ export function Confirm({
             </div>
           )}
           {!isLoading && isPricingDataAvailable && (
-            <div>
-              {!!pricingData?.prices?.length &&
-                pricingData.prices.map((item, index) => {
-                  const first = index <= 0
-                  const discount =
-                    Number(lock!.keyPrice) > 0
-                      ? (100 * (Number(lock!.keyPrice) - item.amount)) /
-                        Number(lock!.keyPrice)
-                      : 0
-                  return (
-                    <div
-                      key={index}
-                      className={`flex border-b ${
-                        first ? 'border-t' : null
-                      } items-center justify-between text-sm px-0 py-2`}
-                    >
-                      <div>
-                        1 Key for{' '}
-                        <span className="font-medium">
-                          {minifyAddress(item.userAddress)}
-                        </span>{' '}
-                        {item.amount < Number(lock!.keyPrice) ? (
-                          <Badge variant="green" size="tiny">
-                            {discount}% Discount
-                          </Badge>
-                        ) : null}
-                      </div>
-
-                      <div className="font-bold">
-                        {item.amount <= 0
-                          ? 'FREE'
-                          : swap
-                          ? `${formatNumber(
-                              payment.route
-                                .convertToQuoteToken(item.amount.toString())
-                                .toFixed()
-                            ).toLocaleString()} ${symbol}`
-                          : `${formatNumber(
-                              item.amount
-                            ).toLocaleString()} ${symbol}`}
-                      </div>
-                    </div>
-                  )
-                })}
-            </div>
+            <PricingData
+              network={lockNetwork}
+              lock={lock!}
+              pricingData={pricingData}
+              payment={payment}
+            />
           )}
         </div>
         {!isPricingDataAvailable && (

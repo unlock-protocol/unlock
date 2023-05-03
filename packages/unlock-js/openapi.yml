@@ -431,6 +431,14 @@ components:
       schema:
         type: string
 
+    Slug:
+      in: path
+      name: slug
+      required: true
+      description: Slug
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -2442,14 +2450,9 @@ paths:
                 type: object
                 properties:
                   result:
-                    type: object
-                    properties:
-                      lock:
-                        type: string
-                      chain:
-                        type: number
-                      stripeAccount:
-                        type: string
+                    type: array
+                    items:
+                      type: object
                   error:
                     type: string
                     nullable: true
@@ -2465,6 +2468,36 @@ paths:
                     type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/lock-settings/slug/{slug}:
+    get:
+      operationId: getLockSettingsBySlug
+      description: Get lock setting by slug
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sendEmail:
+                    type: boolean
+                  replyTo:
+                    type: string
+                  creditCardPrice:
+                    type: number
+                  slug:
+                    type: string
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  emailSender:
+                    type: string
 
   /v2/lock-settings/{network}/locks/{lockAddress}:
     get:
@@ -2485,6 +2518,16 @@ paths:
                   sendEmail:
                     type: boolean
                   replyTo:
+                    type: string
+                  creditCardPrice:
+                    type: number
+                  slug:
+                    type: string
+                  lockAddress:
+                    type: string
+                  network:
+                    type: number
+                  emailSender:
                     type: string
 
         404:
@@ -2526,6 +2569,16 @@ paths:
                 sendEmail:
                   type: boolean
                 replyTo:
+                  type: string
+                creditCardPrice:
+                  type: number
+                slug:
+                  type: string
+                lockAddress:
+                  type: string
+                network:
+                  type: number
+                emailSender:
                   type: string
 
       responses:

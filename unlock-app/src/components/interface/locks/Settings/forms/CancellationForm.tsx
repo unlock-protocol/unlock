@@ -215,7 +215,7 @@ export const CancellationForm = ({
           <Input
             type="number"
             disabled={disabledInput || !cancelPenalty}
-            step={0.01}
+            step={1}
             error={
               errors?.refundPenaltyPercentage &&
               'This field accept percentage value between 0 and 100.'

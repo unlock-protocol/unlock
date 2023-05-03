@@ -1375,6 +1375,7 @@ const abis = {
         "function publicLockVersions(address _impl) view returns (uint16)",
         "function recordConsumedDiscount(uint256,uint256) view",
         "function recordKeyPurchase(uint256 _value,address _referrer)",
+        "function removeLock(address lock)",
         "function renounceOwnership()",
         "function resetTrackedValue(uint256 _grossNetworkProduct,uint256 _totalDiscountGranted)",
         "function setLockTemplate(address _publicLockAddress)",
@@ -1382,13 +1383,14 @@ const abis = {
         "function setProtocolFee(uint256 _protocolFee)",
         "function totalDiscountGranted() view returns (uint256)",
         "function transferOwnership(address newOwner)",
+        "function transferTokens(address token,address to,uint256 amount)",
         "function udt() view returns (address)",
         "function uniswapOracles(address) view returns (address)",
         "function unlockVersion() pure returns (uint16)",
         "function upgradeLock(address lockAddress,uint16 version) returns (address)",
         "function weth() view returns (address)"
       ],
-      "bytecodeHash": "0x386fb5916ed51f9eb6b3d33a37447a3c93c2cfccc9ee6eb4772f86a735e953fa"
+      "bytecodeHash": "0x461d3c895d16600884d7cf2a9d05727c467e59a93d606cff28a33e2d76d8fc0b"
     }
   }
 }

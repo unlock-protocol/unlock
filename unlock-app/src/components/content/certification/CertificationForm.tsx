@@ -24,6 +24,8 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
 import { FaArrowLeft as ArrowLeftIcon } from 'react-icons/fa'
 import Link from 'next/link'
+import { SLUG_REGEXP } from '~/constants'
+import { storage } from '~/config/storage'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -65,6 +67,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
         external_url: '',
         description: '',
         image: '',
+        slug: '',
         certification: {
           certification_issuer: '',
         },
@@ -166,7 +169,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   }}
                 />
               </div>
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 <Input
                   {...register('lock.name', {
                     required: {
@@ -195,6 +198,29 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   description={<DescDescription />}
                   rows={4}
                   error={errors.metadata?.description?.message as string}
+                />
+
+                <Input
+                  {...register('metadata.slug', {
+                    pattern: {
+                      value: SLUG_REGEXP,
+                      message: 'Slug format is not valid',
+                    },
+                    validate: async (slug: string | undefined) => {
+                      if (slug) {
+                        const data = (await storage.getLockSettingsBySlug(slug))
+                          .data
+                        return data
+                          ? 'Slug already used, please use another one.'
+                          : true
+                      }
+                      return true
+                    },
+                  })}
+                  type="text"
+                  label="Custom URL"
+                  error={errors?.metadata?.slug?.message as string}
+                  description="Custom URL that will be used for the page."
                 />
 
                 <Input

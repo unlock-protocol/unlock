@@ -13,18 +13,14 @@ interface SendEmailProps {
 /**
  * Set if a Lock is enabled to send emails
  */
-export async function saveSettings({
-  lockAddress,
-  network,
-  sendEmail,
-  replyTo,
-}: SendEmailProps & LockSettingProps) {
+export async function saveSettings(options: SendEmailProps & LockSettingProps) {
   return await LockSetting.upsert(
     {
-      lockAddress: Normalizer.ethereumAddress(lockAddress),
-      network,
-      sendEmail,
-      replyTo,
+      // save rest of settings
+      ...options,
+      // normalize values
+      lockAddress: Normalizer.ethereumAddress(options.lockAddress),
+      slug: options?.slug?.toLowerCase().trim(),
     },
     {
       returning: true,
@@ -47,4 +43,16 @@ export async function getSettings({
   })
 
   return settings || DEFAULT_LOCK_SETTINGS
+}
+
+export async function getLockSettingsBySlug(
+  slug: string
+): Promise<LockSetting | null> {
+  const settings = await LockSetting.findOne({
+    where: {
+      slug: slug.toLowerCase().trim(),
+    },
+  })
+
+  return settings || null
 }

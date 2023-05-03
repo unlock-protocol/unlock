@@ -82,7 +82,9 @@ export const Members = ({
         },
         queryKey: ['getSubgraphLock', lockAddress, network],
         onError: () => {
-          ToastHelper.error('Unable to fetch lock from subgraph')
+          ToastHelper.error(
+            `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
+          )
         },
       },
       {

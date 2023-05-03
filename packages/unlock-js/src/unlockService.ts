@@ -208,16 +208,13 @@ export default class UnlockService {
   async getHookContract({
     network,
     address,
-    signer,
     abi,
   }: {
     network: number
     address: string
     abi: ContractInterface
-    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
   }) {
     const provider = this.providerForNetwork(network)
-    const contract = new ethers.Contract(address, abi, provider)
-    return contract.connect(signer)
+    return new ethers.Contract(address, abi, provider)
   }
 }

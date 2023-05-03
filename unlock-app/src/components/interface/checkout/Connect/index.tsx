@@ -19,11 +19,14 @@ export function Connect({
   communication,
 }: Props) {
   const connectService = useInterpret(connectMachine)
-  const [state] = useActor(connectService)
+  const [state, send] = useActor(connectService)
   const matched = state.value.toString()
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
+      // Reset the Paywall State!
+      send('DISCONNECT')
+
       if (oauthConfig.redirectUri) {
         const redirectURI = new URL(oauthConfig.redirectUri)
 
@@ -37,7 +40,7 @@ export function Connect({
         communication.emitCloseModal()
       }
     },
-    [oauthConfig.redirectUri, communication]
+    [oauthConfig.redirectUri, communication, send]
   )
 
   const onBack = useMemo(() => {

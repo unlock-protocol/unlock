@@ -23,7 +23,9 @@ export default class WedlockService {
     template: emailTemplate,
     recipient: string,
     params: Params = {},
-    attachments: Attachment[] = []
+    attachments: Attachment[] = [],
+    replyTo?: string,
+    emailSender?: string
   ) => {
     try {
       const payload = {
@@ -31,6 +33,8 @@ export default class WedlockService {
         recipient,
         params,
         attachments,
+        replyTo,
+        emailSender,
       }
       return await fetch(this.uri, {
         method: 'POST',

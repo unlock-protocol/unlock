@@ -18,6 +18,7 @@ export interface Ticket {
 export interface MetadataFormData {
   name: string
   image?: string
+  slug?: string
   description?: string
   external_url?: string
   youtube_url?: string
@@ -46,12 +47,14 @@ export interface Metadata {
   youtube_url?: string
   animation_url?: string
   background_color?: string
+  slug?: string
   attributes: Attribute[]
   [key: string]: any
 }
 
 export function toFormData({
   name,
+  slug,
   description,
   attributes,
   animation_url,
@@ -64,6 +67,10 @@ export function toFormData({
   const metadata = {
     ...categorizedAttrs,
   } as MetadataFormData
+
+  if (slug) {
+    metadata.slug = slug
+  }
 
   if (name) {
     metadata.name = name
@@ -141,6 +148,7 @@ export const categorizeAttributes = (
 
 export const formDataToMetadata = ({
   name,
+  slug,
   description,
   animation_url,
   youtube_url,
@@ -265,5 +273,10 @@ export const formDataToMetadata = ({
   if (external_url) {
     metadata.external_url = external_url
   }
+
+  if (slug) {
+    metadata.slug = slug
+  }
+
   return metadata
 }

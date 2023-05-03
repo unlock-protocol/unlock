@@ -267,9 +267,9 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.expiration = event.params.newTimestamp
     key.cancelled = false
     key.save()
+    // create receipt
+    createReceipt(event)
   }
-  // create receipt
-  createReceipt(event)
 }
 
 // from < v10 (before using tokenId accross the board)
@@ -472,5 +472,13 @@ export function createReceipt(event: ethereum.Event): void {
   receipt.sender = event.transaction.from.toHexString()
   receipt.tokenAddress = tokenAddress.toHexString()
   receipt.gasTotal = BigInt.fromString(totalGas.toString())
+
+  if (lock) {
+    const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
+    lock.numberOfReceipts = newReceiptNumber
+    receipt.numberOfReceipt = newReceiptNumber
+    lock.save()
+  }
+
   receipt.save()
 }

@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.35.3",
+  "version": "0.35.4",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -38,8 +38,8 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.21.0",
-    "@babel/core": "7.21.4",
+    "@babel/cli": "7.21.5",
+    "@babel/core": "7.21.5",
     "@babel/preset-env": "7.20.2",
     "@graphql-codegen/cli": "2.16.5",
     "@graphql-codegen/typescript": "2.8.8",

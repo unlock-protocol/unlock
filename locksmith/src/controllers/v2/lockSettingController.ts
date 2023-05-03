@@ -16,6 +16,22 @@ const LockSettingSchema = z.object({
         'Set the email address that will appear on the Reply-To: field.',
     })
     .optional(),
+  creditCardPrice: z
+    .number({
+      description: 'Credit card default price to use on checkout.',
+    })
+    .optional(),
+  emailSender: z
+    .string({
+      description:
+        'Custom name used as the email sender. This is the name that most email clients will show to readers.',
+    })
+    .optional(),
+  slug: z
+    .string({
+      description: 'Slug that will be used to retrieve the lock',
+    })
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -23,6 +39,9 @@ export type LockSettingProps = z.infer<typeof LockSettingSchema>
 export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
   replyTo: undefined,
+  creditCardPrice: undefined,
+  emailSender: undefined,
+  slug: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
@@ -68,6 +87,23 @@ export const getSettings: RequestHandler = async (
 
     // return default settings
     return response.status(200).send(DEFAULT_LOCK_SETTINGS)
+  } catch (err: any) {
+    logger.error(err.message)
+    return response.status(500).send({
+      message: 'Could not get settings for this Lock.',
+    })
+  }
+}
+
+export const getLockSettingsBySlug: RequestHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const slug = request.params.slug.toLowerCase().trim()
+    const settings = await lockSettingOperations.getLockSettingsBySlug(slug)
+
+    return response.status(200).send(settings)
   } catch (err: any) {
     logger.error(err.message)
     return response.status(500).send({

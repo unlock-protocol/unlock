@@ -1,5 +1,8 @@
 const { ethers, network, config } = require('hardhat')
 const { UDT, unlockAddress, whales } = require('./contracts')
+const USDC_ABI = require('../helpers/ABIs/USDC.json')
+const { MAX_UINT } = require('./constants')
+
 
 const resetNodeState = async () => {
   // reset fork
@@ -55,8 +58,8 @@ const stopImpersonate = async (address) => {
   })
 }
 
-const addERC20 =  async function (tokenAddress, address, amount = ethers.utils.parseEther('1000')) {
-  if(!whales[tokenAddress]) throw Error(`No whale for this address: ${tokenAddress}`)
+const addERC20 = async function (tokenAddress, address, amount = ethers.utils.parseEther('1000')) {
+  if (!whales[tokenAddress]) throw Error(`No whale for this address: ${tokenAddress}`)
   const whale = await ethers.getSigner(whales[tokenAddress])
   await impersonate(whale.address)
 
@@ -115,6 +118,15 @@ const getUDTMainnet = async () => {
   return udt
 }
 
+const addSomeUSDC = async (usdcAddress, recipientAddress, amount = 1000) => {
+  const usdc = await ethers.getContractAt(USDC_ABI, usdcAddress)
+  const masterMinter = await usdc.masterMinter()
+  await impersonate(masterMinter)
+  const minter = await ethers.getSigner(masterMinter)
+  await (await usdc.connect(minter).configureMinter(recipientAddress, MAX_UINT)).wait()
+  await (await usdc.mint(recipientAddress, amount)).wait()
+}
+
 module.exports = {
   resetNodeState,
   impersonate,
@@ -124,5 +136,6 @@ module.exports = {
   getUDTMainnet,
   addUDT,
   addSomeETH,
+  addSomeUSDC,
   addERC20,
 }
