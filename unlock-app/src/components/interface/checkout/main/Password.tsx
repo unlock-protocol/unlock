@@ -68,7 +68,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   return (
     <Fragment>
       <Stepper
-        position={renew ? 2 : 6}
+        position={renew ? 2 : 5}
         service={checkoutService}
         items={stepItems}
       />
@@ -86,7 +86,10 @@ export function Password({ injectedProvider, checkoutService }: Props) {
               validate: (password: string) => {
                 const { address } = getEthersWalletFromPassword(password) ?? {}
                 // check if password match
-                return passwordSigner === address || 'Wrong password...'
+                if (passwordSigner && passwordSigner !== address) {
+                  return 'Wrong password...'
+                }
+                return true
               },
             })}
             error={errors.password?.message}
