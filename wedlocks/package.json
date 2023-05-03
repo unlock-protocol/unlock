@@ -4,10 +4,10 @@
   "description": "The email server for Unlock",
   "main": "src/server.js",
   "dependencies": {
-    "@babel/cli": "7.21.0",
-    "@babel/core": "7.21.4",
+    "@babel/cli": "7.21.5",
+    "@babel/core": "7.21.5",
     "@babel/node": "7.20.7",
-    "@babel/preset-env": "7.21.4",
+    "@babel/preset-env": "7.21.5",
     "@typescript-eslint/parser": "5.59.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-loader": "9.1.2",
