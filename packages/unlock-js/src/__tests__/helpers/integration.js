@@ -1,7 +1,7 @@
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 
-import { getSigners } from '../helpers'
+import { getSigners } from './eth-node/index'
 export const chainId = 31337
 
 // used to run some tests only for ERC20 locks

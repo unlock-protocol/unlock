@@ -1,13 +1,16 @@
 import locks from '../helpers/fixtures/locks'
-import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 import UnlockVersions from '../../Unlock'
+import * as haha from '../helpers'
+console.log(haha)
 
 import {
   chainId,
   setupTest,
   setupLock,
   versionEqualOrAbove,
-} from '../helpers/integration'
+  nodeSetup,
+  resetNode,
+} from '../helpers'
 
 global.suiteData = {
   chainId,
@@ -67,6 +70,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
+    await resetNode()
     ERC20 = await nodeSetup()
     ;({ accounts, walletService, web3Service } = await setupTest(unlockVersion))
     global.suiteData = {

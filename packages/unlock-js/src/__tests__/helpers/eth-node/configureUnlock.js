@@ -1,4 +1,5 @@
-import { ethers } from 'hardhat'
+import { ethers } from 'ethers'
+import { getSigners } from './provider'
 import * as abis from '@unlock-protocol/contracts'
 
 /**
@@ -11,9 +12,11 @@ export default async (
   transactionOptions = {},
   callback
 ) => {
-  const unlockVersionContract = await ethers.getContractAt(
+  const [signer] = await getSigners()
+  const unlockVersionContract = await ethers.Contract(
+    unlockAddress,
     ['function unlockVersion() view returns (uint8)'],
-    unlockAddress
+    signer
   )
 
   const version = await unlockVersionContract.unlockVersion()

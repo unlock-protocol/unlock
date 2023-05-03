@@ -9,7 +9,7 @@
  *     --unlock-version 10 \
  * */
 import locks from '../helpers/fixtures/locks'
-import nodeSetup from '../setup/prepare-eth-node-for-unlock'
+import nodeSetup from '../../../scripts/hardhat/prepareNode'
 import {
   chainId,
   setupTest,
