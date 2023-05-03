@@ -253,7 +253,7 @@ const IconInputComponent = ({
                     if (typeof fileOrFileUrl !== 'string') {
                       const items = await uploadImage(fileOrFileUrl[0])
                       icon = items?.[0]?.publicUrl
-                      if (!image) {
+                      if (!icon) {
                         return
                       }
                     }
