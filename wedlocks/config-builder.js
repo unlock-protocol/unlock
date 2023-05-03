@@ -9,7 +9,6 @@ dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
 
-
 // Remember to add mapping in webpack for all environment variables below
 const requiredVariables = [
   'SMTP_HOST',
@@ -49,7 +48,6 @@ console.log(
     },
     unlockEnv,
     wedlocksPrivateKey,
-    sender:
-      process.env.SMTP_FROM_ADDRESS || 'hello@unlock-protocol.com',
+    sender: process.env.SMTP_FROM_ADDRESS || 'hello@unlock-protocol.com',
   })}`
 )

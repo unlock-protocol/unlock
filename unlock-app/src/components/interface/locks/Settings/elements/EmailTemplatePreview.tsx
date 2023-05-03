@@ -1,4 +1,4 @@
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 import { Button, Input, Modal, TextBox } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -94,7 +94,7 @@ export const EmailTemplatePreview = ({
 
     const params = {
       lockName: 'Email Preview',
-      keychainUrl: 'https://app.unlock-protocol.com/keychain', // TOFIX @kali: never use hardcoded URLs.
+      keychainUrl: `${config.unlockApp}/keychain`,
       keyId: 5,
       network,
       openSeaUrl: '',
@@ -106,9 +106,9 @@ export const EmailTemplatePreview = ({
       eventDescription: '{Email description}',
       eventDate: '{Event date}',
       eventTime: '{Event time}',
-      eventAddress: '{Event address }',
+      eventAddress: '{Event address}',
       // certificate details
-      certificationDetail: 'https://example.it', // TOFIX @kali: What is this?
+      certificationDetail: '{Certification detail}',
     }
 
     return params
