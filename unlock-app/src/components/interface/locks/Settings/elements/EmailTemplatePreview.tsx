@@ -94,7 +94,7 @@ export const EmailTemplatePreview = ({
 
     const params = {
       lockName: 'Email Preview',
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      keychainUrl: `${config.unlockApp}/keychain`,
       keyId: 5,
       network,
       openSeaUrl: '',
@@ -106,9 +106,9 @@ export const EmailTemplatePreview = ({
       eventDescription: '{Email description}',
       eventDate: '{Event date}',
       eventTime: '{Event time}',
-      eventAddress: '{Event address }',
+      eventAddress: '{Event address}',
       // certificate details
-      certificationDetail: 'https://example.it',
+      certificationDetail: '{Certification detail}',
     }
 
     return params
