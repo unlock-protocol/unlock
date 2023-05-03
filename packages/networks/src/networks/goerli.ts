@@ -2,6 +2,7 @@ import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const goerli: NetworkConfig = {
   publicLockVersionToDeploy: 13,
+  cardPurchaserAddress: '0x061Bfda0446c5f71Da760BC31371CB95808f5d82',
   featured: true,
   publicProvider:
     'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
