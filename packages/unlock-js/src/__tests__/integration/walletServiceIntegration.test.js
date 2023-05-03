@@ -1,7 +1,5 @@
 import locks from '../helpers/fixtures/locks'
 import UnlockVersions from '../../Unlock'
-import * as haha from '../helpers'
-console.log(haha)
 
 import {
   chainId,
