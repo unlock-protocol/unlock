@@ -341,6 +341,10 @@ export const checkoutMachine = createMachine(
               actions: ['selectRecipients'],
               cond: 'requireCaptcha',
             },
+            {
+              actions: ['selectRecipients'],
+              target: 'PAYMENT',
+            },
           ],
           BACK: [
             {
