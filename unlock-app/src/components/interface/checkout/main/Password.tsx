@@ -68,7 +68,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   return (
     <Fragment>
       <Stepper
-        position={renew ? 2 : 5}
+        position={renew ? 2 : 6}
         service={checkoutService}
         items={stepItems}
       />

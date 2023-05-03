@@ -35,7 +35,6 @@ interface UnlockAccountMachineContext {
 
 export const unlockAccountMachine = createMachine(
   {
-    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'unlockAccount',
     tsTypes: {} as import('./unlockAccountMachine.typegen').Typegen0,
     schema: {
