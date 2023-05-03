@@ -1,4 +1,4 @@
-import { useMutation, useQueries } from '@tanstack/react-query'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import { Button, Input, Modal, TextBox } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -94,7 +94,7 @@ export const EmailTemplatePreview = ({
 
     const params = {
       lockName: 'Email Preview',
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain', // TOFIX @kali: never use hardcoded URLs.
       keyId: 5,
       network,
       openSeaUrl: '',
@@ -108,7 +108,7 @@ export const EmailTemplatePreview = ({
       eventTime: '{Event time}',
       eventAddress: '{Event address }',
       // certificate details
-      certificationDetail: 'https://example.it',
+      certificationDetail: 'https://example.it', // TOFIX @kali: What is this?
     }
 
     return params
@@ -116,11 +116,21 @@ export const EmailTemplatePreview = ({
 
   const onSubmit = async (form: FormSchemaProps) => {
     const params = await emailPreviewData()
+
+    const { data: lockSettings } = await storage.getLockSettings(
+      network,
+      lockAddress
+    )
+
     const promise = wedlocksService.sendEmail(
       templateId as any,
       form.email,
-      params,
-      [] // attachments
+      {
+        ...params,
+      },
+      [], // attachments
+      lockSettings.replyTo,
+      lockSettings.emailSender
     )
     await ToastHelper.promise(promise, {
       loading: 'Sending email preview...',
@@ -265,7 +275,7 @@ export const EmailTemplatePreview = ({
                       error={errors?.email?.message}
                     />
                     <Button type="submit" disabled={disabled}>
-                      Send email Preview
+                      Send email preview
                     </Button>
                   </div>
                 </form>
