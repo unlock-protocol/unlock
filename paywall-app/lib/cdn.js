@@ -1,9 +1,49 @@
 // this is used to compile the lib and distribute to CDN
-import {
-  Paywall,
-  networkConfigs,
-  setupUnlockProtocolVariable,
-} from '@unlock-protocol/paywall'
+import { Paywall, networkConfigs } from '@unlock-protocol/paywall'
+
+const setupUnlockProtocolVariable = (properties) => {
+  const unlockProtocol = {}
+
+  const immutable = {
+    writable: false,
+    configurable: false,
+    enumerable: false,
+  }
+
+  const immutableProperties = Object.keys(properties).map((name) => {
+    return {
+      [name]: {
+        value: properties[name],
+        ...immutable,
+      },
+    }
+  })
+
+  Object.defineProperties(
+    unlockProtocol,
+    Object.assign({}, ...immutableProperties)
+  )
+
+  const freeze = Object.freeze || Object
+
+  // if freeze is available, prevents adding or
+  // removing the object prototype properties
+  // (value, get, set, enumerable, writable, configurable)
+  // TODO: consider whether this is actually necessary
+  freeze(unlockProtocol)
+
+  try {
+    Object.defineProperties(window, {
+      unlockProtocol: {
+        value: unlockProtocol,
+        ...immutable,
+      },
+    })
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('WARNING: unlockProtocol already defined, cannot re-define it')
+  }
+}
 
 if (typeof window !== 'undefined') {
   const rawConfig = window.unlockProtocolConfig
@@ -23,18 +63,19 @@ if (typeof window !== 'undefined') {
       rawConfig.network = parseInt(rawConfig.network, 10)
     }
 
-    const paywall = new Paywall(rawConfig, networkConfigs)
+    const paywall = new Paywall(networkConfigs)
+    paywall.setPaywallConfig(rawConfig)
     const {
       getState,
       getUserAccountAddress,
       loadCheckoutModal,
-      resetConfig,
+      setPaywallConfig,
       authenticate,
     } = paywall
 
     setupUnlockProtocolVariable({
       loadCheckoutModal,
-      resetConfig,
+      resetConfig: setPaywallConfig,
       getUserAccountAddress,
       getState,
       authenticate,

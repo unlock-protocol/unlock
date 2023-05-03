@@ -1,14 +1,11 @@
-import {
-  getProvider,
-  enableInjectedProvider,
-} from '../../utils/enableInjectedProvider'
+import { getInjectedProvider, enableProvider } from '../../utils/provider'
 
-describe('enableInjectedProvider utils', () => {
-  describe('getProvider', () => {
+describe('enableProvider utils', () => {
+  describe('getInjectedProvider', () => {
     it('returns undefined if there is no provider', () => {
       expect.assertions(1)
 
-      expect(getProvider({})).toBeUndefined()
+      expect(getInjectedProvider({})).toBeUndefined()
     })
 
     it('returns window.ethereum if it is set', () => {
@@ -20,7 +17,7 @@ describe('enableInjectedProvider utils', () => {
         },
       }
 
-      expect(getProvider(window)).toEqual(window.ethereum)
+      expect(getInjectedProvider(window)).toEqual(window.ethereum)
     })
 
     it('returns window.web3.currentProvider if it is set', () => {
@@ -34,15 +31,15 @@ describe('enableInjectedProvider utils', () => {
         },
       }
 
-      expect(getProvider(window)).toEqual(window.web3.currentProvider)
+      expect(getInjectedProvider(window)).toEqual(window.web3.currentProvider)
     })
   })
 
-  describe('enableInjectedProvider', () => {
+  describe('enableProvider', () => {
     it('rejects when there is no provider', () => {
       expect.assertions(1)
 
-      expect(enableInjectedProvider(undefined)).rejects.toEqual(
+      expect(enableProvider(undefined)).rejects.toEqual(
         new Error('Fatal: no web3 provider found.')
       )
     })
@@ -56,7 +53,7 @@ describe('enableInjectedProvider utils', () => {
           .mockRejectedValue(new Error('User did not allow wallet to connect')),
       }
 
-      expect(enableInjectedProvider(provider)).rejects.toEqual(
+      expect(enableProvider(provider)).rejects.toEqual(
         new Error('User did not allow wallet to connect')
       )
     })
@@ -68,7 +65,7 @@ describe('enableInjectedProvider utils', () => {
         enable: vi.fn().mockResolvedValue(undefined),
       }
 
-      expect(enableInjectedProvider(provider)).resolves.toBeUndefined()
+      expect(enableProvider(provider)).resolves.toBeUndefined()
     })
   })
 })

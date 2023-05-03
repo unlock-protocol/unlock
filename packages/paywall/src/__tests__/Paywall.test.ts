@@ -1,5 +1,4 @@
 import { vi } from 'vitest'
-import { Enabler } from '../utils/enableInjectedProvider'
 import * as isUnlockedUtil from '../utils/isUnlocked'
 import { Paywall } from '../Paywall'
 import * as paywallScriptUtils from '../utils'
@@ -42,7 +41,7 @@ describe('Paywall object', () => {
     expect(paywall.childCallBuffer).toHaveLength(0)
   })
 
-  describe('resetConfig', () => {
+  describe('setPaywallConfig', () => {
     beforeEach(() => {
       localStorage.clear()
       vi.resetAllMocks()
@@ -51,7 +50,7 @@ describe('Paywall object', () => {
 
     it('is adding one call in the buffer to set the config', () => {
       expect.assertions(2)
-      paywall.resetConfig(paywallConfig)
+      paywall.setPaywallConfig(paywallConfig)
       expect(paywall.childCallBuffer).toHaveLength(1)
 
       // Constuctor will update config with provider info
@@ -119,7 +118,7 @@ describe('Paywall object', () => {
         sendAsync: vi.fn(),
       }
 
-      paywall.provider = provider as Enabler
+      paywall.provider = provider
 
       await paywall.handleMethodCallEvent({
         method: 'net_version',
