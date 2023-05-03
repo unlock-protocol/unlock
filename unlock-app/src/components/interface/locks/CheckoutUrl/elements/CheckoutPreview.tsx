@@ -58,7 +58,7 @@ export const CheckoutPreview = ({
   const buttonVariant = hasLocks ? 'primary' : 'outlined-primary'
 
   return (
-    <div className="flex items-center justify-center w-full px-2 py-10 bg-gray-300 rounded-3xl">
+    <div className="z-0 flex items-center justify-center w-full px-2 py-10 bg-gray-300 rounded-3xl">
       <div className="flex items-center justify-center w-full max-w-lg">
         {paywallConfig && (
           <div className="flex flex-col items-center w-full gap-4">
