@@ -34,6 +34,7 @@ import {
   getKeyManagerOf,
   LOCK_MANAGER,
 } from './helpers'
+import { nullAddress } from '../tests/constants'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -426,14 +427,16 @@ export function createReceipt(event: ethereum.Event): void {
   const lock = Lock.load(lockAddress)
 
   const tokenAddress =
-    lock && lock.tokenAddress ? lock.tokenAddress : Bytes.fromHexString('')
+    lock && lock.tokenAddress
+      ? lock.tokenAddress
+      : Bytes.fromHexString(nullAddress)
 
   // TODO: compile from contract ABI
   // WARNING : For some tokens it may be different. In that case we would move to a list!
-  /*const ERC20_TRANSFER_TOPIC0 =
-    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'*/
+  const ERC20_TRANSFER_TOPIC0 =
+    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 
-  if (lock && tokenAddress.toString().length > 0) {
+  if (tokenAddress != Bytes.fromHexString(nullAddress)) {
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
     if (logs) {
@@ -441,17 +444,11 @@ export function createReceipt(event: ethereum.Event): void {
       // including one for the ERC20 transfer
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
-
-        const hashedSignature = txLog.topics[0].toHexString()
-        const decodedSignature = ethereum.decode(
-          '(address,address,uint256)',
-          txLog.data
-        )
-
-        const isTransfer =
-          hashedSignature === decodedSignature!.toAddress().toHexString()
-
-        if (isTransfer) {
+        if (
+          txLog.address == tokenAddress &&
+          // Do we always have txLog.topics[0] ?
+          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
+        ) {
           receipt.payer = ethereum
             .decode('address', txLog.topics[1])!
             .toAddress()
