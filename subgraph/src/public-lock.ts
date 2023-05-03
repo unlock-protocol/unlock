@@ -5,7 +5,6 @@ import {
   Bytes,
   ethereum,
   store,
-  ByteArray,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey as CancelKeyEvent,
