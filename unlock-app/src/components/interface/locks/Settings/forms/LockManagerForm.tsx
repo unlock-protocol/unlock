@@ -248,20 +248,22 @@ export const LockManagerForm = ({
   const addLockManagerMutation = useMutation(addLockManager, {
     onSuccess: () => {
       setValue('manager', '')
+      refetch()
     },
   })
 
-  const { isLoading, data: lockSubgraph } = useQuery(
+  const {
+    isLoading,
+    data: lockSubgraph,
+    refetch,
+  } = useQuery(
     [
       'getLockManagerForm',
       lockAddress,
       network,
       addLockManagerMutation.isSuccess,
     ],
-    async () => getLock(),
-    {
-      refetchInterval: 2000,
-    }
+    async () => getLock()
   )
 
   const onAddLockManager = async ({ manager = '' }: any) => {
