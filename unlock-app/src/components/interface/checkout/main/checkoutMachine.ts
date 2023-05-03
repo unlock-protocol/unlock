@@ -207,10 +207,8 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   hook: undefined,
   metadata: undefined,
 }
-
 export const checkoutMachine = createMachine(
   {
-    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'checkout',
     initial: 'SELECT',
     tsTypes: {} as import('./checkoutMachine.typegen').Typegen0,
@@ -320,28 +318,10 @@ export const checkoutMachine = createMachine(
       },
       METADATA: {
         on: {
-          SELECT_RECIPIENTS: [
-            {
-              target: 'MESSAGE_TO_SIGN',
-              actions: ['selectRecipients'],
-              cond: 'requireMessageToSign',
-            },
-            {
-              target: 'PASSWORD',
-              actions: ['selectRecipients'],
-              cond: 'requirePassword',
-            },
-            {
-              target: 'PROMO',
-              actions: ['selectRecipients'],
-              cond: 'requirePromo',
-            },
-            {
-              target: 'CAPTCHA',
-              actions: ['selectRecipients'],
-              cond: 'requireCaptcha',
-            },
-          ],
+          SELECT_RECIPIENTS: {
+            target: 'PAYMENT',
+            actions: ['selectRecipients'],
+          },
           BACK: [
             {
               target: 'SELECT',
@@ -359,30 +339,113 @@ export const checkoutMachine = createMachine(
           },
         },
       },
+      PAYMENT: {
+        on: {
+          SELECT_PAYMENT_METHOD: [
+            {
+              target: 'CARD',
+              actions: ['selectPaymentMethod'],
+              cond: (_, event) => event.payment.method === 'card',
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireCaptcha',
+            },
+            {
+              actions: ['selectPaymentMethod'],
+              target: 'CONFIRM',
+            },
+          ],
+          BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.skipRecipient,
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      CARD: {
+        on: {
+          SELECT_PAYMENT_METHOD: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireCaptcha',
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['selectPaymentMethod'],
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+          BACK: 'PAYMENT',
+        },
+      },
       MESSAGE_TO_SIGN: {
         on: {
           SIGN_MESSAGE: [
             {
+              target: 'PASSWORD',
               actions: ['signMessage'],
               cond: 'requirePassword',
-              target: 'PASSWORD',
             },
             {
+              target: 'PROMO',
               actions: ['signMessage'],
               cond: 'requirePromo',
-              target: 'PROMO',
             },
             {
+              target: 'CAPTCHA',
               actions: ['signMessage'],
               cond: 'requireCaptcha',
-              target: 'CAPTCHA',
             },
             {
+              target: 'CONFIRM',
               actions: ['signMessage'],
-              target: 'PAYMENT',
             },
           ],
-          BACK: 'METADATA',
+          BACK: 'PAYMENT',
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -398,17 +461,21 @@ export const checkoutMachine = createMachine(
               cond: (ctx) => ctx.renew,
             },
             {
-              target: 'PAYMENT',
+              target: 'CONFIRM',
               actions: ['submitPassword'],
             },
           ],
           BACK: [
             {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
+            {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
           DISCONNECT: {
@@ -426,17 +493,21 @@ export const checkoutMachine = createMachine(
               cond: (ctx) => ctx.renew,
             },
             {
-              target: 'PAYMENT',
+              target: 'CONFIRM',
               actions: ['submitPromo'],
             },
           ],
           BACK: [
             {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
+            {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
           DISCONNECT: {
@@ -454,17 +525,21 @@ export const checkoutMachine = createMachine(
               cond: (ctx) => ctx.renew,
             },
             {
-              target: 'PAYMENT',
+              target: 'CONFIRM',
               actions: ['solveCaptcha'],
             },
           ],
           BACK: [
             {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
+            {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
           DISCONNECT: {
@@ -473,62 +548,6 @@ export const checkoutMachine = createMachine(
           },
         },
       },
-      PAYMENT: {
-        on: {
-          SELECT_PAYMENT_METHOD: [
-            {
-              target: 'CARD',
-              actions: ['selectPaymentMethod'],
-              cond: (_, event) => event.payment.method === 'card',
-            },
-            {
-              actions: ['selectPaymentMethod'],
-              target: 'CONFIRM',
-            },
-          ],
-          BACK: [
-            {
-              cond: 'requirePassword',
-              target: 'PASSWORD',
-            },
-            {
-              cond: 'requirePromo',
-              target: 'PROMO',
-            },
-            {
-              cond: 'requireCaptcha',
-              target: 'CAPTCHA',
-            },
-            {
-              cond: 'requireMessageToSign',
-              target: 'MESSAGE_TO_SIGN',
-            },
-            {
-              target: 'METADATA',
-            },
-          ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
-        },
-      },
-      CARD: {
-        on: {
-          SELECT_PAYMENT_METHOD: [
-            {
-              target: 'CONFIRM',
-              actions: ['selectPaymentMethod'],
-            },
-          ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
-          BACK: 'PAYMENT',
-        },
-      },
-
       CONFIRM: {
         on: {
           CONFIRM_MINT: {
@@ -536,6 +555,18 @@ export const checkoutMachine = createMachine(
             actions: ['confirmMint'],
           },
           BACK: [
+            {
+              target: 'PASSWORD',
+              cond: (ctx) => ctx.hook === 'password',
+            },
+            {
+              target: 'CAPTCHA',
+              cond: (ctx) => ctx.hook === 'captcha',
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
             {
               target: 'PAYMENT',
             },
@@ -554,7 +585,6 @@ export const checkoutMachine = createMachine(
           },
         },
       },
-
       UNLOCK_ACCOUNT: {
         invoke: {
           id: 'unlockAccount',
