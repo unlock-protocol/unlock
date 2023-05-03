@@ -10,6 +10,7 @@ import {
   versionEqualOrAbove,
   nodeSetup,
   resetNode,
+  getHardhatProvider,
 } from '../helpers'
 
 global.suiteData = {
@@ -61,6 +62,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let web3Service
   let ERC20
   let accounts
+  let snapshot
 
   // Unlock v4 can only interact w PublicLock v4
   const PublicLockVersions =
@@ -79,6 +81,13 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       walletService,
       accounts,
     }
+    const provider = await getHardhatProvider()
+    snapshot = await provider.send('evm_snapshot')
+  })
+
+  afterAll(async () => {
+    const provider = await getHardhatProvider()
+    await provider.send('evm_revert', [snapshot])
   })
 
   it('should yield true to isUnlockContractDeployed', async () => {
