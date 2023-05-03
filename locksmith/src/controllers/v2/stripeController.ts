@@ -64,7 +64,7 @@ export const getConnectionsForManager = async (req: Request, res: Response) => {
     await Promise.all(
       connections.map(async ({ stripeAccount }) => {
         const connection = await stripeConnection(stripeAccount)
-        if (connection.charges_enabled) {
+        if (connection?.charges_enabled) {
           return connection
         }
         return false

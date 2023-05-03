@@ -55,7 +55,6 @@ const LockSettingsPage = ({
     async () => await getLock(),
     {
       enabled: lockAddress?.length > 0 && network !== undefined,
-      refetchInterval: 1000,
     }
   )
 

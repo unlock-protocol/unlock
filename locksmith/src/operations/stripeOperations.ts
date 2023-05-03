@@ -6,6 +6,7 @@ import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
 import stripe from '../config/stripe'
 import logger from '../logger'
+import Stripe from 'stripe'
 
 const { Op } = Sequelize
 
@@ -211,15 +212,23 @@ export const getStripeConnectForLock = async (lock: string, chain: number) => {
 
   const account = await stripeConnection(stripeConnectLockDetails.stripeAccount)
 
-  if (account.charges_enabled) {
+  if (account?.charges_enabled) {
     return stripeConnectLockDetails.stripeAccount
   }
 
   return 0
 }
 
-export const stripeConnection = async (stripeAccount: string) => {
-  return await stripe.accounts.retrieve(stripeAccount)
+export const stripeConnection = async (
+  stripeAccount: string
+): Promise<Stripe.Account | null> => {
+  let account = null
+  try {
+    account = await stripe.accounts.retrieve(stripeAccount)
+  } catch (error) {
+    console.error(error)
+  }
+  return account
 }
 
 export default {
