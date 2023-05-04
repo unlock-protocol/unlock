@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf abis networks.json build generated",
     "prepare": "yarn prepare:networks && yarn prepare:abis",
-    "prepare:networks": "node ./bin/networks.js",
+    "prepare:networks": "node bin/thegraph network",
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
@@ -22,13 +22,14 @@
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.44.0",
+    "@graphprotocol/graph-cli": "0.48.0",
     "@graphprotocol/graph-ts": "0.29.3",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "8.37.0",
+    "eslint": "8.39.0",
     "fs-extra": "11.1.1",
     "handlebars": "4.7.7",
+    "write-yaml-file": "5.0.0",
     "yargs": "17.7.2"
   },
   "installConfig": {

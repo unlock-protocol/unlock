@@ -3,8 +3,11 @@
 const path = require('path')
 const fs = require('fs-extra')
 const networksConfig = require('@unlock-protocol/networks')
+const writeYamlFile = require('write-yaml-file')
+const manifest = require('../src/manifest.js')
 
 const networkFilePath = path.join(__dirname, '..', 'networks.json')
+const manifestFilePath = path.join(__dirname, '..', 'subgraph.yaml')
 
 // Some networks have a custom networkName
 const networkName = (n) => {
@@ -47,51 +50,14 @@ const generateNetworksFile = async () => {
 }
 
 const generateManifestFile = async () => {
-  const networks = Object.keys(networksConfig)
-    .filter((d) => !['networks', 'default', 'localhost'].includes(d))
-    .reduce((acc, chainName) => {
-      const {
-        startBlock,
-        unlockAddress: unlockContractAddress,
-        previousDeploys,
-      } = networksConfig[chainName]
+  console.log('generate the manifest file!')
+  await writeYamlFile(manifestFilePath, manifest)
+  console.log(`Manifest file saved at: ${manifestFilePath}`)
 
-      const previous = {}
-      if (previousDeploys) {
-        previousDeploys.forEach(({ unlockAddress: address, startBlock }, i) => {
-          previous[`Unlock${i}`] = { address, startBlock }
-        })
-      }
-
-      const unlock = {
-        Unlock: {
-          address: unlockContractAddress,
-          startBlock,
-        },
-        ...previous,
-      }
-
-      return {
-        ...acc,
-        [networkName(chainName)]: unlock,
-      }
-    }, {})
-
-  fs.writeJSONSync(networkFilePath, networks, { spaces: 2 })
-  console.log(`Networks file saved at: ${networkFilePath}`)
 }
 
 module.exports = {
   networkName,
-  generateNetworksFile
-}
-
-// execute as standalone
-if (require.main === module) {
-  generateNetworksFile()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error)
-      process.exit(1)
-    })
+  generateNetworksFile,
+  generateManifestFile
 }

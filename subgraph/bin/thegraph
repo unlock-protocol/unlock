@@ -9,7 +9,7 @@ const { hideBin } = require('yargs/helpers')
 const networks = require('@unlock-protocol/networks')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
-const { networkName } = require('./networks')
+const { networkName, generateNetworksFile, generateManifestFile } = require('./networks')
 
 const executeCommand = async (command) => {
   try {
@@ -46,9 +46,13 @@ const checkStudioAccessToken = () => {
   }
 }
 
-const prepare = async () => {
+const prepare = async (network) => {
   console.log('prepare...')
-  await executeCommand(`yarn run prepare`)
+  if (!network) {
+    throw new Error('Missing network name')
+  }
+  await generateManifestFile(network)
+  await generateNetworksFile()
 }
 
 const codegen = async () => {
@@ -101,8 +105,6 @@ const deployStudio = async (version, subgraphName) => {
  * @returns 
  */
 const deploy = async (network, graphLabel) => {
-  checkHostedServiceAccessToken()
-  checkStudioAccessToken()
   if (!network) {
     throw new Error('Missing network name')
   }
@@ -115,6 +117,7 @@ const deploy = async (network, graphLabel) => {
     'https://api.thegraph.com/subgraphs/name/(.*)'
   )
   if (matchHosted) {
+    checkHostedServiceAccessToken()
     return deployHosted(graphLabel, matchHosted[1])
   }
 
@@ -122,6 +125,7 @@ const deploy = async (network, graphLabel) => {
     'https://api.studio.thegraph.com/query/44190/(.*)/(.*)'
   )
   if (matchStudio) {
+    checkStudioAccessToken()
     const [major, minor, patch] = matchStudio[2]
       .split('.')
       .map((x) => parseInt(x))
@@ -147,15 +151,27 @@ require('yargs/yargs')(hideBin(process.argv))
     async () => await codegen()
   )
   .command(
-    'build <network>',
-    'build with thegraph hosted service',
+    'prepare <network>',
+    'prepare config for network',
     (yargs) =>
       yargs.positional('network', {
         describe: 'the network to deploy',
         choices,
       }),
     async ({ network }) => {
-      await prepare()
+      await prepare(network)
+    }
+  )
+  .command(
+    'build <network>',
+    'build ',
+    (yargs) =>
+      yargs.positional('network', {
+        describe: 'the network to deploy',
+        choices,
+      }),
+    async ({ network }) => {
+      await prepare(network)
       await codegen()
       await build(network)
     }
@@ -169,7 +185,7 @@ require('yargs/yargs')(hideBin(process.argv))
         choices,
       }),
     async ({ network, label }) => {
-      await prepare()
+      await prepare(network)
       await codegen()
       await build(network)
       await deploy(network, label)
@@ -180,20 +196,21 @@ require('yargs/yargs')(hideBin(process.argv))
     'Deploy subgraph on all networks',
     {},
     async ({ label }) => {
-
       // check config
       console.log(
         `Deploying subgraphs for:\n${choices.map((c) => ` - ${c}\n`).join('')}`
       )
 
-      // prepare manifest and network
-      await prepare()
+      checkHostedServiceAccessToken()
+      checkStudioAccessToken()
 
       // generate code
       await codegen()
 
       // build and deploy each network
       for (const network of choices) {
+        // prepare manifest and network
+        await prepare(network)
         await build(network)
         await deploy(network, label)
       }
