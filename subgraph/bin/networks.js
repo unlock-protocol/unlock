@@ -64,6 +64,7 @@ const generateManifestFile = async (network) => {
       name: `Unlock${i}`,
     }
     newSource.source.address = previous.unlockAddress
+    newSource.source.startBlock = previous.startBlock
     manifest.dataSources.push(newSource)
   })
 

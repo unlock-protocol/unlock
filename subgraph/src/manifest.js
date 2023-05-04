@@ -12,8 +12,8 @@ module.exports = {
       kind: 'ethereum',
       source: {
         abi: 'Unlock',
-        address: '0xe79B93f8E22676774F2A8dAd469175ebd00029FA',
-        startBlock: 16989000,
+        address: '', // To be completed
+        startBlock: 0, // To be completed!
       },
       mapping: {
         kind: 'ethereum/events',
@@ -54,7 +54,7 @@ module.exports = {
         ],
         file: './src/unlock.ts',
       },
-      network: 'mainnet',
+      network: '', // To be completed
     },
   ],
   templates: [
