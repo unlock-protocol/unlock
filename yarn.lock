@@ -16609,7 +16609,7 @@ __metadata:
     tailwind-merge: 1.12.0
     tailwindcss: 3.3.2
     typescript: 5.0.4
-    use-local-storage: 2.3.6
+    use-local-storage: 3.0.0
     vitest: 0.29.7
     yaml-front-matter: 4.1.1
   languageName: unknown
@@ -52595,12 +52595,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-local-storage@npm:2.3.6":
-  version: 2.3.6
-  resolution: "use-local-storage@npm:2.3.6"
+"use-local-storage@npm:3.0.0":
+  version: 3.0.0
+  resolution: "use-local-storage@npm:3.0.0"
   peerDependencies:
     react: ">=16.8.1"
-  checksum: e040b2344a087d2e562182fa92e05a14aa97620cca721da35a30bfa6671d88883a6317037be937159b88ee96bcfaaa76ff24f4f0f93a951702f9ebe30b57cdd6
+  checksum: 96865f524ee572b27dc1496dab7e652aa9c76736bd1ebfcbb192fe2ed9f075dcb6ad7691295e76d6c97355136d73e4fd84bf19227cb5402e7a225c3fcf261e69
   languageName: node
   linkType: hard
 
