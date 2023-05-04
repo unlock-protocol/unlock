@@ -46,6 +46,7 @@ export const SettingPayments = ({
           network={network}
           isManager={isManager}
           disabled={!isManager}
+          lock={lock}
         />
       </SettingCard>
 

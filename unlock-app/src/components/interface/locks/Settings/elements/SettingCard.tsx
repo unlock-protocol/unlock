@@ -11,7 +11,7 @@ interface SettingCardProps {
 
 interface SettingCardDetailProps {
   title: string
-  description: ReactNode
+  description?: ReactNode
 }
 
 export const SettingCardDetail = ({
@@ -21,7 +21,9 @@ export const SettingCardDetail = ({
   return (
     <div className="flex flex-col">
       <span className="text-base font-bold text-gray-700">{title}</span>
-      <div className="text-sm text-gray-700">{description}</div>
+      {description && (
+        <div className="text-sm text-gray-700">{description}</div>
+      )}
     </div>
   )
 }

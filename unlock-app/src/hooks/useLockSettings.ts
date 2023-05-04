@@ -61,6 +61,13 @@ interface SaveSlugProps {
   network: number
 }
 
+interface SettingsProps {
+  lockAddress: string
+  network: number
+  slug?: string
+  creditCardPrice?: number
+}
+
 export function useSaveSlugSetting() {
   return useMutation(async ({ slug, lockAddress, network }: SaveSlugProps) => {
     if (slug) {
@@ -68,5 +75,27 @@ export function useSaveSlugSetting() {
         slug,
       })
     }
+  })
+}
+
+export function useSaveLockSettings() {
+  return useMutation(async (settings: SettingsProps) => {
+    const { lockAddress, network } = settings
+
+    return storage.saveLockSetting(network, lockAddress, {
+      ...settings,
+    })
+  })
+}
+
+export function useGetLockSettings({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) {
+  return useQuery(['getLockSetting', lockAddress, network], async () => {
+    return await storage.getLockSettings(network, lockAddress)
   })
 }
