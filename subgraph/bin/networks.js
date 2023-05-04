@@ -49,15 +49,30 @@ const generateNetworksFile = async () => {
   console.log(`Networks file saved at: ${networkFilePath}`)
 }
 
-const generateManifestFile = async () => {
+const generateManifestFile = async (network) => {
   console.log('generate the manifest file!')
-  await writeYamlFile(manifestFilePath, manifest)
-  console.log(`Manifest file saved at: ${manifestFilePath}`)
+  const { previousDeploys } = networksConfig[network]
 
+  // If the network has multiple deploys of Unlock, we need to add them to the manifest!
+  // Note: the networks file will still be used...
+  const dataSource = manifest.dataSources.find(
+    (source) => source.name === 'Unlock'
+  )
+  previousDeploys.forEach((previous, i) => {
+    const newSource = {
+      ...dataSource,
+      name: `Unlock${i}`,
+    }
+    newSource.source.address = previous.unlockAddress
+    manifest.dataSources.push(newSource)
+  })
+
+  await writeYamlFile(manifestFilePath, manifest, { noRefs: true })
+  console.log(`Manifest file saved at: ${manifestFilePath}`)
 }
 
 module.exports = {
   networkName,
   generateNetworksFile,
-  generateManifestFile
+  generateManifestFile,
 }

@@ -9,4 +9,3 @@ tests/.bin
 # generated files
 abis
 networks.json
-subgraph.yaml

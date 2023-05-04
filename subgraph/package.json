@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf abis networks.json build generated",
     "prepare": "yarn prepare:networks && yarn prepare:abis",
-    "prepare:networks": "node bin/thegraph network",
+    "prepare:networks": "node bin/thegraph prepare",
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",

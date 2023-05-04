@@ -144,6 +144,7 @@ const choices = Object.keys(networks).filter(
 )
 
 require('yargs/yargs')(hideBin(process.argv))
+  .strict()
   .command(
     'codegen',
     'Deploy subgraph on all networks',
