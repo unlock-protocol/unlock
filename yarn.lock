@@ -6512,12 +6512,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:2.9.11":
-  version: 2.9.11
-  resolution: "@hookform/resolvers@npm:2.9.11"
+"@hookform/resolvers@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@hookform/resolvers@npm:3.1.0"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 977ea038bb94457ac9f6c7ca65438ce8fcd0cf7643b9925d8bc4d66df6faa0f49ad642bee7362f86a4d3ff7ff53d18b7aea0597085993971cae00e86bf6eda73
+  checksum: 8f6690e514e645dd2a38baf573e7a62a9555c95d6a27f84216be7b3ae4cdc1c09111d6f7a38250612e46aa9d562ccec63db9306ec179156381583b444bf552c2
   languageName: node
   linkType: hard
 
@@ -16381,7 +16381,7 @@ __metadata:
     "@enzoferey/ethers-error-parser": 0.2.3
     "@headlessui/react": 1.7.14
     "@hookform/error-message": 2.0.1
-    "@hookform/resolvers": 2.9.11
+    "@hookform/resolvers": 3.1.0
     "@radix-ui/react-avatar": 1.0.2
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.50.0
