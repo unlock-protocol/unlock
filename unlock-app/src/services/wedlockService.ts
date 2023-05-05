@@ -24,8 +24,8 @@ export default class WedlockService {
     recipient: string,
     params: Params = {},
     attachments: Attachment[] = [],
-    replyTo?: string,
-    emailSender?: string
+    replyTo?: string | null,
+    emailSender?: string | null
   ) => {
     try {
       const payload = {
