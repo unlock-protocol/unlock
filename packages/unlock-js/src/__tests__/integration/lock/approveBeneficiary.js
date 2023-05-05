@@ -3,7 +3,7 @@ import {
   versionEqualOrBelow,
   versionEqualOrAbove,
 } from '../../helpers/integration'
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 import { expect, beforeAll } from 'vitest'
 
 let web3Service, chainId, walletService, lock, lockAddress, ERC20
@@ -19,6 +19,8 @@ export default ({ isERC20, publicLockVersion }) =>
       let receiver
       let receiverBalanceBefore
       let transactionHash
+
+      const { ethers } = hre
 
       beforeAll(async () => {
         ;({ web3Service, chainId, walletService, lock, lockAddress, ERC20 } =

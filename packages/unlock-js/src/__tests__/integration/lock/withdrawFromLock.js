@@ -1,5 +1,5 @@
 import { it, expect, beforeAll } from 'vitest'
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 import {
   versionEqualOrBelow,
   versionEqualOrAbove,
@@ -15,6 +15,8 @@ export default ({ publicLockVersion }) =>
     let transactionHash
     let beneficiary
     let keyOwners
+
+    const { ethers } = hre
 
     const getBalance = async (address, chainId, tokenAddress) =>
       tokenAddress === null
