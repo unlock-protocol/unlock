@@ -1,4 +1,5 @@
 import { ethers } from 'hardhat'
+import { it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 
 let walletService, web3Service, lockAddress, lock, chainId, accounts

@@ -1,3 +1,4 @@
+import { it, expect, beforeAll } from 'vitest'
 let walletService, web3Service, chainId, lock, lockAddress
 
 export default () => () => {

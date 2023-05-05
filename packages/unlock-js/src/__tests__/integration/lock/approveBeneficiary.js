@@ -4,6 +4,7 @@ import {
   versionEqualOrAbove,
 } from '../../helpers/integration'
 import { ethers } from 'hardhat'
+import { expect, beforeAll } from 'vitest'
 
 let web3Service, chainId, walletService, lock, lockAddress, ERC20
 

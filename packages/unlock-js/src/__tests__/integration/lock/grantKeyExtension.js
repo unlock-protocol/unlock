@@ -1,5 +1,5 @@
 import { versionEqualOrAbove } from '../../helpers/integration'
-
+import { describe, it, expect, beforeAll } from 'vitest'
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>

@@ -1,3 +1,5 @@
+import { it, expect, beforeAll } from 'vitest'
+
 import { versionEqualOrAbove } from '../../helpers/integration'
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 

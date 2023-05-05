@@ -1,6 +1,7 @@
-let walletService, web3Service, chainId, lockAddress
+import { it, expect, beforeAll } from 'vitest'
 import { ZERO } from '../../../constants'
 import { versionEqualOrAbove } from '../../helpers/integration'
+let walletService, web3Service, chainId, lockAddress
 
 export default ({ publicLockVersion }) =>
   () => {
