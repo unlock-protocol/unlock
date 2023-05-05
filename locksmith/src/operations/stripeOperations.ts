@@ -140,12 +140,18 @@ export const connectStripe = async (
   stripeAccount?: string
 ) => {
   if (stripeAccount) {
-    await StripeConnectLock.create({
-      lock,
-      manager: lockManager,
-      stripeAccount,
-      chain,
-    })
+    // Check the validity!
+    const account = await stripeConnection(stripeAccount)
+    if (account?.charges_enabled) {
+      await StripeConnectLock.create({
+        lock,
+        manager: lockManager,
+        stripeAccount,
+        chain,
+      })
+    } else {
+      throw new Error('Invalid Stripe Account')
+    }
     // Nothing expected!
     return
   } else {
