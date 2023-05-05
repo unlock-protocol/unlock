@@ -6512,12 +6512,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:2.9.11":
-  version: 2.9.11
-  resolution: "@hookform/resolvers@npm:2.9.11"
+"@hookform/resolvers@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@hookform/resolvers@npm:3.1.0"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 977ea038bb94457ac9f6c7ca65438ce8fcd0cf7643b9925d8bc4d66df6faa0f49ad642bee7362f86a4d3ff7ff53d18b7aea0597085993971cae00e86bf6eda73
+  checksum: 8f6690e514e645dd2a38baf573e7a62a9555c95d6a27f84216be7b3ae4cdc1c09111d6f7a38250612e46aa9d562ccec63db9306ec179156381583b444bf552c2
   languageName: node
   linkType: hard
 
@@ -13658,36 +13658,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.29.1":
-  version: 4.29.1
-  resolution: "@tanstack/query-core@npm:4.29.1"
-  checksum: e7a5a73e5e743411e39348bee3ded4b6c5dd3a70009e72e067e257d5f3d612bfe8df0998cddff6ad7a078e0bcf7a3c92ded669758ca697055472ce910e23a368
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:4.29.5":
   version: 4.29.5
   resolution: "@tanstack/query-core@npm:4.29.5"
   checksum: 367176beccd78e959c74e69e96497b626dd1c139398501eb7a04cf92215edf262665c3e7bb59df68320779d49893d3153a3b41e750b9046655b45cfe44691b36
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:4.29.1":
-  version: 4.29.1
-  resolution: "@tanstack/react-query@npm:4.29.1"
-  dependencies:
-    "@tanstack/query-core": 4.29.1
-    use-sync-external-store: ^1.2.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-native: "*"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 39417ffd3a6298b376f1d739dc2fe4c042c416902c216f61dff9b26dc80d68872770c90ac276db581c1094368f0b9038a34fab8b7df89b018f3960c938d73a57
   languageName: node
   linkType: hard
 
@@ -16185,7 +16159,7 @@ __metadata:
     eslint-plugin-mocha: 10.1.0
     hardhat: 2.14.0
     mocha: 10.2.0
-    prettier: 2.8.7
+    prettier: 2.8.8
     ts-mocha: 10.0.0
     ts-node: 10.9.1
     tslint: 5.20.1
@@ -16322,7 +16296,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: 8.39.0
     next: 13.3.4
-    prettier: 2.8.7
+    prettier: 2.8.8
     typescript: 5.0.4
     vite: 4.3.3
     vite-plugin-node-polyfills: 0.8.2
@@ -16395,7 +16369,7 @@ __metadata:
     hardhat-tracer: 2.1.2
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    prettier: 2.8.7
+    prettier: 2.8.8
     prettier-plugin-solidity: 1.1.3
     prompt: 1.3.0
     solhint: 3.3.8
@@ -16498,13 +16472,13 @@ __metadata:
     "@enzoferey/ethers-error-parser": 0.2.3
     "@headlessui/react": 1.7.14
     "@hookform/error-message": 2.0.1
-    "@hookform/resolvers": 2.9.11
+    "@hookform/resolvers": 3.1.0
     "@radix-ui/react-avatar": 1.0.2
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.50.0
     "@stripe/react-stripe-js": 2.1.0
     "@stripe/stripe-js": 1.52.1
-    "@tanstack/react-query": 4.29.1
+    "@tanstack/react-query": 4.29.5
     "@testing-library/react": 14.0.0
     "@testing-library/react-hooks": 8.0.1
     "@tw-classed/react": 1.4.4
@@ -16549,7 +16523,7 @@ __metadata:
     parse-domain: 7.0.1
     postcss: 8.4.23
     postmate: 1.5.2
-    prettier: 2.8.7
+    prettier: 2.8.8
     prop-types: 15.8.1
     qr-scanner: 1.4.2
     qrcode.react: 3.1.0
@@ -16606,7 +16580,7 @@ __metadata:
     eslint-plugin-standard: 4.1.0
     microbundle-crl: 0.13.11
     npm-run-all: 4.1.5
-    prettier: 2.8.7
+    prettier: 2.8.8
     react: 18.2.0
     react-dom: 18.2.0
     react-scripts: 5.0.1
@@ -16625,7 +16599,7 @@ __metadata:
     eslint: 8.39.0
     ethers: 5.7.2
     passport-custom: 1.1.1
-    prettier: 2.8.7
+    prettier: 2.8.8
   peerDependencies:
     passport: ^0.6.x
   languageName: unknown
@@ -16657,7 +16631,7 @@ __metadata:
     graphql-request: 5.1.0
     hardhat: 2.13.0
     jest: 29.5.0
-    prettier: 2.8.7
+    prettier: 2.8.8
     react-to-print: 2.14.12
     siwe: 1.1.6
     ts-jest: 29.0.3
@@ -16703,12 +16677,12 @@ __metadata:
     feed: 4.2.2
     gray-matter: 4.0.3
     next: 13.3.4
-    next-seo: 5.15.0
+    next-seo: 6.0.0
     next-transpile-modules: 10.0.0
     numeral: 2.0.6
     path-match: 1.2.4
     postcss: 8.4.23
-    prettier: 2.8.7
+    prettier: 2.8.8
     raw-loader: 4.0.2
     react: 18.2.0
     react-apexcharts: 1.4.0
@@ -16726,7 +16700,7 @@ __metadata:
     tailwind-merge: 1.12.0
     tailwindcss: 3.3.2
     typescript: 5.0.4
-    use-local-storage: 2.3.6
+    use-local-storage: 3.0.0
     vitest: 0.29.7
     yaml-front-matter: 4.1.1
   languageName: unknown
@@ -16752,7 +16726,7 @@ __metadata:
     netlify-cli: 13.2.2
     node-forge: 1.3.1
     nodemailer: 6.9.1
-    prettier: 2.8.7
+    prettier: 2.8.8
     regenerator-runtime: 0.13.11
     typescript: 5.0.4
     vitest: 0.30.1
@@ -39600,14 +39574,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-seo@npm:5.15.0":
-  version: 5.15.0
-  resolution: "next-seo@npm:5.15.0"
+"next-seo@npm:6.0.0":
+  version: 6.0.0
+  resolution: "next-seo@npm:6.0.0"
   peerDependencies:
     next: ^8.1.1-canary.54 || >=9.0.0
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 05b0769d9c9abcc6a0179e5d724e87b1a3a7591a9c2caa4ef5b791769fcf868cb97fbcd90264106101cf7fbc073b0375ab90026aa519d2e899fbabea12cafbfb
+  checksum: aa986b3731386bc91408df6bca09a9edc0cdd8a7730bcdc331f283ab50803a6d60047b685eeec4b11bde1660dbb792e3737e81ef05a65682323d0d07fa9edd85
   languageName: node
   linkType: hard
 
@@ -43644,12 +43618,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.8.7, prettier@npm:^2.3.1, prettier@npm:^2.8.0, prettier@npm:^2.8.7":
-  version: 2.8.7
-  resolution: "prettier@npm:2.8.7"
+"prettier@npm:2.8.8":
+  version: 2.8.8
+  resolution: "prettier@npm:2.8.8"
   bin:
     prettier: bin-prettier.js
-  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
+  checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
   languageName: node
   linkType: hard
 
@@ -43659,6 +43633,15 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: e8851a45f60f2994775f96e07964646c299b8a8f9c64da4fbd8efafc20db3458bdcedac79aed34e1d5477540b3aa04f6499adc4979cb7937f8ebd058a767d8ff
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.3.1, prettier@npm:^2.8.0, prettier@npm:^2.8.7":
+  version: 2.8.7
+  resolution: "prettier@npm:2.8.7"
+  bin:
+    prettier: bin-prettier.js
+  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
   languageName: node
   linkType: hard
 
@@ -43998,7 +43981,7 @@ __metadata:
     toucan-js: 3.1.0
     typescript: 5.0.4
     vitest: 0.29.7
-    wrangler: 2.17.0
+    wrangler: 2.19.0
   languageName: unknown
   linkType: soft
 
@@ -52125,7 +52108,7 @@ __metadata:
     eslint-plugin-prettier: latest
     husky: 8.0.3
     lint-staged: 13.2.2
-    prettier: 2.8.7
+    prettier: 2.8.8
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
@@ -52393,12 +52376,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-local-storage@npm:2.3.6":
-  version: 2.3.6
-  resolution: "use-local-storage@npm:2.3.6"
+"use-local-storage@npm:3.0.0":
+  version: 3.0.0
+  resolution: "use-local-storage@npm:3.0.0"
   peerDependencies:
     react: ">=16.8.1"
-  checksum: e040b2344a087d2e562182fa92e05a14aa97620cca721da35a30bfa6671d88883a6317037be937159b88ee96bcfaaa76ff24f4f0f93a951702f9ebe30b57cdd6
+  checksum: 96865f524ee572b27dc1496dab7e652aa9c76736bd1ebfcbb192fe2ed9f075dcb6ad7691295e76d6c97355136d73e4fd84bf19227cb5402e7a225c3fcf261e69
   languageName: node
   linkType: hard
 
@@ -56324,9 +56307,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:2.17.0":
-  version: 2.17.0
-  resolution: "wrangler@npm:2.17.0"
+"wrangler@npm:2.19.0":
+  version: 2.19.0
+  resolution: "wrangler@npm:2.19.0"
   dependencies:
     "@cloudflare/kv-asset-handler": ^0.2.0
     "@esbuild-plugins/node-globals-polyfill": ^0.1.1
@@ -56350,7 +56333,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: e1d8b143ffbd0e788e15005ca7c564dc62d242e70ad2560c9ce6766e5aea8b198042e6b32dbab8473019419106cd6e15dc8ea8298b14b98b4d131b92a5af5ad7
+  checksum: fddfc7f7341dc58d1d2d5eed847f5b262cc181f6b8a2491c8fa0add7ff2489632994bc881bb5db5a4304960755033066bb46149e0ccee3e2c7d56957fdc6b7cc
   languageName: node
   linkType: hard
 

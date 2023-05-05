@@ -254,7 +254,7 @@ const ConnectStripe = ({
   isManager,
   disabled,
 }: ConnectStripeProps) => {
-  const [stripeAccount, setReuseLock] = useState<string>(lockAddress)
+  const [stripeAccount, setStripeAccount] = useState<string>()
   const { getWalletService, account } = useAuth()
   const web3Service = useWeb3Service()
 
@@ -368,7 +368,7 @@ const ConnectStripe = ({
                 <Select
                   defaultValue={stripeAccount}
                   onChange={(value: any) => {
-                    setReuseLock(value.toString())
+                    setStripeAccount(value.toString())
                   }}
                   options={(stripeConnections ?? [])
                     ?.map((connection: any) => {
