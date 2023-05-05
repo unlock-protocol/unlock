@@ -11,7 +11,7 @@
     "directory": "packages/unlock-js"
   },
   "scripts": {
-    "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",
+    "test": "yarn clean && yarn build:abis && yarn build:lib && vitest",
     "test:single": "hardhat test:single",
     "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
@@ -49,7 +49,6 @@
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "8.36.0",

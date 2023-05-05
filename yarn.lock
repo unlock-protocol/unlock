@@ -15971,7 +15971,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/jest-config@workspace:^, @unlock-protocol/jest-config@workspace:packages/jest-config":
+"@unlock-protocol/jest-config@workspace:packages/jest-config":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/jest-config@workspace:packages/jest-config"
   dependencies:
@@ -16420,7 +16420,6 @@ __metadata:
     "@uniswap/smart-order-router": 3.10.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
     eslint: 8.36.0
