@@ -24,6 +24,7 @@ import {
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
 import { useGetCreditCardPricing } from '~/hooks/useCreditCard'
+import { CREDIT_CARD_MIN_USD_PRICE } from '~/constants'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -182,9 +183,10 @@ const CreditCardPrice = ({
                 {...register('creditCardPrice', {
                   required: true,
                   min: {
-                    value: 0.5,
-                    message:
-                      'Price is too low for us to process credit cards. It needs to be at least $0.50.',
+                    value: CREDIT_CARD_MIN_USD_PRICE,
+                    message: `Price is too low for us to process credit cards. It needs to be at least ${parseFloat(
+                      `${CREDIT_CARD_MIN_USD_PRICE}`
+                    ).toFixed(2)}. `,
                   },
                 })}
               />
@@ -511,8 +513,10 @@ export const CreditCardForm = ({
 
       {isPricingLow && (
         <span className="text-sm text-red-600">
-          Your current price is too low for us to process credit cards. It needs
-          to be at least $0.50.
+          {`Your current price is too low for us to process credit cards. It needs
+          to be at least ${parseFloat(`${CREDIT_CARD_MIN_USD_PRICE}`).toFixed(
+            2
+          )}.`}
         </span>
       )}
     </div>

@@ -81,6 +81,8 @@ export const MONTH_NAMES = [
   'Dec',
 ]
 
+export const CREDIT_CARD_MIN_USD_PRICE = 0.5
+
 export const INFINITY = '∞'
 export const UNLIMITED_KEYS_COUNT = -1
 export const UNLIMITED_KEYS_DURATION = -1
