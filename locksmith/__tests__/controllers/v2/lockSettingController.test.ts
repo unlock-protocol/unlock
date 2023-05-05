@@ -205,4 +205,25 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(getSettingResponse.body.slug).toBe(undefined)
     expect(getSettingResponse.body.emailSender).toBe(undefined)
   })
+
+  it('should save null values for settings', async () => {
+    expect.assertions(4)
+
+    const { loginResponse } = await loginRandomUser(app)
+    // save settings
+    const saveSettingResponse = await request(app)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        replyTo: null,
+        creditCardPrice: null,
+        emailSender: null,
+      })
+
+    const response = saveSettingResponse.body
+    expect(saveSettingResponse.status).toBe(200)
+    expect(response.replyTo).toBe(null)
+    expect(response.creditCardPrice).toBe(null)
+    expect(response.emailSender).toBe(null)
+  })
 })
