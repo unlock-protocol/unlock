@@ -162,8 +162,7 @@ const CreditCardPrice = ({
               />
               {!useCustomPrice && (
                 <span className="text-sm">
-                  When custom price is not set, the conversion price will be
-                  used for credit card payments.
+                  {`If you set a custom price for card payments, we will use that one (+ fees) instead of converting the price of ${symbol} to USD.`}
                 </span>
               )}
             </>
@@ -174,11 +173,7 @@ const CreditCardPrice = ({
                 type="numeric"
                 step="any"
                 disabled={disabled}
-                description={
-                  hasPriceConversion
-                    ? 'Price in $USD that will be charged, the actual conversion price will ignored.'
-                    : `Price in $USD that will be charged`
-                }
+                description="Set a fixed price in USD that is charged for card payments."
                 error={errors?.creditCardPrice?.message}
                 {...register('creditCardPrice', {
                   required: true,
@@ -201,7 +196,7 @@ const CreditCardPrice = ({
       </div>
       {needsCustomPrice && (
         <span className="text-sm font-semibold text-red-600">
-          {`There is no conversion price for ${symbol} your lock. Your price needs to be set manually.`}
+          {`We are not able to convert ${symbol} to USD. Please set a fixed price you want to charge for card payments.`}
         </span>
       )}
     </div>
@@ -216,8 +211,8 @@ const DisconnectStripe = ({
   return (
     <div className="flex flex-col gap-4">
       <SettingCardDetail
-        title="Credit card payment ready"
-        description="Member of this Lock can now pay with credit card or crypto as they wish. "
+        title="Card payments enabled"
+        description="Your members can purchase their memberships using a card or their crypto wallets."
       />
       <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
         <Badge variant="green" className="justify-center w-full md:w-1/3">
