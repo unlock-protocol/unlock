@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 import { it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 
@@ -7,6 +7,7 @@ let walletService, web3Service, lockAddress, lock, chainId, accounts
 export default ({ publicLockVersion }) =>
   () => {
     if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+      const { ethers } = hre
       let tokenIds
       let keys
       let keyOwners
