@@ -65,7 +65,7 @@ interface SettingsProps {
   lockAddress: string
   network: number
   slug?: string
-  creditCardPrice?: number
+  creditCardPrice?: number | null
 }
 
 export function useSaveSlugSetting() {

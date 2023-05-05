@@ -19,7 +19,6 @@ import Link from 'next/link'
 import { useStripeConnect, useStripeDisconnect } from '~/hooks/useStripeConnect'
 import { storage } from '~/config/storage'
 import { useForm } from 'react-hook-form'
-import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
 import {
   useGetLockSettings,
   useSaveLockSettings,
@@ -65,31 +64,27 @@ const CreditCardPrice = ({
   disabled,
   lock,
 }: CardPaymentProps) => {
-  const [useCustomPrice, setUseCustomPrice] = useState(true)
+  const [useCustomPrice, setUseCustomPrice] = useState(false)
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
-    formState: { isDirty, errors },
+    formState: { errors },
   } = useForm<CreditCardFormSchema>({
     defaultValues: {
       creditCardPrice: undefined,
     },
   })
 
-  const { data: pricing } = useGetCreditCardPricing({
+  const { data: fiatPricing } = useGetCreditCardPricing({
     lockAddress,
     network,
   })
 
-  const { data: symbol, isLoading: isLoadingSymbol } = useGetLockCurrencySymbol(
-    {
-      lockAddress,
-      network,
-      contractAddress: lock?.currencyContractAddress,
-    }
-  )
+  const {
+    mutateAsync: saveSettingMutation,
+    isLoading: isSaveLockSettingLoading,
+  } = useSaveLockSettings()
 
   const { data: { data: lockSettings = {} } = {}, isLoading } =
     useGetLockSettings({
@@ -101,20 +96,20 @@ const CreditCardPrice = ({
     const price = lockSettings?.creditCardPrice
     if (!price) return
     setValue('creditCardPrice', price)
+    setUseCustomPrice(true)
   }, [lockSettings?.creditCardPrice, setValue])
 
-  const hasPriceConversion = pricing?.usd?.keyPrice
+  const hasPriceConversion = fiatPricing?.usd?.keyPrice
 
-  const {
-    mutateAsync: saveSettingMutation,
-    isLoading: isSaveLockSettingLoading,
-  } = useSaveLockSettings()
+  const onSaveCreditCardPrice = async ({
+    creditCardPrice,
+  }: CreditCardFormSchema) => {
+    const price = creditCardPrice ? parseFloat(`${creditCardPrice}`) : null
 
-  const onSaveCreditCardPrice = async (price: string | number) => {
     const savePricePromise = saveSettingMutation({
       lockAddress,
       network,
-      creditCardPrice: parseFloat(`${price}`),
+      creditCardPrice: price,
     })
 
     await ToastHelper.promise(savePricePromise, {
@@ -124,9 +119,8 @@ const CreditCardPrice = ({
     })
   }
 
-  const onSubmit = ({ creditCardPrice }: CreditCardFormSchema) => {
-    if (!creditCardPrice) return
-    onSaveCreditCardPrice(creditCardPrice)
+  const onSubmit = (fields: CreditCardFormSchema) => {
+    onSaveCreditCardPrice(fields)
   }
 
   if (isLoading) {
@@ -137,9 +131,10 @@ const CreditCardPrice = ({
     )
   }
 
-  const creditCardPrice = watch('creditCardPrice', '')
-  const saveDisabled =
-    isSaveLockSettingLoading || (!creditCardPrice && isDirty) || disabled
+  const saveDisabled = isSaveLockSettingLoading || disabled
+
+  const needsCustomPrice = !hasPriceConversion && !lockSettings?.creditCardPrice
+  const symbol = lock?.currencySymbol
 
   return (
     <div className="grid gap-1">
@@ -150,34 +145,42 @@ const CreditCardPrice = ({
           className="grid items-center gap-3"
         >
           {hasPriceConversion && (
-            <ToggleSwitch
-              title="Use fixed price"
-              enabled={useCustomPrice}
-              setEnabled={setUseCustomPrice}
-              onChange={(enabled) => {
-                setValue(
-                  'creditCardPrice',
-                  enabled ? lockSettings?.creditCardPrice : null,
-                  {
-                    shouldValidate: true,
-                  }
-                )
-              }}
-            />
-          )}
-          {(useCustomPrice || !hasPriceConversion) && (
             <>
+              <ToggleSwitch
+                title="Use fixed price"
+                enabled={useCustomPrice}
+                setEnabled={setUseCustomPrice}
+                onChange={(enabled) => {
+                  if (!enabled) {
+                    setValue('creditCardPrice', null, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }
+                }}
+              />
+              {!useCustomPrice && (
+                <span className="text-sm">
+                  When custom price is not set, the conversion price will be
+                  used for credit card payments.
+                </span>
+              )}
+            </>
+          )}
+          <>
+            {(useCustomPrice || !hasPriceConversion) && (
               <Input
                 type="numeric"
                 step="any"
                 disabled={disabled}
                 description={
                   hasPriceConversion
-                    ? 'This value will replace the actual conversion price when set. To use default conversion'
-                    : `This value will be used as default because there is no conversion price for ${symbol}`
+                    ? 'Price in $USD that will be charged, the actual conversion price will ignored.'
+                    : `Price in $USD that will be charged`
                 }
                 error={errors?.creditCardPrice?.message}
                 {...register('creditCardPrice', {
+                  required: true,
                   min: {
                     value: 0.5,
                     message:
@@ -185,23 +188,24 @@ const CreditCardPrice = ({
                   },
                 })}
               />
-              <div className="w-full md:w-1/3">
-                <Button className="w-full" size="small" disabled={saveDisabled}>
-                  Apply
-                </Button>
-              </div>
-            </>
-          )}
+            )}
+            <div className="w-full md:w-1/3">
+              <Button className="w-full" size="small" disabled={saveDisabled}>
+                Apply
+              </Button>
+            </div>
+          </>
         </form>
       </div>
-      {!hasPriceConversion && !isLoadingSymbol && (
+      {needsCustomPrice && (
         <span className="text-sm font-semibold text-red-600">
-          {`There is no conversion price for your lock. Your price needs to be set manually.`}
+          {`There is no conversion price for ${symbol} your lock. Your price needs to be set manually.`}
         </span>
       )}
     </div>
   )
 }
+
 const DisconnectStripe = ({
   isManager,
   disconnectStipeMutation,
@@ -418,10 +422,7 @@ export const CreditCardForm = ({
   lock,
 }: CardPaymentProps) => {
   const storageService = useStorageService()
-  const { isStripeConnected, getCreditCardPricing } = useLock(
-    { address: lockAddress },
-    network
-  )
+  const { isStripeConnected } = useLock({ address: lockAddress }, network)
 
   const getKeyGranter = async () => {
     return await storageService.getKeyGranter(network)
@@ -437,10 +438,15 @@ export const CreditCardForm = ({
     network,
   })
 
+  const { data: fiatPricing, isLoading: isLoadingPricing } =
+    useGetCreditCardPricing({
+      lockAddress,
+      network,
+    })
+
   const [
     { isLoading, data: isConnected = 0 },
     { isLoading: isLoadingKeyGranter, data: keyGranter },
-    { isLoading: isLoadingPricing, data: fiatPricing },
   ] = useQueries({
     queries: [
       {
@@ -457,10 +463,6 @@ export const CreditCardForm = ({
         queryKey: ['getKeyGranter', lockAddress, network],
         queryFn: getKeyGranter,
       },
-      {
-        queryKey: ['getCreditCardPricing', lockAddress, network],
-        queryFn: getCreditCardPricing,
-      },
     ],
   })
 
@@ -468,11 +470,20 @@ export const CreditCardForm = ({
 
   const loading = isLoading || isLoadingKeyGranter || isLoadingPricing
 
-  const Status = () => {
-    if (
-      [ConnectStatus.NOT_READY, ConnectStatus.NO_ACCOUNT].includes(isConnected)
-    ) {
-      return (
+  if (loading)
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line size="xl" width="sm" />
+      </Placeholder.Root>
+    )
+
+  return (
+    <div className="flex flex-col gap-2">
+      {[ConnectStatus.NOT_READY, ConnectStatus.NO_ACCOUNT].includes(
+        isConnected
+      ) ? (
         <ConnectStripe
           connectStripeMutation={connectStripeMutation}
           lockAddress={lockAddress}
@@ -481,11 +492,7 @@ export const CreditCardForm = ({
           keyGranter={keyGranter}
           disabled={disabled}
         />
-      )
-    }
-
-    if ([ConnectStatus.CONNECTED].includes(isConnected)) {
-      return (
+      ) : [ConnectStatus.CONNECTED].includes(isConnected) ? (
         <div className="grid grid-cols-1 gap-4">
           <DisconnectStripe
             isManager={isManager}
@@ -500,23 +507,8 @@ export const CreditCardForm = ({
             lock={lock}
           />
         </div>
-      )
-    }
-    return null
-  }
+      ) : null}
 
-  if (loading)
-    return (
-      <Placeholder.Root>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line size="xl" width="sm" />
-      </Placeholder.Root>
-    )
-
-  return (
-    <div className="flex flex-col gap-2">
-      <Status />
       {isPricingLow && (
         <span className="text-sm text-red-600">
           Your current price is too low for us to process credit cards. It needs

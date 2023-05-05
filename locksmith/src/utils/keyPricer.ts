@@ -12,6 +12,7 @@ import {
   baseStripeFee,
   GAS_COST_TO_GRANT,
 } from './constants'
+import * as lockSettingOperations from '../operations/lockSettingOperations'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -56,6 +57,16 @@ export default class KeyPricer {
     if (lock.keyPrice === '0') {
       return 0
     }
+
+    const { creditCardPrice } = await lockSettingOperations.getSettings({
+      lockAddress,
+      network,
+    })
+
+    if (creditCardPrice) {
+      return parseInt((creditCardPrice * 100).toFixed(0)) // returns the USD cents price
+    }
+
     const priceConversion = new PriceConversion()
     const usdPrice = await priceConversion.convertToUSD(
       symbol.toUpperCase(),
