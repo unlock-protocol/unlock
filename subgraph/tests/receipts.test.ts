@@ -47,7 +47,41 @@ describe('Receipts for non-ERC20', () => {
     clearStore()
   })
 
-  test('Receipt has been created', () => {
+  test('Receipt has been created for transfers with value', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(nullAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    // transfer event
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    newTransferEvent.transaction.value = BigInt.fromU32(0) // This is a grantKeys transaction
+    handleTransfer(newTransferEvent)
+
+    // key is there
+    assert.entityCount('Key', 1)
+    assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
+
+    // receipt is not there
+    assert.entityCount('Receipt', 0)
+
+    dataSourceMock.resetValues()
+  })
+
+  test('Receipt has not been created for transfers with no value', () => {
     mockDataSourceV11()
 
     // create fake ETH lock in subgraph

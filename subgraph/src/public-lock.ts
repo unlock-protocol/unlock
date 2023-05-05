@@ -144,8 +144,6 @@ export function handleTransfer(event: TransferEvent): void {
     if (key) {
       store.remove('Key', keyID)
     }
-
-    createReceipt(event)
   } else {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -171,7 +169,6 @@ export function handleTransfer(event: TransferEvent): void {
       }
       key.save()
     }
-    createReceipt(event)
   }
 }
 
@@ -458,6 +455,8 @@ export function createReceipt(event: ethereum.Event): void {
             .toBigInt()
         }
       }
+      // If no ERC20 transfer event was found, this was not a "paid" transaction,
+      // which means we don't need to create a receipt.
     }
   } else {
     receipt.payer = event.transaction.from.toHexString()
@@ -465,7 +464,6 @@ export function createReceipt(event: ethereum.Event): void {
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
-
   receipt.lockAddress = lockAddress
   receipt.timestamp = event.block.timestamp
   receipt.sender = event.transaction.from.toHexString()
@@ -479,5 +477,9 @@ export function createReceipt(event: ethereum.Event): void {
     lock.save()
   }
 
-  receipt.save()
+  // save receipt, but only if we have a payer
+  // (i.e. this is a paid transaction)
+  if (receipt.payer && receipt.amountTransferred > BigInt.fromI32(0)) {
+    receipt.save()
+  }
 }
