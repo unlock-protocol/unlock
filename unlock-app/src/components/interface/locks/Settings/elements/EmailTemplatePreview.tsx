@@ -129,8 +129,8 @@ export const EmailTemplatePreview = ({
         ...params,
       },
       [], // attachments
-      lockSettings.replyTo,
-      lockSettings.emailSender
+      lockSettings?.replyTo,
+      lockSettings?.emailSender
     )
     await ToastHelper.promise(promise, {
       loading: 'Sending email preview...',
