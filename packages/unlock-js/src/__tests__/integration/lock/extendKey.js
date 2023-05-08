@@ -55,7 +55,6 @@ export default ({ publicLockVersion }) =>
 
       it('should have renewed the key', async () => {
         expect.assertions(2)
-        console.log(key)
         expect(
           await web3Service.isValidKey(lockAddress, tokenId, chainId)
         ).toBe(true)
