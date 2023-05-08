@@ -48,4 +48,4 @@ Want to check it out today? Check out these posts from some Alpha creators:
 
 ALPHAtweet is part of the ongoing series of experiments in future business models that Unlock Protocol is exploring for the web. Thanks for being a part of it! 
 
-*Interested in becoming a creator on ALPHAtweet or have a question? Reach out to the Unlock Labs team in our [Discord](https://discord.unlock-protocol.com).*
+_Interested in becoming a creator on ALPHAtweet or have a question? Reach out to the Unlock Labs team in our [Discord](https://discord.unlock-protocol.com)._
