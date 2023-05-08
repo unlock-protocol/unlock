@@ -136,7 +136,7 @@ const MENU = {
           title: 'ALPHAtweet',
           src: '/images/marketing/img-aphatweet.png',
           url: 'https://alphatweet.xyz/',
-          description: 'Micro-blogging with a twist of referral.',
+          description: 'Make money through creating or sharing content.',
         },
         {
           title: 'Events By Unlock',
