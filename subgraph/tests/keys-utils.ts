@@ -274,7 +274,6 @@ export function createRenewKeyPurchaseEvent(
   const renewKeyPurchaseEvent = changetype<RenewKeyPurchase>(newMockEvent())
 
   renewKeyPurchaseEvent.address = dataSource.address()
-  log.info(dataSource.address().toHexString(), [])
 
   renewKeyPurchaseEvent.parameters = []
 
