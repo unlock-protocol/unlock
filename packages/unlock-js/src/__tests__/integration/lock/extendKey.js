@@ -45,11 +45,7 @@ export default ({ publicLockVersion }) =>
           }
         )
 
-        key = await web3Service.getKeyByLockForOwner(
-          lockAddress,
-          keyOwner,
-          chainId
-        )
+        key = await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
       })
 
       it('should have yielded a transaction hash', () => {
@@ -59,6 +55,7 @@ export default ({ publicLockVersion }) =>
 
       it('should have renewed the key', async () => {
         expect.assertions(2)
+        console.log(key)
         expect(
           await web3Service.isValidKey(lockAddress, tokenId, chainId)
         ).toBe(true)
