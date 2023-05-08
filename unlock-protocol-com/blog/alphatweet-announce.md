@@ -36,7 +36,7 @@ At the outset, we’re starting with a small cohort of creators including (names
 
 Want to see what ALPHAtweet looks like in action? Here’s what the experience looks like for a sharer of Alpha. (Thanks to Michael Joseph for the video walkthrough!)
 
-[AlphaTweet - Sharer Journey.mp4](ALPHAtweet%20blog%20post%209bce8f1d01824456aecf9c4a9c4e4c88/AlphaTweet_-_Sharer_Journey.mp4)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/sUTaz7-MakY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 Want to check it out today? Check out these posts from some Alpha creators:
 
