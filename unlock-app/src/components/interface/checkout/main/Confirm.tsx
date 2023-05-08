@@ -181,7 +181,7 @@ export function Confirm({
 
   const currencyContractAddress = swap
     ? payment.route.trade.inputAmount.currency?.address
-    : lock?.currencyContractAddress
+    : lock?.currencyContractAddress ?? undefined
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -248,18 +248,17 @@ export function Confirm({
 
   const amountToConvert = pricingData?.total || 0
 
-  const numberOfTokens =
-    amountToConvert > 0 && swap
-      ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
-      : pricingData?.prices?.length ?? 1
-
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
     useFiatChargePrice({
       tokenAddress: currencyContractAddress,
-      amount: numberOfTokens,
+      amount:
+        amountToConvert > 0 && swap
+          ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
+          : amountToConvert,
       network: lock!.network,
       enabled: isPricingDataAvailable,
       lockAddress: lock!.address,
+      keysToPurchase: pricingData?.prices?.length ?? 1,
     })
 
   // TODO: run full estimate so we can catch all errors, rather just check balances

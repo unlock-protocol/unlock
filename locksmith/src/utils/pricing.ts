@@ -8,7 +8,7 @@ import * as lockSettingOperations from '../operations/lockSettingOperations'
 import * as Normalizer from '../utils/normalizer'
 export interface Options {
   amount?: number
-  tokenAddress?: string
+  tokenAddress?: string | null
   network: number
 }
 
@@ -253,11 +253,13 @@ export const createTotalCharges = async ({
   amount,
   network,
   tokenAddress,
+  keysToPurchase = 1,
 }: {
   lockAddress: string
   network: number
   amount: number
-  tokenAddress?: string
+  keysToPurchase: number
+  tokenAddress?: string | null
 }) => {
   const [pricing, gasCost] = await Promise.all([
     defiLammaPrice({
@@ -275,9 +277,9 @@ export const createTotalCharges = async ({
       network,
     })
 
-    // total credit card for keys
+    // get total credit card price for the amount of keys
     if (settings?.creditCardPrice) {
-      creditCardTotal = settings?.creditCardPrice * amount
+      creditCardTotal = settings?.creditCardPrice * keysToPurchase
     }
   }
 
@@ -294,7 +296,9 @@ export const createTotalCharges = async ({
     }
   }
 
+  // prioritize to credit card total if present
   const price = creditCardTotal ?? pricing.priceInAmount
+
   const subtotal = Math.round(price! * 100)
   const fees = getFees({
     subtotal,

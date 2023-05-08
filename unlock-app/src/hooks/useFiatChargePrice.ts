@@ -7,6 +7,7 @@ interface Options {
   amount: number
   enabled?: boolean
   lockAddress: string
+  keysToPurchase?: number
 }
 
 /**
@@ -20,6 +21,7 @@ export const useFiatChargePrice = ({
   lockAddress,
   amount,
   enabled = true,
+  keysToPurchase = 1,
 }: Options) => {
   return useQuery(
     ['purchasePrice', network, lockAddress, tokenAddress, amount],
@@ -27,6 +29,7 @@ export const useFiatChargePrice = ({
       const response = await storage.getTotalPrice(
         network,
         lockAddress,
+        keysToPurchase,
         amount,
         tokenAddress
       )

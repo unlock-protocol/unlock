@@ -22,6 +22,7 @@ export const amount: RequestHandler = async (request, response) => {
 
 export const total: RequestHandler = async (request, response) => {
   const network = Number(request.query.network?.toString() || 1)
+  const keysToPurchase = Number(request.query.keysToPurchase?.toString() || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
   const lockAddress = Normalizer.ethereumAddress(
     request.query.lockAddress as string
@@ -37,6 +38,7 @@ export const total: RequestHandler = async (request, response) => {
     amount,
     tokenAddress,
     lockAddress,
+    keysToPurchase,
   })
   return response.send(charge)
 }
