@@ -6,7 +6,7 @@ description: ALPHAtweet is an experiment in web3 business models where creators 
 image: /images/blog/alphatweet/alphatweet-share.png
 ---
 
-![alphatweet-share.png](ALPHAtweet%20blog%20post%209bce8f1d01824456aecf9c4a9c4e4c88/alphatweet-share.png)
+![alphatweet-share.png](/images/blog/alphatweet/alphatweet-share.png)
 
 _**ALPHA by Unlock Labs** is an initiative to explore new business models and opportunities enabled by blockchain technologies and using Unlock Protocol. It is an iterative series of experiments with the intended goals of learning and sharing information and experiences as part of the open-source Unlock Protocol project._
 
