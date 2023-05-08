@@ -1,5 +1,5 @@
 ---
-title: Unlock Labs launches the ALPHAtweet experiment
+title: Unlock Labs Launches the ALPHAtweet Experiment
 authorName: Christopher Carfi
 publishDate: May 9, 2023
 description: ALPHAtweet is an experiment in web3 business models where creators and their community both share in the upside of creating and sharing content across social networks.
