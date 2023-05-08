@@ -265,7 +265,6 @@ export function createKeyExtendedEvent(
 
   return keyExtendedEvent
 }
-
 // before v10
 export function createRenewKeyPurchaseEvent(
   owner: Address,
