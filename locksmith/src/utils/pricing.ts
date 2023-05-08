@@ -4,6 +4,8 @@ import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
 import { GAS_COST, stripePercentage, baseStripeFee } from './constants'
+import * as lockSettingOperations from '../operations/lockSettingOperations'
+import * as Normalizer from '../utils/normalizer'
 
 export interface Options {
   amount?: number
@@ -251,10 +253,14 @@ export const createTotalCharges = async ({
   amount,
   network,
   address,
+  keysToPurchase = 1,
+  lockAddress,
 }: {
   network: number
   amount: number
   address?: string
+  keysToPurchase?: number
+  lockAddress?: string
 }) => {
   const [pricing, gasCost] = await Promise.all([
     defiLammaPrice({
@@ -265,7 +271,22 @@ export const createTotalCharges = async ({
     getGastCost({ network }),
   ])
 
-  if (pricing.priceInAmount === undefined) {
+  let creditCardTotal: number | undefined = undefined
+  if (lockAddress) {
+    const settings = await lockSettingOperations.getSettings({
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
+      network,
+    })
+
+    // get total credit card price for the amount of keys
+    if (settings?.creditCardPrice) {
+      creditCardTotal = settings?.creditCardPrice * keysToPurchase
+    }
+  }
+
+  const hasPrice = pricing?.priceInAmount || creditCardTotal
+
+  if (!hasPrice) {
     return {
       total: 0,
       subtotal: 0,
@@ -275,7 +296,11 @@ export const createTotalCharges = async ({
       isCreditCardPurchasable: false,
     }
   }
-  const subtotal = Math.round(pricing.priceInAmount * 100)
+
+  // prioritize to credit card total if present
+  const price = creditCardTotal || pricing.priceInAmount
+
+  const subtotal = Math.round(price! * 100)
   const fees = getFees({
     subtotal,
     gasCost,
