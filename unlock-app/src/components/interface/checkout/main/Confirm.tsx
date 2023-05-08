@@ -351,7 +351,7 @@ export function Confirm({
         return getReferrer(recipient, paywallConfig)
       })
 
-      const pricing = totalPricing!.creditCardTotal ?? totalPricing!.total
+      const pricing = totalPricing!.creditCardTotal || totalPricing!.total
 
       const stripeIntent = await createPurchaseIntent({
         pricing,
