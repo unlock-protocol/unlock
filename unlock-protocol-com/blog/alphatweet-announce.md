@@ -28,7 +28,7 @@ In this model, the creator can set the referral percentage bonus to any level th
 
 Here’s a walkthrough diagram of how money flows to pay both creators and sharers.
 
-[https://docs.google.com/presentation/d/1uRzAtKa4_Hm7yXbQavIwImCCSJQCOmANi1G3hp1FSKU/edit?usp=sharing](https://docs.google.com/presentation/d/1uRzAtKa4_Hm7yXbQavIwImCCSJQCOmANi1G3hp1FSKU/edit?usp=sharing)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 0%;"><iframe src="https://docs.google.com/presentation/d/e/1uRzAtKa4_Hm7yXbQavIwImCCSJQCOmANi1G3hp1FSKU/embed?start=false&loop=false&delayms=3000" frameborder="0" width="680" height="411" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></div>
 
 The revenue sharing mechanism is the big deal here. Creators set their terms, and sharers can participate in the upside. (It’s also completely configurable, so the platforms could participate in the upside, too.)
 
