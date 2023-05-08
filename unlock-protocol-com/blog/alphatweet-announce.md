@@ -22,7 +22,7 @@ Creators set their own price for unlocking their exclusive content, the Alpha. T
 
 In this model, the creator can set the referral percentage bonus to any level they want, based on the creator’s own goals. For example:
 
-- A creator could set the referral bonus to 100% (sharing everything) to optimize for reach, awareness, exposure, and virality of their content, where those doing the sharing get 100% of the fees collected when the creator’s content is unlocked.
+- A creator could set the referral bonus to 100% (giving **all** revenue received to the sharer) to optimize for reach, awareness, exposure, and virality of their content, which means that those doing the sharing get 100% of the fees collected when the creator’s content is unlocked.
 - Or, the creator could set the sharing referral bonus percentage to 0% and take all fees, but then there would be no economic benefit to those who do the sharing (which, to be fair, is the way sharing on social works today).
 - Or, the creator could set the referral bonus somewhere in the middle (50/50 or any other amount; it’s up to the creator). We may find out that ALPHAtweet and this model work best when set to something like 20/80 or 10/90 where the distribution is heavily incentivized (but we don’t know — that’s why it’s an experiment!).
 
