@@ -145,7 +145,7 @@ const MENU = {
           description: 'Ticketing events with Unlock is simple.',
         },
         {
-          title: 'Certifications By Unlock',
+          title: 'Certification by Unlock Labs',
           src: '/images/marketing/img-unlock-certification.png',
           url: 'https://certifications.unlock-protocol.com/',
           description: 'Certify and show expertise on chain.',
