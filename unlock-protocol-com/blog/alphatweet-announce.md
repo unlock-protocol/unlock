@@ -40,7 +40,7 @@ Want to see what ALPHAtweet looks like in action? Here’s what the experience l
 
 Want to check it out today? Check out these posts from some Alpha creators:
 
-- one
+- Michael C. Joseph, "[Coordinape Deep Dive](https://twitter.com/michaelcjoseph/status/1655633679794962432)"
 - two
 - three
 - four
