@@ -148,7 +148,7 @@ const MENU = {
           title: 'Certifications By Unlock',
           src: '/images/marketing/img-unlock-certification.png',
           url: 'https://certifications.unlock-protocol.com/',
-          description: 'Certify & Show the expertise on chain.',
+          description: 'Certify & show the expertise on chain.',
         },
         {
           title: 'Flocker',
