@@ -96,6 +96,6 @@ export function useGetLockSettings({
   network: number
 }) {
   return useQuery(['getLockSetting', lockAddress, network], async () => {
-    return await storage.getLockSettings(network, lockAddress)
+    return (await storage.getLockSettings(network, lockAddress))?.data
   })
 }

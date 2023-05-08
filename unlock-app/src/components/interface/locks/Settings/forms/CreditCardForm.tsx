@@ -87,11 +87,10 @@ const CreditCardPrice = ({
     isLoading: isSaveLockSettingLoading,
   } = useSaveLockSettings()
 
-  const { data: { data: lockSettings = {} } = {}, isLoading } =
-    useGetLockSettings({
-      lockAddress,
-      network,
-    })
+  const { data: lockSettings = {}, isLoading } = useGetLockSettings({
+    lockAddress,
+    network,
+  })
 
   useEffect(() => {
     const price = lockSettings?.creditCardPrice

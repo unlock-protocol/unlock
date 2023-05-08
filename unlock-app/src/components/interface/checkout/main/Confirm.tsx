@@ -122,17 +122,23 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                 ) : null}
               </div>
 
-              <div className="font-bold">
-                {item.amount <= 0
-                  ? 'FREE'
-                  : payment?.route
-                  ? `${formatNumber(
-                      payment.route
-                        .convertToQuoteToken(item.amount.toString())
-                        .toFixed()
-                    ).toLocaleString()} ${symbol}`
-                  : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
-              </div>
+              {item?.creditCardAmount > 0 ? (
+                <div className="font-bold">
+                  {`$${formatNumber(item.creditCardAmount).toLocaleString()}`}
+                </div>
+              ) : (
+                <div className="font-bold">
+                  {item.amount <= 0
+                    ? 'FREE'
+                    : payment?.route
+                    ? `${formatNumber(
+                        payment.route
+                          .convertToQuoteToken(item.amount.toString())
+                          .toFixed()
+                      ).toLocaleString()} ${symbol}`
+                    : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+                </div>
+              )}
             </div>
           )
         })}
@@ -242,15 +248,18 @@ export function Confirm({
 
   const amountToConvert = pricingData?.total || 0
 
+  const numberOfTokens =
+    amountToConvert > 0 && swap
+      ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
+      : pricingData?.prices?.length ?? 1
+
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
     useFiatChargePrice({
       tokenAddress: currencyContractAddress,
-      amount:
-        amountToConvert > 0 && swap
-          ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
-          : amountToConvert,
+      amount: numberOfTokens,
       network: lock!.network,
       enabled: isPricingDataAvailable,
+      lockAddress: lock!.address,
     })
 
   // TODO: run full estimate so we can catch all errors, rather just check balances
@@ -343,8 +352,10 @@ export function Confirm({
         return getReferrer(recipient, paywallConfig)
       })
 
+      const pricing = totalPricing!.creditCardTotal ?? totalPricing!.total
+
       const stripeIntent = await createPurchaseIntent({
-        pricing: totalPricing!.total,
+        pricing,
         stripeTokenId: payment.cardId!,
         recipients,
         referrers,
@@ -636,6 +647,7 @@ export function Confirm({
     !isLoading &&
     totalPricing?.isCreditCardPurchasable &&
     payment?.method === 'card'
+
   return (
     <Fragment>
       <ReCaptcha

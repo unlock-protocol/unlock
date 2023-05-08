@@ -4,10 +4,11 @@ import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
 import { GAS_COST, stripePercentage, baseStripeFee } from './constants'
-
+import * as lockSettingOperations from '../operations/lockSettingOperations'
+import * as Normalizer from '../utils/normalizer'
 export interface Options {
   amount?: number
-  address?: string
+  tokenAddress?: string
   network: number
 }
 
@@ -21,7 +22,7 @@ interface Price {
 
 export async function defiLammaPrice({
   network,
-  address,
+  tokenAddress,
   amount = 1,
 }: Options): Promise<
   Partial<
@@ -37,18 +38,18 @@ export async function defiLammaPrice({
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) => item.address?.toLowerCase() === address?.toLowerCase()
+    (item) => item.address?.toLowerCase() === tokenAddress?.toLowerCase()
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {
     items.push(`ethereum:${mainnetTokenAddress}`)
   }
 
-  if (address) {
-    items.push(`${networkConfig.chain}:${address}`)
+  if (tokenAddress) {
+    items.push(`${networkConfig.chain}:${tokenAddress}`)
   }
 
-  if (!address && coingecko) {
+  if (!tokenAddress && coingecko) {
     items.push(coingecko)
   }
 
@@ -135,7 +136,7 @@ export const getKeyPricingInUSD = async ({
 
   const usdPricing = await defiLammaPrice({
     network,
-    address:
+    tokenAddress:
       !currencyContractAddress ||
       currencyContractAddress === ethers.constants.AddressZero
         ? undefined
@@ -248,24 +249,41 @@ export const getFees = ({
 }
 
 export const createTotalCharges = async ({
+  lockAddress,
   amount,
   network,
-  address,
+  tokenAddress,
 }: {
+  lockAddress: string
   network: number
   amount: number
-  address?: string
+  tokenAddress?: string
 }) => {
   const [pricing, gasCost] = await Promise.all([
     defiLammaPrice({
       network,
       amount,
-      address,
+      tokenAddress,
     }),
     getGastCost({ network }),
   ])
 
-  if (pricing.priceInAmount === undefined) {
+  let creditCardTotal = undefined
+  if (lockAddress) {
+    const settings = await lockSettingOperations.getSettings({
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
+      network,
+    })
+
+    // total credit card for keys
+    if (settings?.creditCardPrice) {
+      creditCardTotal = settings?.creditCardPrice * amount
+    }
+  }
+
+  const hasPrice = pricing?.priceInAmount || creditCardTotal
+
+  if (!hasPrice) {
     return {
       total: 0,
       subtotal: 0,
@@ -275,7 +293,9 @@ export const createTotalCharges = async ({
       isCreditCardPurchasable: false,
     }
   }
-  const subtotal = Math.round(pricing.priceInAmount * 100)
+
+  const price = creditCardTotal ?? pricing.priceInAmount
+  const subtotal = Math.round(price! * 100)
   const fees = getFees({
     subtotal,
     gasCost,

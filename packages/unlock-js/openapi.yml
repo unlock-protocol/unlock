@@ -2677,6 +2677,13 @@ paths:
             type: number
 
         - in: query
+          name: lockAddress
+          required: true
+          description: The address of the lock
+          schema:
+            type: string
+
+        - in: query
           name: amount
           required: false
           description: Amount of tokens you want to get the price for in USD.
@@ -2684,7 +2691,7 @@ paths:
             type: number
 
         - in: query
-          name: address
+          name: tokenAddress
           required: false
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
@@ -2704,8 +2711,11 @@ paths:
                   - 'unlockServiceFee'
                   - 'creditCardProcessingFee'
                   - 'isCreditCardPurchasable'
+                  - 'creditCardTotal'
                 properties:
                   total:
+                    type: number
+                  creditCardTotal:
                     type: number
                   subtotal:
                     type: number

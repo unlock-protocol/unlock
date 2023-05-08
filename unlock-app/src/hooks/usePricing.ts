@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import { PaywallConfig } from '~/unlockTypes'
 import { getReferrer } from '~/utils/checkoutLockUtils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useGetLockSettings } from './useLockSettings'
 
 interface Options {
   currencyContractAddress?: string | null
@@ -27,8 +28,13 @@ export const usePricing = ({
   enabled = true,
 }: Options) => {
   const web3Service = useWeb3Service()
+  const { data: lockSettings } = useGetLockSettings({
+    lockAddress,
+    network,
+  })
+
   return useQuery(
-    ['purchasePriceFor', network, lockAddress, recipients, data],
+    ['purchasePriceFor', network, lockAddress, recipients, data, lockSettings],
     async () => {
       const decimals = currencyContractAddress
         ? await web3Service.getTokenDecimals(currencyContractAddress!, network)
@@ -44,19 +50,27 @@ export const usePricing = ({
             referrer,
             data: data?.[index] || '0x',
           }
+
+          const creditCardAmount = lockSettings?.creditCardPrice ?? 0
           const price = await web3Service.purchasePriceFor(options)
           const amount = parseFloat(ethers.utils.formatUnits(price, decimals))
+
           return {
             symbol,
             userAddress,
             amount,
             decimals,
+            creditCardAmount,
           }
         })
       )
       const item = {
         prices,
         total: prices.reduce((acc, item) => acc + item.amount, 0),
+        creditCardTotal: prices.reduce(
+          (acc, item) => acc + item.creditCardAmount,
+          0
+        ),
       }
       return item
     },
