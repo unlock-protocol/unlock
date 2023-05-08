@@ -139,7 +139,7 @@ const MENU = {
           description: 'Make money through creating or sharing content.',
         },
         {
-          title: 'Events By Unlock',
+          title: 'Events by Unlock Labs',
           src: '/images/marketing/events.png',
           url: 'https://events.unlock-protocol.com/',
           description: 'Ticketing events with Unlock is simple.',
