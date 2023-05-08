@@ -42,7 +42,7 @@ Want to check it out today? Check out these posts from some Alpha creators:
 
 - Michael C. Joseph, "[Coordinape Deep Dive](https://twitter.com/michaelcjoseph/status/1655633679794962432)"
 - two
-- three
+- ...Stephen Wolfson, "[The Complex World of Style, Copyright, and Generative AI](https://twitter.com/ccarfi/status/1655662240006295553)" (via Creative Commons)
 - four
 - five
 
