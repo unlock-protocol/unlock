@@ -43,7 +43,6 @@ Want to check it out today? Check out these posts from some Alpha creators:
 - Michael C. Joseph, "[Coordinape Deep Dive](https://twitter.com/michaelcjoseph/status/1655633679794962432)"
 - Julien Genestoux, "[Layers of (De)centralization](https://alphatweet.xyz/posts/ed023c92-8dfd-4060-984c-bc5acdd02436)"
 - Stephen Wolfson, "[The Complex World of Style, Copyright, and Generative AI](https://twitter.com/ccarfi/status/1655662240006295553)" (via Creative Commons)
-- five
 
 ALPHAtweet is part of the ongoing series of experiments in future business models that Unlock Protocol is exploring for the web. Thanks for being a part of it! 
 
