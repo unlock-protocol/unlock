@@ -32,7 +32,7 @@ Here’s a walkthrough diagram of how money flows to pay both creators and share
 
 The revenue sharing mechanism is the big deal here. Creators set their terms, and sharers can participate in the upside. (It’s also completely configurable, so the platforms could participate in the upside, too.)
 
-At the outset, we’re starting with a small cohort of creators including (names) as we shake out bugs and get feedback on the overall experience. That said, *anyone* can choose to unlock, share, and amplify Alpha (and participate in rewards!), and *everyone* can view the snippets/teasers of Alpha.
+At the outset, we’re starting with a small cohort of creators as we shake out bugs and get feedback on the overall experience. That said, *anyone* can choose to unlock, share, and amplify Alpha (and participate in rewards!), and *everyone* can view the snippets/teasers of Alpha.
 
 Want to see what ALPHAtweet looks like in action? Here’s what the experience looks like for a sharer of Alpha. (Thanks to Michael Joseph for the video walkthrough!)
 
