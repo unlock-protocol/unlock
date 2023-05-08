@@ -138,7 +138,7 @@ const CreditCardPrice = ({
 
   return (
     <div className="grid gap-1">
-      <SettingCardDetail title="Price in $USD" />
+      <SettingCardDetail title="Price in $USD" description="" />
       <div className="grid grid-cols-1 gap-1 p-4 bg-gray-100 rounded-lg">
         <form
           onSubmit={handleSubmit(onSubmit)}
