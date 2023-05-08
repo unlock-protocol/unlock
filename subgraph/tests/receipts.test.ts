@@ -6,7 +6,7 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import { Lock } from '../generated/schema'
 
 import {
@@ -42,7 +42,7 @@ const keyID = `${lockAddress}-${tokenId}`
 
 // Receipts for ERC20 locks are tested as part of integration tests
 // because it is hard to trigger 2 Events and test things accurately
-describe('Receipts for non-ERC20', () => {
+describe('Receipts for base currency locks', () => {
   afterAll(() => {
     clearStore()
   })
@@ -165,7 +165,7 @@ describe('Receipts for non-ERC20', () => {
     dataSourceMock.resetValues()
   })
 
-  test('should create receipt after key is renew', () => {
+  test('should create receipt after key is renewed', () => {
     mockDataSourceV8()
     // renew event
     const newExpiration = expiration + 1000
@@ -183,17 +183,21 @@ describe('Receipts for non-ERC20', () => {
     const lockAddress = newRenewKeyPurchase.address.toHexString()
     const timestamp = newRenewKeyPurchase.block.timestamp
 
+    log.info('lockAddress in tests: {}', [lockAddress])
+    log.info('lockAddress in tests: {}', [
+      newRenewKeyPurchase.address.toHexString(),
+    ])
     const amount = newRenewKeyPurchase.transaction.value.toString()
 
     // receipts is fine
     assert.assertNotNull(newRenewKeyPurchase)
     assert.entityCount('Receipt', 1)
     assert.fieldEquals('Receipt', hash, 'id', hash)
-    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
     assert.fieldEquals('Receipt', hash, 'timestamp', `${timestamp}`)
     assert.fieldEquals('Receipt', hash, 'sender', sender)
     assert.fieldEquals('Receipt', hash, 'payer', payer)
     assert.fieldEquals('Receipt', hash, 'amountTransferred', amount)
+    assert.fieldEquals('Receipt', hash, 'lockAddress', lockAddress)
 
     dataSourceMock.resetValues()
   })
