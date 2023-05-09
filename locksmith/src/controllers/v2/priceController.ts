@@ -1,5 +1,9 @@
 import { RequestHandler } from 'express'
-import { createTotalCharges, defiLammaPrice } from '../../utils/pricing'
+import {
+  createPricingForPurchase,
+  createTotalCharges,
+  defiLammaPrice,
+} from '../../utils/pricing'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -33,4 +37,58 @@ export const total: RequestHandler = async (request, response) => {
     address,
   })
   return response.send(charge)
+}
+
+/**
+ * Gets the pricing for the universal card payment method
+ * TODO: support swap and purchase to get the route in USDC if the lock is not USDC
+ * @param request
+ * @param response
+ * @returns
+ */
+export const universalCard: RequestHandler = async (request, response) => {
+  const network = Number(request.params.network)
+  const lockAddress = request.params.lock
+  const { recipients: recipientQ = [], purchaseData = [] } = request.query
+
+  // Setup values
+  const recipients: string[] = Array.isArray(recipientQ)
+    ? recipientQ.map((x) => x.toString())
+    : [recipientQ.toString()]
+  const data: string[] = Array.isArray(purchaseData)
+    ? purchaseData.map((x) => x.toString())
+    : [purchaseData.toString()]
+
+  // Ok so now we use the pricing API to get the price for each recipient!
+  const pricing = await createPricingForPurchase({
+    lockAddress,
+    recipients,
+    network,
+    referrers: Array.from({ length: recipients.length }).map(() => ''),
+    data,
+  })
+
+  // For universal card, we actually apply the unlock fee to each lock
+  // And split gas between them all
+  const fees = (pricing.total - pricing.creditCardProcessingFee) / 100
+  const result = {
+    total: '0',
+    prices: pricing.recipients.map((recipient: any) => {
+      return {
+        userAddress: recipient.address,
+        amount: recipient.amountInUSD + fees / pricing.recipients.length,
+        symbol: '$',
+      }
+    }),
+  }
+
+  // Compute the total as a string in cents
+  result.total = Math.ceil(
+    100 *
+      result.prices
+        .map((price) => price.amount)
+        .reduce((total: number, price: number) => total + price, 0)
+  ).toString()
+
+  return response.send(result)
 }
