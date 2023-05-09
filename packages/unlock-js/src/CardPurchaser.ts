@@ -79,9 +79,14 @@ export class CardPurchaser {
       provider
     )
 
+    const [name, version] = await Promise.all([
+      contract.name(),
+      contract.version(),
+    ])
+
     const domain = {
-      name: await contract.name(),
-      version: await contract.version(),
+      name,
+      version,
       chainId,
       verifyingContract: contract.address,
     }
