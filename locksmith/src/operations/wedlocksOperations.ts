@@ -13,7 +13,7 @@ import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
-import * as metadataOperations from './metadataOperations'
+import * as userMetadataOperations from './userMetadataOperations'
 
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
@@ -340,11 +340,15 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const tokenId = key?.tokenId
   const manager = key?.manager
 
-  const protectedData = await metadataOperations.getUserProtectedMetadata({
+  const ownerMetadata = await userMetadataOperations.getMetadata(
     lockAddress,
-    userAddress: ownerAddress,
-  })
-  const recipient = protectedData?.email as string
+    ownerAddress,
+    true
+  )
+
+  const recipient = (Normalizer.toLowerCaseKeys(
+    ownerMetadata.userMetadata.protected ?? {}
+  )?.email || undefined) as string
 
   if (!recipient) {
     return
