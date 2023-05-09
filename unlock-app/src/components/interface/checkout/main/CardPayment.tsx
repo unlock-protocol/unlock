@@ -50,7 +50,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
 
   return (
     <Fragment>
-      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isMethodLoading ? (
           <CardPlaceholder />

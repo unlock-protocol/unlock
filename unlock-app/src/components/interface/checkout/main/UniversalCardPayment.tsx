@@ -150,12 +150,12 @@ export function UniversalCardPayment({
   }
 
   if (isCardPricingLoading || !cardPricing) {
-    return null
+    return <Stepper position={7} service={checkoutService} items={stepItems} />
   }
 
   return (
     <Fragment>
-      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <Stepper position={7} service={checkoutService} items={stepItems} />
       {/* Show confirmation first */}
       {!onrampSession?.client_secret && (
         <>
