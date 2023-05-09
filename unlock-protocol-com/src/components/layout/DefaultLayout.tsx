@@ -134,7 +134,7 @@ const MENU = {
         },
         {
           title: 'ALPHAtweet',
-          src: '/images/marketing/img-aphatweet.png',
+          src: '/images/marketing/img-alphatweet.png',
           url: 'https://alphatweet.xyz/',
           description: 'Make money through creating or sharing content.',
         },
