@@ -3,15 +3,34 @@ import { networks } from '@unlock-protocol/networks'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS_ON_LOCK, TOPIC_KEYS_ON_NETWORK } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
-import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
+import {
+  notifyNewKeysToWedlocks,
+  sendEmail,
+} from '../../operations/wedlocksOperations'
+import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'
 import { logger } from '../../logger'
 import {
   SubgraphService,
   KeyOrderBy,
   OrderDirection,
 } from '@unlock-protocol/unlock-js'
+import { arrayToChunks } from '../../utils/array'
+import * as Normalizer from '../../utils/normalizer'
+import * as userMetadataOperations from './../../operations/userMetadataOperations'
+import * as subscriptionOperations from './../../operations/subscriptionOperations'
+import dayjs from 'dayjs'
+import config from '../../config/config'
+import { ethers } from 'ethers'
 
 const FETCH_LIMIT = 25
+const MAX_UINT = ethers.constants.MaxUint256.toString()
+const KEYS_CHUNKS_SIZE = 25
+const DELAY = 10000
+
+const delay = (timeout: number) =>
+  new Promise((resolve: any) => {
+    setTimeout(() => resolve(), timeout)
+  })
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const subgraph = new SubgraphService()
@@ -95,6 +114,284 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
 
     page += 1
   }
+}
+
+const getRecipient = async (lockAddress: string, ownerAddress: string) => {
+  const metadata = await userMetadataOperations.getMetadata(
+    lockAddress,
+    ownerAddress,
+    true // include protected
+  )
+
+  const protectedData = Normalizer.toLowerCaseKeys({
+    ...(metadata?.userMetadata?.protected ?? {}),
+  })
+
+  return protectedData?.email as string
+}
+
+const getMembershipStatus = async ({
+  key,
+  tokenAddress,
+  network,
+  lockAddress,
+  tokenId,
+  owner,
+}: {
+  key: any
+  tokenAddress: string
+  network: number
+  lockAddress: string
+  tokenId: string
+  owner: string
+}) => {
+  const isERC20 = tokenAddress && tokenAddress !== ethers.constants.AddressZero
+
+  const isRenewable =
+    Number(key?.lock?.version) >= 11 && key?.expiration !== MAX_UINT && isERC20
+
+  const subscriptions =
+    await subscriptionOperations.getSubscriptionsForLockByOwner({
+      tokenId,
+      lockAddress,
+      owner,
+      network,
+    })
+
+  let currency = ''
+  let isAutoRenewable = false
+  let isRenewableIfReApproved = false
+
+  // TODO: need new version of the lock contract to get the value easily
+  const isRenewableIfRePurchased = false
+
+  // get subscription and check for renews
+  if (subscriptions?.length) {
+    const [subscription] = subscriptions ?? []
+
+    if (subscription) {
+      const possible = ethers.BigNumber.from(subscription.possibleRenewals)
+      const approved = ethers.BigNumber.from(subscription.approvedRenewals)
+
+      isAutoRenewable = approved.gte(0) && possible.gte(0)
+
+      isRenewableIfReApproved = approved.lte(0)
+
+      currency = subscription.balance.symbol
+    }
+  }
+
+  return {
+    currency,
+    isRenewable,
+    isAutoRenewable,
+    isRenewableIfReApproved,
+    isRenewableIfRePurchased,
+  }
+}
+
+export async function notifyKeyExpiration() {
+  const now = new Date()
+
+  const end = new Date(now.getTime())
+  end.setDate(now.getDate() + 1)
+
+  await Promise.allSettled(
+    // get expiring keys for every network
+    Object.keys(networks).map(async (networkId: string) => {
+      const subgraph = new SubgraphService()
+      // get keys from now to 24h in the future
+      const keys = await subgraph.keys(
+        {
+          first: 1000, //  TODO: handle more than 1000 keys
+          where: {
+            expiration_gt: now.getTime().toString(),
+            expiration_lt: end.getTime().toString(),
+          },
+        },
+        {
+          networks: [Number(networkId)],
+        }
+      )
+
+      logger.info(
+        `keys expiring for ${networks[networkId].name}: ${keys?.length}`
+      )
+
+      // split keys into groups to send email by group with some delay
+      const chunks = arrayToChunks(keys, KEYS_CHUNKS_SIZE)
+      await Promise.allSettled(
+        Object.values(chunks).map(async (keys, index) => {
+          const timeout = DELAY * (index + 1) // increase delay for each chunks
+          await delay(timeout)
+
+          logger.info(
+            `send expiring emails for chunk group ${index + 1} on ${
+              networks?.[networkId]?.name
+            }`
+          )
+
+          await Promise.allSettled([
+            keys?.map(async (key: any) => {
+              const lockName = key?.lock?.name ?? ''
+              const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+              const ownerAddress = Normalizer.ethereumAddress(key.owner)
+              const tokenAddress = key?.lock?.tokenAddress ?? ''
+              const keyId = key?.tokenId ?? ''
+
+              const recipient = await getRecipient(lockAddress, ownerAddress)
+
+              if (!recipient) return
+
+              const {
+                isAutoRenewable,
+                isRenewable,
+                isRenewableIfRePurchased,
+                isRenewableIfReApproved,
+                currency,
+              } = await getMembershipStatus({
+                owner: ownerAddress,
+                key,
+                tokenAddress,
+                tokenId: keyId,
+                lockAddress,
+                network: Number(networkId),
+              })
+
+              // expiration date example: 1 December 2022 - 10:55
+              const expirationDate = dayjs(new Date(key.expiration)).format(
+                'D MMMM YYYY - HH:mm'
+              )
+
+              const reminderAlreadySent = await hasReminderAlreadySent({
+                address: lockAddress,
+                network: networkId,
+                tokenId: keyId,
+                type: 'keyExpiring',
+                expiration: key.expiration,
+              })
+
+              if (reminderAlreadySent) {
+                logger.info(
+                  `Email reminder already sent for ${lockAddress} - token ${keyId}`
+                )
+                return
+              }
+
+              // send expiring email
+              await sendEmail({
+                network: Number(`${networkId}`),
+                template: 'keyExpiring',
+                failoverTemplate: 'keyExpiring',
+                recipient,
+                params: {
+                  lockAddress,
+                  lockName,
+                  keyId,
+                  network: networkId,
+                  keychainUrl: `${config.unlockApp}/keychain`,
+                  currency,
+                  expirationDate,
+                  isRenewable,
+                  isAutoRenewable,
+                  isRenewableIfRePurchased,
+                  isRenewableIfReApproved,
+                },
+              })
+            }),
+          ])
+        })
+      )
+    })
+  )
+}
+
+export async function notifyKeyExpired() {
+  const now = new Date()
+
+  const yesterday = new Date(now.getTime())
+  yesterday.setDate(now.getDate() - 1)
+
+  await Promise.allSettled(
+    // get expiring keys for every network
+    Object.keys(networks).map(async (networkId: string) => {
+      const subgraph = new SubgraphService()
+      // get keys from now to 24h before
+      const keys = await subgraph.keys(
+        {
+          first: 1000, //  TODO: handle more than 1000 keys
+          where: {
+            expiration_lt: now.getTime().toString(),
+            expiration_gt: yesterday.getTime().toString(),
+          },
+        },
+        {
+          networks: [Number(networkId)],
+        }
+      )
+
+      logger.info(
+        `keys expired for ${networks[networkId]?.name}: ${keys?.length}`
+      )
+
+      // split keys into groups to send email by group with some delay
+      const chunks = arrayToChunks(keys, KEYS_CHUNKS_SIZE)
+
+      Object.values(chunks).map(async (keys, index) => {
+        const timeout = DELAY * (index + 1) // increase delay for each chunks
+        await delay(timeout)
+
+        logger.info(
+          `send expired emails for chunk group ${index + 1} on ${
+            networks?.[networkId]?.name
+          }`
+        )
+
+        await Promise.allSettled([
+          keys?.map(async (key: any) => {
+            const lockName = key?.lock?.name ?? ''
+            const lockAddress = Normalizer.ethereumAddress(key?.lock?.address)
+            const ownerAddress = Normalizer.ethereumAddress(key.owner)
+            const keyId = key?.tokenId ?? ''
+
+            const recipient = await getRecipient(lockAddress, ownerAddress)
+
+            if (!recipient) return
+
+            const reminderAlreadySent = await hasReminderAlreadySent({
+              address: lockAddress,
+              network: networkId,
+              tokenId: keyId,
+              type: 'keyExpired',
+              expiration: key.expiration,
+            })
+
+            if (reminderAlreadySent) {
+              logger.info(
+                `Email reminder already sent for ${lockAddress} - token ${keyId}`
+              )
+              return
+            }
+
+            // send expiring email
+            await sendEmail({
+              network: Number(`${networkId}`),
+              template: 'keyExpired',
+              failoverTemplate: 'keyExpired',
+              recipient,
+              params: {
+                lockAddress,
+                lockName,
+                keyId,
+                network: networkId,
+                keychainUrl: `${config.unlockApp}/keychain`,
+              },
+            })
+          }),
+        ])
+      })
+    })
+  )
 }
 
 export async function notifyOfKeys(hooks: Hook[]) {
