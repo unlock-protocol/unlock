@@ -346,9 +346,11 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
     true
   )
 
-  const recipient = (Normalizer.toLowerCaseKeys(
-    ownerMetadata.userMetadata.protected ?? {}
-  )?.email || undefined) as string
+  const protectedData = Normalizer.toLowerCaseKeys({
+    ...ownerMetadata?.userMetadata?.protected,
+  })
+
+  const recipient = protectedData?.email as string
 
   if (!recipient) {
     return
