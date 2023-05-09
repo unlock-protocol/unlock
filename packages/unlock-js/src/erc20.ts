@@ -93,6 +93,96 @@ export async function approveTransfer(
   return contract.approve(lockContractAddress, value)
 }
 
+interface TransferAuthorizationMessage {
+  from: string
+  to: string
+  value: any
+  validAfter: number
+  validBefore: number
+  nonce: string
+}
+
+export async function signTransferAuthorization(
+  erc20ContractAddress: string,
+  message: TransferAuthorizationMessage,
+  provider: ethers.providers.Provider,
+  signer: ethers.Signer
+) {
+  const { chainId } = await provider.getNetwork()
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
+
+  const domain = {
+    name: await contract.name(),
+    version: await contract.version(),
+    chainId,
+    verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+  }
+
+  const types = {
+    TransferWithAuthorization: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'validAfter', type: 'uint256' },
+      { name: 'validBefore', type: 'uint256' },
+      { name: 'nonce', type: 'bytes32' },
+    ],
+  }
+  // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'.
+  return signer._signTypedData(domain, types, message)
+}
+
+export async function recoverTransferAuthorization(
+  erc20ContractAddress: string,
+  message: TransferAuthorizationMessage,
+  chainId: number,
+  signature: string,
+  provider: any
+) {
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
+
+  const domain = {
+    name: await contract.name(),
+    version: await contract.version(),
+    chainId,
+    verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+  }
+
+  const types = {
+    TransferWithAuthorization: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'validAfter', type: 'uint256' },
+      { name: 'validBefore', type: 'uint256' },
+      { name: 'nonce', type: 'bytes32' },
+    ],
+  }
+  return ethers.utils.verifyTypedData(domain, types, message, signature)
+}
+
+export async function transferWithAuthorization(
+  erc20ContractAddress: string,
+  message: TransferAuthorizationMessage,
+  signature: string,
+  signer: ethers.Signer
+) {
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
+  const { v, r, s } = ethers.utils.splitSignature(signature)
+
+  return contract.transferWithAuthorization(
+    message.from,
+    message.to,
+    message.value,
+    message.validAfter,
+    message.validBefore,
+    message.nonce,
+    v,
+    r,
+    s
+  )
+}
+
 export default {
   approveTransfer,
   getAllowance,
