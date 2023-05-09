@@ -130,7 +130,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   return (
     <Fragment>
-      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <Stepper position={6} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 overflow-auto">
         {isWaiting ? (
           <div className="space-y-6">

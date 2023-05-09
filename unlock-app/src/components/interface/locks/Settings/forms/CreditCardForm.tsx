@@ -94,18 +94,20 @@ const ConnectStripe = ({
   isManager,
   disabled,
 }: ConnectStripeProps) => {
-  const [stripeAccount, setReuseLock] = useState<string>(lockAddress)
+  const [stripeAccount, setStripeAccount] = useState<string>()
   const { getWalletService, account } = useAuth()
   const web3Service = useWeb3Service()
 
-  const { data: stripeConnections, isLoading: isLoadingStripeConnections } =
-    useQuery(['stripeConnections', account], async () => {
-      const response = await storage.getStripeConnections()
-      if (response.data.error) {
-        throw new Error(response.data.error)
-      }
-      return response.data.result || []
-    })
+  const {
+    data: stripeConnections = [],
+    isLoading: isLoadingStripeConnections,
+  } = useQuery(['stripeConnections', account], async () => {
+    const response = await storage.getStripeConnections()
+    if (response.data.error) {
+      throw new Error(response.data.error)
+    }
+    return response.data.result || []
+  })
 
   const checkIsKeyGranter = async (keyGranter: string) => {
     return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
@@ -202,14 +204,14 @@ const ConnectStripe = ({
         <div className="flex flex-col gap-3">
           {isGranted ? (
             <form className="grid gap-4" onSubmit={connectStripe}>
-              {stripeConnections!.length > 0 && (
+              {(stripeConnections ?? [])?.length > 0 && (
                 <Select
                   defaultValue={stripeAccount}
                   onChange={(value: any) => {
-                    setReuseLock(value.toString())
+                    setStripeAccount(value.toString())
                   }}
-                  options={stripeConnections!
-                    .map((connection: any) => {
+                  options={(stripeConnections ?? [])
+                    ?.map((connection: any) => {
                       return {
                         label: connection.settings.dashboard.display_name,
                         value: connection.id,
@@ -268,6 +270,7 @@ export const CreditCardForm = ({
     lockAddress,
     network,
   })
+
   const connectStripeMutation = useStripeConnect({
     lockAddress,
     network,

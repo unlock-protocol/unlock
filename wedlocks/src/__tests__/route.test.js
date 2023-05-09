@@ -109,6 +109,45 @@ describe('route', () => {
       await route(args)
     })
 
+    it('should send the email using the transporter with custom sender', async () => {
+      expect.assertions(2)
+      templates.template = {
+        subject: 'subject',
+        text: 'text',
+      }
+
+      const args = {
+        template: 'template',
+        params: { hello: 'world' },
+        recipient: 'julien@unlock-protocol.com',
+        attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+        emailSender: 'Custom Sender',
+      }
+
+      const transporter = {
+        sendMail: vi.fn((options) => {
+          expect(options).toEqual({
+            from: {
+              name: 'Custom Sender',
+              address: config.sender,
+            },
+            html: undefined,
+            subject: 'subject',
+            text: 'text',
+            to: args.recipient,
+            attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+          })
+          return Promise.resolve({ sent: true })
+        }),
+      }
+      nodemailer.createTransport = vi.fn((params) => {
+        expect(params).toEqual(config)
+        return transporter
+      })
+
+      await route(args)
+    })
+
     describe('when the email was sent succesfuly', () => {
       it('should yield its enveloppe', async () => {
         expect.assertions(2)

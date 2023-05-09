@@ -71,6 +71,7 @@ export const route = async (args) => {
       .concat(args.attachments, template.attachments)
       .filter((x) => !!x),
   }
+
   const transporter = nodemailer.createTransport(config)
   return transporter.sendMail(email)
 }
