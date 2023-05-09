@@ -12,7 +12,7 @@ _**ALPHA by Unlock Labs** is an initiative to explore new business models and op
 
 ## This experiment is called ALPHAtweet
 
-ALPHAtweet enables you and your followers make money through your content and sharing. It’s powered by Unlock Protocol. Going a bit deeper into this experiment, an “Alpha” is a piece of paid content that is being shared, where **both the creator and the sharer participate in the benefits of sharing when someone unlocks the Alpha**.
+ALPHAtweet enables you and your followers to make money through your content and sharing. It’s powered by Unlock Protocol. Going a bit deeper into this experiment, an “Alpha” is a piece of paid content that is being shared, where **both the creator and the sharer participate in the benefits of sharing when someone unlocks the Alpha**.
 
 While this first experiment emphasizes sharing on Twitter, the magic is that these items of Alpha can be shared *anywhere* by way of share links and, in every case, the creators and sharers **both** have the opportunity to be compensated across *any* platform, every time an Alpha is shared. 🤯 
 
