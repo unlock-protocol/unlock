@@ -68,7 +68,6 @@ function newKey(event: TransferEvent): void {
 
   key.save()
 
-  // creat
   createReceipt(event)
 
   // update lock
