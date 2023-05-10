@@ -4,7 +4,6 @@ pragma solidity >=0.5.0;
 import "../interfaces/IUniswapOracleV3.sol";
 import "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol";
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
-import "hardhat/console.sol";
 
 contract UniswapOracleV3 is IUniswapOracleV3 {
   uint256 public constant override PERIOD = 60 * 60; // in seconds
@@ -45,13 +44,11 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
     address _tokenIn,
     address _tokenOut
   ) public override {
-    console.log(_tokenIn, _tokenOut);
     address pool = IUniswapV3Factory(factory).getPool(
       _tokenIn,
       _tokenOut,
       FEE
     );
-    console.log(pool);
     if (pool == address(0)) {
       pool = IUniswapV3Factory(factory).createPool(
         _tokenIn,
