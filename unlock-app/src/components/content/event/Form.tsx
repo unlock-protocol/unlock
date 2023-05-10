@@ -23,6 +23,7 @@ import { SLUG_REGEXP, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { storage } from '~/config/storage'
+import dayjs from 'dayjs'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
@@ -135,7 +136,20 @@ export const Form = ({ onSubmit }: FormProps) => {
     )
   }
 
+  const ticket = details?.metadata?.ticket
+
   const metadataImage = watch('metadata.image')
+  const isSameDay = dayjs(ticket?.event_end_date).isSame(
+    ticket?.event_start_date,
+    'day'
+  )
+
+  const today = dayjs().format('YYYY-MM-DD')
+
+  const minEndTime = isSameDay ? ticket?.event_start_time : undefined
+  const minEndDate = ticket?.event_start_date
+    ? dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
+    : today
 
   return (
     <FormProvider {...methods}>
@@ -267,6 +281,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                           message: 'Add a start date to your event',
                         },
                       })}
+                      min={today}
                       type="date"
                       label="Start date"
                       error={
@@ -275,9 +290,18 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                     />
                     <Input
-                      {...register('metadata.ticket.event_start_time')}
+                      {...register('metadata.ticket.event_start_time', {
+                        required: {
+                          value: true,
+                          message: 'This value is required',
+                        },
+                      })}
                       type="time"
                       label="Start time"
+                      error={
+                        // @ts-expect-error Property 'event_start_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_start_time?.message || ''
+                      }
                     />
                   </div>
 
@@ -290,6 +314,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       type="date"
+                      min={minEndDate}
                       label="End date"
                       error={
                         // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
@@ -297,9 +322,19 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                     />
                     <Input
-                      {...register('metadata.ticket.event_end_time')}
+                      {...register('metadata.ticket.event_end_time', {
+                        required: {
+                          value: true,
+                          message: 'This value is required',
+                        },
+                      })}
                       type="time"
+                      min={minEndTime}
                       label="End time"
+                      error={
+                        // @ts-expect-error Property 'event_end_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_end_time?.message || ''
+                      }
                     />
                   </div>
 
