@@ -98,12 +98,6 @@ export default () => () => {
       )
     }
 
-    console.log({
-      newBalance,
-      lockBalanceBefore,
-      keyPrice: lock.keyPrice,
-    })
-
     expect(new BigDecimal(newBalance).toString()).toEqual(
       new BigDecimal(lockBalanceBefore)
         .add(new BigDecimal(lock.keyPrice))
