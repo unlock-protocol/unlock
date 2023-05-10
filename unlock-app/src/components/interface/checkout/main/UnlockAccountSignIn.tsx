@@ -35,11 +35,7 @@ export function UnlockAccountSignIn({
   return (
     <Fragment>
       <div className="mb-2">
-        <Stepper
-          position={state.value === 'ENTER_EMAIL' ? 1 : 2}
-          service={unlockAccountService}
-          items={stepItems}
-        />
+        <Stepper service={unlockAccountService} items={stepItems} />
       </div>
       <UnlockAccount
         unlockAccountService={unlockAccountService}

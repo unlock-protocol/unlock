@@ -240,12 +240,7 @@ export function Minting({
 
   return (
     <Fragment>
-      <Stepper
-        position={8}
-        disabled
-        service={checkoutService}
-        items={stepItems}
-      />
+      <Stepper disabled service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         <MintingScreen
           mint={mint!}

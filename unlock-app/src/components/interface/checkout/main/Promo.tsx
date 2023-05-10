@@ -63,11 +63,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
 
   return (
     <Fragment>
-      <Stepper
-        position={renew ? 2 : 5}
-        service={checkoutService}
-        items={stepItems}
-      />
+      <Stepper service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         <form id="promo" className="space-y-4">
           <Input
