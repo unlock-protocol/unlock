@@ -111,9 +111,14 @@ export async function signTransferAuthorization(
   const { chainId } = await provider.getNetwork()
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
 
+  const [name, version] = await Promise.all([
+    contract.name(),
+    contract.version(),
+  ])
+
   const domain = {
-    name: await contract.name(),
-    version: await contract.version(),
+    name,
+    version,
     chainId,
     verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
   }
@@ -141,9 +146,14 @@ export async function recoverTransferAuthorization(
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
 
+  const [name, version] = await Promise.all([
+    contract.name(),
+    contract.version(),
+  ])
+
   const domain = {
-    name: await contract.name(),
-    version: await contract.version(),
+    name,
+    version,
     chainId,
     verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
   }
