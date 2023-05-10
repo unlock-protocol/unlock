@@ -1,4 +1,3 @@
-/* eslint jest/no-identical-title: 0 */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import WalletService from '../walletService'
