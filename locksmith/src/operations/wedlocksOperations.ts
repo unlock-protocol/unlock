@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import * as Normalizer from '../utils/normalizer'
-import { UserTokenMetadata } from '../models'
 import config from '../config/config'
 import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
@@ -14,6 +13,7 @@ import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
+import * as userMetadataOperations from './userMetadataOperations'
 
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
@@ -340,20 +340,16 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const tokenId = key?.tokenId
   const manager = key?.manager
 
-  const userTokenMetadataRecord = await UserTokenMetadata.findOne({
-    where: {
-      tokenAddress: lockAddress,
-      userAddress: ownerAddress,
-    },
-  })
-  logger.info(
-    'Found the relevant token metadata',
-    userTokenMetadataRecord?.data
+  const ownerMetadata = await userMetadataOperations.getMetadata(
+    lockAddress,
+    ownerAddress,
+    true
   )
 
   const protectedData = Normalizer.toLowerCaseKeys({
-    ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+    ...ownerMetadata?.userMetadata?.protected,
   })
+
   const recipient = protectedData?.email as string
 
   if (!recipient) {
