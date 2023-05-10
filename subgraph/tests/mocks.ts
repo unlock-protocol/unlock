@@ -122,6 +122,17 @@ createMockedFunction(
   .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(tokenId))])
   .returns([ethereum.Value.fromAddress(Address.fromString(lockManagers[0]))])
 
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'tokenOfOwnerByIndex',
+  'tokenOfOwnerByIndex(address,uint256):(uint256)'
+)
+  .withArgs([
+    ethereum.Value.fromAddress(Address.fromString(keyOwnerAddress)),
+    ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(0)),
+  ])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
+
 /**
  * Mocks function for v8 locks
  */
