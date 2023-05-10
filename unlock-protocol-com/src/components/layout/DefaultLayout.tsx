@@ -133,10 +133,22 @@ const MENU = {
           url: `${unlockConfig.appURL}/locks`,
         },
         {
-          title: 'Events By Unlock',
+          title: 'ALPHAtweet',
+          src: '/images/marketing/img-alphatweet.png',
+          url: 'https://alphatweet.xyz/',
+          description: 'Make money through creating or sharing content.',
+        },
+        {
+          title: 'Events by Unlock Labs',
           src: '/images/marketing/events.png',
           url: 'https://events.unlock-protocol.com/',
           description: 'Ticketing events with Unlock is simple.',
+        },
+        {
+          title: 'Certification by Unlock Labs',
+          src: '/images/marketing/img-unlock-certification.png',
+          url: 'https://certifications.unlock-protocol.com/',
+          description: 'Certify and show expertise on chain.',
         },
         {
           title: 'Flocker',

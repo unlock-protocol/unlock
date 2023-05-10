@@ -13,7 +13,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { Pricing } from '../Lock'
 import { ViewContract } from '../ViewContract'
 
@@ -52,11 +51,10 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   )
 
   const isDisabled = quantity < 1
-  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">

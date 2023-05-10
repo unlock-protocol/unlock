@@ -15,7 +15,6 @@ import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
 import {
@@ -115,8 +114,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     isReceiverAccountOnly &&
     (!balance?.isPayable || forceClaim)
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
     (item) => !item
   )
@@ -130,7 +127,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   return (
     <Fragment>
-      <Stepper position={6} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 overflow-auto">
         {isWaiting ? (
           <div className="space-y-6">
