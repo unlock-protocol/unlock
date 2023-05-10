@@ -246,6 +246,11 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               actions: ['selectLock'],
+              cond: 'requireMessageToSign',
+              target: 'MESSAGE_TO_SIGN',
+            },
+            {
+              actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
                 const isPassword = ctx?.hook === 'password'

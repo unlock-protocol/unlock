@@ -56,7 +56,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">

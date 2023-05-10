@@ -80,21 +80,16 @@ export interface StepItem {
 
 interface StepperProps {
   items: StepItem[]
-  position: number
   service: CheckoutService | UnlockAccountService
   disabled?: boolean
 }
 
-export const Stepper = ({
-  items,
-  position,
-  service,
-  disabled,
-}: StepperProps) => {
-  const index = items.findIndex((item) => item.id === position)
+export const Stepper = ({ items, service, disabled }: StepperProps) => {
+  const index = items.findIndex((item) => item.to === service.state?.value)
   const step = items[index]
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
+
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
       <div className="flex items-center gap-1.5">

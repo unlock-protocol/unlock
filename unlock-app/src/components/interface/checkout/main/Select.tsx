@@ -312,7 +312,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   return (
     <Fragment>
-      <Stepper position={1} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isLoading ? (
           <div className="mt-6 space-y-4">

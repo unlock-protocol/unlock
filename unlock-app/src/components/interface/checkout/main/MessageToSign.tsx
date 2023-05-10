@@ -48,7 +48,7 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
 
   return (
     <Fragment>
-      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         <pre className="whitespace-pre-wrap text-brand-gray">
           {messageToSign}

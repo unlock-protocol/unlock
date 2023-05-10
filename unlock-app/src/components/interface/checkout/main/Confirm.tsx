@@ -644,7 +644,7 @@ export function Confirm({
         size="invisible"
         badge="bottomleft"
       />
-      <Stepper position={7} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
           <div>

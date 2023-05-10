@@ -91,7 +91,7 @@ export function Returning({
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
           <Lottie
