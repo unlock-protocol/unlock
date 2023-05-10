@@ -96,7 +96,6 @@ export const Stepper = ({ service, disabled }: StepperProps) => {
   const index = items.findIndex(
     (item) => !item.to || item.to === service.state?.value
   )
-  console.log()
   const step = items[index]
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
