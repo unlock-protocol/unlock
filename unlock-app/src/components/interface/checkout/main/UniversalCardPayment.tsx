@@ -9,7 +9,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { storage } from '~/config/storage'
 import { CryptoElements, OnrampElement } from '../utils/CryptoElements'
 import { PricingData } from './Confirm'
@@ -150,12 +149,12 @@ export function UniversalCardPayment({
   }
 
   if (isCardPricingLoading || !cardPricing) {
-    return <Stepper position={7} service={checkoutService} items={stepItems} />
+    return <Stepper service={checkoutService} />
   }
 
   return (
     <Fragment>
-      <Stepper position={7} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       {/* Show confirmation first */}
       {!onrampSession?.client_secret && (
         <>
