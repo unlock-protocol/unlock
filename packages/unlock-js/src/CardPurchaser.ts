@@ -11,6 +11,14 @@ export interface GetContractOptions {
 
 export const CardPurchaserAbi = []
 
+export const PurchaseTypes = {
+  Purchase: [
+    { name: 'lock', type: 'address' },
+    { name: 'sender', type: 'address' },
+    { name: 'expiration', type: 'uint256' },
+  ],
+}
+
 export class CardPurchaser {
   public networks: NetworkConfigs
 
@@ -51,6 +59,22 @@ export class CardPurchaser {
     return cardPurchaserContract
   }
 
+  async getDomain(network: number) {
+    const contract = this.getContract({ network })
+
+    const [name, version] = await Promise.all([
+      contract.name(),
+      contract.version(),
+    ])
+
+    return {
+      name,
+      version,
+      chainId: network,
+      verifyingContract: contract.address,
+    }
+  }
+
   /**
    * Returns a message and corresponding signature to perform a purchase
    * These will be submitted to the purchase function on the CardPurchaser contract
@@ -64,7 +88,6 @@ export class CardPurchaser {
     lockAddress: string,
     signer: Signer
   ) {
-    const provider = this.providerForNetwork(network)
     const networkConfig = this.networks[network]
     const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
 
@@ -72,42 +95,20 @@ export class CardPurchaser {
       throw new Error('Card Purchaser not available for this network')
     }
 
-    const { chainId } = await provider.getNetwork()
-    const contract = new ethers.Contract(
-      cardPurchaserAddress,
-      CardPurchaserAbi,
-      provider
-    )
-
-    const [name, version] = await Promise.all([
-      contract.name(),
-      contract.version(),
-    ])
-
-    const domain = {
-      name,
-      version,
-      chainId,
-      verifyingContract: contract.address,
-    }
-
-    const types = {
-      Purchase: [
-        { name: 'lock', type: 'address' },
-        { name: 'sender', type: 'address' },
-        { name: 'expiration', type: 'uint256' },
-      ],
-    }
-
+    const domain = await this.getDomain(network)
     const now = Math.floor(new Date().getTime() / 1000)
 
     const message = {
       sender: await signer.getAddress(),
       lock: lockAddress,
-      expiration: now + 60 * 60 * 24, // 1 hour!
+      expiration: now + 60 * 60, // 1 hour!
     }
 
-    const signature = await signer._signTypedData(domain, types, message)
+    const signature = await signer._signTypedData(
+      domain,
+      PurchaseTypes,
+      message
+    )
     return { signature, message }
   }
 }
