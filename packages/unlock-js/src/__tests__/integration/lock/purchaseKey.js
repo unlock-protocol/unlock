@@ -1,4 +1,5 @@
 import { it, expect, beforeAll } from 'vitest'
+import { BigDecimal } from '../../helpers'
 let web3Service, walletService, accounts, lock, lockAddress, chainId
 
 export default () => () => {
@@ -96,8 +97,17 @@ export default () => () => {
         chainId
       )
     }
-    expect(parseFloat(newBalance)).toEqual(
-      parseFloat(lockBalanceBefore) + parseFloat(lock.keyPrice)
+
+    console.log({
+      newBalance,
+      lockBalanceBefore,
+      keyPrice: lock.keyPrice,
+    })
+
+    expect(new BigDecimal(newBalance).toString()).toEqual(
+      new BigDecimal(lockBalanceBefore)
+        .add(new BigDecimal(lock.keyPrice))
+        .toString()
     )
   })
 
