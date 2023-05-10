@@ -12,7 +12,6 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
-import { useCheckoutSteps } from './useCheckoutItems'
 import Link from 'next/link'
 
 interface Props {
@@ -107,11 +106,9 @@ export function Renewed({
     }
   }, [renewStatus])
 
-  const stepItems = useCheckoutSteps(checkoutService, true)
-
   return (
     <Fragment>
-      <Stepper disabled service={checkoutService} items={stepItems} />
+      <Stepper disabled service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
           <TransactionAnimation status={renewStatus} />

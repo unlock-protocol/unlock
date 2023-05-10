@@ -7,7 +7,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -44,11 +43,9 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   return (
     <Fragment>
-      <Stepper service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <pre className="whitespace-pre-wrap text-brand-gray">
           {messageToSign}

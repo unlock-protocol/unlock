@@ -15,7 +15,6 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -630,8 +629,6 @@ export function Confirm({
     return null
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   const payingWithCard =
     !isLoading &&
     totalPricing?.isCreditCardPurchasable &&
@@ -644,7 +641,7 @@ export function Confirm({
         size="invisible"
         badge="bottomleft"
       />
-      <Stepper service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
           <div>

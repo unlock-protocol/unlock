@@ -6,7 +6,7 @@ import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
@@ -16,7 +16,6 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
 import { ViewContract } from '../ViewContract'
 import { getReferrer } from '~/utils/checkoutLockUtils'
@@ -176,11 +175,9 @@ export function Renew({
     }
   }
 
-  const stepItems: StepItem[] = useCheckoutSteps(checkoutService, true)
-
   return (
     <Fragment>
-      <Stepper service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">

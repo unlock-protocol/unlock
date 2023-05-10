@@ -6,7 +6,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -22,7 +21,7 @@ interface FormData {
 export function Promo({ injectedProvider, checkoutService }: Props) {
   const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
-  const { recipients, renew } = state.context
+  const { recipients } = state.context
   const {
     register,
     handleSubmit,
@@ -59,11 +58,9 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService, renew)
-
   return (
     <Fragment>
-      <Stepper service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <form id="promo" className="space-y-4">
           <Input

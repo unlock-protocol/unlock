@@ -18,7 +18,6 @@ import {
 } from '@stripe/stripe-js'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
@@ -43,14 +42,13 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
     refetch: refetchPaymentMethods,
   } = usePaymentMethodList()
   const { mutateAsync: removePaymentMethods } = useRemovePaymentMethods()
-  const stepItems = useCheckoutSteps(checkoutService)
 
   const payment = methods?.[0]
   const card = payment?.card
 
   return (
     <Fragment>
-      <Stepper service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isMethodLoading ? (
           <CardPlaceholder />

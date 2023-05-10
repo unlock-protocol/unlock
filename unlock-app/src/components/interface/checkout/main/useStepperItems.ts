@@ -1,11 +1,40 @@
 import { useActor } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import { CheckoutService } from './checkoutMachine'
+import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 
-export function useCheckoutSteps(service: CheckoutService, renewal = false) {
+export function useStepperItems(
+  service: CheckoutService | UnlockAccountService,
+  {
+    isRenew,
+    isUnlockAccount,
+  }: { isRenew?: boolean; isUnlockAccount?: boolean } = {}
+) {
   const [state] = useActor(service)
+
+  if (isUnlockAccount) {
+    return [
+      {
+        id: 1,
+        name: 'Enter email',
+        to: 'ENTER_EMAIL',
+      },
+      {
+        id: 2,
+        name: 'Password',
+      },
+      {
+        id: 3,
+        name: 'Signed in',
+      },
+    ]
+  }
+
+  const checkoutMachineState = state as unknown as CheckoutService
+
   const { paywallConfig, skipQuantity, payment, skipRecipient, hook } =
-    state.context
+    // @ts-expect-error property 'context' does not exist on type 'Interpreter<CheckoutMachineContext, any, SelectLockEvent | SelectQuantityEvent | SelectPaymentMethodEvent | ... 12 more ... | BackEvent, { ...; }, MarkAllImplementationsAsProvided<...>>'
+    checkoutMachineState.context
 
   const isPassword = hook === 'password'
   const isCaptcha = hook === 'captcha'
@@ -98,5 +127,5 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
     },
   ]
 
-  return renewal ? renewItems : checkoutItems
+  return isRenew ? renewItems : checkoutItems
 }
