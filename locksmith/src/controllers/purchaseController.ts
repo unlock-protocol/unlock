@@ -21,14 +21,20 @@ import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
 
 const PaymentCaptureBody = z.object({
-  data: z.array(z.union([z.null(), z.string()])).nullish(),
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   network: z.number(),
   userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   recipients: z.array(
     z.string().transform((item) => Normalizer.ethereumAddress(item))
   ),
-  referrers: z.array(z.union([z.null(), z.string()])).nullish(),
+  referrers: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
   paymentIntent: z.string(),
 })
 

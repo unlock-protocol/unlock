@@ -24,7 +24,6 @@ import { Badge, Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { ViewContract } from '../ViewContract'
 import { useCheckoutHook } from './useCheckoutHook'
@@ -281,6 +280,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const { isLoading: isLoadingHook, lockHookMapping } =
     useCheckoutHook(checkoutService)
 
+  const hookType = useMemo(() => {
+    if (!lock) return undefined
+
+    const hook =
+      lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ?? undefined
+    return hook
+  }, [lockHookMapping, lock])
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -290,8 +297,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     isNotExpectedAddress ||
     isLoadingHook
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   useEffect(() => {
     if (locks?.length) {
       const filtered = locks.filter((lock) => !lock.isSoldOut)
@@ -300,11 +305,13 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
   }, [locks])
 
+  const isLoading = isLocksLoading || isLoadingHook
+
   return (
     <Fragment>
-      <Stepper position={1} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isLocksLoading ? (
+        {isLoading ? (
           <div className="mt-6 space-y-4">
             {Array.from({ length: lockOptions.length }).map((_, index) => (
               <LockOptionPlaceholder key={index} />
@@ -374,10 +381,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                 if (!lock) {
                   return
                 }
-
-                const hookType =
-                  lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ??
-                  undefined
 
                 send({
                   type: 'SELECT_LOCK',

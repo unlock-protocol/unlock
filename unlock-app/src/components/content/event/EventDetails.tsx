@@ -84,6 +84,10 @@ const CoverImageDrawer = ({
   handleClose,
 }: CoverImageDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { isManager: isLockManager } = useLockManager({
+    lockAddress,
+    network,
+  })
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
@@ -109,7 +113,7 @@ const CoverImageDrawer = ({
 
   return (
     <div className="relative inset-0 z-[1]">
-      {!isOpen && (
+      {isLockManager && (
         <Button
           className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
           variant="secondary"
@@ -286,6 +290,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     eventDate && eventData.ticket?.event_start_time
       ? eventDate.toLocaleTimeString(navigator.language || 'en-US', {
           timeZone: eventData.ticket.event_timezone,
+          hour: '2-digit',
+          minute: '2-digit',
         })
       : undefined
 
@@ -303,6 +309,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     eventDate && eventData.ticket?.event_end_time && eventEndDate && isSameDay
       ? eventEndDate.toLocaleTimeString(navigator.language || 'en-US', {
           timeZone: eventData.ticket.event_timezone,
+          hour: '2-digit',
+          minute: '2-digit',
         })
       : null
 

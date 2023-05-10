@@ -1,8 +1,9 @@
 import { Disclosure, Input } from '@unlock-protocol/ui'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { getCertificationPath } from '~/components/content/certification/utils'
 
 interface Props {
   disabled?: boolean
@@ -18,10 +19,21 @@ export function CertificationMetadataForm({
   const {
     register,
     formState: { errors },
+    control,
   } = useFormContext<MetadataFormData>()
 
+  const { slug } = useWatch({
+    control,
+  })
+
   const certificationPageUrl = new URL(
-    `${window.location.origin}/certification?lockAddress=${lockAddress}&network=${network}`
+    `${window.location.origin}${getCertificationPath({
+      lockAddress,
+      network,
+      metadata: {
+        slug,
+      },
+    })}`
   )
 
   return (

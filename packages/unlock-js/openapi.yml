@@ -374,6 +374,28 @@ components:
         type:
           type: string
 
+    LockSettings:
+      type: object
+      nullable: false
+      properties:
+        lockAddress:
+          type: string
+        network:
+          type: number
+        sendEmail:
+          type: boolean
+        slug:
+          type: string
+        replyTo:
+          type: string
+          nullable: true
+        creditCardPrice:
+          type: number
+          nullable: true
+        emailSender:
+          type: string
+          nullable: true
+
   parameters:
     Network:
       in: path
@@ -428,6 +450,14 @@ components:
       name: template
       required: true
       description: Template id for email
+      schema:
+        type: string
+
+    Slug:
+      in: path
+      name: slug
+      required: true
+      description: Slug
       schema:
         type: string
 
@@ -2442,14 +2472,9 @@ paths:
                 type: object
                 properties:
                   result:
-                    type: object
-                    properties:
-                      lock:
-                        type: string
-                      chain:
-                        type: number
-                      stripeAccount:
-                        type: string
+                    type: array
+                    items:
+                      type: object
                   error:
                     type: string
                     nullable: true
@@ -2466,6 +2491,21 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/lock-settings/slug/{slug}:
+    get:
+      operationId: getLockSettingsBySlug
+      description: Get lock setting by slug
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+
+      responses:
+        200:
+          description: Successfully get settings for lock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockSettings'
+
   /v2/lock-settings/{network}/locks/{lockAddress}:
     get:
       operationId: getLockSettings
@@ -2480,12 +2520,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  sendEmail:
-                    type: boolean
-                  replyTo:
-                    type: string
+                $ref: '#/components/schemas/LockSettings'
 
         404:
           description: Setting not found
@@ -2521,12 +2556,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                sendEmail:
-                  type: boolean
-                replyTo:
-                  type: string
+              $ref: '#/components/schemas/LockSettings'
 
       responses:
         200:
