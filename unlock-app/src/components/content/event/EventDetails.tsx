@@ -290,6 +290,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     eventDate && eventData.ticket?.event_start_time
       ? eventDate.toLocaleTimeString(navigator.language || 'en-US', {
           timeZone: eventData.ticket.event_timezone,
+          hour: '2-digit',
+          minute: '2-digit',
         })
       : undefined
 
@@ -307,6 +309,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     eventDate && eventData.ticket?.event_end_time && eventEndDate && isSameDay
       ? eventEndDate.toLocaleTimeString(navigator.language || 'en-US', {
           timeZone: eventData.ticket.event_timezone,
+          hour: '2-digit',
+          minute: '2-digit',
         })
       : null
 

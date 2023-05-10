@@ -7,6 +7,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { getEventPath } from '~/components/content/event/utils'
+import dayjs from 'dayjs'
 
 interface Props {
   disabled?: boolean
@@ -35,6 +36,13 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
       },
     })}`
   )
+  const today = dayjs().format('YYYY-MM-DD')
+  const minEndDate = ticket?.event_start_date ? ticket?.event_start_date : today
+  const isSameDay = dayjs(ticket?.event_end_date).isSame(
+    ticket?.event_start_date,
+    'day'
+  )
+  const minStartTime = isSameDay ? ticket?.event_start_time : undefined
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     ticket?.event_address || 'Ethereum'
@@ -132,27 +140,29 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
                   error={errors.ticket?.event_start_date?.message}
                 />
                 <Input
-                  {...register('ticket.event_end_date')}
-                  disabled={disabled}
-                  type="date"
-                  label="End date"
-                  error={errors.ticket?.event_end_date?.message}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                <Input
                   {...register('ticket.event_start_time')}
                   disabled={disabled}
                   type="time"
                   label="Start time"
                   error={errors.ticket?.event_start_time?.message}
                 />
+              </div>
+
+              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                <Input
+                  {...register('ticket.event_end_date')}
+                  disabled={disabled}
+                  type="date"
+                  label="End date"
+                  min={minEndDate}
+                  error={errors.ticket?.event_end_date?.message}
+                />
                 <Input
                   {...register('ticket.event_end_time')}
                   disabled={disabled}
                   type="time"
                   label="End time"
+                  min={minStartTime}
                   error={errors.ticket?.event_end_time?.message}
                 />
               </div>
