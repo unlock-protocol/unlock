@@ -1,12 +1,12 @@
 import hre from 'hardhat'
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 
 let walletService, web3Service, lockAddress, lock, chainId, accounts
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    describe('mergeKeys', () => {
       const { ethers } = hre
       let tokenIds
       let keys
@@ -92,5 +92,6 @@ export default ({ publicLockVersion }) =>
             lock.expirationDuration * 2
         ).toBeLessThan(60)
       })
-    }
+    })
   }
+}

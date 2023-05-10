@@ -1,11 +1,11 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 
 let walletService, web3Service, lockAddress, accounts, chainId
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    describe('extendKey', () => {
       let keyOwner
       let tokenId
       let transactionHash
@@ -61,5 +61,6 @@ export default ({ publicLockVersion }) =>
         const now = Math.floor(new Date().getTime() / 1000)
         expect(key.expiration).toBeGreaterThan(now)
       })
-    }
+    })
   }
+}

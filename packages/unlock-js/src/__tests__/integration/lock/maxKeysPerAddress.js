@@ -1,11 +1,11 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 
 let walletService, web3Service, lockAddress, lock, chainId
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    describe('maxKeysPerAddress', () => {
       beforeAll(() => {
         ;({ walletService, web3Service, lockAddress, lock, chainId } =
           global.suiteData)
@@ -23,5 +23,6 @@ export default ({ publicLockVersion }) =>
         lock = await web3Service.getLock(lockAddress, chainId)
         expect(lock.maxKeysPerAddress).toEqual(1000)
       })
-    }
+    })
   }
+}

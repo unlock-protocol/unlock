@@ -1,10 +1,10 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 
 import { versionEqualOrAbove } from '../../helpers/integration'
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('grantKey', () => {
     let tokenId
     let key
     let keyBefore
@@ -87,4 +87,4 @@ export default ({ publicLockVersion }) =>
         expect(keyManager).toBe(accounts[0])
       })
     }
-  }
+  })

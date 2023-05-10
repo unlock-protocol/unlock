@@ -1,4 +1,4 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 let walletService, web3Service, chainId, lock, lockAddress, accounts
 import {
   versionEqualOrAbove,
@@ -6,7 +6,7 @@ import {
 } from '../../helpers/integration'
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('setBaseTokenURI', () => {
     const newTokenURI = 'http://some-custom-uri.com/'
 
     let changedTokenURI
@@ -66,4 +66,4 @@ export default ({ publicLockVersion }) =>
         expect(await lockContract.tokenURI(123)).toEqual(`${newTokenURI}123`)
       })
     }
-  }
+  })

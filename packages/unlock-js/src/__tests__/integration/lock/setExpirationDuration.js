@@ -1,9 +1,9 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, lock, chainId
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('setExpirationDuration', () => {
     // Test only on lock v9 and above.
     if (versionEqualOrAbove(publicLockVersion, 'v9')) {
       let expirationDuration
@@ -33,4 +33,4 @@ export default ({ publicLockVersion }) =>
         expect(lock.expirationDuration).toBe(200)
       })
     }
-  }
+  })

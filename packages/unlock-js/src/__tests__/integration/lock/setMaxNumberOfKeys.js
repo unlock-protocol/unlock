@@ -1,11 +1,11 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 let walletService, web3Service, lockAddress, lock, chainId
 import { versionEqualOrAbove } from '../../helpers/integration'
 
-export default ({ publicLockVersion }) =>
-  () => {
-    // Test only on lock v9 and above.
-    if (versionEqualOrAbove(publicLockVersion, 'v9')) {
+export default ({ publicLockVersion }) => {
+  // Test only on lock v9 and above.
+  if (versionEqualOrAbove(publicLockVersion, 'v9')) {
+    describe('setMaxNumberOfKeys', () => {
       let oldMaxNumberOfKeys
       beforeAll(async () => {
         ;({ walletService, web3Service, lockAddress, lock, chainId } =
@@ -30,5 +30,6 @@ export default ({ publicLockVersion }) =>
         expect(oldMaxNumberOfKeys).not.toBe(lock.maxNumberOfKeys)
         expect(lock.maxNumberOfKeys).toBe(200)
       })
-    }
+    })
   }
+}

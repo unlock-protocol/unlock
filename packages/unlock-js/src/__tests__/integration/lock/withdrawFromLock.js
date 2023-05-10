@@ -1,4 +1,4 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import hre from 'hardhat'
 import {
   versionEqualOrBelow,
@@ -8,7 +8,7 @@ import {
 let walletService, web3Service, lockAddress, lock, chainId
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('withdrawFromLock', () => {
     let lockBalanceBefore
     let userBalanceBefore
     let withdrawnAmount
@@ -152,4 +152,4 @@ export default ({ publicLockVersion }) =>
         expect(parseFloat(after)).toBeGreaterThanOrEqual(parseFloat(amount))
       })
     }
-  }
+  })

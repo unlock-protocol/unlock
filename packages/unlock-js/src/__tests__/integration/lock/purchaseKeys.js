@@ -1,9 +1,9 @@
-import { it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('purchaseKeys', () => {
     let tokenIds
     let keys
     let keyOwners
@@ -183,4 +183,4 @@ export default ({ publicLockVersion }) =>
           Math.floor(lock.expirationDuration + latestBlock.timestamp)
       ).toBeLessThan(60)
     })
-  }
+  })
