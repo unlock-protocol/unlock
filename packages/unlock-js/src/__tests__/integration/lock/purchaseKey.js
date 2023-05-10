@@ -150,14 +150,13 @@ export default () => () => {
   })
 
   it('should have increased the number of keys for owner', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const totalKeys = await web3Service.totalKeys(
       lockAddress,
       keyOwner,
       chainId
     )
-    expect(totalKeys).toBe(1)
-    expect(totalKeysBefore).toBe(0)
+    expect(totalKeys).toBe(totalKeysBefore + 1)
   })
 }
