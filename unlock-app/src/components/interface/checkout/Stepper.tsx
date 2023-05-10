@@ -74,7 +74,6 @@ export const StepTitle = ({ children }: { children: ReactNode }) => {
 }
 
 export interface StepItem {
-  id: number
   name: string
   to?: string
   skip?: boolean
