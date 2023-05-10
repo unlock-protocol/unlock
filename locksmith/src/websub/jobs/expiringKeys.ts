@@ -97,14 +97,14 @@ function notifyKeyExpiredForNetwork() {
   // get expiring keys for every network
   return Object.keys(networks).map(async (networkId: string) => {
     const subgraph = new SubgraphService()
-    // get keys from now to 24h in the future
+    // get keys that are about to expire
     const keys = await subgraph.keys(
       {
         first: 1000, //  TODO: handle more than 1000 keys
-        /*where: {
+        where: {
           expiration_gt: now.getTime().toString(),
           expiration_lt: end.getTime().toString(),
-        },*/
+        },
       },
       {
         networks: [Number(networkId)],
