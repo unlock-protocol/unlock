@@ -36,13 +36,13 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
       },
     })}`
   )
-
-  const minEndDate = ticket?.event_start_date
+  const today = dayjs().format('YYYY-MM-DD')
+  const minEndDate = ticket?.event_start_date ? ticket?.event_start_date : today
   const isSameDay = dayjs(ticket?.event_end_date).isSame(
     ticket?.event_start_date,
     'day'
   )
-  const minStartDate = isSameDay ? ticket?.event_start_time : undefined
+  const minStartTime = isSameDay ? ticket?.event_start_time : undefined
 
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     ticket?.event_address || 'Ethereum'
@@ -162,7 +162,7 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
                   disabled={disabled}
                   type="time"
                   label="End time"
-                  min={minStartDate}
+                  min={minStartTime}
                   error={errors.ticket?.event_end_time?.message}
                 />
               </div>
