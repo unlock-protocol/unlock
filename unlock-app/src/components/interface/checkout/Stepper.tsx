@@ -96,10 +96,15 @@ export const Stepper = ({ service, disabled }: StepperProps) => {
   const index = items.findIndex(
     (item) => !item.to || item.to === service.state?.value
   )
+  console.log()
   const step = items[index]
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
 
+  // @ts-expect-error Property 'initialized' does not exist on type 'UnlockAccountMachineContext'.
+  if (!service.initialized) {
+    return null
+  }
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
       <div className="flex items-center gap-1.5">
