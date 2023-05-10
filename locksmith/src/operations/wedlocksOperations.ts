@@ -340,17 +340,10 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const tokenId = key?.tokenId
   const manager = key?.manager
 
-  const ownerMetadata = await userMetadataOperations.getMetadata(
+  const recipient = await userMetadataOperations.getUserEmailRecipient({
     lockAddress,
     ownerAddress,
-    true
-  )
-
-  const protectedData = Normalizer.toLowerCaseKeys({
-    ...ownerMetadata?.userMetadata?.protected,
   })
-
-  const recipient = protectedData?.email as string
 
   if (!recipient) {
     return

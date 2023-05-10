@@ -52,6 +52,26 @@ export async function getMetadata(
   return data ? data.data : data
 }
 
+export async function getUserEmailRecipient({
+  lockAddress,
+  ownerAddress,
+}: {
+  lockAddress: string
+  ownerAddress: string
+}): Promise<string> {
+  const ownerMetadata = await getMetadata(
+    lockAddress,
+    ownerAddress,
+    true // include protected
+  )
+
+  const protectedData = Normalizer.toLowerCaseKeys({
+    ...ownerMetadata?.userMetadata?.protected,
+  })
+
+  return protectedData?.email as string
+}
+
 export interface UserMetadataInputs {
   by?: string | null
   userAddress: string
