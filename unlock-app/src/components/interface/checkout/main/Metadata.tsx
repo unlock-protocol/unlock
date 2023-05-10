@@ -26,7 +26,6 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
@@ -362,11 +361,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   }
   const isLoading = isSubmitting
-  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
-      <Stepper position={3} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isMemberLoading ? (
           <Placeholder.Root>
