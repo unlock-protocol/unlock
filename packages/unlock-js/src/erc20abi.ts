@@ -1,4 +1,6 @@
 const erc20abi = [
+  'function name() public view returns (string)',
+  'function version() public view returns (string)',
   'function totalSupply() public view returns (uint)',
   'function balanceOf(address tokenOwner) public view returns (uint balance)',
   'function decimals() public view returns (uint decimals)',
