@@ -15,6 +15,7 @@ import stripe from '../../config/stripe'
 import { ethers } from 'ethers'
 import { recoverTransferAuthorization } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
+import { UniversalCardPurchases } from '../../models/universalCardPurchases'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -259,15 +260,14 @@ export const createOnRampSession: RequestHandler = async (
     },
   })
 
-  // TODO: save everything to DB?
-  console.log(
+  // save everything so we can use if needed!
+  await UniversalCardPurchases.create({
     lockAddress,
     network,
-    recovered,
     userAddress,
-    request.body,
-    session
-  )
+    stripeSession: session.id,
+    body: request.body,
+  })
 
   return response.status(200).send(session)
 }
