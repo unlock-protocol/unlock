@@ -1,5 +1,6 @@
 // BigDecimal class based on JS native BigInt
 // from https://stackoverflow.com/a/66939244/887594
+// NB: this is used only in `./integration/lock/purchaseKey.js`
 
 export class BigDecimal {
   // Configuration: constants
