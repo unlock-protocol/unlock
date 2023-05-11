@@ -25,7 +25,7 @@ export const useFiatChargePrice = ({
       const response = await storage.getTotalPrice(
         network,
         amount,
-        tokenAddress
+        tokenAddress ?? undefined
       )
       return response.data
     },
