@@ -85,15 +85,21 @@ export const captureCharge = async (
   return response.json()
 }
 
+interface FiatPricingProps {
+  config: any
+  lockAddress: string
+  network: number
+  quantity?: number
+}
 /**
  * Retrieves the pricing for a lock to be purchasable via credit card
  */
-export const getFiatPricing = async (
-  config: any,
-  lock: string,
-  network: number,
-  quantity = 1
-) => {
+export const getFiatPricing = async ({
+  config,
+  lockAddress,
+  network,
+  quantity = 1,
+}: FiatPricingProps) => {
   const opts = {
     method: 'GET',
     headers: {
@@ -101,7 +107,7 @@ export const getFiatPricing = async (
     },
   }
   const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}&quantity=${quantity}`,
+    `${config.services.storage.host}/price/fiat/${lockAddress}?chain=${network}&quantity=${quantity}`,
     opts
   )
   return response.json()

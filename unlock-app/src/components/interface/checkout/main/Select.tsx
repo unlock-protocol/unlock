@@ -167,22 +167,29 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     ['locks', JSON.stringify(paywallConfig)],
     async () => {
       const items = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const networkId: number = props.network || paywallConfig.network || 1
-          const [lockData, fiatPricing] = await Promise.all([
-            web3Service.getLock(lock, networkId),
-            getFiatPricing(config, lock, networkId),
-          ])
-          return {
-            ...props,
-            ...lockData,
-            name: props.name || lockData.name,
-            network: networkId,
-            address: lock,
-            fiatPricing,
-            isSoldOut: numberOfAvailableKeys(lockData) <= 0,
-          } as LockState
-        })
+        Object.entries(paywallConfig.locks).map(
+          async ([lockAddress, props]) => {
+            const networkId: number =
+              props.network || paywallConfig.network || 1
+            const [lockData, fiatPricing] = await Promise.all([
+              web3Service.getLock(lockAddress, networkId),
+              getFiatPricing({
+                config,
+                lockAddress,
+                network: networkId,
+              }),
+            ])
+            return {
+              ...props,
+              ...lockData,
+              name: props.name || lockData.name,
+              network: networkId,
+              address: lockAddress,
+              fiatPricing,
+              isSoldOut: numberOfAvailableKeys(lockData) <= 0,
+            } as LockState
+          }
+        )
       )
 
       const locks = items?.filter(

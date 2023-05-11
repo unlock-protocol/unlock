@@ -364,11 +364,11 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       lockDetails = await web3Service.getLock(lock.address, network)
       if (opts?.pricing) {
         try {
-          const fiatPricing = await getFiatPricing(
+          const fiatPricing = await getFiatPricing({
             config,
-            lock.address,
-            network
-          )
+            lockAddress: lock.address,
+            network,
+          })
           lockDetails = {
             ...lockDetails,
             fiatPricing,
@@ -484,7 +484,11 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
 
   const getCreditCardPricing = async () => {
     try {
-      const fiatPricing = await getFiatPricing(config, lock.address, network)
+      const fiatPricing = await getFiatPricing({
+        config,
+        lockAddress: lock.address,
+        network,
+      })
       const mergedLock = {
         ...lock,
         fiatPricing,

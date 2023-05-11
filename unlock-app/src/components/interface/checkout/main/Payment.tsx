@@ -59,12 +59,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', lock.network, lock.address, recipients.length],
     async () => {
-      const pricing = await getFiatPricing(
+      const pricing = await getFiatPricing({
         config,
-        lock.address,
-        lock.network,
-        recipients.length
-      )
+        lockAddress: lock.address,
+        network: lock.network,
+        quantity: recipients.length,
+      })
       return pricing
     }
   )

@@ -50,7 +50,11 @@ export function Renew({
   const { isLoading: isFiatPricingLoading, data: fiatPricing } = useQuery(
     ['lockFiatPricing', lockAddress, lockNetwork],
     async () => {
-      const pricing = await getFiatPricing(config, lockAddress, lockNetwork)
+      const pricing = await getFiatPricing({
+        config,
+        lockAddress,
+        network: lockNetwork,
+      })
       return pricing
     }
   )
