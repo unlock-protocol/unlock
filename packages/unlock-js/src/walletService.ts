@@ -74,8 +74,6 @@ interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
 }
 
 interface PurchaseWithCardPurchaserParams {
-  lockAddress: string
-  network: number
   transfer: any
   purchase: any
   callData: string
@@ -1121,6 +1119,11 @@ export default class WalletService extends UnlockService {
     purchase,
     callData,
   }: PurchaseWithCardPurchaserParams) {
+    console.log({
+      transfer,
+      purchase,
+      callData,
+    })
     const networkConfig = this.networks[this.networkId]
     const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
 

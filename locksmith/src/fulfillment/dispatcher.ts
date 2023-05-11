@@ -332,16 +332,51 @@ export default class Dispatcher {
     )
   }
 
-  async buyWithCardPurchaser(network: number, transfer: any, purchase: any) {
+  async buyWithCardPurchaser(
+    network: number,
+    lockAddress: string,
+    recipients: string[],
+    transfer: any,
+    purchase: any,
+    purchaseData: any
+  ) {
     const walletService = new WalletService(networks)
     const { wallet, provider } = await this.getPurchaser(network)
     await walletService.connect(provider, wallet)
 
-    console.log({ network, transfer, purchase })
+    const referrer = networks[network]?.multisig
+    const teamMultisig = networks[network]?.multisig
 
-    // Let's build the callData
-    // Based on whether this is a purchase or an extension!
-    const callData = ''
-    return walletService.purchaseWithCardPurchaser(transfer, purchase, callData)
+    // Construct the transaction
+    // ! We should ideally do that in  unlock-js!
+    const lockContract = await walletService.getLockContract(lockAddress)
+    console.log('SO FAR SO GOOD!')
+    const keyPrices = await Promise.all(
+      recipients.map(async (recipient, index) => {
+        console.log({ recipient, referrer, data: purchaseData[index] })
+        return lockContract.purchasePriceFor(
+          recipient,
+          referrer,
+          purchaseData[index] || []
+        )
+      })
+    )
+
+    console.log(keyPrices)
+    const transaction = lockContract.populateTransaction.purchase(
+      keyPrices,
+      recipients,
+      recipients.map(() => referrer),
+      recipients.map(() => teamMultisig),
+      purchaseData
+    )
+
+    console.log('transaction', transaction)
+
+    return walletService.purchaseWithCardPurchaser({
+      transfer,
+      purchase,
+      callData: '',
+    })
   }
 }

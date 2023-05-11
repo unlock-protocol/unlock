@@ -77,7 +77,7 @@ export function useStepperItems(
       to: 'PAYMENT',
     },
     {
-      name: 'Pay with card',
+      name: 'Pay with Stripe',
       to: 'UNIVERSAL_CARD',
     },
     {

@@ -1,4 +1,4 @@
-export const CardPurchaserAbi = [
+export const CardPurchaserABI = [
   {
     inputs: [
       { internalType: 'address', name: '_owner', type: 'address' },

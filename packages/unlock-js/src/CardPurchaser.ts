@@ -1,7 +1,7 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
-import { CardPurchaserAbi } from './abis/CardPurchaserABI'
+import { CardPurchaserABI } from './abis/CardPurchaserABI'
 
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 
@@ -49,7 +49,7 @@ export class CardPurchaser {
     const provider = this.providerForNetwork(network)
     const cardPurchaserContract = new ethers.Contract(
       cardPurchaserContractAddress,
-      CardPurchaserAbi,
+      CardPurchaserABI,
       provider
     )
     if (signer) {

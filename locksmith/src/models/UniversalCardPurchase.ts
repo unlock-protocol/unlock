@@ -40,7 +40,7 @@ UniversalCardPurchase.init(
       type: DataTypes.STRING,
     },
     body: {
-      type: DataTypes.JSON,
+      type: DataTypes.JSONB,
       allowNull: false,
     },
     createdAt: {

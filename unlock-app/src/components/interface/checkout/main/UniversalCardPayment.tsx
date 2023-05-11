@@ -61,7 +61,7 @@ export function UniversalCardPayment({
       enabled: !isInitialDataLoading,
     })
 
-  // TODO: Also configure webhook on the Stripe side!
+  // TODO: Also configure webhook on the Stripe side?
   const onChange = async (event: any) => {
     const { session } = event
 
@@ -124,6 +124,7 @@ export function UniversalCardPayment({
         network: lock!.network,
         amount: cardPricing!.total, // amount is a string in cents
       })
+
       // We pass recipients and purchaseData as these will be used for the onchain transaction
       const response = await storage.createOnRampSession(
         lock!.network,
