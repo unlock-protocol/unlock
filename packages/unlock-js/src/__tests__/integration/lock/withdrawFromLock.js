@@ -1,4 +1,5 @@
-import { ethers } from 'hardhat'
+import { describe, it, expect, beforeAll } from 'vitest'
+import hre from 'hardhat'
 import {
   versionEqualOrBelow,
   versionEqualOrAbove,
@@ -7,13 +8,15 @@ import {
 let walletService, web3Service, lockAddress, lock, chainId
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('withdrawFromLock', () => {
     let lockBalanceBefore
     let userBalanceBefore
     let withdrawnAmount
     let transactionHash
     let beneficiary
     let keyOwners
+
+    const { ethers } = hre
 
     const getBalance = async (address, chainId, tokenAddress) =>
       tokenAddress === null
@@ -149,4 +152,4 @@ export default ({ publicLockVersion }) =>
         expect(parseFloat(after)).toBeGreaterThanOrEqual(parseFloat(amount))
       })
     }
-  }
+  })

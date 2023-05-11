@@ -1,9 +1,10 @@
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, chainId
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+    describe('keyGranter', () => {
       beforeAll(() => {
         ;({ walletService, web3Service, lockAddress, chainId } =
           global.suiteData)
@@ -33,5 +34,6 @@ export default ({ publicLockVersion }) =>
         )
         expect(isKeyManager).toBe(true)
       })
-    }
+    })
   }
+}

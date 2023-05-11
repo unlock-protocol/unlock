@@ -1,3 +1,4 @@
+import { it, expect, beforeAll } from 'vitest'
 import { configureUnlock, deployTemplate } from '../../helpers'
 import { chainId } from '../../helpers/integration'
 import { ZERO } from '../../../constants'

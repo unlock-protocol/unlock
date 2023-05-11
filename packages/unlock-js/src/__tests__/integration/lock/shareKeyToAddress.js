@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll } from 'vitest'
 import {
   versionEqualOrAbove,
   versionEqualOrBelow,
@@ -5,12 +6,12 @@ import {
 
 let walletService, web3Service, lockAddress, accounts, chainId
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (
-      versionEqualOrAbove(publicLockVersion, 'v5') &&
-      versionEqualOrBelow(publicLockVersion, 'v9')
-    ) {
+export default ({ publicLockVersion }) => {
+  if (
+    versionEqualOrAbove(publicLockVersion, 'v5') &&
+    versionEqualOrBelow(publicLockVersion, 'v9')
+  ) {
+    describe('shareKey (to address)', () => {
       beforeAll(() => {
         ;({ walletService, web3Service, lockAddress, accounts, chainId } =
           global.suiteData)
@@ -64,5 +65,6 @@ export default ({ publicLockVersion }) =>
           )
         ).toBeGreaterThan(recipientDurationBefore)
       })
-    }
+    })
   }
+}

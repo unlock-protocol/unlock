@@ -1,14 +1,13 @@
 import Web3Service from '../web3Service'
 import PublicLockVersions from '../PublicLock'
 import networks from '@unlock-protocol/networks'
+import { describe, it, expect, vi } from 'vitest'
 
 var web3Service = new Web3Service(networks)
 const lock = {
   address: '0xe6a85e67905d41a479a32ff59892861351c825e8',
   network: 5,
 }
-
-jest.setTimeout(100000)
 
 describe('Web3Service', () => {
   describe('versions', () => {
@@ -29,7 +28,7 @@ describe('Web3Service', () => {
             return result
           },
         }
-        web3Service.lockContractAbiVersion = jest.fn(() => version)
+        web3Service.lockContractAbiVersion = vi.fn(() => version)
         const r = await web3Service[method](...args)
         expect(r).toBe(result)
       }

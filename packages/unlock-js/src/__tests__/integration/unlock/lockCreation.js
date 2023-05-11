@@ -1,4 +1,5 @@
 import { versionEqualOrBelow } from '../../helpers/integration'
+import { it, expect, beforeAll } from 'vitest'
 
 let lockCreationHash,
   web3Service,

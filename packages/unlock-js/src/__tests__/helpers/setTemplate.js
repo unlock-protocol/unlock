@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 
 /**
  * Sets a new template for locks
@@ -18,7 +18,7 @@ export default async (
     'function setLockTemplate(address _publicLockAddress)',
     'function addLockTemplate(address impl,uint16 version)',
   ]
-
+  const { ethers } = hre
   const unlock = await ethers.getContractAt(abi, unlockAddress)
 
   // add lock version

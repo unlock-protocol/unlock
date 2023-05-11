@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 import * as abis from '@unlock-protocol/contracts'
 
 /**
@@ -10,6 +10,7 @@ import * as abis from '@unlock-protocol/contracts'
  * @param {*} callback
  */
 export default async (version, transactionOptions = {}, callback) => {
+  const { ethers } = hre
   const [signer] = await ethers.getSigners()
   const { abi, bytecode } = abis[`PublicLock${version.toUpperCase()}`]
   const factory = await ethers.getContractFactory(abi, bytecode, signer)
