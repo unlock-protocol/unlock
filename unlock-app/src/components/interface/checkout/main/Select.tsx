@@ -235,6 +235,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     return skip && !collectsMetadadata
   }, [lock, paywallConfig])
 
+  const skipSelect = useMemo(() => {
+    const skip = paywallConfig.skipSelect
+    return skip && Object.keys(paywallConfig.locks).length === 1
+  }, [paywallConfig])
+
   const config = useConfig()
   const { account, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
@@ -305,7 +310,36 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
   }, [locks])
 
-  const isLoading = isLocksLoading || isLoadingHook
+  const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
+
+  useEffect(() => {
+    if (!(lock && skipSelect && account && !isLoading)) {
+      return
+    }
+
+    send({
+      type: 'SELECT_LOCK',
+      lock,
+      existingMember: !!membership?.member,
+      skipQuantity,
+      skipRecipient,
+      // unlock account are unable to renew : wut?
+      expiredMember: isUnlockAccount ? false : !!membership?.expired,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }, [
+    lock,
+    membership,
+    account,
+    hookType,
+    skipQuantity,
+    skipRecipient,
+    isUnlockAccount,
+    send,
+    skipSelect,
+    isLoading,
+  ])
 
   return (
     <Fragment>

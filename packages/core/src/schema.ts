@@ -227,6 +227,15 @@ export const PaywallConfig = z
       })
       .default(true)
       .optional(),
+
+    skipSelect: z
+      .boolean({
+        description:
+          'When set to true and there is only one lock, the checkout flow will skip the lock selection step.',
+      })
+      .optional()
+      .default(false),
+
     expectedAddress: z
       .string({
         description: 'Expected wallet address for user.',
