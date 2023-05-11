@@ -4,6 +4,7 @@ import {
   notifyNewKeyToWedlocks,
   getCustomTemplate,
   getTemplates,
+  getAttachments,
 } from '../../src/operations/wedlocksOperations'
 import { vi, expect } from 'vitest'
 import app from '../app'
@@ -25,9 +26,39 @@ vi.mock('@unlock-protocol/unlock-js', async () => {
   }
 })
 
-vi.mock('../../src/operations/userMetadataOperations.ts', async () => {
+vi.mock('../../src/utils/image', async () => {
+  const actual: any = await vi.importActual('../../src/utils/image')
+  return {
+    ...actual,
+    svgStringToDataURI: () => 'mock',
+  }
+})
+
+vi.mock('../../src/utils/ticket', async () => {
+  const actual: any = await vi.importActual('../../src/utils/ticket')
+  return {
+    ...actual,
+    createTicket: async () => Promise.resolve('mock'),
+  }
+})
+
+vi.mock('../../src/utils/calendar', async () => {
+  const actual: any = await vi.importActual('../../src/utils/calendar')
+  return {
+    ...actual,
+    createEventIcs: async () => Promise.resolve('mock'),
+  }
+})
+
+vi.mock('../../src/utils/certification', async () => {
+  return {
+    createCertificate: vi.fn(async () => Promise.resolve('mock')),
+  }
+})
+
+vi.mock('../../src/operations/userMetadataOperations', async () => {
   const actual: any = await vi.importActual(
-    '../../src/operations/userMetadataOperations.ts'
+    '../../src/operations/userMetadataOperations'
   )
   return {
     ...actual,
@@ -360,6 +391,54 @@ describe('Wedlocks operations', () => {
         'certificationKeyAirdropped0x123',
         'certificationKeyAirdropped',
       ])
+    })
+  })
+
+  describe('getAttachments', () => {
+    it('includes correct file name for event', async () => {
+      expect.assertions(2)
+      const attachments = await getAttachments({
+        tokenId: '1',
+        owner: '12',
+        lockAddress: lockAddressMock,
+        network: 1,
+        types: {
+          isEvent: true,
+          isStamp: false,
+          isCertification: false,
+        },
+        event: {
+          eventName: 'test',
+        },
+      })
+
+      expect(
+        attachments.find((attachment) => attachment.filename === 'ticket.png')
+      ).toBeDefined()
+      expect(
+        attachments.find((attachment) => attachment.filename === 'calendar.ics')
+      ).toBeDefined()
+    })
+
+    it('includes correct file name for certification', async () => {
+      expect.assertions(1)
+      const attachments = await getAttachments({
+        tokenId: '1',
+        owner: '12',
+        lockAddress: lockAddressMock,
+        network: 1,
+        types: {
+          isEvent: false,
+          isStamp: false,
+          isCertification: true,
+        },
+      })
+
+      expect(
+        attachments.find(
+          (attachment) => attachment.filename === 'certification.png'
+        )
+      ).toBeDefined()
     })
   })
 })
