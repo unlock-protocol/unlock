@@ -16,13 +16,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import { useState } from 'react'
 import { onResolveName } from '~/utils/resolvers'
-import { ethers } from 'ethers'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   lockAddress: string
-  currencyContractAddress?: string | null
+  currencyContractAddress?: string
   dismiss?: () => void
   balance: number
   network: number
@@ -87,7 +86,7 @@ export const WithdrawFundModal = ({
       lockAddress,
       beneficiary,
       amount: form.amount.toString(),
-      erc20Address: currencyContractAddress || ethers.constants.AddressZero,
+      erc20Address: currencyContractAddress,
     })
   }
 

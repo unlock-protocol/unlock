@@ -23,8 +23,8 @@ export default async function (
   // decimals could be 0!
   if (decimals == null) {
     // get the decimals from the ERC20 contract or default to 18
-    if (erc20Address !== ZERO) {
-      decimals = await getErc20Decimals(erc20Address, this.provider)
+    if (tokenAddress && tokenAddress !== ZERO) {
+      decimals = await getErc20Decimals(tokenAddress, this.provider)
     } else {
       decimals = 18
     }
