@@ -91,14 +91,17 @@ async function main() {
   console.log(schemaFilePath)
   const raw = `${TheGraphMetaQL} \n${await fs.readFile(schemaFilePath, 'utf8')}`
   const schema = await buildSchema(raw)
-  // console.log(schema)
-  console.log(typeof getIntrospectionQuery())
-  // printIntrospectionSchema()
-  const data = await graphql({
+  const query = getIntrospectionQuery()
+  const { data } = await graphql({
     schema,
-    requestString: getIntrospectionQuery(),
+    source: query,
   })
-  console.log(data)
+  const introspectionJSONFilePath = path.join(
+    __dirname,
+    '..',
+    'introspection.json'
+  )
+  await fs.writeJSON(introspectionJSONFilePath, data, { spaces: 2 })
 }
 
 main()
