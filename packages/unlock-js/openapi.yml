@@ -374,6 +374,28 @@ components:
         type:
           type: string
 
+    LockSettings:
+      type: object
+      nullable: false
+      properties:
+        lockAddress:
+          type: string
+        network:
+          type: number
+        sendEmail:
+          type: boolean
+        slug:
+          type: string
+        replyTo:
+          type: string
+          nullable: true
+        creditCardPrice:
+          type: number
+          nullable: true
+        emailSender:
+          type: string
+          nullable: true
+
   parameters:
     Network:
       in: path
@@ -2482,22 +2504,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  sendEmail:
-                    type: boolean
-                  replyTo:
-                    type: string
-                  creditCardPrice:
-                    type: number
-                  slug:
-                    type: string
-                  lockAddress:
-                    type: string
-                  network:
-                    type: number
-                  emailSender:
-                    type: string
+                $ref: '#/components/schemas/LockSettings'
 
   /v2/lock-settings/{network}/locks/{lockAddress}:
     get:
@@ -2513,22 +2520,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  sendEmail:
-                    type: boolean
-                  replyTo:
-                    type: string
-                  creditCardPrice:
-                    type: number
-                  slug:
-                    type: string
-                  lockAddress:
-                    type: string
-                  network:
-                    type: number
-                  emailSender:
-                    type: string
+                $ref: '#/components/schemas/LockSettings'
 
         404:
           description: Setting not found
@@ -2564,22 +2556,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                sendEmail:
-                  type: boolean
-                replyTo:
-                  type: string
-                creditCardPrice:
-                  type: number
-                slug:
-                  type: string
-                lockAddress:
-                  type: string
-                network:
-                  type: number
-                emailSender:
-                  type: string
+              $ref: '#/components/schemas/LockSettings'
 
       responses:
         200:

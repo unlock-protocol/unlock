@@ -5,6 +5,8 @@ import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutService } from './main/checkoutMachine'
 import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
+import { useStepperItems } from './main/useStepperItems'
+import { useActor } from '@xstate/react'
 
 interface IconProps {
   active?: boolean
@@ -79,22 +81,26 @@ export interface StepItem {
 }
 
 interface StepperProps {
-  items: StepItem[]
-  position: number
   service: CheckoutService | UnlockAccountService
   disabled?: boolean
 }
 
-export const Stepper = ({
-  items,
-  position,
-  service,
-  disabled,
-}: StepperProps) => {
-  const index = items.findIndex((item) => item.id === position)
+export const Stepper = ({ service, disabled }: StepperProps) => {
+  const [state] = useActor(service)
+
+  const isUnlockAccount = service.id === 'unlockAccount'
+  // @ts-expect-error Property 'renew' does not exist on type 'UnlockAccountMachineContext'.
+  const isRenew = service.id === 'checkout' && !!state.context?.renew
+
+  const items = useStepperItems(service, { isUnlockAccount, isRenew })
+
+  const index = items.findIndex(
+    (item) => !item.to || item.to === service.state?.value
+  )
   const step = items[index]
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
+
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
       <div className="flex items-center gap-1.5">
