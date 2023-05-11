@@ -1,5 +1,9 @@
 # Changes
 
+# 0.36.1
+
+- fix decimals for withdrawFromLock
+
 # 0.36.0
 
 - adding support functions for Transfer With Authorization
