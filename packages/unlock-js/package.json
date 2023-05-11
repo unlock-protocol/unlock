@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.35.4",
+  "version": "0.36.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -11,7 +11,7 @@
     "directory": "packages/unlock-js"
   },
   "scripts": {
-    "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",
+    "test": "yarn clean && yarn build:abis && yarn build:lib && vitest",
     "test:single": "hardhat test:single",
     "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
@@ -49,17 +49,14 @@
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "babel-jest": "29.5.0",
     "eslint": "8.36.0",
     "hardhat": "2.13.0",
-    "jest": "29.5.0",
     "prettier": "2.8.8",
-    "ts-jest": "29.0.3",
     "tsup": "6.7.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "vitest": "0.27.0"
   },
   "dependencies": {
     "@uniswap/sdk-core": "3.2.2",
