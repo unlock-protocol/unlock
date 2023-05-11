@@ -6,7 +6,6 @@ import config from '../config/config'
 import { logger } from '../logger'
 import networks from '@unlock-protocol/networks'
 import { createTicket } from '../utils/ticket'
-import resvg from '@resvg/resvg-js'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
@@ -25,6 +24,7 @@ import {
 import { getLockMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { createCertificate } from '../utils/certification'
+import { svgStringToDataURI } from '../utils/image'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -41,6 +41,7 @@ type Params = {
 
 type Attachment = {
   path: string
+  filename: string
 }
 
 interface Key {
@@ -172,15 +173,7 @@ const getCustomContent = async (
   return customContent
 }
 
-const svgStringToDataURI = (svgString: string) => {
-  const svg = new resvg.Resvg(svgString)
-  const pngData = svg.render()
-  const pngBuffer = pngData.asPng()
-  const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
-  return dataURI
-}
-
-const getAttachments = async ({
+export const getAttachments = async ({
   tokenId,
   network,
   lockAddress,
@@ -199,7 +192,10 @@ const getAttachments = async ({
       network,
       owner,
     })
-    attachments.push({ path: svgStringToDataURI(ticket) })
+    attachments.push({
+      path: svgStringToDataURI(ticket),
+      filename: 'ticket.png',
+    })
   }
 
   // Add ICS attachment when event is present
@@ -214,19 +210,22 @@ const getAttachments = async ({
     if (file) {
       const url = file.toString('base64')
       const dataURI = `data:text/calendar;base64,${url}`
-      attachments.push({ path: dataURI })
+      attachments.push({ path: dataURI, filename: 'calendar.ics' })
     }
   }
 
   // Add certificate when lock is certificate
-  if (isCertification && network && tokenId) {
+  if (isCertification && !!network && !!tokenId) {
     const certificate = await createCertificate({
       network,
       lockAddress,
       tokenId,
     })
     if (certificate) {
-      attachments.push({ path: svgStringToDataURI(certificate) })
+      attachments.push({
+        path: svgStringToDataURI(certificate),
+        filename: 'certification.png',
+      })
     }
   }
 
