@@ -292,7 +292,7 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   console.log({ recipients })
 
   const subtotal = recipients.reduce(
-    (sum, item) => sum + (item.price?.amountInCents || item.amountInCents || 0),
+    (sum, item) => sum + item.amountInCents || 0,
     0
   )
   console.log({ subtotal })
