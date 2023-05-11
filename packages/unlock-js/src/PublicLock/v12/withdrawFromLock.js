@@ -1,5 +1,6 @@
 import utils from '../../utils'
-
+import { ZERO } from '../../constants'
+import { getErc20Decimals } from '../../erc20'
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
  * By default (amount=0), this withdraws all funds.
@@ -12,12 +13,23 @@ import utils from '../../utils'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, beneficiary, amount = '0', decimals = 18 },
+  { lockAddress, beneficiary, amount = '0', decimals, erc20Address },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const tokenAddress = await lockContract.tokenAddress()
+  const tokenAddress = erc20Address || (await lockContract.tokenAddress())
+
+  // decimals could be 0!
+  if (decimals == null) {
+    // get the decimals from the ERC20 contract or default to 18
+    if (tokenAddress && tokenAddress !== ZERO) {
+      decimals = await getErc20Decimals(tokenAddress, this.provider)
+    } else {
+      decimals = 18
+    }
+  }
+
   // use the signer as beneficiary
   if (!beneficiary) {
     beneficiary = await this.signer.getAddress()

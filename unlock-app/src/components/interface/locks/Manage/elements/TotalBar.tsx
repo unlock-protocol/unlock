@@ -115,6 +115,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
           isOpen={withdrawModal}
           setIsOpen={setWithdrawModal}
           lockAddress={lockAddress}
+          currencyContractAddress={lock?.currencyContractAddress}
           balance={balance}
           symbol={symbol}
           network={network}
