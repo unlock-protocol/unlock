@@ -90,6 +90,7 @@ interface FiatPricingProps {
   lockAddress: string
   network: number
   quantity?: number
+  amount?: number
 }
 /**
  * Retrieves the pricing for a lock to be purchasable via credit card
@@ -99,6 +100,7 @@ export const getFiatPricing = async ({
   lockAddress,
   network,
   quantity = 1,
+  amount = 1,
 }: FiatPricingProps) => {
   const opts = {
     method: 'GET',
@@ -107,7 +109,7 @@ export const getFiatPricing = async ({
     },
   }
   const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lockAddress}?chain=${network}&quantity=${quantity}`,
+    `${config.services.storage.host}/price/fiat/${lockAddress}?chain=${network}&quantity=${quantity}&amount=${amount}`,
     opts
   )
   return response.json()
