@@ -85,25 +85,28 @@ type Query {
   _dummy: String
 }
 `
-
+const introspectionJSONFilePath = path.join(
+  __dirname,
+  '..',
+  'introspection.json'
+)
 async function main() {
   const schemaFilePath = path.join(__dirname, '..', 'schema.graphql')
-  console.log(schemaFilePath)
   const raw = `${TheGraphMetaQL} \n${await fs.readFile(schemaFilePath, 'utf8')}`
   const schema = await buildSchema(raw)
+
   const query = getIntrospectionQuery()
-  const { data } = await graphql({
+  const { data, errors } = await graphql({
     schema,
     source: query,
   })
-  const introspectionJSONFilePath = path.join(
-    __dirname,
-    '..',
-    'introspection.json'
-  )
+  if (errors) {
+    console.log(errors)
+    throw Error()
+  }
   await fs.writeJSON(introspectionJSONFilePath, data, { spaces: 2 })
 }
 
 main()
-  .then(() => console.log('ok'))
+  .then(() => console.log(`Saved at ${introspectionJSONFilePath}`))
   .catch((err) => console.error(err))
