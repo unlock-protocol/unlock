@@ -1,4 +1,6 @@
 import { RequestHandler } from 'express'
+import { randomUUID } from 'node:crypto'
+
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -15,7 +17,7 @@ import stripe from '../../config/stripe'
 import { ethers } from 'ethers'
 import { recoverTransferAuthorization } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
-import { UniversalCardPurchases } from '../../models/universalCardPurchases'
+import { UniversalCardPurchase } from '../../models/UniversalCardPurchase'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -261,7 +263,8 @@ export const createOnRampSession: RequestHandler = async (
   })
 
   // save everything so we can use if needed!
-  await UniversalCardPurchases.create({
+  await UniversalCardPurchase.create({
+    id: randomUUID(),
     lockAddress,
     network,
     userAddress,
@@ -274,14 +277,15 @@ export const createOnRampSession: RequestHandler = async (
 
 /**
  * Execute the purchase transaction!
+ * with all the signature and stuff!
  * @param request
  * @param response
  * @returns
  */
 export const captureOnRamp: RequestHandler = async (request, response) => {
-  const transactionHash = request.query.transactionHash
+  console.log(request)
+  const dispatcher = new Dispatcher()
+  const transaction = await dispatcher.buyWithCardPurchaser(network)
 
-  return response.send({
-    transactionHash,
-  })
+  return response.send(transaction)
 }

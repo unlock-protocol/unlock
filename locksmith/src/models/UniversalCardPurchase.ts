@@ -2,9 +2,9 @@ import type { InferAttributes, InferCreationAttributes } from 'sequelize'
 import { Model, DataTypes, CreationOptional } from 'sequelize'
 import { LocksmithDataTypes, sequelize } from './sequelize'
 
-export class UniversalCardPurchases extends Model<
-  InferAttributes<UniversalCardPurchases>,
-  InferCreationAttributes<UniversalCardPurchases>
+export class UniversalCardPurchase extends Model<
+  InferAttributes<UniversalCardPurchase>,
+  InferCreationAttributes<UniversalCardPurchase>
 > {
   declare id: CreationOptional<string>
   declare lockAddress: string
@@ -16,7 +16,7 @@ export class UniversalCardPurchases extends Model<
   declare updatedAt: CreationOptional<Date>
 }
 
-UniversalCardPurchases.init(
+UniversalCardPurchase.init(
   {
     id: {
       allowNull: false,
@@ -54,6 +54,6 @@ UniversalCardPurchases.init(
   },
   {
     sequelize,
-    modelName: 'UniversalCardPurchasess',
+    modelName: 'UniversalCardPurchases',
   }
 )

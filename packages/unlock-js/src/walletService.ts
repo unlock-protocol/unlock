@@ -3,7 +3,7 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import { CardPurchaserABI } from './abis/CardPurchaserABI'
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
@@ -71,6 +71,14 @@ interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
   amount: string // this is in cents
   lockAddress: string
   network: number
+}
+
+interface PurchaseWithCardPurchaserParams {
+  lockAddress: string
+  network: number
+  transfer: any
+  purchase: any
+  callData: string
 }
 
 /**
@@ -1012,28 +1020,28 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Returns the ethers contract object for the UnlockSwapPurchaser contract
+   * Returns the ethers contract object for the UnlockCardPurchaser contract
    * @param param0
    * @returns
    */
-  getUnlockSwapPurchaserContract({
+  getUnlockCardPurchaserContract({
     params: { network },
   }: {
     params: { network: number }
   }) {
     const networkConfig = this.networks[network]
-    const UnlockSwapPurchaser = networkConfig?.swapPurchaser
-    if (!UnlockSwapPurchaser) {
-      throw new Error('SwapPurchaser not available for this network')
+    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
     }
     const provider = this.providerForNetwork(network)
-    const swapPurchaserContract = new ethers.Contract(
-      UnlockSwapPurchaser,
-      UnlockSwapPurchaserABI,
+    const CardPurchaserContract = new ethers.Contract(
+      cardPurchaserAddress,
+      CardPurchaserABI,
       provider
     )
-    const swapPurchaser = swapPurchaserContract.connect(this.signer)
-    return swapPurchaser
+    const CardPurchaser = CardPurchaserContract.connect(this.signer)
+    return CardPurchaser
   }
 
   /**
@@ -1052,7 +1060,7 @@ export default class WalletService extends UnlockService {
     const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
 
     if (!cardPurchaserAddress) {
-      throw new Error('SwapPurchaser not available for this network')
+      throw new Error('CardPurchaser not available for this network')
     }
 
     let usdcContractAddress
@@ -1101,5 +1109,32 @@ export default class WalletService extends UnlockService {
       purchaseSignature,
       purchaseMessage,
     }
+  }
+
+  /**
+   * Performs a purchase using the CardPurchaser contract
+   * @param param0
+   * @returns
+   */
+  async purchaseWithCardPurchaser({
+    transfer,
+    purchase,
+    callData,
+  }: PurchaseWithCardPurchaserParams) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
+    }
+
+    const cardPurchaser = new CardPurchaser()
+    return cardPurchaser.purchase(
+      this.networkId,
+      transfer,
+      purchase,
+      callData,
+      this.signer
+    )
   }
 }

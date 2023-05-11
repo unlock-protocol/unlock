@@ -39,8 +39,6 @@ export function UniversalCardPayment({
   const { lock, recipients, captcha, paywallConfig, password, promo } =
     state.context
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   // Build the `purchaseData` field that gets passed to the contract
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({

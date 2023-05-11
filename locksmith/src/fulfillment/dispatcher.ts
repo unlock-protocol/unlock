@@ -331,4 +331,17 @@ export default class Dispatcher {
       )
     )
   }
+
+  async buyWithCardPurchaser(network: number, transfer: any, purchase: any) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getPurchaser(network)
+    await walletService.connect(provider, wallet)
+
+    console.log({ network, transfer, purchase })
+
+    // Let's build the callData
+    // Based on whether this is a purchase or an extension!
+    const callData = ''
+    return walletService.purchaseWithCardPurchaser(transfer, purchase, callData)
+  }
 }
