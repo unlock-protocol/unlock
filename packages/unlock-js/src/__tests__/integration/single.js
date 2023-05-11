@@ -19,9 +19,9 @@ import {
   versionEqualOrAbove,
 } from '../helpers/integration'
 
-const unlockVersion = process.env.UNLOCK_JS_TEST_RUN_UNLOCK_VERSION || 'v11'
+const unlockVersion = process.env.UNLOCK_JS_TEST_RUN_UNLOCK_VERSION || 'v12'
 const publicLockVersion =
-  process.env.UNLOCK_JS_TEST_RUN_PUBLIC_LOCK_VERSION || 'v11'
+  process.env.UNLOCK_JS_TEST_RUN_PUBLIC_LOCK_VERSION || 'v13'
 const testPath =
   process.env.UNLOCK_JS_TEST_RUN_TEST_PATH || './lock/cancelAndRefund.js'
 
