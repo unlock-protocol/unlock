@@ -11,7 +11,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { storage } from '~/config/storage'
 import { CryptoElements, OnrampElement } from '../utils/CryptoElements'
-import { PricingData } from './Confirm'
+import { CreditCardPricingBreakdown, PricingData } from './Confirm'
 import { useActor } from '@xstate/react'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ViewContract } from '../ViewContract'
@@ -151,6 +151,8 @@ export function UniversalCardPayment({
     return <Stepper service={checkoutService} />
   }
 
+  console.log({ cardPricing })
+
   return (
     <Fragment>
       <Stepper service={checkoutService} />
@@ -170,6 +172,11 @@ export function UniversalCardPayment({
                 network={lock!.network}
                 lock={lock!}
                 pricingData={cardPricing}
+              />
+              <CreditCardPricingBreakdown
+                total={totalPricing!.total}
+                creditCardProcessingFee={totalPricing!.creditCardProcessingFee}
+                unlockServiceFee={totalPricing!.unlockServiceFee}
               />
             </div>
           </main>

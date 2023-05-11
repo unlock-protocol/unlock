@@ -350,7 +350,6 @@ export default class Dispatcher {
     // Construct the transaction
     // ! We should ideally do that in  unlock-js!
     const lockContract = await walletService.getLockContract(lockAddress)
-    console.log('SO FAR SO GOOD!')
     const keyPrices = await Promise.all(
       recipients.map(async (recipient, index) => {
         console.log({ recipient, referrer, data: purchaseData[index] })
@@ -362,8 +361,7 @@ export default class Dispatcher {
       })
     )
 
-    console.log(keyPrices)
-    const transaction = lockContract.populateTransaction.purchase(
+    const transaction = await lockContract.populateTransaction.purchase(
       keyPrices,
       recipients,
       recipients.map(() => referrer),
@@ -371,12 +369,14 @@ export default class Dispatcher {
       purchaseData
     )
 
-    console.log('transaction', transaction)
+    if (!transaction.data) {
+      throw new Error('Missing transaction data')
+    }
 
     return walletService.purchaseWithCardPurchaser({
       transfer,
       purchase,
-      callData: '',
+      callData: transaction.data,
     })
   }
 }

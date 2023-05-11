@@ -39,7 +39,7 @@ export const usePurchaseData = ({
         promo ||
         password ||
         captcha ||
-        Array.from({ length: recipients.length }).map(() => [])
+        Array.from({ length: recipients.length }).map(() => '0x')
 
       const dataBuilder =
         paywallConfig.locks[lockAddress].dataBuilder ||

@@ -68,27 +68,14 @@ export const universalCard: RequestHandler = async (request, response) => {
     data,
   })
 
-  // For universal card, we actually apply the unlock fee to each lock
-  // And split gas between them all
-  const fees = (pricing.total - pricing.creditCardProcessingFee) / 100
-  const result = {
-    total: '0',
-    prices: pricing.recipients.map((recipient: any) => {
-      return {
-        userAddress: recipient.address,
-        amount: recipient.amountInUSD + fees / pricing.recipients.length,
-        symbol: '$',
-      }
-    }),
-  }
+  // For universal card, the creditCardProcessingFee fee is applied by Stripe=
+  const creditCardProcessingFee = pricing.creditCardProcessingFee
+  pricing.total -= creditCardProcessingFee
+  pricing.creditCardProcessingFee = 0
 
-  // Compute the total as a string in cents
-  result.total = Math.ceil(
-    100 *
-      result.prices
-        .map((price) => price.amount)
-        .reduce((total: number, price: number) => total + price, 0)
-  ).toString()
+  pricing.recipients.forEach((_, index) => {
+    pricing.recipients[index].symbol = '$'
+  })
 
-  return response.send(result)
+  return response.send(pricing)
 }

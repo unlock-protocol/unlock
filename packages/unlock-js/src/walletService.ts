@@ -1080,7 +1080,7 @@ export default class WalletService extends UnlockService {
       from: await this.signer.getAddress(),
       to: ethers.utils.getAddress(cardPurchaserAddress),
       value,
-      validAfter: now,
+      validAfter: 0,
       validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
       nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
     }
