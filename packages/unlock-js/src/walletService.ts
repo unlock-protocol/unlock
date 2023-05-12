@@ -3,7 +3,7 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import { CardPurchaserABI } from './abis/CardPurchaserABI'
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
@@ -71,6 +71,12 @@ interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
   amount: string // this is in cents
   lockAddress: string
   network: number
+}
+
+interface PurchaseWithCardPurchaserParams {
+  transfer: any
+  purchase: any
+  callData: string
 }
 
 /**
@@ -1022,18 +1028,17 @@ export default class WalletService extends UnlockService {
     params: { network: number }
   }) {
     const networkConfig = this.networks[network]
-    const UnlockSwapPurchaser = networkConfig?.swapPurchaser
-    if (!UnlockSwapPurchaser) {
+    const swapPurchaserAddress = networkConfig?.swapPurchaser
+    if (!swapPurchaserAddress) {
       throw new Error('SwapPurchaser not available for this network')
     }
     const provider = this.providerForNetwork(network)
     const swapPurchaserContract = new ethers.Contract(
-      UnlockSwapPurchaser,
-      UnlockSwapPurchaserABI,
+      swapPurchaserAddress,
+      CardPurchaserABI,
       provider
     )
-    const swapPurchaser = swapPurchaserContract.connect(this.signer)
-    return swapPurchaser
+    return swapPurchaserContract.connect(this.signer)
   }
 
   /**
@@ -1052,7 +1057,7 @@ export default class WalletService extends UnlockService {
     const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
 
     if (!cardPurchaserAddress) {
-      throw new Error('SwapPurchaser not available for this network')
+      throw new Error('CardPurchaser not available for this network')
     }
 
     let usdcContractAddress
@@ -1074,7 +1079,7 @@ export default class WalletService extends UnlockService {
       from: await this.signer.getAddress(),
       to: ethers.utils.getAddress(cardPurchaserAddress),
       value,
-      validAfter: now,
+      validAfter: 0,
       validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
       nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
     }
@@ -1101,5 +1106,32 @@ export default class WalletService extends UnlockService {
       purchaseSignature,
       purchaseMessage,
     }
+  }
+
+  /**
+   * Performs a purchase using the CardPurchaser contract
+   * @param param0
+   * @returns
+   */
+  async purchaseWithCardPurchaser({
+    transfer,
+    purchase,
+    callData,
+  }: PurchaseWithCardPurchaserParams) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
+    }
+
+    const cardPurchaser = new CardPurchaser()
+    return cardPurchaser.purchase(
+      this.networkId,
+      transfer,
+      purchase,
+      callData,
+      this.signer
+    )
   }
 }

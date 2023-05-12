@@ -1,6 +1,7 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
+import { CardPurchaserABI } from './abis/CardPurchaserABI'
 
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 
@@ -8,8 +9,6 @@ export interface GetContractOptions {
   network: number
   signer?: Signer
 }
-
-export const CardPurchaserAbi = []
 
 export const PurchaseTypes = {
   Purchase: [
@@ -50,7 +49,7 @@ export class CardPurchaser {
     const provider = this.providerForNetwork(network)
     const cardPurchaserContract = new ethers.Contract(
       cardPurchaserContractAddress,
-      CardPurchaserAbi,
+      CardPurchaserABI,
       provider
     )
     if (signer) {
@@ -61,7 +60,6 @@ export class CardPurchaser {
 
   async getDomain(network: number) {
     const contract = this.getContract({ network })
-
     const [name, version] = await Promise.all([
       contract.name(),
       contract.version(),
@@ -110,5 +108,33 @@ export class CardPurchaser {
       message
     )
     return { signature, message }
+  }
+
+  /**
+   *
+   * @param network
+   * @param transfer
+   * @param purchase
+   * @param callData
+   * @param signer
+   */
+  async purchase(
+    network: number,
+    transfer: any,
+    purchase: any,
+    callData: any,
+    signer: Signer
+  ) {
+    const contract = this.getContract({ network })
+
+    await contract
+      .connect(signer)
+      .purchase(
+        transfer.message,
+        transfer.signature,
+        purchase.message,
+        purchase.signature,
+        callData
+      )
   }
 }
