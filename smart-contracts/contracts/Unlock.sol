@@ -102,6 +102,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // protocol fee
   uint public protocolFee;
 
+  // errors
+  error Unlock__MANAGER_ONLY();
+  error Unlock__VERSION_TOO_HIGH();
+  error Unlock__MISSING_TEMPLATE();
+  error Unlock__ALREADY_DEPLOYED();
+  error Unlock__MISSING_PROXY_ADMIN();
+  error Unlock__MISSING_LOCK_TEMPLATE();
+  error Unlock__MISSING_LOCK(address lockAddress);
+  error Unlock__INVALID_AMOUNT();
+
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
@@ -137,8 +147,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     // add a proxy admin on deployment
     _deployProxyAdmin();
   }
+
   function initializeProxyAdmin() public onlyOwner {
-    if(proxyAdminAddress != address(0)){revert Unlock__ALREADY_DEPLOYED();}
+    if (proxyAdminAddress != address(0)) {
+      revert Unlock__ALREADY_DEPLOYED();
+    }
     _deployProxyAdmin();
   }
 
@@ -172,10 +185,12 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * Once registered, the template can be used to upgrade an existing Lock
    * @dev This will initialize the template and revokeOwnership.
    */
-  function addLockTemplate(
-    address impl,
-    uint16 version
-  ) public onlyOwner {
+  function addLockTemplate(address impl, uint16 version) public onlyOwner {
+    // First claim the template so that no-one else could
+    // this will revert if the template was already initialized.
+    IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "");
+    IPublicLock(impl).renounceLockManager();
+
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
 
@@ -355,7 +370,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   function networkBaseFee() external view returns (uint) {
     return block.basefee;
   }
-  
+
   /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
@@ -532,21 +547,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * @notice Set the default PublicLock template to use when creating locks
    */
-  function setLockTemplate(
-    address _publicLockAddress
-  ) external onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(_publicLockAddress).initialize(
-      address(this),
-      0,
-      address(0),
-      0,
-      0,
-      ""
-    );
-    IPublicLock(_publicLockAddress).renounceLockManager();
-
+  function setLockTemplate(address _publicLockAddress) external onlyOwner {
+    if (_publicLockVersions[_publicLockAddress] == 0) {
+      revert Unlock__MISSING_LOCK_TEMPLATE();
+    }
+    // set latest version
+    publicLockLatestVersion = _publicLockVersions[_publicLockAddress];
+    // set corresponding template
     publicLockAddress = _publicLockAddress;
     emit SetLockTemplate(_publicLockAddress);
   }
@@ -560,9 +567,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address _tokenAddress,
     address _oracleAddress
   ) external onlyOwner {
-    uniswapOracles[_tokenAddress] = IUniswapOracleV3(
-      _oracleAddress
-    );
+    uniswapOracles[_tokenAddress] = IUniswapOracleV3(_oracleAddress);
     if (_oracleAddress != address(0)) {
       IUniswapOracleV3(_oracleAddress).update(_tokenAddress, weth);
     }
@@ -591,19 +596,6 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    */
   function getGlobalTokenSymbol() external view returns (string memory) {
     return globalTokenSymbol;
-  }
-
-  /**
-   * Returns the ProxyAdmin contract address that manage upgrade for 
-   * this proxy contract
-   * @dev only the owner can call it
-   */
-  function _getAdmin() public view returns (address) {
-      // as per OZ EIP1967 Proxy implementation, this is the keccak-256 hash 
-      // of "eip1967.proxy.admin" subtracted by 1
-      bytes32 _ADMIN_SLOT = 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103;
-
-      return StorageSlot.getAddressSlot(_ADMIN_SLOT).value;
   }
 
   // for doc, see IUnlock.sol
