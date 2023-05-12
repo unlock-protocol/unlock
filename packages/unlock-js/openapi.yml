@@ -1329,6 +1329,7 @@ paths:
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
             type: string
+
       responses:
         200:
           description: Get price for the native token or any erc20 on the network.
@@ -2404,6 +2405,26 @@ paths:
                     type: boolean
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/api/credit-card-details/{network}/locks/{lockAddress}:
+    get:
+      operationId: isCardPaymentEnabledForLock
+      description: Returns if credit card payment are enable for a lock
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully returns credit card enabled status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creditCardEnabled:
+                    type: boolean
 
   /v2/stripe/connect/{network}/locks/{lockAddress}:
     post:
