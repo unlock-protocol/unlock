@@ -36,7 +36,7 @@ contract UnlockOwner {
   address public multisigAddress;
   
   // address of the DAO on mainnet (used to verify trusted origin)
-  address public daoAddress;
+  address public daoTimelockAddress;
 
   // the domain ID of the current network (defined by Connext)
   uint32 public domain;
