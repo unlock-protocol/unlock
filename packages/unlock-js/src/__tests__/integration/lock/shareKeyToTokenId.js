@@ -1,9 +1,10 @@
+import { it, describe, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, accounts, chainId
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    describe('shareKey (to TokenId)', () => {
       beforeAll(() => {
         ;({ walletService, web3Service, lockAddress, accounts, chainId } =
           global.suiteData)
@@ -43,5 +44,6 @@ export default ({ publicLockVersion }) =>
           await web3Service.ownerOf(lockAddress, newTokenId, chainId)
         ).toEqual(recipient)
       })
-    }
+    })
   }
+}

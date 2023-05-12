@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express'
+
 import {
   createPricingForPurchase,
   createTotalCharges,
   defiLammaPrice,
 } from '../../utils/pricing'
-
 import { ethers } from 'ethers'
 
 const MIN_PAYMENT_STRIPE = 100
