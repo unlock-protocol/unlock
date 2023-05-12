@@ -19,6 +19,7 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { fetchRecipientsData } from './utils'
 import { ViewContract } from '../ViewContract'
 import { getReferrer } from '~/utils/checkoutLockUtils'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -54,6 +55,12 @@ export function Renew({
       return pricing
     }
   )
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress,
+    network: lockNetwork,
+  })
+
   const formattedData = getLockProps(
     {
       ...lock,
@@ -187,7 +194,7 @@ export function Renew({
                 <Pricing
                   keyPrice={formattedData.formattedKeyPrice}
                   usdPrice={formattedData.convertedKeyPrice}
-                  isCardEnabled={formattedData.cardEnabled}
+                  isCardEnabled={!!creditCardEnabled}
                 />
               </div>
             ) : (

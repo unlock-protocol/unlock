@@ -29,7 +29,6 @@ export const getLockProps = (
   numberOfRecipients = 1
 ) => {
   return {
-    cardEnabled: lock?.fiatPricing?.creditCardEnabled,
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
     formattedKeyPrice: formattedKeyPrice(
       lock,

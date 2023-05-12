@@ -27,6 +27,8 @@ import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { ViewContract } from '../ViewContract'
 import { useCheckoutHook } from './useCheckoutHook'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -39,6 +41,12 @@ interface LockOptionProps {
 
 const LockOption = ({ disabled, lock }: LockOptionProps) => {
   const config = useConfig()
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
+
   return (
     <RadioGroup.Option
       disabled={disabled}
@@ -87,7 +95,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                 <Pricing
                   keyPrice={formattedData.formattedKeyPrice}
                   usdPrice={formattedData.convertedKeyPrice}
-                  isCardEnabled={formattedData.cardEnabled}
+                  isCardEnabled={!!creditCardEnabled}
                 />
               </div>
             </div>
