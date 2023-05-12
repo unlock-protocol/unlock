@@ -106,7 +106,7 @@ contract UnlockOwner {
    * helper used to get the proxyAdmin address from the Unlock contract
    */
   function _getProxyAdmin(address proxy) internal view returns (address) {
-    address proxyAdminAddress = IUnlock(proxy)._getAdmin();
+    address proxyAdminAddress = IUnlock(proxy).getAdmin();
     return proxyAdminAddress;
   }
 
