@@ -2717,3 +2717,40 @@ paths:
                     type: number
                   isCreditCardPurchasable:
                     type: boolean
+
+  /v2/api/price/{network}/{lockAddress}/card:
+    get:
+      description: Get the price breakdown for universal credit card
+      operationId: getUniversalCardPrice
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: purchaseData[]
+          description: The purchase data passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: recipients[]
+          description: The recipients passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+
+      responses:
+        200:
+          description: Successfully got card price
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'total'
+                properties:
+                  total:
+                    type: string
