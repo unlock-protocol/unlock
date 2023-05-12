@@ -3,7 +3,6 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
-import { getLockProps } from '~/utils/lock'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
@@ -173,7 +172,6 @@ export function Confirm({
   const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
-    quantity,
     recipients,
     payment,
     captcha,
@@ -185,12 +183,7 @@ export function Confirm({
     metadata,
   } = state.context
 
-  const {
-    address: lockAddress,
-    network: lockNetwork,
-    name: lockName,
-    keyPrice,
-  } = lock!
+  const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
   const swap = payment?.method === 'swap_and_purchase'
 
   const currencyContractAddress = swap
