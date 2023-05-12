@@ -268,7 +268,7 @@ interface IPublicLock {
 
   /**
    * _gasRefundValue price in wei or token in smallest price unit
-   * @dev Returns the value/rpice to be refunded to the sender on purchase
+   * @dev Returns the value/price to be refunded to the sender on purchase
    */
   function gasRefundValue()
     external
@@ -326,6 +326,7 @@ interface IPublicLock {
    * @dev allows the key manager to expire a given tokenId
    * and send a refund to the keyOwner based on the amount of time remaining.
    * @param _tokenId The id of the key to cancel.
+   * @notice cancel is enabled with a 10% penalty by default on all Locks.
    */
   function cancelAndRefund(uint _tokenId) external;
 
@@ -642,7 +643,11 @@ interface IPublicLock {
     bytes calldata data
   ) external;
 
-  function totalSupply() external view returns (uint256);
+  /**
+   * Returns the total number of keys, including non-valid ones
+   * @return _totalKeysCreated the total number of keys, valid or not
+   */
+  function totalSupply() external view returns (uint256 _totalKeysCreated);
 
   function tokenOfOwnerByIndex(
     address _owner,
@@ -679,20 +684,6 @@ interface IPublicLock {
     bytes32 role,
     address account
   ) external view returns (bool);
-
-  /**
-   * @param _tokenId the id of the token to transfer time from
-   * @param _to the recipient of the new token with time
-   * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
-   * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
-   * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
-   * @return success the result of the transfer operation
-   */
-  function transfer(
-    uint _tokenId,
-    address _to,
-    uint _value
-  ) external returns (bool success);
 
   /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
    * The `Ownable` logic is used by many 3rd party services to determine
@@ -742,4 +733,16 @@ interface IPublicLock {
     uint _tokenId,
     address _referrer
   ) external;
+
+  /**
+   * @dev helper to check if a key is currently renewable 
+   * it will revert if the pricing or duration of the lock have been modified 
+   * unfavorably since the key was bought(price increase or duration decrease).
+   * It will also revert if a lock is not renewable or if the key is not ready for renewal yet 
+   * (at least 90% expired).
+   * @param tokenId the id of the token to check
+   * @param referrer the address where to send the referrer fee
+   * @return true if the terms has changed
+   */
+  function isRenewable(uint256 tokenId, address referrer) external view returns (bool);
 }

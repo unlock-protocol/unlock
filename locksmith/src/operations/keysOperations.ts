@@ -1,19 +1,12 @@
 import { keysByQuery } from '../graphql/datasource'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import {
+  SubgraphKey,
+  SubgraphLock,
+  Web3Service,
+} from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
-
-interface SubgraphLock {
-  keys: {
-    owner: string
-    tokenId: string
-    expiration: string
-  }[]
-  address: string
-  name: string
-  owner: string
-}
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -47,39 +40,44 @@ async function filterKeys(keys: any[], filters: any) {
   })
 }
 
+type Lock = Omit<Partial<SubgraphLock>, 'keys'> & {
+  keys: Partial<SubgraphKey>[]
+}
 /** merge keys items with the corresponding metadata value */
 export const buildKeysWithMetadata = (
-  lock: SubgraphLock,
+  lock: Lock,
   metadataItems: any[]
-) => {
-  return lock?.keys
-    ?.map((key: any) => {
-      // get key metadata for the owner
-      const { userMetadata, extraMetadata } =
-        metadataItems?.find(
-          (metadata) =>
-            metadata?.userAddress?.toLowerCase() === key?.owner?.toLowerCase()
-        )?.data ?? {}
+): any[] => {
+  return (
+    lock?.keys
+      ?.map((key: Partial<SubgraphKey>) => {
+        // get key metadata for the owner
+        const { userMetadata, extraMetadata } =
+          metadataItems?.find(
+            (metadata) =>
+              metadata?.userAddress?.toLowerCase() === key?.owner?.toLowerCase()
+          )?.data ?? {}
 
-      const metadata = {
-        ...userMetadata?.private,
-        ...userMetadata?.protected,
-        ...extraMetadata,
-      }
+        const metadata = {
+          ...userMetadata?.public,
+          ...userMetadata?.protected,
+          ...extraMetadata,
+        }
 
-      const merged = {
-        token: key?.tokenId,
-        lockName: lock?.name,
-        expiration: key?.expiration,
-        keyholderAddress: key?.owner,
-        // defaults to the owner when the manager is not set
-        keyManager: key?.manager ?? key?.owner,
-        lockAddress: lock?.address,
-        ...metadata,
-      }
-      return merged
-    })
-    .filter(Boolean)
+        const merged = {
+          token: key?.tokenId,
+          lockName: lock?.name,
+          expiration: key?.expiration,
+          keyholderAddress: key?.owner,
+          // defaults to the owner when the manager is not set
+          keyManager: key?.manager || key?.owner,
+          lockAddress: lock?.address,
+          ...metadata,
+        }
+        return merged
+      })
+      .filter(Boolean) || []
+  )
 }
 
 export async function getKeysWithMetadata({
@@ -101,9 +99,9 @@ export async function getKeysWithMetadata({
   )
 
   let metadataItems: any[] = []
-  const graphQLClient = new keysByQuery(network)
 
-  const [lock] = await graphQLClient.get({
+  const [lock] = await keysByQuery({
+    network,
     addresses: [lockAddress],
     filters,
   })
@@ -117,7 +115,7 @@ export async function getKeysWithMetadata({
     })
   }
 
-  const keys = buildKeysWithMetadata(lock, metadataItems)
+  const keys = buildKeysWithMetadata(lock as Lock, metadataItems)
 
   return filterKeys(keys, filters)
 }

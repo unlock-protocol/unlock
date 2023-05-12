@@ -82,16 +82,12 @@ export interface SelectRecipientsEvent {
   type: 'SELECT_RECIPIENTS'
   recipients: string[]
   keyManagers?: string[]
+  metadata?: any[]
 }
 
 export interface SelectPaymentMethodEvent {
   type: 'SELECT_PAYMENT_METHOD'
   payment: Payment
-}
-
-export interface SelectCardToChargeEvent {
-  type: 'SELECT_CARD_TO_CHARGE'
-  cardId: string
 }
 
 export interface DisconnectEvent {
@@ -132,7 +128,6 @@ export type CheckoutMachineEvents =
   | SelectQuantityEvent
   | SelectPaymentMethodEvent
   | SelectRecipientsEvent
-  | SelectCardToChargeEvent
   | SignMessageEvent
   | SubmitPasswordEvent
   | SubmitPromoEvent
@@ -157,8 +152,15 @@ type Payment =
   | {
       method: 'claim'
     }
+  | {
+      method: 'swap_and_purchase'
+      route: any
+    }
+
+export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
+
 export interface Transaction {
-  status: 'ERROR' | 'PROCESSING' | 'FINISHED'
+  status: TransactionStatus
   transactionHash?: string
 }
 
@@ -179,14 +181,36 @@ interface CheckoutMachineContext {
   skipQuantity: boolean
   skipRecipient: boolean
   password?: string[]
+  metadata?: any[]
   promo?: string[]
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
 }
 
+const DEFAULT_CONTEXT: CheckoutMachineContext = {
+  paywallConfig: {} as PaywallConfig,
+  skipRecipient: true,
+  lock: undefined,
+  messageToSign: undefined,
+  mint: undefined,
+  captcha: undefined,
+  payment: {
+    method: 'crypto',
+  },
+  quantity: 1,
+  renewed: undefined,
+  recipients: [],
+  keyManagers: [],
+  skipQuantity: false,
+  renew: false,
+  hook: undefined,
+  metadata: undefined,
+}
+
 export const checkoutMachine = createMachine(
   {
+    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'checkout',
     initial: 'SELECT',
     tsTypes: {} as import('./checkoutMachine.typegen').Typegen0,
@@ -194,24 +218,7 @@ export const checkoutMachine = createMachine(
       context: {} as CheckoutMachineContext,
       events: {} as CheckoutMachineEvents,
     },
-    context: {
-      paywallConfig: {} as PaywallConfig,
-      skipRecipient: true,
-      lock: undefined,
-      messageToSign: undefined,
-      mint: undefined,
-      captcha: undefined,
-      payment: {
-        method: 'crypto',
-      },
-      quantity: 1,
-      renewed: undefined,
-      recipients: [],
-      keyManagers: [],
-      skipQuantity: false,
-      renew: false,
-      hook: undefined,
-    },
+    context: DEFAULT_CONTEXT,
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
       SELECT: 'SELECT',
@@ -239,6 +246,22 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               actions: ['selectLock'],
+              target: 'RETURNING',
+              cond: (_, event) => event.existingMember,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'RENEW',
+              cond: (_, event) => event.expiredMember,
+            },
+
+            {
+              actions: ['selectLock'],
+              cond: 'requireMessageToSign',
+              target: 'MESSAGE_TO_SIGN',
+            },
+            {
+              actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
                 const isPassword = ctx?.hook === 'password'
@@ -261,16 +284,7 @@ export const checkoutMachine = createMachine(
                 return !!isCaptcha && event.expiredMember
               },
             },
-            {
-              actions: ['selectLock'],
-              target: 'RENEW',
-              cond: (_, event) => event.expiredMember,
-            },
-            {
-              actions: ['selectLock'],
-              target: 'RETURNING',
-              cond: (_, event) => event.existingMember,
-            },
+
             {
               actions: ['selectLock'],
               target: 'PAYMENT',
@@ -313,10 +327,32 @@ export const checkoutMachine = createMachine(
       },
       METADATA: {
         on: {
-          SELECT_RECIPIENTS: {
-            target: 'PAYMENT',
-            actions: ['selectRecipients'],
-          },
+          SELECT_RECIPIENTS: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectRecipients'],
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              actions: ['selectRecipients'],
+              cond: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              actions: ['selectRecipients'],
+              cond: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectRecipients'],
+              cond: 'requireCaptcha',
+            },
+            {
+              actions: ['selectRecipients'],
+              target: 'PAYMENT',
+            },
+          ],
           BACK: [
             {
               target: 'SELECT',
@@ -334,113 +370,30 @@ export const checkoutMachine = createMachine(
           },
         },
       },
-      PAYMENT: {
-        on: {
-          SELECT_PAYMENT_METHOD: [
-            {
-              target: 'CARD',
-              actions: ['selectPaymentMethod'],
-              cond: (_, event) => event.payment.method === 'card',
-            },
-            {
-              target: 'MESSAGE_TO_SIGN',
-              actions: ['selectPaymentMethod'],
-              cond: 'requireMessageToSign',
-            },
-            {
-              target: 'PASSWORD',
-              actions: ['selectPaymentMethod'],
-              cond: 'requirePassword',
-            },
-            {
-              target: 'PROMO',
-              actions: ['selectPaymentMethod'],
-              cond: 'requirePromo',
-            },
-            {
-              target: 'CAPTCHA',
-              actions: ['selectPaymentMethod'],
-              cond: 'requireCaptcha',
-            },
-            {
-              actions: ['selectPaymentMethod'],
-              target: 'CONFIRM',
-            },
-          ],
-          BACK: [
-            {
-              target: 'SELECT',
-              cond: (ctx) => ctx.skipRecipient,
-            },
-            {
-              target: 'METADATA',
-            },
-          ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
-        },
-      },
-      CARD: {
-        on: {
-          SELECT_CARD_TO_CHARGE: [
-            {
-              target: 'MESSAGE_TO_SIGN',
-              actions: ['selectCardToCharge'],
-              cond: 'requireMessageToSign',
-            },
-            {
-              target: 'PASSWORD',
-              actions: ['selectCardToCharge'],
-              cond: 'requirePassword',
-            },
-            {
-              target: 'PROMO',
-              actions: ['selectCardToCharge'],
-              cond: 'requirePromo',
-            },
-            {
-              target: 'CAPTCHA',
-              actions: ['selectCardToCharge'],
-              cond: 'requireCaptcha',
-            },
-            {
-              target: 'CONFIRM',
-              actions: ['selectCardToCharge'],
-            },
-          ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
-          BACK: 'PAYMENT',
-        },
-      },
       MESSAGE_TO_SIGN: {
         on: {
           SIGN_MESSAGE: [
             {
-              target: 'PASSWORD',
               actions: ['signMessage'],
               cond: 'requirePassword',
+              target: 'PASSWORD',
             },
             {
-              target: 'PROMO',
               actions: ['signMessage'],
               cond: 'requirePromo',
+              target: 'PROMO',
             },
             {
-              target: 'CAPTCHA',
               actions: ['signMessage'],
               cond: 'requireCaptcha',
+              target: 'CAPTCHA',
             },
             {
-              target: 'CONFIRM',
               actions: ['signMessage'],
+              target: 'PAYMENT',
             },
           ],
-          BACK: 'PAYMENT',
+          BACK: 'METADATA',
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -456,21 +409,17 @@ export const checkoutMachine = createMachine(
               cond: (ctx) => ctx.renew,
             },
             {
-              target: 'CONFIRM',
+              target: 'PAYMENT',
               actions: ['submitPassword'],
             },
           ],
           BACK: [
             {
-              target: 'SELECT',
-              cond: (ctx) => ctx.renew,
-            },
-            {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'PAYMENT',
+              target: 'METADATA',
             },
           ],
           DISCONNECT: {
@@ -488,21 +437,17 @@ export const checkoutMachine = createMachine(
               cond: (ctx) => ctx.renew,
             },
             {
-              target: 'CONFIRM',
+              target: 'PAYMENT',
               actions: ['submitPromo'],
             },
           ],
           BACK: [
             {
-              target: 'SELECT',
-              cond: (ctx) => ctx.renew,
-            },
-            {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'PAYMENT',
+              target: 'METADATA',
             },
           ],
           DISCONNECT: {
@@ -520,21 +465,17 @@ export const checkoutMachine = createMachine(
               cond: (ctx) => ctx.renew,
             },
             {
-              target: 'CONFIRM',
+              target: 'PAYMENT',
               actions: ['solveCaptcha'],
             },
           ],
           BACK: [
             {
-              target: 'SELECT',
-              cond: (ctx) => ctx.renew,
-            },
-            {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'PAYMENT',
+              target: 'METADATA',
             },
           ],
           DISCONNECT: {
@@ -543,6 +484,62 @@ export const checkoutMachine = createMachine(
           },
         },
       },
+      PAYMENT: {
+        on: {
+          SELECT_PAYMENT_METHOD: [
+            {
+              target: 'CARD',
+              actions: ['selectPaymentMethod'],
+              cond: (_, event) => event.payment.method === 'card',
+            },
+            {
+              actions: ['selectPaymentMethod'],
+              target: 'CONFIRM',
+            },
+          ],
+          BACK: [
+            {
+              cond: 'requirePassword',
+              target: 'PASSWORD',
+            },
+            {
+              cond: 'requirePromo',
+              target: 'PROMO',
+            },
+            {
+              cond: 'requireCaptcha',
+              target: 'CAPTCHA',
+            },
+            {
+              cond: 'requireMessageToSign',
+              target: 'MESSAGE_TO_SIGN',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      CARD: {
+        on: {
+          SELECT_PAYMENT_METHOD: [
+            {
+              target: 'CONFIRM',
+              actions: ['selectPaymentMethod'],
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+          BACK: 'PAYMENT',
+        },
+      },
+
       CONFIRM: {
         on: {
           CONFIRM_MINT: {
@@ -550,18 +547,6 @@ export const checkoutMachine = createMachine(
             actions: ['confirmMint'],
           },
           BACK: [
-            {
-              target: 'PASSWORD',
-              cond: (ctx) => ctx.hook === 'password',
-            },
-            {
-              target: 'CAPTCHA',
-              cond: (ctx) => ctx.hook === 'captcha',
-            },
-            {
-              target: 'MESSAGE_TO_SIGN',
-              cond: 'requireMessageToSign',
-            },
             {
               target: 'PAYMENT',
             },
@@ -580,6 +565,7 @@ export const checkoutMachine = createMachine(
           },
         },
       },
+
       UNLOCK_ACCOUNT: {
         invoke: {
           id: 'unlockAccount',
@@ -629,23 +615,11 @@ export const checkoutMachine = createMachine(
   },
   {
     actions: {
-      disconnect: assign((context) => {
+      disconnect: assign((_context) => {
         return {
-          paywallConfig: context.paywallConfig,
-          lock: context.lock,
-          payment: {
-            method: 'crypto',
-          },
-          quantity: context.quantity,
-          messageToSign: undefined,
-          recipients: [],
-          mint: undefined,
-          renewed: undefined,
-          skipQuantity: false,
-          renew: false,
-          skipRecipient: true,
-          keyManagers: [],
-        } as CheckoutMachineContext
+          ...DEFAULT_CONTEXT,
+          paywallConfig: _context.paywallConfig,
+        }
       }),
       selectLock: assign((context, event) => {
         return {
@@ -676,13 +650,8 @@ export const checkoutMachine = createMachine(
         keyManagers: (_, event) => {
           return event.keyManagers
         },
-      }),
-      selectCardToCharge: assign({
-        payment: (context, event) => {
-          return {
-            method: context.payment.method,
-            cardId: event.cardId,
-          } as const
+        metadata: (_, event) => {
+          return event.metadata
         },
       }),
       signMessage: assign({
@@ -711,21 +680,8 @@ export const checkoutMachine = createMachine(
       }),
       updatePaywallConfig: assign((_, event) => {
         return {
+          ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
-          lock: undefined,
-          messageToSign: undefined,
-          mint: undefined,
-          captcha: undefined,
-          payment: {
-            method: 'crypto',
-          },
-          quantity: 1,
-          recipients: [],
-          renewed: undefined,
-          skipQuantity: false,
-          renew: false,
-          skipRecipient: true,
-          keyManagers: [],
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
@@ -751,24 +707,9 @@ export const checkoutMachine = createMachine(
     },
     guards: {
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
-      requireCaptcha: (context) => {
-        return (
-          context?.hook === 'captcha' &&
-          ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
-      requirePassword: (context) => {
-        return (
-          context?.hook === 'password' &&
-          ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
-      requirePromo: (context) => {
-        return (
-          context?.hook === 'promocode' &&
-          ['crypto', 'claim'].includes(context.payment.method)
-        )
-      },
+      requireCaptcha: (context) => context && context?.hook === 'captcha',
+      requirePassword: (context) => context && context?.hook === 'password',
+      requirePromo: (context) => context && context?.hook === 'promocode',
     },
   }
 )

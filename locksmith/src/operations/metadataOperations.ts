@@ -9,6 +9,8 @@ import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
+import { getDefaultLockData } from '../utils/metadata'
+
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -244,4 +246,29 @@ export const getKeysMetadata = async ({
 
   const mergedData = await Promise.all(mergedDataList)
   return mergedData.filter(Boolean)
+}
+
+export const getLockMetadata = async ({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) => {
+  const lockData = await LockMetadata.findOne({
+    where: {
+      chain: network,
+      address: lockAddress,
+    },
+  })
+
+  if (!lockData) {
+    const defaultLockData = await getDefaultLockData({
+      lockAddress,
+      network,
+    })
+    return defaultLockData
+  }
+
+  return lockData?.data
 }

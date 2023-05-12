@@ -37,14 +37,14 @@ const config = {
     dialect: 'postgres',
   } as Options,
   stripeSecret: process.env.STRIPE_SECRET,
-  defaultNetwork: process.env.DEFAULT_NETWORK,
+  defaultNetwork: 1,
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
-    wedlocks: 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
     locksmith: defaultConfig.services.locksmith,
   },
   storage: {
@@ -58,6 +58,7 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
+  requestTimeout: '25s',
 }
 
 if (process.env.ON_HEROKU) {

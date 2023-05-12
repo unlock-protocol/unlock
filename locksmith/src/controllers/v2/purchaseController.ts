@@ -10,7 +10,6 @@ import logger from '../../logger'
 import { z } from 'zod'
 import { isSoldOut } from '../../operations/lockOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
-import config from '../../config/config'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -20,9 +19,17 @@ const createPaymentIntentBody = z.object({
   stripeTokenId: z.string(),
   pricing: z.number(),
   recurring: z.number().optional(),
+  referrers: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
 })
 
-const Processor = new PaymentProcessor(config.stripeSecret!)
+const Processor = new PaymentProcessor()
 
 export const createSetupIntent: RequestHandler = async (request, response) => {
   try {
@@ -75,7 +82,7 @@ export const createPaymentIntent: RequestHandler = async (
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const userAddress = Normalizer.ethereumAddress(request.user!.walletAddress)
-  const { recipients, recurring, stripeTokenId, pricing } =
+  const { recipients, recurring, stripeTokenId, pricing, data, referrers } =
     await createPaymentIntentBody.parseAsync(request.body)
 
   const soldOut = await isSoldOut(lockAddress, network, recipients.length)
@@ -119,7 +126,7 @@ export const createPaymentIntent: RequestHandler = async (
       error: `Purchaser does not have enough to pay for gas on ${network}`,
     })
   }
-  const processor = new PaymentProcessor(config.stripeSecret!)
+  const processor = new PaymentProcessor()
   const paymentIntentDetails = await processor.createPaymentIntent(
     userAddress,
     recipients,
@@ -128,7 +135,9 @@ export const createPaymentIntent: RequestHandler = async (
     pricing,
     network,
     stripeConnectApiKey,
-    recurring
+    recurring,
+    data,
+    referrers
   )
   return response.send(paymentIntentDetails)
 }
@@ -146,7 +155,7 @@ export const removePaymentMethods: RequestHandler = async (
       .send({ message: 'Missing Stripe customer info' })
   }
 
-  const processor = new PaymentProcessor(config.stripeSecret!)
+  const processor = new PaymentProcessor()
   await processor.removePaymentMethods({
     customerId,
   })

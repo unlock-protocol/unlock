@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 import * as abis from '@unlock-protocol/contracts'
 
 /**
@@ -11,6 +11,7 @@ export default async (
   transactionOptions = {},
   callback
 ) => {
+  const { ethers } = hre
   const unlockVersionContract = await ethers.getContractAt(
     ['function unlockVersion() view returns (uint8)'],
     unlockAddress
@@ -40,8 +41,14 @@ function getConfigure(version) {
       return configureUnlockV8
     case 'v9':
       return configureUnlockV9
-    default:
+    case 'v10':
       return configureUnlockV9
+    case 'v11':
+      return configureUnlockV9
+    case 'v12':
+      return configureUnlockV12
+    default:
+      return configureUnlockV12
   }
 }
 
@@ -58,6 +65,7 @@ async function configureUnlockV4(
   transactionOptions = {},
   callback
 ) {
+  const { ethers } = hre
   const transaction = await unlockContract.configUnlock(
     publicLockTemplateAddress,
     globalTokenSymbol,
@@ -85,6 +93,7 @@ async function configureUnlockV6(
   transactionOptions = {},
   callback
 ) {
+  const { ethers } = hre
   const transaction = await unlockContract.configUnlock(
     publicLockTemplateAddress,
     globalTokenSymbol,
@@ -111,6 +120,7 @@ async function configureUnlockV7(
   transactionOptions = {},
   callback
 ) {
+  const { ethers } = hre
   const configTransaction = await unlockContract.configUnlock(
     globalTokenSymbol,
     globalBaseTokenURI
@@ -149,6 +159,7 @@ async function configureUnlockV8(
   transactionOptions = {},
   callback
 ) {
+  const { ethers } = hre
   const configTransaction = await unlockContract.configUnlock(
     unlockDiscountToken,
     wrappedEth,
@@ -192,6 +203,7 @@ async function configureUnlockV9(
   transactionOptions = {},
   callback
 ) {
+  const { ethers } = hre
   const configTransaction = await unlockContract.configUnlock(
     unlockDiscountToken,
     wrappedEth,
@@ -204,6 +216,58 @@ async function configureUnlockV9(
     callback(null, configTransaction.hash)
   }
   ethers.provider.waitForTransaction(configTransaction.hash)
+
+  const deployTemplateTransaction = await unlockContract.setLockTemplate(
+    publicLockTemplateAddress
+  )
+
+  if (callback) {
+    callback(null, deployTemplateTransaction.hash)
+  }
+  return ethers.provider.waitForTransaction(deployTemplateTransaction.hash)
+}
+
+/**
+ * Configures unlock version v12
+ * @param {PropTypes.lock} publicLockTemplateAddress
+ * @param {PropTypes.string} globalTokenSymbol
+ * @param {PropTypes.string} globalBaseTokenURI
+ * @param {function} callback invoked with the transaction hash
+ */
+async function configureUnlockV12(
+  unlockContract,
+  {
+    publicLockTemplateAddress,
+    publicLockVersion,
+    globalTokenSymbol,
+    globalBaseTokenURI,
+    unlockDiscountToken,
+    wrappedEth,
+    estimatedGasForPurchase,
+    chainId,
+  },
+  transactionOptions = {},
+  callback
+) {
+  const { ethers } = hre
+  const configTransaction = await unlockContract.configUnlock(
+    unlockDiscountToken,
+    wrappedEth,
+    estimatedGasForPurchase,
+    globalTokenSymbol,
+    globalBaseTokenURI,
+    chainId
+  )
+  if (callback) {
+    callback(null, configTransaction.hash)
+  }
+  ethers.provider.waitForTransaction(configTransaction.hash)
+
+  const addLockTemplateTransaction = await unlockContract.addLockTemplate(
+    publicLockTemplateAddress,
+    publicLockVersion
+  )
+  ethers.provider.waitForTransaction(addLockTemplateTransaction.hash)
 
   const deployTemplateTransaction = await unlockContract.setLockTemplate(
     publicLockTemplateAddress

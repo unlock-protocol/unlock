@@ -1,3 +1,4 @@
+import { networks } from '@unlock-protocol/networks'
 import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
@@ -95,6 +96,7 @@ export const CreateLockSteps = () => {
             : maxNumberOfKeys,
           currencyContractAddress,
           keyPrice: keyPrice?.toString(),
+          publicLockVersion: networks[network].publicLockVersionToDeploy,
         },
         {},
         (error: any, transactionHash) => {

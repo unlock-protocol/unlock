@@ -1,5 +1,4 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
-import { ethers } from 'ethers'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
@@ -8,6 +7,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { getEthersWalletFromPassword } from '~/utils/strings'
 
 const FAKE_PWD = 'fakepwd'
 export const PasswordContractHook = ({
@@ -27,13 +27,8 @@ export const PasswordContractHook = ({
 
   useEffect(() => {
     if (hookValue.length === 0) return
-    const encoded = ethers.utils.defaultAbiCoder.encode(
-      ['bytes32'],
-      [ethers.utils.id(hookValue)]
-    )
-    const privateKey = ethers.utils.keccak256(encoded)
-    const privateKeyAccount = new ethers.Wallet(privateKey)
-    setSigner(privateKeyAccount.address)
+    const { address } = getEthersWalletFromPassword(hookValue) ?? {}
+    setSigner(address)
   }, [hookValue])
 
   const onSavePassword = async () => {
@@ -50,22 +45,14 @@ export const PasswordContractHook = ({
     return tx.wait()
   }
 
-  const getSigners = async () => {
-    const walletService = await getWalletService(network)
-    return await web3Service.getPasswordHookSigners(
-      {
-        lockAddress,
-        contractAddress: hookAddress,
-        network,
-      },
-      walletService.signer
-    )
-  }
-
   const { data: signers = DEFAULT_USER_ACCOUNT_ADDRESS, isLoading } = useQuery(
     ['getSigners', lockAddress, network],
     async () => {
-      return getSigners()
+      return web3Service.getPasswordHookSigners({
+        lockAddress,
+        contractAddress: hookAddress,
+        network,
+      })
     },
     {
       onSuccess: (signers: string) => {

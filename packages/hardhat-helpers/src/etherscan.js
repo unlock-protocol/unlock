@@ -14,6 +14,8 @@ const etherscan = {
     polygonMumbai: 'W9TVEYKW2CDTQ94T3A2V93IX6U3IHQN5Y3',
     avalanche: 'N4AF8AYN8PXY2MFPUT8PAFSZNVJX5Q814X',
     celo: '6KBKUFYV3NQR4Y1BQN3Q34S2U7NTZBBPQZ',
+    palm: 'abc',
+    baseGoerli: 'YourApiKeyToken',
   },
   customChains: [
     {
@@ -22,6 +24,22 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.celoscan.io/api',
         browserURL: 'https://celoscan.io/',
+      },
+    },
+    {
+      network: 'palm',
+      chainId: 11297108109,
+      urls: {
+        apiURL: 'https://explorer.palm.io/address/api',
+        browserURL: 'https://explorer.palm.io/',
+      },
+    },
+    {
+      network: 'baseGoerli',
+      chainId: 84531,
+      urls: {
+        apiURL: 'https://api-goerli.basescan.org/api',
+        browserURL: 'https://goerli.basescan.org/',
       },
     },
   ],

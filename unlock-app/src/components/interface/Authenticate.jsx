@@ -106,7 +106,7 @@ export const Authenticate = ({
   }
 
   const deAuthenticate = () => {
-    disconnectProvider()
+    return disconnectProvider()
   }
 
   return (
@@ -164,7 +164,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => {},
+  onAuthenticated: () => { },
   providerAdapter: null,
 }
 

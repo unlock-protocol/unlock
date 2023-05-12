@@ -19,7 +19,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
     await lock.updateTransferFee(0) // disable the transfer fee for this test
     await lockSingleKey.updateTransferFee(0) // disable the transfer fee for this test
-    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
+      ; ({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized
@@ -31,7 +31,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     it('should abort when there is no key to transfer', async () => {
       await reverts(
         lock.transferFrom(keyOwners[0], accounts[9], 999),
-        'ONLY_KEY_MANAGER_OR_APPROVED'
+        'KEY_NOT_VALID'
       )
     })
 
@@ -44,10 +44,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       )
     })
 
-    it('should only allow owner without KM, KM or approved to transfer', async () => {
+    it('should only allow owner without LM, KM, KM or approved to transfer', async () => {
       await reverts(
         lock.transferFrom(keyOwners[2], accounts[9], tokenIds[2], {
-          from: keyOwners[5],
+          from: keyOwners[0],
         }),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
@@ -146,6 +146,35 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         })
         await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
           from: keyManager,
+        })
+      })
+      it('should transfer ownership correctly to the sender', async () => {
+        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
+      })
+
+      it('update balances properly', async () => {
+        assert.equal(await lock.balanceOf(accounts[7]), 1)
+        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
+      })
+
+      it('update key validity properly', async () => {
+        assert.equal(await lock.getHasValidKey(accounts[7]), true)
+        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
+      })
+      it('reset the key manager to address zero', async () => {
+        assert.equal(await lock.keyManagerOf(tokenIds[0]), ADDRESS_ZERO)
+      })
+    })
+
+    describe('when the sender is a lock manager', async () => {
+      let lockManager
+      beforeEach(async () => {
+        lockManager = accounts[0]
+        await lock.setKeyManagerOf(tokenIds[0], lockManager, {
+          from: keyOwners[0],
+        })
+        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
+          from: lockManager,
         })
       })
       it('should transfer ownership correctly to the sender', async () => {

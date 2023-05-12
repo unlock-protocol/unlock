@@ -6,16 +6,16 @@ async function main({ publicLockVersion }) {
   // fetch chain info
   const { chainId } = await ethers.provider.getNetwork()
   const networkName = getNetworkName(chainId)
-  const isLocalNet = networkName === 'localhost'
 
   const [signer] = await ethers.getSigners()
-  console.log(`Deploying lock template with signer ${signer.address}`)
 
   let PublicLock
   if (publicLockVersion) {
     const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
+    console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for released version ${publicLockVersion} with signer ${signer.address}`)
     PublicLock = await ethers.getContractFactory(abi, bytecode)
   } else {
+    console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for development version with signer ${signer.address}`)
     PublicLock = await ethers.getContractFactory('PublicLock')
   }
 
@@ -28,13 +28,8 @@ async function main({ publicLockVersion }) {
     } (tx: ${publicLock.deployTransaction.hash})`
   )
 
-  // verify
-  if (!isLocalNet) {
-    try {
-      await run(`verify`, { address: publicLock.address })
-    } catch (error) {
-      console.log(error)
-    }
+  if(chainId !== 31337) {
+    await run('verify:verify', { address: publicLock.address })
   }
 
   return publicLock.address

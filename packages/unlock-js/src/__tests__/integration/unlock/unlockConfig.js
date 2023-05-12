@@ -1,3 +1,4 @@
+import { it, expect, beforeAll } from 'vitest'
 import { configureUnlock, deployTemplate } from '../../helpers'
 import { chainId } from '../../helpers/integration'
 import { ZERO } from '../../../constants'
@@ -32,6 +33,7 @@ export default () => () => {
     const receipt = await configureUnlock(
       unlockAddress,
       {
+        publicLockVersion: parseInt(publicLockVersion.replace('v', '')),
         publicLockTemplateAddress,
         globalTokenSymbol: 'TESTK',
         globalBaseTokenURI: 'https://locksmith.unlock-protocol.com/api/key/',

@@ -51,6 +51,7 @@ const usePaywall = () => {
         },
       },
       referrer,
+      // TODO: remove, part of the old checkout config
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
         expired:

@@ -31,6 +31,8 @@ type Lock @entity {
   lastKeyMintedAt: BigInt
   "Address of the lock deployer"
   deployer: Bytes!
+  "Total number of receipts of lock"
+  numberOfReceipts: BigInt!
 }
 
 type Key @entity {
@@ -50,6 +52,8 @@ type Key @entity {
   tokenURI: String
   "Block key was created"
   createdAtBlock: BigInt!
+  "Timestamp of the block in which the key was created"
+  createdAt: BigInt!
   "Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key"
   cancelled: Boolean
   "list of transaction hashes for purchase/extensions of a specific token"
@@ -97,17 +101,19 @@ type Receipt @entity {
   "Transaction Hash"
   id: ID!
   "Timestamp"
-  timestamp: BigInt
+  timestamp: BigInt!
   "Sender of the transaction"
-  sender: String
+  sender: String!
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
-  payer: String
+  payer: String!
   "Address of the Lock smart contract"
-  lockAddress: String
+  lockAddress: String!
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
-  tokenAddress: String
+  tokenAddress: String!
   "amount"
-  amountTransferred: BigInt
+  amountTransferred: BigInt!
   "Total gas paid"
   gasTotal: BigInt!
+  "Increasing number of receipt"
+  numberOfReceipt: BigInt
 }

@@ -1,19 +1,25 @@
 import fontColorContrast from 'font-color-contrast'
-import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
-import { GoLocation } from 'react-icons/go'
-import { FaCalendar, FaClock } from 'react-icons/fa'
+import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useMetadata } from '~/hooks/metadata'
+import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import LoadingIcon from '~/components/interface/Loading'
-import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
+import {
+  MetadataFormData,
+  formDataToMetadata,
+  toFormData,
+} from '~/components/interface/locks/metadata/utils'
+import {
+  Button,
+  Card,
+  Disclosure,
+  Drawer,
+  Icon,
+  ImageUpload,
+  Modal,
+  Placeholder,
+} from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -23,41 +29,207 @@ import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
+import { WalletlessRegistrationForm } from './WalletlessRegistration'
+import { useIsClaimable } from '~/hooks/useIsClaimable'
+import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
+import { FiMapPin as MapPinIcon } from 'react-icons/fi'
+import { IconType } from 'react-icons'
+import { useValidKey } from '~/hooks/useKey'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
+import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useLockData } from '~/hooks/useLockData'
+import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
+import { useImageUpload } from '~/hooks/useImageUpload'
 
 interface EventDetailsProps {
   lockAddress: string
   network: number
 }
 
+interface EventDetailProps {
+  icon: IconType
+  label: string
+  children?: ReactNode
+}
+
+const EventDetail = ({ label, icon, children }: EventDetailProps) => {
+  return (
+    <div className="grid grid-cols-[64px_1fr] gap-4">
+      <div className="flex w-16 h-16 bg-white border border-gray-200 min-w-16 rounded-2xl">
+        <Icon className="m-auto" icon={icon} size={32} />
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-xl font-bold text-black">{label}</span>
+        <div>{children}</div>
+      </div>
+    </div>
+  )
+}
+
+interface CoverImageDrawerProps {
+  image: string
+  setImage: (image: string) => void
+  lockAddress: string
+  network: number
+  metadata: MetadataFormData
+  handleClose: () => void
+}
+const CoverImageDrawer = ({
+  image,
+  setImage,
+  lockAddress,
+  network,
+  metadata,
+  handleClose,
+}: CoverImageDrawerProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { isManager: isLockManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
+  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+
+  const { mutateAsync: updateMetadata, isLoading } = useUpdateMetadata({
+    lockAddress,
+    network,
+  })
+
+  const coverImage = metadata.ticket?.event_cover_image
+
+  const onSubmit = async () => {
+    const metadataObj = formDataToMetadata({
+      ...metadata,
+      ticket: {
+        ...metadata?.ticket,
+        event_cover_image: image,
+      },
+    })
+    await updateMetadata(metadataObj)
+    setIsOpen(false)
+    handleClose()
+  }
+
+  return (
+    <div className="relative inset-0 z-[1]">
+      {isLockManager && (
+        <Button
+          className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
+          variant="secondary"
+          size="tiny"
+          onClick={() => {
+            setIsOpen(true)
+            setImage(coverImage || '')
+          }}
+        >
+          {coverImage ? 'Change image' : 'Upload Image'}
+        </Button>
+      )}
+      <div className="relative">
+        <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Cover image">
+          <div className="z-10 mt-2 space-y-6">
+            <ImageUpload
+              size="full"
+              description="This illustration will be used as cover image for your event page"
+              preview={image}
+              isUploading={isUploading}
+              imageRatio="cover"
+              onChange={async (fileOrFileUrl: any) => {
+                if (typeof fileOrFileUrl === 'string') {
+                  setImage(fileOrFileUrl)
+                } else {
+                  const items = await uploadImage(fileOrFileUrl[0])
+                  const image = items?.[0]?.publicUrl
+                  if (!image) {
+                    return
+                  }
+                  setImage(image)
+                }
+              }}
+            />
+          </div>
+          <Button
+            className="w-full"
+            size="small"
+            type="submit"
+            onClick={onSubmit}
+            loading={isLoading}
+            disabled={image === coverImage}
+          >
+            Save
+          </Button>
+        </Drawer>
+      </div>
+    </div>
+  )
+}
+
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
-  const { account } = useAuth()
-  const web3Service = useWeb3Service()
+  const [image, setImage] = useState('')
   const config = useConfig()
 
+  const { lock, isLockLoading } = useLockData({
+    lockAddress,
+    network,
+  })
+
+  const { data: symbol } = useGetLockCurrencySymbol({
+    lockAddress,
+    network,
+    contractAddress: lock?.currencyContractAddress,
+  })
+
+  const price =
+    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
+
+  const keysLeft =
+    Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
+  const isSoldOut = keysLeft === 0
+
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+  const {
+    data: metadata,
+    isInitialLoading: isMetadataLoading,
+    refetch,
+  } = useMetadata({
+    lockAddress,
+    network,
+  })
+  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
     lockAddress,
     network,
   })
 
   const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =
-    useQuery(
-      ['hasValidKey', network, lockAddress, account],
-      async () => {
-        return web3Service.getHasValidKey(lockAddress, account!, network)
-      },
-      {
-        enabled: !!account,
-      }
-    )
+    useValidKey({
+      lockAddress,
+      network,
+    })
 
   const { isManager: isLockManager } = useLockManager({
     lockAddress,
     network,
   })
 
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
   if (isMetadataLoading || isHasValidKeyLoading) {
-    return <LoadingIcon></LoadingIcon>
+    return (
+      <Placeholder.Root>
+        <Placeholder.Card size="lg" />
+        <Placeholder.Root inline>
+          <Placeholder.Image size="sm" />
+          <Placeholder.Image size="sm" />
+          <div className="w-1/3 ml-auto">
+            <Placeholder.Card size="md" />
+          </div>
+        </Placeholder.Root>
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+      </Placeholder.Root>
+    )
   }
 
   const onEdit = () => {
@@ -66,7 +238,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
-  if (!metadata?.attributes) {
+  if (!isEvent) {
     if (isLockManager) {
       return (
         <>
@@ -88,7 +260,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     return <p>This contract is not configured.</p>
   }
 
-  const eventData = toFormData(metadata)
+  const eventData = toFormData(metadata!)
   const eventDate = getEventDate(eventData.ticket)
   const eventEndDate = getEventEndDate(eventData.ticket)
 
@@ -105,147 +277,59 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     },
   }
 
-  return (
-    <main className="grid md:grid-cols-[minmax(0,_1fr)_300px] gap-8 mt-8">
-      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
-        <Checkout
-          injectedProvider={injectedProvider as any}
-          paywallConfig={paywallConfig}
-          handleClose={() => setCheckoutOpen(false)}
-        />
-      </Modal>
+  const startDate = eventDate
+    ? eventDate.toLocaleDateString(undefined, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    : null
 
-      <section className="">
-        <h1 className="mb-4 text-5xl font-bold md:text-7xl">
-          {eventData.name}
-        </h1>
-        <p className="flex gap-2 mb-4 flex-rows">
-          <span className="text-brand-gray">Ticket contract</span>
-          <AddressLink
-            lockAddress={lockAddress}
-            network={network}
-          ></AddressLink>
-        </p>
-        <ul
-          className="mb-6 text-xl bold md:text-2xl"
-          style={{ color: `#${eventData.background_color}` }}
-        >
-          {eventDate && (
-            <li className="flex items-center mb-2 ">
-              <FaCalendar className="inline mr-2" />
-              <div className="flex flex-col gap-1 text-lg md:flex-row md:items-center md:text-2xl">
-                <span>
-                  {eventDate.toLocaleDateString(undefined, {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </span>
-                {eventEndDate && !isSameDay && (
-                  <>
-                    <span className="hidden md:block">to</span>
-                    <span>
-                      {eventEndDate.toLocaleDateString(undefined, {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </span>
-                  </>
-                )}
-              </div>
-            </li>
-          )}
-          {eventDate && eventData.ticket?.event_start_time && (
-            <li className="flex items-center mb-2">
-              <FaClock className="inline mr-2" />
-              <Tooltip
-                delay={0}
-                label={eventData.ticket.event_timezone}
-                tip={eventData.ticket.event_timezone}
-                side="bottom"
-              >
-                <div className="flex items-center gap-1 text-lg md:text-2xl">
-                  <span>
-                    {eventDate.toLocaleTimeString(
-                      navigator.language || 'en-US',
-                      {
-                        timeZone: eventData.ticket.event_timezone,
-                      }
-                    )}
-                  </span>
-                  {eventEndDate && isSameDay && (
-                    <>
-                      <span>to</span>
-                      <span>
-                        {eventEndDate.toLocaleTimeString(
-                          navigator.language || 'en-US',
-                          {
-                            timeZone: eventData.ticket.event_timezone,
-                          }
-                        )}
-                      </span>
-                    </>
-                  )}
-                </div>
-              </Tooltip>
-            </li>
-          )}
-          {(eventData?.ticket?.event_address || '')?.length > 0 && (
-            <li className="mb-2">
-              <Link
-                target="_blank"
-                href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
-              >
-                <GoLocation className="inline mr-2" />
-                {eventData.ticket?.event_address}
-              </Link>
-            </li>
-          )}
-        </ul>
-        {eventData.description && (
-          <div className="markdown">
-            {/* eslint-disable-next-line react/no-children-prop */}
-            <ReactMarkdown children={eventData.description} />
-          </div>
-        )}
-      </section>
+  const startTime =
+    eventDate && eventData.ticket?.event_start_time
+      ? eventDate.toLocaleTimeString(navigator.language || 'en-US', {
+          timeZone: eventData.ticket.event_timezone,
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      : undefined
 
-      <section className="flex flex-col items-center">
-        <img
-          alt={eventData.title}
-          className="mb-5 aspect-auto "
-          src={eventData.image}
-        />
-        <ul className="flex justify-around w-1/2">
-          <li className="bg-gray-200 rounded-full">
-            <AddToCalendarButton event={eventData} />
-          </li>
-          <li className="bg-gray-200 rounded-full">
-            <TweetItButton event={eventData} />
-          </li>
-        </ul>
-      </section>
-      <section className="flex flex-col mb-8">
-        {!hasValidKey && (
-          <Button
-            variant="primary"
-            size="medium"
-            className="md:w-1/2"
-            style={{
-              backgroundColor: `#${eventData.background_color}`,
-              color: `#${eventData.background_color}`
-                ? fontColorContrast(`#${eventData.background_color}`)
-                : 'white',
-            }}
-            onClick={() => setCheckoutOpen(true)}
-          >
-            Register
-          </Button>
-        )}
-        {hasValidKey && (
+  const endDate =
+    eventEndDate && eventEndDate && !isSameDay
+      ? eventEndDate.toLocaleDateString(undefined, {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })
+      : null
+
+  const endTime =
+    eventDate && eventData.ticket?.event_end_time && eventEndDate && isSameDay
+      ? eventEndDate.toLocaleTimeString(navigator.language || 'en-US', {
+          timeZone: eventData.ticket.event_timezone,
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      : null
+
+  const hasLocation = (eventData?.ticket?.event_address || '')?.length > 0
+  const hasDate = startDate || startTime || endDate || endTime
+
+  const showWalletLess = !hasValidKey && isClaimable
+
+  const coverImage = eventData.ticket?.event_cover_image
+
+  const RegistrationCard = () => {
+    if (isClaimableLoading || isLockLoading) {
+      return <Placeholder.Card size="md" />
+    }
+
+    return (
+      <Card className="grid gap-6 mt-10 lg:mt-0">
+        <span className="text-2xl font-bold text-gray-900">Registration</span>
+        {hasValidKey ? (
           <p className="text-lg">
             🎉 You already have a ticket! You can view it in{' '}
             <Link className="underline" href="/keychain">
@@ -253,22 +337,187 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             </Link>
             .
           </p>
+        ) : (
+          <>
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2">
+                <>
+                  {symbol && <CryptoIcon symbol={symbol} size={30} />}
+                  <span>{price}</span>
+                </>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon icon={TicketIcon} size={30} />
+                <span className="text-base font-bold">
+                  {isSoldOut ? 'Sold out' : keysLeft}
+                </span>
+                {!isSoldOut && <span className="text-gray-600">Left</span>}
+              </div>
+            </div>
+            {showWalletLess ? (
+              <WalletlessRegistrationForm
+                lockAddress={lockAddress}
+                network={network}
+                disabled={isSoldOut}
+              />
+            ) : (
+              <Button
+                variant="primary"
+                size="medium"
+                style={{
+                  backgroundColor: `#${eventData.background_color}`,
+                  color: `#${eventData.background_color}`
+                    ? fontColorContrast(`#${eventData.background_color}`)
+                    : 'white',
+                }}
+                disabled={isClaimableLoading || isSoldOut}
+                onClick={() => {
+                  setCheckoutOpen(true)
+                }}
+              >
+                Register
+              </Button>
+            )}
+          </>
         )}
+      </Card>
+    )
+  }
+
+  return (
+    <div>
+      <Modal
+        isOpen={isCheckoutOpen && !isClaimable}
+        setIsOpen={setCheckoutOpen}
+        empty={true}
+      >
+        <Checkout
+          injectedProvider={injectedProvider as any}
+          paywallConfig={paywallConfig}
+          handleClose={() => setCheckoutOpen(false)}
+        />
+      </Modal>
+
+      <div className="relative">
+        <div className="relative">
+          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
+            {coverImage && (
+              <img
+                className="object-cover w-full h-full"
+                src={coverImage}
+                alt="Cover image"
+              />
+            )}
+          </div>
+
+          <CoverImageDrawer
+            image={image}
+            setImage={setImage}
+            metadata={eventData}
+            lockAddress={lockAddress}
+            network={network}
+            handleClose={() => {
+              refetch()
+            }}
+          />
+
+          <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
+            <section className="flex justify-between">
+              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
+                <img
+                  alt={eventData.title}
+                  className="object-cover w-full m-auto aspect-1 rounded-2xl"
+                  src={eventData.image}
+                />
+              </div>
+              <ul className="flex items-center gap-2 mt-auto md:gap-2">
+                <li>
+                  <AddToCalendarButton event={eventData} />
+                </li>
+                <li>
+                  <TweetItButton event={eventData} />
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <section className="grid items-start grid-cols-1 gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
+          <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
+            <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
+            <div className="flex gap-2 flex-rows">
+              <span className="text-brand-gray">Ticket contract</span>
+              <AddressLink lockAddress={lockAddress} network={network} />
+            </div>
+            <section className="mt-4">
+              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
+                {hasDate && (
+                  <EventDetail label="Date & Time" icon={CalendarIcon}>
+                    <div
+                      style={{ color: `#${eventData.background_color}` }}
+                      className="flex flex-col text-lg font-normal capitalize text-brand-dark"
+                    >
+                      {(startDate || endDate) && (
+                        <span>
+                          {startDate} {endDate && <>to {endDate}</>}
+                        </span>
+                      )}
+                      {startTime && endTime && (
+                        <span>
+                          {startTime} {endTime && <>to {endTime}</>}
+                        </span>
+                      )}
+                    </div>
+                  </EventDetail>
+                )}
+                {hasLocation && (
+                  <EventDetail label="Location" icon={MapPinIcon}>
+                    <div
+                      style={{ color: `#${eventData.background_color}` }}
+                      className="flex flex-col gap-0.5"
+                    >
+                      <span className="text-lg font-normal capitalize text-brand-dark">
+                        {eventData.ticket?.event_address}
+                      </span>
+                      <Link
+                        target="_blank"
+                        className="text-base font-bold"
+                        href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
+                      >
+                        Show map
+                      </Link>
+                    </div>
+                  </EventDetail>
+                )}
+              </div>
+              <div className="mt-14">
+                <h2 className="text-2xl font-bold">Event Information</h2>
+                {eventData.description && (
+                  <div className="mt-4 markdown">
+                    {/* eslint-disable-next-line react/no-children-prop */}
+                    <ReactMarkdown children={eventData.description} />
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+          {!isCheckoutOpen && <RegistrationCard />}
+        </section>
+      </div>
+
+      <section className="flex flex-col mb-8">
         {isLockManager && (
           <div className="grid gap-6 mt-12">
             <span className="text-2xl font-bold text-brand-dark">
               Tools for you, the lock manager
             </span>
             <div className="grid gap-4">
-              <div className="grid w-full grid-cols-1 p-6 bg-white border border-gray-200 md:items-center md:grid-cols-3 rounded-2xl">
-                <div className="flex flex-col md:col-span-2">
-                  <span className="text-lg font-bold text-brand-ui-primary">
-                    Event detail
-                  </span>
-                  <span>
-                    Need to change something? Access your contract (Lock) &
-                    update detail
-                  </span>
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
+                    title="Event detail"
+                    description="Need to change something? Access your contract (Lock) & update detail"
+                  />
                 </div>
                 <div className="md:col-span-1">
                   <Button
@@ -280,29 +529,24 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                     Edit Details
                   </Button>
                 </div>
-              </div>
-              <div className="w-full p-6 bg-white border border-gray-200 rounded-2xl">
-                <div className="flex flex-col mb-2">
-                  <span className="text-lg font-bold text-brand-ui-primary">
-                    Verifiers
-                  </span>
-                  <span>
-                    Add & manage trusted users at the event to help check-in
-                    attendees
-                  </span>
-                </div>
+              </Card>
+
+              <Disclosure
+                label="Verifiers"
+                description="Add & manage trusted users at the event to help check-in attendees"
+              >
                 <VerifierForm
                   lockAddress={lockAddress}
                   network={network}
                   isManager={isLockManager}
                   disabled={!isLockManager}
                 />
-              </div>
+              </Disclosure>
             </div>
           </div>
         )}
       </section>
-    </main>
+    </div>
   )
 }
 

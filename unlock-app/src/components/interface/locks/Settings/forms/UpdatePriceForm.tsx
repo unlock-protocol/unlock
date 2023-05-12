@@ -43,7 +43,7 @@ export const UpdatePriceForm = ({
   const web3Service = useWeb3Service()
   const [changeCurrencyOpen, setChangeCurrencyModal] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const { baseCurrencySymbol } = networks[network!] ?? {}
+  const baseCurrencySymbol = networks?.[network].nativeCurrency.symbol
 
   const {
     register,
@@ -170,7 +170,7 @@ export const UpdatePriceForm = ({
                 type="number"
                 autoComplete="off"
                 placeholder="0.00"
-                step={0.01}
+                step="any"
                 disabled={isFree || disabledInput}
                 {...register('keyPrice', {
                   required: !isFree,

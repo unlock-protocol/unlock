@@ -56,7 +56,7 @@ networks.hardhat = {
 // mainnet fork
 if (process.env.RUN_FORK) {
   const chainId = parseInt(process.env.RUN_FORK)
-  if(isNaN(chainId)) {
+  if (isNaN(chainId)) {
     throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
   }
   console.log(`Running a fork (chainId : ${chainId})...`)
@@ -85,7 +85,7 @@ require('./tasks/balance')
 require('./tasks/deploy')
 require('./tasks/upgrade')
 require('./tasks/set')
-require('./tasks/gnosis')
+require('./tasks/safe')
 require('./tasks/release')
 require('./tasks/gov')
 require('./tasks/utils')

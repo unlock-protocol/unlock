@@ -4,12 +4,14 @@
  *
  * Usage:
  *
- * yarn hardhat test:integration src/__tests__/integration/lock/purchaseKey.js \
- *     --lock-version 9 \
- *     --unlock-version 10 \
+ * 1. mv single.js single.test.js
+ * 2. edit `testPath` value
+ * 3. yarn vitest
  * */
 import locks from '../helpers/fixtures/locks'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
+import { describe, it, expect, beforeAll } from 'vitest'
+
 import {
   chainId,
   setupTest,
@@ -17,13 +19,11 @@ import {
   versionEqualOrAbove,
 } from '../helpers/integration'
 
-// Increasing timeouts
-jest.setTimeout(3000000)
-
-const unlockVersion = process.env.UNLOCK_JS_JEST_RUN_UNLOCK_VERSION || 'v11'
+const unlockVersion = process.env.UNLOCK_JS_TEST_RUN_UNLOCK_VERSION || 'v12'
 const publicLockVersion =
-  process.env.UNLOCK_JS_JEST_RUN_PUBLIC_LOCK_VERSION || 'v11'
-const testPath = process.env.UNLOCK_JS_JEST_RUN_TEST_PATH
+  process.env.UNLOCK_JS_TEST_RUN_PUBLIC_LOCK_VERSION || 'v13'
+const testPath =
+  process.env.UNLOCK_JS_TEST_RUN_TEST_PATH || './lock/cancelAndRefund.js'
 
 // parse describe info from file name
 const testName = testPath
@@ -83,7 +83,7 @@ describe(`Unlock ${unlockVersion}`, () => {
 
     describe.each(
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
-    )('lock %i: %s', (lockIndex, lockName, lockParams) => {
+    )('lock %i: %s', async (lockIndex, lockName, lockParams) => {
       let lock
       let lockAddress
       let lockCreationHash
@@ -118,7 +118,7 @@ describe(`Unlock ${unlockVersion}`, () => {
       describe('lock creation', lockCreation(testSetupArgs))
 
       // lock tests
-      const testDescribe = require(testPath)
+      const testDescribe = await import(testPath)
       describe(testName, testDescribe.default(testSetupArgs))
     })
   })

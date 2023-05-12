@@ -5,7 +5,7 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { useActor } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -63,18 +63,6 @@ export function Returning({
     }
   }
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'You have it',
-    },
-  ]
-
   const { data: tokenId } = useQuery(
     ['userTokenId', account, lock, web3Service],
     async () => {
@@ -91,7 +79,7 @@ export function Returning({
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
           <Lottie
@@ -112,7 +100,7 @@ export function Returning({
             See in the block explorer
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
-          {isEthPassSupported(lock!.network) && (
+          {tokenId && isEthPassSupported(lock!.network) && (
             <ul className="grid h-12 grid-cols-2 gap-3 pt-4">
               {!isIOS && tokenId && (
                 <li className="">
@@ -191,9 +179,15 @@ export function Returning({
                 Sign message
               </Button>
             ) : (
-              <div className="flex justify-between gap-4">
+              <div
+                className={`gap-4 ${
+                  paywallConfig?.endingCallToAction
+                    ? 'grid grid-cols-1'
+                    : 'flex justify-between '
+                }`}
+              >
                 <Button className="w-full" onClick={() => onClose()}>
-                  Return
+                  {paywallConfig?.endingCallToAction || 'Return'}
                 </Button>
                 {!lock?.isSoldOut && (
                   <Button

@@ -9,6 +9,7 @@ import { ExpirationStatus } from './FilterBar'
 import Link from 'next/link'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
+import { Placeholder } from '@unlock-protocol/ui'
 
 interface MembersProps {
   lockAddress: string
@@ -18,22 +19,6 @@ interface MembersProps {
   page: number
   filters?: FilterProps
   onAirdropKeys?: () => void
-}
-
-const MembersPlaceholder = () => {
-  const placeHolderCardStyle =
-    'h-[130px] md:h-[92px] border-2 rounded-lg bg-slate-200 animate-pulse'
-  return (
-    <div className="flex flex-col gap-3">
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-      <div className={placeHolderCardStyle}></div>
-    </div>
-  )
 }
 
 export interface FilterProps {
@@ -66,9 +51,14 @@ export const Members = ({
     return keys.data
   }
 
+  const getLockSettings = async () => {
+    return await storage.getLockSettings(network, lockAddress)
+  }
+
   const [
     { isLoading, data: members = [] },
     { isLoading: isLockLoading, data: lock },
+    { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
       {
@@ -92,13 +82,21 @@ export const Members = ({
         },
         queryKey: ['getSubgraphLock', lockAddress, network],
         onError: () => {
-          ToastHelper.error('Unable to fetch lock from subgraph')
+          ToastHelper.error(
+            `Unable to fetch lock ${lockAddress} from subgraph on network ${network}`
+          )
         },
+      },
+      {
+        queryKey: ['getLockSettings', lockAddress, network],
+        queryFn: async () => getLockSettings(),
       },
     ],
   })
 
-  const loading = isLockLoading || isLoading || loadingFilters
+  const loading =
+    isLockLoading || isLoading || loadingFilters || isLoadingSettings
+
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
@@ -109,7 +107,15 @@ export const Members = ({
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
 
   if (loading) {
-    return <MembersPlaceholder />
+    return (
+      <>
+        <Placeholder.Root>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Placeholder.Card key={index} />
+          ))}
+        </Placeholder.Root>
+      </>
+    )
   }
 
   if (noItems && !hasActiveFilter) {
@@ -173,6 +179,7 @@ export const Members = ({
             lockAddress={lockAddress!}
             network={network}
             expirationDuration={lock?.expirationDuration}
+            lockSettings={lockSettings}
           />
         )
       })}

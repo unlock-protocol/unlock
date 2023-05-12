@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { OAuthConfig } from '~/unlockTypes'
 export interface UserInfo {
   address?: string
   signedMessage?: string
+  message?: string
 }
 
 export interface TransactionInfo {
@@ -49,6 +51,10 @@ export type AsyncSendable = {
     request: any,
     callback: (error: any, response: any) => void
   ) => void
+  request?: (
+    request: any,
+    callback: (error: any, response: any) => void
+  ) => void
   send?: (request: any, callback: (error: any, response: any) => void) => void
   on?: (name: string, callback: () => void) => void
 }
@@ -81,8 +87,8 @@ export const resolveMethodCall = (result: MethodCallResult) => {
   callback(result.error, result.response)
 }
 
-export const resolveOnEnable = () => {
-  enabled()
+export const resolveOnEnable = (accounts: string[]) => {
+  enabled(accounts)
 }
 
 export const resolveOnEvent = (name: string) => {
@@ -103,11 +109,24 @@ export const useCheckoutCommunication = () => {
     AsyncSendable | undefined
   >(undefined)
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
-  const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
+  const [paywallConfig, setPaywallConfig] = useState<PaywallConfig | undefined>(
+    undefined
+  )
+  const [oauthConfig, setOauthConfig] = useState<OAuthConfig | undefined>(
+    undefined
+  )
   const [user, setUser] = useState<string | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
-      setConfig(config)
+      setPaywallConfig(config)
+    },
+    authenticate: () => {
+      setOauthConfig({
+        clientId: window.parent.location.host,
+        responseType: '',
+        state: '',
+        redirectUri: '',
+      })
     },
     resolveMethodCall,
     resolveOnEvent,
@@ -168,7 +187,10 @@ export const useCheckoutCommunication = () => {
     insideIframe = window.top !== window
   }
 
-  if (config && config.useDelegatedProvider && !providerAdapter) {
+  const useDelegatedProvider =
+    paywallConfig?.useDelegatedProvider || oauthConfig?.useDelegatedProvider
+
+  if (useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
       enable: () => {
         return new Promise((resolve) => {
@@ -177,10 +199,29 @@ export const useCheckoutCommunication = () => {
         })
       },
       sendAsync: (request: MethodCall, callback) => {
+        if (!request.id) {
+          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        }
         waitingMethodCalls[request.id] = (error: any, response: any) => {
           callback(error, response)
         }
         emitMethodCall(request)
+      },
+      request: async (request: MethodCall) => {
+        if (!request.id) {
+          // Assigning an id because they may be returned in a different order
+          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        }
+        return new Promise((resolve, reject) => {
+          waitingMethodCalls[request.id] = (error: any, response: any) => {
+            if (error) {
+              reject(error)
+            } else {
+              resolve(response)
+            }
+          }
+          emitMethodCall(request)
+        })
       },
       on: (event: string, callback: any) => {
         eventHandlers[event] = callback
@@ -194,7 +235,8 @@ export const useCheckoutCommunication = () => {
     emitCloseModal,
     emitTransactionInfo,
     emitMethodCall,
-    paywallConfig: config,
+    paywallConfig,
+    oauthConfig,
     providerAdapter,
     insideIframe,
     // `ready` is primarily provided as an aid for testing the buffer

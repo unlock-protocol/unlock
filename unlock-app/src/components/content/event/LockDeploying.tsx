@@ -9,15 +9,19 @@ import {
 } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'
 import { useConfig } from '~/utils/withConfig'
 import { TransactionDetails } from './NewEvent'
+import { useEffect } from 'react'
+import { getEventPath } from './utils'
 
 interface LockDeployingProps {
   transactionDetails: TransactionDetails
   lockAddress?: string
+  slug?: string
 }
 
 export const LockDeploying = ({
   transactionDetails,
   lockAddress,
+  slug,
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
@@ -27,6 +31,10 @@ export const LockDeploying = ({
   let title = 'Waiting for your transaction to be mined'
   let message = 'Please do not close this window'
 
+  useEffect(() => {
+    window?.scrollTo(0, 0) // force scroll start of page
+  }, [])
+
   if (lockAddress) {
     status = 'deployed'
     title = '🚀​ Contract is successfully deployed'
@@ -35,14 +43,22 @@ export const LockDeploying = ({
   }
 
   const goToEventPage = () => {
-    if (lockAddress) {
-      router.push(`/event?lockAddress=${lockAddress}&network=${network}`)
+    if (lockAddress && network) {
+      router.push(
+        getEventPath({
+          lockAddress,
+          network,
+          metadata: {
+            slug,
+          },
+        })
+      )
     }
   }
 
   return (
     <div>
-      <div className="flex flex-col items-stretch border border-gray-400 rounded-xl p-4">
+      <div className="flex flex-col items-stretch p-4 border border-gray-400 rounded-xl">
         <AnimationContent status={status} />
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="flex flex-col">

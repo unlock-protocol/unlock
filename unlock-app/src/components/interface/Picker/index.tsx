@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
 import { subgraph } from '~/config/subgraph'
 import { LockImage } from '../locks/Manage/elements/LockPicker'
-import LoadingIcon from '../Loading'
 import Link from 'next/link'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import networks from '@unlock-protocol/networks'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 export interface PickerState {
   network?: number
@@ -27,7 +27,7 @@ interface Props extends PickerState {
 }
 
 export function Picker({
-  network = 1,
+  network,
   lockAddress,
   keyId,
   userAddress,
@@ -39,22 +39,33 @@ export function Picker({
   },
   customOption = false,
 }: Props) {
+  const { network: connectedNetwork } = useAuth()
   const [state, setState] = useState<Partial<PickerState>>({
     lockAddress,
     network,
     keyId,
   })
 
-  const { data: locks, isInitialLoading } = useQuery(
-    ['locks', userAddress],
+  const currentNetwork = state.network || connectedNetwork || 1
+
+  const { data: locks, isLoading: isLoadingLocks } = useQuery(
+    ['locks', userAddress, currentNetwork],
     async () => {
-      const locks = await subgraph.locks({
-        first: 100,
-        where: {
-          lockManagers_contains: [userAddress.toLowerCase()],
+      const locks = await subgraph.locks(
+        {
+          first: 100,
+          where: {
+            lockManagers_contains: [userAddress.toLowerCase()],
+          },
         },
-      })
+        {
+          networks: [currentNetwork],
+        }
+      )
       return locks
+    },
+    {
+      enabled: !!currentNetwork,
     }
   )
 
@@ -85,10 +96,6 @@ export function Picker({
 
   const lockExists = locksOptions.length > 0
 
-  if (isInitialLoading) {
-    return <LoadingIcon />
-  }
-
   const onChangeFn = (lockAddress: string) => {
     setState((state) => ({
       network: state.network,
@@ -115,7 +122,7 @@ export function Picker({
       }))
     }
   }
-  const { collectionUrl, tokenUrl } = networks[network]?.opensea ?? {}
+  const { collectionUrl, tokenUrl } = networks[currentNetwork]?.opensea ?? {}
 
   const openSeaCollectionUrl =
     lockAddress && collectionUrl ? collectionUrl(lockAddress) : ''
@@ -124,14 +131,17 @@ export function Picker({
       ? tokenUrl(lockAddress, state.keyId)
       : ''
 
+  const showLocks =
+    state.network && collect.lockAddress && (lockExists || isLoadingLocks)
+
   return (
     <div className="grid gap-4">
       {collect.network && (
         <Select
           label="Network"
           options={networkOptions}
-          defaultValue={network}
-          onChange={(id) => {
+          defaultValue={currentNetwork}
+          onChange={(id: any) => {
             setState({
               network: Number(id),
             })
@@ -139,30 +149,29 @@ export function Picker({
           description="Select the network your lock is on."
         />
       )}
-      {state.network &&
-        collect.lockAddress &&
-        (lockExists ? (
-          <Select
-            key={state.network}
-            label="Lock"
-            options={locksOptions}
-            defaultValue={lockAddress}
-            onChange={(lockAddress: any) => {
-              handleOnChange(lockAddress)
-            }}
-            customOption={customOption}
-            description="Select the lock you want to use."
-          />
-        ) : (
-          <div>
-            You have not deployed locks on this network yet.{' '}
-            <Link href="/locks/create">
-              <span className="font-medium underline cursor-pointer">
-                Deploy one now
-              </span>
-            </Link>
-          </div>
-        ))}
+      {showLocks ? (
+        <Select
+          key={state.network}
+          label="Lock"
+          options={locksOptions}
+          defaultValue={lockAddress}
+          loading={isLoadingLocks}
+          onChange={(lockAddress: any) => {
+            handleOnChange(lockAddress)
+          }}
+          customOption={customOption}
+          description="Select the lock you want to use."
+        />
+      ) : (
+        <div>
+          You have not deployed locks on this network yet.{' '}
+          <Link href="/locks/create">
+            <span className="font-medium underline cursor-pointer">
+              Deploy one now
+            </span>
+          </Link>
+        </div>
+      )}
       {state.lockAddress && lockExists && collect.key && (
         <Input
           className="w-full"
@@ -190,7 +199,7 @@ export function Picker({
             </>
           }
           value={state.keyId}
-          onChange={(event) => {
+          onChange={(event: any) => {
             event.preventDefault()
             const { value } = event.target
             setState((state) => ({

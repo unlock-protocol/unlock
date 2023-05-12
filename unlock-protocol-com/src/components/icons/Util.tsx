@@ -7,7 +7,6 @@ export function BulletPointIcon(props: IconBaseProps) {
         viewBox="0 0 15 16"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
-        {...props}
       >
         <rect x="0.000244141" y="0.500122" width="5" height="5" />
         <rect y="10.5001" width="5" height="5" />
@@ -103,7 +102,6 @@ export function FilesIcon(props: IconBaseProps) {
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        {...props}
       >
         <path
           d="M15.75 21H5.25C5.05109 21 4.86032 20.921 4.71967 20.7803C4.57902 20.6397 4.5 20.4489 4.5 20.25V6.75C4.5 6.55109 4.57902 6.36032 4.71967 6.21967C4.86032 6.07902 5.05109 6 5.25 6H12.75L16.5 9.75V20.25C16.5 20.4489 16.421 20.6397 16.2803 20.7803C16.1397 20.921 15.9489 21 15.75 21Z"

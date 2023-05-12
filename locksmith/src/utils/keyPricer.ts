@@ -2,20 +2,20 @@ import { ethers } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import logger from '../logger'
-
 import * as Normalizer from './normalizer'
 import { ItemizedKeyPrice } from '../types'
 import PriceConversion from './priceConversion'
 import GasPrice from './gasPrice'
+import {
+  GAS_COST,
+  stripePercentage,
+  baseStripeFee,
+  GAS_COST_TO_GRANT,
+} from './constants'
 
-// Stripe's fee is 30 cents plus 2.9% of the transaction.
-const baseStripeFee = 30
-const stripePercentage = 0.029
 const ZERO = ethers.constants.AddressZero
-export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
 
-export const GAS_COST_TO_GRANT = 250000
-
+// @deprecated - Remove once no longer used anywhere. Use functions in pricing.ts instead.
 export default class KeyPricer {
   readOnlyEthereumService: any
 
@@ -39,6 +39,7 @@ export default class KeyPricer {
       network,
       { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
+
     let symbol =
       networks[network]?.nativeCurrency?.coinbase ||
       networks[network]?.nativeCurrency?.symbol
@@ -50,6 +51,10 @@ export default class KeyPricer {
         `We could not determine currency symbol for ${lockAddress} on ${network}`
       )
       throw new Error(`Missing currency`)
+    }
+    // If key is free, no need to convert!
+    if (lock.keyPrice === '0') {
+      return 0
     }
     const priceConversion = new PriceConversion()
     const usdPrice = await priceConversion.convertToUSD(
