@@ -12,7 +12,10 @@ pragma solidity ^0.8.7;
  *
  * As a security measure, this contract also has an `exec` function 
  * that can be used to send calls directly (without going through a bridge)
- * through a multisig wallet managed by the Unlock team.
+ * through a multi-sig wallet managed by the Unlock team. This can be changed
+ * by the DAO at any time, and the Unlock Labs team expects to renounce eventually
+ * that role as we are confident that none of the dependencies in place can prevent a healthy 
+ * governance mechanism (bridge compromised... etc)
  * 
  */
 
