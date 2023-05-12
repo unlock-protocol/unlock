@@ -146,12 +146,14 @@ contract UnlockOwner {
   /**
    * This function can be called by the multisig to remove itself, so only the DAO
    * is left as sole owner of the Unlock contract
+   * @param _newMultisig the address of a multisig contract. If set to `address(0)` then
+   * the multisig will be entirely renounced from the current contract with no way to add it back
    */
-  function renounceMultisig() external {
+  function changeMultisig(address _newMultisig) external {
     if ( !_isMultisig()) {
       revert Unauthorized(msg.sender);
     }
-    multisigAddress = address(0);
+    multisigAddress = _newMultisig;
   } 
 
 

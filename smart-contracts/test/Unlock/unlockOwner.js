@@ -228,16 +228,24 @@ contract("Unlock / bridged governance", () => {
     })
   })
 
-  describe("renounceMultisig", () => {
+  describe("changeMultisig", () => {
     it('can only be called by the multisig itself', async () => {
       await reverts(
-        managerDest.renounceMultisig(),
+        managerDest.changeMultisig(),
         'Unauthorized'
       )
     })
 
+    it('allow the multisig to replace itself', async () => {
+      const wallet = await ethers.Wallet.createRandom()
+      await managerDest.connect(wallet.address).changeMultisig()
+      assert.equal(
+        await managerDest.multisigAddress(),
+        wallet.address
+      )
+    })
     it('allow the multisig to remove itself', async () => {
-      await managerDest.connect(multisig).renounceMultisig()
+      await managerDest.connect(multisig).changeMultisig(ADDRESS_ZERO)
       assert.equal(
         await managerDest.multisigAddress(),
         ADDRESS_ZERO
