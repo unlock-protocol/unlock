@@ -54,6 +54,7 @@ export const getCreditCardEnabledDetailsForLock: RequestHandler = async (
   const result = await defiLammaPrice({
     network,
     address: lock?.currencyContractAddress,
+    amount: Number(`${lock.keyPrice}`),
   })
 
   const creditCardEnabled = await getCreditCardEnabledStatus({
