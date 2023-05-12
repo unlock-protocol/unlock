@@ -31,6 +31,7 @@ import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -221,6 +222,11 @@ export function Confirm({
   })
 
   const { mutateAsync: createPurchaseIntent } = usePurchase({
+    lockAddress,
+    network: lockNetwork,
+  })
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
     lockAddress,
     network: lockNetwork,
   })
@@ -716,7 +722,7 @@ export function Confirm({
                     ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
                     : ''
                 }
-                isCardEnabled={formattedData.cardEnabled}
+                isCardEnabled={!!creditCardEnabled}
               />
             )}
           </div>
