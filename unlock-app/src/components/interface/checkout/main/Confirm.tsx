@@ -3,7 +3,6 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
-import { getLockProps } from '~/utils/lock'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
@@ -31,6 +30,7 @@ import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { ConfirmCard } from './Confirm/ConfirmCard'
 
 interface Props {
@@ -173,7 +173,6 @@ export function Confirm({
   const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
-    quantity,
     recipients,
     payment,
     captcha,
@@ -185,12 +184,7 @@ export function Confirm({
     metadata,
   } = state.context
 
-  const {
-    address: lockAddress,
-    network: lockNetwork,
-    name: lockName,
-    keyPrice,
-  } = lock!
+  const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
   const swap = payment?.method === 'swap_and_purchase'
 
   const currencyContractAddress = swap
@@ -222,6 +216,11 @@ export function Confirm({
   })
 
   const { mutateAsync: createPurchaseIntent } = usePurchase({
+    lockAddress,
+    network: lockNetwork,
+  })
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
     lockAddress,
     network: lockNetwork,
   })
@@ -329,14 +328,6 @@ export function Confirm({
   const symbol = swap
     ? payment.route.trade.inputAmount.currency.symbol
     : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
-
-  const formattedData = getLockProps(
-    lock,
-    lockNetwork,
-    baseCurrencySymbol,
-    lockName,
-    quantity
-  )
 
   const onError = (error: any, message?: string) => {
     console.error(error)
@@ -725,7 +716,7 @@ export function Confirm({
                     ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
                     : ''
                 }
-                isCardEnabled={formattedData.cardEnabled}
+                isCardEnabled={!!creditCardEnabled}
               />
             )}
           </div>

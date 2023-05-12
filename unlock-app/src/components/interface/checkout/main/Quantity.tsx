@@ -15,6 +15,7 @@ import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
 import { ViewContract } from '../ViewContract'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -50,6 +51,11 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
     quantity
   )
 
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
+
   const isDisabled = quantity < 1
 
   return (
@@ -63,7 +69,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
               <Pricing
                 keyPrice={formattedData.formattedKeyPrice}
                 usdPrice={formattedData.convertedKeyPrice}
-                isCardEnabled={formattedData.cardEnabled}
+                isCardEnabled={!!creditCardEnabled}
               />
             </div>
           </div>
