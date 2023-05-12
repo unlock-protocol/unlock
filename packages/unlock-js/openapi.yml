@@ -2738,3 +2738,63 @@ paths:
                     type: number
                   isCreditCardPurchasable:
                     type: boolean
+
+  /v2/api/price/{network}/{lockAddress}/card:
+    get:
+      description: Get the price breakdown for universal credit card
+      operationId: getUniversalCardPrice
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: purchaseData[]
+          description: The purchase data passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: recipients[]
+          description: The recipients passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+
+      responses:
+        200:
+          description: Successfully got card pricing for universal cards
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                  - unlockServiceFee
+                  - gasCost
+                properties:
+                  total:
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  gasCost:
+                    type: number
+                  prices:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - userAddress
+                        - amount
+                        - symbol
+                      properties:
+                        userAddress:
+                          type: string
+                        amount:
+                          type: string
+                        symbol:
+                          type: string
