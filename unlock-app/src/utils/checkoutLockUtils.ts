@@ -14,8 +14,9 @@ interface LockKeysAvailableLock {
 }
 
 interface LockFiatPricing {
-  [currency: string]: any
+  amount: number
 }
+
 interface LockTickerSymbolLock {
   keyPrice?: string
   currencyContractAddress: string | null
@@ -85,12 +86,12 @@ export const convertedKeyPrice = (
   lock: LockTickerSymbolLock,
   numberOfRecipients = 1
 ) => {
-  const keyPrice = lock?.fiatPricing?.usd?.keyPrice
+  const price = lock?.fiatPricing?.amount
 
-  if (!keyPrice) {
+  if (!price) {
     return ''
   }
-  return `~$${((parseFloat(keyPrice) * numberOfRecipients) / 100).toFixed(2)}`
+  return `~$${(parseFloat(`${price}`) * numberOfRecipients).toFixed(2)}`
 }
 
 export const formattedKeyPrice = (

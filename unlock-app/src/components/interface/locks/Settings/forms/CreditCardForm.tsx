@@ -11,6 +11,8 @@ import { SettingCardDetail } from '../elements/SettingCard'
 import Link from 'next/link'
 import { useStripeConnect, useStripeDisconnect } from '~/hooks/useStripeConnect'
 import { storage } from '~/config/storage'
+import { useUSDPricing } from '~/hooks/useUSDPricing'
+import { useLockData } from '~/hooks/useLockData'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -257,10 +259,7 @@ export const CreditCardForm = ({
   disabled,
 }: CardPaymentProps) => {
   const storageService = useStorageService()
-  const { isStripeConnected, getCreditCardPricing } = useLock(
-    { address: lockAddress },
-    network
-  )
+  const { isStripeConnected } = useLock({ address: lockAddress }, network)
 
   const getKeyGranter = async () => {
     return await storageService.getKeyGranter(network)
@@ -276,10 +275,22 @@ export const CreditCardForm = ({
     network,
   })
 
+  const { lock } = useLockData({
+    network,
+    lockAddress,
+  })
+
+  const { isLoading: isLoadingPricing, data: fiatPricing } = useUSDPricing({
+    network,
+    lockAddress,
+    currencyContractAddress: undefined,
+    amount: Number(lock?.keyPrice),
+    enabled: !!lock?.address,
+  })
+
   const [
     { isLoading, data: isConnected = 0 },
     { isLoading: isLoadingKeyGranter, data: keyGranter },
-    { isLoading: isLoadingPricing, data: fiatPricing },
   ] = useQueries({
     queries: [
       {
@@ -296,14 +307,10 @@ export const CreditCardForm = ({
         queryKey: ['getKeyGranter', lockAddress, network],
         queryFn: getKeyGranter,
       },
-      {
-        queryKey: ['getCreditCardPricing', lockAddress, network],
-        queryFn: getCreditCardPricing,
-      },
     ],
   })
 
-  const isPricingLow = fiatPricing?.usd?.keyPrice < 50
+  const isPricingLow = (fiatPricing?.amount ?? 0) < 0.5
 
   const loading = isLoading || isLoadingKeyGranter || isLoadingPricing
 
