@@ -268,6 +268,7 @@ export const createOnRampSession: RequestHandler = async (
     lockAddress,
     network,
     userAddress,
+    // @ts-expect-error Property 'id' does not exist on type 'Response<object>'.ts(2339)
     stripeSession: session.id,
     body: request.body,
   })
