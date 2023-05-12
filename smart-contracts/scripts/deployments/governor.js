@@ -1,9 +1,6 @@
-const { ethers, upgrades, network } = require('hardhat')
-const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
+const { ethers, upgrades } = require('hardhat')
 
 const { getNetworkName } = require('../../helpers/network')
-const { addUDT } = require('../../test/helpers/mainnet')
-
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
 const TIMELOCK_ADMIN_ROLE = ethers.utils.keccak256(
@@ -54,14 +51,7 @@ async function main() {
   )
 
   // get UDT token address
-  let tokenAddress
-  if (networkName !== 'localhost') {
-    const [UDTInfo] =
-      OZ_SDK_EXPORT.networks[networkName].proxies[
-      'unlock-protocol/UnlockDiscountToken'
-      ]
-    tokenAddress = UDTInfo.address
-  }
+  let tokenAddress = '0xaB82D702A4e0cD165072C005dc504A21c019718F'
 
   // deploy governor proxy
   const governor = await upgrades.deployProxy(UnlockProtocolGovernor, [
@@ -76,18 +66,6 @@ async function main() {
     governor.address,
     ` (tx: ${governor.deployTransaction.hash})`
   )
-
-  if (networkName === 'localhost') {
-    // bring default voting period to 10 blocks while developing locally
-    await network.provider.send('hardhat_setStorageAt', [
-      governor.address,
-      '0x1c7', // '455' storage slot
-      '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
-    ])
-
-    // grant timelock some UDT
-    await addUDT(timelock.address, 10000)
-  }
 
   // governor should be the only proposer
   await timelock.grantRole(PROPOSER_ROLE, governor.address)
