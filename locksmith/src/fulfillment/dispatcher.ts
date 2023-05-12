@@ -352,7 +352,6 @@ export default class Dispatcher {
     const lockContract = await walletService.getLockContract(lockAddress)
     const keyPrices = await Promise.all(
       recipients.map(async (recipient, index) => {
-        console.log({ recipient, referrer, data: purchaseData[index] })
         return lockContract.purchasePriceFor(
           recipient,
           referrer,
