@@ -80,11 +80,11 @@ contract("Unlock / bridged governance", () => {
     });
 
     it("stores DAO address", async () => {
-      assert.equal(dao.address, await managerDest.daoAddress());
+      assert.equal(dao.address, await managerDest.daoTimelockAddress());
     });
     
     it("stores multisig address", async () => {
-      assert.equal(dao.address, await managerDest.daoAddress());
+      assert.equal(dao.address, await managerDest.daoTimelockAddress());
     });
   });
 
@@ -126,6 +126,7 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), args[1]);
       assert.equal(await unlockDest.publicLockImpls(args[1]), args[0]);
     })
+
     it('via multisig', async () => {
       const template = await PublicLock.deploy()
       const args = [
