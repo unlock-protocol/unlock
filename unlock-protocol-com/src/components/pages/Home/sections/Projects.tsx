@@ -10,6 +10,14 @@ import { twMerge } from 'tailwind-merge'
 export const UNLOCK_PROJECTS = [
   {
     coverClass:
+      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/blockworks.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/blockworks.png)] [background-blend-mode:normal,screen,normal]',
+    published: 'May 2023',
+    title: 'Blockworks',
+    text: "The Myth of Immutability",
+    href: 'https://blockworks.co/news/blockchains-are-not-immutable',
+  },
+  {
+    coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cointelegraph.png)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cointelegraph.png)] [background-blend-mode:normal,screen,normal]',
     published: 'March 2023',
     title: 'Cointelegraph',
