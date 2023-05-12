@@ -1,4 +1,6 @@
 import { RequestHandler } from 'express'
+import { randomUUID } from 'node:crypto'
+
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -15,7 +17,7 @@ import stripe from '../../config/stripe'
 import { ethers } from 'ethers'
 import { recoverTransferAuthorization } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
-import { UniversalCardPurchases } from '../../models/universalCardPurchases'
+import { UniversalCardPurchase } from '../../models/UniversalCardPurchase'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -261,7 +263,8 @@ export const createOnRampSession: RequestHandler = async (
   })
 
   // save everything so we can use if needed!
-  await UniversalCardPurchases.create({
+  await UniversalCardPurchase.create({
+    id: randomUUID(),
     lockAddress,
     network,
     userAddress,
@@ -274,14 +277,39 @@ export const createOnRampSession: RequestHandler = async (
 
 /**
  * Execute the purchase transaction!
+ * with all the signature and stuff!
  * @param request
  * @param response
  * @returns
  */
 export const captureOnRamp: RequestHandler = async (request, response) => {
-  const transactionHash = request.query.transactionHash
-
-  return response.send({
-    transactionHash,
+  const purchase = await UniversalCardPurchase.findOne({
+    where: {
+      stripeSession: request.params.session,
+    },
   })
+
+  if (!purchase) {
+    return response.status(404).send({
+      message: 'Session does not exist',
+    })
+  }
+
+  // No need to check the status of the session because the tx would fail if the user cannot actually pay!
+  const dispatcher = new Dispatcher()
+  const transaction = await dispatcher.buyWithCardPurchaser(
+    purchase.network,
+    purchase.lockAddress,
+    purchase.body.recipients,
+    {
+      message: purchase.body.transferMessage,
+      signature: purchase.body.purchaseSignature,
+    },
+    {
+      message: purchase.body.purchaseMessage,
+      signature: purchase.body.purchaseSignature,
+    },
+    purchase.body.purchaseData
+  )
+  return response.send(transaction)
 }

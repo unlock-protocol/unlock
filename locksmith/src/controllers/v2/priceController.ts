@@ -5,13 +5,16 @@ import {
   defiLammaPrice,
 } from '../../utils/pricing'
 
+import { ethers } from 'ethers'
+
+const MIN_PAYMENT_STRIPE = 100
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
-  const address =
-    typeof request.query.address === 'string'
-      ? request.query.address
-      : undefined
+  const erc20Address = request.query.address?.toString()
+  const address = ethers.utils.isAddress(erc20Address || '')
+    ? erc20Address
+    : undefined
 
   const result = await defiLammaPrice({
     network,
@@ -26,16 +29,17 @@ export const amount: RequestHandler = async (request, response) => {
 export const total: RequestHandler = async (request, response) => {
   const network = Number(request.query.network?.toString() || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
-  const address =
-    typeof request.query.address === 'string'
-      ? request.query.address
-      : undefined
+  const erc20Address = request.query.address?.toString()
+  const address = ethers.utils.isAddress(erc20Address || '')
+    ? erc20Address
+    : undefined
 
   const charge = await createTotalCharges({
     network,
     amount,
     address,
   })
+
   return response.send(charge)
 }
 
@@ -68,27 +72,26 @@ export const universalCard: RequestHandler = async (request, response) => {
     data,
   })
 
-  // For universal card, we actually apply the unlock fee to each lock
-  // And split gas between them all
-  const fees = (pricing.total - pricing.creditCardProcessingFee) / 100
-  const result = {
-    total: '0',
-    prices: pricing.recipients.map((recipient: any) => {
-      return {
-        userAddress: recipient.address,
-        amount: recipient.amountInUSD + fees / pricing.recipients.length,
-        symbol: '$',
-      }
-    }),
-  }
+  const total = pricing.total - pricing.creditCardProcessingFee
 
-  // Compute the total as a string in cents
-  result.total = Math.ceil(
-    100 *
-      result.prices
-        .map((price) => price.amount)
-        .reduce((total: number, price: number) => total + price, 0)
-  ).toString()
+  // For universal card, the creditCardProcessingFee fee is applied by Stripe directly
+  // Stripe minimum payment is 1$ (100 cents)
+  const creditCardProcessingFee =
+    total < MIN_PAYMENT_STRIPE ? MIN_PAYMENT_STRIPE - total : 0
 
-  return response.send(result)
+  return response.send({
+    creditCardProcessingFee,
+    unlockServiceFee: pricing.unlockServiceFee,
+    gasCost: pricing.gasCost,
+    total: total + creditCardProcessingFee,
+    prices: [
+      ...pricing.recipients.map((recipient) => {
+        return {
+          userAddress: recipient.address,
+          amount: recipient.price.amount,
+          symbol: '$',
+        }
+      }),
+    ],
+  })
 }

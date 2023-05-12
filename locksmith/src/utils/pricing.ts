@@ -119,13 +119,26 @@ export const getLockKeyPricing = async ({
   }
 }
 
+interface KeyPricingPrice {
+  amount: number
+  decimals: number
+  symbol: string | undefined
+  amountInUSD: number | undefined
+  amountInCents: number | undefined
+}
+
+export interface KeyPricing {
+  price: KeyPricingPrice
+  address?: string
+}
+
 export const getKeyPricingInUSD = async ({
   recipients,
   network,
   lockAddress,
   data: dataArray,
   referrers,
-}: KeyPricingOptions) => {
+}: KeyPricingOptions): Promise<KeyPricing[]> => {
   const web3Service = new Web3Service(networks)
   const { keyPrice, decimals, currencyContractAddress } =
     await getLockKeyPricing({
@@ -164,8 +177,9 @@ export const getKeyPricingInUSD = async ({
 
       if (!address) {
         return {
-          recipient: null,
-          ...defaultPricing,
+          price: {
+            ...defaultPricing,
+          },
         }
       }
 
@@ -180,23 +194,23 @@ export const getKeyPricingInUSD = async ({
         const amount = fromDecimal(purchasePrice, decimals)
         return {
           address,
-          price: {
-            amount,
-            decimals,
-            symbol: usdPricing.symbol,
-            amountInUSD: usdPricing?.price
-              ? amount * usdPricing.price
-              : undefined,
-            amountInCents: usdPricing?.price
-              ? Math.round(amount * usdPricing.price * 100)
-              : 0,
-          },
+          amount,
+          decimals,
+          symbol: usdPricing.symbol,
+          amountInUSD: usdPricing?.price
+            ? amount * usdPricing.price
+            : undefined,
+          amountInCents: usdPricing?.price
+            ? Math.round(amount * usdPricing.price * 100)
+            : 0,
         }
       } catch (error) {
         logger.error(error)
         return {
           address,
-          ...defaultPricing,
+          price: {
+            ...defaultPricing,
+          },
         }
       }
     })
@@ -290,11 +304,14 @@ export const createTotalCharges = async ({
 
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInUSD(options)
+
   const subtotal = recipients.reduce(
-    (sum, item) => sum + (item.price?.amountInCents || 0),
+    (sum, item) => sum + item.price.amountInCents,
     0
   )
+
   const gasCost = await getGastCost(options)
+
   const fees = getFees({
     subtotal,
     gasCost,
