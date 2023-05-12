@@ -10,7 +10,7 @@ const router = express.Router({ mergeParams: true })
 router.get('/:network/price', amount)
 router.get('/purchase/total', total)
 router.get(
-  '/:network/locks/:lockAddress/credit-card-details',
+  '/credit-card-details/:network/locks/:lockAddress',
   getCreditCardDetails
 )
 
