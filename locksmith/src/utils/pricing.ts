@@ -124,7 +124,7 @@ interface KeyPricingPrice {
   decimals: number
   symbol: string | undefined
   amountInUSD: number | undefined
-  amountInCents: number
+  amountInCents: number | undefined
 }
 
 export interface KeyPricing {
