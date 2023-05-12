@@ -2417,7 +2417,7 @@ paths:
 
       responses:
         200:
-          description: Successfully returns credit card details
+          description: Successfully returns credit card enabled status
           content:
             application/json:
               schema:
