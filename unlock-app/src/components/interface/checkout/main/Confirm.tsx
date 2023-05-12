@@ -31,6 +31,7 @@ import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
+import { ConfirmCard } from './Confirm/ConfirmCard'
 
 interface Props {
   injectedProvider: unknown
@@ -651,10 +652,6 @@ export function Confirm({
 
   console.log(payment.method)
 
-  const payingWithCard =
-    !isLoading &&
-    totalPricing?.isCreditCardPurchasable &&
-    payment?.method === 'card'
   return (
     <Fragment>
       <ReCaptcha
@@ -666,10 +663,9 @@ export function Confirm({
       <Stepper service={checkoutService} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
+          <ViewContract lockAddress={lock!.address} network={lockNetwork} />
+
           {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>
@@ -684,6 +680,8 @@ export function Confirm({
               )}
             </div>
           )}
+
+          {/* In any case we show the pricing data */}
           {!isLoading && isPricingDataAvailable && (
             <PricingData
               network={lockNetwork}
@@ -692,7 +690,16 @@ export function Confirm({
               payment={payment}
             />
           )}
+          {payment.method === 'card' && (
+            <ConfirmCard
+              pricingData={pricingData}
+              purchaseData={purchaseData!}
+              checkoutService={checkoutService}
+            />
+          )}
+          {payment.method !== 'card' && <>NOT CARD!</>}
         </div>
+
         {!isPricingDataAvailable && (
           <div>
             {isLoading ? (
@@ -722,13 +729,6 @@ export function Confirm({
               />
             )}
           </div>
-        )}
-        {payingWithCard && (
-          <CreditCardPricingBreakdown
-            total={totalPricing!.total}
-            creditCardProcessingFee={totalPricing!.creditCardProcessingFee}
-            unlockServiceFee={totalPricing!.unlockServiceFee}
-          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
