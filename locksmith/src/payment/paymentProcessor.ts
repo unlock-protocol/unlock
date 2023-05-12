@@ -189,12 +189,13 @@ export class PaymentProcessor {
           purchaser: userAddress,
           lock,
           recurring,
-          data: (data || []).join(','),
-          referrers: (referrers || []).join(','),
-          // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
           recipient: recipients.join(','),
           network,
-          maxPrice,
+          // Not actually saving these in Stripe because of size limitations on their side.
+          // data: (data || []).join(','),
+          // referrers: (referrers || []).join(','),
+          // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
+          // maxPrice,
         },
         application_fee_amount: pricing.unlockServiceFee,
       },
