@@ -13,18 +13,23 @@ module.exports = {
         defaultValue: Sequelize.literal('gen_random_uuid()'),
       },
       lockAddress: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       network: {
+        allowNull: false,
         type: 'pg_chain_id'
       },
       userAddress: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       stripeSession: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       body: {
+        allowNull: false,
         type: Sequelize.DataTypes.JSONB,
       },
       createdAt: {
