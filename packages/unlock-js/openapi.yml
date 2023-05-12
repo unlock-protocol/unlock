@@ -1330,13 +1330,6 @@ paths:
           schema:
             type: string
 
-        - in: query
-          name: lockAddress
-          required: false
-          description: Lock address
-          schema:
-            type: string
-
       responses:
         200:
           description: Get price for the native token or any erc20 on the network.
@@ -1359,8 +1352,6 @@ paths:
                         type: string
                       confidence:
                         type: number
-                      creditCardEnabled:
-                        type: boolean
                       priceInAmount:
                         type: number
                         nullable: true
@@ -2414,6 +2405,38 @@ paths:
                     type: boolean
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/api/credit-card-details/{network}/locks/{lockAddress}:
+    get:
+      operationId: getCreditCardDetails
+      description: Get credit card details for a specif lock
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: amount
+          required: false
+          description: Amount of tokens you want to get the price for in USD.
+          schema:
+            type: number
+        - in: query
+          name: address
+          required: false
+          description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfully returns credit card details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creditCardEnabled:
+                    type: boolean
 
   /v2/stripe/connect/{network}/locks/{lockAddress}:
     post:
