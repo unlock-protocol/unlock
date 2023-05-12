@@ -73,7 +73,7 @@ contract UnlockOwner {
     bridgeAddress = _bridgeAddress;
     unlockAddress = _unlockAddress;
     multisigAddress = _multisigAddress;
-    daoAddress = _daoAddress;
+    daoTimelockAddress = _daoAddress;
     domain = _domain;
   }
 
@@ -91,7 +91,7 @@ contract UnlockOwner {
   }
   
   function _isDAO() internal view returns (bool) {
-    return msg.sender == daoAddress;
+    return msg.sender == daoTimelockAddress;
   }
 
 
@@ -102,7 +102,7 @@ contract UnlockOwner {
   function _isBridgedDAO(uint32 origin, address caller) internal view returns(bool) {
     return msg.sender == bridgeAddress 
       && origin == 6648936 
-      && caller == daoAddress;
+      && caller == daoTimelockAddress;
   }
 
   /**
