@@ -194,15 +194,17 @@ export const getKeyPricingInUSD = async ({
         const amount = fromDecimal(purchasePrice, decimals)
         return {
           address,
-          amount,
-          decimals,
-          symbol: usdPricing.symbol,
-          amountInUSD: usdPricing?.price
-            ? amount * usdPricing.price
-            : undefined,
-          amountInCents: usdPricing?.price
-            ? Math.round(amount * usdPricing.price * 100)
-            : 0,
+          price: {
+            amount,
+            decimals,
+            symbol: usdPricing.symbol,
+            amountInUSD: usdPricing?.price
+              ? amount * usdPricing.price
+              : undefined,
+            amountInCents: usdPricing?.price
+              ? Math.round(amount * usdPricing.price * 100)
+              : 0,
+          },
         }
       } catch (error) {
         logger.error(error)
@@ -304,14 +306,11 @@ export const createTotalCharges = async ({
 
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInUSD(options)
-
   const subtotal = recipients.reduce(
-    (sum, item) => sum + item.price.amountInCents,
+    (sum, item) => sum + (item.price?.amountInCents || 0),
     0
   )
-
   const gasCost = await getGastCost(options)
-
   const fees = getFees({
     subtotal,
     gasCost,
