@@ -3,7 +3,7 @@ pragma solidity ^0.8.7;
 
 /**
  * UnlockOwner is used to facilitate the governance of the Unlock protocol
- * accross multiple chains. His role is to manage the state of the Unlock contract
+ * accross multiple chains. Its role is to manage the state of the Unlock contract
  * based on instructions coming from the DAO on mainnet via the Connext bridge.
  * 
  * There are two kind of instructions that can be sent :
