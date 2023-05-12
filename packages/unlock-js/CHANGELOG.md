@@ -1,5 +1,9 @@
 # Changes
 
+# 0.37.0
+
+- adding support for actual purchase through CardPurchaser
+
 # 0.36.1
 
 - fix decimals for withdrawFromLock
