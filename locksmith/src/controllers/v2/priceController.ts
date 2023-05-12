@@ -7,6 +7,7 @@ import {
 
 import { ethers } from 'ethers'
 
+const MIN_PAYMENT_STRIPE = 100
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
@@ -71,14 +72,26 @@ export const universalCard: RequestHandler = async (request, response) => {
     data,
   })
 
+  const total = pricing.total - pricing.creditCardProcessingFee
+
   // For universal card, the creditCardProcessingFee fee is applied by Stripe directly
-  const creditCardProcessingFee = pricing.creditCardProcessingFee
-  pricing.total -= creditCardProcessingFee
-  pricing.creditCardProcessingFee = 0
+  // Stripe minimum payment is 1$ (100 cents)
+  const creditCardProcessingFee =
+    total < MIN_PAYMENT_STRIPE ? MIN_PAYMENT_STRIPE - total : 0
 
-  pricing.recipients.forEach((_, index) => {
-    pricing.recipients[index].symbol = '$'
+  return response.send({
+    creditCardProcessingFee,
+    unlockServiceFee: pricing.unlockServiceFee,
+    gasCost: pricing.gasCost,
+    total: total + creditCardProcessingFee,
+    prices: [
+      ...pricing.recipients.map((recipient) => {
+        return {
+          userAddress: recipient.address,
+          amount: recipient.price.amount,
+          symbol: '$',
+        }
+      }),
+    ],
   })
-
-  return response.send(pricing)
 }

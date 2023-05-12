@@ -305,13 +305,10 @@ export const createTotalCharges = async ({
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   const recipients = await getKeyPricingInUSD(options)
 
-  console.log({ recipients })
-
   const subtotal = recipients.reduce(
-    (sum, item) => sum + item.amountInCents || 0,
+    (sum, item) => sum + item.price.amountInCents,
     0
   )
-  console.log({ subtotal })
 
   const gasCost = await getGastCost(options)
 

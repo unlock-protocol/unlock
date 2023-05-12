@@ -74,12 +74,11 @@ export function UniversalCardPayment({
     const expectedAmount = cardPricing!.total
     if (
       session.quote.destination_amount &&
-      (100 * parseFloat(session.quote.destination_amount)).toString() !==
-        expectedAmount
+      100 * parseFloat(session.quote.destination_amount) !== expectedAmount
     ) {
       console.error(
         'Price changed',
-        (100 * parseFloat(session.quote.destination_amount)).toString(),
+        100 * parseFloat(session.quote.destination_amount),
         expectedAmount
       )
       setSessionError('You cannot change the amount. Please start again.')
@@ -122,7 +121,7 @@ export function UniversalCardPayment({
       } = await walletService.getAndSignAuthorizationsForTransferAndPurchase({
         lockAddress: lock!.address,
         network: lock!.network,
-        amount: cardPricing!.total, // amount is a string in cents
+        amount: cardPricing!.total.toString(), // amount is a string in cents
       })
 
       // We pass recipients and purchaseData as these will be used for the onchain transaction
@@ -151,8 +150,6 @@ export function UniversalCardPayment({
     return <Stepper service={checkoutService} />
   }
 
-  console.log({ cardPricing })
-
   return (
     <Fragment>
       <Stepper service={checkoutService} />
@@ -174,9 +171,9 @@ export function UniversalCardPayment({
                 pricingData={cardPricing}
               />
               <CreditCardPricingBreakdown
-                total={totalPricing!.total}
-                creditCardProcessingFee={totalPricing!.creditCardProcessingFee}
-                unlockServiceFee={totalPricing!.unlockServiceFee}
+                total={cardPricing!.total}
+                creditCardProcessingFee={cardPricing!.creditCardProcessingFee}
+                unlockServiceFee={cardPricing!.unlockServiceFee}
               />
             </div>
           </main>
