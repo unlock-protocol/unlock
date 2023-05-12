@@ -3,6 +3,8 @@ import { createTotalCharges, defiLammaPrice } from '../../utils/pricing'
 import { ethers } from 'ethers'
 import { getCreditCardEnabledStatus } from '../../operations/creditCardOperations'
 import * as Normalizer from '../../utils/normalizer'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -39,22 +41,19 @@ export const total: RequestHandler = async (request, response) => {
   return response.send(charge)
 }
 
-export const getCreditCardDetails: RequestHandler = async (
+export const getCreditCardEnabledDetailsForLock: RequestHandler = async (
   request,
   response
 ) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const erc20Address = request.query.address?.toString()
-  const amount = parseFloat(request.query.amount?.toString() || '1')
-  const address = ethers.utils.isAddress(erc20Address || '')
-    ? erc20Address
-    : undefined
+
+  const web3Service = new Web3Service(networks)
+  const lock = await web3Service.getLock(lockAddress, network)
 
   const result = await defiLammaPrice({
     network,
-    amount,
-    address,
+    address: lock?.currencyContractAddress,
   })
 
   const creditCardEnabled = await getCreditCardEnabledStatus({

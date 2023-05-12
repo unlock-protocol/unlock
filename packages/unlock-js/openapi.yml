@@ -2408,24 +2408,12 @@ paths:
 
   /v2/api/credit-card-details/{network}/locks/{lockAddress}:
     get:
-      operationId: getCreditCardDetails
-      description: Get credit card details for a specif lock
+      operationId: isCardPaymentEnabledForLock
+      description: Returns if credit card payment are enable for a lock
 
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
-        - in: query
-          name: amount
-          required: false
-          description: Amount of tokens you want to get the price for in USD.
-          schema:
-            type: number
-        - in: query
-          name: address
-          required: false
-          description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
-          schema:
-            type: string
 
       responses:
         200:
