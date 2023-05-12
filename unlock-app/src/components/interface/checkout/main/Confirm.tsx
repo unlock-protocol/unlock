@@ -335,14 +335,6 @@ export function Confirm({
     ? payment.route.trade.inputAmount.currency.symbol
     : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
 
-  const formattedData = getLockProps(
-    lock,
-    lockNetwork,
-    baseCurrencySymbol,
-    lockName,
-    quantity
-  )
-
   const onError = (error: any, message?: string) => {
     console.error(error)
     switch (error.code) {
