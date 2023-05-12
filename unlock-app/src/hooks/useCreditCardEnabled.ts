@@ -10,7 +10,7 @@ export const useCreditCardEnabled = ({
   lockAddress,
   network,
 }: CreditCardEnabledProps) => {
-  return useQuery(['useCreditCardEnabled'], async () => {
+  return useQuery(['useCreditCardEnabled', lockAddress, network], async () => {
     const response = await storage.isCardPaymentEnabledForLock(
       network,
       lockAddress
