@@ -649,6 +649,8 @@ export function Confirm({
     return null
   }
 
+  console.log(payment.method)
+
   const payingWithCard =
     !isLoading &&
     totalPricing?.isCreditCardPurchasable &&
