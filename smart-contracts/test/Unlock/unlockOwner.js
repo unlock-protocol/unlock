@@ -14,6 +14,7 @@ const {
 let bridge,
   dao,
   multisig,
+  multisig2,
   managerDest,
   unlockDest,
   wethDest,
@@ -29,7 +30,7 @@ const url = `http://locksmith:8080/api/key/`;
 contract("Unlock / bridged governance", () => {
   before(async () => {
     
-    ;[, dao, multisig] = await ethers.getSigners()
+    ;[, dao, multisig, multisig2] = await ethers.getSigners()
 
     // mock bridge
     ;({bridge, wethDest} = await deployBridge())
@@ -231,21 +232,21 @@ contract("Unlock / bridged governance", () => {
   describe("changeMultisig", () => {
     it('can only be called by the multisig itself', async () => {
       await reverts(
-        managerDest.changeMultisig(),
+        managerDest.changeMultisig(ADDRESS_ZERO),
         'Unauthorized'
       )
     })
 
     it('allow the multisig to replace itself', async () => {
-      const wallet = await ethers.Wallet.createRandom()
-      await managerDest.connect(wallet.address).changeMultisig()
+      await managerDest.connect(multisig).changeMultisig(multisig2.address)
       assert.equal(
         await managerDest.multisigAddress(),
-        wallet.address
+        multisig2.address
       )
     })
+
     it('allow the multisig to remove itself', async () => {
-      await managerDest.connect(multisig).changeMultisig(ADDRESS_ZERO)
+      await managerDest.connect(multisig2).changeMultisig(ADDRESS_ZERO)
       assert.equal(
         await managerDest.multisigAddress(),
         ADDRESS_ZERO
@@ -254,12 +255,9 @@ contract("Unlock / bridged governance", () => {
       // make sure exec reverts
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, '0x'])
       await reverts(
-        managerDest.connect(multisig).execMultisig(calldata),
+        managerDest.connect(multisig2).execMultisig(calldata),
         'Unauthorized'
       )
-      
-
-
     })
   })
 
