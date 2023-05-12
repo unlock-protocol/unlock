@@ -74,7 +74,11 @@ export interface NetworkConfig {
   serializerAddress?: string
   multisig?: string
   keyManagerAddress?: string
-  cardPurchaserAddress?: string
+  universalCard?: {
+    cardPurchaserAddress: string
+    stripeDestinationNetwork: string
+    stripeDestinationCurrency: string
+  }
   publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string

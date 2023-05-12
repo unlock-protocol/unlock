@@ -1054,7 +1054,8 @@ export default class WalletService extends UnlockService {
     network,
   }: GetAndSignAuthorizationsForTransferAndPurchaseParams) {
     const networkConfig = this.networks[this.networkId]
-    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
 
     if (!cardPurchaserAddress) {
       throw new Error('CardPurchaser not available for this network')
@@ -1119,7 +1120,8 @@ export default class WalletService extends UnlockService {
     callData,
   }: PurchaseWithCardPurchaserParams) {
     const networkConfig = this.networks[this.networkId]
-    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
 
     if (!cardPurchaserAddress) {
       throw new Error('CardPurchaser not available for this network')

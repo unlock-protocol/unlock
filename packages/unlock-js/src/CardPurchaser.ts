@@ -42,7 +42,8 @@ export class CardPurchaser {
    */
   getContract({ network, signer }: GetContractOptions) {
     const networkConfig = this.networks[network]
-    const cardPurchaserContractAddress = networkConfig.cardPurchaserAddress
+    const cardPurchaserContractAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
     if (!cardPurchaserContractAddress) {
       throw new Error('No card purchaser contract address found for network')
     }
@@ -87,7 +88,8 @@ export class CardPurchaser {
     signer: Signer
   ) {
     const networkConfig = this.networks[network]
-    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
 
     if (!cardPurchaserAddress) {
       throw new Error('Card Purchaser not available for this network')
