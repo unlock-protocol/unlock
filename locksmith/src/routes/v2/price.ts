@@ -4,7 +4,6 @@ import {
   isCardPaymentEnabledForLock,
   universalCard,
   total,
-  universalCard,
 } from '../../controllers/v2/priceController'
 
 const router = express.Router({ mergeParams: true })
