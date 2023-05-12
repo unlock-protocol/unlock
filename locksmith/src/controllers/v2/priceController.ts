@@ -41,7 +41,7 @@ export const total: RequestHandler = async (request, response) => {
   return response.send(charge)
 }
 
-export const getCreditCardEnabledDetailsForLock: RequestHandler = async (
+export const isCardPaymentEnabledForLock: RequestHandler = async (
   request,
   response
 ) => {

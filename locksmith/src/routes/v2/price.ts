@@ -1,7 +1,7 @@
 import express from 'express'
 import {
   amount,
-  getCreditCardEnabledDetailsForLock,
+  isCardPaymentEnabledForLock,
   total,
 } from '../../controllers/v2/priceController'
 
@@ -11,7 +11,7 @@ router.get('/:network/price', amount)
 router.get('/purchase/total', total)
 router.get(
   '/credit-card-details/:network/locks/:lockAddress',
-  getCreditCardEnabledDetailsForLock
+  isCardPaymentEnabledForLock
 )
 
 export default router
