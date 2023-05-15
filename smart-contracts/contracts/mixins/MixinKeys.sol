@@ -126,24 +126,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   /**
-   * Deactivate an existing key
-   * @param _tokenId the id of token to burn
-   * @notice the key will be expired and ownership records will be destroyed
-   */
-  function burn(uint _tokenId) public {
-    _isKey(_tokenId);
-    _onlyKeyManagerOrApproved(_tokenId);
-
-    emit Transfer(_ownerOf[_tokenId], address(0), _tokenId);
-
-    // expire key
-    _cancelKey(_tokenId);
-
-    // delete owner
-    _ownerOf[_tokenId] = address(0);
-  }
-
-  /**
    * Migrate data from the previous single owner => key mapping to
    * the new data structure w multiple tokens.
    */
@@ -164,9 +146,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
       // update unlock ref in this lock
       unlockProtocol = IUnlock(newUnlockAddress);
-
     }
-    
+
     // update data version
     schemaVersion = publicLockVersion();
   }
@@ -371,9 +352,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @return The number of keys owned by `_keyOwner` (expired or not)
    */
   function totalKeys(address _keyOwner) public view returns (uint) {
-    if (_keyOwner == address(0)) {
-      revert INVALID_ADDRESS();
-    }
     return _balances[_keyOwner];
   }
 
