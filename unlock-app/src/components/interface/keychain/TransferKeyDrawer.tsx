@@ -79,9 +79,9 @@ export const TransferKeyDrawer = ({
   const transferFromMutation = useMutation(onTransferFrom)
 
   const onTransferKeyOwnership = async () => {
-    const promise = transferFromMutation.mutateAsync()
+    const transferPromise = transferFromMutation.mutateAsync()
 
-    await ToastHelper.promise(promise, {
+    await ToastHelper.promise(transferPromise, {
       loading: `Transferring key ownership to ${addressMinify(newOwner)}.`,
       success: 'Key successfully transferred.',
       error: 'There is an issue with transfer, please try again.',

@@ -31,7 +31,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Menu, Transition } from '@headlessui/react'
 import { classed as tw } from '@tw-classed/react'
-import { TbTools as ToolsIcon, TbSend as SendIcon } from 'react-icons/tb'
+import { TbTools as ToolsIcon } from 'react-icons/tb'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import {
   RiNavigationFill as ExploreIcon,
@@ -48,7 +48,6 @@ import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
 import { isIOS } from 'react-device-detect'
 import Image from 'next/image'
-import { TransferKeyDrawer } from './TransferKeyDrawer'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -77,7 +76,6 @@ function Key({ ownedKey, account, network }: Props) {
   const config = useConfig()
   const [showingQR, setShowingQR] = useState(false)
   const [showMoreInfo, setShowMoreInfo] = useState(false)
-  const [showTransferKey, setShowTransferKey] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [expireAndRefunded, setExpireAndRefunded] = useState(false)
@@ -191,14 +189,6 @@ function Key({ ownedKey, account, network }: Props) {
 
   return (
     <Card className="grid gap-6" shadow="lg" padding="xs">
-      <TransferKeyDrawer
-        isOpen={showTransferKey}
-        setIsOpen={setShowTransferKey}
-        lockAddress={ownedKey.lock.address}
-        network={ownedKey.network}
-        tokenId={tokenId}
-        owner={ownedKey.owner}
-      />
       <KeyInfoDrawer
         isOpen={showMoreInfo}
         setIsOpen={setShowMoreInfo}
@@ -316,23 +306,6 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {!isKeyExpired && (
-                    <Menu.Item>
-                      {({ active, disabled }) => (
-                        <MenuButton
-                          disabled={disabled}
-                          active={active}
-                          onClick={(event) => {
-                            event.preventDefault()
-                            setShowTransferKey(true)
-                          }}
-                        >
-                          <SendIcon />
-                          Transfer key
-                        </MenuButton>
-                      )}
-                    </Menu.Item>
-                  )}
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton
