@@ -31,6 +31,7 @@ import { onResolveName } from '~/utils/resolvers'
 import { useMetadata } from '~/hooks/metadata'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
+import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
 
 interface MetadataCardProps {
   metadata: any
@@ -238,6 +239,7 @@ export const MetadataCard = ({
   expirationDuration,
   lockSettings,
 }: MetadataCardProps) => {
+  const [showTransferKey, setShowTransferKey] = useState(false)
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
@@ -349,6 +351,15 @@ export const MetadataCard = ({
 
   return (
     <>
+      <TransferKeyDrawer
+        isOpen={showTransferKey}
+        setIsOpen={setShowTransferKey}
+        lockAddress={lockAddress}
+        network={network}
+        tokenId={tokenId}
+        lockName={lockMetadata?.name}
+        owner={data?.keyholderAddress}
+      />
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
@@ -515,6 +526,14 @@ export const MetadataCard = ({
                       <ExternalLinkIcon size={20} />
                     </a>
                   </Button>
+                  <div className="ml-auto">
+                    <Button
+                      size="small"
+                      onClick={() => setShowTransferKey(true)}
+                    >
+                      Change
+                    </Button>
+                  </div>
                 </div>
               }
             />
