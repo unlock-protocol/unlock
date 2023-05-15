@@ -1136,4 +1136,30 @@ export default class WalletService extends UnlockService {
       this.signer
     )
   }
+
+  /**
+   * Transfers a specific NFT  from one account to another
+   * @returns
+   */
+  async transferFrom(
+    params: {
+      from: string
+      to: string
+      tokenId: string
+      lockAddress: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.from) throw new Error('Missing from')
+    if (!params.to) throw new Error('Missing to')
+    if (!params.tokenId) throw new Error('Missing tokenId')
+
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.transferFrom) {
+      throw new Error('Lock version not supported')
+    }
+    return version.transferFrom.bind(this)(params, transactionOptions, callback)
+  }
 }

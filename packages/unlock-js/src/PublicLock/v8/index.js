@@ -32,6 +32,7 @@ const {
   setEventHooks,
   updateTransferFee,
   setKeyManagerOf,
+  transferFrom,
 } = v7
 
 export default {
@@ -67,4 +68,5 @@ export default {
   setEventHooks,
   updateTransferFee,
   setKeyManagerOf,
+  transferFrom,
 }

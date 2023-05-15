@@ -10,6 +10,7 @@ import keyManagerOf from './keyManagerOf'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 import setEventHooks from './setEventHooks'
 import setKeyManagerOf from './setKeyManagerOf'
+import transferFrom from './transferFrom'
 import v6 from '../v6'
 
 const {
@@ -64,4 +65,5 @@ export default {
   setEventHooks,
   updateTransferFee,
   setKeyManagerOf,
+  transferFrom,
 }
