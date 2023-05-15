@@ -9,7 +9,9 @@ const introspectionJSONFilePath = path.join(
   'introspection.json'
 )
 
-const endpoint = networks['5'].subgraph.endpointV2
+const network = process.env.INTROSPECT_LOCALHOST ? '31337' : '5'
+const endpoint = networks[network].subgraph.endpointV2
+
 console.log(`Fetching graphql introspection from ${endpoint}`)
 async function main() {
   const query = getIntrospectionQuery()
