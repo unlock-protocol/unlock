@@ -1,3 +1,12 @@
+/**
+ * Script to fetch our subgraph introspection graphql as JSON file. That
+ * file (living at `introspection.json` at the root of this folder) is used
+ * by the unlock-js lib to generate a graphql client.
+ *
+ * The introspection will happened against Goerli subgraph by default, but any
+ * network can be used by setting `INTROSPECT_NETWORK` env (ex. INTROSPECT_NETWORK=100)
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const { getIntrospectionQuery } = require('graphql')
@@ -9,7 +18,7 @@ const introspectionJSONFilePath = path.join(
   'introspection.json'
 )
 
-const network = process.env.INTROSPECT_LOCALHOST ? '31337' : '5'
+const network = process.env.INTROSPECT_NETWORK || '5'
 const endpoint = networks[network].subgraph.endpointV2
 
 console.log(`Fetching graphql introspection from ${endpoint}`)
