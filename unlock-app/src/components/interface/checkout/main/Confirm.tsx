@@ -4,7 +4,6 @@ import { Connected } from '../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
@@ -39,73 +38,11 @@ interface Props {
   communication?: CheckoutCommunication
 }
 
-interface CreditCardPricingBreakdownProps {
-  total: number
-  creditCardProcessingFee: number
-  unlockServiceFee: number
-}
-
 interface PricingDataProps {
   pricingData: any
   lock: Lock
   network: number
   payment?: any
-}
-
-export function CreditCardPricingBreakdown({
-  unlockServiceFee,
-  total,
-  creditCardProcessingFee,
-}: CreditCardPricingBreakdownProps) {
-  return (
-    <div className="flex flex-col gap-2 pt-4 text-sm">
-      <h3 className="font-medium">
-        Credit Card Fees{' '}
-        <a
-          href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-2 py-0.5 rounded-lg gap-2 text-xs hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
-        >
-          <span>Learn more</span> <ExternalLinkIcon className="inline" />
-        </a>
-      </h3>
-      <div className="divide-y">
-        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-          <span className="text-gray-600">Service Fee</span>
-          <div>
-            $
-            {(unlockServiceFee / 100).toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            })}
-          </div>
-        </div>
-        {!!creditCardProcessingFee && (
-          <div className="flex justify-between w-full py-2 text-sm">
-            <span className="text-gray-600"> Payment Processor </span>
-            <div>
-              $
-              {(creditCardProcessingFee / 100).toLocaleString(undefined, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-            </div>
-          </div>
-        )}
-        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-          <span className="text-gray-600"> Total </span>
-          <div className="font-bold">
-            $
-            {(total / 100).toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
 }
 
 export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
@@ -652,85 +589,6 @@ export function Confirm({
         badge="bottomleft"
       />
       <Stepper service={checkoutService} />
-      <main className="h-full p-6 space-y-2 overflow-auto">
-        <div className="grid gap-y-2">
-          <h4 className="text-xl font-bold"> {lock!.name}</h4>
-          <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-
-          {isPricingDataError && (
-            // TODO: use actual error from simulation
-            <div>
-              <p className="text-sm font-bold">
-                <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
-              </p>
-              {password && (
-                <p className="text-xs">
-                  Please, check that the password you used is correct.
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* In any case we show the pricing data */}
-          {!isLoading && isPricingDataAvailable && (
-            <PricingData
-              network={lockNetwork}
-              lock={lock!}
-              pricingData={pricingData}
-              payment={payment}
-            />
-          )}
-          {payment.method === 'card' && (
-            <ConfirmCard
-              pricingData={pricingData}
-              purchaseData={purchaseData!}
-              checkoutService={checkoutService}
-            />
-          )}
-          {payment.method !== 'card' && <>NOT CARD!</>}
-        </div>
-
-        {!isPricingDataAvailable && (
-          <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                {recipients.map((user) => (
-                  <div
-                    key={user}
-                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <Pricing
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
-                isCardEnabled={!!creditCardEnabled}
-              />
-            )}
-          </div>
-        )}
-      </main>
-      <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <Payment />
-        </Connected>
-        <PoweredByUnlock />
-      </footer>
     </Fragment>
   )
 }
