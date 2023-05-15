@@ -5,6 +5,7 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
+import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 
 interface Props {
   injectedProvider: unknown
@@ -25,7 +26,13 @@ export function Confirm({
       <Stepper service={checkoutService} />
       {payment.method === 'card' && <p>Card</p>}
       {payment.method === 'swap_and_purchase' && <p>Swap And Purchase!</p>}
-      {payment.method === 'crypto' && <p>crypto!</p>}
+      {payment.method === 'crypto' && (
+        <ConfirmCrypto
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          communication={communication}
+        />
+      )}
       {payment.method === 'claim' && (
         <ConfirmClaim
           checkoutService={checkoutService}
