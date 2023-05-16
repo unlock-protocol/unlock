@@ -3,7 +3,7 @@ import { storage } from '~/config/storage'
 
 interface Options {
   network: number
-  tokenAddress?: string
+  tokenAddress?: string | null
   amount: number
   enabled?: boolean
 }
@@ -25,7 +25,7 @@ export const useFiatChargePrice = ({
       const response = await storage.getTotalPrice(
         network,
         amount,
-        tokenAddress
+        tokenAddress ?? undefined
       )
       return response.data
     },

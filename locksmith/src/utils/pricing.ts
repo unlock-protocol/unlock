@@ -17,6 +17,7 @@ interface Price {
   price: number
   timestamp: number
   confidence: number
+  creditCardEnabled: boolean
 }
 
 export async function defiLammaPrice({
@@ -119,13 +120,26 @@ export const getLockKeyPricing = async ({
   }
 }
 
+interface KeyPricingPrice {
+  amount: number
+  decimals: number
+  symbol: string | undefined
+  amountInUSD: number | undefined
+  amountInCents: number | undefined
+}
+
+export interface KeyPricing {
+  price: KeyPricingPrice
+  address?: string
+}
+
 export const getKeyPricingInUSD = async ({
   recipients,
   network,
   lockAddress,
   data: dataArray,
   referrers,
-}: KeyPricingOptions) => {
+}: KeyPricingOptions): Promise<KeyPricing[]> => {
   const web3Service = new Web3Service(networks)
   const { keyPrice, decimals, currencyContractAddress } =
     await getLockKeyPricing({
@@ -164,8 +178,9 @@ export const getKeyPricingInUSD = async ({
 
       if (!address) {
         return {
-          recipient: null,
-          ...defaultPricing,
+          price: {
+            ...defaultPricing,
+          },
         }
       }
 
@@ -196,7 +211,9 @@ export const getKeyPricingInUSD = async ({
         logger.error(error)
         return {
           address,
-          ...defaultPricing,
+          price: {
+            ...defaultPricing,
+          },
         }
       }
     })
@@ -204,7 +221,7 @@ export const getKeyPricingInUSD = async ({
   return result
 }
 
-export const getGastCost = async ({ network }: Record<'network', number>) => {
+export const getGasCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
   const price = await defiLammaPrice({
@@ -262,7 +279,7 @@ export const createTotalCharges = async ({
       amount,
       address,
     }),
-    getGastCost({ network }),
+    getGasCost({ network }),
   ])
 
   if (pricing.priceInAmount === undefined) {
@@ -294,7 +311,7 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     (sum, item) => sum + (item.price?.amountInCents || 0),
     0
   )
-  const gasCost = await getGastCost(options)
+  const gasCost = await getGasCost(options)
   const fees = getFees({
     subtotal,
     gasCost,

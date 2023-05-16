@@ -154,7 +154,7 @@ type Payment =
     }
   | {
       method: 'swap_and_purchase'
-      route: any
+      route?: any
     }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
@@ -246,6 +246,22 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               actions: ['selectLock'],
+              target: 'RETURNING',
+              cond: (_, event) => event.existingMember,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'RENEW',
+              cond: (_, event) => event.expiredMember,
+            },
+
+            {
+              actions: ['selectLock'],
+              cond: 'requireMessageToSign',
+              target: 'MESSAGE_TO_SIGN',
+            },
+            {
+              actions: ['selectLock'],
               target: 'PASSWORD',
               cond: (ctx, event) => {
                 const isPassword = ctx?.hook === 'password'
@@ -268,16 +284,7 @@ export const checkoutMachine = createMachine(
                 return !!isCaptcha && event.expiredMember
               },
             },
-            {
-              actions: ['selectLock'],
-              target: 'RENEW',
-              cond: (_, event) => event.expiredMember,
-            },
-            {
-              actions: ['selectLock'],
-              target: 'RETURNING',
-              cond: (_, event) => event.existingMember,
-            },
+
             {
               actions: ['selectLock'],
               target: 'PAYMENT',

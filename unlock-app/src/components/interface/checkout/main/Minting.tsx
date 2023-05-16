@@ -11,7 +11,6 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
 import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
@@ -236,16 +235,9 @@ export function Minting({
     waitForConfirmation()
   }, [mint, lock, config, send, communication, account, messageToSign])
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   return (
     <Fragment>
-      <Stepper
-        position={8}
-        disabled
-        service={checkoutService}
-        items={stepItems}
-      />
+      <Stepper disabled service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <MintingScreen
           mint={mint!}
