@@ -3,7 +3,7 @@ import { storage } from '~/config/storage'
 
 interface Options {
   network: number
-  tokenAddress?: string
+  tokenAddress?: string | null
   amount: number
   enabled?: boolean
 }
