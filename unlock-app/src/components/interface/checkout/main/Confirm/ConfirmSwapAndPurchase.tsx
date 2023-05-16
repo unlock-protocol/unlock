@@ -2,7 +2,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
-import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -21,68 +21,12 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
+import { PricingData } from './PricingData'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   communication?: CheckoutCommunication
-}
-
-interface PricingDataProps {
-  pricingData: any
-  lock: Lock
-  network: number
-  payment?: any
-}
-
-export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
-  return (
-    <div>
-      {!!pricingData?.prices?.length &&
-        pricingData.prices.map((item: any, index: number) => {
-          const first = index <= 0
-          const discount =
-            Number(lock!.keyPrice) > 0
-              ? (100 * (Number(lock!.keyPrice) - item.amount)) /
-                Number(lock!.keyPrice)
-              : 0
-          const symbol = payment.route.trade.inputAmount.currency.symbol
-
-          return (
-            <div
-              key={index}
-              className={`flex border-b ${
-                first ? 'border-t' : null
-              } items-center justify-between text-sm px-0 py-2`}
-            >
-              <div>
-                1 Key for{' '}
-                <span className="font-medium">
-                  {minifyAddress(item.userAddress)}
-                </span>{' '}
-                {item.amount < Number(lock!.keyPrice) ? (
-                  <Badge variant="green" size="tiny">
-                    {discount}% Discount
-                  </Badge>
-                ) : null}
-              </div>
-
-              <div className="font-bold">
-                {item.amount <= 0
-                  ? 'FREE'
-                  : payment?.route
-                  ? `${formatNumber(
-                      payment.route
-                        .convertToQuoteToken(item.amount.toString())
-                        .toFixed()
-                    ).toLocaleString()} ${symbol}`
-                  : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
-              </div>
-            </div>
-          )
-        })}
-    </div>
-  )
 }
 
 export function ConfirmSwapAndPurchase({
