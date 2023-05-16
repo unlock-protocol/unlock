@@ -85,13 +85,13 @@ export function createReceipt(event: ethereum.Event): void {
   // save receipt, but only if we have a payer
   // (i.e. this is a paid transaction)
   if (receipt.payer && receipt.amountTransferred > BigInt.fromI32(0)) {
-    receipt.save()
-
     // Updating the lock object
     const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
     lock.numberOfReceipts = newReceiptNumber
-    receipt.numberOfReceipt = newReceiptNumber
     lock.save()
+
+    receipt.receiptNumber = newReceiptNumber
+    receipt.save()
   } else {
     log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
       hash,
