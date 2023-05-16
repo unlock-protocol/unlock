@@ -14,7 +14,7 @@ if [ -n "${3}" ]; then
 fi
 
 # if command to run is provided, use it instead.
-if [ -n "${4}" ]; then 
+if [ -n "${4}" ]; then
     COMMAND=$4
 fi
 
@@ -30,8 +30,7 @@ echo "Using $COMMAND as the start command for container"
 echo "Deploying $SERVICE to Heroku $HEROKU_APP_NAME ..."
 
 # install heroku client
-if ! command -v heroku &> /dev/null
-then
+if ! command -v heroku &>/dev/null; then
     echo "installing heroku"
     curl https://cli-assets.heroku.com/install.sh | sh
 fi
@@ -46,8 +45,13 @@ docker push registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE
 #make sure we are logged in
 heroku container:login
 
-# release on heroku 
+# release on heroku
 heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE
 
 # migrate the database
 heroku run --app $HEROKU_APP_NAME --type $HEROKU_CONTAINER_TYPE --env BUILD_DIR="$BUILD_DIRECTORY" yarn db:migrate
+
+if [ $? -ne 0 ]; then
+    echo "Migration failed. Exiting."
+    exit 1
+fi
