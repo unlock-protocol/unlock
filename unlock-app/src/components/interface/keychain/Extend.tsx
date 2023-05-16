@@ -137,9 +137,8 @@ export const ExtendMembershipModal = ({
       ToastHelper.success('Successfully extended the membership!')
       setIsOpen(false)
     },
-    onError: (err: any) => {
-      console.error(err)
-      ToastHelper.error("Something went wrong. Couldn't extend the membership.")
+    meta: {
+      errorMessage: "Something went wrong. Couldn't extend the membership.",
     },
   })
 

@@ -45,11 +45,9 @@ export const CancelAndRefundModal = ({
     {
       enabled: isOpen, // execute query only when the modal is open
       refetchInterval: false,
-      onError: () => {
-        isOpen &&
-          ToastHelper.error(
-            'We could not retrieve the refund amount for this membership.'
-          )
+      meta: {
+        errorMessage:
+          'We could not retrieve the refund amount for this membership.',
       },
     }
   )
