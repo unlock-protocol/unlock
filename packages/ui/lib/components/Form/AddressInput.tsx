@@ -1,12 +1,5 @@
 import { AxiosError } from 'axios'
-import {
-  InputHTMLAttributes,
-  ForwardedRef,
-  ReactNode,
-  useState,
-  useEffect,
-} from 'react'
-import type { Size } from '../../types'
+import { ForwardedRef, useState, useEffect } from 'react'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
@@ -17,7 +10,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 
-import { Input } from './Input'
+import { Input, Props as InputProps } from './Input'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,17 +33,9 @@ const queryClient = new QueryClient({
   },
 })
 
-export interface Props
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'size' | 'id' | 'children'
-  > {
-  label?: string
-  size?: Size
-  description?: ReactNode
+export interface Props extends InputProps {
   withIcon?: boolean
   isTruncated?: boolean
-  optional?: boolean
   onResolveName: (address: string) => any
 }
 
@@ -72,14 +57,15 @@ export const WrappedAddressInput = ({
   isTruncated = false, // address not truncated by default
   onChange,
   onResolveName,
+  error,
   ...inputProps
 }: Props) => {
-  const [error, setError] = useState<any>('')
+  const [errorMessage, setErrorMessage] = useState<any>('')
   const [success, setSuccess] = useState('')
   const [address, setAddress] = useState<string>(value as string)
 
   const onReset = () => {
-    setError('')
+    setErrorMessage('')
     setSuccess('')
   }
 
@@ -95,7 +81,7 @@ export const WrappedAddressInput = ({
       if (res) {
         const isError = res?.type === 'error'
 
-        setError(isError ? `It's not a valid ens name or address` : '') // set error when is error
+        setErrorMessage(isError ? `It's not a valid ens name or address` : '') // set error when is error
 
         if (res && (res?.type || '')?.length > 0) {
           if (res.type === 'address') {
@@ -111,7 +97,7 @@ export const WrappedAddressInput = ({
       return ''
     } catch (err) {
       onReset()
-      setError(`It's not a valid ens name or address`)
+      setErrorMessage(`It's not a valid ens name or address`)
       return ''
     }
   }
@@ -132,7 +118,7 @@ export const WrappedAddressInput = ({
       type="address"
       value={address}
       label={label}
-      error={error}
+      error={error || errorMessage}
       success={isTruncated ? minifyAddress(success) : success}
       description={description}
       iconClass={resolveNameMutation.isLoading ? 'animate-spin' : ''}
@@ -150,7 +136,7 @@ export const WrappedAddressInput = ({
             }
           } catch (_err) {}
         } else {
-          setError(`It's not a valid ens name or address`)
+          setErrorMessage(`It's not a valid ens name or address`)
           if (typeof onChange === 'function') {
             onChange(value as any)
           }

@@ -6,6 +6,7 @@ import {
   Detail,
   AddressInput,
   isAddressOrEns,
+  Tooltip,
 } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
@@ -16,7 +17,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
-import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
@@ -29,6 +30,7 @@ import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
 import { onResolveName } from '~/utils/resolvers'
 import { useMetadata } from '~/hooks/metadata'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { FiInfo as InfoIcon } from 'react-icons/fi'
 
 interface MetadataCardProps {
   metadata: any
@@ -482,7 +484,16 @@ export const MetadataCard = ({
               className="py-2"
               label={
                 <div className="flex items-center gap-2">
-                  <span>Key Holder:</span>
+                  <Tooltip
+                    tip="Address of the owner of the NFT."
+                    label="Address of the owner of the NFT."
+                    side="bottom"
+                  >
+                    <div className="flex items-center gap-1">
+                      <span>Key Owner </span>
+                      <InfoIcon />:
+                    </div>
+                  </Tooltip>
                   {/* show full address on desktop */}
                   <div className="text-base font-semibold text-black break-words">
                     <span className="hidden md:block">{owner}</span>
@@ -535,51 +546,62 @@ export const MetadataCard = ({
                 )}
               </>
             )}
-            <div className="w-full">
-              <Detail
-                className="py-2"
-                label={
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span>Key Manager:</span>
-                      {/* show full address on desktop */}
-                      <div className="text-base font-semibold text-black break-words">
-                        <span className="hidden md:block">{manager}</span>
-                        {/* show minified address on mobile */}
-                        <span className="block md:hidden">
-                          {addressMinify(manager)}
-                        </span>
-                      </div>
-                      <Button
-                        className="p-0 outline-none text-brand-ui-primary ring-0"
-                        variant="transparent"
-                        aria-label="blockscan link"
-                      >
-                        <a
-                          href={`https://blockscan.com/address/${manager}`}
-                          target="_blank"
-                          rel="noreferrer"
+            {manager && manager !== ADDRESS_ZERO && (
+              <div className="w-full">
+                <Detail
+                  className="py-2"
+                  label={
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Tooltip
+                          label="Address of the manager of the NFT. This address has the transfer rights for this NFT which cannot be transferred by its owner."
+                          tip="Address of the manager of the NFT. This address has the transfer rights for this NFT which cannot be transferred by its owner."
+                          side="right"
                         >
-                          <ExternalLinkIcon size={20} />
-                        </a>
-                      </Button>
+                          <div className="flex items-center gap-1">
+                            <span>Key Manager </span>
+                            <InfoIcon />:
+                          </div>
+                        </Tooltip>
+                        {/* show full address on desktop */}
+                        <div className="text-base font-semibold text-black break-words">
+                          <span className="hidden md:block">{manager}</span>
+                          {/* show minified address on mobile */}
+                          <span className="block md:hidden">
+                            {addressMinify(manager)}
+                          </span>
+                        </div>
+                        <Button
+                          className="p-0 outline-none text-brand-ui-primary ring-0"
+                          variant="transparent"
+                          aria-label="blockscan link"
+                        >
+                          <a
+                            href={`https://blockscan.com/address/${manager}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <ExternalLinkIcon size={20} />
+                          </a>
+                        </Button>
+                      </div>
+                      <ChangeManagerModal
+                        lockAddress={lockAddress}
+                        network={network}
+                        manager={manager}
+                        tokenId={tokenId}
+                        onChange={(keyManager) => {
+                          setData({
+                            ...data,
+                            keyManager,
+                          })
+                        }}
+                      />
                     </div>
-                    <ChangeManagerModal
-                      lockAddress={lockAddress}
-                      network={network}
-                      manager={manager}
-                      tokenId={tokenId}
-                      onChange={(keyManager) => {
-                        setData({
-                          ...data,
-                          keyManager,
-                        })
-                      }}
-                    />
-                  </div>
-                }
-              />
-            </div>
+                  }
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

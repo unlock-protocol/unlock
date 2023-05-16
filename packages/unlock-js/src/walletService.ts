@@ -3,7 +3,9 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import { CardPurchaserABI } from './abis/CardPurchaserABI'
+import { signTransferAuthorization } from './erc20'
+import { CardPurchaser } from './CardPurchaser'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -63,6 +65,18 @@ interface ExtendKeyParams {
   recurringPayment?: string | number
   totalApproval?: string
   swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
+  amount: string // this is in cents
+  lockAddress: string
+  network: number
+}
+
+interface PurchaseWithCardPurchaserParams {
+  transfer: any
+  purchase: any
+  callData: string
 }
 
 /**
@@ -1002,23 +1016,124 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Returns the ethers contract object for the UnlockSwapPurchaser contract
+   * @param param0
+   * @returns
+   */
   getUnlockSwapPurchaserContract({
     params: { network },
   }: {
     params: { network: number }
   }) {
     const networkConfig = this.networks[network]
-    const UnlockSwapPurchaser = networkConfig?.swapPurchaser
-    if (!UnlockSwapPurchaser) {
+    const swapPurchaserAddress = networkConfig?.swapPurchaser
+    if (!swapPurchaserAddress) {
       throw new Error('SwapPurchaser not available for this network')
     }
     const provider = this.providerForNetwork(network)
     const swapPurchaserContract = new ethers.Contract(
-      UnlockSwapPurchaser,
-      UnlockSwapPurchaserABI,
+      swapPurchaserAddress,
+      CardPurchaserABI,
       provider
     )
-    const swapPurchaser = swapPurchaserContract.connect(this.signer)
-    return swapPurchaser
+    return swapPurchaserContract.connect(this.signer)
+  }
+
+  /**
+   * This yields the authorizations required to spend USDC on behalf of the user
+   * to buy a key from a specific lock. This is mostly used for the universal
+   * card support!
+   * @param param0
+   * @returns
+   */
+  async getAndSignAuthorizationsForTransferAndPurchase({
+    amount,
+    lockAddress,
+    network,
+  }: GetAndSignAuthorizationsForTransferAndPurchaseParams) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
+    }
+
+    let usdcContractAddress
+    if (networkConfig?.tokens) {
+      usdcContractAddress = networkConfig.tokens.find(
+        (token: any) => token.symbol === 'USDC'
+      )?.address
+    }
+
+    if (!usdcContractAddress) {
+      throw new Error('USDC not available for this network')
+    }
+
+    // first, get the authorization to spend USDC
+    // 6 decimals for USDC - 2 as amount is in cents
+    const value = ethers.utils.parseUnits(amount, 4).toHexString()
+    const now = Math.floor(new Date().getTime() / 1000)
+    const transferMessage = {
+      from: await this.signer.getAddress(),
+      to: ethers.utils.getAddress(cardPurchaserAddress),
+      value,
+      validAfter: 0,
+      validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
+      nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
+    }
+
+    const transferSignature = await signTransferAuthorization(
+      usdcContractAddress,
+      transferMessage,
+      this.provider,
+      this.signer
+    )
+
+    // then, get the authorization to buy a key
+    const cardPurchaser = new CardPurchaser()
+    const { signature: purchaseSignature, message: purchaseMessage } =
+      await cardPurchaser.getPurchaseAuthorizationSignature(
+        network,
+        lockAddress,
+        this.signer
+      )
+
+    return {
+      transferSignature,
+      transferMessage,
+      purchaseSignature,
+      purchaseMessage,
+    }
+  }
+
+  /**
+   * Performs a purchase using the CardPurchaser contract
+   * @param param0
+   * @returns
+   */
+  async purchaseWithCardPurchaser({
+    transfer,
+    purchase,
+    callData,
+  }: PurchaseWithCardPurchaserParams) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
+    }
+
+    const cardPurchaser = new CardPurchaser()
+    return cardPurchaser.purchase(
+      this.networkId,
+      transfer,
+      purchase,
+      callData,
+      this.signer
+    )
   }
 }
