@@ -543,19 +543,6 @@ export const checkoutMachine = createMachine(
           BACK: 'PAYMENT',
         },
       },
-      UNIVERSAL_CARD: {
-        on: {
-          CONFIRM_MINT: {
-            target: 'MINTING',
-            actions: ['confirmMint'],
-          },
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
-          BACK: 'PAYMENT',
-        },
-      },
       CONFIRM: {
         on: {
           CONFIRM_MINT: {

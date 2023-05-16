@@ -21,7 +21,6 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
-
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
