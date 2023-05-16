@@ -5,7 +5,6 @@ import lockRouter from './lock'
 import userRouter from './user'
 import purchaseRouter from './purchase'
 import claimRouter from './claim'
-import priceRouter from './price'
 import metadataRouter from './metadata'
 import authRouter from './auth'
 import captchaRouter from './captcha'
@@ -53,7 +52,6 @@ router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
 router.use('/claim', claimRouter)
-router.use('/price', priceRouter)
 router.use('/api/key/:chain([0-9]{1,12})/', metadataRouter)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)

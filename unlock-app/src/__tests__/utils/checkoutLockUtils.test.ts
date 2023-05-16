@@ -201,16 +201,16 @@ describe('Checkout Lock Utils', () => {
       const lock = {
         fiatPricing: {
           usd: {
-            keyPrice: '7.4',
+            amount: 20.22,
           },
         },
         currencyContractAddress: 'obc3',
         currencySymbol: 'eth',
       }
 
-      expect(convertedKeyPrice(lock)).toEqual('~$0.07')
+      expect(convertedKeyPrice(lock)).toEqual('~$20.22')
 
-      expect(convertedKeyPrice(lock, numbersOfRecipients)).toEqual('~$0.44')
+      expect(convertedKeyPrice(lock, numbersOfRecipients)).toEqual('~$121.32')
     })
   })
 })

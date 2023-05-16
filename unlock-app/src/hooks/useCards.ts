@@ -85,28 +85,6 @@ export const captureCharge = async (
   return response.json()
 }
 
-/**
- * Retrieves the pricing for a lock to be purchasable via credit card
- */
-export const getFiatPricing = async (
-  config: any,
-  lock: string,
-  network: number,
-  quantity = 1
-) => {
-  const opts = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }
-  const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}&quantity=${quantity}`,
-    opts
-  )
-  return response.json()
-}
-
 export const getCardConnected = async (
   config: any,
   lock: string,

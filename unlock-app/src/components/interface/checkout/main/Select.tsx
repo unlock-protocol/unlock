@@ -11,7 +11,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Fragment, useState, useMemo, useEffect } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { getLockProps } from '~/utils/lock'
-import { getFiatPricing } from '~/hooks/useCards'
 import {
   RiCheckboxBlankCircleLine as CheckBlankIcon,
   RiCheckboxCircleFill as CheckIcon,
@@ -28,6 +27,7 @@ import { minifyAddress } from '@unlock-protocol/ui'
 import { ViewContract } from '../ViewContract'
 import { useCheckoutHook } from './useCheckoutHook'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 
 interface Props {
   injectedProvider: unknown
@@ -177,10 +177,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
           const networkId: number = props.network || paywallConfig.network || 1
-          const [lockData, fiatPricing] = await Promise.all([
-            web3Service.getLock(lock, networkId),
-            getFiatPricing(config, lock, networkId),
-          ])
+
+          const lockData = await web3Service.getLock(lock, networkId)
+          const fiatPricing = await getLockUsdPrice({
+            network: networkId,
+            currencyContractAddress: lockData?.currencyContractAddress,
+            amount: Number(lockData.keyPrice),
+          })
+
           return {
             ...props,
             ...lockData,
