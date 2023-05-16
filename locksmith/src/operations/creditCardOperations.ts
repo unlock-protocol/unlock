@@ -30,7 +30,7 @@ export const getCreditCardEnabledStatus = async ({
     hasEnoughToPayForGas &&
     isAuthorizedForCreditCard &&
     hasStripeConfig &&
-    totalPriceInCents > 50 // Let's check that the price is larger than 50cts
+    totalPriceInCents > 0.5 // Let's check that the price is larger than 50cts
 
   return creditCardEnabled
 }
