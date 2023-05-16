@@ -224,6 +224,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {!isUniswapRoutesLoading &&
               isSwapAndPurchaseEnabled &&
               routes?.map((route, index) => {
+                if (!route) {
+                  return null
+                }
                 return (
                   <button
                     key={index}
@@ -232,8 +235,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                       send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
-                          route,
                           method: 'swap_and_purchase',
+                          route,
                         },
                       })
                     }}

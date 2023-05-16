@@ -154,7 +154,7 @@ type Payment =
     }
   | {
       method: 'swap_and_purchase'
-      route: any
+      route?: object
     }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'

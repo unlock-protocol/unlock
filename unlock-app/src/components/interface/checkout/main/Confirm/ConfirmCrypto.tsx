@@ -21,7 +21,6 @@ import { ViewContract } from '../../ViewContract'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
@@ -116,11 +115,8 @@ export function ConfirmCrypto({
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
-  const swap = payment?.method === 'swap_and_purchase'
 
-  const currencyContractAddress = swap
-    ? payment.route.trade.inputAmount.currency?.address
-    : lock?.currencyContractAddress
+  const currencyContractAddress = lock?.currencyContractAddress
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -167,7 +163,7 @@ export function ConfirmCrypto({
     lockAddress: lock!.address,
     network: lock!.network,
     recipients,
-    currencyContractAddress: lock?.currencyContractAddress,
+    currencyContractAddress,
     data: purchaseData!,
     paywallConfig,
     enabled: !isInitialDataLoading,
@@ -185,10 +181,7 @@ export function ConfirmCrypto({
   const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
     useFiatChargePrice({
       tokenAddress: currencyContractAddress,
-      amount:
-        amountToConvert > 0 && swap
-          ? Number(payment.route.convertToQuoteToken(amountToConvert).toFixed())
-          : amountToConvert,
+      amount: amountToConvert,
       network: lock!.network,
       enabled: isPricingDataAvailable,
     })
@@ -207,13 +200,7 @@ export function ConfirmCrypto({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const totalAmount = swap
-        ? Number(
-            payment.route
-              .convertToQuoteToken(pricingData!.total.toString())
-              .toFixed()
-          )
-        : pricingData!.total
+      const totalAmount = pricingData!.total
 
       const isTokenPayable = totalAmount <= Number(balance)
       const isGasPayable = Number(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
@@ -238,9 +225,7 @@ export function ConfirmCrypto({
     isTotalPricingDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
-  const symbol = swap
-    ? payment.route.trade.inputAmount.currency.symbol
-    : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
+  const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
 
   const onError = (error: any, message?: string) => {
     console.error(error)
@@ -258,9 +243,6 @@ export function ConfirmCrypto({
   const onConfirmCrypto = async () => {
     try {
       setIsConfirming(true)
-      if (!['swap_and_purchase', 'crypto'].includes(payment.method)) {
-        return
-      }
       const keyPrices: string[] =
         pricingData?.prices.map((item) => item.amount.toString()) ||
         new Array(recipients!.length).fill(keyPrice)
@@ -296,27 +278,6 @@ export function ConfirmCrypto({
         }
       }
 
-      const swap =
-        payment.method === 'swap_and_purchase'
-          ? {
-              srcTokenAddress: currencyContractAddress,
-              uniswapRouter: payment.route.swapRouter,
-              swapCallData: payment.route.swapCalldata,
-              value: payment.route.value,
-              amountInMax: ethers.utils
-                .parseUnits(
-                  payment.route
-                    .convertToQuoteToken(pricingData!.total.toString())
-                    .toFixed(payment.route.trade.inputAmount.currency.decimals), // Total Amount
-                  payment.route.trade.inputAmount.currency.decimals
-                )
-                // 1% slippage buffer
-                .mul(101)
-                .div(100)
-                .toString(),
-            }
-          : undefined
-
       const walletService = await getWalletService(lockNetwork)
       await walletService.purchaseKeys(
         {
@@ -328,7 +289,6 @@ export function ConfirmCrypto({
           recurringPayments,
           referrers,
           totalApproval,
-          swap,
         },
         {} /** Transaction params */,
         onErrorCallback
@@ -339,61 +299,23 @@ export function ConfirmCrypto({
     }
   }
 
-  const Payment = () => {
-    let buttonLabel = ''
-    const isFree = pricingData?.prices.reduce((previousTotal, item) => {
-      return previousTotal && item.amount === 0
-    }, true)
+  let buttonLabel = ''
+  const isFree = pricingData?.prices.reduce((previousTotal, item) => {
+    return previousTotal && item.amount === 0
+  }, true)
 
-    if (isFree) {
-      if (isConfirming) {
-        buttonLabel = 'Claiming'
-      } else {
-        buttonLabel = 'Claim'
-      }
+  if (isFree) {
+    if (isConfirming) {
+      buttonLabel = 'Claiming'
     } else {
-      if (isConfirming) {
-        buttonLabel = 'Paying using crypto'
-      } else {
-        buttonLabel = 'Pay using crypto'
-      }
+      buttonLabel = 'Claim'
     }
-
-    return (
-      <div className="grid">
-        <Button
-          loading={isConfirming}
-          disabled={
-            isConfirming || isLoading || !canAfford || isPricingDataError
-          }
-          onClick={async (event) => {
-            event.preventDefault()
-            if (metadata) {
-              await updateUsersMetadata(metadata)
-            }
-            onConfirmCrypto()
-          }}
-        >
-          {buttonLabel}
-        </Button>
-        {!isLoading && !isPricingDataError && isPayable && (
-          <>
-            {!isPayable?.isTokenPayable && (
-              <small className="text-center text-red-500">
-                You do not have enough {symbol} to complete this purchase.
-              </small>
-            )}
-            {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-              <small className="text-center text-red-500">
-                You do not have enough{' '}
-                {config.networks[lock!.network].nativeCurrency.symbol} to pay
-                transaction fees (gas).
-              </small>
-            )}
-          </>
-        )}
-      </div>
-    )
+  } else {
+    if (isConfirming) {
+      buttonLabel = 'Paying using crypto'
+    } else {
+      buttonLabel = 'Pay using crypto'
+    }
   }
 
   return (
@@ -469,7 +391,39 @@ export function ConfirmCrypto({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <Payment />
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={
+                isConfirming || isLoading || !canAfford || isPricingDataError
+              }
+              onClick={async (event) => {
+                event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
+                onConfirmCrypto()
+              }}
+            >
+              {buttonLabel}
+            </Button>
+            {!isLoading && !isPricingDataError && isPayable && (
+              <>
+                {!isPayable?.isTokenPayable && (
+                  <small className="text-center text-red-500">
+                    You do not have enough {symbol} to complete this purchase.
+                  </small>
+                )}
+                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                  <small className="text-center text-red-500">
+                    You do not have enough{' '}
+                    {config.networks[lock!.network].nativeCurrency.symbol} to
+                    pay transaction fees (gas).
+                  </small>
+                )}
+              </>
+            )}
+          </div>
         </Connected>
         <PoweredByUnlock />
       </footer>

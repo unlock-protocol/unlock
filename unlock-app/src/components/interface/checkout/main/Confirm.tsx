@@ -6,7 +6,8 @@ import { Stepper } from '../Stepper'
 
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
-import { ConfirmSwapAndPurchaser } from './Confirm/ConfirmSwapAndPurchase'
+import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
+import { ConfirmCard } from './Confirm/ConfirmCard'
 
 interface Props {
   injectedProvider: unknown
@@ -25,9 +26,15 @@ export function Confirm({
   return (
     <Fragment>
       <Stepper service={checkoutService} />
-      {payment.method === 'card' && <p>Card</p>}
+      {payment.method === 'card' && (
+        <ConfirmCard
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          communication={communication}
+        />
+      )}
       {payment.method === 'swap_and_purchase' && (
-        <ConfirmSwapAndPurchaser
+        <ConfirmSwapAndPurchase
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           communication={communication}
