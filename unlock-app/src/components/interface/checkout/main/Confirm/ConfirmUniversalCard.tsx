@@ -65,13 +65,17 @@ export function ConfirmUniversalCard({
   const onChange = async (event: any) => {
     const { session } = event
 
-    if (session.wallet_address && session.wallet_address !== account) {
+    if (
+      session?.wallet_address &&
+      account &&
+      session?.wallet_address.toLowerCase() !== account.toLowerCase()
+    ) {
       setSessionError(
         'You cannot change the recipient address as it is the address that will receive the NFT membership token. Please start again.'
       )
     }
 
-    const expectedAmount = cardPricing!.total
+    const expectedAmount = cardPricing?.total
     if (
       session.quote.destination_amount &&
       100 * parseFloat(session.quote.destination_amount) !== expectedAmount
@@ -168,7 +172,6 @@ export function ConfirmUniversalCard({
               service={checkoutService}
             >
               <Button
-                // loading={isSaving}
                 disabled={isCardPricingLoading}
                 type="submit"
                 form="payment"
