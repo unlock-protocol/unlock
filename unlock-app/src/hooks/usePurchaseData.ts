@@ -33,11 +33,14 @@ export const usePurchaseData = ({
       captcha,
     ],
     async () => {
+      // promo, password, captcha are mutually exclusive and and are in fact arrays of promo codes,
+      // passwords, or captchas for each recipient.
       let purchaseData =
         promo ||
         password ||
         captcha ||
-        Array.from({ length: recipients.length })
+        Array.from({ length: recipients.length }).map(() => '0x')
+
       const dataBuilder =
         paywallConfig.locks[lockAddress].dataBuilder ||
         paywallConfig.dataBuilder

@@ -1,5 +1,6 @@
 import logger from '../logger'
 import lockIcon from './lockIcon'
+import resvg from '@resvg/resvg-js'
 
 export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
   try {
@@ -24,4 +25,12 @@ export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
     ).toString('base64')}`
     return dataURI
   }
+}
+
+export const svgStringToDataURI = (svgString: string) => {
+  const svg = new resvg.Resvg(svgString)
+  const pngData = svg.render()
+  const pngBuffer = pngData.asPng()
+  const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
+  return dataURI
 }

@@ -1,7 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const typography = require('@tailwindcss/typography')
 const forms = require('@tailwindcss/forms')
-const lineClamp = require('@tailwindcss/line-clamp')
 const aspectRatio = require('@tailwindcss/aspect-ratio')
 const plugin = require('tailwindcss/plugin')
 
@@ -61,7 +60,6 @@ module.exports = {
     typography,
     forms,
     aspectRatio,
-    lineClamp,
     plugin(function ({ addUtilities, theme }) {
       addUtilities({
         '.glass-pane': {

@@ -7,15 +7,12 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
-import { useQuery } from '@tanstack/react-query'
-import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useIsClaimable } from '~/hooks/useIsClaimable'
 import {
@@ -25,6 +22,8 @@ import {
 import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -57,16 +56,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const price = Number(parseFloat(lock.keyPrice) * recipients.length)
 
-  const { isLoading, data: fiatPricing } = useQuery(
-    ['fiat', lock.network, lock.address, recipients.length],
-    async () => {
-      const pricing = await getFiatPricing(
-        config,
-        lock.address,
-        lock.network,
-        recipients.length
-      )
-      return pricing
+  const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
+    {
+      network: lock.network,
+      lockAddress: lock.address,
     }
   )
 
@@ -103,8 +96,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     recipients.length <= 1 &&
     recipients[0]?.toLowerCase() === account?.toLowerCase()
 
-  const enableCreditCard = !!fiatPricing?.creditCardEnabled
-
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
   const forceClaim = lock.network === 42161
@@ -115,15 +106,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     isReceiverAccountOnly &&
     (!balance?.isPayable || forceClaim)
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
     (item) => !item
   )
 
   return (
     <Fragment>
-      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 overflow-auto">
         {isWaiting ? (
           <div className="space-y-6">
