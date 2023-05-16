@@ -7,6 +7,12 @@ import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from './../../operations/userMetadataOperations'
 import * as Normalizer from '../../utils/normalizer'
 
+/**
+ * send email notification for expired keys
+ * @param keys list of expired keys to notify
+ * @param network network
+ * @returns
+ */
 function notifyExpiredKeys({
   keys,
   network,
@@ -24,10 +30,6 @@ function notifyExpiredKeys({
       lockAddress,
       ownerAddress,
     })
-
-    console.log(
-      `${lockName} - ${lockAddress} - ${ownerAddress} - recipient: ${recipient} `
-    )
 
     if (!recipient) return
 

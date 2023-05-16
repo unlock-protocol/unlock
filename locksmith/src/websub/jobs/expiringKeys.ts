@@ -6,9 +6,15 @@ import { logger } from '../../logger'
 import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from './../../operations/userMetadataOperations'
+import * as membershipOperations from './../../operations/membershipOperations'
 import * as Normalizer from '../../utils/normalizer'
-import { getMembershipState } from '../../utils/key'
 
+/**
+ * send email notification for keys that are about to expire
+ * @param keys list of expiring keys to notify
+ * @param network network
+ * @returns
+ */
 function notifyExpiringKeys({
   keys,
   network,
@@ -36,7 +42,7 @@ function notifyExpiringKeys({
       isRenewableIfRePurchased,
       isRenewableIfReApproved,
       currency,
-    } = await getMembershipState({
+    } = await membershipOperations.getMembershipState({
       owner: ownerAddress,
       key,
       tokenAddress,

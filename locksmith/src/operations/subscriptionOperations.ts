@@ -40,7 +40,7 @@ interface GetSubscriptionsProps {
   network: number
 }
 
-export const getSubscriptionsForLockByOwner = async ({
+export const getSubscriptionForLockByOwner = async ({
   tokenId,
   lockAddress,
   owner,
@@ -152,5 +152,5 @@ export const getSubscriptionsForLockByOwner = async ({
 }
 
 export default {
-  getSubscriptionsForLockByOwner,
+  getSubscriptionForLockByOwner,
 }

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as subscriptionOperations from './../operations/subscriptionOperations'
+import * as subscriptionOperations from './subscriptionOperations'
 
 const MAX_UINT = ethers.constants.MaxUint256.toString()
 
@@ -23,8 +23,8 @@ export const getMembershipState = async ({
   const isRenewable =
     Number(key?.lock?.version) >= 11 && key?.expiration !== MAX_UINT && isERC20
 
-  const subscriptions =
-    await subscriptionOperations.getSubscriptionsForLockByOwner({
+  const [subscription] =
+    await subscriptionOperations.getSubscriptionForLockByOwner({
       tokenId,
       lockAddress,
       owner,
@@ -39,19 +39,15 @@ export const getMembershipState = async ({
   const isRenewableIfRePurchased = false
 
   // get subscription and check for renews
-  if (subscriptions?.length) {
-    const [subscription] = subscriptions ?? []
+  if (subscription) {
+    const possible = ethers.BigNumber.from(subscription.possibleRenewals)
+    const approved = ethers.BigNumber.from(subscription.approvedRenewals)
 
-    if (subscription) {
-      const possible = ethers.BigNumber.from(subscription.possibleRenewals)
-      const approved = ethers.BigNumber.from(subscription.approvedRenewals)
+    isAutoRenewable = approved.gte(0) && possible.gte(0)
 
-      isAutoRenewable = approved.gte(0) && possible.gte(0)
+    isRenewableIfReApproved = approved.lte(0)
 
-      isRenewableIfReApproved = approved.lte(0)
-
-      currency = subscription.balance.symbol
-    }
+    currency = subscription.balance.symbol
   }
 
   return {
