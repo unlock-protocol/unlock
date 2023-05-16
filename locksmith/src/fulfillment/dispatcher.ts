@@ -94,7 +94,7 @@ export default class Dispatcher {
           gasPrice.mul(GAS_COST)
         )}) on ${network}`
       )
-      return true
+      return false
     }
     return true
   }
