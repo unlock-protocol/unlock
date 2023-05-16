@@ -4,10 +4,9 @@ import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -27,7 +26,8 @@ import { formatNumber } from '~/utils/formatter'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication?: CheckoutCommunication
+  onConfirmed: (lock: string, hash?: string) => void
+  onError: (message: string) => void
 }
 
 interface CreditCardPricingBreakdownProps {
@@ -95,7 +95,8 @@ export function CreditCardPricingBreakdown({
 export function ConfirmCard({
   injectedProvider,
   checkoutService,
-  communication,
+  onConfirmed,
+  onError,
 }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
@@ -191,91 +192,62 @@ export function ConfirmCard({
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
 
-  const onError = (error: any, message?: string) => {
-    console.error(error)
-    switch (error.code) {
-      case -32000:
-      case 4001:
-      case 'ACTION_REJECTED':
-        ToastHelper.error('Transaction rejected.')
-        break
-      default:
-        ToastHelper.error(message || error?.error?.message || error.message)
-    }
-  }
-
   const onConfirmCard = async () => {
-    try {
-      setIsConfirming(true)
+    setIsConfirming(true)
+    const referrers: string[] = recipients.map((recipient) => {
+      return getReferrer(recipient, paywallConfig)
+    })
 
-      const referrers: string[] = recipients.map((recipient) => {
-        return getReferrer(recipient, paywallConfig)
-      })
+    const stripeIntent = await createPurchaseIntent({
+      pricing: totalPricing!.total,
+      stripeTokenId: payment.cardId!,
+      recipients,
+      referrers,
+      data: purchaseData!,
+      recurring: recurringPaymentAmount || 0,
+    })
 
-      const stripeIntent = await createPurchaseIntent({
-        pricing: totalPricing!.total,
-        stripeTokenId: payment.cardId!,
-        recipients,
-        referrers,
-        data: purchaseData!,
-        recurring: recurringPaymentAmount || 0,
-      })
+    if (!stripeIntent?.clientSecret) {
+      throw new Error('Creating payment intent failed')
+    }
 
-      if (!stripeIntent?.clientSecret) {
-        throw new Error('Creating payment intent failed')
-      }
+    const stripe = await loadStripe(config.stripeApiKey, {
+      stripeAccount: stripeIntent.stripeAccount,
+    })
 
-      const stripe = await loadStripe(config.stripeApiKey, {
-        stripeAccount: stripeIntent.stripeAccount,
-      })
+    if (!stripe) {
+      throw new Error('There was a problem in loading stripe')
+    }
 
-      if (!stripe) {
-        throw new Error('There was a problem in loading stripe')
-      }
+    const { paymentIntent } = await stripe.retrievePaymentIntent(
+      stripeIntent.clientSecret
+    )
 
-      const { paymentIntent } = await stripe.retrievePaymentIntent(
+    if (!paymentIntent) {
+      throw new Error('Payment intent is missing. Please retry.')
+    }
+
+    if (paymentIntent.status !== 'requires_capture') {
+      const confirmation = await stripe.confirmCardPayment(
         stripeIntent.clientSecret
       )
-
-      if (!paymentIntent) {
-        throw new Error('Payment intent is missing. Please retry.')
+      if (
+        confirmation.error ||
+        confirmation.paymentIntent?.status !== 'requires_capture'
+      ) {
+        throw new Error('We could not confirm your payment.')
       }
-
-      if (paymentIntent.status !== 'requires_capture') {
-        const confirmation = await stripe.confirmCardPayment(
-          stripeIntent.clientSecret
-        )
-        if (
-          confirmation.error ||
-          confirmation.paymentIntent?.status !== 'requires_capture'
-        ) {
-          throw new Error('We could not confirm your payment.')
-        }
-      }
-      const transactionHash = await capturePayment({
-        paymentIntent: paymentIntent.id,
-      })
-
-      setIsConfirming(false)
-      if (transactionHash) {
-        send({
-          type: 'CONFIRM_MINT',
-          transactionHash,
-          status: 'PROCESSING',
-        })
-        communication?.emitTransactionInfo({
-          hash: transactionHash,
-          lock: lockAddress,
-        })
-      }
-    } catch (error) {
-      send({
-        type: 'CONFIRM_MINT',
-        status: 'ERROR',
-      })
-      onError(error)
-      setIsConfirming(false)
     }
+    const transactionHash = await capturePayment({
+      paymentIntent: paymentIntent.id,
+    })
+
+    if (transactionHash) {
+      onConfirmed(lockAddress, transactionHash)
+    } else {
+      onError('No transaction hash returned. Failed to claim membership.')
+    }
+    setIsConfirming(false)
   }
 
   return (

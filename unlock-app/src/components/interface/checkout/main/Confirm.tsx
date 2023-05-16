@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
@@ -20,8 +21,24 @@ export function Confirm({
   checkoutService,
   communication,
 }: Props) {
-  const [state] = useActor(checkoutService)
+  const [state, send] = useActor(checkoutService)
   const { payment } = state.context
+
+  const onError = (message: string) => {
+    ToastHelper.error(message)
+  }
+
+  const onConfirmed = (lock: string, hash: string) => {
+    communication?.emitTransactionInfo({
+      hash,
+      lock,
+    })
+    send({
+      type: 'CONFIRM_MINT',
+      status: 'FINISHED',
+      transactionHash: hash,
+    })
+  }
 
   return (
     <Fragment>
@@ -31,6 +48,8 @@ export function Confirm({
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           communication={communication}
+          onConfirmed={onConfirmed}
+          onError={onError}
         />
       )}
       {payment.method === 'swap_and_purchase' && (
@@ -38,6 +57,8 @@ export function Confirm({
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           communication={communication}
+          onConfirmed={onConfirmed}
+          onError={onError}
         />
       )}
       {payment.method === 'crypto' && (
@@ -45,6 +66,8 @@ export function Confirm({
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           communication={communication}
+          onConfirmed={onConfirmed}
+          onError={onError}
         />
       )}
       {payment.method === 'claim' && (
@@ -52,6 +75,8 @@ export function Confirm({
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           communication={communication}
+          onConfirmed={onConfirmed}
+          onError={onError}
         />
       )}
     </Fragment>

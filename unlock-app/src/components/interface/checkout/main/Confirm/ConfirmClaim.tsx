@@ -3,9 +3,7 @@ import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -22,13 +20,15 @@ import { PricingData } from './PricingData'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication?: CheckoutCommunication
+  onConfirmed: (lock: string, hash?: string) => void
+  onError: (message: string) => void
 }
 
 export function ConfirmClaim({
   injectedProvider,
   checkoutService,
-  communication,
+  onConfirmed,
+  onError,
 }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
@@ -91,48 +91,20 @@ export function ConfirmClaim({
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
-  const onError = (error: any, message?: string) => {
-    console.error(error)
-    switch (error.code) {
-      case -32000:
-      case 4001:
-      case 'ACTION_REJECTED':
-        ToastHelper.error('Transaction rejected.')
-        break
-      default:
-        ToastHelper.error(message || error?.error?.message || error.message)
-    }
-  }
-
   const onConfirmClaim = async () => {
-    try {
-      setIsConfirming(true)
+    setIsConfirming(true)
+    const captcha = await recaptchaRef.current?.executeAsync()
+    const { hash } = await claim({
+      data: purchaseData?.[0],
+      captcha,
+    })
 
-      const captcha = await recaptchaRef.current?.executeAsync()
-
-      const { hash } = await claim({
-        data: purchaseData?.[0],
-        captcha,
-      })
-
-      if (hash) {
-        communication?.emitTransactionInfo({
-          hash,
-          lock: lockAddress,
-        })
-        send({
-          type: 'CONFIRM_MINT',
-          status: 'FINISHED',
-          transactionHash: hash,
-        })
-      } else {
-        onError('No transaction hash returned. Failed to claim membership.')
-      }
-      setIsConfirming(false)
-    } catch (error: any) {
-      setIsConfirming(false)
-      onError(error, 'Failed to claim membership. Try again.')
+    if (hash) {
+      onConfirmed(lockAddress, hash)
+    } else {
+      onError('No transaction hash returned. Failed to claim membership.')
     }
+    setIsConfirming(false)
   }
 
   return (

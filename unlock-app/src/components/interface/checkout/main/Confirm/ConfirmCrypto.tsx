@@ -29,13 +29,15 @@ import { PricingData } from './PricingData'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication?: CheckoutCommunication
+  onConfirmed: (lock: string, hash?: string) => void
+  onError: (message: string) => void
 }
 
 export function ConfirmCrypto({
   injectedProvider,
   checkoutService,
-  communication,
+  onConfirmed,
+  onError,
 }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, getWalletService } = useAuth()
