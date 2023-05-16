@@ -208,10 +208,6 @@ export function ConfirmCard({
     try {
       setIsConfirming(true)
 
-      if (payment.method !== 'card') {
-        return
-      }
-
       const referrers: string[] = recipients.map((recipient) => {
         return getReferrer(recipient, paywallConfig)
       })

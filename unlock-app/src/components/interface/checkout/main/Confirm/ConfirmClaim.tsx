@@ -16,8 +16,6 @@ import { useClaim } from '~/hooks/useClaim'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { formatNumber } from '~/utils/formatter'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useConfig } from '~/utils/withConfig'
 import { PricingData } from './PricingData'
 
@@ -91,21 +89,7 @@ export function ConfirmClaim({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: amountToConvert,
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
-
-  const isLoading =
-    isPricingDataLoading || isInitialDataLoading || isTotalPricingDataLoading
-
-  const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
-  const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
+  const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const onError = (error: any, message?: string) => {
     console.error(error)
@@ -123,9 +107,6 @@ export function ConfirmClaim({
   const onConfirmClaim = async () => {
     try {
       setIsConfirming(true)
-      if (payment.method !== 'claim') {
-        return
-      }
 
       const captcha = await recaptchaRef.current?.executeAsync()
 
@@ -194,6 +175,7 @@ export function ConfirmClaim({
         </div>
         {!isPricingDataAvailable && (
           <div>
+            OK
             {isLoading ? (
               <div className="flex flex-col items-center gap-2">
                 {recipients.map((user) => (
@@ -205,18 +187,8 @@ export function ConfirmClaim({
               </div>
             ) : (
               <Pricing
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
+                keyPrice={'FREE'}
+                usdPrice={'0.00'}
                 isCardEnabled={false}
               />
             )}
