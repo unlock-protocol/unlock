@@ -2,6 +2,7 @@ import networks from '@unlock-protocol/networks'
 import { getFees, getGasCost } from '../utils/pricing'
 import * as lockSettingOperations from './lockSettingOperations'
 import { MIN_PAYMENT_STRIPE } from '../utils/constants'
+import { getCreditCardEnabledStatus } from './creditCardOperations'
 
 interface Price {
   decimals: number
@@ -107,8 +108,17 @@ export async function getUsdPricingForLock({
     })
 
     if (creditCardPrice) {
+      const creditCardEnabled = await getCreditCardEnabledStatus({
+        lockAddress,
+        network,
+        totalPriceInCents: creditCardPrice ?? 0,
+      })
+
       return {
+        decimals: 18,
         confidence: 1,
+        timestamp: new Date().getTime(),
+        creditCardEnabled,
         priceInAmount: creditCardPrice * keysToPurchase,
       }
     }
