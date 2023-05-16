@@ -118,9 +118,14 @@ export async function getUsdPricingForLock({
 
       const lock = await web3Service.getLock(lockAddress, network)
 
+      const symbol =
+        lock?.currencySymbol || networks?.[network]?.nativeCurrency?.symbol
+
+      const price = lock?.keyPrice
+
       return {
-        price: lock?.keyPrice,
-        symbol: lock?.currencySymbol,
+        price,
+        symbol,
         creditCardEnabled,
         decimals: 18,
         confidence: 1,
