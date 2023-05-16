@@ -310,7 +310,7 @@ export const CreditCardForm = ({
     ],
   })
 
-  const isPricingLow = (fiatPricing?.amount ?? 0) < 0.5
+  const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
 
   const loading = isLoading || isLoadingKeyGranter || isLoadingPricing
 

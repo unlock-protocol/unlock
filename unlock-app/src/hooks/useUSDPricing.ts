@@ -22,8 +22,10 @@ export const getLockUsdPrice = async ({
     )
     const result = response.data.result
     return {
-      amount: result?.priceInAmount,
-      confidence: result?.confidence,
+      usd: {
+        amount: result?.priceInAmount,
+        confidence: result?.confidence,
+      },
     }
   } catch (error) {
     console.error(error)

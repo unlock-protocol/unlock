@@ -200,7 +200,9 @@ describe('Checkout Lock Utils', () => {
 
       const lock = {
         fiatPricing: {
-          amount: 20.22,
+          usd: {
+            amount: 20.22,
+          },
         },
         currencyContractAddress: 'obc3',
         currencySymbol: 'eth',
