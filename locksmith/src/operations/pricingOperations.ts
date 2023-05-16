@@ -1,3 +1,4 @@
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { getFees, getGasCost } from '../utils/pricing'
 import * as lockSettingOperations from './lockSettingOperations'
@@ -100,6 +101,7 @@ export async function getUsdPricingForLock({
   amount = 1,
   keysToPurchase = 1,
 }: LockPricingProps): Promise<PriceResults> {
+  const web3Service = new Web3Service(networks)
   // priority to credit card if present settings is present
   if (lockAddress) {
     const { creditCardPrice } = await lockSettingOperations.getSettings({
@@ -114,11 +116,15 @@ export async function getUsdPricingForLock({
         totalPriceInCents: creditCardPrice ?? 0,
       })
 
+      const lock = await web3Service.getLock(lockAddress, network)
+
       return {
+        price: lock?.keyPrice,
+        symbol: lock?.currencySymbol,
+        creditCardEnabled,
         decimals: 18,
         confidence: 1,
         timestamp: new Date().getTime(),
-        creditCardEnabled,
         priceInAmount: creditCardPrice * keysToPurchase,
       }
     }
