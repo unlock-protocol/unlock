@@ -162,6 +162,22 @@ contract MixinTransfer is
   }
 
   /**
+   * Deactivate an existing key
+   * @param _tokenId the id of token to burn
+   * @notice the key will be expired and ownership records will be destroyed
+   */
+  function burn(uint _tokenId) public {
+    _isKey(_tokenId);
+    _onlyKeyManagerOrApproved(_tokenId);
+
+    // burn token
+    _transferFrom(ownerOf(_tokenId), address(0), _tokenId);
+
+    // decrease totalSupply
+    _totalSupply--;
+  }
+
+  /**
    * This functions contains the logic to transfer a token
    * from an account to another
    */
@@ -178,9 +194,6 @@ contract MixinTransfer is
       revert UNAUTHORIZED();
     }
 
-    if (_recipient == address(0)) {
-      revert INVALID_ADDRESS();
-    }
     if (_from == _recipient) {
       revert TRANSFER_TO_SELF();
     }

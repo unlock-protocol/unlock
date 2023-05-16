@@ -7,8 +7,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
-import { useQuery } from '@tanstack/react-query'
-import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Fragment } from 'react'
 import {
@@ -24,6 +22,8 @@ import {
 import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -56,16 +56,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const price = Number(parseFloat(lock.keyPrice) * recipients.length)
 
-  const { isLoading, data: fiatPricing } = useQuery(
-    ['fiat', lock.network, lock.address, recipients.length],
-    async () => {
-      const pricing = await getFiatPricing(
-        config,
-        lock.address,
-        lock.network,
-        recipients.length
-      )
-      return pricing
+  const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
+    {
+      network: lock.network,
+      lockAddress: lock.address,
     }
   )
 
@@ -101,8 +95,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
     recipients[0]?.toLowerCase() === account?.toLowerCase()
-
-  const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
@@ -273,6 +265,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {!isUniswapRoutesLoading &&
               isSwapAndPurchaseEnabled &&
               routes?.map((route, index) => {
+                if (!route) {
+                  return null
+                }
                 return (
                   <button
                     key={index}
@@ -281,8 +276,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                       send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
-                          route,
                           method: 'swap_and_purchase',
+                          route,
                         },
                       })
                     }}

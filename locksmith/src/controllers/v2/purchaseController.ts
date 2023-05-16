@@ -219,6 +219,11 @@ export const createOnRampSession: RequestHandler = async (
     throw new Error('USDC not available for this network')
   }
 
+  const universalCardConfig = networks[network]?.universalCard
+  if (!universalCardConfig) {
+    throw new Error('Universal card payments not supported on this network')
+  }
+
   const providerUrl = networks[network].provider
   const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
 
@@ -250,12 +255,16 @@ export const createOnRampSession: RequestHandler = async (
   const session = await new OnrampSessionResource(stripe).create({
     transaction_details: {
       lock_wallet_address: true, // Making sure the user does not change the wallet!
-      source_currency: 'usd', // We only support USDC to USDC
-      destination_currency: 'usdc', // We only support USD to USDC
+      source_currency: 'usd',
+      destination_currency: universalCardConfig.stripeDestinationCurrency,
       destination_exchange_amount: amount,
-      destination_network: 'ethereum', // use polygon when applicable?
-      supported_destination_currencies: ['usdc'],
-      supported_destination_networks: ['ethereum'],
+      destination_network: universalCardConfig.stripeDestinationNetwork,
+      supported_destination_currencies: [
+        universalCardConfig.stripeDestinationCurrency,
+      ],
+      supported_destination_networks: [
+        universalCardConfig.stripeDestinationNetwork,
+      ],
       wallet_addresses: {
         ethereum: userAddress,
       },
@@ -268,6 +277,7 @@ export const createOnRampSession: RequestHandler = async (
     lockAddress,
     network,
     userAddress,
+    // @ts-expect-error Property 'id' does not exist on type 'Response<object>'.ts(2339)
     stripeSession: session.id,
     body: request.body,
   })

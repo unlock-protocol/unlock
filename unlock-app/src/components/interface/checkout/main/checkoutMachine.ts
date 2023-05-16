@@ -155,7 +155,7 @@ type Payment =
     }
   | {
       method: 'swap_and_purchase'
-      route: any
+      route?: any
     }
   | {
       method: 'universal_card'

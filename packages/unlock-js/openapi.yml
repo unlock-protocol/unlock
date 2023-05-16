@@ -1329,6 +1329,7 @@ paths:
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
             type: string
+
       responses:
         200:
           description: Get price for the native token or any erc20 on the network.
@@ -1473,120 +1474,6 @@ paths:
                         nullable: true
         400:
           $ref: '#/components/responses/400.Invalid'
-
-  /v2/purchase/onramp/{network}/locks/{lockAddress}:
-    post:
-      operationId: createOnRampSession
-      security:
-        - User: []
-      description: Setup an onramp session for the user.
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                transferSignature:
-                  type: string
-                transferMessage:
-                  type: object
-                  properties:
-                    from:
-                      type: string
-                    nonce:
-                      type: string
-                    to:
-                      type: string
-                    validAfter:
-                      type: number
-                    validBefore:
-                      type: number
-                    value:
-                      type: string
-                  required:
-                    - from
-                    - nonce
-                    - to
-                    - validAfter
-                    - validBefore
-                    - value
-                purchaseSignature:
-                  type: string
-                purchaseMessage:
-                  type: object
-                  properties:
-                    lock:
-                      type: string
-                    sender:
-                      type: string
-                    expiration:
-                      type: number
-                  required:
-                    - lock
-                    - sender
-                    - expiration
-                recipients:
-                  type: array
-                  items:
-                    type: string
-                purchaseData:
-                  type: array
-                  items:
-                    type: string
-      responses:
-        200:
-          description: Created onramp session.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  clientSecret:
-                    type: string
-
-        401:
-          $ref: '#/components/responses/401.NotAuthenticated'
-
-  /v2/purchase/onramp/{session}/capture:
-    post:
-      operationId: captureOnRampSession
-      security:
-        - User: []
-      description: Setup an onramp session for the user.
-      parameters:
-        - name: session
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The id of the onramp session
-        - in: query
-          name: transactionHash
-          required: true
-          description: The transacttion hash for the deposit
-          schema:
-            type: string
-
-      responses:
-        200:
-          description: Successfully sent purchase transaction
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  transactionHash:
-                    type: string
-                  owner:
-                    type: string
-
-        401:
-          $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/subscriptions/{network}/locks/{lockAddress}/keys/{keyId}:
     delete:
@@ -2519,6 +2406,26 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/api/credit-card-details/{network}/locks/{lockAddress}:
+    get:
+      operationId: isCardPaymentEnabledForLock
+      description: Returns if credit card payment are enable for a lock
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully returns credit card enabled status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creditCardEnabled:
+                    type: boolean
+
   /v2/stripe/connect/{network}/locks/{lockAddress}:
     post:
       operationId: connectStripeAccount
@@ -2858,13 +2765,36 @@ paths:
 
       responses:
         200:
-          description: Successfully got card price
+          description: Successfully got card pricing for universal cards
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - 'total'
+                  - total
+                  - unlockServiceFee
+                  - gasCost
                 properties:
                   total:
-                    type: string
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  gasCost:
+                    type: number
+                  prices:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - userAddress
+                        - amount
+                        - symbol
+                      properties:
+                        userAddress:
+                          type: string
+                        amount:
+                          type: string
+                        symbol:
+                          type: string
