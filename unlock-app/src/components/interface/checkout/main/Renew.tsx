@@ -7,8 +7,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useQuery } from '@tanstack/react-query'
-import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { RiTimer2Line as DurationIcon } from 'react-icons/ri'
@@ -19,6 +17,8 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { fetchRecipientsData } from './utils'
 import { ViewContract } from '../ViewContract'
 import { getReferrer } from '~/utils/checkoutLockUtils'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+import { useUSDPricing } from '~/hooks/useUSDPricing'
 
 interface Props {
   injectedProvider: unknown
@@ -47,13 +47,19 @@ export function Renew({
   const { messageToSign } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
-  const { isLoading: isFiatPricingLoading, data: fiatPricing } = useQuery(
-    ['lockFiatPricing', lockAddress, lockNetwork],
-    async () => {
-      const pricing = await getFiatPricing(config, lockAddress, lockNetwork)
-      return pricing
-    }
-  )
+
+  const { isLoading: isFiatPricingLoading, data: fiatPricing } = useUSDPricing({
+    lockAddress,
+    network: lockNetwork,
+    currencyContractAddress: lock?.currencyContractAddress,
+    amount: Number(lock?.keyPrice),
+  })
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress,
+    network: lockNetwork,
+  })
+
   const formattedData = getLockProps(
     {
       ...lock,
@@ -187,7 +193,7 @@ export function Renew({
                 <Pricing
                   keyPrice={formattedData.formattedKeyPrice}
                   usdPrice={formattedData.convertedKeyPrice}
-                  isCardEnabled={formattedData.cardEnabled}
+                  isCardEnabled={!!creditCardEnabled}
                 />
               </div>
             ) : (

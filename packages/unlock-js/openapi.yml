@@ -1329,6 +1329,7 @@ paths:
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
             type: string
+
       responses:
         200:
           description: Get price for the native token or any erc20 on the network.
@@ -2405,6 +2406,26 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/api/credit-card-details/{network}/locks/{lockAddress}:
+    get:
+      operationId: isCardPaymentEnabledForLock
+      description: Returns if credit card payment are enable for a lock
+
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully returns credit card enabled status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creditCardEnabled:
+                    type: boolean
+
   /v2/stripe/connect/{network}/locks/{lockAddress}:
     post:
       operationId: connectStripeAccount
@@ -2717,3 +2738,63 @@ paths:
                     type: number
                   isCreditCardPurchasable:
                     type: boolean
+
+  /v2/api/price/{network}/{lockAddress}/card:
+    get:
+      description: Get the price breakdown for universal credit card
+      operationId: getUniversalCardPrice
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: purchaseData[]
+          description: The purchase data passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: recipients[]
+          description: The recipients passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+
+      responses:
+        200:
+          description: Successfully got card pricing for universal cards
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                  - unlockServiceFee
+                  - gasCost
+                properties:
+                  total:
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  gasCost:
+                    type: number
+                  prices:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - userAddress
+                        - amount
+                        - symbol
+                      properties:
+                        userAddress:
+                          type: string
+                        amount:
+                          type: string
+                        symbol:
+                          type: string

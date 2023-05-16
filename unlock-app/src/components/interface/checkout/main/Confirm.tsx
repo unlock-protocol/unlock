@@ -3,7 +3,6 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
-import { getLockProps } from '~/utils/lock'
 import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useRef, useState } from 'react'
@@ -31,6 +30,7 @@ import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -72,15 +72,35 @@ export function CreditCardPricingBreakdown({
       <div className="divide-y">
         <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
           <span className="text-gray-600">Service Fee</span>
-          <div>${(unlockServiceFee / 100).toLocaleString()}</div>
+          <div>
+            $
+            {(unlockServiceFee / 100).toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
+          </div>
         </div>
-        <div className="flex justify-between w-full py-2 text-sm">
-          <span className="text-gray-600"> Payment Processor </span>
-          <div>${(creditCardProcessingFee / 100).toLocaleString()}</div>
-        </div>
+        {!!creditCardProcessingFee && (
+          <div className="flex justify-between w-full py-2 text-sm">
+            <span className="text-gray-600"> Payment Processor </span>
+            <div>
+              $
+              {(creditCardProcessingFee / 100).toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </div>
+          </div>
+        )}
         <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
           <span className="text-gray-600"> Total </span>
-          <div className="font-bold">${(total / 100).toLocaleString()}</div>
+          <div className="font-bold">
+            $
+            {(total / 100).toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -152,7 +172,6 @@ export function Confirm({
   const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
-    quantity,
     recipients,
     payment,
     captcha,
@@ -164,12 +183,7 @@ export function Confirm({
     metadata,
   } = state.context
 
-  const {
-    address: lockAddress,
-    network: lockNetwork,
-    name: lockName,
-    keyPrice,
-  } = lock!
+  const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
   const swap = payment?.method === 'swap_and_purchase'
 
   const currencyContractAddress = swap
@@ -201,6 +215,11 @@ export function Confirm({
   })
 
   const { mutateAsync: createPurchaseIntent } = usePurchase({
+    lockAddress,
+    network: lockNetwork,
+  })
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
     lockAddress,
     network: lockNetwork,
   })
@@ -308,14 +327,6 @@ export function Confirm({
   const symbol = swap
     ? payment.route.trade.inputAmount.currency.symbol
     : lockTickerSymbol(lock as Lock, baseCurrencySymbol)
-
-  const formattedData = getLockProps(
-    lock,
-    lockNetwork,
-    baseCurrencySymbol,
-    lockName,
-    quantity
-  )
 
   const onError = (error: any, message?: string) => {
     console.error(error)
@@ -696,7 +707,7 @@ export function Confirm({
                     ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
                     : ''
                 }
-                isCardEnabled={formattedData.cardEnabled}
+                isCardEnabled={!!creditCardEnabled}
               />
             )}
           </div>

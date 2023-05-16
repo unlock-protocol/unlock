@@ -1,6 +1,7 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
+import { CardPurchaserABI } from './abis/CardPurchaserABI'
 
 type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
 
@@ -8,8 +9,6 @@ export interface GetContractOptions {
   network: number
   signer?: Signer
 }
-
-export const CardPurchaserAbi = []
 
 export const PurchaseTypes = {
   Purchase: [
@@ -43,14 +42,15 @@ export class CardPurchaser {
    */
   getContract({ network, signer }: GetContractOptions) {
     const networkConfig = this.networks[network]
-    const cardPurchaserContractAddress = networkConfig.cardPurchaserAddress
+    const cardPurchaserContractAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
     if (!cardPurchaserContractAddress) {
       throw new Error('No card purchaser contract address found for network')
     }
     const provider = this.providerForNetwork(network)
     const cardPurchaserContract = new ethers.Contract(
       cardPurchaserContractAddress,
-      CardPurchaserAbi,
+      CardPurchaserABI,
       provider
     )
     if (signer) {
@@ -61,7 +61,6 @@ export class CardPurchaser {
 
   async getDomain(network: number) {
     const contract = this.getContract({ network })
-
     const [name, version] = await Promise.all([
       contract.name(),
       contract.version(),
@@ -89,7 +88,8 @@ export class CardPurchaser {
     signer: Signer
   ) {
     const networkConfig = this.networks[network]
-    const cardPurchaserAddress = networkConfig?.cardPurchaserAddress
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
 
     if (!cardPurchaserAddress) {
       throw new Error('Card Purchaser not available for this network')
@@ -110,5 +110,33 @@ export class CardPurchaser {
       message
     )
     return { signature, message }
+  }
+
+  /**
+   *
+   * @param network
+   * @param transfer
+   * @param purchase
+   * @param callData
+   * @param signer
+   */
+  async purchase(
+    network: number,
+    transfer: any,
+    purchase: any,
+    callData: any,
+    signer: Signer
+  ) {
+    const contract = this.getContract({ network })
+
+    await contract
+      .connect(signer)
+      .purchase(
+        transfer.message,
+        transfer.signature,
+        purchase.message,
+        purchase.signature,
+        callData
+      )
   }
 }
