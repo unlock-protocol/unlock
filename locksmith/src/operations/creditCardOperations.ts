@@ -1,6 +1,7 @@
 import AuthorizedLockOperations from './authorizedLockOperations'
 import { getStripeConnectForLock } from './stripeOperations'
 import Dispatcher from '../fulfillment/dispatcher'
+import { MIN_PAYMENT_STRIPE } from '../utils/constants'
 
 /**
  * Check if credit card is enabled for a specific lock
@@ -30,7 +31,7 @@ export const getCreditCardEnabledStatus = async ({
     hasEnoughToPayForGas &&
     isAuthorizedForCreditCard &&
     hasStripeConfig &&
-    totalPriceInCents > 0.5 // Let's check that the price is larger than 50cts
+    totalPriceInCents > MIN_PAYMENT_STRIPE // Let's check that the price is larger than 50cts
 
   return creditCardEnabled
 }

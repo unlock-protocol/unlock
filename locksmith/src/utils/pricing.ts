@@ -4,77 +4,16 @@ import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
 import { GAS_COST, stripePercentage, baseStripeFee } from './constants'
+import {
+  getDefiLammaPrice,
+  getUsdPricingForLock,
+} from '../operations/pricingOperations'
 
 export interface Options {
   amount?: number
   address?: string
+  lockAddress?: string
   network: number
-}
-
-interface Price {
-  decimals: number
-  symbol: string
-  price: number
-  timestamp: number
-  confidence: number
-  creditCardEnabled: boolean
-}
-
-export async function defiLammaPrice({
-  network,
-  address,
-  amount = 1,
-}: Options): Promise<
-  Partial<
-    Price & {
-      priceInAmount: number
-    }
-  >
-> {
-  const networkConfig = networks[network]
-  if (!network) {
-    return {}
-  }
-  const items: string[] = []
-  const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
-  const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) => item.address?.toLowerCase() === address?.toLowerCase()
-  )?.mainnetAddress
-
-  if (mainnetTokenAddress) {
-    items.push(`ethereum:${mainnetTokenAddress}`)
-  }
-
-  if (address) {
-    items.push(`${networkConfig.chain}:${address}`)
-  }
-
-  if (!address && coingecko) {
-    items.push(coingecko)
-  }
-
-  const endpoint = `https://coins.llama.fi/prices/current/${items.join(',')}`
-  const response = await fetch(endpoint)
-
-  if (!response.ok) {
-    return {}
-  }
-
-  const json: Record<'coins', Record<string, Price>> = await response.json()
-  const item = Object.values(json.coins).filter(
-    (item) => item.confidence > 0.95
-  )[0]
-
-  if (!item) {
-    return {}
-  }
-
-  const priceInAmount = item.price * amount
-
-  return {
-    ...item,
-    priceInAmount,
-  }
 }
 
 interface KeyPricingOptions {
@@ -147,7 +86,7 @@ export const getKeyPricingInUSD = async ({
       network,
     })
 
-  const usdPricing = await defiLammaPrice({
+  const usdPricing = await getUsdPricingForLock({
     network,
     address:
       !currencyContractAddress ||
@@ -155,6 +94,8 @@ export const getKeyPricingInUSD = async ({
         ? undefined
         : currencyContractAddress,
     amount: 1,
+    lockAddress,
+    keysToPurchase: recipients?.length,
   })
 
   const defaultPrice = fromDecimal(keyPrice, decimals)
@@ -224,7 +165,7 @@ export const getKeyPricingInUSD = async ({
 export const getGasCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
-  const price = await defiLammaPrice({
+  const price = await getDefiLammaPrice({
     network,
     amount,
   })
@@ -262,47 +203,6 @@ export const getFees = ({
     gasCost,
     total: unlockServiceFee + creditCardProcessingFee + subtotal + gasCost,
   }
-}
-
-export const createTotalCharges = async ({
-  amount,
-  network,
-  address,
-}: {
-  network: number
-  amount: number
-  address?: string
-}) => {
-  const [pricing, gasCost] = await Promise.all([
-    defiLammaPrice({
-      network,
-      amount,
-      address,
-    }),
-    getGasCost({ network }),
-  ])
-
-  if (pricing.priceInAmount === undefined) {
-    return {
-      total: 0,
-      subtotal: 0,
-      gasCost,
-      unlockServiceFee: 0,
-      creditCardProcessingFee: 0,
-      isCreditCardPurchasable: false,
-    }
-  }
-  const subtotal = Math.round(pricing.priceInAmount * 100)
-  const fees = getFees({
-    subtotal,
-    gasCost,
-  })
-  const result = {
-    ...fees,
-    subtotal,
-    isCreditCardPurchasable: fees.total > 50,
-  }
-  return result
 }
 
 export const createPricingForPurchase = async (options: KeyPricingOptions) => {
