@@ -9,7 +9,6 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
@@ -23,7 +22,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   const { account } = useAuth()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients, renew } = state.context
+  const { recipients } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -55,15 +54,9 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService, renew)
-
   return (
     <Fragment>
-      <Stepper
-        position={renew ? 2 : 6}
-        service={checkoutService}
-        items={stepItems}
-      />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="space-y-4">
           <div className="flex justify-center">
