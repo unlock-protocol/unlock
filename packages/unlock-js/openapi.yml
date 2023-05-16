@@ -1330,6 +1330,20 @@ paths:
           schema:
             type: string
 
+        - in: query
+          name: lockAddress
+          required: false
+          description: The lock address you want to get the price for.
+          schema:
+            type: string
+
+        - in: query
+          name: keysToPurchase
+          required: false
+          description: Numbers of keys to purchase
+          schema:
+            type: number
+
       responses:
         200:
           description: Get price for the native token or any erc20 on the network.
@@ -2710,6 +2724,20 @@ paths:
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
             type: string
+
+        - in: query
+          name: lockAddress
+          required: false
+          description: The lock address you want to get the price for.
+          schema:
+            type: string
+
+        - in: query
+          name: keysToPurchase
+          required: false
+          description: Numbers of keys to purchase
+          schema:
+            type: number
 
       responses:
         200:

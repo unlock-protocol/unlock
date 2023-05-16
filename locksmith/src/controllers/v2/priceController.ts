@@ -16,10 +16,20 @@ export const amount: RequestHandler = async (request, response) => {
     ? erc20Address
     : undefined
 
+  const _lockAddress = request.query.lockAddress?.toString()
+  const keysToPurchase = Number(request.query.keysToPurchase?.toString() || 1)
+
+  const lockAddress =
+    _lockAddress && ethers.utils.isAddress(_lockAddress || '')
+      ? Normalizer.ethereumAddress(_lockAddress)
+      : undefined
+
   const result = await priceOperations.getUsdPricingForLock({
     network,
     amount,
     address,
+    lockAddress,
+    keysToPurchase,
   })
   return response.status(200).send({
     result,
@@ -34,10 +44,20 @@ export const total: RequestHandler = async (request, response) => {
     ? erc20Address
     : undefined
 
+  const _lockAddress = request.query.lockAddress?.toString()
+  const keysToPurchase = Number(request.query.keysToPurchase?.toString() || 1)
+
+  const lockAddress =
+    _lockAddress && ethers.utils.isAddress(_lockAddress || '')
+      ? Normalizer.ethereumAddress(_lockAddress)
+      : undefined
+
   const charge = await priceOperations.getTotalCharges({
     amount,
     network,
     address,
+    lockAddress,
+    keysToPurchase,
   })
 
   return response.send(charge)
