@@ -44,7 +44,7 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Ensure the key you just purchased is there
 
 ## Swap & purchase
-* [ ] Update the currency (eg. USDC) to enable swap & purchase 
+* [ ] Update the currency for a lock (eg. USDC) to enable swap & purchase 
 * [ ] Open the demo for the lock with the updated currency
 * [ ] Make sure that swap & purchase is enabled as payment method
 * [ ] Use swap and purchase and make sure that unlocking works successfuly
