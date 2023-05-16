@@ -6,7 +6,6 @@ import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -26,16 +25,17 @@ import { PricingData } from './PricingData'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication?: CheckoutCommunication
+  onConfirmed: (lock: string, hash?: string) => void
+  onError: (message: string) => void
 }
 
 export function ConfirmSwapAndPurchase({
   injectedProvider,
   checkoutService,
-  communication,
+  onConfirmed,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, getWalletService } = useAuth()
+  const { getWalletService } = useAuth()
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
@@ -44,7 +44,6 @@ export function ConfirmSwapAndPurchase({
     recipients,
     payment,
     captcha,
-    messageToSign,
     paywallConfig,
     password,
     promo,
@@ -159,22 +158,8 @@ export function ConfirmSwapAndPurchase({
             status: 'ERROR',
             transactionHash: hash!,
           })
-        } else {
-          if (!paywallConfig.pessimistic && hash) {
-            communication?.emitTransactionInfo({
-              hash,
-              lock: lockAddress,
-            })
-            communication?.emitUserInfo({
-              address: account,
-              signedMessage: messageToSign?.signature,
-            })
-          }
-          send({
-            type: 'CONFIRM_MINT',
-            status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
-            transactionHash: hash!,
-          })
+        } else if (hash) {
+          onConfirmed(lockAddress, hash)
         }
       }
 

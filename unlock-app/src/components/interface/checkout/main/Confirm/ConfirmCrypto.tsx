@@ -5,11 +5,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useActor } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -50,7 +48,6 @@ export function ConfirmCrypto({
     recipients,
     payment,
     captcha,
-    messageToSign,
     paywallConfig,
     password,
     promo,
@@ -171,19 +168,6 @@ export function ConfirmCrypto({
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
 
-  const onError = (error: any, message?: string) => {
-    console.error(error)
-    switch (error.code) {
-      case -32000:
-      case 4001:
-      case 'ACTION_REJECTED':
-        ToastHelper.error('Transaction rejected.')
-        break
-      default:
-        ToastHelper.error(message || error?.error?.message || error.message)
-    }
-  }
-
   const onConfirmCrypto = async () => {
     try {
       setIsConfirming(true)
@@ -203,22 +187,8 @@ export function ConfirmCrypto({
             status: 'ERROR',
             transactionHash: hash!,
           })
-        } else {
-          if (!paywallConfig.pessimistic && hash) {
-            communication?.emitTransactionInfo({
-              hash,
-              lock: lockAddress,
-            })
-            communication?.emitUserInfo({
-              address: account,
-              signedMessage: messageToSign?.signature,
-            })
-          }
-          send({
-            type: 'CONFIRM_MINT',
-            status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
-            transactionHash: hash!,
-          })
+        } else if (hash) {
+          onConfirmed(lockAddress, hash)
         }
       }
 
@@ -239,7 +209,16 @@ export function ConfirmCrypto({
       )
     } catch (error: any) {
       setIsConfirming(false)
-      onError(error)
+      console.error(error)
+      switch (error.code) {
+        case -32000:
+        case 4001:
+        case 'ACTION_REJECTED':
+          onError('Transaction rejected.')
+          break
+        default:
+          onError(error?.error?.message || error.message)
+      }
     }
   }
 

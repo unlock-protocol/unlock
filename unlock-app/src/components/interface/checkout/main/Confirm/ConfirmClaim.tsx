@@ -30,7 +30,7 @@ export function ConfirmClaim({
   onConfirmed,
   onError,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const [state] = useActor(checkoutService)
   const config = useConfig()
 
   const recaptchaRef = useRef<any>()

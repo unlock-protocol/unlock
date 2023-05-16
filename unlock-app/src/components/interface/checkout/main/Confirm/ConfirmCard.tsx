@@ -98,7 +98,7 @@ export function ConfirmCard({
   onConfirmed,
   onError,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const [state] = useActor(checkoutService)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
   const {
@@ -200,6 +200,7 @@ export function ConfirmCard({
 
     const stripeIntent = await createPurchaseIntent({
       pricing: totalPricing!.total,
+      // @ts-expect-error Property 'cardId' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
       stripeTokenId: payment.cardId!,
       recipients,
       referrers,

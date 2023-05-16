@@ -9,6 +9,7 @@ import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
 import { ConfirmCard } from './Confirm/ConfirmCard'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   injectedProvider: unknown
@@ -22,21 +23,30 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { payment } = state.context
+  const { payment, paywallConfig, messageToSign } = state.context
+  const { account } = useAuth()
 
   const onError = (message: string) => {
     ToastHelper.error(message)
   }
 
-  const onConfirmed = (lock: string, hash: string) => {
-    communication?.emitTransactionInfo({
-      hash,
-      lock,
-    })
+  const onConfirmed = (lock: string, hash?: string) => {
+    // If not pessimistic, we can emit the transaction info right away
+    // and pass the signed message as well
+    if (!paywallConfig.pessimistic && hash) {
+      communication?.emitTransactionInfo({
+        hash,
+        lock,
+      })
+      communication?.emitUserInfo({
+        address: account,
+        signedMessage: messageToSign?.signature,
+      })
+    }
     send({
       type: 'CONFIRM_MINT',
-      status: 'FINISHED',
-      transactionHash: hash,
+      status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
+      transactionHash: hash!,
     })
   }
 
@@ -47,7 +57,6 @@ export function Confirm({
         <ConfirmCard
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
-          communication={communication}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -56,7 +65,6 @@ export function Confirm({
         <ConfirmSwapAndPurchase
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
-          communication={communication}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -65,7 +73,6 @@ export function Confirm({
         <ConfirmCrypto
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
-          communication={communication}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -74,7 +81,6 @@ export function Confirm({
         <ConfirmClaim
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
-          communication={communication}
           onConfirmed={onConfirmed}
           onError={onError}
         />
