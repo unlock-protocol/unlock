@@ -40,7 +40,6 @@ export interface Typegen0 {
   matchesStates:
     | 'CAPTCHA'
     | 'CARD'
-    | 'UNIVERSAL_CARD'
     | 'CONFIRM'
     | 'MESSAGE_TO_SIGN'
     | 'METADATA'

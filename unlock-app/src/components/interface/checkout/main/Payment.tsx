@@ -114,7 +114,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
     !enableCreditCard &&
-    networkConfig.cardPurchaserAddress &&
+    networkConfig.universalCard?.cardPurchaserAddress &&
     lock.currencyContractAddress === USDC.address
 
   return (

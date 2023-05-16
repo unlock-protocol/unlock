@@ -12,7 +12,6 @@ export type CheckoutPage =
   | 'METADATA'
   | 'CONFIRM'
   | 'CARD'
-  | 'UNIVERSAL_CARD'
   | 'MINTING'
   | 'MESSAGE_TO_SIGN'
   | 'CAPTCHA'
@@ -496,11 +495,6 @@ export const checkoutMachine = createMachine(
               target: 'CARD',
               actions: ['selectPaymentMethod'],
               cond: (_, event) => event.payment.method === 'card',
-            },
-            {
-              target: 'UNIVERSAL_CARD',
-              actions: ['selectPaymentMethod'],
-              cond: (_, event) => event.payment.method === 'universal_card',
             },
             {
               actions: ['selectPaymentMethod'],

@@ -158,15 +158,6 @@ export function Checkout({
           />
         )
       }
-      case 'UNIVERSAL_CARD': {
-        return (
-          <UniversalCardPayment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-            communication={communication}
-          />
-        )
-      }
       case 'METADATA': {
         return (
           <Metadata
