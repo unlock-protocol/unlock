@@ -229,7 +229,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
-
             {enableClaim && (
               <button
                 onClick={(event) => {

@@ -32,14 +32,16 @@ interface Props {
 
 interface CreditCardPricingBreakdownProps {
   total: number
-  creditCardProcessingFee: number
+  creditCardProcessingFee?: number
   unlockServiceFee: number
+  gasCosts?: number
 }
 
 export function CreditCardPricingBreakdown({
   unlockServiceFee,
   total,
   creditCardProcessingFee,
+  gasCosts,
 }: CreditCardPricingBreakdownProps) {
   return (
     <div className="flex flex-col gap-2 pt-4 text-sm">
@@ -71,6 +73,18 @@ export function CreditCardPricingBreakdown({
             <div>
               $
               {(creditCardProcessingFee / 100).toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </div>
+          </div>
+        )}
+        {!!gasCosts && (
+          <div className="flex justify-between w-full py-2 text-sm">
+            <span className="text-gray-600"> Gas Costs </span>
+            <div>
+              $
+              {(gasCosts / 100).toLocaleString(undefined, {
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2,
               })}

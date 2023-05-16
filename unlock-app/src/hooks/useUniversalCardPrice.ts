@@ -19,6 +19,7 @@ export const useUniversalCardPrice = ({
   return useQuery(
     ['useUniversalCardPrice', network, lockAddress, purchaseData, recipients],
     async () => {
+      console.log('get getUniversalCardPrice')
       const response = await storage.getUniversalCardPrice(
         network,
         lockAddress,
