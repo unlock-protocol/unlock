@@ -41,6 +41,9 @@ contract UnlockOwner {
   // the domain ID of the current network (defined by Connext)
   uint32 public domain;
 
+  // required for testing 
+  uint public mainnetChainId;
+
   // Errors
   error OnlyUnlock();
   error ChainNotSet();
@@ -61,6 +64,7 @@ contract UnlockOwner {
    * @param _bridgeAddress address of connext contract on current chain
    * @param _unlockAddress address of the Unlock contract on current chain
    * @param _domain the Domain ID of the current chain as used by the Connext Bridge 
+   * @param _mainnetChainId required for testing, default to 1.
    * https://docs.connext.network/resources/supported-chains
    */
   constructor (
@@ -68,13 +72,16 @@ contract UnlockOwner {
     address _unlockAddress,
     address _daoAddress,
     address _multisigAddress,
-    uint32 _domain
+    uint32 _domain,
+    uint _mainnetChainId
   ) {
     bridgeAddress = _bridgeAddress;
     unlockAddress = _unlockAddress;
     multisigAddress = _multisigAddress;
     daoTimelockAddress = _daoAddress;
     domain = _domain;
+    // required for testing purposes
+    mainnetChainId = _mainnetChainId != 0 ? _mainnetChainId : 1;
   }
 
   /**
@@ -85,7 +92,7 @@ contract UnlockOwner {
   }
   
   function _isDAO() internal view returns (bool) {
-    return msg.sender == daoTimelockAddress && block.chainid == 1;
+    return msg.sender == daoTimelockAddress && block.chainid == mainnetChainId;
   }
 
 
@@ -156,13 +163,13 @@ contract UnlockOwner {
 
   /**
    * Calling this function will execute directly a call to Unlock or a proxy upgrade
-   * @notice This function can only be called by the multisig specified in the constructor
+   * @notice This function can only be called by the DAO on mainnet
    * @param callData the encoded bytes should contains both the call data to be executed and 
    *  the *action* code that follows `_execAction` pattern (see above).
    * @return the address of the contract where code has been executed
    */
-  function execMultisig (bytes memory callData) external payable returns (address, bytes memory) {
-    if(!_isMultisig()) {
+  function execDAO (bytes memory callData) external payable returns (address, bytes memory) {
+     if(!_isDAO()) {
       revert Unauthorized(msg.sender);
     }
     // unpack calldata args
@@ -170,16 +177,16 @@ contract UnlockOwner {
     (address contractCalled, bytes memory returnedData) = _execAction(action, msg.value, execCallData);
     return (contractCalled, returnedData);
   }
-
+  
   /**
-   * This function is used to call Unlock or perform a proxy upgrade on mainnet
-   * @notice only callable by DAO 
+   * Calling this function will execute directly a call to Unlock or a proxy upgrade
+   * @notice This function can only be called by the multisig specified in the constructor
    * @param callData the encoded bytes should contains both the call data to be executed and 
    *  the *action* code that follows `_execAction` pattern (see above).
    * @return the address of the contract where code has been executed
    */
-  function execDAO (bytes memory callData) external payable returns (address, bytes memory) {
-    if(!_isDAO()) {
+  function execMultisig (bytes memory callData) external payable returns (address, bytes memory) {
+    if(!_isMultisig()) {
       revert Unauthorized(msg.sender);
     }
     // unpack calldata args
