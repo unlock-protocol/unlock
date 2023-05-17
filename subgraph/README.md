@@ -18,14 +18,7 @@ yarn build <network-name>
 
 #### Multiple chains
 
-There is subgraph deployed for each network where Unlock Protocol is deployed. While code is similar for all, the addresses where the contracts are deployed vary, requiring a specifying config per network stored in `networks.json`.
-
-The `networks.json` file is generated from our `@unlock-protocol/networks` package.
-
-```sh
-# build the `subgraph.yaml` with the correct contract address per network
-yarn prepare:networks
-```
+There is subgraph deployed for each network where Unlock Protocol is deployed. While code is similar for all, the addresses where the contracts are deployed vary (and even the number of `dataSources` so we generate a different `subgraph.yaml` for each network).
 
 #### Contrat ABIs
 

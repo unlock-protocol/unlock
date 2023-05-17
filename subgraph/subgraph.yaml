@@ -6,12 +6,12 @@ features:
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: ethereum
-    name: Unlock
+  - name: Unlock
+    kind: ethereum
     source:
       abi: Unlock
-      address: "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f"
-      startBlock: 19338700
+      address: "0xe79B93f8E22676774F2A8dAd469175ebd00029FA"
+      startBlock: 16989000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,7 +35,37 @@ dataSources:
         - event: GNPChanged(uint256,uint256,address,uint256,address)
           handler: handleGNPChanged
       file: ./src/unlock.ts
-    network: gnosis
+    network: mainnet
+  - name: Unlock0
+    kind: ethereum
+    source:
+      abi: Unlock
+      address: "0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13"
+      startBlock: 7120795
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - NewLock
+      abis:
+        - name: Unlock
+          file: ./abis/UnlockV11.json
+        - name: PublicLock
+          file: ./abis/PublicLock.json
+        - name: PublicLockV11
+          file: ./abis/PublicLockV11.json
+        - name: PublicLockV7
+          file: ./abis/PublicLockV7.json
+      eventHandlers:
+        - event: NewLock(indexed address,indexed address)
+          handler: handleNewLock
+        - event: LockUpgraded(address,uint16)
+          handler: handleLockUpgraded
+        - event: GNPChanged(uint256,uint256,address,uint256,address)
+          handler: handleGNPChanged
+      file: ./src/unlock.ts
+    network: mainnet
 templates:
   - kind: ethereum
     name: PublicLock
@@ -110,4 +140,4 @@ templates:
           handler: handleLockMetadata
           receipt: true
       file: ./src/public-lock.ts
-    network: gnosis
+    network: mainnet

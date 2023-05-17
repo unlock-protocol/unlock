@@ -9,7 +9,7 @@ const { hideBin } = require('yargs/helpers')
 const networks = require('@unlock-protocol/networks')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
-const { networkName, generateNetworksFile, generateManifestFile } = require('./networks')
+const { networkName, generateManifestFile } = require('./networks')
 
 const executeCommand = async (command) => {
   try {
@@ -52,7 +52,6 @@ const prepare = async (network) => {
     throw new Error('Missing network name')
   }
   await generateManifestFile(network)
-  await generateNetworksFile()
 }
 
 const codegen = async () => {
