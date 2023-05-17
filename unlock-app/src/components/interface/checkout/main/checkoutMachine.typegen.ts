@@ -10,7 +10,7 @@ export interface Typegen0 {
     actions: never
     delays: never
     guards: never
-    services: 'unlockAccount'
+    services: never
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
@@ -29,10 +29,10 @@ export interface Typegen0 {
   }
   eventsCausingDelays: {}
   eventsCausingGuards: {
-    requireCaptcha: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
-    requireMessageToSign: 'BACK' | 'SELECT_PAYMENT_METHOD'
-    requirePassword: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
-    requirePromo: 'SELECT_PAYMENT_METHOD' | 'SIGN_MESSAGE'
+    requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
+    requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requirePromo: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
   }
   eventsCausingServices: {
     unlockAccount: 'UNLOCK_ACCOUNT'
