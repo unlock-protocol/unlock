@@ -63,6 +63,8 @@ contract UnlockOwner {
    /**
    * @param _bridgeAddress address of connext contract on current chain
    * @param _unlockAddress address of the Unlock contract on current chain
+   * @param _timelockDaoAddress the address of the timelock of the DAO (which send instructions)
+   * @param _multisigAddress the address of the multisig contract
    * @param _domain the Domain ID of the current chain as used by the Connext Bridge 
    * @param _mainnetChainId required for testing, default to 1.
    * https://docs.connext.network/resources/supported-chains
@@ -70,7 +72,7 @@ contract UnlockOwner {
   constructor (
     address _bridgeAddress,
     address _unlockAddress,
-    address _daoAddress,
+    address _timelockDaoAddress,
     address _multisigAddress,
     uint32 _domain,
     uint _mainnetChainId
@@ -78,7 +80,7 @@ contract UnlockOwner {
     bridgeAddress = _bridgeAddress;
     unlockAddress = _unlockAddress;
     multisigAddress = _multisigAddress;
-    daoTimelockAddress = _daoAddress;
+    daoTimelockAddress = _timelockDaoAddress;
     domain = _domain;
     // required for testing purposes
     mainnetChainId = _mainnetChainId != 0 ? _mainnetChainId : 1;
