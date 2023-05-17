@@ -313,7 +313,7 @@ export const captureOnRamp: RequestHandler = async (request, response) => {
     purchase.body.recipients,
     {
       message: purchase.body.transferMessage,
-      signature: purchase.body.purchaseSignature,
+      signature: purchase.body.transferSignature,
     },
     {
       message: purchase.body.purchaseMessage,
