@@ -6,7 +6,6 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'

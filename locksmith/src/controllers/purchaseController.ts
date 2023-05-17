@@ -8,11 +8,10 @@ import Dispatcher from '../fulfillment/dispatcher'
 
 import logger from '../logger'
 import { isSoldOut } from '../operations/lockOperations'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
+import { getTotalPurchasePriceInCrypto } from '../utils/claim'
 
 const PaymentCaptureBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
@@ -30,6 +29,16 @@ const PaymentCaptureBody = z.object({
     .nullish()
     .default([]),
   paymentIntent: z.string(),
+})
+
+const CanClaimBody = z.object({
+  recipients: z.array(
+    z.string().transform((item) => Normalizer.ethereumAddress(item))
+  ),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
 })
 
 export class PurchaseController {
@@ -172,11 +181,22 @@ export class PurchaseController {
     try {
       const network = Number(request.params.network)
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const { recipients, data } = CanClaimBody.parse(request.body)
       const pricer = new KeyPricer()
-      const web3Service = new Web3Service(networks)
+
       const fulfillmentDispatcher = new Dispatcher()
-      const lock = await web3Service.getLock(lockAddress, network)
-      const keyPrice = parseFloat(lock.keyPrice)
+      const totalAmount = await getTotalPurchasePriceInCrypto({
+        lockAddress,
+        network,
+        recipients,
+        data: data || [],
+      })
+
+      if (totalAmount.gt(0)) {
+        return response.status(400).send({
+          message: 'Lock is not free',
+        })
+      }
 
       if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
         return response.status(400).send({
@@ -184,22 +204,17 @@ export class PurchaseController {
         })
       }
 
-      if (keyPrice > 0) {
-        return response.status(400).send({
-          message: 'Lock is not free.',
-        })
-      }
+      const [hasEnoughToPayForGas, canAffordGas] = await Promise.all([
+        fulfillmentDispatcher.hasFundsForTransaction(network),
+        pricer.canAffordGrant(network),
+      ])
 
-      const hasEnoughToPayForGas =
-        await fulfillmentDispatcher.hasFundsForTransaction(network)
       if (!hasEnoughToPayForGas) {
         return response.status(500).send({
           message:
             'Purchaser does not have enough funds to allow claiming the membership',
         })
       }
-
-      const canAffordGas = await pricer.canAffordGrant(network)
 
       if (!canAffordGas) {
         return response.status(500).send({
