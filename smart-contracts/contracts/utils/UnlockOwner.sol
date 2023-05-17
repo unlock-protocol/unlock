@@ -80,12 +80,6 @@ contract UnlockOwner {
   /**
    * MODIFIERS
    */
-  
-  // Check is sender is current chain Unlock multisig address
-  function _isUnlockOwner() internal view returns (bool) {    
-    return msg.sender == IUnlock(unlockAddress).owner();
-  }
-
   function _isMultisig() internal view returns (bool) {
     return msg.sender == multisigAddress;
   }
