@@ -14,12 +14,9 @@ import Dispatcher from '../fulfillment/dispatcher'
 
 import logger from '../logger'
 import { isSoldOut } from '../operations/lockOperations'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
-import { ethers } from 'ethers'
 import { getTotalPurchasePriceInCrypto } from '../utils/claim'
 
 const PaymentCaptureBody = z.object({
