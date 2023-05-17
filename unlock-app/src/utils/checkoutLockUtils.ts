@@ -3,7 +3,7 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
-import { PaywallConfig } from '~/unlockTypes'
+import { Lock, PaywallConfig } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 
 // as they only extend it with properties that may be undefined.
@@ -13,14 +13,16 @@ interface LockKeysAvailableLock {
   outstandingKeys?: number
 }
 
-interface LockFiatPricing {
-  [currency: string]: any
-}
 interface LockTickerSymbolLock {
   keyPrice?: string
   currencyContractAddress: string | null
   currencySymbol?: string
-  fiatPricing?: LockFiatPricing
+  fiatPricing?: Record<
+    string,
+    {
+      amount: number
+    }
+  >
 }
 
 interface LockPriceLock {
@@ -56,7 +58,7 @@ export const lockKeysAvailable = ({
 }
 
 export const lockTickerSymbol = (
-  lock: LockTickerSymbolLock,
+  lock: Partial<Lock>,
   baseCurrencySymbol: string
 ) => {
   if (lock.currencyContractAddress) {
@@ -85,12 +87,12 @@ export const convertedKeyPrice = (
   lock: LockTickerSymbolLock,
   numberOfRecipients = 1
 ) => {
-  const keyPrice = lock?.fiatPricing?.usd?.keyPrice
+  const price = lock?.fiatPricing?.usd?.amount
 
-  if (!keyPrice) {
+  if (!price) {
     return ''
   }
-  return `~$${((parseFloat(keyPrice) * numberOfRecipients) / 100).toFixed(2)}`
+  return `~$${(parseFloat(`${price}`) * numberOfRecipients).toFixed(2)}`
 }
 
 export const formattedKeyPrice = (

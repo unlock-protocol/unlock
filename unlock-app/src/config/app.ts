@@ -9,6 +9,7 @@ const staging = {
   unlockStaticUrl: 'https://staging.unlock-protocol.com',
   wedlocksUri:
     'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler',
+  unlockApp: 'https://staging-app.unlock-protocol.com',
 }
 
 const dev = {
@@ -17,6 +18,7 @@ const dev = {
   unlockStaticUrl:
     process.env.NEXT_PUBLIC_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
   wedlocksUri: process.env.NEXT_PUBLIC_WEDLOCKS_URI || staging.wedlocksUri,
+  unlockApp: process.env.NEXT_PUBLIC_UNLOCK_APP_URI || staging.unlockApp,
 }
 
 const production = {
@@ -25,6 +27,7 @@ const production = {
   paywallUrl: 'https://paywall.unlock-protocol.com',
   wedlocksUri:
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+  unlockApp: 'https://app.unlock-protocol.com',
 }
 
 function getAppConfig(environment?: string) {

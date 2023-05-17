@@ -34,8 +34,8 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     )
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
-    const tx1 = await unlock.addLockTemplate(publicLock.address, 1)
-    await tx1.wait()
+    await unlock.addLockTemplate(publicLock.address, 1)
+    await unlock.setLockTemplate(publicLock.address)
     expect(await unlock.publicLockLatestVersion()).to.equals(1)
 
     // deploy new implementation
@@ -44,9 +44,8 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
     await publicLockUpgraded.deployed()
-    const tx2 = await unlock.addLockTemplate(publicLockUpgraded.address, 2)
-    await tx2.wait()
-    expect(await unlock.publicLockLatestVersion()).to.equals(2)
+    await unlock.addLockTemplate(publicLockUpgraded.address, 2)
+    expect(await unlock.publicLockVersions(publicLockUpgraded.address)).to.equals(2)
 
     // create lock calldata
     calldata = await createLockHash({ args, from: lockOwner.address })

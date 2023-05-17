@@ -5,7 +5,6 @@ import lockRouter from './lock'
 import userRouter from './user'
 import purchaseRouter from './purchase'
 import claimRouter from './claim'
-import priceRouter from './price'
 import metadataRouter from './metadata'
 import authRouter from './auth'
 import captchaRouter from './captcha'
@@ -31,13 +30,15 @@ import emailRouter from './v2/email'
 import checkoutConfigRouter from './v2/checkoutConfigs'
 import config from '../config/config'
 import stripeRouter from './v2/stripe'
+import lockSettingsRouter from './v2/lock-settings'
+import certificateRouter from './v2/certificate'
 
 const router = express.Router({ mergeParams: true })
 
 // Set the chain!
 router.use((request, _, next) => {
   const match = request.path.match(/^\/([0-9]*)\/.*/)
-  let chain = parseInt(config.defaultNetwork || '31337')
+  let chain = config.defaultNetwork || 1
   if (match) {
     // When the route starts with the chain (deprecated?)
     chain = parseInt(match[1])
@@ -51,8 +52,7 @@ router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
 router.use('/claim', claimRouter)
-router.use('/price', priceRouter)
-router.use('/api/key/:chain([0-9]{1,6})/', metadataRouter)
+router.use('/api/key/:chain([0-9]{1,12})/', metadataRouter)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
@@ -78,6 +78,8 @@ router.use('/v2/receipts-base', receiptBaseRouter)
 router.use('/v2/email', emailRouter)
 router.use('/v2/checkout', checkoutConfigRouter)
 router.use('/v2/stripe', stripeRouter)
+router.use('/v2/lock-settings', lockSettingsRouter)
+router.use('/v2/certificate', certificateRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

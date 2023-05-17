@@ -29,11 +29,11 @@ export async function getKeyHolderMetadata(
 export async function isSoldOut(
   address: string,
   chain: number,
-  keysNeeded = 10
+  keysNeeded = 1
 ): Promise<boolean> {
   const web3Service = new Web3Service(networks)
   const keysAvailable = await web3Service.keysAvailable(address, chain)
-  return keysAvailable.lte(keysNeeded) // true of keysAvailable smaller than keysNeeded
+  return keysAvailable.lt(keysNeeded) // true of keysAvailable smaller than keysNeeded
 }
 
 export const getGeneratedLockIcon = (lockAddress: string) => {

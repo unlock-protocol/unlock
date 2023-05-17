@@ -5,7 +5,7 @@ import { SiweMessage } from 'siwe'
 import { storage } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
-  getCurrentAccount,
+  getAccessToken,
   removeAccessToken,
   saveAccessToken,
 } from '~/utils/session'
@@ -36,7 +36,7 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
-  const { connected, getWalletService } = useAuth()
+  const { connected, getWalletService, network } = useAuth()
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
@@ -57,10 +57,10 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      const current = getCurrentAccount()
-      if (current) {
+      const session = getAccessToken()
+      if (session) {
         await storage.revoke().catch(console.error)
-        removeAccessToken(current)
+        removeAccessToken()
       }
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
@@ -79,15 +79,26 @@ export const SIWEProvider = ({ children }: Props) => {
 
       const address = await walletService.signer.getAddress()
       const { data: nonce } = await storage.nonce()
+      const parent = new URL(
+        window.location != window.parent.location
+          ? document.referrer
+          : document.location.href
+      )
+      let resources = undefined
+      if (parent.host !== window.location.host) {
+        resources = [window.location.origin]
+      }
       const siwe = new SiweMessage({
-        domain: window.location.hostname,
-        uri: window.location.origin,
+        domain: parent.host,
+        uri: parent.origin,
         address,
-        chainId: 1,
+        chainId: network,
         version: '1',
         statement: '',
         nonce,
+        resources,
       })
+
       const message = siwe.prepareMessage()
       const signature = await walletService.signMessage(
         message,

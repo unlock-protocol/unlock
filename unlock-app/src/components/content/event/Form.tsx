@@ -19,9 +19,11 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { UNLIMITED_KEYS_DURATION } from '~/constants'
+import { SLUG_REGEXP, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { storage } from '~/config/storage'
+import dayjs from 'dayjs'
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
@@ -56,7 +58,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         currencyContractAddress: null,
         keyPrice: '0',
       },
-      currencySymbol: networks[network!].baseCurrencySymbol,
+      currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
         description: '',
         ticket: {
@@ -67,6 +69,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
+        slug: '',
         image: '',
       },
     },
@@ -133,7 +136,20 @@ export const Form = ({ onSubmit }: FormProps) => {
     )
   }
 
+  const ticket = details?.metadata?.ticket
+
   const metadataImage = watch('metadata.image')
+  const isSameDay = dayjs(ticket?.event_end_date).isSame(
+    ticket?.event_start_date,
+    'day'
+  )
+
+  const today = dayjs().format('YYYY-MM-DD')
+
+  const minEndTime = isSameDay ? ticket?.event_start_time : undefined
+  const minEndDate = ticket?.event_start_date
+    ? dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
+    : today
 
   return (
     <FormProvider {...methods}>
@@ -143,41 +159,10 @@ export const Form = ({ onSubmit }: FormProps) => {
             <p className="mb-5">
               All of these fields can also be adjusted later.
             </p>
-            <div className="grid gap-6">
-              <Input
-                {...register('lock.name', {
-                  required: {
-                    value: true,
-                    message: 'Name is required',
-                  },
-                })}
-                type="text"
-                placeholder="Name"
-                label="Event Name"
-                description={
-                  'Enter the name of your event. It will appear on the NFT tickets.'
-                }
-                error={errors.lock?.name?.message}
-              />
 
-              <TextBox
-                {...register('metadata.description', {
-                  required: {
-                    value: true,
-                    message: 'Please add a description for your event',
-                  },
-                })}
-                label="Description"
-                placeholder="Write description here."
-                description={<DescDescription />}
-                rows={4}
-                error={errors.metadata?.description?.message as string}
-              />
-
-              <div className="grid grid-1.5">
-                <span>Illustration</span>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="order-2 md:order-1">
                 <ImageUpload
-                  size="full"
                   description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
@@ -195,28 +180,82 @@ export const Form = ({ onSubmit }: FormProps) => {
                   }}
                 />
               </div>
+              <div className="grid order-1 gap-4 md:order-2">
+                <Input
+                  {...register('lock.name', {
+                    required: {
+                      value: true,
+                      message: 'Name is required',
+                    },
+                  })}
+                  type="text"
+                  placeholder="Name"
+                  label="Event name"
+                  description={
+                    'Enter the name of your event. It will appear on the NFT tickets.'
+                  }
+                  error={errors.lock?.name?.message}
+                />
 
-              <Select
-                onChange={(newValue) => {
-                  setValue('network', Number(newValue))
-                  setValue('lock.currencyContractAddress', null)
-                  setValue(
-                    'currencySymbol',
-                    networks[newValue].baseCurrencySymbol
-                  )
-                }}
-                options={networkOptions}
-                label="Network"
-                defaultValue={network}
-                description={<NetworkDescription />}
-              />
-              <div className="mb-4">
-                {noBalance && (
-                  <BalanceWarning
-                    network={details.network!}
-                    balance={balance}
-                  />
-                )}
+                <TextBox
+                  {...register('metadata.description', {
+                    required: {
+                      value: true,
+                      message: 'Please add a description for your event',
+                    },
+                  })}
+                  label="Description"
+                  placeholder="Write description here."
+                  description={<DescDescription />}
+                  rows={4}
+                  error={errors.metadata?.description?.message as string}
+                />
+
+                <Input
+                  {...register('metadata.slug', {
+                    pattern: {
+                      value: SLUG_REGEXP,
+                      message: 'Slug format is not valid',
+                    },
+                    validate: async (slug: string | undefined) => {
+                      if (slug) {
+                        const data = (await storage.getLockSettingsBySlug(slug))
+                          ?.data
+                        return data
+                          ? 'Slug already used, please use another one'
+                          : true
+                      }
+                      return true
+                    },
+                  })}
+                  type="text"
+                  label="Custom URL"
+                  error={errors?.metadata?.slug?.message as string}
+                  description="Custom URL that will be used for the page."
+                />
+
+                <Select
+                  onChange={(newValue) => {
+                    setValue('network', Number(newValue))
+                    setValue('lock.currencyContractAddress', null)
+                    setValue(
+                      'currencySymbol',
+                      networks[newValue].nativeCurrency.symbol
+                    )
+                  }}
+                  options={networkOptions}
+                  label="Network"
+                  defaultValue={network}
+                  description={<NetworkDescription />}
+                />
+                <div className="mb-4">
+                  {noBalance && (
+                    <BalanceWarning
+                      network={details.network!}
+                      balance={balance}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </Disclosure>
@@ -242,17 +281,27 @@ export const Form = ({ onSubmit }: FormProps) => {
                           message: 'Add a start date to your event',
                         },
                       })}
+                      min={today}
                       type="date"
-                      label="Star Date"
+                      label="Start date"
                       error={
                         // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_start_date?.message || ''
                       }
                     />
                     <Input
-                      {...register('metadata.ticket.event_start_time')}
+                      {...register('metadata.ticket.event_start_time', {
+                        required: {
+                          value: true,
+                          message: 'This value is required',
+                        },
+                      })}
                       type="time"
-                      label="Start Time"
+                      label="Start time"
+                      error={
+                        // @ts-expect-error Property 'event_start_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_start_time?.message || ''
+                      }
                     />
                   </div>
 
@@ -265,16 +314,27 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       type="date"
-                      label="End Date"
+                      min={minEndDate}
+                      label="End date"
                       error={
                         // @ts-expect-error Property 'event_start_date' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_end_date?.message || ''
                       }
                     />
                     <Input
-                      {...register('metadata.ticket.event_end_time')}
+                      {...register('metadata.ticket.event_end_time', {
+                        required: {
+                          value: true,
+                          message: 'This value is required',
+                        },
+                      })}
                       type="time"
-                      label="End Time"
+                      min={minEndTime}
+                      label="End time"
+                      error={
+                        // @ts-expect-error Property 'event_end_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
+                        errors.metadata?.ticket?.event_end_time?.message || ''
+                      }
                     />
                   </div>
 
@@ -366,7 +426,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       type="number"
                       autoComplete="off"
                       placeholder="0.00"
-                      step={0.01}
+                      step="any"
                       disabled={isFree}
                       {...register('lock.keyPrice', {
                         required: !isFree,

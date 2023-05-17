@@ -15,12 +15,12 @@ import {
 import { CgClose as CloseIcon } from 'react-icons/cg'
 import { Size, SizeStyleProp } from '~/types'
 
-interface NavbarMenuProps {
+export interface NavbarMenuProps {
   title: string
   options: { title: string; url: string }[]
 }
 
-interface NavbarImageProps {
+export interface NavbarImageProps {
   title: string
   src: string
   url: string
@@ -34,18 +34,18 @@ interface NavLinkProps {
   description?: string
 }
 
-interface NavEmbedProps {
+export interface NavEmbedProps {
   title: string
   embed: string
 }
 
-type NavOptionProps =
+export type NavOptionProps =
   | NavbarMenuProps
   | NavbarImageProps
   | NavLinkProps
   | NavEmbedProps
 
-type MenuSectionProps =
+export type MenuSectionProps =
   | {
       title: string
       small?: boolean
@@ -57,7 +57,7 @@ type MenuSectionProps =
       url: string
     }
 
-type ActionsProps =
+export type ActionsProps =
   | {
       title: string
       url: string
@@ -66,12 +66,14 @@ type ActionsProps =
   | {
       content: ReactNode
     }
-interface NavbarProps {
+export interface NavbarProps {
   menuSections: MenuSectionProps[]
   actions: ActionsProps[]
   logo: {
     url: string
     src?: string
+    size?: number // custom logo size
+    domain?: string
   }
   extraClass?: {
     mobile?: string
@@ -401,6 +403,8 @@ export const HeaderNav = ({
   const logoUrl = logo.url || '/'
   const logoImageSrc = logo.src || DefaultLogo
 
+  const hasDomain = logo?.domain?.length
+
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!
     // disable scroll of contents when menu mobile is expanded
@@ -415,7 +419,7 @@ export const HeaderNav = ({
   return (
     <div className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
       <div className="flex items-center justify-between w-full h-24 gap-2">
-        <div className="flex gap-8">
+        <div className="flex items-center gap-8">
           <div>
             <div className="flex items-center gap-2">
               <div className="block lg:hidden">
@@ -426,7 +430,25 @@ export const HeaderNav = ({
                 />
               </div>
               <Link href={logoUrl}>
-                <img src={logoImageSrc} alt="logo" className="h-5 lg:h-6" />
+                <div
+                  className={`grid items-center gap-1 divide-x md:gap-2 ${
+                    hasDomain ? 'grid-cols-2' : ''
+                  }`}
+                >
+                  <img
+                    src={logoImageSrc}
+                    alt="logo"
+                    className="h-5 lg:h-6"
+                    style={{
+                      height: logo.size ? `${logo.size}px` : undefined,
+                    }}
+                  />
+                  {logo?.domain && (
+                    <span className="pl-1 text-sm font-semibold md:pl-2 md:text-xl">
+                      {logo.domain}
+                    </span>
+                  )}
+                </div>
               </Link>
             </div>
           </div>
@@ -448,7 +470,7 @@ export const HeaderNav = ({
                 const { title, url, icon } = action
                 return (
                   <Link href={url} key={index}>
-                    <Button variant="outlined-primary" size="small">
+                    <Button as="div" variant="outlined-primary" size="small">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold lg:text-base text-brand-ui-primary">
                           {title}
@@ -465,7 +487,7 @@ export const HeaderNav = ({
                   </Link>
                 )
               } else if ('content' in action) {
-                return action.content
+                return <div key={index}>{action.content}</div>
               }
               return null
             })}

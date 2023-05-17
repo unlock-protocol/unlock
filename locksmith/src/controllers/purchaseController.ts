@@ -1,4 +1,5 @@
 import { Response, Request } from 'express'
+import stripe from '../config/stripe'
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -16,8 +17,26 @@ import { isSoldOut } from '../operations/lockOperations'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
-import config from '../config/config'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
+import { z } from 'zod'
+
+const PaymentCaptureBody = z.object({
+  lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
+  network: z.number(),
+  userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
+  recipients: z.array(
+    z.string().transform((item) => Normalizer.ethereumAddress(item))
+  ),
+  referrers: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  paymentIntent: z.string(),
+})
 
 export class PurchaseController {
   // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.
@@ -94,13 +113,13 @@ export class PurchaseController {
     }
 
     try {
-      const processor = new PaymentProcessor(config.stripeSecret!)
+      const processor = new PaymentProcessor()
       const paymentIntentDetails = await processor.createPaymentIntent(
         Normalizer.ethereumAddress(userAddress),
         normalizedRecipients,
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
-        pricing,
+        pricing * 100,
         network,
         stripeConnectApiKey,
         recurring
@@ -121,12 +140,15 @@ export class PurchaseController {
     request: SignedRequest,
     response: Response
   ): Promise<any> {
-    const { network, recipients, paymentIntent: paymentIntentId } = request.body
-    const userAddress = Normalizer.ethereumAddress(request.body.userAddress)
-    const lockAddress = Normalizer.ethereumAddress(request.body.lock)
-    const normalizedRecipients: string[] = recipients.map((address: string) =>
-      Normalizer.ethereumAddress(address)
-    )
+    const {
+      network,
+      recipients,
+      paymentIntent: paymentIntentId,
+      data,
+      referrers,
+      lock: lockAddress,
+      userAddress,
+    } = await PaymentCaptureBody.parseAsync(request.body)
 
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
@@ -138,11 +160,8 @@ export class PurchaseController {
       })
     }
 
-    const soldOut = await isSoldOut(
-      lockAddress,
-      network,
-      normalizedRecipients.length
-    )
+    const soldOut = await isSoldOut(lockAddress, network, recipients.length)
+
     if (soldOut) {
       // TODO: Cancel authorization
       return response.status(400).send({
@@ -151,7 +170,7 @@ export class PurchaseController {
     }
 
     try {
-      const processor = new PaymentProcessor(config.stripeSecret!)
+      const processor = new PaymentProcessor()
       const { charge, paymentIntent, paymentIntentRecord } =
         await processor.getPaymentIntentRecordAndCharge({
           userAddress,
@@ -159,6 +178,8 @@ export class PurchaseController {
           network,
           paymentIntentId,
           recipients,
+          referrers: referrers || [],
+          data: data || [],
         })
 
       const fulfillmentDispatcher = new Dispatcher()
@@ -178,7 +199,7 @@ export class PurchaseController {
             await charge.save()
 
             // Update Stripe's payment Intent
-            await processor.stripe.paymentIntents.update(
+            await stripe.paymentIntents.update(
               paymentIntentId,
               {
                 metadata: {
@@ -191,7 +212,7 @@ export class PurchaseController {
             )
 
             // We only charge the card when everything else was successful
-            await processor.stripe.paymentIntents.capture(paymentIntentId, {
+            await stripe.paymentIntents.capture(paymentIntentId, {
               stripeAccount: paymentIntentRecord.connectedStripeId,
             })
             // Send the transaction hash without waiting.
@@ -233,13 +254,15 @@ export class PurchaseController {
 
       return
     } catch (error) {
+      if (response.headersSent) {
+        return
+      }
       logger.error('There was an error when capturing payment', error)
       return response.status(400).send({ error: error.message })
     }
   }
 
-  // TODO: add captcha to avoid spamming!
-  // TODO: save claims?
+  // DEPRECATED.
   async claim(req: SignedRequest, res: Response) {
     const { publicKey, lock, network, data } =
       req.body.message['Claim Membership']

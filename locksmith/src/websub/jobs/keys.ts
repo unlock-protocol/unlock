@@ -1,20 +1,33 @@
 import { Op } from 'sequelize'
 import { networks } from '@unlock-protocol/networks'
-import { Key } from '../../graphql/datasource'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS_ON_LOCK, TOPIC_KEYS_ON_NETWORK } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
 import { logger } from '../../logger'
+import {
+  SubgraphService,
+  KeyOrderBy,
+  OrderDirection,
+} from '@unlock-protocol/unlock-js'
 
 const FETCH_LIMIT = 25
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
-  const keySource = new Key(network)
-  const keys = await keySource.getKeys({
-    first: FETCH_LIMIT,
-    skip: page ? page * FETCH_LIMIT : 0,
-  })
+  const subgraph = new SubgraphService()
+  const skip = page ? page * FETCH_LIMIT : 0
+
+  const keys = await subgraph.keys(
+    {
+      first: FETCH_LIMIT,
+      skip,
+      orderBy: KeyOrderBy.CreatedAtBlock,
+      orderDirection: OrderDirection.Desc,
+    },
+    {
+      networks: [network],
+    }
+  )
 
   const keyIds = keys.map((key: any) => key.id)
   const processedKeys = await ProcessedHookItem.findAll({
@@ -40,7 +53,7 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
 
     // If empty, break the loop and return as there are no more new keys to process.
     if (!keys.length) {
-      logger.info('No new keys for', { network })
+      logger.info(`No new keys for ${network}`)
       break
     }
     logger.info('Found new keys', {

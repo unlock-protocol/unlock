@@ -1,8 +1,11 @@
 const { ethers } = require('hardhat')
-
-const CURRENT_VERSION = 10
+const { networks } = require('@unlock-protocol/networks')
 
 async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
+  const { chainId } = await ethers.provider.getNetwork()
+  if (!unlockAddress) {
+    ({unlockAddress} = networks[chainId])
+  }
   if (!publicLockAddress) {
     // eslint-disable-next-line no-console
     throw new Error(
@@ -16,7 +19,7 @@ async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
 
   // get unlock instance
   let unlock
-  if (unlockVersion < CURRENT_VERSION) {
+  if (unlockVersion) {
     const contracts = require('@unlock-protocol/contracts')
     const { abi } = contracts[`UnlockV${unlockVersion}`]
     unlock = await ethers.getContractAt(abi, unlockAddress)

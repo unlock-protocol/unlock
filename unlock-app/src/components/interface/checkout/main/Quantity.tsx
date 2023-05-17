@@ -13,9 +13,9 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { Pricing } from '../Lock'
 import { ViewContract } from '../ViewContract'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -46,17 +46,21 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   const formattedData = getLockProps(
     lock,
     lock!.network,
-    config.networks[lock!.network].baseCurrencySymbol,
+    config.networks[lock!.network].nativeCurrency.symbol,
     lock!.name,
     quantity
   )
 
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
+
   const isDisabled = quantity < 1
-  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">
@@ -65,7 +69,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
               <Pricing
                 keyPrice={formattedData.formattedKeyPrice}
                 usdPrice={formattedData.convertedKeyPrice}
-                isCardEnabled={formattedData.cardEnabled}
+                isCardEnabled={!!creditCardEnabled}
               />
             </div>
           </div>

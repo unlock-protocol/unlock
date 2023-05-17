@@ -10,8 +10,8 @@ dataSources:
     name: Unlock
     source:
       abi: Unlock
-      address: "0x0314E34345C2327aC753C5Bf0D0751Cf6C1BfdE2"
-      startBlock: 9856400
+      address: "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f"
+      startBlock: 19338700
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,7 +35,7 @@ dataSources:
         - event: GNPChanged(uint256,uint256,address,uint256,address)
           handler: handleGNPChanged
       file: ./src/unlock.ts
-    network: palm-mainnet
+    network: gnosis
 templates:
   - kind: ethereum
     name: PublicLock
@@ -110,4 +110,4 @@ templates:
           handler: handleLockMetadata
           receipt: true
       file: ./src/public-lock.ts
-    network: palm-mainnet
+    network: gnosis

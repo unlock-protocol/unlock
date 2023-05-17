@@ -9,7 +9,7 @@ task('release', 'Release a new version of the contract')
     const contractName = contract.replace('contracts/', '').replace('.sol', '')
 
     if (!['Unlock', 'PublicLock'].includes(contractName))
-      throw new Error('Only Unlock and PublickLock supported')
+      throw new Error('Only Unlock and PublicLock supported')
 
     // get data
     await hre.run('compile', contractName)

@@ -8,7 +8,8 @@ import {
 } from '@radix-ui/react-tooltip'
 import { ReactNode } from 'react'
 
-interface Props extends Pick<TooltipContentProps, 'side' | 'sideOffset'> {
+export interface Props
+  extends Pick<TooltipContentProps, 'side' | 'sideOffset'> {
   tip: ReactNode
   children: ReactNode
   label?: string

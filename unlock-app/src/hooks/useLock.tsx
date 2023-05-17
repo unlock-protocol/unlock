@@ -9,8 +9,8 @@ import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import LocksContext from '../contexts/LocksContext'
 import { FATAL_WRONG_NETWORK } from '../errors'
 import { Lock } from '../unlockTypes'
-
-import { getCardConnected, getFiatPricing } from './useCards'
+import { getCardConnected } from './useCards'
+import { getLockUsdPrice } from './useUSDPricing'
 /**
  * Event handler
  * @param {*} hash
@@ -26,11 +26,7 @@ export const processTransaction = async (
   network: number
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
-  const blockTime = config.networks[network].blockTime
-  if (
-    !transaction ||
-    (transaction?.confirmations || 0) <= config.requiredConfirmations
-  ) {
+  if (!transaction || (transaction?.confirmations || 0) <= 12) {
     // Polling if the transaction is not confirmed
     setTimeout(async () => {
       processTransaction(
@@ -42,7 +38,7 @@ export const processTransaction = async (
         hash,
         network
       )
-    }, blockTime / 2)
+    }, 1000) // every second
 
     setLock({
       ...lock,
@@ -359,6 +355,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
   const config = useConfig()
   const [error, setError] = useState<string | null>(null)
 
+  // TODO: to remove? not used anywhere
   const getLock = async (opts: any = {}) => {
     let lockDetails
 
@@ -368,11 +365,11 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       lockDetails = await web3Service.getLock(lock.address, network)
       if (opts?.pricing) {
         try {
-          const fiatPricing = await getFiatPricing(
-            config,
-            lock.address,
-            network
-          )
+          const fiatPricing = await getLockUsdPrice({
+            network,
+            currencyContractAddress: lock?.currencyContractAddress,
+            amount: Number(lock?.keyPrice),
+          })
           lockDetails = {
             ...lockDetails,
             fiatPricing,
@@ -486,9 +483,14 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     return web3Service.getKeyByLockForOwner(lock.address, owner, network)
   }
 
+  // TODO: to remove? not used anywhere
   const getCreditCardPricing = async () => {
     try {
-      const fiatPricing = await getFiatPricing(config, lock.address, network)
+      const fiatPricing = await getLockUsdPrice({
+        network,
+        currencyContractAddress: lock?.currencyContractAddress,
+        amount: Number(lock?.keyPrice),
+      })
       const mergedLock = {
         ...lock,
         fiatPricing,

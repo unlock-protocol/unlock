@@ -20,7 +20,6 @@ import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 interface Props {
   injectedProvider: any
@@ -45,9 +44,6 @@ export function Checkout({
   })
   const [state] = useActor(checkoutService)
   const { account } = useAuth()
-  const { authenticateWithProvider } = useAuthenticate({
-    injectedProvider,
-  })
 
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
@@ -74,6 +70,8 @@ export function Checkout({
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
+      // Reset the Paywall State!
+      checkoutService.send('DISCONNECT')
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
@@ -106,6 +104,7 @@ export function Checkout({
       mint,
       messageToSign,
       paywallConfig.messageToSign,
+      checkoutService,
     ]
   )
 
@@ -264,13 +263,6 @@ export function Checkout({
       }
     }
   }, [injectedProvider, onClose, checkoutService, matched, communication])
-
-  // Autoconnect
-  useEffect(() => {
-    if (paywallConfig?.autoconnect) {
-      authenticateWithProvider('METAMASK')
-    }
-  }, [paywallConfig?.autoconnect, authenticateWithProvider])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

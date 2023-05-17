@@ -70,13 +70,16 @@ export interface NetworkConfig {
   chain?: string
   provider: string
   publicProvider: string
-  locksmithUri?: string // TODO: remove as this should not be network specific
-  unlockAppUrl?: string // TODO: remove as this should not be network specific
-  blockTime?: number
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
   keyManagerAddress?: string
+  universalCard?: {
+    cardPurchaserAddress: string
+    stripeDestinationNetwork: string
+    stripeDestinationCurrency: string
+  }
+  publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string
     endpointV2?: string
@@ -89,7 +92,8 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    oracle?: string
+    oracle: string
+    universalRouterAddress: string
   }>
   swapPurchaser?: string
   ethersProvider?: ethers.providers.Provider
@@ -105,6 +109,10 @@ export interface NetworkConfig {
   opensea?: {
     tokenUrl: (lockAddress: string, tokenId: string) => string | null
     collectionUrl?: (lockAddress: string) => string
+    profileUrl?: (address: string) => string
+  }
+  blockScan?: {
+    url?: (address: string) => string
   }
   isTestNetwork?: boolean
   erc20?: {
@@ -112,8 +120,6 @@ export interface NetworkConfig {
     address: string
   } | null
   maxFreeClaimCost?: number
-  requiredConfirmations?: number
-  baseCurrencySymbol?: string
   nativeCurrency: Omit<Token, 'address'>
   wrappedNativeCurrency?: Token
   startBlock?: number
@@ -121,9 +127,9 @@ export interface NetworkConfig {
   description: string
   url?: string
   faucet?: string
-  teamMultisig?: string
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
+  fullySubsidizedGas?: boolean
 }
 
 export interface NetworkConfigs {
@@ -175,6 +181,7 @@ export interface ChainExplorerURLBuilders {
   [site: string]: (_address: string) => string
 }
 
+// TODO: to remove, deprecated
 export interface PaywallCallToAction {
   default: string
   expired: string
@@ -205,7 +212,7 @@ export interface PaywallConfig {
   pessimistic?: boolean
   icon?: string
   unlockUserAccounts?: true | 'true' | false
-  callToAction: PaywallCallToAction
+  callToAction: PaywallCallToAction // TODO: to remove, deprecated
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
@@ -245,6 +252,8 @@ export interface Lock {
   expirationDuration: number
   key: Key
   currencyContractAddress: string | null
+  currencyDecimals?: number | null
+  currencySymbol?: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number

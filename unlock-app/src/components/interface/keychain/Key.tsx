@@ -16,7 +16,7 @@ import {
   RiErrorWarningFill as DangerIcon,
   RiArrowGoForwardFill as ExtendMembershipIcon,
 } from 'react-icons/ri'
-import { Badge, Button, minifyAddress } from '@unlock-protocol/ui'
+import { Badge, Button, Card, minifyAddress } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
@@ -158,10 +158,12 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
-  const isAvailableOnOpenSea =
-    networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+  const { opensea } = networks[network] ?? {}
 
-  const baseSymbol = config.networks[network].baseCurrencySymbol!
+  const isAvailableOnOpenSea =
+    opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+
+  const baseSymbol = config.networks[network].nativeCurrency.symbol!
   const symbol =
     isLockDataLoading || !lockData
       ? baseSymbol
@@ -186,7 +188,7 @@ function Key({ ownedKey, account, network }: Props) {
   }
 
   return (
-    <div className="grid gap-6 p-4 bg-white border border-gray-200 shadow-lg rounded-xl">
+    <Card className="grid gap-6" shadow="lg" padding="xs">
       <KeyInfoDrawer
         isOpen={showMoreInfo}
         setIsOpen={setShowMoreInfo}
@@ -316,7 +318,7 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {isEthPassSupported(network) && (
+                  {tokenId && isEthPassSupported(network) && (
                     <>
                       <Menu.Item>
                         {({ active, disabled }) => (
@@ -496,12 +498,12 @@ function Key({ ownedKey, account, network }: Props) {
         <h3 className="text-xl font-bold rounded">{lock.name}</h3>
         {networkName && (
           <div className="flex items-center justify-between gap-2 py-1">
-            <span className="text-gray-500 capitalize">Network</span>
+            <span className="text-gray-500">Network</span>
             <span className="font-bold">{networkName}</span>
           </div>
         )}
       </div>
-    </div>
+    </Card>
   )
 }
 export default Key

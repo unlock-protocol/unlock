@@ -21,11 +21,13 @@ export { Footer } from '~/components/Footer/Footer'
 export { Placeholder } from '~/components/Placeholder'
 export { Toggle } from '~/components/Toggle/Toggle'
 export { Detail } from '~/components/Detail/Detail'
+export { Certificate } from '~/components/Certificate/Certificate'
+export { Card } from '~/components/Card/Card'
 export * from './types'
 export { ImageUpload } from '~/components/ImageUpload/ImageUpload'
 export * from './utils'
 export {
   UnlockUIProvider,
   useUnlockUI,
-  UnlocUIContext,
+  UnlockUIContext,
 } from '~/components/Provider'

@@ -1,7 +1,4 @@
-/* eslint strict: 0, global-require: 0 */
-
-'use strict'
-
+// eslint-disable-next-line reserved-reserved
 import { test, expect } from 'vitest'
 
 test('entry point parse', () => {

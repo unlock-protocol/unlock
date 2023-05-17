@@ -18,6 +18,8 @@ import {
   useCheckoutConfigsByUser,
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
+import { useLockSettings } from '~/hooks/useLockSettings'
+import { useQuery } from '@tanstack/react-query'
 const Header = () => {
   return (
     <header className="flex flex-col gap-4">
@@ -35,39 +37,118 @@ export const CheckoutUrlPage = () => {
   const query = router.query
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
-
-  const DEFAULT_CONFIG = useMemo(
-    () =>
-      ({
-        locks:
-          network && lockAddress
-            ? {
-                [lockAddress as string]: {
-                  network: parseInt(`${network!}`),
-                  skipRecipient: true,
-                },
-              }
-            : {},
-        pessimistic: true,
-        skipRecipient: true,
-      } as PaywallConfig),
-    [lockAddress, network]
+  const { getIsRecurringPossible } = useLockSettings()
+  const {
+    isPlaceholderData: isRecurringSettingPlaceholder,
+    data: recurringSetting,
+  } = useQuery(
+    ['isRecurringPossible', network, lockAddress],
+    async () => {
+      return getIsRecurringPossible({
+        lockAddress: lockAddress!.toString(),
+        network: Number(network!),
+      })
+    },
+    {
+      placeholderData: {
+        isRecurringPossible: false,
+        oneYearRecurring: 0,
+        gasRefund: 0,
+      },
+      enabled: Boolean(network && lockAddress),
+    }
   )
-
-  const { data: checkoutConfigList, refetch: refetchConfig } =
-    useCheckoutConfigsByUser()
 
   const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
     id: null as null | string,
-    name: 'default',
-    config: DEFAULT_CONFIG,
+    name: 'config',
+    config: {
+      locks:
+        network && lockAddress
+          ? {
+              [lockAddress as string]: {
+                network: parseInt(`${network!}`),
+                skipRecipient: true,
+              },
+            }
+          : {},
+      icon: '',
+      pessimistic: true,
+      skipRecipient: true,
+    },
   })
+
+  const DEFAULT_CONFIG = useMemo(() => {
+    const recurringPayments = recurringSetting?.isRecurringPossible
+      ? recurringSetting.oneYearRecurring
+      : undefined
+    return {
+      locks:
+        network && lockAddress
+          ? {
+              [lockAddress as string]: {
+                network: parseInt(`${network!}`),
+                skipRecipient: true,
+                recurringPayments,
+              },
+            }
+          : {},
+      icon: '',
+      pessimistic: true,
+      skipRecipient: true,
+    } as PaywallConfig
+  }, [recurringSetting, lockAddress, network])
+
+  const {
+    isLoading: isLoadingConfigList,
+    data: checkoutConfigList,
+    refetch: refetchConfigList,
+  } = useCheckoutConfigsByUser()
 
   const { mutateAsync: updateConfig, isLoading: isConfigUpdating } =
     useCheckoutConfigUpdate()
 
   const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
     useCheckoutConfigRemove()
+
+  // retrieve recurringPayments when lock is present in url
+  useEffect(() => {
+    if (
+      (!lockAddress && !network) ||
+      isRecurringSettingPlaceholder ||
+      isLoadingConfigList ||
+      (checkoutConfigList || [])?.length > 0
+    )
+      return
+    const getDefaultConfig = async (): Promise<void> => {
+      const recurringPayments = recurringSetting?.isRecurringPossible
+        ? recurringSetting.oneYearRecurring
+        : undefined
+
+      setCheckoutConfig((state) => {
+        if (state.config.locks[lockAddress as string]) {
+          // set recurring value
+          state.config.locks[lockAddress as string].recurringPayments =
+            recurringPayments
+        }
+
+        return {
+          ...state,
+          config: {
+            ...state.config,
+          },
+        }
+      })
+    }
+    getDefaultConfig()
+  }, [
+    lockAddress,
+    network,
+    isRecurringSettingPlaceholder,
+    recurringSetting,
+    isLoadingConfigList,
+    checkoutConfigList,
+  ])
 
   const onConfigSave = useCallback<MouseEventHandler<HTMLButtonElement>>(
     async (event) => {
@@ -82,9 +163,9 @@ export const CheckoutUrlPage = () => {
         name: updated.name,
         config: updated.config as PaywallConfig,
       })
-      await refetchConfig()
+      await refetchConfigList()
     },
-    [checkoutConfig, updateConfig, refetchConfig]
+    [checkoutConfig, updateConfig, refetchConfigList]
   )
 
   const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
@@ -95,20 +176,19 @@ export const CheckoutUrlPage = () => {
         return
       }
       await removeConfig(checkoutConfig.id)
-      const { data: list } = await refetchConfig()
+      const { data: list } = await refetchConfigList()
       const result = list?.[0]
-      if (!result) return
       setCheckoutConfig({
-        id: result.id,
-        name: result.name,
-        config: (result.config as PaywallConfig) || DEFAULT_CONFIG,
+        id: result?.id || null,
+        name: result?.name || 'config',
+        config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
       })
       setDeleteConfirmation(false)
     },
     [
       checkoutConfig,
       removeConfig,
-      refetchConfig,
+      refetchConfigList,
       DEFAULT_CONFIG,
       setDeleteConfirmation,
     ]
@@ -196,34 +276,45 @@ export const CheckoutUrlPage = () => {
         </div>
       </Modal>
       <TopBar />
-      <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
-        <div className="md:w-1/2">
+      <div className="z-[1] flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
+        <div className="z-0 order-2 md:w-1/2 md:order-1">
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
           />
         </div>
-        <div className="flex flex-col gap-4 md:w-1/2">
+        <div className="z-0 flex flex-col order-1 gap-4 md:w-1/2 md:order-2">
           <Header />
           <div className="flex items-center w-full gap-4 p-2">
             <div className="w-full">
               <ConfigComboBox
+                disabled={isConfigUpdating}
                 items={
                   (checkoutConfigList as unknown as CheckoutConfig[]) ||
                   ([] as CheckoutConfig[])
                 }
-                onChange={(value) => {
-                  setCheckoutConfig({
-                    id: value.id,
-                    name: value.name,
-                    config: value.config || DEFAULT_CONFIG,
-                  })
+                onChange={async ({ config, ...rest }) => {
+                  const option = {
+                    ...rest,
+                    config: config || DEFAULT_CONFIG,
+                  }
+                  setCheckoutConfig(option)
+                  if (!option.id) {
+                    const response = await updateConfig(option)
+                    setCheckoutConfig({
+                      id: response.id,
+                      config: response.config as PaywallConfig,
+                      name: response.name,
+                    })
+                    await refetchConfigList()
+                  }
                 }}
                 value={checkoutConfig}
               />
             </div>
             <Button
               loading={isConfigUpdating}
+              disabled={isRecurringSettingPlaceholder}
               iconLeft={<SaveIcon />}
               onClick={onConfigSave}
               size="small"

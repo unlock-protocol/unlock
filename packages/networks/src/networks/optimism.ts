@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const optimism: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   featured: true,
   publicProvider: 'https://mainnet.optimism.io',
   provider: 'https://rpc.unlock-protocol.com/10',
@@ -10,7 +11,6 @@ export const optimism: NetworkConfig = {
   id: 10,
   name: 'Optimism',
   chain: 'optimism',
-  blockTime: 8000,
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
@@ -34,12 +34,9 @@ export const optimism: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/optimism/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  baseCurrencySymbol: 'Eth',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
-    name: 'Eth',
-    symbol: 'Eth',
+    name: 'Ether',
+    symbol: 'ETH',
     decimals: 18,
     coingecko: 'ethereum',
   },
@@ -48,11 +45,11 @@ export const optimism: NetworkConfig = {
   url: 'https://www.optimism.io/',
   isTestNetwork: false,
   maxFreeClaimCost: 10,
-  teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+    universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
   },
   swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   wrappedNativeCurrency: {

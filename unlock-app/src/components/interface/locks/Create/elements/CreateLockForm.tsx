@@ -101,7 +101,7 @@ export const CreateLockForm = ({
     control,
   })
 
-  const { baseCurrencySymbol } = networks[selectedNetwork!] ?? {}
+  const baseCurrencySymbol = networks[selectedNetwork!].nativeCurrency.symbol
 
   const getBalance = async () => {
     const balance = await getAccountTokenBalance(
@@ -259,7 +259,7 @@ export const CreateLockForm = ({
                 <Input
                   tabIndex={-1}
                   autoComplete="off"
-                  step={0.01}
+                  step="any"
                   disabled={unlimitedDuration}
                   {...register('expirationDuration', {
                     min: 0,
@@ -348,7 +348,7 @@ export const CreateLockForm = ({
                     type="number"
                     autoComplete="off"
                     placeholder="0.00"
-                    step={0.01}
+                    step="any"
                     disabled={isFree}
                     {...register('keyPrice', {
                       required: !isFree,

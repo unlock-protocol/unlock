@@ -3,7 +3,7 @@ import type { SizeStyleProp } from '../../types'
 import { twMerge } from 'tailwind-merge'
 import { Box, Props as BoxProps } from '../Box/Box'
 
-type Variant =
+export type Variant =
   | 'dark'
   | 'orange'
   | 'red'
@@ -13,7 +13,7 @@ type Variant =
   | 'primary'
   | 'default'
 
-interface Props extends BoxProps {
+export interface Props extends BoxProps {
   iconRight?: ReactNode
   iconLeft?: ReactNode
   variant?: Variant

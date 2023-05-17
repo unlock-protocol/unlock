@@ -177,26 +177,53 @@ export function Connected({
   const [state, send] = useActor<CheckoutService>(service as CheckoutService)
   const { account, email, isUnlockAccount, deAuthenticate, connected } =
     useAuth()
+  const [signing, setSigning] = useState(false)
+
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
-  const { signIn, status, signOut } = useSIWE()
+  const { signIn, signOut, isSignedIn } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
-  useEffect(() => {
-    if (connected && isUnlockAccount) {
-      signIn()
-    }
-  }, [connected, isUnlockAccount, signIn])
+  const autoconnect = state.context?.paywallConfig?.autoconnect
 
-  if (state.context?.paywallConfig?.autoconnect) {
+  useEffect(() => {
+    const autoSignIn = async () => {
+      if (
+        !isSignedIn &&
+        !signing &&
+        connected &&
+        (isUnlockAccount || autoconnect)
+      ) {
+        setSigning(true)
+        await signIn()
+        setSigning(false)
+      }
+    }
+    autoSignIn()
+  }, [connected, autoconnect, isUnlockAccount, signIn, signing, isSignedIn])
+
+  // Autoconnect
+  useEffect(() => {
+    if (autoconnect) {
+      authenticateWithProvider('METAMASK')
+    }
+  }, [autoconnect, authenticateWithProvider])
+
+  useEffect(() => {
+    if (!account) {
+      console.debug('Not connected')
+    } else console.debug(`Connected as ${account}`)
+  }, [account])
+
+  if (autoconnect) {
     return <div className="space-y-2">{children}</div>
   }
 
   const onDisconnect = async () => {
     setIsDisconnecting(true)
-    send('DISCONNECT')
     await signOut()
-    deAuthenticate()
+    await deAuthenticate()
+    send('DISCONNECT')
     setIsDisconnecting(false)
   }
 

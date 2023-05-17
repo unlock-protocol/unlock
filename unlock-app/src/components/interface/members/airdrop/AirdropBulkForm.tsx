@@ -1,4 +1,4 @@
-import { Button, minifyAddress } from '@unlock-protocol/ui'
+import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { useList } from 'react-use'
 import { AirdropMember, AirdropListItem } from './AirdropElements'
 import { useDropzone } from 'react-dropzone'
@@ -18,9 +18,10 @@ const MAX_SIZE = 50
 interface Props {
   lock: Lock
   onConfirm(members: AirdropMember[]): void | Promise<void>
+  emailRequired?: boolean
 }
 
-export function AirdropBulkForm({ lock, onConfirm }: Props) {
+export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
   const [list, { set, clear, removeAt }] = useList<AirdropMember>([])
   const [error, setError] = useState('')
   const config = useConfig()
@@ -51,6 +52,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
 
       const linesWithError: number[] = []
       const duplicates: AirdropMember[] = []
+      const missingEmail: AirdropMember[] = []
 
       const members = await Promise.all(
         json.map(async (item, line) => {
@@ -108,6 +110,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
             ({ wallet }) => wallet === member.wallet
           )
 
+          const noEmail = !member?.email?.includes('@')
           const existingBalance = member.balance || 0
           const alreadyToBeAdded = existingMembers.reduce(
             (total, existingMember) => total + existingMember.count,
@@ -124,6 +127,11 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
             return filtered
           }
 
+          if (noEmail && emailRequired) {
+            console.warn(`Email required and missing`, member)
+            missingEmail.push(member)
+            return filtered
+          }
           // push the item to array if new unique member found
           filtered.push(member)
           return filtered
@@ -151,6 +159,14 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
             .join(', ')}`
         )
       }
+
+      if (missingEmail.length > 0) {
+        errors.push(
+          `The following recipients are missing a required email address and have been discarded: ${missingEmail
+            .map((m) => `${minifyAddress(m.wallet)} -  (line ${m.line})`)
+            .join(', ')}`
+        )
+      }
       if (errors.length > 0) {
         setError(errors.join('\n\n'))
       }
@@ -168,10 +184,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
           {isLoadingMembers && (
             <div className="space-y-6">
               {Array.from({ length: 8 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-full h-8 bg-gray-100 rounded-lg animate-pulse"
-                />
+                <Placeholder.Line size="md" key={index} />
               ))}
             </div>
           )}

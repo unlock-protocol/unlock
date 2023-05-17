@@ -6,6 +6,7 @@ import {
   Detail,
   AddressInput,
   isAddressOrEns,
+  Tooltip,
 } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
@@ -16,7 +17,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
-import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
@@ -25,12 +26,18 @@ import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
+import { onResolveName } from '~/utils/resolvers'
+import { useMetadata } from '~/hooks/metadata'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { FiInfo as InfoIcon } from 'react-icons/fi'
 
 interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
   expirationDuration?: string
+  lockSettings?: Record<string, any>
 }
 
 const keysToIgnore = [
@@ -195,6 +202,7 @@ const ChangeManagerModal = ({
                           shouldValidate: true,
                         })
                       }}
+                      onResolveName={onResolveName}
                     />
                     {managerUnchanged && (
                       <span className="text-sm text-red-500">
@@ -228,6 +236,7 @@ export const MetadataCard = ({
   owner,
   network,
   expirationDuration,
+  lockSettings,
 }: MetadataCardProps) => {
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
@@ -237,6 +246,14 @@ export const MetadataCard = ({
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
+
+  const { data: lockMetadata } = useMetadata({
+    lockAddress: metadata.lockAddress,
+    network,
+  })
+  const types = getLockTypeByMetadata(lockMetadata)
+  const [eventType] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
   const { lockAddress, token: tokenId } = data ?? {}
 
@@ -289,9 +306,9 @@ export const MetadataCard = ({
   const onSendQrCode = async () => {
     if (!network) return
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
-      success: 'QR-code sent by email',
-      loading: 'Sending QR-code by email',
-      error: 'We could not send the QR-code.',
+      success: 'Email sent',
+      loading: 'Sending email...',
+      error: 'We could not send email.',
     })
   }
 
@@ -406,7 +423,7 @@ export const MetadataCard = ({
                   <span>Email:</span>
                   {hasEmail ? (
                     <div className="flex flex-col w-full gap-3 md:flex-row">
-                      <span className="block font-semibold text-black ">
+                      <span className="block text-base font-semibold text-black">
                         {data?.email}
                       </span>
                       <Button
@@ -416,19 +433,27 @@ export const MetadataCard = ({
                       >
                         Edit email
                       </Button>
-                      <Button
-                        size="tiny"
-                        variant="outlined-primary"
-                        onClick={onSendQrCode}
-                        disabled={
-                          sendEmailMutation.isLoading ||
-                          sendEmailMutation.isSuccess
-                        }
-                      >
-                        {sendEmailMutation.isSuccess
-                          ? 'QR-code sent by email'
-                          : 'Send QR-code by email'}
-                      </Button>
+                      {lockSettings?.sendEmail ? (
+                        SendEmailMapping[eventType as keyof LockType] && (
+                          <Button
+                            size="tiny"
+                            variant="outlined-primary"
+                            onClick={onSendQrCode}
+                            disabled={
+                              sendEmailMutation.isLoading ||
+                              sendEmailMutation.isSuccess
+                            }
+                          >
+                            {sendEmailMutation.isSuccess
+                              ? 'Email sent'
+                              : SendEmailMapping[eventType as keyof LockType]}
+                          </Button>
+                        )
+                      ) : (
+                        <Button size="tiny" variant="outlined-primary" disabled>
+                          Email are disabled
+                        </Button>
+                      )}
                     </div>
                   ) : (
                     <Button
@@ -459,9 +484,18 @@ export const MetadataCard = ({
               className="py-2"
               label={
                 <div className="flex items-center gap-2">
-                  <span>Key Holder:</span>
+                  <Tooltip
+                    tip="Address of the owner of the NFT."
+                    label="Address of the owner of the NFT."
+                    side="bottom"
+                  >
+                    <div className="flex items-center gap-1">
+                      <span>Key Owner </span>
+                      <InfoIcon />:
+                    </div>
+                  </Tooltip>
                   {/* show full address on desktop */}
-                  <div className="text-base font-bold break-words">
+                  <div className="text-base font-semibold text-black break-words">
                     <span className="hidden md:block">{owner}</span>
                     {/* show minified address on mobile */}
                     <span className="block md:hidden">
@@ -512,51 +546,62 @@ export const MetadataCard = ({
                 )}
               </>
             )}
-            <div className="w-full">
-              <Detail
-                className="py-2"
-                label={
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span>Key Manager:</span>
-                      {/* show full address on desktop */}
-                      <div className="text-base font-bold break-words">
-                        <span className="hidden md:block">{manager}</span>
-                        {/* show minified address on mobile */}
-                        <span className="block md:hidden">
-                          {addressMinify(manager)}
-                        </span>
-                      </div>
-                      <Button
-                        className="p-0 outline-none text-brand-ui-primary ring-0"
-                        variant="transparent"
-                        aria-label="blockscan link"
-                      >
-                        <a
-                          href={`https://blockscan.com/address/${manager}`}
-                          target="_blank"
-                          rel="noreferrer"
+            {manager && manager !== ADDRESS_ZERO && (
+              <div className="w-full">
+                <Detail
+                  className="py-2"
+                  label={
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Tooltip
+                          label="Address of the manager of the NFT. This address has the transfer rights for this NFT which cannot be transferred by its owner."
+                          tip="Address of the manager of the NFT. This address has the transfer rights for this NFT which cannot be transferred by its owner."
+                          side="right"
                         >
-                          <ExternalLinkIcon size={20} />
-                        </a>
-                      </Button>
+                          <div className="flex items-center gap-1">
+                            <span>Key Manager </span>
+                            <InfoIcon />:
+                          </div>
+                        </Tooltip>
+                        {/* show full address on desktop */}
+                        <div className="text-base font-semibold text-black break-words">
+                          <span className="hidden md:block">{manager}</span>
+                          {/* show minified address on mobile */}
+                          <span className="block md:hidden">
+                            {addressMinify(manager)}
+                          </span>
+                        </div>
+                        <Button
+                          className="p-0 outline-none text-brand-ui-primary ring-0"
+                          variant="transparent"
+                          aria-label="blockscan link"
+                        >
+                          <a
+                            href={`https://blockscan.com/address/${manager}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <ExternalLinkIcon size={20} />
+                          </a>
+                        </Button>
+                      </div>
+                      <ChangeManagerModal
+                        lockAddress={lockAddress}
+                        network={network}
+                        manager={manager}
+                        tokenId={tokenId}
+                        onChange={(keyManager) => {
+                          setData({
+                            ...data,
+                            keyManager,
+                          })
+                        }}
+                      />
                     </div>
-                    <ChangeManagerModal
-                      lockAddress={lockAddress}
-                      network={network}
-                      manager={manager}
-                      tokenId={tokenId}
-                      onChange={(keyManager) => {
-                        setData({
-                          ...data,
-                          keyManager,
-                        })
-                      }}
-                    />
-                  </div>
-                }
-              />
-            </div>
+                  }
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -564,6 +609,11 @@ export const MetadataCard = ({
   )
 }
 
+const SendEmailMapping: Record<keyof LockType, string> = {
+  isCertification: 'Send Certificate by email',
+  isEvent: 'Send QR-code by email',
+  isStamp: 'Send Stamp by email',
+}
 const UpdateEmailModal = ({
   isOpen,
   setIsOpen,
@@ -572,7 +622,6 @@ const UpdateEmailModal = ({
   lockAddress,
   network,
   hasEmail,
-  extraDataItems,
   onEmailChange,
 }: {
   isOpen: boolean
@@ -591,6 +640,11 @@ const UpdateEmailModal = ({
       email: '',
     },
   })
+  const { mutateAsync: updateUserMetadata } = useUpdateUserMetadata({
+    lockAddress,
+    userAddress,
+    network,
+  })
 
   const updateData = (formFields: FieldValues) => {
     reset() // reset form state
@@ -602,16 +656,7 @@ const UpdateEmailModal = ({
   }
 
   const updateMetadata = async (params: any, callback?: () => void) => {
-    const updateMetadataPromise = storage.updateUserMetadata(
-      network,
-      lockAddress,
-      userAddress,
-      {
-        metadata: {
-          protected: params.metadata,
-        },
-      }
-    )
+    const updateMetadataPromise = updateUserMetadata(params)
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
       success: 'Email successfully added to member',
@@ -629,31 +674,18 @@ const UpdateEmailModal = ({
     if (!isLockManager) return
     try {
       setLoading(true)
-      let metadata = {}
 
-      extraDataItems.map(([key, value]: [string, string | number]) => {
-        metadata = {
-          ...metadata,
-          [key]: value,
+      updateMetadata(
+        {
+          protected: {
+            email: formFields.email,
+          },
+          public: {},
+        },
+        () => {
+          updateData(formFields)
         }
-      })
-
-      // merge old metadata with new one to prevent data lost
-      metadata = {
-        ...metadata,
-        ...formFields,
-      }
-
-      const params = {
-        lockAddress,
-        userAddress,
-        network,
-        metadata,
-      }
-
-      updateMetadata(params, () => {
-        updateData(formFields)
-      })
+      )
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }
