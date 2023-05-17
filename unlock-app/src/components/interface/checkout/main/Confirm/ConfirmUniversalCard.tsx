@@ -6,6 +6,7 @@ import { Fragment, useState } from 'react'
 import { loadStripeOnramp } from '@stripe/crypto'
 import { useActor } from '@xstate/react'
 import { storage } from '~/config/storage'
+import { useMutation } from '@tanstack/react-query'
 
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { ViewContract } from '../../ViewContract'
@@ -61,6 +62,26 @@ export function ConfirmUniversalCard({
       enabled: !isInitialDataLoading,
     })
 
+  const createOnRampSession = useMutation(
+    async ({ network, lockAddress, body }: any) => {
+      const response = await storage.createOnRampSession(
+        network,
+        lockAddress,
+        body
+      )
+      return response.data
+    },
+    {}
+  )
+
+  const captureOnRampSession = useMutation(async (session: any) => {
+    const response = await storage.captureOnRampSession(
+      session.id,
+      session.quote.blockchain_tx_id
+    )
+    return response.data.transactionHash
+  })
+
   // TODO: Also configure webhook on the Stripe side?
   const onChange = async (event: any) => {
     const { session } = event
@@ -86,11 +107,7 @@ export function ConfirmUniversalCard({
     }
 
     if (session.status === 'fulfillment_complete') {
-      const response = await storage.captureOnRampSession(
-        session.id,
-        session.quote.blockchain_tx_id
-      )
-      const transactionHash = response.data.transactionHash
+      const transactionHash = await captureOnRampSession.mutateAsync(session)
       if (transactionHash) {
         onConfirmed(lock!.address, transactionHash)
       }
@@ -113,19 +130,19 @@ export function ConfirmUniversalCard({
       })
 
       // We pass recipients and purchaseData as these will be used for the onchain transaction
-      const response = await storage.createOnRampSession(
-        lock!.network,
-        lock!.address,
-        {
+      const session = await createOnRampSession.mutateAsync({
+        network: lock!.network,
+        lockAddress: lock!.address,
+        body: {
           transferSignature,
           transferMessage,
           purchaseSignature,
           purchaseMessage,
           recipients,
           purchaseData: purchaseData!,
-        }
-      )
-      setOnrampSession(response.data)
+        },
+      })
+      setOnrampSession(session)
     } catch (error) {
       console.error(error)
       onError(`We could not initiate the card payment. Please try again!`)
