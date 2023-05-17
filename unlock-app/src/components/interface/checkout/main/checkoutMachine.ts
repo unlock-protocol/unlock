@@ -156,6 +156,10 @@ type Payment =
       method: 'swap_and_purchase'
       route?: any
     }
+  | {
+      method: 'universal_card'
+      cardId?: string
+    }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 
@@ -517,7 +521,6 @@ export const checkoutMachine = createMachine(
           BACK: 'PAYMENT',
         },
       },
-
       CONFIRM: {
         on: {
           CONFIRM_MINT: {
