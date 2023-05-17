@@ -1,5 +1,8 @@
 import networks from '@unlock-protocol/networks'
 import { getFees, getGasCost } from '../utils/pricing'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import * as lockSettingOperations from './lockSettingOperations'
+import * as creditCardOperations from './creditCardOperations'
 
 interface Price {
   decimals: number
@@ -16,17 +19,81 @@ export interface Options {
   network: number
 }
 
+export interface LockPricingProps {
+  amount?: number
+  address?: string
+  lockAddress?: string
+  keysToPurchase?: number
+  network: number
+}
+
+export type PriceResults = Partial<
+  Price & {
+    priceInAmount: number
+  }
+>
+
+/**
+ * Get lock pricing with priority to credit card total if present otherwise return converted price
+ * @returns
+ */
+export async function getUsdLockPricingFromSettingOrConverted({
+  lockAddress,
+  network,
+  address: currencyContractAddress,
+  amount = 1,
+  keysToPurchase = 1,
+}: LockPricingProps): Promise<PriceResults> {
+  const web3Service = new Web3Service(networks)
+  // priority to credit card if present settings is present
+  if (lockAddress) {
+    const { creditCardPrice } = await lockSettingOperations.getSettings({
+      lockAddress,
+      network,
+    })
+
+    if (creditCardPrice) {
+      const creditCardEnabled =
+        await creditCardOperations.getCreditCardEnabledStatus({
+          lockAddress,
+          network,
+          totalPriceInCents: creditCardPrice ?? 0,
+        })
+
+      const lock = await web3Service.getLock(lockAddress, network)
+
+      const symbol =
+        lock?.currencySymbol || networks?.[network]?.nativeCurrency?.symbol
+
+      const price = lock?.keyPrice
+
+      return {
+        price,
+        symbol,
+        creditCardEnabled,
+        decimals: 18,
+        confidence: 1,
+        timestamp: new Date().getTime(),
+        priceInAmount: creditCardPrice * keysToPurchase,
+      }
+    }
+  }
+
+  // fallback to converted price
+  const result = await getDefiLammaPrice({
+    network,
+    address: currencyContractAddress,
+    amount,
+  })
+
+  return result
+}
+
 export async function getDefiLammaPrice({
   network,
-  address,
+  address: currencyContractAddress,
   amount = 1,
-}: Options): Promise<
-  Partial<
-    Price & {
-      priceInAmount: number
-    }
-  >
-> {
+}: Omit<LockPricingProps, 'lockAddress'>): Promise<PriceResults> {
   const networkConfig = networks[network]
   if (!network) {
     return {}
@@ -34,18 +101,19 @@ export async function getDefiLammaPrice({
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) => item.address?.toLowerCase() === address?.toLowerCase()
+    (item) =>
+      item.address?.toLowerCase() === currencyContractAddress?.toLowerCase()
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {
     items.push(`ethereum:${mainnetTokenAddress}`)
   }
 
-  if (address) {
-    items.push(`${networkConfig.chain}:${address}`)
+  if (currencyContractAddress) {
+    items.push(`${networkConfig.chain}:${currencyContractAddress}`)
   }
 
-  if (!address && coingecko) {
+  if (!currencyContractAddress && coingecko) {
     items.push(coingecko)
   }
 
@@ -78,19 +146,19 @@ export async function getDefiLammaPrice({
  * @returns
  */
 export const getTotalCharges = async ({
-  amount,
+  lockAddress,
   network,
   address,
-}: {
-  network: number
-  amount: number
-  address?: string
-}) => {
+  amount = 1,
+  keysToPurchase = 1,
+}: LockPricingProps) => {
   const [pricing, gasCost] = await Promise.all([
-    getDefiLammaPrice({
+    getUsdLockPricingFromSettingOrConverted({
       network,
       amount,
       address,
+      lockAddress,
+      keysToPurchase,
     }),
     getGasCost({ network }),
   ])

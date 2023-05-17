@@ -6,8 +6,8 @@ import * as Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as pricingOperations from '../../operations/pricingOperations'
+import { MIN_PAYMENT_STRIPE } from '../../utils/constants'
 
-const MIN_PAYMENT_STRIPE = 100
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
@@ -16,11 +16,12 @@ export const amount: RequestHandler = async (request, response) => {
     ? erc20Address
     : undefined
 
-  const result = await pricingOperations.getDefiLammaPrice({
-    network,
-    amount,
-    address,
-  })
+  const result =
+    await pricingOperations.getUsdLockPricingFromSettingOrConverted({
+      network,
+      amount,
+      address,
+    })
   return response.status(200).send({
     result,
   })
