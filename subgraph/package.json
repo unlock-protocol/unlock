@@ -10,13 +10,15 @@
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
-    "build": "yarn prepare && yarn codegen && yarn build:graph",
+    "build": "yarn introspect && yarn prepare && yarn codegen && yarn build:graph",
     "build:graph": "node bin/thegraph build",
     "deploy": "node bin/thegraph deploy",
     "deploy-all": "node bin/thegraph deploy-all",
     "create-local": "graph create --node http://localhost:8020/ ",
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
+    "introspect": "/bin/sh -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
+    "introspect:local": "INTROSPECT_NETWORK=31337 node bin/introspect.js",
     "test": "graph test",
     "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ unlock-protocol-mainnet",
     "ci": "yarn prepare && yarn codegen && yarn test -l",
@@ -41,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "graphql": "16.6.0",
     "matchstick-as": "0.5.2"
   }
 }
