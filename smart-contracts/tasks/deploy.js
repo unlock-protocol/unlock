@@ -165,3 +165,19 @@ task('deploy:keyManager', 'Deploy KeyManager contract')
     const keyManagerDeployer = require('../scripts/deployments/keyManager')
     return await keyManagerDeployer(locksmithsArray)
   })
+
+task('deploy:unlock-owner', 'Deploy UnlockOwner contract')
+  .addOptionalParam('timelock', 'the timelock of the DAO')
+  .addOptionalParam('unlockAddress', 'an instance of the Unlock contract')
+  .addOptionalParam('multisig', 'a multisig contract')
+  .setAction(
+    async ({ unlockAddress, timelock: daoTimelockAddress, multisig }) => {
+      // eslint-disable-next-line global-require
+      const unlockManagerDeployer = require('../scripts/deployments/unlockOwner')
+      return await unlockManagerDeployer({
+        unlockAddress,
+        daoTimelockAddress,
+        multisig,
+      })
+    }
+  )
