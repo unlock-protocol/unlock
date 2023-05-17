@@ -24,6 +24,7 @@ const {
   updateLockName,
   updateLockSymbol,
   updateRefundPenalty,
+  transferFrom,
 } = v4
 
 export default {
@@ -51,4 +52,5 @@ export default {
   renounceLockManager,
   updateRefundPenalty,
   updateTransferFee,
+  transferFrom,
 }
