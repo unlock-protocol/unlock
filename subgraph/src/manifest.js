@@ -12,7 +12,7 @@ module.exports = {
       kind: 'ethereum',
       source: {
         abi: 'Unlock',
-        address: '', // To be completed
+        address: '0x0000000000000000000000000000000000000000', // To be completed
         startBlock: 0, // To be completed!
       },
       mapping: {
@@ -177,7 +177,7 @@ module.exports = {
         ],
         file: './src/public-lock.ts',
       },
-      network: 'mainnet',
+      network: '', // needs to be completed
     },
   ],
 }

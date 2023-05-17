@@ -139,7 +139,7 @@ const deploy = async (network, graphLabel) => {
 // Note: the palm network is not supported by
 //
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'palm'].includes(d)
+  (d) => !['networks', 'default', 'palm', 'localhost'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
@@ -204,7 +204,8 @@ require('yargs/yargs')(hideBin(process.argv))
       checkHostedServiceAccessToken()
       checkStudioAccessToken()
 
-      // generate code
+      // generate code (we need to first have a manifest file)
+      await prepare('localhost')
       await codegen()
 
       // build and deploy each network
