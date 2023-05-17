@@ -107,11 +107,13 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   const web3Service = new Web3Service(networks)
   const lock = await web3Service.getLock(lockAddress, network)
 
-  const result = await pricingOperations.getDefiLammaPrice({
-    network,
-    address: lock?.currencyContractAddress,
-    amount: Number(`${lock.keyPrice}`),
-  })
+  const result =
+    await pricingOperations.getUsdLockPricingFromSettingOrConverted({
+      network,
+      address: lock?.currencyContractAddress,
+      amount: Number(`${lock.keyPrice}`),
+      lockAddress,
+    })
 
   const creditCardEnabled = await getCreditCardEnabledStatus({
     lockAddress: Normalizer.ethereumAddress(lockAddress),
