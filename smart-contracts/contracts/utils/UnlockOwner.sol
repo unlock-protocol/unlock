@@ -85,7 +85,7 @@ contract UnlockOwner {
   }
   
   function _isDAO() internal view returns (bool) {
-    return msg.sender == daoTimelockAddress;
+    return msg.sender == daoTimelockAddress && block.chainid == 1;
   }
 
 
