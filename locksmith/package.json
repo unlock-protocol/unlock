@@ -86,7 +86,7 @@
     "satori": "0.7.3",
     "sequelize": "6.31.1",
     "sequelize-cli": "6.6.0",
-    "siwe": "1.1.6",
+    "siwe": "2.1.4",
     "stripe": "12.3.0",
     "unified": "10.1.2",
     "unlock-abi-1-1": "1.1.1",
