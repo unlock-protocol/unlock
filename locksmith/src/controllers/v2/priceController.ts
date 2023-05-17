@@ -1,15 +1,11 @@
 import { RequestHandler } from 'express'
-
-import {
-  createPricingForPurchase,
-  createTotalCharges,
-  defiLammaPrice,
-} from '../../utils/pricing'
+import { createPricingForPurchase } from '../../utils/pricing'
 import { ethers } from 'ethers'
 import { getCreditCardEnabledStatus } from '../../operations/creditCardOperations'
 import * as Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import * as pricingOperations from '../../operations/pricingOperations'
 
 const MIN_PAYMENT_STRIPE = 100
 export const amount: RequestHandler = async (request, response) => {
@@ -20,7 +16,7 @@ export const amount: RequestHandler = async (request, response) => {
     ? erc20Address
     : undefined
 
-  const result = await defiLammaPrice({
+  const result = await pricingOperations.getDefiLammaPrice({
     network,
     amount,
     address,
@@ -38,7 +34,7 @@ export const total: RequestHandler = async (request, response) => {
     ? erc20Address
     : undefined
 
-  const charge = await createTotalCharges({
+  const charge = await pricingOperations.getTotalCharges({
     network,
     amount,
     address,
@@ -110,7 +106,7 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   const web3Service = new Web3Service(networks)
   const lock = await web3Service.getLock(lockAddress, network)
 
-  const result = await defiLammaPrice({
+  const result = await pricingOperations.getDefiLammaPrice({
     network,
     address: lock?.currencyContractAddress,
     amount: Number(`${lock.keyPrice}`),
