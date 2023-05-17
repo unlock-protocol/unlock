@@ -22,6 +22,7 @@ import { useCapturePayment } from '~/hooks/useCapturePayment'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
+import { formatFiatPriceFromCents } from '../utils'
 
 interface Props {
   injectedProvider: unknown
@@ -59,47 +60,23 @@ export function CreditCardPricingBreakdown({
       <div className="divide-y">
         <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
           <span className="text-gray-600">Service Fee</span>
-          <div>
-            $
-            {(unlockServiceFee / 100).toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            })}
-          </div>
+          <div> {formatFiatPriceFromCents(unlockServiceFee)} </div>
         </div>
         {!!creditCardProcessingFee && (
           <div className="flex justify-between w-full py-2 text-sm">
             <span className="text-gray-600"> Payment Processor </span>
-            <div>
-              $
-              {(creditCardProcessingFee / 100).toLocaleString(undefined, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-            </div>
+            <div> {formatFiatPriceFromCents(creditCardProcessingFee)} </div>
           </div>
         )}
         {!!gasCosts && (
           <div className="flex justify-between w-full py-2 text-sm">
             <span className="text-gray-600"> Gas Costs </span>
-            <div>
-              $
-              {(gasCosts / 100).toLocaleString(undefined, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-            </div>
+            <div> {formatFiatPriceFromCents(gasCosts)} </div>
           </div>
         )}
         <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
           <span className="text-gray-600"> Total </span>
-          <div className="font-bold">
-            $
-            {(total / 100).toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            })}
-          </div>
+          <div className="font-bold">{formatFiatPriceFromCents(total)}</div>
         </div>
       </div>
     </div>
