@@ -30,7 +30,6 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
-import { useIsClaimable } from '~/hooks/useIsClaimable'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { FiMapPin as MapPinIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
@@ -41,6 +40,9 @@ import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockData } from '~/hooks/useLockData'
 import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
 import { useImageUpload } from '~/hooks/useImageUpload'
+import { useCanClaim } from '~/hooks/useCanClaim'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -168,7 +170,7 @@ const CoverImageDrawer = ({
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
-
+  const { account } = useAuth()
   const { lock, isLockLoading } = useLockData({
     lockAddress,
     network,
@@ -196,9 +198,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
-  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
+
+  const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim({
+    recipients: [account || ZERO],
     lockAddress,
     network,
+    data: [],
   })
 
   const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =

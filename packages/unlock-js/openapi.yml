@@ -2798,3 +2798,155 @@ paths:
                           type: string
                         symbol:
                           type: string
+
+  /v2/purchase/onramp/{network}/locks/{lockAddress}:
+    post:
+      operationId: createOnRampSession
+      security:
+        - User: []
+      description: Setup an onramp session for the user.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transferSignature:
+                  type: string
+                transferMessage:
+                  type: object
+                  properties:
+                    from:
+                      type: string
+                    nonce:
+                      type: string
+                    to:
+                      type: string
+                    validAfter:
+                      type: number
+                    validBefore:
+                      type: number
+                    value:
+                      type: string
+                  required:
+                    - from
+                    - nonce
+                    - to
+                    - validAfter
+                    - validBefore
+                    - value
+                purchaseSignature:
+                  type: string
+                purchaseMessage:
+                  type: object
+                  properties:
+                    lock:
+                      type: string
+                    sender:
+                      type: string
+                    expiration:
+                      type: number
+                  required:
+                    - lock
+                    - sender
+                    - expiration
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                purchaseData:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Created onramp session.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientSecret:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/onramp/{session}/capture:
+    post:
+      operationId: captureOnRampSession
+      security:
+        - User: []
+      description: Setup an onramp session for the user.
+      parameters:
+        - name: session
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the onramp session
+        - in: query
+          name: transactionHash
+          required: true
+          description: The transacttion hash for the deposit
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfully sent purchase transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionHash:
+                    type: string
+                  owner:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /claim/{network}/locks/{lockAddress}:
+    post:
+      description: Check if claim is possible for a given purchase
+      operationId: checkClaim
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                data:
+                  type: array
+                  items:
+                    type: string
+
+      responses:
+        200:
+          description: Send true if purchase can be claimed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canClaim:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
