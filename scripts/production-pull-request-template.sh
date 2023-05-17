@@ -29,6 +29,13 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Go through the checkout flow and ensure that it works as expected (data is collected for 2 users + and 2 keys are minted)
 * [ ] Use a v9 lock and check if multiple purchase is successful for compatibility. Use lock address: `0xb77030a7e47a5eb942a4748000125e70be598632` on network `100` gnosis.
 
+
+## Verification 
+* [ ] Add a separate address as a verifier
+* [ ] Create QR code for one of the valid NFT you own and check-in using your phone or laptop camera
+* [ ] Check if metadata is displayed when you are a verifier and check-in is persistent from the members page.
+
+# Payments methods
 ## Credit Card flow for Unlock User accounts
 * [ ] Open the demo for a lock that has credit card enabled
 * [ ] Follow the steps to unlock using a credit card as a new user
@@ -36,8 +43,11 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Connect to the keychain using your Unlock credentials
 * [ ] Ensure the key you just purchased is there
 
-## Verification 
-* [ ] Add a separate address as a verifier
-* [ ] Create QR code for one of the valid NFT you own and check-in using your phone or laptop camera
-* [ ] Check if metadata is displayed when you are a verifier and check-in is persistent from the members page.
+## Swap & purchase
+* [ ] Update the currency for a lock (eg. USDC) to enable swap & purchase 
+* [ ] Open the demo for the lock with the updated currency
+* [ ] Make sure that swap & purchase is enabled as payment method
+* [ ] Use swap and purchase and make sure that unlocking works successfuly
 "
+
+
