@@ -1,8 +1,12 @@
 # Changes
 
-# 0.37.1
+# 0.37.2
 
 - add `transferFrom` to walletService
+
+# 0.37.1
+
+- fixing swap and purchase
 
 # 0.37.0
 
