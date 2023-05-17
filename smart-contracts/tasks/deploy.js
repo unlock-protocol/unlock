@@ -167,17 +167,24 @@ task('deploy:keyManager', 'Deploy KeyManager contract')
   })
 
 task('deploy:unlock-owner', 'Deploy UnlockOwner contract')
+  .addOptionalFlag('dryRun', 'dry run just to check values')
   .addOptionalParam('timelock', 'the timelock of the DAO')
   .addOptionalParam('unlockAddress', 'an instance of the Unlock contract')
   .addOptionalParam('multisig', 'a multisig contract')
   .setAction(
-    async ({ unlockAddress, timelock: daoTimelockAddress, multisig }) => {
+    async ({
+      unlockAddress,
+      timelock: daoTimelockAddress,
+      multisig,
+      dryRun,
+    }) => {
       // eslint-disable-next-line global-require
       const unlockManagerDeployer = require('../scripts/deployments/unlockOwner')
       return await unlockManagerDeployer({
         unlockAddress,
         daoTimelockAddress,
         multisig,
+        dryRun,
       })
     }
   )

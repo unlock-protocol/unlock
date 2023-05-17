@@ -6,6 +6,7 @@ async function main({
   unlockAddress,
   daoTimelockAddress,
   multisig,
+  dryRun,
   mainnetChainId = 5,
 } = {}) {
 
@@ -29,6 +30,8 @@ async function main({
     mainnetChainId,
   }
   console.log(args)
+
+  if(dryRun) return 
 
   const UnlockOwner = await ethers.getContractFactory('UnlockOwner')
   const unlockOwner = await UnlockOwner.deploy(...Object.values(args))
