@@ -15,14 +15,17 @@ const networkName = (n) => {
 }
 
 const generateManifestFile = async (network) => {
-  console.log('generate the manifest file!')
-  const { previousDeploys } = networksConfig[network]
+  console.log(`generate the manifest file for ${network}!`)
+  const { previousDeploys, unlockAddress, startBlock } = networksConfig[network]
 
   // If the network has multiple deploys of Unlock, we need to add them to the manifest!
   // Note: the networks file will still be used...
   const dataSource = manifest.dataSources.find(
     (source) => source.name === 'Unlock'
   )
+  dataSource.source.address = unlockAddress
+  dataSource.source.startBlock = startBlock
+  dataSource.network = networkName(network)
   previousDeploys.forEach((previous, i) => {
     const newSource = {
       ...dataSource,
@@ -30,6 +33,7 @@ const generateManifestFile = async (network) => {
     }
     newSource.source.address = previous.unlockAddress
     newSource.source.startBlock = previous.startBlock
+    newSource.source.network = networkName(network)
     manifest.dataSources.push(newSource)
   })
 
