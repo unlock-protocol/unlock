@@ -179,7 +179,7 @@ contract UnlockOwner {
    * @return the address of the contract where code has been executed
    */
   function execDAO (bytes memory callData) external payable returns (address, bytes memory) {
-    if(!_isDAO() && block.chainid != 1) {
+    if(!_isDAO()) {
       revert Unauthorized(msg.sender);
     }
     // unpack calldata args
