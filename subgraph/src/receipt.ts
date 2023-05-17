@@ -84,7 +84,7 @@ export function createReceipt(event: ethereum.Event): void {
 
   // save receipt, but only if we have a payer
   // (i.e. this is a paid transaction)
-  if (receipt.payer && receipt.amountTransferred > BigInt.fromI32(0)) {
+  if (receipt.payer !== null && receipt.amountTransferred > BigInt.fromI32(0)) {
     // Updating the lock object
     const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
     lock.numberOfReceipts = newReceiptNumber
