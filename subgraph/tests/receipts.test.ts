@@ -213,3 +213,47 @@ describe('Receipts for base currency locks', () => {
     assert.fieldEquals('Receipt', hash, 'amountTransferred', `${amount}`)
   })
 })
+
+describe('Receipts for an ERC20 locks', () => {
+  beforeEach(() => {
+    dataSourceMock.resetValues()
+    clearStore()
+  })
+
+  test('Receipt has not been created for transfers without an ERC20 transfer', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(tokenAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    // transfer event
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    newTransferEvent.transaction.value = BigInt.fromU32(0) // This is a grantKeys transaction
+    handleTransfer(newTransferEvent)
+
+    const hash = newTransferEvent.transaction.hash.toHexString()
+    const timestamp = newTransferEvent.block.timestamp.toString()
+    const msgSender = newTransferEvent.transaction.from.toHexString()
+    const amount = newTransferEvent.transaction.value
+
+    // key is there
+    assert.entityCount('Key', 1)
+    assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
+
+    // there is no receipt
+    assert.entityCount('Receipt', 0)
+  })
+})
