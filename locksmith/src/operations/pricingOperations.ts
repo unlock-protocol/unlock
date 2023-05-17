@@ -21,7 +21,7 @@ export interface Options {
 
 export interface LockPricingProps {
   amount?: number
-  address?: string
+  erc20Address?: string
   lockAddress?: string
   keysToPurchase?: number
   network: number
@@ -37,10 +37,10 @@ export type PriceResults = Partial<
  * Get lock pricing with priority to credit card total if present otherwise return converted price
  * @returns
  */
-export async function getUsdLockPricingFromSettingOrConverted({
+export async function getUsdLockPricing({
   lockAddress,
   network,
-  address: currencyContractAddress,
+  erc20Address,
   amount = 1,
   keysToPurchase = 1,
 }: LockPricingProps): Promise<PriceResults> {
@@ -65,10 +65,8 @@ export async function getUsdLockPricingFromSettingOrConverted({
       const symbol =
         lock?.currencySymbol || networks?.[network]?.nativeCurrency?.symbol
 
-      const price = lock?.keyPrice
-
       return {
-        price,
+        price: creditCardPrice,
         symbol,
         creditCardEnabled,
         decimals: 18,
@@ -82,7 +80,7 @@ export async function getUsdLockPricingFromSettingOrConverted({
   // fallback to converted price
   const result = await getDefiLammaPrice({
     network,
-    address: currencyContractAddress,
+    erc20Address,
     amount,
   })
 
@@ -91,7 +89,7 @@ export async function getUsdLockPricingFromSettingOrConverted({
 
 export async function getDefiLammaPrice({
   network,
-  address: currencyContractAddress,
+  erc20Address,
   amount = 1,
 }: Omit<LockPricingProps, 'lockAddress'>): Promise<PriceResults> {
   const networkConfig = networks[network]
@@ -101,19 +99,18 @@ export async function getDefiLammaPrice({
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) =>
-      item.address?.toLowerCase() === currencyContractAddress?.toLowerCase()
+    (item) => item.address?.toLowerCase() === erc20Address?.toLowerCase()
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {
     items.push(`ethereum:${mainnetTokenAddress}`)
   }
 
-  if (currencyContractAddress) {
-    items.push(`${networkConfig.chain}:${currencyContractAddress}`)
+  if (erc20Address) {
+    items.push(`${networkConfig.chain}:${erc20Address}`)
   }
 
-  if (!currencyContractAddress && coingecko) {
+  if (!erc20Address && coingecko) {
     items.push(coingecko)
   }
 
@@ -148,15 +145,15 @@ export async function getDefiLammaPrice({
 export const getTotalCharges = async ({
   lockAddress,
   network,
-  address,
+  erc20Address,
   amount = 1,
   keysToPurchase = 1,
 }: LockPricingProps) => {
   const [pricing, gasCost] = await Promise.all([
-    getUsdLockPricingFromSettingOrConverted({
+    getUsdLockPricing({
       network,
       amount,
-      address,
+      erc20Address,
       lockAddress,
       keysToPurchase,
     }),

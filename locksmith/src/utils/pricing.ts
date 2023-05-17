@@ -76,18 +76,17 @@ export const getKeyPricingInUSD = async ({
       network,
     })
 
-  const usdPricing =
-    await pricingOperations.getUsdLockPricingFromSettingOrConverted({
-      network,
-      address:
-        !currencyContractAddress ||
-        currencyContractAddress === ethers.constants.AddressZero
-          ? undefined
-          : currencyContractAddress,
-      amount: 1,
-      keysToPurchase: recipients?.length,
-      lockAddress,
-    })
+  const usdPricing = await pricingOperations.getUsdLockPricing({
+    network,
+    erc20Address:
+      !currencyContractAddress ||
+      currencyContractAddress === ethers.constants.AddressZero
+        ? undefined
+        : currencyContractAddress,
+    amount: 1,
+    keysToPurchase: recipients?.length,
+    lockAddress,
+  })
 
   const defaultPrice = fromDecimal(keyPrice, decimals)
 
