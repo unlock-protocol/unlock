@@ -103,12 +103,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isSwapAndPurchaseEnabled =
     price > 0 && uniswapRoutes && uniswapRoutes.length > 0
 
-  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
-    useUniswapRoutes({
-      routes: uniswapRoutes!,
-      enabled: isSwapAndPurchaseEnabled,
-    })
-
   const isWaiting = isLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
@@ -122,6 +116,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !isCanClaimLoading &&
     isReceiverAccountOnly &&
     !balance?.isPayable
+
+  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
+    useUniswapRoutes({
+      routes: uniswapRoutes!,
+      enabled: isSwapAndPurchaseEnabled && !enableClaim,
+    })
 
   const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
     (item) => !item
@@ -182,7 +182,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {universalCardEnabled && (
+            {universalCardEnabled && !enableClaim && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -215,7 +215,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {enableCreditCard && (
+            {enableCreditCard && !enableClaim && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -274,13 +274,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
-            {isUniswapRoutesLoading && (
+            {isUniswapRoutesLoading && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading payment options...
               </div>
             )}
             {!isUniswapRoutesLoading &&
               isSwapAndPurchaseEnabled &&
+              !enableClaim &&
               routes?.map((route, index) => {
                 if (!route) {
                   return null
