@@ -14,7 +14,7 @@ export const getCreditCardEnabledStatus = async ({
   lockAddress,
   network,
   totalPriceInCents,
-}: CreditCardStateProps) => {
+}: CreditCardStateProps): Promise<boolean> => {
   const fulfillmentDispatcher = new Dispatcher()
 
   const [hasEnoughToPayForGas, stripeConnected, isAuthorizedForCreditCard] =

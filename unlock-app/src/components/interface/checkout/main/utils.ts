@@ -49,3 +49,11 @@ export async function fetchRecipientsData(
     return
   }
 }
+
+export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
+  const formatted = (priceInCents / 100).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  })
+  return `${currency} ${formatted}`
+}
