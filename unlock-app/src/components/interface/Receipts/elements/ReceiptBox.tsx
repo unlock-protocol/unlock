@@ -107,6 +107,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails && receiptDetails.timestamp
       ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
       : ''
+  const receiptNumber = receiptDetails?.receiptNumber || ''
 
   const PurchaseDetails = () => {
     return (
@@ -236,7 +237,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       <div className="grid w-full max-w-lg gap-4 mb-5">
         <div className="grid w-full">
           <Disclosure
-            label={`Date: ${transactionDate}`}
+            label={`#${receiptNumber}`}
             description={
               transactionUrl?.length && (
                 <div
