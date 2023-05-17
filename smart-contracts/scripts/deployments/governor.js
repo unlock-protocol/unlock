@@ -10,7 +10,7 @@ const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
 )
 
-async function main() {
+async function main({ udtAddress } = {}) {
   const [unlockOwner] = await ethers.getSigners()
 
   // fetch chain info
@@ -51,11 +51,14 @@ async function main() {
   )
 
   // get UDT token address
-  let tokenAddress = '0xaB82D702A4e0cD165072C005dc504A21c019718F'
+  if(!udtAddress) {
+    throw new Error('Missing UDT address.')
+  }
+  console.log(`Using UDT at: ${udtAddress}`)
 
   // deploy governor proxy
   const governor = await upgrades.deployProxy(UnlockProtocolGovernor, [
-    tokenAddress,
+    udtAddress,
     timelock.address,
   ])
   await governor.deployed()
