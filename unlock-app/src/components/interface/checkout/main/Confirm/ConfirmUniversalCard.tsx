@@ -76,15 +76,12 @@ export function ConfirmUniversalCard({
     }
 
     const expectedAmount = cardPricing?.total
-    if (
+    const destinationAmount =
       session.quote.destination_amount &&
-      100 * parseFloat(session.quote.destination_amount) !== expectedAmount
-    ) {
-      console.error(
-        'Price changed',
-        100 * parseFloat(session.quote.destination_amount),
-        expectedAmount
-      )
+      100 * parseFloat(session.quote.destination_amount)
+
+    if (destinationAmount !== expectedAmount) {
+      console.error('Price changed', destinationAmount, expectedAmount)
       setSessionError('You cannot change the amount. Please start again.')
     }
 
