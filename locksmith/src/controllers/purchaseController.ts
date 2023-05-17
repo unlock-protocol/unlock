@@ -262,53 +262,6 @@ export class PurchaseController {
     }
   }
 
-  // DEPRECATED.
-  async claim(req: SignedRequest, res: Response) {
-    const { publicKey, lock, network, data } =
-      req.body.message['Claim Membership']
-
-    const lockAddress = Normalizer.ethereumAddress(lock)
-    const owner = Normalizer.ethereumAddress(publicKey)
-    // First check that the lock is indeed free and that the gas costs is low enough!
-    const pricer = new KeyPricer()
-    const pricing = await pricer.generate(lock, network)
-    const fulfillmentDispatcher = new Dispatcher()
-
-    if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-      return res.status(400).send('Lock is not free')
-    }
-
-    const hasEnoughToPayForGas =
-      await fulfillmentDispatcher.hasFundsForTransaction(network)
-    if (!hasEnoughToPayForGas) {
-      return res.status(500).send('Purchaser does not have enough funds!')
-    }
-
-    if (!(await pricer.canAffordGrant(network))) {
-      return res.status(500).send('Gas fees too high!')
-    }
-
-    try {
-      await fulfillmentDispatcher.purchaseKey(
-        {
-          lockAddress,
-          owner,
-          network,
-          data,
-        },
-        async (_: any, transactionHash: string) => {
-          return res.send({
-            transactionHash,
-          })
-        }
-      )
-      return
-    } catch (error) {
-      logger.error(error)
-      return res.status(400).send(error)
-    }
-  }
-
   async canClaim(request: Request, response: Response) {
     try {
       const network = Number(request.params.network)
