@@ -1324,7 +1324,7 @@ paths:
             type: number
 
         - in: query
-          name: erc20Address
+          name: address
           required: false
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
@@ -2705,7 +2705,7 @@ paths:
             type: number
 
         - in: query
-          name: erc20Address
+          name: address
           required: false
           description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
           schema:
