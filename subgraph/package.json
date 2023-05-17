@@ -9,7 +9,7 @@
     "prepare:networks": "node bin/thegraph prepare",
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
-    "codegen": "graph codegen",
+    "codegen": "node bin/thegraph codegen",
     "build": "yarn introspect && node bin/thegraph build",
     "build:graph": "node bin/thegraph build",
     "deploy": "node bin/thegraph deploy",

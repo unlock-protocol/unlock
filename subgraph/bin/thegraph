@@ -56,7 +56,7 @@ const prepare = async (network) => {
 
 const codegen = async () => {
   console.log('codegen...')
-  await executeCommand('yarn codegen')
+  await executeCommand('yarn graph codegen')
 }
 
 // Creating subgraphs is only available from hosted-service dashboard
