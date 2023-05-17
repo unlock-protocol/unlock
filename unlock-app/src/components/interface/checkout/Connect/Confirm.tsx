@@ -5,11 +5,11 @@ import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useSIWE } from '~/hooks/useSIWE'
 
 interface Props {
   paywallConfig?: PaywallConfig
@@ -29,39 +29,36 @@ export function ConfirmConnect({
   communication,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network, getWalletService, isUnlockAccount } = useAuth()
+  const { signIn } = useSIWE()
+  const { account, isUnlockAccount } = useAuth()
+
   const onSignIn = async () => {
     try {
       setLoading(true)
-      const walletService = await getWalletService()
 
-      const message = createMessageToSignIn({
-        clientId: oauthConfig.clientId,
-        statement: paywallConfig?.messageToSign || '',
-        address: account!,
-        chainId: network,
-      })
+      const result = await signIn(paywallConfig?.messageToSign || '')
 
-      const signature = await walletService.signMessage(
-        message,
-        'personal_sign'
-      )
-      const code = Buffer.from(
-        JSON.stringify({
-          d: message,
-          s: signature,
+      if (result) {
+        const { message, signature } = result
+        const code = Buffer.from(
+          JSON.stringify({
+            d: message,
+            s: signature,
+          })
+        ).toString('base64')
+        communication?.emitUserInfo({
+          address: account,
+          message: message,
+          signedMessage: signature,
         })
-      ).toString('base64')
-      setLoading(false)
-      communication?.emitUserInfo({
-        address: account,
-        message: message,
-        signedMessage: signature,
-      })
-      onClose({
-        code,
-        state: oauthConfig.state,
-      })
+        onClose({
+          code,
+          state: oauthConfig.state,
+        })
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
     } catch (error: any) {
       setLoading(false)
       console.error(error)

@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { SiweMessage } from 'siwe'
+import { SiweMessage, generateNonce } from 'siwe'
 import { storage } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -14,14 +14,16 @@ type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
   session?: string | null
-  signIn: () => Promise<unknown> | unknown
+  signIn: (
+    _statement?: string
+  ) => Promise<{ message: string; signature: string } | null> | null
   signOut: () => Promise<unknown> | unknown
   status?: Status
   isSignedIn: boolean
 }
 
 const SIWEContext = createContext<SIWEContextType>({
-  signIn: () => {
+  signIn: (_statement?: string) => {
     throw new Error('No SIWE provider found')
   },
   signOut: () => {
@@ -33,6 +35,37 @@ const SIWEContext = createContext<SIWEContextType>({
 
 interface Props {
   children: ReactNode
+}
+
+export function createMessageToSignIn({
+  clientId,
+  statement,
+  address,
+  chainId,
+}: {
+  clientId: string
+  statement: string
+  address: string
+  chainId?: number
+}) {
+  const nonce = generateNonce()
+  const expirationDate = new Date()
+  // Add 7 day expiration from today. This will account for months.
+  expirationDate.setDate(expirationDate.getDate() + 7)
+
+  const message = new SiweMessage({
+    nonce,
+    domain: window.location.hostname,
+    statement: statement.trim(),
+    uri: window.location.origin,
+    version: '1',
+    address,
+    chainId,
+    resources: [new URL('https://' + clientId).toString()],
+    expirationTime: expirationDate.toISOString(),
+  })
+
+  return message.prepareMessage()
 }
 
 export const SIWEProvider = ({ children }: Props) => {
@@ -69,7 +102,9 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = async () => {
+  const signIn = async (
+    statement = ''
+  ): Promise<{ message: string; signature: string } | null> => {
     try {
       setStatus('loading')
       if (!connected) {
@@ -94,7 +129,7 @@ export const SIWEProvider = ({ children }: Props) => {
         address,
         chainId: network,
         version: '1',
-        statement: '',
+        statement,
         nonce,
         resources,
       })
@@ -118,10 +153,13 @@ export const SIWEProvider = ({ children }: Props) => {
       await queryClient.refetchQueries()
       await refetchSession()
       setStatus('idle')
+      return { message, signature }
     } catch (error) {
       onError(error)
+      return null
     }
   }
+
   const isSignedIn = !!session
   return (
     <SIWEContext.Provider
