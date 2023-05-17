@@ -1,12 +1,6 @@
 import { Response, Request } from 'express'
 import stripe from '../config/stripe'
-import {
-  getStripeConnectForLock,
-  getStripeCustomerIdForAddress,
-  createStripeCustomer,
-} from '../operations/stripeOperations'
 import KeyPricer from '../utils/keyPricer'
-
 import { SignedRequest } from '../types'
 import PaymentProcessor from '../payment/paymentProcessor'
 import * as Normalizer from '../utils/normalizer'
@@ -43,94 +37,6 @@ export class PurchaseController {
   async info(_req: SignedRequest, res: Response) {
     const fulfillmentDispatcher = new Dispatcher()
     return res.json(await fulfillmentDispatcher.balances())
-  }
-
-  /*
-   * Creates a payment intent that will be passed to the front-end for confirmation with the Stripe API.
-   * Once confirmed, the payment will need to be captured
-   * This flow supports 3D Secure.
-   *  @deprecated
-   */
-  async createPaymentIntent(req: SignedRequest, res: Response) {
-    const {
-      publicKey,
-      lock,
-      stripeTokenId,
-      pricing,
-      network,
-      recipients,
-      userAddress,
-      recurring = 0,
-    } = req.body.message['Charge Card']
-
-    const normalizedRecipients: string[] = recipients.map((address: string) =>
-      Normalizer.ethereumAddress(address)
-    )
-    const soldOut = await isSoldOut(lock, network, normalizedRecipients.length)
-    if (soldOut) {
-      return res.status(400).send({
-        error: 'Lock is sold out.',
-      })
-    }
-
-    const stripeConnectApiKey = await getStripeConnectForLock(
-      Normalizer.ethereumAddress(lock),
-      network
-    )
-
-    if (stripeConnectApiKey == 0 || stripeConnectApiKey == -1) {
-      return res
-        .status(400)
-        .send({ error: 'Missing Stripe Connect integration' })
-    }
-
-    let stripeCustomerId = await getStripeCustomerIdForAddress(
-      Normalizer.ethereumAddress(publicKey)
-    )
-
-    if (!stripeCustomerId && stripeTokenId) {
-      // Create a "global" stripe customer id
-      // (we will create local customer when we issue charges for a connected lock)
-      stripeCustomerId = await createStripeCustomer(
-        stripeTokenId,
-        Normalizer.ethereumAddress(publicKey)
-      )
-    }
-
-    if (!stripeCustomerId) {
-      return res.status(400).send({ error: 'Missing Stripe customer info' })
-    }
-
-    const dispatcher = new Dispatcher()
-    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
-      network
-    )
-
-    if (!hasEnoughToPayForGas) {
-      return res.status(400).send({
-        error: `Purchaser does not have enough to pay for gas on ${network}`,
-      })
-    }
-
-    try {
-      const processor = new PaymentProcessor()
-      const paymentIntentDetails = await processor.createPaymentIntent(
-        Normalizer.ethereumAddress(userAddress),
-        normalizedRecipients,
-        stripeCustomerId,
-        Normalizer.ethereumAddress(lock),
-        pricing * 100,
-        network,
-        stripeConnectApiKey,
-        recurring
-      )
-      return res.send(paymentIntentDetails)
-    } catch (error) {
-      logger.error(error)
-      return res.status(400).send({
-        error: error.message,
-      })
-    }
   }
 
   /*
