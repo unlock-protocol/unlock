@@ -12,12 +12,11 @@ const {
 } = require("../helpers");
 
 let bridge,
-  dao,
+  daoTimelock,
   multisig,
   multisig2,
-  managerDest,
+  unlockOwner,
   unlockDest,
-  wethDest,
   proxyAdmin
 
 //
@@ -68,16 +67,16 @@ const deployUnlockImpl = async () => {
 contract("Unlock / bridged governance", () => {
   before(async () => {
     
-    ;[, dao, multisig, multisig2] = await ethers.getSigners()
+    ;[, daoTimelock, multisig, multisig2] = await ethers.getSigners()
 
     // mock bridge
-    ;({bridge, wethDest} = await deployBridge())
+    ;({bridge} = await deployBridge())
 
     // deploy and set Unlock on a remote chain
     ;({ unlockEthers: unlockDest } = await deployContracts());
     await unlockDest.configUnlock(
       ADDRESS_ZERO, // udt
-      wethDest.address, // wrappedEth
+      ADDRESS_ZERO, // wrappedEth
       gasEstimate,
       "DEST_KEY",
       url,
@@ -88,10 +87,10 @@ contract("Unlock / bridged governance", () => {
     const UnlockOwner = await ethers.getContractFactory("UnlockOwner");
     const { chainId } = await ethers.provider.getNetwork()
 
-    managerDest = await UnlockOwner.deploy(
+    unlockOwner = await UnlockOwner.deploy(
       bridge.address,
       unlockDest.address,
-      dao.address, // dao address on mainnet
+      daoTimelock.address, // dao address on mainnet
       multisig.address,
       destDomainId,
       chainId
@@ -99,37 +98,37 @@ contract("Unlock / bridged governance", () => {
     
     // transfer assets to unlockOwner on dest chain
     proxyAdmin = await getProxyAdmin(unlockDest.address)
-    await proxyAdmin.transferOwnership(managerDest.address)
-    await unlockDest.transferOwnership(managerDest.address)
+    await proxyAdmin.transferOwnership(unlockOwner.address)
+    await unlockDest.transferOwnership(unlockOwner.address)
   });
 
   describe("constructor", () => {
     it("stores bridge address", async () => {
-      assert.equal(bridge.address, await managerDest.bridgeAddress());
+      assert.equal(bridge.address, await unlockOwner.bridgeAddress());
     });
 
     it("stores Unlock address properly", async () => {
       assert.equal(
-        await managerDest.unlockAddress(),
+        await unlockOwner.unlockAddress(),
         unlockDest.address
       );
     });
 
     it("stores the domain properly", async () => {
-      assert.equal(await managerDest.domain(), destDomainId);
+      assert.equal(await unlockOwner.domain(), destDomainId);
     });
 
     it("stores DAO address", async () => {
-      assert.equal(dao.address, await managerDest.daoTimelockAddress());
+      assert.equal(daoTimelock.address, await unlockOwner.daoTimelockAddress());
     });
     
     it("stores multisig address", async () => {
-      assert.equal(dao.address, await managerDest.daoTimelockAddress());
+      assert.equal(daoTimelock.address, await unlockOwner.daoTimelockAddress());
     });
     
     it("stores mainnet chainId", async () => {
       const { chainId } = await ethers.provider.getNetwork()
-      assert.equal(await managerDest.mainnetChainId(), chainId);
+      assert.equal(await unlockOwner.mainnetChainId(), chainId);
     });
   });
 
@@ -145,9 +144,9 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the DAO > mainnet manager > bridge path
-      await bridge.connect(dao).xcall(
+      await bridge.connect(daoTimelock).xcall(
         destChainId,
-        managerDest.address,
+        unlockOwner.address,
         ZERO_ADDRESS, // asset
         ZERO_ADDRESS, // delegate
         0, // amount
@@ -162,7 +161,7 @@ contract("Unlock / bridged governance", () => {
 
     it('DAO without bridge', async () => {
       assert.notEqual(await unlockDest.publicLockImpls(args[1]), template.address);
-      await managerDest.connect(dao).execDAO(calldata)
+      await unlockOwner.connect(daoTimelock).execDAO(calldata)
       assert.equal(await unlockDest.publicLockImpls(args[1]), template.address);
     })
 
@@ -172,7 +171,7 @@ contract("Unlock / bridged governance", () => {
       assert.equal(await unlockDest.publicLockVersions(args[0]), 0);
 
       // send through the DAO > mainnet manager > bridge path
-      await managerDest.connect(multisig).execMultisig(
+      await unlockOwner.connect(multisig).execMultisig(
         calldata
       )
 
@@ -190,9 +189,9 @@ contract("Unlock / bridged governance", () => {
     })   
     it('DAO from the bridge', async () => {
       // send through the dispatcher
-      await bridge.connect(dao).xcall(
+      await bridge.connect(daoTimelock).xcall(
         destChainId,
-        managerDest.address,
+        unlockOwner.address,
         ZERO_ADDRESS,
         ZERO_ADDRESS,
         0,
@@ -205,7 +204,7 @@ contract("Unlock / bridged governance", () => {
     })
 
     it('DAO directly from mainnet', async ()=> {
-      await managerDest.connect(dao).execDAO(
+      await unlockOwner.connect(daoTimelock).execDAO(
         calldata
       )
 
@@ -215,7 +214,7 @@ contract("Unlock / bridged governance", () => {
 
     it('via multisig', async () => {
       // send through the DAO > mainnet manager > bridge path
-      await managerDest.connect(multisig).execMultisig(
+      await unlockOwner.connect(multisig).execMultisig(
         calldata
       )
 
@@ -227,30 +226,30 @@ contract("Unlock / bridged governance", () => {
   describe("changeMultisig", () => {
     it('can only be called by the multisig itself', async () => {
       await reverts(
-        managerDest.changeMultisig(ADDRESS_ZERO),
+        unlockOwner.changeMultisig(ADDRESS_ZERO),
         'Unauthorized'
       )
     })
 
     it('allow the multisig to replace itself', async () => {
-      await managerDest.connect(multisig).changeMultisig(multisig2.address)
+      await unlockOwner.connect(multisig).changeMultisig(multisig2.address)
       assert.equal(
-        await managerDest.multisigAddress(),
+        await unlockOwner.multisigAddress(),
         multisig2.address
       )
     })
 
     it('allow the multisig to remove itself', async () => {
-      await managerDest.connect(multisig2).changeMultisig(ADDRESS_ZERO)
+      await unlockOwner.connect(multisig2).changeMultisig(ADDRESS_ZERO)
       assert.equal(
-        await managerDest.multisigAddress(),
+        await unlockOwner.multisigAddress(),
         ADDRESS_ZERO
       )
 
       // make sure exec reverts
       const calldata = ethers.utils.defaultAbiCoder.encode(['uint8', 'bytes' ], [2, '0x'])
       await reverts(
-        managerDest.connect(multisig2).execMultisig(calldata),
+        unlockOwner.connect(multisig2).execMultisig(calldata),
         'Unauthorized'
       )
     })
@@ -264,11 +263,11 @@ contract("Unlock / bridged governance", () => {
 
     it('reverts is xReceive has not been called through the bridge', async () => {
       await reverts(
-        managerDest.xReceive(
+        unlockOwner.xReceive(
           ethers.utils.formatBytes32String("test"), // transferId
           0, // amount
           ADDRESS_ZERO, //currency
-          dao.address, // caller on origin chain
+          daoTimelock.address, // caller on origin chain
           destDomainId,
           calldata,
         ),
@@ -280,7 +279,7 @@ contract("Unlock / bridged governance", () => {
       await reverts(
         bridge.xcall(
           destChainId,
-          managerDest.address,
+          unlockOwner.address,
           ZERO_ADDRESS,
           ZERO_ADDRESS,
           0,
@@ -293,14 +292,14 @@ contract("Unlock / bridged governance", () => {
     
     it('reverts if execMultisig is not called by multisig', async () => {
       await reverts(
-        managerDest.execMultisig(calldata),
+        unlockOwner.execMultisig(calldata),
         'Unauthorized'
       )
     })
     
     it('reverts if execDAO is not called by DAO itself', async () => {
       await reverts(
-        managerDest.execDAO(calldata),
+        unlockOwner.execDAO(calldata),
         'Unauthorized'
       )
     })
