@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { SiweMessage, generateNonce } from 'siwe'
+import { SiweMessage } from 'siwe'
 import { storage } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -35,37 +35,6 @@ const SIWEContext = createContext<SIWEContextType>({
 
 interface Props {
   children: ReactNode
-}
-
-export function createMessageToSignIn({
-  clientId,
-  statement,
-  address,
-  chainId,
-}: {
-  clientId: string
-  statement: string
-  address: string
-  chainId?: number
-}) {
-  const nonce = generateNonce()
-  const expirationDate = new Date()
-  // Add 7 day expiration from today. This will account for months.
-  expirationDate.setDate(expirationDate.getDate() + 7)
-
-  const message = new SiweMessage({
-    nonce,
-    domain: window.location.hostname,
-    statement: statement.trim(),
-    uri: window.location.origin,
-    version: '1',
-    address,
-    chainId,
-    resources: [new URL('https://' + clientId).toString()],
-    expirationTime: expirationDate.toISOString(),
-  })
-
-  return message.prepareMessage()
 }
 
 export const SIWEProvider = ({ children }: Props) => {
@@ -123,6 +92,7 @@ export const SIWEProvider = ({ children }: Props) => {
       if (parent.host !== window.location.host) {
         resources = [window.location.origin]
       }
+
       const siwe = new SiweMessage({
         domain: parent.host,
         uri: parent.origin,
