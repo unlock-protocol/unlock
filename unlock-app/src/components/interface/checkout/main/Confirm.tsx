@@ -10,6 +10,7 @@ import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
 import { ConfirmCard } from './Confirm/ConfirmCard'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { ConfirmUniversalCard } from './Confirm/ConfirmUniversalCard'
 
 interface Props {
   injectedProvider: unknown
@@ -79,6 +80,14 @@ export function Confirm({
       )}
       {payment.method === 'claim' && (
         <ConfirmClaim
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          onConfirmed={onConfirmed}
+          onError={onError}
+        />
+      )}
+      {payment.method === 'universal_card' && (
+        <ConfirmUniversalCard
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}

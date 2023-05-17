@@ -46,7 +46,8 @@ const app = getAppConfig(env)
 export const config = {
   env,
   wedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY!,
-  stripeApiKey: process.env.NEXT_PUBLIC_STRIPE_KEY!,
+  stripeApiKey:
+    process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
   ethPassApiKey: process.env.NEXT_PUBLIC_ETHPASS_KEY!,
   googleMapsApiKey: 'AIzaSyD_mt4bpelB7Dlr7XzfUW9k7b9agbf_iSo',
   httpProvider: process.env.NEXT_PUBLIC_HTTP_PROVIDER || 'localhost',
