@@ -14,7 +14,6 @@ import {
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { useIsClaimable } from '~/hooks/useIsClaimable'
 import {
   useUniswapRoutes,
   useUniswapRoutesUsingLock,
@@ -23,6 +22,8 @@ import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+import { useCanClaim } from '~/hooks/useCanClaim'
+import { usePurchaseData } from '~/hooks/usePurchaseData'
 
 interface Props {
   injectedProvider: unknown
@@ -63,16 +64,34 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
-    lockAddress: lock.address,
-    network: lock.network,
-  })
-
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
     network: lock.network,
     currencyContractAddress: lock.currencyContractAddress,
   })
+
+  const { data: purchaseData, isLoading: isPurchaseDataLoading } =
+    usePurchaseData({
+      lockAddress: lock.address,
+      network: lock.network,
+      recipients: recipients,
+      paywallConfig: state.context.paywallConfig,
+      promo: state.context.promo,
+      password: state.context.password,
+      captcha: state.context.captcha,
+    })
+
+  const { data: canClaim, isLoading: isCanClaimLoading } = useCanClaim(
+    {
+      lockAddress: lock.address,
+      network: lock.network,
+      recipients: recipients,
+      data: purchaseData || [],
+    },
+    {
+      enabled: !isPurchaseDataLoading,
+    }
+  )
 
   const networkConfig = config.networks[lock.network]
 
@@ -90,7 +109,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       enabled: isSwapAndPurchaseEnabled,
     })
 
-  const isWaiting = isLoading || isClaimableLoading || isBalanceLoading
+  const isWaiting = isLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
@@ -98,13 +117,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
-  const forceClaim = lock.network === 42161
-
   const enableClaim =
-    !!isClaimable &&
-    !isClaimableLoading &&
+    canClaim &&
+    !isCanClaimLoading &&
     isReceiverAccountOnly &&
-    (!balance?.isPayable || forceClaim)
+    !balance?.isPayable
 
   const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
     (item) => !item
