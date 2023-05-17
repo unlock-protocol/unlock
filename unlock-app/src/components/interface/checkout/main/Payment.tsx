@@ -115,7 +115,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const universalCardEnabled =
     !enableCreditCard &&
     networkConfig.universalCard?.cardPurchaserAddress &&
-    lock.currencyContractAddress === USDC.address
+    lock.currencyContractAddress?.toLowerCase()?.trim() ===
+      USDC?.address?.toLowerCase()?.trim()
 
   return (
     <Fragment>

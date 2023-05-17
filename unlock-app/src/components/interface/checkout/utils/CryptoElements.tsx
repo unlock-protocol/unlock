@@ -83,7 +83,7 @@ export const OnrampElement = ({
   ...props
 }: OnrampElementProps) => {
   const stripeOnramp = useStripeOnramp()
-  const onrampElementRef = useRef(null)
+  const onrampElementRef = useRef<HTMLDivElement | null>(null)
   const [session, setSession] = useState()
 
   const appearanceJSON = JSON.stringify(appearance)
@@ -92,7 +92,6 @@ export const OnrampElement = ({
     if (containerRef) {
       // NB: ideally we want to be able to hot swap/update onramp iframe
       // This currently results a flash if one needs to mint a new session when they need to udpate fixed transaction details
-      // @ts-expect-error Property 'innerHTML' does not exist on type 'never'.
       containerRef.innerHTML = ''
 
       if (clientSecret && stripeOnramp) {

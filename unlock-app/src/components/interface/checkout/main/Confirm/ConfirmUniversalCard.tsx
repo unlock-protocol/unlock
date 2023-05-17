@@ -150,7 +150,16 @@ export function ConfirmUniversalCard({
   }
 
   if (isCardPricingLoading || !cardPricing) {
-    return null
+    return (
+      <>
+        {recipients.map((user) => (
+          <div
+            key={user}
+            className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
+          />
+        ))}
+      </>
+    )
   }
 
   return (
