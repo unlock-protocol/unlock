@@ -11,15 +11,15 @@ const MIN_PAYMENT_STRIPE = 100
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
-  const erc20Address = request.query.address?.toString()
-  const address = ethers.utils.isAddress(erc20Address || '')
-    ? erc20Address
+  const currencyContractAddress = request.query.erc20Address?.toString()
+  const erc20Address = ethers.utils.isAddress(currencyContractAddress || '')
+    ? currencyContractAddress
     : undefined
 
   const result = await pricingOperations.getDefiLammaPrice({
     network,
     amount,
-    address,
+    erc20Address,
   })
   return response.status(200).send({
     result,
@@ -29,15 +29,15 @@ export const amount: RequestHandler = async (request, response) => {
 export const total: RequestHandler = async (request, response) => {
   const network = Number(request.query.network?.toString() || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
-  const erc20Address = request.query.address?.toString()
-  const address = ethers.utils.isAddress(erc20Address || '')
-    ? erc20Address
+  const currencyContractAddress = request.query.erc20Address?.toString()
+  const erc20Address = ethers.utils.isAddress(currencyContractAddress || '')
+    ? currencyContractAddress
     : undefined
 
   const charge = await pricingOperations.getTotalCharges({
     network,
     amount,
-    address,
+    erc20Address,
   })
 
   return response.send(charge)
@@ -108,7 +108,7 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
 
   const result = await pricingOperations.getDefiLammaPrice({
     network,
-    address: lock?.currencyContractAddress,
+    erc20Address: lock?.currencyContractAddress,
     amount: Number(`${lock.keyPrice}`),
   })
 
