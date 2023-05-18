@@ -123,10 +123,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       enabled: isSwapAndPurchaseEnabled && !enableClaim,
     })
 
-  const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
-    (item) => !item
-  )
-
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
@@ -134,6 +130,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     networkConfig.universalCard?.cardPurchaserAddress &&
     lock.currencyContractAddress?.toLowerCase()?.trim() ===
       USDC?.address?.toLowerCase()?.trim()
+
+  const allDisabled = [
+    enableCreditCard,
+    enableClaim,
+    enableCrypto,
+    universalCardEnabled,
+  ].every((item) => !item)
 
   return (
     <Fragment>
