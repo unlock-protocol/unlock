@@ -10,6 +10,7 @@ import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useSIWE } from '~/hooks/useSIWE'
+import { generateNonce } from 'siwe'
 
 interface Props {
   paywallConfig?: PaywallConfig
@@ -29,14 +30,17 @@ export function ConfirmConnect({
   communication,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { signIn } = useSIWE()
+  const { siweSign } = useSIWE()
   const { account, isUnlockAccount } = useAuth()
 
   const onSignIn = async () => {
     try {
       setLoading(true)
 
-      const result = await signIn(paywallConfig?.messageToSign || '')
+      const result = await siweSign(
+        generateNonce(),
+        paywallConfig?.messageToSign || ''
+      )
 
       if (result) {
         const { message, signature } = result
