@@ -53,14 +53,17 @@ export function ConfirmUniversalCard({
     })
 
   // And now get the price to pay by card
-  const { data: cardPricing, isInitialLoading: isCardPricingLoading } =
-    useUniversalCardPrice({
-      network: lock!.network,
-      lockAddress: lock!.address,
-      recipients,
-      purchaseData: purchaseData!,
-      enabled: !isInitialDataLoading,
-    })
+  const {
+    data: cardPricing,
+    isInitialLoading: isCardPricingLoading,
+    isFetched: isCardPricingFetched,
+  } = useUniversalCardPrice({
+    network: lock!.network,
+    lockAddress: lock!.address,
+    recipients,
+    purchaseData: purchaseData!,
+    enabled: !isInitialDataLoading,
+  })
 
   const createOnRampSession = useMutation(
     async ({ network, lockAddress, body }: any) => {
@@ -181,14 +184,13 @@ export function ConfirmUniversalCard({
                 lock={lock!}
                 pricingData={cardPricing}
               />
-              {cardPricing && (
-                <CreditCardPricingBreakdown
-                  total={cardPricing?.total}
-                  creditCardProcessingFee={cardPricing?.creditCardProcessingFee}
-                  unlockServiceFee={cardPricing?.unlockServiceFee}
-                  gasCosts={cardPricing?.gasCost}
-                />
-              )}
+              <CreditCardPricingBreakdown
+                loading={isCardPricingLoading || !isCardPricingFetched}
+                total={cardPricing?.total}
+                creditCardProcessingFee={cardPricing?.creditCardProcessingFee}
+                unlockServiceFee={cardPricing?.unlockServiceFee}
+                gasCosts={cardPricing?.gasCost}
+              />
             </div>
           </main>
           <footer className="grid items-center px-6 pt-6 border-t">
