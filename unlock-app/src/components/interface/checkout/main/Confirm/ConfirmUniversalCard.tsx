@@ -82,7 +82,7 @@ export function ConfirmUniversalCard({
       session.id,
       session.quote.blockchain_tx_id
     )
-    return response.data.transactionHash
+    return response.data.hash
   })
 
   // TODO: Also configure webhook on the Stripe side?
