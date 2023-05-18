@@ -2908,9 +2908,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  transactionHash:
-                    type: string
-                  owner:
+                  hash:
                     type: string
 
         401:
