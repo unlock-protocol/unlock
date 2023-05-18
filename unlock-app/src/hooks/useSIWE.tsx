@@ -15,12 +15,19 @@ type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 export interface SIWEContextType {
   session?: string | null
   signIn: () => Promise<unknown> | unknown
+  siweSign: (
+    nonce: string,
+    statement: string
+  ) => Promise<{ message: string; signature: string } | null> | null
   signOut: () => Promise<unknown> | unknown
   status?: Status
   isSignedIn: boolean
 }
 
 const SIWEContext = createContext<SIWEContextType>({
+  siweSign: (_nonce: string, _statement: string) => {
+    throw new Error('No SIWE provider found')
+  },
   signIn: () => {
     throw new Error('No SIWE provider found')
   },
@@ -69,7 +76,10 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = async () => {
+  const siweSign = async (
+    nonce: string,
+    statement: string
+  ): Promise<{ message: string; signature: string } | null> => {
     try {
       setStatus('loading')
       if (!connected) {
@@ -78,7 +88,7 @@ export const SIWEProvider = ({ children }: Props) => {
       const walletService = await getWalletService()
 
       const address = await walletService.signer.getAddress()
-      const { data: nonce } = await storage.nonce()
+
       const parent = new URL(
         window.location != window.parent.location
           ? document.referrer
@@ -88,13 +98,14 @@ export const SIWEProvider = ({ children }: Props) => {
       if (parent.host !== window.location.host) {
         resources = [window.location.origin]
       }
+
       const siwe = new SiweMessage({
         domain: parent.host,
         uri: parent.origin,
         address,
         chainId: network,
         version: '1',
-        statement: '',
+        statement,
         nonce,
         resources,
       })
@@ -104,28 +115,51 @@ export const SIWEProvider = ({ children }: Props) => {
         message,
         'personal_sign'
       )
-      const response = await storage.login({
-        message,
-        signature,
-      })
-      const { accessToken, walletAddress } = response.data
-      if (accessToken && walletAddress) {
-        saveAccessToken({
-          accessToken,
-          walletAddress,
-        })
+
+      return { message, signature }
+    } catch (error) {
+      onError(error)
+      return null
+    }
+  }
+
+  const signIn = async () => {
+    try {
+      setStatus('loading')
+      if (!connected) {
+        throw new Error('No wallet connected.')
       }
-      await queryClient.refetchQueries()
-      await refetchSession()
+
+      const { data: nonce } = await storage.nonce()
+      const siweResult = await siweSign(nonce, '')
+      if (siweResult) {
+        const { message, signature } = siweResult
+
+        const response = await storage.login({
+          message,
+          signature,
+        })
+        const { accessToken, walletAddress } = response.data
+        if (accessToken && walletAddress) {
+          saveAccessToken({
+            accessToken,
+            walletAddress,
+          })
+        }
+        await queryClient.refetchQueries()
+        await refetchSession()
+      }
       setStatus('idle')
     } catch (error) {
       onError(error)
+      return null
     }
   }
+
   const isSignedIn = !!session
   return (
     <SIWEContext.Provider
-      value={{ session, signIn, status, signOut, isSignedIn }}
+      value={{ session, signIn, siweSign, status, signOut, isSignedIn }}
     >
       {children}
     </SIWEContext.Provider>

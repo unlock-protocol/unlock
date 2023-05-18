@@ -13,7 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 export const getAccountTokenBalance = async (
   web3Service: any,
   accountAddress: string,
-  contractAddress: string | null,
+  contractAddress: string | null | undefined,
   network: number
 ) => {
   if (contractAddress) {

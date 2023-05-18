@@ -36,7 +36,7 @@ const Wrapper = classed.div('flex gap-1', {
 const Label = classed.span('relative text-gray-700', {
   variants: {
     size: {
-      tiny: 'text-xs',
+      tiny: 'text-sm',
       small: 'text-base',
       medium: 'text-lg',
       large: 'text-2xl',
@@ -50,7 +50,7 @@ const Label = classed.span('relative text-gray-700', {
 const Value = classed.span(`relative font-bold text-black`, {
   variants: {
     size: {
-      tiny: 'text-base',
+      tiny: 'text-sm',
       small: 'text-base',
       medium: 'text-lg',
       large: 'text-2xl md:text-4xl',
