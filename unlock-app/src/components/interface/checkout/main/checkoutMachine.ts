@@ -154,7 +154,11 @@ type Payment =
     }
   | {
       method: 'swap_and_purchase'
-      route: any
+      route?: any
+    }
+  | {
+      method: 'universal_card'
+      cardId?: string
     }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
@@ -164,7 +168,7 @@ export interface Transaction {
   transactionHash?: string
 }
 
-interface CheckoutMachineContext {
+export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
@@ -186,6 +190,7 @@ interface CheckoutMachineContext {
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
+  existingMember: boolean
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
@@ -206,6 +211,12 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   renew: false,
   hook: undefined,
   metadata: undefined,
+  existingMember: false,
+}
+
+const DISCONNECT = {
+  target: 'SELECT',
+  actions: ['disconnect'],
 }
 
 export const checkoutMachine = createMachine(
@@ -306,10 +317,7 @@ export const checkoutMachine = createMachine(
               target: 'QUANTITY',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       QUANTITY: {
@@ -319,10 +327,7 @@ export const checkoutMachine = createMachine(
             target: 'METADATA',
           },
           BACK: 'SELECT',
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       METADATA: {
@@ -364,10 +369,7 @@ export const checkoutMachine = createMachine(
               target: 'QUANTITY',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       MESSAGE_TO_SIGN: {
@@ -394,10 +396,7 @@ export const checkoutMachine = createMachine(
             },
           ],
           BACK: 'METADATA',
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       PASSWORD: {
@@ -422,10 +421,7 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       PROMO: {
@@ -450,10 +446,7 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       CAPTCHA: {
@@ -478,10 +471,7 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       PAYMENT: {
@@ -518,10 +508,7 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       CARD: {
@@ -532,14 +519,10 @@ export const checkoutMachine = createMachine(
               actions: ['selectPaymentMethod'],
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
           BACK: 'PAYMENT',
         },
       },
-
       CONFIRM: {
         on: {
           CONFIRM_MINT: {
@@ -551,10 +534,7 @@ export const checkoutMachine = createMachine(
               target: 'PAYMENT',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       MINTING: {
@@ -589,10 +569,6 @@ export const checkoutMachine = createMachine(
             },
           ],
           BACK: 'SELECT',
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
         },
       },
       RENEW: {
@@ -631,6 +607,7 @@ export const checkoutMachine = createMachine(
           recipients: event.recipients,
           keyManagers: event.keyManagers,
           hook: event.hook,
+          existingMember: event.existingMember,
         }
       }),
       selectQuantity: assign({
