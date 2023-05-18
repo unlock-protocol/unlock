@@ -28,6 +28,7 @@ import { ViewContract } from '../ViewContract'
 import { useCheckoutHook } from './useCheckoutHook'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { getLockUsdPrice } from '~/hooks/useUSDPricing'
+import { shouldSkip } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -229,23 +230,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }))
   }, [paywallConfig.locks, paywallConfig.network])
 
-  const skipQuantity = useMemo(() => {
-    const maxRecipients = lock?.maxRecipients || paywallConfig.maxRecipients
-    const minRecipients = lock?.minRecipients || paywallConfig.minRecipients
-    const hasMaxRecipients = maxRecipients && maxRecipients > 1
-    const hasMinRecipients = minRecipients && minRecipients > 1
-    return !(hasMaxRecipients || hasMinRecipients)
-  }, [lock, paywallConfig])
-
-  const skipRecipient = useMemo(() => {
-    const skip = lock?.skipRecipient || paywallConfig.skipRecipient
-    const collectsMetadadata =
-      lock?.metadataInputs ||
-      paywallConfig.metadataInputs ||
-      paywallConfig.emailRequired ||
-      lock?.emailRequired
-    return skip && !collectsMetadadata
-  }, [lock, paywallConfig])
+  const { skipQuantity, skipRecipient } = useMemo(
+    () =>
+      shouldSkip({
+        lock,
+        paywallConfig,
+      }),
+    [lock, paywallConfig]
+  )
 
   const config = useConfig()
   const { account, isUnlockAccount } = useAuth()
@@ -321,7 +313,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   return (
     <Fragment>
-      <Stepper service={checkoutService} />
+      <Stepper
+        service={checkoutService}
+        hookType={hookType}
+        existingMember={!!membership?.member}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         {isLoading ? (
           <div className="mt-6 space-y-4">
