@@ -321,5 +321,8 @@ export const captureOnRamp: RequestHandler = async (request, response) => {
     },
     purchase.body.purchaseData
   )
+
+  // TODO : save transaction hash in the DB so we know we have successfuly executed that transaction!
+
   return response.send(transaction)
 }
