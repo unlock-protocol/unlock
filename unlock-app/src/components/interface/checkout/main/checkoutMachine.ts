@@ -156,6 +156,10 @@ type Payment =
       method: 'swap_and_purchase'
       route?: any
     }
+  | {
+      method: 'universal_card'
+      cardId?: string
+    }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 
@@ -164,7 +168,7 @@ export interface Transaction {
   transactionHash?: string
 }
 
-interface CheckoutMachineContext {
+export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
@@ -186,6 +190,7 @@ interface CheckoutMachineContext {
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
+  existingMember: boolean
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
@@ -206,6 +211,7 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   renew: false,
   hook: undefined,
   metadata: undefined,
+  existingMember: false,
 }
 
 const DISCONNECT = {
@@ -517,7 +523,6 @@ export const checkoutMachine = createMachine(
           BACK: 'PAYMENT',
         },
       },
-
       CONFIRM: {
         on: {
           CONFIRM_MINT: {
@@ -602,6 +607,7 @@ export const checkoutMachine = createMachine(
           recipients: event.recipients,
           keyManagers: event.keyManagers,
           hook: event.hook,
+          existingMember: event.existingMember,
         }
       }),
       selectQuantity: assign({

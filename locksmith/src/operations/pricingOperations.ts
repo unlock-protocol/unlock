@@ -12,21 +12,21 @@ interface Price {
 
 export interface Options {
   amount?: number
-  address?: string
+  erc20Address?: string
   network: number
 }
 
+export type PriceResults = Partial<
+  Price & {
+    priceInAmount: number
+  }
+>
+
 export async function getDefiLammaPrice({
   network,
-  address,
+  erc20Address,
   amount = 1,
-}: Options): Promise<
-  Partial<
-    Price & {
-      priceInAmount: number
-    }
-  >
-> {
+}: Options): Promise<PriceResults> {
   const networkConfig = networks[network]
   if (!network) {
     return {}
@@ -34,18 +34,18 @@ export async function getDefiLammaPrice({
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) => item.address?.toLowerCase() === address?.toLowerCase()
+    (item) => item.address?.toLowerCase() === erc20Address?.toLowerCase()
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {
     items.push(`ethereum:${mainnetTokenAddress}`)
   }
 
-  if (address) {
-    items.push(`${networkConfig.chain}:${address}`)
+  if (erc20Address) {
+    items.push(`${networkConfig.chain}:${erc20Address}`)
   }
 
-  if (!address && coingecko) {
+  if (!erc20Address && coingecko) {
     items.push(coingecko)
   }
 
@@ -80,17 +80,13 @@ export async function getDefiLammaPrice({
 export const getTotalCharges = async ({
   amount,
   network,
-  address,
-}: {
-  network: number
-  amount: number
-  address?: string
-}) => {
+  erc20Address,
+}: Options) => {
   const [pricing, gasCost] = await Promise.all([
     getDefiLammaPrice({
       network,
       amount,
-      address,
+      erc20Address,
     }),
     getGasCost({ network }),
   ])

@@ -142,13 +142,15 @@ task('deploy:serializer', 'Deploy LockSerializer').setAction(async () => {
   return await serializerDeployer()
 })
 
-task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
-  async () => {
-    // eslint-disable-next-line global-require
-    const govDeployer = require('../scripts/deployments/governor')
-    return await govDeployer()
-  }
-)
+task('deploy:governor', 'Deploy Governor Alpha contracts')
+  .addParam('udtAddress', 'address of the ERC20 token to use for governance')
+  .setAction(
+    async () => {
+      // eslint-disable-next-line global-require
+      const govDeployer = require('../scripts/deployments/governor')
+      return await govDeployer()
+    }
+  )
 
 task('deploy:keyManager', 'Deploy KeyManager contract')
   .addOptionalParam('locksmiths', 'addresses for the locksmith signers, comma separated')
