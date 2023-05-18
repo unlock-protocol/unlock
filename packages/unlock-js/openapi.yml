@@ -2122,6 +2122,9 @@ paths:
                   country:
                     type: string
 
+        204:
+          description: No supplier found with the provided parameters
+
         500:
           description: Failed to retrieve supplier details.
           content:
