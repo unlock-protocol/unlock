@@ -43,7 +43,7 @@ async function main({
 
   if(chainId !== 31137) {
     await run('verify:verify', {
-      address: '0xa55F8Ba16C5Bb580967f7dD94f927B21d0acF86c', //unlockOwner.address,
+      address: unlockOwner.address,
       constructorArguments: Object.values(args)
     })
   }
