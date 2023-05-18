@@ -2122,6 +2122,9 @@ paths:
                   country:
                     type: string
 
+        204:
+          description: No receipts found
+
         500:
           description: Failed to retrieve supplier details.
           content:
@@ -2905,9 +2908,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  transactionHash:
-                    type: string
-                  owner:
+                  hash:
                     type: string
 
         401:
