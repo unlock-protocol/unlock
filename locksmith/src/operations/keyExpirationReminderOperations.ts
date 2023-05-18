@@ -4,7 +4,7 @@ import * as Normalizer from '../utils/normalizer'
 interface EmailNotificationProps {
   address: string
   network: number | string
-  expiration: number
+  expiration: string
   tokenId: number | string
   type: string
 }

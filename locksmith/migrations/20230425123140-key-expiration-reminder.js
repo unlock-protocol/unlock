@@ -39,6 +39,9 @@ module.exports = {
         type: Sequelize.DATE,
       },
     })
+    await queryInterface.changeColumn('KeyExpirationReminders', 'expiration', {
+      type: Sequelize.STRING,
+    })
     await queryInterface.addIndex('KeyExpirationReminders', {
       fields: ['lockAddress', 'network', 'tokenId', 'type', 'expiration'],
       unique: true,

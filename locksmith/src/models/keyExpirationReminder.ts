@@ -16,7 +16,7 @@ export class KeyExpirationReminder extends Model<
   declare lockAddress: string
   declare tokenId: number
   declare type: string
-  declare expiration: number
+  declare expiration: string
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -47,7 +47,7 @@ KeyExpirationReminder.init(
       allowNull: false,
     },
     expiration: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {
