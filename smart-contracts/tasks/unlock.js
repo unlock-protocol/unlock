@@ -64,3 +64,16 @@ task(
       })
     }
   )
+
+task('unlock:execMultisig', 'Submit a tx to the Unlock Owner through multisig')
+  .addOptionalParam('unlockAddress', 'an instance of the Unlock contract')
+  .addOptionalParam(
+    'unlockOwnerAddress',
+    'an instance of the UnlockOwner contract'
+  )
+  .addOptionalParam('multisig', 'a multisig contract')
+  .addOptionalParam('calldata', 'the calldata to be executed by Unlock')
+  .setAction(async ({ unlockAddress, unlockOwnerAddress, multisig }) => {
+    const execMultisig = require('../scripts/manager/execMultisig')
+    await execMultisig({ unlockAddress, unlockOwnerAddress, multisig })
+  })
