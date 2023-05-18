@@ -3,7 +3,7 @@ import { Tooltip } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
-import { CheckoutService } from './main/checkoutMachine'
+import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
 import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 import { useStepperItems } from './main/useStepperItems'
 import { useActor } from '@xstate/react'
@@ -82,19 +82,30 @@ export interface StepItem {
 interface StepperProps {
   service: CheckoutService | UnlockAccountService
   disabled?: boolean
+  hookType?: CheckoutHookType
+  existingMember?: boolean
 }
 
-export const Stepper = ({ service, disabled }: StepperProps) => {
+export const Stepper = ({
+  service,
+  disabled,
+  hookType,
+  existingMember,
+}: StepperProps) => {
   const [state] = useActor(service)
 
   const isUnlockAccount = service.id === 'unlockAccount'
   // @ts-expect-error Property 'renew' does not exist on type 'UnlockAccountMachineContext'.
   const isRenew = service.id === 'checkout' && !!state.context?.renew
 
-  const items = useStepperItems(service, { isUnlockAccount, isRenew })
-
+  const items = useStepperItems(service, {
+    isUnlockAccount,
+    isRenew,
+    hookType,
+    existingMember,
+  })
   const index = items.findIndex(
-    (item) => !item.to || item.to === service.state?.value
+    (item) => !item.to || item.to === service.getSnapshot()?.value
   )
   const step = items[index]
   const base = items.slice(0, index).filter((item) => !item?.skip)
