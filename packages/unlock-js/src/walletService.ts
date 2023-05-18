@@ -1082,7 +1082,7 @@ export default class WalletService extends UnlockService {
       value,
       validAfter: 0,
       validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
-      nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
+      nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // 32 byte hex string
     }
 
     const transferSignature = await signTransferAuthorization(
