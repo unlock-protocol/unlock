@@ -17,7 +17,6 @@ Don't get us wrong: in some ways, high gas fees are a good problem to have for t
 
 That said, the community has realized this for a long time, and multiple "layer 2" solutions have emerged. Vitalik Buterin [wrote many times](https://vitalik.ca/general/2021/12/06/endgame.html) about why he believes that "roll ups" are the way to scale beyond the limited block space, and we agree!
 
-
 ## Unlock on Optimism
 
 A few months ago, we launched Unlock on [xDAI](/blog/xdai), on [Polygon](/blog/unlock-on-polygon) and more recently on the [Binance Smart Chain](/blog/binance-smart-chain). All of these are great solutions for anyone who wants to deploy a lock, even today! They generally reduce some requirements around permissionlessness in favor of greater usability and much lower fees.
@@ -27,4 +26,3 @@ However, roll-ups represent an opportunity to find another balance between cost 
 So, starting today, Unlock is available on Optimism. We have deployed the same contracts deployed on all the other chains and our front-end fully supports it! For this initial release, locks deployed on Optimism will not yield UDT governance contracts, but we hope to enable that by the end of the year! Get started by [going to the Unlock Dashboard](https://app.unlock-protocol.com/dashboard) and select "Optimism" in the network dropdown!
 
 We can't wait to hear what memberships are going to be unlocked on Optimism :) Like always, please join our community and share your experiments with us!
-

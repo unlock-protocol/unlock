@@ -4,7 +4,6 @@
 
 pragma solidity >=0.4.24 <0.6.0;
 
-
 /**
  * @title Initializable
  *
@@ -18,7 +17,6 @@ pragma solidity >=0.4.24 <0.6.0;
  * because this is not dealt with automatically as with constructors.
  */
 contract Initializable {
-
   /**
    * @dev Indicates that the contract has been initialized.
    */
@@ -33,7 +31,10 @@ contract Initializable {
    * @dev Modifier to use in the initializer function of a contract.
    */
   modifier initializer() {
-    require(initializing || isConstructor() || !initialized, "Contract instance has already been initialized");
+    require(
+      initializing || isConstructor() || !initialized,
+      "Contract instance has already been initialized"
+    );
 
     bool wasInitializing = initializing;
     initializing = true;
@@ -52,14 +53,15 @@ contract Initializable {
     // yield zero, making it an effective way to detect if a contract is
     // under construction or not.
     uint256 cs;
-    assembly { cs := extcodesize(address) }
+    assembly {
+      cs := extcodesize(address)
+    }
     return cs == 0;
   }
 
   // Reserved storage space to allow for layout changes in the future.
   uint256[50] private ______gap;
 }
-
 
 // File openzeppelin-eth/contracts/ownership/Ownable.sol@v2.0.2
 
@@ -73,13 +75,11 @@ pragma solidity ^0.4.24;
 contract Ownable is Initializable {
   address private _owner;
 
-
   event OwnershipRenounced(address indexed previousOwner);
   event OwnershipTransferred(
     address indexed previousOwner,
     address indexed newOwner
   );
-
 
   /**
    * @dev The Ownable constructor sets the original `owner` of the contract to the sender
@@ -92,7 +92,7 @@ contract Ownable is Initializable {
   /**
    * @return the address of the owner.
    */
-  function owner() public view returns(address) {
+  function owner() public view returns (address) {
     return _owner;
   }
 
@@ -107,7 +107,7 @@ contract Ownable is Initializable {
   /**
    * @return true if `msg.sender` is the owner of the contract.
    */
-  function isOwner() public view returns(bool) {
+  function isOwner() public view returns (bool) {
     return msg.sender == _owner;
   }
 
@@ -143,127 +143,88 @@ contract Ownable is Initializable {
   uint256[50] private ______gap;
 }
 
-
 // File contracts/interfaces/ILockCore.sol
 
 pragma solidity 0.4.25;
-
 
 /**
  * @title The Lock interface core methods for a Lock
  * @author HardlyDifficult (unlock-protocol.com)
  */
 interface ILockCore {
+  /**
+   * @dev Purchase function, public version, with no referrer.
+   * @param _recipient address of the recipient of the purchased key
+   * @param _data optional marker for the key
+   */
+  function purchaseFor(address _recipient, bytes _data) external payable;
 
   /**
-  * @dev Purchase function, public version, with no referrer.
-  * @param _recipient address of the recipient of the purchased key
-  * @param _data optional marker for the key
-  */
-  function purchaseFor(
-    address _recipient,
-    bytes _data
-  )
-    external
-    payable;
-
-  /**
-  * @dev Purchase function, public version, with referrer.
-  * @param _recipient address of the recipient of the purchased key
-  * @param _referrer address of the user making the referral
-  * @param _data optional marker for the key
-  */
+   * @dev Purchase function, public version, with referrer.
+   * @param _recipient address of the recipient of the purchased key
+   * @param _referrer address of the user making the referral
+   * @param _data optional marker for the key
+   */
   function purchaseForFrom(
     address _recipient,
     address _referrer,
     bytes _data
-  )
-    external
-    payable;
+  ) external payable;
 
   /**
    * @dev Called by owner to withdraw all funds from the lock.
    */
-  function withdraw(
-  )
-    external;
+  function withdraw() external;
 
   /**
    * @dev Called by owner to partially withdraw funds from the lock.
    */
-  function partialWithdraw(
-    uint _amount
-  )
-    external;
+  function partialWithdraw(uint _amount) external;
 
   /**
    * A function which lets the owner of the lock expire a users' key.
    */
-  function expireKeyFor(
-    address _owner
-  )
-    external;
+  function expireKeyFor(address _owner) external;
 
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
    */
-  function updateKeyPrice(
-    uint _keyPrice
-  )
-    external;
+  function updateKeyPrice(uint _keyPrice) external;
 
   /**
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than outstandingKeys.
    */
-  function numberOfOwners()
-    external
-    view
-    returns (uint);
+  function numberOfOwners() external view returns (uint);
 
   /**
    * Public function which returns the total number of keys (both expired and valid)
    */
-  function outstandingKeys()
-    external
-    view
-    returns (uint);
+  function outstandingKeys() external view returns (uint);
 
   /**
-  * @dev Returns the key's data field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
-  function keyDataFor(
-    address _owner
-  )
-    external
-    view
-    returns (bytes data);
+   * @dev Returns the key's data field for a given owner.
+   * @param _owner address of the user for whom we search the key
+   */
+  function keyDataFor(address _owner) external view returns (bytes data);
 
   /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
+   * @dev Returns the key's ExpirationTimestamp field for a given owner.
+   * @param _owner address of the user for whom we search the key
+   */
   function keyExpirationTimestampFor(
     address _owner
-  )
-    external
-    view
-    returns (uint timestamp);
+  ) external view returns (uint timestamp);
 
   /**
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  */
+   * @param _page the page of key owners requested when faceted by page size
+   * @param _pageSize the number of Key Owners requested per page
+   */
   function getOwnersByPage(
     uint _page,
     uint _pageSize
-  )
-    external
-    view
-    returns (address[]);
+  ) external view returns (address[]);
 }
-
 
 // File contracts/interfaces/IUnlock.sol
 
@@ -271,34 +232,27 @@ pragma solidity 0.4.25;
 
 /**
  * @title The Unlock Interface
-**/
+ **/
 
 interface IUnlock {
-
-
   // Events
-  event NewLock(
-    address indexed lockOwner,
-    address indexed newLockAddress
-  );
+  event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(address _owner) external;
 
   /**
-  * @dev Create lock
-  * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * Return type `ILockCore` is the most specific interface from which all lock types inherit.
-  */
+   * @dev Create lock
+   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+   * Return type `ILockCore` is the most specific interface from which all lock types inherit.
+   */
   function createLock(
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
-  )
-    external
-    returns (ILockCore lock);
+  ) external returns (ILockCore lock);
 
-    /**
+  /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
@@ -308,10 +262,9 @@ interface IUnlock {
   function recordKeyPurchase(
     uint _value,
     address _referrer // solhint-disable-line no-unused-vars
-  )
-    external;
+  ) external;
 
-    /**
+  /**
    * This function will keep track of consumed discounts by a given user.
    * It will also grant discount tokens to the creator who is granting the discount based on the
    * amount of discount and compensation rate.
@@ -320,10 +273,9 @@ interface IUnlock {
   function recordConsumedDiscount(
     uint _discount,
     uint _tokens // solhint-disable-line no-unused-vars
-  )
-    external;
+  ) external;
 
-    /**
+  /**
    * This function returns the discount available for a user, when purchasing a
    * a key from a lock.
    * This does not modify the state. It returns both the discount and the number of tokens
@@ -332,12 +284,8 @@ interface IUnlock {
   function computeAvailableDiscountFor(
     address _purchaser, // solhint-disable-line no-unused-vars
     uint _keyPrice // solhint-disable-line no-unused-vars
-  )
-    external
-    view
-    returns (uint discount, uint tokens);
+  ) external view returns (uint discount, uint tokens);
 }
-
 
 // File contracts/interfaces/IERC721.sol
 
@@ -348,24 +296,34 @@ pragma solidity 0.4.25;
 ///  Note: the ERC-165 identifier for this interface is 0x80ac58cd
 
 interface IERC721 {
-
-
   /// @dev This emits when ownership of any NFT changes by any mechanism.
   ///  This event emits when NFTs are created (`from` == 0) and destroyed
   ///  (`to` == 0). Exception: during contract creation, any number of NFTs
   ///  may be created and assigned without emitting Transfer. At the time of
   ///  any transfer, the approved address for that NFT (if any) is reset to none.
-  event Transfer(address indexed _from, address indexed _to, uint indexed _tokenId);
+  event Transfer(
+    address indexed _from,
+    address indexed _to,
+    uint indexed _tokenId
+  );
 
   /// @dev This emits when the approved address for an NFT is changed or
   ///  reaffirmed. The zero address indicates there is no approved address.
   ///  When a Transfer event emits, this also indicates that the approved
   ///  address for that NFT (if any) is reset to none.
-  event Approval(address indexed _owner, address indexed _approved, uint indexed _tokenId);
+  event Approval(
+    address indexed _owner,
+    address indexed _approved,
+    uint indexed _tokenId
+  );
 
   /// @dev This emits when an operator is enabled or disabled for an owner.
   ///  The operator can manage all NFTs of the owner.
-  event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+  event ApprovalForAll(
+    address indexed _owner,
+    address indexed _operator,
+    bool _approved
+  );
 
   /// @notice Transfer ownership of an NFT -- THE CALLER IS RESPONSIBLE
   ///  TO CONFIRM THAT `_to` IS CAPABLE OF RECEIVING NFTS OR ELSE
@@ -377,7 +335,11 @@ interface IERC721 {
   /// @param _from The current owner of the NFT
   /// @param _to The new owner
   /// @param _tokenId The NFT to transfer
-  function transferFrom(address _from, address _to, uint _tokenId) external payable;
+  function transferFrom(
+    address _from,
+    address _to,
+    uint _tokenId
+  ) external payable;
 
   /// @notice Set or reaffirm the approved address for an NFT
   /// @dev The zero address indicates there is no approved address.
@@ -456,21 +418,19 @@ interface IERC721 {
 //     /// @param _data Additional data with no specified format
 //     /// @return `bytes4(keccak256("onERC721Received(address,address,uint,bytes)"))`
 //     /// unless throwing
-    // function onERC721Received(
-    //   address _operator,
-    //   address _from,
-    //   uint _tokenId,
-    //   bytes _data
-    // )
-    // external
-    // returns(bytes4);
+// function onERC721Received(
+//   address _operator,
+//   address _from,
+//   uint _tokenId,
+//   bytes _data
+// )
+// external
+// returns(bytes4);
 //  }
-
 
 // File contracts/interfaces/IERC721Receiver.sol
 
 pragma solidity 0.4.25;
-
 
 /**
  * @title ERC721 token receiver interface
@@ -497,40 +457,30 @@ interface IERC721Receiver {
     address from,
     uint tokenId,
     bytes data
-  )
-    public
-    returns(bytes4);
+  ) public returns (bytes4);
 }
-
 
 // File openzeppelin-eth/contracts/introspection/IERC165.sol@v2.0.2
 
 pragma solidity ^0.4.24;
-
 
 /**
  * @title IERC165
  * @dev https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md
  */
 interface IERC165 {
-
   /**
    * @notice Query if a contract implements an interface
    * @param interfaceId The interface identifier, as specified in ERC-165
    * @dev Interface identification is specified in ERC-165. This function
    * uses less than 30,000 gas.
    */
-  function supportsInterface(bytes4 interfaceId)
-    external
-    view
-    returns (bool);
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
-
 
 // File openzeppelin-eth/contracts/introspection/ERC165.sol@v2.0.2
 
 pragma solidity ^0.4.24;
-
 
 /**
  * @title ERC165
@@ -538,7 +488,6 @@ pragma solidity ^0.4.24;
  * @dev Implements ERC165 using a lookup table.
  */
 contract ERC165 is Initializable, IERC165 {
-
   bytes4 private constant _InterfaceId_ERC165 = 0x01ffc9a7;
   /**
    * 0x01ffc9a7 ===
@@ -554,30 +503,21 @@ contract ERC165 is Initializable, IERC165 {
    * @dev A contract implementing SupportsInterfaceWithLookup
    * implement ERC165 itself
    */
-  function initialize()
-    public
-    initializer
-  {
+  function initialize() public initializer {
     _registerInterface(_InterfaceId_ERC165);
   }
 
   /**
    * @dev implement supportsInterface(bytes4) using a lookup table
    */
-  function supportsInterface(bytes4 interfaceId)
-    public
-    view
-    returns (bool)
-  {
+  function supportsInterface(bytes4 interfaceId) public view returns (bool) {
     return _supportedInterfaces[interfaceId];
   }
 
   /**
    * @dev private method for registering an interface
    */
-  function _registerInterface(bytes4 interfaceId)
-    internal
-  {
+  function _registerInterface(bytes4 interfaceId) internal {
     require(interfaceId != 0xffffffff);
     _supportedInterfaces[interfaceId] = true;
   }
@@ -585,21 +525,18 @@ contract ERC165 is Initializable, IERC165 {
   uint256[50] private ______gap;
 }
 
-
 // File openzeppelin-eth/contracts/math/SafeMath.sol@v2.0.2
 
 pragma solidity ^0.4.24;
-
 
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that revert on error
  */
 library SafeMath {
-
   /**
-  * @dev Multiplies two numbers, reverts on overflow.
-  */
+   * @dev Multiplies two numbers, reverts on overflow.
+   */
   function mul(uint256 a, uint256 b) internal pure returns (uint256) {
     // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
     // benefit is lost if 'b' is also tested.
@@ -615,8 +552,8 @@ library SafeMath {
   }
 
   /**
-  * @dev Integer division of two numbers truncating the quotient, reverts on division by zero.
-  */
+   * @dev Integer division of two numbers truncating the quotient, reverts on division by zero.
+   */
   function div(uint256 a, uint256 b) internal pure returns (uint256) {
     require(b > 0); // Solidity only automatically asserts when dividing by 0
     uint256 c = a / b;
@@ -626,8 +563,8 @@ library SafeMath {
   }
 
   /**
-  * @dev Subtracts two numbers, reverts on overflow (i.e. if subtrahend is greater than minuend).
-  */
+   * @dev Subtracts two numbers, reverts on overflow (i.e. if subtrahend is greater than minuend).
+   */
   function sub(uint256 a, uint256 b) internal pure returns (uint256) {
     require(b <= a);
     uint256 c = a - b;
@@ -636,8 +573,8 @@ library SafeMath {
   }
 
   /**
-  * @dev Adds two numbers, reverts on overflow.
-  */
+   * @dev Adds two numbers, reverts on overflow.
+   */
   function add(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a + b;
     require(c >= a);
@@ -646,25 +583,18 @@ library SafeMath {
   }
 
   /**
-  * @dev Divides two numbers and returns the remainder (unsigned integer modulo),
-  * reverts when dividing by zero.
-  */
+   * @dev Divides two numbers and returns the remainder (unsigned integer modulo),
+   * reverts when dividing by zero.
+   */
   function mod(uint256 a, uint256 b) internal pure returns (uint256) {
     require(b != 0);
     return a % b;
   }
 }
 
-
 // File contracts/PublicLock.sol
 
 pragma solidity 0.4.25;
-
-
-
-
-
-
 
 /**
  * TODO: consider error codes rather than strings
@@ -679,7 +609,6 @@ pragma solidity 0.4.25;
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
 contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
-
   using SafeMath for uint;
 
   // The struct for a key
@@ -690,15 +619,9 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   // Events
-  event PriceChanged(
-    uint oldKeyPrice,
-    uint keyPrice
-  );
+  event PriceChanged(uint oldKeyPrice, uint keyPrice);
 
-  event Withdrawal(
-    address indexed _sender,
-    uint _amount
-    );
+  event Withdrawal(address indexed _sender, uint _amount);
 
   // Fields
   // Unlock Protocol address
@@ -724,13 +647,13 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
-  mapping (address => Key) internal keyByOwner;
+  mapping(address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
   // merging this with numberOfKeysSold into an array instead.
-  mapping (uint => address) internal ownerByTokenId;
+  mapping(uint => address) internal ownerByTokenId;
 
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
@@ -743,69 +666,55 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   // be a single approved beneficiary
   // Note 2: for transfer, both addresses will be different
   // Note 3: for sales (new keys on restricted locks), both addresses will be the same
-  mapping (uint => address) internal approved;
+  mapping(uint => address) internal approved;
 
   /**
    * MODIFIERS
    */
   // Ensures that an owner has a key
-  modifier hasKey(
-    address _owner
-  ) {
+  modifier hasKey(address _owner) {
     Key storage key = keyByOwner[_owner];
-    require(
-      key.expirationTimestamp > 0, "No such key"
-    );
+    require(key.expirationTimestamp > 0, "No such key");
     _;
   }
 
   // Ensures that an owner has a valid key
-  modifier hasValidKey(
-    address _owner
-  ) {
+  modifier hasValidKey(address _owner) {
     Key storage key = keyByOwner[_owner];
-    require(
-      key.expirationTimestamp > now, "Key is not valid"
-    );
+    require(key.expirationTimestamp > now, "Key is not valid");
     _;
   }
 
   // Ensure that the caller owns the key
-  modifier onlyKeyOwner(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] == msg.sender
-    );
+  modifier onlyKeyOwner(uint _tokenId) {
+    require(ownerByTokenId[_tokenId] == msg.sender);
     _;
   }
-  
+
   // Ensures that a key has an owner
-  modifier isKey(
-    uint _tokenId
-  ) {
-    require(
-      ownerByTokenId[_tokenId] != address(0), "No such key"
-    );
+  modifier isKey(uint _tokenId) {
+    require(ownerByTokenId[_tokenId] != address(0), "No such key");
     _;
   }
 
   // Ensure that the caller has a key
   // or that the caller has been approved
   // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
-    uint _tokenId
-  ) {
+  modifier onlyKeyOwnerOrApproved(uint _tokenId) {
     require(
-      ownerByTokenId[_tokenId] == msg.sender
-      || _getApproved(_tokenId) == msg.sender
-    , "Only key owner or approved owner");
+      ownerByTokenId[_tokenId] == msg.sender ||
+        _getApproved(_tokenId) == msg.sender,
+      "Only key owner or approved owner"
+    );
     _;
   }
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
-    require(maxNumberOfKeys > numberOfKeysSold, "Maximum number of keys already sold");
+    require(
+      maxNumberOfKeys > numberOfKeysSold,
+      "Maximum number of keys already sold"
+    );
     _;
   }
 
@@ -815,9 +724,11 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
-  )
-  public {
-    require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, "Expiration duration exceeds 100 years");
+  ) public {
+    require(
+      _expirationDuration <= 100 * 365 * 24 * 60 * 60,
+      "Expiration duration exceeds 100 years"
+    );
     unlockProtocol = msg.sender; // Make sure we link back to Unlock's smart contract.
     Ownable.initialize(_owner);
     ERC165.initialize();
@@ -827,35 +738,25 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   }
 
   /**
-  * @dev Purchase function, public version, with no referrer.
-  * @param _recipient address of the recipient of the purchased key
-  * @param _data optional marker for the key
-  */
-  function purchaseFor(
-    address _recipient,
-    bytes _data
-  )
-    external
-    payable
-  {
+   * @dev Purchase function, public version, with no referrer.
+   * @param _recipient address of the recipient of the purchased key
+   * @param _data optional marker for the key
+   */
+  function purchaseFor(address _recipient, bytes _data) external payable {
     return _purchaseFor(_recipient, address(0), _data);
   }
 
   /**
-  * @dev Purchase function, public version, with referrer.
-  * @param _recipient address of the recipient of the purchased key
-  * @param _referrer address of the user making the referral
-  * @param _data optional marker for the key
-  */
+   * @dev Purchase function, public version, with referrer.
+   * @param _recipient address of the recipient of the purchased key
+   * @param _referrer address of the user making the referral
+   * @param _data optional marker for the key
+   */
   function purchaseForFrom(
     address _recipient,
     address _referrer,
     bytes _data
-  )
-    external
-    payable
-    hasValidKey(_referrer)
-  {
+  ) external payable hasValidKey(_referrer) {
     return _purchaseFor(_recipient, _referrer, _data);
   }
 
@@ -870,7 +771,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   )
     external
     payable
-    notSoldOut()
+    notSoldOut
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
@@ -892,12 +793,14 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     if (previousExpiration <= now) {
       // The recipient did not have a key, or had a key but it expired. The new expiration is the
       // sender's key expiration
-      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from].expirationTimestamp;
+      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from]
+        .expirationTimestamp;
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - now` cannot underflow
-      keyByOwner[_recipient].expirationTimestamp =
-        keyByOwner[_from].expirationTimestamp.add(previousExpiration - now);
+      keyByOwner[_recipient].expirationTimestamp = keyByOwner[_from]
+        .expirationTimestamp
+        .add(previousExpiration - now);
     }
     // Overwite data in all cases
     keyByOwner[_recipient].data = keyByOwner[_from].data;
@@ -909,21 +812,14 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     approved[_tokenId] = address(0);
 
     // trigger event
-    emit Transfer(
-      _from,
-      _recipient,
-      _tokenId
-    );
+    emit Transfer(_from, _recipient, _tokenId);
   }
 
   /**
    * @dev Called by owner to withdraw all funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
    */
-  function withdraw()
-    external
-    onlyOwner
-  {
+  function withdraw() external onlyOwner {
     uint balance = address(this).balance;
     require(balance > 0, "Not enough funds");
     // Security: re-entrancy not a risk as this is the last line of an external function
@@ -934,10 +830,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * @dev Called by owner to partially withdraw funds from the lock.
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
    */
-  function partialWithdraw(uint _amount)
-    external
-    onlyOwner
-  {
+  function partialWithdraw(uint _amount) external onlyOwner {
     require(_amount > 0, "Must request an amount greater than 0");
     uint256 balance = address(this).balance;
     require(balance > 0 && balance >= _amount, "Not enough funds");
@@ -953,11 +846,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   function approve(
     address _approved,
     uint _tokenId
-  )
-    external
-    payable
-    onlyKeyOwner(_tokenId)
-  {
+  ) external payable onlyKeyOwner(_tokenId) {
     require(_approved != address(0));
     require(msg.sender != _approved, "You can't approve yourself");
 
@@ -968,12 +857,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
    */
-  function updateKeyPrice(
-    uint _keyPrice
-  )
-    external
-    onlyOwner
-  {
+  function updateKeyPrice(uint _keyPrice) external onlyOwner {
     uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
     emit PriceChanged(oldKeyPrice, keyPrice);
@@ -982,14 +866,8 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_owner`, either 0 or 1.
-  */
-  function balanceOf(
-    address _owner
-  )
-    external
-    view
-    returns (uint)
-  {
+   */
+  function balanceOf(address _owner) external view returns (uint) {
     require(_owner != address(0), "Invalid address");
     return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
   }
@@ -997,30 +875,20 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   /**
    * @notice ERC721: Find the owner of an NFT
    * @return The address of the owner of the NFT, if applicable
-  */
+   */
   function ownerOf(
     uint _tokenId
-  )
-    external
-    view
-    isKey(_tokenId)
-    returns (address)
-  {
+  ) external view isKey(_tokenId) returns (address) {
     return ownerByTokenId[_tokenId];
   }
 
   /**
    * @notice Find the tokenId for a given user
    * @return The tokenId of the NFT, else revert
-  */
+   */
   function getTokenIdFor(
     address _account
-  )
-    external
-    view
-    hasKey(_account)
-    returns (uint)
-  {
+  ) external view hasKey(_account) returns (uint) {
     return keyByOwner[_account].tokenId;
   }
 
@@ -1028,13 +896,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * external version
    * Will return the approved recipient for a key, if any.
    */
-  function getApproved(
-    uint _tokenId
-  )
-    external
-    view
-    returns (address)
-  {
+  function getApproved(uint _tokenId) external view returns (address) {
     return _getApproved(_tokenId);
   }
 
@@ -1042,39 +904,33 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than outstandingKeys.
    */
-  function numberOfOwners()
-    public
-    view
-    returns (uint)
-  {
+  function numberOfOwners() public view returns (uint) {
     return owners.length;
   }
 
   /**
-   * Public function which returns the total number of unique keys sold (both 
+   * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
-  function outstandingKeys()
-    public
-    view
-    returns (uint)
-  {
+  function outstandingKeys() public view returns (uint) {
     return numberOfKeysSold;
   }
 
- /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  */
-  function getOwnersByPage(uint _page, uint _pageSize)
-    public
-    view
-    returns (address[])
-  {
+  /**
+   * A function which returns a subset of the keys for this Lock as an array
+   * @param _page the page of key owners requested when faceted by page size
+   * @param _pageSize the number of Key Owners requested per page
+   */
+  function getOwnersByPage(
+    uint _page,
+    uint _pageSize
+  ) public view returns (address[]) {
     require(outstandingKeys() > 0, "No keys to retrieve");
     uint _startIndex = _page * _pageSize;
-    require(_startIndex >= 0 && _startIndex < outstandingKeys(), "Index must be in-bounds");
+    require(
+      _startIndex >= 0 && _startIndex < outstandingKeys(),
+      "Index must be in-bounds"
+    );
     uint endOfPageIndex;
 
     if (_startIndex + _pageSize > owners.length) {
@@ -1100,43 +956,27 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   /**
    * A function which lets the owner of the lock expire a users' key.
    */
-  function expireKeyFor(
-    address _owner
-  )
-    public
-    onlyOwner
-    hasValidKey(_owner)
-  {
+  function expireKeyFor(address _owner) public onlyOwner hasValidKey(_owner) {
     keyByOwner[_owner].expirationTimestamp = now; // Effectively expiring the key
   }
 
   /**
-  * @dev Returns the key's data field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
+   * @dev Returns the key's data field for a given owner.
+   * @param _owner address of the user for whom we search the key
+   */
   function keyDataFor(
     address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (bytes memory data)
-  {
+  ) public view hasKey(_owner) returns (bytes memory data) {
     return keyByOwner[_owner].data;
   }
 
   /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  */
+   * @dev Returns the key's ExpirationTimestamp field for a given owner.
+   * @param _owner address of the user for whom we search the key
+   */
   function keyExpirationTimestampFor(
     address _owner
-  )
-    public
-    view
-    hasKey(_owner)
-    returns (uint timestamp)
-  {
+  ) public view hasKey(_owner) returns (uint timestamp) {
     return keyByOwner[_owner].expirationTimestamp;
   }
 
@@ -1159,32 +999,27 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     address from, // solhint-disable-line no-unused-vars
     uint tokenId, // solhint-disable-line no-unused-vars
     bytes data // solhint-disable-line no-unused-vars
-  )
-    public
-    returns(bytes4)
-  {
+  ) public returns (bytes4) {
     return this.onERC721Received.selector;
   }
 
   /**
-  * @dev Purchase function: this lets a user purchase a key from the lock for another user
-  * @param _recipient address of the recipient of the purchased key
-  * @param _data optional marker for the key
-  * This will fail if
-  *  - the keyReleaseMechanism is private
-  *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
-  *  - the amount value is smaller than the price
-  *  - the recipient already owns a key
-  * TODO: next version of solidity will allow for message to be added to require.
-  */
+   * @dev Purchase function: this lets a user purchase a key from the lock for another user
+   * @param _recipient address of the recipient of the purchased key
+   * @param _data optional marker for the key
+   * This will fail if
+   *  - the keyReleaseMechanism is private
+   *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
+   *  - the amount value is smaller than the price
+   *  - the recipient already owns a key
+   * TODO: next version of solidity will allow for message to be added to require.
+   */
   function _purchaseFor(
     address _recipient,
     address _referrer,
     bytes memory _data
-  )
-    internal
-    notSoldOut() 
-  { // solhint-disable-line function-max-lines
+  ) internal notSoldOut {
+    // solhint-disable-line function-max-lines
     require(_recipient != address(0));
 
     // Let's get the actual price for the key from the Unlock smart contract
@@ -1192,7 +1027,10 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     uint discount;
     uint tokens;
     uint inMemoryKeyPrice = keyPrice;
-    (discount, tokens) = unlock.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
+    (discount, tokens) = unlock.computeAvailableDiscountFor(
+      _recipient,
+      inMemoryKeyPrice
+    );
     uint netPrice = inMemoryKeyPrice;
     if (discount > inMemoryKeyPrice) {
       netPrice = 0;
@@ -1210,7 +1048,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
     // Assign the key
     uint previousExpiration = keyByOwner[_recipient].expirationTimestamp;
     if (previousExpiration < now) {
-      if (previousExpiration == 0) { 
+      if (previousExpiration == 0) {
         // This is a brand new owner, else an owner of an expired key buying an extension
         numberOfKeysSold++;
         owners.push(_recipient);
@@ -1220,12 +1058,14 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
         // support this will change to a sequenceId assigned at purchase.
         keyByOwner[_recipient].tokenId = uint(_recipient);
       }
-      // SafeAdd is not required here since expirationDuration is capped to a tiny value 
+      // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       keyByOwner[_recipient].expirationTimestamp = now + expirationDuration;
     } else {
       // This is an existing owner trying to extend their key
-      keyByOwner[_recipient].expirationTimestamp = previousExpiration.add(expirationDuration);
+      keyByOwner[_recipient].expirationTimestamp = previousExpiration.add(
+        expirationDuration
+      );
     }
     // Overwite data in all cases
     keyByOwner[_recipient].data = _data;
@@ -1250,13 +1090,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
    * Note: this does not check that a corresponding key
    * actually exists.
    */
-  function _getApproved(
-    uint _tokenId
-  )
-    internal
-    view
-    returns (address)
-  {
+  function _getApproved(uint _tokenId) internal view returns (address) {
     address approvedRecipient = approved[_tokenId];
     require(approvedRecipient != address(0), "No approved recipient exists");
     return approvedRecipient;
@@ -1264,18 +1098,14 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
 
   /**
    * @dev private version of the withdraw function which handles all withdrawals from the lock.
-   * 
+   *
    * Security: Be wary of re-entrancy when calling this.
    */
-  function _withdraw(uint _amount)
-    private
-  {
+  function _withdraw(uint _amount) private {
     Ownable.owner().transfer(_amount);
     emit Withdrawal(msg.sender, _amount);
   }
-
 }
-
 
 // File contracts/Unlock.sol
 
@@ -1307,13 +1137,9 @@ pragma solidity 0.4.25;
  *  b. Keeping track of GNP
  */
 
-
-
-
-/// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”. 
+/// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is IUnlock, Initializable, Ownable {
-
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
@@ -1336,21 +1162,13 @@ contract Unlock is IUnlock, Initializable, Ownable {
   uint public totalDiscountGranted;
 
   // We keep track of deployed locks to ensure that callers are all deployed locks.
-  mapping (address => LockBalances) public locks;
+  mapping(address => LockBalances) public locks;
 
   // Events
-  event NewLock(
-    address indexed lockOwner,
-    address indexed newLockAddress
-  );
+  event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
-  function initialize(
-    address _owner
-  )
-    public
-    initializer()
-  {
+  function initialize(address _owner) public initializer {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
     grossNetworkProduct = 0;
@@ -1358,18 +1176,14 @@ contract Unlock is IUnlock, Initializable, Ownable {
   }
 
   /**
-  * @dev Create lock
-  * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  */
+   * @dev Create lock
+   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+   */
   function createLock(
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
-  )
-    public
-    returns (ILockCore lock)
-  {
-
+  ) public returns (ILockCore lock) {
     // create lock
     PublicLock newPublicLock = new PublicLock(
       msg.sender,
@@ -1402,11 +1216,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
   function computeAvailableDiscountFor(
     address _purchaser, // solhint-disable-line no-unused-vars
     uint _keyPrice // solhint-disable-line no-unused-vars
-  )
-    public
-    view
-    returns (uint discount, uint tokens)
-  {
+  ) public view returns (uint discount, uint tokens) {
     // TODO: implement me
     return (0, 0);
   }
@@ -1422,10 +1232,7 @@ contract Unlock is IUnlock, Initializable, Ownable {
   function recordKeyPurchase(
     uint _value,
     address _referrer // solhint-disable-line no-unused-vars
-  )
-    public
-    onlyFromDeployedLock()
-  {
+  ) public onlyFromDeployedLock {
     // TODO: implement me
     grossNetworkProduct += _value;
     return;
@@ -1440,13 +1247,9 @@ contract Unlock is IUnlock, Initializable, Ownable {
   function recordConsumedDiscount(
     uint _discount,
     uint _tokens // solhint-disable-line no-unused-vars
-  )
-    public
-    onlyFromDeployedLock()
-  {
+  ) public onlyFromDeployedLock {
     // TODO: implement me
     totalDiscountGranted += _discount;
     return;
   }
-
 }
