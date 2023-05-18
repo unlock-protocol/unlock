@@ -78,7 +78,7 @@ export const getKeyPricingInUSD = async ({
 
   const usdPricing = await pricingOperations.getDefiLammaPrice({
     network,
-    address:
+    erc20Address:
       !currencyContractAddress ||
       currencyContractAddress === ethers.constants.AddressZero
         ? undefined
