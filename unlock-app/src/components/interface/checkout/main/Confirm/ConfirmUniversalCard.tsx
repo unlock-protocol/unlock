@@ -181,12 +181,14 @@ export function ConfirmUniversalCard({
                 lock={lock!}
                 pricingData={cardPricing}
               />
-              <CreditCardPricingBreakdown
-                total={cardPricing!.total}
-                creditCardProcessingFee={cardPricing!.creditCardProcessingFee}
-                unlockServiceFee={cardPricing!.unlockServiceFee}
-                gasCosts={cardPricing!.gasCost}
-              />
+              {cardPricing && (
+                <CreditCardPricingBreakdown
+                  total={cardPricing?.total}
+                  creditCardProcessingFee={cardPricing?.creditCardProcessingFee}
+                  unlockServiceFee={cardPricing?.unlockServiceFee}
+                  gasCosts={cardPricing?.gasCost}
+                />
+              )}
             </div>
           </main>
           <footer className="grid items-center px-6 pt-6 border-t">
