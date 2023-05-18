@@ -129,7 +129,7 @@ export class CardPurchaser {
   ) {
     const contract = this.getContract({ network })
 
-    await contract
+    return contract
       .connect(signer)
       .purchase(
         transfer.message,
