@@ -27,7 +27,7 @@ const {
   deployLock,
 } = require('../../test/helpers')
 
-async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
+async function main({ publicLockAddress, publicLockVersion, addOnly, unlockAddress } = {}) {
   await run('compile')
 
   // make sure we get the correct chain id on local mainnet fork
@@ -35,7 +35,10 @@ async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
     ? { chainId: '1' }
     : await ethers.provider.getNetwork()
 
-  const { unlockAddress, multisig } = networks[chainId]
+  const { multisig } = networks[chainId]
+  if (!unlockAddress) {
+    ;({unlockAddress} = networks[chainId])
+  }
   let publicLock
 
   // if not address is specified, deploy the lock template
