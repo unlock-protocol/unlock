@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const { ADDRESS_ZERO } = require('../test/helpers')
 
 const getProposalId = async (proposal, govAddress) => {
   const [targets, values, calldata, description] = await parseProposal({
@@ -86,7 +87,8 @@ const encodeProposalArgs = async ({
   functionName,
   functionArgs,
 }) => {
-  const { interface } = await ethers.getContractFactory(contractName)
+  // use that pattern instead of `getContractFactory` so we support passing interfaces
+  const { interface } = await ethers.getContractAt(contractName, ADDRESS_ZERO)
   const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
   return calldata
 }
