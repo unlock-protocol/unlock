@@ -15,7 +15,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
     confirmRenew: 'CONFIRM_RENEW'
-    disconnect: 'DISCONNECT'
+    disconnect: 'DISCONNECT' | 'RESET_CHECKOUT'
     selectLock: 'SELECT_LOCK'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'

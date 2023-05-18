@@ -123,6 +123,10 @@ interface BackEvent {
   type: CheckoutPage | 'BACK'
 }
 
+interface ResetEvent {
+  type: 'RESET_CHECKOUT'
+}
+
 export type CheckoutMachineEvents =
   | SelectLockEvent
   | SelectQuantityEvent
@@ -138,6 +142,7 @@ export type CheckoutMachineEvents =
   | RenewedEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
+  | ResetEvent
   | DisconnectEvent
   | BackEvent
 
@@ -249,6 +254,10 @@ export const checkoutMachine = createMachine(
       },
       SUBMIT_DATA: {
         actions: ['submitData'],
+      },
+      RESET_CHECKOUT: {
+        target: 'SELECT',
+        actions: ['disconnect'],
       },
     },
     states: {

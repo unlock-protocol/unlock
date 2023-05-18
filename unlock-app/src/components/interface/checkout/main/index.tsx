@@ -70,7 +70,7 @@ export function Checkout({
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      checkoutService.send('DISCONNECT')
+      checkoutService.send('RESET_CHECKOUT')
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
