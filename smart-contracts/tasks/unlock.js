@@ -66,14 +66,33 @@ task(
   )
 
 task('unlock:execMultisig', 'Submit a tx to the Unlock Owner through multisig')
+  .addParam('unlockOwnerAddress', 'an instance of the UnlockOwner contract')
+  .addOptionalParam('unlockAddress', 'an instance of the Unlock contract')
+  .addOptionalParam('multisig', 'a multisig contract')
+  .addOptionalParam('calldata', 'the calldata to be executed by Unlock')
+  .setAction(
+    async ({ unlockAddress, unlockOwnerAddress, multisig, calldata }) => {
+      const execMultisig = require('../scripts/manager/execMultisig')
+      await execMultisig({
+        unlockAddress,
+        unlockOwnerAddress,
+        multisig,
+        calldata,
+      })
+    }
+  )
+
+task('unlock:execDAO', 'Submit a DAO proposal through the Unlock Owner')
+  .addParam('govAddress', 'the address of the Gov contract')
   .addOptionalParam('unlockAddress', 'an instance of the Unlock contract')
   .addOptionalParam(
     'unlockOwnerAddress',
     'an instance of the UnlockOwner contract'
   )
-  .addOptionalParam('multisig', 'a multisig contract')
   .addOptionalParam('calldata', 'the calldata to be executed by Unlock')
-  .setAction(async ({ unlockAddress, unlockOwnerAddress, multisig }) => {
-    const execMultisig = require('../scripts/manager/execMultisig')
-    await execMultisig({ unlockAddress, unlockOwnerAddress, multisig })
-  })
+  .setAction(
+    async ({ unlockAddress, unlockOwnerAddress, govAddress, calldata }) => {
+      const execDAO = require('../scripts/manager/execDAO')
+      await execDAO({ unlockAddress, unlockOwnerAddress, govAddress, calldata })
+    }
+  )

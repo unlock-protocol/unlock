@@ -9,6 +9,7 @@ const { impersonate } = require('../../test/helpers/mainnet')
 
 async function main({
   proposerAddress,
+  contractAddress,
   contractName,
   functionName,
   functionArgs,
@@ -65,6 +66,7 @@ async function main({
     contractName,
     calldata,
     proposalName,
+    address: contractAddress,
   })
 
   // eslint-disable-next-line no-console

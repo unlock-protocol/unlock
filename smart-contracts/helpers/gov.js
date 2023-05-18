@@ -58,12 +58,12 @@ const getProposalIdFromContract = async (proposal, govAddress) => {
 
 const parseProposal = async ({
   contractName,
+  contractAddress,
   calldata, // if not present, will be encoded using func name + args
   functionName,
   functionArgs,
   proposalName,
   value = 0,
-  address,
 }) => {
   if (!calldata && !functionArgs) {
     // eslint-disable-next-line no-console
@@ -79,7 +79,7 @@ const parseProposal = async ({
     })
   }
   return [
-    [address], // contract to send the proposal to
+    [contractAddress], // contract to send the proposal to
     [value], // value in ETH, default to 0
     [calldata], // encoded func call
     proposalName,
@@ -138,8 +138,13 @@ const executeProposal = async ({ proposal, govAddress }) => {
  */
 const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
-  const proposerWallet = await ethers.getSigner(proposerAddress)
-  return await gov.connect(proposerWallet).propose(...proposal)
+  let proposer
+  if (!proposerAddress) {
+    ;[proposer] = await ethers.getSigners()
+  } else {
+    proposer = await ethers.getSigner(proposerAddress)
+  }
+  return await gov.connect(proposer).propose(...proposal)
 }
 
 const getProposalVotes = async (proposalId, govAddress) => {
