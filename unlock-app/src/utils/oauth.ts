@@ -1,4 +1,3 @@
-import { generateNonce, SiweMessage } from 'siwe'
 import { OAuthConfig } from '../unlockTypes'
 
 export default function getConfigFromSearch(
@@ -24,35 +23,4 @@ export default function getConfigFromSearch(
     responseType: response_type,
     state,
   }
-}
-
-export function createMessageToSignIn({
-  clientId,
-  statement,
-  address,
-  chainId,
-}: {
-  clientId: string
-  statement: string
-  address: string
-  chainId?: number
-}) {
-  const nonce = generateNonce()
-  const expirationDate = new Date()
-  // Add 7 day expiration from today. This will account for months.
-  expirationDate.setDate(expirationDate.getDate() + 7)
-
-  const message = new SiweMessage({
-    nonce,
-    domain: window.location.hostname,
-    statement: statement.trim(),
-    uri: window.location.origin,
-    version: '1',
-    address,
-    chainId,
-    resources: [new URL('https://' + clientId).toString()],
-    expirationTime: expirationDate.toISOString(),
-  })
-
-  return message.prepareMessage()
 }
