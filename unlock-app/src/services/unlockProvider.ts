@@ -56,10 +56,11 @@ export default class UnlockProvider extends ethers.providers
     emailAddress,
   }: Record<'key' | 'password' | 'emailAddress', string>) {
     this.wallet = await getAccountFromPrivateKey(key, password)
+
     this.wallet.connect(this)
+
     this.emailAddress = emailAddress
     this.passwordEncryptedPrivateKey = key
-
     return true
   }
 
@@ -93,9 +94,21 @@ export default class UnlockProvider extends ethers.providers
     return signature
   }
 
+  // TODO: this almost certainly doesn't work
   async eth_signTypedData([_, data]: any[]) {
     const { domain, types, message, messageKey } = data
     return await this.wallet?._signTypedData(domain, types, message[messageKey])
+  }
+
+  async eth_signTypedData_v4([_, data]: any[]) {
+    const { domain, types, message, primaryType } = JSON.parse(data)
+    return this.wallet?._signTypedData(
+      domain,
+      {
+        [primaryType]: types[primaryType],
+      },
+      message
+    )
   }
 
   // Signature methods
