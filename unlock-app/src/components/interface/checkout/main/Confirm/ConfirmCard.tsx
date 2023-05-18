@@ -302,11 +302,13 @@ export function ConfirmCard({
             )}
           </div>
         )}
-        <CreditCardPricingBreakdown
-          total={totalPricing!.total}
-          creditCardProcessingFee={totalPricing!.creditCardProcessingFee}
-          unlockServiceFee={totalPricing!.unlockServiceFee}
-        />
+        {totalPricing && (
+          <CreditCardPricingBreakdown
+            total={totalPricing?.total}
+            creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
+            unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+          />
+        )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
