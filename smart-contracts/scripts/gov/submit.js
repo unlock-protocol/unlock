@@ -5,7 +5,7 @@ const {
   decodeProposalArgs,
   submitProposal,
 } = require('../../helpers/gov')
-const { impersonate } = require('../../test/helpers/mainnet')
+const { impersonate } = require('../../test/helpers')
 
 async function main({
   proposerAddress,
@@ -29,20 +29,12 @@ async function main({
 
   let proposal
   if (!functionName) {
-    // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing function name.')
   }
   if (!contractName) {
-    // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing function name.')
   }
-  if (!proposerAddress) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing proposer address.')
-  }
-
   if (!proposalName) {
-    // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing proposal name.')
   }
 
@@ -66,7 +58,7 @@ async function main({
     contractName,
     calldata,
     proposalName,
-    address: contractAddress,
+    contractAddress,
   })
 
   // eslint-disable-next-line no-console
@@ -80,8 +72,7 @@ async function main({
     console.log('GOV SUBMIT (dev) > Impersonate proposer ')
     await impersonate(proposerAddress)
   }
-  // eslint-disable-next-line no-console
-  console.log(`GOV SUBMIT > Proposer: ${proposerAddress}`)
+
   const proposalTx = await submitProposal({
     proposerAddress,
     proposal,

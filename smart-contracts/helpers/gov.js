@@ -1,10 +1,5 @@
 const { ethers } = require('hardhat')
 
-const encodeProposalFunc = ({ interface, functionName, functionArgs }) => {
-  const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
-  return calldata
-}
-
 const getProposalId = async (proposal, govAddress) => {
   const [targets, values, calldata, description] = await parseProposal({
     ...proposal,
@@ -92,7 +87,7 @@ const encodeProposalArgs = async ({
   functionArgs,
 }) => {
   const { interface } = await ethers.getContractFactory(contractName)
-  const calldata = encodeProposalFunc({ interface, functionName, functionArgs })
+  const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
   return calldata
 }
 
@@ -103,13 +98,20 @@ const decodeProposalArgs = async ({ contractName, functionName, calldata }) => {
 }
 
 const queueProposal = async ({ proposal, govAddress }) => {
-  const { proposerAddress } = proposal
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
     address: govAddress,
   })
   const descriptionHash = web3.utils.keccak256(description)
-  const voterWallet = await ethers.getSigner(proposerAddress)
+  const { proposerAddress } = proposal
+  let voterWallet
+  if(!proposerAddress) {
+    ;[voterWallet] = await ethers.getSigners()
+  } else {
+    voterWallet = await ethers.getSigner(proposerAddress)
+  }
+
+  console.log({targets, values, calldatas, description})
 
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
@@ -125,7 +127,12 @@ const executeProposal = async ({ proposal, govAddress }) => {
     address: govAddress,
   })
   const descriptionHash = web3.utils.keccak256(description)
-  const voterWallet = await ethers.getSigner(proposerAddress)
+  let voterWallet
+  if(!proposerAddress) {
+    ;[voterWallet] = await ethers.getSigners()
+  } else {
+    voterWallet = await ethers.getSigner(proposerAddress)
+  }
 
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
   return await gov
@@ -177,16 +184,64 @@ const getProposalState = async (proposalId, govAddress) => {
   return states[state]
 }
 
+const loadProposal = async (proposalPath) => {
+  const prop = require(proposalPath)
+  if (typeof prop === 'function' ) {
+    return await prop()
+  } else {
+    return prop
+  }
+}
+
+/**
+ * parseUnlockOwnerCalldata
+ * @param {number} action `1` to pass directly the callData to the Unlock contract, 
+   * and `2` to trigger a contract upgrade through Unlock's ProxyAdmin
+ * @returns calldata
+ */
+async function parseUnlockOwnerCalldata({ 
+  action, 
+  functionName,
+  functionArgs,
+}) {
+  
+  const contractName = action === 1 ? 'Unlock' : 'ProxyAdmin'
+  
+  console.log({
+    contractName,
+    functionName,
+    functionArgs
+  })
+  
+  // parse Unlock calldata 
+  const { interface } = await ethers.getContractFactory(contractName)
+  const actionCallData = interface.encodeFunctionData(
+    functionName,
+    functionArgs
+  )
+  // parse _execAction instructions
+  const calldata = ethers.utils.defaultAbiCoder.encode([
+    'uint8', 
+    'bytes'
+  ], [
+    1, 
+    actionCallData
+  ])
+
+  return calldata
+}
+
 module.exports = {
+  loadProposal,
   getProposalVotes,
   getQuorum,
   getProposalState,
-  encodeProposalFunc,
   getProposalId,
   getProposalIdFromContract,
   parseProposal,
   encodeProposalArgs,
   decodeProposalArgs,
+  parseUnlockOwnerCalldata,
   submitProposal,
   queueProposal,
   executeProposal,
