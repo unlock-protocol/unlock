@@ -2123,7 +2123,7 @@ paths:
                     type: string
 
         204:
-          description: No supplier found with the provided parameters
+          description: No receipts found
 
         500:
           description: Failed to retrieve supplier details.
