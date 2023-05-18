@@ -1,12 +1,6 @@
 import { Response, Request } from 'express'
 import stripe from '../config/stripe'
-import {
-  getStripeConnectForLock,
-  getStripeCustomerIdForAddress,
-  createStripeCustomer,
-} from '../operations/stripeOperations'
 import KeyPricer from '../utils/keyPricer'
-
 import { SignedRequest } from '../types'
 import PaymentProcessor from '../payment/paymentProcessor'
 import * as Normalizer from '../utils/normalizer'
@@ -14,11 +8,10 @@ import Dispatcher from '../fulfillment/dispatcher'
 
 import logger from '../logger'
 import { isSoldOut } from '../operations/lockOperations'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
+import { getTotalPurchasePriceInCrypto } from '../utils/claim'
 
 const PaymentCaptureBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
@@ -38,99 +31,21 @@ const PaymentCaptureBody = z.object({
   paymentIntent: z.string(),
 })
 
+const CanClaimBody = z.object({
+  recipients: z.array(
+    z.string().transform((item) => Normalizer.ethereumAddress(item))
+  ),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+})
+
 export class PurchaseController {
   // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.
   async info(_req: SignedRequest, res: Response) {
     const fulfillmentDispatcher = new Dispatcher()
     return res.json(await fulfillmentDispatcher.balances())
-  }
-
-  /*
-   * Creates a payment intent that will be passed to the front-end for confirmation with the Stripe API.
-   * Once confirmed, the payment will need to be captured
-   * This flow supports 3D Secure.
-   *  @deprecated
-   */
-  async createPaymentIntent(req: SignedRequest, res: Response) {
-    const {
-      publicKey,
-      lock,
-      stripeTokenId,
-      pricing,
-      network,
-      recipients,
-      userAddress,
-      recurring = 0,
-    } = req.body.message['Charge Card']
-
-    const normalizedRecipients: string[] = recipients.map((address: string) =>
-      Normalizer.ethereumAddress(address)
-    )
-    const soldOut = await isSoldOut(lock, network, normalizedRecipients.length)
-    if (soldOut) {
-      return res.status(400).send({
-        error: 'Lock is sold out.',
-      })
-    }
-
-    const stripeConnectApiKey = await getStripeConnectForLock(
-      Normalizer.ethereumAddress(lock),
-      network
-    )
-
-    if (stripeConnectApiKey == 0 || stripeConnectApiKey == -1) {
-      return res
-        .status(400)
-        .send({ error: 'Missing Stripe Connect integration' })
-    }
-
-    let stripeCustomerId = await getStripeCustomerIdForAddress(
-      Normalizer.ethereumAddress(publicKey)
-    )
-
-    if (!stripeCustomerId && stripeTokenId) {
-      // Create a "global" stripe customer id
-      // (we will create local customer when we issue charges for a connected lock)
-      stripeCustomerId = await createStripeCustomer(
-        stripeTokenId,
-        Normalizer.ethereumAddress(publicKey)
-      )
-    }
-
-    if (!stripeCustomerId) {
-      return res.status(400).send({ error: 'Missing Stripe customer info' })
-    }
-
-    const dispatcher = new Dispatcher()
-    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
-      network
-    )
-
-    if (!hasEnoughToPayForGas) {
-      return res.status(400).send({
-        error: `Purchaser does not have enough to pay for gas on ${network}`,
-      })
-    }
-
-    try {
-      const processor = new PaymentProcessor()
-      const paymentIntentDetails = await processor.createPaymentIntent(
-        Normalizer.ethereumAddress(userAddress),
-        normalizedRecipients,
-        stripeCustomerId,
-        Normalizer.ethereumAddress(lock),
-        pricing * 100,
-        network,
-        stripeConnectApiKey,
-        recurring
-      )
-      return res.send(paymentIntentDetails)
-    } catch (error) {
-      logger.error(error)
-      return res.status(400).send({
-        error: error.message,
-      })
-    }
   }
 
   /*
@@ -266,11 +181,22 @@ export class PurchaseController {
     try {
       const network = Number(request.params.network)
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const { recipients, data } = CanClaimBody.parse(request.body)
       const pricer = new KeyPricer()
-      const web3Service = new Web3Service(networks)
+
       const fulfillmentDispatcher = new Dispatcher()
-      const lock = await web3Service.getLock(lockAddress, network)
-      const keyPrice = parseFloat(lock.keyPrice)
+      const totalAmount = await getTotalPurchasePriceInCrypto({
+        lockAddress,
+        network,
+        recipients,
+        data: data || [],
+      })
+
+      if (totalAmount.gt(0)) {
+        return response.status(400).send({
+          message: 'Lock is not free',
+        })
+      }
 
       if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
         return response.status(400).send({
@@ -278,22 +204,17 @@ export class PurchaseController {
         })
       }
 
-      if (keyPrice > 0) {
-        return response.status(400).send({
-          message: 'Lock is not free.',
-        })
-      }
+      const [hasEnoughToPayForGas, canAffordGas] = await Promise.all([
+        fulfillmentDispatcher.hasFundsForTransaction(network),
+        pricer.canAffordGrant(network),
+      ])
 
-      const hasEnoughToPayForGas =
-        await fulfillmentDispatcher.hasFundsForTransaction(network)
       if (!hasEnoughToPayForGas) {
         return response.status(500).send({
           message:
             'Purchaser does not have enough funds to allow claiming the membership',
         })
       }
-
-      const canAffordGas = await pricer.canAffordGrant(network)
 
       if (!canAffordGas) {
         return response.status(500).send({

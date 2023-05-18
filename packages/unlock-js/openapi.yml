@@ -2912,3 +2912,41 @@ paths:
 
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /claim/{network}/locks/{lockAddress}:
+    post:
+      description: Check if claim is possible for a given purchase
+      operationId: checkClaim
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                data:
+                  type: array
+                  items:
+                    type: string
+
+      responses:
+        200:
+          description: Send true if purchase can be claimed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canClaim:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
