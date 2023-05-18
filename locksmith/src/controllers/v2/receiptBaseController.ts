@@ -30,9 +30,8 @@ export class ReceiptBaseController {
     )
 
     if (!receipt) {
-      return response.status(404).json({
-        message: 'No supplier found with the provided parameters.',
-      })
+      // no returning content
+      return response.sendStatus(204)
     }
 
     return response.status(200).json({
