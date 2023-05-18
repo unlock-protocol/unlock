@@ -1,7 +1,7 @@
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Detail } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
@@ -35,6 +35,7 @@ interface CreditCardPricingBreakdownProps {
   creditCardProcessingFee?: number
   unlockServiceFee: number
   gasCosts?: number
+  loading?: boolean
 }
 
 export function CreditCardPricingBreakdown({
@@ -42,6 +43,7 @@ export function CreditCardPricingBreakdown({
   total,
   creditCardProcessingFee,
   gasCosts,
+  loading,
 }: CreditCardPricingBreakdownProps) {
   return (
     <div className="flex flex-col gap-2 pt-4 text-sm">
@@ -57,26 +59,56 @@ export function CreditCardPricingBreakdown({
         </a>
       </h3>
       <div className="divide-y">
-        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-          <span className="text-gray-600">Service Fee</span>
-          <div> {formatFiatPriceFromCents(unlockServiceFee)} </div>
-        </div>
-        {!!creditCardProcessingFee && (
-          <div className="flex justify-between w-full py-2 text-sm">
-            <span className="text-gray-600"> Payment Processor </span>
-            <div> {formatFiatPriceFromCents(creditCardProcessingFee)} </div>
+        <Detail
+          loading={loading}
+          className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
+          label="Service Fee"
+          labelSize="tiny"
+          valueSize="tiny"
+          inline
+        >
+          <div className="font-normal">
+            {formatFiatPriceFromCents(unlockServiceFee)}
           </div>
+        </Detail>
+        {!!creditCardProcessingFee && (
+          <Detail
+            loading={loading}
+            className="flex justify-between w-full py-2 text-sm"
+            label="Payment Processor"
+            labelSize="tiny"
+            valueSize="tiny"
+            inline
+          >
+            <div className="font-normal">
+              {formatFiatPriceFromCents(creditCardProcessingFee)}
+            </div>
+          </Detail>
         )}
         {!!gasCosts && (
-          <div className="flex justify-between w-full py-2 text-sm">
-            <span className="text-gray-600"> Gas Costs </span>
-            <div> {formatFiatPriceFromCents(gasCosts)} </div>
-          </div>
+          <Detail
+            loading={loading}
+            className="flex justify-between w-full py-2 text-sm"
+            label="Gas Costs"
+            labelSize="tiny"
+            valueSize="tiny"
+            inline
+          >
+            <div className="font-normal">
+              {formatFiatPriceFromCents(gasCosts)}
+            </div>
+          </Detail>
         )}
-        <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-          <span className="text-gray-600"> Total </span>
-          <div className="font-bold">{formatFiatPriceFromCents(total)}</div>
-        </div>
+        <Detail
+          loading={loading}
+          className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
+          label="Total"
+          labelSize="tiny"
+          valueSize="tiny"
+          inline
+        >
+          <div className="font-normal">{formatFiatPriceFromCents(total)}</div>
+        </Detail>
       </div>
     </div>
   )
@@ -160,13 +192,16 @@ export function ConfirmCard({
 
   const amountToConvert = pricingData?.total || 0
 
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: amountToConvert,
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
+  const {
+    data: totalPricing,
+    isInitialLoading: isTotalPricingDataLoading,
+    isFetched: isTotalPricingDataFetched,
+  } = useFiatChargePrice({
+    tokenAddress: currencyContractAddress,
+    amount: amountToConvert,
+    network: lock!.network,
+    enabled: isPricingDataAvailable,
+  })
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
@@ -302,13 +337,12 @@ export function ConfirmCard({
             )}
           </div>
         )}
-        {totalPricing && (
-          <CreditCardPricingBreakdown
-            total={totalPricing?.total}
-            creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
-            unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-          />
-        )}
+        <CreditCardPricingBreakdown
+          loading={isTotalPricingDataLoading || !isTotalPricingDataFetched}
+          total={totalPricing?.total ?? 0}
+          creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
+          unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+        />
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
