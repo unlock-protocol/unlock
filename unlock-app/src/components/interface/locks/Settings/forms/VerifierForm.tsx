@@ -65,14 +65,16 @@ const VerifierCard = ({
           </span>
         )}
       </div>
-      <Button
-        size="small"
-        variant="outlined-primary"
-        onClick={() => onDeleteVerifier(address)}
-        disabled={isLoading || disabled}
-      >
-        Remove
-      </Button>
+      {isCurrentAccount && (
+        <Button
+          size="small"
+          variant="outlined-primary"
+          onClick={() => onDeleteVerifier(address)}
+          disabled={isLoading || disabled}
+        >
+          Remove
+        </Button>
+      )}
     </div>
   )
 }
@@ -189,15 +191,21 @@ export const VerifierForm = ({
               : 'Only lock manager can access verifiers list.'}
           </span>
         )}
-        {(verifiers ?? [])?.map((verifier: VerifierProps) => (
-          <VerifierCard
-            verifier={verifier}
-            key={verifier.id}
-            onDeleteVerifier={onDeleteVerifier}
-            isLoading={deleteVerifierMutation.isLoading}
-            disabled={disabled}
-          />
-        ))}
+        <div className="grid gap-1">
+          <span className="font-semibold">Verifiers</span>
+          <div className="grid gap-2">
+            {(verifiers ?? [])?.map((verifier: VerifierProps) => (
+              <VerifierCard
+                verifier={verifier}
+                key={verifier.id}
+                onDeleteVerifier={onDeleteVerifier}
+                isLoading={deleteVerifierMutation.isLoading}
+                disabled={disabled}
+              />
+            ))}
+          </div>
+        </div>
+
         {(isLoadingItems || addVerifierMutation.isLoading) &&
           !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
       </div>

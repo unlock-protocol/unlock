@@ -15,6 +15,7 @@ import useLock from '~/hooks/useLock'
 import Link from 'next/link'
 import { storage } from '~/config/storage'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useLockManager } from '~/hooks/useLockManager'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
@@ -105,6 +106,11 @@ export const LockDetailCard = ({
 
   const [isRecurring, setIsRecurring] = useState(false)
 
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
   const { isStripeConnected } = useLock({ address: lockAddress }, network)
 
   const getLock = async () => {
@@ -182,15 +188,17 @@ export const LockDetailCard = ({
               network={network}
               loading={loading}
             />
-            <p className="p-2 text-sm leading-tight text-gray-500 ">
-              Need to update the icon? Use the{' '}
-              <Link
-                href={metadataPageUrl}
-                className="text-brand-ui-primary hover:underline"
-              >
-                Metadata Editor
-              </Link>
-            </p>
+            {isManager && (
+              <p className="p-2 text-sm leading-tight text-gray-500 ">
+                Need to update the icon? Use the{' '}
+                <Link
+                  href={metadataPageUrl}
+                  className="text-brand-ui-primary hover:underline"
+                >
+                  Metadata Editor
+                </Link>
+              </p>
+            )}
           </div>
           <LockInfoCard
             lockAddress={lockAddress}
@@ -251,17 +259,19 @@ export const LockDetailCard = ({
               </Detail>
             </div>
           </div>
-          <div className="mt-8">
-            <span className="text-sm leading-tight text-gray-500">
-              Need to update terms?{' '}
-              <Link href={settingsPageUrl}>
-                <span className="font-semibold cursor-pointer text-brand-ui-primary">
-                  Click here
-                </span>
-              </Link>{' '}
-              to update your contract&apos;s settings.
-            </span>
-          </div>
+          {isManager && (
+            <div className="mt-8">
+              <span className="text-sm leading-tight text-gray-500">
+                Need to update terms?{' '}
+                <Link href={settingsPageUrl}>
+                  <span className="font-semibold cursor-pointer text-brand-ui-primary">
+                    Click here
+                  </span>
+                </Link>{' '}
+                to update your contract&apos;s settings.
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>

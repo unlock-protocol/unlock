@@ -252,6 +252,11 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
 
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
   return (
     <>
       <div className="flex items-center justify-between">
@@ -263,18 +268,20 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
           />
         </Button>
         <div className="flex gap-3">
-          <Button
-            onClick={() => {
-              router.push(
-                `/locks/settings?address=${lockAddress}&network=${network}`
-              )
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <Icon icon={SettingsIcon} size={20} />
-              <span>Settings</span>
-            </div>
-          </Button>
+          {isManager && (
+            <Button
+              onClick={() => {
+                router.push(
+                  `/locks/settings?address=${lockAddress}&network=${network}`
+                )
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Icon icon={SettingsIcon} size={20} />
+                <span>Settings</span>
+              </div>
+            </Button>
+          )}
 
           <ToolsMenu lockAddress={lockAddress} network={network} />
         </div>

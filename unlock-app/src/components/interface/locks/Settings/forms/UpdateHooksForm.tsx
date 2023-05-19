@@ -196,6 +196,7 @@ const HookSelect = ({
               options={options}
               label={label}
               defaultValue={defaultValue}
+              disabled={disabled}
               onChange={(value) => {
                 handleSelectChange(`${value}`)
               }}
