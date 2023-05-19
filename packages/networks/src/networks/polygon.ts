@@ -9,6 +9,11 @@ export const polygon: NetworkConfig = {
   multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   serializerAddress: '0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9',
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
+  universalCard: {
+    cardPurchaserAddress: '0xAB355a589CFbBA7a21b91E5B6063bF822dCc0016',
+    stripeDestinationNetwork: 'polygon',
+    stripeDestinationCurrency: 'usdc',
+  },
   id: 137,
   name: 'Polygon',
   chain: 'polygon',
