@@ -234,8 +234,7 @@ export const PaywallConfig = z
           'When set to true and there is only one lock, the checkout flow will skip the lock selection step.',
       })
       .default(false)
-      .optional()
-      .nullish(),
+      .optional(),
 
     expectedAddress: z
       .string({
