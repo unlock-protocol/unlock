@@ -15,7 +15,7 @@ Stripe [recently announced](https://stripe.com/blog/crypto-onramp) a new on-ramp
 
 We have had [support for credit card payments](https://unlock-protocol.com/guides/enabling-credit-cards/) for a few years now. However, this legacy credit card payment implementation required lock managers (who deployed the membership contracts) to connect their smart contract(s) to Stripe’s payment gateway using Stripe Connect. This works great, and we’re keeping this option, but is limited in scope as [Stripe Connect](https://stripe.com/connect) is not available in every country or for any kind of business.
 
-With Stripe On Ramp, we’re adding support for credit card payments on a lock, even if the lock manager themselves has not connected with Stripe! For now, this feature works only for locks deployed on _Polygon_ and _Ethereum Mainnet_, and only for locks priced in USDC, but soon, using our [swap and purchase](https://unlock-protocol.com/blog/swap-and-purchase) capabilities, this will be available for locks in _any_ currency, provided that there is a way to convert from USDC to that currency, and for all the networks that Stripe will add support for.
+With Stripe onramp, we’re adding support for credit card payments on a lock, even if the lock manager themselves has not connected with Stripe! For now, this feature works only for locks deployed on _Polygon_ and _Ethereum Mainnet_, and only for locks priced in USDC, but soon, using our [swap and purchase](https://unlock-protocol.com/blog/swap-and-purchase) capabilities, this will be available for locks in _any_ currency, provided that there is a way to convert from USDC to that currency, and for all the networks that Stripe will add support for.
 
 ## How does it work?
 
