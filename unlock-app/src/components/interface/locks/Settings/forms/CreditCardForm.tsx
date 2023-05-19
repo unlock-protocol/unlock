@@ -117,14 +117,15 @@ const ConnectStripe = ({
 
   const grantKeyGrantorRoleMutation = useMutation(async (): Promise<any> => {
     const walletService = await getWalletService(network)
-    return walletService.addKeyGranter({
+    return await walletService.addKeyGranter({
       lockAddress,
       keyGranter,
     })
   })
 
   const onGrantKeyRole = async () => {
-    await ToastHelper.promise(grantKeyGrantorRoleMutation.mutateAsync(), {
+    const keyGrantPromise = grantKeyGrantorRoleMutation.mutateAsync()
+    await ToastHelper.promise(keyGrantPromise, {
       error: `Can't grant role, please try again.`,
       success: 'Key granted',
       loading: 'Allow key granting',
@@ -151,7 +152,13 @@ const ConnectStripe = ({
   }
 
   const { isLoading: isLoadingCheckGrantedStatus, data: isGranted } = useQuery(
-    ['checkIsKeyGranter', lockAddress, network, keyGranter],
+    [
+      'checkIsKeyGranter',
+      lockAddress,
+      network,
+      keyGranter,
+      grantKeyGrantorRoleMutation.isSuccess,
+    ],
     async () => {
       return checkIsKeyGranter(keyGranter)
     }
@@ -241,7 +248,7 @@ const ConnectStripe = ({
               variant="outlined-primary"
               className="w-full md:w-1/3"
               onClick={onGrantKeyRole}
-              loading={grantKeyGrantorRoleMutation.isLoading}
+              disabled={grantKeyGrantorRoleMutation.isLoading}
             >
               Accept
             </Button>
