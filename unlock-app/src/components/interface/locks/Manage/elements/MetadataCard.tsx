@@ -239,7 +239,6 @@ export const MetadataCard = ({
   expirationDuration,
   lockSettings,
 }: MetadataCardProps) => {
-  const { account } = useAuth()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
@@ -349,8 +348,8 @@ export const MetadataCard = ({
     },
   })
 
-  const accountIsManager = account?.toLowerCase() === manager?.toLowerCase()
-  const showManager = !accountIsManager && manager !== ADDRESS_ZERO
+  const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
+  const showManager = !ownerIsManager && manager !== ADDRESS_ZERO
 
   return (
     <>
@@ -520,7 +519,7 @@ export const MetadataCard = ({
                       <ExternalLinkIcon size={20} />
                     </a>
                   </Button>
-                  {accountIsManager && (
+                  {ownerIsManager && (
                     <div className="ml-auto">
                       <ChangeManagerModal
                         lockAddress={lockAddress}
