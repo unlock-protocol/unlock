@@ -6,6 +6,7 @@ import {
   SubgraphService,
 } from '@unlock-protocol/unlock-js'
 import dayjs from 'dayjs'
+
 import { logger } from '../../logger'
 import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'
 import { sendEmail } from '../../operations/wedlocksOperations'
@@ -26,88 +27,91 @@ async function notifyExpiringKey(key: any, network: number) {
   const tokenAddress = key?.lock?.tokenAddress ?? ''
   const keyId = key?.tokenId ?? ''
 
-  const recipient = await userMetadataOperations.getUserEmailRecipient({
-    lockAddress,
-    ownerAddress,
-  })
-
-  if (!recipient) return
-
-  const {
-    isAutoRenewable,
-    isRenewable,
-    isRenewableIfRePurchased,
-    isRenewableIfReApproved,
-    currency,
-  } = await membershipOperations.getMembershipState({
-    owner: ownerAddress,
-    key,
-    tokenAddress,
-    tokenId: keyId,
-    lockAddress,
-    network,
-  })
-
-  // expiration date example: 1 December 2022 - 10:55
-  const expirationDate = dayjs(new Date(key.expiration)).format(
-    'D MMMM YYYY - HH:mm'
-  )
-
-  const reminderAlreadySent = await hasReminderAlreadySent({
-    address: lockAddress,
-    network,
-    tokenId: keyId,
-    type: 'keyExpiring',
-    expiration: key.expiration,
-  })
-
-  if (reminderAlreadySent) {
-    logger.info(
-      `Email reminder already sent for ${lockAddress} - token ${keyId}`
-    )
-    return
-  }
-
-  // send expiring email
-  await sendEmail({
-    network,
-    template: 'keyExpiring',
-    failoverTemplate: 'keyExpiring',
-    recipient,
-    params: {
+  try {
+    const recipient = await userMetadataOperations.getUserEmailRecipient({
       lockAddress,
-      lockName,
-      keyId,
-      network: `${network}`,
-      keychainUrl: `${config.unlockApp}/keychain`,
-      currency,
-      expirationDate,
-      isRenewable,
+      ownerAddress,
+    })
+
+    if (!recipient) return
+
+    const {
       isAutoRenewable,
+      isRenewable,
       isRenewableIfRePurchased,
       isRenewableIfReApproved,
-    },
-  })
+      currency,
+    } = await membershipOperations.getMembershipState({
+      owner: ownerAddress,
+      key,
+      tokenAddress,
+      tokenId: keyId,
+      lockAddress,
+      network,
+    })
+
+    // expiration date example: 1 December 2022 - 10:55
+    const expirationDate = dayjs(new Date(key.expiration)).format(
+      'D MMMM YYYY - HH:mm'
+    )
+
+    const reminderAlreadySent = await hasReminderAlreadySent({
+      address: lockAddress,
+      network,
+      tokenId: keyId,
+      type: 'keyExpiring',
+      expiration: key.expiration,
+    })
+
+    if (reminderAlreadySent) {
+      logger.info(
+        `Email reminder already sent for ${lockAddress} - token ${keyId}`
+      )
+      return
+    }
+
+    // send expiring email
+    await sendEmail({
+      network,
+      template: 'keyExpiring',
+      failoverTemplate: 'keyExpiring',
+      recipient,
+      params: {
+        lockAddress,
+        lockName,
+        keyId,
+        network: `${network}`,
+        keychainUrl: `${config.unlockApp}/keychain`,
+        currency,
+        expirationDate,
+        isRenewable,
+        isAutoRenewable,
+        isRenewableIfRePurchased,
+        isRenewableIfReApproved,
+      },
+    })
+  } catch (err) {
+    logger.error(`There is some error with notifyExpiredKey:`, err)
+  }
 }
 
 export async function notifyExpiringKeysForNetwork() {
-  const now = new Date()
-
-  const end = new Date(now.getTime())
-  end.setDate(now.getDate() + 1)
+  const expirationFrom = dayjs().unix().toString()
+  const expirationTo = dayjs().add(1, 'day').unix().toString()
 
   // get expiring keys for every network
   for (const networkId in networks) {
     const subgraph = new SubgraphService()
     // get keys that are about to expire
+
     const keys = await subgraph.keys(
       {
         first: 1000, //  TODO: handle more than 1000 keys
         orderBy: KeyOrderBy.Expiration,
         orderDirection: OrderDirection.Desc,
         where: {
-          expiration_gt: now.getTime().toString(),
-          expiration_lt: end.getTime().toString(),
+          expiration_gt: expirationFrom,
+          expiration_lt: expirationTo,
         },
       },
       {

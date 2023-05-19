@@ -10,6 +10,7 @@ import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOp
 import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from './../../operations/userMetadataOperations'
 import * as Normalizer from '../../utils/normalizer'
+import dayjs from 'dayjs'
 
 /**
  * Send email notification for expired key
@@ -23,49 +24,51 @@ async function notifyExpiredKey(key: any, network: number) {
   const ownerAddress = Normalizer.ethereumAddress(key.owner)
   const keyId = key?.tokenId ?? ''
 
-  const recipient = await userMetadataOperations.getUserEmailRecipient({
-    lockAddress,
-    ownerAddress,
-  })
-
-  if (!recipient) return
-
-  const reminderAlreadySent = await hasReminderAlreadySent({
-    address: lockAddress,
-    network,
-    tokenId: keyId,
-    type: 'keyExpired',
-    expiration: key.expiration,
-  })
-
-  if (reminderAlreadySent) {
-    logger.info(
-      `Email reminder already sent for ${lockAddress} - token ${keyId}`
-    )
-    return
-  }
-
-  // send expiring email
-  await sendEmail({
-    network: Number(`${network}`),
-    template: 'keyExpired',
-    failoverTemplate: 'keyExpired',
-    recipient,
-    params: {
+  try {
+    const recipient = await userMetadataOperations.getUserEmailRecipient({
       lockAddress,
-      lockName,
-      keyId,
-      network: `${network}`,
-      keychainUrl: `${config.unlockApp}/keychain`,
-    },
-  })
+      ownerAddress,
+    })
+
+    if (!recipient) return
+
+    const reminderAlreadySent = await hasReminderAlreadySent({
+      address: lockAddress,
+      network,
+      tokenId: keyId,
+      type: 'keyExpired',
+      expiration: key.expiration,
+    })
+
+    if (reminderAlreadySent) {
+      logger.info(
+        `Email reminder already sent for ${lockAddress} - token ${keyId}`
+      )
+      return
+    }
+
+    // send expiring email
+    await sendEmail({
+      network: Number(`${network}`),
+      template: 'keyExpired',
+      failoverTemplate: 'keyExpired',
+      recipient,
+      params: {
+        lockAddress,
+        lockName,
+        keyId,
+        network: `${network}`,
+        keychainUrl: `${config.unlockApp}/keychain`,
+      },
+    })
+  } catch (err) {
+    logger.error(`There is some error with notifyExpiredKey:`, err)
+  }
 }
 
 export async function notifyExpiredKeysForNetwork() {
-  const now = new Date()
-
-  const yesterday = new Date(now.getTime())
-  yesterday.setDate(now.getDate() - 1)
+  const now = dayjs().unix().toString()
+  const yesterday = dayjs().subtract(1, 'day').unix().toString()
 
   // get expired keys for every network
   for (const networkId in networks) {
@@ -77,8 +80,8 @@ export async function notifyExpiredKeysForNetwork() {
         orderBy: KeyOrderBy.Expiration,
         orderDirection: OrderDirection.Desc,
         where: {
-          expiration_lt: now.getTime().toString(),
-          expiration_gt: yesterday.getTime().toString(),
+          expiration_lt: now,
+          expiration_gt: yesterday,
         },
       },
       {
