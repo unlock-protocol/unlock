@@ -17,9 +17,9 @@ async function main () {
 
   // make sure chain is correct
   const unlockOwner = await ethers.getContractAt('UnlockOwner', unlockOwnerAddress)
-  const mainnetChainId = await unlockOwner.mainnetChainId() 
-  if (chainId.toString() !== mainnetChainId.toString()) {
-    throw Error(`execDAO can only be used on mainnet (chain ${mainnetChainId})`)
+  const daoChainId = await unlockOwner.daoChainId() 
+  if (chainId.toString() !== daoChainId.toString()) {
+    throw Error(`execDAO can only be used on mainnet (chain ${daoChainId})`)
   }
 
   const protocolFee = ethers.utils.parseEther('0.000003')

@@ -128,7 +128,7 @@ contract("Unlock / bridged governance", () => {
     
     it("stores mainnet chainId", async () => {
       const { chainId } = await ethers.provider.getNetwork()
-      assert.equal(await unlockOwner.mainnetChainId(), chainId);
+      assert.equal(await unlockOwner.daoChainId(), chainId);
     });
   });
 

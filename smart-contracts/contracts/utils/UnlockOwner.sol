@@ -42,7 +42,7 @@ contract UnlockOwner {
   uint32 public domain;
 
   // required for testing 
-  uint public mainnetChainId;
+  uint public daoChainId;
 
   // Errors
   error OnlyUnlock();
@@ -66,7 +66,7 @@ contract UnlockOwner {
    * @param _timelockDaoAddress the address of the timelock of the DAO (which send instructions)
    * @param _multisigAddress the address of the multisig contract
    * @param _domain the Domain ID of the current chain as used by the Connext Bridge 
-   * @param _mainnetChainId required for testing, default to 1.
+   * @param _daoChainId required for testing, default to 1.
    * https://docs.connext.network/resources/supported-chains
    */
   constructor (
@@ -75,7 +75,7 @@ contract UnlockOwner {
     address _timelockDaoAddress,
     address _multisigAddress,
     uint32 _domain,
-    uint _mainnetChainId
+    uint _daoChainId
   ) {
     bridgeAddress = _bridgeAddress;
     unlockAddress = _unlockAddress;
@@ -83,7 +83,7 @@ contract UnlockOwner {
     daoTimelockAddress = _timelockDaoAddress;
     domain = _domain;
     // required for testing purposes
-    mainnetChainId = _mainnetChainId != 0 ? _mainnetChainId : 1;
+    daoChainId = _daoChainId != 0 ? _daoChainId : 1;
   }
 
   /**
@@ -94,7 +94,7 @@ contract UnlockOwner {
   }
   
   function _isDAO() internal view returns (bool) {
-    return msg.sender == daoTimelockAddress && block.chainid == mainnetChainId;
+    return msg.sender == daoTimelockAddress && block.chainid == daoChainId;
   }
 
 
