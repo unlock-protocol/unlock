@@ -187,7 +187,7 @@ export const MetadataInputs = ({
                   }}
                   ref={ref}
                   onBlur={onBlur}
-                  autoComplete={label}
+                  autoComplete="email"
                 />
                 {description && !error && (
                   <p className="text-xs text-gray-600"> {description} </p>
@@ -215,13 +215,13 @@ export const MetadataInputs = ({
             <Input
               key={name}
               label={name}
+              autoComplete={name}
               defaultValue={defaultValue}
               size="small"
               disabled={disabled}
               placeholder={placeholder}
               type={type}
               error={errors?.metadata?.[id]?.[name]?.message}
-              autoComplete={label}
               {...register(`metadata.${id}.${name}`, {
                 required: required && `${name} is required`,
               })}
