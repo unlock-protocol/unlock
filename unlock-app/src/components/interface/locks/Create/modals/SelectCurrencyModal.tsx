@@ -35,8 +35,12 @@ export const SelectCurrencyModal = ({
     () => {
       setQuery(query)
       try {
-        const address = utils.getAddress(query)
-        setContractAddress(address)
+        if (utils.isAddress(query)) {
+          const address = utils.getAddress(query)
+          setContractAddress(address)
+        } else {
+          setContractAddress(query)
+        }
       } catch (err: any) {
         setContractAddress('')
         console.error('Error: ', err)
@@ -117,10 +121,11 @@ export const SelectCurrencyModal = ({
     setContractAddress('')
   }
 
+  const isValidAddress = ethers.utils.isAddress(contractAddress)
   const noItems =
     tokensFiltered?.length === 0 &&
     query?.length > 0 &&
-    !contractAddress?.length &&
+    !isValidAddress &&
     !isLoadingContractToken
 
   useEffect(() => {
@@ -164,7 +169,7 @@ export const SelectCurrencyModal = ({
                     })}
                   />
 
-                  {contractAddress?.length > 0 && (
+                  {isValidAddress && (
                     <div className="flex items-center justify-between mt-3">
                       <span>
                         {contractTokenSymbol || addressMinify(contractAddress)}
