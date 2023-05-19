@@ -38,8 +38,14 @@ export function useStepperItems(
     ]
   }
 
-  const { paywallConfig, skipQuantity, skipRecipient, hook, existingMember } =
-    state.context as CheckoutMachineContext
+  const {
+    paywallConfig,
+    skipQuantity,
+    skipRecipient,
+    hook,
+    existingMember,
+    payment,
+  } = state.context as CheckoutMachineContext
 
   const [address, config] = Object.entries(paywallConfig.locks)[0]
   const hasOneLock = Object.keys(paywallConfig.locks).length === 1
@@ -98,6 +104,11 @@ export function useStepperItems(
     {
       name: 'Payment method',
       to: 'PAYMENT',
+    },
+    {
+      name: 'Add card',
+      to: 'CARD',
+      skip: !['card', 'universal_card'].includes(payment?.method),
     },
     {
       name: 'Confirm',
