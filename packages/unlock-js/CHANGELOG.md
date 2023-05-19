@@ -1,5 +1,9 @@
 # Changes
 
+# 0.37.1
+
+- fixing swap and purchase
+
 # 0.37.0
 
 - adding support for actual purchase through CardPurchaser

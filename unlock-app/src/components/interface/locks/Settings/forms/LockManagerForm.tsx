@@ -282,15 +282,22 @@ export const LockManagerForm = ({
             This lock does not have any Lock Manager.
           </span>
         )}
-        {managers?.map((manager) => (
-          <LockManagerCard
-            lockAddress={lockAddress}
-            manager={manager}
-            key={manager}
-            network={network}
-            hasMultipleManagers={managers?.length > 1}
-          />
-        ))}
+        {managers?.length > 0 && (
+          <div className="grid gap-1">
+            <span className="font-semibold">Lock Managers</span>
+            <div className="grid gap-2">
+              {managers?.map((manager) => (
+                <LockManagerCard
+                  lockAddress={lockAddress}
+                  manager={manager}
+                  key={manager}
+                  network={network}
+                  hasMultipleManagers={managers?.length > 1}
+                />
+              ))}
+            </div>
+          </div>
+        )}
         {(isLoading || addLockManagerMutation.isLoading) && (
           <Placeholder.Line size="xl" />
         )}
@@ -314,6 +321,7 @@ export const LockManagerForm = ({
                     <AddressInput
                       withIcon
                       value={manager}
+                      disabled={disabled}
                       label="Add manager, please enter the wallet address of theirs."
                       description="Enter a wallet address or an ens name"
                       onChange={(value: any) => {

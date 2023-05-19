@@ -3,7 +3,7 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
-import { CardPurchaserABI } from './abis/CardPurchaserABI'
+import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
@@ -1028,14 +1028,14 @@ export default class WalletService extends UnlockService {
     params: { network: number }
   }) {
     const networkConfig = this.networks[network]
-    const swapPurchaserAddress = networkConfig?.swapPurchaser
-    if (!swapPurchaserAddress) {
+    const unlockSwapPurchaserAddress = networkConfig?.swapPurchaser
+    if (!unlockSwapPurchaserAddress) {
       throw new Error('SwapPurchaser not available for this network')
     }
     const provider = this.providerForNetwork(network)
     const swapPurchaserContract = new ethers.Contract(
-      swapPurchaserAddress,
-      CardPurchaserABI,
+      unlockSwapPurchaserAddress,
+      UnlockSwapPurchaserABI,
       provider
     )
     return swapPurchaserContract.connect(this.signer)
@@ -1082,7 +1082,7 @@ export default class WalletService extends UnlockService {
       value,
       validAfter: 0,
       validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
-      nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
+      nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // 32 byte hex string
     }
 
     const transferSignature = await signTransferAuthorization(

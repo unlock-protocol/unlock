@@ -313,7 +313,7 @@ export const captureOnRamp: RequestHandler = async (request, response) => {
     purchase.body.recipients,
     {
       message: purchase.body.transferMessage,
-      signature: purchase.body.purchaseSignature,
+      signature: purchase.body.transferSignature,
     },
     {
       message: purchase.body.purchaseMessage,
@@ -321,5 +321,8 @@ export const captureOnRamp: RequestHandler = async (request, response) => {
     },
     purchase.body.purchaseData
   )
+
+  // TODO : save transaction hash in the DB so we know we have successfuly executed that transaction!
+
   return response.send(transaction)
 }

@@ -14,7 +14,6 @@ import {
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { useIsClaimable } from '~/hooks/useIsClaimable'
 import {
   useUniswapRoutes,
   useUniswapRoutesUsingLock,
@@ -23,6 +22,8 @@ import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+import { useCanClaim } from '~/hooks/useCanClaim'
+import { usePurchaseData } from '~/hooks/usePurchaseData'
 
 interface Props {
   injectedProvider: unknown
@@ -63,16 +64,34 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const { isLoading: isClaimableLoading, isClaimable } = useIsClaimable({
-    lockAddress: lock.address,
-    network: lock.network,
-  })
-
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
     network: lock.network,
     currencyContractAddress: lock.currencyContractAddress,
   })
+
+  const { data: purchaseData, isLoading: isPurchaseDataLoading } =
+    usePurchaseData({
+      lockAddress: lock.address,
+      network: lock.network,
+      recipients: recipients,
+      paywallConfig: state.context.paywallConfig,
+      promo: state.context.promo,
+      password: state.context.password,
+      captcha: state.context.captcha,
+    })
+
+  const { data: canClaim, isLoading: isCanClaimLoading } = useCanClaim(
+    {
+      lockAddress: lock.address,
+      network: lock.network,
+      recipients: recipients,
+      data: purchaseData || [],
+    },
+    {
+      enabled: !isPurchaseDataLoading,
+    }
+  )
 
   const networkConfig = config.networks[lock.network]
 
@@ -84,13 +103,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isSwapAndPurchaseEnabled =
     price > 0 && uniswapRoutes && uniswapRoutes.length > 0
 
-  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
-    useUniswapRoutes({
-      routes: uniswapRoutes!,
-      enabled: isSwapAndPurchaseEnabled,
-    })
-
-  const isWaiting = isLoading || isClaimableLoading || isBalanceLoading
+  const isWaiting = isLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
@@ -98,17 +111,32 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
-  const forceClaim = lock.network === 42161
-
   const enableClaim =
-    !!isClaimable &&
-    !isClaimableLoading &&
+    canClaim &&
+    !isCanClaimLoading &&
     isReceiverAccountOnly &&
-    (!balance?.isPayable || forceClaim)
+    !balance?.isPayable
 
-  const allDisabled = [enableCreditCard, enableClaim, enableCrypto].every(
-    (item) => !item
-  )
+  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
+    useUniswapRoutes({
+      routes: uniswapRoutes!,
+      enabled: isSwapAndPurchaseEnabled && !enableClaim,
+    })
+
+  // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
+  const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
+  const universalCardEnabled =
+    !enableCreditCard &&
+    networkConfig.universalCard?.cardPurchaserAddress &&
+    lock.currencyContractAddress?.toLowerCase()?.trim() ===
+      USDC?.address?.toLowerCase()?.trim()
+
+  const allDisabled = [
+    enableCreditCard,
+    enableClaim,
+    enableCrypto,
+    universalCardEnabled,
+  ].every((item) => !item)
 
   return (
     <Fragment>
@@ -157,7 +185,40 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {enableCreditCard && (
+            {universalCardEnabled && !enableClaim && (
+              <button
+                onClick={(event) => {
+                  event.preventDefault()
+                  send({
+                    type: 'SELECT_PAYMENT_METHOD',
+                    payment: {
+                      method: 'universal_card',
+                    },
+                  })
+                }}
+                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <h3 className="font-bold"> Pay via Stripe </h3>
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                    <VisaIcon size={18} />
+                    <MasterCardIcon size={18} />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-sm text-left text-gray-500">
+                    Use cards, Google Pay, or Apple Pay. <br />
+                    <span className="text-xs">Additional fees may apply</span>
+                  </div>
+                  <RightArrowIcon
+                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    size={20}
+                  />
+                </div>
+              </button>
+            )}
+
+            {enableCreditCard && !enableClaim && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -216,14 +277,18 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
-            {isUniswapRoutesLoading && (
+            {isUniswapRoutesLoading && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading payment options...
               </div>
             )}
             {!isUniswapRoutesLoading &&
               isSwapAndPurchaseEnabled &&
+              !enableClaim &&
               routes?.map((route, index) => {
+                if (!route) {
+                  return null
+                }
                 return (
                   <button
                     key={index}
@@ -232,8 +297,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                       send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
-                          route,
                           method: 'swap_and_purchase',
+                          route,
                         },
                       })
                     }}
