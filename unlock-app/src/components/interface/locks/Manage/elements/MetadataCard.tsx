@@ -15,7 +15,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
@@ -110,7 +109,9 @@ const ChangeManagerModal = ({
   manager,
   tokenId,
   onChange,
+  label,
 }: {
+  label?: string
   lockAddress: string
   network: number
   manager: string
@@ -226,7 +227,7 @@ const ChangeManagerModal = ({
         </div>
       </Modal>
       <Button size="small" onClick={() => setIsOpen(true)}>
-        Change
+        {label ?? 'Change'}
       </Button>
     </>
   )
@@ -238,6 +239,7 @@ export const MetadataCard = ({
   expirationDuration,
   lockSettings,
 }: MetadataCardProps) => {
+  const { account } = useAuth()
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
@@ -346,6 +348,9 @@ export const MetadataCard = ({
       ToastHelper.error('Error on marking ticket as checked-in')
     },
   })
+
+  const accountIsManager = account?.toLowerCase() === manager?.toLowerCase()
+  const showManager = !accountIsManager && manager !== ADDRESS_ZERO
 
   return (
     <>
@@ -515,38 +520,27 @@ export const MetadataCard = ({
                       <ExternalLinkIcon size={20} />
                     </a>
                   </Button>
+                  {accountIsManager && (
+                    <div className="ml-auto">
+                      <ChangeManagerModal
+                        lockAddress={lockAddress}
+                        network={network}
+                        manager={manager}
+                        tokenId={tokenId}
+                        label="Set key manager"
+                        onChange={(keyManager) => {
+                          setData({
+                            ...data,
+                            keyManager,
+                          })
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
               }
             />
-            {isSubscriptionLoading && <LoadingIcon />}
-            {!isSubscriptionLoading && subscription && (
-              <>
-                <Detail
-                  className="py-2"
-                  label="User Balance:"
-                  inline
-                  justify={false}
-                >
-                  {subscription.balance?.amount} {subscription.balance?.symbol}
-                </Detail>
-                <MembershipRenewal
-                  possibleRenewals={subscription.possibleRenewals!}
-                  approvedRenewals={subscription.approvedRenewals!}
-                  balance={subscription.balance as any}
-                />
-                {expirationDuration && expirationDuration !== MAX_UINT && (
-                  <Detail
-                    className="py-2"
-                    label="Renewal duration:"
-                    inline
-                    justify={false}
-                  >
-                    {durationAsText(expirationDuration)}
-                  </Detail>
-                )}
-              </>
-            )}
-            {manager && manager !== ADDRESS_ZERO && (
+            {showManager && (
               <div className="w-full">
                 <Detail
                   className="py-2"
@@ -601,6 +595,33 @@ export const MetadataCard = ({
                   }
                 />
               </div>
+            )}
+            {!isSubscriptionLoading && subscription && (
+              <>
+                <Detail
+                  className="py-2"
+                  label="User Balance:"
+                  inline
+                  justify={false}
+                >
+                  {subscription.balance?.amount} {subscription.balance?.symbol}
+                </Detail>
+                <MembershipRenewal
+                  possibleRenewals={subscription.possibleRenewals!}
+                  approvedRenewals={subscription.approvedRenewals!}
+                  balance={subscription.balance as any}
+                />
+                {expirationDuration && expirationDuration !== MAX_UINT && (
+                  <Detail
+                    className="py-2"
+                    label="Renewal duration:"
+                    inline
+                    justify={false}
+                  >
+                    {durationAsText(expirationDuration)}
+                  </Detail>
+                )}
+              </>
             )}
           </div>
         </div>
