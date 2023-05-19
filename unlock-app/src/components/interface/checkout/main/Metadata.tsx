@@ -187,7 +187,7 @@ export const MetadataInputs = ({
                   }}
                   ref={ref}
                   onBlur={onBlur}
-                  autoComplete="email"
+                  autoComplete={useEmail ? 'email' : label}
                 />
                 {description && !error && (
                   <p className="text-xs text-gray-600"> {description} </p>
