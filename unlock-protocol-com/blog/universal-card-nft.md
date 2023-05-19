@@ -4,10 +4,12 @@ subTitle: Purchase any membership using your payment card!
 description: Today, we’re excited to introduced a new way to purchase Unlock memberships with Stripe!
 author: Julien Genestoux
 publishDate: May 19, 2023
-image: /images/blog/uniswap-v3-oracle/oracle-uniswap-v3-share.png
+image: /images/blog/credit-card-onramp.png
 ---
 
 Today, we’re excited to introduced a new way to purchase Unlock memberships with Stripe!
+
+![Credit card NFT Onramp](/images/blog/credit-card-onramp.png)
 
 Stripe [recently announced](https://stripe.com/blog/crypto-onramp) a new on-ramp mechanism and it is a great match for our membership contracts. You can test it today by buying a membership on this lock TK. (We’re happy to refund you if you ask!).
 
