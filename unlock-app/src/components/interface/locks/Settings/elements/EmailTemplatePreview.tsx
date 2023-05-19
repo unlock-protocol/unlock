@@ -18,6 +18,7 @@ interface EmailTemplatePreviewProps {
   disabled: boolean
   network: number
   lockAddress: string
+  isManager: boolean
 }
 
 const FormSchema = z.object({
@@ -49,6 +50,7 @@ export const EmailTemplatePreview = ({
   disabled,
   network,
   lockAddress,
+  isManager,
 }: EmailTemplatePreviewProps) => {
   const config = useConfig()
   const [showPreview, setShowPreview] = useState(false)
@@ -195,6 +197,7 @@ export const EmailTemplatePreview = ({
           <TextBox
             placeholder="## Example content"
             rows={8}
+            disabled={disabled}
             {...register('customContent')}
           />
           <div className="pb-2 text-sm text-gray-700">
@@ -209,28 +212,30 @@ export const EmailTemplatePreview = ({
             is supported for custom email content
           </div>
         </div>
-        <div className="flex gap-2 ml-auto">
-          <Button
-            size="small"
-            onClick={async () => {
-              await saveCustomContent.mutateAsync()
-            }}
-            loading={saveCustomContent.isLoading}
-            disabled={loading}
-          >
-            Save
-          </Button>
-          <Button
-            size="small"
-            variant="outlined-primary"
-            onClick={async () => {
-              setShowPreview(true)
-            }}
-            disabled={disableShowPreview}
-          >
-            Show email preview
-          </Button>
-        </div>
+        {isManager && (
+          <div className="flex gap-2 ml-auto">
+            <Button
+              size="small"
+              onClick={async () => {
+                await saveCustomContent.mutateAsync()
+              }}
+              loading={saveCustomContent.isLoading}
+              disabled={loading}
+            >
+              Save
+            </Button>
+            <Button
+              size="small"
+              variant="outlined-primary"
+              onClick={async () => {
+                setShowPreview(true)
+              }}
+              disabled={disableShowPreview}
+            >
+              Show email preview
+            </Button>
+          </div>
+        )}
         {showPreview && (
           <Modal empty isOpen={showPreview} setIsOpen={setShowPreview}>
             <div className="fixed inset-0 z-10 flex justify-center overflow-y-auto bg-white">
