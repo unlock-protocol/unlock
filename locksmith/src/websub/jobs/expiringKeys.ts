@@ -96,8 +96,13 @@ async function notifyExpiringKey(key: any, network: number) {
 }
 
 export async function notifyExpiringKeysForNetwork() {
-  const expirationFrom = dayjs().unix().toString()
-  const expirationTo = dayjs().add(1, 'day').unix().toString()
+  const now = new Date()
+
+  const end = new Date(now.getTime())
+  end.setDate(now.getDate() + 1)
+
+  const expirationFrom = Math.floor(now.getTime() / 1000).toString()
+  const expirationTo = Math.floor(end.getTime() / 1000).toString()
 
   // get expiring keys for every network
   for (const networkId in networks) {

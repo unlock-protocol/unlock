@@ -10,7 +10,6 @@ import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOp
 import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from './../../operations/userMetadataOperations'
 import * as Normalizer from '../../utils/normalizer'
-import dayjs from 'dayjs'
 
 /**
  * Send email notification for expired key
@@ -67,8 +66,13 @@ async function notifyExpiredKey(key: any, network: number) {
 }
 
 export async function notifyExpiredKeysForNetwork() {
-  const now = dayjs().unix().toString()
-  const yesterday = dayjs().subtract(1, 'day').unix().toString()
+  const now = new Date()
+
+  const yesterday = new Date(now.getTime())
+  yesterday.setDate(now.getDate() - 1)
+
+  const expirationFrom = Math.floor(now.getTime() / 1000).toString()
+  const expirationTo = Math.floor(yesterday.getTime() / 1000).toString()
 
   // get expired keys for every network
   for (const networkId in networks) {
@@ -80,8 +84,8 @@ export async function notifyExpiredKeysForNetwork() {
         orderBy: KeyOrderBy.Expiration,
         orderDirection: OrderDirection.Desc,
         where: {
-          expiration_lt: now,
-          expiration_gt: yesterday,
+          expiration_lt: expirationFrom,
+          expiration_gt: expirationTo,
         },
       },
       {
