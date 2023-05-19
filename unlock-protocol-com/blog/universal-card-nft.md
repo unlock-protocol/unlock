@@ -29,6 +29,6 @@ Once they have signed these two transactions, they will follow the Stripe checko
 
 ## Next Steps
 
-Like always in the crypto space, we’re learning as we explore! The obvious next step for us to to add support for our “swap and purchase” flow. This would add support to memberships priced in **any** currency, not just USDC. The flow would be nearly identical from a user’s perspective, but instead of using the USDC to purchase the membership, our contract will instantly swap it for the right amount of tokens required to purchase the membership.
+Like always in the crypto space, we’re learning as we explore! The obvious next step for us is to add support for our “swap and purchase” flow. This would add support to memberships priced in **any** currency, not just USDC. The flow would be nearly identical from a user’s perspective, but instead of using the USDC to purchase the membership, our contract will instantly swap it for the right amount of tokens required to purchase the membership.
 
 Stripe has indicated that they will add support for more chains and L2s. We will of course add support for these chains as soon as they do! Finally, Stripe has also indicated that they want to explore support for recurring purchases, which we would be thrilled to add support for, on top of our native [crypto recurring payments](https://unlock-protocol.com/guides/recurring-memberships/).
