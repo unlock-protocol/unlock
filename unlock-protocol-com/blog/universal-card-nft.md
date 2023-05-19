@@ -21,7 +21,7 @@ With Stripe onramp, we’re adding support for credit card payments on a lock, e
 
 First, I should mention that it works for both for users who have their own wallets, as well as for users who don’t have a wallet (using their [Unlock Account](https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/unlock-accounts/)).
 
-When the user selects the option to checkout with Stripe’s onRamp, we ask them to sign two messages (these are just signatures, without any gas spent). The first message to sign is an **approval** to spend the funds they will receive from Stripe, immediately after they received them. The second one is a confirmation that they want to spend these funds for a **specific** membership contract.
+When the user selects the option to checkout with Stripe’s onramp, we ask them to sign two messages (these are just signatures, without any gas spent). The first message to sign is an **approval** to spend the funds they will receive from Stripe, immediately after they received them. The second one is a confirmation that they want to spend these funds for a **specific** membership contract.
 
 These two signatures are critical for security and helps ensure the funds they receive from Stripe cannot be spent for anything else.
 
