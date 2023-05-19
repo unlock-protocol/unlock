@@ -11,7 +11,7 @@ const GUIDES_HEADER = {
     },
   ],
   logo: {
-    url: '/',
+    url: '/guides',
     domain: 'Guides',
   },
   menuSections: [
