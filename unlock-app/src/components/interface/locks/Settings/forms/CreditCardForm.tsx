@@ -117,7 +117,7 @@ const ConnectStripe = ({
 
   const grantKeyGrantorRoleMutation = useMutation(async (): Promise<any> => {
     const walletService = await getWalletService(network)
-    return await walletService.addKeyGranter({
+    return walletService.addKeyGranter({
       lockAddress,
       keyGranter,
     })
@@ -152,13 +152,7 @@ const ConnectStripe = ({
   }
 
   const { isLoading: isLoadingCheckGrantedStatus, data: isGranted } = useQuery(
-    [
-      'checkIsKeyGranter',
-      lockAddress,
-      network,
-      keyGranter,
-      grantKeyGrantorRoleMutation.isSuccess,
-    ],
+    ['checkIsKeyGranter', lockAddress, network, keyGranter],
     async () => {
       return checkIsKeyGranter(keyGranter)
     }
