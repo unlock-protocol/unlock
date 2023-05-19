@@ -25,7 +25,7 @@ When the user selects the option to checkout with Stripe’s onramp, we ask them
 
 These two signatures are critical for security and helps ensure the funds they receive from Stripe cannot be spent for anything else.
 
-Once they have signed these two transactions, they will follow the Stripe checkout flow (the one that you already find on many websites around the world). At the end of it, Stripe sends [USDC](https://www.circle.com/en/usdc) to their address and Unlock Labs triggers a transaction that uses the two signatures they provided earlier to instantly spend these USDC tokens and purchase the NFT membership for them.
+Once they have signed these two transactions, they will follow the Stripe checkout flow (the one that you already find on many websites around the world). At the end of it, Stripe sends [USDC](https://www.circle.com/en/usdc) to their address and Unlock Labs triggers a transaction that uses the two signatures they provided earlier to use these USDC tokens to purchase the NFT membership.
 
 ## Next Steps
 
