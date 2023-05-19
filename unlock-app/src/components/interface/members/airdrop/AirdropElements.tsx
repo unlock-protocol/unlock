@@ -8,7 +8,11 @@ export const AirdropMember = z
   .object({
     wallet: z.string(),
     count: z.preprocess((item) => Number(item), z.number().default(1)),
-    expiration: z.string().optional(),
+    expiration: z.preprocess((value) => {
+      if (value) {
+        return new Date(value.toString()).getTime()
+      }
+    }, z.number().optional()),
     neverExpire: z.preprocess(
       (value) => !!value,
       z.boolean().optional().default(false)
@@ -28,7 +32,7 @@ interface AirdropListItemProps {
 }
 
 export function AirdropListItem({
-  value: { wallet, count, email },
+  value: { wallet, count, email, expiration, neverExpire },
   onRemove,
 }: AirdropListItemProps) {
   return (
@@ -37,9 +41,11 @@ export function AirdropListItem({
         <span>
           {addressMinify(wallet)} {email ? `(${email})` : ''}{' '}
         </span>
-        <span> - </span>
         <span className="text-gray-500">
-          {count} {count > 1 ? 'keys' : 'key'}
+          {count} {count > 1 ? 'keys' : 'key'}{' '}
+          {expiration &&
+            `valid until ${new Date(expiration).toLocaleDateString()}`}
+          {neverExpire && `never expires`}
         </span>
       </div>
       <IconButton

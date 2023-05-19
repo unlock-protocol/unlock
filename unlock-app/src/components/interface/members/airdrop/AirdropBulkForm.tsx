@@ -71,6 +71,12 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
               item.wallet = wallet
             }
             const record = AirdropMember.parse(item)
+
+            // If there is any record in the expiration column, we should assume that this is the expiration date
+            if (record.expiration) {
+              record.neverExpire = false
+            }
+
             const [wallet, manager] = await Promise.all([
               getAddressForName(record.wallet),
               getAddressForName(record.manager || account!),
