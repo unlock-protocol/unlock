@@ -138,15 +138,17 @@ export const getSubscriptionsForLockByOwner = async ({
     })
   }
 
+  const possibleRenewals =
+    // https://links.ethers.org/v5-errors-NUMERIC_FAULT-division-by-zero
+    ethers.BigNumber.from(price).gt(0)
+      ? ethers.BigNumber.from(userBalance).div(price).toString()
+      : ethers.BigNumber.from(0).toString()
+
   // Add the default crypto subscription details.
   const cryptoSubscription: Subscription = {
     ...info,
     approvedRenewals: numberOfRenewalsApproved,
-    possibleRenewals:
-      // https://links.ethers.org/v5-errors-NUMERIC_FAULT-division-by-zero
-      ethers.BigNumber.from(price).gt(0)
-        ? ethers.BigNumber.from(userBalance).div(price).toString()
-        : ethers.BigNumber.from(0).toString(),
+    possibleRenewals,
     type: 'Crypto',
   }
 
