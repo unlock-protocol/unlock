@@ -81,7 +81,7 @@ export const getSubscriptionsForLockByOwner = async ({
 
   const balance = ethers.utils.formatUnits(userBalance, decimals)
 
-  const price = ethers.utils.formatUnits(key.lock.price, decimals)
+  const price = key.lock.price
 
   const next =
     key.expiration === ethers.constants.MaxUint256.toString()
@@ -138,11 +138,17 @@ export const getSubscriptionsForLockByOwner = async ({
     })
   }
 
+  const possibleRenewals =
+    // https://links.ethers.org/v5-errors-NUMERIC_FAULT-division-by-zero
+    ethers.BigNumber.from(price).gt(0)
+      ? ethers.BigNumber.from(userBalance).div(price).toString()
+      : ethers.BigNumber.from(0).toString()
+
   // Add the default crypto subscription details.
   const cryptoSubscription: Subscription = {
     ...info,
     approvedRenewals: numberOfRenewalsApproved,
-    possibleRenewals: ethers.BigNumber.from(userBalance).div(price).toString(),
+    possibleRenewals,
     type: 'Crypto',
   }
 
