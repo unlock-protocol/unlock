@@ -123,6 +123,10 @@ interface BackEvent {
   type: CheckoutPage | 'BACK'
 }
 
+interface ResetEvent {
+  type: 'RESET_CHECKOUT'
+}
+
 export type CheckoutMachineEvents =
   | SelectLockEvent
   | SelectQuantityEvent
@@ -138,6 +142,7 @@ export type CheckoutMachineEvents =
   | RenewedEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
+  | ResetEvent
   | DisconnectEvent
   | BackEvent
 
@@ -168,7 +173,7 @@ export interface Transaction {
   transactionHash?: string
 }
 
-interface CheckoutMachineContext {
+export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
@@ -190,6 +195,7 @@ interface CheckoutMachineContext {
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
+  existingMember: boolean
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
@@ -210,6 +216,7 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   renew: false,
   hook: undefined,
   metadata: undefined,
+  existingMember: false,
 }
 
 const DISCONNECT = {
@@ -247,6 +254,10 @@ export const checkoutMachine = createMachine(
       },
       SUBMIT_DATA: {
         actions: ['submitData'],
+      },
+      RESET_CHECKOUT: {
+        target: 'SELECT',
+        actions: ['disconnect'],
       },
     },
     states: {
@@ -605,6 +616,7 @@ export const checkoutMachine = createMachine(
           recipients: event.recipients,
           keyManagers: event.keyManagers,
           hook: event.hook,
+          existingMember: event.existingMember,
         }
       }),
       selectQuantity: assign({

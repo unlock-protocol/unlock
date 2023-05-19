@@ -53,14 +53,17 @@ export function ConfirmUniversalCard({
     })
 
   // And now get the price to pay by card
-  const { data: cardPricing, isInitialLoading: isCardPricingLoading } =
-    useUniversalCardPrice({
-      network: lock!.network,
-      lockAddress: lock!.address,
-      recipients,
-      purchaseData: purchaseData!,
-      enabled: !isInitialDataLoading,
-    })
+  const {
+    data: cardPricing,
+    isInitialLoading: isCardPricingLoading,
+    isFetched: isCardPricingFetched,
+  } = useUniversalCardPrice({
+    network: lock!.network,
+    lockAddress: lock!.address,
+    recipients,
+    purchaseData: purchaseData!,
+    enabled: !isInitialDataLoading,
+  })
 
   const createOnRampSession = useMutation(
     async ({ network, lockAddress, body }: any) => {
@@ -79,7 +82,7 @@ export function ConfirmUniversalCard({
       session.id,
       session.quote.blockchain_tx_id
     )
-    return response.data.transactionHash
+    return response.data.hash
   })
 
   // TODO: Also configure webhook on the Stripe side?
@@ -97,9 +100,12 @@ export function ConfirmUniversalCard({
     }
 
     const expectedAmount = cardPricing?.total
+    // We use Math.round because
+    // > 100 * parseFloat('1.13')
+    // 112.99999999999999
     const destinationAmount =
       session.quote.destination_amount &&
-      100 * parseFloat(session.quote.destination_amount)
+      Math.round(100 * parseFloat(session.quote.destination_amount))
 
     if (destinationAmount !== expectedAmount) {
       console.error('Price changed', destinationAmount, expectedAmount)
@@ -182,10 +188,11 @@ export function ConfirmUniversalCard({
                 pricingData={cardPricing}
               />
               <CreditCardPricingBreakdown
-                total={cardPricing!.total}
-                creditCardProcessingFee={cardPricing!.creditCardProcessingFee}
-                unlockServiceFee={cardPricing!.unlockServiceFee}
-                gasCosts={cardPricing!.gasCost}
+                loading={isCardPricingLoading || !isCardPricingFetched}
+                total={cardPricing?.total}
+                creditCardProcessingFee={cardPricing?.creditCardProcessingFee}
+                unlockServiceFee={cardPricing?.unlockServiceFee}
+                gasCosts={cardPricing?.gasCost}
               />
             </div>
           </main>
