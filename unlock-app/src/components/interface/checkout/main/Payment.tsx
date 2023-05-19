@@ -185,7 +185,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {universalCardEnabled && !enableClaim && (
+            {universalCardEnabled && false && !enableClaim && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
