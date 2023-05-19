@@ -1,7 +1,7 @@
 ---
 title: Stripe Onramp Support!
 subTitle: Purchase any membership using your payment card!
-description: Today, we’re excited to introduced a new way to purchase Unlock memberships with Stripe!
+description: Today, we’re excited to introduce a new way to purchase Unlock memberships with Stripe!
 author: Julien Genestoux
 publishDate: May 19, 2023
 image: /images/blog/credit-card-onramp.png
