@@ -49,5 +49,11 @@ export default {
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 
 {{links txUrl openSeaUrl true}}
+
+{{#if transactionReceiptUrl}}
+<strong>Need receipts?</strong>
+<br />
+<span>Access your receipts by visiting <a href="{{transactionReceiptUrl}}">this link</a> you can easily download your transaction receipt.</span>
+{{/if}}
 `,
 }

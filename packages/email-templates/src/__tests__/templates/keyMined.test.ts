@@ -97,4 +97,41 @@ describe('keyMined', () => {
     expect(asHtml(content).textContent).toContain(`Custom content here`)
     expect(asHtml(content).innerHTML).toContain('href="http://opensealurl.com"')
   })
+
+  it('should have transaction receipt link', () => {
+    expect.assertions(2)
+    const content = prepareAll(keyMined).html({
+      keyId: '1337',
+      lockName: 'Ethereal NYC 202',
+      network: 'Polygon',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      openSeaUrl: 'http://opensealurl.com',
+      transactionReceiptUrl: 'https://app.unlock-protocol.com/receipts',
+    })
+
+    expect(asHtml(content).textContent).toContain(
+      `Access your receipts by visiting this link you can easily download your transaction receipt.`
+    )
+    expect(asHtml(content).innerHTML).toContain(
+      'https://app.unlock-protocol.com/receipts'
+    )
+  })
+
+  it('should not contains transaction receipt link', () => {
+    expect.assertions(2)
+    const content = prepareAll(keyMined).html({
+      keyId: '1337',
+      lockName: 'Ethereal NYC 202',
+      network: 'Polygon',
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      openSeaUrl: 'http://opensealurl.com',
+    })
+
+    expect(asHtml(content).textContent).not.contain(
+      `Access your receipts by visiting this link you can easily download your transaction receipt.`
+    )
+    expect(asHtml(content).innerHTML).not.contain(
+      'https://app.unlock-protocol.com/receipts'
+    )
+  })
 })
