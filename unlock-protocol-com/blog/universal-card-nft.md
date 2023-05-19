@@ -7,7 +7,7 @@ publishDate: May 19, 2023
 image: /images/blog/credit-card-onramp.png
 ---
 
-Today, we’re excited to introduced a new way to purchase Unlock memberships with Stripe!
+Today, we’re excited to introduce a new way to purchase Unlock memberships with Stripe!
 
 ![Credit card NFT Onramp](/images/blog/credit-card-onramp.png)
 
