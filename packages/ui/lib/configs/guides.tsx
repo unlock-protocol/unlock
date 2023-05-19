@@ -1,4 +1,4 @@
-import { Button, HeaderNav, Footer } from '..'
+import { Button, HeaderNav, Footer, unlockEmailSubscription } from '..'
 
 const GUIDES_HEADER = {
   extraClass: {
@@ -46,34 +46,14 @@ const GUIDES_FOOTER = {
     description:
       'Receive fresh news about Unlock, including new features and opportunities to contribute',
     onSubmit: async (email: string) => {
-      const EMAIL_SUBSCRIPTION_FORM = {
-        portalId: '19942922',
-        formGuid: '868101be-ae3e-422e-bc86-356c96939187',
-      }
-
-      const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${EMAIL_SUBSCRIPTION_FORM.portalId}/${EMAIL_SUBSCRIPTION_FORM.formGuid}`
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fields: [
-            {
-              name: 'email',
-              value: email,
-            },
-          ],
-        }),
-      }
-      await fetch(endpoint, options)
+      await unlockEmailSubscription(email)
     },
   },
   logo: {
     url: '/',
   },
-  privacyUrl: `${window.location.origin}/privacy`,
-  termsUrl: `${window.location.origin}/terms`,
+  privacyUrl: `/privacy`,
+  termsUrl: `/terms`,
   menuSections: [
     {
       title: 'About',
