@@ -22,7 +22,7 @@ async function main () {
 
   // proposed changes
   const protocolFee = ethers.utils.parseEther('0.000001')
-  const proposalName = `[Bridge] Set protocol fee to ${protocolFee} on Mumbai`
+  const proposalName = `[Bridge] (3) Set protocol fee to ${protocolFee} on Mumbai`
 
   // parse Unlock call data
   const unlockOwnerCalldata = await parseUnlockOwnerCalldata({
@@ -31,9 +31,11 @@ async function main () {
     functionArgs: [ protocolFee ],
   })
 
+  const { bridgeAddress } = bridge[chainId]
+  
   // send changes to mumbai
   const destChainId = 80001
-  const { unlockOwnerAddress, bridgeAddress, domainId } = bridge[destChainId]
+  const { unlockOwnerAddress, domainId } = bridge[destChainId]
 
   // parse bridge call
   const functionArgs = [

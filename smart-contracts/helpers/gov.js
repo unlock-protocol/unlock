@@ -221,7 +221,7 @@ async function parseUnlockOwnerCalldata({
     functionName,
     functionArgs
   )
-  // parse _execAction instructions
+  // parse _execAction instructions for Unlock Owner
   const calldata = ethers.utils.defaultAbiCoder.encode([
     'uint8', 
     'bytes'
