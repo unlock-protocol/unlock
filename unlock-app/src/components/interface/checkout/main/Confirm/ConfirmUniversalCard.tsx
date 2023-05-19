@@ -82,7 +82,7 @@ export function ConfirmUniversalCard({
       session.id,
       session.quote.blockchain_tx_id
     )
-    return response.data.transactionHash
+    return response.data.hash
   })
 
   // TODO: Also configure webhook on the Stripe side?
@@ -100,9 +100,12 @@ export function ConfirmUniversalCard({
     }
 
     const expectedAmount = cardPricing?.total
+    // We use Math.round because
+    // > 100 * parseFloat('1.13')
+    // 112.99999999999999
     const destinationAmount =
       session.quote.destination_amount &&
-      100 * parseFloat(session.quote.destination_amount)
+      Math.round(100 * parseFloat(session.quote.destination_amount))
 
     if (destinationAmount !== expectedAmount) {
       console.error('Price changed', destinationAmount, expectedAmount)
