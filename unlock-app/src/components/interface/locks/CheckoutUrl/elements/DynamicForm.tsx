@@ -47,6 +47,7 @@ export const LabelMapping: Record<string, string> = {
   dataBuilder: 'Data builder',
   redirectUri: 'Redirect URL',
   skipRecipient: 'Skip Recipient',
+  skipSelect: 'Skip Select',
   endingCallToAction: 'Return button CTA.',
 }
 

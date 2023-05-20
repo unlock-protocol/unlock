@@ -32,7 +32,7 @@ import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
 import { WarningBar } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { UpdateTransferFee } from '~/components/interface/locks/Settings/forms/UpdateTransferFee'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
 interface CertificationDetailsProps {
   lockAddress: string
@@ -330,7 +330,7 @@ export const CertificationDetails = ({
         emailRequired: true,
       },
     },
-  }
+  } as PaywallConfigType
 
   const showBadge = isLockManager || !account || !viewerIsOwner
   const showExpiration = key?.expiration !== MAX_UINT
