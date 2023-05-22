@@ -1,3 +1,5 @@
+import { PaywallLockConfigType } from '@unlock-protocol/core'
+import { PaywallConfig } from '~/unlockTypes'
 interface FetchRecipientsDataOptions {
   recipients: string[]
   network: number
@@ -47,5 +49,38 @@ export async function fetchRecipientsData(
   } catch (error) {
     console.error(error)
     return
+  }
+}
+
+export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
+  const formatted = (priceInCents / 100).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  })
+  return `${currency} ${formatted}`
+}
+interface Options {
+  paywallConfig?: PaywallConfig
+  lock?: PaywallLockConfigType
+}
+
+export const shouldSkip = ({ lock, paywallConfig }: Options) => {
+  const maxRecipients = lock?.maxRecipients || paywallConfig?.maxRecipients
+  const minRecipients = lock?.minRecipients || paywallConfig?.minRecipients
+  const hasMaxRecipients = maxRecipients && maxRecipients > 1
+  const hasMinRecipients = minRecipients && minRecipients > 1
+  const skipQuantity = !(hasMaxRecipients || hasMinRecipients)
+
+  const skip = lock?.skipRecipient || paywallConfig?.skipRecipient
+  const collectsMetadadata =
+    lock?.metadataInputs ||
+    paywallConfig?.metadataInputs ||
+    paywallConfig?.emailRequired ||
+    lock?.emailRequired
+  const skipRecipient = Boolean(skip && !collectsMetadadata)
+
+  return {
+    skipQuantity,
+    skipRecipient,
   }
 }
