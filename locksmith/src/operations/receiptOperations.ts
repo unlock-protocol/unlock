@@ -9,7 +9,7 @@ interface ReceiptDetailsProps {
   tokenId?: string
 }
 
-/**Get purchaser details from receipt or returns purchaser with metadata values */
+/** Get purchaser details from metadata if email is collected otherwise return from receipt */
 const getPurchaserDetails = async ({
   lockAddress,
   network,
@@ -36,27 +36,20 @@ const getPurchaserDetails = async ({
 
   const data = metadata?.userMetadata?.protected ?? {}
 
-  // use purchaser details as default or metadata if not present
-  const businessName = receiptPurchaser?.businessName || data?.businessName
-  const city = receiptPurchaser?.city || data?.city
-  const zip = receiptPurchaser?.zip || data?.zip
-  const state = receiptPurchaser?.state || data?.state
-  const country = receiptPurchaser?.country || data?.country
-
-  const fullname =
-    receiptPurchaser?.fullname ||
-    data?.fullname ||
-    `${data?.firstname} ${data?.lastname}`
-
-  return {
-    fullname,
-    city,
-    zip,
-    country,
-    state,
-    businessName,
-    ...receiptPurchaser?.dataValues,
+  // return metadata if email is collected
+  if (data?.email) {
+    return {
+      businessName: data?.businessName,
+      city: data?.city,
+      zip: data?.zip,
+      state: data?.state,
+      country: data?.country,
+      addressLine1: data?.addressLine1,
+      addressLine2: data?.addressLine2,
+    }
   }
+
+  return receiptPurchaser
 }
 
 export const getReceiptDetails = async ({
