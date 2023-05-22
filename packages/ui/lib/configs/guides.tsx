@@ -50,7 +50,7 @@ const GUIDES_FOOTER = {
     },
   },
   logo: {
-    url: '/',
+    url: '/guides',
   },
   privacyUrl: `/privacy`,
   termsUrl: `/terms`,
@@ -58,7 +58,7 @@ const GUIDES_FOOTER = {
     {
       title: 'About',
       options: [
-        { label: 'About Unlock', url: `https://unlock-protocol.com/about` },
+        { label: 'About Unlock', url: `/about` },
         {
           label: 'Roadmap',
           url: 'https://docs.unlock-protocol.com/governance/roadmap/',
@@ -74,7 +74,7 @@ const GUIDES_FOOTER = {
       options: [
         {
           label: 'Unlock DAO',
-          url: 'https://unlock-protocol.com/blog/unlock-dao',
+          url: '/blog/unlock-dao',
         },
         { label: 'Forum', url: 'https://unlock.community/' },
         {
@@ -87,17 +87,17 @@ const GUIDES_FOOTER = {
       title: 'Community',
       options: [
         { label: 'Showcase', url: 'https://showcase.unlock-protocol.com/' },
-        { label: 'Blog', url: `https://unlock-protocol.com/blog` },
-        { label: 'Events', url: `https://unlock-protocol.com/upcoming-events` },
-        { label: 'Grants', url: `https://unlock-protocol.com/grants` },
+        { label: 'Blog', url: `/blog` },
+        { label: 'Events', url: `/upcoming-events` },
+        { label: 'Grants', url: `/grants` },
       ],
     },
     {
       title: 'Resources',
       options: [
         { label: 'Docs', url: 'https://docs.unlock-protocol.com/' },
-        { label: 'Developers', url: `https://unlock-protocol.com/developers` },
-        { label: 'Guides', url: `https://unlock-protocol.com/guides` },
+        { label: 'Developers', url: `/developers` },
+        { label: 'Guides', url: `/guides` },
         {
           label: 'Integrations',
           url: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/',
