@@ -112,6 +112,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const PurchaseDetails = () => {
     return (
       <div className="grid gap-2">
+        <Detail label="Receipt Number">#{receiptNumber}</Detail>
         <Detail label="Transaction Date">{transactionDate}</Detail>
         <Detail label="Transaction Hash">{addressMinify(hash)}</Detail>
       </div>
@@ -130,14 +131,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
 
     return (
       <div className="grid gap-2">
-        <div className="flex items-center md:justify-between">
-          <h2 className="text-lg font-bold text-brand-ui-primary">Receipt:</h2>
-        </div>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-4 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
             <div className="col-span-4 md:col-span-3">
               <Detail label="Service performed:">
-                {supplier?.servicePerformed}
+                {supplier?.servicePerformed || 'NFT membership'}
               </Detail>
             </div>
             <div className="flex flex-col col-span-4 md:text-right md:col-span-1">
