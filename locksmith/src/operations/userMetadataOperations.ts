@@ -4,6 +4,15 @@ import { UserTokenMetadata } from '../models'
 
 import { InferAttributes } from 'sequelize'
 import { isEmpty, merge } from 'lodash'
+import LockData from '../utils/lockData'
+import networks from '@unlock-protocol/networks'
+
+interface MetadataByTokenPros {
+  tokenId: string
+  network: number
+  lockAddress: string
+  includeProtected?: boolean
+}
 
 // @deprecated Use `createOrUpdateUserMetadata` instead.
 export async function addMetadata(metadata: UserTokenMetadataInput) {
@@ -50,6 +59,21 @@ export async function getMetadata(
   }
 
   return data ? data.data : data
+}
+
+export async function getMetadataByTokenId({
+  lockAddress,
+  tokenId,
+  network,
+  includeProtected = false,
+}: MetadataByTokenPros) {
+  const lock = new LockData(networks[network].provider)
+
+  const owner = await lock.getKeyOwner(lockAddress, Number(tokenId))
+
+  const metadata = await getMetadata(lockAddress, owner, includeProtected)
+
+  return metadata
 }
 
 export async function getUserEmailRecipient({
