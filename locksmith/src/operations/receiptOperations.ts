@@ -9,7 +9,7 @@ interface ReceiptDetailsProps {
   tokenId?: string
 }
 
-/** Get purchaser details from metadata if email is collected otherwise return from receipt */
+/** Get purchaser details from metadata when receipt purchaser is not present */
 const getPurchaserDetails = async ({
   lockAddress,
   network,
@@ -36,15 +36,15 @@ const getPurchaserDetails = async ({
 
   const data = metadata?.userMetadata?.protected ?? {}
 
-  // return metadata if email is collected
-  if (data?.email) {
+  // return metadata when receipt data is not present
+  if (!receiptPurchaser) {
     return {
-      businessName: data?.businessName,
+      businessName: data?.businessName || data?.company,
       city: data?.city,
-      zip: data?.zip,
+      zip: data?.zip || data?.zipcode,
       state: data?.state,
       country: data?.country,
-      addressLine1: data?.addressLine1,
+      addressLine1: data?.addressLine1 || data?.address,
       addressLine2: data?.addressLine2,
     }
   }
