@@ -80,7 +80,7 @@ export const SIWEProvider = ({ children }: Props) => {
   const siweSign = async (
     nonce: string,
     statement: string,
-    opts = {}
+    opts: any = {}
   ): Promise<{ message: string; signature: string } | null> => {
     try {
       setStatus('loading')
@@ -96,13 +96,12 @@ export const SIWEProvider = ({ children }: Props) => {
           ? document.referrer
           : document.location.href
       )
-      let resources = undefined
+
+      // We can't have an empty resources array... because the siwe library does not parse that correctly
+      // resulting in a different signature on the backend
+      let resources = opts.resources || undefined
       if (parent.host !== window.location.host) {
-        if (!opts.resources) {
-          resources = [window.location.origin]
-        } else {
-          resources = [window.location.origin, ...opts.resources]
-        }
+        resources = [window.location.origin]
       }
 
       const siwe = new SiweMessage({
