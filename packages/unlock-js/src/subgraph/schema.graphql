@@ -84,6 +84,7 @@ query AllReceipts(
     orderDirection: $orderDirection
   ) {
     id
+    receiptNumber
     timestamp
     sender
     payer
