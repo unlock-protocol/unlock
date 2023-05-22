@@ -115,6 +115,17 @@ const ConnectStripe = ({
     return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
   }
 
+  const {
+    isLoading: isLoadingCheckGrantedStatus,
+    data: isGranted,
+    refetch: refetchCheckKeyGranter,
+  } = useQuery(
+    ['checkIsKeyGranter', lockAddress, network, keyGranter],
+    async () => {
+      return checkIsKeyGranter(keyGranter)
+    }
+  )
+
   const grantKeyGrantorRoleMutation = useMutation(async (): Promise<any> => {
     const walletService = await getWalletService(network)
     return walletService.addKeyGranter({
@@ -130,6 +141,7 @@ const ConnectStripe = ({
       success: 'Key granted',
       loading: 'Allow key granting',
     })
+    await refetchCheckKeyGranter()
   }
 
   const connectStripe = async (event: any) => {
@@ -150,13 +162,6 @@ const ConnectStripe = ({
       }
     )
   }
-
-  const { isLoading: isLoadingCheckGrantedStatus, data: isGranted } = useQuery(
-    ['checkIsKeyGranter', lockAddress, network, keyGranter],
-    async () => {
-      return checkIsKeyGranter(keyGranter)
-    }
-  )
 
   const isLoading = isLoadingCheckGrantedStatus || isLoadingStripeConnections
 
