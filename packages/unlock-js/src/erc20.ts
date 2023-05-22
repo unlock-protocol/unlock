@@ -120,10 +120,17 @@ const getDomain = async (
 ) => {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
 
-  const [name, version] = await Promise.all([
-    contract.name(),
-    contract.version(),
-  ])
+  let version = '1' // default to 1
+  try {
+    version = await contract.version()
+  } catch (error) {
+    console.error(
+      `We could not retrieve the version of ${erc20ContractAddress} using the version() method. Defaulting to ${version}`
+    )
+    console.error(error)
+  }
+
+  const name = await contract.name()
 
   return {
     name,
