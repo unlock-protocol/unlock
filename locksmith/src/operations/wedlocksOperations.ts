@@ -43,7 +43,7 @@ type Attachment = {
   path: string
   filename: string
 }
-
+// TODO: replace with SubgraphKey schema
 interface Key {
   lock: {
     address: string
@@ -53,6 +53,7 @@ interface Key {
   tokenId?: string
   owner: string
   keyId?: string
+  transactionsHash?: string[]
 }
 
 interface SendEmailProps {
@@ -431,6 +432,13 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
+  const [transactionsHash] = key?.transactionsHash ?? []
+
+  const keychainUrl = `${config.unlockApp}/keychain`
+  const transactionReceiptUrl = transactionsHash
+    ? `${config.unlockApp}/receipts?address=${lockAddress}&network=${network}&hash=${transactionsHash}`
+    : undefined
+
   await sendEmail({
     network: network!,
     template: templates[0],
@@ -440,13 +448,15 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
     params: {
       lockAddress: key.lock.address ?? '',
       lockName: key.lock.name,
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
       network: networks[network!]?.name ?? '',
-      openSeaUrl,
-      transferUrl: transferUrl.toString(),
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
+      // urls
+      keychainUrl,
+      transactionReceiptUrl,
+      transferUrl: transferUrl.toString(),
+      openSeaUrl,
       // add event details props
       eventName: eventDetail?.eventName,
       eventDate: eventDetail?.eventDate,
