@@ -2,7 +2,7 @@
 
 ## Usage example
 
-In order to use this example we need first to follow the steps included in this document [Wordpress + UI components](https://www.notion.so/unlockprotocol/Wordpress-UI-components-abdd616f489945bba288a4458d2ef7fc)
+In order to use this example we need first to follow the steps included in this document [WordPress + UI components](https://www.notion.so/unlockprotocol/Wordpress-UI-components-abdd616f489945bba288a4458d2ef7fc)
 
 ```html
 <!-- 1) custom element for header -->
@@ -12,7 +12,7 @@ In order to use this example we need first to follow the steps included in this 
 <script type="module">
   import React from 'react'
   import ReactDOM from 'react-dom'
-  import { ShowcaseHeader } from '@unlock-packages/ui' // import compoents we need to use
+  import { ShowcaseHeader } from '@unlock-packages/ui' // import components we need to use
 
   const header = document.getElementById('header')
 
