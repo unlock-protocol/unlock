@@ -274,7 +274,18 @@ export const checkoutMachine = createMachine(
               target: 'RENEW',
               cond: (_, event) => event.expiredMember,
             },
-
+            {
+              actions: ['selectLock'],
+              target: 'QUANTITY',
+              cond: (_, event) => !event.skipQuantity,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'METADATA',
+              cond: (_, event) => {
+                return !event.skipRecipient
+              },
+            },
             {
               actions: ['selectLock'],
               cond: 'requireMessageToSign',
@@ -304,7 +315,6 @@ export const checkoutMachine = createMachine(
                 return !!isCaptcha && event.expiredMember
               },
             },
-
             {
               actions: ['selectLock'],
               target: 'PAYMENT',
@@ -312,18 +322,6 @@ export const checkoutMachine = createMachine(
                 // skip metadata if no quantity and recipient selection
                 return !!(event.skipRecipient && event.skipQuantity)
               },
-            },
-            {
-              actions: ['selectLock'],
-              target: 'METADATA',
-              // Skip quantity page if min or max doesn't require more than 1 recipients
-              cond: (_, event) => {
-                return !!event.skipQuantity
-              },
-            },
-            {
-              actions: ['selectLock'],
-              target: 'QUANTITY',
             },
           ],
           DISCONNECT,
@@ -489,7 +487,7 @@ export const checkoutMachine = createMachine(
             {
               target: 'CARD',
               actions: ['selectPaymentMethod'],
-              cond: (_, event) => event.payment.method === 'card',
+              cond: 'isCardPayment',
             },
             {
               actions: ['selectPaymentMethod'],
@@ -515,6 +513,18 @@ export const checkoutMachine = createMachine(
             },
             {
               target: 'METADATA',
+              cond: (ctx) => {
+                return !ctx.skipRecipient
+              },
+            },
+            {
+              target: 'QUANTITY',
+              cond: (ctx) => {
+                return !ctx.skipQuantity
+              },
+            },
+            {
+              target: 'SELECT',
             },
           ],
           DISCONNECT,
@@ -539,6 +549,10 @@ export const checkoutMachine = createMachine(
             actions: ['confirmMint'],
           },
           BACK: [
+            {
+              target: 'CARD',
+              cond: 'isCardPayment',
+            },
             {
               target: 'PAYMENT',
             },
@@ -696,6 +710,8 @@ export const checkoutMachine = createMachine(
       requireCaptcha: (context) => context && context?.hook === 'captcha',
       requirePassword: (context) => context && context?.hook === 'password',
       requirePromo: (context) => context && context?.hook === 'promocode',
+      isCardPayment: (context) =>
+        ['card', 'universal_card'].includes(context.payment.method),
     },
   }
 )
