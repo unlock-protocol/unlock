@@ -1,6 +1,7 @@
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Receipt, ReceiptBase } from '../models'
 import { getMetadataByTokenId } from './userMetadataOperations'
+import { lowercaseObjectKeys } from '../utils/object'
 
 interface ReceiptDetailsProps {
   lockAddress: string
@@ -34,7 +35,7 @@ const getPurchaserDetails = async ({
     })
   }
 
-  const data = metadata?.userMetadata?.protected ?? {}
+  const data = lowercaseObjectKeys(metadata?.userMetadata?.protected ?? {})
 
   // return metadata when receipt data is not present
   if (!receiptPurchaser?.id) {
