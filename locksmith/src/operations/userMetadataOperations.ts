@@ -58,7 +58,7 @@ export async function getUserEmailRecipient({
 }: {
   lockAddress: string
   ownerAddress: string
-}): Promise<string> {
+}): Promise<string | undefined> {
   const ownerMetadata = await getMetadata(
     lockAddress,
     ownerAddress,

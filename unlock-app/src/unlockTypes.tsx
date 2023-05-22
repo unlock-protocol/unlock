@@ -22,6 +22,7 @@ export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   pessimistic: true,
   hideSoldOut: true,
   skipRecipient: true,
+  skipSelect: true,
 })
 
 export enum TransactionType {
