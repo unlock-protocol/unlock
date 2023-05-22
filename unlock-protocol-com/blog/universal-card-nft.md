@@ -3,7 +3,7 @@ title: Stripe Onramp Support!
 subTitle: Purchase any membership using your payment card!
 description: Today, we’re excited to introduced a new way to purchase Unlock memberships with Stripe!
 author: Julien Genestoux
-publishDate: May 19, 2023
+publishDate: May 22, 2023
 image: /images/blog/credit-card-onramp.png
 ---
 
@@ -11,7 +11,7 @@ Today, we’re excited to introduced a new way to purchase Unlock memberships wi
 
 ![Credit card NFT Onramp](/images/blog/credit-card-onramp.png)
 
-Stripe [recently announced](https://stripe.com/blog/crypto-onramp) a new on-ramp mechanism and it is a great match for our membership contracts. You can test it today by buying a membership on this lock TK. (We’re happy to refund you if you ask!).
+Stripe [recently announced](https://stripe.com/blog/crypto-onramp) a new on-ramp mechanism and it is a great match for our membership contracts. You can test it today by [buying a membership on this lock](https://app.unlock-protocol.com/checkout?id=498f16e7-b9d3-4f80-93ec-74271d772b5d). (We’re happy to refund you if you ask!).
 
 We have had [support for credit card payments](https://unlock-protocol.com/guides/enabling-credit-cards/) for a few years now. However, this legacy credit card payment implementation required lock managers (who deployed the membership contracts) to connect their smart contract(s) to Stripe’s payment gateway using Stripe Connect. This works great, and we’re keeping this option, but is limited in scope as [Stripe Connect](https://stripe.com/connect) is not available in every country or for any kind of business.
 
