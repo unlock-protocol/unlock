@@ -445,36 +445,32 @@ export const LocksForm = ({
               </div>
               <div className="flex flex-col gap-1">
                 <div className="flex flex-col gap-1">
-                  {isRecurringPossible && (
-                    <>
-                      <span className="flex items-center justify-between">
-                        <span className="px-1 text-sm">Number of renewals</span>
-                        <ToggleSwitch
-                          title="Unlimited"
-                          enabled={recurringUnlimited}
-                          setEnabled={(enabled: boolean) => {
-                            setRecurringUnlimited(enabled)
-                            const recurringPayments = enabled ? 'forever' : ''
-                            setRecurring(recurringPayments)
-                            onRecurringChange({
-                              recurringPayments,
-                            })
-                          }}
-                        />
-                      </span>
-                      <Input
-                        size="small"
-                        onChange={(e) => {
-                          setRecurring(e?.target.value)
-                          onRecurringChange({
-                            recurringPayments: e?.target?.value ?? '',
-                          })
-                        }}
-                        value={recurring}
-                        disabled={recurringUnlimited}
-                      />
-                    </>
-                  )}
+                  <span className="flex items-center justify-between">
+                    <span className="px-1 text-sm">Number of renewals</span>
+                    <ToggleSwitch
+                      title="Unlimited"
+                      enabled={recurringUnlimited}
+                      setEnabled={(enabled: boolean) => {
+                        setRecurringUnlimited(enabled)
+                        const recurringPayments = enabled ? 'forever' : ''
+                        setRecurring(recurringPayments)
+                        onRecurringChange({
+                          recurringPayments,
+                        })
+                      }}
+                    />
+                  </span>
+                  <Input
+                    size="small"
+                    onChange={(e) => {
+                      setRecurring(e?.target.value)
+                      onRecurringChange({
+                        recurringPayments: e?.target?.value ?? '',
+                      })
+                    }}
+                    value={recurring}
+                    disabled={recurringUnlimited}
+                  />
                   <span className="mb-4 text-xs text-gray-600">
                     This only applies to locks which have been enable for
                     recurring payments.{' '}
@@ -482,7 +478,7 @@ export const LocksForm = ({
                       className="underline"
                       target="_blank"
                       href="https://unlock-protocol.com/guides/recurring-memberships/"
-                      rel="noreferrer"
+                      rel="noreferrer noopener"
                     >
                       Learn more
                     </a>
