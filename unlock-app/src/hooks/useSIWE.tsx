@@ -17,7 +17,8 @@ export interface SIWEContextType {
   signIn: () => Promise<unknown> | unknown
   siweSign: (
     nonce: string,
-    statement: string
+    statement: string,
+    opts?: any
   ) => Promise<{ message: string; signature: string } | null> | null
   signOut: () => Promise<unknown> | unknown
   status?: Status
@@ -78,7 +79,8 @@ export const SIWEProvider = ({ children }: Props) => {
 
   const siweSign = async (
     nonce: string,
-    statement: string
+    statement: string,
+    opts = {}
   ): Promise<{ message: string; signature: string } | null> => {
     try {
       setStatus('loading')
@@ -96,7 +98,11 @@ export const SIWEProvider = ({ children }: Props) => {
       )
       let resources = undefined
       if (parent.host !== window.location.host) {
-        resources = [window.location.origin]
+        if (!opts.resources) {
+          resources = [window.location.origin]
+        } else {
+          resources = [window.location.origin, ...opts.resources]
+        }
       }
 
       const siwe = new SiweMessage({
