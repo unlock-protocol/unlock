@@ -1,5 +1,9 @@
 # Changes
 
+# 0.37.2
+
+- USDC on Polygon does not have a version function
+
 # 0.37.1
 
 - fixing swap and purchase
