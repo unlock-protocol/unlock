@@ -37,7 +37,7 @@ const getPurchaserDetails = async ({
   const data = metadata?.userMetadata?.protected ?? {}
 
   // return metadata when receipt data is not present
-  if (!receiptPurchaser) {
+  if (!receiptPurchaser?.id) {
     return {
       businessName: data?.businessName || data?.company,
       city: data?.city,
