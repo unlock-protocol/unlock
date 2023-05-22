@@ -473,7 +473,9 @@ export const LocksForm = ({
                   />
                   <span className="mb-4 text-xs text-gray-600">
                     This only applies to locks which have been enable for
-                    recurring payments.{' '}
+                    recurring payments. For native currency locks, this will
+                    only allow renewals for credit card based memberships if
+                    set.
                     <a
                       className="underline"
                       target="_blank"
