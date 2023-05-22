@@ -8,6 +8,7 @@ interface Options {
   network: number
   page: number
   minimumLockVersion: number
+  allowNativeCurrency?: boolean
 }
 
 export const getKeysToRenew = async ({
@@ -17,6 +18,7 @@ export const getKeysToRenew = async ({
   page,
   minimumLockVersion = 10,
   limit = 500,
+  allowNativeCurrency = false,
 }: Options) => {
   try {
     const subgraph = new SubgraphService()
@@ -37,11 +39,13 @@ export const getKeysToRenew = async ({
       }
     )
 
-    const result = keys.filter(
-      (item) =>
-        item.lock.version >= minimumLockVersion &&
-        item.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
-    )
+    // Filter out keys that are not allowed to be renewed. This includes keys of locks without an erc20 token address and lock version below minimumLockVersion
+    const result = keys.filter((item) => {
+      const isAllowed =
+        item.lock.tokenAddress !==
+          '0x0000000000000000000000000000000000000000' || allowNativeCurrency
+      return item.lock.version >= minimumLockVersion && isAllowed
+    })
     return result
   } catch (error) {
     logger.error(error)
