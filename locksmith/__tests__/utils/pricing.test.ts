@@ -7,6 +7,7 @@ const lockAddressCreditCardSetting =
   '0x9405880e66972094fd95153b2afbcb0a865a9bbb'
 const network = 5
 const creditCardPrice = 1700 // $17 usd in cents
+
 vi.mock('../../src/utils/pricing', async () => {
   const actual: any = await vi.importActual('../../src/utils/pricing')
   return {
