@@ -33,7 +33,7 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
   }
 })
 
-vi.mock('../../src/operations/pricingOperations', () => {
+vi.mock('../../src/operations/pricingOperations', async () => {
   return {
     getDefiLammaPrice: async ({ _network, _erc20Address, _amount }) => {
       return {
@@ -47,6 +47,14 @@ vi.mock('../../src/operations/pricingOperations', () => {
 })
 
 describe('getLockUsdPricing', () => {
+  beforeEach(() => {
+    fetchMock.mockIf(
+      /^https?:\/\/coins.llama.fi\/prices\/current\/.*$/,
+      (req) => {
+        return '{"coins":{"coingecko:ethereum":{"price":1,"symbol":"ETH","timestamp":1675174381,"confidence":0.99}}}'
+      }
+    )
+  })
   it('returns USD price from credit card setting price', async () => {
     expect.assertions(3)
 
