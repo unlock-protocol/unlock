@@ -19,6 +19,8 @@ export async function renewFiatKeys(network: number, within?: number) {
       page: page ? page * FETCH_LIMIT : 0,
       limit: FETCH_LIMIT,
       minimumLockVersion: 11,
+      // We can allow native currency for fiat keys as well
+      allowNativeCurrency: true,
     })
 
     // If empty, break the loop and return as there are no more new keys to process.
