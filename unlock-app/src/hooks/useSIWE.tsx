@@ -105,7 +105,7 @@ export const SIWEProvider = ({ children }: Props) => {
       }
 
       const siwe = new SiweMessage({
-        domain: parent.host,
+        domain: window.location.host, // parent.host,
         uri: parent.origin,
         address,
         chainId: network,
