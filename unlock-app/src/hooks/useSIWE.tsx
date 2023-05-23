@@ -17,7 +17,8 @@ export interface SIWEContextType {
   signIn: () => Promise<unknown> | unknown
   siweSign: (
     nonce: string,
-    statement: string
+    statement: string,
+    opts?: any
   ) => Promise<{ message: string; signature: string } | null> | null
   signOut: () => Promise<unknown> | unknown
   status?: Status
@@ -78,7 +79,8 @@ export const SIWEProvider = ({ children }: Props) => {
 
   const siweSign = async (
     nonce: string,
-    statement: string
+    statement: string,
+    opts: any = {}
   ): Promise<{ message: string; signature: string } | null> => {
     try {
       setStatus('loading')
@@ -94,13 +96,16 @@ export const SIWEProvider = ({ children }: Props) => {
           ? document.referrer
           : document.location.href
       )
-      let resources = undefined
+
+      // We can't have an empty resources array... because the siwe library does not parse that correctly
+      // resulting in a different signature on the backend
+      let resources = opts.resources || undefined
       if (parent.host !== window.location.host) {
         resources = [window.location.origin]
       }
 
       const siwe = new SiweMessage({
-        domain: parent.host,
+        domain: window.location.host, // parent.host,
         uri: parent.origin,
         address,
         chainId: network,
