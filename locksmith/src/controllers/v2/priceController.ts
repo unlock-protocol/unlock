@@ -6,7 +6,7 @@ import * as Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as pricingOperations from '../../operations/pricingOperations'
-import { MIN_PAYMENT_STRIPE_LINK } from '../../utils/constants'
+import { MIN_PAYMENT_STRIPE_ONRAMP } from '../../utils/constants'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -77,7 +77,7 @@ export const universalCard: RequestHandler = async (request, response) => {
   // For universal card, the creditCardProcessingFee fee is applied by Stripe directly
   // Stripe minimum payment is 1$ (100 cents)
   const creditCardProcessingFee =
-    total < MIN_PAYMENT_STRIPE_LINK ? MIN_PAYMENT_STRIPE_LINK - total : 0
+    total < MIN_PAYMENT_STRIPE_ONRAMP ? MIN_PAYMENT_STRIPE_ONRAMP - total : 0
 
   return response.send({
     creditCardProcessingFee,
