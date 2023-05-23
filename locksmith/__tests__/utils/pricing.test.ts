@@ -35,7 +35,7 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
 
 vi.mock('../../src/operations/pricingOperations', () => {
   return {
-    getDefiLammaPrice: async () => {
+    getDefiLammaPrice: async ({ _network, _erc20Address, _amount }) => {
       return {
         amount: 1,
         price: 88,
