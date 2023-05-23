@@ -144,6 +144,23 @@ interface GetAttachmentProps {
   types?: LockType
 }
 
+const getTransactionHashUrl = (
+  key: Key,
+  network: number
+): string | undefined => {
+  const hashes = key?.transactionsHash ?? []
+  const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+  const lastHashIndex = Math.max(hashes?.length - 1, 0)
+
+  const transactionsHash = hashes[lastHashIndex] // get last transaction hash
+
+  const transactionReceiptUrl = transactionsHash
+    ? `${config.unlockApp}/receipts?address=${lockAddress}&network=${network}&hash=${transactionsHash}`
+    : undefined
+
+  return transactionReceiptUrl
+}
+
 const getCustomContent = async (
   lockAddress: string,
   network: number,
@@ -425,15 +442,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
-  const hashes = key?.transactionsHash ?? []
-  const lastHashIndex = Math.max(hashes?.length - 1, 0)
-
-  const transactionsHash = hashes[lastHashIndex] // get last transaction hash
-
   const keychainUrl = `${config.unlockApp}/keychain`
-  const transactionReceiptUrl = transactionsHash
-    ? `${config.unlockApp}/receipts?address=${lockAddress}&network=${network}&hash=${transactionsHash}`
-    : undefined
+  const transactionReceiptUrl = getTransactionHashUrl(key, network)
 
   await sendEmail({
     network: network!,
