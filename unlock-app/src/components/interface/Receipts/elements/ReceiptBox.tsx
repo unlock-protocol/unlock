@@ -19,6 +19,7 @@ interface ReceiptBoxProps {
   lockAddress: string
   network: number
   hash: string
+  tokenId?: string
 }
 
 const Address = ({
@@ -56,7 +57,12 @@ const NotAuthorizedBar = () => {
   )
 }
 
-export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
+export const ReceiptBox = ({
+  lockAddress,
+  hash,
+  network,
+  tokenId,
+}: ReceiptBoxProps) => {
   const { account } = useAuth()
 
   const [purchaserDrawer, setPurchaserDrawer] = useState(false)
@@ -74,6 +80,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     lockAddress,
     hash,
     network,
+    tokenId,
   })
 
   const { isLoading: isUpdatingReceipt } = useUpdateReceipt({

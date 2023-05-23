@@ -5,7 +5,8 @@ import { ReceiptBox } from './elements/ReceiptBox'
 export const ReceiptsPage = () => {
   const { query } = useRouter()
 
-  const hasParams = query.network && query.address && query.hash
+  const hasParams =
+    query.network && query.address && query.hash && query.tokenId
 
   let hashes: string[] = []
   if (typeof query.hash === 'string') {
@@ -28,6 +29,7 @@ export const ReceiptsPage = () => {
                     lockAddress={query!.address as string}
                     network={Number(query.network)}
                     hash={hash}
+                    tokenId={query?.tokenId as string}
                   />
                 )
               })}
