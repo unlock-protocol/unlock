@@ -16,9 +16,7 @@ describe('eventKeyMined', () => {
       transactionReceiptUrl: 'https://app.unlock-protocol.com/receipts',
     })
 
-    expect(asHtml(content).textContent).toContain(
-      `Access your receipts by visiting this link you can easily download your transaction receipt.`
-    )
+    expect(asHtml(content).textContent).toContain(`Transaction Receipt`)
     expect(asHtml(content).innerHTML).toContain(
       'https://app.unlock-protocol.com/receipts'
     )
@@ -34,9 +32,7 @@ describe('eventKeyMined', () => {
       openSeaUrl: 'http://opensealurl.com',
     })
 
-    expect(asHtml(content).textContent).not.contain(
-      `Access your receipts by visiting this link you can easily download your transaction receipt.`
-    )
+    expect(asHtml(content).textContent).not.contain(`Transaction Receipt`)
     expect(asHtml(content).innerHTML).not.contain(
       'https://app.unlock-protocol.com/receipts'
     )

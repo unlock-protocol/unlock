@@ -425,7 +425,10 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
-  const [transactionsHash] = key?.transactionsHash ?? []
+  const hashes = key?.transactionsHash ?? []
+  const lastHashIndex = Math.max(hashes?.length - 1, 0)
+
+  const transactionsHash = hashes[lastHashIndex] // get last transaction hash
 
   const keychainUrl = `${config.unlockApp}/keychain`
   const transactionReceiptUrl = transactionsHash

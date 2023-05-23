@@ -51,9 +51,7 @@ export default {
 {{links txUrl openSeaUrl true}}
 
 {{#if transactionReceiptUrl}}
-<strong>Need receipts?</strong>
-<br />
-<span>Access your receipts by visiting <a href="{{transactionReceiptUrl}}">this link</a> you can easily download your transaction receipt.</span>
+<small><a href="{{transactionReceiptUrl}}">Transaction Receipt</a></small>
 {{/if}}
 `,
 }
