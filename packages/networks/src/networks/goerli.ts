@@ -57,6 +57,7 @@ export const goerli: NetworkConfig = {
     universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
+  unlockOwner: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',

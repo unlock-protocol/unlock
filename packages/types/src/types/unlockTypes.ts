@@ -96,6 +96,7 @@ export interface NetworkConfig {
     universalRouterAddress: string
   }>
   swapPurchaser?: string
+  unlockOwner?: string
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
