@@ -39,7 +39,13 @@ const getPurchaserDetails = async ({
 
   // return metadata when receipt data is not present
   if (!receiptPurchaser?.id) {
+    const fullname =
+      data?.fullname || (data?.firstname && data?.lastname)
+        ? `${data?.firstname} ${data?.lastname}`
+        : ''
+
     return {
+      fullname,
       businessName: data?.businessName || data?.company,
       city: data?.city,
       zip: data?.zip || data?.zipcode,
