@@ -1,20 +1,15 @@
-import Highlight, { defaultProps, Language } from 'prism-react-renderer'
+import { Highlight } from 'prism-react-renderer'
 import { twMerge } from 'tailwind-merge'
 import { UnlockPrismTheme } from './theme'
 
 export interface Props {
-  lang: Language
+  lang: any
   code: string
 }
 
 export function CodeBox({ lang, code }: Props) {
   return (
-    <Highlight
-      {...defaultProps}
-      theme={UnlockPrismTheme}
-      code={code}
-      language={lang}
-    >
+    <Highlight theme={UnlockPrismTheme} code={code} language={lang}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={style}
