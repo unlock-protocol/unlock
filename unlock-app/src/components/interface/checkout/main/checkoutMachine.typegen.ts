@@ -29,7 +29,7 @@ export interface Typegen0 {
   }
   eventsCausingDelays: {}
   eventsCausingGuards: {
-    isCardPayment: 'BACK' | 'SELECT_PAYMENT_METHOD'
+    isCardPayment: 'BACK'
     requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
     requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
