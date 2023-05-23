@@ -1,5 +1,6 @@
 import networks from '@unlock-protocol/networks'
 import { getFees, getGasCost } from '../utils/pricing'
+import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
 
 interface Price {
   decimals: number
@@ -109,7 +110,7 @@ export const getTotalCharges = async ({
   const result = {
     ...fees,
     subtotal,
-    isCreditCardPurchasable: fees.total > 50,
+    isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }
   return result
 }
