@@ -85,6 +85,10 @@ export const mumbai: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  bridge: {
+    domainId: 9991,
+    connext: '0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a',
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
