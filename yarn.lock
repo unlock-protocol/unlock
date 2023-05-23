@@ -4123,7 +4123,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connext/nxtp-contracts@npm:^0.2.1-rc.16":
+"@connext/nxtp-contracts@npm:0.2.1-rc.16":
   version: 0.2.1-rc.16
   resolution: "@connext/nxtp-contracts@npm:0.2.1-rc.16"
   dependencies:
@@ -16029,7 +16029,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
-    "@connext/nxtp-contracts": ^0.2.1-rc.16
+    "@connext/nxtp-contracts": 0.2.1-rc.16
     "@nomiclabs/hardhat-ethers": 2.2.2
     "@nomiclabs/hardhat-etherscan": 3.1.7
     "@nomiclabs/hardhat-truffle5": 2.0.7
