@@ -7,6 +7,7 @@ interface ReceiptProps {
   network: number
   lockAddress: string
   hash: string
+  tokenId?: string
 }
 
 interface GetReceiptProps {
@@ -45,6 +46,7 @@ export const useGetReceiptsPageUrl = ({
 
       url.searchParams.append('address', lockAddress)
       url.searchParams.append('network', `${network}`)
+      url.searchParams.append('tokenId', tokenId)
 
       const hashes = key?.transactionsHash || []
 
@@ -57,15 +59,21 @@ export const useGetReceiptsPageUrl = ({
   )
 }
 
-export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
+export const useGetReceipt = ({
+  lockAddress,
+  network,
+  hash,
+  tokenId = '',
+}: ReceiptProps) => {
   return useQuery(
-    ['getReceiptsDetails', network, lockAddress, hash],
+    ['getReceiptsDetails', network, lockAddress, hash, tokenId],
     async (): Promise<any> => {
       try {
         const receiptResponse = await storage.getReceipt(
           network,
           ethers.utils.getAddress(lockAddress),
-          hash
+          hash,
+          tokenId
         )
         return receiptResponse.data
       } catch (error) {
