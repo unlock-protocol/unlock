@@ -113,6 +113,14 @@ interface TransferAuthorizationMessage {
   nonce: string
 }
 
+/**
+ * Computes the domain separator for a given ERC20 contract
+ * Note: some contracts may not have `version()` or `name()` implemented correctly.
+ * @param chainId
+ * @param erc20ContractAddress
+ * @param provider
+ * @returns
+ */
 const getDomain = async (
   chainId: number,
   erc20ContractAddress: string,
@@ -127,11 +135,19 @@ const getDomain = async (
     console.error(
       `We could not retrieve the version of ${erc20ContractAddress} using the version() method. Defaulting to ${version}`
     )
-    console.error(error)
   }
 
   const name = await contract.name()
 
+  // On Polygon, the typehash is ... different.
+  if (chainId === 137) {
+    return {
+      name,
+      version,
+      salt: ethers.utils.zeroPad(ethers.utils.arrayify(137), 32),
+      verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+    }
+  }
   return {
     name,
     version,
