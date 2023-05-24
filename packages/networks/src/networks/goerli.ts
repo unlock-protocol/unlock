@@ -87,6 +87,10 @@ export const goerli: NetworkConfig = {
       mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     },
   ],
+  bridge: {
+    domainId: 1735353714,
+    connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
