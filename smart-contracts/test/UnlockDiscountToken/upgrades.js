@@ -172,7 +172,9 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       const { events } = await tx.wait()
       const evt = events.find((v) => v.event === 'NewLock')
-      const PublicLock = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
@@ -226,7 +228,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         weth.address
       )
 
-       // Give unlock contract some tokens
+      // Give unlock contract some tokens
       await udt.mint(
         unlock.address,
         ethers.utils.parseUnits('1000000', 'ether')
@@ -261,7 +263,7 @@ contract('UnlockDiscountToken upgrade', async () => {
             value: await lock.keyPrice(),
           }
         )
-        
+
         assert.equal((await lock.balanceOf(keyBuyer.address)).toString(), '1')
 
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented

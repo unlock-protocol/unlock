@@ -4,7 +4,6 @@
 
 pragma solidity >=0.4.24 <0.7.0;
 
-
 /**
  * @title Initializable
  *
@@ -18,7 +17,6 @@ pragma solidity >=0.4.24 <0.7.0;
  * because this is not dealt with automatically as with constructors.
  */
 contract Initializable {
-
   /**
    * @dev Indicates that the contract has been initialized.
    */
@@ -33,7 +31,10 @@ contract Initializable {
    * @dev Modifier to use in the initializer function of a contract.
    */
   modifier initializer() {
-    require(initializing || isConstructor() || !initialized, "Contract instance has already been initialized");
+    require(
+      initializing || isConstructor() || !initialized,
+      "Contract instance has already been initialized"
+    );
 
     bool isTopLevelCall = !initializing;
     if (isTopLevelCall) {
@@ -57,14 +58,15 @@ contract Initializable {
     // under construction or not.
     address self = address(this);
     uint256 cs;
-    assembly { cs := extcodesize(self) }
+    assembly {
+      cs := extcodesize(self)
+    }
     return cs == 0;
   }
 
   // Reserved storage space to allow for layout changes in the future.
   uint256[50] private ______gap;
 }
-
 
 // File @openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol@v2.4.0
 
@@ -81,21 +83,21 @@ pragma solidity ^0.5.0;
  * This contract is only required for intermediate, library-like contracts.
  */
 contract Context is Initializable {
-    // Empty internal constructor, to prevent people from mistakenly deploying
-    // an instance of this contract, which should be used via inheritance.
-    constructor () internal { }
-    // solhint-disable-previous-line no-empty-blocks
+  // Empty internal constructor, to prevent people from mistakenly deploying
+  // an instance of this contract, which should be used via inheritance.
+  constructor() internal {}
 
-    function _msgSender() internal view returns (address payable) {
-        return msg.sender;
-    }
+  // solhint-disable-previous-line no-empty-blocks
 
-    function _msgData() internal view returns (bytes memory) {
-        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
-        return msg.data;
-    }
+  function _msgSender() internal view returns (address payable) {
+    return msg.sender;
+  }
+
+  function _msgData() internal view returns (bytes memory) {
+    this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
+    return msg.data;
+  }
 }
-
 
 // File @openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol@v2.4.0
 
@@ -111,82 +113,82 @@ pragma solidity ^0.5.0;
  * the owner.
  */
 contract Ownable is Initializable, Context {
-    address private _owner;
+  address private _owner;
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+  event OwnershipTransferred(
+    address indexed previousOwner,
+    address indexed newOwner
+  );
 
-    /**
-     * @dev Initializes the contract setting the deployer as the initial owner.
-     */
-    function initialize(address sender) public initializer {
-        _owner = sender;
-        emit OwnershipTransferred(address(0), _owner);
-    }
+  /**
+   * @dev Initializes the contract setting the deployer as the initial owner.
+   */
+  function initialize(address sender) public initializer {
+    _owner = sender;
+    emit OwnershipTransferred(address(0), _owner);
+  }
 
-    /**
-     * @dev Returns the address of the current owner.
-     */
-    function owner() public view returns (address) {
-        return _owner;
-    }
+  /**
+   * @dev Returns the address of the current owner.
+   */
+  function owner() public view returns (address) {
+    return _owner;
+  }
 
-    /**
-     * @dev Throws if called by any account other than the owner.
-     */
-    modifier onlyOwner() {
-        require(isOwner(), "Ownable: caller is not the owner");
-        _;
-    }
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyOwner() {
+    require(isOwner(), "Ownable: caller is not the owner");
+    _;
+  }
 
-    /**
-     * @dev Returns true if the caller is the current owner.
-     */
-    function isOwner() public view returns (bool) {
-        return _msgSender() == _owner;
-    }
+  /**
+   * @dev Returns true if the caller is the current owner.
+   */
+  function isOwner() public view returns (bool) {
+    return _msgSender() == _owner;
+  }
 
-    /**
-     * @dev Leaves the contract without owner. It will not be possible to call
-     * `onlyOwner` functions anymore. Can only be called by the current owner.
-     *
-     * > Note: Renouncing ownership will leave the contract without an owner,
-     * thereby removing any functionality that is only available to the owner.
-     */
-    function renounceOwnership() public onlyOwner {
-        emit OwnershipTransferred(_owner, address(0));
-        _owner = address(0);
-    }
+  /**
+   * @dev Leaves the contract without owner. It will not be possible to call
+   * `onlyOwner` functions anymore. Can only be called by the current owner.
+   *
+   * > Note: Renouncing ownership will leave the contract without an owner,
+   * thereby removing any functionality that is only available to the owner.
+   */
+  function renounceOwnership() public onlyOwner {
+    emit OwnershipTransferred(_owner, address(0));
+    _owner = address(0);
+  }
 
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     * Can only be called by the current owner.
-     */
-    function transferOwnership(address newOwner) public onlyOwner {
-        _transferOwnership(newOwner);
-    }
+  /**
+   * @dev Transfers ownership of the contract to a new account (`newOwner`).
+   * Can only be called by the current owner.
+   */
+  function transferOwnership(address newOwner) public onlyOwner {
+    _transferOwnership(newOwner);
+  }
 
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     */
-    function _transferOwnership(address newOwner) internal {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        emit OwnershipTransferred(_owner, newOwner);
-        _owner = newOwner;
-    }
+  /**
+   * @dev Transfers ownership of the contract to a new account (`newOwner`).
+   */
+  function _transferOwnership(address newOwner) internal {
+    require(newOwner != address(0), "Ownable: new owner is the zero address");
+    emit OwnershipTransferred(_owner, newOwner);
+    _owner = newOwner;
+  }
 
-    uint256[50] private ______gap;
+  uint256[50] private ______gap;
 }
-
 
 // File hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol@v0.9.3
 
 pragma solidity ^0.5.0;
 
-
 // From https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol
 // Updated to support Solidity 5, switch to `create2` and revert on fail
-library Clone2Factory
-{
+library Clone2Factory {
   /**
    * @notice Uses create2 to deploy a clone to a pre-determined address.
    * @param target the address of the template contract, containing the logic for this contract.
@@ -199,19 +201,22 @@ library Clone2Factory
   function _createClone2(
     address target,
     bytes12 salt
-  ) internal
-    returns (address proxyAddress)
-  {
+  ) internal returns (address proxyAddress) {
     // solium-disable-next-line
-    assembly
-    {
+    assembly {
       let pointer := mload(0x40)
 
       // Create the bytecode for deployment based on the Minimal Proxy Standard (EIP-1167)
       // bytecode: 0x0
-      mstore(pointer, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
+      mstore(
+        pointer,
+        0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000
+      )
       mstore(add(pointer, 0x14), shl(96, target))
-      mstore(add(pointer, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
+      mstore(
+        add(pointer, 0x28),
+        0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000
+      )
 
       // `create2` consumes all available gas if called with a salt that's already been consumed
       // we check if the address is available first so that doesn't happen
@@ -228,7 +233,10 @@ library Clone2Factory
 
       // addressSeed: 0x40
       // 0xff
-      mstore(add(pointer, 0x40), 0xff00000000000000000000000000000000000000000000000000000000000000)
+      mstore(
+        add(pointer, 0x40),
+        0xff00000000000000000000000000000000000000000000000000000000000000
+      )
       // this
       mstore(add(pointer, 0x41), shl(96, address))
       // salt
@@ -249,127 +257,230 @@ library Clone2Factory
     }
 
     // Revert if the deployment fails (possible if salt was already used)
-    require(proxyAddress != address(0), 'PROXY_DEPLOY_FAILED');
+    require(proxyAddress != address(0), "PROXY_DEPLOY_FAILED");
   }
 }
-
 
 // File hardlydifficult-ethereum-contracts/contracts/interfaces/IUniswapExchange.sol@v0.9.3
 
 pragma solidity ^0.5.0;
 
-
 // Source: https://github.com/Uniswap/contracts-vyper/blob/master/contracts/uniswap_exchange.vy
 // The fallback function is payable and calls `ethToTokenInput`
-interface IUniswapExchange
-{
+interface IUniswapExchange {
   // Events
-  event AddLiquidity(address indexed provider, uint indexed eth_amount, uint indexed token_amount);
+  event AddLiquidity(
+    address indexed provider,
+    uint indexed eth_amount,
+    uint indexed token_amount
+  );
   event Approval(address indexed _owner, address indexed _spender, uint _value);
-  event EthPurchase(address indexed buyer, uint indexed tokens_sold, uint eth_bought);
-  event RemoveLiquidity(address indexed provider, uint indexed eth_amount, uint indexed token_amount);
-  event TokenPurchase(address indexed buyer, uint indexed eth_sold, uint indexed tokens_bought);
+  event EthPurchase(
+    address indexed buyer,
+    uint indexed tokens_sold,
+    uint eth_bought
+  );
+  event RemoveLiquidity(
+    address indexed provider,
+    uint indexed eth_amount,
+    uint indexed token_amount
+  );
+  event TokenPurchase(
+    address indexed buyer,
+    uint indexed eth_sold,
+    uint indexed tokens_bought
+  );
   event Transfer(address indexed _from, address indexed _to, uint _value);
 
   // Read-only
-  function allowance(address _owner, address _spender) external view returns(uint);
-  function balanceOf(address _owner) external view returns(uint);
-  function decimals() external view returns(uint);
-  function factoryAddress() external view returns(address);
-  function getEthToTokenInputPrice(uint eth_sold) external view returns(uint);
-  function getEthToTokenOutputPrice(uint tokens_bought) external view returns(uint);
-  function getTokenToEthInputPrice(uint tokens_sold) external view returns(uint);
-  function getTokenToEthOutputPrice(uint eth_bought) external view returns(uint);
+  function allowance(
+    address _owner,
+    address _spender
+  ) external view returns (uint);
+
+  function balanceOf(address _owner) external view returns (uint);
+
+  function decimals() external view returns (uint);
+
+  function factoryAddress() external view returns (address);
+
+  function getEthToTokenInputPrice(uint eth_sold) external view returns (uint);
+
+  function getEthToTokenOutputPrice(
+    uint tokens_bought
+  ) external view returns (uint);
+
+  function getTokenToEthInputPrice(
+    uint tokens_sold
+  ) external view returns (uint);
+
+  function getTokenToEthOutputPrice(
+    uint eth_bought
+  ) external view returns (uint);
+
   function name() external view returns (bytes32);
+
   function symbol() external view returns (bytes32);
-  function tokenAddress() external view returns(address);
-  function totalSupply() external view returns(uint);
+
+  function tokenAddress() external view returns (address);
+
+  function totalSupply() external view returns (uint);
 
   // Transactions
-  function setup(
-    address token_addr
-  ) external;
-  function addLiquidity(
-    uint min_liquidity, uint max_tokens, uint deadline
-  ) external payable returns (uint);
-  function removeLiquidity(
-    uint amount, uint min_eth, uint min_tokens, uint deadline
-  ) external returns (uint, uint);
-  function ethToTokenSwapInput(
-    uint min_tokens, uint deadline
-  ) external payable returns (uint);
-  function ethToTokenTransferInput(
-    uint min_tokens, uint deadline, address recipient
-  ) external payable returns(uint);
-  function ethToTokenSwapOutput(
-    uint tokens_bought, uint deadline
-  ) external payable returns(uint);
-  function ethToTokenTransferOutput(
-    uint tokens_bought, uint deadline, address recipient
-  ) external payable returns(uint);
-  function tokenToEthSwapInput(
-    uint tokens_sold, uint min_eth, uint deadline
-  ) external returns(uint);
-  function tokenToEthTransferInput(
-    uint tokens_sold, uint min_eth, uint deadline, address recipient
-  ) external returns(uint);
-  function tokenToEthSwapOutput(
-    uint eth_bought, uint max_tokens, uint deadline
-  ) external returns(uint);
-  function tokenToEthTransferOutput(
-    uint eth_bought, uint max_tokens, uint deadline, address recipient
-  ) external returns(uint);
-  function tokenToTokenSwapInput(
-    uint tokens_sold, uint min_tokens_bought, uint min_eth_bought, uint deadline, address token_addr
-  ) external returns(uint);
-  function tokenToTokenTransferInput(
-    uint tokens_sold, uint min_tokens_bought, uint min_eth_bought, uint deadline, address recipient, address token_addr
-  ) external returns(uint);
-  function tokenToTokenSwapOutput(
-    uint tokens_bought, uint max_tokens_sold, uint max_eth_sold, uint deadline, address token_addr
-  ) external returns(uint);
-  function tokenToTokenTransferOutput(
-    uint tokens_bought, uint max_tokens_sold, uint max_eth_sold, uint deadline, address recipient, address token_addr
-  ) external returns(uint);
-  function tokenToExchangeSwapInput(
-    uint tokens_sold, uint min_tokens_bought, uint min_eth_bought, uint deadline, address exchange_addr
-  ) external returns(uint);
-  function tokenToExchangeTransferInput(
-    uint tokens_sold, uint min_tokens_bought, uint min_eth_bought, uint deadline, address recipient, address exchange_addr
-  ) external returns(uint);
-  function tokenToExchangeSwapOutput(
-    uint tokens_bought, uint max_tokens_sold, uint max_eth_sold, uint deadline, address exchange_addr
-  ) external returns(uint);
-  function tokenToExchangeTransferOutput(
-    uint tokens_bought, uint max_tokens_sold, uint max_eth_sold, uint deadline, address recipient, address exchange_addr
-  ) external returns(uint);
-  function transfer(
-    address _to, uint _value
-  ) external returns(bool);
-  function transferFrom(
-    address _from, address _to, uint _value
-  ) external returns(bool);
-  function approve(
-    address _spender, uint _value
-  ) external returns(bool);
-}
+  function setup(address token_addr) external;
 
+  function addLiquidity(
+    uint min_liquidity,
+    uint max_tokens,
+    uint deadline
+  ) external payable returns (uint);
+
+  function removeLiquidity(
+    uint amount,
+    uint min_eth,
+    uint min_tokens,
+    uint deadline
+  ) external returns (uint, uint);
+
+  function ethToTokenSwapInput(
+    uint min_tokens,
+    uint deadline
+  ) external payable returns (uint);
+
+  function ethToTokenTransferInput(
+    uint min_tokens,
+    uint deadline,
+    address recipient
+  ) external payable returns (uint);
+
+  function ethToTokenSwapOutput(
+    uint tokens_bought,
+    uint deadline
+  ) external payable returns (uint);
+
+  function ethToTokenTransferOutput(
+    uint tokens_bought,
+    uint deadline,
+    address recipient
+  ) external payable returns (uint);
+
+  function tokenToEthSwapInput(
+    uint tokens_sold,
+    uint min_eth,
+    uint deadline
+  ) external returns (uint);
+
+  function tokenToEthTransferInput(
+    uint tokens_sold,
+    uint min_eth,
+    uint deadline,
+    address recipient
+  ) external returns (uint);
+
+  function tokenToEthSwapOutput(
+    uint eth_bought,
+    uint max_tokens,
+    uint deadline
+  ) external returns (uint);
+
+  function tokenToEthTransferOutput(
+    uint eth_bought,
+    uint max_tokens,
+    uint deadline,
+    address recipient
+  ) external returns (uint);
+
+  function tokenToTokenSwapInput(
+    uint tokens_sold,
+    uint min_tokens_bought,
+    uint min_eth_bought,
+    uint deadline,
+    address token_addr
+  ) external returns (uint);
+
+  function tokenToTokenTransferInput(
+    uint tokens_sold,
+    uint min_tokens_bought,
+    uint min_eth_bought,
+    uint deadline,
+    address recipient,
+    address token_addr
+  ) external returns (uint);
+
+  function tokenToTokenSwapOutput(
+    uint tokens_bought,
+    uint max_tokens_sold,
+    uint max_eth_sold,
+    uint deadline,
+    address token_addr
+  ) external returns (uint);
+
+  function tokenToTokenTransferOutput(
+    uint tokens_bought,
+    uint max_tokens_sold,
+    uint max_eth_sold,
+    uint deadline,
+    address recipient,
+    address token_addr
+  ) external returns (uint);
+
+  function tokenToExchangeSwapInput(
+    uint tokens_sold,
+    uint min_tokens_bought,
+    uint min_eth_bought,
+    uint deadline,
+    address exchange_addr
+  ) external returns (uint);
+
+  function tokenToExchangeTransferInput(
+    uint tokens_sold,
+    uint min_tokens_bought,
+    uint min_eth_bought,
+    uint deadline,
+    address recipient,
+    address exchange_addr
+  ) external returns (uint);
+
+  function tokenToExchangeSwapOutput(
+    uint tokens_bought,
+    uint max_tokens_sold,
+    uint max_eth_sold,
+    uint deadline,
+    address exchange_addr
+  ) external returns (uint);
+
+  function tokenToExchangeTransferOutput(
+    uint tokens_bought,
+    uint max_tokens_sold,
+    uint max_eth_sold,
+    uint deadline,
+    address recipient,
+    address exchange_addr
+  ) external returns (uint);
+
+  function transfer(address _to, uint _value) external returns (bool);
+
+  function transferFrom(
+    address _from,
+    address _to,
+    uint _value
+  ) external returns (bool);
+
+  function approve(address _spender, uint _value) external returns (bool);
+}
 
 // File contracts/interfaces/IPublicLock.sol
 
 pragma solidity 0.5.17;
 
 /**
-* @title The PublicLock Interface
+ * @title The PublicLock Interface
  */
 
-
-contract IPublicLock
-{
-
-// See indentationissue description here:
-// https://github.com/duaraghav8/Ethlint/issues/268
-// solium-disable indentation
+contract IPublicLock {
+  // See indentationissue description here:
+  // https://github.com/duaraghav8/Ethlint/issues/268
+  // solium-disable indentation
 
   /// Functions
 
@@ -394,28 +505,27 @@ contract IPublicLock
   function initialize() external;
 
   /**
-  * @notice The version number of the current implementation on this network.
-  * @return The current version number.
-  */
+   * @notice The version number of the current implementation on this network.
+   * @return The current version number.
+   */
   function publicLockVersion() public pure returns (uint);
 
   /**
-  * @notice Gets the current balance of the account provided.
-  * @param _tokenAddress The token type to retrieve the balance of.
-  * @param _account The account to get the balance of.
-  * @return The number of tokens of the given type for the given address, possibly 0.
-  */
+   * @notice Gets the current balance of the account provided.
+   * @param _tokenAddress The token type to retrieve the balance of.
+   * @param _account The account to get the balance of.
+   * @return The number of tokens of the given type for the given address, possibly 0.
+   */
   function getBalance(
     address _tokenAddress,
     address _account
-  ) external view
-    returns (uint);
+  ) external view returns (uint);
 
   /**
-  * @notice Used to disable lock before migrating keys and/or destroying contract.
-  * @dev Throws if called by other than a lock manager.
-  * @dev Throws if lock contract has already been disabled.
-  */
+   * @notice Used to disable lock before migrating keys and/or destroying contract.
+   * @dev Throws if called by other than a lock manager.
+   * @dev Throws if lock contract has already been disabled.
+   */
   function disableLock() external;
 
   /**
@@ -428,10 +538,7 @@ contract IPublicLock
    *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
    * use cases.
    */
-  function withdraw(
-    address _tokenAddress,
-    uint _amount
-  ) external;
+  function withdraw(address _tokenAddress, uint _amount) external;
 
   /**
    * A function which lets a Lock manager of the lock to change the price for future purchases.
@@ -442,7 +549,7 @@ contract IPublicLock
    * @param _tokenAddress The address of the erc20 token to use for pricing the keys,
    * or 0 to use ETH
    */
-  function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
+  function updateKeyPricing(uint _keyPrice, address _tokenAddress) external;
 
   /**
    * A function which lets a Lock manager update the beneficiary account,
@@ -451,31 +558,27 @@ contract IPublicLock
    * @dev Throws if _beneficiary is address(0)
    * @param _beneficiary The new address to set as the beneficiary
    */
-  function updateBeneficiary( address _beneficiary ) external;
+  function updateBeneficiary(address _beneficiary) external;
 
-    /**
+  /**
    * Checks if the user has a non-expired key.
    * @param _user The address of the key owner
    */
-  function getHasValidKey(
-    address _user
-  ) external view returns (bool);
+  function getHasValidKey(address _user) external view returns (bool);
 
   /**
    * @notice Find the tokenId for a given user
    * @return The tokenId of the NFT, else returns 0
    * @param _account The address of the key owner
-  */
-  function getTokenIdFor(
-    address _account
-  ) external view returns (uint);
+   */
+  function getTokenIdFor(address _account) external view returns (uint);
 
   /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  * @dev Throws if there are no key owners yet
-  */
+   * A function which returns a subset of the keys for this Lock as an array
+   * @param _page the page of key owners requested when faceted by page size
+   * @param _pageSize the number of Key Owners requested per page
+   * @dev Throws if there are no key owners yet
+   */
   function getOwnersByPage(
     uint _page,
     uint _pageSize
@@ -492,10 +595,10 @@ contract IPublicLock
   ) external view returns (bool);
 
   /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _keyOwner address of the user for whom we search the key
-  * @dev Returns 0 if the owner has never owned a key for this lock
-  */
+   * @dev Returns the key's ExpirationTimestamp field for a given owner.
+   * @param _keyOwner address of the user for whom we search the key
+   * @dev Returns 0 if the owner has never owned a key for this lock
+   */
   function keyExpirationTimestampFor(
     address _keyOwner
   ) external view returns (uint timestamp);
@@ -511,35 +614,27 @@ contract IPublicLock
    * @param _lockName The new name for the lock
    * @dev Throws if called by other than a Lock manager
    */
-  function updateLockName(
-    string calldata _lockName
-  ) external;
+  function updateLockName(string calldata _lockName) external;
 
   /**
    * Allows a Lock manager to assign a Symbol for this Lock.
    * @param _lockSymbol The new Symbol for the lock
    * @dev Throws if called by other than a Lock manager
    */
-  function updateLockSymbol(
-    string calldata _lockSymbol
-  ) external;
+  function updateLockSymbol(string calldata _lockSymbol) external;
 
   /**
-    * @dev Gets the token symbol
-    * @return string representing the token symbol
-    */
-  function symbol()
-    external view
-    returns(string memory);
+   * @dev Gets the token symbol
+   * @return string representing the token symbol
+   */
+  function symbol() external view returns (string memory);
 
-    /**
+  /**
    * Allows a Lock manager to update the baseTokenURI for this Lock.
    * @dev Throws if called by other than a Lock manager
    * @param _baseTokenURI String representing the base of the URI for this lock.
    */
-  function setBaseTokenURI(
-    string calldata _baseTokenURI
-  ) external;
+  function setBaseTokenURI(string calldata _baseTokenURI) external;
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC
@@ -549,9 +644,7 @@ contract IPublicLock
    * @param _tokenId The tokenID we're inquiring about
    * @return String representing the URI for the requested token
    */
-  function tokenURI(
-    uint256 _tokenId
-  ) external view returns(string memory);
+  function tokenURI(uint256 _tokenId) external view returns (string memory);
 
   /**
    * Allows a Lock manager to add or remove an event hook
@@ -577,17 +670,17 @@ contract IPublicLock
   ) external;
 
   /**
-  * @dev Purchase function
-  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
-  * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the purchased key
-  * @param _referrer address of the user making the referral
-  * @param _data arbitrary data populated by the front-end which initiated the sale
-  * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
-  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
-  * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
-  * than keyPrice is approved for spending).
-  */
+   * @dev Purchase function
+   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+   * (_value is ignored when using ETH)
+   * @param _recipient address of the recipient of the purchased key
+   * @param _referrer address of the user making the referral
+   * @param _data arbitrary data populated by the front-end which initiated the sale
+   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
+   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
+   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
+   * than keyPrice is approved for spending).
+   */
   function purchase(
     uint256 _value,
     address _recipient,
@@ -603,8 +696,7 @@ contract IPublicLock
     address _recipient,
     address _referrer,
     bytes calldata _data
-  ) external view
-    returns (uint);
+  ) external view returns (uint);
 
   /**
    * Allow a Lock manager to change the transfer fee.
@@ -612,9 +704,7 @@ contract IPublicLock
    * @param _transferFeeBasisPoints The new transfer fee in basis-points(bps).
    * Ex: 200 bps = 2%
    */
-  function updateTransferFee(
-    uint _transferFeeBasisPoints
-  ) external;
+  function updateTransferFee(uint _transferFeeBasisPoints) external;
 
   /**
    * Determines how much of a fee a key owner would need to pay in order to
@@ -637,12 +727,9 @@ contract IPublicLock
    * @dev Throws if called by other than a Lock manager
    * @dev Throws if _keyOwner does not have a valid key
    */
-  function expireAndRefundFor(
-    address _keyOwner,
-    uint amount
-  ) external;
+  function expireAndRefundFor(address _keyOwner, uint amount) external;
 
-   /**
+  /**
    * @dev allows the key manager to expire a given tokenId
    * and send a refund to the keyOwner based on the amount of time remaining.
    * @param _tokenId The id of the key to cancel.
@@ -668,9 +755,7 @@ contract IPublicLock
    * senders account.
    * @dev This can be used to invalidate a previously signed message.
    */
-  function invalidateOffchainApproval(
-    uint _nextAvailableNonce
-  ) external;
+  function invalidateOffchainApproval(uint _nextAvailableNonce) external;
 
   /**
    * Allow a Lock manager to change the refund penalty.
@@ -694,7 +779,7 @@ contract IPublicLock
     address _keyOwner
   ) external view returns (uint refund);
 
-  function keyManagerToNonce(address ) external view returns (uint256 );
+  function keyManagerToNonce(address) external view returns (uint256);
 
   /**
    * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
@@ -716,9 +801,9 @@ contract IPublicLock
 
   function isLockManager(address account) external view returns (bool);
 
-  function onKeyPurchaseHook() external view returns(address);
+  function onKeyPurchaseHook() external view returns (address);
 
-  function onKeyCancelHook() external view returns(address);
+  function onKeyCancelHook() external view returns (address);
 
   function revokeKeyGranter(address _granter) external;
 
@@ -727,146 +812,153 @@ contract IPublicLock
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
-  function beneficiary() external view returns (address );
+  function beneficiary() external view returns (address);
 
-  function expirationDuration() external view returns (uint256 );
+  function expirationDuration() external view returns (uint256);
 
-  function freeTrialLength() external view returns (uint256 );
+  function freeTrialLength() external view returns (uint256);
 
-  function isAlive() external view returns (bool );
+  function isAlive() external view returns (bool);
 
-  function keyPrice() external view returns (uint256 );
+  function keyPrice() external view returns (uint256);
 
-  function maxNumberOfKeys() external view returns (uint256 );
+  function maxNumberOfKeys() external view returns (uint256);
 
-  function owners(uint256 ) external view returns (address );
+  function owners(uint256) external view returns (address);
 
-  function refundPenaltyBasisPoints() external view returns (uint256 );
+  function refundPenaltyBasisPoints() external view returns (uint256);
 
-  function tokenAddress() external view returns (address );
+  function tokenAddress() external view returns (address);
 
-  function transferFeeBasisPoints() external view returns (uint256 );
+  function transferFeeBasisPoints() external view returns (uint256);
 
-  function unlockProtocol() external view returns (address );
+  function unlockProtocol() external view returns (address);
 
-  function keyManagerOf(uint) external view returns (address );
+  function keyManagerOf(uint) external view returns (address);
 
   ///===================================================================
 
   /**
-  * @notice Allows the key owner to safely share their key (parent key) by
-  * transferring a portion of the remaining time to a new key (child key).
-  * @dev Throws if key is not valid.
-  * @dev Throws if `_to` is the zero address
-  * @param _to The recipient of the shared key
-  * @param _tokenId the key to share
-  * @param _timeShared The amount of time shared
-  * checks if `_to` is a smart contract (code size > 0). If so, it calls
-  * `onERC721Received` on `_to` and throws if the return value is not
-  * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
-  * @dev Emit Transfer event
-  */
-  function shareKey(
-    address _to,
-    uint _tokenId,
-    uint _timeShared
-  ) external;
+   * @notice Allows the key owner to safely share their key (parent key) by
+   * transferring a portion of the remaining time to a new key (child key).
+   * @dev Throws if key is not valid.
+   * @dev Throws if `_to` is the zero address
+   * @param _to The recipient of the shared key
+   * @param _tokenId the key to share
+   * @param _timeShared The amount of time shared
+   * checks if `_to` is a smart contract (code size > 0). If so, it calls
+   * `onERC721Received` on `_to` and throws if the return value is not
+   * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
+   * @dev Emit Transfer event
+   */
+  function shareKey(address _to, uint _tokenId, uint _timeShared) external;
 
   /**
-  * @notice Update transfer and cancel rights for a given key
-  * @param _tokenId The id of the key to assign rights for
-  * @param _keyManager The address to assign the rights to for the given key
-  */
-  function setKeyManagerOf(
-    uint _tokenId,
-    address _keyManager
-  ) external;
+   * @notice Update transfer and cancel rights for a given key
+   * @param _tokenId The id of the key to assign rights for
+   * @param _keyManager The address to assign the rights to for the given key
+   */
+  function setKeyManagerOf(uint _tokenId, address _keyManager) external;
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
+
   ///===================================================================
 
   /// From ERC165.sol
-  function supportsInterface(bytes4 interfaceId) external view returns (bool );
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
+
   ///===================================================================
 
   /// From ERC-721
   /**
-     * @dev Returns the number of NFTs in `owner`'s account.
-     */
-    function balanceOf(address _owner) public view returns (uint256 balance);
+   * @dev Returns the number of NFTs in `owner`'s account.
+   */
+  function balanceOf(address _owner) public view returns (uint256 balance);
 
-    /**
-     * @dev Returns the owner of the NFT specified by `tokenId`.
-     */
-    function ownerOf(uint256 tokenId) public view returns (address _owner);
+  /**
+   * @dev Returns the owner of the NFT specified by `tokenId`.
+   */
+  function ownerOf(uint256 tokenId) public view returns (address _owner);
 
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     *
-     *
-     * Requirements:
-     * - `from`, `to` cannot be zero.
-     * - `tokenId` must be owned by `from`.
-     * - If the caller is not `from`, it must be have been allowed to move this
-     * NFT by either {approve} or {setApprovalForAll}.
-     */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - If the caller is not `from`, it must be approved to move this NFT by
-     * either {approve} or {setApprovalForAll}.
-     */
-    function transferFrom(address from, address to, uint256 tokenId) public;
-    function approve(address to, uint256 tokenId) public;
+  /**
+   * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+   * another (`to`).
+   *
+   *
+   *
+   * Requirements:
+   * - `from`, `to` cannot be zero.
+   * - `tokenId` must be owned by `from`.
+   * - If the caller is not `from`, it must be have been allowed to move this
+   * NFT by either {approve} or {setApprovalForAll}.
+   */
+  function safeTransferFrom(address from, address to, uint256 tokenId) public;
 
-    /**
-    * @notice Get the approved address for a single NFT
-    * @dev Throws if `_tokenId` is not a valid NFT.
-    * @param _tokenId The NFT to find the approved address for
-    * @return The approved address for this NFT, or the zero address if there is none
-    */
-    function getApproved(uint256 _tokenId) public view returns (address operator);
+  /**
+   * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+   * another (`to`).
+   *
+   * Requirements:
+   * - If the caller is not `from`, it must be approved to move this NFT by
+   * either {approve} or {setApprovalForAll}.
+   */
+  function transferFrom(address from, address to, uint256 tokenId) public;
 
-    function setApprovalForAll(address operator, bool _approved) public;
-    function isApprovedForAll(address _owner, address operator) public view returns (bool);
+  function approve(address to, uint256 tokenId) public;
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+  /**
+   * @notice Get the approved address for a single NFT
+   * @dev Throws if `_tokenId` is not a valid NFT.
+   * @param _tokenId The NFT to find the approved address for
+   * @return The approved address for this NFT, or the zero address if there is none
+   */
+  function getApproved(uint256 _tokenId) public view returns (address operator);
 
-    function totalSupply() public view returns (uint256);
-    function tokenOfOwnerByIndex(address _owner, uint256 index) public view returns (uint256 tokenId);
+  function setApprovalForAll(address operator, bool _approved) public;
 
-    function tokenByIndex(uint256 index) public view returns (uint256);
+  function isApprovedForAll(
+    address _owner,
+    address operator
+  ) public view returns (bool);
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes memory data
+  ) public;
+
+  function totalSupply() public view returns (uint256);
+
+  function tokenOfOwnerByIndex(
+    address _owner,
+    uint256 index
+  ) public view returns (uint256 tokenId);
+
+  function tokenByIndex(uint256 index) public view returns (uint256);
 }
-
 
 // File contracts/interfaces/IUnlock.sol
 
 pragma solidity 0.5.17;
 
-
 /**
  * @title The Unlock Interface
-**/
+ **/
 
-interface IUnlock
-{
+interface IUnlock {
   // Use initialize instead of a constructor to support proxies(for upgradeability via zos).
   function initialize(address _unlockOwner) external;
 
   /**
-  * @dev Create lock
-  * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * @param _salt an identifier for the Lock, which is unique for the user.
-  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
-  * to know the lock's address before the transaction is mined.
-  */
+   * @dev Create lock
+   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+   * @param _salt an identifier for the Lock, which is unique for the user.
+   * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+   * to know the lock's address before the transaction is mined.
+   */
   function createLock(
     uint _expirationDuration,
     address _tokenAddress,
@@ -876,7 +968,7 @@ interface IUnlock
     bytes12 _salt
   ) external;
 
-    /**
+  /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
@@ -886,10 +978,9 @@ interface IUnlock
   function recordKeyPurchase(
     uint _value,
     address _referrer // solhint-disable-line no-unused-vars
-  )
-    external;
+  ) external;
 
-    /**
+  /**
    * This function will keep track of consumed discounts by a given user.
    * It will also grant discount tokens to the creator who is granting the discount based on the
    * amount of discount and compensation rate.
@@ -898,10 +989,9 @@ interface IUnlock
   function recordConsumedDiscount(
     uint _discount,
     uint _tokens // solhint-disable-line no-unused-vars
-  )
-    external;
+  ) external;
 
-    /**
+  /**
    * This function returns the discount available for a user, when purchasing a
    * a key from a lock.
    * This does not modify the state. It returns both the discount and the number of tokens
@@ -910,55 +1000,34 @@ interface IUnlock
   function computeAvailableDiscountFor(
     address _purchaser, // solhint-disable-line no-unused-vars
     uint _keyPrice // solhint-disable-line no-unused-vars
-  )
-    external
-    view
-    returns(uint discount, uint tokens);
+  ) external view returns (uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
-  function globalBaseTokenURI()
-    external
-    view
-    returns(string memory);
+  function globalBaseTokenURI() external view returns (string memory);
 
   /**
    * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalBaseTokenURI()
-    external
-    view
-    returns (string memory);
+  function getGlobalBaseTokenURI() external view returns (string memory);
 
   // Function to read the globalTokenSymbol field.
-  function globalTokenSymbol()
-    external
-    view
-    returns(string memory);
+  function globalTokenSymbol() external view returns (string memory);
 
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory);
+  function getGlobalTokenSymbol() external view returns (string memory);
 
   /** Function for the owner to update configuration variables.
    *  Should throw if called by other than owner.
    */
-  function configUnlock(
-    string calldata _symbol,
-    string calldata _URI
-  )
-    external;
+  function configUnlock(string calldata _symbol, string calldata _URI) external;
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.
    * @dev This will initialize the template and revokeOwnership.
    */
-  function setLockTemplate(
-    address payable _publicLockAddress
-  ) external;
+  function setLockTemplate(address payable _publicLockAddress) external;
 
   // Allows the owner to change the value tracking variables as needed.
   function resetTrackedValue(
@@ -966,21 +1035,26 @@ interface IUnlock
     uint _totalDiscountGranted
   ) external;
 
-  function grossNetworkProduct() external view returns(uint);
+  function grossNetworkProduct() external view returns (uint);
 
-  function totalDiscountGranted() external view returns(uint);
+  function totalDiscountGranted() external view returns (uint);
 
-  function locks(address) external view returns(bool deployed, uint totalSales, uint yieldedDiscountTokens);
+  function locks(
+    address
+  )
+    external
+    view
+    returns (bool deployed, uint totalSales, uint yieldedDiscountTokens);
 
   // The address of the public lock template, used when `createLock` is called
-  function publicLockAddress() external view returns(address);
+  function publicLockAddress() external view returns (address);
 
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
-  function uniswapExchanges(address) external view returns(address);
+  function uniswapExchanges(address) external view returns (address);
 
   // The version number of the current Unlock implementation on this network
-  function unlockVersion() external pure returns(uint16);
+  function unlockVersion() external pure returns (uint16);
 
   // allows the owner to set the exchange address to use for value conversions
   // setting the _exchangeAddress to address(0) removes support for the token
@@ -992,12 +1066,12 @@ interface IUnlock
   /**
    * @dev Returns true if the caller is the current owner.
    */
-  function isOwner() external view returns(bool);
+  function isOwner() external view returns (bool);
 
   /**
    * @dev Returns the address of the current owner.
    */
-  function owner() external view returns(address);
+  function owner() external view returns (address);
 
   /**
    * @dev Leaves the contract without owner. It will not be possible to call
@@ -1015,7 +1089,6 @@ interface IUnlock
   function transferOwnership(address newOwner) external;
 }
 
-
 // File @openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol@v2.4.0
 
 pragma solidity ^0.5.5;
@@ -1024,69 +1097,73 @@ pragma solidity ^0.5.5;
  * @dev Collection of functions related to the address type
  */
 library Address {
-    /**
-     * @dev Returns true if `account` is a contract.
-     *
-     * This test is non-exhaustive, and there may be false-negatives: during the
-     * execution of a contract's constructor, its address will be reported as
-     * not containing a contract.
-     *
-     * IMPORTANT: It is unsafe to assume that an address for which this
-     * function returns false is an externally-owned account (EOA) and not a
-     * contract.
-     */
-    function isContract(address account) internal view returns (bool) {
-        // This method relies in extcodesize, which returns 0 for contracts in
-        // construction, since the code is only stored at the end of the
-        // constructor execution.
+  /**
+   * @dev Returns true if `account` is a contract.
+   *
+   * This test is non-exhaustive, and there may be false-negatives: during the
+   * execution of a contract's constructor, its address will be reported as
+   * not containing a contract.
+   *
+   * IMPORTANT: It is unsafe to assume that an address for which this
+   * function returns false is an externally-owned account (EOA) and not a
+   * contract.
+   */
+  function isContract(address account) internal view returns (bool) {
+    // This method relies in extcodesize, which returns 0 for contracts in
+    // construction, since the code is only stored at the end of the
+    // constructor execution.
 
-        // According to EIP-1052, 0x0 is the value returned for not-yet created accounts
-        // and 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470 is returned
-        // for accounts without code, i.e. `keccak256('')`
-        bytes32 codehash;
-        bytes32 accountHash = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
-        // solhint-disable-next-line no-inline-assembly
-        assembly { codehash := extcodehash(account) }
-        return (codehash != 0x0 && codehash != accountHash);
+    // According to EIP-1052, 0x0 is the value returned for not-yet created accounts
+    // and 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470 is returned
+    // for accounts without code, i.e. `keccak256('')`
+    bytes32 codehash;
+    bytes32 accountHash = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
+    // solhint-disable-next-line no-inline-assembly
+    assembly {
+      codehash := extcodehash(account)
     }
+    return (codehash != 0x0 && codehash != accountHash);
+  }
 
-    /**
-     * @dev Converts an `address` into `address payable`. Note that this is
-     * simply a type cast: the actual underlying value is not changed.
-     *
-     * _Available since v2.4.0._
-     */
-    function toPayable(address account) internal pure returns (address payable) {
-        return address(uint160(account));
-    }
+  /**
+   * @dev Converts an `address` into `address payable`. Note that this is
+   * simply a type cast: the actual underlying value is not changed.
+   *
+   * _Available since v2.4.0._
+   */
+  function toPayable(address account) internal pure returns (address payable) {
+    return address(uint160(account));
+  }
 
-    /**
-     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
-     * `recipient`, forwarding all available gas and reverting on errors.
-     *
-     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
-     * of certain opcodes, possibly making contracts go over the 2300 gas limit
-     * imposed by `transfer`, making them unable to receive funds via
-     * `transfer`. {sendValue} removes this limitation.
-     *
-     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
-     *
-     * IMPORTANT: because control is transferred to `recipient`, care must be
-     * taken to not create reentrancy vulnerabilities. Consider using
-     * {ReentrancyGuard} or the
-     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
-     *
-     * _Available since v2.4.0._
-     */
-    function sendValue(address payable recipient, uint256 amount) internal {
-        require(address(this).balance >= amount, "Address: insufficient balance");
+  /**
+   * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
+   * `recipient`, forwarding all available gas and reverting on errors.
+   *
+   * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
+   * of certain opcodes, possibly making contracts go over the 2300 gas limit
+   * imposed by `transfer`, making them unable to receive funds via
+   * `transfer`. {sendValue} removes this limitation.
+   *
+   * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
+   *
+   * IMPORTANT: because control is transferred to `recipient`, care must be
+   * taken to not create reentrancy vulnerabilities. Consider using
+   * {ReentrancyGuard} or the
+   * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
+   *
+   * _Available since v2.4.0._
+   */
+  function sendValue(address payable recipient, uint256 amount) internal {
+    require(address(this).balance >= amount, "Address: insufficient balance");
 
-        // solhint-disable-next-line avoid-call-value
-        (bool success, ) = recipient.call.value(amount)("");
-        require(success, "Address: unable to send value, recipient may have reverted");
-    }
+    // solhint-disable-next-line avoid-call-value
+    (bool success, ) = recipient.call.value(amount)("");
+    require(
+      success,
+      "Address: unable to send value, recipient may have reverted"
+    );
+  }
 }
-
 
 // File contracts/Unlock.sol
 
@@ -1118,19 +1195,9 @@ pragma solidity 0.5.17;
  *  b. Keeping track of GNP
  */
 
-
-
-
-
-
-
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract Unlock is
-  IUnlock,
-  Initializable,
-  Ownable
-{
+contract Unlock is IUnlock, Initializable, Ownable {
   using Address for address;
   using Clone2Factory for address;
 
@@ -1140,15 +1207,14 @@ contract Unlock is
    * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,
    * which would be the same values when the lock is not set.
    */
-  struct LockBalances
-  {
+  struct LockBalances {
     bool deployed;
     uint totalSales; // This is in wei
     uint yieldedDiscountTokens;
   }
 
   modifier onlyFromDeployedLock() {
-    require(locks[msg.sender].deployed, 'ONLY_LOCKS');
+    require(locks[msg.sender].deployed, "ONLY_LOCKS");
     _;
   }
 
@@ -1157,7 +1223,7 @@ contract Unlock is
   uint public totalDiscountGranted;
 
   // We keep track of deployed locks to ensure that callers are all deployed locks.
-  mapping (address => LockBalances) public locks;
+  mapping(address => LockBalances) public locks;
 
   // global base token URI
   // Used by locks where the owner has not set a custom base URI.
@@ -1172,47 +1238,31 @@ contract Unlock is
 
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
-  mapping (address => IUniswapExchange) public uniswapExchanges;
+  mapping(address => IUniswapExchange) public uniswapExchanges;
 
   // Events
-  event NewLock(
-    address indexed lockOwner,
-    address indexed newLockAddress
-  );
+  event NewLock(address indexed lockOwner, address indexed newLockAddress);
 
-  event ConfigUnlock(
-    string globalTokenSymbol,
-    string globalTokenURI
-  );
+  event ConfigUnlock(string globalTokenSymbol, string globalTokenURI);
 
-  event SetLockTemplate(
-    address publicLockAddress
-  );
+  event SetLockTemplate(address publicLockAddress);
 
-  event ResetTrackedValue(
-    uint grossNetworkProduct,
-    uint totalDiscountGranted
-  );
+  event ResetTrackedValue(uint grossNetworkProduct, uint totalDiscountGranted);
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
-  function initialize(
-    address _unlockOwner
-  )
-    public
-    initializer()
-  {
+  function initialize(address _unlockOwner) public initializer {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_unlockOwner);
   }
 
   /**
-  * @dev Create lock
-  * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * @param _salt an identifier for the Lock, which is unique for the user.
-  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
-  * to know the lock's address before the transaction is mined.
-  */
+   * @dev Create lock
+   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+   * @param _salt an identifier for the Lock, which is unique for the user.
+   * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+   * to know the lock's address before the transaction is mined.
+   */
   function createLock(
     uint _expirationDuration,
     address _tokenAddress,
@@ -1220,12 +1270,13 @@ contract Unlock is
     uint _maxNumberOfKeys,
     string memory _lockName,
     bytes12 _salt
-  ) public
-  {
-    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
+  ) public {
+    require(publicLockAddress != address(0), "MISSING_LOCK_TEMPLATE");
 
     // create lock
-    address payable newLock = address(uint160(publicLockAddress._createClone2(_salt)));
+    address payable newLock = address(
+      uint160(publicLockAddress._createClone2(_salt))
+    );
     IPublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
@@ -1237,7 +1288,9 @@ contract Unlock is
 
     // Assign the new Lock
     locks[newLock] = LockBalances({
-      deployed: true, totalSales: 0, yieldedDiscountTokens: 0
+      deployed: true,
+      totalSales: 0,
+      yieldedDiscountTokens: 0
     });
 
     // trigger event
@@ -1254,11 +1307,7 @@ contract Unlock is
   function computeAvailableDiscountFor(
     address /* _purchaser */,
     uint /* _keyPrice */
-  )
-    public
-    view
-    returns (uint discount, uint tokens)
-  {
+  ) public view returns (uint discount, uint tokens) {
     // TODO: implement me
     return (0, 0);
   }
@@ -1274,24 +1323,20 @@ contract Unlock is
   function recordKeyPurchase(
     uint _value,
     address /* _referrer */
-  )
-    public
-    onlyFromDeployedLock()
-  {
-    if(_value > 0) {
+  ) public onlyFromDeployedLock {
+    if (_value > 0) {
       uint valueInETH;
       address tokenAddress = IPublicLock(msg.sender).tokenAddress();
-      if(tokenAddress != address(0)) {
+      if (tokenAddress != address(0)) {
         // If priced in an ERC-20 token, find the supported uniswap exchange
         IUniswapExchange exchange = uniswapExchanges[tokenAddress];
-        if(address(exchange) != address(0)) {
+        if (address(exchange) != address(0)) {
           valueInETH = exchange.getTokenToEthInputPrice(_value);
         } else {
           // If the token type is not supported, assume 0 value
           valueInETH = 0;
         }
-      }
-      else {
+      } else {
         // If priced in ETH (or value is 0), no conversion is required
         valueInETH = _value;
       }
@@ -1310,20 +1355,14 @@ contract Unlock is
   function recordConsumedDiscount(
     uint _discount,
     uint /* _tokens */
-  )
-    public
-    onlyFromDeployedLock()
-  {
+  ) public onlyFromDeployedLock {
     // TODO: implement me
     totalDiscountGranted += _discount;
     return;
   }
 
   // The version number of the current Unlock implementation on this network
-  function unlockVersion(
-  ) external pure
-    returns (uint16)
-  {
+  function unlockVersion() external pure returns (uint16) {
     return 7;
   }
 
@@ -1331,9 +1370,7 @@ contract Unlock is
   function configUnlock(
     string calldata _symbol,
     string calldata _URI
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     // ensure that this is an address to which a contract has been deployed.
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
@@ -1347,13 +1384,16 @@ contract Unlock is
    */
   function setLockTemplate(
     address payable _publicLockAddress
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     // First claim the template so that no-one else could
     // this will revert if the template was already initialized.
     IPublicLock(_publicLockAddress).initialize(
-      address(this), 0, address(0), 0, 0, ''
+      address(this),
+      0,
+      address(0),
+      0,
+      0,
+      ""
     );
     IPublicLock(_publicLockAddress).renounceLockManager();
 
@@ -1367,9 +1407,7 @@ contract Unlock is
   function setExchange(
     address _tokenAddress,
     address _exchangeAddress
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     uniswapExchanges[_tokenAddress] = IUniswapExchange(_exchangeAddress);
   }
 
@@ -1377,9 +1415,7 @@ contract Unlock is
   function resetTrackedValue(
     uint _grossNetworkProduct,
     uint _totalDiscountGranted
-  ) external
-    onlyOwner
-  {
+  ) external onlyOwner {
     grossNetworkProduct = _grossNetworkProduct;
     totalDiscountGranted = _totalDiscountGranted;
 
@@ -1389,22 +1425,14 @@ contract Unlock is
   /**
    * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalBaseTokenURI()
-    external
-    view
-    returns (string memory)
-  {
+  function getGlobalBaseTokenURI() external view returns (string memory) {
     return globalBaseTokenURI;
   }
 
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory)
-  {
+  function getGlobalTokenSymbol() external view returns (string memory) {
     return globalTokenSymbol;
   }
 }

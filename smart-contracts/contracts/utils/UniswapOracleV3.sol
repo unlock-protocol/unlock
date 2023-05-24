@@ -21,16 +21,14 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
     uint256 _amountIn,
     address _tokenOut
   ) public view override returns (uint256 quoteAmount) {
-    address pool = IUniswapV3Factory(factory).getPool(
-      _tokenIn,
-      _tokenOut,
-      FEE
-    );
+    address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
     if (pool == address(0)) {
       return 0;
     }
-    (int24 timeWeightedAverageTick, ) = OracleLibrary
-      .consult(pool, uint32(PERIOD));
+    (int24 timeWeightedAverageTick, ) = OracleLibrary.consult(
+      pool,
+      uint32(PERIOD)
+    );
     quoteAmount = OracleLibrary.getQuoteAtTick(
       timeWeightedAverageTick,
       uint128(_amountIn),
@@ -50,11 +48,7 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
       FEE
     );
     if (pool == address(0)) {
-      pool = IUniswapV3Factory(factory).createPool(
-        _tokenIn,
-        _tokenOut,
-        FEE
-      );
+      pool = IUniswapV3Factory(factory).createPool(_tokenIn, _tokenOut, FEE);
     }
     emit PairAdded(_tokenIn, _tokenOut);
   }

@@ -6,6 +6,7 @@ publishDate: April 12, 2019
 description: Introducing Optimistic Unlocking, which overcomes the slow confirmation times and provides a better user experience for blockchain transactions.
 image: /images/blog/hellooptimisticunlocking/hero.jpg
 ---
+
 ![Optimistic Unlocking in action.](/images/blog/hellooptimisticunlocking/hero.jpg)
 
 At Unlock we’re all about making transactions on the web seamless and effortless. Blockchain transactions have lots of incredible features, from low cost to permissionless, but the strong suit of blockchain technology – its safety features around immutable data also means every transaction needs to be confirmed by miners. This can take time. Generally Ethereum transactions are considered final after they’ve been confirmed by 12 miners, which can take a few minutes and longer depending on how busy the network is. This presents 2 challenges: not only is this slow, but it is very hard to predict accurately.
@@ -18,7 +19,7 @@ One of our core beliefs is that the challenge most creators are facing is not so
 
 We want to trust people! And we’re optimistic that they actually want the content and are willing to pay for it fair and square. Meet Optimistic Unlocking!
 
-We’re working on an algorithm that will determine if a transaction is likely to go through or not, based on the user's balance, their previous transactions, and a few other factors. If it’s likely to go through, the content immediately unlocks while it’s still being mined and confirmed  in the background. We display a status bar and notifications, and a confirmation once the transaction went through.
+We’re working on an algorithm that will determine if a transaction is likely to go through or not, based on the user's balance, their previous transactions, and a few other factors. If it’s likely to go through, the content immediately unlocks while it’s still being mined and confirmed in the background. We display a status bar and notifications, and a confirmation once the transaction went through.
 
 ![Optimistic Unlocking in action.](/images/blog/hellooptimisticunlocking/confirming.jpg)
 
