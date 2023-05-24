@@ -100,10 +100,10 @@ export const ReceiptBaseForm = ({
 
   return (
     <form
-      className="flex flex-col gap-6 text-left"
+      className="grid grid-cols-1 gap-6 text-left"
       onSubmit={handleSubmit(onHandleSubmit)}
     >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2">
         <Input
           disabled={disabledInput}
           label="Supplier name"
