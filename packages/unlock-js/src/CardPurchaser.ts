@@ -104,6 +104,7 @@ export class CardPurchaser {
       expiration: now + 60 * 60, // 1 hour!
     }
 
+    // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'.ts(2339)
     const signature = await signer._signTypedData(
       domain,
       PurchaseTypes,
@@ -129,7 +130,7 @@ export class CardPurchaser {
   ) {
     const contract = this.getContract({ network })
 
-    await contract
+    return contract
       .connect(signer)
       .purchase(
         transfer.message,

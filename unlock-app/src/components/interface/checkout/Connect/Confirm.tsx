@@ -39,7 +39,10 @@ export function ConfirmConnect({
 
       const result = await siweSign(
         generateNonce(),
-        paywallConfig?.messageToSign || ''
+        paywallConfig?.messageToSign || '',
+        {
+          resources: [new URL('https://' + oauthConfig.clientId).toString()],
+        }
       )
 
       if (result) {

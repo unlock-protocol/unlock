@@ -88,7 +88,7 @@ export function AnimationContent({ status }: { status: DeployStatus }) {
 export const CreateLockFormSummary = ({
   formData,
   showStatus = false,
-  transactionHash,
+  transactionHash = '',
   lockAddress,
 }: CreateLockFormSummaryProps) => {
   const { network } = useAuth()
@@ -118,6 +118,7 @@ export const CreateLockFormSummary = ({
       return getTransactionDetails(transactionHash!)
     },
     {
+      enabled: !!transactionHash,
       refetchInterval: 5000,
     }
   )

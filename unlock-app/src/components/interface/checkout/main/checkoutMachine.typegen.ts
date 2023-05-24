@@ -15,7 +15,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
     confirmRenew: 'CONFIRM_RENEW'
-    disconnect: 'DISCONNECT'
+    disconnect: 'DISCONNECT' | 'RESET_CHECKOUT'
     selectLock: 'SELECT_LOCK'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'
@@ -29,6 +29,7 @@ export interface Typegen0 {
   }
   eventsCausingDelays: {}
   eventsCausingGuards: {
+    isCardPayment: 'BACK'
     requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
     requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'

@@ -300,7 +300,9 @@ export function AirdropManualForm({
 }: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
-  const expiration = formatDate(lock.expirationDuration || 0)
+  const expiration = new Date(
+    formatDate(lock.expirationDuration || 0)
+  ).getTime()
   const [isConfirming, setIsConfirming] = useState(false)
 
   return (

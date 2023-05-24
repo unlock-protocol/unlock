@@ -63,7 +63,7 @@ const signUSDCTransfer = async ({
     value: amount,
     validAfter: 0,
     validBefore: Math.floor(Date.now() / 1000) + 3600, // Valid for an hour
-    nonce: ethers.utils.hexValue(ethers.utils.randomBytes(32)), // 32 byte hex string
+    nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // 32 byte hex string
   }
 
   const signature = await signer._signTypedData(domain, types, message)
