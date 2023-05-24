@@ -70,8 +70,6 @@ describe('getLockUsdPricing', () => {
       network,
     })
 
-    console.log('usdPricing', usdPricing)
-
     expect(usdPricing.symbol).toBe('MATIC')
     expect(usdPricing.price).toBe(88)
     expect(usdPricing.isPriceFromSettings).toBe(undefined)
