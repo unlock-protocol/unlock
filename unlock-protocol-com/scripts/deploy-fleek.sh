@@ -6,12 +6,9 @@ set -e
 # This script deploys a static build to fleek.
 
 APP_PATH=$1
-DEPLOY_ENV=$2 #ignored in this script since unlock-protocol.com is always deployed to production
+DEPLOY_ENV=$2 
 COMMIT=$3
 PUBLISH=$4
-
-# unlock-protocol.com is always deployed to production
-DEPLOY_ENV="prod"
 
 if [ "$PUBLISH" = "true" ]; then
   MESSAGE="Deploying $COMMIT to production. See logs below."
