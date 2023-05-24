@@ -9,14 +9,14 @@ image: /images/blog/unlock-2021-review/fireworks-min.jpg
 
 Looking back at everything that happened this year, 2021 will be remembered as the year Unlock Protocol really started to take off. This is a testament to our growing community, and if you’re reading this, it means you are part of it. Thank you!
 
-Back in the global uncertainty of January 2021, it was difficult to predict exactly where we might land come December, or that everything would happen according to plan over the course of the year. 
+Back in the global uncertainty of January 2021, it was difficult to predict exactly where we might land come December, or that everything would happen according to plan over the course of the year.
 
 That said, key parts of our vision were clear. We wanted to continue on our mission to...
 
 - Build an open protocol that is decentralized and permissionless
 - Give the power back to creators, letting them design experiences to engage their members, on their own terms.
 
-The fundamental item on our roadmap was also clear: we wanted to make Unlock Protocol more accessible to wider communities. 
+The fundamental item on our roadmap was also clear: we wanted to make Unlock Protocol more accessible to wider communities.
 
 Here’s what happened in 2021.
 
@@ -26,9 +26,9 @@ Back in March, we wrote [“Over the last few months, it became clear that purch
 
 While gas fees have gone through the roof ever since, we wanted to lead the way when it comes to offering alternatives to our community.
 
-So we started exploring “layer 2” options starting with xDAI support, which we released in March. 
+So we started exploring “layer 2” options starting with xDAI support, which we released in March.
 
-Our path did not stop there; we now support 5 networks: in addition to the Ethereum mainnet, we currently support xDAI, Polygon, Binance Smart Chain, and the layer 2 roll-up Optimism. 
+Our path did not stop there; we now support 5 networks: in addition to the Ethereum mainnet, we currently support xDAI, Polygon, Binance Smart Chain, and the layer 2 roll-up Optimism.
 
 ![five network logos](/images/blog/unlock-2021-review/5-network-logos.png)
 
@@ -36,25 +36,25 @@ And to make these network options easily available to both developers and end us
 
 **Spring 2021: Provide more places for our community to come together**
 
-Our next step was to set the building blocks of our community. We wanted to offer more places for developers, creators, and Unlock fans to connect and discuss their use of the protocol and their ideas to make it better. 
+Our next step was to set the building blocks of our community. We wanted to offer more places for developers, creators, and Unlock fans to connect and discuss their use of the protocol and their ideas to make it better.
 
-We naturally opened the [Unlock Protocol Discord server](https://discord.com/invite/Ah6ZEJyTDp). It’s now a gathering place for over 1,650 members (have you joined us yet?). 
+We naturally opened the [Unlock Protocol Discord server](https://discord.com/invite/Ah6ZEJyTDp). It’s now a gathering place for over 1,650 members (have you joined us yet?).
 
 Joining our Discord is a special experience, as one gets to “unlock” the server to access the different channels. How? By grabbing a free NFT-membership through the Unlock checkout! And we’re proud to say that it was built by one of our community members: Patrick Gallagher. The bot powering this experience — [Swordy Bot](https://swordybot.com/) — allows any community to design membership experiences and token gate their Discord server.
 
 ![swordy bot](/images/blog/unlock-2021-review/swordybot.png)
 
-In addition to the Discord server, we opened up [unlock.community](http://unlock.community) — our Discourse forum. This was built by another community member:  Camille Besse. Similar to our Discord experience, members can “unlock” access to specific categories in the forum by getting a free membership using their crypto wallet. Want to add a lock to your Discourse forum? Read [Camille’s tutorial](https://unlock.community/t/unlock-discourse-plugin/64).
+In addition to the Discord server, we opened up [unlock.community](http://unlock.community) — our Discourse forum. This was built by another community member: Camille Besse. Similar to our Discord experience, members can “unlock” access to specific categories in the forum by getting a free membership using their crypto wallet. Want to add a lock to your Discourse forum? Read [Camille’s tutorial](https://unlock.community/t/unlock-discourse-plugin/64).
 
-One of the most exciting capabilities of the Unlock Protocol is that community membership natively works cross-platform. By using the same lock across our Discord server and our Discourse forum, new Unlock members get access to both. 
+One of the most exciting capabilities of the Unlock Protocol is that community membership natively works cross-platform. By using the same lock across our Discord server and our Discourse forum, new Unlock members get access to both.
 
-Unlock can power memberships that your community can use across all your platforms, everywhere on the web. 
+Unlock can power memberships that your community can use across all your platforms, everywhere on the web.
 
-**Summer: Credit card support and a funding announcement** 
+**Summer: Credit card support and a funding announcement**
 
-While the Unlock checkout allows users to authenticate and purchase NFT memberships using their crypto wallet, we didn’t want people who don’t use crypto to be left out. 
+While the Unlock checkout allows users to authenticate and purchase NFT memberships using their crypto wallet, we didn’t want people who don’t use crypto to be left out.
 
-In July, we released credit card support, powered by Stripe, through which community members can [buy NFT memberships with their credit card](https://unlock-protocol.com/blog/credit-card-nft). This means developers and creators can extend NFT memberships to users who don’t yet have a crypto wallet. 
+In July, we released credit card support, powered by Stripe, through which community members can [buy NFT memberships with their credit card](https://unlock-protocol.com/blog/credit-card-nft). This means developers and creators can extend NFT memberships to users who don’t yet have a crypto wallet.
 
 ![credit card](/images/blog/unlock-2021-review/creditcard.png)
 
@@ -64,7 +64,7 @@ Last but not least, we ended summer announcing a $4 million investment round fro
 
 **Fall: Airdrop, governance, and retroactive funding**
 
-This fall was transformative for Unlock. Like any other protocol, we believe the protocol should belong to its community of users and adopters. 
+This fall was transformative for Unlock. Like any other protocol, we believe the protocol should belong to its community of users and adopters.
 
 With this in mind, [we launched the Unlock DAO](https://unlock-protocol.com/blog/unlock-dao) to give control and power to the developers, creators and users of Unlock Protocol. Anyone who has used Unlock Protocol, even only once, can earn governance tokens, as well as contribute and vote on proposals in order to collectively govern the protocol and its treasury.
 
@@ -76,19 +76,19 @@ In December, we also released an all-new update to our [Unlock Protocol WordPres
 
 ![wordpress](/images/blog/unlock-2021-review/wordpress.jpeg)
 
-Last but not least, to reward the most active implementers and community members of Unlock, we have launched our first monthly retroactive funding campaign in December 2021. 
+Last but not least, to reward the most active implementers and community members of Unlock, we have launched our first monthly retroactive funding campaign in December 2021.
 
-We wanted the process to be decentralized and open. Here is how it works: Unlock is allocating 100 UDT each month to the community, and we’re letting the community nominate individuals they feel had the biggest impact on the protocol in the previous month, and therefore vote for who should get a share of the 100 UDT. 
+We wanted the process to be decentralized and open. Here is how it works: Unlock is allocating 100 UDT each month to the community, and we’re letting the community nominate individuals they feel had the biggest impact on the protocol in the previous month, and therefore vote for who should get a share of the 100 UDT.
 
-In our first retroactive campaign, [the community chose to reward 7 of its members](https://unlock.community/t/retroactive-funding-november-2021/199/11) via quadratic voting on Snapshot. 
+In our first retroactive campaign, [the community chose to reward 7 of its members](https://unlock.community/t/retroactive-funding-november-2021/199/11) via quadratic voting on Snapshot.
 
 **Throughout the year: What makes us the most excited? The 35+ Grantees building with Unlock**
 
-Aside from all the milestones described above, one of our most exciting projects of 2021 was certainly the launch of the [Unlock Token Grant Program](https://unlock-protocol.com/blog/token-grant-program)! 
+Aside from all the milestones described above, one of our most exciting projects of 2021 was certainly the launch of the [Unlock Token Grant Program](https://unlock-protocol.com/blog/token-grant-program)!
 
-The goal of the program is to enable developers and creators to make Unlock more accessible to wider communities. Grantees are selected every month by a decentralized Grant Committee composed of Unlock advisors, investors and past grantees. Grantees are awarded UDT tokens after their project is launched and shared publicly. 
+The goal of the program is to enable developers and creators to make Unlock more accessible to wider communities. Grantees are selected every month by a decentralized Grant Committee composed of Unlock advisors, investors and past grantees. Grantees are awarded UDT tokens after their project is launched and shared publicly.
 
-To date, five cohorts of Grantees have already been selected, making it a total of 37 Grantees building with Unlock! A small sample of the projects includes: 
+To date, five cohorts of Grantees have already been selected, making it a total of 37 Grantees building with Unlock! A small sample of the projects includes:
 
 - A [Decentraland integration](https://unlock-protocol.com/blog/decentraland) that allows anyone to create unique in-world NFT memberships.
 - A [Firebase integration](https://unlock-protocol.com/blog/firebase-integration) that brings the power of Unlock to developers building Google apps.
@@ -96,14 +96,14 @@ To date, five cohorts of Grantees have already been selected, making it a total 
 
 ![decentraland](/images/blog/unlock-2021-review/decentraland.png)
 
-We’re amazed at seeing our community of Grantees create game-changing use cases for Unlock, creating documentation or helping extend the reach of the protocol. [Want to see what Grantees are building? Head over to the Unlock Showcase](https://www.unlockshowcase.com/). Created by Cohort 1 Grantee Kalidou Diagne, the showcase features a gallery of all projects built using Unlock Protocol. 
+We’re amazed at seeing our community of Grantees create game-changing use cases for Unlock, creating documentation or helping extend the reach of the protocol. [Want to see what Grantees are building? Head over to the Unlock Showcase](https://www.unlockshowcase.com/). Created by Cohort 1 Grantee Kalidou Diagne, the showcase features a gallery of all projects built using Unlock Protocol.
 
-We’re always on the lookout for new Grant applications. Want to join our token grant Program? [You can submit your project here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22). 
+We’re always on the lookout for new Grant applications. Want to join our token grant Program? [You can submit your project here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 
 **2022: We’re so glad we’re on this journey with you**
 
-2022 is around the corner and we want to open it up to you. 
+2022 is around the corner and we want to open it up to you.
 
-Where should we go next? What can we improve? How can we help you? 
+Where should we go next? What can we improve? How can we help you?
 
 Write to us at hello@unlock-protocol.com and let’s get in touch.

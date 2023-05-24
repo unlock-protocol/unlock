@@ -22,9 +22,3 @@ We're proud to announce that we now fully support the Ethereum Name Service! For
 ![Dashboard Lock](/images/blog/ethereum-name-service/ens-enabled.png)
 
 If you have not done so already, think about [registering your own ENS domain today](https://app.ens.domains/)!
-
-
-
-
-
-

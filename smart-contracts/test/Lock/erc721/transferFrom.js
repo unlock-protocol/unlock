@@ -19,7 +19,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
     await lock.updateTransferFee(0) // disable the transfer fee for this test
     await lockSingleKey.updateTransferFee(0) // disable the transfer fee for this test
-      ; ({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized

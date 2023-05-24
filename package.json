@@ -79,7 +79,9 @@
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.5.0",
   "lint-staged": {
-    "*.js": "yarn run lint --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,ts,tsx,sol}": [
+      "yarn run lint --fix"
+    ],
+    "*.{js,ts,tsx,sol,css,md}": "prettier --write"
   }
 }

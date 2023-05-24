@@ -1,5 +1,5 @@
 Providing a rough script allowing Lock owners with the ability to upload/update metadata associated with
-their Nonfungible Tokens. 
+their Nonfungible Tokens.
 
 Instructions:
 
@@ -17,7 +17,6 @@ The format of the input file should match the examples in `sample_data/defaultKe
 
 **Update Default Token Metadata**
 `ts-node ./scripts/metadataUpload/metadata_upload.ts --privateKey <private key> --lockAddress <lock address> --host https://locksmith.unlock-protocol.com --inputFile <location of metadata json> --scope default`
-
 
 **Update Token Specific Metadata**
 `ts-node ./scripts/metadataUpload/metadata_upload.ts --privateKey <private key> --lockAddress <lock address> --host https://locksmith.unlock-protocol.com --inputFile <location of metadata json> --scope token`

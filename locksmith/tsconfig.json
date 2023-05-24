@@ -6,12 +6,7 @@
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
     "jsx": "react-jsx",
-    "lib": [
-      "dom"
-    ]
+    "lib": ["dom"]
   },
-  "exclude": [
-    "build",
-    "__tests__",
-  ]
+  "exclude": ["build", "__tests__"]
 }

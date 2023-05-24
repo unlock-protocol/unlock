@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('PaymentIntents', {
@@ -6,46 +6,49 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       lockAddress: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       chain: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userAddress: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       intentId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       stripeCustomerId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       connectedStripeId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       connectedCustomerId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
     await queryInterface.addIndex('PaymentIntents', { fields: ['lockAddress'] })
     await queryInterface.addIndex('PaymentIntents', { fields: ['userAddress'] })
     await queryInterface.addIndex('PaymentIntents', { fields: ['intentId'] })
-    await queryInterface.addIndex('PaymentIntents', { fields: ['connectedStripeId'] })
-    await queryInterface.addIndex('PaymentIntents', { fields: ['connectedCustomerId'] })
-
+    await queryInterface.addIndex('PaymentIntents', {
+      fields: ['connectedStripeId'],
+    })
+    await queryInterface.addIndex('PaymentIntents', {
+      fields: ['connectedCustomerId'],
+    })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('PaymentIntents');
-  }
-};
+    await queryInterface.dropTable('PaymentIntents')
+  },
+}

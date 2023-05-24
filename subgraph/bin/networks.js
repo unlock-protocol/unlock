@@ -46,10 +46,9 @@ const generateNetworksFile = async () => {
   console.log(`Networks file saved at: ${networkFilePath}`)
 }
 
-
 module.exports = {
   networkName,
-  generateNetworksFile
+  generateNetworksFile,
 }
 
 // execute as standalone

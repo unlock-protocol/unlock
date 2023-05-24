@@ -33,9 +33,7 @@ abstract contract UnlockOwnable is
   /**
    * @dev Initializes the contract setting the deployer as the initial owner.
    */
-  function __initializeOwnable(
-    address sender
-  ) public initializer {
+  function __initializeOwnable(address sender) public initializer {
     _owner = sender;
     emit OwnershipTransferred(address(0), _owner);
   }
@@ -77,9 +75,7 @@ abstract contract UnlockOwnable is
    * @dev Transfers ownership of the contract to a new account (`newOwner`).
    * Can only be called by the current owner.
    */
-  function transferOwnership(
-    address newOwner
-  ) public onlyOwner {
+  function transferOwnership(address newOwner) public onlyOwner {
     require(newOwner != address(0), "INVALID_OWNER");
     _transferOwnership(newOwner);
   }

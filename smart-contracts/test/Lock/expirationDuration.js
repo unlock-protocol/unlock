@@ -33,8 +33,9 @@ contract('Lock / expirationDuration', () => {
     const { tokenId, blockNumber } = await purchaseKey(lock, buyer.address)
     const transfer1Block = await ethers.provider.getBlock(blockNumber)
     assert.equal(
-      (await lock.keyExpirationTimestampFor(tokenId)).toNumber()
-      , transfer1Block.timestamp + 1800)
+      (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
+      transfer1Block.timestamp + 1800
+    )
 
     // update duration
     await lock.updateLockConfig(
@@ -50,8 +51,9 @@ contract('Lock / expirationDuration', () => {
     const transfer2Block = await ethers.provider.getBlock(blockNumber2)
 
     assert.equal(
-      (await lock.keyExpirationTimestampFor(tokenId2)).toNumber()
-      , transfer2Block.timestamp + 5000)
+      (await lock.keyExpirationTimestampFor(tokenId2)).toNumber(),
+      transfer2Block.timestamp + 5000
+    )
     assert.equal((await lock.expirationDuration()).toString(), '5000')
   })
 

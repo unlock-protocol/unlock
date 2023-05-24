@@ -18,19 +18,13 @@ interface IPublicLockV13 {
   ) external;
 
   // default role from OpenZeppelin
-  function DEFAULT_ADMIN_ROLE()
-    external
-    view
-    returns (bytes32 role);
+  function DEFAULT_ADMIN_ROLE() external view returns (bytes32 role);
 
   /**
    * @notice The version number of the current implementation on this network.
    * @return The current version number.
    */
-  function publicLockVersion()
-    external
-    pure
-    returns (uint16);
+  function publicLockVersion() external pure returns (uint16);
 
   /**
    * @dev Called by lock manager to withdraw all funds from the lock
@@ -56,10 +50,7 @@ interface IPublicLockV13 {
    * @param _tokenAddress The address of the erc20 token to use for pricing the keys,
    * or 0 to use ETH
    */
-  function updateKeyPricing(
-    uint _keyPrice,
-    address _tokenAddress
-  ) external;
+  function updateKeyPricing(uint _keyPrice, address _tokenAddress) external;
 
   /**
    * Update the main key properties for the entire lock:
@@ -85,9 +76,7 @@ interface IPublicLockV13 {
    * Checks if the user has a non-expired key.
    * @param _user The address of the key owner
    */
-  function getHasValidKey(
-    address _user
-  ) external view returns (bool);
+  function getHasValidKey(address _user) external view returns (bool);
 
   /**
    * @dev Returns the key's ExpirationTimestamp field for a given owner.
@@ -130,9 +119,7 @@ interface IPublicLockV13 {
    * @param _tokenId The tokenID we're inquiring about
    * @return String representing the URI for the requested token
    */
-  function tokenURI(
-    uint256 _tokenId
-  ) external view returns (string memory);
+  function tokenURI(uint256 _tokenId) external view returns (string memory);
 
   /**
    * Allows a Lock manager to add or remove an event hook
@@ -174,10 +161,7 @@ interface IPublicLockV13 {
    * @param _duration The duration in secondes to add ot the key
    * @dev set `_duration` to 0 to use the default duration of the lock
    */
-  function grantKeyExtension(
-    uint _tokenId,
-    uint _duration
-  ) external;
+  function grantKeyExtension(uint _tokenId, uint _duration) external;
 
   /**
    * @dev Purchase function
@@ -234,10 +218,7 @@ interface IPublicLockV13 {
    * specific referrer (in basis points)
    * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
    */
-  function setReferrerFee(
-    address _referrer,
-    uint _feeBasisPoint
-  ) external;
+  function setReferrerFee(address _referrer, uint _feeBasisPoint) external;
 
   /**
    * Merge existing keys
@@ -245,11 +226,7 @@ interface IPublicLockV13 {
    * @param _tokenIdTo the id of the destination token  to add time
    * @param _amount the amount of time to transfer (in seconds)
    */
-  function mergeKeys(
-    uint _tokenIdFrom,
-    uint _tokenIdTo,
-    uint _amount
-  ) external;
+  function mergeKeys(uint _tokenIdFrom, uint _tokenIdTo, uint _amount) external;
 
   /**
    * Deactivate an existing key
@@ -262,18 +239,13 @@ interface IPublicLockV13 {
    * @param _gasRefundValue price in wei or token in smallest price unit
    * @dev Set the value to be refunded to the sender on purchase
    */
-  function setGasRefundValue(
-    uint256 _gasRefundValue
-  ) external;
+  function setGasRefundValue(uint256 _gasRefundValue) external;
 
   /**
    * _gasRefundValue price in wei or token in smallest price unit
    * @dev Returns the value/price to be refunded to the sender on purchase
    */
-  function gasRefundValue()
-    external
-    view
-    returns (uint256 _gasRefundValue);
+  function gasRefundValue() external view returns (uint256 _gasRefundValue);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
@@ -291,9 +263,7 @@ interface IPublicLockV13 {
    * @param _transferFeeBasisPoints The new transfer fee in basis-points(bps).
    * Ex: 200 bps = 2%
    */
-  function updateTransferFee(
-    uint _transferFeeBasisPoints
-  ) external;
+  function updateTransferFee(uint _transferFeeBasisPoints) external;
 
   /**
    * Determines how much of a fee would need to be paid in order to
@@ -317,10 +287,7 @@ interface IPublicLockV13 {
    * @dev Throws if called by other than a Lock manager
    * @dev Throws if _keyOwner does not have a valid key
    */
-  function expireAndRefundFor(
-    uint _tokenId,
-    uint _amount
-  ) external;
+  function expireAndRefundFor(uint _tokenId, uint _amount) external;
 
   /**
    * @dev allows the key manager to expire a given tokenId
@@ -354,72 +321,49 @@ interface IPublicLockV13 {
 
   function addLockManager(address account) external;
 
-  function isLockManager(
-    address account
-  ) external view returns (bool);
+  function isLockManager(address account) external view returns (bool);
 
   /**
    * Returns the address of the `onKeyPurchaseHook` hook.
    * @return hookAddress address of the hook
    */
-  function onKeyPurchaseHook()
-    external
-    view
-    returns (address hookAddress);
+  function onKeyPurchaseHook() external view returns (address hookAddress);
 
   /**
    * Returns the address of the `onKeyCancelHook` hook.
    * @return hookAddress address of the hook
    */
-  function onKeyCancelHook()
-    external
-    view
-    returns (address hookAddress);
+  function onKeyCancelHook() external view returns (address hookAddress);
 
   /**
    * Returns the address of the `onValidKeyHook` hook.
    * @return hookAddress address of the hook
    */
-  function onValidKeyHook()
-    external
-    view
-    returns (address hookAddress);
+  function onValidKeyHook() external view returns (address hookAddress);
 
   /**
    * Returns the address of the `onTokenURIHook` hook.
    * @return hookAddress address of the hook
    */
-  function onTokenURIHook()
-    external
-    view
-    returns (address hookAddress);
+  function onTokenURIHook() external view returns (address hookAddress);
 
   /**
    * Returns the address of the `onKeyTransferHook` hook.
    * @return hookAddress address of the hook
    */
-  function onKeyTransferHook()
-    external
-    view
-    returns (address hookAddress);
+  function onKeyTransferHook() external view returns (address hookAddress);
 
   /**
    * Returns the address of the `onKeyExtendHook` hook.
    * @return hookAddress the address ok the hook
    */
-  function onKeyExtendHook()
-    external
-    view
-    returns (address hookAddress);
+  function onKeyExtendHook() external view returns (address hookAddress);
 
   /**
    * Returns the address of the `onKeyGrantHook` hook.
    * @return hookAddress the address ok the hook
    */
-  function onKeyGrantHook()
-    external
-    view
-    returns (address hookAddress);
+  function onKeyGrantHook() external view returns (address hookAddress);
 
   function renounceLockManager() external;
 
@@ -428,40 +372,23 @@ interface IPublicLockV13 {
    */
   function maxKeysPerAddress() external view returns (uint);
 
-  function expirationDuration()
-    external
-    view
-    returns (uint256);
+  function expirationDuration() external view returns (uint256);
 
-  function freeTrialLength()
-    external
-    view
-    returns (uint256);
+  function freeTrialLength() external view returns (uint256);
 
   function keyPrice() external view returns (uint256);
 
-  function maxNumberOfKeys()
-    external
-    view
-    returns (uint256);
+  function maxNumberOfKeys() external view returns (uint256);
 
-  function refundPenaltyBasisPoints()
-    external
-    view
-    returns (uint256);
+  function refundPenaltyBasisPoints() external view returns (uint256);
 
   function tokenAddress() external view returns (address);
 
-  function transferFeeBasisPoints()
-    external
-    view
-    returns (uint256);
+  function transferFeeBasisPoints() external view returns (uint256);
 
   function unlockProtocol() external view returns (address);
 
-  function keyManagerOf(
-    uint
-  ) external view returns (address);
+  function keyManagerOf(uint) external view returns (address);
 
   ///===================================================================
 
@@ -478,30 +405,21 @@ interface IPublicLockV13 {
    * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
    * @dev Emit Transfer event
    */
-  function shareKey(
-    address _to,
-    uint _tokenId,
-    uint _timeShared
-  ) external;
+  function shareKey(address _to, uint _tokenId, uint _timeShared) external;
 
   /**
    * @notice Update transfer and cancel rights for a given key
    * @param _tokenId The id of the key to assign rights for
    * @param _keyManager The address to assign the rights to for the given key
    */
-  function setKeyManagerOf(
-    uint _tokenId,
-    address _keyManager
-  ) external;
+  function setKeyManagerOf(uint _tokenId, address _keyManager) external;
 
   /**
    * Check if a certain key is valid
    * @param _tokenId the id of the key to check validity
    * @notice this makes use of the onValidKeyHook if it is set
    */
-  function isValidKey(
-    uint _tokenId
-  ) external view returns (bool);
+  function isValidKey(uint _tokenId) external view returns (bool);
 
   /**
    * Returns the number of keys owned by `_keyOwner` (expired or not)
@@ -513,17 +431,12 @@ interface IPublicLockV13 {
   ) external view returns (uint numberOfKeys);
 
   /// @notice A descriptive name for a collection of NFTs in this contract
-  function name()
-    external
-    view
-    returns (string memory _name);
+  function name() external view returns (string memory _name);
 
   ///===================================================================
 
   /// From ERC165.sol
-  function supportsInterface(
-    bytes4 interfaceId
-  ) external view returns (bool);
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
 
   ///===================================================================
 
@@ -532,16 +445,12 @@ interface IPublicLockV13 {
    * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
    * @return balance The number of valid keys owned by `_keyOwner`
    */
-  function balanceOf(
-    address _owner
-  ) external view returns (uint256 balance);
+  function balanceOf(address _owner) external view returns (uint256 balance);
 
   /**
    * @dev Returns the owner of the NFT specified by `tokenId`.
    */
-  function ownerOf(
-    uint256 tokenId
-  ) external view returns (address _owner);
+  function ownerOf(uint256 tokenId) external view returns (address _owner);
 
   /**
    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
@@ -553,11 +462,7 @@ interface IPublicLockV13 {
    * - If the caller is not `from`, it must be have been allowed to move this
    * NFT by either {approve} or {setApprovalForAll}.
    */
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId
-  ) external;
+  function safeTransferFrom(address from, address to, uint256 tokenId) external;
 
   /**
    * an ERC721-like function to transfer a token from one account to another.
@@ -568,11 +473,7 @@ interface IPublicLockV13 {
    * either {approve} or {setApprovalForAll}.
    * The key manager will be reset to address zero after the transfer
    */
-  function transferFrom(
-    address from,
-    address to,
-    uint256 tokenId
-  ) external;
+  function transferFrom(address from, address to, uint256 tokenId) external;
 
   /**
    * Lending a key allows you to transfer the token while retaining the
@@ -584,11 +485,7 @@ interface IPublicLockV13 {
    * After calling the function, the `_recipent` will be the new owner, and the sender of the tx
    * will become the key manager.
    */
-  function lendKey(
-    address from,
-    address to,
-    uint tokenId
-  ) external;
+  function lendKey(address from, address to, uint tokenId) external;
 
   /**
    * Unlend is called when you have lent a key and want to claim its full ownership back.
@@ -596,10 +493,7 @@ interface IPublicLockV13 {
    * @param _tokenId the id of the token
    * @dev Only the key manager of the token can call this function
    */
-  function unlendKey(
-    address _recipient,
-    uint _tokenId
-  ) external;
+  function unlendKey(address _recipient, uint _tokenId) external;
 
   function approve(address to, uint256 tokenId) external;
 
@@ -620,10 +514,7 @@ interface IPublicLockV13 {
    * @param _approved representing the status of the approval to be set
    * @notice disabled when transfers are disabled
    */
-  function setApprovalForAll(
-    address _operator,
-    bool _approved
-  ) external;
+  function setApprovalForAll(address _operator, bool _approved) external;
 
   /**
    * @dev Tells whether an operator is approved by a given keyManager
@@ -654,36 +545,20 @@ interface IPublicLockV13 {
     uint256 index
   ) external view returns (uint256 tokenId);
 
-  function tokenByIndex(
-    uint256 index
-  ) external view returns (uint256);
+  function tokenByIndex(uint256 index) external view returns (uint256);
 
   /**
    * Innherited from Open Zeppelin AccessControl.sol
    */
-  function getRoleAdmin(
-    bytes32 role
-  ) external view returns (bytes32);
+  function getRoleAdmin(bytes32 role) external view returns (bytes32);
 
-  function grantRole(
-    bytes32 role,
-    address account
-  ) external;
+  function grantRole(bytes32 role, address account) external;
 
-  function revokeRole(
-    bytes32 role,
-    address account
-  ) external;
+  function revokeRole(bytes32 role, address account) external;
 
-  function renounceRole(
-    bytes32 role,
-    address account
-  ) external;
+  function renounceRole(bytes32 role, address account) external;
 
-  function hasRole(
-    bytes32 role,
-    address account
-  ) external view returns (bool);
+  function hasRole(bytes32 role, address account) external view returns (bool);
 
   /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
    * The `Ownable` logic is used by many 3rd party services to determine
@@ -696,9 +571,7 @@ interface IPublicLockV13 {
 
   function setOwner(address account) external;
 
-  function isOwner(
-    address account
-  ) external view returns (bool isOwner);
+  function isOwner(address account) external view returns (bool isOwner);
 
   /**
    * Migrate data from the previous single owner => key mapping to
@@ -729,20 +602,20 @@ interface IPublicLockV13 {
    * @param _tokenId the ID fo the token to renew
    * @param _referrer the address of the person to be granted UDT
    */
-  function renewMembershipFor(
-    uint _tokenId,
-    address _referrer
-  ) external;
+  function renewMembershipFor(uint _tokenId, address _referrer) external;
 
   /**
-   * @dev helper to check if a key is currently renewable 
-   * it will revert if the pricing or duration of the lock have been modified 
+   * @dev helper to check if a key is currently renewable
+   * it will revert if the pricing or duration of the lock have been modified
    * unfavorably since the key was bought(price increase or duration decrease).
-   * It will also revert if a lock is not renewable or if the key is not ready for renewal yet 
+   * It will also revert if a lock is not renewable or if the key is not ready for renewal yet
    * (at least 90% expired).
    * @param tokenId the id of the token to check
    * @param referrer the address where to send the referrer fee
    * @return true if the terms has changed
    */
-  function isRenewable(uint256 tokenId, address referrer) external view returns (bool);
+  function isRenewable(
+    uint256 tokenId,
+    address referrer
+  ) external view returns (bool);
 }

@@ -11,7 +11,7 @@ const {
   getMatchingLockVersion,
   cleanupPastContracts,
   deployUpgreadableContract,
-  upgradeUpgreadableContract
+  upgradeUpgreadableContract,
 } = require('../helpers')
 
 const unlockVersions = getUnlockVersionNumbers()
@@ -60,11 +60,13 @@ contract('Unlock / upgrades', async (accounts) => {
 
       beforeEach(async () => {
         // deploy a new Unlock instance
-        ; ({ contract: unlock, proxyAdmin } = await deployUpgreadableContract(Unlock, [unlockOwner.address]))
+        ;({ contract: unlock, proxyAdmin } = await deployUpgreadableContract(
+          Unlock,
+          [unlockOwner.address]
+        ))
 
         // complete PublicLock configuration
         publicLock = await PublicLock.deploy()
-
 
         const publicLockVersion = await publicLock.publicLockVersion()
         if (versionNumber < 7) {
@@ -136,7 +138,7 @@ contract('Unlock / upgrades', async (accounts) => {
               ADDRESS_ZERO, // token address
               keyPrice,
               5, // maxNumberOfKeys
-              `UpgradeTestingLock ${versionNumber}`,
+              `UpgradeTestingLock ${versionNumber}`
             )
           } else if (versionNumber >= 1) {
             // Version 1 added ERC-20 support, requiring a tokenAddress
@@ -292,11 +294,7 @@ contract('Unlock / upgrades', async (accounts) => {
               }
               const tx = await lock
                 .connect(keyOwner)
-                .transferFrom(
-                  keyOwner.address,
-                  accounts[8],
-                  id
-                )
+                .transferFrom(keyOwner.address, accounts[8], id)
               const { events } = await tx.wait()
               const evt = events.find(({ event }) => event === 'Transfer')
               assert.equal(evt.event, 'Transfer')
@@ -319,12 +317,18 @@ contract('Unlock / upgrades', async (accounts) => {
 
             it('should persist the expirationDuration between upgrades', async () => {
               const expirationDuration = await lock.expirationDuration()
-              assert.equal(expirationDuration.toString(), lockExpirationDuration.toString())
+              assert.equal(
+                expirationDuration.toString(),
+                lockExpirationDuration.toString()
+              )
             })
 
             it('should persist the maxNumberOfKeys between upgrades', async () => {
               const maxNumberOfKeys = await lock.maxNumberOfKeys()
-              assert.equal(maxNumberOfKeys.toString(), lockMaxNumberOfKeys.toString())
+              assert.equal(
+                maxNumberOfKeys.toString(),
+                lockMaxNumberOfKeys.toString()
+              )
             })
 
             it('lock data should persist state between upgrades', async () => {
@@ -410,7 +414,6 @@ contract('Unlock / upgrades', async (accounts) => {
       async function purchaseKey(lock) {
         const publicLockVersion = await lock.publicLockVersion()
         if (publicLockVersion >= 11) {
-
           await lock.setMaxKeysPerAddress(10)
           // Lock Version 11 multiple purchases
           return await lock

@@ -14,7 +14,7 @@ async function deployLock({
   isEthers,
 } = {}) {
   if (!unlock) {
-    ; ({ unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
   }
   if (!deployer) {
     const [defaultDeployer] = await ethers.getSigners()
@@ -60,7 +60,10 @@ async function deployLock({
     )
   }
   return isEthers
-    ? await ethers.getContractAt('contracts/PublicLock.sol:PublicLock', lock.address)
+    ? await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        lock.address
+      )
     : lock
 }
 

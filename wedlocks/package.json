@@ -22,11 +22,6 @@
     "typescript": "5.0.4",
     "winston": "3.8.2"
   },
-  "lint-staged": {
-    ".{js,ts,tsx}": [
-      "yarn run lint --fix"
-    ]
-  },
   "scripts": {
     "build": "netlify build",
     "dev": "UNLOCK_ENV=dev netlify functions:serve",

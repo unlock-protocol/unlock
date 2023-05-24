@@ -1,20 +1,15 @@
 version: '3.4'
 services:
-
   eth-node:
     restart: always
     build:
       context: ./development/eth-node
-    command: [ "sh","-c", "yarn start --hostname 0.0.0.0" ]
+    command: ['sh', '-c', 'yarn start --hostname 0.0.0.0']
     ports:
       - 8545:8545
 
   postgres:
-    command:
-      [
-        'postgres',
-        '-cshared_preload_libraries=pg_stat_statements'
-      ]
+    command: ['postgres', '-cshared_preload_libraries=pg_stat_statements']
     env_file: development.env
     ports:
       - '5432:5432'
@@ -24,22 +19,22 @@ services:
     image: locksmith
     build:
       context: ../
-      target: dev  
+      target: dev
       args:
         BUILD_DIR: locksmith
       cache_from:
         - unlockprotocol/unlock-dev
     command:
       [
-        "/opt/wait-for-it.sh",
-        "-t",
-        "0",
-        "postgres:5432",
-        "--",
-        "yarn",
-        "workspace",
-        "@unlock-protocol/locksmith",
-        "dev"
+        '/opt/wait-for-it.sh',
+        '-t',
+        '0',
+        'postgres:5432',
+        '--',
+        'yarn',
+        'workspace',
+        '@unlock-protocol/locksmith',
+        'dev',
       ]
     ports:
       - '8080:8080'
@@ -59,15 +54,15 @@ services:
         - unlockprotocol/unlock-dev
     command:
       [
-        "/opt/wait-for-it.sh",
-        "-t",
-        "0",
-        "postgres:5432",
-        "--",
-        "yarn",
-        "workspace",
-        "@unlock-protocol/locksmith",
-        "websub:dev"
+        '/opt/wait-for-it.sh',
+        '-t',
+        '0',
+        'postgres:5432',
+        '--',
+        'yarn',
+        'workspace',
+        '@unlock-protocol/locksmith',
+        'websub:dev',
       ]
     volumes:
       - ./development/wait-for-it/wait-for-it.sh:/opt/wait-for-it.sh
@@ -87,13 +82,13 @@ services:
     env_file: development.env
     command:
       [
-        "/opt/wait-for-it.sh",
-        "-t",
-        "0",
-        "graph-node:8020",
-        "--",
-        "sh",
-        "/opt/startup.sh"
+        '/opt/wait-for-it.sh',
+        '-t',
+        '0',
+        'graph-node:8020',
+        '--',
+        'sh',
+        '/opt/startup.sh',
       ]
     volumes:
       - ./development/subgraph/startup.sh:/opt/startup.sh
@@ -108,13 +103,7 @@ services:
       cache_from:
         - unlockprotocol/unlock-dev
       context: ../
-    command:
-      [
-        "yarn",
-        "workspace",
-        "@unlock-protocol/wedlocks",
-        "dev"
-      ]
+    command: ['yarn', 'workspace', '@unlock-protocol/wedlocks', 'dev']
     env_file: development.env
     ports:
       - '1337:1337'

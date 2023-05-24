@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const table = 'Transactions'
 
@@ -11,5 +11,5 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn(table, 'data')
-  }
-};
+  },
+}

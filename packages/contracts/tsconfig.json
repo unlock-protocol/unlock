@@ -1,18 +1,10 @@
 {
-    "extends": "@unlock-protocol/tsconfig",
-    "compilerOptions": {
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "lib": [
-            "es2019"
-        ],
-        "outDir": "dist"
-    },
-    "exclude" : [
-        "deprec",
-        "test",
-        "dist",
-        "task",
-        "hardhat.config.js"
-    ]
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["es2019"],
+    "outDir": "dist"
+  },
+  "exclude": ["deprec", "test", "dist", "task", "hardhat.config.js"]
 }

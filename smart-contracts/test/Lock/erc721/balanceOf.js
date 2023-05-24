@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 
-const { deployLock,  ADDRESS_ZERO } = require('../../helpers')
+const { deployLock, ADDRESS_ZERO } = require('../../helpers')
 
 contract('Lock / erc721 / balanceOf', (accounts) => {
   let lock

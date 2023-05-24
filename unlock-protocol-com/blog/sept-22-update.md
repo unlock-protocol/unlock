@@ -10,22 +10,26 @@ image: /images/blog/sept-22-update/sept-22-banner.png
 ![sept-22-banner.png](/images/blog/sept-22-update/sept-22-banner.png)
 
 ## Partners and integrations
+
 - Launched on [Arbitrum](https://unlock-protocol.com/blog/arbitrum)
 - Launched on [Avalanche](https://unlock-protocol.com/blog/avalanche)
 
-## Checkout 
+## Checkout
+
 - [Support for fiat recurring subscriptions](https://unlock-protocol.com/blog/unlock-fiat-subscription)
 - [Support for Apple Pay and Google Pay mobile payments](https://unlock-protocol.com/blog/support-for-google-and-apple-pay)
-- [Password-protected NFT purchases](https://unlock-protocol.com/blog/password-required-hook) 
+- [Password-protected NFT purchases](https://unlock-protocol.com/blog/password-required-hook)
 
 ## Members page
-- [Enhanced Members Page filters](https://unlock-protocol.com/blog/new-filters-members-page) 
+
+- [Enhanced Members Page filters](https://unlock-protocol.com/blog/new-filters-members-page)
 
 ## Dashboard
-- Preview of an [entirely redesigned dashboard](https://unlock-protocol.com/blog/dashboard-redesign)
-    
-## Other
-- [Subgraph upgrade](https://unlock-protocol.com/blog/subgraph-v2)
 
+- Preview of an [entirely redesigned dashboard](https://unlock-protocol.com/blog/dashboard-redesign)
+
+## Other
+
+- [Subgraph upgrade](https://unlock-protocol.com/blog/subgraph-v2)
 
 Want to know more and try stuff out? [Join our Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!

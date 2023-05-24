@@ -12,12 +12,14 @@ The Unlock creator dashboard already included the functionality that allows some
 The email generated will also include a QR code of the signed NFT that they can use to prove that they own it when attending in-person events and a link to view their NFT. Let's take a look at the changes!
 
 ## New field added to the airdrop screen
-A new field "email" is now present on the airdrop screen. 
+
+A new field "email" is now present on the airdrop screen.
 ![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/email-airdrop-screenshot1.png)
 
 You can still send them without the email if you wish.
 
 ## New actions added to the "Members" page
+
 Some new action buttons are now visible on the "Members" page:
 
 - Add or edit the email for a specific key
@@ -27,4 +29,3 @@ Some new action buttons are now visible on the "Members" page:
 ![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/email-airdrop-screenshot3.png)
 
 We're excited to continue to support users of the protocol by consistently adding new features to the tools available. Be sure to join the [Discord](https://discord.com/invite/Ah6ZEJyTDp) server and subscribe to our newsletter for updates if you haven't already.
-

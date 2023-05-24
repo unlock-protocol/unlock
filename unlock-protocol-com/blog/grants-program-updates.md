@@ -23,21 +23,21 @@ I’m also excited to say that it means we now have the capability and capacity 
 
 ### Improved guides & handbooks
 
-We’ve updated all of our guides and handbooks for grantees and published them in our 
-[docs](https://docs.unlock-protocol.com/governance/grants-bounties/). This should improve the understanding of how the grants program works for those interested in 
-[applying](https://docs.unlock-protocol.com/governance/grants-bounties/udt-grantee-handbook#submitting-an-application). 
+We’ve updated all of our guides and handbooks for grantees and published them in our
+[docs](https://docs.unlock-protocol.com/governance/grants-bounties/). This should improve the understanding of how the grants program works for those interested in
+[applying](https://docs.unlock-protocol.com/governance/grants-bounties/udt-grantee-handbook#submitting-an-application).
 
-In addition, our new processes should make adding new [grant committee](https://docs.unlock-protocol.com/governance/grants-bounties/grant-committee-applicant-guide) 
-members much easier. This will enable Unlock to scale the program as the ecosystem grows. 
+In addition, our new processes should make adding new [grant committee](https://docs.unlock-protocol.com/governance/grants-bounties/grant-committee-applicant-guide)
+members much easier. This will enable Unlock to scale the program as the ecosystem grows.
 
-Using the experience gained from the over 100 grant applications we received to date, we sought to increase the impact of the projects we give grants to and have made improvements to the 
-[grant review](https://docs.unlock-protocol.com/governance/grants-bounties/grant-review-guide) guidance for the committee. 
+Using the experience gained from the over 100 grant applications we received to date, we sought to increase the impact of the projects we give grants to and have made improvements to the
+[grant review](https://docs.unlock-protocol.com/governance/grants-bounties/grant-review-guide) guidance for the committee.
 
 ### What’s next?
 
-We’re thrilled so far with all of these improvements and we’re confident this next season of grants will be even more effective at increasing network volume and adding to the credibility and visibility of Unlock Protocol. On a quarterly basis, the grants committee will review the progress of the program and make proposals to the community for iterative improvements, if needed. This will accelerate the success of the program while maintaining our commitment to decentralization. 
+We’re thrilled so far with all of these improvements and we’re confident this next season of grants will be even more effective at increasing network volume and adding to the credibility and visibility of Unlock Protocol. On a quarterly basis, the grants committee will review the progress of the program and make proposals to the community for iterative improvements, if needed. This will accelerate the success of the program while maintaining our commitment to decentralization.
 
-👉 Interested in building with us? Fill out an [application](https://docs.unlock-protocol.com/governance/grants-bounties/udt-grantee-handbook#submitting-an-application) for one of grants now! 
+👉 Interested in building with us? Fill out an [application](https://docs.unlock-protocol.com/governance/grants-bounties/udt-grantee-handbook#submitting-an-application) for one of grants now!
 
 ### Looking back at the last year: Unlock Protocol grant success stories
 

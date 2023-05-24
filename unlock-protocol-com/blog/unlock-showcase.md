@@ -9,7 +9,6 @@ image: /images/blog/unlock-showcase/unlock-showcase.png
 
 ![Unlock Showcase](/images/blog/unlock-showcase/unlock-showcase.png)
 
-
 [Unlock Showcase](https://www.unlockshowcase.com/) is a collection of projects, plugins and, websites built on Unlock Protocol.
 
 Unlock Showcase features interesting projects built with Unlock Protocol as well as third party tools and resources for developers. They would love to get to know about yours: [submit it now](https://www.unlockshowcase.com/submit)!
@@ -27,4 +26,3 @@ If you want to boost your project or support the team, please consider booking a
 Unlock Protocol provides UDT token grants to developers who can make the platform more accessible to wider communities.
 
 Have a project, developer tool, or another idea that would help Unlock? [Apply here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22)!
-

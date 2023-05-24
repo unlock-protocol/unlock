@@ -19,15 +19,15 @@ With test coins being free, there is no economic incentives for miners to secure
 
 ## Why Goerli?
 
-The Goerli (Görli) network is one of the main testing networks for Ethereum. It was created in 2018 during ETHBerlin to try to address the various flaws in existing testnets, by making it: *"both widely usable across all client implementations, and robust enough to guarantee consistent availability and high reliability"* (read the [original statement](https://dev.to/5chdn/the-grli-testnet-proposal---a-call-for-participation-58pf) for more). As today, it has become the most used test network and it's planned to be maintained [long term](https://ethereum.org/en/developers/docs/networks/). 
+The Goerli (Görli) network is one of the main testing networks for Ethereum. It was created in 2018 during ETHBerlin to try to address the various flaws in existing testnets, by making it: _"both widely usable across all client implementations, and robust enough to guarantee consistent availability and high reliability"_ (read the [original statement](https://dev.to/5chdn/the-grli-testnet-proposal---a-call-for-participation-58pf) for more). As today, it has become the most used test network and it's planned to be maintained [long term](https://ethereum.org/en/developers/docs/networks/).
 
-## Preparing for the Merge 
+## Preparing for the Merge
 
 Like most testnets, Goerli uses a permissioned proof-of-authority consensus mechanism - where only a small number of chosen nodes can validate transactions and create new blocks. As [The Merge](https://ethereum.org/en/upgrades/merge/) is getting closer, Goerli testnet will be merged with the Prater beacon chain and transition to a full proof-of-stake network in the following weeks. The Goerli/Prater merge should happen on [Aug 10, 2022](https://etherworld.co/2022/07/16/goerli-and-prater-testnet-merge/). This will mark the end of the permissioned proof-of-authority phase and anyone will be able to run a validator for Goerli. For the end user, not much will change (hopefully!).
 
 ## Unlock Protocol on Goerli
 
-The contracts for Unlock Protocol have been deployed on Goerli and you are able to create test locks from the online dashboard, starting now. The Unlock main contract lives at the address [`0x627118a4fB747016911e5cDA82e2E77C531e8206`](https://goerli.etherscan.io/address/0x627118a4fb747016911e5cda82e2e77c531e8206). You can get Goerli test coins using a [faucet](https://fauceth.komputing.org/?chain=5) - you can also try [that one](https://goerlifaucet.com/). Goerli is an ideal environment to build custom logic for your lock, using for instance [contract hooks](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks#register-a-hook). You can also check all [networks](https://docs.unlock-protocol.com/core-protocol/unlock/networks/) where Unlock has been been deployed. 
+The contracts for Unlock Protocol have been deployed on Goerli and you are able to create test locks from the online dashboard, starting now. The Unlock main contract lives at the address [`0x627118a4fB747016911e5cDA82e2E77C531e8206`](https://goerli.etherscan.io/address/0x627118a4fb747016911e5cda82e2e77c531e8206). You can get Goerli test coins using a [faucet](https://fauceth.komputing.org/?chain=5) - you can also try [that one](https://goerlifaucet.com/). Goerli is an ideal environment to build custom logic for your lock, using for instance [contract hooks](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks#register-a-hook). You can also check all [networks](https://docs.unlock-protocol.com/core-protocol/unlock/networks/) where Unlock has been been deployed.
 
 Now, time to build!
 

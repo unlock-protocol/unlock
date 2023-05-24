@@ -6,7 +6,7 @@ description: ETHDenver brings together developers, builders, and other members o
 image: /images/blog/ethdenver2023/ethdenver-unlock-share.png
 ---
 
-ETHDenver is an annual event that brings together developers, builders, and other members of the Ethereum community to collaborate and build decentralized applications and features talks, workshops, and hackathons. (And it’s a ***huge*** event — this year’s ETHDenver attracted over 30,000 attendees from around the world.) 
+ETHDenver is an annual event that brings together developers, builders, and other members of the Ethereum community to collaborate and build decentralized applications and features talks, workshops, and hackathons. (And it’s a **_huge_** event — this year’s ETHDenver attracted over 30,000 attendees from around the world.)
 
 The Unlock team was everywhere at ETHDenver 2023! Here are some of the highlights…
 
@@ -32,7 +32,7 @@ See [Chris’s presentation slides here](https://docs.google.com/presentation/d/
 
 ### **Sparx and Websh3 Panel: “Unlocking the Benefits of Blockchain in the Real World”**
 
-Hosted by Sparx and Websh3, sponsored by Unlock, and hosted at the Salesforce Tower, the “Unlocking the Benefits of Blockchain in the Real World” panel got into specifics and tangible use cases of blockchains. 
+Hosted by Sparx and Websh3, sponsored by Unlock, and hosted at the Salesforce Tower, the “Unlocking the Benefits of Blockchain in the Real World” panel got into specifics and tangible use cases of blockchains.
 
 ![sparx-panel-setup-lg-min.jpeg](/images/blog/ethdenver2023/sparx-panel-setup-lg-min.jpeg)
 
@@ -44,7 +44,7 @@ Hosted by Sparx and Websh3, sponsored by Unlock, and hosted at the Salesforce To
 
 ## Unlock x Coinvise “Creator Cocktails” Happy Hour
 
-On Wednesday night at ETHDenver, the Unlock team co-hosted over 150 registrants with our friends from Coinvise at the Rock Bottom Brewery to kick back and have some snacks, libations, and great conversations. 
+On Wednesday night at ETHDenver, the Unlock team co-hosted over 150 registrants with our friends from Coinvise at the Rock Bottom Brewery to kick back and have some snacks, libations, and great conversations.
 
 The Locksmith community is absolute 🔥.
 

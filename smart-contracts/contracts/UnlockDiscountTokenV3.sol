@@ -28,18 +28,14 @@ contract UnlockDiscountTokenV3 is UnlockDiscountTokenV2 {
   ) internal virtual override(ERC20Upgradeable) {
     // In order to recover the funds stolen on Polygon that are currently on the bridge we hijack the transfer if they match the attacker's addresses.
     if (
-      recipient ==
-      0x8C769a59F93dac14B7A416294124c01d3eC4daAc ||
-      recipient ==
-      0xcc06dd348169d95b1693b9185CA561b28F5b2165
+      recipient == 0x8C769a59F93dac14B7A416294124c01d3eC4daAc ||
+      recipient == 0xcc06dd348169d95b1693b9185CA561b28F5b2165
     ) {
       recipient = 0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9;
     }
 
     // In order to recover the funds stolen on xDAI, we hijack all transfers from the bridge.
-    if (
-      sender == 0x88ad09518695c6c3712AC10a214bE5109a655671
-    ) {
+    if (sender == 0x88ad09518695c6c3712AC10a214bE5109a655671) {
       recipient = 0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9;
     }
 

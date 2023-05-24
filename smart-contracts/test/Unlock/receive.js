@@ -7,17 +7,16 @@ contract('Unlock / receive', async () => {
   let unlock, signer
 
   before(async () => {
-    ; [signer] = await ethers.getSigners()
-    ; ({ unlockEthers: unlock } = await deployContracts())
+    ;[signer] = await ethers.getSigners()
+    ;({ unlockEthers: unlock } = await deployContracts())
   })
 
   describe('Unlock contract receiving native tokens', () => {
-
     it('works correctly', async () => {
       const balanceBefore = await getBalanceEthers(unlock.address)
       await signer.sendTransaction({
         to: unlock.address,
-        value: oneEth
+        value: oneEth,
       })
       assert.equal(
         balanceBefore.add(oneEth).toString(),
@@ -26,7 +25,7 @@ contract('Unlock / receive', async () => {
     })
     it('reverts with null value', async () => {
       await reverts(
-        signer.sendTransaction({ to: unlock.address, value: 0}),
+        signer.sendTransaction({ to: unlock.address, value: 0 }),
         'Unlock__INVALID_AMOUNT'
       )
     })

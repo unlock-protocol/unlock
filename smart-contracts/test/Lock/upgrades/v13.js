@@ -48,18 +48,14 @@ describe('PublicLock upgrade v12 > v13', () => {
       currency,
       keyPrice,
       maxKeys,
-      name
+      name,
     ]
 
     lock = await upgrades.deployProxy(PublicLockPast, args)
     await lock.deployed()
 
     // set many keys
-    await lock.connect(lockOwner).updateLockConfig(
-      duration,
-      20,
-      3
-    )
+    await lock.connect(lockOwner).updateLockConfig(duration, 20, 3)
   })
 
   it('past version has correct version number', async () => {
@@ -107,7 +103,7 @@ describe('PublicLock upgrade v12 > v13', () => {
       // deploy new implementation
       lock = await upgrades.upgradeProxy(lock.address, PublicLockLatest, {
         // UNSECURE - but we need the flag as we are resizing the `__gap`
-        // unsafeSkipStorageCheck: true, 
+        // unsafeSkipStorageCheck: true,
       })
 
       // make sure ownership is preserved
@@ -119,7 +115,10 @@ describe('PublicLock upgrade v12 > v13', () => {
       assert.equal(await lock.name(), name)
       assert.equal(await lock.expirationDuration(), duration)
       assert.equal((await lock.keyPrice()).toString(), price.toString())
-      assert.equal((await lock.maxNumberOfKeys()).toString(), maxKeys.toString())
+      assert.equal(
+        (await lock.maxNumberOfKeys()).toString(),
+        maxKeys.toString()
+      )
       assert.equal(await lock.tokenAddress(), currency)
     })
 

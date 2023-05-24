@@ -61,11 +61,6 @@
     "chai": "4.3.7",
     "web3": "1.8.2"
   },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "yarn run lint --fix"
-    ]
-  },
   "scripts": {
     "test": "hardhat test",
     "clean": "rm -rf artifacts",

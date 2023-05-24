@@ -4,7 +4,6 @@ const { getNetworkName } = require('../../helpers/network')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 async function main(locksmiths) {
-
   const [deployer] = await ethers.getSigners()
 
   // fetch chain info
@@ -16,9 +15,14 @@ async function main(locksmiths) {
     initializer: 'initialize()',
   })
   await keyManager.deployed()
-  const implementation = await getImplementationAddress(deployer.provider, keyManager.address)
+  const implementation = await getImplementationAddress(
+    deployer.provider,
+    keyManager.address
+  )
 
-  console.log(`> Deployed KeyManager on ${networkName} to ${keyManager.address} (impl: ${implementation})`)
+  console.log(
+    `> Deployed KeyManager on ${networkName} to ${keyManager.address} (impl: ${implementation})`
+  )
 
   // Add locksmiths
   for (const locksmith of locksmiths) {
@@ -36,13 +40,17 @@ async function main(locksmiths) {
     const proxyAdmin = await upgrades.admin.getInstance()
     const proxyAdminOwner = await proxyAdmin.owner()
     if (proxyAdminOwner === deployer.address) {
-      console.log(`> Proxy admin is owned by deployer, transfering to multisig ${multisig}`)
+      console.log(
+        `> Proxy admin is owned by deployer, transfering to multisig ${multisig}`
+      )
       await upgrades.admin.transferProxyAdminOwnership(multisig)
       console.log(`> Transfered proxy admin ownership to ${multisig}`)
     } else if (proxyAdminOwner === multisig) {
       console.log(`> Proxy admin is already onwed by multisig`)
     } else {
-      console.log(`⚠️ Proxy admin is owned by ${proxyAdminOwner}! Make sure to transfer to multisig ${multisig}!`)
+      console.log(
+        `⚠️ Proxy admin is owned by ${proxyAdminOwner}! Make sure to transfer to multisig ${multisig}!`
+      )
     }
   }
   return keyManager.address

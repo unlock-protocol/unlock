@@ -11,7 +11,6 @@ Hello, Unlock community! We’re very excited to announce that [Austin Robey](ht
 
 ![Amber Case](/images/blog/austin-robey.png)
 
-
 I first met Austin in my work as a Fellow studying web monetization with the [Mozilla Foundation](https://www.mozilla.org/en-US/). Since then he’s dived into Web3 technologies with impressive energy and passion to help Unlock work for independent creators. We also love his strong design background, with an architecture degree from Pratt, and an ongoing relationship as a designer with the New Museum of Contemporary Art in New York. So we can’t wait to see how he better connects Unlock with projects across many creative fields.
 
 What that let me turn the mic over to Austin to talk about his new role, and his vision for helping Unlock:

@@ -21,13 +21,14 @@ contract('Unlock / UnlockProxy', (accounts) => {
     const lock = await PublicLock.new()
 
     await this.unlock.addLockTemplate(
-      lock.address, 
-      await unlock.publicLockLatestVersion() + 1, 
-    {
-      from: this.unlockOwner,
-      gas: MAX_GAS,
-    })
-    
+      lock.address,
+      (await unlock.publicLockLatestVersion()) + 1,
+      {
+        from: this.unlockOwner,
+        gas: MAX_GAS,
+      }
+    )
+
     await this.unlock.setLockTemplate(lock.address, {
       from: this.unlockOwner,
       gas: MAX_GAS,

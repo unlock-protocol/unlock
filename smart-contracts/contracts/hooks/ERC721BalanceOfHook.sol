@@ -7,18 +7,9 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 contract ERC721BalanceOfHook {
   mapping(address => address) public nftAddresses;
 
-  function createMapping(
-    address _lockAddress,
-    address _nftAddress
-  ) external {
-    require(
-      _lockAddress != address(0),
-      "Lock address can not be zero"
-    );
-    require(
-      _nftAddress != address(0),
-      "ERC721 address can not be zero"
-    );
+  function createMapping(address _lockAddress, address _nftAddress) external {
+    require(_lockAddress != address(0), "Lock address can not be zero");
+    require(_nftAddress != address(0), "ERC721 address can not be zero");
 
     // make sure lock manager
     IPublicLockV9 lock = IPublicLockV9(_lockAddress);

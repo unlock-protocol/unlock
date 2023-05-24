@@ -6,7 +6,7 @@ description: The details on why over 200,000 membership NFTs were claimed during
 image: /images/blog/advent-infographic/advent-infographic-share.png
 ---
 
-It's true! Unlock Protocol had over **200,000** membership NFTs claimed during December from our Advent calendar activation. 
+It's true! Unlock Protocol had over **200,000** membership NFTs claimed during December from our Advent calendar activation.
 
 The key bits:
 

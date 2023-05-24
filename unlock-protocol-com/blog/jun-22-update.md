@@ -34,6 +34,7 @@ image: /images/blog/june-22-update/june-22-banner.png
 - Members page UI refreshed
 
 ## Backend / API server updates
+
 - Support for API to grant keys on lock
 - Server side QR code generation
 - Ability to send QR codes by email from backend

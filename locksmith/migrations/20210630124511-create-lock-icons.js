@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('LockIcons', {
@@ -6,34 +6,33 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       lock: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       chain: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       icon: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
     await queryInterface.addIndex('LockIcons', {
       unique: true,
       fields: ['lock', 'chain'],
       name: 'lock_chain_index',
     })
-
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('LockIcons');
-  }
-};
+    await queryInterface.dropTable('LockIcons')
+  },
+}

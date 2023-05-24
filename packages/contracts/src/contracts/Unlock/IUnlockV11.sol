@@ -18,10 +18,7 @@ interface IUnlockV11 {
    * Retrieve the contract address of the proxy admin that manages the locks
    * @return the address of the ProxyAdmin instance
    */
-  function proxyAdminAddress()
-    external
-    view
-    returns (address);
+  function proxyAdminAddress() external view returns (address);
 
   /**
    * @notice Create lock (legacy)
@@ -61,9 +58,7 @@ interface IUnlockV11 {
    *  );
    * @return address of the create lock
    */
-  function createUpgradeableLock(
-    bytes memory data
-  ) external returns (address);
+  function createUpgradeableLock(bytes memory data) external returns (address);
 
   /**
    * Create an upgradeable lock using a specific PublicLock version
@@ -127,24 +122,15 @@ interface IUnlockV11 {
   ) external pure returns (uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
-  function globalBaseTokenURI()
-    external
-    view
-    returns (string memory);
+  function globalBaseTokenURI() external view returns (string memory);
 
   /**
    * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalBaseTokenURI()
-    external
-    view
-    returns (string memory);
+  function getGlobalBaseTokenURI() external view returns (string memory);
 
   // Function to read the globalTokenSymbol field.
-  function globalTokenSymbol()
-    external
-    view
-    returns (string memory);
+  function globalTokenSymbol() external view returns (string memory);
 
   // Function to read the chainId field.
   function chainId() external view returns (uint);
@@ -152,10 +138,7 @@ interface IUnlockV11 {
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory);
+  function getGlobalTokenSymbol() external view returns (string memory);
 
   /**
    * @notice Allows the owner to update configuration variables
@@ -173,45 +156,33 @@ interface IUnlockV11 {
    * @notice Add a PublicLock template to be used for future calls to `createLock`.
    * @dev This is used to upgrade conytract per version number
    */
-  function addLockTemplate(
-    address impl,
-    uint16 version
-  ) external;
+  function addLockTemplate(address impl, uint16 version) external;
 
   /**
    * Match lock templates addresses with version numbers
    * @param _version the number of the version of the template
    * @return address of the lock templates
    */
-  function publicLockImpls(
-    uint16 _version
-  ) external view returns (address);
+  function publicLockImpls(uint16 _version) external view returns (address);
 
   /**
    * Match version numbers with lock templates addresses
    * @param _impl the address of the deployed template contract (PublicLock)
    * @return number of the version corresponding to this address
    */
-  function publicLockVersions(
-    address _impl
-  ) external view returns (uint16);
+  function publicLockVersions(address _impl) external view returns (uint16);
 
   /**
    * Retrieve the latest existing lock template version
    * @return the version number of the latest template (used to deploy contracts)
    */
-  function publicLockLatestVersion()
-    external
-    view
-    returns (uint16);
+  function publicLockLatestVersion() external view returns (uint16);
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.
    * @dev This will initialize the template and revokeOwnership.
    */
-  function setLockTemplate(
-    address payable _publicLockAddress
-  ) external;
+  function setLockTemplate(address payable _publicLockAddress) external;
 
   // Allows the owner to change the value tracking variables as needed.
   function resetTrackedValue(
@@ -219,38 +190,23 @@ interface IUnlockV11 {
     uint _totalDiscountGranted
   ) external;
 
-  function grossNetworkProduct()
-    external
-    view
-    returns (uint);
+  function grossNetworkProduct() external view returns (uint);
 
-  function totalDiscountGranted()
-    external
-    view
-    returns (uint);
+  function totalDiscountGranted() external view returns (uint);
 
   function locks(
     address
   )
     external
     view
-    returns (
-      bool deployed,
-      uint totalSales,
-      uint yieldedDiscountTokens
-    );
+    returns (bool deployed, uint totalSales, uint yieldedDiscountTokens);
 
   // The address of the public lock template, used when `createLock` is called
-  function publicLockAddress()
-    external
-    view
-    returns (address);
+  function publicLockAddress() external view returns (address);
 
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
-  function uniswapOracles(
-    address
-  ) external view returns (address);
+  function uniswapOracles(address) external view returns (address);
 
   // The WETH token address, used for value calculations
   function weth() external view returns (address);
@@ -259,10 +215,7 @@ interface IUnlockV11 {
   function udt() external view returns (address);
 
   // The approx amount of gas required to purchase a key
-  function estimatedGasForPurchase()
-    external
-    view
-    returns (uint);
+  function estimatedGasForPurchase() external view returns (uint);
 
   /**
    * Helper to get the network mining basefee as introduced in EIP-1559
@@ -279,14 +232,11 @@ interface IUnlockV11 {
    * setting the _oracleAddress to address(0) removes support for the token
    * @dev This will also call update to ensure at least one datapoint has been recorded.
    */
-  function setOracle(
-    address _tokenAddress,
-    address _oracleAddress
-  ) external;
+  function setOracle(address _tokenAddress, address _oracleAddress) external;
 
   /**
-   * Initialize the Ownable contract, granting contract ownership to the specified sender 
-   */ 
+   * Initialize the Ownable contract, granting contract ownership to the specified sender
+   */
   function __initializeOwnable(address sender) external;
 
   /**

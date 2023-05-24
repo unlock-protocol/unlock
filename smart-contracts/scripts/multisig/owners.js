@@ -3,9 +3,9 @@ const { getProvider, getSafeAddress } = require('./_helpers')
 const multisigABI = require('../../test/helpers/ABIs/multisig.json')
 
 async function main({ chainId, safeAddress }) {
-  if(!chainId) {
-    ;({chainId} = await ethers.provider.getNetwork())
-  } 
+  if (!chainId) {
+    ;({ chainId } = await ethers.provider.getNetwork())
+  }
   const { provider } = await getProvider(chainId)
   if (!safeAddress) {
     safeAddress = await getSafeAddress(chainId)

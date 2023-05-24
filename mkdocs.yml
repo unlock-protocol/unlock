@@ -1,6 +1,6 @@
 site_name: Unlock Protocol Documentation
 theme: readthedocs
 markdown_extensions:
-- admonition
-- codehilite
+  - admonition
+  - codehilite
 repo_url: https://github.com/unlock-protocol/unlock/

@@ -119,7 +119,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       await purchaseKey(lock, nftOwner)
       assert.equal(await lock.balanceOf(nftOwner), 1)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
-      
+
       // create mapping
       await hook.createMapping(lock.address, nft.address)
       assert.equal(await lock.getHasValidKey(nftOwner), true)

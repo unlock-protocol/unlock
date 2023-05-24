@@ -127,7 +127,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
       const isValid = await lock.getHasValidKey(keyOwners[0])
       assert.equal(isValid, false)
     })
-    
+
     it('should retain ownership info', async () => {
       assert.equal(await lock.ownerOf(tokenIds[0]), keyOwners[0])
     })

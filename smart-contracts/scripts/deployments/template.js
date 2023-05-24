@@ -12,10 +12,14 @@ async function main({ publicLockVersion }) {
   let PublicLock
   if (publicLockVersion) {
     const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
-    console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for released version ${publicLockVersion} with signer ${signer.address}`)
+    console.log(
+      `PUBLIC LOCK > Deploying lock template on ${networkName} for released version ${publicLockVersion} with signer ${signer.address}`
+    )
     PublicLock = await ethers.getContractFactory(abi, bytecode)
   } else {
-    console.log(`PUBLIC LOCK > Deploying lock template on ${networkName} for development version with signer ${signer.address}`)
+    console.log(
+      `PUBLIC LOCK > Deploying lock template on ${networkName} for development version with signer ${signer.address}`
+    )
     PublicLock = await ethers.getContractFactory('PublicLock')
   }
 
@@ -24,11 +28,12 @@ async function main({ publicLockVersion }) {
 
   // eslint-disable-next-line no-console
   console.log(
-    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLock.address
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${
+      publicLock.address
     } (tx: ${publicLock.deployTransaction.hash})`
   )
 
-  if(chainId !== 31337) {
+  if (chainId !== 31337) {
     await run('verify:verify', { address: publicLock.address })
   }
 

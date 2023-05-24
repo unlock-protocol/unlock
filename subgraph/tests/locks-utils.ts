@@ -1,9 +1,14 @@
 import { newMockEvent } from 'matchstick-as'
-import {
-  dataSourceMock,
-} from 'matchstick-as/assembly/index'
+import { dataSourceMock } from 'matchstick-as/assembly/index'
 
-import { ethereum, Address, BigInt, Value, Bytes, DataSourceContext } from '@graphprotocol/graph-ts'
+import {
+  ethereum,
+  Address,
+  BigInt,
+  Value,
+  Bytes,
+  DataSourceContext,
+} from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
   RoleGranted,
@@ -43,7 +48,6 @@ export function createNewLockEvent(
 
   return newLockEvent
 }
-
 
 export function createRoleGrantedLockManagerAddedEvent(
   newLockManager: Address

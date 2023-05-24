@@ -18,13 +18,13 @@ David Layton, from the Novum Insights team built an integration between Unlock a
 The first step is to install the [NPM package](https://www.npmjs.com/package/@novuminsights/unlock-protocol-firebase) for the integration `@novum/unlock-firebase-integration`, then your application needs to authenticate its users by requesting users to sign a message. The backend will then **map** a Firebase Authentication user with their Ethereum wallet.
 
 ```javascript
-import "firebase/auth"
-import "firebase/functions"
-import {signInWithWeb3} from '@novum/unlock-firebase-integration/lib/browser'
+import 'firebase/auth'
+import 'firebase/functions'
+import { signInWithWeb3 } from '@novum/unlock-firebase-integration/lib/browser'
 
-const app = firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig)
 const signInButton = document.querySelector('#MyButton')
-signInButton.onclick = () => signInWithWeb3(app);
+signInButton.onclick = () => signInWithWeb3(app)
 ```
 
 Finally, once the users are mapped to their wallet you can easily configure your application to behave differently based on which locks the users have unlocked!
@@ -43,18 +43,18 @@ You can define these using a configuration file `unlock-integration.config.json`
     },
 }
 ```
+
 In that example, any user who has a valid membership to the lock `0x361Ddf540e27632D80dDE806EAa76AC42A0e15F6` will have the role `basic_subscription`
 
 Finally you can alter the behavior of your application on the front-end or backend using the `context.auth` object.
 
 ```javascript
 async function hasBasicSubscription(context) {
-    const auth = context.auth;
-    /// ...
-    return auth.token.basic_subscription === true;
+  const auth = context.auth
+  /// ...
+  return auth.token.basic_subscription === true
 }
 ```
-
 
 Check the [Unlock Firebase integration docs](https://david-layton.gitbook.io/novum/) for more info!
 
@@ -63,5 +63,3 @@ Check the [Unlock Firebase integration docs](https://david-layton.gitbook.io/nov
 Novum Insights is a powerful DeFi tool that lets investors identify **Momentum Pairs** of crypto tokens. Novum Insights is now offering an Unlock based membership that uses their Firebase integration! Right now, they have a 1 year limited edition for Eth 0.04 (50% off!)
 
 Get [your Novum Membership today](https://novuminsights.com/)!
-
-

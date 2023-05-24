@@ -11,7 +11,6 @@ Cohort 4 of the Unlock Grantees are here and ready to push the protocol towards 
 
 ![Cohort 4](/images/blog/cohort-4/cohort-4.png)
 
-
 Check out these brief introductions for each grantee, their project and how to find them on the Twitters so you can follow their progress. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal to join the next cohort! Our grant selection committee will be meeting soon to review the latest applications— so don't wait!
 
 ## David Layton - Unfurl
@@ -22,7 +21,7 @@ David Layton is creating Unfurl, an Open ID Connect Provider powered by Unlock P
 
 ## MJ Zilla - Element Integration
 
-[https://twitter.com/_mecyver](https://twitter.com/_mecyver)
+[https://twitter.com/\_mecyver](https://twitter.com/_mecyver)
 
 MJ, aka Mecyver is working on an Element + Unlock integration. Providing a viable alternative to community building outside of Discord that utilizes our protocol to manage memberships will help support more adoption by creators! We're very excited to see a fresh integration for private and group chats that is also open-source and encrypted.
 
@@ -36,7 +35,7 @@ Chisos Capital is utilizing Unlock to support their membership club and communit
 
 [https://twitter.com/the_carlosdp](https://twitter.com/the_carlosdp)
 
-Carlos and Gail are working on an integration for Metaphor's DAO onboarding tool, with the intention of creating an easy method for joining a DAO.  This will allow members to bypass expensive, and often prohibitive, token ownership that normally powers DAO participation.
+Carlos and Gail are working on an integration for Metaphor's DAO onboarding tool, with the intention of creating an easy method for joining a DAO. This will allow members to bypass expensive, and often prohibitive, token ownership that normally powers DAO participation.
 
 ## Fanny Lakoubay - BAD 2.0 (Blockchain Art Directory)
 

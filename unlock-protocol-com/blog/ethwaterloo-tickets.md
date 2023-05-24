@@ -52,5 +52,4 @@ At check-in, you will be asked to show the QR code you were provided by Unlock w
 
 No. Actually, all Unlock keys (your ticket is a kind of Unlock key) are transferable, but each lock owner can set terms on how keys can be transferred. ETHGlobal charges a prohibitively expensive fee for transfers, making them economically improbable ;) Bonus point if you write the actual amount of that fee in the comments!
 
-
 We're very excited to meet you in Waterloo, as our team will be there! If you've never hacked on Ethereum before, [please consider applying now](https://airtable.com/shrrUrSEzT4xrYuyC)!

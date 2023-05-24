@@ -1,30 +1,30 @@
 [
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "net_version",
-            "params": [],
-            "id": 42,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 42,
-            "jsonrpc": "2.0",
-            "result": "31337"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Fri, 27 Mar 2020 18:59:55 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ],
-        "responseIsBinary": false
-    }
+  {
+    "scope": "http://0.0.0.0:8545",
+    "method": "POST",
+    "path": "/",
+    "body": {
+      "method": "net_version",
+      "params": [],
+      "id": 42,
+      "jsonrpc": "2.0"
+    },
+    "status": 200,
+    "response": {
+      "id": 42,
+      "jsonrpc": "2.0",
+      "result": "31337"
+    },
+    "rawHeaders": [
+      "Content-Type",
+      "application/json",
+      "Date",
+      "Fri, 27 Mar 2020 18:59:55 GMT",
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked"
+    ],
+    "responseIsBinary": false
+  }
 ]

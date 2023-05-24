@@ -8,9 +8,7 @@ async function main({ owners, threshold = 4 }) {
     throw new Error('SAFE SETUP > Number of owners should be odd.')
   }
   if (owners && owners.length < threshold) {
-    throw new Error(
-      'SAFE SETUP > Threshold is greater than number of owners.'
-    )
+    throw new Error('SAFE SETUP > Threshold is greater than number of owners.')
   }
 
   // get mainnet owners if needed

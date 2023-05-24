@@ -51,7 +51,6 @@ At the end of the period, the smart contract looks at the number of votes (quoru
 
 However, if the proposal is approved (majority of votes in favor), then the proposal gets sent to a time-lock contract. This contract is where the transaction will sit for 1 week, before being finally executed!
 
-
 ## Collaborating
 
 The pre-requisite to any proposal is that all (or at least a majority of) token holders have delegated their votes. It is a critical step because _without it, no proposal can ever reach quorum_.

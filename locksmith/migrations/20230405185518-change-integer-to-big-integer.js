@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -71,7 +71,7 @@ module.exports = {
       }),
       queryInterface.changeColumn('HookEvents', 'network', {
         type: 'pg_chain_id',
-      })
+      }),
     ])
   },
 
@@ -143,8 +143,8 @@ module.exports = {
       }),
       queryInterface.changeColumn('HookEvents', 'network', {
         type: Sequelize.INTEGER,
-      })
+      }),
     ])
     return queryInterface.sequelize.query('DROP DOMAIN pg_chain_id;')
-  }
-};
+  },
+}

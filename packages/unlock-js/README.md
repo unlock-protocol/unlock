@@ -43,13 +43,13 @@ There is a `yarn generate` command which generates the client and spits it out i
 
 ## Tests
 
-You can run the entire test suite using 
+You can run the entire test suite using
 
 ```
 yarn test
 ```
 
-Run a single test 
+Run a single test
 
 ```
 yarn test:single --file src/__tests__/utils.test.js

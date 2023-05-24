@@ -51,8 +51,8 @@ contract('Unlock / createLock (Legacy)', () => {
           const tx = await unlock.createLock(...args, salt)
           const evt = tx.logs.find((v) => v.event === 'NewLock')
           lock = await ethers.getContractAt(
-            'contracts/PublicLock.sol:PublicLock'      
-            , evt.args.newLockAddress
+            'contracts/PublicLock.sol:PublicLock',
+            evt.args.newLockAddress
           )
         })
 
@@ -68,7 +68,7 @@ contract('Unlock / createLock (Legacy)', () => {
         it('lock is upgradeable', async () => {
           const tx = await unlock.upgradeLock(
             lock.address,
-            await lock.publicLockVersion() + 1
+            (await lock.publicLockVersion()) + 1
           )
           assert.equal(tx.logs[0].event, 'LockUpgraded')
         })

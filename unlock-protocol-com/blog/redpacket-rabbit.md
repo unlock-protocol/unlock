@@ -14,7 +14,7 @@ Hongbao is an important part of Chinese culture and is seen as a way to show res
 
 The monetary value of hongbao is typically small, and it is seen as a gesture, rather than an exchange of money. It is often accompanied by a written message or wish.
 
-Our designer [Chiali](https://chialitsai.com/about/) brought up the idea of seeing if we’d be able to bring the gratitude of hongbao to web3, and the rest of the Unlock Protocol team leapt at her idea. 
+Our designer [Chiali](https://chialitsai.com/about/) brought up the idea of seeing if we’d be able to bring the gratitude of hongbao to web3, and the rest of the Unlock Protocol team leapt at her idea.
 
 Chiali’s design and results are delightful.
 
@@ -26,8 +26,8 @@ We will open a mint window on Wednesday, January 18, 2023, and you can mint and 
 
 The five hongbao designs with differing rarity traits will be revealed to holders on Sunday, January 22, 2023 (Lunar New Year).
 
-Mint price to send a gift of hongbao is 1 MATIC (right around a dollar at today’s rates) and takes place on the Polygon Network. While you can mint multiple times to send to multiple recipients, there is a maximum of one hongbao gift per wallet. 
+Mint price to send a gift of hongbao is 1 MATIC (right around a dollar at today’s rates) and takes place on the Polygon Network. While you can mint multiple times to send to multiple recipients, there is a maximum of one hongbao gift per wallet.
 
 **If you would like to gift a web3-powered red packet to someone this year, please visit: [https://red-packet.unlock-protocol.com](https://red-packet.unlock-protocol.com).**
 
-*As always, if you have any questions, please let us know in the [Discord](https://discord.unlock-protocol.com).*
+_As always, if you have any questions, please let us know in the [Discord](https://discord.unlock-protocol.com)._

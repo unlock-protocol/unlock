@@ -86,7 +86,7 @@ That’s the contract implementation! The hardest part can be testing though. We
 const { protocols } = require('hardlydifficult-ethereum-contracts')
 const PaidOnlyFeature = artifacts.require('PaidOnlyFeature')
 
-contract('PaidOnlyFeature', accounts => {
+contract('PaidOnlyFeature', (accounts) => {
   let lock
   let featureContract
   const keyOwner = accounts[3]

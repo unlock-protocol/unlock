@@ -10,7 +10,7 @@ dataSources:
     name: Unlock
     source:
       abi: Unlock
-      address: "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f"
+      address: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f'
       startBlock: 19338700
     mapping:
       kind: ethereum/events

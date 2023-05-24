@@ -9,22 +9,14 @@ import "./MixinErrors.sol";
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
-contract MixinConvenienceOwnable is
-  MixinErrors,
-  MixinLockCore
-{
+contract MixinConvenienceOwnable is MixinErrors, MixinLockCore {
   // used for `owner()`convenience helper
   address private _convenienceOwner;
 
   // events
-  event OwnershipTransferred(
-    address previousOwner,
-    address newOwner
-  );
+  event OwnershipTransferred(address previousOwner, address newOwner);
 
-  function _initializeMixinConvenienceOwnable(
-    address _sender
-  ) internal {
+  function _initializeMixinConvenienceOwnable(address _sender) internal {
     _convenienceOwner = _sender;
   }
 
@@ -54,9 +46,7 @@ contract MixinConvenienceOwnable is
     emit OwnershipTransferred(_previousOwner, account);
   }
 
-  function isOwner(
-    address account
-  ) public view returns (bool) {
+  function isOwner(address account) public view returns (bool) {
     return _convenienceOwner == account;
   }
 

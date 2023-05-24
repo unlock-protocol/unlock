@@ -24,7 +24,7 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     ;[unlockOwner, lockOwner] = await ethers.getSigners()
     const Unlock = await ethers.getContractFactory('Unlock')
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)'
+      initializer: 'initialize(address)',
     })
     await unlock.deployed()
 
@@ -45,7 +45,9 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     publicLockUpgraded = await PublicLockUpgraded.deploy()
     await publicLockUpgraded.deployed()
     await unlock.addLockTemplate(publicLockUpgraded.address, 2)
-    expect(await unlock.publicLockVersions(publicLockUpgraded.address)).to.equals(2)
+    expect(
+      await unlock.publicLockVersions(publicLockUpgraded.address)
+    ).to.equals(2)
 
     // create lock calldata
     calldata = await createLockHash({ args, from: lockOwner.address })

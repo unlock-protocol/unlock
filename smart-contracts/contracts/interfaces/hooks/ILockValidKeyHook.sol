@@ -13,7 +13,7 @@ interface ILockValidKeyHook {
    * @param operator the address that is calling the function (`msg.sender`)
    * @param tokenId the id of the token to check
    * @param expirationTimestamp the key expiration timestamp
-   * @param keyOwner the owner of the key 
+   * @param keyOwner the owner of the key
    * @param isValidKey the actual validity of the key
    */
   function isValidKey(

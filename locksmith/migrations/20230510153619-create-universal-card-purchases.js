@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const table = 'UniversalCardPurchases'
 
@@ -14,19 +14,19 @@ module.exports = {
       },
       lockAddress: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       network: {
         allowNull: false,
-        type: 'pg_chain_id'
+        type: 'pg_chain_id',
       },
       userAddress: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       stripeSession: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       body: {
         allowNull: false,
@@ -34,13 +34,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
     await queryInterface.addIndex(table, {
       fields: ['stripeSession'],
       name: 'stripeSession_index',
@@ -53,9 +53,8 @@ module.exports = {
       fields: ['lockAddress'],
       name: 'lockAddress_index',
     })
-
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(table);
-  }
-};
+    await queryInterface.dropTable(table)
+  },
+}

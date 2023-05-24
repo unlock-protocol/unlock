@@ -6,10 +6,7 @@ interface IUniswapOracleV3 {
 
   function factory() external returns (address);
 
-  function update(
-    address _tokenIn,
-    address _tokenOut
-  ) external;
+  function update(address _tokenIn, address _tokenOut) external;
 
   function consult(
     address _tokenIn,

@@ -5,6 +5,7 @@ authorName: Julien Genestoux
 publishDate: July 24, 2018
 description: We’re growing our talented and mission-driven team. Come join us!
 ---
+
 At Unlock, we’re on [a mission to fix the web](/blog/its-time-to-unlock-the-web). Unlock empowers each and every creator in the world and helps them find ways to monetize without relying on a middleman. It’s a protocol — and not a centralized platform that controls everything that happens on it. We want to help value spread more easily not through convoluted user tracking or clickbait. It’s about taking back subscription and access from the domain of middlemen — from a million tiny silos and a handful of gigantic ones — and transforming it into a fundamental business model for the web.
 
 I’ve spent my career building for the open web, whether for Superfeedr (acquired by Medium in 2016) or at Medium where I worked on SEO, syndication protocols and cryptocurrencies, or through the WebSub protocol which I wrote for the W3C.

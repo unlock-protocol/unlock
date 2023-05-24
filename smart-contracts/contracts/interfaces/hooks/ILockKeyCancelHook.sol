@@ -13,9 +13,5 @@ interface ILockKeyCancelHook {
    * @param to the account which had the key canceled
    * @param refund the amount sent to the `to` account (ETH or a ERC-20 token)
    */
-  function onKeyCancel(
-    address operator,
-    address to,
-    uint256 refund
-  ) external;
+  function onKeyCancel(address operator, address to, uint256 refund) external;
 }

@@ -7,7 +7,7 @@ description: Content Rooms is a platform for Creators to connect with and moneti
 image: /images/blog/contentrooms-logo-510.png
 ---
 
-*Chris Cacace is the Founder and CEO of Content Rooms and presented at Unlock's [Developer Meetup](https://youtu.be/s7w_MDmqeUQ?t=412).*
+_Chris Cacace is the Founder and CEO of Content Rooms and presented at Unlock's [Developer Meetup](https://youtu.be/s7w_MDmqeUQ?t=412)._
 
 [Content Rooms](https://www.contentrooms.com) is a platform for Creators to connect with and monetize their community. We enable Creators to build a subscription fanbase and host exclusive events that are protected using Unlock Protocol.
 

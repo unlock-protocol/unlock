@@ -62,22 +62,15 @@ contract LockSerializer {
     uint expirationDuration = lock.expirationDuration();
     uint keyPrice = lock.keyPrice();
     uint maxNumberOfKeys = lock.maxNumberOfKeys();
-    return
-      LockPriceInfo(
-        expirationDuration,
-        keyPrice,
-        maxNumberOfKeys
-      );
+    return LockPriceInfo(expirationDuration, keyPrice, maxNumberOfKeys);
   }
 
   function serializeFees(
     IPublicLock lock
   ) public view returns (LockFees memory) {
     uint256 freeTrialLength = lock.freeTrialLength();
-    uint256 refundPenaltyBasisPoints = lock
-      .refundPenaltyBasisPoints();
-    uint256 transferFeeBasisPoints = lock
-      .transferFeeBasisPoints();
+    uint256 refundPenaltyBasisPoints = lock.refundPenaltyBasisPoints();
+    uint256 transferFeeBasisPoints = lock.transferFeeBasisPoints();
     return
       LockFees(
         freeTrialLength,
@@ -94,23 +87,17 @@ contract LockSerializer {
 
     // get the latest TokenURI to use as sample
     uint totalSupply = lock.totalSupply();
-    string memory tokenURISample = lock.tokenURI(
-      totalSupply
-    );
+    string memory tokenURISample = lock.tokenURI(totalSupply);
 
     return LockMetadata(name, symbol, tokenURISample);
   }
 
-  function serialize(
-    address lockAddress
-  ) public view returns (Lock memory) {
+  function serialize(address lockAddress) public view returns (Lock memory) {
     IPublicLock lock = IPublicLock(lockAddress);
 
     LockMetadata memory metadata = serializeMetadata(lock);
     LockFees memory fees = serializeFees(lock);
-    LockPriceInfo memory priceInfo = serializePriceInfo(
-      lock
-    );
+    LockPriceInfo memory priceInfo = serializePriceInfo(lock);
 
     // protocol
     uint publicLockVersion = lock.publicLockVersion();
@@ -122,19 +109,14 @@ contract LockSerializer {
 
     // keys
     address[] memory keyOwners = new address[](totalSupply);
-    address[] memory keyManagers = new address[](
-      totalSupply
-    );
-    uint[] memory expirationTimestamps = new uint[](
-      totalSupply
-    );
+    address[] memory keyManagers = new address[](totalSupply);
+    uint[] memory expirationTimestamps = new uint[](totalSupply);
 
     // tokenId starts at 1, so totalSupply + 1 is needed
     for (uint256 i = 0; i < totalSupply; i++) {
       uint256 tokenId = i + 1;
       keyOwners[i] = lock.ownerOf(tokenId);
-      expirationTimestamps[i] = lock
-        .keyExpirationTimestampFor(tokenId);
+      expirationTimestamps[i] = lock.keyExpirationTimestampFor(tokenId);
       keyManagers[i] = lock.keyManagerOf(tokenId);
     }
 

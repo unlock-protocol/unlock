@@ -11,7 +11,7 @@ Cohort 5 is in the house and they are ready to launch their amazing ideas into t
 
 ![Cohort 5](/images/blog/cohort-5/cohort-5.png)
 
-Here’s a quick introduction to each grantee, their project and how to find them on the Twitters so you can support their projects. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal! 
+Here’s a quick introduction to each grantee, their project and how to find them on the Twitters so you can support their projects. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal!
 
 **Jenil Thakker - Coinvise**
 

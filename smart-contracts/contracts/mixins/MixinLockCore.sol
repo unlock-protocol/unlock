@@ -20,11 +20,7 @@ import "../interfaces/hooks/ILockKeyExtendHook.sol";
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
-contract MixinLockCore is
-  MixinRoles,
-  MixinFunds,
-  MixinDisable
-{
+contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
   using AddressUpgradeable for address;
 
   event Withdrawal(
@@ -145,11 +141,7 @@ contract MixinLockCore is
   }
 
   // The version number of the current implementation on this network
-  function publicLockVersion()
-    public
-    pure
-    returns (uint16)
-  {
+  function publicLockVersion() public pure returns (uint16) {
     return 13;
   }
 
@@ -171,9 +163,7 @@ contract MixinLockCore is
     if (_tokenAddress == address(0)) {
       balance = address(this).balance;
     } else {
-      balance = IERC20Upgradeable(_tokenAddress).balanceOf(
-        address(this)
-      );
+      balance = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
     }
 
     uint amount;
@@ -186,12 +176,7 @@ contract MixinLockCore is
       amount = _amount;
     }
 
-    emit Withdrawal(
-      msg.sender,
-      _tokenAddress,
-      _recipient,
-      amount
-    );
+    emit Withdrawal(msg.sender, _tokenAddress, _recipient, amount);
     // Security: re-entrancy not a risk as this is the last line of an external function
     _transfer(_tokenAddress, _recipient, amount);
   }
@@ -201,22 +186,14 @@ contract MixinLockCore is
    * This consists of 2 parts: The token address and the price in the given token.
    * In order to set the token to ETH, use 0 for the token Address.
    */
-  function updateKeyPricing(
-    uint _keyPrice,
-    address _tokenAddress
-  ) external {
+  function updateKeyPricing(uint _keyPrice, address _tokenAddress) external {
     _onlyLockManager();
     _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
     keyPrice = _keyPrice;
     tokenAddress = _tokenAddress;
-    emit PricingChanged(
-      oldKeyPrice,
-      keyPrice,
-      oldTokenAddress,
-      tokenAddress
-    );
+    emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
   }
 
   /**
@@ -233,61 +210,35 @@ contract MixinLockCore is
   ) external {
     _onlyLockManager();
 
-    if (
-      _onKeyPurchaseHook != address(0) &&
-      !_onKeyPurchaseHook.isContract()
-    ) {
+    if (_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract()) {
       revert INVALID_HOOK(0);
     }
-    if (
-      _onKeyCancelHook != address(0) &&
-      !_onKeyCancelHook.isContract()
-    ) {
+    if (_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) {
       revert INVALID_HOOK(1);
     }
-    if (
-      _onValidKeyHook != address(0) &&
-      !_onValidKeyHook.isContract()
-    ) {
+    if (_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) {
       revert INVALID_HOOK(2);
     }
-    if (
-      _onTokenURIHook != address(0) &&
-      !_onTokenURIHook.isContract()
-    ) {
+    if (_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) {
       revert INVALID_HOOK(3);
     }
-    if (
-      _onKeyTransferHook != address(0) &&
-      !_onKeyTransferHook.isContract()
-    ) {
+    if (_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) {
       revert INVALID_HOOK(4);
     }
-    if (
-      _onKeyExtendHook != address(0) &&
-      !_onKeyExtendHook.isContract()
-    ) {
+    if (_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) {
       revert INVALID_HOOK(5);
     }
-    if (
-      _onKeyGrantHook != address(0) &&
-      !_onKeyGrantHook.isContract()
-    ) {
+    if (_onKeyGrantHook != address(0) && !_onKeyGrantHook.isContract()) {
       revert INVALID_HOOK(6);
     }
 
-    onKeyPurchaseHook = ILockKeyPurchaseHook(
-      _onKeyPurchaseHook
-    );
+    onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
-    onKeyTransferHook = ILockKeyTransferHook(
-      _onKeyTransferHook
-    );
+    onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
     onKeyGrantHook = ILockKeyGrantHook(_onKeyGrantHook);
-
 
     emit EventHooksUpdated(
       _onKeyPurchaseHook,

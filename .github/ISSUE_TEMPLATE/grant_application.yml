@@ -1,7 +1,7 @@
-name: "Grant Application"
+name: 'Grant Application'
 description: Submit a grant application
-title: "Project Name <- Replace me!"
-labels: ["Grant Application"]
+title: 'Project Name <- Replace me!'
+labels: ['Grant Application']
 assignees:
   - desertrat10
   - thehen
@@ -44,20 +44,20 @@ body:
     id: linkedIn
     attributes:
       label: LinkedIn
-      description: Please enter the page for your LinkedIn profile 
+      description: Please enter the page for your LinkedIn profile
       placeholder: ex. https://www.linkedin.com/company/unlock-protocol/
   - type: input
-    id: discord 
+    id: discord
     attributes:
       label: Discord handle
       description: Your Discord handle (make sure you join the [Unlock Discord server](https://discord.unlock-protocol.com/))
     validations:
       required: true
   - type: input
-    id: duration 
+    id: duration
     attributes:
       label: Completion time
-      description: Let us know how much time do you think you will need to complete your project 
+      description: Let us know how much time do you think you will need to complete your project
     validations:
       required: true
   - type: textarea
@@ -81,9 +81,9 @@ body:
         - 100 UDT
         - 200 UDT
         - 300 UDT
-        - Other amount, or not requesting UDT      
+        - Other amount, or not requesting UDT
     validations:
-        required: true
+      required: true
   - type: textarea
     id: extra
     attributes:
@@ -98,7 +98,7 @@ body:
         - Yes, my project will use an Open Source license such as MIT
         - No, my project does not use an Open Source license
     validations:
-        required: true
+      required: true
   - type: checkboxes
     id: terms
     attributes:

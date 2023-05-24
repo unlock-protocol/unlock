@@ -5,5 +5,5 @@ const listAllContracts = (contractName) => {
 }
 
 module.exports = {
-  listAllContracts
+  listAllContracts,
 }

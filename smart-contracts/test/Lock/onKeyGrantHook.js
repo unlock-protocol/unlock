@@ -27,7 +27,7 @@ contract('Lock / onKeyGrantHook', (accounts) => {
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({event}) => event === 'EventHooksUpdated')
+    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
     assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
     assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
     assert.equal(args.onValidKeyHook, ADDRESS_ZERO)

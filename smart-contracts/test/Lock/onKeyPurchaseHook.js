@@ -31,7 +31,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({event}) => event === 'EventHooksUpdated')
+    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
     assert.equal(args.onKeyPurchaseHook, testEventHooks.address)
     assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
     assert.equal(args.onValidKeyHook, ADDRESS_ZERO)

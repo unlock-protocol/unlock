@@ -7,10 +7,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "./MixinErrors.sol";
 
-contract MixinRoles is
-  AccessControlUpgradeable,
-  MixinErrors
-{
+contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   // roles
   bytes32 internal constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
   bytes32 internal constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
@@ -45,9 +42,7 @@ contract MixinRoles is
   }
 
   // lock manager functions
-  function isLockManager(
-    address account
-  ) public view returns (bool) {
+  function isLockManager(address account) public view returns (bool) {
     return hasRole(LOCK_MANAGER_ROLE, account);
   }
 

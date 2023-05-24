@@ -14,12 +14,7 @@ contract KeyManagerMock is MixinKeys {
     address _keyManager,
     uint _expirationTimestamp
   ) public returns (uint) {
-    return
-      _createNewKey(
-        _recipient,
-        _keyManager,
-        _expirationTimestamp
-      );
+    return _createNewKey(_recipient, _keyManager, _expirationTimestamp);
   }
 
   function isKeyManager(

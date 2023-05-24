@@ -74,11 +74,6 @@
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "ci": "yarn test && yarn lint && yarn build"
   },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "yarn run lint --fix"
-    ]
-  },
   "browserslist": [
     "defaults",
     "not IE 11",

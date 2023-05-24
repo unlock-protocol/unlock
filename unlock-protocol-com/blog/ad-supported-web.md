@@ -6,6 +6,7 @@ publishDate: December 13, 2018
 description: What if we got the business model of the web wrong?
 image: /images/blog/adsupportedweb/1984.jpg
 ---
+
 For the last 20 years, every consumer-oriented application, service or content platform used “ads” as its default business model. Like always, the road to hell has been paved with good intentions: we assumed that the mostly innocuous billboards could be transposed to the web… but these banner ads quickly became endless trojan horses into our privacy, feelings and opinions.
 
 Our naive “content-wants-to-be-free” approach failed to account for externalities, including the fact that hostile organizations are influencing us through our media consumption… Using ads to support content creation is not working anymore, whether it is from a purely technical aspect when more and more of the provisioned ads are not being displayed, from an economic standpoint where, outside of a shrinking number of larges platforms, nobody is able to even scrape cents per hour spent staring at ads.

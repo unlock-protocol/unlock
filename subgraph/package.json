@@ -37,11 +37,6 @@
   "installConfig": {
     "hoistingLimits": "workspaces"
   },
-  "lint-staged": {
-    ".{js,ts,tsx}": [
-      "yarn run lint --fix"
-    ]
-  },
   "devDependencies": {
     "graphql": "16.6.0",
     "matchstick-as": "0.5.2"

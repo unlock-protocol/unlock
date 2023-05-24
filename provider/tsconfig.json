@@ -1,9 +1,7 @@
 {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
-    "types": [
-      "@cloudflare/workers-types"
-    ],
+    "types": ["@cloudflare/workers-types"],
     "forceConsistentCasingInFileNames": true
   }
 }

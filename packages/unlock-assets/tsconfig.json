@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,7 +17,5 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": [
-    "./src/**/*.tsx"
-  ]
+  "include": ["./src/**/*.tsx"]
 }

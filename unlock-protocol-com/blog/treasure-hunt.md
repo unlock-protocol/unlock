@@ -8,7 +8,7 @@ image: /images/blog/treasure-hunt-share.png
 
 ![treasure hunt](/images/blog/treasure-hunt-share.png)
 
-Are you ready to join our brave hero, Spork, on their mission to collect all the prizes at ETHDenver? Spork needs your help to accomplish their quest, and your reward will be a plethora of treasures waiting at each of the five stops on the Treasure Hunt! 
+Are you ready to join our brave hero, Spork, on their mission to collect all the prizes at ETHDenver? Spork needs your help to accomplish their quest, and your reward will be a plethora of treasures waiting at each of the five stops on the Treasure Hunt!
 
 You'll help Spork traverse through the five different locations, each of which has its own unique challenge to overcome before being able to collect the prizes. This is no easy feat, but the rewards are worth it!
 
@@ -23,6 +23,6 @@ Along the way, Spork will meet new frens that will join them on their journey. T
 - Once you have the password for that quest on the Treasure Hunt, you’ll use it to claim a free NFT on Polygon (there are five NFTs in all)
 - After collecting all five NFTs, you’ll receive a prize at ETHDenver
 
-Please don’t delay — Spork is counting on you! 
+Please don’t delay — Spork is counting on you!
 
 [Start the Treasure Hunt](https://ethdenver.unlock-protocol.com)
