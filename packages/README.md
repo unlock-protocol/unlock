@@ -6,7 +6,6 @@ Packages in this folder are shared accross multiple apps in this (mono)repo.
 
 Each package has its own logic. Some batch commands affecting all packages are available from the root repo (in the main `package.json`).
 
-
 ```sh
 # remove existing dist/build folders
 yarn packages:clean
@@ -47,7 +46,7 @@ yarn version:check
 
 ## Publish to npm
 
-NB: packages where ```js private: true``` is set in `package.json` won't be published.
+NB: packages where `js private: true` is set in `package.json` won't be published.
 
 ```
 yarn publish

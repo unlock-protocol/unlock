@@ -7,7 +7,7 @@ description: Unlock's January 2022 release adds upgradable contracts, NFT airdro
 image: /images/blog/jan-22-update/rocket-with-unlock-logo.png
 ---
 
-The Unlock Protocol team has been on a 🚀 ride of BUIDLing as we blast into 2022! First, there is a major new release of the underlying Unlock smart contract — the engine that powers Unlock — as well as a whole smorgasbord of new capabilities that add power and flexibility to the protocol. 
+The Unlock Protocol team has been on a 🚀 ride of BUIDLing as we blast into 2022! First, there is a major new release of the underlying Unlock smart contract — the engine that powers Unlock — as well as a whole smorgasbord of new capabilities that add power and flexibility to the protocol.
 
 Members of the Unlock team — heck, the whole Unlock community — are constantly finding new ways for creators and developers to benefit from building their membership-based projects, solutions and businesses using the open-source Unlock Protocol. Here’s what’s new in January 2022.
 

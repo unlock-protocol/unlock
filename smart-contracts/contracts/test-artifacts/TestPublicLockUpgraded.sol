@@ -32,9 +32,7 @@ contract TestPublicLockUpgraded is
       _keyPrice,
       _maxNumberOfKeys
     );
-    MixinLockMetadata._initializeMixinLockMetadata(
-      _lockName
-    );
+    MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRoles._initializeMixinRoles(_lockCreator);
 
@@ -42,11 +40,7 @@ contract TestPublicLockUpgraded is
   }
 
   // add a function to try
-  function sayHello()
-    external
-    pure
-    returns (string memory)
-  {
+  function sayHello() external pure returns (string memory) {
     return "hello world";
   }
 

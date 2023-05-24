@@ -6,6 +6,7 @@ publishDate: August 8, 2019
 description: Now you can buy tickets to real-world events using Ethereum and the Unlock Protocol.
 image: /images/blog/introducing-tickets/introducing-tickets.jpg
 ---
+
 ![introducing tickets](/images/blog/introducing-tickets/introducing-tickets.jpg)
 
 The Unlock Protocol isn't just a way to pay to access services on the internet.
