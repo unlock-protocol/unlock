@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('StripeConnectLocks', {
@@ -6,34 +6,35 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       lock: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       manager: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       chain: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       stripeAccount: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-    await queryInterface.addIndex('StripeConnectLocks', {fields: ['lock']})
-    await queryInterface.addIndex('StripeConnectLocks', {fields: ['stripeAccount']})
-
+        type: Sequelize.DATE,
+      },
+    })
+    await queryInterface.addIndex('StripeConnectLocks', { fields: ['lock'] })
+    await queryInterface.addIndex('StripeConnectLocks', {
+      fields: ['stripeAccount'],
+    })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('StripeConnectLocks');
-  }
-};
+    await queryInterface.dropTable('StripeConnectLocks')
+  },
+}

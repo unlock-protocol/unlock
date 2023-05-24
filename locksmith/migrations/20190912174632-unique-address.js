@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const table = 'AuthorizedLocks'
 
@@ -6,7 +6,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     queryInterface.changeColumn(table, 'address', {
       type: Sequelize.STRING,
-      unique: true
+      unique: true,
     })
   },
 
@@ -14,5 +14,5 @@ module.exports = {
     queryInterface.changeColumn(table, 'address', {
       type: Sequelize.STRING,
     })
-  }
-};
+  },
+}
