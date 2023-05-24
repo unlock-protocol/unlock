@@ -17,7 +17,6 @@ The first one is [xDAI](https://www.xdaichain.com/). xDAI is a blockchain that l
 
 ![XDAI](/images/blog/xdai/xdai.png)
 
-
 Over the next few weeks, we will also add xUDT, the xDAI equivalent of our [Unlock Tokens](https://unlock-protocol.com/blog/unlock-tokens-launched), and add support for credit cards and more! If you have deployed a lock on xDAI, please message us on Telegram for a surprise!
 
 Finally, we will also start exploring deploying Unlock on other chains such as [Polygon](https://polygon.technology/) or [BSC](https://bnbsmartchain.com/) as prompted by some of our early adopters, and explore [Optimism](https://optimism.io/) and [Arbitrum](https://offchainlabs.com/), to make sure that Unlock can grow and scale with the tens of thousands new NFT fans :)

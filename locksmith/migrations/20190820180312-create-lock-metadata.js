@@ -1,27 +1,27 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('LockMetadata', {
       address: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       data: {
         allowNull: false,
-        type: Sequelize.JSON
+        type: Sequelize.JSON,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('LockMetadata');
-  }
-};
+    return queryInterface.dropTable('LockMetadata')
+  },
+}
