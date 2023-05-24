@@ -3,7 +3,7 @@ const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 const {
   copyAndBuildContractAtVersion,
-  cleanupContractVersions
+  cleanupContractVersions,
 } = require('../upgrade/_helpers')
 
 async function main({ unlockVersion } = {}) {
@@ -14,7 +14,9 @@ async function main({ unlockVersion } = {}) {
     console.log(`Setting up version ${unlockVersion} from package`)
     Unlock = await copyAndBuildContractAtVersion('Unlock', unlockVersion)
   } else {
-    console.log(`Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`)
+    console.log(
+      `Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`
+    )
     Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
   }
 
@@ -34,7 +36,7 @@ async function main({ unlockVersion } = {}) {
   )
 
   const { chainId } = await ethers.provider.getNetwork()
-  if(chainId !== 31337) {
+  if (chainId !== 31337) {
     await run('verify:verify', { address: implementation })
   }
 

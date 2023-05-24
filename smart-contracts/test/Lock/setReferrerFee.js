@@ -102,8 +102,6 @@ contract('Lock / setReferrerFee', (accounts) => {
               .toFixed()
           )
         })
-
-        
       })
 
       describe('setting 20% fee for a specific address', () => {

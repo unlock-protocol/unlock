@@ -16,9 +16,7 @@ import { UnlockV0 } from '@unlock-protocol/contracts'
 NB: all the contracts have been flattened and exist mostly for archiving.
 
 ```solidity
-
-import "@unlock-protocol/contracts/Unlock/UnlockV0.sol";
-
+import '@unlock-protocol/contracts/Unlock/UnlockV0.sol';
 ```
 
 ## Build the package

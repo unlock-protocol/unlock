@@ -1,38 +1,38 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('UserReferences', {
-      id:{
+      id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true, 
+        primaryKey: true,
       },
       emailAddress: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique : true,
+        unique: true,
       },
       publicKey: {
         type: Sequelize.STRING,
         references: {
           model: 'Users',
-          key: 'publicKey'
+          key: 'publicKey',
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserReferences');
-  }
-};
+    return queryInterface.dropTable('UserReferences')
+  },
+}

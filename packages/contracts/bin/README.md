@@ -1,6 +1,6 @@
 ## Flattened contracts
 
-The different versions of the contract have been flattened from commit history using hardhat. 
+The different versions of the contract have been flattened from commit history using hardhat.
 
 NB: These files are used to test upgrades from successive versions.
 
@@ -13,5 +13,3 @@ You can reproduce the steps by running the following script.
 ```
 sh ./flatten-past-versions.sh
 ```
-
-

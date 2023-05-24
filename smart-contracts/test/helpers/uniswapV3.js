@@ -1,15 +1,35 @@
 const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
 const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk/')
-const { Token, CurrencyAmount, TradeType, Percent } = require('@uniswap/sdk-core')
-const { AlphaRouter, SwapType, nativeOnChain, MAX_UINT160 } = require('@uniswap/smart-order-router')
-const JSBI  = require('jsbi')
+const {
+  Token,
+  CurrencyAmount,
+  TradeType,
+  Percent,
+} = require('@uniswap/sdk-core')
+const {
+  AlphaRouter,
+  SwapType,
+  nativeOnChain,
+  MAX_UINT160,
+} = require('@uniswap/smart-order-router')
+const JSBI = require('jsbi')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
 
 const { abi: WethABI } = require('./ABIs/weth.json')
 const { addUDT, impersonate, addSomeETH } = require('./fork')
-const { WETH, USDC, DAI, UDT, WBTC, UNISWAP_FACTORY_ADDRESS, V3_SWAP_ROUTER_ADDRESS, POSITION_MANAGER_ADDRESS, CHAIN_ID } = require('./contracts')
+const {
+  WETH,
+  USDC,
+  DAI,
+  UDT,
+  WBTC,
+  UNISWAP_FACTORY_ADDRESS,
+  V3_SWAP_ROUTER_ADDRESS,
+  POSITION_MANAGER_ADDRESS,
+  CHAIN_ID,
+} = require('./contracts')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 // default fee
@@ -333,16 +353,15 @@ const currencyAmountToBigNumber = (amount) => {
   )
 }
 
-
-/** 
+/**
  * PERMIT2 helpers
- * */ 
+ * */
 const makePermit = (
   tokenAddress,
   amount = ethers.constants.MaxUint256.toString(),
   deadline = Math.floor(new Date().getTime() / 1000 + 100000),
-  nonce = '0',
-) =>  {
+  nonce = '0'
+) => {
   return {
     details: {
       token: tokenAddress,
@@ -356,34 +375,38 @@ const makePermit = (
 }
 
 async function generatePermitSignature(permit, signer, chainId = CHAIN_ID) {
-  const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
+  const { domain, types, values } = AllowanceTransfer.getPermitData(
+    permit,
+    PERMIT2_ADDRESS,
+    chainId
+  )
   return await signer._signTypedData(domain, types, values)
 }
 
-/** 
+/**
  * UNISWAP ROUTER
- * */ 
-async function getUniswapRoute ({
-  tokenIn, 
-  tokenOut, 
+ * */
+async function getUniswapRoute({
+  tokenIn,
+  tokenOut,
   amoutOut = ethers.utils.parseUnits('10', tokenOut.decimals),
   recipient,
   slippageTolerance = new Percent(10, 100),
   deadline = Math.floor(new Date().getTime() / 1000 + 100000),
-  permitOptions: {
-    usePermit2Sig = false,
-    inputTokenPermit
-  } = {},
-  chainId = CHAIN_ID
+  permitOptions: { usePermit2Sig = false, inputTokenPermit } = {},
+  chainId = CHAIN_ID,
 }) {
   // init router
-  const router = new AlphaRouter({ 
-    chainId, 
+  const router = new AlphaRouter({
+    chainId,
     provider: ethers.provider,
   })
 
-  // parse router args 
-  const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt(amoutOut))
+  // parse router args
+  const outputAmount = CurrencyAmount.fromRawAmount(
+    tokenOut,
+    JSBI.BigInt(amoutOut)
+  )
   const routeArgs = [
     outputAmount,
     tokenIn,
@@ -392,33 +415,28 @@ async function getUniswapRoute ({
       type: SwapType.UNIVERSAL_ROUTER,
       recipient,
       slippageTolerance,
-      deadline
-    }
+      deadline,
+    },
   ]
-  
+
   // add sig if necessary
-  if(usePermit2Sig) routeArgs.inputTokenPermit = inputTokenPermit
+  if (usePermit2Sig) routeArgs.inputTokenPermit = inputTokenPermit
 
   // call router
-  const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } = await router.route(
-    ...routeArgs
-  )
+  const { methodParameters, quote, quoteGasAdjusted, estimatedGasUsedUSD } =
+    await router.route(...routeArgs)
 
   // parse quote as BigNumber
   const amountInMax = currencyAmountToBigNumber(quote)
 
   // log some prices
   console.log(`Quote Exact: ${quote.toExact()}`)
-  console.log(`Quote toFixed: ${quote.toFixed(2)}`);
-  console.log(`Gas Adjusted Quote: ${quoteGasAdjusted.toFixed(2)}`);
-  console.log(`Gas Used USD: ${estimatedGasUsedUSD.toFixed(6)}`);
-  console.log(`AmountInMax: ${amountInMax.toString()}`);
+  console.log(`Quote toFixed: ${quote.toFixed(2)}`)
+  console.log(`Gas Adjusted Quote: ${quoteGasAdjusted.toFixed(2)}`)
+  console.log(`Gas Used USD: ${estimatedGasUsedUSD.toFixed(6)}`)
+  console.log(`AmountInMax: ${amountInMax.toString()}`)
 
-  const { 
-      calldata: swapCalldata, 
-      value, 
-      to: swapRouter
-  } = methodParameters
+  const { calldata: swapCalldata, value, to: swapRouter } = methodParameters
 
   return {
     swapCalldata,
@@ -434,7 +452,7 @@ const getUniswapTokens = (chainId = 1) => ({
   weth: new Token(chainId, WETH, 18, 'WETH'),
   usdc: new Token(chainId, USDC, 6, 'USDC'),
   udt: new Token(chainId, UDT, 18, 'UDT'),
-  wBtc: new Token(chainId, WBTC, 18, 'wBTC')
+  wBtc: new Token(chainId, WBTC, 18, 'wBTC'),
 })
 
 module.exports = {
@@ -449,5 +467,5 @@ module.exports = {
   PERMIT2_ADDRESS,
   MAX_UINT160,
   makePermit,
-  generatePermitSignature
+  generatePermitSignature,
 }

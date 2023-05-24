@@ -31,9 +31,7 @@ contract MixinERC721Enumerable is
   /// @param _index A counter less than `totalSupply()`
   /// @return The token identifier for the `_index`th NFT,
   ///  (sort order not specified)
-  function tokenByIndex(
-    uint256 _index
-  ) public view returns (uint256) {
+  function tokenByIndex(uint256 _index) public view returns (uint256) {
     if (_index >= _totalSupply) {
       revert OUT_OF_RANGE();
     }
@@ -46,10 +44,7 @@ contract MixinERC721Enumerable is
     public
     view
     virtual
-    override(
-      AccessControlUpgradeable,
-      ERC165StorageUpgradeable
-    )
+    override(AccessControlUpgradeable, ERC165StorageUpgradeable)
     returns (bool)
   {
     return super.supportsInterface(interfaceId);
