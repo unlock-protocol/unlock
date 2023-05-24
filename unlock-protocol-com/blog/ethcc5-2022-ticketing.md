@@ -7,10 +7,9 @@ description: Behind the scenes on how Unlock handled NFT ticketing for the large
 image: /images/blog/ethcc5/ethcc-stage.png
 ---
 
-Now in its fifth year, the Ethereum Community Conference (EthCC [5]) is the largest annual European Ethereum event focused on technology and community, consisting of three intense days of conferences, networking and learning. 
+Now in its fifth year, the Ethereum Community Conference (EthCC [5]) is the largest annual European Ethereum event focused on technology and community, consisting of three intense days of conferences, networking and learning.
 
 With over 1800 attendees in 2022, EthCC is the premier European event for the Ethereum community. It is held at the historic Maison de la Mutualité, and EthCC prides itself on a flawless experience for attendees, sponsors, speakers, and all other members of its community.
-
 
 ![maison-de-la-mutau.jpg](/images/blog/ethcc5/maison-de-la-mutau.jpg)
 
@@ -18,7 +17,7 @@ _Image source: [Wikipedia](https://fr.wikipedia.org/wiki/Maison_de_la_Mutualit%C
 
 The first impression of any conference participant is the ticketing and check-in experience. The ticket purchase experience needs to be straightforward, and the check-in process at the venue itself needs to be fast and efficient. Other conferences in the crypto space have been plagued with blocks-long queues for entrance, resulting in hours-long wait times to get into the venue for some attendees. EthCC was committed to living up to its reputation and was committed to having the smoothest check-in experience for all its stakeholders.
 
-As an Ethereum technology conference, EthCC knew they needed to offer their community not only a flawless ticketing process, but a crypto-native ticketing experience as well. Tickets needed to be purchasable either in crypto or in fiat, and needed to be represented by NFTs. 
+As an Ethereum technology conference, EthCC knew they needed to offer their community not only a flawless ticketing process, but a crypto-native ticketing experience as well. Tickets needed to be purchasable either in crypto or in fiat, and needed to be represented by NFTs.
 
 In 2022, EthCC partnered with Unlock Labs and used Unlock Protocol to create its ticketing experience, based on Unlock’s long track record of providing membership solutions based on blockchain technology.
 
@@ -26,12 +25,12 @@ In 2022, EthCC partnered with Unlock Labs and used Unlock Protocol to create its
 
 There were over 1800 individuals registered for EthCC 2022. Not only were there a huge number of attendees, there were also different types of tickets within that group. As opposed to events that have a single “general admission” ticketing tier, EthCC wanted to specialize their ticketing based on attendee type. Tickets for EthCC were segmented into a number of categories based on the role of the attendee. These included:
 
-* General admission
-* Sponsors
-* Speakers
-* Investors
-* Students
-* Press
+- General admission
+- Sponsors
+- Speakers
+- Investors
+- Students
+- Press
 
 Each of these different types of attendees required a different ticket type, which would specialize their experience throughout EthCC.
 
@@ -41,7 +40,7 @@ Tickets for EthCC were sold through the EthCC website in multiple waves or batch
 
 From the user’s point of view, purchasing a ticket followed a familiar online e-commerce checkout flow. However, for each ticket sale, the front-end simplicity of the checkout experience was backed by a complex bit of choreography between the user’s crypto wallet, the smart contract that issued the tickets, and potentially a credit card gateway (for purchases where tickets were purchased with a credit card). In particular, not only did the payment need to successfully complete, but as soon as the transaction was successfully completed, the smart contract handling the ticketing needed to mint and transfer an NFT ticket into the user’s crypto wallet. This process happened almost instantaneously, and Unlock shielded the user from this complexity.
 
-Also, EthCC had a requirement to make these NFT tickets “non-transferable,” as a mechanism to reduce the probability of ticket scalping or other malicious activity that could result from ticket transfers for this in-demand event. 
+Also, EthCC had a requirement to make these NFT tickets “non-transferable,” as a mechanism to reduce the probability of ticket scalping or other malicious activity that could result from ticket transfers for this in-demand event.
 
 Associated with each ticket, EthCC wanted to collect a number of pieces of metadata, including the attendee’s name, the ticket number, the ticket type, the ticket purchase date, as well as other metadata.
 
@@ -65,9 +64,9 @@ After exploring several potential approaches, the Unlock Labs team created a web
 
 The ticket scanner application developed by Unlock Labs returns one of a number of potential results for every ticket scan. The result of a scan can be:
 
-* The ticket is ok and valid
-* The ticket has already been checked in (i.e. someone is trying to recycle a ticket)
-* The ticket is not valid (e.g. expired, inauthentic, or some other exception)
+- The ticket is ok and valid
+- The ticket has already been checked in (i.e. someone is trying to recycle a ticket)
+- The ticket is not valid (e.g. expired, inauthentic, or some other exception)
 
 ![two-phones-min.png](/images/blog/ethcc5/two-phones-min.png)
 
@@ -107,19 +106,17 @@ _Wrist band color decoder_
 
 _The live check-in experience_
 
-
 ## Conclusion: NFT ticketing with Unlock Protocol is ready for events with thousands of attendees
 
-The experience at EthCC has shown that NFT-based ticketing with Unlock Protocol is ready for real-world use. From purchase through check-in, the process and technology work at scale to support large numbers of attendees and support concurrent use by multiple volunteers. 
+The experience at EthCC has shown that NFT-based ticketing with Unlock Protocol is ready for real-world use. From purchase through check-in, the process and technology work at scale to support large numbers of attendees and support concurrent use by multiple volunteers.
 
 ![ethcc-stairway.png](/images/blog/ethcc5/ethcc-stairway.png)
-
 
 ## Addendum: How to deal with ticket scammers, scalpers, and other bad actors
 
 Like any in-demand event, EthCC attracts actors who aim to exploit systems for their own gain. Through a number of technical architecture decisions and processes, Unlock Protocol makes things difficult for scalpers and for scammers. These features include:
 
-* A strong CAPTCHA at purchase time to deter bot purchases
-* Non-transferable NFT tickets to deter aftermarket price inflation
-* At-venue ticket verification to ensure tickets are authentic
-* A real-time scan for double-use of tickets at check-in
+- A strong CAPTCHA at purchase time to deter bot purchases
+- Non-transferable NFT tickets to deter aftermarket price inflation
+- At-venue ticket verification to ensure tickets are authentic
+- A real-time scan for double-use of tickets at check-in

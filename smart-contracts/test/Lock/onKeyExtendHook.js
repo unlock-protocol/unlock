@@ -57,7 +57,7 @@ contract('Lock / onKeyExtendHook', (accounts) => {
 
   it('emit the correct event', async () => {
     const { events } = await tx.wait()
-    const { args } = events.find(({event}) => event === 'EventHooksUpdated')
+    const { args } = events.find(({ event }) => event === 'EventHooksUpdated')
     assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
     assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
     assert.equal(args.onValidKeyHook, ADDRESS_ZERO)

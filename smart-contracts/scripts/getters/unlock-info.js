@@ -14,8 +14,8 @@ async function main({ unlockAddress }) {
   const unlock = await ethers.getContractAt('Unlock', unlockAddress)
   const unlockOwner = await unlock.owner()
   const isMultisig = safeAddress === unlockOwner
-  
-  let proxyAdminAddress 
+
+  let proxyAdminAddress
   try {
     proxyAdminAddress = await getProxyAdminAddress({ network })
   } catch (error) {
@@ -24,15 +24,16 @@ async function main({ unlockAddress }) {
 
   let nbOwners
   try {
-    nbOwners = (await getOwners({safeAddress : unlockOwner})).length    
+    nbOwners = (await getOwners({ safeAddress: unlockOwner })).length
   } catch (error) {
     console.log(`⚠️: Unlock owner is not a multisig !`)
   }
 
   if (nbOwners && !isMultisig) {
-    console.log(`⚠️: Multisig in networks package does not match with Unlock owner!`)
+    console.log(
+      `⚠️: Multisig in networks package does not match with Unlock owner!`
+    )
   }
-
 
   // eslint-disable-next-line no-console
   console.log(
@@ -40,7 +41,7 @@ async function main({ unlockAddress }) {
     `-  address: ${unlockAddress} \n`,
     `-  unlockVersion: ${await unlock.unlockVersion()} \n`,
     `-  publicLockVersion: ${await unlock.publicLockLatestVersion()} \n`,
-    `-  owner: ${unlockOwner} ${nbOwners ? `(${nbOwners} owners)` : '' }\n`,
+    `-  owner: ${unlockOwner} ${nbOwners ? `(${nbOwners} owners)` : ''}\n`,
     `-  proxyAdminAddress: ${proxyAdminAddress} \n`
   )
 }

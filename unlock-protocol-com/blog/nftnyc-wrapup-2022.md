@@ -9,7 +9,7 @@ image: /images/blog/nyc22/nyc-cover-image-2022.jpeg
 
 ![nyc-cover-image-2022.jpeg](/images/blog/nyc22/nyc-cover-image-2022.jpeg)
 
-Wowsa. What a week in New York City — it seems the entire web3 industry was there in one form or another between June 20th and June 26th. There was so 👏 much 👏 going 👏 on 👏. 
+Wowsa. What a week in New York City — it seems the entire web3 industry was there in one form or another between June 20th and June 26th. There was so 👏 much 👏 going 👏 on 👏.
 
 Here are some of the highlights from the events the Unlock Labs squad participated in.
 
@@ -18,7 +18,6 @@ Here are some of the highlights from the events the Unlock Labs squad participat
 If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) is a token standard to describe programmable, composable and modular cashflows and execute them automatically on chain, while [Privy](https://docs.privy.io/) is a simple API that enables you to manage user data off-chain (e.g. their name, email address or KYC information). Both are great partners to Unlock, and we were thrilled to team up with Superfluid and Privy to co-host a happy hour at Casa Bocado in Manhattan, with stellar conversation, incredible food, and tasty beverages. Big thanks to everyone who came out to connect up with us!
 
 [![nftnyc-tweet1.jpg](/images/blog/nyc22/nftnyc-tweet1.jpg)](https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
-
 
 ## We experienced ~ vibesIRL ~ with Developer DAO
 
@@ -102,7 +101,7 @@ For grantees:
 
 [https://ethglobal.com/showcase/gard3n-fez2q](https://ethglobal.com/showcase/gard3n-fez2q)
 
-**Presentation:** 
+**Presentation:**
 
 [https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view](https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view)
 

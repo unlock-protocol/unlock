@@ -27,7 +27,11 @@ async function main({
     serializedLock
 
   // eslint-disable-next-line no-console
-  console.log(`LOCK DEPLOY > creating a new lock (${lockVersion ? 'latest' : `v${lockVersion}`}) '${name}'...`)
+  console.log(
+    `LOCK DEPLOY > creating a new lock (${
+      lockVersion ? 'latest' : `v${lockVersion}`
+    }) '${name}'...`
+  )
 
   let tx
   if (unlockVersion < 10) {

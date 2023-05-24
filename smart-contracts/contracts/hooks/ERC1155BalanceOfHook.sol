@@ -16,14 +16,8 @@ contract ERC1155BalanceOfHook {
     address _nftAddress,
     uint _tokenTypeId
   ) external {
-    require(
-      _lockAddress != address(0),
-      "Lock address can not be zero"
-    );
-    require(
-      _nftAddress != address(0),
-      "ERC1155 address can not be zero"
-    );
+    require(_lockAddress != address(0), "Lock address can not be zero");
+    require(_nftAddress != address(0), "ERC1155 address can not be zero");
 
     // make sure lock manager
     IPublicLockV9 lock = IPublicLockV9(_lockAddress);

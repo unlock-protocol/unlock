@@ -14,7 +14,7 @@ _**ALPHA by Unlock Labs** is an initiative to explore new business models and op
 
 ALPHAtweet enables you and your followers to make money through your content and sharing. It’s powered by Unlock Protocol. Going a bit deeper into this experiment, an “Alpha” is a piece of paid content that is being shared, where **both the creator and the sharer participate in the benefits of sharing when someone unlocks the Alpha**.
 
-While this first experiment emphasizes sharing on Twitter, the magic is that these items of Alpha can be shared *anywhere* by way of share links and, in every case, the creators and sharers **both** have the opportunity to be compensated across *any* platform, every time an Alpha is shared. 🤯 
+While this first experiment emphasizes sharing on Twitter, the magic is that these items of Alpha can be shared _anywhere_ by way of share links and, in every case, the creators and sharers **both** have the opportunity to be compensated across _any_ platform, every time an Alpha is shared. 🤯
 
 This is not something that could be done before today.
 
@@ -32,7 +32,7 @@ Here’s a walkthrough diagram of how money flows to pay both creators and share
 
 The revenue sharing mechanism is the big deal here. Creators set their terms, and sharers can participate in the upside. (It’s also completely configurable, so the platforms could participate in the upside, too.)
 
-At the outset, we’re starting with a small cohort of creators as we shake out bugs and get feedback on the overall experience. That said, *anyone* can choose to unlock, share, and amplify Alpha (and participate in rewards!), and *everyone* can view the snippets/teasers of Alpha.
+At the outset, we’re starting with a small cohort of creators as we shake out bugs and get feedback on the overall experience. That said, _anyone_ can choose to unlock, share, and amplify Alpha (and participate in rewards!), and _everyone_ can view the snippets/teasers of Alpha.
 
 Want to see what ALPHAtweet looks like in action? Here’s what the experience looks like for a sharer of Alpha. (Thanks to Michael Joseph for the video walkthrough!)
 
@@ -44,6 +44,6 @@ Want to check it out today? Check out these posts from some Alpha creators:
 - Julien Genestoux, "[Layers of (De)centralization](https://alphatweet.xyz/posts/ed023c92-8dfd-4060-984c-bc5acdd02436)"
 - Stephen Wolfson, "[The Complex World of Style, Copyright, and Generative AI](https://twitter.com/ccarfi/status/1655662240006295553)" (via Creative Commons)
 
-ALPHAtweet is part of the ongoing series of experiments in future business models that Unlock Protocol is exploring for the web. Thanks for being a part of it! 
+ALPHAtweet is part of the ongoing series of experiments in future business models that Unlock Protocol is exploring for the web. Thanks for being a part of it!
 
 _Interested in becoming a creator on ALPHAtweet or have a question? Reach out to the Unlock Labs team in our [Discord](https://discord.unlock-protocol.com)._
