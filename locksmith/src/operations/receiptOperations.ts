@@ -16,7 +16,9 @@ const getPurchaserDetails = async ({
   network,
   hash,
   tokenId,
-}: ReceiptDetailsProps): Promise<Partial<Receipt> | null> => {
+}: ReceiptDetailsProps): Promise<Partial<
+  Receipt & { email?: string }
+> | null> => {
   const receiptPurchaser = await Receipt.findOne({
     where: {
       network,
@@ -45,6 +47,7 @@ const getPurchaserDetails = async ({
         : ''
 
     return {
+      email: data?.email,
       fullname,
       businessName: data?.businessName || data?.company,
       city: data?.city,
