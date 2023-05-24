@@ -26,6 +26,25 @@ interface ReceiptBaseFormProps {
   isManager: boolean
   disabled: boolean
 }
+
+const ReceiptBaseFormPlaceholder = () => {
+  return (
+    <Placeholder.Root className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <Placeholder.Line size="xl" />
+      <Placeholder.Root className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
+        <Placeholder.Line size="xl" />
+        <Placeholder.Line size="xl" />
+      </Placeholder.Root>
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+    </Placeholder.Root>
+  )
+}
+
 export const ReceiptBaseForm = ({
   lockAddress,
   isManager,
@@ -81,21 +100,7 @@ export const ReceiptBaseForm = ({
   const disabledInput = isReceiptsBaseUpdating || disabled || isLoadingDetails
 
   if (isLoadingDetails) {
-    return (
-      <Placeholder.Root className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Placeholder.Line size="xl" />
-        <Placeholder.Root className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
-          <Placeholder.Line size="xl" />
-          <Placeholder.Line size="xl" />
-        </Placeholder.Root>
-        <Placeholder.Line size="xl" />
-        <Placeholder.Line size="xl" />
-        <Placeholder.Line size="xl" />
-        <Placeholder.Line size="xl" />
-        <Placeholder.Line size="xl" />
-        <Placeholder.Line size="xl" />
-      </Placeholder.Root>
-    )
+    return <ReceiptBaseFormPlaceholder />
   }
 
   return (
