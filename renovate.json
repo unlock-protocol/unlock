@@ -29,12 +29,6 @@
     },
     {
       "minor": {
-        "groupName": "packages/jest-config"
-      },
-      "matchPaths": ["packages/jest-config/**"]
-    },
-    {
-      "minor": {
         "groupName": "packages/networks"
       },
       "matchPaths": ["packages/networks/**"]
