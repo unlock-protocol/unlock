@@ -2107,6 +2107,8 @@ paths:
                     type: string
                   vat:
                     type: string
+                  vatRatePercentage:
+                    type: number
                   servicePerformed:
                     type: string
                   addressLine1:
@@ -2163,6 +2165,8 @@ paths:
                     type: string
                   vat:
                     type: string
+                  vatRatePercentage:
+                    type: number
                   servicePerformed:
                     type: string
                   addressLine1:

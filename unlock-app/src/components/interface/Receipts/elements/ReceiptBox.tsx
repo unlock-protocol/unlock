@@ -129,6 +129,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       hash,
     })
 
+    const showVatPercentage = supplier?.vatRatePercentage
+
     return (
       <div className="grid gap-2">
         <div className="flex flex-col gap-4">
@@ -138,11 +140,21 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 {supplier?.servicePerformed || 'NFT membership'}
               </Detail>
             </div>
-            <div className="flex flex-col col-span-4 md:text-right md:col-span-1">
-              <span>Amount Paid:</span>
-              <div className="flex flex-col">
-                <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
+            <div className="flex flex-col col-span-4 gap-2 md:text-right md:col-span-1">
+              <div className="grid gap-0.5">
+                <span>Amount Paid:</span>
+                <div className="flex flex-col">
+                  <span className="font-semibold">{`${receiptPrice?.total} ${symbol}`}</span>
+                </div>
               </div>
+              {showVatPercentage && (
+                <div className="flex gap-0.5 md:ml-auto">
+                  <span>VAT:</span>
+                  <div className="flex flex-col">
+                    <span className="font-semibold">{`${supplier?.vatRatePercentage} %`}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

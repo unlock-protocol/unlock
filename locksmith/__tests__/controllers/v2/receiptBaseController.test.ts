@@ -3,7 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import * as z from 'zod'
 
 import app from '../../app'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
@@ -19,6 +19,7 @@ const supplier: z.infer<typeof SupplierBody> = {
   city: 'Sea',
   state: 'Red Line',
   zip: '00000',
+  vatRatePercentage: 22,
 }
 
 vi.mock('@unlock-protocol/unlock-js', () => {
@@ -59,7 +60,7 @@ describe('Receipt Base v2', () => {
   })
 
   it('Correctly save supplier details and returns correctly value', async () => {
-    expect.assertions(10)
+    expect.assertions(11)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
@@ -79,10 +80,11 @@ describe('Receipt Base v2', () => {
     expect(body.city).toBe(supplier.city)
     expect(body.country).toBe(supplier.country)
     expect(body.zip).toBe(supplier.zip)
+    expect(body.vatRatePercentage).toBe(supplier.vatRatePercentage)
   })
 
   it('Correctly save supplier details without params and returns default values', async () => {
-    expect.assertions(10)
+    expect.assertions(11)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
@@ -101,10 +103,11 @@ describe('Receipt Base v2', () => {
     expect(body.city).toBe('')
     expect(body.country).toBe('')
     expect(body.zip).toBe('')
+    expect(body.vatRatePercentage).toBe(null)
   })
 
   it('Correctly save and get supplier details', async () => {
-    expect.assertions(11)
+    expect.assertions(12)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
@@ -132,5 +135,6 @@ describe('Receipt Base v2', () => {
     expect(body.city).toBe(supplier.city)
     expect(body.country).toBe(supplier.country)
     expect(body.zip).toBe(supplier.zip)
+    expect(body.vatRatePercentage).toBe(supplier.vatRatePercentage)
   })
 })
