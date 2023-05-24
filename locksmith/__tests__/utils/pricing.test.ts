@@ -12,49 +12,44 @@ vi.mock('../../src/utils/pricing', async () => {
   const actual: any = await vi.importActual('../../src/utils/pricing')
   return {
     ...actual,
-    getLockKeyPricing: async () => ({
-      decimals: 18,
-      keyPrice: 1000,
-      currencyContractAddress: '0xb93cba7013f4557cdfb590fd152d24ef4063485f',
-    }),
+    getLockKeyPricing: vi.fn(() =>
+      Promise.resolve({
+        decimals: 18,
+        keyPrice: 1000,
+        currencyContractAddress: '0xb93cba7013f4557cdfb590fd152d24ef4063485f',
+      })
+    ),
   }
 })
 
 vi.mock('../../src/operations/lockSettingOperations', () => {
   return {
-    getSettings: async ({ lockAddress: lock }) => {
+    getSettings: ({ lockAddress: lock }) => {
+      let res: any = DEFAULT_LOCK_SETTINGS
       if (lock === lockAddressCreditCardSetting) {
-        return {
+        res = {
           creditCardPrice,
         }
       }
-      return DEFAULT_LOCK_SETTINGS
+      return Promise.resolve(res)
     },
   }
 })
 
-vi.mock('../../src/operations/pricingOperations', async () => {
+vi.mock('../../src/operations/pricingOperations', () => {
   return {
-    getDefiLammaPrice: async ({ _network, _erc20Address, _amount }) => {
-      return {
+    getDefiLammaPrice: vi.fn(() =>
+      Promise.resolve({
         amount: 1,
         price: 88,
         decimals: 18,
         symbol: 'MATIC',
-      }
-    },
+      })
+    ),
   }
 })
 
 describe('getLockUsdPricing', () => {
-  beforeEach(() => {
-    fetchMock.mockIf(
-      /^https?:\/\/coins.llama.fi\/prices\/current\/.*$/,
-      (req) => {
-        return '{"coins":{"coingecko:ethereum":{"price":1,"symbol":"ETH","timestamp":1675174381,"confidence":0.99}}}'
-      }
-    )
-  })
   it('returns USD price from credit card setting price', async () => {
     expect.assertions(3)
 
@@ -74,6 +69,8 @@ describe('getLockUsdPricing', () => {
       lockAddress: defaultLockAddress,
       network,
     })
+
+    console.log('usdPricing', usdPricing)
 
     expect(usdPricing.symbol).toBe('MATIC')
     expect(usdPricing.price).toBe(88)
