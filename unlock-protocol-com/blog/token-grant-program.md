@@ -22,15 +22,15 @@ We choose recipients based on feasibility, scale and potential impact. We're als
 
 Our five criteria are as follows:
 
-* **Impact** - Could this impact a lot of users?
+- **Impact** - Could this impact a lot of users?
 
-* **Clarity** - Does the project include user experience, aesthetics and anything else that makes the solution clear, accessible and easy to use once implemented?
+- **Clarity** - Does the project include user experience, aesthetics and anything else that makes the solution clear, accessible and easy to use once implemented?
 
-* **Feasibility** - Is this a reasonable implementation?
+- **Feasibility** - Is this a reasonable implementation?
 
-* **Team** - Does the team have the skills to make this happen?
+- **Team** - Does the team have the skills to make this happen?
 
-* **Maturity** - Is this a brand new startup or a launched system with revenue?
+- **Maturity** - Is this a brand new startup or a launched system with revenue?
 
 If accepted, we'll send an email with and start a smart contract that vests the tokens over time.
 
@@ -52,7 +52,6 @@ We review all applications on a monthly basis. You’ll get a notification when 
 
 Each grantee will get a token grant that vests monthly starting 12 months from the start of the grant period. Once the project is completed, the vested funds will be delivered by smart contract, and the rest of the funds will be delivered each month until the end of the grant period.
 
-Want to learn a bit more about Unlock? [Join us in the Discord Channel](https://discord.gg/ByZjth3P)  or check out the [developer documentation](https://docs.unlock-protocol.com/) for ideas.
+Want to learn a bit more about Unlock? [Join us in the Discord Channel](https://discord.gg/ByZjth3P) or check out the [developer documentation](https://docs.unlock-protocol.com/) for ideas.
 
 Congratulations to all of the grantees, and thanks again for supporting Unlock!
-

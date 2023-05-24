@@ -1,10 +1,11 @@
 ---
 title: Setting Unlock’s demo free
-subTitle: Today we’re sharing the very first demo of the Unlock Protocol. 
+subTitle: Today we’re sharing the very first demo of the Unlock Protocol.
 authorName: Julien Genestoux
 publishDate: June 10, 2018
 description: Today we’re sharing the very first demo of the Unlock Protocol.
 ---
+
 Ideas are wonderful and beautiful. They can only be perfect, because they do not exist. I am fascinated by artists, authors and creators of all kinds who are able crack open their own skulls to let their ideas, dreams, and nightmares become real and shared with the world.
 
 Creating a product also has some of this. The business plan, slides and pitches are barely more than a raw idea. It’s easy to make a chart which look up and to the right, or describe a world where consumers have been waiting for the product to be launched. But the truth is, it all starts with a draft, a demo, a proof of concept and this first attempt will likely be disappointing for those who bought your grand vision ([including yourself](https://vimeo.com/85040589)).

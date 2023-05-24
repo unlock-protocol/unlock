@@ -11,11 +11,7 @@ import "./MixinErrors.sol";
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
-contract MixinGrantKeys is
-  MixinErrors,
-  MixinRoles,
-  MixinKeys
-{
+contract MixinGrantKeys is MixinErrors, MixinRoles, MixinKeys {
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
    * Each key may be assigned a different expiration date.
@@ -26,10 +22,7 @@ contract MixinGrantKeys is
     address[] calldata _keyManagers
   ) external returns (uint[] memory) {
     _lockIsUpToDate();
-    if (
-      !hasRole(KEY_GRANTER_ROLE, msg.sender) &&
-      !isLockManager(msg.sender)
-    ) {
+    if (!hasRole(KEY_GRANTER_ROLE, msg.sender) && !isLockManager(msg.sender)) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
     }
 
@@ -61,16 +54,10 @@ contract MixinGrantKeys is
    * @param _duration The duration in secondes to add ot the key
    * @dev set `_duration` to 0 to use the default duration of the lock
    */
-  function grantKeyExtension(
-    uint _tokenId,
-    uint _duration
-  ) external {
+  function grantKeyExtension(uint _tokenId, uint _duration) external {
     _lockIsUpToDate();
     _isKey(_tokenId);
-    if (
-      !hasRole(KEY_GRANTER_ROLE, msg.sender) &&
-      !isLockManager(msg.sender)
-    ) {
+    if (!hasRole(KEY_GRANTER_ROLE, msg.sender) && !isLockManager(msg.sender)) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
     }
     _extendKey(_tokenId, _duration);

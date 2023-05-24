@@ -4,10 +4,10 @@ on:
   workflow_call:
     inputs:
       service:
-        description: "The service/sub-repository to deploy"
+        description: 'The service/sub-repository to deploy'
         type: string
         required: true
-      
+
 jobs:
   deploy-to-fleek:
     name: Deploy ${{ input.service }} on fleek

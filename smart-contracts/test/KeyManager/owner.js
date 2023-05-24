@@ -7,7 +7,7 @@ let keyManager
 
 contract('KeyManager / Ownable', (accounts) => {
   beforeEach(async () => {
-    [keyManager] = await setup()
+    ;[keyManager] = await setup()
   })
 
   it('should be owned by the owner', async () => {
@@ -25,7 +25,9 @@ contract('KeyManager / Ownable', (accounts) => {
     expect(await keyManager.owner()).to.equal(accounts[0])
 
     await reverts(
-      keyManager.connect(newOwner).transferOwnership(newOwner.address), `Ownable: caller is not the owner`)
+      keyManager.connect(newOwner).transferOwnership(newOwner.address),
+      `Ownable: caller is not the owner`
+    )
 
     expect(await keyManager.owner()).to.equal(accounts[0])
   })

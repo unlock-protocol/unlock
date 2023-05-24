@@ -10,7 +10,7 @@ image: /images/blog/certifications/certification-cover-min.png
 
 Unlock has launched an easy way to issue certifications and credentials on-chain. Every certification held is a proof of a course completion and has its own verifiable NFT.
 
-Let's see how to create a certification or credential and distribute it to participants. 
+Let's see how to create a certification or credential and distribute it to participants.
 
 ## Certifications powered by Unlock Protocol
 
@@ -22,7 +22,7 @@ Click "Create your certification now” to go to the form to build your certific
 
 ### Basic certification information
 
-Enter the basic information for your certification including: 
+Enter the basic information for your certification including:
 
 - **Certification name**: The program or course name that was completed by the recipient of the certification.
 - **Description**: The description for the certification. This will be part of the NFT metadata.
@@ -45,7 +45,7 @@ In case you do choose to make your certification purchasable, you will need to s
 
 ### Network
 
-This is the network on which your certification smart contract will be deployed. 
+This is the network on which your certification smart contract will be deployed.
 
 ![network-min.png](/images/blog/certifications/network-min.png)
 
@@ -55,9 +55,9 @@ Once the above settings are specified, you can deploy the certificate and see th
 
 ## Certificate overview
 
-Each certification has a dedicated page where information for that certification is visible. 
+Each certification has a dedicated page where information for that certification is visible.
 
-An individual who holds a certificate will be able to download it or share it via social networks. 
+An individual who holds a certificate will be able to download it or share it via social networks.
 
 ### Certification template
 
@@ -67,7 +67,7 @@ An individual who holds a certificate will be able to download it or share it vi
 
 ![certification-view-min.png](/images/blog/certifications/certification-view-min.png)
 
-### Transferable certificate 
+### Transferable certificate
 
 In most cases, a certification should not be able to be transferred to another user. Certifications will be non-transferable by default, and a notification will be shown in the user interface if a certification is able to be transferred. This notification is displayed to help ensure that the ability to transfer certifications is the intention of the creator of the certification program.
 
@@ -79,7 +79,7 @@ As a [Lock Manager](https://docs.unlock-protocol.com/core-protocol/public-lock/a
 
 ![certification-airdrop-min.png](/images/blog/certifications/certification-airdrop-min.png)
 
-Thats all! Visit [https://certifications.unlock-protocol.com](https://certifications.unlock-protocol.com) and start to deploy your first certificate!  
+Thats all! Visit [https://certifications.unlock-protocol.com](https://certifications.unlock-protocol.com) and start to deploy your first certificate!
 
 **What if I find an issue or bug in the new certification builder?**
 

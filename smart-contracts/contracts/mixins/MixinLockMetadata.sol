@@ -32,15 +32,9 @@ contract MixinLockMetadata is
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
   string private baseTokenURI;
 
-  event LockMetadata(
-    string name,
-    string symbol,
-    string baseTokenURI
-  );
+  event LockMetadata(string name, string symbol, string baseTokenURI);
 
-  function _initializeMixinLockMetadata(
-    string calldata _lockName
-  ) internal {
+  function _initializeMixinLockMetadata(string calldata _lockName) internal {
     ERC165StorageUpgradeable.__ERC165Storage_init();
     name = _lockName;
     // registering the optional erc721 metadata interface with ERC165.sol using
@@ -89,9 +83,7 @@ contract MixinLockMetadata is
    * that conforms to the "ERC721 Metadata JSON Schema".
    * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
    */
-  function tokenURI(
-    uint256 _tokenId
-  ) external view returns (string memory) {
+  function tokenURI(uint256 _tokenId) external view returns (string memory) {
     string memory URI;
     string memory tokenId;
     string memory lockAddress = address(this).address2Str();
@@ -104,9 +96,7 @@ contract MixinLockMetadata is
     }
 
     if (address(onTokenURIHook) != address(0)) {
-      uint expirationTimestamp = keyExpirationTimestampFor(
-        _tokenId
-      );
+      uint expirationTimestamp = keyExpirationTimestampFor(_tokenId);
       return
         onTokenURIHook.tokenURI(
           address(this),
@@ -135,10 +125,7 @@ contract MixinLockMetadata is
     public
     view
     virtual
-    override(
-      AccessControlUpgradeable,
-      ERC165StorageUpgradeable
-    )
+    override(AccessControlUpgradeable, ERC165StorageUpgradeable)
     returns (bool)
   {
     return super.supportsInterface(interfaceId);

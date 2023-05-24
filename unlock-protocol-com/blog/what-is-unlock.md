@@ -6,6 +6,7 @@ publishDate: February 26, 2019
 description: Why we’re building a business model as an open protocol.
 image: /images/blog/whatisunlock.jpg
 ---
+
 If you’ve read our words, you probably rightfully think that the thing we’re building at Unlock is some kind of new
 paywall system. This is true, but it is also only the tip of the iceberg: we’re building a protocol to lock and unlock
 “things”.
@@ -13,7 +14,7 @@ paywall system. This is true, but it is also only the tip of the iceberg: we’r
 ![locks](/images/blog/whatisunlock.jpg)
 
 The [web needs a new business model](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1). A
-business model is generally how an organization generates revenues AND makes a  profit. So far, the business model of
+business model is generally how an organization generates revenues AND makes a profit. So far, the business model of
 the web has generally been to show ads to users in order to influence their choices. This is
 [not working anymore](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f) because this
 model does not sustain creation, creates massive privacy concerns, incentivizes division and hate, or centralizes power
