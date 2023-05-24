@@ -20,7 +20,7 @@
     "introspect": "/bin/sh -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
     "introspect:local": "INTROSPECT_NETWORK=31337 node bin/introspect.js",
     "test": "graph test",
-    "ci": "yarn prepare && yarn codegen && yarn test -l",
+    "ci": "yarn prepare:abis && yarn codegen && yarn test -l",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
