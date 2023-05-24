@@ -10,7 +10,7 @@ dataSources:
     kind: ethereum
     source:
       abi: Unlock
-      address: "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f"
+      address: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f'
       startBlock: 21986688
     mapping:
       kind: ethereum/events
@@ -40,7 +40,7 @@ dataSources:
     kind: ethereum
     source:
       abi: Unlock
-      address: "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863"
+      address: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863'
       startBlock: 15714206
     mapping:
       kind: ethereum/events

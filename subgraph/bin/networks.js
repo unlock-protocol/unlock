@@ -57,3 +57,13 @@ module.exports = {
   networkName,
   generateManifestFile,
 }
+
+// execute as standalone
+if (require.main === module) {
+  generateManifestFile()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error(error)
+      process.exit(1)
+    })
+}

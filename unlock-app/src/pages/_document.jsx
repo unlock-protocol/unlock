@@ -11,7 +11,6 @@ export default class MyDocument extends Document {
           <script
             defer
             src="https://crypto-js.stripe.com/crypto-onramp-outer.js"
-
           />
           <Fonts />
           <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -9,8 +9,8 @@ image: /images/blog/superfluid/superfluid-unlock-min.png
 
 Unlock Protocol and [Superfluid](https://www.superfluid.finance) have teamed up to support streaming payments for Unlock membership NFTs! So what does this mean in practice?
 
-* Unlock is the open-source web3 protocol for time-based memberships. With Unlock NFTs, brands, creators, and developers can enable membership-based access to content, experiences, online communities, services, and events for any length of time desired — from seconds to weeks, months, or any other duration. A membership provides access to specified resources and experiences until the membership expires.
-* Superfluid streams enable real time flows of value between parties, and Superfluid is the building block for real time finance. Superfluid handles value transfer for subscriptions, membership rewards or any other composable stream of value, with continuous settlement.
+- Unlock is the open-source web3 protocol for time-based memberships. With Unlock NFTs, brands, creators, and developers can enable membership-based access to content, experiences, online communities, services, and events for any length of time desired — from seconds to weeks, months, or any other duration. A membership provides access to specified resources and experiences until the membership expires.
+- Superfluid streams enable real time flows of value between parties, and Superfluid is the building block for real time finance. Superfluid handles value transfer for subscriptions, membership rewards or any other composable stream of value, with continuous settlement.
 
 Enabling an integration between Unlock Protocol and Superfluid is as natural as combining peanut butter and jelly, or chocolate and peanut butter (or whatever delicious food pairing works for you). Now, brands, creators and developers have the flexibility to monetize memberships with real time streams that match the duration of their Unlock-powered memberships. For example, a publisher offering a 30-day membership to their content site can have members pay via a Superfluid stream, with the real time amount of payment matching the time left on their membership.
 

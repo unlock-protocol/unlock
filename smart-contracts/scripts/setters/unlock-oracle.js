@@ -9,7 +9,7 @@ async function main({ unlockAddress, tokenAddress, oracleAddress }) {
   if (!unlockAddress) {
     unlockAddress = networks[chainId].unlockAddress
   }
-  
+
   if (!unlockAddress) {
     throw new Error(
       'UNLOCK ORACLE CONFIG > Missing Unlock address... aborting.'
@@ -27,7 +27,7 @@ async function main({ unlockAddress, tokenAddress, oracleAddress }) {
 
   // get unlock instance
   const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-  
+
   const [owner] = await ethers.getSigners()
 
   console.log(
@@ -38,7 +38,7 @@ async function main({ unlockAddress, tokenAddress, oracleAddress }) {
     - signer: ${owner.address}
     `
   )
-  
+
   // set oracle
   const tx = await unlock.connect(owner).setOracle(tokenAddress, oracleAddress)
   const { transactionHash } = await tx.wait()
