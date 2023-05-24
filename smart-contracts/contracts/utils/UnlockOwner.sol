@@ -17,6 +17,7 @@ pragma solidity ^0.8.7;
  * that role as we are confident that none of the dependencies in place can prevent a healthy 
  * governance mechanism (bridge compromised... etc)
  * 
+ * 
  */
 
 
@@ -24,19 +25,36 @@ import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfa
 import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
 import '../interfaces/IUnlock.sol';
 
+interface ITimelockController {
+
+  function schedule(
+        address target,
+        uint256 value,
+        bytes calldata data,
+        bytes32 predecessor,
+        bytes32 salt,
+        uint256 delay
+  ) external;
+  function cancel(bytes32 id) external;
+
+}
+
 contract UnlockOwner {
 
   // address of the connext bridge on the current chain
-  address public bridgeAddress;
+  address public bridge;
 
   // address of Unlock on the current chain
-  address public unlockAddress;
+  address public unlock;
 
   // address of Unlock team multisig wallet for the current chain
-  address public multisigAddress;
+  address public multisig;
   
   // address of the DAO on mainnet (used to verify trusted origin)
-  address public daoTimelockAddress;
+  address public daoTimelock;
+
+  // the timelock used on destinatio chain
+  address public timelock;
 
   // the domain ID of the current network (defined by Connext)
   uint32 public domain;
@@ -61,40 +79,45 @@ contract UnlockOwner {
   );
 
    /**
-   * @param _bridgeAddress address of connext contract on current chain
-   * @param _unlockAddress address of the Unlock contract on current chain
-   * @param _timelockDaoAddress the address of the timelock of the DAO (which send instructions)
-   * @param _multisigAddress the address of the multisig contract
+   * @param _bridge address of connext contract on current chain
+   * @param _unlock address of the Unlock contract on current chain
+   * @param _timelockDao the address of the timelock of the DAO on mainnet (which send instructions)
+   * @param _multisig the address of the multisig contract
+   * @param _timelock the address of the multisig contract
    * @param _domain the Domain ID of the current chain as used by the Connext Bridge 
    * @param _daoChainId required for testing, default to 1.
    * https://docs.connext.network/resources/supported-chains
    */
   constructor (
-    address _bridgeAddress,
-    address _unlockAddress,
-    address _timelockDaoAddress,
-    address _multisigAddress,
+    address _bridge,
+    address _unlock,
+    address _timelockDao,
+    address _multisig,
+    address _timelock,
     uint32 _domain,
     uint _daoChainId
   ) {
-    bridgeAddress = _bridgeAddress;
-    unlockAddress = _unlockAddress;
-    multisigAddress = _multisigAddress;
-    daoTimelockAddress = _timelockDaoAddress;
+    // store params
+    bridge = _bridge;
+    unlock = _unlock;
+    multisig = _multisig;
+    daoTimelock = _timelockDao;
+    timelock= _timelock;
     domain = _domain;
+
     // required for testing purposes
-    daoChainId = _daoChainId != 0 ? _daoChainId : 1;
+    daoChainId = _daoChainId != 0 ? _daoChainId : 1;    
   }
 
   /**
    * MODIFIERS
    */
   function _isMultisig() internal view returns (bool) {
-    return msg.sender == multisigAddress;
+    return msg.sender == multisig;
   }
   
   function _isDAO() internal view returns (bool) {
-    return msg.sender == daoTimelockAddress && block.chainid == daoChainId;
+    return msg.sender == daoTimelock && block.chainid == daoChainId;
   }
 
 
@@ -103,9 +126,9 @@ contract UnlockOwner {
    * @notice 6648936 is the ID representing mainnet domain on Connext Bridge
    */
   function _isBridgedDAO(uint32 origin, address caller) internal view returns(bool) {
-    return msg.sender == bridgeAddress 
+    return msg.sender == bridge 
       && origin == 6648936 
-      && caller == daoTimelockAddress;
+      && caller == daoTimelock;
   }
 
   /**
@@ -115,7 +138,7 @@ contract UnlockOwner {
     address proxyAdminAddress = IUnlock(proxy).getAdmin();
     return proxyAdminAddress;
   }
-
+  
   /**
    * Internal helper to execute a call
    * @param action the type of action to perform is decribed as a number. Currently, 
@@ -129,9 +152,9 @@ contract UnlockOwner {
     // check where to forward the call
     address contractToCall;    
     if(action == 1) { 
-      contractToCall = unlockAddress;
+      contractToCall = unlock;
     } else if (action == 2) { 
-      contractToCall = _getProxyAdmin(unlockAddress);
+      contractToCall = _getProxyAdmin(unlock);
     }
 
     (bool success, bytes memory returnedData) = contractToCall.call{value: value}(callData);
@@ -159,9 +182,8 @@ contract UnlockOwner {
     if ( !_isMultisig()) {
       revert Unauthorized(msg.sender);
     }
-    multisigAddress = _newMultisig;
+    multisig = _newMultisig;
   } 
-
 
   /**
    * Calling this function will execute directly a call to Unlock or a proxy upgrade
