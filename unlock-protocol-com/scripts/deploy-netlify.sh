@@ -7,11 +7,13 @@ set -e
 # It requires AUTH_TOKEN and SITE_ID to be set (see details on how to set them using deploy.sh)
 
 APP_PATH=$1
-DEPLOY_ENV=$2
+DEPLOY_ENV=$2 #ignored in this script since unlock-protocol.com is always deployed to production
 COMMIT=$3
 PUBLISH=$4
 BUILD_PATH="out/"
 
+# unlock-protocol.com is always deployed to production
+DEPLOY_ENV="prod"
 
 if [ "$PUBLISH" = "true" ]; then
   # This is a build on master, we deploy as a published build
