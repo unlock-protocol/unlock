@@ -2,7 +2,6 @@ import { QueryClient, QueryCache } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import * as Sentry from '@sentry/nextjs'
-import { trimString } from '~/utils/formatter'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
