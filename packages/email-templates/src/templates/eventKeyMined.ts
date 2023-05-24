@@ -4,8 +4,10 @@ import {
   eventDetailStyle,
 } from './helpers/customContentStyle'
 import { links } from './helpers/links'
+import { transactionLink } from './helpers/transactionLink'
 
 handlebars.registerHelper('links', links)
+handlebars.registerHelper('transactionLink', transactionLink)
 
 export default {
   subject: `Your ticket for {{lockName}}`,
@@ -50,8 +52,6 @@ export default {
 
 {{links txUrl openSeaUrl true}}
 
-{{#if transactionReceiptUrl}}
-<small><a href="{{transactionReceiptUrl}}">Transaction Receipt</a></small>
-{{/if}}
+{{transactionLink transactionReceiptUrl}}
 `,
 }

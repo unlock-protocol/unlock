@@ -1,8 +1,10 @@
 import handlebars from 'handlebars'
 import { customContentStyle } from './helpers/customContentStyle'
 import { links } from './helpers/links'
+import { transactionLink } from './helpers/transactionLink'
 
 handlebars.registerHelper('links', links)
+handlebars.registerHelper('transactionLink', transactionLink)
 
 export default {
   subject: 'A membership was added to your wallet!',
@@ -20,8 +22,6 @@ export default {
 
 {{links txUrl openSeaUrl true}}
 
-{{#if transactionReceiptUrl}}
-<small><a href="{{transactionReceiptUrl}}">Transaction Receipt</a></small>
-{{/if}}
+{{transactionLink transactionReceiptUrl}}
 `,
 }
