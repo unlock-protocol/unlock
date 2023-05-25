@@ -216,7 +216,12 @@ export function Connected({
   }, [account])
 
   if (autoconnect) {
-    return <div className="space-y-2">{children}</div>
+    if (account) {
+      return <div className="space-y-2">{children}</div>
+    } else {
+      console.debug('Autoconnecting...')
+      return null
+    }
   }
 
   const onDisconnect = async () => {
