@@ -1,21 +1,21 @@
 {
-    "name": "@unlock-protocol/eth-node",
-    "description": "Simple ETH node for development purposes",
-    "private": true,
-    "scripts": {
-        "lint:fix": "yarn lint --fix",
-        "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/",
-        "provision": "hardhat run scripts/provision.ts",
-        "start": "hardhat node"
-    },
-    "dependencies": {
-        "@nomiclabs/hardhat-ethers": "2.2.2",
-        "@unlock-protocol/hardhat-plugin": "0.0.18",
-        "eslint": "8.39.0",
-        "ethers": "5.7.2",
-        "hardhat": "2.14.0",
-        "hardhat-erc1820": "0.1.0",
-        "ts-node": "10.9.1",
-        "typescript": "5.0.4"
-    }
+  "name": "@unlock-protocol/eth-node",
+  "description": "Simple ETH node for development purposes",
+  "private": true,
+  "scripts": {
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/",
+    "provision": "hardhat run scripts/provision.ts",
+    "start": "hardhat node"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "2.2.2",
+    "@unlock-protocol/hardhat-plugin": "*",
+    "eslint": "8.39.0",
+    "ethers": "5.7.2",
+    "hardhat": "2.14.0",
+    "hardhat-erc1820": "0.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "5.0.4"
+  }
 }

@@ -25,19 +25,11 @@ contract MixinPurchase is
     address tokenAddress
   );
 
-  event UnlockCallFailed(
-    address indexed lockAddress,
-    address unlockAddress
-  );
+  event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
-  event ReferrerFee(
-    address indexed referrer,
-    uint fee
-  );
-  
-  event GasRefundValueChanged(
-    uint refundValue
-  );
+  event ReferrerFee(address indexed referrer, uint fee);
+
+  event GasRefundValueChanged(uint refundValue);
 
   // default to 0
   uint256 internal _gasRefundValue;
@@ -59,9 +51,7 @@ contract MixinPurchase is
    * @dev Set the value/price to be refunded to the sender on purchase
    */
 
-  function setGasRefundValue(
-    uint256 _refundValue
-  ) external {
+  function setGasRefundValue(uint256 _refundValue) external {
     _onlyLockManager();
     _gasRefundValue = _refundValue;
     emit GasRefundValueChanged(_refundValue);
@@ -70,11 +60,7 @@ contract MixinPurchase is
   /**
    * @dev Returns value/price to be refunded to the sender on purchase
    */
-  function gasRefundValue()
-    external
-    view
-    returns (uint256 _refundValue)
-  {
+  function gasRefundValue() external view returns (uint256 _refundValue) {
     return _gasRefundValue;
   }
 
@@ -86,10 +72,7 @@ contract MixinPurchase is
    * specific referrer (in basis points)
    * @dev To send a fixed percentage of the key price to all referrers, set a percentage to `address(0)`
    */
-  function setReferrerFee(
-    address _referrer,
-    uint _feeBasisPoint
-  ) public {
+  function setReferrerFee(address _referrer, uint _feeBasisPoint) public {
     _onlyLockManager();
     referrerFees[_referrer] = _feeBasisPoint;
     emit ReferrerFee(_referrer, _feeBasisPoint);
@@ -99,7 +82,7 @@ contract MixinPurchase is
   @dev internal function to execute the payments to referrers if any is set
   */
   function _payReferrer(address _referrer) internal {
-    if(_referrer != address(0)) {
+    if (_referrer != address(0)) {
       // get default value
       uint basisPointsToPay = referrerFees[address(0)];
 
@@ -119,30 +102,30 @@ contract MixinPurchase is
     }
   }
 
-  /** 
+  /**
    * @param _baseAmount the total amount to calculate the fee
    * @dev internal function to execute the payments to referrers if any is set
    */
   function _payProtocol(uint _baseAmount) internal {
-
-    // get fee from Unlock 
+    // get fee from Unlock
     uint protocolFee;
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
-      try unlockProtocol.protocolFee() returns (uint _fee){
+      try unlockProtocol.protocolFee() returns (uint _fee) {
         // calculate fee to be paid
         protocolFee = (_baseAmount * _fee) / BASIS_POINTS_DEN;
-      
+
         // pay fee to Unlock
         if (protocolFee != 0) {
-          _transfer(tokenAddress, payable(address(unlockProtocol)), protocolFee);
+          _transfer(
+            tokenAddress,
+            payable(address(unlockProtocol)),
+            protocolFee
+          );
         }
       } catch {
         // emit missing unlock
-        emit UnlockCallFailed(
-          address(this),
-          address(unlockProtocol)
-        );
+        emit UnlockCallFailed(address(this), address(unlockProtocol));
       }
     }
   }
@@ -150,53 +133,34 @@ contract MixinPurchase is
   /**
    * @dev Helper to communicate with Unlock (record GNP and mint UDT tokens)
    */
-  function _recordKeyPurchase(
-    uint _keyPrice,
-    address _referrer
-  ) internal {
-
+  function _recordKeyPurchase(uint _keyPrice, address _referrer) internal {
     // make sure unlock is a contract, and we catch possible reverts
     if (address(unlockProtocol).code.length > 0) {
-      
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
       try
-        unlockProtocol.recordKeyPurchase{ gas: 300000 }(
-          _keyPrice,
-          _referrer
-        )
+        unlockProtocol.recordKeyPurchase{gas: 300000}(_keyPrice, _referrer)
       {} catch {
         // emit missing unlock
-        emit UnlockCallFailed(
-          address(this),
-          address(unlockProtocol)
-        );
+        emit UnlockCallFailed(address(this), address(unlockProtocol));
       }
     } else {
       // emit missing unlock
-      emit UnlockCallFailed(
-        address(this),
-        address(unlockProtocol)
-      );
+      emit UnlockCallFailed(address(this), address(unlockProtocol));
     }
   }
 
   /**
    * @dev helper to keep track of price and duration settings of a key
-   * at purchase / extend time 
-   * @notice stores values are used to prevent renewal if a key has settings 
+   * at purchase / extend time
+   * @notice stores values are used to prevent renewal if a key has settings
    * has changed
    */
-  function _recordTokenTerms(
-    uint _tokenId,
-    uint _keyPrice
-  ) internal {
+  function _recordTokenTerms(uint _tokenId, uint _keyPrice) internal {
     if (_originalPrices[_tokenId] != _keyPrice) {
       _originalPrices[_tokenId] = _keyPrice;
     }
-    if (
-      _originalDurations[_tokenId] != expirationDuration
-    ) {
+    if (_originalDurations[_tokenId] != expirationDuration) {
       _originalDurations[_tokenId] = expirationDuration;
     }
     if (_originalTokens[_tokenId] != tokenAddress) {
@@ -205,10 +169,13 @@ contract MixinPurchase is
   }
 
   /**
-   * @dev helper to check if the pricing or duration of the lock have been modified 
+   * @dev helper to check if the pricing or duration of the lock have been modified
    * since the key was bought
    */
-  function isRenewable(uint _tokenId, address _referrer) public view returns (bool) {
+  function isRenewable(
+    uint _tokenId,
+    address _referrer
+  ) public view returns (bool) {
     // check the lock
     if (
       _originalDurations[_tokenId] == type(uint).max ||
@@ -219,7 +186,8 @@ contract MixinPurchase is
 
     // make sure key duration haven't decreased or price hasn't increase
     if (
-      _originalPrices[_tokenId] < purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
+      _originalPrices[_tokenId] <
+      purchasePriceFor(ownerOf(_tokenId), _referrer, "") ||
       _originalDurations[_tokenId] > expirationDuration ||
       _originalTokens[_tokenId] != tokenAddress
     ) {
@@ -227,11 +195,9 @@ contract MixinPurchase is
     }
 
     // make sure key is ready for renewal (at least 90% expired)
-    // check if key is 90% expired  
-    uint deadline = 
-      (_keys[_tokenId].expirationTimestamp - expirationDuration) // origin
-      + 
-      (expirationDuration * 9000 / BASIS_POINTS_DEN); // 90% of duration
+    // check if key is 90% expired
+    uint deadline = (_keys[_tokenId].expirationTimestamp - expirationDuration) + // origin
+      ((expirationDuration * 9000) / BASIS_POINTS_DEN); // 90% of duration
 
     if (block.timestamp < deadline) {
       revert NOT_READY_FOR_RENEWAL();
@@ -249,7 +215,7 @@ contract MixinPurchase is
       revert INSUFFICIENT_ERC20_VALUE();
     }
   }
-  
+
   /**
    * @dev helper to pay ERC20 tokens
    */
@@ -287,9 +253,7 @@ contract MixinPurchase is
     bytes[] calldata _data
   ) external payable returns (uint[] memory) {
     _lockIsUpToDate();
-    if (
-      _totalSupply + _recipients.length > maxNumberOfKeys
-    ) {
+    if (_totalSupply + _recipients.length > maxNumberOfKeys) {
       revert LOCK_SOLD_OUT();
     }
     if (
@@ -327,7 +291,7 @@ contract MixinPurchase is
       _recordTokenTerms(tokenIds[i], inMemoryKeyPrice);
 
       // make sure erc20 price is correct
-      if(tokenAddress != address(0)) {
+      if (tokenAddress != address(0)) {
         _checkValue(_values[i], inMemoryKeyPrice);
       }
 
@@ -335,9 +299,7 @@ contract MixinPurchase is
       _recordKeyPurchase(inMemoryKeyPrice, _referrers[i]);
 
       // fire hook
-      uint pricePaid = tokenAddress == address(0)
-        ? msg.value
-        : _values[i];
+      uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
       if (address(onKeyPurchaseHook) != address(0)) {
         onKeyPurchaseHook.onKeyPurchase(
           tokenIds[i],
@@ -397,7 +359,7 @@ contract MixinPurchase is
     );
 
     // make sure erc20 price is correct
-    if(tokenAddress != address(0)) {
+    if (tokenAddress != address(0)) {
       _checkValue(_value, inMemoryKeyPrice);
     }
 
@@ -426,13 +388,10 @@ contract MixinPurchase is
    * @param _tokenId the ID fo the token to renew
    * @param _referrer the address of the person to be granted UDT
    */
-  function renewMembershipFor(
-    uint _tokenId,
-    address _referrer
-  ) public {
+  function renewMembershipFor(uint _tokenId, address _referrer) public {
     _lockIsUpToDate();
     _isKey(_tokenId);
-    
+
     // check if key is ripe for renewal
     isRenewable(_tokenId, _referrer);
 
@@ -482,14 +441,9 @@ contract MixinPurchase is
    */
   function _refundGas() internal {
     if (_gasRefundValue != 0) {
-
       _transfer(tokenAddress, payable(msg.sender), _gasRefundValue);
 
-      emit GasRefunded(
-        msg.sender,
-        _gasRefundValue,
-        tokenAddress
-      );
+      emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
     }
   }
 

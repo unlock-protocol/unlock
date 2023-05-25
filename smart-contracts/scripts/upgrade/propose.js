@@ -7,11 +7,16 @@ const { confirmMultisigTx, impersonate } = require('../../test/helpers')
 const { submitTx, getOwners } = require('../multisig')
 
 // used to update contract implementation address in proxy admin using multisig
-async function main({ proxyAddress, proxyAdminAddress, implementation, multisig }) {
+async function main({
+  proxyAddress,
+  proxyAdminAddress,
+  implementation,
+  multisig,
+}) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   let [signer] = await ethers.getSigners()
-  if(!multisig) {
+  if (!multisig) {
     ;({ multisig } = networks[chainId])
   }
 
@@ -29,13 +34,10 @@ async function main({ proxyAddress, proxyAdminAddress, implementation, multisig 
   - multisig: ${multisig}
   - signer: ${signer.address}
   `)
-  
+
   // build upgrade tx
   const { interface } = await ethers.getContractAt(proxyABI, proxyAdminAddress)
-  const args = [
-    proxyAddress,
-    implementation,
-  ]
+  const args = [proxyAddress, implementation]
   const data = interface.encodeFunctionData('upgrade', args)
 
   // submit proxy upgrade tx to proxyAdmin
@@ -48,7 +50,7 @@ async function main({ proxyAddress, proxyAdminAddress, implementation, multisig 
       value: 0, // ETH value
       calldata: data,
     },
-    signer
+    signer,
   })
 
   // make sure it doesnt revert

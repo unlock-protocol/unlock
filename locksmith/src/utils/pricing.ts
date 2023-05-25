@@ -3,7 +3,12 @@ import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
-import { GAS_COST, stripePercentage, baseStripeFee } from './constants'
+import {
+  GAS_COST,
+  stripePercentage,
+  baseStripeFee,
+  MIN_PAYMENT_STRIPE_CREDIT_CARD,
+} from './constants'
 import * as pricingOperations from '../operations/pricingOperations'
 
 interface KeyPricingOptions {
@@ -221,6 +226,6 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     ...fees,
     recipients,
     gasCost,
-    isCreditCardPurchasable: fees.total > 50,
+    isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }
 }

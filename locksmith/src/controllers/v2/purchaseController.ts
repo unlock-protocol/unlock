@@ -266,7 +266,7 @@ export const createOnRampSession: RequestHandler = async (
         universalCardConfig.stripeDestinationNetwork,
       ],
       wallet_addresses: {
-        [universalCardConfig.stripeDestinationNetwork]: userAddress,
+        ethereum: userAddress,
       },
     },
   })

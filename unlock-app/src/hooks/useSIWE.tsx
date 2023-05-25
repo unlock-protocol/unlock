@@ -17,7 +17,8 @@ export interface SIWEContextType {
   signIn: () => Promise<unknown> | unknown
   siweSign: (
     nonce: string,
-    statement: string
+    statement: string,
+    opts?: any
   ) => Promise<{ message: string; signature: string } | null> | null
   signOut: () => Promise<unknown> | unknown
   status?: Status
@@ -78,29 +79,37 @@ export const SIWEProvider = ({ children }: Props) => {
 
   const siweSign = async (
     nonce: string,
-    statement: string
+    statement: string,
+    opts: {
+      resources?: string[]
+    } = {}
   ): Promise<{ message: string; signature: string } | null> => {
     try {
-      setStatus('loading')
       if (!connected) {
         throw new Error('No wallet connected.')
       }
       const walletService = await getWalletService()
 
       const address = await walletService.signer.getAddress()
+      const insideIframe = window.location.href !== window.parent.location.href
 
       const parent = new URL(
-        window.location != window.parent.location
-          ? document.referrer
-          : document.location.href
+        insideIframe ? window.parent.location.href : window.location.href
       )
-      let resources = undefined
+
+      // We can't have an empty resources array... because the siwe library does not parse that correctly
+      // resulting in a different signature on the backend
+      let resources =
+        opts?.resources?.length && opts.resources?.length > 0
+          ? opts.resources
+          : undefined
+
       if (parent.host !== window.location.host) {
         resources = [window.location.origin]
       }
 
       const siwe = new SiweMessage({
-        domain: parent.host,
+        domain: window.location.host, // parent.host,
         uri: parent.origin,
         address,
         chainId: network,
@@ -134,7 +143,6 @@ export const SIWEProvider = ({ children }: Props) => {
       const siweResult = await siweSign(nonce, '')
       if (siweResult) {
         const { message, signature } = siweResult
-
         const response = await storage.login({
           message,
           signature,

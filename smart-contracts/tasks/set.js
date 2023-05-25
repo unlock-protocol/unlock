@@ -65,7 +65,10 @@ task('set:template', 'Set PublicLock address in Unlock contract')
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )
-  .addOptionalParam('unlockAddress', 'the address of an existing Unlock contract')
+  .addOptionalParam(
+    'unlockAddress',
+    'the address of an existing Unlock contract'
+  )
   .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
   .setAction(async ({ publicLockAddress, unlockAddress, unlockVersion }) => {
     // eslint-disable-next-line global-require

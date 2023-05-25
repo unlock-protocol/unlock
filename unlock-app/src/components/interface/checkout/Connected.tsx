@@ -205,7 +205,6 @@ export function Connected({
   // Autoconnect
   useEffect(() => {
     if (autoconnect) {
-      console.debug('Autoconnecting...')
       authenticateWithProvider('METAMASK')
     }
   }, [autoconnect, authenticateWithProvider])
@@ -217,12 +216,7 @@ export function Connected({
   }, [account])
 
   if (autoconnect) {
-    if (account) {
-      return <div className="space-y-2">{children}</div>
-    } else {
-      console.debug('Autoconnect failed...')
-      return null
-    }
+    return <div className="space-y-2">{children}</div>
   }
 
   const onDisconnect = async () => {

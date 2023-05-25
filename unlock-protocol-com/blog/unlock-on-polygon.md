@@ -9,7 +9,6 @@ image: /images/blog/polygon/polygon.png
 
 ![polygon](/images/blog/polygon/polygon.png)
 
-
 Unlock has been deployed to Polygon! As Ethereum's main net is increasingly crowded, we wanted to give the ability to creators to deploy their locks and memberships on other networks, such as [Polygon](https://polygon.technology/).
 
 Polygon is an EVM-compatible blockchain that runs on proof-of-stake and offers much cheaper transaction costs. For example, it currently costs about $0.0003 to purchase a membership on a lock deployed on Polygon (another way to look at this is that it would require you to buy about 33 different memberships to spend $0.01 in fees!)
@@ -37,8 +36,3 @@ The process is simple: instead of minting from the main chain, we have taken abo
 What's important to realize is that tokens are **only distributed when the protocol is used**. Additionally the amount of tokens minted is capped by gas spent. Read more about the [tokenomics of UDT in our documentation](https://docs.unlock-protocol.com/governance/the-unlock-token/side-chains-and-layer-2)!
 
 We're very excited to see what will happen with Eth2.0, but we're also convinced that the future of Ethereum is multi-chain, multi-L2 and we're committed to making sure that each has its own UDT reward system, as we want Unlock to grow everywhere!
-
-
-
-
-
