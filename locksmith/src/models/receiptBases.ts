@@ -15,7 +15,7 @@ export class ReceiptBase extends Model<
   declare lockAddress: string
 
   // receipts details
-  declare vatRatePercentage?: number | null
+  declare vatBasisPointsRate?: number | null
   declare supplierName?: string
   declare vat?: string
   declare servicePerformed?: string
@@ -54,7 +54,7 @@ ReceiptBase.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    vatRatePercentage: {
+    vatBasisPointsRate: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,

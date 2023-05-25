@@ -15,7 +15,7 @@ export const SupplierBody = z.object({
   state: z.string().optional().default(''),
   zip: z.string().optional().default(''),
   country: z.string().optional().default(''),
-  vatRatePercentage: z.number().nullish().default(null),
+  vatBasisPointsRate: z.number().min(0).max(10000).nullish().default(null),
 })
 export type SupplierBodyProps = z.infer<typeof SupplierBody>
 

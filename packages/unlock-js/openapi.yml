@@ -2107,7 +2107,7 @@ paths:
                     type: string
                   vat:
                     type: string
-                  vatRatePercentage:
+                  vatBasisPointsRate:
                     type: number
                   servicePerformed:
                     type: string
@@ -2165,7 +2165,7 @@ paths:
                     type: string
                   vat:
                     type: string
-                  vatRatePercentage:
+                  vatBasisPointsRate:
                     type: number
                   servicePerformed:
                     type: string

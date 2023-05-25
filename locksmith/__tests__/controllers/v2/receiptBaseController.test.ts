@@ -19,7 +19,7 @@ const supplier: z.infer<typeof SupplierBody> = {
   city: 'Sea',
   state: 'Red Line',
   zip: '00000',
-  vatRatePercentage: 22,
+  vatBasisPointsRate: 2200,
 }
 
 vi.mock('@unlock-protocol/unlock-js', () => {
@@ -80,7 +80,7 @@ describe('Receipt Base v2', () => {
     expect(body.city).toBe(supplier.city)
     expect(body.country).toBe(supplier.country)
     expect(body.zip).toBe(supplier.zip)
-    expect(body.vatRatePercentage).toBe(supplier.vatRatePercentage)
+    expect(body.vatBasisPointsRate).toBe(supplier.vatBasisPointsRate)
   })
 
   it('Correctly save supplier details without params and returns default values', async () => {
@@ -103,7 +103,7 @@ describe('Receipt Base v2', () => {
     expect(body.city).toBe('')
     expect(body.country).toBe('')
     expect(body.zip).toBe('')
-    expect(body.vatRatePercentage).toBe(null)
+    expect(body.vatBasisPointsRate).toBe(null)
   })
 
   it('Correctly save and get supplier details', async () => {
@@ -135,6 +135,6 @@ describe('Receipt Base v2', () => {
     expect(body.city).toBe(supplier.city)
     expect(body.country).toBe(supplier.country)
     expect(body.zip).toBe(supplier.zip)
-    expect(body.vatRatePercentage).toBe(supplier.vatRatePercentage)
+    expect(body.vatBasisPointsRate).toBe(supplier.vatBasisPointsRate)
   })
 })

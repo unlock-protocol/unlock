@@ -4,7 +4,7 @@ const table = 'ReceiptBases'
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn(table, 'vatRatePercentage', {
+    await queryInterface.addColumn(table, 'vatBasisPointsRate', {
       type: Sequelize.INTEGER,
       allowNull: true,
       defaultValue: null,
@@ -12,6 +12,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn(table, 'vatRatePercentage')
+    await queryInterface.removeColumn(table, 'vatBasisPointsRate')
   },
 }

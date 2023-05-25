@@ -94,6 +94,7 @@ export const ReceiptBaseForm = ({
   useEffect(() => {
     if (receiptsBase) {
       reset(receiptsBase)
+      setVatPercentage(receiptsBase?.vatRatePercentage > 0) // enable when percentage is set
     }
   }, [receiptsBase, reset])
 
@@ -116,7 +117,11 @@ export const ReceiptBaseForm = ({
         />
         <div className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
           <div className="mt-1">
-            <Input disabled={disabledInput} label="VAT" {...register('vat')} />
+            <Input
+              disabled={disabledInput}
+              label="VAT number"
+              {...register('vat')}
+            />
           </div>
           <div>
             <div className="flex items-center justify-between">
@@ -140,11 +145,15 @@ export const ReceiptBaseForm = ({
               type="number"
               min={0}
               max={100}
-              step={1}
+              step="any"
               disabled={disabledInput || !vatPercentage}
               error={errors?.vatRatePercentage?.message}
               {...register('vatRatePercentage', {
                 valueAsNumber: true,
+                required: {
+                  value: vatPercentage,
+                  message: 'This value is required.',
+                },
               })}
             />
           </div>
