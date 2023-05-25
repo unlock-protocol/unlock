@@ -5,15 +5,21 @@ import { ReceiptBox } from './elements/ReceiptBox'
 export const ReceiptsPage = () => {
   const { query } = useRouter()
 
-  const hasParams =
-    query.network && query.address && query.hash && query.tokenId
-
   let hashes: string[] = []
+  let hasMultipleTokenIds = false
+
   if (typeof query.hash === 'string') {
     hashes.push(query.hash)
   } else if (typeof query.hash?.length && query.hash) {
     hashes = query.hash
   }
+
+  if (typeof query.tokenId !== 'string') {
+    hasMultipleTokenIds = true // hide receipt we would not know which of the token ids matches a specific receipt.
+  }
+
+  const hasParams =
+    query.network && query.address && query.hash && !hasMultipleTokenIds
 
   return (
     <>

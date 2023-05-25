@@ -37,25 +37,28 @@ const getPurchaserDetails = async ({
     })
   }
 
-  const data = lowercaseObjectKeys(metadata?.userMetadata?.protected)
+  const keyOwnerMetadata = lowercaseObjectKeys(
+    metadata?.userMetadata?.protected
+  )
 
   // return metadata when receipt data is not present
   if (!purchaserDetails) {
     const fullname =
-      data?.fullname || (data?.firstname && data?.lastname)
-        ? `${data?.firstname} ${data?.lastname}`
+      keyOwnerMetadata?.fullname ||
+      (keyOwnerMetadata?.firstname && keyOwnerMetadata?.lastname)
+        ? `${keyOwnerMetadata?.firstname} ${keyOwnerMetadata?.lastname}`
         : ''
 
     return {
-      email: data?.email,
+      email: keyOwnerMetadata?.email,
       fullname,
-      businessName: data?.businessname || data?.company,
-      city: data?.city,
-      zip: data?.zip || data?.zipcode,
-      state: data?.state,
-      country: data?.country,
-      addressLine1: data?.addressline1 || data?.address,
-      addressLine2: data?.addressline2,
+      businessName: keyOwnerMetadata?.businessname || keyOwnerMetadata?.company,
+      city: keyOwnerMetadata?.city,
+      zip: keyOwnerMetadata?.zip || keyOwnerMetadata?.zipcode,
+      state: keyOwnerMetadata?.state,
+      country: keyOwnerMetadata?.country,
+      addressLine1: keyOwnerMetadata?.addressline1 || keyOwnerMetadata?.address,
+      addressLine2: keyOwnerMetadata?.addressline2,
     }
   }
 
