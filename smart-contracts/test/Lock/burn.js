@@ -42,13 +42,13 @@ contract('Lock / burn', (accounts) => {
 
   it('balance is updated correctly', async () => {
     assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 1)
-    assert.equal((await lock.tokenOfOwnerByIndex(keyOwner, 0)).toNumber(), tokenId.toNumber())
+    assert.equal(
+      (await lock.tokenOfOwnerByIndex(keyOwner, 0)).toNumber(),
+      tokenId.toNumber()
+    )
     await lock.burn(tokenId, { from: keyOwner })
     assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 0)
-    await reverts(
-      lock.tokenOfOwnerByIndex(keyOwner, 0),
-      'OUT_OF_RANGE'
-    )
+    await reverts(lock.tokenOfOwnerByIndex(keyOwner, 0), 'OUT_OF_RANGE')
   })
 
   it('totalSupply is decreased', async () => {

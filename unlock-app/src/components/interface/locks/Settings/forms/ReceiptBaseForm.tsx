@@ -1,29 +1,63 @@
-import { TextBox } from '@unlock-protocol/ui'
+import { Placeholder, TextBox, ToggleSwitch } from '@unlock-protocol/ui'
 import { Input, Button } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/useReceipts'
+import { z } from 'zod'
 
-type SupplierBodyProps = any
+const SupplierSchema = z.object({
+  vat: z.string().optional(),
+  vatRatePercentage: z.number().nullish().default(null),
+  supplierName: z.string().optional(),
+  addressLine1: z.string().optional(),
+  addressLine2: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
+  zip: z.string().optional(),
+  servicePerformed: z.string().optional(),
+})
 
+type SupplierBodyProps = z.infer<typeof SupplierSchema>
 interface ReceiptBaseFormProps {
   lockAddress: string
   network: number
   isManager: boolean
   disabled: boolean
 }
+
+const ReceiptBaseFormPlaceholder = () => {
+  return (
+    <Placeholder.Root className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <Placeholder.Line size="xl" />
+      <Placeholder.Root className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
+        <Placeholder.Line size="xl" />
+        <Placeholder.Line size="xl" />
+      </Placeholder.Root>
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+      <Placeholder.Line size="xl" />
+    </Placeholder.Root>
+  )
+}
+
 export const ReceiptBaseForm = ({
   lockAddress,
   isManager,
   disabled,
   network,
 }: ReceiptBaseFormProps) => {
+  const [vatPercentage, setVatPercentage] = useState(false)
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isValid },
+    setValue,
+    formState: { isValid, errors },
   } = useForm<SupplierBodyProps>({
     mode: 'onChange',
   })
@@ -60,23 +94,70 @@ export const ReceiptBaseForm = ({
   useEffect(() => {
     if (receiptsBase) {
       reset(receiptsBase)
+      setVatPercentage(receiptsBase?.vatRatePercentage > 0) // enable when percentage is set
     }
   }, [receiptsBase, reset])
 
   const disabledInput = isReceiptsBaseUpdating || disabled || isLoadingDetails
 
+  if (isLoadingDetails) {
+    return <ReceiptBaseFormPlaceholder />
+  }
+
   return (
     <form
-      className="flex flex-col gap-6 text-left"
+      className="grid grid-cols-1 gap-6 text-left"
       onSubmit={handleSubmit(onHandleSubmit)}
     >
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2">
         <Input
           disabled={disabledInput}
           label="Supplier name"
           {...register('supplierName')}
         />
-        <Input disabled={disabledInput} label="VAT" {...register('vat')} />
+        <div className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
+          <div className="mt-1">
+            <Input
+              disabled={disabledInput}
+              label="VAT number"
+              {...register('vat')}
+            />
+          </div>
+          <div>
+            <div className="flex items-center justify-between">
+              <label className="px-1 text-base" htmlFor="">
+                VAT rate (%)
+              </label>
+              <ToggleSwitch
+                title="Enable"
+                enabled={vatPercentage}
+                setEnabled={setVatPercentage}
+                onChange={(enabled) => {
+                  if (!enabled) {
+                    setValue('vatRatePercentage', null, {
+                      shouldValidate: true,
+                    })
+                  }
+                }}
+              />
+            </div>
+            <Input
+              type="number"
+              min={0}
+              max={100}
+              step="any"
+              disabled={disabledInput || !vatPercentage}
+              error={errors?.vatRatePercentage?.message}
+              {...register('vatRatePercentage', {
+                valueAsNumber: true,
+                required: {
+                  value: vatPercentage,
+                  message: 'This value is required.',
+                },
+              })}
+            />
+          </div>
+        </div>
         <Input
           disabled={disabledInput}
           label="Address line 1"

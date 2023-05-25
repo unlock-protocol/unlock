@@ -1796,6 +1796,12 @@
               "deprecationReason": null
             },
             {
+              "name": "lock__numberOfReceipts",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "tokenId",
               "description": null,
               "isDeprecated": false,
@@ -2142,6 +2148,22 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "Bytes",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "numberOfReceipts",
+              "description": "Total number of receipts of lock",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigInt",
                   "ofType": null
                 }
               },
@@ -4348,6 +4370,102 @@
               "defaultValue": null
             },
             {
+              "name": "numberOfReceipts",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_not",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "BigInt",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "numberOfReceipts_not_in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "BigInt",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_change_block",
               "description": "Filter for the block changed event.",
               "type": {
@@ -4490,6 +4608,12 @@
             },
             {
               "name": "deployer",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "numberOfReceipts",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5480,9 +5604,13 @@
               "description": "Timestamp",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "BigInt",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigInt",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -5492,9 +5620,13 @@
               "description": "Sender of the transaction",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -5516,9 +5648,13 @@
               "description": "Address of the Lock smart contract",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -5528,9 +5664,13 @@
               "description": "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -5540,9 +5680,13 @@
               "description": "amount",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "BigInt",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigInt",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -5550,6 +5694,22 @@
             {
               "name": "gasTotal",
               "description": "Total gas paid",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigInt",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "receiptNumber",
+              "description": "Increasing number of receipt",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -6824,6 +6984,102 @@
               "defaultValue": null
             },
             {
+              "name": "receiptNumber",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_not",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigInt",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "BigInt",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "receiptNumber_not_in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "BigInt",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_change_block",
               "description": "Filter for the block changed event.",
               "type": {
@@ -6918,6 +7174,12 @@
             },
             {
               "name": "gasTotal",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "receiptNumber",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -9463,11 +9725,7 @@
         {
           "name": "skip",
           "description": null,
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -9488,11 +9746,7 @@
         {
           "name": "include",
           "description": null,
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -9513,17 +9767,13 @@
         {
           "name": "entity",
           "description": "Marks the GraphQL type as indexable entity.  Each type that should be an entity is required to be annotated with this directive.",
-          "locations": [
-            "OBJECT"
-          ],
+          "locations": ["OBJECT"],
           "args": []
         },
         {
           "name": "subgraphId",
           "description": "Defined a Subgraph ID for an object type",
-          "locations": [
-            "OBJECT"
-          ],
+          "locations": ["OBJECT"],
           "args": [
             {
               "name": "id",
@@ -9544,9 +9794,7 @@
         {
           "name": "derivedFrom",
           "description": "creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API.",
-          "locations": [
-            "FIELD_DEFINITION"
-          ],
+          "locations": ["FIELD_DEFINITION"],
           "args": [
             {
               "name": "field",

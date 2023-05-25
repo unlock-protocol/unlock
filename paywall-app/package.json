@@ -29,11 +29,6 @@
     "typescript": "5.0.4",
     "vite": "4.3.3"
   },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "yarn run lint --fix"
-    ]
-  },
   "browserslist": [
     "defaults",
     "not IE 11",

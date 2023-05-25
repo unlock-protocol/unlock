@@ -55,10 +55,7 @@ task('lock:samples', 'Deploy a sample lock')
     'lockVersion',
     'The PublicLock version to use when deploying the lock'
   )
-  .addOptionalParam(
-    'count',
-    'The number of sample locks to deploy'
-  )
+  .addOptionalParam('count', 'The number of sample locks to deploy')
   .setAction(async ({ unlockAddress, lockVersion, count }) => {
     // eslint-disable-next-line global-require
     const deploySampleLocks = require('../scripts/lock/samples')
@@ -108,10 +105,12 @@ task('lock:upgrade', 'Upgrade a lock to the next version')
 task('lock:purchase', 'Purchase a single key')
   .addParam('lockAddress', 'The lock address')
   .addOptionalParam('to', 'The address that will receive the key')
-  .addOptionalParam('lockVersion', 'The version of the Lock used to deploy the keys')
+  .addOptionalParam(
+    'lockVersion',
+    'The version of the Lock used to deploy the keys'
+  )
   .setAction(async ({ lockAddress }) => {
     // eslint-disable-next-line global-require
     const upgradeLock = require('../scripts/lock/purchase')
     await upgradeLock({ lockAddress })
   })
-  

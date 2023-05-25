@@ -20,7 +20,7 @@ export const queryClient = new QueryClient({
           },
         },
       })
-      console.error(`Event ID: ${id}\n`, error)
+      console.debug(`Event ID: ${id}\n`, error)
       if (query?.meta?.errorMessage) {
         toast.error(query.meta.errorMessage as string)
       } else {
@@ -33,7 +33,6 @@ export const queryClient = new QueryClient({
           default: {
             const errorMessage = error?.error?.message || error.message
             if (errorMessage) {
-              // Trim the error message to 125 characters to avoid overflowing the toast. Maybe different approach? Is there way to get more readable message from ethers?
               toast.error(
                 'There was an unexpected error. Please try again, refresh the page and report to our team if this persists.'
               )
