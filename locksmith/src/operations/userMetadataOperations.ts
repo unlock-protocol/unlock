@@ -4,15 +4,6 @@ import { UserTokenMetadata } from '../models'
 
 import { InferAttributes } from 'sequelize'
 import { isEmpty, merge } from 'lodash'
-import LockData from '../utils/lockData'
-import networks from '@unlock-protocol/networks'
-
-interface MetadataByTokenPros {
-  tokenId: string
-  network: number
-  lockAddress: string
-  includeProtected?: boolean
-}
 
 // @deprecated Use `createOrUpdateUserMetadata` instead.
 export async function addMetadata(metadata: UserTokenMetadataInput) {
