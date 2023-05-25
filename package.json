@@ -51,6 +51,7 @@
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn packages --parallel run lint",
+    "lint:contracts": "yarn workspace @unlock-protocol/smart-contracts lint:contracts --fix",
     "postinstall": "husky install"
   },
   "repository": {
@@ -79,9 +80,8 @@
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.5.0",
   "lint-staged": {
-    "*.{js,ts,tsx,sol}": [
-      "yarn run lint --fix"
-    ],
-    "*.{js,ts,tsx,sol,css,md}": "prettier --write"
+    "*.{js,ts,tsx}": "yarn run lint --fix",
+    "*.{js,ts,tsx,sol,css,md}": "prettier --write",
+    "*.sol": "yarn lint:contracts "
   }
 }
