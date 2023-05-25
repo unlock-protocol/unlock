@@ -61,21 +61,6 @@ export async function getMetadata(
   return data ? data.data : data
 }
 
-export async function getMetadataByTokenId({
-  lockAddress,
-  tokenId,
-  network,
-  includeProtected = false,
-}: MetadataByTokenPros) {
-  const lock = new LockData(networks[network].provider)
-
-  const owner = await lock.getKeyOwner(lockAddress, Number(tokenId))
-
-  const metadata = await getMetadata(lockAddress, owner, includeProtected)
-
-  return metadata
-}
-
 export async function getUserEmailRecipient({
   lockAddress,
   ownerAddress,

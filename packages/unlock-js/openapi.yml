@@ -1951,13 +1951,6 @@ paths:
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/Hash'
 
-        - in: query
-          name: tokenId
-          required: false
-          description: Token id
-          schema:
-            type: string
-
       responses:
         200:
           description: Successfully receipt details.

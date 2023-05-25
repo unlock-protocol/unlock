@@ -59,21 +59,15 @@ export const useGetReceiptsPageUrl = ({
   )
 }
 
-export const useGetReceipt = ({
-  lockAddress,
-  network,
-  hash,
-  tokenId = '',
-}: ReceiptProps) => {
+export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
   return useQuery(
-    ['getReceiptsDetails', network, lockAddress, hash, tokenId],
+    ['getReceiptsDetails', network, lockAddress, hash],
     async (): Promise<any> => {
       try {
         const receiptResponse = await storage.getReceipt(
           network,
           ethers.utils.getAddress(lockAddress),
-          hash,
-          tokenId
+          hash
         )
         return receiptResponse.data
       } catch (error) {

@@ -1,6 +1,6 @@
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { Receipt, ReceiptBase } from '../models'
-import { getMetadataByTokenId } from './userMetadataOperations'
+import { getMetadata } from './userMetadataOperations'
 import { lowercaseObjectKeys } from '../utils/object'
 
 interface ReceiptDetailsProps {
@@ -10,12 +10,34 @@ interface ReceiptDetailsProps {
   tokenId?: string
 }
 
+export const getSingleReceiptDetails = async ({
+  hash,
+  network,
+}: {
+  hash: string
+  network: number
+}) => {
+  // get receipts details from subgraph
+  const subgraph = new SubgraphService()
+  const receipt = await subgraph.receipt(
+    {
+      where: {
+        id: hash,
+      },
+    },
+    {
+      network,
+    }
+  )
+
+  return receipt
+}
+
 /** Get purchaser details from metadata when receipt purchaser is not present */
 const getPurchaserDetails = async ({
   lockAddress,
   network,
   hash,
-  tokenId,
 }: ReceiptDetailsProps): Promise<Partial<
   Receipt & { email?: string }
 > | null> => {
@@ -27,27 +49,25 @@ const getPurchaserDetails = async ({
     },
   })
 
+  // get purchaser metadata details
   let metadata: any
-  if (tokenId) {
-    metadata = await getMetadataByTokenId({
-      tokenId,
-      network,
-      lockAddress,
-      includeProtected: true,
-    })
+  const receipt = await getSingleReceiptDetails({ hash, network })
+  if (receipt?.payer) {
+    metadata = await getMetadata(lockAddress, receipt.payer, true)
   }
 
   const keyOwnerMetadata = lowercaseObjectKeys(
     metadata?.userMetadata?.protected
   )
 
-  // return metadata when receipt data is not present
+  // return purchaser metadata details there is not stored data
   if (!purchaserDetails) {
-    const fullname =
-      keyOwnerMetadata?.fullname ||
-      (keyOwnerMetadata?.firstname && keyOwnerMetadata?.lastname)
-        ? `${keyOwnerMetadata?.firstname} ${keyOwnerMetadata?.lastname}`
-        : ''
+    let fullname: string | undefined = undefined
+    if (keyOwnerMetadata?.fullname) {
+      fullname = keyOwnerMetadata.fullname
+    } else if (keyOwnerMetadata?.firstname && keyOwnerMetadata?.lastname) {
+      fullname = `${keyOwnerMetadata?.firstname} ${keyOwnerMetadata?.lastname}`
+    }
 
     return {
       email: keyOwnerMetadata?.email,
@@ -69,7 +89,6 @@ export const getReceiptDetails = async ({
   lockAddress,
   network,
   hash,
-  tokenId,
 }: ReceiptDetailsProps): Promise<{
   supplier: ReceiptBase | null
   purchaser: Partial<Receipt> | null
@@ -79,7 +98,6 @@ export const getReceiptDetails = async ({
     lockAddress,
     network,
     hash,
-    tokenId,
   })
 
   const supplierDetails = await ReceiptBase.findOne({
@@ -89,18 +107,7 @@ export const getReceiptDetails = async ({
     },
   })
 
-  // get receipts details from subgraph
-  const subgraph = new SubgraphService()
-  const receipt = await subgraph.receipt(
-    {
-      where: {
-        id: hash,
-      },
-    },
-    {
-      network,
-    }
-  )
+  const receipt = await getSingleReceiptDetails({ hash, network })
 
   return {
     supplier: supplierDetails,
