@@ -19,7 +19,7 @@ const getPurchaserDetails = async ({
 }: ReceiptDetailsProps): Promise<Partial<
   Receipt & { email?: string }
 > | null> => {
-  const receiptPurchaser = await Receipt.findOne({
+  const purchaserDetails = await Receipt.findOne({
     where: {
       network,
       lockAddress,
@@ -40,7 +40,7 @@ const getPurchaserDetails = async ({
   const data = lowercaseObjectKeys(metadata?.userMetadata?.protected ?? {})
 
   // return metadata when receipt data is not present
-  if (!receiptPurchaser?.id) {
+  if (!purchaserDetails) {
     const fullname =
       data?.fullname || (data?.firstname && data?.lastname)
         ? `${data?.firstname} ${data?.lastname}`
@@ -49,17 +49,17 @@ const getPurchaserDetails = async ({
     return {
       email: data?.email,
       fullname,
-      businessName: data?.businessName || data?.company,
+      businessName: data?.businessname || data?.company,
       city: data?.city,
       zip: data?.zip || data?.zipcode,
       state: data?.state,
       country: data?.country,
-      addressLine1: data?.addressLine1 || data?.address,
-      addressLine2: data?.addressLine2,
+      addressLine1: data?.addressline1 || data?.address,
+      addressLine2: data?.addressline2,
     }
   }
 
-  return receiptPurchaser
+  return purchaserDetails
 }
 
 export const getReceiptDetails = async ({
@@ -72,14 +72,14 @@ export const getReceiptDetails = async ({
   purchaser: Partial<Receipt> | null
   receipt: any
 }> => {
-  const purchaser = await getPurchaserDetails({
+  const purchaserDetails = await getPurchaserDetails({
     lockAddress,
     network,
     hash,
     tokenId,
   })
 
-  const supplier = await ReceiptBase.findOne({
+  const supplierDetails = await ReceiptBase.findOne({
     where: {
       lockAddress,
       network,
@@ -100,8 +100,8 @@ export const getReceiptDetails = async ({
   )
 
   return {
-    supplier,
-    purchaser,
+    supplier: supplierDetails,
+    purchaser: purchaserDetails,
     receipt,
   }
 }
