@@ -1,1 +1,6 @@
-@generated/**/*.ts
+subgraph/generated/**/*.ts
+**/build
+**/coverage
+**/artifacts
+**/dist
+**/.next

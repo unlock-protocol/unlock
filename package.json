@@ -82,6 +82,7 @@
     "*.{js,ts,tsx,sol}": [
       "yarn run lint --fix"
     ],
-    "*.{js,ts,tsx,sol,css,md}": "prettier --write"
+    "*.{js,ts,tsx,sol,css,md}": "yarn prettier --write",
+    "*.sol": "yarn workspace @unlock-protocol/smart-contracts lint"
   }
 }
