@@ -8,7 +8,6 @@ export const ReceiptsPage = () => {
   const hasParams = query.network && query.address && query.hash
 
   let hashes: string[] = []
-
   if (typeof query.hash === 'string') {
     hashes.push(query.hash)
   } else if (typeof query.hash?.length && query.hash) {
