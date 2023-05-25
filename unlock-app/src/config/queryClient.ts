@@ -2,7 +2,6 @@ import { QueryClient, QueryCache } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import * as Sentry from '@sentry/nextjs'
-import { trimString } from '~/utils/formatter'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -34,8 +33,9 @@ export const queryClient = new QueryClient({
           default: {
             const errorMessage = error?.error?.message || error.message
             if (errorMessage) {
-              // Trim the error message to 125 characters to avoid overflowing the toast. Maybe different approach? Is there way to get more readable message from ethers?
-              toast.error(trimString(errorMessage, 125))
+              toast.error(
+                'There was an unexpected error. Please try again, refresh the page and report to our team if this persists.'
+              )
             }
           }
         }
