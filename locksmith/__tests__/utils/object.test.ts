@@ -12,7 +12,7 @@ describe('lowercaseObjectKeys', () => {
 
     const lowercased = lowercaseObjectKeys(obj)
 
-    // has all lowercase keys
+    // has all lowercased keys
     expect(lowercased).toHaveProperty('firstname')
     expect(lowercased).toHaveProperty('lastname')
     expect(lowercased).toHaveProperty('addressline1')
