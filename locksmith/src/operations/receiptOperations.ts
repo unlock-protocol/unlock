@@ -56,29 +56,31 @@ const getPurchaserDetails = async ({
     metadata = await getMetadata(lockAddress, receipt.payer, true)
   }
 
-  const keyOwnerMetadata = lowercaseObjectKeys(
+  const purchaserMetadata = lowercaseObjectKeys(
     metadata?.userMetadata?.protected
   )
 
   // return purchaser metadata details there is not stored data
   if (!purchaserDetails) {
     let fullname: string | undefined = undefined
-    if (keyOwnerMetadata?.fullname) {
-      fullname = keyOwnerMetadata.fullname
-    } else if (keyOwnerMetadata?.firstname && keyOwnerMetadata?.lastname) {
-      fullname = `${keyOwnerMetadata?.firstname} ${keyOwnerMetadata?.lastname}`
+    if (purchaserMetadata?.fullname) {
+      fullname = purchaserMetadata.fullname
+    } else if (purchaserMetadata?.firstname && purchaserMetadata?.lastname) {
+      fullname = `${purchaserMetadata?.firstname} ${purchaserMetadata?.lastname}`
     }
 
     return {
-      email: keyOwnerMetadata?.email,
+      email: purchaserMetadata?.email,
       fullname,
-      businessName: keyOwnerMetadata?.businessname || keyOwnerMetadata?.company,
-      city: keyOwnerMetadata?.city,
-      zip: keyOwnerMetadata?.zip || keyOwnerMetadata?.zipcode,
-      state: keyOwnerMetadata?.state,
-      country: keyOwnerMetadata?.country,
-      addressLine1: keyOwnerMetadata?.addressline1 || keyOwnerMetadata?.address,
-      addressLine2: keyOwnerMetadata?.addressline2,
+      businessName:
+        purchaserMetadata?.businessname || purchaserMetadata?.company,
+      city: purchaserMetadata?.city,
+      zip: purchaserMetadata?.zip || purchaserMetadata?.zipcode,
+      state: purchaserMetadata?.state,
+      country: purchaserMetadata?.country,
+      addressLine1:
+        purchaserMetadata?.addressline1 || purchaserMetadata?.address,
+      addressLine2: purchaserMetadata?.addressline2,
     }
   }
 
