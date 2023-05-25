@@ -54,7 +54,8 @@ export function createReceipt(event: ethereum.Event): void {
         if (
           txLog.address == tokenAddress &&
           // Do we always have txLog.topics[0] ?
-          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
+          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0 &&
+          txLog.topics[2].toHexString() == lockAddress
         ) {
           receipt.payer = ethereum
             .decode('address', txLog.topics[1])!
