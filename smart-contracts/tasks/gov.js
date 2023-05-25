@@ -106,7 +106,7 @@ task('gov:state', 'Check proposal state')
 task('gov:id', 'Retrieve proposal ID')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal }) => {    
+  .setAction(async ({ proposal }) => {
     const { loadProposal } = require('../helpers/gov')
     const prop = await loadProposal(resolve(proposal))
 

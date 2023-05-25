@@ -104,13 +104,13 @@ const queueProposal = async ({ proposal, govAddress }) => {
   const descriptionHash = web3.utils.keccak256(description)
   const { proposerAddress } = proposal
   let voterWallet
-  if(!proposerAddress) {
+  if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()
   } else {
     voterWallet = await ethers.getSigner(proposerAddress)
   }
 
-  console.log({targets, values, calldatas, description})
+  console.log({ targets, values, calldatas, description })
 
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
@@ -126,7 +126,7 @@ const executeProposal = async ({ proposal, govAddress }) => {
   })
   const descriptionHash = web3.utils.keccak256(description)
   let voterWallet
-  if(!proposerAddress) {
+  if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()
   } else {
     voterWallet = await ethers.getSigner(proposerAddress)
@@ -184,7 +184,7 @@ const getProposalState = async (proposalId, govAddress) => {
 
 const loadProposal = async (proposalPath) => {
   const prop = require(proposalPath)
-  if (typeof prop === 'function' ) {
+  if (typeof prop === 'function') {
     return await prop()
   } else {
     return prop
