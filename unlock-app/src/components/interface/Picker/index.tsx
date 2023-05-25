@@ -110,8 +110,7 @@ export function Picker({
   const handleOnChange = (lockAddress: string) => {
     if (!collect?.lockAddress) return // no need to check if 'lockAddress' is not required
 
-    const hasAddress = collect?.lockAddress && lockAddress?.length > 0
-    const addressIsValid = hasAddress
+    const addressIsValid = lockAddress
       ? ethers.utils.isAddress(lockAddress)
       : true
 
