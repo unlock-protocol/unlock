@@ -3,7 +3,7 @@ export function objectWithoutKey(obj: Record<string, unknown>, key: string) {
   return otherKeys
 }
 
-export function lowercaseObjectKeys(obj: Record<string, unknown>) {
+export function lowercaseObjectKeys(obj: Record<string, unknown> = {}) {
   const newObject: Record<string, any> = {}
 
   Object.keys(obj).forEach((key) => {

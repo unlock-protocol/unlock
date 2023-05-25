@@ -37,7 +37,7 @@ const getPurchaserDetails = async ({
     })
   }
 
-  const data = lowercaseObjectKeys(metadata?.userMetadata?.protected ?? {})
+  const data = lowercaseObjectKeys(metadata?.userMetadata?.protected)
 
   // return metadata when receipt data is not present
   if (!purchaserDetails) {
