@@ -7,7 +7,6 @@ interface ReceiptProps {
   network: number
   lockAddress: string
   hash: string
-  tokenId?: string
 }
 
 interface GetReceiptProps {
@@ -46,7 +45,6 @@ export const useGetReceiptsPageUrl = ({
 
       url.searchParams.append('address', lockAddress)
       url.searchParams.append('network', `${network}`)
-      url.searchParams.append('tokenId', tokenId)
 
       const hashes = key?.transactionsHash || []
 
