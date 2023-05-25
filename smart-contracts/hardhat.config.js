@@ -118,7 +118,7 @@ module.exports = {
       { version: '0.8.2', settings },
       { version: '0.8.4', settings },
       { version: '0.8.7', settings },
-      { version: '0.8.13', settings },
+      { version: '0.8.17', settings },
     ],
   },
   mocha: {
