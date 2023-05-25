@@ -489,7 +489,7 @@ export const checkoutMachine = createMachine(
               target: 'CARD',
               actions: ['selectPaymentMethod'],
               cond: (_, event) => {
-                return ['card', 'universal_card'].includes(event.payment.method)
+                return ['card'].includes(event.payment.method)
               },
             },
             {
@@ -713,8 +713,7 @@ export const checkoutMachine = createMachine(
       requireCaptcha: (context) => context && context?.hook === 'captcha',
       requirePassword: (context) => context && context?.hook === 'password',
       requirePromo: (context) => context && context?.hook === 'promocode',
-      isCardPayment: (context) =>
-        ['card', 'universal_card'].includes(context.payment.method),
+      isCardPayment: (context) => ['card'].includes(context.payment.method),
     },
   }
 )
