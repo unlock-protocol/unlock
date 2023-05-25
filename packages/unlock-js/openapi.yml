@@ -2116,6 +2116,8 @@ paths:
                     type: string
                   vat:
                     type: string
+                  vatBasisPointsRate:
+                    type: number
                   servicePerformed:
                     type: string
                   addressLine1:
@@ -2172,6 +2174,8 @@ paths:
                     type: string
                   vat:
                     type: string
+                  vatBasisPointsRate:
+                    type: number
                   servicePerformed:
                     type: string
                   addressLine1:

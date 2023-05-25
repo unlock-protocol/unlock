@@ -95,7 +95,14 @@ export const useGetReceiptsBase = ({
     ['getReceiptsBase', network, lockAddress],
     async (): Promise<Partial<any>> => {
       const supplier = await storage.getReceiptsBase(network, lockAddress)
-      return supplier.data
+      // convert basis points to percentage
+      const vatRatePercentage: number | null =
+        (supplier?.data?.vatBasisPointsRate ?? 0) / 100 || null
+
+      return {
+        ...supplier.data,
+        vatRatePercentage,
+      }
     },
     {
       enabled: !!lockAddress && !!network && isManager,
@@ -139,12 +146,18 @@ export const useUpdateReceiptsBase = ({
     ['saveReceiptsBase', network, lockAddress],
     async (supplier: any): Promise<Partial<any>> => {
       if (isManager) {
+        // convert percentage to basis points
+        const vatBasisPointsRate = supplier?.vatRatePercentage
+          ? supplier?.vatRatePercentage * 100
+          : null
+
         const supplierResponse = await storage.saveReceiptsBase(
           network,
           lockAddress,
           {
             data: {
               ...supplier,
+              vatBasisPointsRate,
             },
           }
         )
