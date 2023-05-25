@@ -49,19 +49,18 @@ const getPurchaserDetails = async ({
     },
   })
 
-  // get purchaser metadata details
-  let metadata: any
-  const receipt = await getSingleReceiptDetails({ hash, network })
-  if (receipt?.payer) {
-    metadata = await getMetadata(lockAddress, receipt.payer, true)
-  }
-
-  const purchaserMetadata = lowercaseObjectKeys(
-    metadata?.userMetadata?.protected
-  )
-
   // return purchaser metadata details there is not stored data
   if (!purchaserDetails) {
+    // get purchaser metadata details
+    let metadata: any
+    const receipt = await getSingleReceiptDetails({ hash, network })
+    if (receipt?.payer) {
+      metadata = await getMetadata(lockAddress, receipt.payer, true)
+    }
+
+    const purchaserMetadata = lowercaseObjectKeys(
+      metadata?.userMetadata?.protected
+    )
     let fullname: string | undefined = undefined
     if (purchaserMetadata?.fullname) {
       fullname = purchaserMetadata.fullname
