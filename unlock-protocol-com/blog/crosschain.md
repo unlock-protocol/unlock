@@ -14,7 +14,7 @@ The Unlock Protocol moved its governance to a [DAO](https://docs.unlock-protocol
 
 ## Life across multiple chains
 
-Technology derived from the original Ethereum experiment has gained momentum and lead to a vast arrays of new chains being deployed, each with their own characteristics. Under the hood, many of these chains have added the ability to execute contract calls by following the original Ethereum Virtual Machine implementation (EVM). The EVM provides a blueprint and ensures compatibility of the code that can be deployed across different chains.
+Technology derived from the original Ethereum experiment has gained momentum and lead to a vast array of new chains being deployed, each with their own characteristics. Under the hood, many of these chains have added the ability to execute contract calls by following the original Ethereum Virtual Machine implementation (EVM). The EVM provides a blueprint and ensures compatibility of the code that can be deployed across different chains.
 
 At Unlock Labs, we have long thought that we need to meet our community where they are, and that meant deploying the protocol on [multiple chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks). 
 
