@@ -105,7 +105,10 @@ module.exports = {
   },
   solidity: {
     compilers: [
-      { version: '0.7.6', settings }, // need to keep for uniswap
+      { version: '0.7.6', settings }, // required for uniswap
+      { version: '0.8.4', settings }, // required for test/Lock/upgrades/V10
+      { version: '0.8.7', settings }, // required for test/Lock/upgrades/V11
+      { version: '0.8.13', settings }, // required for test/Lock/upgrades/V12
       { version: '0.8.17', settings },
     ],
   },
