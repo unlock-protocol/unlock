@@ -6,6 +6,8 @@ import { createAccessToken } from '../../utils/middlewares/auth'
 import dayjs from 'dayjs'
 import config from '../../config/config'
 import normalizer from '../../utils/normalizer'
+import { ethers } from 'ethers'
+import { networks } from '@unlock-protocol/networks'
 
 export const login: RequestHandler = async (request, response) => {
   try {
@@ -16,7 +18,16 @@ export const login: RequestHandler = async (request, response) => {
       return
     }
     const message = new SiweMessage(request.body.message)
-    const fields = await message.validate(request.body.signature)
+
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[message.chainId].publicProvider
+    )
+    const { data: fields } = await message.verify(
+      {
+        signature: request.body.signature,
+      },
+      { provider }
+    )
     // Avoid replay attack.
     const isNonceLoggedIn = await Session.findOne({
       where: {

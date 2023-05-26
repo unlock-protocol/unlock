@@ -1,8 +1,9 @@
 import { Response } from 'express'
 import { ethers, utils } from 'ethers'
-import { SiweMessage, ErrorTypes } from 'siwe'
+import { SiweMessage, SiweErrorType } from 'siwe'
 import { SignedRequest } from '../types'
 import logger from '../logger'
+import { networks } from '@unlock-protocol/networks'
 
 export const authorize = async (
   req: SignedRequest,
@@ -60,7 +61,15 @@ export const authorize = async (
     const decoded = utils.base64.decode(code)
     const message = JSON.parse(ethers.utils.toUtf8String(decoded))
     const siweMessage = new SiweMessage(message.d)
-    const fields = await siweMessage.validate(message.s)
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[message.chainId].publicProvider
+    )
+
+    const { data: fields } = await siweMessage.verify(
+      { signature: message.s },
+      { provider }
+    )
+
     const recoveredAddress = fields.address
     return res.json({
       me: recoveredAddress,
@@ -68,11 +77,11 @@ export const authorize = async (
   } catch (error: any) {
     logger.error('Error verifying auth signature', { code })
     switch (error) {
-      case ErrorTypes.EXPIRED_MESSAGE: {
+      case SiweErrorType.EXPIRED_MESSAGE: {
         res.status(440).json({ message: error.message })
         break
       }
-      case ErrorTypes.INVALID_SIGNATURE: {
+      case SiweErrorType.INVALID_SIGNATURE: {
         res.status(422).json({ message: error.message })
         break
       }

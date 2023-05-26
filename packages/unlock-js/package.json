@@ -59,6 +59,6 @@
     "graphql": "16.6.0",
     "graphql-request": "5.1.0",
     "react-to-print": "2.14.12",
-    "siwe": "2.1.4"
+    "siwe": "1.1.6"
   }
 }
