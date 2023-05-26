@@ -9,6 +9,7 @@ import {
   removeAccessToken,
   saveAccessToken,
 } from '~/utils/session'
+import { config } from '~/config/app'
 
 type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -91,10 +92,10 @@ export const SIWEProvider = ({ children }: Props) => {
       const walletService = await getWalletService()
 
       const address = await walletService.signer.getAddress()
-      const insideIframe = window.location.href !== window.parent.location.href
+      const insideIframe = window !== window.parent
 
       const parent = new URL(
-        insideIframe ? window.parent.location.href : window.location.href
+        insideIframe ? config.unlockApp : window.location.href
       )
 
       // We can't have an empty resources array... because the siwe library does not parse that correctly
