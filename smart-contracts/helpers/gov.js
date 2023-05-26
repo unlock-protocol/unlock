@@ -29,7 +29,11 @@ const getProposalIdFromContract = async (proposal, govAddress) => {
     ...proposal,
   })
 
-  const proposerWallet = await ethers.getSigner(proposerAddress)
+  const [defaultSigner] = await ethers.getSigners()
+  const proposerWallet = proposerAddress
+    ? defaultSigner
+    : await ethers.getSigner(proposerAddress)
+
   const gov = await ethers.getContractAt(
     'UnlockProtocolGovernor',
     govAddress,

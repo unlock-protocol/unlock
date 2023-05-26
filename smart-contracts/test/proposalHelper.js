@@ -80,7 +80,7 @@ contract('Proposal Helper', () => {
     it('can be retrieved', async () => {
       // eslint-disable-next-line global-require
       const proposalExample = require('../proposals/000-example')
-      const proposalId = await getProposalId(proposalExample, gov.address)
+      const proposalId = await getProposalId(proposalExample)
       const proposalIdFromContract = await getProposalIdFromContract(
         proposalExample,
         gov.address
