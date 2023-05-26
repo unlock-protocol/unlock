@@ -16,7 +16,11 @@ The Unlock Protocol moved its governance to a [DAO](https://docs.unlock-protocol
 
 Technology derived from the original Ethereum experiment has gained momentum and lead to a vast arrays of new chains being deployed, each with their own characteristics. Under the hood, many of these chains have added the ability to execute contract calls by following the original Ethereum Virtual Machine implementation (EVM). The EVM provides a blueprint and ensures compatibility of the code that can be deployed across different chains.
 
-At Unlock Labs, we have long thought that we need to meet our community where they are, and that meant deploying the protocol on [multiple chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks). Our role is not to choose which chain/L2 on which developers choose to deploy their membership contracts. As an open protocol, that decision should be up to the community, and that decision should be permissionless. At the same time, it is also critical that the protocol acts the same across the board, regardless of what chain it is being run on.
+At Unlock Labs, we have long thought that we need to meet our community where they are, and that meant deploying the protocol on [multiple chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks). 
+
+Our role is not to choose which chain/L2 on which developers choose to deploy their membership contracts — as an open protocol, that decision should be up to the community, and that decision should be permissionless. 
+
+At the same time, it is also critical that the protocol acts the same across the board, regardless of what chain it is being run on.
 
 ## Why cross-chain governance?
 
