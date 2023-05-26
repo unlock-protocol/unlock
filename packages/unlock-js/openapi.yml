@@ -1763,6 +1763,16 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /lock/{lockAddress}/stripe-connected:
+    get:
+      operationId: getLockStripeConnectionDetails
+      description: Returns Stripe connection details
+      parameters:
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: Successfully returns lock Stripe connection details.
+
   /v2/images/upload:
     post:
       operationId: uploadImages
