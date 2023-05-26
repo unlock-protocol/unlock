@@ -58,7 +58,7 @@ Below the addresses of deployed test instances (nb: these may change over time a
 **Goerli**
 
 | Contract | Link|
-| --- | --- |
+| :--- | :--- |
 | Unlock | https://goerli.etherscan.io/address/0x7fA9F695856269E1415b2d373b35037159E2F94C |
 | UDT | https://goerli.etherscan.io/address/0xaB82D702A4e0cD165072C005dc504A21c019718F#readProxyContract |
 | Gov | https://goerli.etherscan.io/address/0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9 |
@@ -70,6 +70,6 @@ DAO Dashboard: [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz
 **Mumbai**
 
 | Contract | Link|
-| --- | --- |
+| :--- | :--- |
 | Unlock | https://mumbai.polygonscan.com/address/0x8db6eE991C6C3CB2b6228b558c1b3D6EA474cB42#writeProxyContract |
 | Unlock Owner | https://mumbai.polygonscan.com/address/0xdc230F9A08918FaA5ae48B8E13647789A8B6dD46 |
