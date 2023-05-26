@@ -56,6 +56,7 @@ We encourage you to check proposals on our [Unlock Test DAO](https://www.tally.x
 Below the addresses of deployed test instances (nb: these may change over time as we redeploy the contracts).
 
 **Goerli**
+
 DAO Dashboard: [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz/gov/unlock-test-dao)
 
 | Contract | Link|
