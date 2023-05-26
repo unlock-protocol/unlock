@@ -9,7 +9,6 @@ import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 import { NextSeo } from 'next-seo'
-import { customizeSEO } from '~/config/seo'
 import { config } from '~/config/app'
 
 export const EventContent = () => {
