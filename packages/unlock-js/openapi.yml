@@ -1769,6 +1769,13 @@ paths:
       description: Returns Stripe connection details
       parameters:
         - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: chain
+          required: true
+          schema:
+            type: number
+          description: Lock network
+
       responses:
         200:
           description: Successfully returns lock Stripe connection details.
@@ -1776,8 +1783,6 @@ paths:
             application/json:
               schema:
                 type: object
-                required:
-                  - 'connected'
                 properties:
                   account:
                     type: string
