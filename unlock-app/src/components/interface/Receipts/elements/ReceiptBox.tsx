@@ -193,6 +193,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           <span className="text-lg font-semibold">
             {purchaser?.businessName}
           </span>
+          {purchaser?.email && (
+            <span className="text-base">Email: {purchaser?.email}</span>
+          )}
           <span className="text-base">
             Wallet:{' '}
             {receiptDetails?.payer?.length > 0
