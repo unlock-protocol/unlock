@@ -3,10 +3,10 @@ title: How the Unlock DAO Implemented Cross-chain Governance
 authorName: Clément Renaud
 publishDate: May 30, 2023
 description: This cross-chain governance design relies on a straightforward idea. The DAO on Ethereum mainnet is the authority that all contracts should listen to. When a proposal is executed, the DAO should send instructions, pass contract calls, and send data across a bridge to all other instances of the DAO on other chains.
-image: /images/blog/alphatweet/alphatweet-share.png
+image: /images/blog/crosschain/cross-chain-share.png
 ---
 
-![alphatweet-share.png](/images/blog/alphatweet/alphatweet-share.png)
+![cross-chain-share-share.png](/images/blog/crosschain/cross-chain-share.png)
 
 ## What is cross-chain governance?
 
