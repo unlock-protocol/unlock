@@ -43,15 +43,16 @@ export const connectStripe = async (req: Request, res: Response) => {
 
 export const stripeConnected = async (req: Request, res: Response) => {
   try {
-    const stripeConnected = await stripeOperations.getStripeConnectForLock(
-      Normalizer.ethereumAddress(req.params.lockAddress),
-      req.chain
-    )
+    const { stripeEnabled, stripeAccount: account } =
+      await stripeOperations.getStripeConnectForLock(
+        Normalizer.ethereumAddress(req.params.lockAddress),
+        req.chain
+      )
 
-    if (stripeConnected !== -1 && stripeConnected !== 0) {
-      return res.json({ connected: 1 })
+    if (stripeEnabled) {
+      return res.json({ connected: 1, account })
     }
-    return res.json({ connected: stripeConnected })
+    return res.json({ connected: 0, account })
   } catch (error) {
     logger.error(
       'Cannot verified if Stripe is connected: there was an error',

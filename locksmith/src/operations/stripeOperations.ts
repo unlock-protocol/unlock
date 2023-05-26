@@ -201,28 +201,42 @@ export const getConnectionsForManager = async (manager: string) => {
   })
 }
 
-/**
- * Get stripe connect account to lock
- * Returns -1 if no Stripe is connected
- * Return 0 if a Stripe account is connected, but not ready to process charges
- * Returns the stripeAccount if all fully enabled
- */
-export const getStripeConnectForLock = async (lock: string, chain: number) => {
+export const getStripeConnectLockDetails = async (
+  lockAddress: string,
+  network: number
+) => {
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
-    where: { lock, chain },
+    where: { lock: lockAddress, chain: network },
   })
+  return stripeConnectLockDetails
+}
+
+/**
+ * Get stripe connect account to lock & enabled status
+ * Returns `stripeEnable` as true when connection details is present
+ * Returns `stripeAccount` only when connection details are present
+ */
+export const getStripeConnectForLock = async (
+  lock: string,
+  chain: number
+): Promise<{ stripeAccount?: string; stripeEnabled: boolean }> => {
+  const stripeConnectLockDetails = await getStripeConnectLockDetails(
+    lock,
+    chain
+  )
 
   if (!stripeConnectLockDetails?.stripeAccount) {
-    return -1
+    return {
+      stripeEnabled: false,
+    }
   }
 
   const account = await stripeConnection(stripeConnectLockDetails.stripeAccount)
 
-  if (account?.charges_enabled) {
-    return stripeConnectLockDetails.stripeAccount
+  return {
+    stripeEnabled: account?.charges_enabled ?? false,
+    stripeAccount: stripeConnectLockDetails.stripeAccount,
   }
-
-  return 0
 }
 
 export const stripeConnection = async (
