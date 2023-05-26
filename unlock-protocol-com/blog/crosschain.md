@@ -59,7 +59,7 @@ We encourage you to check proposals on our [Unlock Test DAO](https://www.tally.x
 
 Below are the addresses of deployed test instances (nb. these may change over time as we redeploy the contracts).
 
-**Goerli Contracts**
+### Goerli Contracts
 
 - **Unlock:** [https://goerli.etherscan.io/address/0x7fA9F695856269E1415b2d373b35037159E2F94C](https://goerli.etherscan.io/address/0x7fA9F695856269E1415b2d373b35037159E2F94C)
 - **UDT:** [https://goerli.etherscan.io/address/0xaB82D702A4e0cD165072C005dc504A21c019718F#readProxyContract](https://goerli.etherscan.io/address/0xaB82D702A4e0cD165072C005dc504A21c019718F#readProxyContract)
@@ -67,9 +67,11 @@ Below are the addresses of deployed test instances (nb. these may change over ti
 - **Timelock:** [https://goerli.etherscan.io/address/0xD7477B7c0CdA4204Cf860e4c27486061b15a5AC3](https://goerli.etherscan.io/address/0xD7477B7c0CdA4204Cf860e4c27486061b15a5AC3)
 - **Unlock Owner:** [https://goerli.etherscan.io/address/0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1](https://goerli.etherscan.io/address/0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1)
 
-DAO Dashboard: [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz/gov/unlock-test-dao)
-
-**Mumbai Contracts**
+### Mumbai Contracts
 
 - **Unlock:** [https://mumbai.polygonscan.com/address/0x8db6eE991C6C3CB2b6228b558c1b3D6EA474cB42#writeProxyContract](https://mumbai.polygonscan.com/address/0x8db6eE991C6C3CB2b6228b558c1b3D6EA474cB42#writeProxyContract)
 - **Unlock Owner:** [https://mumbai.polygonscan.com/address/0xdc230F9A08918FaA5ae48B8E13647789A8B6dD46](https://mumbai.polygonscan.com/address/0x8db6eE991C6C3CB2b6228b558c1b3D6EA474cB42#writeProxyContract)
+
+### Test DAO Dashboard
+
+- **Tally:** [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz/gov/unlock-test-dao)
