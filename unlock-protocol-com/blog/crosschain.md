@@ -1,8 +1,8 @@
 ---
-title: Unlock Labs Launches the ALPHAtweet Experiment
-authorName: Christopher Carfi
-publishDate: May 9, 2023
-description: ALPHAtweet is an experiment in web3 business models where creators and their community both share in the upside of creating and sharing content across social networks.
+title: How the Unlock DAO Implemented Cross-chain Governance
+authorName: Clément Renaud
+publishDate: May 30, 2023
+description: This cross-chain governance design relies on a straightforward idea. The DAO on Ethereum mainnet is the authority that all contracts should listen to. When a proposal is executed, the DAO should send instructions, pass contract calls, and send data across a bridge to all other instances of the DAO on other chains.
 image: /images/blog/alphatweet/alphatweet-share.png
 ---
 
