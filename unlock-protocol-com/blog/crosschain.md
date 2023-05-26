@@ -38,7 +38,7 @@ A new contract called `UnlockOwner` acts as a relay in this process, receiving t
 
 In technical terms, `UnlockOwner` is deployed on each network. It owns (as in owner of an [Ownable contract](https://docs.openzeppelin.com/contracts/4.x/access-control#ownership-and-ownable)) both the Unlock contract instance and the ProxyAdmin (that controls the proxy upgrades).
 
-![cross-chain-napkin.jpeg](/images/blog/crosschain/cross-chain-napkin.jpeg)
+![cross-chain-napkin.png](/images/blog/crosschain/cross-chain-napkin.png)
 
 *Original sketch of how calls could circulate across the bridge and through Unlock Manager on multiple chains*
 
