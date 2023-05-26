@@ -1962,6 +1962,8 @@ paths:
                   purchaser:
                     type: object
                     properties:
+                      email:
+                        type: string
                       fullname:
                         type: string
                       businessName:
