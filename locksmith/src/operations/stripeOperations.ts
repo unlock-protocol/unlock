@@ -128,6 +128,53 @@ export const disconnectStripe = async ({
   return deletedItems > 0
 }
 
+/** Create a Stripe Account link that where user is redirected to connect stripe to the lock */
+export const createStripeAccountLink = async ({
+  baseUrl,
+  network,
+  lockAddress,
+  lockManager,
+}: {
+  baseUrl: string
+  network: number
+  lockAddress: string
+  lockManager: string
+}): Promise<any> => {
+  const stripeConnectLockDetails = await StripeConnectLock.findOne({
+    where: { lock: lockAddress },
+  })
+
+  let account
+  if (!stripeConnectLockDetails) {
+    // This is a new one
+    account = await stripe.accounts.create({
+      type: 'standard',
+      metadata: {
+        manager: lockManager,
+      },
+    })
+
+    await StripeConnectLock.create({
+      lock: lockAddress,
+      manager: lockManager,
+      stripeAccount: account.id,
+      chain: network,
+    })
+  } else {
+    // Retrieve it from Stripe!
+    account = await stripe.accounts.retrieve(
+      stripeConnectLockDetails.stripeAccount
+    )
+  }
+
+  return stripe.accountLinks.create({
+    account: account.id,
+    refresh_url: `${baseUrl}/locks/settings?address=${lockAddress}&network=${network}&stripe=0&defaultTab=payments`,
+    return_url: `${baseUrl}/locks/settings?address=${lockAddress}&network=${network}&stripe=1&defaultTab=payments`,
+    type: 'account_onboarding',
+  })
+}
+
 /**
  * Connects a Stripe account to a lock
  * Do we want to store this?
@@ -149,44 +196,26 @@ export const connectStripe = async (
         stripeAccount,
         chain,
       })
+    } else if (account) {
+      // account connected but charges not enabled, need to return  link to resume stripe setup
+      return await createStripeAccountLink({
+        baseUrl,
+        network: chain,
+        lockAddress: lock,
+        lockManager,
+      })
     } else {
+      // no valid account
       throw new Error('Invalid Stripe Account')
     }
     // Nothing expected!
     return
   } else {
-    const stripeConnectLockDetails = await StripeConnectLock.findOne({
-      where: { lock },
-    })
-
-    let account
-    if (!stripeConnectLockDetails) {
-      // This is a new one
-      account = await stripe.accounts.create({
-        type: 'standard',
-        metadata: {
-          manager: lockManager,
-        },
-      })
-
-      await StripeConnectLock.create({
-        lock,
-        manager: lockManager,
-        stripeAccount: account.id,
-        chain,
-      })
-    } else {
-      // Retrieve it from Stripe!
-      account = await stripe.accounts.retrieve(
-        stripeConnectLockDetails.stripeAccount
-      )
-    }
-
-    return await stripe.accountLinks.create({
-      account: account.id,
-      refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
-      return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
-      type: 'account_onboarding',
+    return await createStripeAccountLink({
+      baseUrl,
+      network: chain,
+      lockAddress: lock,
+      lockManager,
     })
   }
 }
