@@ -19,9 +19,13 @@ export const login: RequestHandler = async (request, response) => {
     }
     const message = new SiweMessage(request.body.message)
 
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[message.chainId || 1].publicProvider
-    )
+    const networkConfig = networks[message.chainId || 1]
+    let provider
+    if (networkConfig) {
+      provider = new ethers.providers.JsonRpcProvider(
+        networkConfig.publicProvider
+      )
+    }
     const { data: fields } = await message.verify(
       {
         signature: request.body.signature,

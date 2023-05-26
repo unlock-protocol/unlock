@@ -61,10 +61,14 @@ export const authorize = async (
     const decoded = utils.base64.decode(code)
     const message = JSON.parse(ethers.utils.toUtf8String(decoded))
     const siweMessage = new SiweMessage(message.d)
-    const provider = new ethers.providers.JsonRpcProvider(
-      networks[message.chainId || 1].publicProvider
-    )
 
+    const networkConfig = networks[message.chainId || 1]
+    let provider
+    if (networkConfig) {
+      provider = new ethers.providers.JsonRpcProvider(
+        networkConfig.publicProvider
+      )
+    }
     const { data: fields } = await siweMessage.verify(
       { signature: message.s },
       { provider }
