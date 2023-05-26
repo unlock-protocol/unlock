@@ -66,7 +66,10 @@ task(
   )
 
 task('unlock:execMultisig', 'Submit a tx to the Unlock Owner through multisig')
-  .addParam('unlockOwnerAddress', 'an instance of the UnlockOwner contract')
+  .addOptionalParam(
+    'unlockOwnerAddress',
+    'an instance of the UnlockOwner contract'
+  )
   .addOptionalParam('unlockAddress', 'an instance of the Unlock contract')
   .addOptionalParam('multisig', 'a multisig contract')
   .addOptionalParam('calldata', 'the calldata to be executed by Unlock')
