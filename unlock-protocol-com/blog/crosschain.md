@@ -57,8 +57,6 @@ Below the addresses of deployed test instances (nb: these may change over time a
 
 **Goerli**
 
-DAO Dashboard: [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz/gov/unlock-test-dao)
-
 | Contract | Link|
 | --- | --- |
 | Unlock | https://goerli.etherscan.io/address/0x7fA9F695856269E1415b2d373b35037159E2F94C |
@@ -66,6 +64,8 @@ DAO Dashboard: [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz
 | Gov | https://goerli.etherscan.io/address/0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9 |
 | Timelock | https://goerli.etherscan.io/address/0xD7477B7c0CdA4204Cf860e4c27486061b15a5AC3 |
 | Unlock Owner | https://goerli.etherscan.io/address/0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1 |
+
+DAO Dashboard: [https://www.tally.xyz/gov/unlock-test-dao](https://www.tally.xyz/gov/unlock-test-dao)
 
 **Mumbai**
 
