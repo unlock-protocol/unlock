@@ -1772,6 +1772,17 @@ paths:
       responses:
         200:
           description: Successfully returns lock Stripe connection details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'connected'
+                properties:
+                  account:
+                    type: string
+                  connected:
+                    type: number
 
   /v2/images/upload:
     post:
