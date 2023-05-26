@@ -1,6 +1,5 @@
 const { ethers, run } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks') 
-const bridgeInfo = require('../../helpers/bridge')
+const { networks } = require('@unlock-protocol/networks')
 
 async function main({
   unlockAddress,
@@ -9,7 +8,6 @@ async function main({
   dryRun,
   daoChainId = 5,
 } = {}) {
-
   const { chainId } = await ethers.provider.getNetwork()
   if (!unlockAddress) {
     ;({ unlockAddress } = await networks[chainId])
@@ -17,8 +15,11 @@ async function main({
   if (!multisig) {
     ;({ multisig } = await networks[chainId])
   }
-  
-  const { domainId, bridgeAddress } = bridgeInfo[chainId]
+
+  // get bridge info
+  const {
+    bridge: { domainId, connext: bridgeAddress },
+  } = networks[chainId]
 
   console.log(`Deploying on network :${chainId}`)
   const args = {
@@ -31,7 +32,7 @@ async function main({
   }
   console.log(args)
 
-  if(dryRun) return 
+  if (dryRun) return
 
   const UnlockOwner = await ethers.getContractFactory('UnlockOwner')
   const unlockOwner = await UnlockOwner.deploy(...Object.values(args))
@@ -41,10 +42,10 @@ async function main({
     `UnlockOwner > deployed to : ${unlockOwner.address} (tx: ${unlockOwner.deployTransaction.hash}`
   )
 
-  if(chainId !== 31137) {
+  if (chainId !== 31137) {
     await run('verify:verify', {
       address: unlockOwner.address,
-      constructorArguments: Object.values(args)
+      constructorArguments: Object.values(args),
     })
   }
   return unlockOwner.address
