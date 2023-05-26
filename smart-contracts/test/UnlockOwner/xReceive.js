@@ -17,20 +17,24 @@ const {
   getProxyAdmin,
 } = require('../helpers')
 
-let bridge,
-  daoTimelock,
-  timelock,
-  multisig,
-  unlock,
-  unlockOwner,
-  proxyAdmin,
-  someGuy
+let bridge, daoTimelock, multisig, unlock, unlockOwner, proxyAdmin, someGuy
 
 const minDelay = 60 * 60 * 24 * 2 // twoDaysInSeconds
-const PROPOSER_ROLE = ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
-)
 
+// parse events from Unlock Owner / Timelock
+const parseEvents = async (txEvents) => {
+  const { interface: UnlockOwnerInterface } = await ethers.getContractFactory(
+    'UnlockOwner'
+  )
+
+  return txEvents.map((d) => {
+    try {
+      return UnlockOwnerInterface.parseLog(d)
+    } catch (error) {
+      return {}
+    }
+  })
+}
 contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
   before(async () => {
     ;[, daoTimelock, multisig, someGuy] = await ethers.getSigners()
@@ -49,16 +53,6 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
       destChainId
     )
 
-    // deploy a timelock
-    const Timelock = await ethers.getContractFactory('TimelockController')
-
-    timelock = await Timelock.deploy(
-      minDelay, // minDelay before execution
-      [multisig.address], // proposers
-      [ADDRESS_ZERO], // executors - allow any address to execute a proposal once the timelock has expired
-      multisig.address // admin
-    )
-
     // deploy unlock manager on remote chain
     const UnlockOwner = await ethers.getContractFactory('UnlockOwner')
     const { chainId } = await ethers.provider.getNetwork()
@@ -68,15 +62,9 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
       unlock.address,
       daoTimelock.address, // dao address on mainnet
       multisig.address,
-      timelock.address,
       destDomainId,
       chainId
     )
-
-    // add UnlockOwner as proposer
-    await timelock
-      .connect(multisig)
-      .grantRole(PROPOSER_ROLE, unlockOwner.address)
 
     // transfer assets to unlockOwner on dest chain
     proxyAdmin = await getProxyAdmin(unlock.address)
@@ -110,31 +98,14 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
 
       // parse events logs
       const { events: txEvents } = await tx.wait()
-
-      // parse events from Unlock Owner and Timelock
-      const { interface: UnlockOwnerInterface } =
-        await ethers.getContractFactory('UnlockOwner')
-      const { interface: TimelockInterface } = timelock
-
-      events = txEvents.map((d) => {
-        try {
-          return UnlockOwnerInterface.parseLog(d)
-        } catch (error) {
-          try {
-            return TimelockInterface.parseLog(d)
-          } catch (error) {
-            return {}
-          }
-        }
-      })
+      events = await parseEvents(txEvents)
       ;({
         args: { id: scheduleId },
       } = events.find(({ name }) => name === 'CallScheduled'))
     })
 
     it('is configured properly', async () => {
-      assert.equal(await unlockOwner.timelock(), timelock.address)
-      assert.equal(await timelock.getMinDelay(), minDelay)
+      assert.equal(await unlockOwner.getMinDelay(), minDelay)
     })
 
     it('fire events properly', async () => {
@@ -148,6 +119,7 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
       assert.equal(operationScheduled.action, 1)
       assert.equal(operationScheduled.contractToCall, unlock.address)
       assert.equal(operationScheduled.execCallData, unlockCallData)
+      assert.equal(operationScheduled.scheduleId, scheduleId)
 
       transferId = bridgeCallReceived.transferId
 
@@ -166,29 +138,28 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
     })
 
     it('hold operations in lock before executing them', async () => {
-      assert.equal(await timelock.isOperation(scheduleId), true)
-      assert.equal(await timelock.isOperationPending(scheduleId), true)
-      assert.equal(await timelock.isOperationReady(scheduleId), false)
+      assert.equal(await unlockOwner.isOperation(scheduleId), true)
+      assert.equal(await unlockOwner.isOperationPending(scheduleId), true)
+      assert.equal(await unlockOwner.isOperationReady(scheduleId), false)
     })
 
     it('allow multisig to cancel actions while on hold', async () => {
-      await timelock.connect(multisig).cancel(scheduleId)
-      assert.equal(await timelock.isOperationReady(scheduleId), false)
-      assert.equal(await timelock.isOperation(scheduleId), false)
+      await unlockOwner.connect(multisig).cancel(scheduleId)
+      assert.equal(await unlockOwner.isOperationReady(scheduleId), false)
+      assert.equal(await unlockOwner.isOperation(scheduleId), false)
     })
 
     it('allow anyone to execute operations when time is ripe', async () => {
-      assert.equal(await timelock.isOperationReady(scheduleId), false)
+      assert.equal(await unlockOwner.isOperationReady(scheduleId), false)
 
       // advance time to expiration
-      const expirationTs = await timelock.getTimestamp(scheduleId)
+      const expirationTs = await unlockOwner.getTimestamp(scheduleId)
       await time.increaseTo(expirationTs.toNumber())
 
-      assert.equal(await timelock.isOperationReady(scheduleId), true)
-      assert.equal(await timelock.isOperationDone(scheduleId), false)
+      assert.equal(await unlockOwner.isOperationReady(scheduleId), true)
+      assert.equal(await unlockOwner.isOperationDone(scheduleId), false)
 
-      // TODO: this reverts because the timelock is NOT the owner of Unlock
-      await timelock
+      await unlockOwner
         .connect(someGuy)
         .execute(
           unlock.address,
@@ -197,7 +168,12 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
           ethers.utils.formatBytes32String(''),
           transferId
         )
-      assert.equal(await timelock.isOperationDone(scheduleId), true)
+
+      assert.equal(
+        (await unlock.protocolFee()).toString(),
+        ethers.utils.parseEther('0.0001').toString()
+      )
+      // assert.equal(await unlockOwner.isOperationDone(scheduleId), true)
     })
   })
 
@@ -213,7 +189,7 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
       assert.equal(await unlock.publicLockVersions(args[0]), 0)
 
       // send through the DAO > mainnet manager > bridge path
-      await bridge.connect(daoTimelock).xcall(
+      const tx = await bridge.connect(daoTimelock).xcall(
         destChainId,
         unlockOwner.address,
         ADDRESS_ZERO, // asset
@@ -222,6 +198,28 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
         30, // slippage
         calldata
       )
+
+      // get timelock operation
+      const { events: txEvents } = await tx.wait()
+      const events = await parseEvents(txEvents)
+      const {
+        args: { transferId, scheduleId, execCallData },
+      } = events.find(({ name }) => name === 'UnlockOperationScheduled')
+
+      // advance time to expiration
+      const expirationTs = await unlockOwner.getTimestamp(scheduleId)
+      await time.increaseTo(expirationTs.toNumber())
+
+      // execute timelock operation
+      await unlockOwner
+        .connect(someGuy)
+        .execute(
+          unlock.address,
+          0,
+          execCallData,
+          ethers.utils.formatBytes32String(''),
+          transferId
+        )
 
       // make sure things have worked correctly
       assert.equal(await unlock.publicLockVersions(args[0]), args[1])
@@ -238,7 +236,7 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
     })
     it('updated proxy impl correctly', async () => {
       // send through the dispatcher
-      await bridge
+      const tx = await bridge
         .connect(daoTimelock)
         .xcall(
           destChainId,
@@ -248,6 +246,28 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
           0,
           30,
           calldata
+        )
+
+      // get timelock operation
+      const { events: txEvents } = await tx.wait()
+      const events = await parseEvents(txEvents)
+      const {
+        args: { transferId, scheduleId, contractToCall, execCallData },
+      } = events.find(({ name }) => name === 'UnlockOperationScheduled')
+
+      // advance time to expiration
+      const expirationTs = await unlockOwner.getTimestamp(scheduleId)
+      await time.increaseTo(expirationTs.toNumber() + 1)
+
+      // execute timelock operation
+      await unlockOwner
+        .connect(someGuy)
+        .execute(
+          contractToCall,
+          0,
+          execCallData,
+          ethers.utils.formatBytes32String(''),
+          transferId
         )
 
       const unlockAfterUpgrade = await ethers.getContractAt(

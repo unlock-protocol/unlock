@@ -68,6 +68,7 @@ contract UnlockOwner is TimelockController {
 
   event UnlockOperationScheduled(
     bytes32 transferId,
+    bytes32 scheduleId,
     uint8 action,
     address contractToCall,
     bytes execCallData
@@ -79,19 +80,12 @@ contract UnlockOwner is TimelockController {
     bytes callData
   );
 
-  // constructor helpers as we can not declare arrays directly in solidity
-  // function _getConstructorProposers(address _multisig) view private returns (address[] memory _constructorProposers) {
-  //   // _constructorProposers[0] = _multisig;
-  //   // _constructorProposers[1] = address(this);
-  // }
-
+  // constructor helpers as we can not declare arrays directly in constructor
   function _getConstructorArray()
     private
     pure
     returns (address[] memory _constructorArray)
-  {
-    // _constructorExecutors[0] = address(0);
-  }
+  {}
 
   /**
    * @param _bridge address of connext contract on current chain
@@ -296,8 +290,17 @@ contract UnlockOwner is TimelockController {
       2 days // delay is 2 days
     );
 
+    bytes32 id = this.hashOperation(
+      contractToCall,
+      0,
+      execCallData,
+      bytes32(0),
+      transferId
+    );
+
     emit UnlockOperationScheduled(
       transferId,
+      id,
       action,
       contractToCall,
       execCallData
