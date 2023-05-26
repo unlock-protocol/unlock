@@ -49,7 +49,7 @@ Automating the governance process facilitates the propagation of decisions. This
 To mitigate the risks of a protocol-wide attack, we set up two main tools:
 
 1. **A safety delay**: Every contract call arriving from the DAO across the bridge will be quarantined for a duration of at least two days. That leaves some room to act if any malicious calls were to be sent. Note that this time period comes *after* the delay introduced by the DAO itself. For that, we rely on [OpenZeppelin's Timelock contract](https://docs.openzeppelin.com/contracts/4.x/governance#timelock) that has been audited multiple times.
-2. **Multisigs**: On each chain, a multisig owned by our team and trusted members of the Unlock community retains the ability to trigger actions through the `UnlockOwner` contract. We believe this is still a requirement at this stage as a safeguard. Protocol-wide upgrade across chains is a radically new approach. As such processes of governance are maturing, we hope multisigs could become obsolete and we have built a way in the `UnlockOwner` to remove them. We believe this will happen in due time.
+2. **Multisigs**: On each chain, a multisig owned by our team and trusted members of the Unlock community retains the ability to trigger actions through the `UnlockOwner` contract. We believe this is still a requirement at this stage as a safeguard. Performing a protocol-wide upgrade across chains is a radically new approach. As such processes of governance are maturing, we hope multisigs could become obsolete and we have built a way in the `UnlockOwner` to remove them. We believe this will happen in due time.
 
 ## Try it now !
 
