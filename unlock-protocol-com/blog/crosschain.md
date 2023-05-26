@@ -32,7 +32,7 @@ While a simple upgrade or change in protocol settings on one network may require
 
 ## How it works: the Unlock Owner
 
-Our design relies on a straightforward idea: the DAO on Ethereum mainnet is the authority that all contracts should listen to. When a proposal is executed, the DAO should send instructions across the bridge to all other instances of Unlock. To enable the cross-chain governance process, we have to pass contract calls and data across chains. For that we rely on the [Connext Bridge](https://www.connext.network/).
+Our design relies on a straightforward idea: the DAO on Ethereum mainnet is the authority that all contracts should listen to. When a proposal is executed, the DAO should send instructions across the bridge to all other instances of Unlock. To enable the cross-chain governance process, we have to pass contract calls and data across chains. For that, we rely on the [Connext Bridge](https://www.connext.network/).
 
 A new contract called `UnlockOwner` acts as a relay in this process, receiving the calls from the DAO across the bridge (or directly on mainnet) and passing it down to the correct contract in the protocol. It has mainly two functions: 1) upgrade the Unlock contract (core of the protocol) and 2) change settings of the Unlock contract itself (e.g. add a new template or tweak a parameter).
 
