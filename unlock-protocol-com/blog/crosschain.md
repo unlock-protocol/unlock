@@ -57,7 +57,7 @@ As of today, the cross-chain governance process is already deployed on ETH Goerl
 
 We encourage you to check proposals on our [Unlock Test DAO](https://www.tally.xyz/gov/unlock-test-dao). Any feedback will be warmly welcome!
 
-Below the addresses of deployed test instances (nb: these may change over time as we redeploy the contracts).
+Below are the addresses of deployed test instances (nb: these may change over time as we redeploy the contracts).
 
 **Goerli**
 
