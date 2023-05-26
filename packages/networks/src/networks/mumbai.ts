@@ -49,7 +49,7 @@ export const mumbai: NetworkConfig = {
     universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
-  unlockOwner: '0xdc230F9A08918FaA5ae48B8E13647789A8B6dD46',
+  unlockOwner: '0x508619074f542b6544c5835f260CC704E988cf65',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
