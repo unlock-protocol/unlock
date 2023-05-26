@@ -24,15 +24,12 @@ contract('UnlockOwner / constructor params', () => {
 
     // deploy unlock manager on remote chain
     const UnlockOwner = await ethers.getContractFactory('UnlockOwner')
-    const { chainId } = await ethers.provider.getNetwork()
-
     unlockOwner = await UnlockOwner.deploy(
       bridge.address, // bridge
       unlock.address, // unlock
       daoTimelock.address, // timelockDao
       multisig.address, // multisig
-      destDomainId, // domain,
-      chainId // daoChainId
+      destDomainId // domain
     )
   })
   describe('stores value correctyl', () => {
@@ -57,8 +54,7 @@ contract('UnlockOwner / constructor params', () => {
     })
 
     it('mainnet chainId', async () => {
-      const { chainId } = await ethers.provider.getNetwork()
-      assert.equal(await unlockOwner.daoChainId(), chainId)
+      assert.equal(await unlockOwner.daoChainId(), 1)
     })
   })
 

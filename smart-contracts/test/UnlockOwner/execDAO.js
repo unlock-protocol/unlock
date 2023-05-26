@@ -37,15 +37,12 @@ contract('UnlockOwner / execDAO (directly from DAO without bridge)', () => {
 
     // deploy unlock manager on remote chain
     const UnlockOwner = await ethers.getContractFactory('UnlockOwner')
-    const { chainId } = await ethers.provider.getNetwork()
-
     unlockOwner = await UnlockOwner.deploy(
       bridge.address,
       unlock.address,
       daoTimelock.address, // dao address on mainnet
       multisig.address,
-      destDomainId,
-      chainId
+      destDomainId
     )
 
     // transfer assets to unlockOwner on dest chain

@@ -14,15 +14,12 @@ contract('UnlockOwner / change multisig', () => {
 
     // deploy unlock manager on remote chain
     const UnlockOwner = await ethers.getContractFactory('UnlockOwner')
-    const { chainId } = await ethers.provider.getNetwork()
-
     unlockOwner = await UnlockOwner.deploy(
       bridge.address, // bridge
       unlock.address, // unlock
       daoTimelock.address, // timelockDao
       multisig.address, // multisig
-      destDomainId, // domain,
-      chainId // daoChainId
+      destDomainId // domain
     )
   })
 
