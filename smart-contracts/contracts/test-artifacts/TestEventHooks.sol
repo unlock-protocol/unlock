@@ -1,4 +1,4 @@
-pragma solidity 0.5.17;
+pragma solidity 0.8.17;
 
 import "../interfaces/hooks/ILockKeyPurchaseHook.sol";
 import "../interfaces/hooks/ILockKeyCancelHook.sol";
