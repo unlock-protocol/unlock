@@ -62,7 +62,7 @@ export const authorize = async (
     const message = JSON.parse(ethers.utils.toUtf8String(decoded))
     const siweMessage = new SiweMessage(message.d)
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[message.chainId].publicProvider
+      networks[message.chainId || 1].publicProvider
     )
 
     const { data: fields } = await siweMessage.verify(
