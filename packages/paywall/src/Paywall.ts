@@ -101,16 +101,31 @@ export class Paywall {
     this.sendOrBuffer('authenticate', {})
   }
 
-  loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {
+  loadCheckoutModal = async (config?: PaywallConfig, unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      this.shakeHands(unlockUrl || unlockAppUrl)
+      await this.shakeHands(unlockUrl || unlockAppUrl)
     }
     this.sendOrBuffer(
       'setConfig',
       injectProviderInfo(config || this.paywallConfig, this.provider)
     )
+    return new Promise((resolve) => {
+      let hash: string, lock: string
+      this.child!.on(
+        CheckoutEvents.transactionInfo,
+        (transactionInfo: TransactionInfo) => {
+          hash = transactionInfo.hash
+          lock = transactionInfo.lock
+          this.handleTransactionInfoEvent(transactionInfo)
+        }
+      )
+      this.child!.on(CheckoutEvents.closeModal, () => {
+        this.hideIframe()
+        resolve({ hash, lock })
+      })
+    })
   }
 
   getUserAccountAddress = () => {
