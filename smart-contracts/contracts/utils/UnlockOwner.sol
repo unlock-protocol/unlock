@@ -45,8 +45,13 @@ contract UnlockOwner is TimelockController {
   // the domain ID of the current network (defined by Connext)
   uint32 public domain;
 
-  // required for testing
-  uint public daoChainId;
+  // the chainId of the network where the DAO is deployed
+  uint public daoChainId = 1;
+
+  // the Connext domain ID representing the network where the DAO is deployed
+  // @notice 6648936 is the ID representing mainnet domain on Connext Bridge
+  // see https://docs.connext.network/resources/supported-chains
+  uint public daoDomainId = 6648936;
 
   // Errors
   error OnlyUnlock();
@@ -93,7 +98,6 @@ contract UnlockOwner is TimelockController {
    * @param _timelockDao the address of the timelock of the DAO on mainnet (which send instructions)
    * @param _multisig the address of the multisig contract
    * @param _domain the Domain ID of the current chain as used by the Connext Bridge
-   * @param _daoChainId required for testing, default to 1.
    * https://docs.connext.network/resources/supported-chains
    */
   constructor(
@@ -101,8 +105,7 @@ contract UnlockOwner is TimelockController {
     address _unlock,
     address _timelockDao,
     address _multisig,
-    uint32 _domain,
-    uint _daoChainId
+    uint32 _domain
   )
     // setup Timelock
     TimelockController(
@@ -118,9 +121,6 @@ contract UnlockOwner is TimelockController {
     multisig = _multisig;
     daoTimelock = _timelockDao;
     domain = _domain;
-
-    // required for testing purposes
-    daoChainId = _daoChainId != 0 ? _daoChainId : 1;
 
     // setup timelock roles
     _setupRole(PROPOSER_ROLE, address(this));
@@ -141,13 +141,13 @@ contract UnlockOwner is TimelockController {
 
   /**
    * helper to check if sender is mainnet DAO
-   * @notice 6648936 is the ID representing mainnet domain on Connext Bridge
    */
   function _isBridgedDAO(
     uint32 origin,
     address caller
   ) internal view returns (bool) {
-    return msg.sender == bridge && origin == 6648936 && caller == daoTimelock;
+    return
+      msg.sender == bridge && origin == daoDomainId && caller == daoTimelock;
   }
 
   /**
