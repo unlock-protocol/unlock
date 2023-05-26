@@ -3,13 +3,13 @@ const { ethers } = require('hardhat')
 
 const { reverts, ADDRESS_ZERO } = require('../helpers')
 
-let bridge, daoTimelock, timelock, multisig, multisig2, unlock, unlockOwner
+let bridge, daoTimelock, multisig, multisig2, unlock, unlockOwner
 
 const destDomainId = 1734439522
 
 contract('UnlockOwner / change multisig', () => {
   before(async () => {
-    ;[, bridge, unlock, timelock, daoTimelock, multisig, multisig2] =
+    ;[, bridge, unlock, daoTimelock, multisig, multisig2] =
       await ethers.getSigners()
 
     // deploy unlock manager on remote chain
@@ -21,7 +21,6 @@ contract('UnlockOwner / change multisig', () => {
       unlock.address, // unlock
       daoTimelock.address, // timelockDao
       multisig.address, // multisig
-      timelock.address, // timelock
       destDomainId, // domain,
       chainId // daoChainId
     )

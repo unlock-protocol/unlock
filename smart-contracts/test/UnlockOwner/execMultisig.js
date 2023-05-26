@@ -15,11 +15,11 @@ const {
   getProxyAdmin,
 } = require('../helpers')
 
-let bridge, daoTimelock, multisig, timelock, unlock, unlockOwner, proxyAdmin
+let bridge, daoTimelock, multisig, unlock, unlockOwner, proxyAdmin
 
 contract('UnlockOwner / execMultisig', () => {
   before(async () => {
-    ;[, daoTimelock, timelock, multisig] = await ethers.getSigners()
+    ;[, daoTimelock, multisig] = await ethers.getSigners()
 
     // mock bridge
     ;({ bridge } = await deployBridge())
@@ -44,7 +44,6 @@ contract('UnlockOwner / execMultisig', () => {
       unlock.address,
       daoTimelock.address, // dao address on mainnet
       multisig.address,
-      timelock.address, // timelock
       destDomainId,
       chainId
     )
