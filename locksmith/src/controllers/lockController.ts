@@ -52,7 +52,11 @@ export const stripeConnected = async (req: Request, res: Response) => {
     if (stripeEnabled) {
       return res.json({ connected: 1, account })
     }
-    return res.json({ connected: 0, account })
+
+    return res.json({
+      connected: account ? 0 : -1, // status is '0' when account is connected but not ready
+      account,
+    })
   } catch (error) {
     logger.error(
       'Cannot verified if Stripe is connected: there was an error',
