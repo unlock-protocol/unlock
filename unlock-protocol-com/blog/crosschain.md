@@ -6,7 +6,7 @@ description: This cross-chain governance design relies on a straightforward idea
 image: /images/blog/crosschain/cross-chain-share.png
 ---
 
-![cross-chain-share-share.png](/images/blog/crosschain/cross-chain-share.png)
+![cross-chain-share.png](/images/blog/crosschain/cross-chain-share.png)
 
 ## What is cross-chain governance?
 
