@@ -28,7 +28,7 @@ While a simple upgrade or change in protocol settings on one network may require
 
 1. **Consistency**: We need to make sure that any change that happens somewhere is replicated everywhere, so the experience of using the protocol is consistent across chains.
 2. **Reduce risk of deployment errors**: On each chain, the set of contracts are deployed at [different addresses](https://www.npmjs.com/package/@unlock-protocol/networks). To make all upgrades manually introduces the possibility of errors. Even if to err is human, we love to avoid it as much as we can.
-3. **Transparency**: While changes in the protocol are [voted on in the Unlock DAO](https://unlock-protocol.com/guides/delegation/), the execution and enforcement of these changes is left entirely to human discretion. We pursue the goal of making Unlock a decentralised organization and therefore like to transfer that burden to auditable contracts.
+3. **Transparency**: While changes in the protocol are [voted on in the Unlock DAO](https://unlock-protocol.com/guides/delegation/), the execution and enforcement of these changes is left entirely to human discretion. We pursue the goal of making Unlock a decentralised organization and therefore like to transfer that burden to auditable smart contracts.
 
 ## How it works: the Unlock Owner
 
