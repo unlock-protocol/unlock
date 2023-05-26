@@ -6,7 +6,6 @@ async function main({
   daoTimelockAddress,
   multisig,
   dryRun,
-  daoChainId = 5,
 } = {}) {
   const { chainId } = await ethers.provider.getNetwork()
   if (!unlockAddress) {
@@ -28,7 +27,6 @@ async function main({
     daoTimelockAddress, // dao address on mainnet
     multisig, // multisig that controls
     domainId,
-    daoChainId,
   }
   console.log(args)
 
