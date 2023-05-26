@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { ErrorTypes, generateNonce, SiweMessage } from 'siwe'
+import { generateNonce, SiweMessage, SiweErrorType } from 'siwe'
 import { logger } from '../../logger'
 import { Session } from '../../models/Session'
 import { createAccessToken } from '../../utils/middlewares/auth'
@@ -17,7 +17,6 @@ export const login: RequestHandler = async (request, response) => {
     }
     const message = new SiweMessage(request.body.message)
     const fields = await message.validate(request.body.signature)
-
     // Avoid replay attack.
     const isNonceLoggedIn = await Session.findOne({
       where: {
@@ -48,11 +47,11 @@ export const login: RequestHandler = async (request, response) => {
   } catch (error) {
     logger.error(error.message)
     switch (error) {
-      case ErrorTypes.EXPIRED_MESSAGE: {
+      case SiweErrorType.EXPIRED_MESSAGE: {
         response.status(440).json({ message: error.message })
         break
       }
-      case ErrorTypes.INVALID_SIGNATURE: {
+      case SiweErrorType.INVALID_SIGNATURE: {
         response.status(422).json({ message: error.message })
         break
       }
