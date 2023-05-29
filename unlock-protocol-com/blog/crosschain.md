@@ -18,7 +18,7 @@ Technology derived from the original Ethereum experiment has gained momentum and
 
 At Unlock Labs, we have long thought that we need to meet our community where they are, and that meant deploying the protocol on [multiple chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks). 
 
-Our role is not to choose which chain/L2 on which developers choose to deploy their membership contracts — as an open protocol, that decision should be up to the community, and that decision should be permissionless. 
+Our role is not to choose which chain/L2 on which developers choose to deploy their membership contracts — as an open protocol, that decision should be theirs, and that decision should be permissionless. 
 
 At the same time, it is also critical that the protocol acts the same across the board, regardless of what chain it is being run on.
 
