@@ -1,11 +1,13 @@
 import { RequestHandler } from 'express'
-import { ErrorTypes, generateNonce, SiweMessage } from 'siwe'
+import { generateNonce, SiweMessage, SiweErrorType } from 'siwe'
 import { logger } from '../../logger'
 import { Session } from '../../models/Session'
 import { createAccessToken } from '../../utils/middlewares/auth'
 import dayjs from 'dayjs'
 import config from '../../config/config'
 import normalizer from '../../utils/normalizer'
+import { ethers } from 'ethers'
+import { networks } from '@unlock-protocol/networks'
 
 export const login: RequestHandler = async (request, response) => {
   try {
@@ -16,8 +18,20 @@ export const login: RequestHandler = async (request, response) => {
       return
     }
     const message = new SiweMessage(request.body.message)
-    const fields = await message.validate(request.body.signature)
 
+    const networkConfig = networks[message.chainId || 1]
+    let provider
+    if (networkConfig) {
+      provider = new ethers.providers.JsonRpcProvider(
+        networkConfig.publicProvider
+      )
+    }
+    const { data: fields } = await message.verify(
+      {
+        signature: request.body.signature,
+      },
+      { provider }
+    )
     // Avoid replay attack.
     const isNonceLoggedIn = await Session.findOne({
       where: {
@@ -48,11 +62,11 @@ export const login: RequestHandler = async (request, response) => {
   } catch (error) {
     logger.error(error.message)
     switch (error) {
-      case ErrorTypes.EXPIRED_MESSAGE: {
+      case SiweErrorType.EXPIRED_MESSAGE: {
         response.status(440).json({ message: error.message })
         break
       }
-      case ErrorTypes.INVALID_SIGNATURE: {
+      case SiweErrorType.INVALID_SIGNATURE: {
         response.status(422).json({ message: error.message })
         break
       }
