@@ -8063,6 +8063,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:^1.1.2":
+  version: 1.3.0
+  resolution: "@noble/hashes@npm:1.3.0"
+  checksum: d7ddb6d7c60f1ce1f87facbbef5b724cdea536fc9e7f59ae96e0fc9de96c8f1a2ae2bdedbce10f7dcc621338dfef8533daa73c873f2b5c87fa1a4e05a95c2e2e
+  languageName: node
+  linkType: hard
+
 "@noble/secp256k1@npm:1.7.1, @noble/secp256k1@npm:~1.7.0":
   version: 1.7.1
   resolution: "@noble/secp256k1@npm:1.7.1"
@@ -10598,12 +10605,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@spruceid/siwe-parser@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "@spruceid/siwe-parser@npm:1.1.3"
+"@spruceid/siwe-parser@npm:*":
+  version: 2.0.2
+  resolution: "@spruceid/siwe-parser@npm:2.0.2"
   dependencies:
+    "@noble/hashes": ^1.1.2
     apg-js: ^4.1.1
-  checksum: 708786ba2f10987c45c1fd8a6243ba6572ee7f320531616d71ff66044828bc24af66f5537ce09c9272bdae93fcc35b566a7804fe7997284f2ee5445a36e6add2
+    uri-js: ^4.4.1
+    valid-url: ^1.0.9
+  checksum: 689b09a73026c79223805c77762b923af25209274f26d5f26d95f808a882ceb138dfbdfb6d7c8e31a67fb677bc16d90079c83821ee8e7c8bcece29cd94b2a67b
   languageName: node
   linkType: hard
 
@@ -15961,7 +15971,7 @@ __metadata:
     satori: 0.7.3
     sequelize: 6.31.1
     sequelize-cli: 6.6.0
-    siwe: 1.1.6
+    siwe: 2.1.4
     stripe: 12.3.0
     supertest: 6.3.3
     tsx: 3.12.7
@@ -16248,7 +16258,7 @@ __metadata:
     react-test-renderer: 18.2.0
     react-use: 17.4.0
     react-use-clipboard: 1.0.9
-    siwe: 1.1.6
+    siwe: 2.1.4
     tailwind-merge: 1.12.0
     tailwindcss: 3.3.2
     typescript: 5.0.4
@@ -16336,7 +16346,7 @@ __metadata:
     hardhat: 2.13.0
     prettier: 2.8.8
     react-to-print: 2.14.12
-    siwe: 1.1.6
+    siwe: 2.1.4
     tsup: 6.7.0
     typescript: 5.0.4
     vitest: 0.27.0
@@ -47626,16 +47636,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"siwe@npm:1.1.6":
-  version: 1.1.6
-  resolution: "siwe@npm:1.1.6"
+"siwe@npm:2.1.4":
+  version: 2.1.4
+  resolution: "siwe@npm:2.1.4"
   dependencies:
-    "@spruceid/siwe-parser": ^1.1.3
+    "@spruceid/siwe-parser": "*"
     "@stablelib/random": ^1.0.1
-    apg-js: ^4.1.1
+    uri-js: ^4.4.1
+    valid-url: ^1.0.9
   peerDependencies:
-    ethers: 5.5.1
-  checksum: 067517d2dd37c034f6c81011cf2d9cd821d44710030161990f630cf0228dcf327d02343e59cd00c761836aa3497f1e9f2d975f9d887db6174d611b3b3a6190f5
+    ethers: ^5.6.8 || ^6.0.8
+  checksum: a5eb48a72ccd8cca155b667e065a08ea01f626be81c489ccc65e8978cb5928857d31f073d3dabcb951581293a08868ea5cfaa183ae32bd2bc2ed0b3d88fcca77
   languageName: node
   linkType: hard
 
@@ -52004,7 +52015,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uri-js@npm:^4.2.2":
+"uri-js@npm:^4.2.2, uri-js@npm:^4.4.1":
   version: 4.4.1
   resolution: "uri-js@npm:4.4.1"
   dependencies:
@@ -52382,6 +52393,13 @@ __metadata:
   dependencies:
     homedir-polyfill: ^1.0.1
   checksum: 193db08aa396d993da04d3d985450784aa0010f51613005d13ef97d7b2b9e1ba5aef04affa585037adece12de5ca532f6f5fc40288495eab55e2eebc201809d2
+  languageName: node
+  linkType: hard
+
+"valid-url@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "valid-url@npm:1.0.9"
+  checksum: 3ecb030559404441c2cf104cbabab8770efb0f36d117db03d1081052ef133015a68806148ce954bb4dd0b5c42c14b709a88783c93d66b0916cb67ba771c98702
   languageName: node
   linkType: hard
 
