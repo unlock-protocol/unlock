@@ -254,9 +254,9 @@ const StripeNotReady = ({
   return (
     <span className="grid gap-2 text-sm">
       <span className="font-semibold text-red-500">
-        Stripe account is connected, but not ready to process charges. Make sure
-        that all information are validated and you email is verified from
-        Stripe.
+        Your Stripe account is connected but not ready to process charges yet.
+        Make sure that all the details you entered on Stripe are valid and your
+        email has been verified from Stripe.
       </span>
       <div className="flex items-center gap-0.5">
         <div className="w-full md:w-1/3">
