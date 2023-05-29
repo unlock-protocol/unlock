@@ -366,6 +366,7 @@ export const CreditCardForm = ({
             window.location.assign(connect.url)
           } else {
             ToastHelper.success('Stripe connection succeeded!')
+            refetchStripeConnectionDetails()
           }
         },
         onError: () => {
