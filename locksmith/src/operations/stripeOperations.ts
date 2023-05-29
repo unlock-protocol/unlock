@@ -263,7 +263,7 @@ export const getStripeConnectForLock = async (
   const account = await stripeConnection(stripeConnectLockDetails.stripeAccount)
 
   return {
-    stripeEnabled: account?.charges_enabled ?? false,
+    stripeEnabled: !!account?.charges_enabled,
     stripeAccount: stripeConnectLockDetails.stripeAccount,
   }
 }
