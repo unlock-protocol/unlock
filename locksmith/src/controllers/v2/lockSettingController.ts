@@ -34,7 +34,7 @@ const LockSettingSchema = z.object({
     .optional(),
   checkoutConfigId: z
     .string({
-      description: 'Checkout config URL assigned to the lock.',
+      description: 'Checkout config URL id.',
     })
     .nullish(),
 })
