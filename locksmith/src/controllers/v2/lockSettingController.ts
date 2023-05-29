@@ -32,6 +32,11 @@ const LockSettingSchema = z.object({
       description: 'Slug that will be used to retrieve the lock',
     })
     .optional(),
+  checkoutConfigId: z
+    .string({
+      description: 'Checkout config URL assigned to the lock.',
+    })
+    .nullish(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -42,6 +47,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   creditCardPrice: undefined,
   emailSender: undefined,
   slug: undefined,
+  checkoutConfigId: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
