@@ -395,6 +395,9 @@ components:
         emailSender:
           type: string
           nullable: true
+        checkoutConfigId:
+          type: string
+          nullable: true
 
   parameters:
     Network:

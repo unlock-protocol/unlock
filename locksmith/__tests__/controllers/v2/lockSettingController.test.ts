@@ -8,7 +8,6 @@ const network = 4
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const lockAddress2 = '0x060D07E7cCcD390B6F93B4D318E9FF203250D9be'
 const lockSettingMock = {
-  id: 4,
   lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
   network,
   sendEmail: true,
@@ -16,6 +15,7 @@ const lockSettingMock = {
   emailSender: 'Custom Sender',
   slug: 'slug-test',
   replyTo: 'example@gmail.com',
+  checkoutConfigId: 'f549d936-24e6-49e0-9acb',
   createdAt: '2023-03-24T15:40:54.509Z',
   updatedAt: '2023-03-24T15:40:54.509Z',
 }
@@ -120,7 +120,7 @@ describe('LockSettings v2 endpoints for lock', () => {
   })
 
   it('should correctly save settings when user is lockManager', async () => {
-    expect.assertions(6)
+    expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
     const saveSettingResponse = await request(app)
@@ -131,6 +131,7 @@ describe('LockSettings v2 endpoints for lock', () => {
         replyTo: 'example@gmail.com',
         slug: 'slug-demo',
         emailSender: 'Example',
+        checkoutConfigId: 'f549d936-24e6-49e0-9acb',
       })
 
     const response = saveSettingResponse.body
@@ -140,10 +141,11 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.replyTo).toBe('example@gmail.com')
     expect(response.slug).toBe('slug-demo')
     expect(response.emailSender).toBe('Example')
+    expect(response.checkoutConfigId).toBe('f549d936-24e6-49e0-9acb')
   })
 
   it('should save and retrieve setting when user is lockManager', async () => {
-    expect.assertions(13)
+    expect.assertions(15)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -157,6 +159,7 @@ describe('LockSettings v2 endpoints for lock', () => {
         creditCardPrice: 0.04,
         slug: 'slug-test',
         emailSender: 'Custom Sender',
+        checkoutConfigId: 'f549d936-24e6-49e0-9acb',
       })
 
     const response = saveSettingResponse.body
@@ -166,6 +169,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.creditCardPrice).toBe(0.04)
     expect(response.slug).toBe('slug-test')
     expect(response.emailSender).toBe('Custom Sender')
+    expect(response.checkoutConfigId).toBe('f549d936-24e6-49e0-9acb')
 
     // retrieve settings
     const getSettingResponse = await request(app)
@@ -185,10 +189,13 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(getSettingResponse.body.emailSender).toBe(
       lockSettingMock.emailSender
     )
+    expect(getSettingResponse.body.checkoutConfigId).toBe(
+      lockSettingMock.checkoutConfigId
+    )
   })
 
   it('should retrieve default settings for a lock', async () => {
-    expect.assertions(6)
+    expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -204,10 +211,11 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(getSettingResponse.body.creditCardPrice).toBe(undefined)
     expect(getSettingResponse.body.slug).toBe(undefined)
     expect(getSettingResponse.body.emailSender).toBe(undefined)
+    expect(getSettingResponse.body.checkoutConfigId).toBe(undefined)
   })
 
   it('should save null values for settings', async () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     const { loginResponse } = await loginRandomUser(app)
     // save settings
@@ -218,6 +226,7 @@ describe('LockSettings v2 endpoints for lock', () => {
         replyTo: null,
         creditCardPrice: null,
         emailSender: null,
+        checkoutConfigId: null,
       })
 
     const response = saveSettingResponse.body
@@ -225,5 +234,6 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.replyTo).toBe(null)
     expect(response.creditCardPrice).toBe(null)
     expect(response.emailSender).toBe(null)
+    expect(response.checkoutConfigId).toBe(null)
   })
 })
