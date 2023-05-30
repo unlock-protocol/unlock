@@ -215,7 +215,7 @@ const CheckoutRegistrationCard = ({
     return <Placeholder.Card size="md" />
   }
 
-  // not match on found for the assigned Checkout ID, for example could be deleted
+  // not match found for the assigned Checkout ID, for example could be deleted
   if (!checkoutConfig || locks.length === 0) {
     return (
       <Card className="grid gap-6 mt-10 lg:mt-0">
