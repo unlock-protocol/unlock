@@ -8,6 +8,8 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
+import { NextSeo } from 'next-seo'
+import { config } from '~/config/app'
 
 export const EventContent = () => {
   const router = useRouter()
@@ -25,6 +27,11 @@ export const EventContent = () => {
 
   const showDetails = lockAddress && network
 
+  const locksmithEventOG = new URL(
+    `/v2/og/event/${network}/locks/${lockAddress}`,
+    config.locksmithHost
+  ).toString()
+
   return (
     <AppLayout
       showLinks={false}
@@ -35,6 +42,18 @@ export const EventContent = () => {
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
+      <NextSeo
+        title="Unlock Events"
+        description="Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered."
+        openGraph={{
+          images: [
+            {
+              alt: 'Event',
+              url: locksmithEventOG,
+            },
+          ],
+        }}
+      />
       {!showDetails && (
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}
