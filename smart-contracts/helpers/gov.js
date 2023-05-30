@@ -107,13 +107,13 @@ const queueProposal = async ({ proposal, govAddress }) => {
   const descriptionHash = web3.utils.keccak256(description)
   const { proposerAddress } = proposal
   let voterWallet
-  if(!proposerAddress) {
+  if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()
   } else {
     voterWallet = await ethers.getSigner(proposerAddress)
   }
 
-  console.log({targets, values, calldatas, description})
+  console.log({ targets, values, calldatas, description })
 
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
@@ -130,7 +130,7 @@ const executeProposal = async ({ proposal, govAddress }) => {
   })
   const descriptionHash = web3.utils.keccak256(description)
   let voterWallet
-  if(!proposerAddress) {
+  if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()
   } else {
     voterWallet = await ethers.getSigner(proposerAddress)
@@ -188,7 +188,7 @@ const getProposalState = async (proposalId, govAddress) => {
 
 const loadProposal = async (proposalPath) => {
   const prop = require(proposalPath)
-  if (typeof prop === 'function' ) {
+  if (typeof prop === 'function') {
     return await prop()
   } else {
     return prop
@@ -197,38 +197,34 @@ const loadProposal = async (proposalPath) => {
 
 /**
  * parseUnlockOwnerCalldata
- * @param {number} action `1` to pass directly the callData to the Unlock contract, 
-   * and `2` to trigger a contract upgrade through Unlock's ProxyAdmin
+ * @param {number} action `1` to pass directly the callData to the Unlock contract,
+ * and `2` to trigger a contract upgrade through Unlock's ProxyAdmin
  * @returns calldata
  */
-async function parseUnlockOwnerCalldata({ 
-  action, 
+async function parseUnlockOwnerCalldata({
+  action,
   functionName,
   functionArgs,
 }) {
-  
   const contractName = action === 1 ? 'Unlock' : 'ProxyAdmin'
-  
+
   console.log({
     contractName,
     functionName,
-    functionArgs
+    functionArgs,
   })
-  
-  // parse Unlock calldata 
+
+  // parse Unlock calldata
   const { interface } = await ethers.getContractFactory(contractName)
   const actionCallData = interface.encodeFunctionData(
     functionName,
     functionArgs
   )
   // parse _execAction instructions for Unlock Owner
-  const calldata = ethers.utils.defaultAbiCoder.encode([
-    'uint8', 
-    'bytes'
-  ], [
-    1, 
-    actionCallData
-  ])
+  const calldata = ethers.utils.defaultAbiCoder.encode(
+    ['uint8', 'bytes'],
+    [1, actionCallData]
+  )
 
   return calldata
 }
