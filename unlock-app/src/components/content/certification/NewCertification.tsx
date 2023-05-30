@@ -9,6 +9,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { CertificationForm, NewCertificationForm } from './CertificationForm'
 import { CertificationDeploying } from './CertificationDeploying'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
+import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 export interface TransactionDetails {
   hash: string
@@ -21,6 +22,8 @@ export const NewCertification = () => {
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
   const [slug, setSlug] = useState<string | undefined>(undefined)
+
+  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
   const onSubmit = async (formData: NewCertificationForm) => {
     let lockAddress
@@ -70,7 +73,9 @@ export const NewCertification = () => {
 
       const slug = formData?.metadata.slug
       if (slug) {
-        await storage.saveLockSetting(formData.network, lockAddress, {
+        await saveSettingsMutation({
+          lockAddress,
+          network: formData.network,
           slug,
         })
       }

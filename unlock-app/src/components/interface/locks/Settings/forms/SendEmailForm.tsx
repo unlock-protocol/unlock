@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { EmailSettingsForm } from './EmailSettingsForm'
+import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -19,10 +20,13 @@ export const SendEmailForm = ({
 }: SubscriptionFormProps) => {
   const [sendEmail, setSendEmail] = useState(true)
   const [changed, setChanged] = useState(false)
+  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
   const updateRequireEmail = async () => {
     if (!isManager) return
-    return await storage.saveLockSetting(network, lockAddress, {
+    return await saveSettingsMutation({
+      lockAddress,
+      network,
       sendEmail,
     })
   }

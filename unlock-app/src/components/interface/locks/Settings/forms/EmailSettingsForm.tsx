@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { storage } from '~/config/storage'
+import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface EmailReplyToFormProps {
   lockAddress: string
@@ -32,11 +32,14 @@ export const EmailSettingsForm = ({
     },
   })
 
-  const updateReplyTo = async ({ replyTo, emailSender }: FormProps) => {
+  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
+
+  const updateReplyTo = async (config: FormProps) => {
     if (!isManager) return
-    return await storage.saveLockSetting(network, lockAddress, {
-      replyTo,
-      emailSender,
+    return await saveSettingsMutation({
+      lockAddress,
+      network,
+      ...config,
     })
   }
 
