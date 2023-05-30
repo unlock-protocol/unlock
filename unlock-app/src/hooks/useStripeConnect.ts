@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { storage } from '~/config/storage'
 
 interface Options {
@@ -40,6 +40,22 @@ export const useStripeDisconnect = ({ lockAddress, network }: Options) => {
     },
     {
       retry: 2,
+    }
+  )
+}
+
+export const useGetLockStripeConnectionDetails = ({
+  lockAddress,
+  network,
+}: Options) => {
+  return useQuery(
+    ['getLockStripeConnectionDetails', lockAddress, network],
+    async () => {
+      const response = await storage.getLockStripeConnectionDetails(
+        lockAddress,
+        network
+      )
+      return response.data ?? {}
     }
   )
 }
