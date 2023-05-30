@@ -1,4 +1,10 @@
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  Placeholder,
+  Select,
+  ToggleSwitch,
+} from '@unlock-protocol/ui'
 import { Controller, useForm } from 'react-hook-form'
 import { SLUG_REGEXP } from '~/constants'
 import { useCheckoutConfigsByUser } from '~/hooks/useCheckoutConfig'
@@ -103,7 +109,13 @@ export const EventCheckoutUrl = ({
     }) ?? []
 
   if (loading) {
-    return null // loading placeholder
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line />
+        <Placeholder.Line />
+        <Placeholder.Line />
+      </Placeholder.Root>
+    )
   }
 
   if (!hasConfigList) {
@@ -171,9 +183,6 @@ export const EventCheckoutUrl = ({
                 name="checkoutConfigId"
                 control={control}
                 rules={{
-                  /*validate: (value: any) => {
-                return !value?.length ? 'This field is required.' : true
-              },*/
                   required: {
                     value: useCheckoutURL,
                     message: 'This field is required.',
