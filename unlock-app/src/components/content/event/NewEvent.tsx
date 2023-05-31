@@ -8,6 +8,7 @@ import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 export interface TransactionDetails {
   hash: string
@@ -20,6 +21,9 @@ export const NewEvent = () => {
   const [slug, setSlug] = useState<string | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
+
+  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
+
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
@@ -63,7 +67,9 @@ export const NewEvent = () => {
 
       const slug = formData?.metadata.slug
       if (slug) {
-        await storage.saveLockSetting(formData.network, lockAddress, {
+        await saveSettingsMutation({
+          lockAddress,
+          network: formData.network,
           slug,
         })
       }

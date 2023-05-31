@@ -22,7 +22,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { CertificationMetadataForm } from './CertificationMetadataForm'
-import { useSaveSlugSetting } from '~/hooks/useLockSettings'
+import { useSaveLockSettings } from '~/hooks/useLockSettings'
 interface Props {
   lockAddress?: string
   network?: number
@@ -70,7 +70,7 @@ export const Form = ({
       keyId,
     })
 
-  const { mutateAsync: saveSlugSetting } = useSaveSlugSetting()
+  const { mutateAsync: saveSlugSetting } = useSaveLockSettings()
 
   const onSubmit = async (formData: MetadataFormData) => {
     const metadata = formDataToMetadata({
