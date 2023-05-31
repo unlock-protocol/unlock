@@ -416,19 +416,24 @@ export const HeaderNav = ({
     }
   }, [menuExpanded])
 
+  const hasSections = menuSections?.length > 0
+
   return (
     <div className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
       <div className="flex items-center justify-between w-full h-24 gap-2">
         <div className="flex items-center gap-8">
           <div>
             <div className="flex items-center gap-2">
-              <div className="block lg:hidden">
-                <Icon
-                  size={30}
-                  icon={menuExpanded ? CloseIcon : MenuIcon}
-                  onClick={() => setMenuExpanded(!menuExpanded)}
-                />
-              </div>
+              {/* no need to show burgher menu if there is no items */}
+              {hasSections && (
+                <div className="block lg:hidden">
+                  <Icon
+                    size={30}
+                    icon={menuExpanded ? CloseIcon : MenuIcon}
+                    onClick={() => setMenuExpanded(!menuExpanded)}
+                  />
+                </div>
+              )}
               <Link href={logoUrl}>
                 <div
                   className={`grid items-center gap-1 divide-x md:gap-2 ${

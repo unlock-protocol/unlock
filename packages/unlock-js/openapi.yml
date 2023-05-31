@@ -395,6 +395,9 @@ components:
         emailSender:
           type: string
           nullable: true
+        checkoutConfigId:
+          type: string
+          nullable: true
 
   parameters:
     Network:
@@ -1763,6 +1766,32 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /lock/{lockAddress}/stripe-connected:
+    get:
+      operationId: getLockStripeConnectionDetails
+      description: Returns Stripe connection details
+      parameters:
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: chain
+          required: true
+          schema:
+            type: number
+          description: Lock network
+
+      responses:
+        200:
+          description: Successfully returns lock Stripe connection details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: string
+                  connected:
+                    type: number
+
   /v2/images/upload:
     post:
       operationId: uploadImages
@@ -1962,6 +1991,8 @@ paths:
                   purchaser:
                     type: object
                     properties:
+                      email:
+                        type: string
                       fullname:
                         type: string
                       businessName:
