@@ -258,6 +258,7 @@ export const useProvider = (config: any) => {
     watchAsset,
     providerSend,
     connected,
+    provider,
     displayAccount,
   }
 }

@@ -5,11 +5,10 @@ import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from './utils/localStorage'
 import { isUnlocked } from './utils/isUnlocked'
 import {
-  Enabler,
-  getProvider,
-  Web3Window,
-  enableInjectedProvider,
-} from './utils/enableInjectedProvider'
+  getInjectedProvider,
+  enableProvider,
+  PaywallProvider,
+} from './utils/provider'
 import { unlockAppUrl } from './urls'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
@@ -42,12 +41,14 @@ export enum CheckoutEvents {
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
   enable = 'checkout.enable',
+  resolveMethodCall = 'checkout.resolveMethodCall',
+  resolveOnEventCall = 'checkout.resolveOnEventCall',
 }
 
 export interface MethodCall {
   method: string
   params: any
-  id: number
+  id: string | number
 }
 
 export interface MethodCallResult {
@@ -75,114 +76,71 @@ export class Paywall {
 
   lockStatus?: string
 
-  provider?: Enabler
+  provider?: any
 
   child?: Postmate.ParentAPI
 
-  constructor(
-    paywallConfig: PaywallConfig,
-    networkConfigs: NetworkConfigs,
-    provider?: any
-  ) {
+  constructor(networkConfigs: NetworkConfigs) {
     this.networkConfigs = networkConfigs
-    if (provider) {
-      paywallConfig.autoconnect = true // force autoconnect
-    }
-    // Use provider in parameter, fall back to injected provider in window (if any)
-    this.provider = provider || getProvider(window as Web3Window)
-    this.paywallConfig = injectProviderInfo(paywallConfig, this.provider)
-    // Always do this last!
-    this.loadCache()
   }
 
-  authenticate = (unlockUrl?: string) => {
+  /**
+   * Connects to an existing provider. Call this, or authenticate in which can we will use the
+   * provider passed from the child iframe.
+   * @param provider?
+   */
+  connect = async (provider?: any) => {
+    this.provider = provider || getInjectedProvider()
+  }
+
+  /**
+   * Uses the provider from Unlock. Returns a EIP1193 compliant provider
+   * @param unlockUrl
+   * @returns
+   */
+  authenticate(unlockUrl?: string, config?: any) {
     if (this.iframe) {
       this.showIframe()
     } else {
       this.shakeHands(unlockUrl || unlockAppUrl)
     }
-    this.sendOrBuffer('authenticate', {})
+    this.sendOrBuffer('authenticate', config)
+    this.provider = new PaywallProvider(this)
+    return this.provider
   }
 
-  loadCheckoutModal = async (config?: PaywallConfig, unlockUrl?: string) => {
+  /**
+   * Loads the checkout modal!
+   * @param config
+   * @param unlockUrl
+   */
+  loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      await this.shakeHands(unlockUrl || unlockAppUrl)
+      this.shakeHands(unlockUrl || unlockAppUrl)
     }
     this.sendOrBuffer(
       'setConfig',
       injectProviderInfo(config || this.paywallConfig, this.provider)
     )
-    return new Promise((resolve) => {
-      let hash: string, lock: string
-      this.child!.on(
-        CheckoutEvents.transactionInfo,
-        (transactionInfo: TransactionInfo) => {
-          hash = transactionInfo.hash
-          lock = transactionInfo.lock
-          this.handleTransactionInfoEvent(transactionInfo)
-        }
-      )
-      this.child!.on(CheckoutEvents.closeModal, () => {
-        this.hideIframe()
-        resolve({ hash, lock })
-      })
-    })
   }
 
-  getUserAccountAddress = () => {
-    return this.userAccountAddress
-  }
+  setPaywallConfig = (config: PaywallConfig) => {
+    if (this.provider && !this.provider.isPaywallProvider) {
+      config.autoconnect = true // force autoconnect, when the provider is external
+    }
+    // Use provider in parameter, fall back to injected provider in window (if any)
+    this.paywallConfig = injectProviderInfo(config, this.provider)
+    // Always do this last!
+    this.loadCache()
 
-  resetConfig = (config: PaywallConfig) => {
     this.paywallConfig = injectProviderInfo(config, this.provider)
     this.checkKeysAndLock()
     this.sendOrBuffer(
       'setConfig',
       injectProviderInfo(config || this.paywallConfig, this.provider)
     )
-  }
-
-  getState = () => {
-    return this.lockStatus
-  }
-
-  // Saves the user info in the cache
-  cacheUserInfo = async (info: UserInfo) => {
-    store('userInfo', info)
-  }
-
-  // Loads the cache
-  loadCache = async () => {
-    const info = retrieve('userInfo')
-    if (!info) {
-      return this.lockPage()
-    }
-    this.userAccountAddress = info.address
-    this.checkKeysAndLock()
-  }
-
-  // Will lock or unlock the page based on the current state
-  async checkKeysAndLock() {
-    // For each lock.
-
-    if (!this.userAccountAddress) {
-      return
-    }
-
-    this.lockStatus = undefined
-
-    const unlockedLocks = await isUnlocked(
-      this.userAccountAddress,
-      this.paywallConfig,
-      this.networkConfigs
-    )
-
-    if (unlockedLocks.length) {
-      return this.unlockPage(unlockedLocks)
-    }
-    return this.lockPage()
   }
 
   shakeHands = async (unlockAppUrl: string) => {
@@ -273,14 +231,13 @@ export class Paywall {
 
   handleOnEventEvent = async (eventName: string) => {
     const provider = this.provider as any
-
     provider.on(eventName, () => {
       this.child!.call('resolveOnEvent', eventName)
     })
   }
 
   handleEnable = async () => {
-    const result = await enableInjectedProvider(this.provider)
+    const result = await enableProvider(this.provider)
     this.child!.call('resolveOnEnable', result)
   }
 
@@ -291,6 +248,50 @@ export class Paywall {
   hideIframe = () => {
     dispatchEvent(unlockEvents.closeModal, {})
     this.iframe!.classList.remove('show')
+  }
+
+  /********************
+   * Legacy/deprecated methods
+   ********************/
+
+  getUserAccountAddress = () => {
+    return this.userAccountAddress
+  }
+
+  getState = () => {
+    return this.lockStatus
+  }
+
+  cacheUserInfo = async (info: UserInfo) => {
+    store('userInfo', info)
+  }
+
+  loadCache = async () => {
+    const info = retrieve('userInfo')
+    if (!info) {
+      return this.lockPage()
+    }
+    this.userAccountAddress = info.address
+    this.checkKeysAndLock()
+  }
+
+  async checkKeysAndLock() {
+    if (!this.userAccountAddress) {
+      return
+    }
+
+    this.lockStatus = undefined
+
+    const unlockedLocks = await isUnlocked(
+      this.userAccountAddress,
+      this.paywallConfig,
+      this.networkConfigs
+    )
+
+    if (unlockedLocks.length) {
+      return this.unlockPage(unlockedLocks)
+    }
+    return this.lockPage()
   }
 
   lockPage = () => {

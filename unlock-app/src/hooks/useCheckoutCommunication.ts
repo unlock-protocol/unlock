@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
+import { useProvider } from './useProvider'
+import { config as AppConfig } from '~/config/app'
 export interface UserInfo {
   address?: string
   signedMessage?: string
@@ -23,9 +25,11 @@ export enum CheckoutEvents {
   metadata = 'checkout.metadata',
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
+  resolveMethodCall = 'checkout.resolveMethodCall',
+  resolveOnEventCall = 'checkout.resolveOnEventCall',
 }
 
-type Payload = UserInfo | TransactionInfo | MethodCall | string
+type Payload = UserInfo | TransactionInfo | MethodCall | any
 
 interface BufferedEvent {
   kind: CheckoutEvents
@@ -35,7 +39,7 @@ interface BufferedEvent {
 export interface MethodCall {
   method: string
   params: any
-  id: number
+  id: string
 }
 
 export interface MethodCallResult {
@@ -64,7 +68,7 @@ export type AsyncSendable = {
 // iframe are held here, once the parent iframe has resolved the call
 // it will trigger the callback and remove it from the table.
 export const waitingMethodCalls: {
-  [id: number]: (error: any, response: any) => void
+  [id: string]: (error: any, response: any) => void
 } = {}
 // TODO: see if we can support multiple handlers for same event name
 export const eventHandlers: {
@@ -116,15 +120,16 @@ export const useCheckoutCommunication = () => {
   const [oauthConfig, setOauthConfig] = useState<OAuthConfig | undefined>(
     undefined
   )
+  const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
 
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setPaywallConfig(config)
     },
-    authenticate: () => {
+    authenticate: (config: any) => {
       setOauthConfig({
-        clientId: window.parent.location.host,
+        clientId: 'http://localhost:3000',
         responseType: '',
         state: '',
         redirectUri: '',
@@ -133,6 +138,35 @@ export const useCheckoutCommunication = () => {
     resolveMethodCall,
     resolveOnEvent,
     resolveOnEnable,
+    async handleMethodCallEvent({ id, params, method }: MethodCall) {
+      if (!(provider && provider?.request)) {
+        return
+      }
+      return provider
+        .request({ method, params, id })
+        .then((response: any) => {
+          pushOrEmit(CheckoutEvents.resolveMethodCall, {
+            id,
+            error: null,
+            response,
+          })
+        })
+        .catch((error: any) => {
+          pushOrEmit(CheckoutEvents.resolveMethodCall, {
+            id,
+            error,
+            response: null,
+          })
+        })
+    },
+    async handleOnEvent(eventName: string) {
+      if (!provider) {
+        return
+      }
+      return provider.on(eventName, () => {
+        pushOrEmit(CheckoutEvents.resolveOnEventCall, eventName)
+      })
+    },
   })
 
   let insideIframe = false
@@ -210,7 +244,7 @@ export const useCheckoutCommunication = () => {
       },
       sendAsync: (request: MethodCall, callback) => {
         if (!request.id) {
-          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+          request.id = window.crypto.randomUUID()
         }
         waitingMethodCalls[request.id] = (error: any, response: any) => {
           callback(error, response)
@@ -220,7 +254,7 @@ export const useCheckoutCommunication = () => {
       request: async (request: MethodCall) => {
         if (!request.id) {
           // Assigning an id because they may be returned in a different order
-          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+          request.id = window.crypto.randomUUID()
         }
         return new Promise((resolve, reject) => {
           waitingMethodCalls[request.id] = (error: any, response: any) => {
