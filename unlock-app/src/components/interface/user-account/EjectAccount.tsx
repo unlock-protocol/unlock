@@ -38,7 +38,7 @@ export function EjectAccount() {
         </div>
         <div className="w-full p-4 border border-gray-200 grid grid-cols-1 md:grid-cols-[128px_1fr] items-center md:items-start">
           <div>
-            <Svg.Attention className="w-24 fill-gray-500" />
+            <Svg.Attention />
           </div>
           <div>
             <h1 className="mt-0 text-red-600">Danger Zone</h1>
