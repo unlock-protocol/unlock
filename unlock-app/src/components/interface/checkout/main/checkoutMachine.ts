@@ -245,6 +245,7 @@ export const checkoutMachine = createMachine(
       CAPTCHA: 'CAPTCHA',
       PASSWORD: 'PASSWORD',
       PROMO: 'PROMO',
+      CARD: 'CARD',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
         actions: ['updatePaywallConfig'],
@@ -487,7 +488,9 @@ export const checkoutMachine = createMachine(
             {
               target: 'CARD',
               actions: ['selectPaymentMethod'],
-              cond: 'isCardPayment',
+              cond: (_, event) => {
+                return ['card'].includes(event.payment.method)
+              },
             },
             {
               actions: ['selectPaymentMethod'],
@@ -710,8 +713,7 @@ export const checkoutMachine = createMachine(
       requireCaptcha: (context) => context && context?.hook === 'captcha',
       requirePassword: (context) => context && context?.hook === 'password',
       requirePromo: (context) => context && context?.hook === 'promocode',
-      isCardPayment: (context) =>
-        ['card', 'universal_card'].includes(context.payment.method),
+      isCardPayment: (context) => ['card'].includes(context.payment.method),
     },
   }
 )

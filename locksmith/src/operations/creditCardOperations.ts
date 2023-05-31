@@ -18,19 +18,17 @@ export const getCreditCardEnabledStatus = async ({
 }: CreditCardStateProps): Promise<boolean> => {
   const fulfillmentDispatcher = new Dispatcher()
 
-  const [hasEnoughToPayForGas, stripeConnected, isAuthorizedForCreditCard] =
+  const [hasEnoughToPayForGas, { stripeEnabled }, isAuthorizedForCreditCard] =
     await Promise.all([
       fulfillmentDispatcher.hasFundsForTransaction(network),
       getStripeConnectForLock(lockAddress, network),
       AuthorizedLockOperations.hasAuthorization(lockAddress, network),
     ])
 
-  const hasStripeConfig = stripeConnected != 0 && stripeConnected != -1
-
   const creditCardEnabled =
     hasEnoughToPayForGas &&
     isAuthorizedForCreditCard &&
-    hasStripeConfig &&
+    stripeEnabled &&
     totalPriceInCents > MIN_PAYMENT_STRIPE_CREDIT_CARD // Let's check that the price is larger than 50cts
 
   return creditCardEnabled

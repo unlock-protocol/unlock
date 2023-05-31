@@ -10,7 +10,6 @@ image: /images/blog/udt-grants-class-1.png
 
 We’re excited to announce our pioneering set of Unlock Token Grantees!  We’re looking forward to seeing how they apply Unlock in new ways. You can [learn more about the grant program here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 
-
 ## What is the Unlock Token Grant Program?
 
 The Unlock Token Grant Program is all about increasing the amount of people building with Unlock, by encouraging and supporting developers that create plugins, processes and documentation that make it easier for people to use Unlock.
@@ -19,15 +18,15 @@ The Unlock Token Grant Program is all about increasing the amount of people buil
 
 Our five criteria are as follows:
 
-* **Impact** - could this impact a lot of users?
+- **Impact** - could this impact a lot of users?
 
-* **Clarity** - Does the project include user experience, aesthetics and anything else that makes the solution clear, accessible and easy to use once implemented?
+- **Clarity** - Does the project include user experience, aesthetics and anything else that makes the solution clear, accessible and easy to use once implemented?
 
-* **Feasibility** - is this a reasonable implementation?
+- **Feasibility** - is this a reasonable implementation?
 
-* **Team** - Does the team have the skills to make this happen?
+- **Team** - Does the team have the skills to make this happen?
 
-* **Maturity** - is this a brand new startup or a launched system with revenue?
+- **Maturity** - is this a brand new startup or a launched system with revenue?
 
 ## Class 1 Token Grantees
 
@@ -37,7 +36,7 @@ Member Benefits (Shopify App)
 
 A Shopify app that allows merchants to easily integrate locks in their stores. Customers with a key to a lock get the associated discount code applied.
 
-*JavaScript, NodeJS, React, Liquid (Shopify templates)*
+_JavaScript, NodeJS, React, Liquid (Shopify templates)_
 
 ### Henry Hoffman, London, UK
 
@@ -65,7 +64,7 @@ Novum Insights
 
 FireUnlock - a Firebase extension for Unlock Protocol.
 
-*JavaScript, TypeScript*
+_JavaScript, TypeScript_
 
 ### Kalidou Diagne, Milan, Italy
 
@@ -73,7 +72,7 @@ Unlock Showcase
 
 Website with a collection of websites and applications using UnlockProtocal with a blog and social profile thats shares content related to UnlockProtocol.
 
-*Typescript, VueJS or React, GraphCMS*
+_Typescript, VueJS or React, GraphCMS_
 
 ### Anjali Young, Boulder, Colorado, USA
 
@@ -81,7 +80,7 @@ Collab.land
 
 Integrating Unlock Protocol with Collab.Land. Collab.Land will let users create locks in Discord and Telegram.
 
-*Typescript, Javascript, Solidity*
+_Typescript, Javascript, Solidity_
 
 ### Ismail Hassan, Chicago, Illinois, USA
 
@@ -89,7 +88,7 @@ Telegram Bot Unlock Integration
 
 Telegram integration with Unlock Protocol that allows owners to restrict access to their private channels/groups to only members that own an active key.
 
-*Node.js*
+_Node.js_
 
 ### Cyprien Grau, Montreal, Quebec
 
@@ -97,7 +96,7 @@ Beem
 
 Unlock Integration with Beem, a Live events & VOD social platform
 
-*JS, React*
+_JS, React_
 
 ### Marshall Holmes, Waxahachie, Texas, USA
 
@@ -105,7 +104,7 @@ Streamers Unleashed
 
 Integration with Streamlabs to allow donations and superchats with Unlock Protocol.
 
-*Javascript*
+_Javascript_
 
 ### Camille Besse, Nantes, France
 
@@ -113,7 +112,7 @@ Unlock Discourse Forum Plugin
 
 Lock topics behind the Unlock paywall. Enable Discourse members to buy your membership as an NFT or receive it via an airdrop to access topics from locked categories.
 
-*Javascript & Ruby*
+_Javascript & Ruby_
 
 ## Learn more about our Token Grant Program!
 

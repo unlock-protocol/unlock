@@ -21,7 +21,7 @@ Let's see the details, step by step.
 
 The lock creation section of the Dashboard is where creators deploy new locks to create memberships for their community. The enhanced Dashboard takes a guided, step-by-step approach to lock creation.
 
-In the first step, a form with the details to create a lock is shown to the user. The interface will indicate if a required field is missing before allowing the user to proceed to the next step. 
+In the first step, a form with the details to create a lock is shown to the user. The interface will indicate if a required field is missing before allowing the user to proceed to the next step.
 
 ![Screenshot 2022-10-03 at 11.29.54.png](/images/blog/dashboard-redesign/Screenshot_2022-10-03_at_11.29.54.png)
 
@@ -45,8 +45,6 @@ In the new dashboard, locks are now grouped and displayed by network. This makes
 
 When there are no locks to show on the listing page, the user will be redirected to the “Create lock” page.
 
- 
-
 ![Screenshot 2022-09-27 at 11.06.44.png](/images/blog/dashboard-redesign/Screenshot_2022-09-27_at_11.06.44.png)
 
 ### Lock summary cards
@@ -57,7 +55,7 @@ Lock summary cards show the high-level information about the lock. Lock summary 
 
 ## Lock management
 
-Clicking through on a lock summary card brings up the lock management screen, which surfaces the details for a particular lock. This page has been redesigned for simplicity and readability. 
+Clicking through on a lock summary card brings up the lock management screen, which surfaces the details for a particular lock. This page has been redesigned for simplicity and readability.
 
 On this page, the lock manager can update settings for the lock, as well as see a list of all the members.
 
@@ -83,11 +81,11 @@ Clicking on a key will expand it, and shows basic information about the key, own
 
 ![Screenshot 2022-10-03 at 12.06.41.png](/images/blog/dashboard-redesign/Screenshot_2022-10-03_at_12.06.41.png)
 
- In addition, if the viewer is the lock manager, more details and metadata for the key are shown.
+In addition, if the viewer is the lock manager, more details and metadata for the key are shown.
 
 ![Screenshot 2022-10-03 at 12.05.24.png](/images/blog/dashboard-redesign/Screenshot_2022-10-03_at_12.05.24.png)
 
-### Withdrawing funds from a lock 
+### Withdrawing funds from a lock
 
 When the lock has a withdrawable amount, the `Withdraw` button will be active and allow the lock manager to withdraw the collected amount for the keys sold.
 
@@ -103,7 +101,7 @@ By clicking the `Generate URL` button, the user can generate a URL that can be s
 
 The mobile experience is improved significantly with the new Dashboard. It features a fully responsive layout and provides a better experience and improved usability when using the app through a mobile device.
 
-### Change network and header 
+### Change network and header
 
 ![mobile-header.png](/images/blog/dashboard-redesign/mobile-header.png)
 

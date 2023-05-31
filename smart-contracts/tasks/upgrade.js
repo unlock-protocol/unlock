@@ -2,18 +2,20 @@ const { task } = require('hardhat/config')
 const { getNetworkName } = require('../helpers/network')
 const { getProxyAdminAddress } = require('../helpers/deployments')
 
-task('upgrade', 'Upgrade an existing contract with a new implementation (no multisig)')
+task(
+  'upgrade',
+  'Upgrade an existing contract with a new implementation (no multisig)'
+)
   .addParam('contract', 'The contract path')
   .addParam('proxy', 'The proxy contract address')
   .setAction(async ({ contract, proxy }, { ethers, network }) => {
-
     const contractName = contract.split('/')[1].replace('.sol', '')
     console.log(`Upgrading ${contractName} contract...`)
 
     // show signer
     const [signer] = await ethers.getSigners()
     console.log(`Signer: ${signer.address}`)
-    
+
     // fetch proxy admin
     const proxyAdminAddress = await getProxyAdminAddress({ network })
     console.log(`proxyAdminAddress: ${proxyAdminAddress}`)
@@ -50,7 +52,7 @@ task('upgrade:prepare', 'Deploy the implementation of an upgradeable contract')
     await prepareUpgrade({
       proxyAddress: proxy,
       contractName,
-      contractVersion
+      contractVersion,
     })
   })
 
@@ -110,16 +112,25 @@ task(
     'Specify the template version to deploy (from contracts package)'
   )
   .addFlag('addOnly', 'Only add the template without setting it as default')
-  .setAction(async ({ publicLockAddress, publicLockVersion, unlockAddress, addOnly }) => {
-    // eslint-disable-next-line global-require
-    const submitLockVersion = require('../scripts/upgrade/submitLockVersion')
-    await submitLockVersion({ publicLockAddress, publicLockVersion, addOnly, unlockAddress })
-  })
+  .setAction(
+    async ({
+      publicLockAddress,
+      publicLockVersion,
+      unlockAddress,
+      addOnly,
+    }) => {
+      // eslint-disable-next-line global-require
+      const submitLockVersion = require('../scripts/upgrade/submitLockVersion')
+      await submitLockVersion({
+        publicLockAddress,
+        publicLockVersion,
+        addOnly,
+        unlockAddress,
+      })
+    }
+  )
 
-task(
-  'proxy-admin',
-  'Retrieve the proxy admin address'
-)
+task('proxy-admin', 'Retrieve the proxy admin address')
   .addOptionalParam('publicLockAddress', 'The deployed contract address')
   .addOptionalParam(
     'publicLockVersion',
@@ -133,7 +144,7 @@ task(
       'TestProxyAdmin',
       proxyAdminAddress
     )
-    console.log(`ProxyAdmin at ${proxyAdminAddress} (owner: ${await proxyAdmin.owner()})`)
+    console.log(
+      `ProxyAdmin at ${proxyAdminAddress} (owner: ${await proxyAdmin.owner()})`
+    )
   })
-
-  

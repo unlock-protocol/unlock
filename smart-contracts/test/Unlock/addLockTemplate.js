@@ -11,7 +11,7 @@ contract('PublicLock template versions', () => {
     const Unlock = await ethers.getContractFactory('Unlock')
     const [unlockOwner] = await ethers.getSigners()
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)'
+      initializer: 'initialize(address)',
     })
     await unlock.deployed()
 
@@ -44,7 +44,9 @@ contract('PublicLock template versions', () => {
 
     const tx2 = await unlock.addLockTemplate(publicLockUpgraded.address, 2)
     await tx2.wait()
-    expect(await unlock.publicLockVersions(publicLockUpgraded.address)).to.equals(2)
+    expect(
+      await unlock.publicLockVersions(publicLockUpgraded.address)
+    ).to.equals(2)
   })
 
   it('should revert if the template was already initialized', async () => {
@@ -54,14 +56,11 @@ contract('PublicLock template versions', () => {
       publicLock.initialize(signer.address, 0, ADDRESS_ZERO, 0, 0, '')
     )
   })
-  
+
   it('should revert if the template is not a contract', async () => {
     // jump versions is allowed
     const { address: randomAddress } = await ethers.Wallet.createRandom()
-    await reverts(
-      unlock.addLockTemplate(randomAddress, 532),
-      'non-contract'
-    )
+    await reverts(unlock.addLockTemplate(randomAddress, 532), 'non-contract')
   })
 
   it('Should store publicLockImpls properly', async () => {

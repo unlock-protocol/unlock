@@ -10,6 +10,7 @@ import { vi, expect } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
+import config from '../../src/config/config'
 
 const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
 const network = 80001
@@ -69,6 +70,7 @@ vi.mock('../../src/operations/userMetadataOperations', async () => {
       }),
   }
 })
+
 describe('Wedlocks operations', () => {
   afterEach(() => {
     vi.clearAllMocks()
@@ -93,6 +95,7 @@ describe('Wedlocks operations', () => {
       })
       await notifyNewKeyToWedlocks(
         {
+          transactionsHash: ['0x'],
           lock: {
             address: lockAddress,
             name: lockName,
@@ -102,14 +105,15 @@ describe('Wedlocks operations', () => {
         },
         network
       )
-      const transferUrl = `${[
-        process.env.UNLOCK_ENV !== 'prod'
-          ? 'https://staging-app.unlock-protocol.com'
-          : 'https://app.unlock-protocol.com',
-      ]}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=${network}`
+
+      const keychainUrl = `${config.unlockApp}/keychain`
+
+      const transferUrl = `${config.unlockApp}/transfer?lockAddress=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&keyId=&network=${network}`
+
+      const transactionReceiptUrl = `${config.unlockApp}/receipts?address=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&network=${network}&hash=0x`
 
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":"Mumbai (Polygon)","transferUrl":"${transferUrl}"},"attachments":[]}`,
+        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keyId":"","network":"Mumbai (Polygon)","keychainUrl":"${keychainUrl}","transactionReceiptUrl":"${transactionReceiptUrl}","transferUrl":"${transferUrl}"},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
