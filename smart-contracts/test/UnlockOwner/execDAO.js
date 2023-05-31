@@ -46,7 +46,7 @@ contract('UnlockOwner / execDAO (directly from DAO without bridge)', () => {
     )
 
     // set DAO chainId correctly
-    await unlockOwner.connect(multisig).setDaoChainId(31337, 6648936)
+    await unlockOwner.connect(multisig).setDaoChain(31337, 6648936)
 
     // transfer assets to unlockOwner on dest chain
     proxyAdmin = await getProxyAdmin(unlock.address)
