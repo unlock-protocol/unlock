@@ -137,7 +137,8 @@ export const EventCheckoutUrl = ({
           href={checkoutUrl}
           rel="noopener noreferrer"
         >
-          Create a checkout URL
+          Create a new checkout URL, where you can configure the checkout steps
+          for your event.
         </Link>{' '}
         first.
       </span>
@@ -174,7 +175,7 @@ export const EventCheckoutUrl = ({
         />
         <div className="w-full">
           <ToggleSwitch
-            title="Set Checkout URL."
+            title="Set Checkout URL"
             enabled={useCheckoutURL}
             size="small"
             setEnabled={(enabled) => {
@@ -208,14 +209,13 @@ export const EventCheckoutUrl = ({
                         }
                         description={
                           <span>
-                            Your configuration is not present? you can create
-                            one from{' '}
+                            Missing checkout URL? You can{' '}
                             <Link
                               className="font-semibold text-brand-ui-primary"
                               href={checkoutUrl}
                               rel="noopener noreferrer"
                             >
-                              Create a checkout URL
+                              create a new one
                             </Link>{' '}
                             .
                           </span>
