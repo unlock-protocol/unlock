@@ -76,6 +76,17 @@ interface SaveLockProps {
   checkoutConfigId?: string | null
 }
 
+interface SaveLockProps {
+  lockAddress: string
+  network: number
+  sendEmail?: boolean
+  slug?: string
+  replyTo?: string | null
+  creditCardPrice?: number | null
+  emailSender?: string | null
+  checkoutConfigId?: string | null
+}
+
 export function useSaveLockSettings() {
   return useMutation(async (config: SaveLockProps) => {
     const { lockAddress, network } = config
