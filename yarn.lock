@@ -10041,7 +10041,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-core-sdk-types@npm:^1.9.0, @safe-global/safe-core-sdk-types@npm:^1.9.1":
+"@safe-global/safe-core-sdk-types@npm:^1.9.1":
   version: 1.10.1
   resolution: "@safe-global/safe-core-sdk-types@npm:1.10.1"
   dependencies:
@@ -10054,7 +10054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-core-sdk-utils@npm:^1.7.2, @safe-global/safe-core-sdk-utils@npm:^1.7.3":
+"@safe-global/safe-core-sdk-utils@npm:^1.7.3":
   version: 1.7.3
   resolution: "@safe-global/safe-core-sdk-utils@npm:1.7.3"
   dependencies:
@@ -10089,14 +10089,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-ethers-lib@npm:1.9.2":
-  version: 1.9.2
-  resolution: "@safe-global/safe-ethers-lib@npm:1.9.2"
+"@safe-global/safe-ethers-lib@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@safe-global/safe-ethers-lib@npm:1.9.3"
   dependencies:
-    "@safe-global/safe-core-sdk-types": ^1.9.0
-    "@safe-global/safe-core-sdk-utils": ^1.7.2
+    "@safe-global/safe-core-sdk-types": ^1.9.1
+    "@safe-global/safe-core-sdk-utils": ^1.7.3
     ethers: 5.7.2
-  checksum: 76daf131fb12c2aa7b5d1ed3b69f0fb6a336c00d1bb3b1027ca2920be67a5c92747d79ce46ada3efa2fea4a27ade13a3b7b17ba06c7f78a44cc34433e145b99d
+  checksum: ed06315356bfd2ae6d6f16433ab4adb877fc6bfe353d8f734b8c6d52d88e5fe39befb63afe6ec97b4c052324a2920124d3bec44b113138a4efc6ca38625c4445
   languageName: node
   linkType: hard
 
@@ -16051,7 +16051,7 @@ __metadata:
     "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.22.0
     "@safe-global/safe-core-sdk": 3.3.3
-    "@safe-global/safe-ethers-lib": 1.9.2
+    "@safe-global/safe-ethers-lib": 1.9.3
     "@safe-global/safe-service-client": 2.0.1
     "@uniswap/smart-order-router": 3.5.0
     "@uniswap/v2-core": 1.0.1

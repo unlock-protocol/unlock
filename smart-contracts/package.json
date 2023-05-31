@@ -20,7 +20,7 @@
     "@openzeppelin/test-helpers": "0.5.16",
     "@openzeppelin/upgrades-core": "1.22.0",
     "@safe-global/safe-core-sdk": "3.3.3",
-    "@safe-global/safe-ethers-lib": "1.9.2",
+    "@safe-global/safe-ethers-lib": "1.9.3",
     "@safe-global/safe-service-client": "2.0.1",
     "@uniswap/smart-order-router": "3.5.0",
     "@uniswap/v2-core": "1.0.1",
