@@ -34,7 +34,7 @@ export default defineConfig({
     react(),
     svgr({
       exportAsDefault: true,
-      // exclude: ['lib/assets/*.svg'],
+      exclude: ['lib/assets/*.svg'],
     }),
     nodePolyfills({
       // Whether to polyfill `node:` protocol imports.
