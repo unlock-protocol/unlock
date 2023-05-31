@@ -77,8 +77,8 @@ const MENU = {
         },
         {
           title: 'Watch Tutorials',
-          embed:
-            '<iframe src="https://plugins.flockler.com/embed/iframe/18462b3104603cf8399278dfcbdfdad8/1850c9aba1e022ab838f498cc9cff0ee" height="800" style="display: block; border: none; width: 100%;" allowfullscreen> </iframe>',
+          src: '/images/illustrations/youtube-tutorial.png',
+          url: 'https://www.youtube.com/watch?v=Elk0vsZLmD4&list=PL4EDTaxNLpu76SiayMqTKrVQYp4zAZM0W', // link to
         },
       ],
     },
