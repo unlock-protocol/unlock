@@ -11,7 +11,7 @@ interface Lock {
   network: number
 }
 
-/** Returns list of locks from checkout config or the defefault locks if none */
+/** Returns list of locks from checkout config or the default locks if none */
 export const useGetEventLocksConfig = ({
   lockAddress,
   network,
@@ -41,6 +41,7 @@ export const useGetEventLocksConfig = ({
     }
   })
 
+  // locks from checkout config if exists otherwise fallback to lockAddress + network
   const locks: Lock[] = checkoutConfigId
     ? checkoutConfigLocks
     : [{ lockAddress, network }]
