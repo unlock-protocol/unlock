@@ -17,13 +17,14 @@ import Link from 'next/link'
 import { useMetadata } from '~/hooks/metadata'
 import { useRouter } from 'next/router'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface EventCheckoutUrlProps {
   lockAddress: string
   network: number
   isManager: boolean
   disabled: boolean
+  onCheckoutChange: () => void
 }
 
 interface FormProps {
@@ -36,6 +37,7 @@ export const EventCheckoutUrl = ({
   network,
   disabled,
   isManager,
+  onCheckoutChange,
 }: EventCheckoutUrlProps) => {
   const router = useRouter()
   const [useCheckoutURL, setUseCheckoutURL] = useState(false)
@@ -58,6 +60,12 @@ export const EventCheckoutUrl = ({
   const methods = useForm<FormProps>({
     mode: 'onChange',
   })
+
+  // enable toggle if setting is present
+  useEffect(() => {
+    if (!settings?.checkoutConfigId) return
+    setUseCheckoutURL(true)
+  }, [settings])
 
   const loading = isLoadingConfigList || isLoadingSettings
 
@@ -94,6 +102,8 @@ export const EventCheckoutUrl = ({
       error: 'There is an issue with configuration update.',
       loading: 'Saving configuration...',
     })
+
+    await onCheckoutChange()
 
     if (!hasCustomUrl) {
       router.push(`event?s=${slug}`)

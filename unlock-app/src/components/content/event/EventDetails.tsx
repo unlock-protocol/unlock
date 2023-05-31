@@ -342,7 +342,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
-  const { isLoading: isLoadingSettings, data: settings } = useGetLockSettings({
+  const {
+    isLoading: isLoadingSettings,
+    data: settings,
+    refetch: refetchSettings,
+  } = useGetLockSettings({
     lockAddress,
     network,
   })
@@ -380,6 +384,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     lockAddress,
     network,
   })
+
+  const reload = async () => {
+    await Promise.allSettled([refetch(), refetchSettings()])
+  }
 
   const { isEvent } = getLockTypeByMetadata(metadata)
 
@@ -725,6 +733,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   network={network}
                   isManager={isLockManager}
                   disabled={!isLockManager}
+                  onCheckoutChange={reload}
                 />
               </Disclosure>
             </div>
