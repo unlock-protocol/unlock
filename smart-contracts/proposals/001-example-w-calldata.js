@@ -3,6 +3,7 @@ const proposerAddress = '0x9ded35aef86f3c826ff8fe9240f9e7a9fb2094e5'
 
 module.exports = {
   contractName: 'UnlockDiscountTokenV3',
+  contractAddress: '0xaB82D702A4e0cD165072C005dc504A21c019718F',
   functionName: 'transfer',
   proposalName: 'Marketing unlock - david moderator',
   proposerAddress,

@@ -71,7 +71,7 @@ contract('Proposal Helper', () => {
         contractName,
         calldata: encoded,
         proposalName,
-        address,
+        contractAddress: address,
       })
 
       assert.equal(to[0], address)

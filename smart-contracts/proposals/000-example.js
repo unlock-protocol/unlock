@@ -4,6 +4,7 @@ const tokenRecipientAddress = '0x70997970c51812dc3a010c7d01b50e0d17dc79c8'
 const proposerAddress = '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
 
 module.exports = {
+  contractAddress: '0xaB82D702A4e0cD165072C005dc504A21c019718F',
   contractName: 'UnlockDiscountTokenV3',
   functionName: 'transfer',
   functionArgs: [tokenRecipientAddress, ethers.utils.parseUnits('0.01', 18)],
