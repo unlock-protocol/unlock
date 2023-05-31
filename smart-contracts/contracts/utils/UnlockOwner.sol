@@ -230,6 +230,20 @@ contract UnlockOwner is TimelockController {
   }
 
   /**
+   *
+   * @param _daoChainId the chain ID where the Governor lives
+   * @param _daoDomainId the Connext Domain ID of the Governor chain
+   * @notice only multisig can call
+   */
+  function setDaoChain(uint _daoChainId, uint _daoDomainId) public {
+    if (!_isMultisig()) {
+      revert Unauthorized(msg.sender);
+    }
+    daoChainId = _daoChainId;
+    daoDomainId = _daoDomainId;
+  }
+
+  /**
    * Calling this function will execute directly a call to Unlock or a proxy upgrade
    * @notice This function can only be called by the DAO on mainnet
    * @param callData the encoded bytes should contains both the call data to be executed and

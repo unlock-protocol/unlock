@@ -63,6 +63,8 @@ contract('UnlockOwner / xReceive (calls coming across the bridge)', () => {
       destDomainId
     )
 
+    await unlockOwner.connect(multisig).setDaoChainId(31337, 6648936)
+
     // transfer assets to unlockOwner on dest chain
     proxyAdmin = await getProxyAdmin(unlock.address)
     await proxyAdmin.transferOwnership(unlockOwner.address)
