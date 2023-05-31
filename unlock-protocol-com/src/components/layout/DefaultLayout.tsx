@@ -78,7 +78,7 @@ const MENU = {
         {
           title: 'Watch Tutorials',
           src: '/images/illustrations/youtube-tutorial.png',
-          url: 'https://www.youtube.com/watch?v=Elk0vsZLmD4&list=PL4EDTaxNLpu76SiayMqTKrVQYp4zAZM0W', // link to
+          url: 'https://www.youtube.com/watch?v=Elk0vsZLmD4&list=PL4EDTaxNLpu76SiayMqTKrVQYp4zAZM0W', // link to unlock overview playlist
         },
       ],
     },
