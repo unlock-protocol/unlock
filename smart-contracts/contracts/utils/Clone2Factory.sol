@@ -63,12 +63,7 @@ library Clone2Factory {
       switch extcodesize(proxyAddress)
       case 0 {
         // Deploy the contract, returning the address or 0 on fail
-        proxyAddress := create2(
-          0,
-          pointer,
-          0x37,
-          mload(add(pointer, 0x100))
-        )
+        proxyAddress := create2(0, pointer, 0x37, mload(add(pointer, 0x100)))
       }
       default {
         proxyAddress := 0
@@ -76,9 +71,6 @@ library Clone2Factory {
     }
 
     // Revert if the deployment fails (possible if salt was already used)
-    require(
-      proxyAddress != address(0),
-      "PROXY_DEPLOY_FAILED"
-    );
+    require(proxyAddress != address(0), "PROXY_DEPLOY_FAILED");
   }
 }

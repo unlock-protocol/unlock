@@ -1,4 +1,4 @@
-pragma solidity 0.5.17;
+pragma solidity 0.8.17;
 
 /**
  * This is an empty contract to be used in tests to see what happens

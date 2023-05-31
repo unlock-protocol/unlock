@@ -237,7 +237,7 @@ services:
     build:
       context: ./development
       dockerfile: subgraph.dockerfile
-    command: [ 'node', './deploy-subgraph.js' ]
+    command: ['node', './deploy-subgraph.js']
     depends_on:
       - ipfs
       - postgres

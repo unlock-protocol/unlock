@@ -2,7 +2,11 @@ const { ethers } = require('hardhat')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
 
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO, deployContracts, getProxyAdminAddress } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  deployContracts,
+  getProxyAdminAddress,
+} = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 let pastImpl

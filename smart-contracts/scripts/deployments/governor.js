@@ -51,7 +51,7 @@ async function main({ udtAddress } = {}) {
   )
 
   // get UDT token address
-  if(!udtAddress) {
+  if (!udtAddress) {
     throw new Error('Missing UDT address.')
   }
   console.log(`Using UDT at: ${udtAddress}`)

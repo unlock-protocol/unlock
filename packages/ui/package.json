@@ -20,7 +20,7 @@
       "require": "./dist/unlock-tailwind-preset.js"
     }
   },
-  "version": "0.4.1",
+  "version": "0.4.2",
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "yarn build:lib && yarn build:cdn && tsup ./lib/index.tsx --dts-only",
@@ -40,7 +40,7 @@
     "@tw-classed/react": "1.4.4",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "ethers": "5.7.2",
-    "prism-react-renderer": "1.3.5",
+    "prism-react-renderer": "2.0.4",
     "react-dropzone": "14.2.3",
     "react-hook-form": "7.43.9",
     "react-icons": "4.8.0",

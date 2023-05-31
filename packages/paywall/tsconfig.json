@@ -1,14 +1,9 @@
-
 {
-    "extends": "@unlock-protocol/tsconfig",
-    "compilerOptions": {
-        "lib": [ "dom" ],
-        "outDir": "build",
-        "moduleResolution" : "node"
-    },
-    "exclude": [
-        "build",
-        "dist",
-        "coverage"
-    ]
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    "lib": ["dom"],
+    "outDir": "build",
+    "moduleResolution": "node"
+  },
+  "exclude": ["build", "dist", "coverage"]
 }

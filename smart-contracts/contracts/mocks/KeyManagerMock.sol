@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.5.17 <=0.8.7;
+pragma solidity >=0.5.17 <=0.8.17;
 
 import "../mixins/MixinKeys.sol";
 
@@ -14,12 +14,7 @@ contract KeyManagerMock is MixinKeys {
     address _keyManager,
     uint _expirationTimestamp
   ) public returns (uint) {
-    return
-      _createNewKey(
-        _recipient,
-        _keyManager,
-        _expirationTimestamp
-      );
+    return _createNewKey(_recipient, _keyManager, _expirationTimestamp);
   }
 
   function isKeyManager(

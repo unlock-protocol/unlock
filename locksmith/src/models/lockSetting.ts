@@ -13,6 +13,7 @@ export class LockSetting extends Model<
   declare creditCardPrice?: number | null
   declare emailSender?: string | null
   declare slug?: string
+  declare checkoutConfigId?: string | null
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -50,6 +51,11 @@ LockSetting.init(
       type: DataTypes.STRING,
       allowNull: true,
       unique: true,
+      defaultValue: null,
+    },
+    checkoutConfigId: {
+      type: DataTypes.STRING,
+      allowNull: true,
       defaultValue: null,
     },
     createdAt: {
