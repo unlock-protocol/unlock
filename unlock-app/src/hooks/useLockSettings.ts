@@ -84,3 +84,33 @@ export function useSaveLockSettings() {
     })
   })
 }
+
+export function useGetLockSettings({
+  lockAddress,
+  network,
+}: LockSettingsProps) {
+  return useQuery(['getLockSettings', lockAddress, network], async () => {
+    const response = await storage.getLockSettings(network, lockAddress)
+    return response?.data
+  })
+}
+
+interface SaveLockProps {
+  lockAddress: string
+  network: number
+  sendEmail?: boolean
+  slug?: string
+  replyTo?: string | null
+  creditCardPrice?: number | null
+  emailSender?: string | null
+  checkoutConfigId?: string | null
+}
+
+export function useSaveLockSettings() {
+  return useMutation(async (config: SaveLockProps) => {
+    const { lockAddress, network } = config
+    return storage.saveLockSetting(network, lockAddress, {
+      ...config,
+    })
+  })
+}
