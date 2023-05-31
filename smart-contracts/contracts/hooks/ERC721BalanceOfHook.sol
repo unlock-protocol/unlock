@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.2;
+pragma solidity ^0.8.17;
 
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
