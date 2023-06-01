@@ -14086,16 +14086,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hoist-non-react-statics@npm:*":
-  version: 3.3.1
-  resolution: "@types/hoist-non-react-statics@npm:3.3.1"
-  dependencies:
-    "@types/react": "*"
-    hoist-non-react-statics: ^3.3.0
-  checksum: 2c0778570d9a01d05afabc781b32163f28409bb98f7245c38d5eaf082416fdb73034003f5825eb5e21313044e8d2d9e1f3fe2831e345d3d1b1d20bcd12270719
-  languageName: node
-  linkType: hard
-
 "@types/html-minifier-terser@npm:^5.0.0":
   version: 5.1.2
   resolution: "@types/html-minifier-terser@npm:5.1.2"
@@ -14818,17 +14808,6 @@ __metadata:
   dependencies:
     stripe: "*"
   checksum: d41feb7998ec647999540a509a8cc8aa3a45f5157902c91a2248a8518f9698559526669e0ce684fb467022a0d2e639188bcb6c8c343db54803d12256891cf4b5
-  languageName: node
-  linkType: hard
-
-"@types/styled-components@npm:5.1.26":
-  version: 5.1.26
-  resolution: "@types/styled-components@npm:5.1.26"
-  dependencies:
-    "@types/hoist-non-react-statics": "*"
-    "@types/react": "*"
-    csstype: ^3.0.2
-  checksum: 84f53b3101739b20d1731554fb7735bc2f3f5d050a8b392e9845403c8c8bbd729737d033978649f9195a97b557875b010d46e35a4538564a2d0dbcce661dbf76
   languageName: node
   linkType: hard
 
@@ -16313,7 +16292,6 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 18.16.3
     "@types/react": 18.0.32
-    "@types/styled-components": 5.1.26
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
@@ -16323,7 +16301,6 @@ __metadata:
     autoprefixer: 10.4.14
     babel-loader: 9.1.2
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 2.1.1
     babel-preset-react-app: 10.0.1
     dayjs: 1.11.7
     dotenv: 16.1.3
@@ -16355,7 +16332,6 @@ __metadata:
     remark-html: 15.0.2
     rss: 1.2.2
     showdown-highlight: 3.1.0
-    styled-components: 5.3.6
     tailwind-merge: 1.12.0
     tailwindcss: 3.3.2
     typescript: 5.0.4
@@ -19337,7 +19313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-styled-components@npm:2.1.1, babel-plugin-styled-components@npm:>= 1.12.0":
+"babel-plugin-styled-components@npm:>= 1.12.0":
   version: 2.1.1
   resolution: "babel-plugin-styled-components@npm:2.1.1"
   dependencies:
