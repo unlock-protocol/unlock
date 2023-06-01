@@ -8,7 +8,7 @@ import {
 } from '../../controllers/v2/checkoutController'
 const router = express.Router({ mergeParams: true })
 
-router.get('/list', authenticatedMiddleware, getCheckoutConfigsByUser)
+router.get('/list', getCheckoutConfigsByUser)
 router.put('/:id?', authenticatedMiddleware, createOrUpdateCheckoutConfig)
 router.get('/:id', getCheckoutConfig)
 router.delete('/:id', authenticatedMiddleware, deleteCheckoutConfig)

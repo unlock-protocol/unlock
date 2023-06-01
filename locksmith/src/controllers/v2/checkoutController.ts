@@ -61,19 +61,31 @@ export const getCheckoutConfig: RequestHandler = async (request, response) => {
   return response.status(statusCode).send(json)
 }
 
+interface CheckoutConfigItem {
+  id: string
+  name: string
+  by: string
+  config: CheckoutConfig['config']
+  updatedAt: string
+  createdAt: string
+}
+
 export const getCheckoutConfigsByUser: RequestHandler = async (
   request,
   response
 ) => {
+  let results: CheckoutConfigItem[] = []
   const userAddress = request.user!.walletAddress
-  const checkoutConfigs = await CheckoutConfig.findAll({
-    where: {
-      createdBy: userAddress,
-    },
-    order: [['updatedAt', 'DESC']],
-  })
-  return response.status(200).send({
-    results: checkoutConfigs.map((config) => {
+
+  if (userAddress) {
+    const checkoutConfigs = await CheckoutConfig.findAll({
+      where: {
+        createdBy: userAddress,
+      },
+      order: [['updatedAt', 'DESC']],
+    })
+
+    results = checkoutConfigs.map((config) => {
       return {
         id: config.id,
         name: config.name,
@@ -82,8 +94,10 @@ export const getCheckoutConfigsByUser: RequestHandler = async (
         updatedAt: config.updatedAt.toISOString(),
         createdAt: config.createdAt.toISOString(),
       }
-    }),
-  })
+    })
+  }
+
+  return response.status(200).send({ results })
 }
 
 export const deleteCheckoutConfig: RequestHandler = async (

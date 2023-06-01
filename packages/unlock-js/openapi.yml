@@ -2406,8 +2406,6 @@ paths:
   /v2/checkout/list:
     get:
       operationId: listCheckoutConfigs
-      security:
-        - User: []
       description: A list of all checkout configs created by the user
 
       responses:
@@ -2421,9 +2419,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CheckoutConfig'
-
-        401:
-          $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/purchase/payment-methods:
     delete:
