@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -23,4 +23,26 @@ export const useValidKey = ({ lockAddress, network }: ValidKeyProps) => {
       enabled: !!account,
     }
   )
+}
+
+/** Check if there is a valid keys from a list of Locks */
+export const useValidKeyBulk = (locks: ValidKeyProps[]) => {
+  const { account } = useAuth()
+
+  const web3Service = useWeb3Service()
+
+  return useQueries({
+    queries: locks.map(({ lockAddress, network }) => {
+      return {
+        enabled: !!account,
+        queryKey: ['validKeyForKey', lockAddress, network],
+        queryFn: async () => {
+          if (!account) {
+            return false
+          }
+          return web3Service.getHasValidKey(lockAddress, account!, network)
+        },
+      }
+    }),
+  })
 }

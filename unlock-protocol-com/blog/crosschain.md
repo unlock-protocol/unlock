@@ -16,9 +16,9 @@ The Unlock Protocol moved its governance to a [DAO](https://docs.unlock-protocol
 
 Technology derived from the original Ethereum experiment has gained momentum and lead to a vast array of new chains being deployed, each with their own characteristics. Under the hood, many of these chains have added the ability to execute contract calls by following the original Ethereum Virtual Machine implementation (EVM). The EVM provides a blueprint and ensures compatibility of the code that can be deployed across different chains.
 
-At Unlock Labs, we have long thought that we need to meet our community where they are, and that meant deploying the protocol on [multiple chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks). 
+At Unlock Labs, we have long thought that we need to meet our community where they are, and that meant deploying the protocol on [multiple chains](https://docs.unlock-protocol.com/core-protocol/unlock/networks).
 
-Our role is not to choose which chain/L2 on which developers choose to deploy their membership contracts — as an open protocol, that decision should be theirs, and that decision should be permissionless. 
+Our role is not to choose which chain/L2 on which developers choose to deploy their membership contracts — as an open protocol, that decision should be theirs, and that decision should be permissionless.
 
 At the same time, it is also critical that the protocol acts the same across the board, regardless of what chain it is being run on.
 
@@ -40,7 +40,7 @@ In technical terms, `UnlockOwner` is deployed on each network. It owns (as in ow
 
 ![cross-chain-napkin.png](/images/blog/crosschain/cross-chain-napkin.png)
 
-*Original sketch of how calls could circulate across the bridge and through Unlock Manager on multiple chains*
+_Original sketch of how calls could circulate across the bridge and through Unlock Manager on multiple chains_
 
 ## Risks and safeguards
 
@@ -48,12 +48,12 @@ Automating the governance process facilitates the propagation of decisions. This
 
 To mitigate the risks of a protocol-wide attack, we set up two main tools:
 
-1. **A safety delay**: Every contract call arriving from the DAO across the bridge will be quarantined for a duration of at least two days. That leaves some room to act if any malicious calls were to be sent. Note that this time period comes *after* the delay introduced by the DAO itself. For that, we rely on [OpenZeppelin's Timelock contract](https://docs.openzeppelin.com/contracts/4.x/governance#timelock) that has been audited multiple times.
+1. **A safety delay**: Every contract call arriving from the DAO across the bridge will be quarantined for a duration of at least two days. That leaves some room to act if any malicious calls were to be sent. Note that this time period comes _after_ the delay introduced by the DAO itself. For that, we rely on [OpenZeppelin's Timelock contract](https://docs.openzeppelin.com/contracts/4.x/governance#timelock) that has been audited multiple times.
 2. **Multisigs**: On each chain, a multisig owned by our team and trusted members of the Unlock community retains the ability to trigger actions through the `UnlockOwner` contract. We believe this is still a requirement at this stage as a safeguard. Performing a protocol-wide upgrade across chains is a radically new approach. As such processes of governance are maturing, we hope multisigs could become obsolete and we have built a way in the `UnlockOwner` to remove them. We believe this will happen in due time.
 
 ## Try it now !
 
-As of today, the cross-chain governance process is already deployed on ETH Goerli and Polygon Mumbai testnets. We redeployed a DAO on Goerli (which acts as a "mainnet" for testnets) and are still testing how various calls behave and how our current approach could be improved. 
+As of today, the cross-chain governance process is already deployed on ETH Goerli and Polygon Mumbai testnets. We redeployed a DAO on Goerli (which acts as a "mainnet" for testnets) and are still testing how various calls behave and how our current approach could be improved.
 
 We encourage you to check proposals on our [Unlock Test DAO](https://www.tally.xyz/gov/unlock-test-dao). Any feedback will be warmly welcome!
 
