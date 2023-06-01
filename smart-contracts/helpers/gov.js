@@ -3,6 +3,7 @@ const { ADDRESS_ZERO } = require('../test/helpers')
 
 /**
  * Helper to parse a DAO proposal from an object
+ * @param {String} proposalName name of the proposal
  * @param {Array.<{
  * contractAddress: string, // target address of the call
  * calldata: string, // if not present, will be encoded using functionName + functionArgs
