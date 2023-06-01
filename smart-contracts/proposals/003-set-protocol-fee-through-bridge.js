@@ -16,13 +16,15 @@ async function main() {
   const { chainId } = await ethers.provider.getNetwork()
 
   // make sure chain is correct
-  if (chainId.toString() !== '5') {
-    throw Error(`calls are only send from Goerli/Mainnet (chain ${chainId})`)
+  if (!['1', '5'].includes(chainId.toString())) {
+    throw Error(
+      `Bridge calls can only be sent from Goerli/Mainnet (chain ${chainId})`
+    )
   }
 
   // proposed changes
   const protocolFee = ethers.utils.parseEther('0.000001')
-  const proposalName = `[Bridge] (4) Set protocol fee to ${protocolFee} on Mumbai`
+  const proposalName = `[Bridge] (6) Set protocol fee to ${protocolFee} on Mumbai`
 
   // parse Unlock call data
   const unlockOwnerCalldata = await parseUnlockOwnerCalldata({
