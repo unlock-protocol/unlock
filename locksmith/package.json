@@ -99,7 +99,7 @@
     "@types/multer": "1.4.7",
     "@types/multer-s3": "3.0.0",
     "@types/nock": "10.0.3",
-    "@types/node": "18.16.3",
+    "@types/node": "18.16.16",
     "@types/node-cron": "3.0.7",
     "@types/request-promise-native": "1.0.18",
     "@types/stripe": "8.0.416",
