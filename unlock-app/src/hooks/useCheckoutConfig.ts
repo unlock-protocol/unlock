@@ -9,7 +9,7 @@ interface CheckoutConfigOptions {
 
 export const useCheckoutConfig = ({ id }: CheckoutConfigOptions) => {
   return useQuery(
-    ['checkout', id],
+    ['checkoutConfigsById', id],
     async () => {
       try {
         const response = await storage.getCheckoutConfig(id!)
@@ -28,7 +28,7 @@ export const useCheckoutConfig = ({ id }: CheckoutConfigOptions) => {
 
 export const useCheckoutConfigsByUser = () => {
   const { account } = useAuth()
-  return useQuery(['checkout', account!], async () => {
+  return useQuery(['checkoutConfigsByUser', account!], async () => {
     const response = await storage.listCheckoutConfigs()
     return response.data.results
   })

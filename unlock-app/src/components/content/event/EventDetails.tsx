@@ -174,16 +174,16 @@ const CoverImageDrawer = ({
 
 interface CheckoutRegistrationCardProps {
   isManager: boolean
-  disabled: boolean
   lockAddress: string
   network: number
+  onPurchase: () => void
 }
 
 const CheckoutRegistrationCard = ({
-  disabled,
   isManager,
   lockAddress,
   network,
+  onPurchase,
 }: CheckoutRegistrationCardProps) => {
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
 
@@ -228,7 +228,10 @@ const CheckoutRegistrationCard = ({
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={checkoutConfig as any}
-          handleClose={() => setCheckoutOpen(false)}
+          handleClose={() => {
+            setCheckoutOpen(false)
+            onPurchase()
+          }}
         />
       </Modal>
       <Card className="grid gap-6 mt-10 lg:mt-0">
@@ -258,7 +261,6 @@ const CheckoutRegistrationCard = ({
         <Button
           variant="primary"
           size="medium"
-          disabled={disabled}
           onClick={() => {
             setCheckoutOpen(true)
           }}
@@ -571,7 +573,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
-          handleClose={() => setCheckoutOpen(false)}
+          handleClose={() => {
+            setCheckoutOpen(false)
+            reload() // force refresh after eventual purchase
+          }}
         />
       </Modal>
 
@@ -686,9 +691,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               {hasCheckoutId ? (
                 <CheckoutRegistrationCard
                   isManager={isLockManager}
-                  disabled={!isLockManager}
                   lockAddress={lockAddress}
                   network={network}
+                  onPurchase={reload}
                 />
               ) : (
                 <RegistrationCard />

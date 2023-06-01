@@ -1,5 +1,5 @@
 import { useGetLockSettings } from './useLockSettings'
-import { useCheckoutConfigsByUser } from './useCheckoutConfig'
+import { useCheckoutConfig } from './useCheckoutConfig'
 
 interface GetEventLocksProps {
   lockAddress: string
@@ -21,25 +21,24 @@ export const useGetEventLocksConfig = ({
     network,
   })
 
-  const { isLoading: isLoadingConfigList, data: checkoutConfigList } =
-    useCheckoutConfigsByUser()
+  const checkoutConfigId = settings?.checkoutConfigId ?? ''
 
-  const checkoutConfigId = settings?.checkoutConfigId
-
-  // Get checkout id by using the `checkoutConfigId`
-  const checkoutConfig =
-    checkoutConfigList?.find(
-      ({ id }) => id?.toLowerCase() === checkoutConfigId?.toLowerCase()
-    )?.config ?? {}
-
-  const checkoutConfigLocks: Lock[] = Object.entries(
-    checkoutConfig?.locks ?? {}
-  )?.map(([lockAddress, { network }]: any) => {
-    return {
-      lockAddress,
-      network,
-    }
+  // get checkout config with the saved checkoutConfigId
+  const { isInitialLoading: isLoadingConfigList, data } = useCheckoutConfig({
+    id: checkoutConfigId,
   })
+
+  const checkoutConfig = data?.config
+  const configLocks = checkoutConfig?.locks ?? {}
+
+  const checkoutConfigLocks: Lock[] = Object.entries(configLocks)?.map(
+    ([lockAddress, { network }]: any) => {
+      return {
+        lockAddress,
+        network,
+      }
+    }
+  )
 
   // locks from checkout config if exists otherwise fallback to lockAddress + network
   const locks: Lock[] = checkoutConfigId
