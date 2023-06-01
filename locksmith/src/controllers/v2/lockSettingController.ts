@@ -87,11 +87,14 @@ export const getSettings: RequestHandler = async (
 
     const userAddress = request.user?.walletAddress ?? ''
 
-    const isLockManager = await web3Service.isLockManager(
-      lockAddress,
-      userAddress,
-      network
-    )
+    let isLockManager = false
+    if (userAddress) {
+      isLockManager = await web3Service.isLockManager(
+        lockAddress,
+        userAddress,
+        network
+      )
+    }
 
     const settings = await lockSettingOperations.getSettings({
       lockAddress,

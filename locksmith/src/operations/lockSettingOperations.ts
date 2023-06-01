@@ -31,11 +31,11 @@ export async function saveSettings(options: SendEmailProps & LockSettingProps) {
 export async function getSettings({
   lockAddress,
   network,
-  includeProtected,
+  includeProtected = false,
 }: {
   lockAddress: string
   network: number
-  includeProtected: boolean
+  includeProtected?: boolean
 }): Promise<LockSetting | LockSettingProps> {
   const settings = await LockSetting.findOne({
     where: {
