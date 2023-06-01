@@ -86,7 +86,7 @@
     "@vitejs/plugin-react": "3.1.0",
     "@vitest/coverage-c8": "0.31.4",
     "autoprefixer": "10.4.14",
-    "postcss": "8.4.23",
+    "postcss": "8.4.24",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "3.3.2",
     "vitest": "0.31.4",
