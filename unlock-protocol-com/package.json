@@ -5,7 +5,7 @@
   "dependencies": {
     "@babel/core": "7.21.5",
     "@headlessui/react": "1.7.15",
-    "@radix-ui/react-avatar": "1.0.2",
+    "@radix-ui/react-avatar": "1.0.3",
     "@testing-library/react": "14.0.0",
     "@types/next": "8.0.7",
     "@types/node": "18.16.3",
