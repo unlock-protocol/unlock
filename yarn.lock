@@ -16179,7 +16179,7 @@ __metadata:
     "@tailwindcss/line-clamp": 0.4.4
     "@tailwindcss/typography": 0.5.9
     "@tanstack/react-query": 4.29.5
-    "@tw-classed/react": 1.4.4
+    "@tw-classed/react": 1.5.0
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.1
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -16192,8 +16192,8 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-dropzone: 14.2.3
-    react-hook-form: 7.43.9
-    react-icons: 4.8.0
+    react-hook-form: 7.44.2
+    react-icons: 4.9.0
     react-use-clipboard: 1.0.9
     storybook: 7.0.0
     tailwind-merge: 1.12.0
