@@ -52,9 +52,11 @@ export const Disclosure = ({
               </div>
             )}
           </HeadlessDisclosure.Button>
-          <HeadlessDisclosure.Panel unmount={false} className="pt-6">
-            {children}
-          </HeadlessDisclosure.Panel>
+          {open && (
+            <HeadlessDisclosure.Panel unmount={false} className="pt-6">
+              {children}
+            </HeadlessDisclosure.Panel>
+          )}
         </Card>
       )}
     </HeadlessDisclosure>

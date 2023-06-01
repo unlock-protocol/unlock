@@ -18,7 +18,7 @@ async function main({ proposal, govAddress }) {
   const proposalId = proposal.proposalId || (await getProposalId(proposal))
 
   // contract instance etc
-  let state = await getProposalState(proposalId)
+  let state = await getProposalState(proposalId, govAddress)
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
 
   // check if time is ripe
@@ -27,11 +27,12 @@ async function main({ proposal, govAddress }) {
     const currentTime = (await time.latest()).toNumber()
     // reach proposal ETA
     if (!isDev) {
-      throw new Error(
+      console.log(
         `GOV EXEC > Proposal still queued until: ${new Date(
           eta.toNumber() * 1000
         )}`
       )
+      return
     } else {
       // eslint-disable-next-line no-console
       console.log(
