@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@enzoferey/ethers-error-parser": "0.2.3",
-    "@headlessui/react": "1.7.14",
+    "@headlessui/react": "1.7.15",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.1.0",
     "@radix-ui/react-avatar": "1.0.2",
