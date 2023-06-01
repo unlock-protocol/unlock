@@ -71,7 +71,8 @@ export const UnlockAccountSignIn = ({
           loading={isSubmitting}
           icon={
             <SvgComponents.Unlock
-              style={{ width: 40, height: 40 }}
+              width={40}
+              height={40}
               className="fill-inherit"
             />
           }
@@ -190,7 +191,13 @@ export const UnlockAccountSignUp = ({
           type="submit"
           primary
           loading={isSubmitting}
-          icon={<SvgComponents.Unlock />}
+          icon={
+            <SvgComponents.Unlock
+              width={40}
+              height={40}
+              className="fill-inherit"
+            />
+          }
         >
           Create an account
         </ConnectButton>

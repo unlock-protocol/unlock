@@ -10,7 +10,7 @@ export function PoweredByUnlock() {
         rel="noopener noreferrer"
       >
         Powered by{' '}
-        <Images.UnlockWordMark className="fill-black" style={{ height: 14 }} />
+        <Images.UnlockWordMark className="fill-black" fill="#000" height={14} />
       </a>
     </div>
   )

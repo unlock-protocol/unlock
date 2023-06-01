@@ -30,7 +30,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
       <div className="grid gap-4 px-6">
         {window.ethereum && (
           <ConnectButton
-            icon={<SvgComponents.Metamask />}
+            icon={<SvgComponents.Metamask width={40} height={40} />}
             highlight={recentlyUsedProvider === 'METAMASK'}
             loading={isConnecting === 'METAMASK'}
             onClick={createOnConnectHandler('METAMASK')}
@@ -39,7 +39,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
           </ConnectButton>
         )}
         <ConnectButton
-          icon={<SvgComponents.WalletConnect />}
+          icon={<SvgComponents.WalletConnect width={40} height={40} />}
           highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
           loading={isConnecting === 'WALLET_CONNECT'}
           onClick={createOnConnectHandler('WALLET_CONNECT')}
@@ -47,7 +47,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
           WalletConnect
         </ConnectButton>
         <ConnectButton
-          icon={<SvgComponents.CoinbaseWallet />}
+          icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
           highlight={recentlyUsedProvider === 'COINBASE'}
           loading={isConnecting === 'COINBASE'}
           onClick={createOnConnectHandler('COINBASE')}
@@ -61,7 +61,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
           use this option.
         </div>
         <ConnectButton
-          icon={<SvgComponents.Unlock />}
+          icon={<SvgComponents.Unlock width={40} height={40} />}
           highlight={recentlyUsedProvider === 'UNLOCK'}
           loading={isConnecting === 'UNLOCK'}
           onClick={(event) => {
