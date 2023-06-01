@@ -39,9 +39,6 @@ contract UnlockOwner is TimelockController {
   // address of the DAO on mainnet (used to verify trusted origin)
   address public daoTimelock;
 
-  // the timelock used on destinatio chain
-  address public timelock;
-
   // the domain ID of the current network (defined by Connext)
   uint32 public domain;
 
