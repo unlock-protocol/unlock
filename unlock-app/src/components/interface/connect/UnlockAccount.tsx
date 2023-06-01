@@ -69,7 +69,12 @@ export const UnlockAccountSignIn = ({
         <ConnectButton
           primary
           loading={isSubmitting}
-          icon={<SvgComponents.Unlock />}
+          icon={
+            <SvgComponents.Unlock
+              style={{ width: 40, height: 40 }}
+              className="fill-inherit"
+            />
+          }
         >
           Sign in
         </ConnectButton>

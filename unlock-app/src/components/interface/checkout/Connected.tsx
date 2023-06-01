@@ -83,10 +83,10 @@ export function SignedOut({
 
   const ButtonIcon = useMemo(() => {
     const walletIcons = {
-      metamask: <SvgComponents.Metamask />,
-      brave: <BraveWalletIcon className="m-1.5" />,
-      frame: <SvgComponents.Frame />,
-      status: <SvgComponents.Status />,
+      metamask: <SvgComponents.Metamask style={{ width: 32 }} />,
+      brave: <BraveWalletIcon style={{ width: 20 }} className="m-1.5" />,
+      frame: <SvgComponents.Frame style={{ width: 24 }} />,
+      status: <SvgComponents.Status style={{ width: 32 }} />,
     }
     const detected = detectInjectedProvider(injectedProvider)
     return walletIcons[detected]
@@ -130,7 +130,7 @@ export function SignedOut({
             type="button"
             className={iconButtonClass}
           >
-            <SvgComponents.WalletConnect />
+            <SvgComponents.WalletConnect style={{ width: 32 }} />
           </button>
           <button
             aria-label="coinbase wallet"
@@ -138,7 +138,7 @@ export function SignedOut({
             type="button"
             className={iconButtonClass}
           >
-            <SvgComponents.CoinbaseWallet />
+            <SvgComponents.CoinbaseWallet style={{ width: 32 }} />
           </button>
         </div>
       </div>

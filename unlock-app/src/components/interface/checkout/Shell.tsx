@@ -77,7 +77,10 @@ export function CheckoutHead({ title, iconURL }: CheckoutHeadProps) {
             height={64}
           />
           <Avatar.Fallback>
-            <SvgComponents.UnlockMonogram />
+            <SvgComponents.UnlockMonogram
+              className="rounded-full"
+              style={{ height: 64, width: 64 }}
+            />
           </Avatar.Fallback>
         </Avatar.Root>
         <div>
