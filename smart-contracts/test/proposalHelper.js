@@ -7,8 +7,6 @@ const {
   getProposalIdFromContract,
 } = require('../helpers/gov')
 
-const { deployContracts } = require('./helpers')
-
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated but deterministic for tests
 
 const contractName = 'UnlockDiscountTokenV3'
@@ -53,12 +51,9 @@ contract('Proposal Helper', () => {
     })
   })
 
-  describe('proposal parser', () => {
+  describe('parseProposal', () => {
     it('parse gov args correctly', async () => {
-      await deployContracts()
-      const {
-        udt: { address },
-      } = await deployContracts()
+      const contractAddress = gov.address
       const proposalName = 'Send some tokens to a grantee'
 
       const encoded = await encodeProposalArgs({
@@ -69,12 +64,12 @@ contract('Proposal Helper', () => {
 
       const [to, value, calldata, proposalNameParsed] = await parseProposal({
         contractName,
+        contractAddress,
         calldata: encoded,
         proposalName,
-        address,
       })
 
-      assert.equal(to[0], address)
+      assert.equal(to[0], contractAddress)
       assert.equal(value[0], 0)
       assert.equal(calldata[0], [calldataEncoded])
       assert.equal(proposalNameParsed, proposalName)
@@ -85,7 +80,7 @@ contract('Proposal Helper', () => {
     it('can be retrieved', async () => {
       // eslint-disable-next-line global-require
       const proposalExample = require('../proposals/000-example')
-      const proposalId = await getProposalId(proposalExample, gov.address)
+      const proposalId = await getProposalId(proposalExample)
       const proposalIdFromContract = await getProposalIdFromContract(
         proposalExample,
         gov.address
