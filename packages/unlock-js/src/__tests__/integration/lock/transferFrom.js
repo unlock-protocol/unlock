@@ -8,20 +8,17 @@ export default ({ publicLockVersion }) => {
       let tokenId
       let transactionHash
       let newOwner
-      let keyOwner
 
       beforeAll(async () => {
         ;({ walletService, web3Service, lockAddress, accounts, chainId, lock } =
           global.suiteData)
 
-        keyOwner = accounts[0]
         newOwner = accounts[6]
 
         // purchase a new key
         tokenId = await walletService.purchaseKey(
           {
             lockAddress,
-            owner: keyOwner,
             keyPrice: lock.keyPrice,
           },
           {} /** transactionOptions */,
@@ -53,11 +50,12 @@ export default ({ publicLockVersion }) => {
           tokenId,
           chainId
         )
-        expect(prevOwner).toBe(keyOwner)
+        const signer = accounts[0]
+        expect(prevOwner).toBe(signer)
 
         // transfer key to a new owner
         await walletService.transferFrom({
-          from: keyOwner,
+          from: prevOwner,
           to: newOwner,
           lockAddress,
           tokenId,
