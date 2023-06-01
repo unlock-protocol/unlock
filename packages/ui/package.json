@@ -83,7 +83,7 @@
     "tsx": "3.12.7",
     "typescript": "5.0.4",
     "url-loader": "4.1.1",
-    "vite": "4.3.3",
+    "vite": "4.3.9",
     "vite-plugin-node-polyfills": "0.8.2",
     "vite-plugin-svgr": "3.2.0",
     "vite-tsconfig-paths": "4.2.0"
