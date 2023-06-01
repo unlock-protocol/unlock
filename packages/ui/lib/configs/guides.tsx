@@ -9,7 +9,7 @@ const GUIDES_HEADER = {
   actions: [
     {
       content: (
-        <Link href="https://app.unlock-protocol.com/locks">
+        <Link href="/locks">
           <Button variant="outlined-primary">Launch App</Button>
         </Link>
       ),
