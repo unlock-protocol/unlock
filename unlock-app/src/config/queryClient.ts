@@ -9,7 +9,7 @@ export const queryClient = new QueryClient({
       if (
         error instanceof AxiosError &&
         error?.response?.status &&
-        [404].includes(error.response.status)
+        [404, 401].includes(error.response.status)
       ) {
         return
       }
