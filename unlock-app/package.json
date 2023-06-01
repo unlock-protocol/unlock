@@ -9,7 +9,7 @@
     "@hookform/resolvers": "3.1.0",
     "@radix-ui/react-avatar": "1.0.2",
     "@rehooks/local-storage": "2.4.4",
-    "@sentry/nextjs": "7.53.1",
+    "@sentry/nextjs": "7.54.0",
     "@stripe/crypto": "0.0.4",
     "@stripe/react-stripe-js": "2.1.0",
     "@stripe/stripe-js": "1.54.0",
