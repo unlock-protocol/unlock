@@ -53,7 +53,6 @@ export async function getSettings({
     if (res.replyTo) {
       delete res.replyTo
     }
-    console.log('res', res)
   }
 
   return res
