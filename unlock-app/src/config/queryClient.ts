@@ -6,13 +6,6 @@ import * as Sentry from '@sentry/nextjs'
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: any, query) => {
-      if (
-        error instanceof AxiosError &&
-        error?.response?.status &&
-        [404].includes(error.response.status)
-      ) {
-        return
-      }
       const id = Sentry.captureException(error, {
         contexts: {
           query: {
@@ -21,6 +14,13 @@ export const queryClient = new QueryClient({
         },
       })
       console.debug(`Event ID: ${id}\n`, error)
+      if (
+        error instanceof AxiosError &&
+        error?.response?.status &&
+        [404, 401, 403].includes(error.response.status)
+      ) {
+        return
+      }
       if (query?.meta?.errorMessage) {
         toast.error(query.meta.errorMessage as string)
       } else {
