@@ -4,22 +4,21 @@ import {IXReceiver} from "@connext/nxtp-contracts/contracts/core/connext/interfa
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IWETH.sol";
 
-import 'hardhat/console.sol';
+import "hardhat/console.sol";
 
 contract TestBridge {
-
   IWETH wethSrc;
   IWETH wethDest;
 
   // used to know here does the call come from
-  uint32 srcDomainId; 
+  uint32 srcDomainId;
 
   // used for swap
   address srcToken;
   address destToken;
 
   constructor(
-    address _wethSrc, 
+    address _wethSrc,
     address _wethDest,
     uint32 _srcDomainId,
     address _srcToken,
@@ -61,34 +60,33 @@ contract TestBridge {
       require(success, "wrapping token failed");
 
       bridgedAsset = address(wethDest);
-    } else if(_asset != address(0)) {
+    } else if (_asset != address(0)) {
       // get asset from the src lock
       IERC20(srcToken).transferFrom(msg.sender, address(this), _amount);
 
       // make sure we got the $$
       require(
         IERC20(srcToken).balanceOf(address(this)) >= _amount,
-        'not enough token'
+        "not enough token"
       );
 
       // SWAP using a (fake) bridged token
       IERC20(destToken).transfer(_to, _amount);
 
-     bridgedAsset = address(destToken);
+      bridgedAsset = address(destToken);
     } else {
       bridgedAsset = address(0);
     }
-    
+
     IXReceiver(_to).xReceive(
       transferId,
       _amount, // amount of token in wei
-      bridgedAsset , // native or bridged ERC20 token
+      bridgedAsset, // native or bridged ERC20 token
       msg.sender, // sender on the origin chain
       srcDomainId, // domain ID of the origin chain
       _callData
     );
   }
-
 
   // required as WETH withdraw will unwrap and send tokens here
   receive() external payable {}

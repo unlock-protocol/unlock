@@ -38,15 +38,8 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
   }
 
   // deprec
-  function update(
-    address _tokenIn,
-    address _tokenOut
-  ) public override {
-    address pool = IUniswapV3Factory(factory).getPool(
-      _tokenIn,
-      _tokenOut,
-      FEE
-    );
+  function update(address _tokenIn, address _tokenOut) public override {
+    address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
     if (pool == address(0)) {
       pool = IUniswapV3Factory(factory).createPool(_tokenIn, _tokenOut, FEE);
     }
