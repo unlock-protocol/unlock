@@ -18,7 +18,6 @@ Sentry.init({
   // that it will also get attached to your source maps
   debug: process.env.NODE_ENV === 'development',
   attachStacktrace: true,
-  allowUrls: true,
   enabled: ['production', 'staging'].includes(process.env.NODE_ENV),
   environment: process.env.NODE_ENV,
   autoSessionTracking: true,
