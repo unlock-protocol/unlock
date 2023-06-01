@@ -13646,6 +13646,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tw-classed/core@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@tw-classed/core@npm:1.5.0"
+  checksum: 645c0fbf7bbd4c2e8719623103c144da3ef14d15f8d009160bf49b74665d47a72ba216dccde6e75c88f243b59f8cd7e2f4f5229b7cf4464197ed172dcac0d760
+  languageName: node
+  linkType: hard
+
 "@tw-classed/react@npm:1.4.4":
   version: 1.4.4
   resolution: "@tw-classed/react@npm:1.4.4"
@@ -13654,6 +13661,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: d185560a70591f3c409f48fc843e787379fa0208e8a8e059460fdfdb6fb23b4cb400b970531be7db404a3d0afb839849be03f4f3e6747405ed1cc61435b917d3
+  languageName: node
+  linkType: hard
+
+"@tw-classed/react@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@tw-classed/react@npm:1.5.0"
+  dependencies:
+    "@tw-classed/core": 1.5.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 7136435b05ccc968fb4df50544d7bdcf94444c6ae58e7a7051c29547f1ba92461b449c6a457d1f032e2986e3b44b2f5a33cb19416ea6f5bff7a9a600cd751c2a
   languageName: node
   linkType: hard
 
@@ -16146,7 +16164,7 @@ __metadata:
     "@tailwindcss/line-clamp": 0.4.4
     "@tailwindcss/typography": 0.5.9
     "@tanstack/react-query": 4.29.5
-    "@tw-classed/react": 1.4.4
+    "@tw-classed/react": 1.5.0
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.1
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -16159,8 +16177,8 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-dropzone: 14.2.3
-    react-hook-form: 7.43.9
-    react-icons: 4.8.0
+    react-hook-form: 7.44.2
+    react-icons: 4.9.0
     react-use-clipboard: 1.0.9
     storybook: 7.0.0
     tailwind-merge: 1.12.0
@@ -44668,6 +44686,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:7.44.2":
+  version: 7.44.2
+  resolution: "react-hook-form@npm:7.44.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 0c17f8fc33b52ff3caa9de433e1ff3e79f9b797bddd2e80f1156d8a6324710cc360b700e560562ee822e129b440f730f2990caa1e79a3eb66094d9e235410b46
+  languageName: node
+  linkType: hard
+
 "react-hot-toast@npm:2.4.1":
   version: 2.4.1
   resolution: "react-hot-toast@npm:2.4.1"
@@ -44686,6 +44713,15 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 4dbba7ad989c295b410e19b2a702722dae44368cb04b6515f9471353552f31ac80bd350f121d5bff79f81504b84039ede44d09e9f035f48bb1032e6eace126c4
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:4.9.0":
+  version: 4.9.0
+  resolution: "react-icons@npm:4.9.0"
+  peerDependencies:
+    react: "*"
+  checksum: 69d1000d02349cf4baa78a0882aff09723d348d910256ea7489dea777abf10f158b27c1b5d3b1d2ec030e21320eae0afcc13f9c9d11afb85a8809c59a23a923c
   languageName: node
   linkType: hard
 
