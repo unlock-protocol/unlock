@@ -16079,7 +16079,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: 8.39.0
+    eslint: 8.41.0
     tsup: 6.7.0
     typescript: 5.0.4
   languageName: unknown
