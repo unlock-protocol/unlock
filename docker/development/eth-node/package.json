@@ -11,7 +11,7 @@
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.2",
     "@unlock-protocol/hardhat-plugin": "*",
-    "eslint": "8.39.0",
+    "eslint": "8.41.0",
     "ethers": "5.7.2",
     "hardhat": "2.14.0",
     "hardhat-erc1820": "0.1.0",
