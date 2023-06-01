@@ -52,14 +52,14 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('LockSettings v2 endpoints for lock', () => {
-  it('should fail to get settings  with no authentication', async () => {
+  it('should get settings with no authentication', async () => {
     expect.assertions(1)
 
     const response = await request(app).get(
       `/v2/lock-settings/${network}/locks/${lockAddress}`
     )
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(200)
   })
 
   it('should fail to save settings with no authentication', async () => {
@@ -70,19 +70,6 @@ describe('LockSettings v2 endpoints for lock', () => {
     )
 
     expect(saveSettingResponse.status).toBe(401)
-  })
-
-  it('should fail to get settings when authenticated and not lockManager', async () => {
-    expect.assertions(2)
-
-    const { loginResponse, address } = await loginRandomUser(app)
-    expect(loginResponse.status).toBe(200)
-
-    const response = await request(app)
-      .get(`/v2/lock-settings/${network}/locks/${address}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-
-    expect(response.status).toBe(403)
   })
 
   it('should fail to save settings when authenticated and not lockManager', async () => {

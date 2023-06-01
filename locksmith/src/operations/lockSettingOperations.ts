@@ -31,9 +31,11 @@ export async function saveSettings(options: SendEmailProps & LockSettingProps) {
 export async function getSettings({
   lockAddress,
   network,
+  includeProtected,
 }: {
   lockAddress: string
   network: number
+  includeProtected: boolean
 }): Promise<LockSetting | LockSettingProps> {
   const settings = await LockSetting.findOne({
     where: {
@@ -42,7 +44,19 @@ export async function getSettings({
     },
   })
 
-  return settings || DEFAULT_LOCK_SETTINGS
+  const res = settings || DEFAULT_LOCK_SETTINGS
+
+  if (includeProtected) {
+    return res
+  } else {
+    // delete protected keys
+    if (res.replyTo) {
+      delete res.replyTo
+    }
+    console.log('res', res)
+  }
+
+  return res
 }
 
 export async function getLockSettingsBySlug(
