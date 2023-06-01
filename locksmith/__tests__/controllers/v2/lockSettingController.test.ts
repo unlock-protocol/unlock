@@ -42,8 +42,9 @@ var mockWeb3Service = {
 
 vi.mock('../../../src/operations/lockSettingsOperations', () => {
   return {
-    getSettings: () =>
-      vi.fn(({ lockAddress: lock }) => {
+    getSettings: ({ lockAddress: lock }) => {
+      const mockLockSettings = vi.fn().mockImplementation(() => {
+        // mock isLockManager for this locks
         const isLockManager = [
           lockAddress,
           lockAddress2,
@@ -53,15 +54,18 @@ vi.mock('../../../src/operations/lockSettingsOperations', () => {
         if (isLockManager) {
           return Promise.resolve(lockSettingMock)
         }
-
         return Promise.resolve(lockSettingNonManagerMock)
-      }),
+      })
+
+      return mockLockSettings
+    },
     setSendMail: ({ sendEmail, replyTo }) => {
-      return {
+      const mockSetSendMail = {
         ...lockSettingMock,
         sendEmail,
         replyTo,
       }
+      return mockSetSendMail
     },
   }
 })
