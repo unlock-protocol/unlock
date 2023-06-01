@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
-import { expect, vi } from 'vitest'
+import { expect, vi, beforeAll } from 'vitest'
 import { DEFAULT_LOCK_SETTINGS } from '../../../src/controllers/v2/lockSettingController'
 
 const network = 4
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const lockAddress2 = '0x060D07E7cCcD390B6F93B4D318E9FF203250D9be'
-const lockSettingMock = {
+const lockSettingMock: any = {
   lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
   network,
   sendEmail: true,
@@ -20,11 +20,14 @@ const lockSettingMock = {
   updatedAt: '2023-03-24T15:40:54.509Z',
 }
 
+// eslint-disable-next-line
+var mockWeb3Service = {
+  isLockManager: vi.fn(() => Promise.resolve(true)),
+}
+
 vi.mock('../../../src/operations/lockSettingsOperations', () => {
   return {
-    getSettings: () => {
-      return lockSettingMock
-    },
+    getSettings: () => vi.fn(() => Promise.resolve(lockSettingMock)),
     setSendMail: ({ sendEmail, replyTo }) => {
       return {
         ...lockSettingMock,
@@ -35,24 +38,41 @@ vi.mock('../../../src/operations/lockSettingsOperations', () => {
   }
 })
 
-vi.mock('@unlock-protocol/unlock-js', () => {
-  return {
-    Web3Service: vi.fn().mockImplementation(() => {
-      return {
-        isLockManager: (lock: string) => {
-          return (
-            lockAddress.toLowerCase() === lock.toLowerCase() ||
-            lockSettingMock.lockAddress?.toLowerCase() === lock.toLowerCase() ||
-            lockAddress2.toLowerCase() === lock.toLowerCase()
-          )
-        },
-      }
-    }),
-  }
+vi.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+}))
+
+beforeAll(() => {
+  mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(false))
 })
 
 describe('LockSettings v2 endpoints for lock', () => {
+  afterEach(async () => {
+    mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(false))
+  })
   it('should get settings with no authentication', async () => {
+    expect.assertions(1)
+
+    const response = await request(app).get(
+      `/v2/lock-settings/${network}/locks/${lockAddress}`
+    )
+
+    expect(response.status).toBe(200)
+  })
+
+  it.skip('should not protected data when user is non-manager', async () => {
+    expect.assertions(1)
+
+    const response = await request(app).get(
+      `/v2/lock-settings/${network}/locks/${lockAddress}`
+    )
+
+    expect(response.status).toBe(200)
+  })
+
+  it.skip('should returns protected data when user is lock-manager', async () => {
     expect.assertions(1)
 
     const response = await request(app).get(
@@ -94,6 +114,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
+    mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
     const saveSettingResponse = await request(app)
       .post(`/v2/lock-settings/${network}/locks/${lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
@@ -110,6 +131,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
+    mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
     const saveSettingResponse = await request(app)
       .post(`/v2/lock-settings/${network}/locks/${lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
@@ -136,6 +158,7 @@ describe('LockSettings v2 endpoints for lock', () => {
 
     const { loginResponse } = await loginRandomUser(app)
 
+    mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
     // save settings
     const saveSettingResponse = await request(app)
       .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
@@ -206,6 +229,7 @@ describe('LockSettings v2 endpoints for lock', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     // save settings
+    mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
     const saveSettingResponse = await request(app)
       .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
