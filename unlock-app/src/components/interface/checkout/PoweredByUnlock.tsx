@@ -9,7 +9,7 @@ export function PoweredByUnlock() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Powered by <Images.UnlockWordMark />
+        Powered by <Images.UnlockWordMark style={{ height: 14 }} />
       </a>
     </div>
   )
