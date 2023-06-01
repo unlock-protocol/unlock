@@ -15909,7 +15909,7 @@ __metadata:
     rate-limiter-flexible: 2.4.1
     react: 18.2.0
     remark-html: 15.0.2
-    remark-parse: 10.0.1
+    remark-parse: 10.0.2
     request: 2.88.2
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
@@ -16351,7 +16351,7 @@ __metadata:
     react-query: 3.39.3
     react-showdown: 2.3.1
     react-test-renderer: 18.2.0
-    remark: 14.0.2
+    remark: 14.0.3
     remark-html: 15.0.2
     rss: 1.2.2
     showdown-highlight: 3.1.0
@@ -45502,14 +45502,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark-parse@npm:10.0.1":
-  version: 10.0.1
-  resolution: "remark-parse@npm:10.0.1"
+"remark-parse@npm:10.0.2, remark-parse@npm:^10.0.0":
+  version: 10.0.2
+  resolution: "remark-parse@npm:10.0.2"
   dependencies:
     "@types/mdast": ^3.0.0
     mdast-util-from-markdown: ^1.0.0
     unified: ^10.0.0
-  checksum: 505088e564ab53ff054433368adbb7b551f69240c7d9768975529837a86f1d0f085e72d6211929c5c42db315273df4afc94f3d3a8662ffdb69468534c6643d29
+  checksum: 5041b4b44725f377e69986e02f8f072ae2222db5e7d3b6c80829756b842e811343ffc2069cae1f958a96bfa36104ab91a57d7d7e2f0cef521e210ab8c614d5c7
   languageName: node
   linkType: hard
 
@@ -45534,17 +45534,6 @@ __metadata:
     vfile-location: ^3.0.0
     xtend: ^4.0.1
   checksum: 2dfea250e7606ddfc9e223b9f41e0b115c5c701be4bd35181beaadd46ee59816bc00aadc6085a420f8df00b991ada73b590ea7fd34ace14557de4a0a41805be5
-  languageName: node
-  linkType: hard
-
-"remark-parse@npm:^10.0.0":
-  version: 10.0.2
-  resolution: "remark-parse@npm:10.0.2"
-  dependencies:
-    "@types/mdast": ^3.0.0
-    mdast-util-from-markdown: ^1.0.0
-    unified: ^10.0.0
-  checksum: 5041b4b44725f377e69986e02f8f072ae2222db5e7d3b6c80829756b842e811343ffc2069cae1f958a96bfa36104ab91a57d7d7e2f0cef521e210ab8c614d5c7
   languageName: node
   linkType: hard
 
@@ -45591,15 +45580,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark@npm:14.0.2":
-  version: 14.0.2
-  resolution: "remark@npm:14.0.2"
+"remark@npm:14.0.3":
+  version: 14.0.3
+  resolution: "remark@npm:14.0.3"
   dependencies:
     "@types/mdast": ^3.0.0
     remark-parse: ^10.0.0
     remark-stringify: ^10.0.0
     unified: ^10.0.0
-  checksum: a534b6c6bb8a0db7e22580c73d820af9c2468af24d434eb0d54c9b50577d609ec5383a90e81c921f334c1426494c5cf7460ae68b5027123f159bbf1ca8a5a85f
+  checksum: 36eec9668c5f5e497507fa5d396c79183265a5f7dd204a608e7f031a4f61b48f7bb5cfaec212f5614ccd1266cc4a9f8d7a59a45e95aed9876986b4c453b191be
   languageName: node
   linkType: hard
 
