@@ -115,6 +115,12 @@ export interface NetworkConfig {
   blockScan?: {
     url?: (address: string) => string
   }
+  // info about the bridge are available at
+  // https://docs.connext.network/resources/deployments
+  bridge?: {
+    domainId: number
+    connext: string
+  }
   isTestNetwork?: boolean
   erc20?: {
     symbol: string

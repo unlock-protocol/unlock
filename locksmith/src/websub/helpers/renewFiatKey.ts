@@ -35,9 +35,16 @@ export async function renewFiatKey({
       lockAddress,
     }
 
-    const stripeAccount = await getStripeConnectForLock(lockAddress, network)
+    const { stripeEnabled, stripeAccount = '' } = await getStripeConnectForLock(
+      lockAddress,
+      network
+    )
 
-    if (stripeAccount === 0 || stripeAccount === -1) {
+    if (!stripeEnabled) {
+      throw new Error('Stripe connect is not enabled')
+    }
+
+    if (!stripeAccount) {
       throw new Error('No stripe connect account associated with the lock')
     }
 
