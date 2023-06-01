@@ -7,7 +7,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "ethers": "5.7.2",
     "typescript": "5.0.4",
-    "vitest": "0.29.7"
+    "vitest": "0.31.4"
   },
   "dependencies": {
     "toucan-js": "3.1.0",

@@ -11,9 +11,9 @@
     "handlebars": "4.7.7"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "0.28.3",
+    "@vitest/coverage-c8": "0.31.4",
     "typescript": "5.0.4",
-    "vitest": "0.28.3"
+    "vitest": "0.31.4"
   },
   "repository": {
     "type": "git",
