@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@unlock-protocol/hardhat-plugin": "*",
-    "eslint": "8.39.0",
+    "@nomiclabs/hardhat-ethers": "2.2.2",
+    "@unlock-protocol/hardhat-plugin": "0.0.18",
+    "eslint": "8.41.0",
     "ethers": "5.7.2",
     "hardhat": "2.14.0",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.1",
-    "typescript": "5.0.4"
+    "typescript": "5.1.3"
   }
 }
