@@ -49,6 +49,7 @@ export const mumbai: NetworkConfig = {
     universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
+  unlockOwner: '0xdc230F9A08918FaA5ae48B8E13647789A8B6dD46',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
@@ -85,6 +86,10 @@ export const mumbai: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  bridge: {
+    domainId: 9991,
+    connext: '0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a',
+  },
   hooks: {
     onKeyPurchaseHook: [
       {

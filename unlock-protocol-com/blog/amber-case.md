@@ -28,4 +28,3 @@ Amber is joining the Unlock team as a strategic advisor who’ll drive our partn
 **Ticket sales**: Already used by the [Ethereum Community Conference](https://unlock-protocol.com/blog/ethcc-tickets) last July in Paris, other upcoming conferences (like [Liscon](https://liscon.org/!) are leveraging Unlock to sell tickets (via crypto or fiat) and manage attendees.
 
 With Amber’s guidance, these are just the start to the many use cases that will soon emerge from Unlock. More details soon, and [don’t forget to join us in our Discord](https://discord.gg/Ha9fGnKgUV)!
-

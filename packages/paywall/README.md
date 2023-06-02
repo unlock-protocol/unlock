@@ -40,5 +40,7 @@ const provider = window.ethereum
 const paywall = new Paywall(paywallConfig, networkConfigs, provider)
 
 // Loads the checkout UI
-paywall.loadCheckoutModal()
+const response = await paywall.loadCheckoutModal()
+
+// response is set when the modal is closed. response may include hash (the transaction hash) and lock (the address of the lock to which the transaction was sent)
 ```

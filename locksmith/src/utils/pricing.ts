@@ -3,7 +3,12 @@ import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
-import { GAS_COST, stripePercentage, baseStripeFee } from './constants'
+import {
+  GAS_COST,
+  stripePercentage,
+  baseStripeFee,
+  MIN_PAYMENT_STRIPE_CREDIT_CARD,
+} from './constants'
 import * as pricingOperations from '../operations/pricingOperations'
 
 interface KeyPricingOptions {
@@ -176,11 +181,20 @@ export const getUnlockServiceFee = (cost: number) => {
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 
-export const getFees = ({
-  subtotal,
-  gasCost,
-}: Record<'subtotal' | 'gasCost', number>) => {
-  const unlockServiceFee = getUnlockServiceFee(subtotal)
+export const getFees = (
+  { subtotal, gasCost }: Record<'subtotal' | 'gasCost', number>,
+  options?: KeyPricingOptions
+) => {
+  let unlockServiceFee = getUnlockServiceFee(subtotal)
+
+  if (
+    options?.lockAddress.toLowerCase() ===
+    '0x45accac0e5c953009cda713a3b722f87f2907f86'.toLowerCase()
+  ) {
+    // For CabinDAO, we cap the fee at 20 USDC
+    unlockServiceFee = 2000
+  }
+
   const creditCardProcessingFee = getCreditCardProcessingFee(
     subtotal + gasCost,
     unlockServiceFee
@@ -200,15 +214,18 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     0
   )
   const gasCost = await getGasCost(options)
-  const fees = getFees({
-    subtotal,
-    gasCost,
-  })
+  const fees = getFees(
+    {
+      subtotal,
+      gasCost,
+    },
+    options
+  )
 
   return {
     ...fees,
     recipients,
     gasCost,
-    isCreditCardPurchasable: fees.total > 50,
+    isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }
 }

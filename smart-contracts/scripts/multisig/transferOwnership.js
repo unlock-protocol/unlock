@@ -53,11 +53,10 @@ const abi = [
 ]
 
 async function main({ contractAddress, safeAddress }) {
-
   const { chainId } = await ethers.provider.getNetwork()
-  if(!safeAddress) {
+  if (!safeAddress) {
     const { multisig } = networks[chainId]
-    if(multisig) { 
+    if (multisig) {
       safeAddress = multisig
     }
   }

@@ -1,15 +1,18 @@
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import useLock from '~/hooks/useLock'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
 import Link from 'next/link'
-import { useStripeConnect, useStripeDisconnect } from '~/hooks/useStripeConnect'
+import {
+  useGetLockStripeConnectionDetails,
+  useStripeConnect,
+  useStripeDisconnect,
+} from '~/hooks/useStripeConnect'
 import { storage } from '~/config/storage'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
@@ -27,8 +30,12 @@ interface CardPaymentProps {
   disabled: boolean
 }
 
+interface ConnectStripe {
+  onConnectStripe: (stripeAccount?: string) => void
+  onDisconnect: any
+}
+
 interface ConnectStripeProps {
-  connectStripeMutation: any
   lockAddress: string
   network: number
   keyGranter: string
@@ -39,12 +46,12 @@ interface ConnectStripeProps {
 interface DisconnectStripeProps {
   isManager: boolean
   disabled: boolean
-  disconnectStipeMutation: any
+  onDisconnect: any
 }
 
 const DisconnectStripe = ({
   isManager,
-  disconnectStipeMutation,
+  onDisconnect,
   disabled,
 }: DisconnectStripeProps) => {
   return (
@@ -67,18 +74,8 @@ const DisconnectStripe = ({
             size="small"
             variant="borderless"
             className="text-brand-ui-primary"
-            disabled={disconnectStipeMutation.isLoading || disabled}
-            onClick={(event) => {
-              event.preventDefault()
-              disconnectStipeMutation.mutate(undefined, {
-                onSuccess: () => {
-                  ToastHelper.success('Stripe disconnected')
-                },
-                onError: () => {
-                  ToastHelper.error('Stripe disconnection failed')
-                },
-              })
-            }}
+            disabled={disabled}
+            onClick={onDisconnect}
           >
             Disconnect Stripe
           </Button>
@@ -89,13 +86,13 @@ const DisconnectStripe = ({
 }
 
 const ConnectStripe = ({
-  connectStripeMutation,
   lockAddress,
   network,
   keyGranter,
   isManager,
   disabled,
-}: ConnectStripeProps) => {
+  onConnectStripe,
+}: ConnectStripeProps & Pick<ConnectStripe, 'onConnectStripe'>) => {
   const [stripeAccount, setStripeAccount] = useState<string>()
   const { getWalletService, account } = useAuth()
   const web3Service = useWeb3Service()
@@ -115,6 +112,17 @@ const ConnectStripe = ({
     return await web3Service.isKeyGranter(lockAddress, keyGranter, network)
   }
 
+  const {
+    isLoading: isLoadingCheckGrantedStatus,
+    data: isGranted,
+    refetch: refetchCheckKeyGranter,
+  } = useQuery(
+    ['checkIsKeyGranter', lockAddress, network, keyGranter],
+    async () => {
+      return checkIsKeyGranter(keyGranter)
+    }
+  )
+
   const grantKeyGrantorRoleMutation = useMutation(async (): Promise<any> => {
     const walletService = await getWalletService(network)
     return walletService.addKeyGranter({
@@ -124,38 +132,14 @@ const ConnectStripe = ({
   })
 
   const onGrantKeyRole = async () => {
-    await ToastHelper.promise(grantKeyGrantorRoleMutation.mutateAsync(), {
+    const keyGrantPromise = grantKeyGrantorRoleMutation.mutateAsync()
+    await ToastHelper.promise(keyGrantPromise, {
       error: `Can't grant role, please try again.`,
       success: 'Key granted',
       loading: 'Allow key granting',
     })
+    await refetchCheckKeyGranter()
   }
-
-  const connectStripe = async (event: any) => {
-    event.preventDefault()
-    connectStripeMutation.mutate(
-      { stripeAccount },
-      {
-        onSuccess: (connect: any) => {
-          if (connect?.url) {
-            window.location.assign(connect.url)
-          } else {
-            ToastHelper.success('Stripe connection succeeded!')
-          }
-        },
-        onError: () => {
-          ToastHelper.error('Stripe connection failed')
-        },
-      }
-    )
-  }
-
-  const { isLoading: isLoadingCheckGrantedStatus, data: isGranted } = useQuery(
-    ['checkIsKeyGranter', lockAddress, network, keyGranter],
-    async () => {
-      return checkIsKeyGranter(keyGranter)
-    }
-  )
 
   const isLoading = isLoadingCheckGrantedStatus || isLoadingStripeConnections
 
@@ -205,7 +189,13 @@ const ConnectStripe = ({
       {isManager && (
         <div className="flex flex-col gap-3">
           {isGranted ? (
-            <form className="grid gap-4" onSubmit={connectStripe}>
+            <form
+              className="grid gap-4"
+              onSubmit={(e) => {
+                e.preventDefault()
+                onConnectStripe(stripeAccount)
+              }}
+            >
               {(stripeConnections ?? [])?.length > 0 && (
                 <Select
                   defaultValue={stripeAccount}
@@ -228,7 +218,6 @@ const ConnectStripe = ({
               )}
               <Button
                 className="w-full md:w-1/3"
-                loading={connectStripeMutation.isLoading}
                 type="submit"
                 disabled={disabled}
               >
@@ -241,7 +230,7 @@ const ConnectStripe = ({
               variant="outlined-primary"
               className="w-full md:w-1/3"
               onClick={onGrantKeyRole}
-              loading={grantKeyGrantorRoleMutation.isLoading}
+              disabled={grantKeyGrantorRoleMutation.isLoading}
             >
               Accept
             </Button>
@@ -252,6 +241,53 @@ const ConnectStripe = ({
   )
 }
 
+const StripeNotReady = ({
+  isManager,
+  disabled,
+  onDisconnect,
+  onConnectStripe,
+  connectedStripeAccount,
+}: Pick<ConnectStripeProps, 'isManager' | 'disabled'> &
+  ConnectStripe & {
+    connectedStripeAccount?: string
+  }) => {
+  return (
+    <span className="grid gap-2 text-sm">
+      <span className="font-semibold text-red-500">
+        Your Stripe account is connected but not ready to process charges yet.
+        Make sure that all the details you entered on Stripe are valid and your
+        email has been verified from Stripe.
+      </span>
+      <div className="flex items-center gap-0.5">
+        <div className="w-full md:w-1/3">
+          <Button
+            onClick={(e: any) => {
+              e?.preventDefault()
+              onConnectStripe(connectedStripeAccount)
+            }}
+            size="small"
+          >
+            Resume Stripe Setup
+          </Button>
+        </div>
+        {isManager && (
+          <div className="w-full md:w-1/3">
+            <Button
+              size="small"
+              variant="borderless"
+              className="text-brand-ui-primary"
+              disabled={disabled}
+              onClick={onDisconnect}
+            >
+              Disconnect Stripe
+            </Button>
+          </div>
+        )}
+      </div>
+    </span>
+  )
+}
+
 export const CreditCardForm = ({
   lockAddress,
   network,
@@ -259,7 +295,25 @@ export const CreditCardForm = ({
   disabled,
 }: CardPaymentProps) => {
   const storageService = useStorageService()
-  const { isStripeConnected } = useLock({ address: lockAddress }, network)
+
+  const {
+    isLoading,
+    data: stripeConnectionDetails,
+    refetch: refetchStripeConnectionDetails,
+  } = useGetLockStripeConnectionDetails({
+    lockAddress,
+    network,
+  })
+
+  const { isLoading: isLoadingKeyGranter, data: keyGranter } = useQuery(
+    ['getKeyGranter', lockAddress, network],
+    () => {
+      return getKeyGranter()
+    }
+  )
+
+  const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
+  const connectedStripeAccount = stripeConnectionDetails?.account
 
   const getKeyGranter = async () => {
     return await storageService.getKeyGranter(network)
@@ -288,54 +342,76 @@ export const CreditCardForm = ({
     enabled: !!lock?.address,
   })
 
-  const [
-    { isLoading, data: isConnected = 0 },
-    { isLoading: isLoadingKeyGranter, data: keyGranter },
-  ] = useQueries({
-    queries: [
-      {
-        queryKey: [
-          'isStripeConnected',
-          lockAddress,
-          network,
-          disconnectStipeMutation.isSuccess,
-          connectStripeMutation.isSuccess,
-        ],
-        queryFn: isStripeConnected,
-      },
-      {
-        queryKey: ['getKeyGranter', lockAddress, network],
-        queryFn: getKeyGranter,
-      },
-    ],
-  })
-
   const isPricingLow = (fiatPricing?.usd?.amount ?? 0) < 0.5
 
   const loading = isLoading || isLoadingKeyGranter || isLoadingPricing
 
+  const onDisconnectStripe = async (event: any) => {
+    event.preventDefault()
+    const disconnectStripePromise = disconnectStipeMutation.mutateAsync()
+    await ToastHelper.promise(disconnectStripePromise, {
+      error: 'Stripe disconnection failed.',
+      success: 'Stripe disconnected.',
+      loading: 'Disconnecting Stripe.',
+    })
+    await refetchStripeConnectionDetails()
+  }
+
+  const onConnectStripe = (stripeAccount?: string) => {
+    connectStripeMutation.mutate(
+      { stripeAccount },
+      {
+        onSuccess: (connect: any) => {
+          if (connect?.url) {
+            window.location.assign(connect.url)
+          } else {
+            ToastHelper.success('Stripe connection succeeded!')
+            refetchStripeConnectionDetails()
+          }
+        },
+        onError: () => {
+          ToastHelper.error('Stripe connection failed')
+        },
+      }
+    )
+  }
+
   const Status = () => {
-    if (
-      [ConnectStatus.NOT_READY, ConnectStatus.NO_ACCOUNT].includes(isConnected)
-    ) {
+    if (ConnectStatus.NO_ACCOUNT === stripeConnectionState) {
       return (
         <ConnectStripe
-          connectStripeMutation={connectStripeMutation}
+          onConnectStripe={onConnectStripe}
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
           keyGranter={keyGranter}
-          disabled={disabled}
+          disabled={disabled || connectStripeMutation.isLoading}
         />
       )
     }
 
-    if ([ConnectStatus.CONNECTED].includes(isConnected)) {
+    if (ConnectStatus.NOT_READY === stripeConnectionState) {
+      return (
+        <StripeNotReady
+          isManager={isManager}
+          disabled={
+            disabled ||
+            connectStripeMutation.isLoading ||
+            disconnectStipeMutation.isLoading
+          }
+          onConnectStripe={onConnectStripe}
+          onDisconnect={onDisconnectStripe}
+          connectedStripeAccount={connectedStripeAccount}
+        />
+      )
+    }
+
+    if (ConnectStatus.CONNECTED === stripeConnectionState) {
       return (
         <DisconnectStripe
           isManager={isManager}
-          disconnectStipeMutation={disconnectStipeMutation}
-          disabled={disabled}
+          onDisconnect={onDisconnectStripe}
+          disabled={disabled || disconnectStipeMutation.isLoading}
         />
       )
     }
