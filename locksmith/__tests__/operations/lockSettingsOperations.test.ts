@@ -27,7 +27,7 @@ describe('lockSettingsOperations', () => {
     expect(settings.sendEmail).toBe(true)
   })
 
-  it.only('correctly save and retrieve lock settings without protected data', async () => {
+  it('correctly save and retrieve lock settings without protected data', async () => {
     expect.assertions(2)
     const lockAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
     const network = 5
