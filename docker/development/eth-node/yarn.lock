@@ -1215,7 +1215,7 @@ __metadata:
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.2.2
-    "@unlock-protocol/hardhat-plugin": "*"
+    "@unlock-protocol/hardhat-plugin": 0.0.18
     eslint: 8.41.0
     ethers: 5.7.2
     hardhat: 2.14.0
@@ -1225,7 +1225,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/hardhat-plugin@npm:*":
+"@unlock-protocol/hardhat-plugin@npm:0.0.18":
   version: 0.0.18
   resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.18"
   dependencies:
