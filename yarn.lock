@@ -17191,7 +17191,7 @@ __metadata:
     remark-html: 15.0.2
     rss: 1.2.2
     showdown-highlight: 3.1.0
-    tailwind-merge: 1.12.0
+    tailwind-merge: 1.13.0
     tailwindcss: 3.3.2
     typescript: 5.1.3
     use-local-storage: 3.0.0
@@ -50253,13 +50253,6 @@ __metadata:
     mkdirp: ^0.5.1
     untildify: ^3.0.3
   checksum: 993fdd78afc8a64d262638a6845a5b69aa03c5e0e3de17a1ee3396128299aff3fb879b7c79bff63d2a3c29b326da494a1463034a25099b1129f80ca311117c02
-  languageName: node
-  linkType: hard
-
-"tailwind-merge@npm:1.12.0":
-  version: 1.12.0
-  resolution: "tailwind-merge@npm:1.12.0"
-  checksum: 5ef323eec1051c4aa9626e29498f6c058dbbb242ca8156aa298de41ada3eda05a8f5f1260a57112c155f63b2e94c4b4ccab5386d60fae54de07aac6d9dbc60e4
   languageName: node
   linkType: hard
 
