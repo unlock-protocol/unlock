@@ -61,7 +61,7 @@
     "hardhat": "^2.12.x"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "2.2.2",
+    "@nomiclabs/hardhat-ethers": "2.2.3",
     "eslint-plugin-mocha": "10.1.0"
   }
 }

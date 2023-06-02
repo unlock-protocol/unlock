@@ -8637,17 +8637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.2":
-  version: 2.2.2
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.2"
-  peerDependencies:
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: f7b880cbb3fbf809b5d01619112231be9ef8dc3c2880960d2382813fa19b783670ee2d982ebd43d8867281ad82854ca0d16626c013d0d834eb3b19a65dc0c851
-  languageName: node
-  linkType: hard
-
-"@nomiclabs/hardhat-ethers@npm:^2.0.0":
+"@nomiclabs/hardhat-ethers@npm:2.2.3, @nomiclabs/hardhat-ethers@npm:^2.0.0":
   version: 2.2.3
   resolution: "@nomiclabs/hardhat-ethers@npm:2.2.3"
   peerDependencies:
@@ -15884,7 +15874,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.2.2
+    "@nomiclabs/hardhat-ethers": 2.2.3
     "@types/chai": 4.3.5
     "@types/fs-extra": 11.0.1
     "@types/mocha": 10.0.1
@@ -16054,7 +16044,7 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@connext/nxtp-contracts": 0.2.1-rc.16
-    "@nomiclabs/hardhat-ethers": 2.2.2
+    "@nomiclabs/hardhat-ethers": 2.2.3
     "@nomiclabs/hardhat-etherscan": 3.1.7
     "@nomiclabs/hardhat-truffle5": 2.0.7
     "@nomiclabs/hardhat-waffle": 2.0.5
@@ -16347,7 +16337,7 @@ __metadata:
     "@graphql-codegen/typescript": 2.8.8
     "@graphql-codegen/typescript-graphql-request": 4.5.9
     "@graphql-codegen/typescript-operations": 2.5.13
-    "@nomiclabs/hardhat-ethers": 2.2.2
+    "@nomiclabs/hardhat-ethers": 2.2.3
     "@openapitools/openapi-generator-cli": 2.5.2
     "@uniswap/sdk-core": 3.2.2
     "@uniswap/smart-order-router": 3.10.1
