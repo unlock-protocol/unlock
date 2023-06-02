@@ -8,20 +8,23 @@ export const useSessionUser = () => {
   return useQuery(
     ['session'],
     async () => {
+      const accessToken = getAccessToken()
+      const address = getCurrentAccount()
       try {
+        if (!accessToken) return null
         const response = await storage.user()
         return response.data!.walletAddress
       } catch (error) {
-        const address = getCurrentAccount()
         if (error instanceof AxiosError) {
-          if (error.response?.status === 401 && address) {
+          if (error.response?.status === 401 && accessToken) {
             return null
           }
+          // To handle temporary network errors and fallback if locksmith is not behaving correctly
+          if (accessToken) {
+            return address
+          }
+          return null
         }
-        if (address && getAccessToken(address)) {
-          return address
-        }
-        return null
       }
     },
     {
