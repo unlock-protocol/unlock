@@ -33,8 +33,7 @@ export default defineConfig({
     tsconfigPaths(),
     react(),
     svgr({
-      exportAsDefault: true,
-      exclude: ['lib/assets/*.svg'],
+      exportAsDefault: true, // exporting components by default, use ?url to export data:uri
     }),
     nodePolyfills({
       // Whether to polyfill `node:` protocol imports.

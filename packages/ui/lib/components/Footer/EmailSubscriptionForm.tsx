@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '~/components/Button/Button'
-import SignUpImageUrl from './../../assets/img-signup-lg.svg'
+import SignUpImageUrl from './../../assets/img-signup-lg.svg?url'
 
 export interface EmailSubscriptionFormProps {
   onSubmit: (email: string) => void

@@ -1,5 +1,3 @@
-import UnlockAssets from '@unlock-protocol/unlock-assets'
+import { Images } from '@unlock-protocol/ui'
 
-const { SvgComponents } = UnlockAssets
-
-export default SvgComponents
+export default Images

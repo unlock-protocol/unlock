@@ -13,7 +13,6 @@
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/ui": "workspace:./packages/ui",
-    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@zeit/next-source-maps": "0.0.3",
     "apexcharts": "3.40.0",
     "babel-loader": "9.1.2",

@@ -270,8 +270,7 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
           rel="noopener noreferrer"
           href="https://ethereum.org/en/wallets/find-wallet/"
         >
-          I want to get a wallet
-          <WalletIcon size={26} className="mr-2" />
+          Get a crypto wallet
         </CustomAnchorButton>
         <ConnectButton
           icon={<WalletIcon size={24} />}
@@ -280,7 +279,7 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
             onExit()
           }}
         >
-          <span>Back to using wallet</span>
+          <span>Back to using your crypto wallet</span>
         </ConnectButton>
       </div>
     </div>
