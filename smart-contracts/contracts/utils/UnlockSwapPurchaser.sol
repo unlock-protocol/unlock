@@ -8,7 +8,21 @@ import "../interfaces/IPermit2.sol";
 import "../interfaces/IPublicLock.sol";
 import "../interfaces/IUnlock.sol";
 
+library SafeCast160 {
+  error UnsafeCast();
+
+  /// @notice Safely casts uint256 to uint160
+  /// @param value The uint256 to be cast
+  function toUint160(uint256 value) internal pure returns (uint160) {
+    if (value > type(uint160).max) revert UnsafeCast();
+    return uint160(value);
+  }
+}
+
 contract UnlockSwapPurchaser {
+  // make sure we dont exceed type uint160 when casting
+  using SafeCast160 for uint256;
+
   // Unlock address on current chain
   address public unlockAddress;
 
@@ -133,7 +147,7 @@ contract UnlockSwapPurchaser {
     IPermit2(permit2).approve(
       srcToken,
       uniswapRouter,
-      uint160(amountInMax),
+      amountInMax.toUint160(),
       uint48(block.timestamp + 60) // expires after 1min
     );
 
