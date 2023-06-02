@@ -16814,7 +16814,7 @@ __metadata:
     postmate: 1.5.2
     typescript: 5.0.4
     vite: 4.3.9
-    vite-plugin-css-injected-by-js: 3.1.0
+    vite-plugin-css-injected-by-js: 3.1.1
     vitest: 0.30.1
     vitest-fetch-mock: 0.2.2
   languageName: unknown
@@ -53282,12 +53282,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-css-injected-by-js@npm:3.1.0":
-  version: 3.1.0
-  resolution: "vite-plugin-css-injected-by-js@npm:3.1.0"
+"vite-plugin-css-injected-by-js@npm:3.1.1":
+  version: 3.1.1
+  resolution: "vite-plugin-css-injected-by-js@npm:3.1.1"
   peerDependencies:
     vite: ">2.0.0-0"
-  checksum: 2f48b23a52d2c7e4d4a172107406e788bac5132c7b9650ab6e8f1906ed8c60fd4ff82b49f7e073233c348590d3a390173d482000faec8d2fee60e2bc915c5388
+  checksum: 3f05747631805c3ca7646067d9f6eda5d89decc5a5cc939abf3c115c2d5a226429ca2e96711299524394623131688b11f1f6a90ad7e3f37692dcb5ecbcf82e10
   languageName: node
   linkType: hard
 
