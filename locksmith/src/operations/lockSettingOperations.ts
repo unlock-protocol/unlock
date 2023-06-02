@@ -31,18 +31,28 @@ export async function saveSettings(options: SendEmailProps & LockSettingProps) {
 export async function getSettings({
   lockAddress,
   network,
+  includeProtected = false,
 }: {
   lockAddress: string
   network: number
+  includeProtected?: boolean
 }): Promise<LockSetting | LockSettingProps> {
+  // list of array of keys to exclude
+  const attributesExcludes = includeProtected ? [] : ['replyTo']
+
   const settings = await LockSetting.findOne({
     where: {
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     },
+    attributes: {
+      exclude: attributesExcludes,
+    },
   })
 
-  return settings || DEFAULT_LOCK_SETTINGS
+  const res = settings || DEFAULT_LOCK_SETTINGS
+
+  return res
 }
 
 export async function getLockSettingsBySlug(
