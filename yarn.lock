@@ -13164,7 +13164,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:3.2.2, @uniswap/sdk-core@npm:^3.0.0-alpha.3, @uniswap/sdk-core@npm:^3.0.1, @uniswap/sdk-core@npm:^3.1.0":
+"@uniswap/sdk-core@npm:3.2.3":
+  version: 3.2.3
+  resolution: "@uniswap/sdk-core@npm:3.2.3"
+  dependencies:
+    "@ethersproject/address": ^5.0.2
+    big.js: ^5.2.2
+    decimal.js-light: ^2.5.0
+    jsbi: ^3.1.4
+    tiny-invariant: ^1.1.0
+    toformat: ^2.0.0
+  checksum: a19367c7e1d7b391b1664f59b808836cbaed9a12880bdf6b9a31e6c3b63f2edce2966bdda65144a3003e4c3cd96085b86129c174971330a9766194c404263346
+  languageName: node
+  linkType: hard
+
+"@uniswap/sdk-core@npm:^3.0.0-alpha.3, @uniswap/sdk-core@npm:^3.0.1, @uniswap/sdk-core@npm:^3.1.0":
   version: 3.2.2
   resolution: "@uniswap/sdk-core@npm:3.2.2"
   dependencies:
@@ -13863,7 +13877,7 @@ __metadata:
     "@types/react": 18.2.0
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
-    "@uniswap/sdk-core": 3.2.2
+    "@uniswap/sdk-core": 3.2.3
     "@uniswap/smart-order-router": 3.12.1
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -13959,7 +13973,7 @@ __metadata:
     "@graphql-codegen/typescript-operations": 2.5.13
     "@nomiclabs/hardhat-ethers": 2.2.3
     "@openapitools/openapi-generator-cli": 2.5.2
-    "@uniswap/sdk-core": 3.2.2
+    "@uniswap/sdk-core": 3.2.3
     "@uniswap/smart-order-router": 3.10.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
