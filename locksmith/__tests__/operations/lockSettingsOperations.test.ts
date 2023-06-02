@@ -14,7 +14,7 @@ describe('lockSettingsOperations', () => {
       lockAddress,
       network,
       sendEmail: true,
-      replyTo: 'exaple@gmail.com',
+      replyTo: 'example@gmail.com',
     })
 
     const settings = await getSettings({
@@ -23,7 +23,7 @@ describe('lockSettingsOperations', () => {
       includeProtected: true,
     })
 
-    expect(settings.replyTo).toBe('exaple@gmail.com')
+    expect(settings.replyTo).toBe('example@gmail.com')
     expect(settings.sendEmail).toBe(true)
   })
 
@@ -32,11 +32,11 @@ describe('lockSettingsOperations', () => {
     const lockAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
     const network = 5
 
-    saveSettings({
+    await saveSettings({
       lockAddress,
       network,
       sendEmail: true,
-      replyTo: 'exaple@gmail.com',
+      replyTo: 'example@gmail.com',
     })
 
     const settings = await getSettings({
