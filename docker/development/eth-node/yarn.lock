@@ -891,13 +891,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.2":
-  version: 2.2.2
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.2"
+"@nomiclabs/hardhat-ethers@npm:2.2.3":
+  version: 2.2.3
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.3"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: f7b880cbb3fbf809b5d01619112231be9ef8dc3c2880960d2382813fa19b783670ee2d982ebd43d8867281ad82854ca0d16626c013d0d834eb3b19a65dc0c851
+  checksum: 72321317e55eb510306e04c42353c5f7ceb42d086fc76cc740120da6e1635b7ad5bbf23a8d6b02bd590754adcf646618933111624085ab249b1ff3482e773226
   languageName: node
   linkType: hard
 
@@ -1214,18 +1214,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.2.2
-    "@unlock-protocol/hardhat-plugin": "*"
+    "@nomiclabs/hardhat-ethers": 2.2.3
+    "@unlock-protocol/hardhat-plugin": 0.0.18
     eslint: 8.41.0
     ethers: 5.7.2
-    hardhat: 2.14.0
+    hardhat: 2.14.1
     hardhat-erc1820: 0.1.0
     ts-node: 10.9.1
     typescript: 5.1.3
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/hardhat-plugin@npm:*":
+"@unlock-protocol/hardhat-plugin@npm:0.0.18":
   version: 0.0.18
   resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.18"
   dependencies:
@@ -2720,9 +2720,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.14.0":
-  version: 2.14.0
-  resolution: "hardhat@npm:2.14.0"
+"hardhat@npm:2.14.1":
+  version: 2.14.1
+  resolution: "hardhat@npm:2.14.1"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -2784,7 +2784,7 @@ __metadata:
       optional: true
   bin:
     hardhat: internal/cli/bootstrap.js
-  checksum: 7a11ad4650759851306d65c30252ccffa2aca9cb461c66f3fcef5f29d38fe66402d6bc295d293670fa0a72bf3572cc95029c5cd0b0fd45f45edd99d6eb5b7586
+  checksum: 151fda00b4cbc049c29af4249755ee28af7a588d66fed1ff308b2b19e260462649798a13acbc758e24fbfdc8a90fd43809c9cf2d3383fbab3eea0d0e0b00bb22
   languageName: node
   linkType: hard
 
