@@ -10,7 +10,7 @@ describe('lockSettingsOperations', () => {
     const lockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
     const network = 5
 
-    saveSettings({
+    await saveSettings({
       lockAddress,
       network,
       sendEmail: true,
