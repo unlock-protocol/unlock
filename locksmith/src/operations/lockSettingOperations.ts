@@ -37,23 +37,20 @@ export async function getSettings({
   network: number
   includeProtected?: boolean
 }): Promise<LockSetting | LockSettingProps> {
+  // list of array of keys to exclude
+  const attributesExcludes = includeProtected ? [] : ['replyTo']
+
   const settings = await LockSetting.findOne({
     where: {
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     },
+    attributes: {
+      exclude: attributesExcludes,
+    },
   })
 
   const res = settings || DEFAULT_LOCK_SETTINGS
-
-  if (includeProtected) {
-    return res
-  } else {
-    // delete protected keys
-    if (res.replyTo) {
-      delete res.replyTo
-    }
-  }
 
   return res
 }
