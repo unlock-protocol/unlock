@@ -1,6 +1,70 @@
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('../test/helpers')
 
+/**
+ * Helper to parse a DAO proposal from an object
+ * @param {String} proposalName name of the proposal
+ * @param {Array.<{
+ * contractAddress: string, // target address of the call
+ * calldata: string, // if not present, will be encoded using functionName + functionArgs
+ * contractName: string, // to fetch the encoding ABI
+ * functionName: string,
+ * functionArgs: Array,
+ * }>} calls An array of calls to be send to the proposal
+ * @returns a formatted proposal in the form of an array of 3 arrays and a string
+ * ex. [ [ to (address) ], [ value (in ETH) ], [ calldata (as string) ],  "name of the proposal"]
+ */
+
+const parseProposal = async ({
+  calls, // should be an array. If present will bypass functionName / functionArgs logic
+  proposalName,
+}) => {
+  // parse an array of contract calls
+  if (!calls || !calls.length) {
+    throw new Error('Missing contract calls.')
+  }
+
+  // make sure needed data is there
+  calls.forEach(validateProposalCall)
+
+  // assume similar values for all calls
+  const encodedCalls = await Promise.all(
+    calls.map(
+      async ({
+        calldata,
+        contractName,
+        contractAddress,
+        functionName,
+        functionArgs,
+      }) => {
+        if (!calldata) {
+          calldata = await encodeProposalArgs({
+            contractName,
+            functionName,
+            functionArgs,
+          })
+        }
+        return { calldata, contractAddress, value: 0 }
+      }
+    )
+  )
+
+  const parsed = encodedCalls.reduce(
+    (arr, { calldata, contractAddress, value }) => {
+      return !arr.length
+        ? [[contractAddress], [value], [calldata]]
+        : [
+            [...arr[0], contractAddress], // contracts to send the proposal to
+            [...arr[1], value], // value in ETH, default to 0
+            [...arr[2], calldata], // encoded func calls
+          ]
+    },
+    []
+  )
+
+  return [...parsed, proposalName]
+}
+
 const getProposalId = async (proposal) => {
   const [targets, values, calldata, description] = await parseProposal({
     ...proposal,
@@ -54,34 +118,11 @@ const getProposalIdFromContract = async (proposal, govAddress) => {
   return proposalId
 }
 
-const parseProposal = async ({
-  contractName,
-  contractAddress,
-  calldata, // if not present, will be encoded using func name + args
-  functionName,
-  functionArgs,
-  proposalName,
-  value = 0,
-}) => {
-  if (!calldata && !functionArgs) {
-    // eslint-disable-next-line no-console
+const validateProposalCall = (proposal) => {
+  // proposal contains a single contract call
+  if (!proposal.calldata && !proposal.functionArgs) {
     throw new Error('Missing calldata or function args.')
   }
-
-  // if no call data, then parse it
-  if (!calldata) {
-    calldata = await encodeProposalArgs({
-      contractName,
-      functionName,
-      functionArgs,
-    })
-  }
-  return [
-    [contractAddress], // contract to send the proposal to
-    [value], // value in ETH, default to 0
-    [calldata], // encoded func call
-    proposalName,
-  ]
 }
 
 const encodeProposalArgs = async ({

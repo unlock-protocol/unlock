@@ -2,6 +2,7 @@ const { ethers } = require('hardhat')
 const {
   encodeProposalArgs,
   decodeProposalArgs,
+  loadProposal,
   parseProposal,
   getProposalId,
   getProposalIdFromContract,
@@ -63,9 +64,7 @@ contract('Proposal Helper', () => {
       })
 
       const [to, value, calldata, proposalNameParsed] = await parseProposal({
-        contractName,
-        contractAddress,
-        calldata: encoded,
+        calls: [{ contractName, contractAddress, calldata: encoded }],
         proposalName,
       })
 
@@ -78,8 +77,7 @@ contract('Proposal Helper', () => {
 
   describe('proposal ID', () => {
     it('can be retrieved', async () => {
-      // eslint-disable-next-line global-require
-      const proposalExample = require('../proposals/000-example')
+      const proposalExample = await loadProposal('../proposals/000-example')
       const proposalId = await getProposalId(proposalExample)
       const proposalIdFromContract = await getProposalIdFromContract(
         proposalExample,
