@@ -9718,10 +9718,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.8.2":
-  version: 4.8.2
-  resolution: "@openzeppelin/contracts@npm:4.8.2"
-  checksum: 1d362f0b9c880549cb82544e23fb70270fbbbe24a69e10bd5aa07649fd82347686173998ae484defafdc473d04004d519f839e3cd3d3e7733d0895b950622243
+"@openzeppelin/contracts@npm:4.8.3":
+  version: 4.8.3
+  resolution: "@openzeppelin/contracts@npm:4.8.3"
+  checksum: aea130d38d46840c5cbe3adbaa9a7ac645e4bd66ad3f3baf2fa78588c408d1a686170b3408c9e2e5e05530fba22ecdc00d7efb6b27852a8b29f91accbc0af255
   languageName: node
   linkType: hard
 
@@ -16831,7 +16831,7 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.7
     "@nomiclabs/hardhat-waffle": 2.0.5
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.8.2
+    "@openzeppelin/contracts": 4.8.3
     "@openzeppelin/contracts-upgradeable": 4.9.0
     "@openzeppelin/hardhat-upgrades": 1.27.0
     "@openzeppelin/test-helpers": 0.5.16
