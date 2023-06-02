@@ -42,7 +42,7 @@
     "ethers": "5.7.2",
     "prism-react-renderer": "2.0.4",
     "react-dropzone": "14.2.3",
-    "react-hook-form": "7.44.2",
+    "react-hook-form": "7.44.3",
     "react-icons": "4.9.0",
     "react-use-clipboard": "1.0.9",
     "tailwind-merge": "1.13.0",
