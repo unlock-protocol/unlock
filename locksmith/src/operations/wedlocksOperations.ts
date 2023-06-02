@@ -335,6 +335,7 @@ const getLockSettings = async (
     const settings = await lockSettingOperations.getSettings({
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
+      includeProtected: true,
     })
     return settings
   }

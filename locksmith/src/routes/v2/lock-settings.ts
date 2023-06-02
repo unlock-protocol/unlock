@@ -16,12 +16,7 @@ router.post(
   updateSettings
 )
 
-router.get(
-  '/:network/locks/:lockAddress',
-  authenticatedMiddleware,
-  lockManagerMiddleware,
-  getSettings
-)
+router.get('/:network/locks/:lockAddress', getSettings)
 
 router.get('/slug/:slug', getLockSettingsBySlug)
 
