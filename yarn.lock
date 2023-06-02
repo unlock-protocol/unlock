@@ -15803,7 +15803,7 @@ __metadata:
     eslint: 8.41.0
     fs-extra: 11.1.1
     hardhat: 2.14.0
-    typescript: 5.0.4
+    typescript: 5.1.3
   languageName: unknown
   linkType: soft
 
@@ -15816,7 +15816,7 @@ __metadata:
     "@vitest/coverage-c8": 0.31.4
     eslint: 8.41.0
     tsup: 6.7.0
-    typescript: 5.0.4
+    typescript: 5.1.3
     vitest: 0.31.4
   peerDependencies:
     zod: 3.21.4
@@ -15842,7 +15842,7 @@ __metadata:
     storybook: 7.0.0
     tsup: 6.7.0
     tsx: 3.12.7
-    typescript: 5.0.4
+    typescript: 5.1.3
     vite: 4.3.9
     vite-plugin-svgr: 3.2.0
     vite-tsconfig-paths: 4.2.0
@@ -15858,7 +15858,7 @@ __metadata:
   dependencies:
     "@vitest/coverage-c8": 0.31.4
     handlebars: 4.7.7
-    typescript: 5.0.4
+    typescript: 5.1.3
     vitest: 0.31.4
   languageName: unknown
   linkType: soft
@@ -15916,7 +15916,7 @@ __metadata:
     tslint: 5.20.1
     tslint-config-prettier: 1.18.0
     tslint-plugin-prettier: 2.3.0
-    typescript: 5.0.4
+    typescript: 5.1.3
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     ethers: ^5.7.x
@@ -16022,7 +16022,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     eslint: 8.41.0
     tsup: 6.7.0
-    typescript: 5.0.4
+    typescript: 5.1.3
   languageName: unknown
   linkType: soft
 
@@ -16190,11 +16190,11 @@ __metadata:
     react-icons: 4.9.0
     react-use-clipboard: 1.0.9
     storybook: 7.0.0
-    tailwind-merge: 1.12.0
+    tailwind-merge: 1.13.0
     tailwindcss: 3.3.2
     tsup: 6.7.0
     tsx: 3.12.7
-    typescript: 5.0.4
+    typescript: 5.1.3
     url-loader: 4.1.1
     vite: 4.3.9
     vite-plugin-node-polyfills: 0.8.2
@@ -16287,9 +16287,9 @@ __metadata:
     react-use: 17.4.0
     react-use-clipboard: 1.0.9
     siwe: 2.1.4
-    tailwind-merge: 1.12.0
+    tailwind-merge: 1.13.0
     tailwindcss: 3.3.2
-    typescript: 5.0.4
+    typescript: 5.1.3
     validator: 13.9.0
     vitest: 0.31.4
     vitest-fetch-mock: 0.2.2
@@ -16437,7 +16437,7 @@ __metadata:
     showdown-highlight: 3.1.0
     tailwind-merge: 1.12.0
     tailwindcss: 3.3.2
-    typescript: 5.0.4
+    typescript: 5.1.3
     use-local-storage: 3.0.0
     vitest: 0.31.4
     yaml-front-matter: 4.1.1
@@ -43856,7 +43856,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
     toucan-js: 3.1.0
-    typescript: 5.0.4
+    typescript: 5.1.3
     vitest: 0.31.4
     wrangler: 2.20.0
   languageName: unknown
@@ -49626,6 +49626,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind-merge@npm:1.13.0":
+  version: 1.13.0
+  resolution: "tailwind-merge@npm:1.13.0"
+  checksum: 03452dbcf389051bd4d60645e9f27699a0214e5dc910c7570068baf25adfe384e415f246276cde6bbdd0f414df3053dbf009b033d586a19de45db6b48f4fe954
+  languageName: node
+  linkType: hard
+
 "tailwindcss@npm:3.3.2, tailwindcss@npm:^3.0.2":
   version: 3.3.2
   resolution: "tailwindcss@npm:3.3.2"
@@ -51248,6 +51255,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.1.3":
+  version: 5.1.3
+  resolution: "typescript@npm:5.1.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: d9d51862d98efa46534f2800a1071a613751b1585dc78884807d0c179bcd93d6e9d4012a508e276742f5f33c480adefc52ffcafaf9e0e00ab641a14cde9a31c7
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^3.8.3":
   version: 3.9.10
   resolution: "typescript@npm:3.9.10"
@@ -51275,6 +51292,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: bb309d320c59a26565fb3793dba550576ab861018ff3fd1b7fccabbe46ae4a35546bc45f342c0a0b6f265c801ccdf64ffd68f548f117ceb7f0eac4b805cd52a9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@5.1.3#~builtin<compat/typescript>":
+  version: 5.1.3
+  resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=85af82"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 32a25b2e128a4616f999d4ee502aabb1525d5647bc8955e6edf05d7fbc53af8aa98252e2f6ba80bcedfc0260c982b885f3c09cfac8bb65d2924f3133ad1e1e62
   languageName: node
   linkType: hard
 
@@ -51894,7 +51921,7 @@ __metadata:
     husky: 8.0.3
     lint-staged: 13.2.2
     prettier: 2.8.8
-    typescript: 5.0.4
+    typescript: 5.1.3
   languageName: unknown
   linkType: soft
 
