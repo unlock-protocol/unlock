@@ -72,7 +72,7 @@
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
-    "@vitejs/plugin-react": "3.1.0",
+    "@vitejs/plugin-react": "4.0.0",
     "autoprefixer": "10.4.14",
     "postcss": "8.4.24",
     "react": "18.2.0",
