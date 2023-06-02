@@ -40,7 +40,7 @@
     "@graphql-codegen/typescript": "2.8.8",
     "@graphql-codegen/typescript-graphql-request": "4.5.9",
     "@graphql-codegen/typescript-operations": "2.5.13",
-    "@nomiclabs/hardhat-ethers": "2.2.2",
+    "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
@@ -59,6 +59,6 @@
     "graphql": "16.6.0",
     "graphql-request": "5.1.0",
     "react-to-print": "2.14.12",
-    "siwe": "1.1.6"
+    "siwe": "2.1.4"
   }
 }
