@@ -16,7 +16,7 @@ export class SubscriptionController {
     const userAddress = normalizer.ethereumAddress(request.user!.walletAddress)
 
     const subscriptions: Subscription[] =
-      await subscriptionOperations.getSubscriptionForLockByOwner({
+      await subscriptionOperations.getSubscriptionsForLockByOwner({
         tokenId: keyId.toString(),
         owner: userAddress,
         network,

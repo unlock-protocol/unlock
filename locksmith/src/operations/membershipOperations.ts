@@ -24,7 +24,7 @@ export const getMembershipState = async ({
     Number(key?.lock?.version) >= 11 && key?.expiration !== MAX_UINT && isERC20
 
   const [subscription] =
-    await subscriptionOperations.getSubscriptionForLockByOwner({
+    await subscriptionOperations.getSubscriptionsForLockByOwner({
       tokenId,
       lockAddress,
       owner,
