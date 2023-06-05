@@ -20,8 +20,8 @@ const artifactsPath = path.resolve(
 )
 
 task('verify-proxy', 'Deploy and verify the TransparentProxy used by locks')
-  .addParam('publicLockAddress', 'the PublicLock template address')
-  .addParam('proxyAdminAddress', "Unlock's ProxyAdmin contract address")
+  .addOptionalParam('publicLockAddress', 'the PublicLock template address')
+  .addOptionalParam('proxyAdminAddress', "Unlock's ProxyAdmin contract address")
   .addOptionalParam(
     'transparentProxyAddress',
     'the address of TransparentProxy instance already deployed using this script'

@@ -22,6 +22,7 @@
  * can be picked up by the block explorer
  */
 const { ethers, run } = require('hardhat')
+const { networks } = require('@unlock-protocol/networks')
 const createLockCalldata = require('../test/helpers/createLockCalldata')
 const Locks = require('../test/fixtures/locks')
 
@@ -41,7 +42,18 @@ async function main({
 
   const calldata = await createLockCalldata({ args })
 
-  console.log(calldata)
+  const { chainId } = await ethers.provider.getNetwork()
+  if (!publicLockAddress) {
+    const { unlockAddress } = networks[chainId]
+    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    publicLockAddress = await unlock.publicLockAddress()
+  }
+
+  if (!proxyAdminAddress) {
+    const { unlockAddress } = networks[chainId]
+    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    proxyAdminAddress = await unlock.proxyAdminAddress()
+  }
 
   if (!transparentProxyAddress) {
     const TransparentProxy = await ethers.getContractFactory(
