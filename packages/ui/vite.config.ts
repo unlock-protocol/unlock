@@ -32,9 +32,7 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
-    svgr({
-      exportAsDefault: true, // exporting components by default, use ?url to export data:uri
-    }),
+    svgr(),
     nodePolyfills({
       // Whether to polyfill `node:` protocol imports.
       protocolImports: true,
