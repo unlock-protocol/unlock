@@ -14,7 +14,7 @@ export const DEFAULT_SEO: DefaultSeoProps = {
     site_name: 'unlock-protocol',
     images: [
       {
-        url: `/images/unlock.png`,
+        url: `${baseURL}/images/unlock.png`,
         alt: 'unlock-protocol',
       },
     ],
