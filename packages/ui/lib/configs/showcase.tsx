@@ -1,3 +1,4 @@
+import { Link } from '~/components/Link/Link'
 import { Button, HeaderNav, Footer, unlockEmailSubscription } from '..'
 
 const SHOWCASE_HEADER = {
@@ -7,7 +8,11 @@ const SHOWCASE_HEADER = {
   showSocialIcons: true,
   actions: [
     {
-      content: <Button variant="outlined-primary">Launch App</Button>,
+      content: (
+        <Link href="https://app.unlock-protocol.com/locks">
+          <Button variant="outlined-primary">Launch App</Button>
+        </Link>
+      ),
     },
   ],
   logo: {
