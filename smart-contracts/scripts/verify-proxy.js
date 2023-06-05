@@ -55,6 +55,13 @@ async function main({
     proxyAdminAddress = await unlock.proxyAdminAddress()
   }
 
+  console.table({
+    chainId,
+    publicLockAddress,
+    proxyAdminAddress,
+    calldata,
+  })
+
   if (!transparentProxyAddress) {
     const TransparentProxy = await ethers.getContractFactory(
       '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy'
