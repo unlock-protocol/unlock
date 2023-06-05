@@ -43,7 +43,7 @@ cp $REPO_ROOT/docker/development/eth-node/networks.json $REPO_ROOT/subgraph/netw
 cd $REPO_ROOT/subgraph
 yarn prepare:abis
 yarn codegen
-yarn graph build --network localhost
+yarn graph build --network localhost --verbose
 
 # now deploy the subgraph
 yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://localhost:8020/ 

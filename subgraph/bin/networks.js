@@ -13,7 +13,7 @@ const networkName = (n) => {
 
 const generateNetworksFile = async () => {
   const networks = Object.keys(networksConfig)
-    .filter((d) => !['networks', 'default', 'localhost'].includes(d))
+    .filter((d) => !['networks', 'default'].includes(d))
     .reduce((acc, chainName) => {
       const {
         startBlock,
@@ -43,7 +43,7 @@ const generateNetworksFile = async () => {
     }, {})
 
   fs.writeJSONSync(networkFilePath, networks, { spaces: 2 })
-  console.log(`Networks file saved at: ${networkFilePath}`)
+  console.log(`Networks file saved at: ${networkFilePath}`, networks)
 }
 
 module.exports = {
