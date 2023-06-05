@@ -21,6 +21,8 @@ import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { PricingData } from './PricingData'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
 
 interface Props {
   injectedProvider: unknown
@@ -47,8 +49,10 @@ export function ConfirmSwapAndPurchase({
     keyManagers,
     metadata,
     data,
+    renew,
   } = state.context
 
+  const { account } = useAuth()
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 
   // @ts-expect-error Property 'route' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
@@ -178,21 +182,39 @@ export function ConfirmSwapAndPurchase({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      await walletService.purchaseKeys(
-        {
+      const web3Service = new Web3Service(networks)
+      if (renew) {
+        const tokenId = await web3Service.tokenOfOwnerByIndex(
           lockAddress,
-          keyPrices,
-          owners: recipients!,
-          data: purchaseData,
-          keyManagers: keyManagers?.length ? keyManagers : undefined,
-          recurringPayments,
-          referrers,
-          totalApproval,
+          account!,
+          0,
+          lockNetwork
+        )
+        await walletService.extendKey({
+          lockAddress,
+          keyPrice,
+          tokenId,
+          data: purchaseData?.[0] || '0x',
+          referrer: referrers?.[0],
           swap,
-        },
-        {} /** Transaction params */,
-        onErrorCallback
-      )
+        })
+      } else {
+        await walletService.purchaseKeys(
+          {
+            lockAddress,
+            keyPrices,
+            owners: recipients!,
+            data: purchaseData,
+            keyManagers: keyManagers?.length ? keyManagers : undefined,
+            recurringPayments,
+            referrers,
+            totalApproval,
+            swap,
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      }
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)

@@ -51,6 +51,7 @@ export function ConfirmCrypto({
     keyManagers,
     metadata,
     data,
+    renew,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -189,20 +190,52 @@ export function ConfirmCrypto({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      await walletService.purchaseKeys(
-        {
-          lockAddress,
-          keyPrices,
-          owners: recipients!,
-          data: purchaseData,
-          keyManagers: keyManagers?.length ? keyManagers : undefined,
-          recurringPayments,
-          referrers,
-          totalApproval,
-        },
-        {} /** Transaction params */,
-        onErrorCallback
-      )
+      if (renew) {
+        if (lock!.publicLockVersion! <= 9) {
+          await walletService.purchaseKeys(
+            {
+              lockAddress,
+              owners: [account!],
+              referrers: [getReferrer(account!, paywallConfig)],
+              data: purchaseData,
+            },
+            {} /** transactionParams */,
+            onErrorCallback
+          )
+        } else {
+          const tokenId = await web3Service.tokenOfOwnerByIndex(
+            lockAddress,
+            account!,
+            0,
+            lockNetwork
+          )
+          await walletService.extendKey(
+            {
+              lockAddress,
+              tokenId: tokenId.toString(),
+              referrer: getReferrer(account!, paywallConfig),
+              data: purchaseData?.[0],
+            },
+            {} /** Transaction params */,
+            onErrorCallback
+          )
+        }
+      } else {
+        await walletService.purchaseKeys(
+          {
+            lockAddress,
+            keyPrices,
+            owners: recipients!,
+            data: purchaseData,
+            keyManagers: keyManagers?.length ? keyManagers : undefined,
+            recurringPayments,
+            referrers,
+            totalApproval,
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      }
     } catch (error: any) {
       setIsConfirming(false)
       console.error(error)

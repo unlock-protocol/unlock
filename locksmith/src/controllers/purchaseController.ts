@@ -12,6 +12,7 @@ import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
 import { getTotalPurchasePriceInCrypto } from '../utils/claim'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 
 const PaymentCaptureBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
@@ -64,7 +65,6 @@ export class PurchaseController {
       lock: lockAddress,
       userAddress,
     } = await PaymentCaptureBody.parseAsync(request.body)
-
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
       network
