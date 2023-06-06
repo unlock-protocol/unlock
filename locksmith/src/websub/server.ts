@@ -6,6 +6,8 @@ import { logger } from '../logger'
 import { renewFiatKeys } from './jobs/renewFiatKeys'
 import { runRenewal } from './helpers/renewal'
 import { renewKeys } from './jobs/renewKeys'
+import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
+import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 
 logger.info('Websub server started.')
 
@@ -70,6 +72,10 @@ cron.schedule(DAY_CRON_SCHEDULE, async () => {
     runRenewal((network) => renewKeys(network, within)),
     runRenewal((network) => renewFiatKeys(network, within)),
   ])
+
+  // Send "expired" and "expiring" email notification
+  await notifyExpiringKeysForNetwork()
+  await notifyExpiredKeysForNetwork()
 })
 
 cron.schedule(WEEKLY_CRON_SCHEDULE, async () => {
