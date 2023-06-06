@@ -13,6 +13,7 @@ import getLock from './getLock'
 import addLockManager from './addLockManager'
 import renounceLockManager from './renounceLockManager'
 import updateTransferFee from './updateTransferFee'
+import transferFrom from './transferFrom'
 
 import v4 from '../v4'
 
@@ -24,7 +25,6 @@ const {
   updateLockName,
   updateLockSymbol,
   updateRefundPenalty,
-  transferFrom,
 } = v4
 
 export default {

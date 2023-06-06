@@ -3,7 +3,7 @@ import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, accounts, chainId, lock
 
 export default ({ publicLockVersion }) => {
-  if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+  if (versionEqualOrAbove(publicLockVersion, 'v6')) {
     describe('transferFrom', () => {
       let tokenId
       let transactionHash

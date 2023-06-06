@@ -16,7 +16,6 @@ import updateLockSymbol from './updateLockSymbol'
 import setBaseTokenURI from './setBaseTokenURI'
 import updateRefundPenalty from './updateRefundPenalty'
 import getPurchaseKeysArguments from './getPurchaseKeysArguments'
-import transferFrom from './transferFrom'
 
 export default {
   getPurchaseKeysArguments,
@@ -39,5 +38,4 @@ export default {
   updateLockSymbol,
   setBaseTokenURI,
   updateRefundPenalty,
-  transferFrom,
 }
