@@ -106,7 +106,7 @@ export const goerli: NetworkConfig = {
       {
         id: HookType.GUILD,
         name: 'Guild',
-        address: '0xGU1LD',
+        address: '0x1AC9271D271b8E50537CAd54b330424C52A84822',
       },
     ],
   },
