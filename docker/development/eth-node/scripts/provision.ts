@@ -6,7 +6,7 @@
  * to make it easy to work with Unlock.
  */
 
-import { ethers, unlock } from 'hardhat'
+import { ethers, unlock, provider } from 'hardhat'
 
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
@@ -18,6 +18,7 @@ const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
 const users = []
 
+console.log(provider)
 if (process.env.LOCKSMITH_PURCHASER_ADDRESS) {
   users.push(process.env.LOCKSMITH_PURCHASER_ADDRESS)
 }
