@@ -129,7 +129,7 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const keyManagerAddress = networks[network].keyManagerAddress
 
-  // if the lock is expired, we use extend rather than purchase
+  // if the key is expired, we use extend rather than purchase
   if (expired) {
     const tokenId = await web3Service.tokenOfOwnerByIndex(
       lockAddress,
