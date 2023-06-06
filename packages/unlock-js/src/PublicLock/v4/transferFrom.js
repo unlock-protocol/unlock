@@ -5,12 +5,17 @@
  */
 
 export default async function (
-  { lockAddress, from, to, tokenId },
+  { lockAddress, owner, to, tokenId },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const transactionPromise = lockContract.transferFrom(from, to, tokenId)
+
+  if (!owner) {
+    owner = await this.signer.getAddress()
+  }
+
+  const transactionPromise = lockContract.transferFrom(owner, to, tokenId)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
