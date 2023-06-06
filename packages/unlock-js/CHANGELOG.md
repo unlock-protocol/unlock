@@ -1,5 +1,9 @@
 # Changes
 
+# 0.38.0
+
+- Add support for swap and purchase in key extension
+
 # 0.37.2
 
 - USDC on Polygon does not have a version function
