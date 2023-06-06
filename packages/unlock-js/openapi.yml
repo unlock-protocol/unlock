@@ -398,6 +398,9 @@ components:
         checkoutConfigId:
           type: string
           nullable: true
+        hookGuildId:
+          type: string
+          nullable: true
 
   parameters:
     Network:

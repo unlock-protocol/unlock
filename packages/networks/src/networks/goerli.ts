@@ -103,6 +103,11 @@ export const goerli: NetworkConfig = {
         name: 'Captcha',
         address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
       },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xGU1LD',
+      },
     ],
   },
 }
