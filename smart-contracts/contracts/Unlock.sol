@@ -329,7 +329,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert Unlock__MISSING_TEMPLATE();
     }
 
-    TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
+    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(
       lockAddress
     );
 

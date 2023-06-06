@@ -40,7 +40,7 @@
     "@graphql-codegen/typescript": "2.8.8",
     "@graphql-codegen/typescript-graphql-request": "4.5.9",
     "@graphql-codegen/typescript-operations": "2.5.13",
-    "@nomiclabs/hardhat-ethers": "2.2.2",
+    "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
@@ -54,7 +54,7 @@
     "vitest": "0.27.0"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "3.2.2",
+    "@uniswap/sdk-core": "3.2.3",
     "@uniswap/smart-order-router": "3.10.1",
     "graphql": "16.6.0",
     "graphql-request": "5.1.0",

@@ -16,11 +16,11 @@ task('gov', 'Submit (and validate) a proposal to UDT Governor contract')
 task('gov:submit', 'Submit a proposal to UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal, govAddress }) => {
+  .setAction(async ({ proposal: proposalPath, govAddress }) => {
     const { loadProposal } = require('../helpers/gov')
-    const prop = await loadProposal(resolve(proposal))
+    const proposal = await loadProposal(resolve(proposalPath))
     const submitProposal = require('../scripts/gov/submit')
-    return await submitProposal({ ...prop, govAddress })
+    return await submitProposal({ proposal, govAddress })
   })
 
 task('gov:vote', 'Vote for a proposal on UDT Governor contract')

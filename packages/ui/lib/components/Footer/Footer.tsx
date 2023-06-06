@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { SOCIAL_LINKS } from '../constants'
-import LogoUrl from './../../assets/unlock-footer-logo.svg'
+import LogoUrl from './../../assets/unlock-footer-logo.svg?url'
 
 import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
