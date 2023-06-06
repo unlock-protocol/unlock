@@ -19,6 +19,7 @@ import {
   ImageUpload,
   Modal,
   Placeholder,
+  minifyAddress,
 } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
@@ -33,7 +34,7 @@ import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { FiMapPin as MapPinIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import { useValidKey } from '~/hooks/useKey'
+import { useValidKey, useValidKeyBulk } from '~/hooks/useKey'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
@@ -43,6 +44,10 @@ import { useImageUpload } from '~/hooks/useImageUpload'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
+import { EventCheckoutUrl } from './EventCheckoutUrl'
+import { useGetLockSettings } from '~/hooks/useLockSettings'
+import { UNLIMITED_KEYS_COUNT } from '~/constants'
+import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -167,6 +172,172 @@ const CoverImageDrawer = ({
   )
 }
 
+interface CheckoutRegistrationCardProps {
+  isManager: boolean
+  lockAddress: string
+  network: number
+  onPurchase: () => void
+}
+
+const CheckoutRegistrationCard = ({
+  isManager,
+  lockAddress,
+  network,
+  onPurchase,
+}: CheckoutRegistrationCardProps) => {
+  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+
+  const config = useConfig()
+
+  const {
+    locks: eventLocks,
+    isLoading: isLoadingEventLocks,
+    checkoutConfig,
+  } = useGetEventLocksConfig({
+    lockAddress,
+    network,
+  })
+
+  const queries = useValidKeyBulk(eventLocks)
+  const isLoadingValidKeys = queries?.some((query) => query.isLoading)
+  const hasValidKey = queries?.map((query) => query.data).some((value) => value)
+
+  const injectedProvider = selectProvider(config)
+
+  if (isLoadingEventLocks || isLoadingValidKeys) {
+    return <Placeholder.Card size="md" />
+  }
+
+  // not match found for the assigned Checkout ID, for example could be deleted
+  if (eventLocks.length === 0) {
+    return (
+      <Card className="grid gap-6 mt-10 lg:mt-0">
+        <span className="text-2xl font-bold text-gray-900">Registration</span>
+        <span>
+          {isManager
+            ? 'The checkout URL assigned to this event is deleted or invalid. Please make sure to assign an existing one.'
+            : 'Registration details are not configured.'}
+        </span>
+      </Card>
+    )
+  }
+
+  return (
+    <>
+      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+        <Checkout
+          injectedProvider={injectedProvider as any}
+          paywallConfig={checkoutConfig as any}
+          handleClose={() => {
+            setCheckoutOpen(false)
+            onPurchase()
+          }}
+        />
+      </Modal>
+      <Card className="grid gap-6 mt-10 lg:mt-0">
+        <span className="text-2xl font-bold text-gray-900">Registration</span>
+        {hasValidKey ? (
+          <p className="text-lg">
+            🎉 You already have a ticket! You can view it in{' '}
+            <Link className="underline" href="/keychain">
+              your keychain
+            </Link>
+            .
+          </p>
+        ) : (
+          <div className="grid gap-6 md:gap-8">
+            {eventLocks?.map(({ lockAddress, network }) => {
+              return (
+                <LockPriceDetails
+                  key={lockAddress}
+                  lockAddress={lockAddress}
+                  network={network}
+                  showContract
+                />
+              )
+            })}
+          </div>
+        )}
+        <Button
+          variant="primary"
+          size="medium"
+          onClick={() => {
+            setCheckoutOpen(true)
+          }}
+        >
+          Register
+        </Button>
+      </Card>
+    </>
+  )
+}
+
+export const LockPriceDetails = ({
+  lockAddress,
+  network,
+  showContract = false,
+}: EventDetailsProps & { showContract?: boolean }) => {
+  const { lock, isLockLoading } = useLockData({
+    lockAddress,
+    network,
+  })
+
+  const price =
+    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
+
+  const keysLeft =
+    Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
+
+  const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+
+  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
+
+  const { data: symbol } = useGetLockCurrencySymbol({
+    lockAddress,
+    network,
+    contractAddress: lock?.currencyContractAddress,
+  })
+
+  if (isLockLoading) {
+    return (
+      <Placeholder.Root inline>
+        <Placeholder.Line width="sm" />
+        <Placeholder.Line width="sm" />
+      </Placeholder.Root>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-5">
+        <div className="flex items-center gap-2">
+          <>
+            {symbol && <CryptoIcon symbol={symbol} size={30} />}
+            <span>{price}</span>
+          </>
+        </div>
+        <div className="flex items-center gap-2">
+          <Icon icon={TicketIcon} size={30} />
+          {hasUnlimitedKeys ? (
+            <span className="text-base font-bold">&infin;</span>
+          ) : (
+            <span className="text-base font-bold">
+              {isSoldOut ? 'Sold out' : keysLeft}
+            </span>
+          )}
+          {!isSoldOut && <span className="text-gray-600">Left</span>}
+        </div>
+      </div>
+      {showContract && (
+        <div className="flex gap-2 flex-rows">
+          <span className="text-brand-gray">Ticket contract</span>
+          <AddressLink lockAddress={lockAddress} network={network} />
+        </div>
+      )}
+    </div>
+  )
+}
+
 export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
@@ -176,14 +347,16 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
-  const { data: symbol } = useGetLockCurrencySymbol({
+  const {
+    isLoading: isLoadingSettings,
+    data: settings,
+    refetch: refetchSettings,
+  } = useGetLockSettings({
     lockAddress,
     network,
-    contractAddress: lock?.currencyContractAddress,
   })
 
-  const price =
-    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
+  const hasCheckoutId = settings?.checkoutConfigId
 
   const keysLeft =
     Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
@@ -217,9 +390,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
+  const { locks: eventLocks, isLoading: isLoadingEventLocks } =
+    useGetEventLocksConfig({
+      lockAddress,
+      network,
+    })
+
+  const reload = async () => {
+    await Promise.allSettled([refetch(), refetchSettings()])
+  }
+
   const { isEvent } = getLockTypeByMetadata(metadata)
 
-  if (isMetadataLoading || isHasValidKeyLoading) {
+  if (isMetadataLoading || isLoadingSettings || isLoadingEventLocks) {
     return (
       <Placeholder.Root>
         <Placeholder.Card size="lg" />
@@ -327,7 +510,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const coverImage = eventData.ticket?.event_cover_image
 
   const RegistrationCard = () => {
-    if (isClaimableLoading || isLockLoading) {
+    if (
+      isClaimableLoading ||
+      isLockLoading ||
+      isLoadingSettings ||
+      isHasValidKeyLoading
+    ) {
       return <Placeholder.Card size="md" />
     }
 
@@ -344,21 +532,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </p>
         ) : (
           <>
-            <div className="flex items-center gap-5">
-              <div className="flex items-center gap-2">
-                <>
-                  {symbol && <CryptoIcon symbol={symbol} size={30} />}
-                  <span>{price}</span>
-                </>
-              </div>
-              <div className="flex items-center gap-2">
-                <Icon icon={TicketIcon} size={30} />
-                <span className="text-base font-bold">
-                  {isSoldOut ? 'Sold out' : keysLeft}
-                </span>
-                {!isSoldOut && <span className="text-gray-600">Left</span>}
-              </div>
-            </div>
+            <LockPriceDetails lockAddress={lockAddress} network={network} />
             {showWalletLess ? (
               <WalletlessRegistrationForm
                 lockAddress={lockAddress}
@@ -399,7 +573,10 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
-          handleClose={() => setCheckoutOpen(false)}
+          handleClose={() => {
+            setCheckoutOpen(false)
+            reload() // force refresh after eventual purchase
+          }}
         />
       </Modal>
 
@@ -447,13 +624,15 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
+        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
-            <div className="flex gap-2 flex-rows">
-              <span className="text-brand-gray">Ticket contract</span>
-              <AddressLink lockAddress={lockAddress} network={network} />
-            </div>
+            {!hasCheckoutId && (
+              <div className="flex gap-2 flex-rows">
+                <span className="text-brand-gray">Ticket contract</span>
+                <AddressLink lockAddress={lockAddress} network={network} />
+              </div>
+            )}
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
                 {hasDate && (
@@ -506,7 +685,21 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               </div>
             </section>
           </div>
-          {!isCheckoutOpen && <RegistrationCard />}
+          {!isCheckoutOpen && (
+            <>
+              {/** Prioritize Checkout URL if there is one set */}
+              {hasCheckoutId ? (
+                <CheckoutRegistrationCard
+                  isManager={isLockManager}
+                  lockAddress={lockAddress}
+                  network={network}
+                  onPurchase={reload}
+                />
+              ) : (
+                <RegistrationCard />
+              )}
+            </>
+          )}
         </section>
       </div>
 
@@ -540,11 +733,35 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 label="Verifiers"
                 description="Add & manage trusted users at the event to help check-in attendees"
               >
-                <VerifierForm
+                <div className="grid gap-2">
+                  {eventLocks?.map(({ lockAddress, network }) => {
+                    return (
+                      <Disclosure
+                        label={`Verifiers for ${minifyAddress(lockAddress)}`}
+                        key={lockAddress}
+                      >
+                        <VerifierForm
+                          lockAddress={lockAddress}
+                          network={network}
+                          isManager={isLockManager}
+                          disabled={!isLockManager}
+                        />
+                      </Disclosure>
+                    )
+                  })}
+                </div>
+              </Disclosure>
+
+              <Disclosure
+                label="Checkout URL"
+                description="Select a checkout URL that will be used for this event."
+              >
+                <EventCheckoutUrl
                   lockAddress={lockAddress}
                   network={network}
                   isManager={isLockManager}
                   disabled={!isLockManager}
+                  onCheckoutChange={reload}
                 />
               </Disclosure>
             </div>
