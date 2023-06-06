@@ -402,12 +402,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const { isEvent } = getLockTypeByMetadata(metadata)
 
-  if (
-    isMetadataLoading ||
-    isHasValidKeyLoading ||
-    isLoadingSettings ||
-    isLoadingEventLocks
-  ) {
+  if (isMetadataLoading || isLoadingSettings || isLoadingEventLocks) {
     return (
       <Placeholder.Root>
         <Placeholder.Card size="lg" />
@@ -515,7 +510,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const coverImage = eventData.ticket?.event_cover_image
 
   const RegistrationCard = () => {
-    if (isClaimableLoading || isLockLoading || isLoadingSettings) {
+    if (
+      isClaimableLoading ||
+      isLockLoading ||
+      isLoadingSettings ||
+      isHasValidKeyLoading
+    ) {
       return <Placeholder.Card size="md" />
     }
 
