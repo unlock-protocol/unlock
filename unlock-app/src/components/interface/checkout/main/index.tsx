@@ -208,7 +208,9 @@ export function Checkout({
           />
         )
       }
-
+      case 'GUILD': {
+        return <p>Guild!</p>
+      }
       case 'PASSWORD': {
         return (
           <Password

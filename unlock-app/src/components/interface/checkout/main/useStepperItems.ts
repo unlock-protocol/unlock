@@ -63,6 +63,7 @@ export function useStepperItems(
   const isPassword = hook === 'password' || hookType === 'password'
   const isCaptcha = hook === 'captcha' || hookType === 'captcha'
   const isPromo = hook === 'promocode' || hookType === 'promocode'
+  const isGuild = hook === 'guild' || hookType === 'guild'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
@@ -95,6 +96,11 @@ export function useStepperItems(
       ? {
           name: 'Enter promo code',
           to: 'PROMO',
+        }
+      : isGuild
+      ? {
+          name: 'Guild',
+          to: 'GUILD',
         }
       : {
           name: 'Solve captcha',
