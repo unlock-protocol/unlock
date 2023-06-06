@@ -11,7 +11,6 @@ import {
 } from './constants'
 import * as pricingOperations from '../operations/pricingOperations'
 import { getSettings } from '../operations/lockSettingOperations'
-import { PriceResults } from '../operations/pricingOperations'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
