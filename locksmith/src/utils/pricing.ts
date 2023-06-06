@@ -11,6 +11,7 @@ import {
 } from './constants'
 import * as pricingOperations from '../operations/pricingOperations'
 import { getSettings } from '../operations/lockSettingOperations'
+import { PriceResults } from '../operations/pricingOperations'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -74,9 +75,9 @@ interface getLockUsdPricingProps {
 }
 
 type UsdLockPricingResults = {
-  symbol?: string
-  price?: number
-  decimals?: number
+  symbol: string
+  price: number
+  decimals: number
   isPriceFromSettings?: boolean
 }
 
@@ -84,14 +85,11 @@ type UsdLockPricingResults = {
 export const getLockUsdPricing = async ({
   lockAddress,
   network,
-}: getLockUsdPricingProps): Promise<Required<UsdLockPricingResults>> => {
+}: getLockUsdPricingProps): Promise<UsdLockPricingResults> => {
   const { decimals, currencyContractAddress } = await getLockKeyPricing({
     lockAddress,
     network,
   })
-
-  // make sure to have this params
-  let usdPricing: UsdLockPricingResults
 
   const { creditCardPrice } = await getSettings({
     lockAddress,
@@ -101,23 +99,23 @@ export const getLockUsdPricing = async ({
   // priority to custom credit card price
   if (creditCardPrice) {
     const creditCardPriceInUsd = creditCardPrice / 100
-    usdPricing = {
+    return {
       symbol: '$',
       price: creditCardPriceInUsd,
       decimals,
       isPriceFromSettings: true, // keep track that is price from settings
     }
-  } else {
-    usdPricing = await pricingOperations.getDefiLammaPrice({
-      network,
-      erc20Address:
-        !currencyContractAddress ||
-        currencyContractAddress === ethers.constants.AddressZero
-          ? undefined
-          : currencyContractAddress,
-      amount: 1,
-    })
   }
+
+  // get formatted price
+  const usdPricing = await pricingOperations.getDefiLammaPrice({
+    network,
+    erc20Address:
+      !currencyContractAddress ||
+      currencyContractAddress === ethers.constants.AddressZero
+        ? undefined
+        : currencyContractAddress,
+  })
 
   return usdPricing as Required<UsdLockPricingResults>
 }
