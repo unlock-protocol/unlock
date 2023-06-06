@@ -36,6 +36,7 @@ export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  metadata = 'checkout.metadata',
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
   enable = 'checkout.enable',
@@ -199,6 +200,7 @@ export class Paywall {
     this.child!.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
     this.child!.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
     this.child!.on(CheckoutEvents.enable, this.handleEnable)
+    this.child!.on(CheckoutEvents.metadata, this.handleMetadataEvent)
 
     // transactionInfo event also carries transaction hash.
     this.child!.on(
@@ -225,6 +227,10 @@ export class Paywall {
     if (!this.paywallConfig.pessimistic && hash && lock) {
       this.unlockPage([lock])
     }
+  }
+
+  async handleMetadataEvent(metadata: any) {
+    dispatchEvent(unlockEvents.metadata, metadata)
   }
 
   handleUserInfoEvent = async (info: UserInfo) => {
