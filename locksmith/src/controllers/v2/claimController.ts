@@ -111,16 +111,17 @@ export const claim: RequestHandler = async (request, response: Response) => {
       metadata,
     })
   }
-
   const web3Service = new Web3Service(networks)
-  const alreadyHasKey = await web3Service.getHasValidKey(
-    lockAddress,
-    owner,
-    network
-  )
 
-  // Is user already has a key, claim will likely fail
-  if (alreadyHasKey) {
+  const [member, total] = await Promise.all([
+    web3Service.getHasValidKey(lockAddress, owner, network),
+    web3Service.totalKeys(lockAddress, owner, network),
+  ])
+
+  const expired = !member && total > 0
+
+  // Is user already has a valid key, claim will likely fail
+  if (member) {
     return response.status(400).send({
       message: 'User already has key',
     })
@@ -128,19 +129,41 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const keyManagerAddress = networks[network].keyManagerAddress
 
-  return fulfillmentDispatcher.purchaseKey(
-    {
+  // if the lock is expired, we use extend rather than purchase
+  if (expired) {
+    const tokenId = await web3Service.tokenOfOwnerByIndex(
       lockAddress,
       owner,
+      0,
+      network
+    )
+    return fulfillmentDispatcher.extendKey(
+      lockAddress,
+      tokenId,
       network,
-      data,
-      keyManager: email ? keyManagerAddress : owner,
-    },
-    async (_: any, transactionHash: string) => {
-      return response.send({
-        transactionHash,
+      data || '0x',
+      async (_, transactionHash) => {
+        return response.send({
+          transactionHash,
+          owner,
+        })
+      }
+    )
+  } else {
+    return fulfillmentDispatcher.purchaseKey(
+      {
+        lockAddress,
         owner,
-      })
-    }
-  )
+        network,
+        data,
+        keyManager: email ? keyManagerAddress : owner,
+      },
+      async (_, transactionHash) => {
+        return response.send({
+          transactionHash,
+          owner,
+        })
+      }
+    )
+  }
 }
