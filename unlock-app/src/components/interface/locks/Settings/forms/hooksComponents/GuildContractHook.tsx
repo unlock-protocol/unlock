@@ -1,9 +1,6 @@
-import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { Select } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
-import networks from '@unlock-protocol/networks'
-import { Hook, HookType } from '@unlock-protocol/types'
 import { useUserGuilds } from '~/hooks/useUserGuilds'
 import Link from 'next/link'
 import {
@@ -22,10 +19,6 @@ export const GuildContractHook = ({
     network,
   })
   const [hookGuildId, setHookGuildId] = useState<string | null>(null)
-  const hookAddress =
-    networks?.[network]?.hooks?.onKeyPurchaseHook?.find(
-      (hook: Hook) => hook.id === HookType.GUILD
-    )?.address ?? ''
 
   const { data: guilds, isLoading: isLoadingGuilds } = useUserGuilds()
 
@@ -75,7 +68,6 @@ export const GuildContractHook = ({
         <Select
           onChange={onGuildSelected}
           options={guildsAsOptions}
-          required
           defaultValue={hookGuildId}
           description={<p>Select a Guild for which you are an admin. </p>}
         />
