@@ -1,7 +1,6 @@
 import { ZERO } from '../../constants'
 import getPurchaseKeysArguments from './getPurchaseKeysArguments'
 import approveAllowance from '../utils/approveAllowance'
-import { ethers } from 'ethers'
 
 /**
  * Purchase key function. This implementation requires the following
