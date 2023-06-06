@@ -9,7 +9,7 @@ export default async function (
   transactionOptions = {},
   callback
 ) {
-  const lockContract = await this.getLockContract(lockAddress)
+  const lockContract = await this.getLockContract(lockAddress, this.provider)
 
   if (!owner) {
     owner = await this.signer.getAddress()
