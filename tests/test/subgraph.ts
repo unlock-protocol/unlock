@@ -311,8 +311,7 @@ describe('Receipts', function () {
     expect(parseInt(receiptInGraph.gasTotal, 10)).to.greaterThan(0)
   })
 
-  it.only('created the receipt successfully for an ERC20 currency lock', async () => {
-    console.log('I WAS HERE!!!')
+  it('created the receipt successfully for an ERC20 currency lock', async () => {
     const locks = await subgraph.getLocks()
     console.log({ locks })
     const lockAddress = locks.find(

@@ -13,13 +13,13 @@ const { localhost: subgraphConfig } = fs.readJSONSync(
   SUBGRAPH_NETWORKS_CONFIG_PATH
 )
 
-const unlockAddress = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6' // subgraphConfig.Unlock.address
+const unlockAddress = subgraphConfig.Unlock.address
 
 const config: HardhatUserConfig = {
   solidity: '0.8.9',
   networks: {
     docker: {
-      url: 'http://0.0.0.0:8545',
+      url: 'http://eth-node:8545',
     },
   },
   unlock: {
