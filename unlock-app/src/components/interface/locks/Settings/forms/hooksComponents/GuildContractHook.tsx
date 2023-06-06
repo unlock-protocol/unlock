@@ -9,11 +9,9 @@ import {
 } from '~/hooks/useLockSettings'
 
 export const GuildContractHook = ({
-  defaultValue,
   lockAddress,
   network,
 }: CustomComponentProps) => {
-  const [isSet, setIsSet] = useState(false)
   const { isLoading: isLoadingSettings, data: settings } = useGetLockSettings({
     lockAddress,
     network,
@@ -25,10 +23,6 @@ export const GuildContractHook = ({
   useEffect(() => {
     setHookGuildId(settings?.hookGuildId ?? null)
   }, [settings])
-
-  useEffect(() => {
-    setIsSet(false)
-  }, [defaultValue])
 
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
@@ -71,13 +65,6 @@ export const GuildContractHook = ({
           defaultValue={hookGuildId}
           description={<p>Select a Guild for which you are an admin. </p>}
         />
-      )}
-
-      {isSet && (
-        <span className="text-sm text-gray-600">
-          {`Remember to press "Apply" at the end of the form to apply
-                changes.`}
-        </span>
       )}
     </div>
   )
