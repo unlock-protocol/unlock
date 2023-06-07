@@ -40,7 +40,7 @@ const LockSettingSchema = z.object({
     })
     .nullish(),
   hookGuildId: z
-    .string({
+    .number({
       description: 'Guild Id for the Guild Hook.',
     })
     .nullish(),

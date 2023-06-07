@@ -46,7 +46,9 @@ export function useStepperItems(
     existingMember,
     payment,
   } = state.context as CheckoutMachineContext
-
+  if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
+    return []
+  }
   const [address, config] = Object.entries(paywallConfig.locks)[0]
   const hasOneLock = Object.keys(paywallConfig.locks).length === 1
   const lockConfig = {

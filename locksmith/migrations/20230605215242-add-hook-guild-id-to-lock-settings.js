@@ -5,7 +5,7 @@ const table = 'LockSettings'
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addColumn(table, 'hookGuildId', {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: true,
       defaultValue: null,
     })

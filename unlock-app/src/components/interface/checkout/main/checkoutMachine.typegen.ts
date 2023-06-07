@@ -7,7 +7,7 @@ export interface Typegen0 {
   }
   invokeSrcNameMap: {}
   missingImplementations: {
-    actions: never
+    actions: 'submitGuild'
     delays: never
     guards: never
     services: never
@@ -23,6 +23,7 @@ export interface Typegen0 {
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
     submitData: 'SUBMIT_DATA'
+    submitGuild: 'SUBMIT_GUILD'
     submitPassword: 'SUBMIT_PASSWORD'
     submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
@@ -31,6 +32,7 @@ export interface Typegen0 {
   eventsCausingGuards: {
     isCardPayment: 'BACK'
     requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireGuild: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
     requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requirePromo: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
@@ -42,6 +44,7 @@ export interface Typegen0 {
     | 'CAPTCHA'
     | 'CARD'
     | 'CONFIRM'
+    | 'GUILD'
     | 'MESSAGE_TO_SIGN'
     | 'METADATA'
     | 'MINTING'
