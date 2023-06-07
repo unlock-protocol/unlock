@@ -9,7 +9,7 @@ const devConfig: Config = {
   baseURL:
     process.env.NEXT_PUBLIC_URL_BASE ?? 'https://staging.unlock-protocol.com',
   appURL:
-    process.env.NEXT_PUBLIC_UNLOCK_APP_URL ??
+    process.env.NEXT_PUBLIC_UNLOCK_APP_URI ??
     'https://staging-app.unlock-protocol.com',
   gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
@@ -18,7 +18,9 @@ const stagingConfig: Config = {
   gaId: '0',
   gaTmId: '0',
   baseURL: 'https://staging.unlock-protocol.com',
-  appURL: 'https://staging-app.unlock-protocol.com',
+  appURL:
+    process.env.NEXT_PUBLIC_UNLOCK_APP_URI ??
+    'https://staging-app.unlock-protocol.com',
   gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
 
