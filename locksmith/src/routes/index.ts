@@ -33,6 +33,8 @@ import stripeRouter from './v2/stripe'
 import lockSettingsRouter from './v2/lock-settings'
 import certificateRouter from './v2/certificate'
 import ogRouter from './v2/og'
+import hooksRooter from './v2/hooks'
+
 const router = express.Router({ mergeParams: true })
 
 // Set the chain!
@@ -92,6 +94,7 @@ router.use('/v2/stripe', stripeRouter)
 router.use('/v2/lock-settings', lockSettingsRouter)
 router.use('/v2/certificate', certificateRouter)
 router.use('/v2/og', ogRouter)
+router.use('/v2/hooks', hooksRooter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
