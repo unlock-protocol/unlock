@@ -184,7 +184,7 @@ export default class Dispatcher {
       data?: string
       keyManager?: string
     },
-    cb?: any
+    cb?: (error: any, hash: string | null) => Promise<unknown>
   ) {
     const { network, lockAddress, owner, data, keyManager } = options
     const walletService = new WalletService(networks)
@@ -258,6 +258,36 @@ export default class Dispatcher {
           lockAddress,
           tokenId: keyId.toString(),
           duration: 0,
+        },
+        {} /** TransactionOptions */,
+        callback
+      )
+    )
+  }
+
+  /**
+   * Extends an existing NFT membership
+   * @param lockAddress
+   * @param keyId
+   * @param network
+   * @param callback
+   */
+  async extendKey(
+    lockAddress: string,
+    keyId: number,
+    network: number,
+    data: string,
+    callback: (error: any, hash: string | null) => Promise<unknown>
+  ) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getPurchaser(network)
+    await walletService.connect(provider, wallet)
+    return executeAndRetry(
+      walletService.extendKey(
+        {
+          lockAddress,
+          tokenId: keyId.toString(),
+          data,
         },
         {} /** TransactionOptions */,
         callback
