@@ -36,7 +36,6 @@ async function main() {
     calls: [proposalGrantRoleArgs, proposalRevokeRoleArgs],
     proposalName: 'Switch Timelock admin role to the new Governor',
   }
-  console.log(proposalArgs)
 
   return proposalArgs
 }
