@@ -27,36 +27,55 @@ const createLockCalldata = require('../test/helpers/createLockCalldata')
 const Locks = require('../test/fixtures/locks')
 
 async function main({
+  calldata,
+  unlockAddress,
+  lockVersion,
   publicLockAddress,
   proxyAdminAddress,
   transparentProxyAddress,
 }) {
-  const name = 'FIRST'
-  const args = [
-    Locks[name].expirationDuration,
-    ethers.constants.AddressZero,
-    Locks[name].keyPrice,
-    Locks[name].maxNumberOfKeys,
-    Locks[name].lockName,
-  ]
-
-  const calldata = await createLockCalldata({ args })
+  if (!calldata) {
+    const name = 'FIRST'
+    const args = [
+      Locks[name].expirationDuration,
+      ethers.constants.AddressZero,
+      Locks[name].keyPrice,
+      Locks[name].maxNumberOfKeys,
+      Locks[name].lockName,
+    ]
+    calldata = await createLockCalldata({ args })
+  }
 
   const { chainId } = await ethers.provider.getNetwork()
+  if (transparentProxyAddress) {
+    const lock = await ethers.getContractAt(
+      'PublicLock',
+      transparentProxyAddress
+    )
+    unlockAddress = await lock.unlockProtocol()
+  } else {
+    ;({ unlockAddress } = networks[chainId])
+  }
+
+  if (lockVersion) {
+    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    publicLockAddress = await unlock.publicLockImpls(lockVersion)
+  }
+
   if (!publicLockAddress) {
-    const { unlockAddress } = networks[chainId]
     const unlock = await ethers.getContractAt('Unlock', unlockAddress)
     publicLockAddress = await unlock.publicLockAddress()
   }
 
   if (!proxyAdminAddress) {
-    const { unlockAddress } = networks[chainId]
     const unlock = await ethers.getContractAt('Unlock', unlockAddress)
     proxyAdminAddress = await unlock.proxyAdminAddress()
   }
 
   console.table({
     chainId,
+    unlockAddress,
+    lockVersion,
     publicLockAddress,
     proxyAdminAddress,
     calldata,
