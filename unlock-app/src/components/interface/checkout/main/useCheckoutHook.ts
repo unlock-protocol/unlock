@@ -71,8 +71,6 @@ export function useCheckoutHook(service: CheckoutService) {
                 }
               }
 
-              console.log({ hookType })
-
               return {
                 [lockAddress?.toLowerCase()]: hookType,
               }

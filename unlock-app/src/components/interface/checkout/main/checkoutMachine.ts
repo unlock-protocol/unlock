@@ -76,6 +76,7 @@ export interface SubmitPasswordEvent {
 
 export interface SubmitGuildEvent {
   type: 'SUBMIT_GUILD'
+  data: string[]
 }
 
 export interface SubmitPromoEvent {
@@ -315,11 +316,8 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'GUILD',
-              cond: (ctx, event) => {
-                console.log('I WAS HERE TO CHECK IF THE HOOK IS A GUILD HOOK')
-                console.log(ctx)
-                const isGuild = ctx?.hook === 'guild'
-                return !!isGuild && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'guild'
               },
             },
             {
