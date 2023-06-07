@@ -301,17 +301,15 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'PASSWORD',
-              cond: (ctx, event) => {
-                const isPassword = ctx?.hook === 'password'
-                return !!isPassword && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'password'
               },
             },
             {
               actions: ['selectLock'],
               target: 'PROMO',
-              cond: (ctx, event) => {
-                const isPromo = ctx?.hook === 'promocode'
-                return !!isPromo && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'promocode'
               },
             },
             {
@@ -327,9 +325,8 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'CAPTCHA',
-              cond: (ctx, event) => {
-                const isCaptcha = ctx?.hook === 'captcha'
-                return !!isCaptcha && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'captcha'
               },
             },
             {
