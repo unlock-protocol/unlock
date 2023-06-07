@@ -126,6 +126,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
+    window.top === window &&
     !enableCreditCard &&
     networkConfig.universalCard?.cardPurchaserAddress &&
     lock.currencyContractAddress?.toLowerCase()?.trim() ===
