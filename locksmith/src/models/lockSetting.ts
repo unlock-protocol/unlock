@@ -14,7 +14,7 @@ export class LockSetting extends Model<
   declare emailSender?: string | null
   declare slug?: string
   declare checkoutConfigId?: string | null
-  declare hookGuildId?: string | null
+  declare hookGuildId?: number | null
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -60,7 +60,7 @@ LockSetting.init(
       defaultValue: null,
     },
     hookGuildId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,
     },
