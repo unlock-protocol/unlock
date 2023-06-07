@@ -3,8 +3,6 @@ type Config = Record<
   string
 >
 
-const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
-
 const devConfig: Config = {
   gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID ?? '0',
   gaTmId: process.env.NEXT_PUBLIC_UNLOCK_GA_TM_ID ?? '0',
@@ -43,4 +41,4 @@ function getUnlockConfig(environment?: string) {
   }
 }
 
-export const unlockConfig = getUnlockConfig(env)
+export const unlockConfig = getUnlockConfig(process.env.NEXT_PUBLIC_UNLOCK_ENV)
