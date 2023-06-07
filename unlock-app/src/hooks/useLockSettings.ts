@@ -74,7 +74,6 @@ interface SaveLockProps {
   creditCardPrice?: number | null
   emailSender?: string | null
   checkoutConfigId?: string | null
-  hookGuildId?: string | null
 }
 
 interface SaveLockProps {
@@ -86,7 +85,6 @@ interface SaveLockProps {
   creditCardPrice?: number | null
   emailSender?: string | null
   checkoutConfigId?: string | null
-  hookGuildId?: string | null
 }
 
 export function useSaveLockSettings() {

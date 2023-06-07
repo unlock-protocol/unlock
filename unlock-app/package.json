@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@enzoferey/ethers-error-parser": "0.2.3",
-    "@guildxyz/sdk": "1.1.1",
     "@headlessui/react": "1.7.15",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.1.0",
@@ -85,7 +84,7 @@
     "@vitejs/plugin-react": "4.0.0",
     "@vitest/coverage-c8": "0.31.4",
     "autoprefixer": "10.4.14",
-    "jsdom": "22.1.0",
+    "jsdom": "^22.1.0",
     "postcss": "8.4.24",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "3.3.2",

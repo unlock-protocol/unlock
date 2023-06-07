@@ -46,9 +46,7 @@ export function useStepperItems(
     existingMember,
     payment,
   } = state.context as CheckoutMachineContext
-  if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
-    return []
-  }
+
   const [address, config] = Object.entries(paywallConfig.locks)[0]
   const hasOneLock = Object.keys(paywallConfig.locks).length === 1
   const lockConfig = {
@@ -65,7 +63,6 @@ export function useStepperItems(
   const isPassword = hook === 'password' || hookType === 'password'
   const isCaptcha = hook === 'captcha' || hookType === 'captcha'
   const isPromo = hook === 'promocode' || hookType === 'promocode'
-  const isGuild = hook === 'guild' || hookType === 'guild'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
@@ -98,11 +95,6 @@ export function useStepperItems(
       ? {
           name: 'Enter promo code',
           to: 'PROMO',
-        }
-      : isGuild
-      ? {
-          name: 'Guild',
-          to: 'GUILD',
         }
       : {
           name: 'Solve captcha',
