@@ -17,17 +17,17 @@ async function main() {
   console.log("// Refer to 'utils/parser.ts' and 'yarn build:index' for more\n")
 
   exports.forEach(({ contractName, versionNumber, abiPath }) =>
-    console.log(`import ${contractName}${versionNumber} from '${abiPath}' `)
+    console.log(`import ${contractName}${versionNumber} from '${abiPath}'`)
   )
 
   console.log("import LockSerializer from './abis/utils/LockSerializer.json'")
   console.log('\n\n// exports')
 
   exports.forEach(({ contractName, versionNumber }) =>
-    console.log(`export {${contractName}${versionNumber}}`)
+    console.log(`export { ${contractName}${versionNumber} }`)
   )
 
-  console.log('export {LockSerializer}')
+  console.log('export { LockSerializer }')
 }
 
 main()
