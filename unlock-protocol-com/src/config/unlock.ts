@@ -3,15 +3,13 @@ type Config = Record<
   string
 >
 
-const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
-
 const devConfig: Config = {
   gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID ?? '0',
   gaTmId: process.env.NEXT_PUBLIC_UNLOCK_GA_TM_ID ?? '0',
   baseURL:
     process.env.NEXT_PUBLIC_URL_BASE ?? 'https://staging.unlock-protocol.com',
   appURL:
-    process.env.NEXT_PUBLIC_UNLOCK_APP_URL ??
+    process.env.NEXT_PUBLIC_UNLOCK_APP_URI ??
     'https://staging-app.unlock-protocol.com',
   gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
@@ -20,7 +18,9 @@ const stagingConfig: Config = {
   gaId: '0',
   gaTmId: '0',
   baseURL: 'https://staging.unlock-protocol.com',
-  appURL: 'https://staging-app.unlock-protocol.com',
+  appURL:
+    process.env.NEXT_PUBLIC_UNLOCK_APP_URI ??
+    'https://staging-app.unlock-protocol.com',
   gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
 
@@ -43,4 +43,4 @@ function getUnlockConfig(environment?: string) {
   }
 }
 
-export const unlockConfig = getUnlockConfig(env)
+export const unlockConfig = getUnlockConfig(process.env.NEXT_PUBLIC_UNLOCK_ENV)
