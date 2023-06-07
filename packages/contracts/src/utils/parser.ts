@@ -27,7 +27,7 @@ async function main() {
     console.log(`export { ${contractName}${versionNumber} }`)
   )
 
-  console.log('export {LockSerializer}')
+  console.log('export { LockSerializer }')
 }
 
 main()
