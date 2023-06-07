@@ -42,6 +42,7 @@ export enum HookType {
   CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
   CAPTCHA = 'CAPTCHA',
+  GUILD = 'GUILD',
 }
 
 export const HooksName = [
