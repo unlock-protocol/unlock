@@ -148,6 +148,146 @@ export const createPaymentIntent: RequestHandler = async (
   return response.send(paymentIntentDetails)
 }
 
+const PaymentCaptureBody = z.object({
+  lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
+  network: z.number(),
+  userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
+  recipients: z.array(
+    z.string().transform((item) => Normalizer.ethereumAddress(item))
+  ),
+  referrers: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  data: z
+    .array(z.union([z.string(), z.null()]))
+    .nullish()
+    .default([]),
+  paymentIntent: z.string(),
+})
+
+export const captureExtension: RequestHandler = async (request, response) => {
+  const {
+    network,
+    recipients,
+    paymentIntent: paymentIntentId,
+    data,
+    referrers,
+    lock: lockAddress,
+    userAddress,
+  } = await PaymentCaptureBody.parseAsync(request.body)
+
+  const dispatcher = new Dispatcher()
+  const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(network)
+  if (!hasEnoughToPayForGas) {
+    return response.status(400).send({
+      error: `Purchaser does not have enough to pay for gas on ${network}`,
+    })
+  }
+
+  const soldOut = await isSoldOut(lockAddress, network, recipients.length)
+
+  if (soldOut) {
+    // TODO: Cancel authorization
+    return response.status(400).send({
+      error: 'Lock is sold out.',
+    })
+  }
+
+  try {
+    const processor = new PaymentProcessor()
+    const { charge, paymentIntent, paymentIntentRecord } =
+      await processor.getPaymentIntentRecordAndCharge({
+        userAddress,
+        lockAddress,
+        network,
+        paymentIntentId,
+        recipients,
+        referrers: referrers || [],
+        data: data || [],
+      })
+
+    const fulfillmentDispatcher = new Dispatcher()
+
+    const transactionHandler = async (_: any, transactionHash: string) => {
+      // Update our charge object
+      charge.transactionHash = transactionHash
+      await charge.save()
+
+      // Update Stripe's payment Intent
+      await stripe.paymentIntents.update(
+        paymentIntentId,
+        {
+          metadata: {
+            transactionHash,
+          },
+        },
+        {
+          stripeAccount: paymentIntentRecord.connectedStripeId,
+        }
+      )
+
+      // We only charge the card when everything else was successful
+      await stripe.paymentIntents.capture(paymentIntentId, {
+        stripeAccount: paymentIntentRecord.connectedStripeId,
+      })
+      // Send the transaction hash without waiting.
+      response.status(201).send({
+        transactionHash,
+      })
+    }
+    // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
+    // This should be fine though since grantKeys transaction should succeed anyway
+    const items: Record<'id' | 'owner', string>[] | null =
+      await fulfillmentDispatcher.grantKeys(
+        paymentIntent.metadata.lock,
+        paymentIntent.metadata.recipient.split(',').map((recipient) => ({
+          recipient,
+        })),
+        parseInt(paymentIntent.metadata.network, 10),
+        transactionHandler
+      )
+
+    /**
+     * For now, we are only allowing subscription for the user who purchased the key, not for the multiple recipients
+     * because we don't have a way for them to "accept" the subscription and we don't want owner to be charged for all of them
+     * without a way to manage these from the dashboard.
+     */
+    const key = items?.find((item) => item.owner === userAddress)
+
+    if (!key) {
+      return
+    }
+
+    const split = recipients?.length || 1
+    const subscription = new KeySubscription()
+    subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
+    subscription.stripeCustomerId = paymentIntentRecord.stripeCustomerId
+    subscription.keyId = Number(key.id)
+    subscription.amount = paymentIntent.amount / split
+    subscription.unlockServiceFee = paymentIntent.application_fee_amount
+      ? paymentIntent.application_fee_amount / split
+      : 0
+    subscription.lockAddress = lockAddress
+    subscription.userAddress = userAddress
+    subscription.network = network
+    subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
+    await subscription.save()
+
+    logger.info(
+      `Subscription ${subscription.id} created for ${subscription.userAddress} on ${subscription.network} and for lock ${subscription.lockAddress}. It will renew key ${subscription.keyId} for ${subscription.recurring}`
+    )
+
+    return
+  } catch (error) {
+    if (response.headersSent) {
+      return
+    }
+    logger.error('There was an error when capturing payment', error)
+    return response.status(400).send({ error: error.message })
+  }
+}
+
 export const removePaymentMethods: RequestHandler = async (
   request,
   response

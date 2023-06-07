@@ -99,6 +99,33 @@ export class PurchaseController {
 
       const fulfillmentDispatcher = new Dispatcher()
 
+      const transactionHandler = async (_: any, transactionHash: string) => {
+        // Update our charge object
+        charge.transactionHash = transactionHash
+        await charge.save()
+
+        // Update Stripe's payment Intent
+        await stripe.paymentIntents.update(
+          paymentIntentId,
+          {
+            metadata: {
+              transactionHash,
+            },
+          },
+          {
+            stripeAccount: paymentIntentRecord.connectedStripeId,
+          }
+        )
+
+        // We only charge the card when everything else was successful
+        await stripe.paymentIntents.capture(paymentIntentId, {
+          stripeAccount: paymentIntentRecord.connectedStripeId,
+        })
+        // Send the transaction hash without waiting.
+        response.status(201).send({
+          transactionHash,
+        })
+      }
       // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
       // This should be fine though since grantKeys transaction should succeed anyway
       const items: Record<'id' | 'owner', string>[] | null =
@@ -108,33 +135,7 @@ export class PurchaseController {
             recipient,
           })),
           parseInt(paymentIntent.metadata.network, 10),
-          async (_: any, transactionHash: string) => {
-            // Update our charge object
-            charge.transactionHash = transactionHash
-            await charge.save()
-
-            // Update Stripe's payment Intent
-            await stripe.paymentIntents.update(
-              paymentIntentId,
-              {
-                metadata: {
-                  transactionHash,
-                },
-              },
-              {
-                stripeAccount: paymentIntentRecord.connectedStripeId,
-              }
-            )
-
-            // We only charge the card when everything else was successful
-            await stripe.paymentIntents.capture(paymentIntentId, {
-              stripeAccount: paymentIntentRecord.connectedStripeId,
-            })
-            // Send the transaction hash without waiting.
-            response.status(201).send({
-              transactionHash,
-            })
-          }
+          transactionHandler
         )
 
       /**
@@ -148,20 +149,30 @@ export class PurchaseController {
         return
       }
 
-      const split = recipients?.length || 1
-      const subscription = new KeySubscription()
-      subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
-      subscription.stripeCustomerId = paymentIntentRecord.stripeCustomerId
-      subscription.keyId = Number(key.id)
-      subscription.amount = paymentIntent.amount / split
-      subscription.unlockServiceFee = paymentIntent.application_fee_amount
-        ? paymentIntent.application_fee_amount / split
+      const count = recipients?.length || 1
+      const amount = paymentIntent.amount / count
+      const unlockServiceFee = paymentIntent.application_fee_amount
+        ? paymentIntent.application_fee_amount / count
         : 0
-      subscription.lockAddress = lockAddress
-      subscription.userAddress = userAddress
-      subscription.network = network
-      subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
-      await subscription.save()
+      const recurring = Number(paymentIntent.metadata.recurring || 0)
+      const keyId = Number(key.id)
+
+      const [subscription] = await KeySubscription.upsert(
+        {
+          lockAddress,
+          userAddress,
+          network,
+          keyId,
+          amount,
+          unlockServiceFee,
+          recurring,
+          connectedCustomer: paymentIntentRecord.connectedCustomerId,
+          stripeCustomerId: paymentIntentRecord.stripeCustomerId,
+        },
+        {
+          returning: true,
+        }
+      )
 
       logger.info(
         `Subscription ${subscription.id} created for ${subscription.userAddress} on ${subscription.network} and for lock ${subscription.lockAddress}. It will renew key ${subscription.keyId} for ${subscription.recurring}`
