@@ -51,7 +51,7 @@ async function notifyExpiringKey(key: any, network: number) {
     })
 
     // expiration date example: 1 December 2022 - 10:55
-    const expirationDate = dayjs(new Date(key.expiration)).format(
+    const expirationDate = dayjs(key.expiration * 1000).format(
       'D MMMM YYYY - HH:mm'
     )
 
