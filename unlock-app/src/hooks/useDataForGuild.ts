@@ -31,8 +31,6 @@ export function useDataForGuild({
       return getDataForGuild(network, lockAddress, recipients)
     },
     {
-      refetchIntervalInBackground: true,
-      refetchInterval: 3000, // Every 3 seconds?
     }
   )
 }
