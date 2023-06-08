@@ -14,17 +14,17 @@ const getDataForGuild = async (
   return response.data.result
 }
 
-interface UseDataForGuildProps {
+interface UseDataForGuildHookProps {
   lockAddress: string
   network: number
   recipients: string[]
 }
 
-export function useDataForGuild({
+export function useDataForGuildHook({
   lockAddress,
   network,
   recipients,
-}: UseDataForGuildProps) {
+}: UseDataForGuildHookProps) {
   return useQuery(['getLockSettings', lockAddress, network], async () => {
     return getDataForGuild(network, lockAddress, recipients)
   })

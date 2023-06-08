@@ -8,7 +8,7 @@ import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockGuild } from '~/hooks/useLockGuild'
 import Link from 'next/link'
-import { useDataForGuild } from '~/hooks/useDataForGuild'
+import { useDataForGuildHook } from '~/hooks/useDataForGuildHook'
 
 interface Props {
   injectedProvider: unknown
@@ -20,8 +20,6 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const { recipients, lock } = state.context
 
-  // Check that all recipients are members  of the guild
-  // First, load the guild? Do we need to?
   const users = recipients.length > 0 ? recipients : [account!]
 
   const { isLoading: isLoadingGuild, data: guild } = useLockGuild({
@@ -29,7 +27,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
     network: lock!.network,
   })
 
-  const { data, isLoading: useGuildData } = useDataForGuild({
+  const { data, isLoading: useGuildData } = useDataForGuildHook({
     lockAddress: lock!.address,
     network: lock!.network,
     recipients: users,
