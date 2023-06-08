@@ -10,6 +10,7 @@ import {
   saveAccessToken,
 } from '~/utils/session'
 import { config } from '~/config/app'
+import ProviderContext from '~/contexts/ProviderContext'
 
 type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -46,6 +47,7 @@ interface Props {
 
 export const SIWEProvider = ({ children }: Props) => {
   const { connected, getWalletService, network } = useAuth()
+  const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
@@ -90,7 +92,6 @@ export const SIWEProvider = ({ children }: Props) => {
         throw new Error('No wallet connected.')
       }
       const walletService = await getWalletService()
-
       const address = await walletService.signer.getAddress()
       const insideIframe = window !== window.parent
 
@@ -107,6 +108,13 @@ export const SIWEProvider = ({ children }: Props) => {
 
       if (parent.host !== window.location.host) {
         resources = [window.location.origin]
+      }
+
+      let domain = window.location.host
+      // If we are using the parent's provider, then we MUST use the parent's domain
+      console.log(provider?.provider?.parentOrigin)
+      if (provider?.provider?.parentOrigin) {
+        domain = new URL(provider.provider.parentOrigin).host
       }
 
       const siwe = new SiweMessage({

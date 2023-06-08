@@ -44,10 +44,8 @@ export interface MethodCallResult {
 
 // Taken from https://github.com/ethers-io/ethers.js/blob/master/src.ts/providers/web3-provider.ts
 export type AsyncSendable = {
+  parentOrigin: string
   enable: () => void
-  isMetaMask?: boolean
-  host?: string
-  path?: string
   sendAsync?: (
     request: any,
     callback: (error: any, response: any) => void
@@ -197,6 +195,7 @@ export const useCheckoutCommunication = () => {
 
   if (useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
+      parentOrigin: parent?.parentOrigin,
       enable: () => {
         return new Promise((resolve) => {
           enabled = resolve
