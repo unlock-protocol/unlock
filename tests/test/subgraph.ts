@@ -313,7 +313,6 @@ describe('Receipts', function () {
 
   it('created the receipt successfully for an ERC20 currency lock', async () => {
     const locks = await subgraph.getLocks()
-    console.log({ locks })
     const lockAddress = locks.find(
       (lock: any) =>
         lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
