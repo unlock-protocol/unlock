@@ -12,7 +12,7 @@ import { Lock, Receipt } from '../generated/schema'
 export function createReceipt(event: ethereum.Event): void {
   const hash = event.transaction.hash.toHexString()
 
-  log.info('Creating receipt for transaction {}', [hash])
+  log.debug('Creating receipt for transaction {}', [hash])
 
   // Lock address is always the address of the contract emitting the `Transfer` event
   const lockAddress = event.address.toHexString()
@@ -25,7 +25,7 @@ export function createReceipt(event: ethereum.Event): void {
 
   // No need to go further if there is no matching lock object in the subgraph
   if (!lock) {
-    log.info('Missing Lock {}. Skipping receipt', [lockAddress])
+    log.debug('Missing Lock {}. Skipping receipt', [lockAddress])
     return
   }
 
@@ -40,39 +40,29 @@ export function createReceipt(event: ethereum.Event): void {
     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 
   if (tokenAddress != Bytes.fromHexString(nullAddress)) {
-    log.info('Creating receipt for ERC20 lock {} {}', [
+    log.debug('Creating receipt for ERC20 lock {} {}', [
       lockAddress,
       tokenAddress.toHexString(),
     ])
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
-    log.info('RECEIPT CREATION', [])
 
     if (logs) {
       // If it is an ERC20 lock, there should be multiple events
       // including one for the ERC20 transfer
       for (let i = 0; i < logs.length; i++) {
-        log.info('logs {}', [i.toString()])
-
         const txLog = logs[i]
         if (
           txLog.address == tokenAddress &&
           txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0 &&
-          txLog.topics.length == 3
+          txLog.topics.length >= 3
         ) {
           const erc20Recipient = ethereum
             .decode('address', txLog.topics[2])!
             .toAddress()
 
-          log.info('CANDIDATE!!', [])
-          log.info(' {}', [erc20Recipient.toHexString()])
-          log.info(' {}', [event.address.toHexString()])
-
+          // If the ERC20 recipient is the lock, then this is the transfer we're looking for!
           if (erc20Recipient == event.address) {
-            log.info('RECEIPT CREATION {}', [txLog.topics.length.toString()])
-            log.info('\t {}', [txLog.topics[1].toHexString()])
-            log.info('\t {}', [txLog.topics[2].toHexString()])
-            log.info('\t {}', [txLog.data.toHexString()])
             receipt.payer = ethereum
               .decode('address', txLog.topics[1])!
               .toAddress()
@@ -82,17 +72,17 @@ export function createReceipt(event: ethereum.Event): void {
               .decode('uint256', txLog.data)!
               .toBigInt()
           } else {
-            log.info('Not the transfer to the lock!', [])
+            log.debug('Not the transfer to the lock!', [])
           }
         } else {
-          log.info('Not the right kind of transfer!', [])
+          log.debug('Not the right kind of transfer!', [])
         }
       }
       // If no ERC20 transfer event was found, this was not a "paid" transaction,
       // which means we don't need to create a receipt.
     }
   } else {
-    log.info('Creating receipt for base currency lock {}', [lockAddress])
+    log.debug('Creating receipt for base currency lock {}', [lockAddress])
     receipt.payer = event.transaction.from.toHexString()
     receipt.amountTransferred = event.transaction.value
   }
@@ -115,7 +105,7 @@ export function createReceipt(event: ethereum.Event): void {
     receipt.receiptNumber = newReceiptNumber
     receipt.save()
   } else {
-    log.info('Skipping receipt for free (grantKeys or no value) transfer {}', [
+    log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
       hash,
     ])
   }
