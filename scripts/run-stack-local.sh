@@ -46,7 +46,7 @@ yarn codegen
 yarn graph build --network localhost 
 
 # now deploy the subgraph
-yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://localhost:8020/ 
+yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://localhost:8020/
 yarn graph deploy testgraph --node http://localhost:8020/ --ipfs http://localhost:5001 --version-label 0.0.1 --network localhost
 
 # start 2nd postgres instance for locksmith

@@ -10,7 +10,7 @@ dataSources:
     name: Unlock
     source:
       abi: Unlock
-      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6"
+      address: "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
