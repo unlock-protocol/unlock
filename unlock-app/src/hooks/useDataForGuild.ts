@@ -29,8 +29,6 @@ export function useDataForGuild({
     ['getLockSettings', lockAddress, network],
     async () => {
       return getDataForGuild(network, lockAddress, recipients)
-    },
-    {
     }
   )
 }
