@@ -43,7 +43,7 @@ const generateNetworksFile = async () => {
     }, {})
 
   fs.writeJSONSync(networkFilePath, networks, { spaces: 2 })
-  console.log(`Networks file saved at: ${networkFilePath}`, networks)
+  console.log(`Networks file saved at: ${networkFilePath}`)
 }
 
 module.exports = {
