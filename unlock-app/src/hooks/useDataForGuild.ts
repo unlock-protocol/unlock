@@ -25,7 +25,14 @@ export function useDataForGuild({
   network,
   recipients,
 }: UseDataForGuildProps) {
-  return useQuery(['getLockSettings', lockAddress, network], async () => {
-    return getDataForGuild(network, lockAddress, recipients)
-  })
+  return useQuery(
+    ['getLockSettings', lockAddress, network],
+    async () => {
+      return getDataForGuild(network, lockAddress, recipients)
+    },
+    {
+      refetchIntervalInBackground: true,
+      refetchInterval: 3000, // Every 3 seconds?
+    }
+  )
 }
