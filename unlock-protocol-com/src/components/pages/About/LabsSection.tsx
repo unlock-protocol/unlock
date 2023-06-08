@@ -27,7 +27,7 @@ const TEAM_MEMBERS: TeamProps[] = [
     ],
   },
   {
-    name: 'Chris Carfi',
+    name: 'Christopher Carfi',
     role: 'Head of Marketing',
     img: '/images/pages/about/ccarfi.png',
     imgHover: '/images/pages/about/ccarfi-hover.png',
@@ -83,22 +83,6 @@ const TEAM_MEMBERS: TeamProps[] = [
       {
         title: 'Twitter',
         url: 'https://twitter.com/searchableguy',
-      },
-    ],
-  },
-  {
-    name: 'Angela Steffens',
-    role: 'Head of Developer Relations',
-    img: '/images/pages/about/angela.png',
-    imgHover: '/images/pages/about/angela-hover.png',
-    socials: [
-      {
-        title: 'Twitter',
-        url: 'https://twitter.com/wonderwomancode',
-      },
-      {
-        title: 'Linked-in',
-        url: 'https://www.linkedin.com/in/wonderwomancode/',
       },
     ],
   },
