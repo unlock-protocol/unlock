@@ -32,10 +32,7 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
-    svgr({
-      exportAsDefault: true,
-      exclude: ['lib/assets/*.svg'],
-    }),
+    svgr(),
     nodePolyfills({
       // Whether to polyfill `node:` protocol imports.
       protocolImports: true,

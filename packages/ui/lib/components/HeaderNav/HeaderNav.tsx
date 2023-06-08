@@ -6,7 +6,7 @@ import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
 import { HTMLProps } from 'react'
 import { IconType } from 'react-icons'
-import DefaultLogo from './../../assets/unlock-footer-logo.svg'
+import DefaultLogo from './../../assets/unlock-footer-logo.svg?url'
 import {
   FiMenu as MenuIcon,
   FiPlus as PlusIcon,
