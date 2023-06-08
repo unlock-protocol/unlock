@@ -60,11 +60,15 @@ export function createReceipt(event: ethereum.Event): void {
           txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0 &&
           txLog.topics.length == 3
         ) {
+          const erc20Recipient = ethereum
+            .decode('address', txLog.topics[2])!
+            .toAddress()
+
           log.info('CANDIDATE!!', [])
-          log.info(' {}', [txLog.topics[2].toHexString()])
+          log.info(' {}', [erc20Recipient.toHexString()])
           log.info(' {}', [event.address.toHexString()])
 
-          if (txLog.topics[2] == event.address) {
+          if (erc20Recipient == event.address) {
             log.info('RECEIPT CREATION', [])
             log.info('\t {}', [txLog.topics[1].toHexString()])
             log.info('\t {}', [txLog.topics[2].toHexString()])
