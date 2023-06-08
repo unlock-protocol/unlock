@@ -30,7 +30,6 @@ const {
   renounceLockManager,
   updateRefundPenalty,
   updateTransferFee,
-  transferFrom,
 } = v6
 
 export default {
@@ -65,5 +64,4 @@ export default {
   setEventHooks,
   updateTransferFee,
   setKeyManagerOf,
-  transferFrom,
 }

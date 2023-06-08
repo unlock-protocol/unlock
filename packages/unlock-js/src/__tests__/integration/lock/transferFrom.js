@@ -5,7 +5,7 @@ import hre from 'hardhat'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 
 export default ({ publicLockVersion }) => {
-  if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+  if (versionEqualOrAbove(publicLockVersion, 'v9')) {
     describe('transferFrom', () => {
       let tokenId
       let transactionHash

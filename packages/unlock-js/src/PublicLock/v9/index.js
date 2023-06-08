@@ -4,6 +4,7 @@ import purchaseKeys from './purchaseKeys'
 import setMaxNumberOfKeys from './setMaxNumberOfKeys'
 import setExpirationDuration from './setExpirationDuration'
 import setEventHooks from './setEventHooks'
+import transferFrom from './transferFrom'
 
 import v8 from '../v8'
 
@@ -34,7 +35,6 @@ const {
   updateRefundPenalty,
   updateTransferFee,
   setKeyManagerOf,
-  transferFrom,
 } = v8
 
 export default {
