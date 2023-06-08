@@ -42,10 +42,11 @@ export function createReceipt(event: ethereum.Event): void {
   if (tokenAddress != Bytes.fromHexString(nullAddress)) {
     log.debug('Creating receipt for ERC20 lock {} {}', [
       lockAddress,
-      tokenAddress.toString(),
+      tokenAddress.toHexString(),
     ])
     const txReceipt = event.receipt!
     const logs: ethereum.Log[] = txReceipt.logs
+
     if (logs) {
       // If it is an ERC20 lock, there should be multiple events
       // including one for the ERC20 transfer
@@ -53,17 +54,28 @@ export function createReceipt(event: ethereum.Event): void {
         const txLog = logs[i]
         if (
           txLog.address == tokenAddress &&
-          // Do we always have txLog.topics[0] ?
-          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0
+          txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0 &&
+          txLog.topics.length >= 3
         ) {
-          receipt.payer = ethereum
-            .decode('address', txLog.topics[1])!
+          const erc20Recipient = ethereum
+            .decode('address', txLog.topics[2])!
             .toAddress()
-            .toHexString()
 
-          receipt.amountTransferred = ethereum
-            .decode('uint256', txLog.data)!
-            .toBigInt()
+          // If the ERC20 recipient is the lock, then this is the transfer we're looking for!
+          if (erc20Recipient == event.address) {
+            receipt.payer = ethereum
+              .decode('address', txLog.topics[1])!
+              .toAddress()
+              .toHexString()
+
+            receipt.amountTransferred = ethereum
+              .decode('uint256', txLog.data)!
+              .toBigInt()
+          } else {
+            log.debug('Not the transfer to the lock!', [])
+          }
+        } else {
+          log.debug('Not the right kind of transfer!', [])
         }
       }
       // If no ERC20 transfer event was found, this was not a "paid" transaction,
