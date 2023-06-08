@@ -112,7 +112,6 @@ export const SIWEProvider = ({ children }: Props) => {
 
       let domain = window.location.host
       // If we are using the parent's provider, then we MUST use the parent's domain
-      console.log(provider?.provider?.parentOrigin)
       if (provider?.provider?.parentOrigin) {
         domain = new URL(provider.provider.parentOrigin).host
       }
