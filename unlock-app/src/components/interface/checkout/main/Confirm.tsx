@@ -24,7 +24,7 @@ export function Confirm({
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { payment, paywallConfig, messageToSign } = state.context
+  const { payment, paywallConfig, messageToSign, metadata } = state.context
   const { account } = useAuth()
 
   const onError = (message: string) => {
@@ -43,7 +43,9 @@ export function Confirm({
         address: account,
         signedMessage: messageToSign?.signature,
       })
+      communication?.emitMetadata(metadata)
     }
+    communication?.emitMetadata(metadata)
     send({
       type: 'CONFIRM_MINT',
       status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',

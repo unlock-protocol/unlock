@@ -18,6 +18,7 @@ export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  metadata = 'checkout.metadata',
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
 }
@@ -162,6 +163,10 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.userInfo, info)
   }
 
+  const emitMetadata = (metadata: any) => {
+    pushOrEmit(CheckoutEvents.metadata, metadata)
+  }
+
   const emitCloseModal = () => {
     pushOrEmit(CheckoutEvents.closeModal)
   }
@@ -234,6 +239,7 @@ export const useCheckoutCommunication = () => {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
+    emitMetadata,
     emitMethodCall,
     paywallConfig,
     oauthConfig,

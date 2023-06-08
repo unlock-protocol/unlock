@@ -182,7 +182,7 @@ export function Minting({
   const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { mint, lock, messageToSign } = state.context
+  const { mint, lock, messageToSign, metadata } = state.context
   const processing = mint?.status === 'PROCESSING'
 
   useEffect(() => {
@@ -215,6 +215,7 @@ export function Minting({
             address: account,
             signedMessage: messageToSign?.signature,
           })
+          communication?.emitMetadata(metadata)
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
