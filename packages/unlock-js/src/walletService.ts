@@ -1143,7 +1143,7 @@ export default class WalletService extends UnlockService {
    */
   async transferFrom(
     params: {
-      owner?: string
+      keyOwner: string
       to: string
       tokenId: string
       lockAddress: string
@@ -1152,6 +1152,7 @@ export default class WalletService extends UnlockService {
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.keyOwner) throw new Error('Missing keyOwner')
     if (!params.to) throw new Error('Missing to')
     if (!params.tokenId) throw new Error('Missing tokenId')
 

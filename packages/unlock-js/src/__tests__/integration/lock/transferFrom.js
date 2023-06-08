@@ -1,22 +1,31 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, accounts, chainId, lock
+import hre from 'hardhat'
 
 export default ({ publicLockVersion }) => {
   if (versionEqualOrAbove(publicLockVersion, 'v6')) {
     describe('transferFrom', () => {
       let tokenId
       let transactionHash
+      let keyOwner
+
+      const { ethers } = hre
 
       beforeAll(async () => {
         ;({ walletService, web3Service, lockAddress, accounts, chainId, lock } =
           global.suiteData)
+
+        const wallet = ethers.Wallet.createRandom()
+        keyOwner = wallet.address
 
         // purchase a new key
         tokenId = await walletService.purchaseKey(
           {
             lockAddress,
             keyPrice: lock.keyPrice,
+            owner: keyOwner,
+            keyManager: accounts[0],
           },
           {} /** transactionOptions */,
           (error, hash) => {
@@ -47,21 +56,27 @@ export default ({ publicLockVersion }) => {
           tokenId,
           chainId
         )
-        const signer = accounts[0]
-        expect(prevOwner).toBe(signer)
+        expect(prevOwner).toEqual(keyOwner)
 
-        const newOwner = accounts[4]
+        const wallet = ethers.Wallet.createRandom()
+        const newOwner = wallet.address
 
         // transfer key to a new owner
         await walletService.transferFrom({
+          keyOwner,
           to: newOwner,
           lockAddress,
           tokenId,
         })
 
-        const owner = await web3Service.ownerOf(lockAddress, tokenId, chainId)
+        const currentOwner = await web3Service.ownerOf(
+          lockAddress,
+          tokenId,
+          chainId
+        )
+
         // check that the owner is changed
-        expect(owner).toBe(newOwner)
+        expect(currentOwner).toEqual(newOwner)
       })
     })
   }
