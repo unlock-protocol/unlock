@@ -29,6 +29,7 @@ for (const [key, value] of Object.entries(requiredEnvs)) {
 }
 
 const config = {
+  productionBrowserSourceMaps: true,
   sentry: {
     disableServerWebpackPlugin: true,
     disableClientWebpackPlugin: true,
