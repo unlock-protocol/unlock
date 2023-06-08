@@ -1,8 +1,12 @@
 # Changes
 
-# 0.38.0
+# 0.38.1
 
 - add `transferFrom` to walletService
+
+# 0.38.0
+
+- Add support for swap and purchase in key extension
 
 # 0.37.2
 
