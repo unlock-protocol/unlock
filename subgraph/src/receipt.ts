@@ -61,8 +61,8 @@ export function createReceipt(event: ethereum.Event): void {
           txLog.topics.length == 3
         ) {
           log.info('CANDIDATE!!', [])
-          console.log(txLog.topics[2].toHexString())
-          console.log(event.address.toHexString())
+          log.info(' {}', [txLog.topics[2].toHexString()])
+          log.info(' {}', [event.address.toHexString()])
 
           if (txLog.topics[2] == event.address) {
             log.info('RECEIPT CREATION', [])
