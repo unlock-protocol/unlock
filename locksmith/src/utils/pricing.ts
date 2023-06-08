@@ -1,6 +1,6 @@
 import { networks } from '@unlock-protocol/networks'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
-import { BigNumber, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import logger from '../logger'
 import GasPrice from './gasPrice'
 import {
@@ -10,7 +10,6 @@ import {
   MIN_PAYMENT_STRIPE_CREDIT_CARD,
 } from './constants'
 import * as pricingOperations from '../operations/pricingOperations'
-import { getSettings } from '../operations/lockSettingOperations'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -68,57 +67,6 @@ export interface KeyPricing {
   address?: string
 }
 
-interface getLockUsdPricingProps {
-  lockAddress: string
-  network: number
-}
-
-type UsdLockPricingResults = {
-  symbol: string
-  price: number
-  decimals: number
-  isPriceFromSettings?: boolean
-}
-
-/** Returns USD lock pricing from settings or calculated from currency */
-export const getLockUsdPricing = async ({
-  lockAddress,
-  network,
-}: getLockUsdPricingProps): Promise<UsdLockPricingResults> => {
-  const { decimals, currencyContractAddress } = await getLockKeyPricing({
-    lockAddress,
-    network,
-  })
-
-  const { creditCardPrice } = await getSettings({
-    lockAddress,
-    network,
-  })
-
-  // priority to custom credit card price
-  if (creditCardPrice) {
-    const creditCardPriceInUsd = creditCardPrice / 100
-    return {
-      symbol: '$',
-      price: creditCardPriceInUsd,
-      decimals,
-      isPriceFromSettings: true, // keep track that is price from settings
-    }
-  }
-
-  // get formatted price
-  const usdPricing = await pricingOperations.getDefiLammaPrice({
-    network,
-    erc20Address:
-      !currencyContractAddress ||
-      currencyContractAddress === ethers.constants.AddressZero
-        ? undefined
-        : currencyContractAddress,
-  })
-
-  return usdPricing as Required<UsdLockPricingResults>
-}
-
 export const getKeyPricingInUSD = async ({
   recipients,
   network,
@@ -127,45 +75,34 @@ export const getKeyPricingInUSD = async ({
   referrers,
 }: KeyPricingOptions): Promise<KeyPricing[]> => {
   const web3Service = new Web3Service(networks)
-  const { keyPrice, decimals } = await getLockKeyPricing({
-    lockAddress,
+  const { keyPrice, decimals, currencyContractAddress } =
+    await getLockKeyPricing({
+      lockAddress,
+      network,
+    })
+
+  const usdPricing = await pricingOperations.getDefiLammaPrice({
     network,
+    erc20Address:
+      !currencyContractAddress ||
+      currencyContractAddress === ethers.constants.AddressZero
+        ? undefined
+        : currencyContractAddress,
+    amount: 1,
   })
 
-  const defaultPrice = fromDecimal(
-    BigNumber.from(keyPrice).toString(),
-    decimals
-  )
-
-  const usdPricing = await getLockUsdPricing({
-    lockAddress,
-    network,
-  })
-
-  const { isPriceFromSettings = false } = usdPricing
-
-  // use number of recipients as total items from for credit card or amount if not
-  const totalItems = isPriceFromSettings
-    ? recipients?.length || 1
-    : defaultPrice
-
-  // use credit card price as amount if present
-  const amount = isPriceFromSettings ? usdPricing.price : defaultPrice
-
-  const amountInUSD = usdPricing?.price
-    ? totalItems * usdPricing.price
-    : undefined
-
-  const amountInCents = usdPricing?.price
-    ? Math.round(totalItems * usdPricing.price * 100)
-    : 0
+  const defaultPrice = fromDecimal(keyPrice, decimals)
 
   const defaultPricing = {
-    amount,
+    amount: defaultPrice,
     decimals,
     symbol: usdPricing.symbol,
-    amountInUSD,
-    amountInCents,
+    amountInUSD: usdPricing?.price
+      ? defaultPrice * usdPricing.price
+      : undefined,
+    amountInCents: usdPricing?.price
+      ? Math.round(defaultPrice * usdPricing.price * 100)
+      : 0,
   }
 
   const result = await Promise.all(
@@ -181,38 +118,27 @@ export const getKeyPricingInUSD = async ({
         }
       }
 
-      const { price, symbol } = usdPricing ?? {}
       try {
-        let amount: number
-        let amountInUSD: number
-        let amountInCents: number | undefined
-
-        // use credit card price as amount when is set
-        if (isPriceFromSettings) {
-          amount = price
-          amountInUSD = price
-          amountInCents = Math.round(price * 100)
-        } else {
-          const purchasePrice = await web3Service.purchasePriceFor({
-            lockAddress,
-            userAddress: address,
-            data,
-            network,
-            referrer,
-          })
-          amount = fromDecimal(purchasePrice, decimals)
-          amountInUSD = price * amount
-          amountInCents = price ? Math.round(price * 100) : undefined
-        }
-
+        const purchasePrice = await web3Service.purchasePriceFor({
+          lockAddress,
+          userAddress: address,
+          data,
+          network,
+          referrer,
+        })
+        const amount = fromDecimal(purchasePrice, decimals)
         return {
           address,
           price: {
             amount,
             decimals,
-            symbol,
-            amountInUSD,
-            amountInCents,
+            symbol: usdPricing.symbol,
+            amountInUSD: usdPricing?.price
+              ? amount * usdPricing.price
+              : undefined,
+            amountInCents: usdPricing?.price
+              ? Math.round(amount * usdPricing.price * 100)
+              : 0,
           },
         }
       } catch (error) {
