@@ -98,8 +98,8 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={isSubmitting || isLoadingSigner}
-            loading={isSubmitting || isLoadingSigner}
+            disabled={isLoadingSigner}
+            loading={isSubmitting}
             onClick={handleSubmit(onSubmit)}
           >
             Submit password
