@@ -7,7 +7,7 @@ export interface Typegen0 {
   }
   invokeSrcNameMap: {}
   missingImplementations: {
-    actions: 'submitGuild'
+    actions: never
     delays: never
     guards: never
     services: never
@@ -23,7 +23,6 @@ export interface Typegen0 {
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
     submitData: 'SUBMIT_DATA'
-    submitGuild: 'SUBMIT_GUILD'
     submitPassword: 'SUBMIT_PASSWORD'
     submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'

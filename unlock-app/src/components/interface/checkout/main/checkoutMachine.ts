@@ -74,11 +74,6 @@ export interface SubmitPasswordEvent {
   data: string[]
 }
 
-export interface SubmitGuildEvent {
-  type: 'SUBMIT_GUILD'
-  data: string[]
-}
-
 export interface SubmitPromoEvent {
   type: 'SUBMIT_PROMO'
   data: string[]
@@ -141,7 +136,6 @@ export type CheckoutMachineEvents =
   | SignMessageEvent
   | SubmitPasswordEvent
   | SubmitPromoEvent
-  | SubmitGuildEvent
   | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
@@ -481,15 +475,15 @@ export const checkoutMachine = createMachine(
       },
       GUILD: {
         on: {
-          SUBMIT_GUILD: [
+          SUBMIT_DATA: [
             {
               target: 'RENEW',
-              actions: ['submitGuild'],
+              actions: ['submitData'],
               cond: (ctx) => ctx.renew,
             },
             {
               target: 'PAYMENT',
-              actions: ['submitGuild'],
+              actions: ['submitData'],
             },
           ],
           BACK: [

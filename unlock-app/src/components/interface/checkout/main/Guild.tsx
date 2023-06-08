@@ -1,7 +1,7 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -29,20 +29,24 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
     network: lock!.network,
   })
 
-  const { data: guildData, isLoading: useGuildData } = useDataForGuild({
+  const { data, isLoading: useGuildData } = useDataForGuild({
     lockAddress: lock!.address,
     network: lock!.network,
     recipients: users,
   })
 
   const onSubmit = async () => {
-    send({
-      type: 'SUBMIT_GUILD',
-      data: guildData,
-    })
+    if (data) {
+      send({
+        type: 'SUBMIT_DATA',
+        data: data,
+      })
+    }
   }
 
   const isLoading = isLoadingGuild || useGuildData
+
+  const disabled = data && data.filter((d) => !d).length > 0
 
   return (
     <Fragment>
@@ -50,8 +54,8 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         {!isLoading && (
           <p className=" text-sm">
-            In order to purchase this membership your wallet address needs to
-            belong to the{' '}
+            In order to purchase this membership the recipient&apos;s address
+            needs to belong to the{' '}
             <Link
               className="text-brand-ui-primary"
               target="_blank"
@@ -73,8 +77,8 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={isLoading}
-            loading={isLoading || !guildData}
+            disabled={disabled}
+            loading={isLoading}
             onClick={onSubmit}
           >
             Continue

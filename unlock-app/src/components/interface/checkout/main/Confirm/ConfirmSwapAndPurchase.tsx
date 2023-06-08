@@ -49,6 +49,7 @@ export function ConfirmSwapAndPurchase({
     promo,
     keyManagers,
     metadata,
+    data,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -88,6 +89,7 @@ export function ConfirmSwapAndPurchase({
       captcha,
       paywallConfig,
       recipients,
+      data,
     })
 
   const {
