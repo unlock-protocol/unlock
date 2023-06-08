@@ -69,17 +69,17 @@ export function createReceipt(event: ethereum.Event): void {
           log.info(' {}', [event.address.toHexString()])
 
           if (erc20Recipient == event.address) {
-            log.info('RECEIPT CREATION', [])
+            log.info('RECEIPT CREATION {}', [txLog.topics.length.toString()])
             log.info('\t {}', [txLog.topics[1].toHexString()])
             log.info('\t {}', [txLog.topics[2].toHexString()])
-            log.info('\t {}', [txLog.topics[3].toHexString()])
+            log.info('\t {}', [txLog.data.toHexString()])
             receipt.payer = ethereum
               .decode('address', txLog.topics[1])!
               .toAddress()
               .toHexString()
 
             receipt.amountTransferred = ethereum
-              .decode('uint256', txLog.topics[3])!
+              .decode('uint256', txLog.data)!
               .toBigInt()
           } else {
             log.info('Not the transfer to the lock!', [])
