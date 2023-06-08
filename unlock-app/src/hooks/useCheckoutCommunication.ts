@@ -44,7 +44,7 @@ export interface MethodCallResult {
 
 // Taken from https://github.com/ethers-io/ethers.js/blob/master/src.ts/providers/web3-provider.ts
 export type AsyncSendable = {
-  parentOrigin: string
+  parentOrigin: () => string
   enable: () => void
   sendAsync?: (
     request: any,
@@ -115,6 +115,7 @@ export const useCheckoutCommunication = () => {
     undefined
   )
   const [user, setUser] = useState<string | undefined>(undefined)
+
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setPaywallConfig(config)
@@ -195,7 +196,10 @@ export const useCheckoutCommunication = () => {
 
   if (useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
-      parentOrigin: parent?.parentOrigin,
+      parentOrigin: () => {
+        // @ts-expect-error Property 'parentOrigin' does not exist on type 'ChildAPI'.ts(2339)
+        return parent?.parentOrigin
+      },
       enable: () => {
         return new Promise((resolve) => {
           enabled = resolve
