@@ -1,29 +1,49 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { versionEqualOrAbove } from '../../helpers/integration'
-let walletService, web3Service, lockAddress, accounts, chainId, lock
+import { versionEqualOrAbove, setupLock } from '../../helpers/integration'
+let walletService, web3Service, lockAddress, accounts, chainId, unlockVersion
 import hre from 'hardhat'
+import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 
 export default ({ publicLockVersion }) => {
-  if (versionEqualOrAbove(publicLockVersion, 'v6')) {
+  if (versionEqualOrAbove(publicLockVersion, 'v7')) {
     describe('transferFrom', () => {
       let tokenId
       let transactionHash
       let keyOwner
+      let newOwner
+      let prevOwner
 
       const { ethers } = hre
 
       beforeAll(async () => {
-        ;({ walletService, web3Service, lockAddress, accounts, chainId, lock } =
+        ;({ walletService, web3Service, accounts, chainId, unlockVersion } =
           global.suiteData)
 
-        const wallet = ethers.Wallet.createRandom()
-        keyOwner = wallet.address
+        // create new lock
+        const newLock = await setupLock({
+          walletService,
+          web3Service,
+          publicLockVersion,
+          unlockVersion,
+          lockParams: {
+            name: 'Lock for transfer',
+            expirationDuration: 60 * 60 * 24 * 30,
+            maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+            isERC20: false,
+            keyPrice: '0.1',
+          },
+        })
+
+        lockAddress = newLock.lockAddress
+        const keyPrice = newLock.lock.keyPrice
 
         // purchase a new key
+        const wallet = ethers.Wallet.createRandom()
+        keyOwner = wallet.address
         tokenId = await walletService.purchaseKey(
           {
             lockAddress,
-            keyPrice: lock.keyPrice,
+            keyPrice,
             owner: keyOwner,
             keyManager: accounts[0],
           },
@@ -35,6 +55,19 @@ export default ({ publicLockVersion }) => {
             transactionHash = hash
           }
         )
+
+        // store prev owner
+        prevOwner = await web3Service.ownerOf(lockAddress, tokenId, chainId)
+
+        const newWallet = ethers.Wallet.createRandom()
+        newOwner = newWallet.address
+
+        await walletService.transferFrom({
+          keyOwner,
+          to: newOwner,
+          lockAddress,
+          tokenId,
+        })
       })
 
       it('should have yielded a transaction hash', () => {
@@ -50,33 +83,16 @@ export default ({ publicLockVersion }) => {
       it('should correctly transfer ownership to a new owner', async () => {
         expect.assertions(2)
 
-        // check that the owner is the default one
-        const prevOwner = await web3Service.ownerOf(
-          lockAddress,
-          tokenId,
-          chainId
-        )
-        expect(prevOwner).toEqual(keyOwner)
+        // check that the prev owner is correct
+        expect(prevOwner).toBe(keyOwner)
 
-        const wallet = ethers.Wallet.createRandom()
-        const newOwner = wallet.address
-
-        // transfer key to a new owner
-        await walletService.transferFrom({
-          keyOwner,
-          to: newOwner,
-          lockAddress,
-          tokenId,
-        })
-
+        // check that the owner is changed
         const currentOwner = await web3Service.ownerOf(
           lockAddress,
           tokenId,
           chainId
         )
-
-        // check that the owner is changed
-        expect(currentOwner).toEqual(newOwner)
+        expect(currentOwner).toBe(newOwner)
       })
     })
   }
