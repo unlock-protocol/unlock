@@ -44,6 +44,7 @@ export function ConfirmClaim({
     password,
     promo,
     metadata,
+    data,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -66,6 +67,7 @@ export function ConfirmClaim({
       captcha,
       paywallConfig,
       recipients,
+      data,
     })
 
   const {

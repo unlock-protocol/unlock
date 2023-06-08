@@ -70,6 +70,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     currencyContractAddress: lock.currencyContractAddress,
   })
 
+  console.log(state)
+
   const { data: purchaseData, isLoading: isPurchaseDataLoading } =
     usePurchaseData({
       lockAddress: lock.address,
@@ -79,6 +81,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       promo: state.context.promo,
       password: state.context.password,
       captcha: state.context.captcha,
+      data: state.context.data,
     })
 
   const { data: canClaim, isLoading: isCanClaimLoading } = useCanClaim(

@@ -31,6 +31,7 @@ export interface Typegen0 {
   eventsCausingGuards: {
     isCardPayment: 'BACK'
     requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireGuild: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
     requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
     requirePromo: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
@@ -42,6 +43,7 @@ export interface Typegen0 {
     | 'CAPTCHA'
     | 'CARD'
     | 'CONFIRM'
+    | 'GUILD'
     | 'MESSAGE_TO_SIGN'
     | 'METADATA'
     | 'MINTING'

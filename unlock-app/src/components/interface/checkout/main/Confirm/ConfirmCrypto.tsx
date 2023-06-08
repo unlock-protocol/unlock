@@ -53,6 +53,7 @@ export function ConfirmCrypto({
     promo,
     keyManagers,
     metadata,
+    data,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -94,6 +95,7 @@ export function ConfirmCrypto({
       captcha,
       paywallConfig,
       recipients,
+      data,
     })
 
   const {
