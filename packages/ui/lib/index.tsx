@@ -31,5 +31,7 @@ export {
   useUnlockUI,
   UnlockUIContext,
 } from '~/components/Provider'
+export { Images } from '~/components/Images/Images'
+
 export { GuidesHeader, GuidesFooter } from '~/configs/guides'
 export { ShowcaseHeader, ShowcaseFooter } from '~/configs/showcase'

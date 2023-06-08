@@ -8,7 +8,7 @@ Object.keys(networks)
   .forEach((chainId: number) => {
     const { provider, publicProvider, name, id, subgraph } =
       networks[chainId as number]
-
+    // @ts-expect-error - TODO: fix types
     networkConfigs[chainId as number] = {
       id,
       name,

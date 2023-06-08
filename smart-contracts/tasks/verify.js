@@ -20,24 +20,33 @@ const artifactsPath = path.resolve(
 )
 
 task('verify-proxy', 'Deploy and verify the TransparentProxy used by locks')
-  .addParam('publicLockAddress', 'the PublicLock template address')
-  .addParam('proxyAdminAddress', "Unlock's ProxyAdmin contract address")
+  .addOptionalParam('publicLockAddress', 'the PublicLock template address')
+  .addOptionalParam('unlockAddress', 'the Unlock factory address')
+  .addOptionalParam('lockVersion', 'the version number of deployed lock')
+  .addOptionalParam('proxyAdminAddress', "Unlock's ProxyAdmin contract address")
+  .addOptionalParam('calldata', 'calldata used for lock creation')
   .addOptionalParam(
     'transparentProxyAddress',
     'the address of TransparentProxy instance already deployed using this script'
   )
   .setAction(
     async ({
+      calldata,
+      lockVersion,
       publicLockAddress,
       proxyAdminAddress,
       transparentProxyAddress,
+      unlockAddress,
     }) => {
       // eslint-disable-next-line global-require
       const verifyProxy = require('../scripts/verify-proxy')
       await verifyProxy({
+        calldata,
+        lockVersion,
         publicLockAddress,
         proxyAdminAddress,
         transparentProxyAddress,
+        unlockAddress,
       })
     }
   )
