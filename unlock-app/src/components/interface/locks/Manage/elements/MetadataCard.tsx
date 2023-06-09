@@ -31,7 +31,6 @@ import { useMetadata } from '~/hooks/metadata'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
-import { useGetTransferFeeBasisPoints } from '~/hooks/useTransferFee'
 
 interface MetadataCardProps {
   metadata: any
@@ -272,11 +271,6 @@ export const MetadataCard = ({
     network,
   })
 
-  const { isLoading: isLoadingTransferFee, data: { isTransferAllowed } = {} } =
-    useGetTransferFeeBasisPoints({
-      lockAddress,
-      network,
-    })
   // defaults to the owner when the manager is not set
   const manager = data?.keyManager ?? data?.keyholderAddress
 
@@ -364,8 +358,6 @@ export const MetadataCard = ({
 
   const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
   const showManager = !ownerIsManager && manager !== ADDRESS_ZERO
-  const canTransferKeyOwnership =
-    isLockManager && isTransferAllowed && !isLoadingTransferFee
 
   return (
     <>
@@ -551,7 +543,7 @@ export const MetadataCard = ({
                   </div>
                   <div className="md:ml-auto">
                     <div className="flex flex-col gap-2 md:flex-row md:items-center">
-                      {canTransferKeyOwnership && (
+                      {isLockManager && (
                         <Button
                           size="small"
                           onClick={() => setShowTransferKey(true)}
