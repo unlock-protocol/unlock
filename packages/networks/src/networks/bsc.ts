@@ -88,6 +88,11 @@ export const bsc: NetworkConfig = {
         name: 'Captcha',
         address: '0x88ed81de2d62849B337c3f31cd84D041bF26A38C',
       },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xF6963D3c395A7914De77f771C2fC44b47B8379AC',
+      },
     ],
   },
 }

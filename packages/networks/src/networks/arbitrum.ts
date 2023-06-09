@@ -104,6 +104,11 @@ export const arbitrum: NetworkConfig = {
         name: 'Captcha',
         address: '0xF6963D3c395A7914De77f771C2fC44b47B8379AC',
       },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0x06538095ae3B5123e440D9991377B85C3BC6E6FF',
+      },
     ],
   },
 }
