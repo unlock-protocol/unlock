@@ -38,6 +38,7 @@ const {
   setEventHooks,
   updateTransferFee,
   setKeyManagerOf,
+  transferFrom,
 } = v9
 
 export default {
@@ -79,4 +80,5 @@ export default {
   setEventHooks,
   updateTransferFee,
   setKeyManagerOf,
+  transferFrom,
 }
