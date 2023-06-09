@@ -191,35 +191,16 @@ export function ConfirmCrypto({
 
       const walletService = await getWalletService(lockNetwork)
       if (renew) {
-        if (lock!.publicLockVersion! <= 9) {
-          await walletService.purchaseKeys(
-            {
-              lockAddress,
-              owners: [account!],
-              referrers: [getReferrer(account!, paywallConfig)],
-              data: purchaseData,
-            },
-            {} /** transactionParams */,
-            onErrorCallback
-          )
-        } else {
-          const tokenId = await web3Service.tokenOfOwnerByIndex(
+        await walletService.extendKey(
+          {
             lockAddress,
-            account!,
-            0,
-            lockNetwork
-          )
-          await walletService.extendKey(
-            {
-              lockAddress,
-              tokenId: tokenId.toString(),
-              referrer: getReferrer(account!, paywallConfig),
-              data: purchaseData?.[0],
-            },
-            {} /** Transaction params */,
-            onErrorCallback
-          )
-        }
+            owner: recipients?.[0],
+            referrer: getReferrer(account!, paywallConfig),
+            data: purchaseData?.[0],
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
       } else {
         await walletService.purchaseKeys(
           {

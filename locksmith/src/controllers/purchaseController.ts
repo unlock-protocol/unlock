@@ -12,7 +12,6 @@ import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
 import { getTotalPurchasePriceInCrypto } from '../utils/claim'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 
 const PaymentCaptureBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),

@@ -21,8 +21,6 @@ import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { PricingData } from './PricingData'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { networks } from '@unlock-protocol/networks'
 
 interface Props {
   injectedProvider: unknown
@@ -182,18 +180,11 @@ export function ConfirmSwapAndPurchase({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      const web3Service = new Web3Service(networks)
       if (renew) {
-        const tokenId = await web3Service.tokenOfOwnerByIndex(
-          lockAddress,
-          account!,
-          0,
-          lockNetwork
-        )
         await walletService.extendKey({
           lockAddress,
           keyPrice,
-          tokenId,
+          owner: recipients?.[0],
           data: purchaseData?.[0] || '0x',
           referrer: referrers?.[0],
           swap,
