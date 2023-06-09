@@ -59,6 +59,26 @@ const fromDecimal = (num: string, decimals: number) => {
   )
 }
 
+/** Helper to return usd pricing object */
+const toUsdPricing = ({
+  amount,
+  usdPricing,
+  decimals,
+}: {
+  amount: number
+  decimals: number
+  usdPricing: PriceResults
+}): KeyPricingPrice => {
+  const { symbol, price } = usdPricing ?? {}
+  return {
+    amount,
+    decimals,
+    symbol,
+    amountInUSD: price ? amount * price : undefined,
+    amountInCents: price ? Math.round(amount * price * 100) : 0,
+  }
+}
+
 export async function getDefiLammaPrice({
   network,
   erc20Address,
@@ -200,17 +220,11 @@ export const getDefaultUsdPricing = async ({
 
   const defaultPrice = fromDecimal(keyPrice, decimals)
 
-  const defaultPricing = {
+  const defaultPricing = toUsdPricing({
     amount: defaultPrice,
+    usdPricing,
     decimals,
-    symbol: usdPricing.symbol,
-    amountInUSD: usdPricing?.price
-      ? defaultPrice * usdPricing.price
-      : undefined,
-    amountInCents: usdPricing?.price
-      ? Math.round(defaultPrice * usdPricing.price * 100)
-      : 0,
-  }
+  })
 
   return defaultPricing
 }
@@ -250,16 +264,14 @@ export const getUsdPricingForRecipient = async ({
 
   const amount = fromDecimal(purchasePrice, decimals)
 
+  const price = toUsdPricing({
+    amount,
+    usdPricing,
+    decimals,
+  })
+
   return {
     address: userAddress,
-    price: {
-      amount,
-      decimals,
-      symbol: usdPricing.symbol,
-      amountInUSD: usdPricing?.price ? amount * usdPricing.price : undefined,
-      amountInCents: usdPricing?.price
-        ? Math.round(amount * usdPricing.price * 100)
-        : 0,
-    },
+    price,
   }
 }
