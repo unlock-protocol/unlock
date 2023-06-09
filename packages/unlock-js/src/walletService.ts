@@ -43,7 +43,6 @@ interface PurchaseKeysParams {
   totalApproval?: string
   keyManagers?: string[]
   swap?: Omit<SwapOptions, 'callData'>
-  renewIfExpired?: boolean
 }
 
 interface SwapOptions {
