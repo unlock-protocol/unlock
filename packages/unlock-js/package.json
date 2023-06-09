@@ -57,7 +57,7 @@
     "@uniswap/sdk-core": "3.2.3",
     "@uniswap/smart-order-router": "3.10.1",
     "graphql": "16.6.0",
-    "graphql-request": "5.1.0",
+    "graphql-request": "6.1.0",
     "react-to-print": "2.14.12",
     "siwe": "2.1.4"
   }
