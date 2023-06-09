@@ -66,13 +66,11 @@ export const TransferKeyDrawer = ({
     network,
   })
 
-  const {
-    isLoading: isLoadingTransferFee,
-    data: { transferFeePercentage, isTransferAllowed } = {},
-  } = useGetTransferFeeBasisPoints({
-    lockAddress,
-    network,
-  })
+  const { data: { transferFeePercentage, isTransferAllowed } = {} } =
+    useGetTransferFeeBasisPoints({
+      lockAddress,
+      network,
+    })
 
   console.table({
     transferFeePercentage,
@@ -120,6 +118,12 @@ export const TransferKeyDrawer = ({
     return true
   }
 
+  const isTransferable = async () => {
+    return !isTransferAllowed
+      ? 'Transfers are disabled and tokens are soul-bound.'
+      : true
+  }
+
   if (!isOpen) return null
 
   return (
@@ -142,6 +146,7 @@ export const TransferKeyDrawer = ({
               isAddressOrEns,
               isOwnerUnchanged,
               hasMaxNumberOfKeys,
+              isTransferable,
             },
           }}
           render={() => {
