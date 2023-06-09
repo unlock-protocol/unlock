@@ -6,14 +6,6 @@ import * as Sentry from '@sentry/nextjs'
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: any, query) => {
-      if (
-        error instanceof AxiosError &&
-        error?.response?.status &&
-        [401, 403, 404].includes(error.response.status)
-      ) {
-        return
-      }
-
       const id = Sentry.captureException(error, {
         contexts: {
           query: {
