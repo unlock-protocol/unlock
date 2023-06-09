@@ -96,6 +96,11 @@ export const optimism: NetworkConfig = {
         name: 'Captcha',
         address: '0x639143cbf90F27eA5Ce4b3A7D869d4D7878009A5',
       },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0x1402D55BF0D6566ca8F569041000a8015b608632',
+      },
     ],
   },
 }
