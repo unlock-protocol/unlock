@@ -229,7 +229,7 @@ export const getDefaultUsdPricing = async ({
   return defaultPricing
 }
 
-/** Get default pricing for a specific recipient */
+/** Get usd pricing for a specific recipient */
 export const getUsdPricingForRecipient = async ({
   lockAddress,
   network,
