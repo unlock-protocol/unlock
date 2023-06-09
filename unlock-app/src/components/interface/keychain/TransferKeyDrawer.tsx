@@ -122,8 +122,6 @@ export const TransferKeyDrawer = ({
       : true
   }
 
-  if (!isOpen) return null
-
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       <form
