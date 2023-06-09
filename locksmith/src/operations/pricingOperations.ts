@@ -258,7 +258,6 @@ export const getUsdPricingForRecipient = async ({
         currencyContractAddress === ethers.constants.AddressZero
           ? undefined
           : currencyContractAddress,
-      amount: 1,
     }),
   ])
 
