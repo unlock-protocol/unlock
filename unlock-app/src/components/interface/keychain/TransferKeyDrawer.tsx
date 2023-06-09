@@ -14,7 +14,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { addressMinify } from '~/utils/strings'
 import { useMutation } from '@tanstack/react-query'
 import { useLockData } from '~/hooks/useLockData'
-import { useGetTransferFeeBasisPoints } from '~/hooks/useTransferFee'
 import { useEffect } from 'react'
 
 interface TransferKeyDrawerProps {
@@ -66,11 +65,6 @@ export const TransferKeyDrawer = ({
     network,
   })
 
-  const { data: { isTransferAllowed } = {} } = useGetTransferFeeBasisPoints({
-    lockAddress,
-    network,
-  })
-
   const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
 
   const onTransferFrom = async () => {
@@ -116,12 +110,6 @@ export const TransferKeyDrawer = ({
     return true
   }
 
-  const isTransferable = async () => {
-    return !isTransferAllowed
-      ? 'Transfers are disabled and tokens are soul-bound.'
-      : true
-  }
-
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       <form
@@ -142,7 +130,6 @@ export const TransferKeyDrawer = ({
               isAddressOrEns,
               isOwnerUnchanged,
               hasMaxNumberOfKeys,
-              isTransferable,
             },
           }}
           render={() => {
