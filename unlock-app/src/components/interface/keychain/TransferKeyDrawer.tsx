@@ -15,6 +15,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { addressMinify } from '~/utils/strings'
 import { useMutation } from '@tanstack/react-query'
 import { useLockData } from '~/hooks/useLockData'
+import { useGetTransferFeeBasisPoints } from '~/hooks/useTransferFee'
 
 interface TransferKeyDrawerProps {
   isOpen: boolean
@@ -65,11 +66,24 @@ export const TransferKeyDrawer = ({
     network,
   })
 
+  const {
+    isLoading: isLoadingTransferFee,
+    data: { transferFeePercentage, isTransferAllowed } = {},
+  } = useGetTransferFeeBasisPoints({
+    lockAddress,
+    network,
+  })
+
+  console.table({
+    transferFeePercentage,
+    isTransferAllowed,
+  })
+
   const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
 
   const onTransferFrom = async () => {
     await walletService.transferFrom({
-      from: account!,
+      keyOwner: account!,
       to: newOwner!,
       lockAddress,
       tokenId,
