@@ -1,5 +1,21 @@
 # Changes
 
+# 0.38.1
+
+- add `transferFrom` to walletService
+
+# 0.38.0
+
+- Add support for swap and purchase in key extension
+
+# 0.37.2
+
+- USDC on Polygon does not have a version function
+
+# 0.37.1
+
+- fixing swap and purchase
+
 # 0.37.0
 
 - adding support for actual purchase through CardPurchaser

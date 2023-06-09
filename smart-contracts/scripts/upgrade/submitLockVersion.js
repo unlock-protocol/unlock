@@ -27,7 +27,12 @@ const {
   deployLock,
 } = require('../../test/helpers')
 
-async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
+async function main({
+  publicLockAddress,
+  publicLockVersion,
+  addOnly,
+  unlockAddress,
+} = {}) {
   await run('compile')
 
   // make sure we get the correct chain id on local mainnet fork
@@ -35,7 +40,10 @@ async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
     ? { chainId: '1' }
     : await ethers.provider.getNetwork()
 
-  const { unlockAddress, multisig } = networks[chainId]
+  const { multisig } = networks[chainId]
+  if (!unlockAddress) {
+    ;({ unlockAddress } = networks[chainId])
+  }
   let publicLock
 
   // if not address is specified, deploy the lock template
@@ -82,7 +90,6 @@ async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
 
   // mainnet uses old multisigs so we have to send tx 1 by 1
   if (chainId == 4 || chainId == 1) {
-    
     // add template
     await submitTx({
       safeAddress: multisig,
@@ -91,13 +98,12 @@ async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
     })
 
     // set template as default
-    if(!addOnly) {
+    if (!addOnly) {
       await submitTx({
         safeAddress: multisig,
         tx: parseTx('setLockTemplate', [publicLock.address]),
         signer,
       })
-
     }
     // multisig txs are confirmed automatically on a mainnet fork
     if (process.env.RUN_MAINNET_FORK) {
@@ -111,14 +117,10 @@ async function main({ publicLockAddress, publicLockVersion, addOnly } = {}) {
     }
   } else {
     // on all other networks, we can send all txs at once
-    const txs = [
-      parseTx('addLockTemplate', [publicLock.address, version]),
-    ]
+    const txs = [parseTx('addLockTemplate', [publicLock.address, version])]
 
-    if(!addOnly) {
-      txs.push(
-        parseTx('setLockTemplate', [publicLock.address]),
-      )
+    if (!addOnly) {
+      txs.push(parseTx('setLockTemplate', [publicLock.address]))
     }
 
     await submitTx({

@@ -36,6 +36,7 @@ export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  metadata = 'checkout.metadata',
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
   enable = 'checkout.enable',
@@ -101,16 +102,31 @@ export class Paywall {
     this.sendOrBuffer('authenticate', {})
   }
 
-  loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {
+  loadCheckoutModal = async (config?: PaywallConfig, unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      this.shakeHands(unlockUrl || unlockAppUrl)
+      await this.shakeHands(unlockUrl || unlockAppUrl)
     }
     this.sendOrBuffer(
       'setConfig',
       injectProviderInfo(config || this.paywallConfig, this.provider)
     )
+    return new Promise((resolve) => {
+      let hash: string, lock: string
+      this.child!.on(
+        CheckoutEvents.transactionInfo,
+        (transactionInfo: TransactionInfo) => {
+          hash = transactionInfo.hash
+          lock = transactionInfo.lock
+          this.handleTransactionInfoEvent(transactionInfo)
+        }
+      )
+      this.child!.on(CheckoutEvents.closeModal, () => {
+        this.hideIframe()
+        resolve({ hash, lock })
+      })
+    })
   }
 
   getUserAccountAddress = () => {
@@ -184,6 +200,7 @@ export class Paywall {
     this.child!.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
     this.child!.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
     this.child!.on(CheckoutEvents.enable, this.handleEnable)
+    this.child!.on(CheckoutEvents.metadata, this.handleMetadataEvent)
 
     // transactionInfo event also carries transaction hash.
     this.child!.on(
@@ -212,6 +229,10 @@ export class Paywall {
     }
   }
 
+  async handleMetadataEvent(metadata: any) {
+    dispatchEvent(unlockEvents.metadata, metadata)
+  }
+
   handleUserInfoEvent = async (info: UserInfo) => {
     this.userAccountAddress = info.address
     dispatchEvent(unlockEvents.authenticated, info)
@@ -222,11 +243,14 @@ export class Paywall {
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
     const provider = this.provider as any
     if (provider.request) {
-      return provider.request({ method, params, id }).then((response) => {
-        this.child!.call('resolveMethodCall', { id, error: null, response })
-      }).catch((error) => {
-        this.child!.call('resolveMethodCall', { id, error, response: null })
-      })
+      return provider
+        .request({ method, params, id })
+        .then((response) => {
+          this.child!.call('resolveMethodCall', { id, error: null, response })
+        })
+        .catch((error) => {
+          this.child!.call('resolveMethodCall', { id, error, response: null })
+        })
     } else if (provider.sendAsync) {
       provider.sendAsync(
         { method, params, id },

@@ -42,6 +42,7 @@ export enum HookType {
   CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
   CAPTCHA = 'CAPTCHA',
+  GUILD = 'GUILD',
 }
 
 export const HooksName = [
@@ -96,6 +97,7 @@ export interface NetworkConfig {
     universalRouterAddress: string
   }>
   swapPurchaser?: string
+  unlockOwner?: string
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
@@ -113,6 +115,12 @@ export interface NetworkConfig {
   }
   blockScan?: {
     url?: (address: string) => string
+  }
+  // info about the bridge are available at
+  // https://docs.connext.network/resources/deployments
+  bridge?: {
+    domainId: number
+    connext: string
   }
   isTestNetwork?: boolean
   erc20?: {

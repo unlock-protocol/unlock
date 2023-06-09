@@ -22,6 +22,7 @@ export type CheckoutPage =
   | 'RENEWED'
   | 'PASSWORD'
   | 'PROMO'
+  | 'GUILD'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -32,7 +33,7 @@ export interface FiatPricing {
   }
 }
 
-export type CheckoutHookType = 'password' | 'promocode' | 'captcha'
+export type CheckoutHookType = 'password' | 'promocode' | 'captcha' | 'guild'
 
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
@@ -123,6 +124,10 @@ interface BackEvent {
   type: CheckoutPage | 'BACK'
 }
 
+interface ResetEvent {
+  type: 'RESET_CHECKOUT'
+}
+
 export type CheckoutMachineEvents =
   | SelectLockEvent
   | SelectQuantityEvent
@@ -138,6 +143,7 @@ export type CheckoutMachineEvents =
   | RenewedEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
+  | ResetEvent
   | DisconnectEvent
   | BackEvent
 
@@ -154,7 +160,11 @@ type Payment =
     }
   | {
       method: 'swap_and_purchase'
-      route: any
+      route?: any
+    }
+  | {
+      method: 'universal_card'
+      cardId?: string
     }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
@@ -164,7 +174,7 @@ export interface Transaction {
   transactionHash?: string
 }
 
-interface CheckoutMachineContext {
+export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
@@ -186,6 +196,7 @@ interface CheckoutMachineContext {
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
+  existingMember: boolean
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
@@ -206,6 +217,12 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   renew: false,
   hook: undefined,
   metadata: undefined,
+  existingMember: false,
+}
+
+const DISCONNECT = {
+  target: 'SELECT',
+  actions: ['disconnect'],
 }
 
 export const checkoutMachine = createMachine(
@@ -229,6 +246,8 @@ export const checkoutMachine = createMachine(
       CAPTCHA: 'CAPTCHA',
       PASSWORD: 'PASSWORD',
       PROMO: 'PROMO',
+      GUILD: 'GUILD',
+      CARD: 'CARD',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
         actions: ['updatePaywallConfig'],
@@ -238,6 +257,10 @@ export const checkoutMachine = createMachine(
       },
       SUBMIT_DATA: {
         actions: ['submitData'],
+      },
+      RESET_CHECKOUT: {
+        target: 'SELECT',
+        actions: ['disconnect'],
       },
     },
     states: {
@@ -254,7 +277,18 @@ export const checkoutMachine = createMachine(
               target: 'RENEW',
               cond: (_, event) => event.expiredMember,
             },
-
+            {
+              actions: ['selectLock'],
+              target: 'QUANTITY',
+              cond: (_, event) => !event.skipQuantity,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'METADATA',
+              cond: (_, event) => {
+                return !event.skipRecipient
+              },
+            },
             {
               actions: ['selectLock'],
               cond: 'requireMessageToSign',
@@ -263,28 +297,31 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'PASSWORD',
-              cond: (ctx, event) => {
-                const isPassword = ctx?.hook === 'password'
-                return !!isPassword && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'password'
               },
             },
             {
               actions: ['selectLock'],
               target: 'PROMO',
-              cond: (ctx, event) => {
-                const isPromo = ctx?.hook === 'promocode'
-                return !!isPromo && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'promocode'
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'GUILD',
+              cond: (_, event) => {
+                return event.hook === 'guild'
               },
             },
             {
               actions: ['selectLock'],
               target: 'CAPTCHA',
-              cond: (ctx, event) => {
-                const isCaptcha = ctx?.hook === 'captcha'
-                return !!isCaptcha && event.expiredMember
+              cond: (_, event) => {
+                return event.hook === 'captcha'
               },
             },
-
             {
               actions: ['selectLock'],
               target: 'PAYMENT',
@@ -293,23 +330,8 @@ export const checkoutMachine = createMachine(
                 return !!(event.skipRecipient && event.skipQuantity)
               },
             },
-            {
-              actions: ['selectLock'],
-              target: 'METADATA',
-              // Skip quantity page if min or max doesn't require more than 1 recipients
-              cond: (_, event) => {
-                return !!event.skipQuantity
-              },
-            },
-            {
-              actions: ['selectLock'],
-              target: 'QUANTITY',
-            },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       QUANTITY: {
@@ -319,10 +341,7 @@ export const checkoutMachine = createMachine(
             target: 'METADATA',
           },
           BACK: 'SELECT',
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       METADATA: {
@@ -349,6 +368,11 @@ export const checkoutMachine = createMachine(
               cond: 'requireCaptcha',
             },
             {
+              target: 'GUILD',
+              actions: ['selectRecipients'],
+              cond: 'requireGuild',
+            },
+            {
               actions: ['selectRecipients'],
               target: 'PAYMENT',
             },
@@ -364,10 +388,7 @@ export const checkoutMachine = createMachine(
               target: 'QUANTITY',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       MESSAGE_TO_SIGN: {
@@ -385,6 +406,11 @@ export const checkoutMachine = createMachine(
             },
             {
               actions: ['signMessage'],
+              cond: 'requireGuild',
+              target: 'GUILD',
+            },
+            {
+              actions: ['signMessage'],
               cond: 'requireCaptcha',
               target: 'CAPTCHA',
             },
@@ -394,10 +420,7 @@ export const checkoutMachine = createMachine(
             },
           ],
           BACK: 'METADATA',
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       PASSWORD: {
@@ -422,10 +445,7 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       PROMO: {
@@ -450,10 +470,32 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
+        },
+      },
+      GUILD: {
+        on: {
+          SUBMIT_DATA: [
+            {
+              target: 'RENEW',
+              actions: ['submitData'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'PAYMENT',
+              actions: ['submitData'],
+            },
+          ],
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
+          DISCONNECT,
         },
       },
       CAPTCHA: {
@@ -478,10 +520,7 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       PAYMENT: {
@@ -490,7 +529,9 @@ export const checkoutMachine = createMachine(
             {
               target: 'CARD',
               actions: ['selectPaymentMethod'],
-              cond: (_, event) => event.payment.method === 'card',
+              cond: (_, event) => {
+                return ['card'].includes(event.payment.method)
+              },
             },
             {
               actions: ['selectPaymentMethod'],
@@ -507,6 +548,10 @@ export const checkoutMachine = createMachine(
               target: 'PROMO',
             },
             {
+              cond: 'requireGuild',
+              target: 'GUILD',
+            },
+            {
               cond: 'requireCaptcha',
               target: 'CAPTCHA',
             },
@@ -516,12 +561,21 @@ export const checkoutMachine = createMachine(
             },
             {
               target: 'METADATA',
+              cond: (ctx) => {
+                return !ctx.skipRecipient
+              },
+            },
+            {
+              target: 'QUANTITY',
+              cond: (ctx) => {
+                return !ctx.skipQuantity
+              },
+            },
+            {
+              target: 'SELECT',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       CARD: {
@@ -532,14 +586,10 @@ export const checkoutMachine = createMachine(
               actions: ['selectPaymentMethod'],
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
           BACK: 'PAYMENT',
         },
       },
-
       CONFIRM: {
         on: {
           CONFIRM_MINT: {
@@ -548,13 +598,14 @@ export const checkoutMachine = createMachine(
           },
           BACK: [
             {
+              target: 'CARD',
+              cond: 'isCardPayment',
+            },
+            {
               target: 'PAYMENT',
             },
           ],
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
+          DISCONNECT,
         },
       },
       MINTING: {
@@ -589,10 +640,6 @@ export const checkoutMachine = createMachine(
             },
           ],
           BACK: 'SELECT',
-          DISCONNECT: {
-            target: 'SELECT',
-            actions: ['disconnect'],
-          },
         },
       },
       RENEW: {
@@ -631,6 +678,7 @@ export const checkoutMachine = createMachine(
           recipients: event.recipients,
           keyManagers: event.keyManagers,
           hook: event.hook,
+          existingMember: event.existingMember,
         }
       }),
       selectQuantity: assign({
@@ -710,6 +758,8 @@ export const checkoutMachine = createMachine(
       requireCaptcha: (context) => context && context?.hook === 'captcha',
       requirePassword: (context) => context && context?.hook === 'password',
       requirePromo: (context) => context && context?.hook === 'promocode',
+      requireGuild: (context) => context && context?.hook === 'guild',
+      isCardPayment: (context) => ['card'].includes(context.payment.method),
     },
   }
 )

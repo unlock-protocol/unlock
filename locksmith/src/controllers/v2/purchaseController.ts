@@ -98,12 +98,10 @@ export const createPaymentIntent: RequestHandler = async (
     throw new Error('Lock is sold out.')
   }
 
-  const stripeConnectApiKey = await getStripeConnectForLock(
-    lockAddress,
-    network
-  )
+  const { stripeEnabled, stripeAccount: stripeConnectApiKey = '' } =
+    await getStripeConnectForLock(lockAddress, network)
 
-  if (stripeConnectApiKey == 0 || stripeConnectApiKey == -1) {
+  if (!stripeEnabled) {
     return response
       .status(400)
       .send({ message: 'Missing Stripe Connect integration' })
@@ -266,7 +264,7 @@ export const createOnRampSession: RequestHandler = async (
         universalCardConfig.stripeDestinationNetwork,
       ],
       wallet_addresses: {
-        ethereum: userAddress,
+        [universalCardConfig.stripeDestinationNetwork]: userAddress,
       },
     },
   })
@@ -313,7 +311,7 @@ export const captureOnRamp: RequestHandler = async (request, response) => {
     purchase.body.recipients,
     {
       message: purchase.body.transferMessage,
-      signature: purchase.body.purchaseSignature,
+      signature: purchase.body.transferSignature,
     },
     {
       message: purchase.body.purchaseMessage,
@@ -321,5 +319,8 @@ export const captureOnRamp: RequestHandler = async (request, response) => {
     },
     purchase.body.purchaseData
   )
+
+  // TODO : save transaction hash in the DB so we know we have successfuly executed that transaction!
+
   return response.send(transaction)
 }

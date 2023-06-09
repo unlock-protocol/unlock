@@ -7,6 +7,7 @@ import normalizer from '../../utils/normalizer'
 import networks from '@unlock-protocol/networks'
 import { UserMetadata } from './metadataController'
 import { upsertUserMetadata } from '../../operations/userMetadataOperations'
+import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
 
 const ClaimBody = z.object({
   data: z.string().optional(),
@@ -37,44 +38,6 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const email = request.body.email?.toString().toLowerCase()
 
-  if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
-    return response.status(400).send({
-      message: 'Claim disabled for this lock',
-    })
-  }
-
-  // First check that the lock is indeed free and that the gas costs is low enough!
-  const pricer = new KeyPricer()
-  const pricing = await pricer.generate(lockAddress, network)
-  if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-    return response.status(400).send({
-      message: 'Lock is not free!',
-    })
-  }
-
-  const fulfillmentDispatcher = new Dispatcher()
-
-  // Check that claim is not too costly
-  const hasEnoughToPayForGas =
-    await fulfillmentDispatcher.hasFundsForTransaction(network)
-  if (!hasEnoughToPayForGas) {
-    return response.status(500).send({
-      message: 'Not enough funds to pay for gas',
-    })
-  }
-
-  if (!(await pricer.canAffordGrant(network))) {
-    return response.status(500).send({
-      message: 'Gas fees too high!',
-    })
-  }
-
-  if (!owner && !email) {
-    return response.status(401).send({
-      message: 'You are not authenticated.',
-    })
-  }
-
   // Support for walletless claims!
   if (!owner && email) {
     // We can build a recipient wallet address from the email address
@@ -84,6 +47,52 @@ export const claim: RequestHandler = async (request, response: Response) => {
         email,
         lockAddress,
       },
+    })
+  }
+
+  if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
+    return response.status(400).send({
+      message: 'Claim disabled for this lock',
+    })
+  }
+
+  // First check that the lock is indeed free and that the gas costs is low enough!
+  const pricer = new KeyPricer()
+  const totalAmount = await getTotalPurchasePriceInCrypto({
+    lockAddress,
+    network,
+    recipients: [owner],
+    data: [data || '0x'],
+  })
+
+  if (totalAmount.gt(0)) {
+    return response.status(400).send({
+      message: 'Lock is not free',
+    })
+  }
+
+  const fulfillmentDispatcher = new Dispatcher()
+
+  // Check that claim is not too costly
+  const [hasEnoughToPayForGas, canAffordGas] = await Promise.all([
+    fulfillmentDispatcher.hasFundsForTransaction(network),
+    pricer.canAffordGrant(network),
+  ])
+  if (!hasEnoughToPayForGas) {
+    return response.status(500).send({
+      message: 'Not enough funds to pay for gas',
+    })
+  }
+
+  if (!canAffordGas) {
+    return response.status(500).send({
+      message: 'Gas fees too high!',
+    })
+  }
+
+  if (!owner && !email) {
+    return response.status(401).send({
+      message: 'You are not authenticated.',
     })
   }
 
@@ -102,16 +111,17 @@ export const claim: RequestHandler = async (request, response: Response) => {
       metadata,
     })
   }
-
   const web3Service = new Web3Service(networks)
-  const alreadyHasKey = await web3Service.getHasValidKey(
-    lockAddress,
-    owner,
-    network
-  )
 
-  // Is user already has a key, claim will likely fail
-  if (alreadyHasKey) {
+  const [member, total] = await Promise.all([
+    web3Service.getHasValidKey(lockAddress, owner, network),
+    web3Service.totalKeys(lockAddress, owner, network),
+  ])
+
+  const expired = !member && total > 0
+
+  // Is user already has a valid key, claim will likely fail
+  if (member) {
     return response.status(400).send({
       message: 'User already has key',
     })
@@ -119,19 +129,41 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const keyManagerAddress = networks[network].keyManagerAddress
 
-  return fulfillmentDispatcher.purchaseKey(
-    {
+  // if the key is expired, we use extend rather than purchase
+  if (expired) {
+    const tokenId = await web3Service.tokenOfOwnerByIndex(
       lockAddress,
       owner,
+      0,
+      network
+    )
+    return fulfillmentDispatcher.extendKey(
+      lockAddress,
+      tokenId,
       network,
-      data,
-      keyManager: email ? keyManagerAddress : owner,
-    },
-    async (_: any, transactionHash: string) => {
-      return response.send({
-        transactionHash,
+      data || '0x',
+      async (_, transactionHash) => {
+        return response.send({
+          transactionHash,
+          owner,
+        })
+      }
+    )
+  } else {
+    return fulfillmentDispatcher.purchaseKey(
+      {
+        lockAddress,
         owner,
-      })
-    }
-  )
+        network,
+        data,
+        keyManager: email ? keyManagerAddress : owner,
+      },
+      async (_, transactionHash) => {
+        return response.send({
+          transactionHash,
+          owner,
+        })
+      }
+    )
+  }
 }

@@ -36,7 +36,7 @@ const Wrapper = classed.div('flex gap-1', {
 const Label = classed.span('relative text-gray-700', {
   variants: {
     size: {
-      tiny: 'text-xs',
+      tiny: 'text-sm',
       small: 'text-base',
       medium: 'text-lg',
       large: 'text-2xl',
@@ -50,7 +50,7 @@ const Label = classed.span('relative text-gray-700', {
 const Value = classed.span(`relative font-bold text-black`, {
   variants: {
     size: {
-      tiny: 'text-base',
+      tiny: 'text-sm',
       small: 'text-base',
       medium: 'text-lg',
       large: 'text-2xl md:text-4xl',
@@ -101,14 +101,14 @@ export const Detail = ({
         children !== undefined &&
         (typeof label === 'string' && tooltip ? (
           <Tooltip tip={children} label={label} side="bottom">
-            <div className="flex items-center gap-2 text-right cursor-pointer">
+            <div className="flex items-center gap-2 cursor-pointer">
               <Value truncate={truncate} size={valueSize}>
                 {children}
               </Value>
             </div>
           </Tooltip>
         ) : (
-          <div className="flex items-center gap-2 text-right">
+          <div className="flex items-center gap-2">
             <Value truncate={truncate} size={valueSize}>
               {children}
             </Value>

@@ -2,11 +2,9 @@ const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../helpers')
 
-
 let proxy
 
 contract('KeyManager', (accounts) => {
-
   beforeEach(async () => {
     // deploy proxy
     const KeyManager = await ethers.getContractFactory('KeyManager')
@@ -30,14 +28,20 @@ contract('KeyManager', (accounts) => {
 
   it('should not be upgradable by an attacker', async () => {
     const attacker = await ethers.getSigner(accounts[3])
-    const KeyManagerV2 = await ethers.getContractFactory('KeyManagerV2', attacker)
+    const KeyManagerV2 = await ethers.getContractFactory(
+      'KeyManagerV2',
+      attacker
+    )
 
     // the `reverts` helper does not seem to work here.
     try {
       await upgrades.upgradeProxy(proxy.address, KeyManagerV2)
       assert.equal(false, 'to have reverted')
     } catch (error) {
-      assert.equal(error.message, "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'")
+      assert.equal(
+        error.message,
+        "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
+      )
     }
   })
 })

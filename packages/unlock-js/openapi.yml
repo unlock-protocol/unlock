@@ -395,6 +395,12 @@ components:
         emailSender:
           type: string
           nullable: true
+        checkoutConfigId:
+          type: string
+          nullable: true
+        hookGuildId:
+          type: string
+          nullable: true
 
   parameters:
     Network:
@@ -1763,6 +1769,32 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /lock/{lockAddress}/stripe-connected:
+    get:
+      operationId: getLockStripeConnectionDetails
+      description: Returns Stripe connection details
+      parameters:
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: chain
+          required: true
+          schema:
+            type: number
+          description: Lock network
+
+      responses:
+        200:
+          description: Successfully returns lock Stripe connection details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: string
+                  connected:
+                    type: number
+
   /v2/images/upload:
     post:
       operationId: uploadImages
@@ -1962,6 +1994,8 @@ paths:
                   purchaser:
                     type: object
                     properties:
+                      email:
+                        type: string
                       fullname:
                         type: string
                       businessName:
@@ -2107,6 +2141,8 @@ paths:
                     type: string
                   vat:
                     type: string
+                  vatBasisPointsRate:
+                    type: number
                   servicePerformed:
                     type: string
                   addressLine1:
@@ -2121,6 +2157,9 @@ paths:
                     type: string
                   country:
                     type: string
+
+        204:
+          description: No receipts found
 
         500:
           description: Failed to retrieve supplier details.
@@ -2160,6 +2199,8 @@ paths:
                     type: string
                   vat:
                     type: string
+                  vatBasisPointsRate:
+                    type: number
                   servicePerformed:
                     type: string
                   addressLine1:
@@ -2630,6 +2671,44 @@ paths:
                 properties:
                   message:
                     type: string
+
+  /v2/hooks/guild:
+    get:
+      operationId: getDataForRecipientsAndGuild
+      description: Get the data for recipients and guild. This is to be used in conjunction with the Guild
+      parameters:
+        - in: query
+          name: network
+          required: true
+          description: The network the lock is on
+          schema:
+            type: number
+        - in: query
+          name: lockAddress
+          description: The address of the lock
+          schema:
+            type: string
+        - in: query
+          name: recipients
+          description: The list of recipients for the purchase
+          schema:
+            type: array
+            items:
+              type: string
+
+      responses:
+        200:
+          description: the list of data inputs to use for the transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: string
+
   /purchase/capture:
     post:
       operationId: capturePurchase
@@ -2798,3 +2877,153 @@ paths:
                           type: string
                         symbol:
                           type: string
+
+  /v2/purchase/onramp/{network}/locks/{lockAddress}:
+    post:
+      operationId: createOnRampSession
+      security:
+        - User: []
+      description: Setup an onramp session for the user.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transferSignature:
+                  type: string
+                transferMessage:
+                  type: object
+                  properties:
+                    from:
+                      type: string
+                    nonce:
+                      type: string
+                    to:
+                      type: string
+                    validAfter:
+                      type: number
+                    validBefore:
+                      type: number
+                    value:
+                      type: string
+                  required:
+                    - from
+                    - nonce
+                    - to
+                    - validAfter
+                    - validBefore
+                    - value
+                purchaseSignature:
+                  type: string
+                purchaseMessage:
+                  type: object
+                  properties:
+                    lock:
+                      type: string
+                    sender:
+                      type: string
+                    expiration:
+                      type: number
+                  required:
+                    - lock
+                    - sender
+                    - expiration
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                purchaseData:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Created onramp session.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientSecret:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/purchase/onramp/{session}/capture:
+    post:
+      operationId: captureOnRampSession
+      security:
+        - User: []
+      description: Setup an onramp session for the user.
+      parameters:
+        - name: session
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the onramp session
+        - in: query
+          name: transactionHash
+          required: true
+          description: The transacttion hash for the deposit
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfully sent purchase transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hash:
+                    type: string
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /claim/{network}/locks/{lockAddress}:
+    post:
+      description: Check if claim is possible for a given purchase
+      operationId: checkClaim
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                data:
+                  type: array
+                  items:
+                    type: string
+
+      responses:
+        200:
+          description: Send true if purchase can be claimed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canClaim:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'

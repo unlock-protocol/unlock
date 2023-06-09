@@ -9,18 +9,28 @@ import {
   removeAccessToken,
   saveAccessToken,
 } from '~/utils/session'
+import { config } from '~/config/app'
+import ProviderContext from '~/contexts/ProviderContext'
 
 type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
   session?: string | null
   signIn: () => Promise<unknown> | unknown
+  siweSign: (
+    nonce: string,
+    statement: string,
+    opts?: any
+  ) => Promise<{ message: string; signature: string } | null> | null
   signOut: () => Promise<unknown> | unknown
   status?: Status
   isSignedIn: boolean
 }
 
 const SIWEContext = createContext<SIWEContextType>({
+  siweSign: (_nonce: string, _statement: string) => {
+    throw new Error('No SIWE provider found')
+  },
   signIn: () => {
     throw new Error('No SIWE provider found')
   },
@@ -37,6 +47,7 @@ interface Props {
 
 export const SIWEProvider = ({ children }: Props) => {
   const { connected, getWalletService, network } = useAuth()
+  const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
@@ -69,32 +80,49 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const signIn = async () => {
+  const siweSign = async (
+    nonce: string,
+    statement: string,
+    opts: {
+      resources?: string[]
+    } = {}
+  ): Promise<{ message: string; signature: string } | null> => {
     try {
-      setStatus('loading')
       if (!connected) {
         throw new Error('No wallet connected.')
       }
       const walletService = await getWalletService()
-
       const address = await walletService.signer.getAddress()
-      const { data: nonce } = await storage.nonce()
+      const insideIframe = window !== window.parent
+
       const parent = new URL(
-        window.location != window.parent.location
-          ? document.referrer
-          : document.location.href
+        insideIframe ? config.unlockApp : window.location.href
       )
-      let resources = undefined
+
+      // We can't have an empty resources array... because the siwe library does not parse that correctly
+      // resulting in a different signature on the backend
+      let resources =
+        opts?.resources?.length && opts.resources?.length > 0
+          ? opts.resources
+          : undefined
+
       if (parent.host !== window.location.host) {
         resources = [window.location.origin]
       }
+
+      let domain = window.location.host
+      // If we are using the parent's provider, then we MUST use the parent's domain
+      if (provider?.provider?.parentOrigin) {
+        domain = new URL(provider.provider.parentOrigin()).host
+      }
+
       const siwe = new SiweMessage({
-        domain: parent.host,
+        domain,
         uri: parent.origin,
         address,
         chainId: network,
         version: '1',
-        statement: '',
+        statement,
         nonce,
         resources,
       })
@@ -104,28 +132,50 @@ export const SIWEProvider = ({ children }: Props) => {
         message,
         'personal_sign'
       )
-      const response = await storage.login({
-        message,
-        signature,
-      })
-      const { accessToken, walletAddress } = response.data
-      if (accessToken && walletAddress) {
-        saveAccessToken({
-          accessToken,
-          walletAddress,
-        })
+
+      return { message, signature }
+    } catch (error) {
+      onError(error)
+      return null
+    }
+  }
+
+  const signIn = async () => {
+    try {
+      setStatus('loading')
+      if (!connected) {
+        throw new Error('No wallet connected.')
       }
-      await queryClient.refetchQueries()
-      await refetchSession()
+
+      const { data: nonce } = await storage.nonce()
+      const siweResult = await siweSign(nonce, '')
+      if (siweResult) {
+        const { message, signature } = siweResult
+        const response = await storage.login({
+          message,
+          signature,
+        })
+        const { accessToken, walletAddress } = response.data
+        if (accessToken && walletAddress) {
+          saveAccessToken({
+            accessToken,
+            walletAddress,
+          })
+        }
+        await queryClient.refetchQueries()
+        await refetchSession()
+      }
       setStatus('idle')
     } catch (error) {
       onError(error)
+      return null
     }
   }
+
   const isSignedIn = !!session
   return (
     <SIWEContext.Provider
-      value={{ session, signIn, status, signOut, isSignedIn }}
+      value={{ session, signIn, siweSign, status, signOut, isSignedIn }}
     >
       {children}
     </SIWEContext.Provider>

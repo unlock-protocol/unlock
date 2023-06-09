@@ -11,6 +11,8 @@ import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
+import { GuildContractHook } from './hooksComponents/GuildContractHook'
+
 import { useCustomHook } from '~/hooks/useCustomHooks'
 
 interface UpdateHooksFormProps {
@@ -78,6 +80,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Captcha required',
         value: HookType.CAPTCHA,
         component: (args) => <CaptchaContractHook {...args} />,
+      },
+      {
+        label: 'Guild.xyz',
+        value: HookType.GUILD,
+        component: (args) => <GuildContractHook {...args} />,
       },
     ],
   },
@@ -196,6 +203,7 @@ const HookSelect = ({
               options={options}
               label={label}
               defaultValue={defaultValue}
+              disabled={disabled}
               onChange={(value) => {
                 handleSelectChange(`${value}`)
               }}

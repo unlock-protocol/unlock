@@ -19,16 +19,12 @@ contract MixinFunds is MixinErrors {
    */
   address public tokenAddress;
 
-  function _initializeMixinFunds(
-    address _tokenAddress
-  ) internal {
+  function _initializeMixinFunds(address _tokenAddress) internal {
     _isValidToken(_tokenAddress);
     tokenAddress = _tokenAddress;
   }
 
-  function _isValidToken(
-    address _tokenAddress
-  ) internal view {
+  function _isValidToken(address _tokenAddress) internal view {
     if (
       _tokenAddress != address(0) &&
       IERC20Upgradeable(_tokenAddress).totalSupply() < 0
@@ -52,9 +48,7 @@ contract MixinFunds is MixinErrors {
         // https://diligence.consensys.net/blog/2019/09/stop-using-soliditys-transfer-now/
         _to.sendValue(_amount);
       } else {
-        IERC20Upgradeable token = IERC20Upgradeable(
-          _tokenAddress
-        );
+        IERC20Upgradeable token = IERC20Upgradeable(_tokenAddress);
         token.safeTransfer(_to, _amount);
       }
     }

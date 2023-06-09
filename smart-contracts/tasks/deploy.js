@@ -36,7 +36,10 @@ task('deploy', 'Deploy the entire Unlock protocol')
   .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
   .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
   .addOptionalParam('locksmithURI', 'the URL locksmith to use in Unlock config')
-  .addOptionalParam('owner', 'address of the owner. defaults to the multisig address set for the network, it uses it')
+  .addOptionalParam(
+    'owner',
+    'address of the owner. defaults to the multisig address set for the network, it uses it'
+  )
   .addFlag('setTemplate', 'set the PublicLock instance in Unlock')
   .setAction(
     async (
@@ -142,22 +145,23 @@ task('deploy:serializer', 'Deploy LockSerializer').setAction(async () => {
   return await serializerDeployer()
 })
 
-task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
-  async () => {
+task('deploy:governor', 'Deploy Governor Alpha contracts')
+  .addParam('udtAddress', 'address of the ERC20 token to use for governance')
+  .setAction(async () => {
     // eslint-disable-next-line global-require
     const govDeployer = require('../scripts/deployments/governor')
     return await govDeployer()
-  }
-)
+  })
 
 task('deploy:keyManager', 'Deploy KeyManager contract')
-  .addOptionalParam('locksmiths', 'addresses for the locksmith signers, comma separated')
-  .setAction(
-    async ({ locksmiths }) => {
-      const locksmithsArray = !locksmiths ? [] : locksmiths.split(',')
-
-      // eslint-disable-next-line global-require
-      const keyManagerDeployer = require('../scripts/deployments/keyManager')
-      return await keyManagerDeployer(locksmithsArray)
-    }
+  .addOptionalParam(
+    'locksmiths',
+    'addresses for the locksmith signers, comma separated'
   )
+  .setAction(async ({ locksmiths }) => {
+    const locksmithsArray = !locksmiths ? [] : locksmiths.split(',')
+
+    // eslint-disable-next-line global-require
+    const keyManagerDeployer = require('../scripts/deployments/keyManager')
+    return await keyManagerDeployer(locksmithsArray)
+  })

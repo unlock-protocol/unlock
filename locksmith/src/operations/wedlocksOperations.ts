@@ -43,7 +43,7 @@ type Attachment = {
   path: string
   filename: string
 }
-
+// TODO: replace with SubgraphKey schema
 interface Key {
   lock: {
     address: string
@@ -53,6 +53,7 @@ interface Key {
   tokenId?: string
   owner: string
   keyId?: string
+  transactionsHash?: string[]
 }
 
 interface SendEmailProps {
@@ -141,6 +142,23 @@ interface GetAttachmentProps {
   owner: string
   event?: Partial<EventProps>
   types?: LockType
+}
+
+const getTransactionHashUrl = (
+  key: Key,
+  network: number
+): string | undefined => {
+  const hashes = key?.transactionsHash ?? []
+  const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+  const lastHashIndex = Math.max(hashes?.length - 1, 0)
+
+  const transactionsHash = hashes[lastHashIndex] // get last transaction hash
+
+  const transactionReceiptUrl = transactionsHash
+    ? `${config.unlockApp}/receipts?address=${lockAddress}&network=${network}&hash=${transactionsHash}`
+    : undefined
+
+  return transactionReceiptUrl
 }
 
 const getCustomContent = async (
@@ -317,6 +335,7 @@ const getLockSettings = async (
     const settings = await lockSettingOperations.getSettings({
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
+      includeProtected: true,
     })
     return settings
   }
@@ -339,17 +358,10 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const tokenId = key?.tokenId
   const manager = key?.manager
 
-  const ownerMetadata = await userMetadataOperations.getMetadata(
+  const recipient = await userMetadataOperations.getUserEmailRecipient({
     lockAddress,
     ownerAddress,
-    true
-  )
-
-  const protectedData = Normalizer.toLowerCaseKeys({
-    ...ownerMetadata?.userMetadata?.protected,
   })
-
-  const recipient = protectedData?.email as string
 
   if (!recipient) {
     return
@@ -431,6 +443,9 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const withLockImage = (customContent || '')?.length > 0
   const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
 
+  const keychainUrl = `${config.unlockApp}/keychain`
+  const transactionReceiptUrl = getTransactionHashUrl(key, network)
+
   await sendEmail({
     network: network!,
     template: templates[0],
@@ -440,13 +455,15 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
     params: {
       lockAddress: key.lock.address ?? '',
       lockName: key.lock.name,
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
       keyId: tokenId ?? '',
       network: networks[network!]?.name ?? '',
-      openSeaUrl,
-      transferUrl: transferUrl.toString(),
       customContent,
       lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
+      // urls
+      keychainUrl,
+      transactionReceiptUrl,
+      transferUrl: transferUrl.toString(),
+      openSeaUrl,
       // add event details props
       eventName: eventDetail?.eventName,
       eventDate: eventDetail?.eventDate,

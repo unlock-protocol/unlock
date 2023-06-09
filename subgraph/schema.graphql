@@ -105,7 +105,7 @@ type Receipt @entity {
   "Sender of the transaction"
   sender: String!
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
-  payer: String!
+  payer: String
   "Address of the Lock smart contract"
   lockAddress: String!
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"
@@ -115,5 +115,5 @@ type Receipt @entity {
   "Total gas paid"
   gasTotal: BigInt!
   "Increasing number of receipt"
-  numberOfReceipt: BigInt
+  receiptNumber: BigInt!
 }

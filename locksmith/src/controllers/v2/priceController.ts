@@ -1,29 +1,25 @@
 import { RequestHandler } from 'express'
-
-import {
-  createPricingForPurchase,
-  createTotalCharges,
-  defiLammaPrice,
-} from '../../utils/pricing'
+import { createPricingForPurchase } from '../../utils/pricing'
 import { ethers } from 'ethers'
 import { getCreditCardEnabledStatus } from '../../operations/creditCardOperations'
 import * as Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import * as pricingOperations from '../../operations/pricingOperations'
+import { MIN_PAYMENT_STRIPE_ONRAMP } from '../../utils/constants'
 
-const MIN_PAYMENT_STRIPE = 100
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
-  const erc20Address = request.query.address?.toString()
-  const address = ethers.utils.isAddress(erc20Address || '')
-    ? erc20Address
+  const currencyContractAddress = request.query.address?.toString()
+  const erc20Address = ethers.utils.isAddress(currencyContractAddress || '')
+    ? currencyContractAddress
     : undefined
 
-  const result = await defiLammaPrice({
+  const result = await pricingOperations.getDefiLammaPrice({
     network,
     amount,
-    address,
+    erc20Address,
   })
   return response.status(200).send({
     result,
@@ -33,15 +29,15 @@ export const amount: RequestHandler = async (request, response) => {
 export const total: RequestHandler = async (request, response) => {
   const network = Number(request.query.network?.toString() || 1)
   const amount = parseFloat(request.query.amount?.toString() || '1')
-  const erc20Address = request.query.address?.toString()
-  const address = ethers.utils.isAddress(erc20Address || '')
-    ? erc20Address
+  const currencyContractAddress = request.query.address?.toString()
+  const erc20Address = ethers.utils.isAddress(currencyContractAddress || '')
+    ? currencyContractAddress
     : undefined
 
-  const charge = await createTotalCharges({
+  const charge = await pricingOperations.getTotalCharges({
     network,
     amount,
-    address,
+    erc20Address,
   })
 
   return response.send(charge)
@@ -81,7 +77,7 @@ export const universalCard: RequestHandler = async (request, response) => {
   // For universal card, the creditCardProcessingFee fee is applied by Stripe directly
   // Stripe minimum payment is 1$ (100 cents)
   const creditCardProcessingFee =
-    total < MIN_PAYMENT_STRIPE ? MIN_PAYMENT_STRIPE - total : 0
+    total < MIN_PAYMENT_STRIPE_ONRAMP ? MIN_PAYMENT_STRIPE_ONRAMP - total : 0
 
   return response.send({
     creditCardProcessingFee,
@@ -110,16 +106,17 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   const web3Service = new Web3Service(networks)
   const lock = await web3Service.getLock(lockAddress, network)
 
-  const result = await defiLammaPrice({
+  const result = await pricingOperations.getDefiLammaPrice({
     network,
-    address: lock?.currencyContractAddress,
+    erc20Address: lock?.currencyContractAddress,
     amount: Number(`${lock.keyPrice}`),
   })
 
+  const totalPriceInCents = (result.priceInAmount ?? 0) * 100
   const creditCardEnabled = await getCreditCardEnabledStatus({
     lockAddress: Normalizer.ethereumAddress(lockAddress),
     network,
-    totalPriceInCents: result.priceInAmount ?? 0,
+    totalPriceInCents,
   })
 
   return response.status(200).send({ creditCardEnabled })

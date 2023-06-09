@@ -1,75 +1,20 @@
 const { ethers } = require('hardhat')
-const {
-  parseProposal,
-  encodeProposalArgs,
-  decodeProposalArgs,
-  submitProposal,
-} = require('../../helpers/gov')
-const { impersonate } = require('../../test/helpers/mainnet')
+const { submitProposal } = require('../../helpers/gov')
+const { impersonate } = require('../../test/helpers')
 
-async function main({
-  proposerAddress,
-  contractName,
-  functionName,
-  functionArgs,
-  proposalName,
-  proposalId: _proposalId,
-  calldata,
-  govAddress,
-}) {
-  if (_proposalId) {
-    // eslint-disable-next-line no-console
-    console.log('GOV SUBMIT > proposalId is present, skipping submit task')
-    return
-  }
+async function main({ proposal, proposerAddress, govAddress }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  let proposal
-  if (!functionName) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing function name.')
-  }
-  if (!contractName) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing function name.')
-  }
-  if (!proposerAddress) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing proposer address.')
-  }
-
-  if (!proposalName) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing proposal name.')
-  }
-
-  if (!calldata) {
-    calldata = await encodeProposalArgs({
-      contractName,
-      functionName,
-      functionArgs,
-    })
-  } else {
-    // parse to log
-    functionArgs = await decodeProposalArgs({
-      contractName,
-      functionName,
-      calldata,
-    })
-  }
-
-  // parse proposal correctly
-  proposal = await parseProposal({
-    contractName,
-    calldata,
-    proposalName,
-  })
-
-  // eslint-disable-next-line no-console
+  // log what is happening
   console.log(
-    `GOV SUBMIT > Proposed: ${contractName} ${functionName} ${functionArgs}`
+    `GOV SUBMIT > Proposed (${proposal.calls} calls):\n${proposal.calls
+      .map(
+        ({ contractName, functionName, functionArgs }) =>
+          `- ${contractName} ${functionName} ${functionArgs}`
+      )
+      .join('\n')}\n`
   )
 
   // submit the proposal
@@ -78,8 +23,7 @@ async function main({
     console.log('GOV SUBMIT (dev) > Impersonate proposer ')
     await impersonate(proposerAddress)
   }
-  // eslint-disable-next-line no-console
-  console.log(`GOV SUBMIT > Proposer: ${proposerAddress}`)
+
   const proposalTx = await submitProposal({
     proposerAddress,
     proposal,

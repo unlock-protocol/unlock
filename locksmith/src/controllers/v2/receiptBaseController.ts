@@ -15,6 +15,7 @@ export const SupplierBody = z.object({
   state: z.string().optional().default(''),
   zip: z.string().optional().default(''),
   country: z.string().optional().default(''),
+  vatBasisPointsRate: z.number().min(0).max(10000).nullish().default(null),
 })
 export type SupplierBodyProps = z.infer<typeof SupplierBody>
 
@@ -30,9 +31,8 @@ export class ReceiptBaseController {
     )
 
     if (!receipt) {
-      return response.status(404).json({
-        message: 'No supplier found with the provided parameters.',
-      })
+      // no returning content
+      return response.sendStatus(204)
     }
 
     return response.status(200).json({

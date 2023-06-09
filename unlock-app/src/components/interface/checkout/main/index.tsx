@@ -21,6 +21,7 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { Guild } from './Guild'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
@@ -36,7 +37,6 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  // @ts-expect-error - xstate extension type generation is buggy
   const checkoutService = useInterpret(checkoutMachine, {
     context: {
       paywallConfig,
@@ -71,26 +71,27 @@ export function Checkout({
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      checkoutService.send('DISCONNECT')
+      checkoutService.send('RESET_CHECKOUT')
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
+        const redirect = new URL(redirectURI.toString())
         if (mint && mint?.status === 'ERROR') {
-          redirectURI.searchParams.append('error', 'access-denied')
+          redirect.searchParams.append('error', 'access-denied')
         }
 
         if (paywallConfig.messageToSign && !messageToSign) {
-          redirectURI.searchParams.append('error', 'user did not sign message')
+          redirect.searchParams.append('error', 'user did not sign message')
         }
 
         if (messageToSign) {
-          redirectURI.searchParams.append('signature', messageToSign.signature)
-          redirectURI.searchParams.append('address', messageToSign.address)
+          redirect.searchParams.append('signature', messageToSign.signature)
+          redirect.searchParams.append('address', messageToSign.address)
         }
         for (const [key, value] of Object.entries(params)) {
-          redirectURI.searchParams.append(key, value)
+          redirect.searchParams.append(key, value)
         }
-        return window.location.assign(redirectURI)
+        return window.location.assign(redirect)
       } else if (!communication?.insideIframe) {
         window.history.back()
       } else {
@@ -208,7 +209,14 @@ export function Checkout({
           />
         )
       }
-
+      case 'GUILD': {
+        return (
+          <Guild
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
       case 'PASSWORD': {
         return (
           <Password

@@ -3,6 +3,8 @@ import { Request, RequestHandler, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import * as lockSettingOperations from '../../operations/lockSettingOperations'
+import networks from '@unlock-protocol/networks'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 
 const LockSettingSchema = z.object({
   sendEmail: z
@@ -32,6 +34,19 @@ const LockSettingSchema = z.object({
       description: 'Slug that will be used to retrieve the lock',
     })
     .optional(),
+  checkoutConfigId: z
+    .string({
+      description: 'Checkout config URL id.',
+    })
+    .nullish(),
+  hookGuildId: z.preprocess(
+    (a) => parseInt(z.string().parse(a), 10),
+    z
+      .number({
+        description: 'Guild Id for the Guild Hook.',
+      })
+      .nullish()
+  ),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -42,6 +57,8 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   creditCardPrice: undefined,
   emailSender: undefined,
   slug: undefined,
+  checkoutConfigId: undefined,
+  hookGuildId: undefined,
 }
 
 export const updateSettings: RequestHandler = async (
@@ -73,12 +90,25 @@ export const getSettings: RequestHandler = async (
   response: Response
 ) => {
   try {
+    const web3Service = new Web3Service(networks)
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
+
+    const userAddress = request.user?.walletAddress ?? ''
+
+    let isLockManager = false
+    if (userAddress) {
+      isLockManager = await web3Service.isLockManager(
+        lockAddress,
+        userAddress,
+        network
+      )
+    }
 
     const settings = await lockSettingOperations.getSettings({
       lockAddress,
       network,
+      includeProtected: isLockManager,
     })
 
     if (settings) {

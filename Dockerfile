@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:experimental
 
-ARG NODE_VERSION=18
+ARG NODE_VERSION=18.15.0
 
 ###################################################################
 # Stage 1: Install all workspaces (dev)dependencies               #

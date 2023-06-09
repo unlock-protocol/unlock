@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.2;
+pragma solidity ^0.8.17;
 
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
@@ -16,14 +16,8 @@ contract ERC1155BalanceOfHook {
     address _nftAddress,
     uint _tokenTypeId
   ) external {
-    require(
-      _lockAddress != address(0),
-      "Lock address can not be zero"
-    );
-    require(
-      _nftAddress != address(0),
-      "ERC1155 address can not be zero"
-    );
+    require(_lockAddress != address(0), "Lock address can not be zero");
+    require(_nftAddress != address(0), "ERC1155 address can not be zero");
 
     // make sure lock manager
     IPublicLockV9 lock = IPublicLockV9(_lockAddress);

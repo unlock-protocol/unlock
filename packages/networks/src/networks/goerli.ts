@@ -57,6 +57,7 @@ export const goerli: NetworkConfig = {
     universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
+  unlockOwner: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -86,6 +87,10 @@ export const goerli: NetworkConfig = {
       mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     },
   ],
+  bridge: {
+    domainId: 1735353714,
+    connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -97,6 +102,11 @@ export const goerli: NetworkConfig = {
         id: HookType.CAPTCHA,
         name: 'Captcha',
         address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
+      },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0x1AC9271D271b8E50537CAd54b330424C52A84822',
       },
     ],
   },

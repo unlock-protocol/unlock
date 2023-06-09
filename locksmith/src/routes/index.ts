@@ -5,7 +5,6 @@ import lockRouter from './lock'
 import userRouter from './user'
 import purchaseRouter from './purchase'
 import claimRouter from './claim'
-import priceRouter from './price'
 import metadataRouter from './metadata'
 import authRouter from './auth'
 import captchaRouter from './captcha'
@@ -33,6 +32,8 @@ import config from '../config/config'
 import stripeRouter from './v2/stripe'
 import lockSettingsRouter from './v2/lock-settings'
 import certificateRouter from './v2/certificate'
+import ogRouter from './v2/og'
+import hooksRooter from './v2/hooks'
 
 const router = express.Router({ mergeParams: true })
 
@@ -53,7 +54,17 @@ router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
 router.use('/claim', claimRouter)
-router.use('/price', priceRouter)
+
+// Redirects for broken base URLs
+router.use(
+  '/api/key/:chain([0-9]{1,12}):lock(0x[0-9A-Fa-f]{40}):rest(/[0-9]{0,12})?',
+  (req, res) => {
+    return res.redirect(
+      `/api/key/${req.params.chain}/${req.params.lock}${req.params.rest || ''}`
+    )
+  }
+)
+
 router.use('/api/key/:chain([0-9]{1,12})/', metadataRouter)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)
@@ -82,6 +93,8 @@ router.use('/v2/checkout', checkoutConfigRouter)
 router.use('/v2/stripe', stripeRouter)
 router.use('/v2/lock-settings', lockSettingsRouter)
 router.use('/v2/certificate', certificateRouter)
+router.use('/v2/og', ogRouter)
+router.use('/v2/hooks', hooksRooter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

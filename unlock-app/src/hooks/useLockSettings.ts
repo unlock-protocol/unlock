@@ -55,18 +55,45 @@ export function useGetLockSettingsBySlug(slug = '') {
   })
 }
 
-interface SaveSlugProps {
-  slug: string
-  lockAddress: string
-  network: number
+export function useGetLockSettings({
+  lockAddress,
+  network,
+}: LockSettingsProps) {
+  return useQuery(['getLockSettings', lockAddress, network], async () => {
+    const response = await storage.getLockSettings(network, lockAddress)
+    return response?.data
+  })
 }
 
-export function useSaveSlugSetting() {
-  return useMutation(async ({ slug, lockAddress, network }: SaveSlugProps) => {
-    if (slug) {
-      return storage.saveLockSetting(network, lockAddress, {
-        slug,
-      })
-    }
+interface SaveLockProps {
+  lockAddress: string
+  network: number
+  sendEmail?: boolean
+  slug?: string
+  replyTo?: string | null
+  creditCardPrice?: number | null
+  emailSender?: string | null
+  checkoutConfigId?: string | null
+  hookGuildId?: string | null
+}
+
+interface SaveLockProps {
+  lockAddress: string
+  network: number
+  sendEmail?: boolean
+  slug?: string
+  replyTo?: string | null
+  creditCardPrice?: number | null
+  emailSender?: string | null
+  checkoutConfigId?: string | null
+  hookGuildId?: string | null
+}
+
+export function useSaveLockSettings() {
+  return useMutation(async (config: SaveLockProps) => {
+    const { lockAddress, network } = config
+    return storage.saveLockSetting(network, lockAddress, {
+      ...config,
+    })
   })
 }

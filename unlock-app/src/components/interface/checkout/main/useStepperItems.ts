@@ -1,17 +1,28 @@
 import { useActor } from '@xstate/react'
 import { StepItem } from '../Stepper'
-import { CheckoutService } from './checkoutMachine'
+import {
+  CheckoutHookType,
+  CheckoutMachineContext,
+  CheckoutService,
+} from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
+import { shouldSkip } from './utils'
 
 export function useStepperItems(
   service: CheckoutService | UnlockAccountService,
   {
     isRenew,
     isUnlockAccount,
-  }: { isRenew?: boolean; isUnlockAccount?: boolean } = {}
+    hookType,
+    existingMember: isExistingMember,
+  }: {
+    isRenew?: boolean
+    isUnlockAccount?: boolean
+    hookType?: CheckoutHookType
+    existingMember?: boolean
+  } = {}
 ) {
   const [state] = useActor(service)
-
   if (isUnlockAccount) {
     return [
       {
@@ -27,16 +38,35 @@ export function useStepperItems(
     ]
   }
 
-  const checkoutMachineState = state as unknown as CheckoutService
+  const {
+    paywallConfig,
+    skipQuantity,
+    skipRecipient,
+    hook,
+    existingMember,
+    payment,
+  } = state.context as CheckoutMachineContext
+  if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
+    return []
+  }
+  const [address, config] = Object.entries(paywallConfig.locks)[0]
+  const hasOneLock = Object.keys(paywallConfig.locks).length === 1
+  const lockConfig = {
+    address,
+    ...config,
+  }
 
-  const { paywallConfig, skipQuantity, payment, skipRecipient, hook } =
-    // @ts-expect-error property 'context' does not exist on type 'Interpreter<CheckoutMachineContext, any, SelectLockEvent | SelectQuantityEvent | SelectPaymentMethodEvent | ... 12 more ... | BackEvent, { ...; }, MarkAllImplementationsAsProvided<...>>'
-    checkoutMachineState.context
+  const { skipQuantity: skipLockQuantity, skipRecipient: skipLockRecipient } =
+    shouldSkip({
+      paywallConfig,
+      lock: lockConfig,
+    })
 
-  const isPassword = hook === 'password'
-  const isCaptcha = hook === 'captcha'
-  const isPromo = hook === 'promocode'
-
+  const isPassword = hook === 'password' || hookType === 'password'
+  const isCaptcha = hook === 'captcha' || hookType === 'captcha'
+  const isPromo = hook === 'promocode' || hookType === 'promocode'
+  const isGuild = hook === 'guild' || hookType === 'guild'
+  const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
       name: 'Select',
@@ -44,13 +74,15 @@ export function useStepperItems(
     },
     {
       name: 'Choose quantity',
-      skip: skipQuantity,
+      skip: !hasOneLock ? skipQuantity : skipLockQuantity,
       to: 'QUANTITY',
     },
     {
       name: 'Add recipients',
       to: 'METADATA',
-      skip: skipRecipient && skipQuantity,
+      skip: !hasOneLock
+        ? skipRecipient && skipQuantity && !isMember
+        : skipLockQuantity && skipLockRecipient && !isMember,
     },
     {
       name: 'Sign message',
@@ -67,14 +99,24 @@ export function useStepperItems(
           name: 'Enter promo code',
           to: 'PROMO',
         }
+      : isGuild
+      ? {
+          name: 'Guild',
+          to: 'GUILD',
+        }
       : {
           name: 'Solve captcha',
           to: 'CAPTCHA',
-          skip: !isCaptcha || ['card'].includes(payment.method),
+          skip: !isCaptcha,
         },
     {
       name: 'Payment method',
       to: 'PAYMENT',
+    },
+    {
+      name: 'Add card',
+      to: 'CARD',
+      skip: !['card', 'universal_card'].includes(payment?.method),
     },
     {
       name: 'Confirm',
@@ -94,6 +136,11 @@ export function useStepperItems(
       ? {
           name: 'Submit password',
           to: 'PASSWORD',
+        }
+      : isPromo
+      ? {
+          name: 'Enter promo code',
+          to: 'PROMO',
         }
       : {
           name: 'Solve captcha',

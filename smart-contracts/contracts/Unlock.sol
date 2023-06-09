@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.17;
 
 /**
  * @title The Unlock contract
@@ -329,7 +329,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert Unlock__MISSING_TEMPLATE();
     }
 
-    TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(
+    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(
       lockAddress
     );
 
