@@ -10,7 +10,6 @@ import { onResolveName } from '~/utils/resolvers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
 import { useWalletService } from '~/utils/withWalletService'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { addressMinify } from '~/utils/strings'
 import { useMutation } from '@tanstack/react-query'
@@ -56,7 +55,6 @@ export const TransferKeyDrawer = ({
     },
   })
 
-  const { account } = useAuth()
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
   const newOwner = watch('newOwner', '')
@@ -66,22 +64,16 @@ export const TransferKeyDrawer = ({
     network,
   })
 
-  const { data: { transferFeePercentage, isTransferAllowed } = {} } =
-    useGetTransferFeeBasisPoints({
-      lockAddress,
-      network,
-    })
-
-  console.table({
-    transferFeePercentage,
-    isTransferAllowed,
+  const { data: { isTransferAllowed } = {} } = useGetTransferFeeBasisPoints({
+    lockAddress,
+    network,
   })
 
   const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
 
   const onTransferFrom = async () => {
     await walletService.transferFrom({
-      keyOwner: account!,
+      keyOwner: owner,
       to: newOwner!,
       lockAddress,
       tokenId,
