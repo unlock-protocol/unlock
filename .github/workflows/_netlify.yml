@@ -37,6 +37,9 @@ on:
         required: false
       NEXT_PUBLIC_UNLOCK_GA_ID:
         required: false
+      NEXT_PUBLIC_UNLOCK_APP_URI:
+        required: false
+
       # wedlocks only
       SMTP_HOST:
         required: false

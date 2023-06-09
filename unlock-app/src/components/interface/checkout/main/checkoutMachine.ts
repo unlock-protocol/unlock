@@ -22,6 +22,7 @@ export type CheckoutPage =
   | 'RENEWED'
   | 'PASSWORD'
   | 'PROMO'
+  | 'GUILD'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -32,7 +33,7 @@ export interface FiatPricing {
   }
 }
 
-export type CheckoutHookType = 'password' | 'promocode' | 'captcha'
+export type CheckoutHookType = 'password' | 'promocode' | 'captcha' | 'guild'
 
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
@@ -245,6 +246,7 @@ export const checkoutMachine = createMachine(
       CAPTCHA: 'CAPTCHA',
       PASSWORD: 'PASSWORD',
       PROMO: 'PROMO',
+      GUILD: 'GUILD',
       CARD: 'CARD',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
@@ -308,6 +310,13 @@ export const checkoutMachine = createMachine(
             },
             {
               actions: ['selectLock'],
+              target: 'GUILD',
+              cond: (_, event) => {
+                return event.hook === 'guild'
+              },
+            },
+            {
+              actions: ['selectLock'],
               target: 'CAPTCHA',
               cond: (_, event) => {
                 return event.hook === 'captcha'
@@ -359,6 +368,11 @@ export const checkoutMachine = createMachine(
               cond: 'requireCaptcha',
             },
             {
+              target: 'GUILD',
+              actions: ['selectRecipients'],
+              cond: 'requireGuild',
+            },
+            {
               actions: ['selectRecipients'],
               target: 'PAYMENT',
             },
@@ -389,6 +403,11 @@ export const checkoutMachine = createMachine(
               actions: ['signMessage'],
               cond: 'requirePromo',
               target: 'PROMO',
+            },
+            {
+              actions: ['signMessage'],
+              cond: 'requireGuild',
+              target: 'GUILD',
             },
             {
               actions: ['signMessage'],
@@ -454,6 +473,31 @@ export const checkoutMachine = createMachine(
           DISCONNECT,
         },
       },
+      GUILD: {
+        on: {
+          SUBMIT_DATA: [
+            {
+              target: 'RENEW',
+              actions: ['submitData'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'PAYMENT',
+              actions: ['submitData'],
+            },
+          ],
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
+          DISCONNECT,
+        },
+      },
       CAPTCHA: {
         on: {
           SOLVE_CAPTCHA: [
@@ -502,6 +546,10 @@ export const checkoutMachine = createMachine(
             {
               cond: 'requirePromo',
               target: 'PROMO',
+            },
+            {
+              cond: 'requireGuild',
+              target: 'GUILD',
             },
             {
               cond: 'requireCaptcha',
@@ -710,6 +758,7 @@ export const checkoutMachine = createMachine(
       requireCaptcha: (context) => context && context?.hook === 'captcha',
       requirePassword: (context) => context && context?.hook === 'password',
       requirePromo: (context) => context && context?.hook === 'promocode',
+      requireGuild: (context) => context && context?.hook === 'guild',
       isCardPayment: (context) => ['card'].includes(context.payment.method),
     },
   }

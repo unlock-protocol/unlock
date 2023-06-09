@@ -37,7 +37,7 @@ export function ConfirmUniversalCard({
   const [onrampSession, setOnrampSession] = useState<any>(null)
   const stripeOnrampPromise = loadStripeOnramp(config.stripeApiKey)
 
-  const { lock, recipients, captcha, paywallConfig, password, promo } =
+  const { lock, recipients, captcha, paywallConfig, password, promo, data } =
     state.context
 
   // Build the `purchaseData` field that gets passed to the contract
@@ -50,6 +50,7 @@ export function ConfirmUniversalCard({
       captcha,
       paywallConfig,
       recipients,
+      data,
     })
 
   // And now get the price to pay by card

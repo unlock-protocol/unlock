@@ -70,6 +70,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     currencyContractAddress: lock.currencyContractAddress,
   })
 
+  console.log(state)
+
   const { data: purchaseData, isLoading: isPurchaseDataLoading } =
     usePurchaseData({
       lockAddress: lock.address,
@@ -79,6 +81,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       promo: state.context.promo,
       password: state.context.password,
       captcha: state.context.captcha,
+      data: state.context.data,
     })
 
   const { data: canClaim, isLoading: isCanClaimLoading } = useCanClaim(
@@ -126,6 +129,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
+    window.top === window &&
     !enableCreditCard &&
     networkConfig.universalCard?.cardPurchaserAddress &&
     lock.currencyContractAddress?.toLowerCase()?.trim() ===

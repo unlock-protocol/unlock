@@ -132,6 +132,7 @@ export function ConfirmCard({
     password,
     promo,
     metadata,
+    data,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -167,6 +168,7 @@ export function ConfirmCard({
       captcha,
       paywallConfig,
       recipients,
+      data,
     })
 
   const {
