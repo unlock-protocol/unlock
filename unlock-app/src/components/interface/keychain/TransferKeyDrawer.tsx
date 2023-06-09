@@ -15,6 +15,7 @@ import { addressMinify } from '~/utils/strings'
 import { useMutation } from '@tanstack/react-query'
 import { useLockData } from '~/hooks/useLockData'
 import { useGetTransferFeeBasisPoints } from '~/hooks/useTransferFee'
+import { useEffect } from 'react'
 
 interface TransferKeyDrawerProps {
   isOpen: boolean
@@ -49,6 +50,7 @@ export const TransferKeyDrawer = ({
     setValue,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<TransferKeyFormProps>({
     defaultValues: {
       newOwner: '',
@@ -92,6 +94,10 @@ export const TransferKeyDrawer = ({
     })
     setIsOpen(false)
   }
+
+  useEffect(() => {
+    reset() // clear form
+  }, [isOpen, reset])
 
   const isOwnerUnchanged = async (address: string) => {
     return owner?.toLowerCase() === address?.toLowerCase()
