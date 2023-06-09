@@ -8,6 +8,7 @@ interface Options {
   promo?: string[]
   password?: string[]
   captcha?: string[]
+  data?: string[]
   recipients: string[]
   paywallConfig: PaywallConfig
 }
@@ -18,6 +19,7 @@ export const usePurchaseData = ({
   promo,
   password,
   captcha,
+  data,
   recipients,
   paywallConfig,
 }: Options) => {
@@ -31,11 +33,13 @@ export const usePurchaseData = ({
       promo,
       password,
       captcha,
+      data,
     ],
     async () => {
       // promo, password, captcha are mutually exclusive and and are in fact arrays of promo codes,
       // passwords, or captchas for each recipient.
       let purchaseData =
+        data ||
         promo ||
         password ||
         captcha ||

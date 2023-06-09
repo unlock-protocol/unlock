@@ -8,6 +8,7 @@ import { CheckoutHookType, CheckoutService } from './checkoutMachine'
 type LockHookProps = Record<string, CheckoutHookType | undefined>
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
+  GUILD: 'guild',
 }
 
 export function useCheckoutHook(service: CheckoutService) {
@@ -69,6 +70,7 @@ export function useCheckoutHook(service: CheckoutService) {
                   hookType = 'promocode'
                 }
               }
+
               return {
                 [lockAddress?.toLowerCase()]: hookType,
               }
