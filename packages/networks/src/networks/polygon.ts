@@ -118,6 +118,11 @@ export const polygon: NetworkConfig = {
         name: 'Captcha',
         address: '0xA0863a0B58457A86c937e91533e3F6B8dA27cf4b',
       },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xBfF080aB4600554c1e8c390d2e070CF423767B64',
+      },
     ],
   },
 }
