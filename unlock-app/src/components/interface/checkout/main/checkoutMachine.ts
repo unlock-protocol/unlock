@@ -160,7 +160,6 @@ export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
-  captcha?: string[]
   messageToSign?: {
     signature: string
     address: string
@@ -172,9 +171,7 @@ export interface CheckoutMachineContext {
   renewed?: Transaction
   skipQuantity: boolean
   skipRecipient: boolean
-  password?: string[]
   metadata?: any[]
-  promo?: string[]
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
@@ -187,7 +184,6 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   lock: undefined,
   messageToSign: undefined,
   mint: undefined,
-  captcha: undefined,
   payment: {
     method: 'crypto',
   },
