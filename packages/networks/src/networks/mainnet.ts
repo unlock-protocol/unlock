@@ -133,11 +133,11 @@ export const mainnet: NetworkConfig = {
       },
     ],
   },
-  universalCard: {
-    cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',
-    stripeDestinationNetwork: 'ethereum',
-    stripeDestinationCurrency: 'usdc',
-  },
+  // universalCard: {
+  //   cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',
+  //   stripeDestinationNetwork: 'ethereum',
+  //   stripeDestinationCurrency: 'usdc',
+  // },
 }
 
 export default mainnet
