@@ -209,7 +209,7 @@ export const MetadataInputs = ({
           )
         })
         .map((metadataInputItem) => {
-          const { name, defaultValue, placeholder, type, required } =
+          const { name, defaultValue, placeholder, type, required, value } =
             metadataInputItem ?? {}
           return (
             <Input
@@ -224,6 +224,7 @@ export const MetadataInputs = ({
               error={errors?.metadata?.[id]?.[name]?.message}
               {...register(`metadata.${id}.${name}`, {
                 required: required && `${name} is required`,
+                value,
               })}
             />
           )
