@@ -257,6 +257,9 @@ export const CheckoutUrlPage = () => {
     )
   }
 
+  const hasRecurringPlaceholder =
+    !!lockAddress && !!network && isRecurringSettingPlaceholder
+
   return (
     <>
       <Modal isOpen={isDeleteConfirmation} setIsOpen={setDeleteConfirmation}>
@@ -317,7 +320,7 @@ export const CheckoutUrlPage = () => {
             </div>
             <Button
               loading={isConfigUpdating}
-              disabled={isRecurringSettingPlaceholder}
+              disabled={hasRecurringPlaceholder}
               iconLeft={<SaveIcon />}
               onClick={onConfigSave}
               size="small"
