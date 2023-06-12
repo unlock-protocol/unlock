@@ -12,6 +12,7 @@ export interface Props {
   description?: ReactNode
   children: ReactNode
   append?: ReactNode
+  hidden?: boolean
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -37,12 +38,17 @@ export function FieldLayout(props: Props) {
     append,
     required,
     optional,
+    hidden,
   } = props
   const labelSizeStyle = SIZE_STYLES[size!]
   const labelClass = twMerge('px-1', labelSizeStyle)
   const descriptionClass = twMerge('text-gray-600', TEXT_SIZE[size])
   const errorClass = twMerge('text-red-500', TEXT_SIZE[size])
   const successClass = twMerge('text-green-500', TEXT_SIZE[size])
+
+  if (hidden) {
+    return null
+  }
 
   function Message() {
     if (error) {

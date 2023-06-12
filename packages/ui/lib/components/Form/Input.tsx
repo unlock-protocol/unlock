@@ -94,6 +94,7 @@ export const Input = forwardRef(
         error={error}
         success={success}
         description={description}
+        hidden={inputProps.type === 'hidden'}
       >
         <div className="relative">
           {icon && (
