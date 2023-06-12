@@ -182,8 +182,11 @@ export function Minting({
   const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata } = state.context
+  const { mint, lock, messageToSign, metadata, paywallConfig } = state.context
   const processing = mint?.status === 'PROCESSING'
+
+  const endingCallToAction =
+    paywallConfig?.endingCallToAction || 'Return to site'
 
   useEffect(() => {
     if (mint?.status !== 'PROCESSING') {
@@ -259,7 +262,7 @@ export function Minting({
             onClick={() => onClose()}
             className="w-full"
           >
-            {processing ? 'Minting your membership' : 'Return to site'}
+            {processing ? 'Minting your membership' : endingCallToAction}
           </Button>
         </Connected>
         <PoweredByUnlock />

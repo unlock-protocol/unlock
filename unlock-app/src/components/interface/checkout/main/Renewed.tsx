@@ -30,9 +30,12 @@ export function Renewed({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { renewed, lock, messageToSign } = state.context
+  const { renewed, lock, messageToSign, paywallConfig } = state.context
   const { status: renewStatus, transactionHash } = renewed!
   const processing = renewStatus === 'PROCESSING'
+
+  const endingCallToAction =
+    paywallConfig?.endingCallToAction || 'Return to site'
 
   useEffect(() => {
     if (renewStatus !== 'PROCESSING') {
@@ -152,7 +155,7 @@ export function Renewed({
             onClick={() => onClose()}
             className="w-full"
           >
-            {processing ? 'Renewing your membership' : 'Return to site'}
+            {processing ? 'Renewing your membership' : endingCallToAction}
           </Button>
         </Connected>
         <PoweredByUnlock />
