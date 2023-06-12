@@ -20,6 +20,8 @@ import {
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
 import { useQuery } from '@tanstack/react-query'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+
 const Header = () => {
   return (
     <header className="flex flex-col gap-4">
@@ -163,6 +165,7 @@ export const CheckoutUrlPage = () => {
         name: updated.name,
         config: updated.config as PaywallConfig,
       })
+      ToastHelper.success('Configuration updated.')
       await refetchConfigList()
     },
     [checkoutConfig, updateConfig, refetchConfigList]
