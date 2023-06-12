@@ -20,6 +20,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import type { Transaction } from './checkoutMachine'
+import { ReturningButton } from '../ReturningButton'
 
 interface MintingScreenProps {
   lockName: string
@@ -253,14 +254,12 @@ export function Minting({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <Button
-            disabled={!account || processing}
+          <ReturningButton
             loading={processing}
+            disabled={!account || processing}
             onClick={() => onClose()}
-            className="w-full"
-          >
-            {processing ? 'Minting your membership' : 'Return to site'}
-          </Button>
+            checkoutService={checkoutService}
+          />
         </Connected>
         <PoweredByUnlock />
       </footer>
