@@ -33,7 +33,6 @@ import UnlockDiscountTokenV1 from './abis/UnlockDiscountToken/UnlockDiscountToke
 import UnlockDiscountTokenV2 from './abis/UnlockDiscountToken/UnlockDiscountTokenV2.json'
 import LockSerializer from './abis/utils/LockSerializer.json'
 
-
 // exports
 export { PublicLockV0 }
 export { PublicLockV1 }
