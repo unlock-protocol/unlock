@@ -9,6 +9,7 @@ type LockHookProps = Record<string, CheckoutHookType | undefined>
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
   GUILD: 'guild',
+  CAPTCHA: 'captcha',
 }
 
 export function useCheckoutHook(service: CheckoutService) {
