@@ -174,7 +174,7 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const [state, send] = useActor<CheckoutService>(service as CheckoutService)
+  const [state, send] = useActor(service as any)
   const { account, email, isUnlockAccount, deAuthenticate, connected } =
     useAuth()
   const [signing, setSigning] = useState(false)
@@ -223,7 +223,9 @@ export function Connected({
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
-    send('DISCONNECT')
+    send({
+      type: 'DISCONNECT',
+    })
     setIsDisconnecting(false)
   }
 
@@ -235,7 +237,13 @@ export function Connected({
         account={account}
         email={email}
         isUnlockAccount={!!isUnlockAccount}
-        onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
+        onDisconnect={
+          state.can({
+            type: 'DISCONNECT',
+          })
+            ? onDisconnect
+            : undefined
+        }
       />
     </div>
   ) : connected ? (
@@ -255,7 +263,9 @@ export function Connected({
       <SignedOut
         injectedProvider={injectedProvider}
         onUnlockAccount={() => {
-          send('UNLOCK_ACCOUNT')
+          send({
+            type: 'UNLOCK_ACCOUNT',
+          })
         }}
         authenticateWithProvider={authenticateWithProvider}
         title="Have a crypto wallet?"

@@ -17,14 +17,13 @@ type ConnectMachineEvents = UnlockAccountEvent | BackEvent | DisconnectEvent
 
 export const connectMachine = createMachine(
   {
-    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'connect',
-    tsTypes: {} as import('./connectMachine.typegen').Typegen0,
-    schema: {
+    types: {
+      typegen: {} as import('./connectMachine.typegen').Typegen0,
       events: {} as ConnectMachineEvents,
     },
     on: {
-      DISCONNECT: 'CONNECT',
+      DISCONNECT: '.CONNECT',
     },
     initial: 'CONNECT',
     states: {

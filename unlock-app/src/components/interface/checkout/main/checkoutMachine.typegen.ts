@@ -25,14 +25,7 @@ export interface Typegen0 {
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
   eventsCausingDelays: {}
-  eventsCausingGuards: {
-    isCardPayment: 'BACK'
-    requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
-    requireGuild: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
-    requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
-    requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
-    requirePromo: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
-  }
+  eventsCausingGuards: {}
   eventsCausingServices: {
     unlockAccount: 'UNLOCK_ACCOUNT'
   }

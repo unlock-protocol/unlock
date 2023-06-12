@@ -8,7 +8,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useInterpret } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
@@ -22,6 +22,7 @@ import { Renew } from './Renew'
 import { Renewed } from './Renewed'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { Guild } from './Guild'
+import { interpret } from 'xstate'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfig
@@ -37,12 +38,12 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  const checkoutService = useInterpret(checkoutMachine, {
-    context: {
+  const checkoutService = interpret(checkoutMachine, {
+    input: {
       paywallConfig,
     },
   })
-  const [state] = useActor(checkoutService)
+  const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context
@@ -54,12 +55,12 @@ export function Checkout({
 
   useEffect(() => {
     if (paywallConfigChanged) {
-      checkoutService.send({
+      send({
         type: 'UPDATE_PAYWALL_CONFIG',
         config: paywallConfig,
       })
     }
-  }, [paywallConfig, checkoutService, paywallConfigChanged])
+  }, [paywallConfig, send, paywallConfigChanged])
 
   useEffect(() => {
     const user = account ? { address: account } : {}
@@ -71,7 +72,9 @@ export function Checkout({
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      checkoutService.send('RESET_CHECKOUT')
+      send({
+        type: 'RESET_CHECKOUT',
+      })
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
@@ -105,24 +108,32 @@ export function Checkout({
       mint,
       messageToSign,
       paywallConfig.messageToSign,
-      checkoutService,
+      send,
     ]
   )
 
   const onBack = useMemo(() => {
     const unlockAccount = state.children?.unlockAccount
-    const canBackInUnlockAccountService = unlockAccount
-      ?.getSnapshot()
-      .can('BACK')
-    const canBack = state.can('BACK')
+    const canBackInUnlockAccountService = unlockAccount?.getSnapshot().can({
+      type: 'BACK',
+    })
+    const canBack = state.can({
+      type: 'BACK',
+    })
     if (canBackInUnlockAccountService) {
-      return () => unlockAccount.send('BACK')
+      return () =>
+        unlockAccount.send({
+          type: 'BACK',
+        })
     }
     if (canBack) {
-      return () => checkoutService.send('BACK')
+      return () =>
+        send({
+          type: 'BACK',
+        })
     }
     return undefined
-  }, [state, checkoutService])
+  }, [state, send])
 
   const Content = useCallback(() => {
     switch (matched) {
@@ -270,7 +281,7 @@ export function Checkout({
         return null
       }
     }
-  }, [injectedProvider, onClose, checkoutService, matched, communication])
+  }, [injectedProvider, onClose, send, matched, communication])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

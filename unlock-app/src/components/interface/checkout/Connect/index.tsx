@@ -2,10 +2,11 @@ import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
-import { useActor, useInterpret } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
+import { interpret } from 'xstate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -18,14 +19,16 @@ export function Connect({
   oauthConfig,
   communication,
 }: Props) {
-  const connectService = useInterpret(connectMachine)
+  const connectService = interpret(connectMachine)
   const [state, send] = useActor(connectService)
   const matched = state.value.toString()
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      send('DISCONNECT')
+      send({
+        type: 'DISCONNECT',
+      })
 
       if (oauthConfig.redirectUri) {
         const redirectURI = new URL(oauthConfig.redirectUri)
@@ -45,15 +48,20 @@ export function Connect({
 
   const onBack = useMemo(() => {
     const unlockAccount = state.children?.unlockAccount
-    const canBackInUnlockAccountService = unlockAccount
-      ?.getSnapshot()
-      .can('BACK')
-    const canBack = state.can('BACK')
+    const canBackInUnlockAccountService = unlockAccount?.getSnapshot().can({
+      type: 'BACK',
+    })
+    const canBack = state.can({
+      type: 'BACK',
+    })
     if (canBackInUnlockAccountService) {
-      return () => unlockAccount.send('BACK')
+      return () => unlockAccount.send({ type: 'BACK' })
     }
     if (canBack) {
-      return () => connectService.send('BACK')
+      return () =>
+        connectService.send({
+          type: 'BACK',
+        })
     }
     return undefined
   }, [state, connectService])
@@ -83,7 +91,14 @@ export function Connect({
         return null
       }
     }
-  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
+  }, [
+    matched,
+    onClose,
+    connectService,
+    communication,
+    injectedProvider,
+    oauthConfig,
+  ])
 
   return (
     <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
