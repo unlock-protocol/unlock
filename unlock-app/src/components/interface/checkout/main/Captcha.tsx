@@ -43,7 +43,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       const data: string[] = response.signatures
       setIsContinuing(false)
       send({
-        type: 'SOLVE_CAPTCHA',
+        type: 'SUBMIT_DATA',
         data,
       })
     } catch (error) {
