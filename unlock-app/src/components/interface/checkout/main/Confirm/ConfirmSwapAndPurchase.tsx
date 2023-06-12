@@ -50,7 +50,6 @@ export function ConfirmSwapAndPurchase({
     renew,
   } = state.context
 
-  const { account } = useAuth()
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 
   // @ts-expect-error Property 'route' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.

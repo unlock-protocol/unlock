@@ -6,7 +6,6 @@ import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
 import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 import { useStepperItems } from './main/useStepperItems'
-import { useActor } from '@xstate/react'
 
 interface IconProps {
   active?: boolean
