@@ -3,10 +3,11 @@ import { ethers } from 'ethers'
 import { SignedRequest } from '../types'
 import config from '../config/config'
 import fetch from 'isomorphic-fetch'
+import { getPurchaser } from '../fulfillment/dispatcher'
 
 export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   const { recipients, captchaValue } = req.query
-  const { purchaserCredentials, recaptchaSecret } = config
+  const { recaptchaSecret } = config
 
   if (!recipients || !captchaValue || !Array.isArray(recipients)) {
     return res.json({ error: 'Missing recipients or captchaValue' })
@@ -21,7 +22,7 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   if (!response.success) {
     return res.json({ error: response['error-codes'] })
   }
-  const wallet = new ethers.Wallet(purchaserCredentials)
+  const { wallet } = await getPurchaser()
   const messages: string[] = []
   const signatures: string[] = []
   let i = 0
