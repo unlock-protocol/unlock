@@ -9,6 +9,7 @@ type LockHookProps = Record<string, CheckoutHookType | undefined>
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
   GUILD: 'guild',
+  CAPTCHA: 'captcha',
 }
 
 export function useCheckoutHook(service: CheckoutService) {
@@ -35,8 +36,6 @@ export function useCheckoutHook(service: CheckoutService) {
                 network,
               })
 
-              console.log({ onPurchaseHooks, hookValue })
-
               // check for match for hook value
               const match = onPurchaseHooks?.find(
                 ({ address }) =>
@@ -62,8 +61,6 @@ export function useCheckoutHook(service: CheckoutService) {
                   isPassword: !!(password || paywallConfig?.password),
                   isCaptcha: !!(captcha || paywallConfig?.captcha),
                 }
-
-                console.log(hookStatePaywall)
 
                 const { isCaptcha, isPromo, isPassword } = hookStatePaywall
                 if (isPassword) {
