@@ -36,14 +36,12 @@ export interface Subscription {
 interface GetSubscriptionsProps {
   tokenId: string
   lockAddress: string
-  owner: string
   network: number
 }
 
 export const getSubscriptionsForLockByOwner = async ({
   tokenId,
   lockAddress,
-  owner,
   network,
 }: GetSubscriptionsProps): Promise<Subscription[]> => {
   const subgraphService = new SubgraphService(networks)
@@ -53,7 +51,6 @@ export const getSubscriptionsForLockByOwner = async ({
       where: {
         tokenId,
         lock: lockAddress.toLowerCase(),
-        owner: owner.toLowerCase(),
       },
     },
     {
@@ -73,9 +70,9 @@ export const getSubscriptionsForLockByOwner = async ({
   const web3Service = new Web3Service(networks)
   const provider = web3Service.providerForNetwork(network)
   const [userBalance, decimals, userAllowance, symbol] = await Promise.all([
-    getErc20BalanceForAddress(key.lock.tokenAddress, owner, provider),
+    getErc20BalanceForAddress(key.lock.tokenAddress, key.owner, provider),
     getErc20Decimals(key.lock.tokenAddress, provider),
-    getAllowance(key.lock.tokenAddress, key.lock.address, provider, owner),
+    getAllowance(key.lock.tokenAddress, key.lock.address, provider, key.owner),
     getErc20TokenSymbol(key.lock.tokenAddress, provider),
   ])
 
@@ -117,7 +114,7 @@ export const getSubscriptionsForLockByOwner = async ({
       keyId: tokenId,
       lockAddress,
       network,
-      userAddress: owner,
+      userAddress: key.owner,
       recurring: {
         [Op.gt]: 0,
       },
