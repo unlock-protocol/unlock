@@ -20,6 +20,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import type { Transaction } from './checkoutMachine'
+import { ReturningButton } from '../ReturningButton'
 
 interface MintingScreenProps {
   lockName: string
@@ -182,11 +183,8 @@ export function Minting({
   const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata, paywallConfig } = state.context
+  const { mint, lock, messageToSign, metadata } = state.context
   const processing = mint?.status === 'PROCESSING'
-
-  const endingCallToAction =
-    paywallConfig?.endingCallToAction || 'Return to site'
 
   useEffect(() => {
     if (mint?.status !== 'PROCESSING') {
@@ -256,14 +254,12 @@ export function Minting({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <Button
-            disabled={!account || processing}
+          <ReturningButton
             loading={processing}
+            disabled={!account || processing}
             onClick={() => onClose()}
-            className="w-full"
-          >
-            {processing ? 'Minting your membership' : endingCallToAction}
-          </Button>
+            checkoutService={checkoutService}
+          />
         </Connected>
         <PoweredByUnlock />
       </footer>

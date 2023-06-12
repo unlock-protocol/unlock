@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useMemo } from 'react'
@@ -13,6 +13,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
+import { ReturningButton } from '../ReturningButton'
 
 interface Props {
   injectedProvider: unknown
@@ -30,12 +31,9 @@ export function Renewed({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { renewed, lock, messageToSign, paywallConfig } = state.context
+  const { renewed, lock, messageToSign } = state.context
   const { status: renewStatus, transactionHash } = renewed!
   const processing = renewStatus === 'PROCESSING'
-
-  const endingCallToAction =
-    paywallConfig?.endingCallToAction || 'Return to site'
 
   useEffect(() => {
     if (renewStatus !== 'PROCESSING') {
@@ -149,14 +147,13 @@ export function Renewed({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <Button
-            disabled={!account || processing}
+          <ReturningButton
             loading={processing}
+            loadingLabel="Renewing your membership"
+            disabled={!account || processing}
             onClick={() => onClose()}
-            className="w-full"
-          >
-            {processing ? 'Renewing your membership' : endingCallToAction}
-          </Button>
+            checkoutService={checkoutService}
+          />
         </Connected>
         <PoweredByUnlock />
       </footer>
