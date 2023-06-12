@@ -39,14 +39,14 @@ const LockSettingSchema = z.object({
       description: 'Checkout config URL id.',
     })
     .nullish(),
-  hookGuildId: z.preprocess(
-    (a) => parseInt(z.string().parse(a), 10),
-    z
-      .number({
+  hookGuildId: z
+    .preprocess(
+      (a) => parseInt(z.string().parse(a), 10),
+      z.number({
         description: 'Guild Id for the Guild Hook.',
       })
-      .nullish()
-  ),
+    )
+    .nullish(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
