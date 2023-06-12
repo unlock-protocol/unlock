@@ -41,8 +41,7 @@ export function Renew({
     paywallConfig,
     lock,
     messageToSign: signedMessage,
-    password,
-    captcha,
+    data,
   } = state.context
   const { messageToSign } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
@@ -77,7 +76,7 @@ export function Renew({
         return
       }
 
-      let data = password || captcha || undefined
+      let purchaseData = data
 
       const dataBuilder =
         paywallConfig.locks[lock!.address].dataBuilder ||
@@ -85,7 +84,7 @@ export function Renew({
 
       // if Data builder url is present, prioritize that above rest.
       if (dataBuilder) {
-        data = await fetchRecipientsData(dataBuilder, {
+        purchaseData = await fetchRecipientsData(dataBuilder, {
           recipients: [account],
           lockAddress: lock!.address,
           network: lock!.network,
@@ -130,7 +129,7 @@ export function Renew({
             lockAddress,
             owners: [account],
             referrers: [getReferrer(account, paywallConfig)],
-            data,
+            data: purchaseData,
           },
           {} /** transactionParams */,
           onTransactionHandler
@@ -147,7 +146,7 @@ export function Renew({
             lockAddress,
             tokenId: tokenId.toString(),
             referrer: getReferrer(account, paywallConfig),
-            data: data?.[0],
+            data: purchaseData?.[0],
           },
           {} /** Transaction params */,
           onTransactionHandler

@@ -78,9 +78,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       network: lock.network,
       recipients: recipients,
       paywallConfig: state.context.paywallConfig,
-      promo: state.context.promo,
-      password: state.context.password,
-      captcha: state.context.captcha,
       data: state.context.data,
     })
 

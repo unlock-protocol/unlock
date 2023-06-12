@@ -123,17 +123,8 @@ export function ConfirmCard({
   const [state] = useActor(checkoutService)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const {
-    lock,
-    recipients,
-    payment,
-    captcha,
-    paywallConfig,
-    password,
-    promo,
-    metadata,
-    data,
-  } = state.context
+  const { lock, recipients, payment, paywallConfig, metadata, data } =
+    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -163,9 +154,6 @@ export function ConfirmCard({
     usePurchaseData({
       lockAddress: lock!.address,
       network: lock!.network,
-      promo,
-      password,
-      captcha,
       paywallConfig,
       recipients,
       data,
@@ -293,11 +281,6 @@ export function ConfirmCard({
                 <ErrorIcon className="inline" />
                 There was an error when preparing the transaction.
               </p>
-              {password && (
-                <p className="text-xs">
-                  Please, check that the password you used is correct.
-                </p>
-              )}
             </div>
           )}
           {!isLoading && isPricingDataAvailable && (

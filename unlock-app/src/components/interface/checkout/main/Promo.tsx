@@ -50,7 +50,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
         })
       )
       send({
-        type: 'SUBMIT_PROMO',
+        type: 'SUBMIT_DATA',
         data,
       })
     } catch (error: any) {

@@ -5,9 +5,6 @@ import { PaywallConfig } from '~/unlockTypes'
 interface Options {
   lockAddress: string
   network: number
-  promo?: string[]
-  password?: string[]
-  captcha?: string[]
   data?: string[]
   recipients: string[]
   paywallConfig: PaywallConfig
@@ -16,34 +13,17 @@ interface Options {
 export const usePurchaseData = ({
   lockAddress,
   network,
-  promo,
-  password,
-  captcha,
   data,
   recipients,
   paywallConfig,
 }: Options) => {
   return useQuery(
-    [
-      'purchaseData',
-      network,
-      lockAddress,
-      paywallConfig,
-      recipients,
-      promo,
-      password,
-      captcha,
-      data,
-    ],
+    ['purchaseData', network, lockAddress, paywallConfig, recipients, data],
     async () => {
       // promo, password, captcha are mutually exclusive and and are in fact arrays of promo codes,
       // passwords, or captchas for each recipient.
       let purchaseData =
-        data ||
-        promo ||
-        password ||
-        captcha ||
-        Array.from({ length: recipients.length }).map(() => '0x')
+        data || Array.from({ length: recipients.length }).map(() => '0x')
 
       const dataBuilder =
         paywallConfig.locks[lockAddress].dataBuilder ||
