@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const MetadataInput = z.object({
-  type: z.enum(['text', 'date', 'color', 'email', 'url'], {
+  type: z.enum(['text', 'date', 'color', 'email', 'url', 'hidden'], {
     description:
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
   }),
@@ -18,6 +18,11 @@ export const MetadataInput = z.object({
   placeholder: z
     .string({
       description: 'Placeholder displayed to users.',
+    })
+    .optional(),
+  value: z
+    .string({
+      description: 'Value to use for hidden metadata inputs.',
     })
     .optional(),
   defaultValue: z
