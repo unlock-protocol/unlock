@@ -9,14 +9,12 @@ export const getMembershipState = async ({
   network,
   lockAddress,
   tokenId,
-  owner,
 }: {
   key: any
   tokenAddress: string
   network: number
   lockAddress: string
   tokenId: string
-  owner: string
 }) => {
   const isERC20 = tokenAddress && tokenAddress !== ethers.constants.AddressZero
 
@@ -27,7 +25,6 @@ export const getMembershipState = async ({
     await subscriptionOperations.getSubscriptionsForLockByOwner({
       tokenId,
       lockAddress,
-      owner,
       network,
     })
 
