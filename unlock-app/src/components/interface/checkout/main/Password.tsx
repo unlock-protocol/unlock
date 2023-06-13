@@ -54,7 +54,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
         })
       )
       send({
-        type: 'SUBMIT_PASSWORD',
+        type: 'SUBMIT_DATA',
         data,
       })
     } catch (error: any) {

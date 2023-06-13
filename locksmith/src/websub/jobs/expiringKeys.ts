@@ -42,7 +42,6 @@ async function notifyExpiringKey(key: any, network: number) {
       isRenewableIfReApproved,
       currency,
     } = await membershipOperations.getMembershipState({
-      owner: ownerAddress,
       key,
       tokenAddress,
       tokenId: keyId,
