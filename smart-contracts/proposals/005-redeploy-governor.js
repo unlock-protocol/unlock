@@ -9,8 +9,7 @@
 const { ethers, upgrades, run } = require('hardhat')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
-const oldGovAddress = '0x508619074f542b6544c5835f260CC704E988cf65'
-// const newGovAddress = '0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9'
+const oldGovAddress = '0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9'
 
 async function main({ newGovAddress } = {}) {
   // get addresses
@@ -18,9 +17,20 @@ async function main({ newGovAddress } = {}) {
     'UnlockProtocolGovernor',
     oldGovAddress
   )
-  const timeLockAddress = oldGov.timeLock()
-  const tokenAddress = oldGov.token()
-  const TIMELOCK_ADMIN_ROLE = oldGov.TIMELOCK_ADMIN_ROLE()
+
+  const timeLockAddress = await oldGov.timelock()
+  const tokenAddress = await oldGov.token()
+
+  const timelock = await ethers.getContractAt(
+    'UnlockProtocolTimelock',
+    timeLockAddress
+  )
+  const TIMELOCK_ADMIN_ROLE = await timelock.TIMELOCK_ADMIN_ROLE()
+
+  // show some info in terminal
+  console.log(`redeploying Governor:
+  - timelock: ${timeLockAddress}
+  - token: ${tokenAddress}`)
 
   // deploy new instance of gov if necessary
   if (!newGovAddress) {
