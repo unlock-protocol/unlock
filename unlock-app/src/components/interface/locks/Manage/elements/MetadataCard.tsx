@@ -30,6 +30,7 @@ import { onResolveName } from '~/utils/resolvers'
 import { useMetadata } from '~/hooks/metadata'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
+import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
 
 interface MetadataCardProps {
   metadata: any
@@ -226,7 +227,11 @@ const ChangeManagerModal = ({
           </form>
         </div>
       </Modal>
-      <Button size="small" onClick={() => setIsOpen(true)}>
+      <Button
+        className="w-full md:w-auto"
+        size="small"
+        onClick={() => setIsOpen(true)}
+      >
         {label ?? 'Change'}
       </Button>
     </>
@@ -239,11 +244,13 @@ export const MetadataCard = ({
   expirationDuration,
   lockSettings,
 }: MetadataCardProps) => {
+  const [showTransferKey, setShowTransferKey] = useState(false)
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
     null
   )
+
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
@@ -252,6 +259,7 @@ export const MetadataCard = ({
     lockAddress: metadata.lockAddress,
     network,
   })
+
   const types = getLockTypeByMetadata(lockMetadata)
   const [eventType] =
     Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
@@ -353,6 +361,15 @@ export const MetadataCard = ({
 
   return (
     <>
+      <TransferKeyDrawer
+        isOpen={showTransferKey}
+        setIsOpen={setShowTransferKey}
+        lockAddress={lockAddress}
+        network={network}
+        tokenId={tokenId}
+        lockName={lockMetadata?.name}
+        owner={data?.keyholderAddress}
+      />
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
@@ -486,56 +503,74 @@ export const MetadataCard = ({
             })}
             <Detail
               className="py-2"
+              justify={false}
               label={
-                <div className="flex items-center gap-2">
-                  <Tooltip
-                    tip="Address of the owner of the NFT."
-                    label="Address of the owner of the NFT."
-                    side="bottom"
-                  >
-                    <div className="flex items-center gap-1">
-                      <span>Key Owner </span>
-                      <InfoIcon />:
-                    </div>
-                  </Tooltip>
-                  {/* show full address on desktop */}
-                  <div className="text-base font-semibold text-black break-words">
-                    <span className="hidden md:block">{owner}</span>
-                    {/* show minified address on mobile */}
-                    <span className="block md:hidden">
-                      {addressMinify(owner)}
-                    </span>
-                  </div>
-                  <Button
-                    className="p-0 outline-none text-brand-ui-primary ring-0"
-                    variant="transparent"
-                    aria-label="blockscan link"
-                  >
-                    <a
-                      href={`https://blockscan.com/address/${owner}`}
-                      target="_blank"
-                      rel="noreferrer"
+                <div className="flex flex-col justify-between w-full gap-2 md:items-center md:flex-row">
+                  <div>
+                    <Tooltip
+                      tip="Address of the owner of the NFT."
+                      label="Address of the owner of the NFT."
+                      side="bottom"
                     >
-                      <ExternalLinkIcon size={20} />
-                    </a>
-                  </Button>
-                  {ownerIsManager && (
-                    <div className="ml-auto">
-                      <ChangeManagerModal
-                        lockAddress={lockAddress}
-                        network={network}
-                        manager={manager}
-                        tokenId={tokenId}
-                        label="Set key manager"
-                        onChange={(keyManager) => {
-                          setData({
-                            ...data,
-                            keyManager,
-                          })
-                        }}
-                      />
+                      <div className="flex items-center gap-2">
+                        <span>Key Owner </span>
+                        <InfoIcon />:
+                        <div className="flex gap-2">
+                          {/* show full address on desktop */}
+                          <div className="text-base font-semibold text-black break-words">
+                            <span className="hidden md:block">{owner}</span>
+                            {/* show minified address on mobile */}
+                            <span className="block md:hidden">
+                              {addressMinify(owner)}
+                            </span>
+                          </div>
+                          <Button
+                            className="p-0 outline-none text-brand-ui-primary ring-0"
+                            variant="transparent"
+                            aria-label="blockscan link"
+                          >
+                            <a
+                              href={`https://blockscan.com/address/${owner}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <ExternalLinkIcon size={20} />
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </Tooltip>
+                  </div>
+                  <div className="md:ml-auto">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                      {isLockManager && (
+                        <Button
+                          size="small"
+                          onClick={() => setShowTransferKey(true)}
+                          className="w-full md:w-auto"
+                        >
+                          Transfer ownership
+                        </Button>
+                      )}
+                      {ownerIsManager && (
+                        <div className="md:ml-auto">
+                          <ChangeManagerModal
+                            lockAddress={lockAddress}
+                            network={network}
+                            manager={manager}
+                            tokenId={tokenId}
+                            label="Set key manager"
+                            onChange={(keyManager) => {
+                              setData({
+                                ...data,
+                                keyManager,
+                              })
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               }
             />
@@ -583,6 +618,7 @@ export const MetadataCard = ({
                         network={network}
                         manager={manager}
                         tokenId={tokenId}
+                        label="Change key manager"
                         onChange={(keyManager) => {
                           setData({
                             ...data,
