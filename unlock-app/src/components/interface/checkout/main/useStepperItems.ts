@@ -11,9 +11,9 @@ import { shouldSkip } from './utils'
 export function useStepperItems(
   service: CheckoutService | UnlockAccountService,
   {
-    isRenew,
     isUnlockAccount,
     hookType,
+    isRenew,
     existingMember: isExistingMember,
   }: {
     isRenew?: boolean
@@ -45,6 +45,7 @@ export function useStepperItems(
     hook,
     existingMember,
     payment,
+    renew,
   } = state.context as CheckoutMachineContext
   if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
     return []
@@ -56,6 +57,7 @@ export function useStepperItems(
     ...config,
   }
 
+  const isExpired = isRenew || renew
   const { skipQuantity: skipLockQuantity, skipRecipient: skipLockRecipient } =
     shouldSkip({
       paywallConfig,
@@ -74,15 +76,16 @@ export function useStepperItems(
     },
     {
       name: 'Choose quantity',
-      skip: !hasOneLock ? skipQuantity : skipLockQuantity,
+      skip: (!hasOneLock ? skipQuantity : skipLockQuantity) || isExpired,
       to: 'QUANTITY',
     },
     {
       name: 'Add recipients',
       to: 'METADATA',
-      skip: !hasOneLock
-        ? skipRecipient && skipQuantity && !isMember
-        : skipLockQuantity && skipLockRecipient && !isMember,
+      skip:
+        (!hasOneLock
+          ? skipRecipient && skipQuantity && !isMember
+          : skipLockQuantity && skipLockRecipient && !isMember) || isExpired,
     },
     {
       name: 'Sign message',
@@ -127,34 +130,5 @@ export function useStepperItems(
     },
   ]
 
-  const renewItems: StepItem[] = [
-    {
-      name: 'Select',
-      to: 'SELECT',
-    },
-    isPassword
-      ? {
-          name: 'Submit password',
-          to: 'PASSWORD',
-        }
-      : isPromo
-      ? {
-          name: 'Enter promo code',
-          to: 'PROMO',
-        }
-      : {
-          name: 'Solve captcha',
-          to: 'CAPTCHA',
-          skip: !isCaptcha,
-        },
-    {
-      name: 'Renew membership',
-      to: 'RENEW',
-    },
-    {
-      name: 'Renewed!',
-    },
-  ]
-
-  return isRenew ? renewItems : checkoutItems
+  return checkoutItems
 }
