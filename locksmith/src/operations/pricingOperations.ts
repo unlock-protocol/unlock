@@ -51,7 +51,7 @@ interface DefaultPricingProps {
   network: number
 }
 
-const fromDecimal = (num: string, decimals: number) => {
+export function fromDecimal(num: string, decimals: number) {
   return parseFloat(
     ethers.utils
       .formatUnits(ethers.BigNumber.from(num), decimals)
@@ -60,7 +60,7 @@ const fromDecimal = (num: string, decimals: number) => {
 }
 
 /** Helper to return usd pricing object */
-const toUsdPricing = ({
+export const toUsdPricing = ({
   amount,
   usdPricing,
   decimals,
@@ -171,13 +171,13 @@ export const getTotalCharges = async ({
   return result
 }
 
-export const getLockKeyPricing = async ({
+export async function getLockKeyPricing({
   lockAddress,
   network,
 }: {
   lockAddress: string
   network: number
-}) => {
+}) {
   const web3Service = new Web3Service(networks)
   const provider = web3Service.providerForNetwork(network)
   const lockContract = await web3Service.getLockContract(lockAddress, provider)
