@@ -13,7 +13,7 @@ export interface TransferObject {
   deadline: number
 }
 
-type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
+type Signer = ethers.Signer | ethers.providers.JsonRpcSigner
 export interface CreateTransferSignatureOptions {
   signer: Signer
   params: TransferObject
@@ -111,6 +111,7 @@ export class KeyManager {
     network,
   }: CreateTransferSignatureOptions) {
     const domain = this.getDomain(network)
+    // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'. (https://docs.ethers.org/v5/api/signer/#Signer-signTypedData)
     const signature = await signer._signTypedData(domain, TransferTypes, params)
     return signature
   }

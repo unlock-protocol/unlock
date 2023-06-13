@@ -4,7 +4,6 @@ import * as z from 'zod'
 import normalizer from '../../utils/normalizer'
 import { getSettings } from '../../operations/lockSettingOperations'
 import { ethers } from 'ethers'
-import config from '../../config/config'
 import { getPurchaser } from '../../fulfillment/dispatcher'
 
 const guildHookQuery = z.object({

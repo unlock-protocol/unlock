@@ -18,6 +18,7 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
   requestTimeout: '25s',
+  defenderRelaySecret: process.env.DEFENDER_RELAY_SECRET,
 }
 
 if (process.env.ON_HEROKU) {

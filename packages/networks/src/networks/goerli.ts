@@ -110,6 +110,9 @@ export const goerli: NetworkConfig = {
       },
     ],
   },
+  defenderRelay: {
+    apiKey: 'ABoZPmooUbZNrMxjLfK5ZjAc3ojNtS9L',
+  },
 }
 
 export default goerli

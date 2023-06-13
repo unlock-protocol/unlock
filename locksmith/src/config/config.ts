@@ -59,6 +59,7 @@ const config = {
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
+  defenderRelaySecret: process.env.DEFENDER_RELAY_SECRET,
 }
 
 if (process.env.ON_HEROKU) {

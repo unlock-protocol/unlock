@@ -39,7 +39,7 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   }
   return res.json({
     messages,
-    signer: wallet.address,
+    signer: await wallet.getAddress(),
     signatures,
   })
 }

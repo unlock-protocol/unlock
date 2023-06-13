@@ -2,7 +2,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
 import logger from '../logger'
-import Dispatcher from '../fulfillment/dispatcher'
+import { getPurchaser } from '../fulfillment/dispatcher'
 
 export const hasAuthorization = async (
   address: string,
@@ -11,18 +11,20 @@ export const hasAuthorization = async (
   const lockAddress = Normalizer.ethereumAddress(address)
   const web3Service = new Web3Service(networks)
 
-  const { wallet } = await new Dispatcher().getPurchaser(network)
+  const { wallet } = await getPurchaser(network)
+
+  const purchaserAddress = await wallet.getAddress()
 
   try {
     const isKeyGranter = await web3Service.isKeyGranter(
       lockAddress,
-      wallet.address,
+      purchaserAddress,
       network
     )
     return isKeyGranter
   } catch (error: any) {
     logger.error(
-      `Could not check if lock ${lockAddress} authorized ${wallet.address} to grant keys on ${network}. ${error.message}`
+      `Could not check if lock ${lockAddress} authorized ${purchaserAddress} to grant keys on ${network}. ${error.message}`
     )
     return false
   }

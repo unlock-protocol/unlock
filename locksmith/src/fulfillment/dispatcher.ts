@@ -1,4 +1,9 @@
 import {
+  DefenderRelaySigner,
+  DefenderRelayProvider,
+} from 'defender-relay-client/lib/ethers'
+
+import {
   KeyManager,
   WalletService,
   Web3Service,
@@ -32,6 +37,18 @@ export const getProviderForNetwork = async function (network = 1) {
  * @returns
  */
 export const getPurchaser = async function (network = 1) {
+  const { defenderRelay } = networks[network]
+  if (defenderRelay?.apiKey && config.defenderRelaySecret) {
+    const credentials = {
+      apiKey: defenderRelay?.apiKey,
+      apiSecret: config.defenderRelaySecret,
+    }
+    const provider = new DefenderRelayProvider(credentials)
+    const wallet = new DefenderRelaySigner(credentials, provider, {
+      speed: 'fast',
+    })
+    return { wallet, provider }
+  }
   const provider = await getProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
   return {
@@ -50,11 +67,12 @@ export default class Dispatcher {
       Object.values(networks).map(async (network: any) => {
         try {
           const { wallet, provider } = await getPurchaser(network.id)
-          const balance = await provider.getBalance(wallet.address)
+          const address = await wallet.getAddress()
+          const balance = await provider.getBalance(address)
           return [
             network.id,
             {
-              address: wallet.address,
+              address,
               name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
@@ -79,13 +97,11 @@ export default class Dispatcher {
     const { wallet, provider } = await getPurchaser(network)
 
     const gasPrice = await provider.getGasPrice()
-
-    const balance = await provider.getBalance(wallet.address)
+    const address = await wallet.getAddress()
+    const balance = await provider.getBalance(address)
     if (balance.lt(gasPrice.mul(GAS_COST))) {
       logger.warn(
-        `Purchaser ${
-          wallet.address
-        } does not have enough coins (${ethers.utils.formatUnits(
+        `Purchaser ${address} does not have enough coins (${ethers.utils.formatUnits(
           balance,
           '18'
         )}) to pay for gas (${ethers.utils.formatUnits(
@@ -166,9 +182,10 @@ export default class Dispatcher {
       network,
       params,
     })
+    const walletAddress = await wallet.getAddress()
     const isSignedByLocksmith =
       transferSignerAddress.trim().toLowerCase() ===
-      wallet.address.trim().toLowerCase()
+      walletAddress.trim().toLowerCase()
 
     return isSignedByLocksmith
   }
