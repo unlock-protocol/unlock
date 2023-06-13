@@ -1,6 +1,8 @@
 import networks from '@unlock-protocol/networks'
 import { getFees, getGasCost } from '../utils/pricing'
 import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
+import { ethers } from 'ethers'
+import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 
 interface Price {
   decimals: number
@@ -22,6 +24,60 @@ export type PriceResults = Partial<
     priceInAmount: number
   }
 >
+
+interface KeyPricingPrice {
+  amount: number
+  decimals: number
+  symbol: string | undefined
+  amountInUSD: number | undefined
+  amountInCents: number | undefined
+}
+
+export interface KeyPricing {
+  price: KeyPricingPrice
+  address?: string
+}
+
+interface PricingForRecipientProps {
+  lockAddress: string
+  network: number
+  userAddress: string
+  referrer: string
+  data?: any
+}
+
+interface DefaultPricingProps {
+  lockAddress: string
+  network: number
+}
+
+export function fromDecimal(num: string, decimals: number) {
+  return parseFloat(
+    ethers.utils
+      .formatUnits(ethers.BigNumber.from(num), decimals)
+      .replace(/\.0$/, '')
+  )
+}
+
+/** Helper to return usd pricing object */
+export const toUsdPricing = ({
+  amount,
+  usdPricing,
+  decimals,
+}: {
+  amount: number
+  decimals: number
+  usdPricing: PriceResults
+}): KeyPricingPrice => {
+  const { symbol, price } = usdPricing ?? {}
+  return {
+    amount,
+    decimals,
+    symbol,
+    amountInUSD: price ? amount * price : undefined,
+    amountInCents: price ? Math.round(amount * price * 100) : 0,
+  }
+}
 
 export async function getDefiLammaPrice({
   network,
@@ -113,4 +169,108 @@ export const getTotalCharges = async ({
     isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }
   return result
+}
+
+export async function getLockKeyPricing({
+  lockAddress,
+  network,
+}: {
+  lockAddress: string
+  network: number
+}) {
+  const web3Service = new Web3Service(networks)
+  const provider = web3Service.providerForNetwork(network)
+  const lockContract = await web3Service.getLockContract(lockAddress, provider)
+  const [keyPrice, currencyContractAddress] = await Promise.all([
+    lockContract.keyPrice(),
+    lockContract.tokenAddress(),
+  ])
+  const decimals =
+    currencyContractAddress &&
+    currencyContractAddress !== ethers.constants.AddressZero
+      ? await getErc20Decimals(currencyContractAddress, provider)
+      : networks[network].nativeCurrency?.decimals || 18
+
+  return {
+    decimals,
+    keyPrice,
+    currencyContractAddress,
+  }
+}
+
+/** Get default pricing for a specific lock */
+export const getDefaultUsdPricing = async ({
+  lockAddress,
+  network,
+}: DefaultPricingProps): Promise<KeyPricingPrice> => {
+  const { keyPrice, decimals, currencyContractAddress } =
+    await getLockKeyPricing({
+      lockAddress,
+      network,
+    })
+
+  const usdPricing = await getDefiLammaPrice({
+    network,
+    erc20Address:
+      !currencyContractAddress ||
+      currencyContractAddress === ethers.constants.AddressZero
+        ? undefined
+        : currencyContractAddress,
+  })
+
+  const defaultPrice = fromDecimal(keyPrice, decimals)
+
+  const defaultPricing = toUsdPricing({
+    amount: defaultPrice,
+    usdPricing,
+    decimals,
+  })
+
+  return defaultPricing
+}
+
+/** Get usd pricing for a specific recipient */
+export const getUsdPricingForRecipient = async ({
+  lockAddress,
+  network,
+  userAddress,
+  data,
+  referrer,
+}: PricingForRecipientProps): Promise<KeyPricing> => {
+  const web3Service = new Web3Service(networks)
+  const { decimals, currencyContractAddress } = await getLockKeyPricing({
+    lockAddress,
+    network,
+  })
+
+  const [purchasePrice, usdPricing] = await Promise.all([
+    web3Service.purchasePriceFor({
+      lockAddress,
+      userAddress,
+      data,
+      network,
+      referrer,
+    }),
+    getDefiLammaPrice({
+      network,
+      erc20Address:
+        !currencyContractAddress ||
+        currencyContractAddress === ethers.constants.AddressZero
+          ? undefined
+          : currencyContractAddress,
+    }),
+  ])
+
+  const amount = fromDecimal(purchasePrice, decimals)
+
+  const price = toUsdPricing({
+    amount,
+    usdPricing,
+    decimals,
+  })
+
+  return {
+    address: userAddress,
+    price,
+  }
 }
