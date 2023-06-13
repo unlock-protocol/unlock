@@ -4,6 +4,31 @@ on:
   pull_request:
 
 jobs:
+
+  load-secrets:
+    steps:
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          # Export loaded secrets as environment variables
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          # These reference URIs have the following syntax:
+          # op://<vault>/<item>[/<section>]/<field>
+          # So for example, the reference URI op://app-cicd/aws/secret-access-key would be interpreted as:
+          # Vault: app-cicd
+          # Item: aws
+          # Section: default section
+          # Field: secret-access-key
+          USERNAME: op://API & Services/hello-world/username
+          CREDENTIAL: op://API & Services/hello-world/credential
+
+      - name: Print masked secret for debugging purposes
+        run: echo "Secret: $USERNAME => $CREDENTIAL"
+        # Prints: Secret: ***
+
+
   # check which folder changed in the repo
   check-changes:
     uses: ./.github/workflows/_check.yml
@@ -53,6 +78,7 @@ jobs:
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
       NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
       NEXT_PUBLIC_UNLOCK_APP_URI: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_APP_URL }}
+
   deploy-paywall-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     needs: run-tests
