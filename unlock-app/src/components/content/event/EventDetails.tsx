@@ -199,12 +199,16 @@ const CheckoutRegistrationCard = ({
   })
 
   const queries = useValidKeyBulk(eventLocks)
-  const isLoadingValidKeys = queries?.some((query) => query.isLoading)
+  const isLoadingValidKeys = queries?.some(
+    (query) => query.isInitialLoading || query.isRefetching
+  )
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
   const injectedProvider = selectProvider(config)
 
-  if (isLoadingEventLocks || isLoadingValidKeys) {
+  const showCardPlaceholder = isLoadingEventLocks || isLoadingValidKeys
+
+  if (showCardPlaceholder) {
     return <Placeholder.Card size="md" />
   }
 
