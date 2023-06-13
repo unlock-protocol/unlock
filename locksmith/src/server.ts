@@ -9,4 +9,8 @@ const port = process.env.PORT || 8080
 logger.info(`Listening on ${port}`)
 const server = app.listen(port)
 
+process.on('uncaughtException', (exception) => {
+  console.error(exception)
+})
+
 export default server
