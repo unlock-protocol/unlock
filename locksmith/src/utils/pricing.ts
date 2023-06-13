@@ -9,7 +9,12 @@ import {
   baseStripeFee,
   MIN_PAYMENT_STRIPE_CREDIT_CARD,
 } from './constants'
-import * as pricingOperations from '../operations/pricingOperations'
+import {
+  getDefaultUsdPricing,
+  getUsdPricingForRecipient,
+  getDefiLammaPrice,
+  KeyPricing,
+} from '../operations/pricingOperations'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -17,14 +22,6 @@ interface KeyPricingOptions {
   referrers?: (string | null)[] | null | undefined
   network: number
   lockAddress: string
-}
-
-const fromDecimal = (num: string, decimals: number) => {
-  return parseFloat(
-    ethers.utils
-      .formatUnits(ethers.BigNumber.from(num), decimals)
-      .replace(/\.0$/, '')
-  )
 }
 
 export const getLockKeyPricing = async ({
@@ -54,19 +51,6 @@ export const getLockKeyPricing = async ({
   }
 }
 
-interface KeyPricingPrice {
-  amount: number
-  decimals: number
-  symbol: string | undefined
-  amountInUSD: number | undefined
-  amountInCents: number | undefined
-}
-
-export interface KeyPricing {
-  price: KeyPricingPrice
-  address?: string
-}
-
 export const getKeyPricingInUSD = async ({
   recipients,
   network,
@@ -74,43 +58,17 @@ export const getKeyPricingInUSD = async ({
   data: dataArray,
   referrers,
 }: KeyPricingOptions): Promise<KeyPricing[]> => {
-  const web3Service = new Web3Service(networks)
-  const { keyPrice, decimals, currencyContractAddress } =
-    await getLockKeyPricing({
-      lockAddress,
-      network,
-    })
-
-  const usdPricing = await pricingOperations.getDefiLammaPrice({
+  const defaultPricing = await getDefaultUsdPricing({
+    lockAddress,
     network,
-    erc20Address:
-      !currencyContractAddress ||
-      currencyContractAddress === ethers.constants.AddressZero
-        ? undefined
-        : currencyContractAddress,
-    amount: 1,
   })
 
-  const defaultPrice = fromDecimal(keyPrice, decimals)
-
-  const defaultPricing = {
-    amount: defaultPrice,
-    decimals,
-    symbol: usdPricing.symbol,
-    amountInUSD: usdPricing?.price
-      ? defaultPrice * usdPricing.price
-      : undefined,
-    amountInCents: usdPricing?.price
-      ? Math.round(defaultPrice * usdPricing.price * 100)
-      : 0,
-  }
-
   const result = await Promise.all(
-    recipients.map(async (address, index) => {
+    recipients.map(async (userAddress, index) => {
       const data = dataArray?.[index] ?? '0x'
-      const referrer = referrers?.[index] ?? address!
+      const referrer = referrers?.[index] ?? userAddress!
 
-      if (!address) {
+      if (!userAddress) {
         return {
           price: {
             ...defaultPricing,
@@ -119,32 +77,18 @@ export const getKeyPricingInUSD = async ({
       }
 
       try {
-        const purchasePrice = await web3Service.purchasePriceFor({
+        const pricingForRecipient = await getUsdPricingForRecipient({
           lockAddress,
-          userAddress: address,
-          data,
           network,
+          userAddress,
           referrer,
+          data,
         })
-        const amount = fromDecimal(purchasePrice, decimals)
-        return {
-          address,
-          price: {
-            amount,
-            decimals,
-            symbol: usdPricing.symbol,
-            amountInUSD: usdPricing?.price
-              ? amount * usdPricing.price
-              : undefined,
-            amountInCents: usdPricing?.price
-              ? Math.round(amount * usdPricing.price * 100)
-              : 0,
-          },
-        }
+        return pricingForRecipient
       } catch (error) {
         logger.error(error)
         return {
-          address,
+          address: userAddress,
           price: {
             ...defaultPricing,
           },
@@ -158,7 +102,7 @@ export const getKeyPricingInUSD = async ({
 export const getGasCost = async ({ network }: Record<'network', number>) => {
   const gas = new GasPrice()
   const amount = await gas.gasPriceETH(network, GAS_COST)
-  const price = await pricingOperations.getDefiLammaPrice({
+  const price = await getDefiLammaPrice({
     network,
     amount,
   })
