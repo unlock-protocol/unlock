@@ -6,7 +6,6 @@ import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
 import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 import { useStepperItems } from './main/useStepperItems'
-import { useActor } from '@xstate/react'
 
 interface IconProps {
   active?: boolean
@@ -84,6 +83,7 @@ interface StepperProps {
   disabled?: boolean
   hookType?: CheckoutHookType
   existingMember?: boolean
+  isRenew?: boolean
 }
 
 export const Stepper = ({
@@ -91,19 +91,17 @@ export const Stepper = ({
   disabled,
   hookType,
   existingMember,
+  isRenew,
 }: StepperProps) => {
-  const [state] = useActor(service)
-
   const isUnlockAccount = service.id === 'unlockAccount'
-  // @ts-expect-error Property 'renew' does not exist on type 'UnlockAccountMachineContext'.
-  const isRenew = service.id === 'checkout' && !!state.context?.renew
 
   const items = useStepperItems(service, {
     isUnlockAccount,
-    isRenew,
     hookType,
     existingMember,
+    isRenew,
   })
+
   const index = items.findIndex(
     (item) => !item.to || item.to === service.getSnapshot()?.value
   )

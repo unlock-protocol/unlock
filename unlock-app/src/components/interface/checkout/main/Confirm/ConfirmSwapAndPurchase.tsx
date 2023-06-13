@@ -47,6 +47,7 @@ export function ConfirmSwapAndPurchase({
     keyManagers,
     metadata,
     data,
+    renew,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -178,21 +179,32 @@ export function ConfirmSwapAndPurchase({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      await walletService.purchaseKeys(
-        {
+      if (renew) {
+        await walletService.extendKey({
           lockAddress,
-          keyPrices,
-          owners: recipients!,
-          data: purchaseData,
-          keyManagers: keyManagers?.length ? keyManagers : undefined,
-          recurringPayments,
-          referrers,
-          totalApproval,
+          keyPrice,
+          owner: recipients?.[0],
+          data: purchaseData?.[0] || '0x',
+          referrer: referrers?.[0],
           swap,
-        },
-        {} /** Transaction params */,
-        onErrorCallback
-      )
+        })
+      } else {
+        await walletService.purchaseKeys(
+          {
+            lockAddress,
+            keyPrices,
+            owners: recipients!,
+            data: purchaseData,
+            keyManagers: keyManagers?.length ? keyManagers : undefined,
+            recurringPayments,
+            referrers,
+            totalApproval,
+            swap,
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      }
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)

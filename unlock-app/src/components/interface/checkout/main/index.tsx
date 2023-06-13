@@ -18,8 +18,6 @@ import { Promo } from './Promo'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
-import { Renew } from './Renew'
-import { Renewed } from './Renewed'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 interface Props {
@@ -241,27 +239,6 @@ export function Checkout({
             onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
-          />
-        )
-      }
-
-      case 'RENEW': {
-        return (
-          <Renew
-            communication={communication}
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-
-      case 'RENEWED': {
-        return (
-          <Renewed
-            onClose={onClose}
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-            communication={communication}
           />
         )
       }

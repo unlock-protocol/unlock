@@ -56,7 +56,8 @@ interface SwapOptions {
 
 interface ExtendKeyParams {
   lockAddress: string
-  tokenId: string
+  tokenId?: string
+  owner?: string
   referrer?: string
   data?: string
   decimals?: number
@@ -310,9 +311,33 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.extendKey) {
-      throw new Error('Lock version not supported')
+    const lockContract = await this.getLockContract(params.lockAddress)
+
+    if (!(params.tokenId || params.owner)) {
+      throw new Error('Missing tokenId or owner')
     }
+
+    // if the lock is not v10+, we need to purchase a key to extend it.
+    if (!version.extendKey) {
+      const owner = params.owner
+        ? params.owner
+        : lockContract.ownerOf(params.tokenId)
+
+      return this.purchaseKey.bind(this)(
+        {
+          owner,
+          ...params,
+        },
+        transactionOptions,
+        callback
+      )
+    }
+
+    if (!params.tokenId && params.owner) {
+      const id = await lockContract.tokenOfOwnerByIndex(params.owner, 0)
+      params.tokenId = id.toString()
+    }
+
     return version.extendKey.bind(this)(params, transactionOptions, callback)
   }
 

@@ -64,7 +64,6 @@ export class PurchaseController {
       lock: lockAddress,
       userAddress,
     } = await PaymentCaptureBody.parseAsync(request.body)
-
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
       network

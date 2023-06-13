@@ -29,7 +29,7 @@ import { useCheckoutHook } from './useCheckoutHook'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
-
+import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -157,6 +157,14 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   >
                     {' '}
                     Valid{' '}
+                  </Badge>
+                </div>
+              )}
+              {lock.isExpired && (
+                <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
+                  Your membership is expired.{' '}
+                  <Badge size="tiny" iconRight={<WarningIcon />} variant="red">
+                    Expired
                   </Badge>
                 </div>
               )}
@@ -351,6 +359,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         service={checkoutService}
         hookType={hookType}
         existingMember={!!membership?.member}
+        isRenew={!!membership?.expired}
       />
       <main className="h-full px-6 py-2 overflow-auto">
         {isLoading ? (
@@ -384,11 +393,15 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                       </p>
                     )}
                     {locks.map((lock) => {
-                      const disabled = lock.isSoldOut && !lock.isMember
-                      const isMember = memberships?.find(
+                      const isMember = !!memberships?.find(
                         (m) => m.lock === lock.address
                       )?.member
+                      const isExpired = !!memberships?.find(
+                        (m) => m.lock === lock.address
+                      )?.expired
+                      const disabled = lock.isSoldOut && !lock.isMember
                       lock.isMember = lock.isMember ?? isMember
+                      lock.isExpired = lock.isExpired ?? isExpired
                       return (
                         <LockOption
                           key={lock.address}
@@ -427,13 +440,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                 send({
                   type: 'SELECT_LOCK',
                   lock,
-                  existingMember: !!membership?.member,
+                  existingMember: lock.isMember,
+                  expiredMember: lock.isExpired,
                   skipQuantity,
                   skipRecipient,
-                  // unlock account are unable to renew : wut?
-                  expiredMember: isUnlockAccount
-                    ? false
-                    : !!membership?.expired,
                   recipients: account ? [account] : [],
                   hook: hookType,
                 })
