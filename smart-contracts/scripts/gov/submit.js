@@ -9,7 +9,7 @@ async function main({ proposal, proposerAddress, govAddress }) {
 
   // log what is happening
   console.log(
-    `GOV SUBMIT > Proposed (${proposal.calls} calls):\n${proposal.calls
+    `GOV SUBMIT > Proposed (${proposal.calls.length} calls):\n${proposal.calls
       .map(
         ({ contractName, functionName, functionArgs }) =>
           `- ${contractName} ${functionName} ${functionArgs}`

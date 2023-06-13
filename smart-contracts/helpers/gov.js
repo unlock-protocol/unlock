@@ -194,7 +194,8 @@ const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
   } else {
     proposer = await ethers.getSigner(proposerAddress)
   }
-  return await gov.connect(proposer).propose(...proposal)
+  const parsed = await parseProposal(proposal)
+  return await gov.connect(proposer).propose(...parsed)
 }
 
 const getProposalVotes = async (proposalId, govAddress) => {

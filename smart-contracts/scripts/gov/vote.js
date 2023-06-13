@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getProposalState } = require('../../helpers/gov')
-const { impersonate, getDictator } = require('../../test/helpers/mainnet')
+const { impersonate, getDictator } = require('../../test/helpers')
 
 async function main({ voter, proposalId, govAddress }) {
   // env settings

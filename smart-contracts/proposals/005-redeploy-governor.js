@@ -12,7 +12,7 @@ const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 const oldGovAddress = '0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9'
 
 async function main({
-  newGovAddress = '0xa1fc4Ed179E39D673a22593F567c48d1cc358a82',
+  newGovAddress = '0x19c0841576948fc46f0da53869b8c95634e68ad2',
 } = {}) {
   // get addresses
   const oldGov = await ethers.getContractAt(
@@ -28,6 +28,7 @@ async function main({
     timeLockAddress
   )
   const TIMELOCK_ADMIN_ROLE = await timelock.TIMELOCK_ADMIN_ROLE()
+  const PROPOSER_ROLE = await timelock.PROPOSER_ROLE()
 
   // show some info in terminal
   console.log(`redeploying Governor:
@@ -58,22 +59,35 @@ async function main({
     })
   }
 
-  const proposalGrantRoleArgs = {
-    contractName: 'UnlockProtocolTimelock',
-    contractAddress: timeLockAddress,
-    functionName: 'grantRole',
-    functionArgs: [TIMELOCK_ADMIN_ROLE, newGovAddress],
-  }
-
-  const proposalRevokeRoleArgs = {
-    contractName: 'UnlockProtocolTimelock',
-    contractAddress: timeLockAddress,
-    functionName: 'revokeRole',
-    functionArgs: [TIMELOCK_ADMIN_ROLE, oldGovAddress],
-  }
+  const calls = [
+    {
+      contractName: 'UnlockProtocolTimelock',
+      contractAddress: timeLockAddress,
+      functionName: 'grantRole',
+      functionArgs: [TIMELOCK_ADMIN_ROLE, newGovAddress],
+    },
+    {
+      contractName: 'UnlockProtocolTimelock',
+      contractAddress: timeLockAddress,
+      functionName: 'grantRole',
+      functionArgs: [PROPOSER_ROLE, newGovAddress],
+    },
+    {
+      contractName: 'UnlockProtocolTimelock',
+      contractAddress: timeLockAddress,
+      functionName: 'revokeRole',
+      functionArgs: [TIMELOCK_ADMIN_ROLE, oldGovAddress],
+    },
+    {
+      contractName: 'UnlockProtocolTimelock',
+      contractAddress: timeLockAddress,
+      functionName: 'revokeRole',
+      functionArgs: [PROPOSER_ROLE, oldGovAddress],
+    },
+  ]
 
   const proposalArgs = {
-    calls: [proposalGrantRoleArgs, proposalRevokeRoleArgs],
+    calls,
     proposalName: 'Switch Timelock admin role to the new Governor',
   }
 
