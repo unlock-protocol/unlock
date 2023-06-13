@@ -13,8 +13,8 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          USERNAME: op://API & Services/API Credential/username
-          CREDENTIAL: op://API & Services/API Credential/credential
+          USERNAME: op://secrets/test-api/username
+          CREDENTIAL: op://secrets/test-api/credential
       - name: Print masked secret for debugging purposes
         run: echo "Secret $USERNAME => $CREDENTIAL"
 
