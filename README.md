@@ -114,10 +114,9 @@ steps:
       export-env: true
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      USERNAME: op://API & Services/hello-world/username
-      CREDENTIAL: op://API & Services/hello-world/credential
-  - name: Print masked secret for debugging purposes
-    run: echo "Secret $USERNAME => $CREDENTIAL"
+      USERNAME: op://secrets/test-api/username
+      CREDENTIAL: op://secrets/test-api/credential
+  ... more steps that require USERNAME and CREDENTIAL to be set
 ```
 
 These reference URIs have the following syntax:
@@ -125,7 +124,6 @@ These reference URIs have the following syntax:
 So for example, the reference URI op://app-cicd/aws/secret-access-key would be interpreted as:
 Vault: app-cicd
 Item: aws
-Section: default section
 Field: secret-access-key
 
 ## Thank you
