@@ -4,7 +4,6 @@ on:
   pull_request:
 
 jobs:
-
   load-secrets:
     steps:
       - name: Load secrets from 1Password
@@ -17,8 +16,7 @@ jobs:
           CREDENTIAL: op://API & Services/hello-world/credential
 
       - name: Print masked secret for debugging purposes
-        run: echo "Secret: $USERNAME => $CREDENTIAL"
-
+        run: echo "Secret $USERNAME => $CREDENTIAL"
 
   # check which folder changed in the repo
   check-changes:
