@@ -14,7 +14,6 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           USERNAME: op://API & Services/hello-world/username
           CREDENTIAL: op://API & Services/hello-world/credential
-
       - name: Print masked secret for debugging purposes
         run: echo "Secret $USERNAME => $CREDENTIAL"
 
