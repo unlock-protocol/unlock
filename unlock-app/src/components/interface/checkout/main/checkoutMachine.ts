@@ -18,8 +18,6 @@ export type CheckoutPage =
   | 'RETURNING'
   | 'UNLOCK_ACCOUNT'
   | 'PAYMENT'
-  | 'RENEW'
-  | 'RENEWED'
   | 'PASSWORD'
   | 'PROMO'
   | 'GUILD'
@@ -38,6 +36,7 @@ export type CheckoutHookType = 'password' | 'promocode' | 'captcha' | 'guild'
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
   isMember: boolean
+  isExpired: boolean
   isSoldOut: boolean
 }
 
@@ -93,10 +92,6 @@ interface ConfirmMintEvent extends Transaction {
   type: 'CONFIRM_MINT'
 }
 
-interface RenewedEvent extends Transaction {
-  type: 'CONFIRM_RENEW'
-}
-
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
 }
@@ -122,7 +117,6 @@ export type CheckoutMachineEvents =
   | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | ConfirmMintEvent
-  | RenewedEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
   | ResetEvent
@@ -168,7 +162,6 @@ export interface CheckoutMachineContext {
   recipients: string[]
   keyManagers?: string[]
   mint?: Transaction
-  renewed?: Transaction
   skipQuantity: boolean
   skipRecipient: boolean
   metadata?: any[]
@@ -188,7 +181,6 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
     method: 'crypto',
   },
   quantity: 1,
-  renewed: undefined,
   recipients: [],
   keyManagers: [],
   skipQuantity: false,
@@ -252,19 +244,14 @@ export const checkoutMachine = createMachine(
             },
             {
               actions: ['selectLock'],
-              target: 'RENEW',
-              cond: (_, event) => event.expiredMember,
-            },
-            {
-              actions: ['selectLock'],
               target: 'QUANTITY',
-              cond: (_, event) => !event.skipQuantity,
+              cond: (_, event) => !event.skipQuantity && !event.expiredMember,
             },
             {
               actions: ['selectLock'],
               target: 'METADATA',
               cond: (_, event) => {
-                return !event.skipRecipient
+                return !event.skipRecipient && !event.expiredMember
               },
             },
             {
@@ -303,10 +290,6 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'PAYMENT',
-              cond: (_, event) => {
-                // skip metadata if no quantity and recipient selection
-                return !!(event.skipRecipient && event.skipQuantity)
-              },
             },
           ],
           DISCONNECT,
@@ -405,11 +388,6 @@ export const checkoutMachine = createMachine(
         on: {
           SUBMIT_DATA: [
             {
-              target: 'RENEW',
-              actions: ['submitData'],
-              cond: (ctx) => ctx.renew,
-            },
-            {
               target: 'PAYMENT',
               actions: ['submitData'],
             },
@@ -429,11 +407,6 @@ export const checkoutMachine = createMachine(
       PROMO: {
         on: {
           SUBMIT_DATA: [
-            {
-              target: 'RENEW',
-              actions: ['submitData'],
-              cond: (ctx) => ctx.renew,
-            },
             {
               target: 'PAYMENT',
               actions: ['submitData'],
@@ -455,11 +428,6 @@ export const checkoutMachine = createMachine(
         on: {
           SUBMIT_DATA: [
             {
-              target: 'RENEW',
-              actions: ['submitData'],
-              cond: (ctx) => ctx.renew,
-            },
-            {
               target: 'PAYMENT',
               actions: ['submitData'],
             },
@@ -479,11 +447,6 @@ export const checkoutMachine = createMachine(
       CAPTCHA: {
         on: {
           SUBMIT_DATA: [
-            {
-              target: 'RENEW',
-              actions: ['submitData'],
-              cond: (ctx) => ctx.renew,
-            },
             {
               target: 'PAYMENT',
               actions: ['submitData'],
@@ -620,22 +583,6 @@ export const checkoutMachine = createMachine(
           BACK: 'SELECT',
         },
       },
-      RENEW: {
-        on: {
-          CONFIRM_RENEW: {
-            actions: ['confirmRenew'],
-            target: 'RENEWED',
-          },
-        },
-      },
-      RENEWED: {
-        on: {
-          CONFIRM_RENEW: {
-            type: 'final',
-            actions: ['confirmRenew'],
-          },
-        },
-      },
     },
   },
   {
@@ -690,14 +637,6 @@ export const checkoutMachine = createMachine(
       }),
       confirmMint: assign({
         mint: (_, { status, transactionHash }) => {
-          return {
-            status,
-            transactionHash,
-          } as const
-        },
-      }),
-      confirmRenew: assign({
-        renewed: (_, { status, transactionHash }) => {
           return {
             status,
             transactionHash,
