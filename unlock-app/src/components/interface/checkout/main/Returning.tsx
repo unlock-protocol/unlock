@@ -17,6 +17,7 @@ import { isAndroid, isIOS } from 'react-device-detect'
 import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { ReturningButton } from '../ReturningButton'
 
 interface Props {
   injectedProvider: unknown
@@ -186,9 +187,11 @@ export function Returning({
                     : 'flex justify-between '
                 }`}
               >
-                <Button className="w-full" onClick={() => onClose()}>
-                  {paywallConfig?.endingCallToAction || 'Return'}
-                </Button>
+                <ReturningButton
+                  onClick={() => onClose()}
+                  returnLabel="Return"
+                  checkoutService={checkoutService}
+                />
                 {!lock?.isSoldOut && (
                   <Button
                     className="w-full"
