@@ -5,6 +5,7 @@ on:
 
 jobs:
   load-secrets:
+    runs-on: ubuntu-22.04
     steps:
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v1.2.0
