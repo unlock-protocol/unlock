@@ -4,6 +4,7 @@ import {
   authenticatedMiddleware,
   userOnlyMiddleware,
 } from '../../utils/middlewares/auth'
+import { lockManagerOrKeyOwnerMiddleware } from '../../utils/middlewares/lockManagerOrKeyOwner'
 
 const router = express.Router({ mergeParams: true })
 
@@ -13,6 +14,7 @@ router.get(
   '/:network/locks/:lockAddress/keys/:keyId',
   authenticatedMiddleware,
   userOnlyMiddleware,
+  lockManagerOrKeyOwnerMiddleware,
   (req, res) => {
     subscriptionController.getSubscription(req, res)
   }
