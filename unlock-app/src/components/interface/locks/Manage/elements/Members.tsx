@@ -67,6 +67,7 @@ export const Members = ({
         onError: () => {
           ToastHelper.error(`Can't load members, please try again`)
         },
+        refetchOnWindowFocus: true,
       },
 
       {
