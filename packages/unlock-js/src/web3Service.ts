@@ -1063,4 +1063,39 @@ export default class Web3Service extends UnlockService {
       estimatedGasUsedUSD,
     }
   }
+
+  async getTokenIdFromTx({
+    params: { hash, network, lockAddress },
+  }: {
+    params: {
+      hash: string
+      network: number
+      lockAddress: string
+    }
+  }) {
+    const provider = this.providerForNetwork(network)
+    const lockContract = await this.getLockContract(lockAddress, provider)
+    const txReceipt = await provider.getTransactionReceipt(hash)
+    const parser = lockContract.interface
+    const events = txReceipt.logs.map((log) => {
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
+      return parser.parseLog(log)
+    })
+
+    const transfer = events.find((event) => {
+      return event && event.name === 'Transfer'
+    })
+
+    if (transfer) {
+      return transfer.args.tokenId.toString()
+    }
+
+    const extend = events.find((event) => {
+      return event && event.name === 'KeyExtended'
+    })
+    if (extend) {
+      return extend.args.tokenId.toString()
+    }
+    return null
+  }
 }

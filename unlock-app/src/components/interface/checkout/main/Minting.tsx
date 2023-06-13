@@ -21,6 +21,8 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
 
 interface MintingScreenProps {
   lockName: string
@@ -206,17 +208,29 @@ export function Minting({
           if (transaction.status !== 1) {
             throw new Error('Transaction failed.')
           }
+          const web3Service = new Web3Service(networks)
+          const tokenId = await web3Service.getTokenIdFromTx({
+            params: {
+              lockAddress: lock!.address,
+              hash: mint!.transactionHash!,
+              network: lock!.network,
+            },
+          })
 
           communication?.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
+            tokenId,
+            metadata,
           })
 
           communication?.emitUserInfo({
             address: account,
             signedMessage: messageToSign?.signature,
           })
+
           communication?.emitMetadata(metadata)
+
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
@@ -235,7 +249,16 @@ export function Minting({
       }
     }
     waitForConfirmation()
-  }, [mint, lock, config, send, communication, account, messageToSign])
+  }, [
+    mint,
+    lock,
+    config,
+    send,
+    communication,
+    account,
+    messageToSign,
+    metadata,
+  ])
 
   return (
     <Fragment>
