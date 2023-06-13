@@ -11,7 +11,9 @@ const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 const oldGovAddress = '0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9'
 
-async function main({ newGovAddress } = {}) {
+async function main({
+  newGovAddress = '0xa1fc4Ed179E39D673a22593F567c48d1cc358a82',
+} = {}) {
   // get addresses
   const oldGov = await ethers.getContractAt(
     'UnlockProtocolGovernor',
@@ -42,6 +44,10 @@ async function main({ newGovAddress } = {}) {
     ])
     await governor.deployed()
     newGovAddress = governor.address
+
+    console.log(
+      `Governor deployed at ${newGovAddress} (tx: ${governor.deployTransaction.hash})`
+    )
 
     const implementation = await getImplementationAddress(
       ethers.provider,
