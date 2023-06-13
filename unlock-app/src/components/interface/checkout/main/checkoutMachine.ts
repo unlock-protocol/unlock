@@ -69,16 +69,6 @@ export interface SubmitDataEvent {
   data: string[]
 }
 
-export interface SubmitPasswordEvent {
-  type: 'SUBMIT_PASSWORD'
-  data: string[]
-}
-
-export interface SubmitPromoEvent {
-  type: 'SUBMIT_PROMO'
-  data: string[]
-}
-
 export interface SelectRecipientsEvent {
   type: 'SELECT_RECIPIENTS'
   recipients: string[]
@@ -107,11 +97,6 @@ interface RenewedEvent extends Transaction {
   type: 'CONFIRM_RENEW'
 }
 
-interface SolveCaptchaEvent {
-  type: 'SOLVE_CAPTCHA'
-  data: string[]
-}
-
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
 }
@@ -134,11 +119,8 @@ export type CheckoutMachineEvents =
   | SelectPaymentMethodEvent
   | SelectRecipientsEvent
   | SignMessageEvent
-  | SubmitPasswordEvent
-  | SubmitPromoEvent
   | SubmitDataEvent
   | MakeAnotherPurchaseEvent
-  | SolveCaptchaEvent
   | ConfirmMintEvent
   | RenewedEvent
   | UnlockAccountEvent
@@ -178,7 +160,6 @@ export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
-  captcha?: string[]
   messageToSign?: {
     signature: string
     address: string
@@ -190,9 +171,7 @@ export interface CheckoutMachineContext {
   renewed?: Transaction
   skipQuantity: boolean
   skipRecipient: boolean
-  password?: string[]
   metadata?: any[]
-  promo?: string[]
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
@@ -205,7 +184,6 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   lock: undefined,
   messageToSign: undefined,
   mint: undefined,
-  captcha: undefined,
   payment: {
     method: 'crypto',
   },
@@ -425,15 +403,15 @@ export const checkoutMachine = createMachine(
       },
       PASSWORD: {
         on: {
-          SUBMIT_PASSWORD: [
+          SUBMIT_DATA: [
             {
               target: 'RENEW',
-              actions: ['submitPassword'],
+              actions: ['submitData'],
               cond: (ctx) => ctx.renew,
             },
             {
               target: 'PAYMENT',
-              actions: ['submitPassword'],
+              actions: ['submitData'],
             },
           ],
           BACK: [
@@ -450,15 +428,15 @@ export const checkoutMachine = createMachine(
       },
       PROMO: {
         on: {
-          SUBMIT_PROMO: [
+          SUBMIT_DATA: [
             {
               target: 'RENEW',
-              actions: ['submitPromo'],
+              actions: ['submitData'],
               cond: (ctx) => ctx.renew,
             },
             {
               target: 'PAYMENT',
-              actions: ['submitPromo'],
+              actions: ['submitData'],
             },
           ],
           BACK: [
@@ -500,15 +478,15 @@ export const checkoutMachine = createMachine(
       },
       CAPTCHA: {
         on: {
-          SOLVE_CAPTCHA: [
+          SUBMIT_DATA: [
             {
               target: 'RENEW',
-              actions: ['solveCaptcha'],
+              actions: ['submitData'],
               cond: (ctx) => ctx.renew,
             },
             {
               target: 'PAYMENT',
-              actions: ['solveCaptcha'],
+              actions: ['submitData'],
             },
           ],
           BACK: [
@@ -731,21 +709,6 @@ export const checkoutMachine = createMachine(
           ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
         } as CheckoutMachineContext
-      }),
-      solveCaptcha: assign({
-        captcha: (_, event) => {
-          return event.data
-        },
-      }),
-      submitPassword: assign({
-        password: (_, event) => {
-          return event.data
-        },
-      }),
-      submitPromo: assign({
-        promo: (_, event) => {
-          return event.data
-        },
       }),
       submitData: assign({
         data: (_, event) => {

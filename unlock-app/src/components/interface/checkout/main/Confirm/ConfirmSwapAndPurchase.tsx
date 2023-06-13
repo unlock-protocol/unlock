@@ -43,10 +43,7 @@ export function ConfirmSwapAndPurchase({
     lock,
     recipients,
     payment,
-    captcha,
     paywallConfig,
-    password,
-    promo,
     keyManagers,
     metadata,
     data,
@@ -84,9 +81,6 @@ export function ConfirmSwapAndPurchase({
     usePurchaseData({
       lockAddress: lock!.address,
       network: lock!.network,
-      promo,
-      password,
-      captcha,
       paywallConfig,
       recipients,
       data,
@@ -234,11 +228,6 @@ export function ConfirmSwapAndPurchase({
                 <ErrorIcon className="inline" />
                 There was an error when preparing the transaction.
               </p>
-              {password && (
-                <p className="text-xs">
-                  Please, check that the password you used is correct.
-                </p>
-              )}
             </div>
           )}
           {!isLoading && isPricingDataAvailable && (

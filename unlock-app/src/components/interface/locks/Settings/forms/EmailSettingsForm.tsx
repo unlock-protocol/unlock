@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface EmailReplyToFormProps {
@@ -49,6 +50,7 @@ export const EmailSettingsForm = ({
 
   const onSubmit = async (fields: FormProps) => {
     await updateReplyToMutation.mutateAsync(fields)
+    ToastHelper.success('Email settings updated.')
   }
 
   useEffect(() => {

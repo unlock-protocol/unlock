@@ -126,13 +126,18 @@ export const mainnet: NetworkConfig = {
         name: 'Captcha',
         address: '0x0959482CbFB3c3C85ECd7bf690a0cde808eE8471',
       },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0x1d8DD27432cC0aCB93B93c4486F46b67E2208359',
+      },
     ],
   },
-  universalCard: {
-    cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',
-    stripeDestinationNetwork: 'ethereum',
-    stripeDestinationCurrency: 'usdc',
-  },
+  // universalCard: {
+  //   cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',
+  //   stripeDestinationNetwork: 'ethereum',
+  //   stripeDestinationCurrency: 'usdc',
+  // },
 }
 
 export default mainnet
