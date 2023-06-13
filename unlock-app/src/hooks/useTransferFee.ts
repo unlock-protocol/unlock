@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -40,18 +39,12 @@ export const useGetTransferFeeBasisPoints = ({
   return useQuery(
     ['transferFeeBasisPoints', lockAddress, network],
     async () => {
-      const [transferFeeBasisPoints, lock] = await Promise.all([
-        web3Service.transferFeeBasisPoints(lockAddress, network),
-        web3Service.getLock(lockAddress, network),
-      ])
-
+      const transferFeeBasisPoints = await web3Service.transferFeeBasisPoints(
+        lockAddress,
+        network
+      )
       const transferFeePercentage = (transferFeeBasisPoints ?? 0) / 100
-      const unlimitedDuration =
-        lock?.expirationDuration === UNLIMITED_KEYS_DURATION
-
-      // unlimited memberships could not be made soul-bound
-      const isTransferAllowed =
-        transferFeePercentage < 100 && !unlimitedDuration
+      const isTransferAllowed = transferFeePercentage < 100
 
       return {
         transferFeePercentage,
