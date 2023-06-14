@@ -52,7 +52,7 @@ export default ({ publicLockVersion }) =>
         )
       }
 
-      tokenIds = await walletService.purchaseKeys(
+      await walletService.purchaseKeys(
         {
           lockAddress,
           owners: keyOwners,
@@ -67,6 +67,19 @@ export default ({ publicLockVersion }) =>
           transactionHashes.push(hash)
         }
       )
+
+      tokenIds = await Promise.all([
+        transactionHashes.map((hash) =>
+          web3Service.getTokenIdFromTx({
+            params: {
+              network: chainId,
+              lockAddress,
+              hash,
+            },
+          })
+        ),
+      ])
+      console.log(tokenIds)
 
       keys = await Promise.all(
         keyOwners.map(async (owner) =>

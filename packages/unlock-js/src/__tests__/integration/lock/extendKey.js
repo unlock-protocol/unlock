@@ -17,11 +17,24 @@ export default ({ publicLockVersion }) => {
 
         keyOwner = accounts[5]
 
-        tokenId = await walletService.purchaseKey({
-          lockAddress,
-          owners: keyOwner,
-        })
-
+        await walletService.purchaseKey(
+          {
+            lockAddress,
+            owners: keyOwner,
+          },
+          {},
+          async (_, hash) => {
+            if (hash) {
+              tokenId = await web3Service.getTokenIdFromTx({
+                params: {
+                  network: chainId,
+                  lockAddress,
+                  hash,
+                },
+              })
+            }
+          }
+        )
         // expire key
         await walletService.expireAndRefundFor({
           lockAddress,
