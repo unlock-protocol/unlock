@@ -20,7 +20,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          SUBGRAPH_DEPLOY_KEY: op://secrets/subgraph/hosted-service/deploy-key
+          SUBGRAPH_DEPLOY_KEY: op://secrets/subgraph/hosted-service-deploy-key
       - run: yarn
       - run: yarn build
       - name: Deploying the subgraphs
