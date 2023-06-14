@@ -48,25 +48,30 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
 
   const disabled = data && data.filter((d) => !d).length > 0
 
+  const guildUrl =
+    guild && guild.urlName ? `https://guild.xyz/${guild?.urlName}` : '#'
+
+  const guildName = guild && guild?.name ? guild.name : undefined
+
   return (
     <Fragment>
       <Stepper service={checkoutService} />
-      <main className="h-full px-6 py-2 overflow-auto text-sm pt-4">
+      <main className="h-full px-6 py-2 pt-4 overflow-auto text-sm">
         {!isLoadingGuild && (
           <>
             <p>
               Memberships to this lock are restricted to addresses that belong
               to the{' '}
               <Link
-                className="text-brand-ui-primary underline"
+                className="underline text-brand-ui-primary"
                 target="_blank"
                 rel="noreferrer"
-                href={`https://guild.xyz/${guild!.urlName}`}
+                href={guildUrl}
               >
-                {guild!.name}{' '}
+                {guildName}{' '}
                 <ExternalLinkIcon
                   size={14}
-                  className="text-brand-ui-primary inline"
+                  className="inline text-brand-ui-primary"
                 />
               </Link>{' '}
               guild.
@@ -77,7 +82,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   return (
                     <li
                       key={user}
-                      className="pl-1 mb-2 flex items-center w-full gap-1 text-center"
+                      className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
                     >
                       <LoadingIcon size={14} />
                       {minifyAddress(user)}
@@ -88,7 +93,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   return (
                     <li
                       key={user}
-                      className="pl-1 mb-2 flex items-center w-full gap-1 text-center"
+                      className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
                     >
                       ✅ {minifyAddress(user)}
                     </li>
@@ -97,7 +102,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                 return (
                   <li
                     key={user}
-                    className="pl-1 mb-2 flex items-center w-full gap-1 text-center"
+                    className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
                   >
                     ❌ {minifyAddress(user)}
                   </li>
@@ -111,7 +116,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   as="a"
                   target="_blank"
                   rel="noreferrer"
-                  href={`https://guild.xyz/${guild!.urlName}`}
+                  href={guildUrl}
                   size="tiny"
                 >
                   Join the Guild!
@@ -128,7 +133,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                     as="a"
                     target="_blank"
                     rel="noreferrer"
-                    href={`https://guild.xyz/${guild!.urlName}`}
+                    href={guildUrl}
                     size="tiny"
                   >
                     Join the Guild!
