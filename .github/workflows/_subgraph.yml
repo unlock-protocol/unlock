@@ -1,10 +1,6 @@
 name: Subgraphs deployment
 
-on:
-  workflow_call:
-    secrets:
-      SUBGRAPH_DEPLOY_KEY:
-        required: true
+on: workflow_call
 
 jobs:
   coverage:
@@ -13,12 +9,18 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SUBGRAPH_DEPLOY_KEY: op://secrets/subgraph/hosted-service/deploy-key
       - run: yarn
       - run: yarn build
       - name: Deploying the subgraphs
