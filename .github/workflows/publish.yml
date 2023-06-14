@@ -19,10 +19,15 @@ jobs:
           cache: 'yarn'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          NPM_AUTH_TOKEN: op://secrets/npm/credential
+
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y default-jdk
       - run: yarn install
       - run: yarn release
-
-    env:
-      NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
