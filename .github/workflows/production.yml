@@ -48,7 +48,6 @@ jobs:
       target-env: prod
       site-id: d7ab286a-d726-49c0-83b4-c89b52d97f5b
     secrets:
-      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_AUTH_TOKEN }}
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -60,7 +59,6 @@ jobs:
       bypass_diff_check: bypass
       site-id: d527d16a-ec5c-4d4a-9a01-5ca649c1725b
     secrets:
-      AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_PROD_AUTH_TOKEN }}
       SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_HOST }}
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_USERNAME }}
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_PASSWORD }}
@@ -76,7 +74,6 @@ jobs:
       target-env: prod
       site-id: 5426347d-0c26-4743-88bc-dc4168e47f91
     secrets:
-      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_AUTH_TOKEN }}
       NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_BASE64_WEDLOCKS_PUBLIC_KEY }}
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_STRIPE_KEY }}
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_ETHPASS_KEY }}

@@ -50,7 +50,6 @@ jobs:
       target-env: staging
       site-id: 39b0a906-2c77-452b-9049-d04062303b1a
     secrets:
-      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
       NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
       NEXT_PUBLIC_UNLOCK_APP_URI: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_APP_URL }}
 
@@ -62,8 +61,6 @@ jobs:
       service: paywall-app
       target-env: staging
       site-id: f78363cb-8caa-4616-8fdc-f6ecc5df8c04
-    secrets:
-      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
   deploy-unlock-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
@@ -74,7 +71,6 @@ jobs:
       target-env: staging
       site-id: d2e1173a-de41-475c-b46f-9e53653c4f77
     secrets:
-      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
       NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}

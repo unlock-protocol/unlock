@@ -25,9 +25,6 @@ on:
         required: true
         type: string
     secrets:
-      # all netlify deployments
-      AUTH_TOKEN:
-        required: true
       NEXT_PUBLIC_UNLOCK_ENV:
         required: false
       # unlock-app only
@@ -86,6 +83,13 @@ jobs:
       SITE_ID: ${{ inputs.site-id }}
     steps:
       - uses: actions/checkout@v3
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          AUTH_TOKEN: op://secrets/netlify/credential
       - name: 'Export secrets to env'
         id: filter_secrets
         run: |
