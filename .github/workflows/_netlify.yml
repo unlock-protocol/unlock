@@ -34,8 +34,6 @@ on:
         required: false
       NEXT_PUBLIC_ETHPASS_KEY:
         required: false
-      NEXT_PUBLIC_UNLOCK_APP_URI:
-        required: false
 
       SMTP_PASSWORD:
         required: false
@@ -85,6 +83,7 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           AUTH_TOKEN: op://secrets/netlify/credential
+          SMTP_PASSWORD: op://secrets/sendgrid/credential
       - name: 'Export secrets to env'
         id: filter_secrets
         run: |

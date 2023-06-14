@@ -58,7 +58,6 @@ jobs:
       bypass_diff_check: bypass
       site-id: d527d16a-ec5c-4d4a-9a01-5ca649c1725b
     secrets:
-      SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_PASSWORD }}
       BASE64_WEDLOCKS_PRIVATE_KEY: ${{ secrets.WEDLOCKS_NETLIFY_PROD_BASE64_WEDLOCKS_PRIVATE_KEY }}
 
   deploy-unlock-app-production:
