@@ -12,6 +12,11 @@ const decimals = 18
 const currencyContractAddress = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
 const keyPrice = 40000
 
+const recipients = [
+  '0x6f59999AE79Bc593549918179454A47980a800E5',
+  '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
+]
+
 // eslint-disable-next-line
 var mockWeb3Service = {
   providerForNetwork: vi.fn(),
@@ -260,6 +265,22 @@ describe('pricingOperations', () => {
       expect(pricing?.symbol).toBe('$')
       expect(pricing?.amountInUSD).toBe(55.32)
       expect(pricing?.amountInCents).toBe(5532)
+    })
+
+    it('returns pricing when "creditCardPrice" is set in lockSettings for recipients', async () => {
+      expect.assertions(4)
+
+      const pricing = await pricingOperations.getPricingFromSettings({
+        lockAddress,
+        network,
+        recipients,
+      })
+
+      expect(pricing?.decimals).toBe(18)
+      expect(pricing?.symbol).toBe('$')
+      // total for the 2 recipients
+      expect(pricing?.amountInUSD).toBe(110.64)
+      expect(pricing?.amountInCents).toBe(11064)
     })
   })
 })
