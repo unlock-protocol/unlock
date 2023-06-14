@@ -16,9 +16,6 @@ jobs:
       bypass_diff_check: bypass
       service: locksmith
       app-name: unlock-locksmith-staging
-    secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   deploy-locksmith-websub-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -31,9 +28,6 @@ jobs:
       command: 'yarn websub:prod'
       container-type: worker
       app-name: locksmith-websub-staging
-    secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   # Netlify Deployments
   # The unlock-protocol-com site is built from `master` as we don't use a staging site for it.

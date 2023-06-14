@@ -27,11 +27,6 @@ on:
         description: 'Bypass the monorepo diff check'
         required: false
         type: string
-    secrets:
-      HEROKU_EMAIL:
-        required: true
-      HEROKU_API_KEY:
-        required: true
 
 jobs:
   deploy-to-heroku:
@@ -58,10 +53,15 @@ jobs:
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          HEROKU_EMAIL: op://secrets/heroku/email
+          HEROKU_API_KEY: op://secrets/heroku/credential
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
           sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.container-type }} "${{ inputs.command }}" ${{ inputs.build-dir }}
-        env:
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

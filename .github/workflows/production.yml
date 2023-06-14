@@ -24,9 +24,6 @@ jobs:
       bypass_diff_check: bypass
       service: locksmith
       app-name: unlock-locksmith-production
-    secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   deploy-locksmith-websub-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -39,9 +36,6 @@ jobs:
       command: 'yarn websub:prod'
       container-type: worker
       app-name: locksmith-websub-production
-    secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   # Netlify Deployments
   deploy-paywall-app-production:
