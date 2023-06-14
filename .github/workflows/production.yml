@@ -47,7 +47,6 @@ jobs:
       service: paywall-app
       target-env: prod
       site-id: d7ab286a-d726-49c0-83b4-c89b52d97f5b
-    secrets:
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}

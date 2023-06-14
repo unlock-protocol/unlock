@@ -50,7 +50,6 @@ jobs:
       target-env: staging
       site-id: 39b0a906-2c77-452b-9049-d04062303b1a
     secrets:
-      NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
       NEXT_PUBLIC_UNLOCK_APP_URI: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_APP_URL }}
 
   deploy-paywall-app:

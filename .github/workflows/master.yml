@@ -41,7 +41,6 @@ jobs:
       target-env: prod
       site-id: e52574b4-9da2-4000-a46d-3d4a3ed189a4
     secrets:
-      NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_UNLOCK_GA_ID }}
       NEXT_PUBLIC_UNLOCK_ENV: prod
 
   deploy-paywall-app:
