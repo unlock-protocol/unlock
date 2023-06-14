@@ -62,6 +62,7 @@ jobs:
       target-env: staging
       bypass_diff_check: bypass
       site-id: c5f7b41c-4f33-46f4-a28a-0de87c454425
+      smtp-host: smtp.sendgrid.net
     secrets:
       SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
