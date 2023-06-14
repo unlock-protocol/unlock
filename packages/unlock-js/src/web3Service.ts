@@ -1078,7 +1078,7 @@ export default class Web3Service extends UnlockService {
     const txReceipt = await provider.getTransactionReceipt(hash)
     const parser = lockContract.interface
     const events = txReceipt.logs.map((log) => {
-      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Filter events not emitted by the lock contract
       return parser.parseLog(log)
     })
 
