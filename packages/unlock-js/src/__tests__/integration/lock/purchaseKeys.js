@@ -79,7 +79,6 @@ export default ({ publicLockVersion }) =>
           })
         ),
       ])
-      console.log(tokenIds)
 
       keys = await Promise.all(
         keyOwners.map(async (owner) =>
