@@ -569,10 +569,15 @@ export function State() {
                     .map(({ total, network }, index) => (
                       <div
                         key={index}
-                        className="p-6 border border-gray-300 rounded-md"
+                        className="p-4 border border-gray-300 rounded-md"
                       >
-                        <div className="flex justify-start pb-4 border-b border-gray-300">
+                        <div className="flex justify-between pb-2">
+                          <p className="text-xl font-bold">{network.name}</p>
+                        </div>
+
+                        <div className="flex justify-start pt-2 border-t border-gray-300">
                           <CryptoIcon
+                            className="mr-2"
                             symbol={network.nativeCurrency.symbol}
                             size={40}
                           />
@@ -581,17 +586,6 @@ export function State() {
                           </p>
                           <p className="self-center pr-2 heading-small">
                             {network.nativeCurrency.symbol}
-                          </p>
-                        </div>
-                        <div className="flex justify-between pt-4">
-                          <p className="text-xl font-bold">{network.name}</p>
-                          <p className="text-xl font-bold">
-                            +
-                            {numeral(
-                              gnpPByNetworks.filter(
-                                (item) => item.name === network.name
-                              )[0]?.gnpPercentage
-                            ).format('0.0%')}
                           </p>
                         </div>
                       </div>
