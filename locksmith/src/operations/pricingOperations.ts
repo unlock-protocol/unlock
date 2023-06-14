@@ -96,7 +96,7 @@ export const getPricingFromSettings = async ({
     network,
   })
 
-  // priority to custom credit card pricing
+  // return pricing object using the price from the settings
   if (creditCardPrice) {
     const keysToPurchase = recipients?.length || 1
 
@@ -112,6 +112,7 @@ export const getPricingFromSettings = async ({
     }
   }
 
+  // no custom price is found
   return null
 }
 
