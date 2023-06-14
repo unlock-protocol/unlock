@@ -169,9 +169,7 @@ export function ConfirmClaim({
                 onConfirmClaim()
               }}
             >
-              {isConfirming
-                ? 'Claiming your membership'
-                : 'Claim your membership'}
+              {isConfirming ? 'Claiming' : 'Claim'}
             </Button>
           </div>
         </Connected>
