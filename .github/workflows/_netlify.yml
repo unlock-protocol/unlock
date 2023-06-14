@@ -20,10 +20,12 @@ on:
         description: 'Bypass the monorepo diff check'
         required: false
         type: string
+      site-id:
+        description: 'The netlify site id'
+        required: true
+        type: string
     secrets:
       # all netlify deployments
-      SITE_ID:
-        required: true
       AUTH_TOKEN:
         required: true
       NEXT_PUBLIC_UNLOCK_ENV:
@@ -81,6 +83,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+      SITE_ID: ${{ inputs.site-id }}
     steps:
       - uses: actions/checkout@v3
       - name: 'Export secrets to env'

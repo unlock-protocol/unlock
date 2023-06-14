@@ -46,8 +46,8 @@ jobs:
       bypass_diff_check: bypass
       service: paywall-app
       target-env: prod
+      site-id: d7ab286a-d726-49c0-83b4-c89b52d97f5b
     secrets:
-      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_AUTH_TOKEN }}
 
   deploy-wedlocks:
@@ -58,8 +58,8 @@ jobs:
       service: wedlocks
       target-env: prod
       bypass_diff_check: bypass
+      site-id: d527d16a-ec5c-4d4a-9a01-5ca649c1725b
     secrets:
-      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_PROD_AUTH_TOKEN }}
       SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_HOST }}
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_PROD_SMTP_USERNAME }}
@@ -74,8 +74,8 @@ jobs:
       bypass_diff_check: bypass
       service: unlock-app
       target-env: prod
+      site-id: 5426347d-0c26-4743-88bc-dc4168e47f91
     secrets:
-      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_AUTH_TOKEN }}
       NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_BASE64_WEDLOCKS_PUBLIC_KEY }}
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_STRIPE_KEY }}

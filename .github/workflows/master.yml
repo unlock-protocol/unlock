@@ -39,8 +39,8 @@ jobs:
       bypass_diff_check: bypass
       service: unlock-protocol-com
       target-env: prod
+      site-id: e52574b4-9da2-4000-a46d-3d4a3ed189a4
     secrets:
-      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
       NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_UNLOCK_GA_ID }}
       NEXT_PUBLIC_UNLOCK_ENV: prod
@@ -53,8 +53,8 @@ jobs:
       service: paywall-app
       target-env: staging
       bypass_diff_check: bypass
+      site-id: f78363cb-8caa-4616-8fdc-f6ecc5df8c04
     secrets:
-      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
   deploy-wedlocks:
@@ -65,8 +65,8 @@ jobs:
       service: wedlocks
       target-env: staging
       bypass_diff_check: bypass
+      site-id: c5f7b41c-4f33-46f4-a28a-0de87c454425
     secrets:
-      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_AUTH_TOKEN }}
       SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
@@ -81,8 +81,8 @@ jobs:
       service: unlock-app
       target-env: staging
       bypass_diff_check: bypass
+      site-id: d2e1173a-de41-475c-b46f-9e53653c4f77
     secrets:
-      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
       NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
