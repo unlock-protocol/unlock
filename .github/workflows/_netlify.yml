@@ -24,10 +24,6 @@ on:
         description: 'The netlify site id'
         required: true
         type: string
-      smtp-host:
-        description: 'The smtp host for wedlocks'
-        required: false
-        type: string
     secrets:
       NEXT_PUBLIC_UNLOCK_ENV:
         required: false
@@ -41,8 +37,6 @@ on:
       NEXT_PUBLIC_UNLOCK_APP_URI:
         required: false
 
-      SMTP_USERNAME:
-        required: false
       SMTP_PASSWORD:
         required: false
       BASE64_WEDLOCKS_PRIVATE_KEY:
@@ -80,7 +74,8 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
       SITE_ID: ${{ inputs.site-id }}
-      SMTP_HOST: ${{ inputs.smtp-host }}
+      SMTP_HOST: smtp.sendgrid.net
+      SMTP_USERNAME: apikey
     steps:
       - uses: actions/checkout@v3
       - name: Load secrets from 1Password
