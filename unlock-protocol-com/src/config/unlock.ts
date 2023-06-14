@@ -18,9 +18,7 @@ const stagingConfig: Config = {
   gaId: '',
   gaTmId: '',
   baseURL: 'https://staging.unlock-protocol.com',
-  appURL:
-    process.env.NEXT_PUBLIC_UNLOCK_APP_URI ??
-    'https://staging-app.unlock-protocol.com',
+  appURL: 'https://staging-app.unlock-protocol.com',
   gApiKey: 'AIzaSyBqLebWxCpOw_HO4k0KhYkWhkrS__O3XME',
 }
 
