@@ -59,7 +59,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          HEROKU_EMAIL: op://secrets/heroku/email
+          HEROKU_EMAIL: op://secrets/heroku/username
           HEROKU_API_KEY: op://secrets/heroku/credential
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
