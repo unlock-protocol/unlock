@@ -85,7 +85,7 @@ interface GetPriceProps {
   network: number
   recipients?: string[]
 }
-/** Get pricing form settings  */
+/** Get pricing from settings  */
 export const getPricingFromSettings = async ({
   lockAddress,
   network,
