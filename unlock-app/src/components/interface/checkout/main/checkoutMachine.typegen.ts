@@ -14,14 +14,16 @@ export interface Typegen0 {
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
-    confirmRenew: 'CONFIRM_RENEW'
     disconnect: 'DISCONNECT' | 'RESET_CHECKOUT'
     selectLock: 'SELECT_LOCK'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
+    solveCaptcha: 'SOLVE_CAPTCHA'
     submitData: 'SUBMIT_DATA'
+    submitPassword: 'SUBMIT_PASSWORD'
+    submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
   eventsCausingDelays: {}
@@ -48,8 +50,6 @@ export interface Typegen0 {
     | 'PAYMENT'
     | 'PROMO'
     | 'QUANTITY'
-    | 'RENEW'
-    | 'RENEWED'
     | 'RETURNING'
     | 'SELECT'
     | 'UNLOCK_ACCOUNT'
