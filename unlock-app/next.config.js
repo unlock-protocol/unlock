@@ -11,7 +11,6 @@ dotenv.config({
 
 const requiredEnvs = {
   unlockEnv,
-  base64WedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY,
   stripeApiKey:
     process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
 }

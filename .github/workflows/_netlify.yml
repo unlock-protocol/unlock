@@ -31,8 +31,6 @@ on:
       NEXT_PUBLIC_UNLOCK_ENV:
         required: false
       # unlock-app only
-      NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY:
-        required: false
       NEXT_PUBLIC_STRIPE_KEY:
         required: false
 
