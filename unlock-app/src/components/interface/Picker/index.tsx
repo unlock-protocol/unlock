@@ -129,6 +129,8 @@ export function Picker({
       ? tokenUrl(lockAddress, state.keyId)
       : ''
 
+  const hasValidOpenSeaUrl = openSeaCollectionUrl || openSeaTokenUrl
+
   const showLocks =
     state.network && collect.lockAddress && (lockExists || isLoadingLocks)
 
@@ -181,19 +183,23 @@ export function Picker({
                 {`Enter the key ID you want to use. This can be an existing key ID
                 or a new one which doesn't exist yet.`}
               </span>
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href={state.keyId ? openSeaTokenUrl! : openSeaCollectionUrl!}
-                className="font-semibold text-brand-ui-primary"
-              >
-                <div className="flex gap-2">
-                  <span>
-                    {state.keyId ? 'See NFT on OpenSea' : ' See NFT Collection'}
-                  </span>
-                  <ExternalLinkIcon size={20} />
-                </div>
-              </Link>
+              {hasValidOpenSeaUrl && (
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={state.keyId ? openSeaTokenUrl! : openSeaCollectionUrl!}
+                  className="font-semibold text-brand-ui-primary"
+                >
+                  <div className="flex gap-2">
+                    <span>
+                      {state.keyId
+                        ? 'See NFT on OpenSea'
+                        : ' See NFT Collection'}
+                    </span>
+                    <ExternalLinkIcon size={20} />
+                  </div>
+                </Link>
+              )}
             </>
           }
           value={state.keyId}
