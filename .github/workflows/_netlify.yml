@@ -34,9 +34,6 @@ on:
       NEXT_PUBLIC_STRIPE_KEY:
         required: false
 
-      BASE64_WEDLOCKS_PRIVATE_KEY:
-        required: false
-
 jobs:
   check-changes:
     runs-on: ubuntu-22.04
@@ -81,6 +78,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           AUTH_TOKEN: op://secrets/netlify/credential
           SMTP_PASSWORD: op://secrets/sendgrid/credential
+          BASE64_WEDLOCKS_PRIVATE_KEY: op://secrets/wedlocks/private-key
       - name: 'Export secrets to env'
         id: filter_secrets
         run: |
