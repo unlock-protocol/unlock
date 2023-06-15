@@ -104,7 +104,7 @@ export const getPricingFromSettings = async ({
     const amountInUSD = amountInCents / 100 // get total price in USD
 
     return {
-      amount: keysToPurchase,
+      amount: amountInUSD, // amount is usd for the single key
       decimals: 18,
       symbol: '$',
       amountInUSD,
