@@ -123,7 +123,7 @@ export function ConfirmCard({
   const [state] = useActor(checkoutService)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data } =
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
     state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -199,6 +199,7 @@ export function ConfirmCard({
     data: purchaseData,
     referrers: recipients.map((recipient) => getReferrer(recipient)),
     recipients,
+    type: renew ? 'extend' : 'purchase',
   })
 
   const isLoading =

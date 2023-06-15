@@ -12,6 +12,8 @@ import { KeySubscription } from '../models'
 import { LOCKS_WITH_DISABLED_CLAIMS } from './v2/claimController'
 import { z } from 'zod'
 import { getTotalPurchasePriceInCrypto } from '../utils/claim'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
 
 const PaymentCaptureBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
@@ -29,6 +31,10 @@ const PaymentCaptureBody = z.object({
     .nullish()
     .default([]),
   paymentIntent: z.string(),
+  type: z
+    .union([z.literal('extend'), z.literal('purchase')])
+    .default('purchase')
+    .optional(),
 })
 
 const CanClaimBody = z.object({
@@ -63,6 +69,7 @@ export class PurchaseController {
       referrers,
       lock: lockAddress,
       userAddress,
+      type,
     } = await PaymentCaptureBody.parseAsync(request.body)
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
@@ -96,45 +103,80 @@ export class PurchaseController {
           data: data || [],
         })
 
-      const fulfillmentDispatcher = new Dispatcher()
+      const transactionHandler = async (
+        _: any,
+        transactionHash: string | null
+      ) => {
+        if (!transactionHash) {
+          throw new Error('No transaction hash')
+        }
+        // Update our charge object
+        charge.transactionHash = transactionHash
+        await charge.save()
 
-      // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
-      // This should be fine though since grantKeys transaction should succeed anyway
-      const items: Record<'id' | 'owner', string>[] | null =
-        await fulfillmentDispatcher.grantKeys(
-          paymentIntent.metadata.lock,
-          paymentIntent.metadata.recipient.split(',').map((recipient) => ({
-            recipient,
-          })),
-          parseInt(paymentIntent.metadata.network, 10),
-          async (_: any, transactionHash: string) => {
-            // Update our charge object
-            charge.transactionHash = transactionHash
-            await charge.save()
-
-            // Update Stripe's payment Intent
-            await stripe.paymentIntents.update(
-              paymentIntentId,
-              {
-                metadata: {
-                  transactionHash,
-                },
-              },
-              {
-                stripeAccount: paymentIntentRecord.connectedStripeId,
-              }
-            )
-
-            // We only charge the card when everything else was successful
-            await stripe.paymentIntents.capture(paymentIntentId, {
-              stripeAccount: paymentIntentRecord.connectedStripeId,
-            })
-            // Send the transaction hash without waiting.
-            response.status(201).send({
+        // Update Stripe's payment Intent
+        await stripe.paymentIntents.update(
+          paymentIntentId,
+          {
+            metadata: {
               transactionHash,
-            })
+            },
+          },
+          {
+            stripeAccount: paymentIntentRecord.connectedStripeId,
           }
         )
+
+        // We only charge the card when everything else was successful
+        await stripe.paymentIntents.capture(paymentIntentId, {
+          stripeAccount: paymentIntentRecord.connectedStripeId,
+        })
+        // Send the transaction hash without waiting.
+        response.status(201).send({
+          transactionHash,
+        })
+      }
+      const fulfillmentDispatcher = new Dispatcher()
+
+      const paymentIntentRecipients = paymentIntent.metadata.recipient
+        .split(',')
+        .map((recipient) => ({
+          recipient,
+        }))
+      const paymentIntentNetwork = Number(paymentIntent.metadata.network)
+      // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
+      // This should be fine though since grantKeys transaction should succeed anyway
+
+      let items: Record<'id' | 'owner', string>[] | null = []
+
+      if (type === 'purchase') {
+        items = await fulfillmentDispatcher.grantKeys(
+          paymentIntent.metadata.lock,
+          paymentIntentRecipients,
+          paymentIntentNetwork,
+          transactionHandler
+        )
+      } else if (type === 'extend') {
+        const web3Service = new Web3Service(networks)
+        const owner = paymentIntentRecipients?.[0]?.recipient || userAddress
+        const tokenId = await web3Service.getTokenIdForOwner(
+          paymentIntent.metadata.lock,
+          owner,
+          paymentIntentNetwork
+        )
+        await fulfillmentDispatcher.grantKeyExtension(
+          paymentIntent.metadata.lock,
+          tokenId,
+          paymentIntentNetwork,
+          transactionHandler
+        )
+        items = [
+          {
+            id: tokenId,
+            owner,
+          },
+        ]
+      }
 
       /**
        * For now, we are only allowing subscription for the user who purchased the key, not for the multiple recipients
@@ -147,26 +189,25 @@ export class PurchaseController {
         return
       }
 
-      const split = recipients?.length || 1
-      const subscription = new KeySubscription()
-      subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
-      subscription.stripeCustomerId = paymentIntentRecord.stripeCustomerId
-      subscription.keyId = Number(key.id)
-      subscription.amount = paymentIntent.amount / split
-      subscription.unlockServiceFee = paymentIntent.application_fee_amount
+      const split = type === 'extend' ? 1 : paymentIntentRecipients?.length || 1
+      const amount = paymentIntent.amount / split
+      const unlockServiceFee = paymentIntent.application_fee_amount
         ? paymentIntent.application_fee_amount / split
         : 0
-      subscription.lockAddress = lockAddress
-      subscription.userAddress = userAddress
-      subscription.network = network
-      subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
-      await subscription.save()
-
-      logger.info(
-        `Subscription ${subscription.id} created for ${subscription.userAddress} on ${subscription.network} and for lock ${subscription.lockAddress}. It will renew key ${subscription.keyId} for ${subscription.recurring}`
-      )
-
-      return
+      const recurring = Number(paymentIntent.metadata.recurring || 0)
+      const keyId = Number(key.id)
+      const [subscription] = await KeySubscription.upsert({
+        unlockServiceFee,
+        amount,
+        keyId,
+        lockAddress,
+        userAddress: request.user!.walletAddress,
+        network,
+        recurring,
+        connectedCustomer: paymentIntentRecord.connectedCustomerId,
+        stripeCustomerId: paymentIntentRecord.stripeCustomerId,
+      })
+      logger.info(`Subscription updated for id: ${subscription?.id}`)
     } catch (error) {
       if (response.headersSent) {
         return
