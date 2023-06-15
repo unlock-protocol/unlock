@@ -26,8 +26,6 @@ else
 fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
-  # rebuild
-  UNLOCK_ENV="$DEPLOY_ENV" yarn build
   # Package
   UNLOCK_ENV="$DEPLOY_ENV" yarn deploy
   # And ship!
