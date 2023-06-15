@@ -39,8 +39,18 @@ async function main({
   if (!newGovAddress) {
     const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
 
+    // get params from old governor
+    const oldGovernor = await ethers.getContractAt(
+      'UnlockProtocolGovernor',
+      oldGovAddress
+    )
+    const votingPeriod = await oldGovernor.votingPeriod()
+    const quorum = await oldGovernor.quorum()
+
     const governor = await upgrades.deployProxy(Governor, [
       tokenAddress,
+      votingPeriod,
+      quorum,
       timeLockAddress,
     ])
     await governor.deployed()
