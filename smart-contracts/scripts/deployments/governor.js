@@ -67,9 +67,11 @@ async function main({ udtAddress, timelockAddress, testing } = {}) {
 
   // deploy governor proxy
   const votingPeriod = testing ? 20 : 45818 // 1 week
+  const quorum = ethers.utils.parseEther('15000') // 15k UDT as default
   const governor = await upgrades.deployProxy(UnlockProtocolGovernor, [
     udtAddress,
     votingPeriod,
+    quorum,
     timelock.address,
   ])
   await governor.deployed()
