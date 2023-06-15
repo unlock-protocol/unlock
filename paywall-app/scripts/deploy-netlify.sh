@@ -30,8 +30,6 @@ if [ "$DEPLOY_ENV" = "prod" ]; then
 fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
-  # Package
-  UNLOCK_ENV="$DEPLOY_ENV" yarn deploy
   # And ship!
   echo $MESSAGE
   npx -y netlify-cli deploy -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
