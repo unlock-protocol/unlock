@@ -65,16 +65,23 @@ jobs:
       site-id: c5f7b41c-4f33-46f4-a28a-0de87c454425
 
   deploy-unlock-app:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     needs: run-all-tests
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      service: unlock-app
-      target-env: staging
-      bypass_diff_check: bypass
-      site-id: d2e1173a-de41-475c-b46f-9e53653c4f77
-    secrets:
-      NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
+    steps:
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          NEXT_PUBLIC_STRIPE_KEY: op://secrets/stripe/publishabke-key-staging
+      - name: 'Deploy Unlock App to netlify'
+        uses: ./.github/workflows/_netlify.yml
+        with:
+          service: unlock-app
+          target-env: staging
+          site-id: d2e1173a-de41-475c-b46f-9e53653c4f77
 
   cache_deps:
     uses: ./.github/workflows/_docker-cache.yml

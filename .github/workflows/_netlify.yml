@@ -28,11 +28,6 @@ on:
       OP_SERVICE_ACCOUNT_TOKEN:
         description: '1Password service account token'
         required: true
-      NEXT_PUBLIC_UNLOCK_ENV:
-        required: false
-      # unlock-app only
-      NEXT_PUBLIC_STRIPE_KEY:
-        required: false
 
 jobs:
   check-changes:
