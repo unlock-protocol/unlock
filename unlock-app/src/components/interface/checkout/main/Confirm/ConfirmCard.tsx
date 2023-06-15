@@ -283,7 +283,7 @@ export function ConfirmCard({
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={totalPricing?.prices}
+              pricingData={totalPricing}
               payment={payment}
             />
           )}
