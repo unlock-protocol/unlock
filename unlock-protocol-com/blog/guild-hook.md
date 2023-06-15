@@ -1,7 +1,7 @@
 ---
 title: Guild.xyz hook
-subTitle:
-description:
+subTitle: Easily create all kinds of allow-list on your lock using Guild.xyz!
+description: By leveraging a new kind of smart contract hook, you can easily create all kinds of allow-list on your lock using Guild.xyz.
 author: Julien Genestoux
 publishDate: June 15, 2023
 image: /images/blog/guild-hook/guild.xyz.jpeg
