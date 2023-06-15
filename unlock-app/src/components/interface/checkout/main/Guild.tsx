@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, minifyAddress } from '@unlock-protocol/ui'
+import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -48,16 +48,23 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
 
   const disabled = data && data.filter((d) => !d).length > 0
 
-  const guildUrl =
-    guild && guild.urlName ? `https://guild.xyz/${guild?.urlName}` : '#'
-
-  const guildName = guild && guild?.name ? guild.name : undefined
-
   return (
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 pt-4 overflow-auto text-sm">
-        {!isLoadingGuild && (
+        {isLoading && (
+          <Placeholder.Root
+            data-testid="placeholder"
+            className="flex flex-col w-full gap-5 p-4"
+          >
+            <div className="flex flex-col gap-2">
+              <Placeholder.Line />
+              <Placeholder.Line />
+            </div>
+            <Placeholder.Line size="lg" />
+          </Placeholder.Root>
+        )}
+        {guild && (
           <>
             <p>
               Memberships to this lock are restricted to addresses that belong
@@ -66,9 +73,9 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                 className="underline text-brand-ui-primary"
                 target="_blank"
                 rel="noreferrer"
-                href={guildUrl}
+                href={`https://guild.xyz/${guild!.urlName}`}
               >
-                {guildName}{' '}
+                {guild!.name}{' '}
                 <ExternalLinkIcon
                   size={14}
                   className="inline text-brand-ui-primary"
@@ -116,7 +123,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   as="a"
                   target="_blank"
                   rel="noreferrer"
-                  href={guildUrl}
+                  href={`https://guild.xyz/${guild!.urlName}`}
                   size="tiny"
                 >
                   Join the Guild!
@@ -133,7 +140,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                     as="a"
                     target="_blank"
                     rel="noreferrer"
-                    href={guildUrl}
+                    href={`https://guild.xyz/${guild!.urlName}`}
                     size="tiny"
                   >
                     Join the Guild!
@@ -153,7 +160,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={disabled}
+            disabled={isLoadingGuildData || disabled}
             loading={isLoading}
             onClick={onSubmit}
           >
