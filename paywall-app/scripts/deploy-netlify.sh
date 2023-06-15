@@ -32,7 +32,8 @@ fi
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   # And ship!
   echo $MESSAGE
-  npx -y netlify-cli deploy -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
+  export NETLIFY_NEXT_PLUGIN_SKIP=true
+  npx -y netlify-cli deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
