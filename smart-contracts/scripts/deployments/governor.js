@@ -10,7 +10,7 @@ const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
 )
 
-async function main({ udtAddress } = {}) {
+async function main({ udtAddress, timelockAddress, testing } = {}) {
   const [unlockOwner] = await ethers.getSigners()
 
   // fetch chain info
@@ -22,28 +22,35 @@ async function main({ udtAddress } = {}) {
     `Deploying Governor on ${networkName} with the account: ${unlockOwner.address}...`
   )
 
-  // deploying Unlock Protocol with a proxy
-  const UnlockProtocolTimelock = await ethers.getContractFactory(
-    'UnlockProtocolTimelock'
-  )
+  let timelock
+  if (!timelockAddress) {
+    // deploying Unlock Protocol with a proxy
+    const UnlockProtocolTimelock = await ethers.getContractFactory(
+      'UnlockProtocolTimelock'
+    )
+    // time lock in seconds
+    const oneWeekInSeconds = 60 * 60 * 24 * 7
+    const MINDELAY = testing ? 30 : oneWeekInSeconds
 
-  // time lock in seconds
-  const oneWeekInSeconds = 60 * 60 * 24 * 7
-  const MINDELAY = networkName === 'localhost' ? 30 : oneWeekInSeconds
+    timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
+      MINDELAY,
+      [], // proposers list is empty at deployment
+      [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
+    ])
+    await timelock.deployed()
 
-  const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
-    MINDELAY,
-    [], // proposers list is empty at deployment
-    [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
-  ])
-  await timelock.deployed()
-
-  // eslint-disable-next-line no-console
-  console.log(
-    '> Timelock w proxy deployed at:',
-    timelock.address,
-    ` (tx: ${timelock.deployTransaction.hash})`
-  )
+    // eslint-disable-next-line no-console
+    console.log(
+      '> Timelock w proxy deployed at:',
+      timelock.address,
+      ` (tx: ${timelock.deployTransaction.hash})`
+    )
+  } else {
+    timelock = await ethers.getContractAt(
+      'UnlockProtocolTimelock',
+      timelockAddress
+    )
+  }
 
   // deploying Unlock Protocol with a proxy
   const UnlockProtocolGovernor = await ethers.getContractFactory(
@@ -54,11 +61,15 @@ async function main({ udtAddress } = {}) {
   if (!udtAddress) {
     throw new Error('Missing UDT address.')
   }
-  console.log(`Using UDT at: ${udtAddress}`)
+  console.log(`Using :
+   - UDT: ${udtAddress}
+   - timelock: ${timelock.address}`)
 
   // deploy governor proxy
+  const votingPeriod = testing ? 20 : 45818 // 1 week
   const governor = await upgrades.deployProxy(UnlockProtocolGovernor, [
     udtAddress,
+    votingPeriod,
     timelock.address,
   ])
   await governor.deployed()

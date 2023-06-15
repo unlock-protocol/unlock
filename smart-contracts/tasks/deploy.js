@@ -147,10 +147,12 @@ task('deploy:serializer', 'Deploy LockSerializer').setAction(async () => {
 
 task('deploy:governor', 'Deploy Governor Alpha contracts')
   .addParam('udtAddress', 'address of the ERC20 token to use for governance')
-  .setAction(async () => {
+  .addOptionalParam('timelockAddress', 'address of a timelock contract')
+  .addFlag('testing', 'lower vesting periods for dev purposes')
+  .setAction(async ({ udtAddress, timelockAddress, testing }) => {
     // eslint-disable-next-line global-require
     const govDeployer = require('../scripts/deployments/governor')
-    return await govDeployer()
+    return await govDeployer({ udtAddress, timelockAddress, testing })
   })
 
 task('deploy:keyManager', 'Deploy KeyManager contract')
