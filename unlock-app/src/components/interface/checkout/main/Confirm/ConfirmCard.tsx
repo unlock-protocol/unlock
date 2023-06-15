@@ -16,12 +16,12 @@ import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
 import { formatFiatPriceFromCents } from '../utils'
+import { useGetTotalCharges } from '~/hooks/usePrice'
 
 interface Props {
   injectedProvider: unknown
@@ -128,8 +128,6 @@ export function ConfirmCard({
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
-  const currencyContractAddress = lock?.currencyContractAddress
-
   const recurringPayment =
     paywallConfig?.recurringPayments ||
     paywallConfig?.locks[lockAddress]?.recurringPayments
@@ -180,17 +178,15 @@ export function ConfirmCard({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
   const {
     data: totalPricing,
     isInitialLoading: isTotalPricingDataLoading,
     isFetched: isTotalPricingDataFetched,
-  } = useFiatChargePrice({
-    tokenAddress: currencyContractAddress,
-    amount: amountToConvert,
+  } = useGetTotalCharges({
+    recipients,
+    lockAddress,
     network: lock!.network,
-    enabled: isPricingDataAvailable,
+    purchaseData: purchaseData || [],
   })
 
   const { mutateAsync: capturePayment } = useCapturePayment({
@@ -287,7 +283,7 @@ export function ConfirmCard({
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={pricingData}
+              pricingData={totalPricing?.prices}
               payment={payment}
             />
           )}

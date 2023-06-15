@@ -46,3 +46,67 @@ export const useGetPrice = ({
     }
   })
 }
+
+interface GetTotalChargesProps {
+  lockAddress: string
+  network: number
+  recipients: string[]
+  purchaseData: string[]
+  enabled?: boolean
+}
+export const useGetTotalCharges = ({
+  lockAddress,
+  network,
+  purchaseData,
+  recipients,
+  enabled = true,
+}: GetTotalChargesProps) => {
+  return useQuery(
+    ['getTotalChargesForLock', lockAddress, network],
+    async () => {
+      return {
+        creditCardProcessingFee: 52,
+        unlockServiceFee: 66,
+        gasCost: 0,
+        total: 777,
+        prices: [
+          {
+            userAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
+            amount: 0.004,
+            symbol: 'ETH',
+          },
+        ],
+      }
+      /*return {
+        unlockServiceFee: 66,
+        creditCardProcessingFee: 51,
+        gasCost: 0,
+        total: 772,
+        recipients: [
+          {
+            address: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
+            price: {
+              amount: 0.004,
+              decimals: 18,
+              symbol: 'ETH',
+              amountInUSD: 6.55412,
+              amountInCents: 655,
+            },
+          },
+        ],
+        isCreditCardPurchasable: true,
+      } */
+      const pricing = await storage.getChargesForLock(
+        network,
+        lockAddress,
+        purchaseData,
+        recipients
+      )
+
+      return pricing.data
+    },
+    {
+      enabled,
+    }
+  )
+}
