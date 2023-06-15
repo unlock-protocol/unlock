@@ -209,7 +209,7 @@ export function Minting({
             throw new Error('Transaction failed.')
           }
           const web3Service = new Web3Service(networks)
-          const tokenId = await web3Service.getTokenIdFromTx({
+          const tokenIds = await web3Service.getTokenIdsFromTx({
             params: {
               lockAddress: lock!.address,
               hash: mint!.transactionHash!,
@@ -220,7 +220,7 @@ export function Minting({
           communication?.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
-            tokenId,
+            tokenIds,
             metadata,
           })
 

@@ -1064,7 +1064,7 @@ export default class Web3Service extends UnlockService {
     }
   }
 
-  async getTokenIdFromTx({
+  async getTokenIdsFromTx({
     params: { hash, network, lockAddress },
   }: {
     params: {
@@ -1082,19 +1082,20 @@ export default class Web3Service extends UnlockService {
       return parser.parseLog(log)
     })
 
-    const transfer = events.find((event) => {
+    const purchaseItems = events.filter((event) => {
       return event && event.name === 'Transfer'
     })
 
-    if (transfer) {
-      return transfer.args.tokenId.toString()
+    if (purchaseItems.length) {
+      return purchaseItems.map((item) => item?.args?.tokenId?.toString())
     }
 
-    const extend = events.find((event) => {
+    const extendItems = events.filter((event) => {
       return event && event.name === 'KeyExtended'
     })
-    if (extend) {
-      return extend.args.tokenId.toString()
+
+    if (extendItems.length) {
+      return extendItems.map((item) => item?.args?.tokenId?.toString())
     }
     return null
   }

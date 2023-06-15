@@ -12,7 +12,7 @@ export interface TransactionInfo {
   hash: string
   lock?: string
   metadata?: any
-  tokenId?: string
+  tokenIds?: string[]
 }
 
 export enum CheckoutEvents {

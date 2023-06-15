@@ -30,7 +30,7 @@ export interface UserInfo {
 export interface TransactionInfo {
   hash: string
   lock: string
-  tokenId?: string
+  tokenIds?: string[]
   metadata?: any
 }
 
