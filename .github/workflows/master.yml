@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      # - op-secrets # remove me but test once all secrets are in place!
+      - op-secrets # remove me but test once all secrets are in place!
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
