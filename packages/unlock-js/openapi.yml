@@ -2818,6 +2818,72 @@ paths:
                   isCreditCardPurchasable:
                     type: boolean
 
+  /v2/api/charges/{network}/locks/{lockAddress}:
+    get:
+      description: Get the price breakdown for recipients & total charges with fees for a specific lock
+      operationId: getChargesForLock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: purchaseData[]
+          description: The purchase data passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: recipients[]
+          description: The recipients passed to the purchase function
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+
+      responses:
+        200:
+          description: Successfully got card pricing for universal cards
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                  - unlockServiceFee
+                  - gasCost
+                properties:
+                  total:
+                    type: number
+                  creditCardProcessingFee:
+                    type: number
+                  unlockServiceFee:
+                    type: number
+                  gasCost:
+                    type: number
+                  recipients:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - address
+                        - price
+                      properties:
+                        address:
+                          type: string
+                        price:
+                          type: object
+                          properties:
+                            amount:
+                              type: number
+                            symbol:
+                              type: object
+                            amountInUSD:
+                              type: number
+                            amountInCents:
+                              type: number
+
   /v2/api/price/{network}/{lockAddress}/card:
     get:
       description: Get the price breakdown for universal credit card

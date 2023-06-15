@@ -134,3 +134,35 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
 
   return response.status(200).send({ creditCardEnabled })
 }
+
+/**
+ * Get pricing for recipients + total charges with fees
+ */
+export const getTotalChargesForLock: RequestHandler = async (
+  request,
+  response
+) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+
+  const { recipients: recipientQ = [], purchaseData = [] } = request.query
+
+  // Setup values
+  const recipients: string[] = Array.isArray(recipientQ)
+    ? recipientQ.map((x) => x.toString())
+    : [recipientQ.toString()]
+  const data: string[] = Array.isArray(purchaseData)
+    ? purchaseData.map((x) => x.toString())
+    : [purchaseData.toString()]
+
+  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set
+  const pricing = await createPricingForPurchase({
+    lockAddress,
+    network,
+    recipients,
+    referrers: Array.from({ length: recipients.length }).map(() => ''),
+    data,
+  })
+
+  return response.status(200).send({ ...pricing })
+}
