@@ -12598,10 +12598,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.16.3":
-  version: 18.16.3
-  resolution: "@types/node@npm:18.16.3"
-  checksum: 816b39d45b05ebdc6f362b630970df3f6d82f71d418a2555353522f4eeeb078fa201de5299f02c09a09faa975e43b2745fe19c263d44069f87ddf37d6c37b717
+"@types/node@npm:18.16.18":
+  version: 18.16.18
+  resolution: "@types/node@npm:18.16.18"
+  checksum: d32d8a0a04cd3f5ecb361bcb42f3a07623881ac90d680e06bf626defb3c663a94860d11690babe607cfe67265eceeb8a59ba5fe40c0e49f5a1b01e0088640469
   languageName: node
   linkType: hard
 
@@ -13836,7 +13836,7 @@ __metadata:
     "@types/chai": 4.3.5
     "@types/fs-extra": 11.0.1
     "@types/mocha": 10.0.1
-    "@types/node": 18.16.3
+    "@types/node": 18.16.18
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -13878,7 +13878,7 @@ __metadata:
     "@types/multer": 1.4.7
     "@types/multer-s3": 3.0.0
     "@types/nock": 10.0.3
-    "@types/node": 18.16.3
+    "@types/node": 18.16.18
     "@types/node-cron": 3.0.7
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
@@ -14295,7 +14295,7 @@ __metadata:
     "@radix-ui/react-avatar": 1.0.3
     "@testing-library/react": 14.0.0
     "@types/next": 8.0.7
-    "@types/node": 18.16.3
+    "@types/node": 18.16.18
     "@types/react": 18.0.32
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -36148,7 +36148,7 @@ __metadata:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": 4.20230518.0
-    "@types/node": 18.16.3
+    "@types/node": 18.16.18
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
     toucan-js: 3.1.0
