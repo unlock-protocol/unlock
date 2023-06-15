@@ -18,6 +18,7 @@ import { ethers } from 'ethers'
 import { recoverTransferAuthorization } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
 import { UniversalCardPurchase } from '../../models/UniversalCardPurchase'
+import { KeySubscription } from '../../models'
 
 const createPaymentIntentBody = z.object({
   recipients: z
@@ -148,35 +149,30 @@ export const createPaymentIntent: RequestHandler = async (
   return response.send(paymentIntentDetails)
 }
 
-const PaymentCaptureBody = z.object({
+const PaymentExtendBody = z.object({
   lock: z.string().transform((item) => Normalizer.ethereumAddress(item)),
   network: z.number(),
-  userAddress: z.string().transform((item) => Normalizer.ethereumAddress(item)),
-  recipients: z.array(
-    z.string().transform((item) => Normalizer.ethereumAddress(item))
-  ),
-  referrers: z
-    .array(z.union([z.string(), z.null()]))
-    .nullish()
-    .default([]),
-  data: z
-    .array(z.union([z.string(), z.null()]))
-    .nullish()
-    .default([]),
+  keyId: z.string(),
+  referrer: z.coerce
+    .string()
+    .transform((item) => Normalizer.ethereumAddress(item))
+    .optional(),
+  data: z.coerce.string().optional().default('0x'),
   paymentIntent: z.string(),
 })
 
 export const captureExtension: RequestHandler = async (request, response) => {
   const {
     network,
-    recipients,
+    keyId: tokenId,
     paymentIntent: paymentIntentId,
     data,
-    referrers,
+    referrer,
     lock: lockAddress,
-    userAddress,
-  } = await PaymentCaptureBody.parseAsync(request.body)
+  } = await PaymentExtendBody.parseAsync(request.body)
 
+  const keyId = Number(tokenId)
+  const userAddress = request.user!.walletAddress
   const dispatcher = new Dispatcher()
   const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(network)
   if (!hasEnoughToPayForGas) {
@@ -185,7 +181,7 @@ export const captureExtension: RequestHandler = async (request, response) => {
     })
   }
 
-  const soldOut = await isSoldOut(lockAddress, network, recipients.length)
+  const soldOut = await isSoldOut(lockAddress, network, 1)
 
   if (soldOut) {
     // TODO: Cancel authorization
@@ -202,14 +198,20 @@ export const captureExtension: RequestHandler = async (request, response) => {
         lockAddress,
         network,
         paymentIntentId,
-        recipients,
-        referrers: referrers || [],
-        data: data || [],
+        recipients: [userAddress],
+        referrers: [referrer || userAddress],
+        data: [data || '0x'],
       })
 
     const fulfillmentDispatcher = new Dispatcher()
 
-    const transactionHandler = async (_: any, transactionHash: string) => {
+    const transactionHandler = async (
+      _: any,
+      transactionHash: string | null
+    ) => {
+      if (!transactionHash) {
+        throw new Error('No transaction hash')
+      }
       // Update our charge object
       charge.transactionHash = transactionHash
       await charge.save()
@@ -236,47 +238,34 @@ export const captureExtension: RequestHandler = async (request, response) => {
         transactionHash,
       })
     }
-    // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
-    // This should be fine though since grantKeys transaction should succeed anyway
-    const items: Record<'id' | 'owner', string>[] | null =
-      await fulfillmentDispatcher.grantKeys(
-        paymentIntent.metadata.lock,
-        paymentIntent.metadata.recipient.split(',').map((recipient) => ({
-          recipient,
-        })),
-        parseInt(paymentIntent.metadata.network, 10),
-        transactionHandler
-      )
 
-    /**
-     * For now, we are only allowing subscription for the user who purchased the key, not for the multiple recipients
-     * because we don't have a way for them to "accept" the subscription and we don't want owner to be charged for all of them
-     * without a way to manage these from the dashboard.
-     */
-    const key = items?.find((item) => item.owner === userAddress)
-
-    if (!key) {
-      return
-    }
-
-    const split = recipients?.length || 1
-    const subscription = new KeySubscription()
-    subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
-    subscription.stripeCustomerId = paymentIntentRecord.stripeCustomerId
-    subscription.keyId = Number(key.id)
-    subscription.amount = paymentIntent.amount / split
-    subscription.unlockServiceFee = paymentIntent.application_fee_amount
-      ? paymentIntent.application_fee_amount / split
-      : 0
-    subscription.lockAddress = lockAddress
-    subscription.userAddress = userAddress
-    subscription.network = network
-    subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
-    await subscription.save()
-
-    logger.info(
-      `Subscription ${subscription.id} created for ${subscription.userAddress} on ${subscription.network} and for lock ${subscription.lockAddress}. It will renew key ${subscription.keyId} for ${subscription.recurring}`
+    await fulfillmentDispatcher.grantKeyExtension(
+      paymentIntent.metadata.lock,
+      keyId,
+      parseInt(paymentIntent.metadata.network, 10),
+      transactionHandler
     )
+
+    const amount = paymentIntent.amount
+    const unlockServiceFee = paymentIntent.application_fee_amount
+      ? paymentIntent.application_fee_amount
+      : 0
+    const recurring = Number(paymentIntent.metadata.recurring || 0)
+    const [subscription] = await KeySubscription.upsert({
+      unlockServiceFee,
+      amount,
+      keyId,
+      lockAddress,
+      userAddress: request.user!.walletAddress,
+      network,
+      recurring,
+      connectedCustomer: paymentIntentRecord.connectedCustomerId,
+      stripeCustomerId: paymentIntentRecord.stripeCustomerId,
+    })
+
+    if (subscription) {
+      logger.info(`Subscription updated for id: ${subscription.id}`)
+    }
 
     return
   } catch (error) {
