@@ -51,6 +51,7 @@ export function ConfirmCrypto({
     keyManagers,
     metadata,
     data,
+    renew,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -189,20 +190,33 @@ export function ConfirmCrypto({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      await walletService.purchaseKeys(
-        {
-          lockAddress,
-          keyPrices,
-          owners: recipients!,
-          data: purchaseData,
-          keyManagers: keyManagers?.length ? keyManagers : undefined,
-          recurringPayments,
-          referrers,
-          totalApproval,
-        },
-        {} /** Transaction params */,
-        onErrorCallback
-      )
+      if (renew) {
+        await walletService.extendKey(
+          {
+            lockAddress,
+            owner: recipients?.[0],
+            referrer: getReferrer(account!, paywallConfig),
+            data: purchaseData?.[0],
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      } else {
+        await walletService.purchaseKeys(
+          {
+            lockAddress,
+            keyPrices,
+            owners: recipients!,
+            data: purchaseData,
+            keyManagers: keyManagers?.length ? keyManagers : undefined,
+            recurringPayments,
+            referrers,
+            totalApproval,
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      }
     } catch (error: any) {
       setIsConfirming(false)
       console.error(error)
