@@ -35,8 +35,6 @@ on:
         required: false
       NEXT_PUBLIC_STRIPE_KEY:
         required: false
-      NEXT_PUBLIC_ETHPASS_KEY:
-        required: false
 
       BASE64_WEDLOCKS_PRIVATE_KEY:
         required: false

@@ -14,7 +14,6 @@ const requiredEnvs = {
   base64WedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY,
   stripeApiKey:
     process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
-  ethPassApiKey: process.env.NEXT_PUBLIC_ETHPASS_KEY,
 }
 
 for (const [key, value] of Object.entries(requiredEnvs)) {
