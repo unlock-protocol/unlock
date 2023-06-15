@@ -8795,6 +8795,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/defender-base-client@npm:^1.46.0":
+  version: 1.46.0
+  resolution: "@openzeppelin/defender-base-client@npm:1.46.0"
+  dependencies:
+    amazon-cognito-identity-js: ^6.0.1
+    async-retry: ^1.3.3
+    axios: ^0.21.2
+    lodash: ^4.17.19
+    node-fetch: ^2.6.0
+  checksum: 3d9284913989429432be0b769df693909ea2df648d9d0a5a0f6ce1ed70b042c74a2bcabfc266efecad4e3ed74b08a9a78d87c338bfcdd739cc00cd2e432486ac
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/hardhat-upgrades@npm:1.17.0":
   version: 1.17.0
   resolution: "@openzeppelin/hardhat-upgrades@npm:1.17.0"
@@ -8811,15 +8824,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.27.0":
-  version: 1.27.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.27.0"
+"@openzeppelin/hardhat-upgrades@npm:1.28.0":
+  version: 1.28.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.28.0"
   dependencies:
-    "@openzeppelin/upgrades-core": ^1.26.2
+    "@openzeppelin/defender-base-client": ^1.46.0
+    "@openzeppelin/platform-deploy-client": ^0.8.0
+    "@openzeppelin/upgrades-core": ^1.27.0
     chalk: ^4.1.0
     debug: ^4.1.1
-    defender-base-client: ^1.44.0
-    platform-deploy-client: ^0.6.0
     proper-lockfile: ^4.1.1
   peerDependencies:
     "@nomiclabs/hardhat-ethers": ^2.0.0
@@ -8831,7 +8844,20 @@ __metadata:
       optional: true
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 43005c560d3e1fd2943d0c0d5c5de5e9183ea8cc99710a0227d5906fdfb6a30872d857aa92424d7f05b0cf9b27b81e3669d6332ff34853b862f33437ed8b0748
+  checksum: b37a5eb7c3a5c1fb4ae6754f5fe1d6e93eb6bc143861f57babf5c7d66706ee3e44ca7d57db17ce2ec6c7014f09c269d506f62b3b116897407fdb0d1ff68f4925
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/platform-deploy-client@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@openzeppelin/platform-deploy-client@npm:0.8.0"
+  dependencies:
+    "@ethersproject/abi": ^5.6.3
+    "@openzeppelin/defender-base-client": ^1.46.0
+    axios: ^0.21.2
+    lodash: ^4.17.19
+    node-fetch: ^2.6.0
+  checksum: 0ce050e185a812c366ceef7dcfce526815babab9396275d9724f324a548ddfdca92ea9913ce61356dcd8c014fc495890c8e21afab4a197e0e14e761c698cce68
   languageName: node
   linkType: hard
 
@@ -8891,7 +8917,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.26.2, @openzeppelin/upgrades-core@npm:^1.14.1, @openzeppelin/upgrades-core@npm:^1.26.2":
+"@openzeppelin/upgrades-core@npm:1.27.0, @openzeppelin/upgrades-core@npm:^1.27.0":
+  version: 1.27.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.27.0"
+  dependencies:
+    cbor: ^8.0.0
+    chalk: ^4.1.0
+    compare-versions: ^5.0.0
+    debug: ^4.1.1
+    ethereumjs-util: ^7.0.3
+    minimist: ^1.2.7
+    proper-lockfile: ^4.1.1
+    solidity-ast: ^0.4.15
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: f69a10285bf7300110bb9a78b200d3c2135c8d42da8c080d2b85638ad59daa1af46a84d0ea8447d916a525ef9ed5b06ce7427d90875881dab3a61aea30323f45
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.14.1":
   version: 1.26.2
   resolution: "@openzeppelin/upgrades-core@npm:1.26.2"
   dependencies:
@@ -14010,9 +14054,9 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.9.1
     "@openzeppelin/contracts-upgradeable": 4.9.1
-    "@openzeppelin/hardhat-upgrades": 1.27.0
+    "@openzeppelin/hardhat-upgrades": 1.28.0
     "@openzeppelin/test-helpers": 0.5.16
-    "@openzeppelin/upgrades-core": 1.26.2
+    "@openzeppelin/upgrades-core": 1.27.0
     "@safe-global/safe-core-sdk": 3.3.3
     "@safe-global/safe-ethers-lib": 1.9.3
     "@safe-global/safe-service-client": 2.0.1
@@ -14032,18 +14076,18 @@ __metadata:
     bignumber.js: 9.1.1
     chai: 4.3.7
     debug: 4.3.4
-    eslint: 8.41.0
+    eslint: 8.42.0
     eslint-plugin-mocha: 10.1.0
     eth-gas-reporter: 0.2.25
     eth-sig-util: 3.0.1
     ethers: 5.7.2
     fs-extra: 11.1.1
-    hardhat: 2.14.1
-    hardhat-contract-sizer: 2.9.0
+    hardhat: 2.15.0
+    hardhat-contract-sizer: 2.10.0
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: 2.3.2
+    hardhat-tracer: 2.4.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 2.8.8
@@ -20825,19 +20869,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"defender-base-client@npm:^1.44.0":
-  version: 1.44.0
-  resolution: "defender-base-client@npm:1.44.0"
-  dependencies:
-    amazon-cognito-identity-js: ^6.0.1
-    async-retry: ^1.3.3
-    axios: ^0.21.2
-    lodash: ^4.17.19
-    node-fetch: ^2.6.0
-  checksum: 68485f71a926338b01ff8d5ed5fcc42b1a7a19d3c89bff86a373d75bdd3b03cb6f82324016cd3f3809823278e7acfd19019bf2aac8c8f567c7164558fadcecdc
-  languageName: node
-  linkType: hard
-
 "defer-to-connect@npm:^1.0.1":
   version: 1.1.3
   resolution: "defer-to-connect@npm:1.1.3"
@@ -26395,16 +26426,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-contract-sizer@npm:2.9.0":
-  version: 2.9.0
-  resolution: "hardhat-contract-sizer@npm:2.9.0"
+"hardhat-contract-sizer@npm:2.10.0":
+  version: 2.10.0
+  resolution: "hardhat-contract-sizer@npm:2.10.0"
   dependencies:
     chalk: ^4.0.0
     cli-table3: ^0.6.0
     strip-ansi: ^6.0.0
   peerDependencies:
     hardhat: ^2.0.0
-  checksum: 91ea80d1aea6407b6ee7a8cba8b6b5413ea2884477fda964863b3928f05dd64ab34639122ee85177ea836150e21109ead88208aa12321c58cffaddb849f810ef
+  checksum: 870e7cad5d96ad7288b64da0faec7962a9a18e1eaaa02ed474e4f9285cd4b1a0fc6f66326e6a7476f7063fdf99aee57f227084519b1fb3723700a2d65fc65cfa
   languageName: node
   linkType: hard
 
@@ -26474,16 +26505,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:2.3.2":
-  version: 2.3.2
-  resolution: "hardhat-tracer@npm:2.3.2"
+"hardhat-tracer@npm:2.4.0":
+  version: 2.4.0
+  resolution: "hardhat-tracer@npm:2.4.0"
   dependencies:
     chalk: ^4.1.2
     ethers: ^5.6.1
   peerDependencies:
     chai: 4.x
     hardhat: 2.x
-  checksum: 6c1601e4ba808100ce0895fc7859fd09a3bbffcf42cf5e59c8caf7f0bcd53a729d0400750877a81622995fa6b8b9b33d2a34e604f2df2d0d41e1fa515330c1da
+  checksum: aa82150a70a1c2bce80c7aa0efefc3c1dcb7a8e836ccdba75dae2636f322a74caab5b7c1d66194a1e161312328458423ae4438ffdd36a752c990f33ab102f0c2
   languageName: node
   linkType: hard
 
@@ -26699,6 +26730,74 @@ __metadata:
   bin:
     hardhat: internal/cli/bootstrap.js
   checksum: 151fda00b4cbc049c29af4249755ee28af7a588d66fed1ff308b2b19e260462649798a13acbc758e24fbfdc8a90fd43809c9cf2d3383fbab3eea0d0e0b00bb22
+  languageName: node
+  linkType: hard
+
+"hardhat@npm:2.15.0":
+  version: 2.15.0
+  resolution: "hardhat@npm:2.15.0"
+  dependencies:
+    "@ethersproject/abi": ^5.1.2
+    "@metamask/eth-sig-util": ^4.0.0
+    "@nomicfoundation/ethereumjs-block": 5.0.1
+    "@nomicfoundation/ethereumjs-blockchain": 7.0.1
+    "@nomicfoundation/ethereumjs-common": 4.0.1
+    "@nomicfoundation/ethereumjs-evm": 2.0.1
+    "@nomicfoundation/ethereumjs-rlp": 5.0.1
+    "@nomicfoundation/ethereumjs-statemanager": 2.0.1
+    "@nomicfoundation/ethereumjs-trie": 6.0.1
+    "@nomicfoundation/ethereumjs-tx": 5.0.1
+    "@nomicfoundation/ethereumjs-util": 9.0.1
+    "@nomicfoundation/ethereumjs-vm": 7.0.1
+    "@nomicfoundation/solidity-analyzer": ^0.1.0
+    "@sentry/node": ^5.18.1
+    "@types/bn.js": ^5.1.0
+    "@types/lru-cache": ^5.1.0
+    abort-controller: ^3.0.0
+    adm-zip: ^0.4.16
+    aggregate-error: ^3.0.0
+    ansi-escapes: ^4.3.0
+    chalk: ^2.4.2
+    chokidar: ^3.4.0
+    ci-info: ^2.0.0
+    debug: ^4.1.1
+    enquirer: ^2.3.0
+    env-paths: ^2.2.0
+    ethereum-cryptography: ^1.0.3
+    ethereumjs-abi: ^0.6.8
+    find-up: ^2.1.0
+    fp-ts: 1.19.3
+    fs-extra: ^7.0.1
+    glob: 7.2.0
+    immutable: ^4.0.0-rc.12
+    io-ts: 1.10.4
+    keccak: ^3.0.2
+    lodash: ^4.17.11
+    mnemonist: ^0.38.0
+    mocha: ^10.0.0
+    p-map: ^4.0.0
+    qs: ^6.7.0
+    raw-body: ^2.4.1
+    resolve: 1.17.0
+    semver: ^6.3.0
+    solc: 0.7.3
+    source-map-support: ^0.5.13
+    stacktrace-parser: ^0.1.10
+    tsort: 0.0.1
+    undici: ^5.14.0
+    uuid: ^8.3.2
+    ws: ^7.4.6
+  peerDependencies:
+    ts-node: "*"
+    typescript: "*"
+  peerDependenciesMeta:
+    ts-node:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    hardhat: internal/cli/bootstrap.js
+  checksum: 46767f0eb75f08e1f47585d3aec3261932251b47909051bfffcbff317f7efe06fdab7cb8686cb67c46cc7ed4cedb80d0c21157fe03f103054001b2762085ef92
   languageName: node
   linkType: hard
 
@@ -32306,7 +32405,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:1.2.8, minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:~1.2.0, minimist@npm:~1.2.7":
+"minimist@npm:1.2.8, minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.7, minimist@npm:~1.2.0, minimist@npm:~1.2.7":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
@@ -35481,19 +35580,6 @@ __metadata:
     mlly: ^1.2.0
     pathe: ^1.1.0
   checksum: 4b305c834b912ddcc8a0fe77530c0b0321fe340396f84cbb87aecdbc126606f47f2178f23b8639e71a4870f9631c7217aef52ffed0ae17ea2dbbe7e43d116a6e
-  languageName: node
-  linkType: hard
-
-"platform-deploy-client@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "platform-deploy-client@npm:0.6.0"
-  dependencies:
-    "@ethersproject/abi": ^5.6.3
-    axios: ^0.21.2
-    defender-base-client: ^1.44.0
-    lodash: ^4.17.19
-    node-fetch: ^2.6.0
-  checksum: 77302d925877b8ae5c24d9e217cfa7562e138742c571ed26eea38fa75aa88c55f9aa5af3f683ef7ece1c60f3bc83d1205e6c21442e7883c9e17d8d6de601ebdd
   languageName: node
   linkType: hard
 
