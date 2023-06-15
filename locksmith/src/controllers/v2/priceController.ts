@@ -164,5 +164,21 @@ export const getTotalChargesForLock: RequestHandler = async (
     data,
   })
 
-  return response.status(200).send({ ...pricing })
+  const { creditCardProcessingFee, unlockServiceFee, gasCost, total } = pricing
+
+  return response.status(200).send({
+    creditCardProcessingFee,
+    unlockServiceFee,
+    gasCost,
+    total,
+    prices: [
+      ...pricing.recipients.map((recipient) => {
+        return {
+          userAddress: recipient.address,
+          amount: recipient.price.amount,
+          symbol: recipient.price.symbol,
+        }
+      }),
+    ],
+  })
 }
