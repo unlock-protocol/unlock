@@ -2753,6 +2753,13 @@ paths:
                   type: array
                   items:
                     type: string
+
+                purchaseType:
+                  type: string
+                  description: whether to extend or purchase membership for the recipient.
+                  enum:
+                    - 'extend'
+                    - 'purchase'
       responses:
         200:
           description: Successfully captured purchase
