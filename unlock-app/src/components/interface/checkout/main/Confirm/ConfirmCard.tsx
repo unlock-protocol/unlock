@@ -123,7 +123,7 @@ export function ConfirmCard({
   const [state] = useActor(checkoutService)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data } =
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
     state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -197,8 +197,9 @@ export function ConfirmCard({
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient) => getReferrer(recipient)),
+    referrers: recipients.map((recipient: string) => getReferrer(recipient)),
     recipients,
+    purchaseType: renew ? 'extend' : 'purchase',
   })
 
   const isLoading =
@@ -215,7 +216,6 @@ export function ConfirmCard({
 
     const stripeIntent = await createPurchaseIntent({
       pricing: totalPricing!.total,
-      // @ts-expect-error Property 'cardId' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
       stripeTokenId: payment.cardId!,
       recipients,
       referrers,
