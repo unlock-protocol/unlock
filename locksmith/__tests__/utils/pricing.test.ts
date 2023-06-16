@@ -143,7 +143,7 @@ describe('pricing', () => {
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
-            amount: 1,
+            amount: 55.32,
             decimals: 18,
             symbol: '$',
             amountInUSD: 55.32,
@@ -153,7 +153,7 @@ describe('pricing', () => {
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
-            amount: 1,
+            amount: 55.32,
             decimals: 18,
             symbol: '$',
             amountInUSD: 55.32,
@@ -213,7 +213,7 @@ describe('pricing', () => {
         {
           address: '0x6f59999AE79Bc593549918179454A47980a800E5',
           price: {
-            amount: 1,
+            amount: 55.32,
             decimals: 18,
             symbol: '$',
             amountInUSD: 55.32,
@@ -223,7 +223,7 @@ describe('pricing', () => {
         {
           address: '0x9aBa7eeb134Fa94dfe735205DdA6aC6447d76F9b',
           price: {
-            amount: 1,
+            amount: 55.32,
             decimals: 18,
             symbol: '$',
             amountInUSD: 55.32,
