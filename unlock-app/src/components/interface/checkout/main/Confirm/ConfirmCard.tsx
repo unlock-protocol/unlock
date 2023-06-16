@@ -197,9 +197,9 @@ export function ConfirmCard({
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient) => getReferrer(recipient)),
+    referrers: recipients.map((recipient: string) => getReferrer(recipient)),
     recipients,
-    type: renew ? 'extend' : 'purchase',
+    purchaseType: renew ? 'extend' : 'purchase',
   })
 
   const isLoading =
@@ -216,7 +216,6 @@ export function ConfirmCard({
 
     const stripeIntent = await createPurchaseIntent({
       pricing: totalPricing!.total,
-      // @ts-expect-error Property 'cardId' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
       stripeTokenId: payment.cardId!,
       recipients,
       referrers,

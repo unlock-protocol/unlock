@@ -31,7 +31,7 @@ const PaymentCaptureBody = z.object({
     .nullish()
     .default([]),
   paymentIntent: z.string(),
-  type: z
+  purchaseType: z
     .union([z.literal('extend'), z.literal('purchase')])
     .default('purchase')
     .optional(),
@@ -69,7 +69,7 @@ export class PurchaseController {
       referrers,
       lock: lockAddress,
       userAddress,
-      type,
+      purchaseType,
     } = await PaymentCaptureBody.parseAsync(request.body)
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
@@ -149,19 +149,20 @@ export class PurchaseController {
 
       let items: Record<'id' | 'owner', string>[] | null = []
 
-      if (type === 'purchase') {
+      if (purchaseType === 'purchase') {
         items = await fulfillmentDispatcher.grantKeys(
           paymentIntent.metadata.lock,
           paymentIntentRecipients,
           paymentIntentNetwork,
           transactionHandler
         )
-      } else if (type === 'extend') {
+      } else if (purchaseType === 'extend') {
         const web3Service = new Web3Service(networks)
         const owner = paymentIntentRecipients?.[0]?.recipient || userAddress
-        const tokenId = await web3Service.getTokenIdForOwner(
+        const tokenId = await web3Service.tokenOfOwnerByIndex(
           paymentIntent.metadata.lock,
           owner,
+          0,
           paymentIntentNetwork
         )
         await fulfillmentDispatcher.grantKeyExtension(
@@ -189,7 +190,8 @@ export class PurchaseController {
         return
       }
 
-      const split = type === 'extend' ? 1 : paymentIntentRecipients?.length || 1
+      const split =
+        purchaseType === 'extend' ? 1 : paymentIntentRecipients?.length || 1
       const amount = paymentIntent.amount / split
       const unlockServiceFee = paymentIntent.application_fee_amount
         ? paymentIntent.application_fee_amount / split

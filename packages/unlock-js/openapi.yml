@@ -2754,7 +2754,7 @@ paths:
                   items:
                     type: string
 
-                type:
+                purchaseType:
                   type: string
                   description: whether to extend or purchase membership for the recipient.
                   enum:

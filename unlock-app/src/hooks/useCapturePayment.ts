@@ -8,7 +8,7 @@ interface Options {
   recipients: string[]
   data?: (string | null)[] | null
   referrers?: (string | null)[] | null
-  type?: 'extend' | 'purchase'
+  purchaseType?: 'extend' | 'purchase'
 }
 
 export const useCapturePayment = ({
@@ -17,7 +17,7 @@ export const useCapturePayment = ({
   data,
   referrers,
   recipients,
-  type,
+  purchaseType,
 }: Options) => {
   const { account } = useAuth()
   return useMutation(
@@ -29,7 +29,7 @@ export const useCapturePayment = ({
       recipients,
       data,
       referrers,
-      type,
+      purchaseType,
     ],
     async ({ paymentIntent }: Record<'paymentIntent', string>) => {
       const response = await storage.capturePurchase({
@@ -40,7 +40,7 @@ export const useCapturePayment = ({
         lock: lockAddress,
         network,
         recipients,
-        type,
+        purchaseType,
       })
       return response.data.transactionHash
     }
