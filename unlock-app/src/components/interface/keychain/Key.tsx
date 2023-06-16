@@ -119,6 +119,7 @@ function Key({ ownedKey, account, network }: Props) {
 
   const addToWallet = () => {
     watchAsset({
+      network,
       address: lock.address,
       symbol: 'KEY',
       image: `${config.services.storage.host}/lock/${lock.address}/icon`,
