@@ -179,7 +179,7 @@ describe('pricingOperations', () => {
         network,
       })
 
-      expect(pricing.amount).toBe(1)
+      expect(pricing.amount).toBe(55.32)
       expect(pricing.amountInCents).toBe(5532)
       expect(pricing.amountInUSD).toBe(55.32)
       expect(pricing.decimals).toBe(18)
@@ -237,7 +237,7 @@ describe('pricingOperations', () => {
       expect(pricing.price.symbol).toBe('$')
       expect(pricing.price.amountInUSD).toBe(55.32)
       expect(pricing.price.amountInCents).toBe(5532)
-      expect(pricing.price.amount).toBe(1)
+      expect(pricing.price.amount).toBe(55.32)
     })
   })
 
@@ -254,7 +254,7 @@ describe('pricingOperations', () => {
     })
 
     it('returns pricing when "creditCardPrice" is set in lockSettings', async () => {
-      expect.assertions(4)
+      expect.assertions(5)
 
       const pricing = await pricingOperations.getPricingFromSettings({
         lockAddress,
@@ -265,10 +265,11 @@ describe('pricingOperations', () => {
       expect(pricing?.symbol).toBe('$')
       expect(pricing?.amountInUSD).toBe(55.32)
       expect(pricing?.amountInCents).toBe(5532)
+      expect(pricing?.amount).toBe(55.32)
     })
 
     it('returns pricing when "creditCardPrice" is set in lockSettings for recipients', async () => {
-      expect.assertions(4)
+      expect.assertions(5)
 
       const pricing = await pricingOperations.getPricingFromSettings({
         lockAddress,
@@ -281,6 +282,7 @@ describe('pricingOperations', () => {
       // total for the 2 recipients
       expect(pricing?.amountInUSD).toBe(110.64)
       expect(pricing?.amountInCents).toBe(11064)
+      expect(pricing?.amount).toBe(110.64)
     })
   })
 })
