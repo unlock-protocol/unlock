@@ -64,10 +64,9 @@ async function main({ proposal, govAddress }) {
     )
   } else if (state === 'Active') {
     const deadline = await gov.proposalDeadline(proposalId)
+    const currentBlock = await ethers.provider.getBlockNumber()
     console.log(
-      `GOV QUEUE > Vote still open until: ${new Date(
-        deadline.toNumber() * 1000
-      )}`
+      `GOV QUEUE > Vote still open until block ${deadline} (current: ${currentBlock})`
     )
   } else {
     console.log(`GOV QUEUE > Proposal state (${state}) does not allow queue.`)
