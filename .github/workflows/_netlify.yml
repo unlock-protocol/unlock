@@ -24,6 +24,9 @@ on:
         description: 'The netlify site id'
         required: true
         type: string
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: true
 
 jobs:
   check-changes:
