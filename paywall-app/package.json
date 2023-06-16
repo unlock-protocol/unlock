@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/next": "8.0.7",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
+    "netlify-cli": "15.4.1",
     "next": "13.4.4",
     "vite-plugin-node-polyfills": "0.8.2"
   },
