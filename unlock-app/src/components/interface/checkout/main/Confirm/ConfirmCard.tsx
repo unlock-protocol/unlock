@@ -216,6 +216,7 @@ export function ConfirmCard({
 
     const stripeIntent = await createPurchaseIntent({
       pricing: totalPricing!.total,
+      // @ts-expect-error - generated types don't narrow down to the right type
       stripeTokenId: payment.cardId!,
       recipients,
       referrers,
