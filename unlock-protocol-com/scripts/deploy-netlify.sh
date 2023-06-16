@@ -10,7 +10,6 @@ APP_PATH=$1
 DEPLOY_ENV=$2 #ignored in this script since unlock-protocol.com is always deployed to production
 COMMIT=$3
 PUBLISH=$4
-BUILD_PATH="out/"
 
 # unlock-protocol.com is always deployed to production
 DEPLOY_ENV="prod"
@@ -30,7 +29,7 @@ if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   echo $MESSAGE
   export NETLIFY_NEXT_PLUGIN_SKIP=true
   export NETLIFY_SITE_ID="$SITE_ID" #
-  npx -- netlify-cli deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
+  npx -- netlify-cli deploy --build -s $SITE_ID -a $AUTH_TOKEN $PROD --message="$MESSAGE"
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
