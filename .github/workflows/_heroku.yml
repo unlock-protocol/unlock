@@ -53,14 +53,6 @@ jobs:
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          HEROKU_EMAIL: op://secrets/heroku/username
-          HEROKU_API_KEY: op://secrets/heroku/credential
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |

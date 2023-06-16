@@ -61,15 +61,6 @@ jobs:
       SMTP_USERNAME: apikey
     steps:
       - uses: actions/checkout@v3
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          AUTH_TOKEN: op://secrets/netlify/credential
-          SMTP_PASSWORD: op://secrets/sendgrid/credential
-          BASE64_WEDLOCKS_PRIVATE_KEY: op://secrets/wedlocks/private-key
       - name: 'Export secrets to env'
         id: filter_secrets
         run: |
