@@ -19,7 +19,7 @@ async function main({ proposal, govAddress }) {
   if (state === 'Queued') {
     // check if time is ripe
     const eta = await gov.proposalEta(proposalId)
-    if (eta < Date.now()) {
+    if (eta.toNumber() * 1000 > Date.now()) {
       console.log(
         `GOV EXEC > Proposal still queued until: ${new Date(
           eta.toNumber() * 1000
