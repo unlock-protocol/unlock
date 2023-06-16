@@ -10,6 +10,7 @@ APP_PATH=$1
 DEPLOY_ENV=$2
 COMMIT=$3
 PUBLISH=$4
+BUILD_PATH="out/"
 
 if [ "$DEPLOY_ENV" = "staging" ]; then
   if [ "$PUBLISH" = "true" ]; then
@@ -29,10 +30,11 @@ if [ "$DEPLOY_ENV" = "prod" ]; then
 fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
+  # Package
+  UNLOCK_ENV="$DEPLOY_ENV" yarn deploy
   # And ship!
   echo $MESSAGE
-  export NETLIFY_NEXT_PLUGIN_SKIP=true
-  npx -y netlify-cli deploy --build -s $SITE_ID -a $AUTH_TOKEN $PROD --message="$MESSAGE"
+  npx -y netlify-cli deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
