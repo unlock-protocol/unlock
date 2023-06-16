@@ -62,10 +62,15 @@ async function main({ proposal, govAddress }) {
         eta.toNumber() * 1000
       )}`
     )
-  } else {
-    throw new Error(
-      `GOV QUEUE > Proposal state (${state}) does not allow queue.`
+  } else if (state === 'Active') {
+    const deadline = await gov.proposalDeadline(proposalId)
+    console.log(
+      `GOV QUEUE > Vote still open until: ${new Date(
+        deadline.toNumber() * 1000
+      )}`
     )
+  } else {
+    console.log(`GOV QUEUE > Proposal state (${state}) does not allow queue.`)
   }
 }
 
