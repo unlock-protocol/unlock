@@ -184,7 +184,9 @@ export class PurchaseController {
        * because we don't have a way for them to "accept" the subscription and we don't want owner to be charged for all of them
        * without a way to manage these from the dashboard.
        */
-      const key = items?.find((item) => item.owner === userAddress)
+      const key = items?.find(
+        (item) => item.owner.toLowerCase() === userAddress.toLowerCase()
+      )
 
       if (!key) {
         return
@@ -198,19 +200,26 @@ export class PurchaseController {
         : 0
       const recurring = Number(paymentIntent.metadata.recurring || 0)
       const keyId = Number(key.id)
-      const [subscription] = await KeySubscription.upsert({
-        unlockServiceFee,
-        amount,
-        keyId,
-        lockAddress,
-        userAddress: request.user!.walletAddress,
-        network,
-        recurring,
-        connectedCustomer: paymentIntentRecord.connectedCustomerId,
-        stripeCustomerId: paymentIntentRecord.stripeCustomerId,
-      })
+      const [subscription] = await KeySubscription.upsert(
+        {
+          unlockServiceFee,
+          amount,
+          keyId,
+          lockAddress,
+          userAddress,
+          network,
+          recurring,
+          connectedCustomer: paymentIntentRecord.connectedCustomerId,
+          stripeCustomerId: paymentIntentRecord.stripeCustomerId,
+        },
+        {
+          conflictFields: ['network', 'lockAddress', 'keyId', 'userAddress'],
+        }
+      )
+      console.log(subscription)
       logger.info(`Subscription updated for id: ${subscription?.id}`)
     } catch (error) {
+      console.log(error)
       if (response.headersSent) {
         return
       }
