@@ -4,7 +4,7 @@ subTitle: Easily create all kinds of allow-list on your lock using Guild.xyz!
 description: By leveraging a new kind of smart contract hook, you can easily create all kinds of allow-list on your lock using Guild.xyz.
 author: Julien Genestoux
 publishDate: June 15, 2023
-image: /images/blog/guild-hook/guild.xyz.jpeg
+image: /guides/wp-content/uploads/2022/06/guild.xyz_.png
 ---
 
 The Unlock Protocol has a unique feature that lets developers change the behavior of an Unlock [membership contract](https://docs.unlock-protocol.com/core-protocol/public-lock/) while still leveraging most of its logic. These additional pieces of functionality are accessed via “[hooks](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks)”. One of the hooks is the [`onKeyPurchaseHook`](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks#onkeypurchase-hook) and it is triggered when new members are purchasing a membership NFT.
@@ -29,11 +29,11 @@ Let’s say I only want people who [follow Unlock on Twitter](https://twitter.co
 
 ![Guild.xyz Settings](/images/blog/guild-hook/unlock-hook-settings.png)
 
-3. I can then save the changes and my membership contract is now **\*\***hooked**\*\*** to the Guild of the Unlock Protocol followers on Twitter!
+3. I can then save the changes and my membership contract is now **hooked** to the Guild of the Unlock Protocol followers on Twitter!
 
 Now the requirements are set, and there is one more step to go.
 
-The last step is to build a checkout URL, [like this one](https://app.unlock-protocol.com/checkout?id=23d15cce-8423-4761-ba48-6dd5ab5a048c), through which users are prompted to join the Guild, if they don’t already, before they can mint their NFT membership!
+The last step is to build a checkout URL, [like this one](https://app.unlock-protocol.com/checkout?id=23d15cce-8423-4761-ba48-6dd5ab5a048c), through which users are prompted to join the Guild if they are not already members. Once someone is a member of the Guild, they can mint their NFT membership!
 
 ![Guild.xyz Settings](/images/blog/guild-hook/unlock-guild-checkout.png)
 
