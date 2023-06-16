@@ -62,7 +62,6 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
-    "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
