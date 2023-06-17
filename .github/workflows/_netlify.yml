@@ -24,6 +24,10 @@ on:
         description: 'The netlify site id'
         required: true
         type: string
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        description: '1password service account token'
+        required: true
 
 jobs:
   check-changes:
@@ -61,6 +65,8 @@ jobs:
       SMTP_USERNAME: apikey
     steps:
       - uses: actions/checkout@v3
+
+      # DO WE STILL NEED THIS?
       - name: 'Export secrets to env'
         id: filter_secrets
         run: |
@@ -69,6 +75,18 @@ jobs:
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
           PREFIX="${PREFIX^^}" # uppercase
           bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' $PREFIX
+
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          NEXT_PUBLIC_STRIPE_KEY: op://secrets/stripe/publishable-key-staging
+          AUTH_TOKEN: op://secrets/netlify/credential
+          SMTP_PASSWORD: op://secrets/sendgrid/credential
+          BASE64_WEDLOCKS_PRIVATE_KEY: op://secrets/wedlocks/private-key
+
       - name: Deploy to Netlify
         run: |
           # show args

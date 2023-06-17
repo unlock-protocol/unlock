@@ -1,6 +1,11 @@
 name: Subgraphs deployment
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        description: '1password service account token'
+        required: true
 
 jobs:
   coverage:

@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - op-secrets # remove me but test once all secrets are in place!
+
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
@@ -14,14 +15,6 @@ jobs:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     steps:
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          HEROKU_EMAIL: op://secrets/heroku/username
-          HEROKU_API_KEY: op://secrets/heroku/credential
       - name: 'Deploy Locksmith to Heroku'
         uses: ./.github/workflows/_heroku.yml
         with:
@@ -89,17 +82,6 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     needs: run-all-tests
     steps:
-      - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          NEXT_PUBLIC_STRIPE_KEY: op://secrets/stripe/publishable-key-staging
-          AUTH_TOKEN: op://secrets/netlify/credential
-          SMTP_PASSWORD: op://secrets/sendgrid/credential
-          BASE64_WEDLOCKS_PRIVATE_KEY: op://secrets/wedlocks/private-key
-
       - name: 'Deploy Unlock App to netlify'
         uses: ./.github/workflows/_netlify.yml
         with:
