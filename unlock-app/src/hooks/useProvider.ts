@@ -101,8 +101,8 @@ export const useProvider = (config: any) => {
           'any'
         )
       }
-      return walletServiceProvider
     }
+    return walletServiceProvider
   }
 
   const getWalletService = async (networkId?: number) => {
