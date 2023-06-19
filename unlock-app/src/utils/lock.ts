@@ -1,11 +1,3 @@
-import { durationsAsTextFromSeconds } from '../utils/durations'
-import {
-  lockKeysAvailable,
-  numberOfAvailableKeys,
-  convertedKeyPrice,
-  formattedKeyPrice,
-} from '../utils/checkoutLockUtils'
-
 /**
  * Given a lock, returns its symbol's currency
  * @param {*} lock
@@ -19,30 +11,6 @@ export const currencySymbol = (lock: any) => {
     currency = 'ERC20' // Default for ERC20 without symbol
   }
   return currency
-}
-
-export const getLockProps = (
-  lock: any,
-  network: number,
-  baseCurrencySymbol: string,
-  name: string,
-  numberOfRecipients = 1
-) => {
-  return {
-    formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: formattedKeyPrice(
-      lock,
-      baseCurrencySymbol,
-      numberOfRecipients
-    ),
-    convertedKeyPrice: convertedKeyPrice(lock, numberOfRecipients),
-    formattedKeysAvailable: lockKeysAvailable(lock),
-    name: name || lock.name,
-    address: lock.address,
-    network,
-    prepend: numberOfRecipients > 1 ? `${numberOfRecipients} x ` : '',
-    isSoldOut: numberOfAvailableKeys(lock) <= 0,
-  }
 }
 
 /**
