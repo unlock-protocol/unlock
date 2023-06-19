@@ -76,6 +76,13 @@ KeySubscription.init(
   },
   {
     sequelize,
+    indexes: [
+      {
+        unique: true,
+        name: 'network_lockAddress_keyId_userAddress_index',
+        fields: ['network', 'lockAddress', 'keyId', 'userAddress'],
+      },
+    ],
     modelName: 'KeySubscriptions',
   }
 )
