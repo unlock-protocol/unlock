@@ -16,6 +16,7 @@ import {
 import { storage } from '~/config/storage'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
+import CreditCardCustomPrice from './CreditCardCustomPrice'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -408,11 +409,21 @@ export const CreditCardForm = ({
 
     if (ConnectStatus.CONNECTED === stripeConnectionState) {
       return (
-        <DisconnectStripe
-          isManager={isManager}
-          onDisconnect={onDisconnectStripe}
-          disabled={disabled || disconnectStipeMutation.isLoading}
-        />
+        <div className="grid gap-4">
+          <DisconnectStripe
+            isManager={isManager}
+            onDisconnect={onDisconnectStripe}
+            disabled={disabled || disconnectStipeMutation.isLoading}
+          />
+          {isManager && (
+            <CreditCardCustomPrice
+              lockAddress={lockAddress}
+              network={network}
+              disabled={disabled}
+              lock={lock}
+            />
+          )}
+        </div>
       )
     }
     return null

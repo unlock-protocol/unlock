@@ -10,7 +10,6 @@ import { Stepper } from '../Stepper'
 import { useQuery } from '@tanstack/react-query'
 import { Fragment, useState, useMemo, useEffect } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { getLockProps } from '~/utils/lock'
 import {
   RiCheckboxBlankCircleLine as CheckBlankIcon,
   RiCheckboxCircleFill as CheckIcon,
@@ -30,6 +29,7 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
+import { useGetLockProps } from '~/hooks/useGetLockProps'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -48,6 +48,12 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
     network: lock.network,
   })
 
+  const { isLoading: isLoadingFormattedData, data: formattedData } =
+    useGetLockProps({
+      lock: lock,
+      baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
+    })
+
   return (
     <RadioGroup.Option
       disabled={disabled}
@@ -60,12 +66,6 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
       }
     >
       {({ checked }) => {
-        const formattedData = getLockProps(
-          lock,
-          lock.network,
-          config.networks[lock.network].nativeCurrency.symbol,
-          lock.name
-        )
         const lockImageURL = `${config.services.storage.host}/lock/${lock?.address}/icon`
 
         return (
@@ -94,9 +94,10 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                 </div>
 
                 <Pricing
-                  keyPrice={formattedData.formattedKeyPrice}
-                  usdPrice={formattedData.convertedKeyPrice}
+                  keyPrice={formattedData?.formattedKeyPrice}
+                  usdPrice={formattedData?.convertedKeyPrice}
                   isCardEnabled={!!creditCardEnabled}
+                  loading={isLoadingFormattedData}
                 />
               </div>
             </div>
@@ -107,15 +108,15 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   <LabeledItem
                     label="Duration"
                     icon={DurationIcon}
-                    value={formattedData.formattedDuration}
+                    value={formattedData?.formattedDuration}
                   />
                   <LabeledItem
                     label="Quantity"
                     icon={QuantityIcon}
                     value={
-                      formattedData.isSoldOut
+                      formattedData?.isSoldOut
                         ? 'Sold out'
-                        : formattedData.formattedKeysAvailable
+                        : formattedData?.formattedKeysAvailable
                     }
                   />
                   {!!lock.recurringPayments &&
