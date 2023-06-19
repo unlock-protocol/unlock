@@ -22,6 +22,7 @@ import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
 import { formatFiatPriceFromCents } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
+import { useGetLockSettings } from '~/hooks/useLockSettings'
 
 interface Props {
   injectedProvider: unknown
@@ -174,6 +175,10 @@ export function ConfirmCard({
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
+  const { data: { creditCardPrice } = {} } = useGetLockSettings({
+    network: lock!.network,
+    lockAddress: lock!.address,
+  })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
@@ -188,6 +193,9 @@ export function ConfirmCard({
     network: lock!.network,
     purchaseData: purchaseData || [],
   })
+
+  // show gas cost only when custom credit card price is present
+  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
@@ -324,6 +332,7 @@ export function ConfirmCard({
           total={totalPricing?.total ?? 0}
           creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
           unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+          gasCosts={gasCosts}
         />
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
