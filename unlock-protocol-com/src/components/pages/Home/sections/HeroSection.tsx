@@ -1,0 +1,54 @@
+import React from 'react'
+import { Button } from '@unlock-protocol/ui'
+import Link from 'next/link'
+import { unlockConfig } from 'src/config/unlock'
+import Container from 'src/components/layout/Container'
+
+interface HeroSectionProps {
+  subhead: string
+  title: string
+  description: string
+}
+
+const HeroSectionDetails: HeroSectionProps = {
+  subhead: 'Open source and purpose built',
+  title:
+    ' Smart contracts built specifically for memberships and subscriptions',
+  description:
+    'The only smart contracts that let you add time constraints, update pricing, and handle recurring payments.',
+}
+
+export default function HeroSection() {
+  const { subhead, title, description } = HeroSectionDetails
+  return (
+    <div className="relative grid gap-8 md:gap-10 md:grid-cols-3">
+      <div className="flex flex-col items-start gap-6 md:col-span-2">
+        <div className="flex flex-col gap-4">
+          <span className="text-2xl font-semibold md:text-3xl text-brand-ui-primary">
+            {subhead}
+          </span>
+          <span className="text-4xl font-bold text-black md:text-7xl">
+            {title}
+          </span>
+        </div>
+        <div className="flex flex-col items-start gap-8">
+          <div className="text-2xl">{description}</div>
+          <Button
+            as={Link}
+            className="w-auto"
+            href={`${unlockConfig.appURL}/locks/create`}
+          >
+            Start Building
+          </Button>
+        </div>
+      </div>
+      <div className="col-span-1 md:col-span-1">
+        <img
+          className="4xl:right-0 md:absolute md:top-0"
+          src="/images/hero-app-overview.svg"
+          alt="app showcase"
+        />
+      </div>
+    </div>
+  )
+}
