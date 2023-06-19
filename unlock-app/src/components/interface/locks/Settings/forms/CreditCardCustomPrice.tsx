@@ -1,5 +1,5 @@
 import { Placeholder, ToggleSwitch, Input, Button } from '@unlock-protocol/ui'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CREDIT_CARD_MIN_USD_PRICE } from '~/constants'
@@ -27,6 +27,7 @@ export default function CreditCardCustomPrice({
   lock,
 }: CreditCardCustomPriceProps) {
   const [useCustomPrice, setUseCustomPrice] = useState(false)
+  const [hasPriceConversion, setHasPriceConversion] = useState(false)
 
   const getDefaultValues = async (): Promise<CreditCardFormSchema> => {
     const settings = (await storage.getLockSettings(network, lockAddress)).data
@@ -67,7 +68,10 @@ export default function CreditCardCustomPrice({
     amount: parseFloat(keyPrice),
   })
 
-  const hasPriceConversion = fiatPricing?.usd?.amount
+  useEffect(() => {
+    const pricing = fiatPricing?.usd?.amount || 0
+    setHasPriceConversion(pricing > 0)
+  }, [fiatPricing?.usd?.amount])
 
   const onSaveCreditCardPrice = async ({
     creditCardPrice,
@@ -102,13 +106,15 @@ export default function CreditCardCustomPrice({
   }
 
   const saveDisabled = isSaveLockSettingLoading || disabled
+  const toggleActive =
+    !hasPriceConversion || (useCustomPrice && hasPriceConversion)
 
   const symbol = lock?.currencySymbol
 
   return (
     <div className="grid gap-2">
       <SettingCardDetail
-        title="Set fixed price in $USD"
+        title="Set fixed price in USD"
         description={
           <span className="text-sm">
             {`If you set a custom price for card payments, we will use that one (+ fees) instead of converting the price of ${symbol} to USD.`}
@@ -122,7 +128,8 @@ export default function CreditCardCustomPrice({
         >
           <ToggleSwitch
             title="Use fixed price"
-            enabled={useCustomPrice}
+            enabled={toggleActive}
+            disabled={!hasPriceConversion}
             setEnabled={setUseCustomPrice}
             onChange={(enabled) => {
               if (!enabled) {
@@ -133,7 +140,7 @@ export default function CreditCardCustomPrice({
               }
             }}
           />
-          {useCustomPrice && (
+          {toggleActive && (
             <Input
               type="number"
               step="any"
@@ -141,7 +148,10 @@ export default function CreditCardCustomPrice({
               description="Set a fixed price in USD that is charged for card payments."
               error={errors?.creditCardPrice?.message}
               {...register('creditCardPrice', {
-                required: true,
+                required: {
+                  value: toggleActive,
+                  message: 'This field is required.',
+                },
                 min: {
                   value: CREDIT_CARD_MIN_USD_PRICE,
                   message: `Price is too low for us to process credit cards. It needs to be at least ${parseFloat(
