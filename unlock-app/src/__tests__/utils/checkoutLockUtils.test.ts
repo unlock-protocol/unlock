@@ -7,6 +7,8 @@ import {
 } from '../../utils/checkoutLockUtils'
 import { it, describe, expect } from 'vitest'
 
+const lockAddress = '0x2B24bE6c9d5b70Ad53203AdB780681cd70603660'
+const network = 5
 describe('Checkout Lock Utils', () => {
   describe('lockKeysAvailable', () => {
     it('returns Unlimited if it has unlimited keys', () => {
@@ -159,11 +161,15 @@ describe('Checkout Lock Utils', () => {
         keyPrice: '100',
         currencyContractAddress: 'obc3',
         currencySymbol: 'eth',
+        address: lockAddress,
+        network,
       }
       const lock2 = {
         keyPrice: '0',
         currencyContractAddress: 'Oxbe',
         currencySymbol: 'eth',
+        address: lockAddress,
+        network,
       }
 
       expect(formattedKeyPrice(lock1, lock1.currencySymbol)).toEqual('100 ETH')
@@ -179,11 +185,15 @@ describe('Checkout Lock Utils', () => {
         keyPrice: '12.4',
         currencyContractAddress: 'obc3',
         currencySymbol: 'eth',
+        address: lockAddress,
+        network,
       }
       const lock2 = {
         keyPrice: '0',
         currencyContractAddress: 'Oxbe',
         currencySymbol: 'eth',
+        address: lockAddress,
+        network,
       }
       expect(
         formattedKeyPrice(lock1, lock1.currencySymbol, numbersOfRecipients)
@@ -194,7 +204,7 @@ describe('Checkout Lock Utils', () => {
       ).toEqual('FREE')
     })
 
-    it('correctly convert keyPrice', () => {
+    it('correctly convert keyPrice', async () => {
       expect.assertions(2)
       const numbersOfRecipients = 6
 
@@ -204,13 +214,17 @@ describe('Checkout Lock Utils', () => {
             amount: 20.22,
           },
         },
+        address: lockAddress,
+        network,
         currencyContractAddress: 'obc3',
         currencySymbol: 'eth',
       }
 
-      expect(convertedKeyPrice(lock)).toEqual('~$20.22')
+      expect(await convertedKeyPrice(lock)).toEqual('~$20.22')
 
-      expect(convertedKeyPrice(lock, numbersOfRecipients)).toEqual('~$121.32')
+      expect(await convertedKeyPrice(lock, numbersOfRecipients)).toEqual(
+        '~$121.32'
+      )
     })
   })
 })
