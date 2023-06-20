@@ -11,6 +11,20 @@ import Link from 'next/link'
 export function Home() {
   return (
     <main className="relative overflow-hidden">
+      <div className="absolute -left-28 md:-left-48 md:top-20 top-52">
+        <img
+          className="w-60 md:w-auto"
+          src="/images/illustrations/img-leaf.svg"
+          alt=""
+        />
+      </div>
+      <div className="absolute top-0 -right-48">
+        <img
+          className="md:w-auto w-60"
+          src="/images/illustrations/img-umagnetic.svg"
+          alt=""
+        />
+      </div>
       <Container>
         <HeroSection />
         <div className="mt-12 md:mt-80">
@@ -30,7 +44,7 @@ export function Home() {
         </Container>
       </div>
 
-      <div className="mt-10 md:mt-32">
+      <div className="mt-10 md:mt-20">
         <Testimonial />
       </div>
 
