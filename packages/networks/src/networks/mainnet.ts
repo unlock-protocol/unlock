@@ -124,7 +124,7 @@ export const mainnet: NetworkConfig = {
       {
         id: HookType.CAPTCHA,
         name: 'Captcha',
-        address: '0x0959482CbFB3c3C85ECd7bf690a0cde808eE8471',
+        address: '0xaF96721f8ffc136e4C170446E68Dc6744B6Ee4f4',
       },
       {
         id: HookType.GUILD,

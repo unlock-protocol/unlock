@@ -86,7 +86,7 @@ export const bsc: NetworkConfig = {
       {
         id: HookType.CAPTCHA,
         name: 'Captcha',
-        address: '0x88ed81de2d62849B337c3f31cd84D041bF26A38C',
+        address: '0x80E085D7591C61153D876b5171dc25756a7A3254',
       },
       {
         id: HookType.GUILD,
