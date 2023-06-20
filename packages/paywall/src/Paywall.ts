@@ -98,7 +98,7 @@ export class Paywall {
    * @param unlockUrl
    * @returns
    */
-  authenticate = (unlockUrl?: string, config?: any) => {
+  getProvider = (unlockUrl?: string, config?: any) => {
     this.provider = new PaywallProvider(this, unlockUrl, config)
     return this.provider
   }

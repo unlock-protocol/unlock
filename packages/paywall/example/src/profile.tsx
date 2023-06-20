@@ -13,7 +13,7 @@ export function Profile() {
         name: 'Unlock Paywall Provider',
         getProvider: () => {
           const paywall = new Paywall(networks)
-          return paywall.authenticate('http://localhost:3000') // Replace me with the URL of your Unlock instance
+          return paywall.getProvider('http://localhost:3000') // Replace me with the URL of your Unlock instance
         },
       },
     }),
