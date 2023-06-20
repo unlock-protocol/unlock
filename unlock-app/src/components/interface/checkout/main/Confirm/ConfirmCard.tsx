@@ -16,12 +16,13 @@ import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 import { formatNumber } from '~/utils/formatter'
 import { formatFiatPriceFromCents } from '../utils'
+import { useGetTotalCharges } from '~/hooks/usePrice'
+import { useGetLockSettings } from '~/hooks/useLockSettings'
 
 interface Props {
   injectedProvider: unknown
@@ -123,12 +124,10 @@ export function ConfirmCard({
   const [state] = useActor(checkoutService)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data } =
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
     state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
-
-  const currencyContractAddress = lock?.currencyContractAddress
 
   const recurringPayment =
     paywallConfig?.recurringPayments ||
@@ -176,29 +175,35 @@ export function ConfirmCard({
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
+  const { data: { creditCardPrice } = {} } = useGetLockSettings({
+    network: lock!.network,
+    lockAddress: lock!.address,
+  })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
-
-  const amountToConvert = pricingData?.total || 0
 
   const {
     data: totalPricing,
     isInitialLoading: isTotalPricingDataLoading,
     isFetched: isTotalPricingDataFetched,
-  } = useFiatChargePrice({
-    tokenAddress: currencyContractAddress,
-    amount: amountToConvert,
+  } = useGetTotalCharges({
+    recipients,
+    lockAddress,
     network: lock!.network,
-    enabled: isPricingDataAvailable,
+    purchaseData: purchaseData || [],
   })
+
+  // show gas cost only when custom credit card price is present
+  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient) => getReferrer(recipient)),
+    referrers: recipients.map((recipient: string) => getReferrer(recipient)),
     recipients,
+    purchaseType: renew ? 'extend' : 'purchase',
   })
 
   const isLoading =
@@ -215,7 +220,7 @@ export function ConfirmCard({
 
     const stripeIntent = await createPurchaseIntent({
       pricing: totalPricing!.total,
-      // @ts-expect-error Property 'cardId' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
+      // @ts-expect-error - generated types don't narrow down to the right type
       stripeTokenId: payment.cardId!,
       recipients,
       referrers,
@@ -287,7 +292,7 @@ export function ConfirmCard({
             <PricingData
               network={lockNetwork}
               lock={lock!}
-              pricingData={pricingData}
+              pricingData={totalPricing}
               payment={payment}
             />
           )}
@@ -327,6 +332,7 @@ export function ConfirmCard({
           total={totalPricing?.total ?? 0}
           creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
           unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+          gasCosts={gasCosts}
         />
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

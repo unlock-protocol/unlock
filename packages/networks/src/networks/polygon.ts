@@ -116,7 +116,7 @@ export const polygon: NetworkConfig = {
       {
         id: HookType.CAPTCHA,
         name: 'Captcha',
-        address: '0xA0863a0B58457A86c937e91533e3F6B8dA27cf4b',
+        address: '0x64bDe27046F915e2BAb6339Ce4f737E34474344d',
       },
       {
         id: HookType.GUILD,

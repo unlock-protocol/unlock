@@ -17,6 +17,7 @@ import {
   TradeType,
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
+import { networks } from '@unlock-protocol/networks'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -112,7 +113,13 @@ export default class Web3Service extends UnlockService {
    * We use the block version
    * @return Promise<Lock>
    */
-  async getLock(address: string, network: number) {
+  async getLock(
+    address: string,
+    network: number,
+    options = {
+      fields: [] as string[],
+    }
+  ) {
     const networkConfig = this.networks[network]
     if (!(networkConfig && networkConfig.unlockAddress)) {
       throw new Error(
@@ -129,7 +136,8 @@ export default class Web3Service extends UnlockService {
 
     const lock = await version.getLock.bind(this)(
       address,
-      this.providerForNetwork(network)
+      this.providerForNetwork(network),
+      options
     )
     // Add the lock address
     lock.address = address

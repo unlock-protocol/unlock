@@ -2,9 +2,23 @@ interface PricingProps {
   isCardEnabled: boolean
   usdPrice?: string
   keyPrice?: string
+  loading?: boolean
 }
 
-export function Pricing({ usdPrice, keyPrice, isCardEnabled }: PricingProps) {
+export function Pricing({
+  usdPrice,
+  keyPrice,
+  isCardEnabled,
+  loading = false,
+}: PricingProps) {
+  if (loading) {
+    return (
+      <div className="grid gap-1 text-right">
+        <div className="w-24 h-4 duration-150 bg-gray-200 rounded-full animate-pulse" />
+        <div className="w-10 h-4 ml-auto duration-150 bg-gray-200 rounded-full animate-pulse" />
+      </div>
+    )
+  }
   if (isCardEnabled && !usdPrice) {
     return (
       <div className="grid text-right">

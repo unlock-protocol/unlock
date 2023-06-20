@@ -75,7 +75,7 @@ export const gnosis: NetworkConfig = {
       {
         id: HookType.CAPTCHA,
         name: 'Captcha',
-        address: '0x6E422f8eDCE3586e8c384f7e602D3b5706463e12',
+        address: '0xFb0657eAE55A4dd3E2317C9eCB311bA5Ecc62C9C',
       },
       {
         id: HookType.GUILD,
