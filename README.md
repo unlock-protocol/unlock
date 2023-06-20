@@ -100,40 +100,31 @@ This will start
 - `http://localhost:3000/locks` to start using the application and deploy locks locally.
 - `http://localhost:3002` our static landing page site.
 
-### Config and environment variables
+## Secrets
 
-If you run the app locally on your machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
+Secrets are stored in the Unlock Labs 1Password account in the `API & Services` Vault. They can be loaded in our Github Actions through the use of dedicated actions.
 
-```
-# your wallet address to the first line
-ETHEREUM_ADDRESS=<your ethereum address>
+Here is an example:
 
-# the ETH node
-READ_ONLY_PROVIDER=http://localhost:8545
-
-# core service URLs
-LOCKSMITH_URI=http://localhost:8080
-WEDLOCKS_URI=http://localhost:1337
-
-# other optional services
-DASHBOARD_URL=http://localhost:3000
-PAYWALL_URL=http://localhost:3001
-PAYWALL_SCRIPT_URL=http://localhost:3001/static/paywall.min.js
-UNLOCK_STATIC_URL=http://localhost:3002
-UNLOCK_TICKETS_URL=http://0.0.0.0:3003
-
-# deployment
-HTTP_PROVIDER_HOST=127.0.0.1
-HTTP_PROVIDER_PORT=8545
-ERC20_CONTRACT_SYMBOL=DAI
-ERC20_CONTRACT_ADDRESS=0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9
-BOOTSTRAP_AMOUNT=15.0
-LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
+```yaml
+steps:
+  - name: Load secrets from 1Password
+    uses: 1Password/load-secrets-action@v1.2.0
+    with:
+      export-env: true
+    env:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      USERNAME: op://secrets/test-api/username
+      CREDENTIAL: op://secrets/test-api/credential
+  ... more steps that require USERNAME and CREDENTIAL to be set
 ```
 
-Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interact with the application using your regular setup.
-
-NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder.
+These reference URIs have the following syntax:
+`op://<vault>/<item>[/<section>]/<field>`
+So for example, the reference URI op://app-cicd/aws/secret-access-key would be interpreted as:
+Vault: app-cicd
+Item: aws
+Field: secret-access-key
 
 ## Thank you
 
