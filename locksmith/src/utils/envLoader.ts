@@ -37,7 +37,7 @@ const requiredEnvVars = [
 
 requiredEnvVars.forEach((envVar) => {
   if (process.env[envVar] === undefined) {
-    if (['test', 'production'].indexOf(process.env.NODE_ENV || '') > -1) {
+    if (['production'].indexOf(process.env.NODE_ENV || '') > -1) {
       throw new Error(`Missing required environment variable ${envVar}`)
     }
   }
