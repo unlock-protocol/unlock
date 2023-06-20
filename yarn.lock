@@ -22702,7 +22702,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vitest@npm:^0.2.6":
+"eslint-plugin-vitest@npm:0.2.6":
   version: 0.2.6
   resolution: "eslint-plugin-vitest@npm:0.2.6"
   dependencies:
@@ -42840,7 +42840,7 @@ __metadata:
     babel-plugin-polyfill-corejs2: 0.4.3
     eslint: 8.41.0
     eslint-plugin-prettier: latest
-    eslint-plugin-vitest: ^0.2.6
+    eslint-plugin-vitest: 0.2.6
     husky: 8.0.3
     lint-staged: 13.2.2
     prettier: 2.8.8
