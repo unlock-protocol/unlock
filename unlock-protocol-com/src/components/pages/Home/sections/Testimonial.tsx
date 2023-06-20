@@ -93,7 +93,7 @@ export default function Testimonial() {
     <div className="flex flex-col gap-10">
       <Container>
         <div className="flex w-full text-center">
-          <span className="mx-auto text-5xl font-bold text-center">
+          <span className="mx-auto text-3xl font-bold text-center md:text-5xl">
             Bring flexibility and transparency into your membership products
           </span>
         </div>

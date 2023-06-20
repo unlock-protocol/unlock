@@ -13,13 +13,13 @@ export function Home() {
     <main className="relative overflow-hidden">
       <Container>
         <HeroSection />
-        <div className="mt-16 md:mt-80">
+        <div className="mt-12 md:mt-80">
           <SocialProof />
         </div>
-        <div className="mt-16 md:mt-48">
+        <div className="mt-12 md:mt-48">
           <ProblemSection />
         </div>
-        <div className="mt-16 md:mt-48">
+        <div className="mt-12 md:mt-48">
           <TheSolution />
         </div>
       </Container>

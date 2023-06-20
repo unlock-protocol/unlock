@@ -32,8 +32,8 @@ export default function TheSolution() {
   return (
     <div className="grid gap-24">
       <div className="flex flex-col items-start gap-6">
-        <span className="text-5xl font-bold text-black md:text-7xl">{`We've solved the membership problem for smart contracts`}</span>
-        <span className="px-10 py-6 bg-[#E1DAFF] font-bold text-gray-900 text-4xl md:w-2/3 w-full rounded-lg">
+        <span className="text-3xl font-bold text-black md:text-7xl">{`We've solved the membership problem for smart contracts`}</span>
+        <span className="px-10 py-6 bg-[#E1DAFF] font-bold text-gray-900 text-2xl md:w-2/3 w-full rounded-lg">
           Unlock is the only smart contract protocol specifically built for
           memberships
         </span>
@@ -52,7 +52,7 @@ export default function TheSolution() {
                   <span className="text-xl font-bold text-brand-ui-primary">
                     {solution?.heading}
                   </span>
-                  <span className="text-5xl font-bold text-black ">
+                  <span className="text-3xl font-bold text-black ">
                     {solution?.title}
                   </span>
                 </div>

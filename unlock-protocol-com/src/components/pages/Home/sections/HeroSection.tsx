@@ -30,10 +30,10 @@ export default function HeroSection() {
           </span>
         </div>
         <div className="flex flex-col items-start gap-8">
-          <div className="text-2xl">{description}</div>
+          <div className="text-xl md:text-2xl">{description}</div>
           <Button
             as={Link}
-            className="w-auto"
+            className="w-full md:w-auto"
             href="https://docs.unlock-protocol.com/"
           >
             Start Building
