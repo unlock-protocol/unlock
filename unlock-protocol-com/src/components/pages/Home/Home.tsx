@@ -6,7 +6,6 @@ import TheSolution from './sections/TheSolution'
 import UnlockStats from './sections/UnlockStats'
 import Testimonial from './sections/Testimonial'
 import { Button } from '@unlock-protocol/ui'
-import { unlockConfig } from 'src/config/unlock'
 import Link from 'next/link'
 
 export function Home() {
@@ -43,7 +42,7 @@ export function Home() {
           <Button
             as={Link}
             className="w-auto"
-            href={`${unlockConfig.appURL}/locks/create`}
+            href="https://docs.unlock-protocol.com"
             variant="outlined-primary"
           >
             Start Building

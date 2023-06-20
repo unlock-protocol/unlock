@@ -67,7 +67,7 @@ export default function SocialProof() {
   return (
     <div className="flex flex-col gap-10 text-center">
       <span className="font-bold text-gray-700">{description}</span>
-      <ul className="flex flex-row flex-wrap justify-around w-full md:mx-10 md:gap-0">
+      <ul className="flex flex-row flex-wrap justify-between w-full md:mx-10 md:gap-0">
         {partners?.map(({ logo, alt }, index) => {
           return (
             <li

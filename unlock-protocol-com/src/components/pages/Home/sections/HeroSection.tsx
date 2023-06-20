@@ -1,8 +1,6 @@
 import React from 'react'
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import { unlockConfig } from 'src/config/unlock'
-import Container from 'src/components/layout/Container'
 
 interface HeroSectionProps {
   subhead: string
@@ -36,7 +34,7 @@ export default function HeroSection() {
           <Button
             as={Link}
             className="w-auto"
-            href={`${unlockConfig.appURL}/locks/create`}
+            href="https://docs.unlock-protocol.com/"
           >
             Start Building
           </Button>
