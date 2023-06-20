@@ -98,14 +98,8 @@ export class Paywall {
    * @param unlockUrl
    * @returns
    */
-  authenticate(unlockUrl?: string, config?: any) {
-    if (this.iframe) {
-      this.showIframe()
-    } else {
-      this.shakeHands(unlockUrl || unlockAppUrl)
-    }
-    this.sendOrBuffer('authenticate', config)
-    this.provider = new PaywallProvider(this)
+  authenticate = (unlockUrl?: string, config?: any) => {
+    this.provider = new PaywallProvider(this, unlockUrl, config)
     return this.provider
   }
 
@@ -114,11 +108,11 @@ export class Paywall {
    * @param config
    * @param unlockUrl
    */
-  loadCheckoutModal = (config?: PaywallConfig, unlockUrl?: string) => {
+  loadCheckoutModal = async (config?: PaywallConfig, unlockUrl?: string) => {
     if (this.iframe) {
       this.showIframe()
     } else {
-      this.shakeHands(unlockUrl || unlockAppUrl)
+      await this.shakeHands(unlockUrl || unlockAppUrl)
     }
     this.sendOrBuffer(
       'setConfig',

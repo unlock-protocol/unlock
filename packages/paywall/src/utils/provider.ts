@@ -1,5 +1,6 @@
 import events from 'events'
 import { CheckoutEvents, MethodCall, Paywall } from '../Paywall'
+import { PaywallConfig } from '@unlock-protocol/types'
 
 export interface Web3Window {
   // Present with more recent injected providers
@@ -57,6 +58,8 @@ interface MethodCallResult {
 
 export class PaywallProvider extends events.EventEmitter {
   paywall: Paywall
+  unlockUrl: string
+  config: PaywallConfig
   isMetamask = true
 
   #methodCalls: {
@@ -65,9 +68,20 @@ export class PaywallProvider extends events.EventEmitter {
 
   #eventHandlers: { [name: string]: (...args: any) => void } = {}
 
-  constructor(paywall: Paywall) {
+  constructor(paywall: Paywall, unlockUrl, config) {
     super()
     this.paywall = paywall
+    this.unlockUrl = unlockUrl
+    this.config = config
+  }
+
+  connect = async () => {
+    if (this.paywall.iframe) {
+      this.paywall.showIframe()
+    } else {
+      await this.paywall.shakeHands(this.unlockUrl)
+    }
+    this.paywall.sendOrBuffer('authenticate', this.config)
     this.paywall.child!.on(
       CheckoutEvents.resolveOnEventCall,
       (event: string) => {
@@ -92,6 +106,12 @@ export class PaywallProvider extends events.EventEmitter {
       // Generate a random ID for this request
       args.id = window.crypto.randomUUID()
     }
+
+    if (args.method === 'eth_requestAccounts') {
+      this.connect()
+      // Here we need to get the response that unlock provides when the user is authenticated and just yield the address back
+    }
+
     return new Promise((resolve, reject) => {
       this.#methodCalls[args.id] = (error: any, response: any) => {
         if (error) {

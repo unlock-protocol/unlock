@@ -14573,8 +14573,8 @@ __metadata:
 
 "@unlock-protocol/networks@file:../networks::locator=%40unlock-protocol%2Fpaywall%40workspace%3Apackages%2Fpaywall":
   version: 0.0.14
-  resolution: "@unlock-protocol/networks@file:../networks#../networks::hash=784e72&locator=%40unlock-protocol%2Fpaywall%40workspace%3Apackages%2Fpaywall"
-  checksum: 215a453470b8964a65bae5fcc7f5638bc7045077669a8d42041326a260b917b9569e88a03c5333f6d28eb26d8f6bc53a1e154b04d1a63b729ddee67e683f7834
+  resolution: "@unlock-protocol/networks@file:../networks#../networks::hash=425d25&locator=%40unlock-protocol%2Fpaywall%40workspace%3Apackages%2Fpaywall"
+  checksum: 14cb5e900ae5e643dc43d7df575fae4109df3e0485d8f2df52652e4b60dac6dcac12b357d185de5f5da67bdd890263b9d6e3f074581ac52fce2c05d26ce21ad4
   languageName: node
   linkType: hard
 
