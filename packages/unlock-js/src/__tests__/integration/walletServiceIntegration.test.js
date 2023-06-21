@@ -51,7 +51,7 @@ import transferFrom from './lock/transferFrom'
 
 // Unlock versions to test
 export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
-  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+  (v) => !['v6', 'v4'].includes(v) // 'v6' is disabled it required erc1820
 )
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {

@@ -30,6 +30,8 @@ export interface UserInfo {
 export interface TransactionInfo {
   hash: string
   lock: string
+  tokenIds?: string[]
+  metadata?: any
 }
 
 export enum CheckoutEvents {
@@ -222,8 +224,12 @@ export class Paywall {
     }
   }
 
-  handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    dispatchEvent(unlockEvents.transactionSent, { hash, lock })
+  handleTransactionInfoEvent = async ({
+    hash,
+    lock,
+    ...rest
+  }: TransactionInfo) => {
+    dispatchEvent(unlockEvents.transactionSent, { hash, lock, ...rest })
     if (!this.paywallConfig.pessimistic && hash && lock) {
       this.unlockPage([lock])
     }
