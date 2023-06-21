@@ -40,11 +40,11 @@ export default function HeroSection() {
           </Button>
         </div>
       </div>
-      <div className="col-span-1 md:col-span-1">
-        <img
-          className="4xl:right-0 md:absolute md:top-0"
-          src="/images/hero-app-overview.svg"
-          alt="app showcase"
+      <div className="col-span-1">
+        <object
+          className="w-full md:w-2/3 4xl:right-0 md:absolute md:top-0"
+          type="image/svg+xml"
+          data="/images/hero-app-overview.svg"
         />
       </div>
     </div>
