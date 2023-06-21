@@ -220,7 +220,7 @@ export function Minting({
           communication?.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
-            tokenIds,
+            tokenIds: tokenIds?.length ? tokenIds : [],
             metadata,
           })
 
