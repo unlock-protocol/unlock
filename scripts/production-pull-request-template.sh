@@ -48,6 +48,12 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Open the demo for the lock with the updated currency
 * [ ] Make sure that swap & purchase is enabled as payment method
 * [ ] Use swap and purchase and make sure that unlocking works successfuly
+
+## Custom credit card price
+* [ ] Open settings for a lock and go to "payments"
+* [ ] Enable custom credit card and set a fixed price
+* [ ] Go through the checkout flow and ensure that the custom price correctly show as the price for the lock
+* [ ] Make sure that purchase with custom price works successfuly
 "
 
 
