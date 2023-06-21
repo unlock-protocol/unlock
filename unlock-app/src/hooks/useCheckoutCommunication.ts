@@ -123,13 +123,16 @@ export const useCheckoutCommunication = () => {
   const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
 
+  // @ts-expect-error - attach to window
+  window.px = provider
+
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setPaywallConfig(config)
     },
     authenticate: (config: any) => {
       setOauthConfig({
-        clientId: 'http://localhost:3000',
+        clientId: config?.clientId || 'http://localhost:3000',
         responseType: '',
         state: '',
         redirectUri: '',
@@ -139,25 +142,33 @@ export const useCheckoutCommunication = () => {
     resolveOnEvent,
     resolveOnEnable,
     async handleMethodCallEvent({ id, params, method }: MethodCall) {
-      if (!(provider && provider?.request)) {
-        return
+      // @ts-expect-error but we know it's there
+      const px = window.px
+      if (px?.send) {
+        return px
+          .send(method, params)
+          .then((response: unknown) => {
+            pushOrEmit(CheckoutEvents.resolveMethodCall, {
+              id,
+              error: null,
+              response,
+            })
+          })
+          .catch((error: Error) => {
+            pushOrEmit(CheckoutEvents.resolveMethodCall, {
+              id,
+              error,
+              response: null,
+            })
+          })
+      } else {
+        pushOrEmit(CheckoutEvents.resolveMethodCall, {
+          id,
+          error:
+            'unknown method to call provider! Please make sure you use and EIP1193 provider!',
+          response: null,
+        })
       }
-      return provider
-        .request({ method, params, id })
-        .then((response: any) => {
-          pushOrEmit(CheckoutEvents.resolveMethodCall, {
-            id,
-            error: null,
-            response,
-          })
-        })
-        .catch((error: any) => {
-          pushOrEmit(CheckoutEvents.resolveMethodCall, {
-            id,
-            error,
-            response: null,
-          })
-        })
     },
     async handleOnEvent(eventName: string) {
       if (!provider) {

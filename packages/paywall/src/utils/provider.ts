@@ -56,6 +56,10 @@ interface MethodCallResult {
   error?: any
 }
 
+const Events = {
+  resolveMethodCall: 'handleMethodCallEvent',
+  resolveOnEvent: 'handleOnEventCallEvent',
+}
 export class PaywallProvider extends events.EventEmitter {
   paywall: Paywall
   unlockUrl: string
@@ -75,7 +79,7 @@ export class PaywallProvider extends events.EventEmitter {
     this.config = config
   }
 
-  connect = async () => {
+  async connect() {
     if (this.paywall.iframe) {
       this.paywall.showIframe()
     } else {
@@ -101,17 +105,7 @@ export class PaywallProvider extends events.EventEmitter {
     )
   }
 
-  request(args: MethodCall): Promise<unknown> {
-    if (!args.id) {
-      // Generate a random ID for this request
-      args.id = window.crypto.randomUUID()
-    }
-
-    if (args.method === 'eth_requestAccounts') {
-      this.connect()
-      // Here we need to get the response that unlock provides when the user is authenticated and just yield the address back
-    }
-
+  async #createRequestPromise(args: MethodCall) {
     return new Promise((resolve, reject) => {
       this.#methodCalls[args.id] = (error: any, response: any) => {
         if (error) {
@@ -120,13 +114,28 @@ export class PaywallProvider extends events.EventEmitter {
           resolve(response)
         }
       }
-      this.paywall.sendOrBuffer('providerRequest', args)
+      this.paywall.sendOrBuffer(Events.resolveMethodCall, args)
     })
+  }
+
+  async request(args: MethodCall): Promise<unknown> {
+    if (!args.id) {
+      // Generate a random ID for this request
+      args.id = window.crypto.randomUUID()
+    }
+
+    if (args.method === 'eth_requestAccounts') {
+      await this.connect()
+      const response = await this.#createRequestPromise(args)
+      return response
+    }
+    const response = await this.#createRequestPromise(args)
+    return response
   }
 
   on(event: string, callback: any) {
     this.#eventHandlers[event] = callback
-    this.paywall.sendOrBuffer('providerOn', { event })
+    this.paywall.sendOrBuffer(Events.resolveOnEvent, { event })
     return this
   }
 }

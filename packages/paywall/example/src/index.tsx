@@ -1,4 +1,3 @@
-import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { WagmiConfig, createConfig, mainnet } from 'wagmi'
 import { createPublicClient, http } from 'viem'
