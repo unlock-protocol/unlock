@@ -1,104 +1,68 @@
-import { Connect } from './sections/Connect'
-import { Developer } from './sections/Developer'
-import { Steps } from './sections/Steps'
-import { Public } from './sections/Public'
-import { Community } from './sections/Community'
-import { GetStarted } from './sections/GetStarted'
-import { Projects } from './sections/Projects'
-import { Recipes } from './sections/Recipes'
-import { MembershipExplained } from './sections/MembershipExplained'
+import HeroSection from './sections/HeroSection'
+import Container from 'src/components/layout/Container'
+import SocialProof from './sections/SocialProof'
+import ProblemSection from './sections/ProblemSection'
+import TheSolution from './sections/TheSolution'
+import UnlockStats from './sections/UnlockStats'
+import Testimonial from './sections/Testimonial'
+import { Button } from '@unlock-protocol/ui'
+import Link from 'next/link'
+
 export function Home() {
   return (
-    <main className="relative">
-      <div className="relative">
-        <div className="px-6 pt-6 pb-24 sm:pt-12">
-          <Connect />
+    <main className="relative overflow-hidden">
+      <div className="absolute -left-28 md:-left-48 md:top-20 top-52">
+        <img
+          className="w-60 md:w-auto"
+          src="/images/illustrations/img-leaf.svg"
+          alt=""
+        />
+      </div>
+      <div className="absolute top-0 -right-48">
+        <img
+          className="md:w-auto w-60"
+          src="/images/illustrations/img-umagnetic.svg"
+          alt=""
+        />
+      </div>
+      <Container>
+        <HeroSection />
+        <div className="mt-12 md:mt-80">
+          <SocialProof />
         </div>
-        <div className="px-6 pt-6 pb-28 sm:pt-12">
-          <MembershipExplained />
+        <div className="mt-12 md:mt-48">
+          <ProblemSection />
         </div>
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute sm:hidden left-0 bottom-[34rem] -z-10 not-sr-only"
-          src="/images/svg/m-bg-1.svg"
-        />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute right-0 not-sr-only -bottom-72 sm:hidden -z-10"
-          src="/images/svg/m-bg-2.svg"
-        />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute right-0 hidden not-sr-only -top-20 sm:block -z-10"
-          src="/images/svg/d-bg-1.png"
-        />
+        <div className="mt-12 md:mt-48">
+          <TheSolution />
+        </div>
+      </Container>
+
+      <div className="py-24 md:py-32 bg-[#FFFAF1] mt-16 md:mt-48">
+        <Container>
+          <UnlockStats />
+        </Container>
       </div>
 
-      <div className="relative px-6 pt-12 pb-24">
-        <Steps />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute top-0 right-0 not-sr-only sm:hidden -z-10"
-          src="/images/svg/m-bg-3.svg"
-        />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute left-0 hidden not-sr-only top-96 sm:block -z-10"
-          src="/images/svg/d-bg-2.png"
-        />
-      </div>
-      <div className="relative px-6 pt-12 pb-24">
-        <GetStarted />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute left-0 not-sr-only top-48 sm:hidden -z-10"
-          src="/images/svg/m-bg-4.svg"
-        />
+      <div className="mt-10 md:mt-20">
+        <Testimonial />
       </div>
 
-      <div className="px-6 pt-12 pb-24">
-        <Projects />
-      </div>
-      <div className="relative pt-12 pb-24">
-        <Developer />
-        <Recipes />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute right-0 hidden not-sr-only -top-72 sm:block -z-10"
-          src="/images/svg/d-bg-3.png"
-        />
-      </div>
-      <div className="relative px-6 pt-12 pb-24">
-        <Public />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute right-0 not-sr-only -top-96 sm:hidden -z-10"
-          src="/images/svg/m-bg-5.svg"
-        />
-      </div>
-      <div className="relative px-6 pt-12 pb-24 sm:overflow-hidden">
-        <Community />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute right-0 not-sr-only top-20 sm:hidden -z-10"
-          src="/images/svg/m-bg-6.svg"
-        />
-        <img
-          alt="background"
-          aria-hidden
-          className="absolute left-0 hidden not-sr-only -top-6 sm:block -z-10"
-          src="/images/svg/d-bg-4.svg"
-        />
-      </div>
+      <Container>
+        <div className="flex flex-col items-center w-full gap-6 mt-16 mb-48">
+          <span className="mx-auto text-2xl font-bold text-center md:text-3xl">
+            Build your first membership contract in minutes.
+          </span>
+          <Button
+            as={Link}
+            className="w-auto"
+            href="https://docs.unlock-protocol.com"
+            variant="outlined-primary"
+          >
+            Start Building
+          </Button>
+        </div>
+      </Container>
     </main>
   )
 }
