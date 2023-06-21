@@ -43,7 +43,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       const data: string[] = response.signatures
       setIsContinuing(false)
       send({
-        type: 'SOLVE_CAPTCHA',
+        type: 'SUBMIT_DATA',
         data,
       })
     } catch (error) {
@@ -58,17 +58,15 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
-        <div className="space-y-4">
-          <div className="flex justify-center">
-            {/* 
+        <div className="flex justify-center">
+          {/* 
             todo: Type '{}' is not assignable to type 'ReactNode'.
               
             @ts-ignore */}
-            <ReCAPTCHA
-              sitekey={config.recaptchaKey}
-              onChange={(token) => setRecaptchaValue(token)}
-            />
-          </div>
+          <ReCAPTCHA
+            sitekey={config.recaptchaKey}
+            onChange={(token) => setRecaptchaValue(token)}
+          />
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

@@ -75,7 +75,7 @@ export const celo: NetworkConfig = {
       {
         id: HookType.CAPTCHA,
         name: 'Captcha',
-        address: '0x80E085D7591C61153D876b5171dc25756a7A3254',
+        address: '0x1Bc951F8ed90F6c135F01Fe62CA348F4c3F43D00',
       },
       {
         id: HookType.GUILD,

@@ -20,6 +20,9 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import type { Transaction } from './checkoutMachine'
+import { ReturningButton } from '../ReturningButton'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
 
 interface MintingScreenProps {
   lockName: string
@@ -205,17 +208,29 @@ export function Minting({
           if (transaction.status !== 1) {
             throw new Error('Transaction failed.')
           }
+          const web3Service = new Web3Service(networks)
+          const tokenIds = await web3Service.getTokenIdsFromTx({
+            params: {
+              lockAddress: lock!.address,
+              hash: mint!.transactionHash!,
+              network: lock!.network,
+            },
+          })
 
           communication?.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
+            tokenIds: tokenIds?.length ? tokenIds : [],
+            metadata,
           })
 
           communication?.emitUserInfo({
             address: account,
             signedMessage: messageToSign?.signature,
           })
+
           communication?.emitMetadata(metadata)
+
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
@@ -234,7 +249,16 @@ export function Minting({
       }
     }
     waitForConfirmation()
-  }, [mint, lock, config, send, communication, account, messageToSign])
+  }, [
+    mint,
+    lock,
+    config,
+    send,
+    communication,
+    account,
+    messageToSign,
+    metadata,
+  ])
 
   return (
     <Fragment>
@@ -253,14 +277,12 @@ export function Minting({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <Button
-            disabled={!account || processing}
+          <ReturningButton
             loading={processing}
+            disabled={!account || processing}
             onClick={() => onClose()}
-            className="w-full"
-          >
-            {processing ? 'Minting your membership' : 'Return to site'}
-          </Button>
+            checkoutService={checkoutService}
+          />
         </Connected>
         <PoweredByUnlock />
       </footer>

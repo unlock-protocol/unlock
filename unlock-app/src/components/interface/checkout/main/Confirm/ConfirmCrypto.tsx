@@ -47,13 +47,11 @@ export function ConfirmCrypto({
     lock,
     recipients,
     payment,
-    captcha,
     paywallConfig,
-    password,
-    promo,
     keyManagers,
     metadata,
     data,
+    renew,
   } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
@@ -90,9 +88,6 @@ export function ConfirmCrypto({
     usePurchaseData({
       lockAddress: lock!.address,
       network: lock!.network,
-      promo,
-      password,
-      captcha,
       paywallConfig,
       recipients,
       data,
@@ -195,20 +190,33 @@ export function ConfirmCrypto({
       }
 
       const walletService = await getWalletService(lockNetwork)
-      await walletService.purchaseKeys(
-        {
-          lockAddress,
-          keyPrices,
-          owners: recipients!,
-          data: purchaseData,
-          keyManagers: keyManagers?.length ? keyManagers : undefined,
-          recurringPayments,
-          referrers,
-          totalApproval,
-        },
-        {} /** Transaction params */,
-        onErrorCallback
-      )
+      if (renew) {
+        await walletService.extendKey(
+          {
+            lockAddress,
+            owner: recipients?.[0],
+            referrer: getReferrer(account!, paywallConfig),
+            data: purchaseData?.[0],
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      } else {
+        await walletService.purchaseKeys(
+          {
+            lockAddress,
+            keyPrices,
+            owners: recipients!,
+            data: purchaseData,
+            keyManagers: keyManagers?.length ? keyManagers : undefined,
+            recurringPayments,
+            referrers,
+            totalApproval,
+          },
+          {} /** Transaction params */,
+          onErrorCallback
+        )
+      }
     } catch (error: any) {
       setIsConfirming(false)
       console.error(error)
@@ -264,11 +272,6 @@ export function ConfirmCrypto({
                 <ErrorIcon className="inline" />
                 There was an error when preparing the transaction.
               </p>
-              {password && (
-                <p className="text-xs">
-                  Please, check that the password you used is correct.
-                </p>
-              )}
             </div>
           )}
           {!isLoading && isPricingDataAvailable && (

@@ -37,17 +37,13 @@ export function ConfirmUniversalCard({
   const [onrampSession, setOnrampSession] = useState<any>(null)
   const stripeOnrampPromise = loadStripeOnramp(config.stripeApiKey)
 
-  const { lock, recipients, captcha, paywallConfig, password, promo, data } =
-    state.context
+  const { lock, recipients, paywallConfig, data } = state.context
 
   // Build the `purchaseData` field that gets passed to the contract
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
       lockAddress: lock!.address,
       network: lock!.network,
-      promo,
-      password,
-      captcha,
       paywallConfig,
       recipients,
       data,

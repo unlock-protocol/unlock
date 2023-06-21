@@ -17,6 +17,7 @@ import {
   TradeType,
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
+import { networks } from '@unlock-protocol/networks'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -112,7 +113,13 @@ export default class Web3Service extends UnlockService {
    * We use the block version
    * @return Promise<Lock>
    */
-  async getLock(address: string, network: number) {
+  async getLock(
+    address: string,
+    network: number,
+    options = {
+      fields: [] as string[],
+    }
+  ) {
     const networkConfig = this.networks[network]
     if (!(networkConfig && networkConfig.unlockAddress)) {
       throw new Error(
@@ -129,7 +136,8 @@ export default class Web3Service extends UnlockService {
 
     const lock = await version.getLock.bind(this)(
       address,
-      this.providerForNetwork(network)
+      this.providerForNetwork(network),
+      options
     )
     // Add the lock address
     lock.address = address
@@ -1054,5 +1062,41 @@ export default class Web3Service extends UnlockService {
       quoteGasAdjusted,
       estimatedGasUsedUSD,
     }
+  }
+
+  async getTokenIdsFromTx({
+    params: { hash, network, lockAddress },
+  }: {
+    params: {
+      hash: string
+      network: number
+      lockAddress: string
+    }
+  }) {
+    const provider = this.providerForNetwork(network)
+    const lockContract = await this.getLockContract(lockAddress, provider)
+    const txReceipt = await provider.getTransactionReceipt(hash)
+    const parser = lockContract.interface
+    const events = txReceipt.logs.map((log) => {
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Filter events not emitted by the lock contract
+      return parser.parseLog(log)
+    })
+
+    const purchaseItems = events.filter((event) => {
+      return event && event.name === 'Transfer'
+    })
+
+    if (purchaseItems.length) {
+      return purchaseItems.map((item) => item?.args?.tokenId?.toString())
+    }
+
+    const extendItems = events.filter((event) => {
+      return event && event.name === 'KeyExtended'
+    })
+
+    if (extendItems.length) {
+      return extendItems.map((item) => item?.args?.tokenId?.toString())
+    }
+    return null
   }
 }

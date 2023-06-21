@@ -18,8 +18,6 @@ export type CheckoutPage =
   | 'RETURNING'
   | 'UNLOCK_ACCOUNT'
   | 'PAYMENT'
-  | 'RENEW'
-  | 'RENEWED'
   | 'PASSWORD'
   | 'PROMO'
   | 'GUILD'
@@ -38,6 +36,7 @@ export type CheckoutHookType = 'password' | 'promocode' | 'captcha' | 'guild'
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
   isMember: boolean
+  isExpired: boolean
   isSoldOut: boolean
 }
 
@@ -69,16 +68,6 @@ export interface SubmitDataEvent {
   data: string[]
 }
 
-export interface SubmitPasswordEvent {
-  type: 'SUBMIT_PASSWORD'
-  data: string[]
-}
-
-export interface SubmitPromoEvent {
-  type: 'SUBMIT_PROMO'
-  data: string[]
-}
-
 export interface SelectRecipientsEvent {
   type: 'SELECT_RECIPIENTS'
   recipients: string[]
@@ -103,15 +92,6 @@ interface ConfirmMintEvent extends Transaction {
   type: 'CONFIRM_MINT'
 }
 
-interface RenewedEvent extends Transaction {
-  type: 'CONFIRM_RENEW'
-}
-
-interface SolveCaptchaEvent {
-  type: 'SOLVE_CAPTCHA'
-  data: string[]
-}
-
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
 }
@@ -134,13 +114,9 @@ export type CheckoutMachineEvents =
   | SelectPaymentMethodEvent
   | SelectRecipientsEvent
   | SignMessageEvent
-  | SubmitPasswordEvent
-  | SubmitPromoEvent
   | SubmitDataEvent
   | MakeAnotherPurchaseEvent
-  | SolveCaptchaEvent
   | ConfirmMintEvent
-  | RenewedEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
   | ResetEvent
@@ -178,7 +154,6 @@ export interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
-  captcha?: string[]
   messageToSign?: {
     signature: string
     address: string
@@ -187,12 +162,9 @@ export interface CheckoutMachineContext {
   recipients: string[]
   keyManagers?: string[]
   mint?: Transaction
-  renewed?: Transaction
   skipQuantity: boolean
   skipRecipient: boolean
-  password?: string[]
   metadata?: any[]
-  promo?: string[]
   data?: string[]
   hook?: CheckoutHookType
   renew: boolean
@@ -205,12 +177,10 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   lock: undefined,
   messageToSign: undefined,
   mint: undefined,
-  captcha: undefined,
   payment: {
     method: 'crypto',
   },
   quantity: 1,
-  renewed: undefined,
   recipients: [],
   keyManagers: [],
   skipQuantity: false,
@@ -274,19 +244,14 @@ export const checkoutMachine = createMachine(
             },
             {
               actions: ['selectLock'],
-              target: 'RENEW',
-              cond: (_, event) => event.expiredMember,
-            },
-            {
-              actions: ['selectLock'],
               target: 'QUANTITY',
-              cond: (_, event) => !event.skipQuantity,
+              cond: (_, event) => !event.skipQuantity && !event.expiredMember,
             },
             {
               actions: ['selectLock'],
               target: 'METADATA',
               cond: (_, event) => {
-                return !event.skipRecipient
+                return !event.skipRecipient && !event.expiredMember
               },
             },
             {
@@ -325,10 +290,6 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'PAYMENT',
-              cond: (_, event) => {
-                // skip metadata if no quantity and recipient selection
-                return !!(event.skipRecipient && event.skipQuantity)
-              },
             },
           ],
           DISCONNECT,
@@ -425,15 +386,10 @@ export const checkoutMachine = createMachine(
       },
       PASSWORD: {
         on: {
-          SUBMIT_PASSWORD: [
-            {
-              target: 'RENEW',
-              actions: ['submitPassword'],
-              cond: (ctx) => ctx.renew,
-            },
+          SUBMIT_DATA: [
             {
               target: 'PAYMENT',
-              actions: ['submitPassword'],
+              actions: ['submitData'],
             },
           ],
           BACK: [
@@ -450,15 +406,10 @@ export const checkoutMachine = createMachine(
       },
       PROMO: {
         on: {
-          SUBMIT_PROMO: [
-            {
-              target: 'RENEW',
-              actions: ['submitPromo'],
-              cond: (ctx) => ctx.renew,
-            },
+          SUBMIT_DATA: [
             {
               target: 'PAYMENT',
-              actions: ['submitPromo'],
+              actions: ['submitData'],
             },
           ],
           BACK: [
@@ -476,11 +427,6 @@ export const checkoutMachine = createMachine(
       GUILD: {
         on: {
           SUBMIT_DATA: [
-            {
-              target: 'RENEW',
-              actions: ['submitData'],
-              cond: (ctx) => ctx.renew,
-            },
             {
               target: 'PAYMENT',
               actions: ['submitData'],
@@ -500,15 +446,10 @@ export const checkoutMachine = createMachine(
       },
       CAPTCHA: {
         on: {
-          SOLVE_CAPTCHA: [
-            {
-              target: 'RENEW',
-              actions: ['solveCaptcha'],
-              cond: (ctx) => ctx.renew,
-            },
+          SUBMIT_DATA: [
             {
               target: 'PAYMENT',
-              actions: ['solveCaptcha'],
+              actions: ['submitData'],
             },
           ],
           BACK: [
@@ -642,22 +583,6 @@ export const checkoutMachine = createMachine(
           BACK: 'SELECT',
         },
       },
-      RENEW: {
-        on: {
-          CONFIRM_RENEW: {
-            actions: ['confirmRenew'],
-            target: 'RENEWED',
-          },
-        },
-      },
-      RENEWED: {
-        on: {
-          CONFIRM_RENEW: {
-            type: 'final',
-            actions: ['confirmRenew'],
-          },
-        },
-      },
     },
   },
   {
@@ -718,34 +643,11 @@ export const checkoutMachine = createMachine(
           } as const
         },
       }),
-      confirmRenew: assign({
-        renewed: (_, { status, transactionHash }) => {
-          return {
-            status,
-            transactionHash,
-          } as const
-        },
-      }),
       updatePaywallConfig: assign((_, event) => {
         return {
           ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
         } as CheckoutMachineContext
-      }),
-      solveCaptcha: assign({
-        captcha: (_, event) => {
-          return event.data
-        },
-      }),
-      submitPassword: assign({
-        password: (_, event) => {
-          return event.data
-        },
-      }),
-      submitPromo: assign({
-        promo: (_, event) => {
-          return event.data
-        },
       }),
       submitData: assign({
         data: (_, event) => {
