@@ -88,9 +88,6 @@ export const SIWEProvider = ({ children }: Props) => {
     } = {}
   ): Promise<{ message: string; signature: string } | null> => {
     try {
-      if (!connected) {
-        throw new Error('No wallet connected.')
-      }
       const walletService = await getWalletService()
       const address = await walletService.signer.getAddress()
       const insideIframe = window !== window.parent
