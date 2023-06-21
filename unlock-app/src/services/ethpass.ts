@@ -1,5 +1,6 @@
 import { networks } from '@unlock-protocol/networks'
 import { minifyAddress } from '@unlock-protocol/ui'
+import { config } from '~/config/app'
 import { storage } from '~/config/storage'
 
 export enum Platform {
@@ -167,7 +168,7 @@ export const createWalletPass = async ({
   const opts = {
     method: 'POST',
     headers: {
-      'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
+      'X-API-KEY': config.ethPassApiKey,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(passRequest),

@@ -5,6 +5,7 @@
 
 import { Lock, PaywallConfig } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
+import { storage } from '~/config/storage'
 
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
@@ -14,6 +15,8 @@ interface LockKeysAvailableLock {
 }
 
 interface LockTickerSymbolLock {
+  network: number
+  address: string
   keyPrice?: string
   currencyContractAddress: string | null
   currencySymbol?: string
@@ -83,10 +86,23 @@ export const userCanAffordKey = (
   return keyPrice <= _balance
 }
 
-export const convertedKeyPrice = (
+export const convertedKeyPrice = async (
   lock: LockTickerSymbolLock,
   numberOfRecipients = 1
 ) => {
+  const { creditCardPrice } = (
+    await storage.getLockSettings(lock.network, lock.address)
+  ).data
+
+  // priority to credit card price if present
+  if (creditCardPrice) {
+    // format price in USD
+    const priceInUsd = `~$${(
+      parseFloat(`${creditCardPrice / 100}`) * numberOfRecipients
+    ).toFixed(2)}`
+    return priceInUsd
+  }
+
   const price = lock?.fiatPricing?.usd?.amount
 
   if (!price) {
