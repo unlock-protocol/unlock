@@ -57,7 +57,7 @@ export const Members = ({
 
   const [
     { isLoading, data: members = [] },
-    { isLoading: isLockLoading, data: lock },
+    { isLoading: isLockLoading, data: lock, isError: hasLockLoadingError },
     { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
@@ -67,6 +67,7 @@ export const Members = ({
         onError: () => {
           ToastHelper.error(`Can't load members, please try again`)
         },
+        refetchOnWindowFocus: true,
       },
 
       {
@@ -115,6 +116,16 @@ export const Members = ({
           ))}
         </Placeholder.Root>
       </>
+    )
+  }
+
+  if (hasLockLoadingError) {
+    return (
+      <ImageBar
+        alt="Fetch error"
+        src="/images/illustrations/no-member.svg"
+        description={<span>Unable to fetch lock members from subgraph.</span>}
+      />
     )
   }
 

@@ -19,6 +19,7 @@ interface WatchAssetInterface {
   address: string
   symbol: string
   image: string
+  network: number
 }
 
 /**
@@ -48,6 +49,7 @@ export const useProvider = (config: any) => {
     const _account = await _walletService.getAccount()
     return {
       walletService: _walletService,
+      provider,
       network: _network,
       account: _account,
     }
@@ -75,7 +77,7 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const getWalletService = async (networkId?: number) => {
+  const getNetworkProvider = async (networkId?: number) => {
     const currentNetworkId = Number(network)
     let pr = provider
     // If the user is not connected, we open the connect modal
@@ -84,11 +86,14 @@ export const useProvider = (config: any) => {
       closeConnectModal()
       pr = response?.provider
     }
-    let walletServiceProvider: ethers.providers.Provider = pr
+    let walletServiceProvider: ethers.providers.Web3Provider = pr
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
       if (pr.isUnlock) {
-        walletServiceProvider = UnlockProvider.reconnect(pr, networkConfig)
+        walletServiceProvider = UnlockProvider.reconnect(
+          pr,
+          networkConfig
+        ) as unknown as ethers.providers.Web3Provider
       } else {
         await switchWeb3ProviderNetwork(networkId).catch(console.error)
         walletServiceProvider = new ethers.providers.Web3Provider(
@@ -97,8 +102,13 @@ export const useProvider = (config: any) => {
         )
       }
     }
+    return walletServiceProvider
+  }
+
+  const getWalletService = async (networkId?: number) => {
+    const networkProvider = await getNetworkProvider(networkId)
     const { walletService: _walletService } = await createWalletService(
-      walletServiceProvider
+      networkProvider
     )
     return _walletService
   }
@@ -216,7 +226,9 @@ export const useProvider = (config: any) => {
     address,
     symbol,
     image,
+    network,
   }: WatchAssetInterface) => {
+    await switchWeb3ProviderNetwork(network)
     await provider.send('wallet_watchAsset', {
       type: 'ERC20', // THIS IS A LIE, BUT AT LEAST WE CAN GET ADDED THERE!
       options: {
