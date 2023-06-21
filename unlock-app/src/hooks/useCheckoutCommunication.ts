@@ -11,6 +11,8 @@ export interface UserInfo {
 export interface TransactionInfo {
   hash: string
   lock?: string
+  metadata?: any
+  tokenIds?: string[]
 }
 
 export enum CheckoutEvents {
