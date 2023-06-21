@@ -13,6 +13,8 @@ import { unlockAppUrl } from './urls'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
+Postmate.debug = true
+
 // TODO move to newer format for provider
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1193.md#request
 
@@ -170,8 +172,10 @@ export class Paywall {
 
   sendOrBuffer = (method: string, args: any) => {
     if (this.child) {
+      console.log('PUSH!', method, args)
       this.child.call(method, args)
     } else {
+      console.log('NO CHILD! BUFFER')
       this.childCallBuffer.push([method, args])
     }
   }

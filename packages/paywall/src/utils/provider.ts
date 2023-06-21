@@ -73,6 +73,7 @@ export class PaywallProvider extends events.EventEmitter {
   #eventHandlers: { [name: string]: (...args: any) => void } = {}
 
   constructor(paywall: Paywall, unlockUrl, config) {
+    console.log('INITIALIZING PAYWALL PROVIDER')
     super()
     this.paywall = paywall
     this.unlockUrl = unlockUrl
@@ -116,6 +117,8 @@ export class PaywallProvider extends events.EventEmitter {
         }
       }
       console.log('sending method call', args)
+      console.log('we should have a child!', this.paywall)
+      console.log('we should have a child!', this.paywall.showIframe())
       this.paywall.sendOrBuffer(Events.resolveMethodCall, args)
     })
   }
@@ -130,6 +133,8 @@ export class PaywallProvider extends events.EventEmitter {
     if (args.method === 'eth_requestAccounts') {
       await this.connect()
       return new Promise(async (resolve, reject) => {
+        this.paywall.hahaha = 'hahaha'
+        console.log('after connecting', this.paywall.child)
         this.paywall.child!.on(CheckoutEvents.userInfo, (userInfo: any) => {
           if (userInfo.address) {
             return resolve([userInfo.address])

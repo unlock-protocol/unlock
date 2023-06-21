@@ -141,7 +141,8 @@ export const useCheckoutCommunication = () => {
     resolveMethodCall,
     resolveOnEvent,
     resolveOnEnable,
-    async handleMethodCallEvent({ id, params, method }: MethodCall) {
+    handleMethodCallEvent: async ({ id, params, method }: MethodCall) => {
+      console.log('handleMethodCallEvent', { id, params, method })
       // @ts-expect-error but we know it's there
       const px = window.px
       if (px?.send) {
@@ -170,7 +171,8 @@ export const useCheckoutCommunication = () => {
         })
       }
     },
-    async handleOnEvent(eventName: string) {
+    handleOnEvent: async (eventName: string) => {
+      console.log('handleOnEvent', { eventName })
       if (!provider) {
         return
       }
