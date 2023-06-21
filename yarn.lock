@@ -14571,13 +14571,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/networks@file:../networks::locator=%40unlock-protocol%2Fpaywall%40workspace%3Apackages%2Fpaywall":
-  version: 0.0.14
-  resolution: "@unlock-protocol/networks@file:../networks#../networks::hash=784e72&locator=%40unlock-protocol%2Fpaywall%40workspace%3Apackages%2Fpaywall"
-  checksum: 215a453470b8964a65bae5fcc7f5638bc7045077669a8d42041326a260b917b9569e88a03c5333f6d28eb26d8f6bc53a1e154b04d1a63b729ddee67e683f7834
-  languageName: node
-  linkType: hard
-
 "@unlock-protocol/networks@workspace:./packages/networks, @unlock-protocol/networks@workspace:^, @unlock-protocol/networks@workspace:packages/networks":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/networks@workspace:packages/networks"
@@ -14613,7 +14606,7 @@ __metadata:
   dependencies:
     "@types/postmate": 1.5.2
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/networks": ../networks
+    "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     "@vitejs/plugin-react": ^4.0.0

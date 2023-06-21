@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/postmate": "1.5.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "@unlock-protocol/networks": "../networks",
+    "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "@vitejs/plugin-react": "^4.0.0",
