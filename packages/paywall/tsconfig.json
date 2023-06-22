@@ -7,7 +7,6 @@
     "outDir": "build",
     "moduleResolution": "node",
     "noImplicitAny": false,
-    "jsx": "react-jsx"
   },
   "exclude": [
     "build",
