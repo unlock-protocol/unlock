@@ -14094,8 +14094,6 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    "@unlock-protocol/unlock-js": "workspace:^"
-    "@vitejs/plugin-react": 4.0.0
     eslint: 8.41.0
     postmate: 1.5.2
     tsup: 6.7.0
@@ -14284,7 +14282,6 @@ __metadata:
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
@@ -14362,7 +14359,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-js@workspace:./packages/unlock-js, @unlock-protocol/unlock-js@workspace:^, @unlock-protocol/unlock-js@workspace:packages/unlock-js":
+"@unlock-protocol/unlock-js@workspace:./packages/unlock-js, @unlock-protocol/unlock-js@workspace:packages/unlock-js":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-js@workspace:packages/unlock-js"
   dependencies:
