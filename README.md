@@ -81,7 +81,7 @@ cd docker
 docker-compose exec eth-node yarn provision
 ```
 
-### Run one of the app
+### Run one of the app bla
 
 The main dashboard lives in the `unlock-app` folder of this repo.
 
