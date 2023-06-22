@@ -34,7 +34,6 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "@unlock-protocol/unlock-js": "workspace:^",
-    "@vitejs/plugin-react": "4.0.0",
     "eslint": "8.41.0",
     "tsup": "6.7.0",
     "typescript": "5.1.3",
