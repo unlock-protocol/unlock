@@ -183,7 +183,7 @@ export class Paywall {
     ...rest
   }: TransactionInfo) => {
     dispatchEvent(unlockEvents.transactionSent, { hash, lock, ...rest })
-    if (!this.paywallConfig.pessimistic && hash && lock) {
+    if (!this.paywallConfig?.pessimistic && hash && lock) {
       this.unlockPage([lock])
     }
   }
