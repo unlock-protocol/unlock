@@ -6,8 +6,8 @@ handlebars.registerHelper('links', links)
 
 export default {
   subject: `Your certification for {{{lockName}}}`,
-  html: `<h1>A NFT certification for "{{lockName}}" was airdropped to you!</h1>
-<p><a href="{{certificationUrl}}">Here</a> is your NFT certification (#{{keyId}}) for <strong>{{lockName}}</strong>. It was just airdropped to your address.</p>
+  html: `<h1>Your NFT certification for "{{lockName}}" was sent to you!</h1>
+<p>Congratulations! You can view and share your certificate for <strong>{{lockName}}</strong> on LinkedIn <a href="{{certificationUrl}}">Here</a>.</p>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
