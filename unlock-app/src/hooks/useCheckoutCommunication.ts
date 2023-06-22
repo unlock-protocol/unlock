@@ -132,7 +132,7 @@ export const useCheckoutCommunication = () => {
     },
     authenticate: (config: any) => {
       setOauthConfig({
-        clientId: config?.clientId ?? 'http://localhost:3000',
+        clientId: config?.clientId,
         responseType: config?.responseType ?? '',
         state: config?.state ?? '',
         redirectUri: config?.redirectUri ?? '',
