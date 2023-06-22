@@ -140,7 +140,6 @@ export class Paywall {
   }
 
   shakeHands = async (unlockAppUrl: string) => {
-    console.debug(`Connecting to ${unlockAppUrl}`)
     if (!postmateChild) {
       postmateChild = await new Postmate({
         url: `${unlockAppUrl}/checkout`,
@@ -172,10 +171,8 @@ export class Paywall {
 
   sendOrBuffer = (method: string, args: any) => {
     if (this.child) {
-      console.log('PUSH!', method, args)
       this.child.call(method, args)
     } else {
-      console.log('NO CHILD! BUFFER')
       this.childCallBuffer.push([method, args])
     }
   }

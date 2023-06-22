@@ -132,17 +132,16 @@ export const useCheckoutCommunication = () => {
     },
     authenticate: (config: any) => {
       setOauthConfig({
-        clientId: config?.clientId || 'http://localhost:3000',
-        responseType: '',
-        state: '',
-        redirectUri: '',
+        clientId: config?.clientId ?? 'http://localhost:3000',
+        responseType: config?.responseType ?? '',
+        state: config?.state ?? '',
+        redirectUri: config?.redirectUri ?? '',
       })
     },
     resolveMethodCall,
     resolveOnEvent,
     resolveOnEnable,
     handleMethodCallEvent: async ({ id, params, method }: MethodCall) => {
-      console.log('handleMethodCallEvent', { id, params, method })
       // @ts-expect-error but we know it's there
       const px = window.px
       if (px?.send) {

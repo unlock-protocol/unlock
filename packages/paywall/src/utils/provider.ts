@@ -73,7 +73,6 @@ export class PaywallProvider extends events.EventEmitter {
   #eventHandlers: { [name: string]: (...args: any) => void } = {}
 
   constructor(paywall: Paywall, unlockUrl, config) {
-    console.log('INITIALIZING PAYWALL PROVIDER')
     super()
     this.paywall = paywall
     this.unlockUrl = unlockUrl
@@ -116,15 +115,11 @@ export class PaywallProvider extends events.EventEmitter {
           resolve(response)
         }
       }
-      console.log('sending method call', args)
-      console.log('we should have a child!', this.paywall)
-      console.log('we should have a child!', this.paywall.showIframe())
       this.paywall.sendOrBuffer(Events.resolveMethodCall, args)
     })
   }
 
   async request(args: MethodCall): Promise<unknown> {
-    console.log(args)
     if (!args.id) {
       // Generate a random ID for this request
       args.id = window.crypto.randomUUID()
@@ -132,20 +127,9 @@ export class PaywallProvider extends events.EventEmitter {
 
     if (args.method === 'eth_requestAccounts') {
       await this.connect()
-      return new Promise(async (resolve, reject) => {
-        this.paywall.hahaha = 'hahaha'
-        console.log('after connecting', this.paywall.child)
-        this.paywall.child!.on(CheckoutEvents.userInfo, (userInfo: any) => {
-          if (userInfo.address) {
-            return resolve([userInfo.address])
-          }
-          console.error('No account found')
-          reject('No account found')
-        })
-      })
+      return this.#createRequestPromise(args)
     }
     const response = await this.#createRequestPromise(args)
-    console.log(response)
     return response
   }
 
