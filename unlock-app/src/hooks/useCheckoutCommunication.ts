@@ -171,7 +171,6 @@ export const useCheckoutCommunication = () => {
       }
     },
     handleOnEvent: async (eventName: string) => {
-      console.log('handleOnEvent', { eventName })
       if (!provider) {
         return
       }

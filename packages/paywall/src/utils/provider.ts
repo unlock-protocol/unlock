@@ -108,7 +108,6 @@ export class PaywallProvider extends events.EventEmitter {
   async #createRequestPromise(args: MethodCall) {
     return new Promise((resolve, reject) => {
       this.#methodCalls[args.id] = (error: any, response: any) => {
-        console.log('Got response!')
         if (error) {
           reject(error)
         } else {

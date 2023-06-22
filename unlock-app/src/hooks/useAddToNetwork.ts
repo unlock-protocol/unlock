@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { ProviderContext } from '../contexts/ProviderContext'
-import { ConfigContext } from '../utils/withConfig'
-
+import { config as AppConfig } from '../config/app'
 export const useAddToNetwork = (account?: string | null) => {
-  const { networks } = useContext(ConfigContext)
   const { provider } = useContext(ProviderContext)
   const [currentNetwork, setCurrentNetwork] = useState<number | null>()
 
@@ -14,7 +12,7 @@ export const useAddToNetwork = (account?: string | null) => {
 
   const getCurrentNetwork = (network: number) => {
     if (!network) return
-    const currentNetwork = networks[network]
+    const currentNetwork = AppConfig.networks[network]
     if (!currentNetwork) return
     return currentNetwork
   }
