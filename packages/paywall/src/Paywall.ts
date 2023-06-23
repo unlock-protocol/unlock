@@ -51,6 +51,13 @@ export interface MethodCall {
   id: string | number
 }
 
+export interface OauthConfig {
+  clientId: string
+  responseType?: string
+  state?: string
+  redirectUri?: string
+}
+
 export interface MethodCallResult {
   id: number
   response?: any
@@ -98,7 +105,12 @@ export class Paywall {
    * @param unlockUrl
    * @returns
    */
-  getProvider = (unlockUrl?: string, config?: any) => {
+  getProvider = (
+    unlockUrl = 'https://app.unlock-protocol.com',
+    config: OauthConfig = {
+      clientId: window.location.origin.toString(),
+    }
+  ) => {
     this.provider = new PaywallProvider(this, unlockUrl, config)
     return this.provider
   }
