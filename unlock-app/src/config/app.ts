@@ -50,6 +50,7 @@ export const config = {
   stripeApiKey:
     process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
   ethPassApiKey: 'pk_live_Th4KfDH9DZw0cuHcWzyUFBgAeHEl0MoK',
+  walletConnectApiKey: '1535029cc7500ace23802e2e990c58d7', // https://cloud.walletconnect.com/app/project?uuid=7920be27-1e19-43a8-8f7d-cafbb00d4b80
   googleMapsApiKey: 'AIzaSyD_mt4bpelB7Dlr7XzfUW9k7b9agbf_iSo',
   httpProvider: process.env.NEXT_PUBLIC_HTTP_PROVIDER || 'localhost',
   locksmithSigners: ['0x58b5CeDE554a39666091F96C8058920dF5906581'], // TODO: cleanup? We use config from networks package!
