@@ -5,6 +5,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IWETH.sol";
 
 // This contract is a "fake" bridge that uses the same signature as the real connect bridge and that we can use to easily test the message passing logic.
+
 contract TestBridge {
   IWETH wethSrc;
   IWETH wethDest;

@@ -1,10 +1,9 @@
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('../test/helpers')
 
-const getProposalId = async (proposal, govAddress) => {
+const getProposalId = async (proposal) => {
   const [targets, values, calldata, description] = await parseProposal({
     ...proposal,
-    address: govAddress,
   })
 
   const descriptionHash = ethers.utils.keccak256(
@@ -28,10 +27,13 @@ const getProposalIdFromContract = async (proposal, govAddress) => {
   const { proposerAddress } = proposal
   const [to, value, calldata, description] = await parseProposal({
     ...proposal,
-    address: govAddress,
   })
 
-  const proposerWallet = await ethers.getSigner(proposerAddress)
+  const [defaultSigner] = await ethers.getSigners()
+  const proposerWallet = proposerAddress
+    ? defaultSigner
+    : await ethers.getSigner(proposerAddress)
+
   const gov = await ethers.getContractAt(
     'UnlockProtocolGovernor',
     govAddress,
@@ -102,7 +104,6 @@ const decodeProposalArgs = async ({ contractName, functionName, calldata }) => {
 const queueProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
-    address: govAddress,
   })
   const descriptionHash = web3.utils.keccak256(description)
   const { proposerAddress } = proposal
@@ -126,7 +127,6 @@ const executeProposal = async ({ proposal, govAddress }) => {
   const { proposerAddress } = proposal
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
-    address: govAddress,
   })
   const descriptionHash = web3.utils.keccak256(description)
   let voterWallet
@@ -194,6 +194,7 @@ const loadProposal = async (proposalPath) => {
     return prop
   }
 }
+
 
 /**
  * parseUnlockOwnerCalldata
