@@ -40,9 +40,10 @@ async function main({ proposal, proposerAddress, govAddress }) {
 
   // success
   const { proposalId } = evt.args
-  // eslint-disable-next-line no-console
+  const currentBlock = await ethers.provider.getBlockNumber()
+
   console.log(
-    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
+    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash}, block: ${currentBlock})`
   )
 }
 
