@@ -44,3 +44,18 @@ const response = await paywall.loadCheckoutModal()
 
 // response is set when the modal is closed. response may include hash (the transaction hash) and lock (the address of the lock to which the transaction was sent)
 ```
+
+### Using unlock provider
+
+You can use `Paywall` class to load login modal and get a provider from it.
+
+```javascript
+import { Paywall } from '@unlock-protocol/paywall'
+import { networks } from '@unlock-protocol/networks'
+const paywall = new Paywall(networks)
+// you can now use the provider to sign messages, send transactions, etc.
+const provider = paywall.getProvider('https://app.unlock-protocol.com')
+await provider.connect() // this will open the login modal
+```
+
+You can find the tutorial [here](https://docs.unlock-protocol.com/tutorials/front-end/paywall/provider/) here to learn more about how to use the provider within your application using wagmi.
