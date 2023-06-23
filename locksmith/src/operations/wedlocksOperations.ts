@@ -21,9 +21,9 @@ import {
   DEFAULT_LOCK_SETTINGS,
   LockSettingProps,
 } from '../controllers/v2/lockSettingController'
-import { getLockMetadata } from './metadataOperations'
+import { getLockMetadata, generateKeyMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
-import { createCertificate } from '../utils/certification'
+import { getCertificateLinkedinShareUrl } from '../utils/certification'
 import { svgStringToDataURI } from '../utils/image'
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -409,10 +409,26 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
     eventDetail = await getEventDetail(lockAddress, network)
   }
 
-  if (isCertification) {
-    const certificationUrl = `${config.unlockApp}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
-    certificationDetail = {
-      certificationUrl,
+  if (isCertification && tokenId) {
+    const hostUrl = new URL(config.services.locksmith)
+    const keyData = await generateKeyMetadata(
+      lockAddress,
+      tokenId,
+      true, // include protected data
+      hostUrl.host, // host
+      network
+    )
+    const certificationUrl = getCertificateLinkedinShareUrl({
+      lockAddress,
+      network,
+      tokenId,
+      metadata: keyData,
+    })
+
+    if (certificationUrl) {
+      certificationDetail = {
+        certificationUrl,
+      }
     }
   }
 
