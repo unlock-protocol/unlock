@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import Container from 'src/components/layout/Container'
+
+import {
+  FiArrowLeft as ArrowLeftIcon,
+  FiArrowRight as ArrowRightIcon,
+} from 'react-icons/fi'
+import { useCallback } from 'react'
+import { useState } from 'react'
 
 interface TestimonialBoxProps {
   description: string
@@ -82,12 +89,29 @@ function TestimonialBox({
 }
 
 export default function Testimonial() {
-  const [viewportRef] = useEmblaCarousel({
+  const [viewportRef, embla] = useEmblaCarousel({
     dragFree: true,
     containScroll: 'trimSnaps',
     slidesToScroll: 1,
     loop: false,
   })
+
+  const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
+  const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
+  const scrollPrev = useCallback(() => embla && embla.scrollPrev(), [embla])
+  const scrollNext = useCallback(() => embla && embla.scrollNext(), [embla])
+
+  const onSelect = useCallback(() => {
+    if (!embla) return
+    setPrevBtnEnabled(embla.canScrollPrev())
+    setNextBtnEnabled(embla.canScrollNext())
+  }, [embla])
+
+  useEffect(() => {
+    if (!embla) return
+    embla.on('select', onSelect)
+    onSelect()
+  }, [embla, onSelect])
 
   return (
     <div className="flex flex-col gap-10">
@@ -98,6 +122,28 @@ export default function Testimonial() {
           </span>
         </div>
       </Container>
+
+      <div className="flex w-full px-6 -mb-4">
+        <div className="flex gap-4 ml-auto">
+          <button
+            className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
+            aria-label="previous"
+            onClick={scrollPrev}
+            disabled={!prevBtnEnabled}
+          >
+            <ArrowLeftIcon size={24} />
+          </button>
+          <button
+            className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
+            aria-label="next"
+            onClick={scrollNext}
+            disabled={!nextBtnEnabled}
+          >
+            <ArrowRightIcon size={24} />
+          </button>
+        </div>
+      </div>
+
       <div
         className="w-full overflow-hidden cursor-move sm:block"
         ref={viewportRef}

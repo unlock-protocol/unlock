@@ -143,7 +143,7 @@ export const Footer = ({
       </div>
       <div className="flex flex-col w-full gap-6 py-4 border-t border-gray-400 md:gap-0 md:items-center md:justify-between md:flex-row">
         <span className="text-xs text-brand-dark">
-          &copy; Unlock Lab, {new Date().getFullYear()}
+          &copy; Unlock Labs, {new Date().getFullYear()}
         </span>
         <div className="flex gap-8">
           {privacyUrl && (
