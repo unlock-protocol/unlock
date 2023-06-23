@@ -15,6 +15,7 @@ export class LockSetting extends Model<
   declare slug?: string
   declare checkoutConfigId?: string | null
   declare hookGuildId?: number | null
+  declare unlockFeeChargedToUser?: boolean
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -63,6 +64,11 @@ LockSetting.init(
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,
+    },
+    unlockFeeChargedToUser: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
     createdAt: {
       allowNull: false,
