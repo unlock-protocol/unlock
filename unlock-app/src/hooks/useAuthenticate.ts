@@ -77,7 +77,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const handleWalletConnectProvider = useCallback(async () => {
     // requires @walletconnect/modal for showQrModal:true
     const client = await EthereumProvider.init({
-      projectId: '1535029cc7500ace23802e2e990c58d7', // https://cloud.walletconnect.com/app/project?uuid=7920be27-1e19-43a8-8f7d-cafbb00d4b80
+      projectId: config.walletConnectApiKey,
       showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
       qrModalOptions: {
         chainImages: [],
