@@ -332,14 +332,7 @@ export const CertificationDetails = ({
     },
   } as PaywallConfigType
 
-  const showBadge = isLockManager || !account || !viewerIsOwner
   const showExpiration = key?.expiration !== MAX_UINT
-
-  const badge = isLockManager ? (
-    <span className="text-xl">Here is a preview</span>
-  ) : (
-    'Sample'
-  )
 
   const expiration = isPlaceholderData
     ? key?.expiration
@@ -374,7 +367,11 @@ export const CertificationDetails = ({
             }
             image={certificationData?.image as string}
             lockAddress={lockAddress}
-            badge={showBadge ? badge : undefined}
+            badge={
+              isLockManager ? (
+                <span className="text-xl">Here is a preview</span>
+              ) : undefined
+            }
             issuer={issuer}
             owner={!hasValidKey ? key?.owner : addressMinify(key?.owner)}
             expiration={showExpiration ? expiration : undefined}
