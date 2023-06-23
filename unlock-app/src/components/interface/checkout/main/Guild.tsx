@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, minifyAddress } from '@unlock-protocol/ui'
+import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -51,14 +51,26 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
   return (
     <Fragment>
       <Stepper service={checkoutService} />
-      <main className="h-full px-6 py-2 overflow-auto text-sm pt-4">
-        {!isLoadingGuild && (
+      <main className="h-full px-6 py-2 pt-4 overflow-auto text-sm">
+        {isLoading && (
+          <Placeholder.Root
+            data-testid="placeholder"
+            className="flex flex-col w-full gap-5 p-4"
+          >
+            <div className="flex flex-col gap-2">
+              <Placeholder.Line />
+              <Placeholder.Line />
+            </div>
+            <Placeholder.Line size="lg" />
+          </Placeholder.Root>
+        )}
+        {guild && (
           <>
             <p>
               Memberships to this lock are restricted to addresses that belong
               to the{' '}
               <Link
-                className="text-brand-ui-primary underline"
+                className="underline text-brand-ui-primary"
                 target="_blank"
                 rel="noreferrer"
                 href={`https://guild.xyz/${guild!.urlName}`}
@@ -66,7 +78,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                 {guild!.name}{' '}
                 <ExternalLinkIcon
                   size={14}
-                  className="text-brand-ui-primary inline"
+                  className="inline text-brand-ui-primary"
                 />
               </Link>{' '}
               guild.
@@ -77,7 +89,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   return (
                     <li
                       key={user}
-                      className="pl-1 mb-2 flex items-center w-full gap-1 text-center"
+                      className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
                     >
                       <LoadingIcon size={14} />
                       {minifyAddress(user)}
@@ -88,7 +100,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   return (
                     <li
                       key={user}
-                      className="pl-1 mb-2 flex items-center w-full gap-1 text-center"
+                      className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
                     >
                       ✅ {minifyAddress(user)}
                     </li>
@@ -97,7 +109,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                 return (
                   <li
                     key={user}
-                    className="pl-1 mb-2 flex items-center w-full gap-1 text-center"
+                    className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
                   >
                     ❌ {minifyAddress(user)}
                   </li>
@@ -148,7 +160,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             type="submit"
             form="password"
             className="w-full"
-            disabled={disabled}
+            disabled={isLoadingGuildData || disabled}
             loading={isLoading}
             onClick={onSubmit}
           >

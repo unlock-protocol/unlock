@@ -6,6 +6,7 @@ import * as Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as pricingOperations from '../../operations/pricingOperations'
+import * as lockSettingOperations from '../../operations/lockSettingOperations'
 import { MIN_PAYMENT_STRIPE_ONRAMP } from '../../utils/constants'
 
 export const amount: RequestHandler = async (request, response) => {
@@ -106,13 +107,25 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   const web3Service = new Web3Service(networks)
   const lock = await web3Service.getLock(lockAddress, network)
 
-  const result = await pricingOperations.getDefiLammaPrice({
-    network,
-    erc20Address: lock?.currencyContractAddress,
-    amount: Number(`${lock.keyPrice}`),
-  })
+  const [defiLammaPricing, settingsPricing] = await Promise.all([
+    pricingOperations.getDefiLammaPrice({
+      network,
+      erc20Address: lock?.currencyContractAddress,
+      amount: Number(`${lock.keyPrice}`),
+    }),
+    lockSettingOperations.getSettings({
+      lockAddress,
+      network,
+    }),
+  ])
 
-  const totalPriceInCents = (result.priceInAmount ?? 0) * 100
+  let totalPriceInCents = (defiLammaPricing.priceInAmount ?? 0) * 100
+
+  // priority to pricing from settings if set
+  if (settingsPricing?.creditCardPrice) {
+    totalPriceInCents = settingsPricing.creditCardPrice // this price is already in cents
+  }
+
   const creditCardEnabled = await getCreditCardEnabledStatus({
     lockAddress: Normalizer.ethereumAddress(lockAddress),
     network,
@@ -120,4 +133,52 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   })
 
   return response.status(200).send({ creditCardEnabled })
+}
+
+/**
+ * Get pricing for recipients + total charges with fees
+ */
+export const getTotalChargesForLock: RequestHandler = async (
+  request,
+  response
+) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+
+  const { recipients: recipientQ = [], purchaseData = [] } = request.query
+
+  // Setup values
+  const recipients: string[] = Array.isArray(recipientQ)
+    ? recipientQ.map((x) => x.toString())
+    : [recipientQ.toString()]
+  const data: string[] = Array.isArray(purchaseData)
+    ? purchaseData.map((x) => x.toString())
+    : [purchaseData.toString()]
+
+  // `createPricingForPurchase` already includes the logic to returns credit custom credit card price when set
+  const pricing = await createPricingForPurchase({
+    lockAddress,
+    network,
+    recipients,
+    referrers: Array.from({ length: recipients.length }).map(() => ''),
+    data,
+  })
+
+  const { creditCardProcessingFee, unlockServiceFee, gasCost, total } = pricing
+
+  return response.status(200).send({
+    creditCardProcessingFee,
+    unlockServiceFee,
+    gasCost,
+    total,
+    prices: [
+      ...pricing.recipients.map((recipient) => {
+        return {
+          userAddress: recipient.address,
+          amount: recipient.price.amount,
+          symbol: recipient.price.symbol,
+        }
+      }),
+    ],
+  })
 }

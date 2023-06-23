@@ -100,7 +100,7 @@ export const mumbai: NetworkConfig = {
       {
         id: HookType.CAPTCHA,
         name: 'Captcha',
-        address: '0x639143cbf90F27eA5Ce4b3A7D869d4D7878009A5',
+        address: '0xdd753E08BB09F22593537f29100F0eD98AfA57FA',
       },
     ],
   },
