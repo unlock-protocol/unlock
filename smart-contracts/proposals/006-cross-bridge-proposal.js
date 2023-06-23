@@ -54,7 +54,7 @@ const abiIConnext = [
   },
 ]
 
-module.exports = async ([destChainId = 137]) => {
+module.exports = async ([destChainId = 137] = []) => {
   // parse call data for function call
   const { interface: unlockInterface } = await ethers.getContractAt(
     'Unlock',
