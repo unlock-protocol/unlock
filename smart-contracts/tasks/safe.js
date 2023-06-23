@@ -1,4 +1,5 @@
 const { task } = require('hardhat/config')
+const { resolve } = require('path')
 
 task('safe:create', 'Create a Safe from a list of owners')
   .addOptionalVariadicPositionalParam('owners', 'addresses of the owners')
@@ -56,4 +57,25 @@ task('safe:owners', 'List owners of a safe')
     const owners = await safeOwners({ safeAddress, chainId })
     // log the results
     owners.forEach((owner) => console.log(`${owner}`))
+  })
+
+task('safe:submit', 'Submit to multisig from a proposal file')
+  .addParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('safeAddress', 'the address of the multisig contract')
+  .addOptionalParam(
+    'chainId',
+    'the id of the chain to fetch from (default to hardhat provider)'
+  )
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal: proposalPath, safeAddress, params }) => {
+    // eslint-disable-next-line global-require
+    const { loadProposal } = require('../helpers/gov')
+    const { calls } = await loadProposal(resolve(proposalPath), params)
+
+    // eslint-disable-next-line global-require
+    const submitTx = require('../scripts/multisig/submitTx')
+    await submitTx({ safeAddress, tx: calls })
   })
