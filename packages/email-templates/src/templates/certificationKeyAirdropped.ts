@@ -1,13 +1,15 @@
 import handlebars from 'handlebars'
 import { customContentStyle } from './helpers/customContentStyle'
 import { links } from './helpers/links'
+import { certificationLink } from './helpers/certificationLink'
 
 handlebars.registerHelper('links', links)
+handlebars.registerHelper('certificationLink', certificationLink)
 
 export default {
   subject: `Your certification for {{{lockName}}}`,
-  html: `<h1>A NFT certification for "{{lockName}}" was airdropped to you!</h1>
-<p><a href="{{certificationUrl}}">Here</a> is your NFT certification (#{{keyId}}) for <strong>{{lockName}}</strong>. It was just airdropped to your address.</p>
+  html: `<h1>Your NFT certification for "{{lockName}}" was airdropped!</h1>
+{{certificationLink lockName certificationUrl}}
 
 {{#if customContent}}
 <section style="${customContentStyle}">
