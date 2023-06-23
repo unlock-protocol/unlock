@@ -227,10 +227,10 @@ const getProposalState = async (proposalId, govAddress) => {
   return states[state]
 }
 
-const loadProposal = async (proposalPath) => {
+const loadProposal = async (proposalPath, params) => {
   const prop = require(proposalPath)
   if (typeof prop === 'function') {
-    return await prop()
+    return await prop(params)
   } else {
     return prop
   }
