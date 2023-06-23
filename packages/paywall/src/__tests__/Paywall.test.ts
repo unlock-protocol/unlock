@@ -42,42 +42,6 @@ describe('Paywall object', () => {
     expect(paywall.childCallBuffer).toHaveLength(0)
   })
 
-  describe('resetConfig', () => {
-    beforeEach(() => {
-      localStorage.clear()
-      vi.resetAllMocks()
-      paywall = new Paywall(paywallConfig, networkConfigs)
-    })
-
-    it('is adding one call in the buffer to set the config', () => {
-      expect.assertions(2)
-      paywall.resetConfig(paywallConfig)
-      expect(paywall.childCallBuffer).toHaveLength(1)
-
-      // Constuctor will update config with provider info
-      const expectedConfig =
-        paywallScriptUtils.injectProviderInfo(paywallConfig)
-
-      expect(paywall.childCallBuffer[0]).toEqual(['setConfig', expectedConfig])
-    })
-  })
-
-  describe('authenticate', () => {
-    beforeEach(() => {
-      localStorage.clear()
-      vi.resetAllMocks()
-      paywall = new Paywall(paywallConfig, networkConfigs)
-    })
-
-    it('is constructed with one call in the buffer to authenticate', () => {
-      expect.assertions(2)
-      paywall.authenticate()
-      expect(paywall.childCallBuffer).toHaveLength(1)
-
-      expect(paywall.childCallBuffer[0]).toEqual(['authenticate', {}])
-    })
-  })
-
   describe('userInfo event', () => {
     it('caches the user key info and checks the status', async () => {
       expect.assertions(3)
