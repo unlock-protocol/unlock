@@ -10,8 +10,7 @@ const {
 async function main({ proposal, govAddress }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
-  const isDev = chainId === 31337
-
+  const isDev = chainId === 31337 || process.env.RUN_FORK
   const proposalId = proposal.proposalId || (await getProposalId(proposal))
 
   if (!proposalId) {
@@ -27,17 +26,15 @@ async function main({ proposal, govAddress }) {
     const deadline = await gov.proposalDeadline(proposalId)
     const currentBlock = await ethers.provider.getBlockNumber()
     if (currentBlock < deadline) {
-      await time.advanceBlockTo(deadline.toNumber() + 1)
-      // eslint-disable-next-line no-console
       console.log(
-        `GOV QUEUE > closing voting period (advancing to block #${deadline.toNumber()})`
+        `GOV QUEUE > closing voting period (advancing to block ${deadline.toNumber()})`
       )
-      state = await getProposalState(proposalId)
+      await time.advanceBlockTo(deadline.toNumber() + 1)
+      state = await getProposalState(proposalId, govAddress)
     }
   }
 
   const votes = await getProposalVotes(proposalId, govAddress)
-  // eslint-disable-next-line no-console
   console.log(
     `GOV QUEUE > Current proposal ${state} - votes (against, for, abstain): ${votes}`
   )
@@ -48,7 +45,6 @@ async function main({ proposal, govAddress }) {
     const { events, transactionHash } = await tx.wait()
     const evt = events.find((v) => v.event === 'ProposalQueued')
     const { eta } = evt.args
-    // eslint-disable-next-line no-console
     console.log(
       `GOV QUEUE > Proposal queued. ETA :${new Date(
         eta.toNumber() * 1000
@@ -56,7 +52,6 @@ async function main({ proposal, govAddress }) {
     )
   } else if (state === 'Queued') {
     const eta = await gov.proposalEta(proposalId)
-    // eslint-disable-next-line no-console
     console.log(
       `GOV QUEUE > Proposal is queued for execution. ETA :${new Date(
         eta.toNumber() * 1000

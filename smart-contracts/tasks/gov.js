@@ -26,16 +26,32 @@ task('gov:submit', 'Submit a proposal to UDT Governor contract')
 task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .addOptionalParam('voter', 'The address of the voter')
-  .setAction(async ({ proposal: proposalPath, voter, govAddress }) => {
-    const voteProposal = require('../scripts/gov/vote')
-    const { loadProposal, getProposalId } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath))
-    const proposalId =
-      proposal.proposalId || (await getProposalId(proposal, govAddress))
+  .addOptionalParam('voterAddress', 'The address of the voter')
+  .addOptionalParam(
+    'proposalBlock',
+    'The block when the proposal was submitted (used for voting delay in dev)'
+  )
+  .setAction(
+    async ({
+      proposal: proposalPath,
+      voterAddress,
+      govAddress,
+      proposalBlock,
+    }) => {
+      const voteProposal = require('../scripts/gov/vote')
+      const { loadProposal, getProposalId } = require('../helpers/gov')
+      const proposal = await loadProposal(resolve(proposalPath))
+      const proposalId =
+        proposal.proposalId || (await getProposalId(proposal, govAddress))
 
-    return await voteProposal({ proposalId, voter, govAddress })
-  })
+      return await voteProposal({
+        proposalId,
+        voterAddress,
+        govAddress,
+        proposalBlock,
+      })
+    }
+  )
 
 task('gov:queue', 'Queue proposal in timelock')
   .addParam('proposal', 'The file containing the proposal')
@@ -79,7 +95,7 @@ task('gov:votes', 'Show votes for a specific proposal')
       govAddress
     )
 
-    const quorum = await getQuorum({ govAddress })
+    const quorum = await getQuorum(govAddress)
     const { formatEther } = ethers.utils
 
     // eslint-disable-next-line no-console
