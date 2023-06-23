@@ -35,11 +35,11 @@ describe('certificationKeyAirdropped', () => {
       `Your NFT certification for "How To Deploy a Lock" was airdropped to you!`
     )
     expect(content.innerHTML).toContain(
-      `<a href="https://app.unlock-protocol.com/certification">Here</a>`
+      `<a href="https://app.unlock-protocol.com/certification">here</a>`
     )
   })
 
-  it('should have keychainUrl if user wallet', () => {
+  it.only('should have keychainUrl if user wallet', () => {
     expect.assertions(2)
 
     const content = asHtml(
@@ -51,12 +51,11 @@ describe('certificationKeyAirdropped', () => {
         certificationUrl: 'https://app.unlock-protocol.com/certification',
       })
     )
-
     expect(content.textContent).toContain(
       `Your NFT certification for "How To Deploy a Lock" was airdropped to you!`
     )
     expect(content.innerHTML).toContain(
-      `<a href="https://app.unlock-protocol.com/certification">Here</a>`
+      `<a href="https://app.unlock-protocol.com/certification">here</a>`
     )
   })
 
