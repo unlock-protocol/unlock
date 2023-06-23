@@ -21,6 +21,7 @@ contract UnlockProtocolGovernor is
 
   function initialize(
     IVotesUpgradeable _token,
+    uint __votingDelay,
     uint __votingPeriod,
     uint __quorum,
     TimelockControllerUpgradeable _timelock
@@ -30,8 +31,8 @@ contract UnlockProtocolGovernor is
     __GovernorVotes_init(_token);
     __GovernorTimelockControl_init(_timelock);
 
-    _votingDelay = 1; // 1 block
-    _votingPeriod = __votingPeriod; // 1 week
+    _votingDelay = __votingDelay;
+    _votingPeriod = __votingPeriod;
     _quorum = __quorum;
   }
 
