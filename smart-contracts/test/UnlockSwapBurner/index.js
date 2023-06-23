@@ -9,7 +9,7 @@ const {
   addSomeETH,
   USDC,
   addERC20,
-  // addERC20,
+  impersonate,
   // reverts,
 } = require('../helpers')
 const uniswapRouterAddresses = require('../../scripts/uniswap/routerAddresses.json')
@@ -75,12 +75,12 @@ describe(`swapAndBurn`, function () {
       expect(balanceBefore.gt(0)).to.equal(true)
     })
 
-    it.skip('burns USDC with a specified amount', async () => {
-      await swapBurner.swapAndBurn(usdc.address)
-      expect(balanceBefore.eq(0)).to.equal(false)
-    })
+    it('burns USDC entire balance', async () => {
+      const unlockSigner = await impersonate(unlockAddress)
+      await usdc
+        .connect(unlockSigner)
+        .approve(swapBurner.address, balanceBefore.toString())
 
-    it('burns USDC entire amount', async () => {
       await swapBurner.swapAndBurn(usdc.address, 0)
       expect(balanceBefore.eq(0)).to.equal(false)
     })

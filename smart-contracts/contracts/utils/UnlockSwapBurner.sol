@@ -94,20 +94,19 @@ contract UnlockSwapBurner {
       amount
     );
 
-    // TODO: Permit2 settings
     // Approve the router to spend src ERC20
-    // TransferHelper.safeApprove(srcToken, uniswapRouter, amountInMax);
+    TransferHelper.safeApprove(tokenAddress, swapRouter, amount);
 
-    // // approve PERMIT2 to manipulate the token
-    // IERC20(srcToken).approve(permit2, amountInMax);
+    // approve PERMIT2 to manipulate the token
+    IERC20(tokenAddress).approve(permit2, amount);
 
-    // // issue PERMIT2 Allowance
-    // IPermit2(permit2).approve(
-    //   srcToken,
-    //   uniswapRouter,
-    //   amountInMax.toUint160(),
-    //   uint48(block.timestamp + 60) // expires after 1min
-    // );
+    // issue PERMIT2 Allowance
+    IPermit2(permit2).approve(
+      tokenAddress,
+      swapRouter,
+      amount.toUint160(),
+      uint48(block.timestamp + 60) // expires after 1min
+    );
 
     // swap tokens params
     ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
