@@ -20,10 +20,7 @@ export interface Typegen0 {
     selectQuantity: 'SELECT_QUANTITY'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
-    solveCaptcha: 'SOLVE_CAPTCHA'
     submitData: 'SUBMIT_DATA'
-    submitPassword: 'SUBMIT_PASSWORD'
-    submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
   eventsCausingDelays: {}
