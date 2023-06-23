@@ -8,7 +8,7 @@ handlebars.registerHelper('certificationLink', certificationLink)
 
 export default {
   subject: `Your certification for {{{lockName}}}`,
-  html: `<h1>Your NFT certification for "{{lockName}}" was sent to you!</h1>
+  html: `<h1>A NFT certification for "{{lockName}}" was sent to you!</h1>
 {{certificationLink lockName certificationUrl}}
 
 {{#if customContent}}
