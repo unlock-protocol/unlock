@@ -16,9 +16,13 @@ task('gov', 'Submit (and validate) a proposal to UDT Governor contract')
 task('gov:submit', 'Submit a proposal to UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal: proposalPath, govAddress }) => {
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
     const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath))
+    const proposal = await loadProposal(resolve(proposalPath), params)
     const submitProposal = require('../scripts/gov/submit')
     return await submitProposal({ proposal, govAddress })
   })
@@ -27,6 +31,10 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
   .addOptionalParam('voterAddress', 'The address of the voter')
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
   .addOptionalParam(
     'proposalBlock',
     'The block when the proposal was submitted (used for voting delay in dev)'
@@ -37,10 +45,11 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
       voterAddress,
       govAddress,
       proposalBlock,
+      params,
     }) => {
       const voteProposal = require('../scripts/gov/vote')
       const { loadProposal, getProposalId } = require('../helpers/gov')
-      const proposal = await loadProposal(resolve(proposalPath))
+      const proposal = await loadProposal(resolve(proposalPath), params)
       const proposalId =
         proposal.proposalId || (await getProposalId(proposal, govAddress))
 
@@ -56,21 +65,29 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
 task('gov:queue', 'Queue proposal in timelock')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal: proposalPath, govAddress }) => {
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
     const queueProposal = require('../scripts/gov/queue')
     const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath))
+    const proposal = await loadProposal(resolve(proposalPath), params)
     return await queueProposal({ proposal, govAddress })
   })
 
 task('gov:execute', 'Closing vote period and execute a proposal (local only)')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal: proposalPath, govAddress }) => {
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
     const executeProposal = require('../scripts/gov/execute')
     const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath))
-    return await executeProposal({ proposal, govAddress })
+    const proposal = await loadProposal(resolve(proposalPath), params)
+    return await executeProposal({ proposal, govAddress, params })
   })
 
 /**
@@ -79,42 +96,48 @@ task('gov:execute', 'Closing vote period and execute a proposal (local only)')
 task('gov:votes', 'Show votes for a specific proposal')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal: proposalPath, govAddress }, { ethers }) => {
-    const {
-      getProposalVotes,
-      getProposalId,
-      getQuorum,
-    } = require('../helpers/gov')
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(
+    async ({ proposal: proposalPath, govAddress, params }, { ethers }) => {
+      const {
+        getProposalVotes,
+        getProposalId,
+        getQuorum,
+      } = require('../helpers/gov')
 
-    const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath))
-    const proposalId =
-      proposal.proposalId || (await getProposalId(proposal, govAddress))
-    const { againstVotes, forVotes, abstainVotes } = await getProposalVotes(
-      proposalId,
-      govAddress
-    )
+      const { loadProposal } = require('../helpers/gov')
+      const proposal = await loadProposal(resolve(proposalPath), params)
+      const proposalId =
+        proposal.proposalId || (await getProposalId(proposal, govAddress))
+      const { againstVotes, forVotes, abstainVotes } = await getProposalVotes(
+        proposalId,
+        govAddress
+      )
 
-    const quorum = await getQuorum(govAddress)
-    const { formatEther } = ethers.utils
+      const quorum = await getQuorum(govAddress)
+      const { formatEther } = ethers.utils
 
-    // eslint-disable-next-line no-console
-    console.log(
-      `Current proposal votes 
+      // eslint-disable-next-line no-console
+      console.log(
+        `Current proposal votes 
       - against:  ${formatEther(againstVotes.toString())}
       - for: ${formatEther(forVotes.toString())}
       - abstain: ${formatEther(abstainVotes.toString())}
       - quorum: ${formatEther(quorum.toString())}`
-    )
-  })
+      )
+    }
+  )
 
 task('gov:state', 'Check proposal state')
   .addParam('proposalId', 'The proposal id')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposalId }) => {
+  .setAction(async ({ proposalId, govAddress }) => {
     const { getProposalState } = require('../helpers/gov')
 
-    const state = await getProposalState(proposalId)
+    const state = await getProposalState(proposalId, govAddress)
     // eslint-disable-next-line no-console
     console.log(`Current proposal state: ${state}`)
   })
@@ -122,9 +145,13 @@ task('gov:state', 'Check proposal state')
 task('gov:id', 'Retrieve proposal ID')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal }) => {
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal, params }) => {
     const { loadProposal } = require('../helpers/gov')
-    const prop = await loadProposal(resolve(proposal))
+    const prop = await loadProposal(resolve(proposal), params)
 
     const { getProposalId } = require('../helpers/gov')
     const proposalId = await getProposalId(prop)
