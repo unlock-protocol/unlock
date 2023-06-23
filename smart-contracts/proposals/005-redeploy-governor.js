@@ -4,24 +4,46 @@
  * 1. deploy a new instance of Governor (if necessary)
  * 2. set new governor as admin of the timelock
  * 3. remove existing governor as admin of the timelock
+ *
+ * To use, you need to pass the address of the current gov as first positional parameter.
+ *
+ * ## Submit the proposal
+ *
+ * ```
+ * yarn hardhat gov:submit --gov-address 0x7757f7f21f5fa9b1fd168642b79416051cd0bb94  \
+ *    --network localhost \
+ *    --proposal proposals/005-redeploy-governor.js \
+ *    0x7757f7f21f5fa9b1fd168642b79416051cd0bb94
+ * ```
+ *
+ * ## Vote for proposal
+ *
+ * To vote, you need to retrieve the address of the freshly deployed Governor instance and
+ * add it as second positional parameter
+ *
+ * ```
+ * yarn hardhat gov:vote --gov-address 0x7757f7f21f5fa9b1fd168642b79416051cd0bb94  \
+ *  --network localhost \
+ *  --proposal proposals/005-redeploy-governor.js
+ *  0x7757f7f21f5fa9b1fd168642b79416051cd0bb94 0xaB82D702A4e0cD165072C005dc504A21c019718F
+ * ```
  */
 
 const { ethers, upgrades, run } = require('hardhat')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
-const oldGovAddress = '0xDcDE260Df00ba86889e8B112DfBe1A4945B35CA9'
-
-async function main({
-  newGovAddress = '0x19c0841576948fc46f0da53869b8c95634e68ad2',
-} = {}) {
+async function main([oldGovAddress, newGovAddress]) {
+  if (!oldGovAddress) {
+    throw Error(`Missing old governor address.`)
+  }
   // get addresses
-  const oldGov = await ethers.getContractAt(
+  const oldGovernor = await ethers.getContractAt(
     'UnlockProtocolGovernor',
     oldGovAddress
   )
 
-  const timeLockAddress = await oldGov.timelock()
-  const tokenAddress = await oldGov.token()
+  const timeLockAddress = await oldGovernor.timelock()
+  const tokenAddress = await oldGovernor.token()
 
   const timelock = await ethers.getContractAt(
     'UnlockProtocolTimelock',
@@ -39,16 +61,14 @@ async function main({
   if (!newGovAddress) {
     const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
 
-    // get params from old governor
-    const oldGovernor = await ethers.getContractAt(
-      'UnlockProtocolGovernor',
-      oldGovAddress
-    )
     const votingPeriod = await oldGovernor.votingPeriod()
-    const quorum = await oldGovernor.quorum()
+    const votingDelay = await oldGovernor.votingDelay()
+    const currentBlock = await ethers.provider.getBlockNumber()
+    const quorum = await oldGovernor.quorum(currentBlock - 1)
 
     const governor = await upgrades.deployProxy(Governor, [
       tokenAddress,
+      votingDelay,
       votingPeriod,
       quorum,
       timeLockAddress,
@@ -64,9 +84,11 @@ async function main({
       ethers.provider,
       newGovAddress
     )
-    await run('verify:verify', {
-      address: implementation,
-    })
+    if (!process.env.RUN_FORK) {
+      await run('verify:verify', {
+        address: implementation,
+      })
+    }
   }
 
   const calls = [
