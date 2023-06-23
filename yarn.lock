@@ -14100,6 +14100,7 @@ __metadata:
     typescript: 5.1.3
     vite: 4.3.9
     vite-plugin-css-injected-by-js: 3.1.1
+    vite-plugin-node-polyfills: 0.9.0
     vitest: 0.31.4
     vitest-fetch-mock: 0.2.2
   languageName: unknown
@@ -43449,6 +43450,18 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0 || ^3.0.0 || ^4.0.0
   checksum: d4fa195a17ae080fd65b1aa90ce484360aa080f1574c9dafc5e136e6b3830bf92ce064824e6bd6e056f2a2cf70138841851425e28d664614bd1788d435a05dc8
+  languageName: node
+  linkType: hard
+
+"vite-plugin-node-polyfills@npm:0.9.0":
+  version: 0.9.0
+  resolution: "vite-plugin-node-polyfills@npm:0.9.0"
+  dependencies:
+    "@rollup/plugin-inject": ^5.0.3
+    node-stdlib-browser: ^1.2.0
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0
+  checksum: 734ccfa83dd7f484b3aeb5b1128b0439facfe95543fe46f41769b3bf157872972eb44b4f28b297e88c16b93af572fb5678c1a95a11881bbfdf0ecc7522ba582e
   languageName: node
   linkType: hard
 
