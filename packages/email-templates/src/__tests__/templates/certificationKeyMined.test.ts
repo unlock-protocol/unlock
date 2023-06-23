@@ -32,13 +32,13 @@ describe('certificationKeyMinded', () => {
     )
 
     expect(content.textContent).toContain(
-      `Your NFT certification for "How To Deploy a Lock" was sent to you!`
+      `A NFT certification for "How To Deploy a Lock" was sent to you!`
     )
     expect(content.innerHTML).toContain(
       `<a href="https://app.unlock-protocol.com/keychain">Unlock Keychain</a>`
     )
     expect(content.innerHTML).toContain(
-      `<a href="https://app.unlock-protocol.com/certification">here</a>`
+      `<a href="https://app.unlock-protocol.com/certification">there</a>`
     )
   })
 })
