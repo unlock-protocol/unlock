@@ -73,6 +73,10 @@ export const polygon: NetworkConfig = {
     decimals: 18,
     address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
   },
+  bridge: {
+    domainId: 1886350457,
+    connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
+  },
   tokens: [
     {
       name: 'Wrapped Ether',

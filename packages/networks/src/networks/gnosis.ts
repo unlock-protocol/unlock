@@ -51,6 +51,10 @@ export const gnosis: NetworkConfig = {
   faucet: 'https://gnosisfaucet.com/',
   isTestNetwork: false,
   maxFreeClaimCost: 100,
+  bridge: {
+    domainId: 6778479,
+    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+  },
   tokens: [
     {
       name: 'USD Coin',
