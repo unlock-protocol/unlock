@@ -129,6 +129,7 @@ export const useCheckoutCommunication = () => {
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setPaywallConfig(config)
+      setOauthConfig(undefined)
     },
     authenticate: (config: any) => {
       setOauthConfig({
@@ -137,6 +138,7 @@ export const useCheckoutCommunication = () => {
         state: config?.state ?? '',
         redirectUri: config?.redirectUri ?? '',
       })
+      setPaywallConfig(undefined)
     },
     resolveMethodCall,
     resolveOnEvent,
