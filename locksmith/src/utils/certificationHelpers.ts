@@ -35,12 +35,12 @@ export const getCertificateLinkedinShareUrl = ({
 }: LinkedinShareProps): string | null => {
   const certificateData = toFormData(metadata)
 
-  const certificationUrl = `${window?.location?.origin}${getCertificationPath({
+  const certificationUrl = getCertificationPath({
     metadata,
     lockAddress,
     network,
     tokenId,
-  })}`
+  })
 
   if (!metadata.name || !certificateData) {
     return null

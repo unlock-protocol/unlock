@@ -23,8 +23,10 @@ import {
 } from '../controllers/v2/lockSettingController'
 import { getLockMetadata, generateKeyMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
-import { getCertificateLinkedinShareUrl } from '../utils/certification'
+import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
 import { svgStringToDataURI } from '../utils/image'
+import { createCertificate } from '../utils/certification'
+
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
