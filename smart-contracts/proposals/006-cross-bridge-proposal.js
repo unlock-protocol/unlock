@@ -1,3 +1,7 @@
+/**
+ * Example of a bridged proposal that will be sent across Connext to multisigs
+ * on the other side of the network.
+ */
 const { ADDRESS_ZERO } = require('../test/helpers')
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
@@ -54,7 +58,7 @@ const abiIConnext = [
   },
 ]
 
-module.exports = async ([destChainId = 137] = []) => {
+module.exports = async ([destChainId = 137, destAddress] = []) => {
   // parse call data for function call
   const { interface: unlockInterface } = await ethers.getContractAt(
     'Unlock',
@@ -74,8 +78,12 @@ module.exports = async ([destChainId = 137] = []) => {
   } = networks[chainId]
 
   // dest info
-  const { unlockAddress: destUnlockAddress, bridge } = networks[destChainId]
+  const { multisig, bridge } = networks[destChainId]
   const { domainId: destDomainId } = bridge
+
+  if (!destAddress) {
+    destAddress = multisig
+  }
 
   // proposed changes
   const calls = [
@@ -85,7 +93,7 @@ module.exports = async ([destChainId = 137] = []) => {
       functionName: 'xcall',
       functionArgs: [
         destDomainId,
-        destUnlockAddress,
+        destAddress,
         ADDRESS_ZERO, // asset
         ADDRESS_ZERO, // delegate
         0, // amount
@@ -94,6 +102,8 @@ module.exports = async ([destChainId = 137] = []) => {
       ],
     },
   ]
+
+  console.log(calls)
 
   // send to multisig / DAO
   return {
