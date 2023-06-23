@@ -412,7 +412,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   }
 
   if (isCertification && tokenId) {
-    const hostUrl = new URL(config.services.locksmith)
+    const hostUrl = new URL(config.unlockApp)
     const keyData = await generateKeyMetadata(
       lockAddress,
       tokenId,
