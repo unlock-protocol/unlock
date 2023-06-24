@@ -401,6 +401,8 @@ components:
         hookGuildId:
           type: string
           nullable: true
+        unlockFeeChargedToUser:
+          type: boolean
 
   parameters:
     Network:
