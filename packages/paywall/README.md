@@ -37,7 +37,10 @@ const networkConfigs = {
 // If no provider is set, the library uses window.ethereum
 const provider = window.ethereum
 
-const paywall = new Paywall(paywallConfig, networkConfigs, provider)
+const paywall = new Paywall(networks)
+
+// set the configuration
+await paywall.setPaywallConfig(paywallConfig)
 
 // Loads the checkout UI
 const response = await paywall.loadCheckoutModal()
