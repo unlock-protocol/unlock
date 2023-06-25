@@ -23,18 +23,21 @@ if (typeof window !== 'undefined') {
       rawConfig.network = parseInt(rawConfig.network, 10)
     }
 
-    const paywall = new Paywall(rawConfig, networkConfigs)
+    const paywall = new Paywall(networkConfigs)
+    paywall.setPaywallConfig(rawConfig)
+
     const {
       getState,
       getUserAccountAddress,
       loadCheckoutModal,
-      resetConfig,
+      setPaywallConfig,
       authenticate,
     } = paywall
 
     setupUnlockProtocolVariable({
       loadCheckoutModal,
-      resetConfig,
+      resetConfig: setPaywallConfig,
+      setPaywallConfig,
       getUserAccountAddress,
       getState,
       authenticate,
