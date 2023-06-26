@@ -1,12 +1,11 @@
 import { ToggleSwitch } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface CreditCardUnlockFeeFormProps {
-  unlockFeeChargedToUser: boolean
+  unlockPaidByLockManager: boolean
 }
 
 interface CreditCardUnlockFeeProps {
@@ -20,21 +19,23 @@ export default function CreditCardUnlockFee({
   network,
   disabled,
 }: CreditCardUnlockFeeProps) {
-  const [includeUnlockFee, setIncludeUnlockFee] = useState(false)
+  const [unlockPaidByLockManager, setUnlockPaidByLockManager] = useState(false)
+  const { handleSubmit } = useForm<CreditCardUnlockFeeFormProps>({
+    defaultValues: async () => await getDefaultValues(),
+  })
+
   const getDefaultValues = async (): Promise<CreditCardUnlockFeeFormProps> => {
     const { unlockFeeChargedToUser = true } = (
       await storage.getLockSettings(network, lockAddress)
     ).data
 
-    setIncludeUnlockFee(unlockFeeChargedToUser)
+    const unlockPaidByLockManager = !unlockFeeChargedToUser
+
+    setUnlockPaidByLockManager(unlockPaidByLockManager)
     return {
-      unlockFeeChargedToUser,
+      unlockPaidByLockManager,
     }
   }
-
-  const { handleSubmit } = useForm<CreditCardUnlockFeeFormProps>({
-    defaultValues: async () => await getDefaultValues(),
-  })
 
   const saveSettingMutation = useSaveLockSettings()
 
@@ -42,9 +43,8 @@ export default function CreditCardUnlockFee({
     await saveSettingMutation.mutateAsync({
       lockAddress,
       network,
-      unlockFeeChargedToUser: includeUnlockFee,
+      unlockFeeChargedToUser: !unlockPaidByLockManager,
     })
-    ToastHelper.success('Fee setting updated.')
   }
 
   return (
@@ -56,9 +56,11 @@ export default function CreditCardUnlockFee({
           </span>
           <ToggleSwitch
             disabled={disabled || saveSettingMutation.isLoading}
-            enabled={includeUnlockFee}
-            setEnabled={setIncludeUnlockFee}
-            onChange={onSubmit}
+            enabled={unlockPaidByLockManager}
+            setEnabled={setUnlockPaidByLockManager}
+            onChange={() => {
+              onSubmit()
+            }}
           />
         </div>
         <div className="text-sm text-gray-700">
