@@ -1187,4 +1187,23 @@ export default class WalletService extends UnlockService {
     }
     return version.transferFrom.bind(this)(params, transactionOptions, callback)
   }
+
+  async setGasRefund(
+    params: {
+      lockAddress: string
+      gasRefundValue: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setGasRefundValue) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setGasRefundValue.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }
