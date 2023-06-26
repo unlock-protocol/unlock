@@ -105,9 +105,10 @@ export const getPricingFromSettings = async ({
     const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
     const amountInUSD = amountInCents / 100 // get total price in USD
 
-    const symbol =
-      // @ts-expect-error
-      CurrencyType[creditCardCurrency as typeof CurrencyType] || '$'
+    // @ts-expect-error
+    const currency = creditCardCurrency as keyof typeof CurrencyType
+
+    const symbol = CurrencyType?.[currency] || '$'
 
     return {
       amount: amountInUSD, // amount is usd for the single key
