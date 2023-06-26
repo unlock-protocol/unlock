@@ -31,6 +31,8 @@ import { IconType } from 'react-icons'
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
+import { useMetadata } from '~/hooks/metadata'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface ActionBarProps {
   lockAddress: string
@@ -54,6 +56,13 @@ export function downloadAsCSV(cols: string[], metadata: any[]) {
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+  const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
+    lockAddress,
+    network,
+  })
+
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
   const getMembers = async () => {
     const response = await storage.keys(
       network,
@@ -92,20 +101,24 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     },
   })
 
+  const isLoading = onDownloadMutation.isLoading || isLoadingMetadata
+
   return (
     <>
       <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-brand-ui-primary">Members</span>
+        <span className="text-xl font-bold text-brand-ui-primary">
+          {isEvent ? 'Attendees' : 'Members'}
+        </span>
         {isManager && (
           <div className="flex gap-2">
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={onDownloadMutation.isLoading}
+              disabled={isLoading}
               onClick={() => onDownloadMutation.mutate()}
             >
               <div className="flex items-center gap-2">
-                {onDownloadMutation?.isLoading ? (
+                {isLoading ? (
                   <SpinnerIcon
                     className="text-brand-ui-primary animate-spin"
                     size={16}
@@ -113,7 +126,9 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
                 ) : (
                   <CsvIcon className="text-brand-ui-primary" size={16} />
                 )}
-                <span className="text-brand-ui-primary">CSV</span>
+                <span className="text-brand-ui-primary">
+                  Download {isEvent ? 'attendee' : 'member'} list
+                </span>
               </div>
             </Button>
           </div>
