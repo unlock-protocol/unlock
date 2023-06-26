@@ -58,7 +58,7 @@ const abiIConnext = [
   },
 ]
 
-module.exports = async ([destChainId = 137, destAddress] = []) => {
+module.exports = async ([destChainId = 137, destMultisigAddress] = []) => {
   // parse call data for function call
   const { interface: unlockInterface } = await ethers.getContractAt(
     'Unlock',
@@ -78,12 +78,26 @@ module.exports = async ([destChainId = 137, destAddress] = []) => {
   } = networks[chainId]
 
   // dest info
-  const { multisig, bridge } = networks[destChainId]
+  const { multisig, bridge, unlockAddress } = networks[destChainId]
   const { domainId: destDomainId } = bridge
 
-  if (!destAddress) {
-    destAddress = multisig
+  if (!destMultisigAddress) {
+    destMultisigAddress = multisig
   }
+
+  // encode data to be passed to Gnosis Zodiac module
+  // following instructions at https://github.com/gnosis/zodiac-module-connext
+  const moduleData = await ethers.utils.defaultAbiCoder.encode(
+    ['address', 'uint256', 'bytes', 'bool'],
+    [
+      unlockAddress, // to
+      0, // value
+      calldata, // data
+      0, // operation
+    ]
+  )
+
+  console.log(moduleData)
 
   // proposed changes
   const calls = [
@@ -93,12 +107,12 @@ module.exports = async ([destChainId = 137, destAddress] = []) => {
       functionName: 'xcall',
       functionArgs: [
         destDomainId,
-        destAddress,
+        destMultisigAddress,
         ADDRESS_ZERO, // asset
         ADDRESS_ZERO, // delegate
         0, // amount
         30, // slippage
-        calldata, // calldata
+        moduleData, // calldata
       ],
     },
   ]
