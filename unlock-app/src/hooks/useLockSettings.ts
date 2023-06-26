@@ -87,6 +87,7 @@ interface SaveLockProps {
   emailSender?: string | null
   checkoutConfigId?: string | null
   hookGuildId?: string | null
+  unlockFeeChargedToUser?: boolean
 }
 
 export function useSaveLockSettings() {
