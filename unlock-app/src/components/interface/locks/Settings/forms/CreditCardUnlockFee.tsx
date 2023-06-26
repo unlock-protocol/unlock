@@ -19,7 +19,7 @@ export default function CreditCardUnlockFee({
   network,
   disabled,
 }: CreditCardUnlockFeeProps) {
-  const [unlockPaidByLockManager, setUnlockPaidByLockManager] = useState(false)
+  const [unlockFeePaidByLockManager, setUnlockFeePaidByLockManager] = useState(false)
   const { handleSubmit } = useForm<CreditCardUnlockFeeFormProps>({
     defaultValues: async () => await getDefaultValues(),
   })
@@ -31,9 +31,9 @@ export default function CreditCardUnlockFee({
 
     const unlockPaidByLockManager = !unlockFeeChargedToUser
 
-    setUnlockPaidByLockManager(unlockPaidByLockManager)
+    setUnlockFeePaidByLockManager(unlockPaidByLockManager)
     return {
-      unlockPaidByLockManager,
+      unlockFeePaidByLockManager,
     }
   }
 
@@ -43,7 +43,7 @@ export default function CreditCardUnlockFee({
     await saveSettingMutation.mutateAsync({
       lockAddress,
       network,
-      unlockFeeChargedToUser: !unlockPaidByLockManager,
+      unlockFeeChargedToUser: !unlockFeePaidByLockManager,
     })
   }
 
@@ -56,8 +56,8 @@ export default function CreditCardUnlockFee({
           </span>
           <ToggleSwitch
             disabled={disabled || saveSettingMutation.isLoading}
-            enabled={unlockPaidByLockManager}
-            setEnabled={setUnlockPaidByLockManager}
+            enabled={unlockFeePaidByLockManager}
+            setEnabled={setUnlockFeePaidByLockManager}
             onChange={() => {
               onSubmit()
             }}
