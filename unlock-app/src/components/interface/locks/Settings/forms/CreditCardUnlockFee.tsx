@@ -51,7 +51,7 @@ export default function CreditCardUnlockFee({
     <form onSubmit={handleSubmit(onSubmit)} className="grid items-center gap-2">
       <div className="flex flex-col gap-0.5">
         <div className="flex items-center gap-2">
-          <span className="text-base font-bold text-gray-700">Unlock fees</span>
+          <span className="text-base font-bold text-gray-700">Fees paid by lock manager</span>
           <ToggleSwitch
             disabled={disabled || saveSettingMutation.isLoading}
             enabled={includeUnlockFee}
