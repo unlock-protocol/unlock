@@ -15,6 +15,7 @@ import {
   getDefiLammaPrice,
   KeyPricing,
 } from '../operations/pricingOperations'
+import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -125,11 +126,24 @@ export const getUnlockServiceFee = (cost: number) => {
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 
-export const getFees = (
+export const getFees = async (
   { subtotal, gasCost }: Record<'subtotal' | 'gasCost', number>,
   options?: KeyPricingOptions
 ) => {
+  const { lockAddress, network } = options ?? {}
   let unlockServiceFee = getUnlockServiceFee(subtotal)
+
+  // fees can be ignored if disabled by lockManager
+  if (lockAddress && network) {
+    const { unlockFeeChargedToUser } = await getLockSettings({
+      lockAddress,
+      network,
+    })
+
+    if (!unlockFeeChargedToUser) {
+      unlockServiceFee = 0
+    }
+  }
 
   if (
     options?.lockAddress.toLowerCase() ===
@@ -158,7 +172,7 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     0
   )
   const gasCost = await getGasCost(options)
-  const fees = getFees(
+  const fees = await getFees(
     {
       subtotal,
       gasCost,

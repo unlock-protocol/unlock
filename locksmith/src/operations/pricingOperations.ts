@@ -196,7 +196,7 @@ export const getTotalCharges = async ({
     }
   }
   const subtotal = Math.round(pricing.priceInAmount * 100)
-  const fees = getFees({
+  const fees = await getFees({
     subtotal,
     gasCost,
   })
