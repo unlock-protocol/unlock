@@ -7,6 +7,7 @@ const lockAddress = '0x551c6ecdf819Dc90c5287971072B4651119accD3'
 const lockAddressErc20 = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
 const lockAddressWithSettings = '0xbd55144a3a30907e080595cabf652bc079728b2f'
 const lockAddressWithoutSettings = '0x0ddf835dc0c326c4a677a807b21af1d7a521f275'
+const lockWithEurCurrency = '0x1a1d8b22555521d9e664981af56438e8ace2134e'
 const network = 5
 const decimals = 18
 const currencyContractAddress = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
@@ -53,6 +54,14 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
         return Promise.resolve({
           sendEmail: true,
           creditCardPrice: 5532, // 55.32$ in basis points
+        })
+      }
+
+      if ([lockWithEurCurrency].includes(lock)) {
+        return Promise.resolve({
+          sendEmail: true,
+          creditCardPrice: 5532, // 55.32$ in basis points
+          creditCardCurrency: 'eur',
         })
       }
 
@@ -171,7 +180,7 @@ describe('pricingOperations', () => {
       expect(pricing.amountInCents).toBe(4)
     })
 
-    it('returns usd pricing with "creditCard" settings price', async () => {
+    it('returns USD pricing with "creditCard" settings price', async () => {
       expect.assertions(5)
 
       const pricing = await pricingOperations.getDefaultUsdPricing({
@@ -184,6 +193,21 @@ describe('pricingOperations', () => {
       expect(pricing.amountInUSD).toBe(55.32)
       expect(pricing.decimals).toBe(18)
       expect(pricing.symbol).toBe('$')
+    })
+
+    it('returns EUR pricing with "creditCard" settings price', async () => {
+      expect.assertions(5)
+
+      const pricing = await pricingOperations.getDefaultUsdPricing({
+        lockAddress: lockWithEurCurrency,
+        network,
+      })
+
+      expect(pricing.amount).toBe(55.32)
+      expect(pricing.amountInCents).toBe(5532)
+      expect(pricing.amountInUSD).toBe(55.32)
+      expect(pricing.decimals).toBe(18)
+      expect(pricing.symbol).toBe('€')
     })
 
     it('returns default usd pricing when "creditCard" settings price is not set', async () => {
@@ -220,7 +244,7 @@ describe('pricingOperations', () => {
       expect(pricing.price.amountInCents).toBe(4)
     })
 
-    it('returns usd pricing with "creditCard" settings price', async () => {
+    it('returns USD pricing with "creditCard" settings price', async () => {
       expect.assertions(6)
       const userAddress = await ethers.Wallet.createRandom().getAddress()
       const referrer = await ethers.Wallet.createRandom().getAddress()
@@ -239,6 +263,26 @@ describe('pricingOperations', () => {
       expect(pricing.price.amountInCents).toBe(5532)
       expect(pricing.price.amount).toBe(55.32)
     })
+
+    it('returns EUR pricing with "creditCard" settings price', async () => {
+      expect.assertions(6)
+      const userAddress = await ethers.Wallet.createRandom().getAddress()
+      const referrer = await ethers.Wallet.createRandom().getAddress()
+
+      const pricing = await pricingOperations.getUsdPricingForRecipient({
+        lockAddress: lockWithEurCurrency,
+        network,
+        userAddress,
+        data: '0x',
+        referrer,
+      })
+      expect(pricing.address).toBe(userAddress)
+      expect(pricing.price.decimals).toBe(18)
+      expect(pricing.price.symbol).toBe('€')
+      expect(pricing.price.amountInUSD).toBe(55.32)
+      expect(pricing.price.amountInCents).toBe(5532)
+      expect(pricing.price.amount).toBe(55.32)
+    })
   })
 
   describe('getPricingFromSettings', () => {
@@ -253,7 +297,7 @@ describe('pricingOperations', () => {
       expect(pricing).toBe(null)
     })
 
-    it('returns pricing when "creditCardPrice" is set in lockSettings', async () => {
+    it('returns USD pricing when "creditCardPrice" is set in lockSettings', async () => {
       expect.assertions(5)
 
       const pricing = await pricingOperations.getPricingFromSettings({
@@ -268,7 +312,22 @@ describe('pricingOperations', () => {
       expect(pricing?.amount).toBe(55.32)
     })
 
-    it('returns pricing when "creditCardPrice" is set in lockSettings for recipients', async () => {
+    it('returns EUR pricing when "creditCardPrice" is set in lockSettings', async () => {
+      expect.assertions(5)
+
+      const pricing = await pricingOperations.getPricingFromSettings({
+        lockAddress: lockWithEurCurrency,
+        network,
+      })
+
+      expect(pricing?.decimals).toBe(18)
+      expect(pricing?.symbol).toBe('€')
+      expect(pricing?.amountInUSD).toBe(55.32)
+      expect(pricing?.amountInCents).toBe(5532)
+      expect(pricing?.amount).toBe(55.32)
+    })
+
+    it('returns USD pricing when "creditCardPrice" is set in lockSettings for recipients', async () => {
       expect.assertions(5)
 
       const pricing = await pricingOperations.getPricingFromSettings({
@@ -279,6 +338,23 @@ describe('pricingOperations', () => {
 
       expect(pricing?.decimals).toBe(18)
       expect(pricing?.symbol).toBe('$')
+      // total for the 2 recipients
+      expect(pricing?.amountInUSD).toBe(110.64)
+      expect(pricing?.amountInCents).toBe(11064)
+      expect(pricing?.amount).toBe(110.64)
+    })
+
+    it('returns EUR pricing when "creditCardPrice" is set in lockSettings for recipients', async () => {
+      expect.assertions(5)
+
+      const pricing = await pricingOperations.getPricingFromSettings({
+        lockAddress: lockWithEurCurrency,
+        network,
+        recipients,
+      })
+
+      expect(pricing?.decimals).toBe(18)
+      expect(pricing?.symbol).toBe('€')
       // total for the 2 recipients
       expect(pricing?.amountInUSD).toBe(110.64)
       expect(pricing?.amountInCents).toBe(11064)

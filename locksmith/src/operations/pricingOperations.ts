@@ -4,6 +4,7 @@ import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
 import { ethers } from 'ethers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
+import { CurrencyType } from '@unlock-protocol/core'
 
 interface Price {
   decimals: number
@@ -91,10 +92,11 @@ export const getPricingFromSettings = async ({
   network,
   recipients = [],
 }: GetPriceProps): Promise<KeyPricingPrice | null> => {
-  const { creditCardPrice } = await lockSettingOperations.getSettings({
-    lockAddress,
-    network,
-  })
+  const { creditCardPrice, creditCardCurrency } =
+    await lockSettingOperations.getSettings({
+      lockAddress,
+      network,
+    })
 
   // return pricing object using the price from the settings
   if (creditCardPrice) {
@@ -103,10 +105,14 @@ export const getPricingFromSettings = async ({
     const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
     const amountInUSD = amountInCents / 100 // get total price in USD
 
+    const symbol =
+      // @ts-expect-error
+      CurrencyType[creditCardCurrency as typeof CurrencyType] || '$'
+
     return {
       amount: amountInUSD, // amount is usd for the single key
       decimals: 18,
-      symbol: '$',
+      symbol,
       amountInUSD,
       amountInCents,
     }

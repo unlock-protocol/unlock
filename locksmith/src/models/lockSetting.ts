@@ -16,6 +16,7 @@ export class LockSetting extends Model<
   declare checkoutConfigId?: string | null
   declare hookGuildId?: number | null
   declare unlockFeeChargedToUser?: boolean
+  declare creditCardCurrency: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -69,6 +70,11 @@ LockSetting.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+    },
+    creditCardCurrency: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'usd', // let's use 'usd' as default currency for all the locks that does not have the value set
     },
     createdAt: {
       allowNull: false,

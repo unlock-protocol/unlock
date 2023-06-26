@@ -11,6 +11,7 @@ import {
   getStripeCustomerIdForAddress,
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
+import { getSettings } from '../operations/lockSettingOperations'
 import logger from '../logger'
 import { Op, Sequelize } from 'sequelize'
 import { createPricingForPurchase } from '../utils/pricing'
@@ -178,10 +179,15 @@ export class PaymentProcessor {
       )
     }
 
+    // retrieve lock currency
+    const { creditCardCurrency } = await getSettings({
+      lockAddress: lock,
+      network,
+    })
     const intent = await stripe.paymentIntents.create(
       {
         amount: pricing.total,
-        currency: 'usd',
+        currency: creditCardCurrency,
         customer: connectedCustomer.id,
         payment_method: method.id,
         capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
