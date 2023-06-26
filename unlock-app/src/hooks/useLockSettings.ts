@@ -88,6 +88,7 @@ interface SaveLockProps {
   checkoutConfigId?: string | null
   hookGuildId?: string | null
   unlockFeeChargedToUser?: boolean
+  creditCardCurrency?: string
 }
 
 export function useSaveLockSettings() {
