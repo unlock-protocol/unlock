@@ -191,20 +191,22 @@ export const VerifierForm = ({
               : 'Only lock manager can access verifiers list.'}
           </span>
         )}
-        <div className="grid gap-1">
-          <span className="font-semibold">Verifiers</span>
-          <div className="grid gap-2">
-            {(verifiers ?? [])?.map((verifier: VerifierProps) => (
-              <VerifierCard
-                verifier={verifier}
-                key={verifier.id}
-                onDeleteVerifier={onDeleteVerifier}
-                isLoading={deleteVerifierMutation.isLoading}
-                disabled={disabled}
-              />
-            ))}
+        {!noVerifiers && !isLoading && (
+          <div className="grid gap-1">
+            <span className="font-semibold">Verifiers</span>
+            <div className="grid gap-2">
+              {(verifiers ?? [])?.map((verifier: VerifierProps) => (
+                <VerifierCard
+                  verifier={verifier}
+                  key={verifier.id}
+                  onDeleteVerifier={onDeleteVerifier}
+                  isLoading={deleteVerifierMutation.isLoading}
+                  disabled={disabled}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {(isLoadingItems || addVerifierMutation.isLoading) &&
           !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
@@ -229,7 +231,7 @@ export const VerifierForm = ({
                       withIcon
                       value={verifier}
                       disabled={disabled}
-                      label="Add verifier, please enter the wallet address of theirs."
+                      label="To add a verifier, please enter their wallet address or ENS name"
                       autoComplete="off"
                       onChange={(value: any) => {
                         setValue('verifier', value)
