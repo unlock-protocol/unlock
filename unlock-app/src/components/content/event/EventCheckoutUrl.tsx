@@ -175,7 +175,7 @@ export const EventCheckoutUrl = ({
         />
         <div className="w-full">
           <ToggleSwitch
-            title="Set Checkout URL"
+            title="Set a custom checkout URL"
             enabled={useCheckoutURL}
             size="small"
             setEnabled={(enabled) => {
