@@ -13,6 +13,7 @@ const lockSettingMock = {
   sendEmail: true,
   unlockFeeChargedToUser: true,
   creditCardPrice: 0.04,
+  creditCardCurrency: 'usd',
   emailSender: 'Custom Sender',
   slug: 'slug-test',
   replyTo: 'example@gmail.com',
@@ -91,7 +92,7 @@ describe('LockSettings v2 endpoints for lock', () => {
   })
 
   it('should correctly save settings when user is lockManager', async () => {
-    expect.assertions(9)
+    expect.assertions(10)
 
     const { loginResponse } = await loginRandomUser(app)
     const saveSettingResponse = await request(app)
@@ -105,6 +106,7 @@ describe('LockSettings v2 endpoints for lock', () => {
         emailSender: 'Example',
         checkoutConfigId: 'f549d936-24e6-49e0-9acb',
         hookGuildId: '14',
+        creditCardCurrency: 'eur',
       })
 
     const response = saveSettingResponse.body
@@ -117,10 +119,11 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.checkoutConfigId).toBe('f549d936-24e6-49e0-9acb')
     expect(response.hookGuildId).toBe(14)
     expect(response.unlockFeeChargedToUser).toBe(false)
+    expect(response.creditCardCurrency).toBe('eur')
   })
 
   it('should save and retrieve setting when user is lockManager', async () => {
-    expect.assertions(19)
+    expect.assertions(21)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -137,6 +140,7 @@ describe('LockSettings v2 endpoints for lock', () => {
         emailSender: 'Custom Sender',
         checkoutConfigId: 'f549d936-24e6-49e0-9acb',
         hookGuildId: '199',
+        creditCardCurrency: 'eur',
       })
 
     const response = saveSettingResponse.body
@@ -149,6 +153,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.emailSender).toBe('Custom Sender')
     expect(response.checkoutConfigId).toBe('f549d936-24e6-49e0-9acb')
     expect(response.hookGuildId).toBe(199)
+    expect(response.creditCardCurrency).toBe('eur')
 
     // retrieve settings
     const getSettingResponse = await request(app)
@@ -169,10 +174,11 @@ describe('LockSettings v2 endpoints for lock', () => {
       'f549d936-24e6-49e0-9acb'
     )
     expect(getSettingResponse.body.hookGuildId).toBe(199)
+    expect(getSettingResponse.body.creditCardCurrency).toBe('eur')
   })
 
   it('should retrieve default settings for a lock', async () => {
-    expect.assertions(9)
+    expect.assertions(10)
 
     const { loginResponse } = await loginRandomUser(app)
 
@@ -191,6 +197,7 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(getSettingResponse.body.emailSender).toBe(undefined)
     expect(getSettingResponse.body.checkoutConfigId).toBe(undefined)
     expect(getSettingResponse.body.hookGuildId).toBe(undefined)
+    expect(getSettingResponse.body.creditCardCurrency).toBe('usd') // default currency is usd
   })
 
   it('should save null values for settings', async () => {
@@ -216,5 +223,20 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.emailSender).toBe(null)
     expect(response.checkoutConfigId).toBe(null)
     expect(response.hookGuildId).toBe(null)
+  })
+
+  it('should fail to save not supported currency', async () => {
+    expect.assertions(1)
+
+    const { loginResponse } = await loginRandomUser(app)
+    // save settings
+    const saveSettingResponse = await request(app)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        creditCardCurrency: 'ooo',
+      })
+
+    expect(saveSettingResponse.status).toBe(500)
   })
 })
