@@ -27,7 +27,8 @@
     "websub:dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js  ./src/websub/server.ts",
     "websub:prod": "tsx -r ./src/utils/envLoader ./src/websub/server.ts",
     "send:email": "tsx -r ./config/envLoader.js  ./scripts/send_email.ts",
-    "create:access_token": "tsx -r ./config/envLoader.js  ./scripts/create_access_token.ts"
+    "create:access_token": "tsx -r ./config/envLoader.js  ./scripts/create_access_token.ts",
+    "worker:dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js  ./src/websub/worker.ts"
   },
   "author": "Unlock Inc",
   "license": "ISC",
@@ -58,6 +59,7 @@
     "express-winston": "4.2.0",
     "fuse.js": "6.6.2",
     "geoip-country": "4.1.59",
+    "graphile-worker": "^0.13.0",
     "graphql": "16.6.0",
     "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.1",
