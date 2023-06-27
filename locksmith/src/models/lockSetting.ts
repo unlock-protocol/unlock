@@ -9,6 +9,7 @@ export class LockSetting extends Model<
   declare lockAddress: string
   declare network: number
   declare sendEmail: boolean
+  declare creditCardCurrency: string
   declare replyTo?: string | null
   declare creditCardPrice?: number | null
   declare emailSender?: string | null
@@ -69,6 +70,11 @@ LockSetting.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+    },
+    creditCardCurrency: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'usd', // let's use 'usd' as default currency for all the locks that does not have the value set
     },
     createdAt: {
       allowNull: false,

@@ -403,6 +403,9 @@ components:
           nullable: true
         unlockFeeChargedToUser:
           type: boolean
+        creditCardCurrency:
+          type: string
+          default: 'usd'
 
   parameters:
     Network:
