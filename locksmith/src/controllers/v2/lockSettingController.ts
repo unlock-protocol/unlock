@@ -44,7 +44,7 @@ const LockSettingSchema = z.object({
       description:
         'When enabled the Unlock fee will be included to the total cost for the user, otherwise the lock manager will absorb" that cost.',
     })
-    .default(true),
+    .optional(),
   hookGuildId: z
     .preprocess(
       (a) => parseInt(z.string().parse(a), 10),
