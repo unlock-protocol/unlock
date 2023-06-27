@@ -35,6 +35,11 @@ const rsvpForm = z.object({
       description: 'Wallet that will receive the ticket NFT.',
     })
     .default(''),
+  fullname: z
+    .string({
+      description: 'Full name of the attendee.',
+    })
+    .default(''),
 })
 
 type RsvpFormProps = z.infer<typeof rsvpForm>
@@ -148,6 +153,7 @@ export const WalletlessRegistrationForm = ({
     defaultValues: {
       email: '',
       recipient: account || '',
+      fullname: '',
     },
   })
   const {
@@ -162,11 +168,14 @@ export const WalletlessRegistrationForm = ({
     control,
   })
 
-  const onSubmit = async ({ email, recipient }: RsvpFormProps) => {
+  const onSubmit = async ({ email, recipient, fullname }: RsvpFormProps) => {
     setLoading(true)
     try {
       const captcha = await recaptchaRef.current?.executeAsync()
       const { hash, owner } = await claim({
+        metadata: {
+          fullname,
+        },
         email,
         recipient,
         captcha,
@@ -221,6 +230,23 @@ export const WalletlessRegistrationForm = ({
           'Please enter your email address to get a QR code by email.'
         }
         error={errors?.email?.message}
+      />
+      <Input
+        {...register('fullname', {
+          required: {
+            value: true,
+            message: 'This field is required.',
+          },
+        })}
+        disabled={disabled}
+        required
+        type="string"
+        placeholder="Satoshi Nakamoto"
+        label="Full Name"
+        description={
+          'Please enter your your full name to be added to the RSVP list.'
+        }
+        error={errors?.fullname?.message}
       />
       <Controller
         name="recipient"

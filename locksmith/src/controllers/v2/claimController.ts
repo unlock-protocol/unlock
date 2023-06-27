@@ -38,6 +38,13 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const email = request.body.email?.toString().toLowerCase()
 
+  // By default we protect all metadata
+  const protectedMetadata = {
+    ...request.body,
+  }
+  // Remove the recipient
+  delete protectedMetadata.recipient
+
   // Support for walletless claims!
   if (!owner && email) {
     // We can build a recipient wallet address from the email address
@@ -96,14 +103,15 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (email) {
-    // Save email if applicable
+  if (Object.keys(protectedMetadata).length > 0) {
+    // Save metadata if applicable
     const metadata = await UserMetadata.parseAsync({
       public: {},
       protected: {
-        email,
+        ...protectedMetadata,
       },
     })
+    console.log(metadata)
     await upsertUserMetadata({
       network,
       userAddress: owner,

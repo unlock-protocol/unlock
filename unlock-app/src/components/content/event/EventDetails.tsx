@@ -465,6 +465,16 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
       [lockAddress]: {
         network,
         emailRequired: true,
+        metadataInputs: [
+          {
+            name: 'fullname',
+            defaultValue: '',
+            type: 'text',
+            required: true,
+            placeholder: 'Satoshi Nakamoto',
+            public: false,
+          },
+        ],
       },
     },
   }
