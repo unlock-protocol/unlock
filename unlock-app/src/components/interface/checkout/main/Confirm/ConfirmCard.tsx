@@ -23,6 +23,7 @@ import { formatNumber } from '~/utils/formatter'
 import { formatFiatPriceFromCents } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
+import { getCurrencySymbol } from '~/utils/currency'
 
 interface Props {
   injectedProvider: unknown
@@ -37,6 +38,7 @@ interface CreditCardPricingBreakdownProps {
   unlockServiceFee: number
   gasCosts?: number
   loading?: boolean
+  symbol?: string
 }
 
 export function CreditCardPricingBreakdown({
@@ -45,6 +47,7 @@ export function CreditCardPricingBreakdown({
   creditCardProcessingFee,
   gasCosts,
   loading,
+  symbol = '$',
 }: CreditCardPricingBreakdownProps) {
   return (
     <div className="flex flex-col gap-2 pt-4 text-sm">
@@ -69,7 +72,7 @@ export function CreditCardPricingBreakdown({
           inline
         >
           <div className="font-normal">
-            {formatFiatPriceFromCents(unlockServiceFee)}
+            {formatFiatPriceFromCents(unlockServiceFee, symbol)}
           </div>
         </Detail>
         {!!creditCardProcessingFee && (
@@ -82,7 +85,7 @@ export function CreditCardPricingBreakdown({
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(creditCardProcessingFee)}
+              {formatFiatPriceFromCents(creditCardProcessingFee, symbol)}
             </div>
           </Detail>
         )}
@@ -96,7 +99,7 @@ export function CreditCardPricingBreakdown({
             inline
           >
             <div className="font-normal">
-              {formatFiatPriceFromCents(gasCosts)}
+              {formatFiatPriceFromCents(gasCosts, symbol)}
             </div>
           </Detail>
         )}
@@ -108,7 +111,9 @@ export function CreditCardPricingBreakdown({
           valueSize="tiny"
           inline
         >
-          <div className="font-normal">{formatFiatPriceFromCents(total)}</div>
+          <div className="font-normal">
+            {formatFiatPriceFromCents(total, symbol)}
+          </div>
         </Detail>
       </div>
     </div>
@@ -271,6 +276,13 @@ export function ConfirmCard({
     setIsConfirming(false)
   }
 
+  const { data: { creditCardCurrency = 'usd ' } = {} } = useGetLockSettings({
+    lockAddress,
+    network: lock!.network,
+  })
+
+  const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
+
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
@@ -333,6 +345,7 @@ export function ConfirmCard({
           creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
           unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
           gasCosts={gasCosts}
+          symbol={creditCardCurrencySymbol}
         />
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
