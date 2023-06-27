@@ -6,6 +6,7 @@
 import { Lock, PaywallConfig } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 import { storage } from '~/config/storage'
+import { getCurrencySymbol } from './currency'
 
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
@@ -90,14 +91,16 @@ export const convertedKeyPrice = async (
   lock: LockTickerSymbolLock,
   numberOfRecipients = 1
 ) => {
-  const { creditCardPrice } = (
+  const { creditCardPrice, creditCardCurrency = 'usd' } = (
     await storage.getLockSettings(lock.network, lock.address)
   ).data
 
+  const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
+
   // priority to credit card price if present
   if (creditCardPrice) {
-    // format price in USD
-    const priceInUsd = `~$${(
+    // format price with selected currency for lock
+    const priceInUsd = `~${creditCardCurrencySymbol}${(
       parseFloat(`${creditCardPrice / 100}`) * numberOfRecipients
     ).toFixed(2)}`
     return priceInUsd
