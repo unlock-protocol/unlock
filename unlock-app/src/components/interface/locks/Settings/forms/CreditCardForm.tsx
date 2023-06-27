@@ -419,6 +419,11 @@ export const CreditCardForm = ({
           />
           {isManager && (
             <>
+              <CreditCardCurrency
+                lockAddress={lockAddress}
+                network={network}
+                disabled={disabled}
+              />
               <CreditCardCustomPrice
                 lockAddress={lockAddress}
                 network={network}
@@ -426,11 +431,6 @@ export const CreditCardForm = ({
                 lock={lock}
               />
               <CreditCardUnlockFee
-                lockAddress={lockAddress}
-                network={network}
-                disabled={disabled}
-              />
-              <CreditCardCurrency
                 lockAddress={lockAddress}
                 network={network}
                 disabled={disabled}

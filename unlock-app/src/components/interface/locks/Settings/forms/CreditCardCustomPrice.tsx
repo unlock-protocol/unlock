@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CREDIT_CARD_MIN_USD_PRICE } from '~/constants'
-import { useSaveLockSettings } from '~/hooks/useLockSettings'
+import {
+  useGetLockSettings,
+  useSaveLockSettings,
+} from '~/hooks/useLockSettings'
 import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
 import { storage } from '~/config/storage'
@@ -28,6 +31,11 @@ export default function CreditCardCustomPrice({
 }: CreditCardCustomPriceProps) {
   const [useCustomPrice, setUseCustomPrice] = useState(false)
   const [hasPriceConversion, setHasPriceConversion] = useState(false)
+
+  const {
+    isLoading: isLoadingSettings,
+    data: { creditCardCurrency = 'usd ' } = {},
+  } = useGetLockSettings({ lockAddress, network })
 
   const getDefaultValues = async (): Promise<CreditCardFormSchema> => {
     const settings = (await storage.getLockSettings(network, lockAddress)).data
@@ -97,7 +105,7 @@ export default function CreditCardCustomPrice({
     onSaveCreditCardPrice(fields)
   }
 
-  if (isLoading) {
+  if (isLoading || isLoadingSettings) {
     return (
       <Placeholder.Root>
         <Placeholder.Card />
@@ -114,7 +122,7 @@ export default function CreditCardCustomPrice({
   return (
     <div className="grid gap-2">
       <SettingCardDetail
-        title="Set fixed price in USD"
+        title={`Set fixed price in ${creditCardCurrency?.toUpperCase()}`}
         description={
           <span className="text-sm">
             {`If you set a custom price for card payments, we will use that one (+ fees) instead of converting the price of ${symbol} to USD.`}
