@@ -4,7 +4,7 @@ import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
 import { ethers } from 'ethers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
-import { CurrencyType } from '@unlock-protocol/core'
+import { Currencies } from '@unlock-protocol/core'
 
 interface Price {
   decimals: number
@@ -61,6 +61,14 @@ export function fromDecimal(num: string, decimals: number) {
   )
 }
 
+export function getCurrencySymbol(currency?: string) {
+  return (
+    Currencies.find(
+      (item) => item?.currency?.toLowerCase() === currency?.toLowerCase()
+    )?.symbol || '$'
+  )
+}
+
 /** Helper to return usd pricing object */
 export const toUsdPricing = ({
   amount,
@@ -105,10 +113,7 @@ export const getPricingFromSettings = async ({
     const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
     const amountInUSD = amountInCents / 100 // get total price in USD
 
-    // @ts-expect-error
-    const currency = creditCardCurrency as keyof typeof CurrencyType
-
-    const symbol = CurrencyType?.[currency] || '$'
+    const symbol = getCurrencySymbol(creditCardCurrency)
 
     return {
       amount: amountInUSD, // amount is usd for the single key

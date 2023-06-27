@@ -81,6 +81,25 @@ describe('pricingOperations', () => {
     )
   })
 
+  describe('getCurrencySymbol', () => {
+    it('returns EUR symbol', () => {
+      expect.assertions(1)
+      const symbol = pricingOperations.getCurrencySymbol('eur')
+      expect(symbol).toBe('€')
+    })
+
+    it('returns USD symbol', () => {
+      expect.assertions(1)
+      const symbol = pricingOperations.getCurrencySymbol('usd')
+      expect(symbol).toBe('$')
+    })
+
+    it('returns default symbol', () => {
+      expect.assertions(1)
+      const symbol = pricingOperations.getCurrencySymbol()
+      expect(symbol).toBe('$')
+    })
+  })
   describe('toUsdPricing', () => {
     it('returns usd pricing object', () => {
       expect.assertions(5)
