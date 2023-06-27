@@ -5,7 +5,7 @@ import { storage } from '~/config/storage'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface CreditCardUnlockFeeFormProps {
-  unlockPaidByLockManager: boolean
+  unlockFeePaidByLockManager: boolean
 }
 
 interface CreditCardUnlockFeeProps {
@@ -19,7 +19,8 @@ export default function CreditCardUnlockFee({
   network,
   disabled,
 }: CreditCardUnlockFeeProps) {
-  const [unlockFeePaidByLockManager, setUnlockFeePaidByLockManager] = useState(false)
+  const [unlockFeePaidByLockManager, setUnlockFeePaidByLockManager] =
+    useState(false)
   const { handleSubmit } = useForm<CreditCardUnlockFeeFormProps>({
     defaultValues: async () => await getDefaultValues(),
   })
