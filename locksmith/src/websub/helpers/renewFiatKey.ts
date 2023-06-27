@@ -103,7 +103,7 @@ export async function renewFiatKey({
     const fulfillmentDispatcher = new Dispatcher()
 
     // retrieve lock currency
-    const { creditCardCurrency } = await getSettings({
+    const { creditCardCurrency = 'usd' } = await getSettings({
       lockAddress,
       network,
     })
