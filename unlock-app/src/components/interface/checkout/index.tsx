@@ -13,6 +13,7 @@ import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { PaywallConfig } from '~/unlockTypes'
+import { ethers } from 'ethers'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -22,6 +23,8 @@ export function CheckoutPage() {
   const { isInitialLoading, data: checkout } = useCheckoutConfig({
     id: query.id?.toString(),
   })
+
+  const referrerAddress = query?.referrerAddress?.toString()
   // Get paywallConfig or oauthConfig from the query parameters.
   const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
   const oauthConfigFromQuery = getOauthConfigFromQuery(query)
@@ -31,6 +34,15 @@ export function CheckoutPage() {
     (checkout?.config as PaywallConfig) ||
     communication.paywallConfig ||
     paywallConfigFromQuery
+
+  // If the referrer address is valid, override the paywall config referrer with it.
+  if (
+    referrerAddress &&
+    paywallConfig &&
+    ethers.utils.isAddress(referrerAddress)
+  ) {
+    paywallConfig.referrer = referrerAddress
+  }
 
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
