@@ -17,7 +17,7 @@ import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
 import { storage } from '~/config/storage'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
-import { currencies } from '@unlock-protocol/core'
+import { Currencies } from '@unlock-protocol/core'
 
 interface CreditCardFormSchema {
   creditCardPrice?: string | number | null
@@ -135,7 +135,7 @@ export default function CreditCardCustomPrice({
   const symbol = lock?.currencySymbol
 
   // list of currencies for dropdown
-  const currencyOptions = currencies.map(({ currency, symbol }) => {
+  const currencyOptions = Currencies.map(({ currency, symbol }) => {
     return {
       label: `${currency.toUpperCase()} - ${symbol}`,
       value: currency,
