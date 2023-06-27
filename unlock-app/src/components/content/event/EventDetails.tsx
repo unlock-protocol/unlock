@@ -726,7 +726,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                     return (
                       <Button
                         key={lockAddress}
-                        as="a"
+                        as={Link}
                         variant="black"
                         className="button border"
                         size="small"
