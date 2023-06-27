@@ -53,6 +53,11 @@ const LockSettingSchema = z.object({
       })
     )
     .nullish(),
+  creditCardCurrency: z
+    .enum(['usd', 'eur'], {
+      description: 'Currency to use for credit card payment.',
+    })
+    .default('usd'), // default currency ,
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -66,6 +71,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   slug: undefined,
   checkoutConfigId: undefined,
   hookGuildId: undefined,
+  creditCardCurrency: 'usd',
 }
 
 export const updateSettings: RequestHandler = async (
