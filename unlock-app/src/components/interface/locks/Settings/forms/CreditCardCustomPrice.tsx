@@ -179,7 +179,7 @@ export default function CreditCardCustomPrice({
                   type="number"
                   step="any"
                   disabled={disabled}
-                  description="Set a fixed price in USD that is charged for card payments."
+                  description="Set a fixed price in fiat currency that is charged for card payments."
                   error={errors?.creditCardPrice?.message}
                   {...register('creditCardPrice', {
                     required: {
