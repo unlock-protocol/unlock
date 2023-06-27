@@ -18,7 +18,6 @@ import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
 import CreditCardUnlockFee from './CreditCardUnlockFee'
-import CreditCardCurrency from './CreditCardCurrency'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -419,11 +418,6 @@ export const CreditCardForm = ({
           />
           {isManager && (
             <>
-              <CreditCardCurrency
-                lockAddress={lockAddress}
-                network={network}
-                disabled={disabled}
-              />
               <CreditCardCustomPrice
                 lockAddress={lockAddress}
                 network={network}
