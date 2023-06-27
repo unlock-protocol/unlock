@@ -180,7 +180,7 @@ export class PaymentProcessor {
     }
 
     // retrieve lock currency
-    const { creditCardCurrency } = await getSettings({
+    const { creditCardCurrency = 'usd' } = await getSettings({
       lockAddress: lock,
       network,
     })

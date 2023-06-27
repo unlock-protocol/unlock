@@ -717,6 +717,31 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
+                    title="Manage Attendees"
+                    description="See who is attending your event, invite people with airdrops and more!"
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  {eventLocks?.map(({ lockAddress, network }) => {
+                    return (
+                      <Button
+                        key={lockAddress}
+                        as={Link}
+                        variant="black"
+                        className="button border"
+                        size="small"
+                        href={`/locks/lock?address=${lockAddress}&network=${network}`}
+                      >
+                        Manage attendees for {minifyAddress(lockAddress)}
+                      </Button>
+                    )
+                  })}
+                </div>
+              </Card>
+
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
                     title="Event detail"
                     description="Need to change something? Access your contract (Lock) & update detail"
                   />

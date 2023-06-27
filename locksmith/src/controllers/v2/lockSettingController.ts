@@ -57,7 +57,7 @@ const LockSettingSchema = z.object({
     .enum(['usd', 'eur'], {
       description: 'Currency to use for credit card payment.',
     })
-    .default('usd'), // default currency ,
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>

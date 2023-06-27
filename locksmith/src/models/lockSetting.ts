@@ -9,6 +9,7 @@ export class LockSetting extends Model<
   declare lockAddress: string
   declare network: number
   declare sendEmail: boolean
+  declare creditCardCurrency?: string
   declare replyTo?: string | null
   declare creditCardPrice?: number | null
   declare emailSender?: string | null
@@ -16,7 +17,6 @@ export class LockSetting extends Model<
   declare checkoutConfigId?: string | null
   declare hookGuildId?: number | null
   declare unlockFeeChargedToUser?: boolean
-  declare creditCardCurrency: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
