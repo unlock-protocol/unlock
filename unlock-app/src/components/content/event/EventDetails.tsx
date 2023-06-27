@@ -48,6 +48,7 @@ import { EventCheckoutUrl } from './EventCheckoutUrl'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
+import { PaywallConfig } from '~/unlockTypes'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -460,11 +461,21 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const injectedProvider = selectProvider(config)
 
-  const paywallConfig = {
+  const paywallConfig: PaywallConfig = {
     locks: {
       [lockAddress]: {
         network,
         emailRequired: true,
+        metadataInputs: [
+          {
+            name: 'fullname',
+            defaultValue: '',
+            type: 'text',
+            required: true,
+            placeholder: 'Satoshi Nakamoto',
+            public: false,
+          },
+        ],
       },
     },
   }
