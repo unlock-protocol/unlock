@@ -70,6 +70,9 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
 
 const nextConfig = {
   output: 'export',
+  images: {
+    unoptimized: true,
+  },
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({

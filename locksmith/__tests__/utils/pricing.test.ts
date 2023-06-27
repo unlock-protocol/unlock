@@ -1,6 +1,7 @@
 import { expect, describe, beforeEach, it, vi } from 'vitest'
 import {
   createPricingForPurchase,
+  getFees,
   getKeyPricingInUSD,
 } from '../../src/utils/pricing'
 import { DEFAULT_LOCK_SETTINGS } from '../../src/controllers/v2/lockSettingController'
@@ -23,6 +24,7 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
     getSettings: vi.fn(({ lockAddress: lock }) => {
       if ([lockAddressWithSettings].includes(lock)) {
         return Promise.resolve({
+          unlockFeeChargedToUser: false,
           sendEmail: true,
           creditCardPrice: 5532, // 55.32$ in basis points
         })
@@ -231,6 +233,80 @@ describe('pricing', () => {
           },
         },
       ])
+    })
+    it('return pricing for purchase without unlockFees', async () => {
+      expect.assertions(1)
+      const pricingForPurchase = await createPricingForPurchase({
+        lockAddress: lockAddressWithSettings,
+        network,
+        recipients,
+        referrers: [],
+        data,
+      })
+
+      expect(pricingForPurchase.unlockServiceFee).toBe(0)
+    })
+
+    it('return pricing for purchase with unlockFees', async () => {
+      expect.assertions(1)
+      const pricingForPurchase = await createPricingForPurchase({
+        lockAddress,
+        network,
+        recipients,
+        referrers: [],
+        data,
+      })
+
+      expect(pricingForPurchase.unlockServiceFee).not.toBe(0)
+    })
+  })
+
+  describe('getFees', () => {
+    it('should not include unlockFees', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 1430,
+          gasCost: 10,
+        },
+        {
+          lockAddress: lockAddressWithSettings,
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(0)
+    })
+    it('should include unlockFees', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 1430,
+          gasCost: 10,
+        },
+        {
+          lockAddress,
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(143)
+    })
+
+    it('should return cabinDao unlockFess', async () => {
+      expect.assertions(1)
+      const fees = await getFees(
+        {
+          subtotal: 1430,
+          gasCost: 10,
+        },
+        {
+          lockAddress: '0x45accac0e5c953009cda713a3b722f87f2907f86',
+          network: 5,
+          recipients: ['0x'],
+        }
+      )
+      expect(fees.unlockServiceFee).toBe(2000)
     })
   })
 })

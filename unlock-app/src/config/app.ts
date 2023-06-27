@@ -45,10 +45,12 @@ const app = getAppConfig(env)
 
 export const config = {
   env,
-  wedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY!,
+  wedlocksPublicKey:
+    'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBbzdTYXhDZDg3YnQ0SFZ4anhXbkkNClFOTGFhZVdqb1ptbFNxcGhkL1JCbDNzNGQrcENnZHl3YUJBdGRqVENMQXBzakN6SzFqZWZLVWZmbXhqbW15NGUNCnFHRHN2ekZBazRUS1ZrM0g4ZTJrYnJpNHdoZjNaU1V4d2gyL2c2WWgrRzFuK1F2cWJ0ZGwvOVUvcnJ5SmR5NFENCmt6K2tJMzBsRk9aNHJCMHJ5bldvdDZuZGtISUVlMDFhQThzYWpSb1ZrZitDb1RFZ1hWNlowd2gzSlRNc01FUEENCk8rc2FGYkVaZlI4Y1lMNEVVanB1Ty9WUXZyZk1nVDRiQUxLQXVrV1hweGZWZDNWTVlNallQeU52KzUwRTFRR2UNClZYN0xtYUR6ZmhuQlhTbG4zU01mYncvTWl2cExoR3RlQ0NIN0JYaU8zb1hQUFpVd3ZIT3BzTm1OS2F6dEx4OG4NCmF3SURBUUFCDQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0NCg==',
   stripeApiKey:
     process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
-  ethPassApiKey: process.env.NEXT_PUBLIC_ETHPASS_KEY!,
+  ethPassApiKey: 'pk_live_Th4KfDH9DZw0cuHcWzyUFBgAeHEl0MoK',
+  walletConnectApiKey: '1535029cc7500ace23802e2e990c58d7', // https://cloud.walletconnect.com/app/project?uuid=7920be27-1e19-43a8-8f7d-cafbb00d4b80
   googleMapsApiKey: 'AIzaSyD_mt4bpelB7Dlr7XzfUW9k7b9agbf_iSo',
   httpProvider: process.env.NEXT_PUBLIC_HTTP_PROVIDER || 'localhost',
   locksmithSigners: ['0x58b5CeDE554a39666091F96C8058920dF5906581'], // TODO: cleanup? We use config from networks package!

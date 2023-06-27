@@ -38,6 +38,7 @@ export function Confirm({
       communication?.emitTransactionInfo({
         hash,
         lock,
+        metadata,
       })
       communication?.emitUserInfo({
         address: account,
@@ -45,7 +46,6 @@ export function Confirm({
       })
       communication?.emitMetadata(metadata)
     }
-    communication?.emitMetadata(metadata)
     send({
       type: 'CONFIRM_MINT',
       status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
