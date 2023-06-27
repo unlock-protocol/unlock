@@ -8,7 +8,10 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { CREDIT_CARD_MIN_USD_PRICE } from '~/constants'
+import {
+  CREDIT_CARD_MIN_PRICE_BY_CURRENCY,
+  CREDIT_CARD_MIN_USD_PRICE,
+} from '~/constants'
 import {
   useGetLockSettings,
   useSaveLockSettings,
@@ -48,7 +51,7 @@ export default function CreditCardCustomPrice({
 
   const getDefaultValues = async (): Promise<CreditCardFormSchema> => {
     const settings = (await storage.getLockSettings(network, lockAddress)).data
-    const { creditCardPrice: price, creditCardCurrency } = settings
+    const { creditCardPrice: price, creditCardCurrency = 'usd' } = settings
 
     if (price && creditCardCurrency) {
       const priceInUsd = parseFloat(formatNumber(price / 100)).toFixed(2)
@@ -142,6 +145,10 @@ export default function CreditCardCustomPrice({
     }
   })
 
+  const minPriceByCurrency =
+    CREDIT_CARD_MIN_PRICE_BY_CURRENCY?.[currency?.toUpperCase()] ||
+    CREDIT_CARD_MIN_USD_PRICE
+
   return (
     <div className="grid gap-2">
       <SettingCardDetail
@@ -187,9 +194,9 @@ export default function CreditCardCustomPrice({
                       message: 'This field is required.',
                     },
                     min: {
-                      value: CREDIT_CARD_MIN_USD_PRICE,
+                      value: minPriceByCurrency,
                       message: `Price is too low for us to process credit cards. It needs to be at least ${parseFloat(
-                        `${CREDIT_CARD_MIN_USD_PRICE}`
+                        `${minPriceByCurrency}`
                       ).toFixed(2)}. `,
                     },
                   })}
