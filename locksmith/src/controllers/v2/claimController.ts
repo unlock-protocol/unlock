@@ -111,7 +111,6 @@ export const claim: RequestHandler = async (request, response: Response) => {
         ...protectedMetadata,
       },
     })
-    console.log(metadata)
     await upsertUserMetadata({
       network,
       userAddress: owner,
