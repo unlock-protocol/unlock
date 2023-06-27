@@ -240,7 +240,6 @@ export const WalletlessRegistrationForm = ({
         })}
         disabled={disabled}
         required
-        type="string"
         placeholder="Satoshi Nakamoto"
         label="Full Name"
         description={
