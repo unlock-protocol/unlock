@@ -10,7 +10,7 @@ const queue = require('./queue')
 const execute = require('./execute')
 
 async function main({ proposal, govAddress }) {
-  const [signer, holder] = await ethers.getSigners()
+  const [signer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
   const quorum = await getQuorum(govAddress)
@@ -23,13 +23,9 @@ async function main({ proposal, govAddress }) {
 
     // NB: this has to be done *before* proposal submission's block height so votes get accounted for
     console.log('GOV (dev) > Delegating UDT to bypass quorum')
-    await addUDT(holder.address, ethers.utils.formatEther(quorum.mul(2)))
+    await addUDT(signer.address, ethers.utils.formatEther(quorum.mul(2)))
 
-    const udt = await ethers.getContractAt(
-      'UnlockDiscountTokenV3',
-      udtAddress,
-      holder
-    )
+    const udt = await ethers.getContractAt('UnlockDiscountTokenV3', udtAddress)
 
     // delegate 30k to voter
     const tx = await udt.delegate(signer.address)
@@ -38,7 +34,7 @@ async function main({ proposal, govAddress }) {
     if (evt) {
       // eslint-disable-next-line no-console
       console.log(
-        `GOV VOTE (dev) > ${holder.address} delegated quorum to ${signer.address}`,
+        `GOV VOTE (dev) > ${signer.address} delegated quorum to ${signer.address}`,
         `(total votes: ${ethers.utils.formatEther(
           await udt.getVotes(signer.address)
         )},quorum: ${ethers.utils.formatEther(quorum)})`
