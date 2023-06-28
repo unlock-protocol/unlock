@@ -5,7 +5,13 @@ const { resolve } = require('path')
 task('gov', 'Submit (and validate) a proposal to UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal, govAddress }) => {
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
+    const { loadProposal } = require('../helpers/gov')
+    const proposal = await loadProposal(resolve(proposalPath), params)
     const processProposal = require('../scripts/gov')
     return await processProposal({ proposal, govAddress })
   })

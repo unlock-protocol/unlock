@@ -45,6 +45,8 @@ async function main({ proposal, proposerAddress, govAddress }) {
   console.log(
     `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash}, block: ${currentBlock})`
   )
+
+  return proposalId
 }
 
 // execute as standalone

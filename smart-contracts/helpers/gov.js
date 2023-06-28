@@ -211,6 +211,11 @@ const getQuorum = async (govAddress) => {
   return await gov.quorum(currentBlock - 1)
 }
 
+const getGovTokenAddress = async (govAddress) => {
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  return await gov.token()
+}
+
 const getProposalState = async (proposalId, govAddress) => {
   const states = [
     'Pending',
@@ -241,6 +246,7 @@ module.exports = {
   loadProposal,
   getProposalVotes,
   getQuorum,
+  getGovTokenAddress,
   getProposalState,
   getProposalId,
   getProposalIdFromContract,
