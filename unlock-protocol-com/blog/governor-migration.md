@@ -1,8 +1,7 @@
 ---
-created: 2023-06-28T13:47:34+02:00
-modified:
-author: Clément Renaud
 title: Proposed Upgrade of the Unlock DAO Governor Contract to the Most Recent Version
+publishDate: June 28, 2023
+authorName: Clément Renaud
 image: /images/blog/ballot-box-image.png
 ---
 
