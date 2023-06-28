@@ -39,7 +39,11 @@ Sentry.init({
 })
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
-app.use(Sentry.Handlers.requestHandler())
+app.use(
+  Sentry.Handlers.requestHandler({
+    ip: true,
+  })
+)
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler())
 

@@ -11,6 +11,7 @@ export type User =
       type: 'user'
       walletAddress: string
       session: string
+      id: string
     }
   | {
       id: number
@@ -105,10 +106,12 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
       if (!session) {
         return next()
       }
+      const walletAddress = normalizer.ethereumAddress(session.walletAddress)
       req.user = {
         type: 'user',
         session: session.id,
-        walletAddress: normalizer.ethereumAddress(session.walletAddress),
+        walletAddress,
+        id: walletAddress,
       }
       return next()
     }

@@ -1,7 +1,7 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 
-const isProduction = ['prod'].includes(
+export const isProduction = ['prod'].includes(
   process.env.NODE_ENV?.toLowerCase().trim() ?? ''
 )
 
@@ -87,7 +87,7 @@ if (process.env.DATABASE_URL) {
   config.database.host = process.env.DB_HOSTNAME
 }
 
-if (process.env.UNLOCK_ENV === 'prod') {
+if (isProduction) {
   config.services.wedlocks =
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
 } else if (process.env.UNLOCK_ENV === 'staging') {

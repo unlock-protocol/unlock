@@ -34,6 +34,7 @@ import lockSettingsRouter from './v2/lock-settings'
 import certificateRouter from './v2/certificate'
 import ogRouter from './v2/og'
 import hooksRooter from './v2/hooks'
+import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 
 const router = express.Router({ mergeParams: true })
 
@@ -65,7 +66,11 @@ router.use(
   }
 )
 
-router.use('/api/key/:chain([0-9]{1,12})/', metadataRouter)
+router.use(
+  '/api/key/:chain([0-9]{1,12})/',
+  createCacheMiddleware(),
+  metadataRouter
+)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
