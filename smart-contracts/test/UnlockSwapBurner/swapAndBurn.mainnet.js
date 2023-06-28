@@ -12,6 +12,7 @@ const {
   getUDTSwapRoute,
   getUniswapTokens,
   getUniswapRouters,
+  ADDRESS_ZERO,
   // reverts,
 } = require('../helpers')
 
@@ -20,7 +21,7 @@ const { native, usdc, dai, wBtc } = getUniswapTokens(CHAIN_ID)
 const scenarios = [native, usdc, dai, wBtc]
 
 describe(`swapAndBurn`, function () {
-  let swapBurner, unlockAddress, routers
+  let swapBurner, unlockAddress, routers, tokenAddress
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
@@ -31,9 +32,8 @@ describe(`swapAndBurn`, function () {
     const [signer] = await ethers.getSigners()
     await addSomeETH(signer.address)
 
-    const routers = getUniswapRouters()
     const { chainId } = await ethers.provider.getNetwork()
-
+    routers = getUniswapRouters(chainId)
     ;({ unlockAddress } = networks[chainId])
 
     // deploy swapper
@@ -59,14 +59,15 @@ describe(`swapAndBurn`, function () {
       let amount
       before(async () => {
         amount = ethers.utils.parseUnits('50', token.decimals)
+        tokenAddress = tokenAddress || ADDRESS_ZERO
 
         // Unlock has some token
         if (!token.isNative) {
-          await addERC20(token.address, unlockAddress, amount)
+          await addERC20(tokenAddress, unlockAddress, amount)
         } else {
           await addSomeETH(unlockAddress, amount)
         }
-        const balance = await getBalance(unlockAddress, token.address)
+        const balance = await getBalance(unlockAddress, tokenAddress)
         expect(balance.toString()).to.equal(amount.toString())
 
         // burner has not UDT
@@ -79,7 +80,7 @@ describe(`swapAndBurn`, function () {
         if (!token.isNative) {
           const tokenContract = await ethers.getContractAt(
             'IERC20',
-            token.address,
+            tokenAddress,
             unlockSigner
           )
           await tokenContract.transfer(swapBurner.address, amount)
@@ -89,10 +90,7 @@ describe(`swapAndBurn`, function () {
             value: amount,
           })
         }
-        const balanceBurner = await getBalance(
-          swapBurner.address,
-          token.address
-        )
+        const balanceBurner = await getBalance(swapBurner.address, tokenAddress)
         expect(balanceBurner.toString()).to.equal(amount.toString())
       })
 
@@ -102,22 +100,27 @@ describe(`swapAndBurn`, function () {
           tokenIn: token,
           recipient: swapBurner.address,
         })
+        const balanceBurnerBefore = await getBalance(
+          swapBurner.address,
+          tokenAddress
+        )
+        const udtBalanceBurnerBefore = await getBalance(swapBurner.address, UDT)
 
         await swapBurner.swapAndBurn(
-          token.address,
+          tokenAddress,
           swapRouter,
           amount,
           swapCalldata,
           { value }
         )
-        const balanceBurner = await getBalance(
-          swapBurner.address,
-          token.address
+        const balanceBurner = await getBalance(swapBurner.address, tokenAddress)
+        expect(balanceBurnerBefore.minus(balanceBurner).toString()).to.equal(
+          '0'
         )
-        expect(balanceBurner.toString()).to.equal('0')
         const udtBalanceBurner = await getBalance(swapBurner.address, UDT)
-        expect(udtBalanceBurner.gt(0)).to.equal(true)
-        console.log(udtBalanceBurner)
+        expect(udtBalanceBurner.minus(udtBalanceBurnerBefore).get(0)).to.equal(
+          true
+        )
       })
     })
   })
