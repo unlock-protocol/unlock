@@ -19,7 +19,7 @@ import { networks } from '@unlock-protocol/networks'
 
 const paywall = new Paywall(networks)
 // Now, you can utilize the provider for tasks such as signing messages and sending transactions.
-const provider = paywall.getProvider('https://app.unlock-protocol.com')
+const provider = paywall.getProvider()
 await provider.connect() // This step will initiate the login modal
 ```
 
