@@ -18,14 +18,14 @@ We have redeployed [a new version](https://etherscan.io/address/0x440d9D4E66d39b
 
 ## **The king is dead, long live the king!**
 
-For the DAO, a change in governor requires two actions: canonize the new one and retire the old one. The vehicle for that process will be a proposal containing the instructions to make the change. Once executed, this DAO popemobile will transport the voting system to its new location.
+For the DAO, a change in governor requires two actions: canonize the new one and retire the old one. The vehicle for that process will be [a proposal](https://www.tally.xyz/gov/unlock/proposal/36208249270120864100503453462134662510103434369621143761091232235939585571890) containing the instructions to make the change. Once executed, this DAO popemobile will transport the voting system to its new location.
 
 As a user/voter, there won’t be any change in delegations or voting process. The only apparent change is that the previous proposals will no longer appear in the Tally UI or be visible from the new governor contract.
 
 ## **What to do now**
 
 - [Delegate your votes](https://unlock-protocol.com/guides/delegation/) (you **must** delegate in order to participate in onchain votes, including self-delegation)
-- Head to the proposal
+- Head to [the proposal](https://www.tally.xyz/gov/unlock/proposal/36208249270120864100503453462134662510103434369621143761091232235939585571890)
 - Cast your vote!
 
 The voting period ends on **xxx July 2023.** At the end of the voting period, and if the proposal to upgrade passes, the proposal will be queued and executed and the change will become effective.
