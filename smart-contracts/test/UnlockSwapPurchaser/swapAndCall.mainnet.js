@@ -6,6 +6,7 @@ const {
   uniswapRouterAddresses,
   getUniswapTokens,
   getUniswapRoute,
+  getUniswapRouters,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
   getBalance,

@@ -11,9 +11,9 @@ const {
   impersonate,
   getUDTSwapRoute,
   getUniswapTokens,
+  getUniswapRouters,
   // reverts,
 } = require('../helpers')
-const uniswapRouterAddresses = require('../../scripts/uniswap/routerAddresses.json')
 
 // get uniswap-formatted tokens
 const { native, usdc, dai, wBtc } = getUniswapTokens(CHAIN_ID)
@@ -31,12 +31,7 @@ describe(`swapAndBurn`, function () {
     const [signer] = await ethers.getSigners()
     await addSomeETH(signer.address)
 
-    const { UniversalRouter, UniversalRouterV1_2, SwapRouter02 } =
-      uniswapRouterAddresses[CHAIN_ID]
-    routers = [UniversalRouter, SwapRouter02, UniversalRouterV1_2].filter(
-      (d) => !!d
-    )
-
+    const routers = getUniswapRouters()
     const { chainId } = await ethers.provider.getNetwork()
 
     ;({ unlockAddress } = networks[chainId])
