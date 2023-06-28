@@ -17,13 +17,7 @@ const uniswapRouterAddresses = require('../../scripts/uniswap/routerAddresses.js
 
 // get uniswap-formatted tokens
 const { native, usdc, dai, wBtc } = getUniswapTokens(CHAIN_ID)
-
-const scenarios = [
-  native,
-  usdc,
-  dai,
-  wBtc, // Uniswap SDK fails to generate route and parse calldata
-]
+const scenarios = [native, usdc, dai, wBtc]
 
 describe(`swapAndBurn`, function () {
   let swapBurner, unlockAddress, routers
@@ -57,8 +51,8 @@ describe(`swapAndBurn`, function () {
       expect(await swapBurner.udtAddress()).to.equal(UDT)
     })
     it('uniswap routers are set properly', async () => {
-      expect(await swapBurner.uniswapRouters(0)).to.equal(routers[0])
-      expect(await swapBurner.uniswapRouters(1)).to.equal(routers[1])
+      expect(await swapBurner.uniswapRouters(routers[0])).to.be.true
+      expect(await swapBurner.uniswapRouters(routers[1])).to.be.true
     })
     it('permit2 is set properly', async () => {
       expect(await swapBurner.permit2()).to.equal(PERMIT2_ADDRESS)
@@ -69,7 +63,7 @@ describe(`swapAndBurn`, function () {
     describe(`swap ${token.symbol} for UDT`, () => {
       let amount
       before(async () => {
-        amount = ethers.utils.parseUnits('500', token.decimals)
+        amount = ethers.utils.parseUnits('50', token.decimals)
 
         // Unlock has some token
         if (!token.isNative) {
@@ -87,12 +81,19 @@ describe(`swapAndBurn`, function () {
 
         // transfer these token to burner
         const unlockSigner = await impersonate(unlockAddress)
-        const tokenContract = await ethers.getContractAt(
-          'IERC20',
-          token.address,
-          unlockSigner
-        )
-        await tokenContract.transfer(swapBurner.address, amount)
+        if (!token.isNative) {
+          const tokenContract = await ethers.getContractAt(
+            'IERC20',
+            token.address,
+            unlockSigner
+          )
+          await tokenContract.transfer(swapBurner.address, amount)
+        } else {
+          await await unlockSigner.sendTransaction({
+            to: swapBurner.address,
+            value: amount,
+          })
+        }
         const balanceBurner = await getBalance(
           swapBurner.address,
           token.address
@@ -103,7 +104,7 @@ describe(`swapAndBurn`, function () {
       it('burns token entire balance', async () => {
         const { swapCalldata, value, swapRouter } = await getUDTSwapRoute({
           amountIn: amount,
-          tokenInAddress: token.address,
+          tokenIn: token,
           recipient: swapBurner.address,
         })
 
