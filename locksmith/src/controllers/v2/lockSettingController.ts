@@ -39,6 +39,12 @@ const LockSettingSchema = z.object({
       description: 'Checkout config URL id.',
     })
     .nullish(),
+  unlockFeeChargedToUser: z
+    .boolean({
+      description:
+        'When enabled the Unlock fee will be included to the total cost for the user, otherwise the lock manager will absorb" that cost.',
+    })
+    .optional(),
   hookGuildId: z
     .preprocess(
       (a) => parseInt(z.string().parse(a), 10),
@@ -47,18 +53,25 @@ const LockSettingSchema = z.object({
       })
     )
     .nullish(),
+  creditCardCurrency: z
+    .enum(['usd', 'eur'], {
+      description: 'Currency to use for credit card payment.',
+    })
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
 
 export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   sendEmail: true,
+  unlockFeeChargedToUser: true,
   replyTo: undefined,
   creditCardPrice: undefined,
   emailSender: undefined,
   slug: undefined,
   checkoutConfigId: undefined,
   hookGuildId: undefined,
+  creditCardCurrency: 'usd',
 }
 
 export const updateSettings: RequestHandler = async (

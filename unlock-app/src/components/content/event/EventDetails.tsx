@@ -48,6 +48,7 @@ import { EventCheckoutUrl } from './EventCheckoutUrl'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
+import { PaywallConfig } from '~/unlockTypes'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -460,11 +461,21 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const injectedProvider = selectProvider(config)
 
-  const paywallConfig = {
+  const paywallConfig: PaywallConfig = {
     locks: {
       [lockAddress]: {
         network,
         emailRequired: true,
+        metadataInputs: [
+          {
+            name: 'fullname',
+            defaultValue: '',
+            type: 'text',
+            required: true,
+            placeholder: 'Satoshi Nakamoto',
+            public: false,
+          },
+        ],
       },
     },
   }
@@ -714,6 +725,31 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               Tools for you, the lock manager
             </span>
             <div className="grid gap-4">
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
+                    title="Manage Attendees"
+                    description="See who is attending your event, invite people with airdrops and more!"
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  {eventLocks?.map(({ lockAddress, network }) => {
+                    return (
+                      <Button
+                        key={lockAddress}
+                        as={Link}
+                        variant="black"
+                        className="button border"
+                        size="small"
+                        href={`/locks/lock?address=${lockAddress}&network=${network}`}
+                      >
+                        Manage attendees for {minifyAddress(lockAddress)}
+                      </Button>
+                    )
+                  })}
+                </div>
+              </Card>
+
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
