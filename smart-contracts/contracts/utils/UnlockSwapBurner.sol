@@ -23,12 +23,11 @@ contract UnlockSwapBurner {
   using SafeCast160 for uint256;
 
   // addresses on current chain
-  address public unlockAddress;
   address public udtAddress;
 
   // required by Uniswap Universal Router
   address public permit2;
-  address public swapRouter;
+  mapping(address => bool) public uniswapRouters;
 
   // dead address to burn
   address public constant burnAddress =
@@ -41,11 +40,10 @@ contract UnlockSwapBurner {
   event SwapBurn(address tokenAddress, uint amountSpent, uint amountBurnt);
 
   // errors
-  error SwapFailed(
+  error UDTSwapFailed(
     address uniswapRouter,
     address tokenIn,
-    address tokenOut,
-    uint amountInMax,
+    uint amount,
     bytes callData
   );
   error InsufficientBalance();
@@ -54,20 +52,30 @@ contract UnlockSwapBurner {
 
   /**
    * Set the address of Uniswap Permit2 helper contract
-   * @param _unlockAddress the address of Unlock contract
    * @param _udtAddress the address of UDT contract
    * @param _permit2Address the address of Uniswap PERMIT2 contract
    */
   constructor(
-    address _unlockAddress,
     address _udtAddress,
     address _permit2Address,
-    address _swapRouter
+    address[] memory _uniswapRouters
   ) {
-    unlockAddress = _unlockAddress;
     udtAddress = _udtAddress;
     permit2 = _permit2Address;
-    swapRouter = _swapRouter;
+    for (uint i = 0; i < _uniswapRouters.length; i++) {
+      uniswapRouters[_uniswapRouters[i]] = true;
+    }
+  }
+
+  /**
+   * Simple helper to retrieve balance in ERC20 or native tokens
+   * @param token the address of the token (address(0) for native token)
+   */
+  function getBalance(address token) internal view returns (uint) {
+    return
+      token == address(0)
+        ? address(this).balance
+        : IMintableERC20(token).balanceOf(address(this));
   }
 
   /**
@@ -75,30 +83,26 @@ contract UnlockSwapBurner {
    */
   function swapAndBurn(
     address tokenAddress,
-    uint amount
+    address swapRouter,
+    uint amount,
+    bytes memory swapCalldata
   ) public payable returns (bytes memory) {
-    uint unlockBalance = IMintableERC20(tokenAddress).balanceOf(unlockAddress);
-    amount = amount == 0 ? unlockBalance : amount;
+    // make sure given uniswapRouter is whitelisted
+    if (uniswapRouters[swapRouter] != true) {
+      revert UnautorizedRouter(swapRouter);
+    }
 
     // get balances before swap
-    uint balanceTokenBefore = IMintableERC20(tokenAddress).balanceOf(
-      address(this)
-    );
-    uint udtBalanceBefore = IMintableERC20(udtAddress).balanceOf(address(this));
+    uint balanceTokenBefore = getBalance(tokenAddress);
+    uint balanceUdtBefore = getBalance(udtAddress);
 
-    // Transfer the specified amount of token to this contract.
-    TransferHelper.safeTransferFrom(
-      tokenAddress,
-      msg.sender,
-      address(this),
-      amount
-    );
+    if (tokenAddress != address(0)) {
+      // Approve the router to spend src ERC20
+      TransferHelper.safeApprove(tokenAddress, swapRouter, amount);
 
-    // Approve the router to spend src ERC20
-    TransferHelper.safeApprove(tokenAddress, swapRouter, amount);
-
-    // approve PERMIT2 to manipulate the token
-    IERC20(tokenAddress).approve(permit2, amount);
+      // approve PERMIT2 to manipulate the token
+      IERC20(tokenAddress).approve(permit2, amount);
+    }
 
     // issue PERMIT2 Allowance
     IPermit2(permit2).approve(
@@ -108,49 +112,25 @@ contract UnlockSwapBurner {
       uint48(block.timestamp + 60) // expires after 1min
     );
 
-    // swap tokens params
-    ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
-      .ExactInputSingleParams({
-        tokenIn: tokenAddress,
-        tokenOut: udtAddress,
-        fee: poolFee,
-        recipient: address(this),
-        deadline: block.timestamp,
-        amountIn: amount,
-        amountOutMinimum: 0,
-        sqrtPriceLimitX96: 0
-      });
+    // executes the swap
+    (bool success, ) = swapRouter.call{
+      value: tokenAddress == address(0) ? msg.value : 0
+    }(swapCalldata);
 
-    // execute the swap.
-    uint amountOut = ISwapRouter(swapRouter).exactInputSingle(params);
-    uint udtBalanceAfter = IMintableERC20(udtAddress).balanceOf(address(this));
-
-    // assert that the contract received UDT properly
-    require((udtBalanceBefore - udtBalanceAfter) == amountOut, "w");
-
-    // TODO: make sure to catch Uniswap revert
-    // if (success == false) {
-    //   revert SwapFailed(
-    //     uniswapRouter,
-    //     srcToken,
-    //     destToken,
-    //     amountInMax,
-    //     swapCalldata
-    //   );
-    // }
-
-    // check that contract did not spend more than it received
-    if (
-      IMintableERC20(tokenAddress).balanceOf(address(this)) -
-        balanceTokenBefore <
-      0
-    ) {
-      // balance too low
-      revert UnauthorizedBalanceChange();
+    // catch Uniswap revert
+    if (success == false) {
+      revert UDTSwapFailed(swapRouter, tokenAddress, amount, swapCalldata);
     }
 
-    // burn the received UDT
-    IMintableERC20(udtAddress).transfer(burnAddress, amountOut);
+    // TODO: check that Unlock did not spend more than it received
+    uint balanceUdtAfter = getBalance(udtAddress);
+    // if (
+    //   getBalance(tokenAddress) - balanceTokenBefore < 0 ||
+    //   balanceUdtAfter - balanceUdtBefore < 0
+    // ) {
+    //   // balance too low
+    //   revert UnauthorizedBalanceChange();
+    // }
   }
 
   // required to withdraw WETH
