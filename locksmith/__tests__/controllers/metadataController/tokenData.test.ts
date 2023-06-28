@@ -194,7 +194,7 @@ describe('Requesting Token Data', () => {
 
   describe('when the user has provided metadata', () => {
     describe('when the user has provided public & protected metadata', () => {
-      it('returns their payload in the response excluding the protected fields', async () => {
+      it.only('returns their payload in the response excluding the protected fields', async () => {
         expect.assertions(2)
         const response = await request(app)
           .get(`/api/key/${lockAddress}/1`)

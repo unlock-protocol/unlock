@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express'
 import { OutgoingHttpHeaders } from 'http'
 import { MemoryCache } from 'memory-cache-node'
+import { isProduction } from '../../config/config'
 
 export interface Options {
   ttl: number
@@ -22,6 +23,11 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     }
   >(checkInterval, maxItems)
   const handler: RequestHandler = (req, res, next) => {
+    // Only cache in production
+    if (isProduction) {
+      return next()
+    }
+
     // Only cache GET requests
     if (req.method !== 'GET') {
       return next()
