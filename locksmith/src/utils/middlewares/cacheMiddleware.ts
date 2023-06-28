@@ -30,7 +30,12 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     const cached = cache.retrieveItemValue(key)
     res.sendResponse = res.send
     if (cached) {
-      return res.header(cached.headers).sendResponse(cached.body)
+      return res
+        .header({
+          ...cached.headers,
+          'locksmith-cache': 'HIT',
+        })
+        .sendResponse(cached.body)
     }
 
     res.send = (body) => {
