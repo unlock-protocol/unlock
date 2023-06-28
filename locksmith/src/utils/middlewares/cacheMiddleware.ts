@@ -26,6 +26,12 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     if (req.method !== 'GET') {
       return next()
     }
+
+    // We don't cache authenticated requests
+    if (req.user?.walletAddress) {
+      return next()
+    }
+
     const key = (req.originalUrl || req.url).trim().toLowerCase()
     const cached = cache.retrieveItemValue(key)
     res.sendResponse = res.send
