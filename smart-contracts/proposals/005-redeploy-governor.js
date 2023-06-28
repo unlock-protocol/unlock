@@ -52,13 +52,14 @@ async function main([oldGovAddress, newGovAddress]) {
   const TIMELOCK_ADMIN_ROLE = await timelock.TIMELOCK_ADMIN_ROLE()
   const PROPOSER_ROLE = await timelock.PROPOSER_ROLE()
 
-  // show some info in terminal
-  console.log(`redeploying Governor:
+  // show old gov info in terminal
+  console.log(`previous Governor deployment:
   - timelock: ${timeLockAddress}
   - token: ${tokenAddress}`)
 
   // deploy new instance of gov if necessary
   if (!newGovAddress) {
+    console.log(`Redeploying governor...`)
     const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
 
     const votingPeriod = await oldGovernor.votingPeriod()
@@ -90,6 +91,8 @@ async function main([oldGovAddress, newGovAddress]) {
       })
     }
   }
+
+  console.log(`Transfering governor from ${oldGovAddress} to ${newGovAddress}.`)
 
   const calls = [
     {
