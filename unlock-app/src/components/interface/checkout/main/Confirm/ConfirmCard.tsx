@@ -63,18 +63,20 @@ export function CreditCardPricingBreakdown({
         </a>
       </h3>
       <div className="divide-y">
-        <Detail
-          loading={loading}
-          className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
-          label="Service Fee"
-          labelSize="tiny"
-          valueSize="tiny"
-          inline
-        >
-          <div className="font-normal">
-            {formatFiatPriceFromCents(unlockServiceFee, symbol)}
-          </div>
-        </Detail>
+        {unlockServiceFee > 0 && !loading && (
+          <Detail
+            loading={loading}
+            className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
+            label="Service Fee"
+            labelSize="tiny"
+            valueSize="tiny"
+            inline
+          >
+            <div className="font-normal">
+              {formatFiatPriceFromCents(unlockServiceFee, symbol)}
+            </div>
+          </Detail>
+        )}
         {!!creditCardProcessingFee && (
           <Detail
             loading={loading}
