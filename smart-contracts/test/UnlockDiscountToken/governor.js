@@ -14,6 +14,11 @@ contract('UnlockProtocolGovernor', () => {
   let udt
   let updateTx
 
+  // default values
+  const votingDelay = 1
+  const votingPeriod = 45818
+  const defaultQuorum = ethers.utils.parseEther('15000')
+
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
     const proposalTx = await gov.propose(...proposal)
@@ -83,6 +88,9 @@ contract('UnlockProtocolGovernor', () => {
 
     gov = await upgrades.deployProxy(UnlockProtocolGovernor, [
       udt.address,
+      votingDelay,
+      votingPeriod,
+      defaultQuorum,
       timelock.address,
     ])
     await gov.deployed()
@@ -92,22 +100,22 @@ contract('UnlockProtocolGovernor', () => {
   })
 
   describe('Default values', () => {
-    it('default delay is 1 block', async () => {
-      assert.equal(await gov.votingDelay(), 1)
+    it('default delay is set properly', async () => {
+      assert.equal(await gov.votingDelay(), votingDelay)
     })
 
     it('voting period is 1 week', async () => {
-      assert.equal(await gov.votingPeriod(), 45818)
+      assert.equal(await gov.votingPeriod(), votingPeriod)
     })
 
     it('quorum is 15k UDT', async () => {
-      assert.equal(await gov.quorum(1), 15000e18)
+      assert.equal((await gov.quorum(1)).toString(), defaultQuorum.toString())
     })
   })
 
   describe('Update voting params', () => {
     it('should only be possible through voting', async () => {
-      assert.equal(await gov.votingDelay(), 1)
+      assert.equal(await gov.votingDelay(), votingDelay)
       await reverts(gov.setVotingDelay(2), 'Governor: onlyGovernance')
       await reverts(gov.setQuorum(2), 'Governor: onlyGovernance')
       await reverts(gov.setVotingPeriod(2), 'Governor: onlyGovernance')
@@ -168,7 +176,7 @@ contract('UnlockProtocolGovernor', () => {
         const evt = updateTx.events.find((v) => v.event === 'QuorumUpdated')
         const { oldQuorum, newQuorum } = evt.args
         assert.equal(newQuorum.eq(quorum), true)
-        assert.equal(oldQuorum, 15000e18)
+        assert.equal(oldQuorum.toString(), defaultQuorum.toString())
       })
     })
 
