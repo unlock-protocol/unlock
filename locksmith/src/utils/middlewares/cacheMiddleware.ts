@@ -24,7 +24,7 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
   >(checkInterval, maxItems)
   const handler: RequestHandler = (req, res, next) => {
     // Only cache in production
-    if (isProduction) {
+    if (!isProduction) {
       return next()
     }
 
