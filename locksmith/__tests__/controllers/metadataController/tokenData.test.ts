@@ -93,6 +93,15 @@ vi.mock('../../../src/utils/keyData', () => {
 
 describe('Requesting Token Data', () => {
   beforeAll(async () => {
+    await LockMetadata.destroy({
+      where: {},
+      truncate: true,
+    })
+    await KeyMetadata.destroy({
+      where: {},
+      truncate: true,
+    })
+
     await LockMetadata.create({
       chain,
       address: lockAddress,
@@ -194,7 +203,7 @@ describe('Requesting Token Data', () => {
 
   describe('when the user has provided metadata', () => {
     describe('when the user has provided public & protected metadata', () => {
-      it.only('returns their payload in the response excluding the protected fields', async () => {
+      it('returns their payload in the response excluding the protected fields', async () => {
         expect.assertions(2)
         const response = await request(app)
           .get(`/api/key/${lockAddress}/1`)
