@@ -1,5 +1,5 @@
 ---
-title: Proposed Upgrade of the Unlock DAO Governor Contract to the Most Recent Version
+title: Proposed Upgrade of the Unlock DAO Governor Contract 
 publishDate: June 28, 2023
 authorName: Clément Renaud
 image: /images/blog/ballot-box-image.png
@@ -23,8 +23,8 @@ As a user/voter, there won’t be any change in delegations or voting process. T
 
 ## **What to do now**
 
-- [Delegate your votes](https://unlock-protocol.com/guides/delegation/) (you **must** delegate in order to participate in onchain votes, including self-delegation)
+-  If you own any amount of UDT, the Unlock protocol's governance tokens, [delegate your votes](https://unlock-protocol.com/guides/delegation/) (you **must** delegate to participate in onchain votes, including self-delegation)
 - Head to [the proposal](https://www.tally.xyz/gov/unlock/proposal/36208249270120864100503453462134662510103434369621143761091232235939585571890)
 - Cast your vote!
 
-The voting period ends on **xxx July 2023.** At the end of the voting period, and if the proposal to upgrade passes, the proposal will be queued and executed and the change will become effective.
+The voting period ends on **July 11th 2023**. At the end of the voting period, and if the proposal to upgrade passes, the proposal will be queued and executed and the change will become effective.
