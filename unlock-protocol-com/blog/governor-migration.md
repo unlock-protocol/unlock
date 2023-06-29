@@ -1,5 +1,5 @@
 ---
-title: Proposed Upgrade of the Unlock DAO Governor Contract 
+title: Proposed Upgrade of the Unlock DAO Governor Contract to the Most Recent Version
 publishDate: June 28, 2023
 authorName: Clément Renaud
 image: /images/blog/ballot-box-image.png
