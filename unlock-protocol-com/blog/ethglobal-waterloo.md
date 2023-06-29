@@ -4,7 +4,7 @@ subTitle: ETHGlobal Waterloo had everything — building, learning, advice from 
 authorName: Christopher Carfi
 publishDate: June 28, 2023
 description: ETHGlobal Waterloo had everything — building, learning, advice from Vitalik, and a huge tortoise.
-image: /images/blog/ethglobalwaterloo23/
+image: /images/blog/ethglobalwaterloo23/ethglobal-waterloo-big-photo-min.jpeg
 ---
 
 ![ethglobal-waterloo-big-photo-min.jpeg](/images/blog/ethglobalwaterloo23/ethglobal-waterloo-big-photo-min.jpeg)
