@@ -25,10 +25,24 @@ export const allReceipts: RequestHandler = async (request, response) => {
     }),
   ])
 
-  const receiptsMap = receipts.reduce((map, receipt) => {
-    map[receipt.hash] = receipt
-    return map
-  }, {})
+  const receiptsDataMap = receiptsData.reduce<Record<string, Receipt>>(
+    (map, receiptData) => {
+      map[receiptData.id] = receiptData
+      return map
+    },
+    {}
+  )
 
-  return response.json({ receipts })
+  const items = receipts.map((item) => {
+    const receiptData = receiptsDataMap[item.id]
+    return {
+      ...item,
+      fullName: receiptData.fullname,
+      vat: receiptBaseData?.vat,
+      service: receiptBaseData?.servicePerformed,
+      supplier: receiptBaseData?.supplierName,
+      supplierAddress: `${receiptBaseData?.addressLine1}\n${receiptBaseData}`,
+    }
+  })
+  return response.json({ items })
 }

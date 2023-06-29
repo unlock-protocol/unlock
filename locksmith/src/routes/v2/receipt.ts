@@ -11,6 +11,13 @@ const router = express.Router({ mergeParams: true })
 const receiptController = new ReceiptController()
 
 router.get(
+  '/:network/:lockAddress/all',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  allReceipts
+)
+
+router.get(
   '/:network/:lockAddress/:hash',
   authenticatedMiddleware,
   lockManagerOrPayerMiddleware,
@@ -22,13 +29,6 @@ router.post(
   authenticatedMiddleware,
   lockManagerOrPayerMiddleware,
   (req, res) => receiptController.savePurchaser(req, res)
-)
-
-router.get(
-  '/:network/:lockAddress',
-  // authenticatedMiddleware,
-  // lockManagerMiddleware,
-  allReceipts
 )
 
 export default router
