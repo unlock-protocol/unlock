@@ -91,7 +91,7 @@ In addition to having the practical logistics of the hackathon buttoned down, th
 
 The ETHGlobal Waterloo hackathon was visited by some animal frens! Meet Gladys the tortoise. She was awesome. (And really likes grapes.)
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtube.com/shorts/gypdOT2pqRc?feature=share" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/gypdOT2pqRc?feature=share" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 
 The Unlock team had an amazing time meeting talking with all the hackers. See you at the next one!
