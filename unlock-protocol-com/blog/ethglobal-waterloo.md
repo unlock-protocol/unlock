@@ -77,7 +77,7 @@ Evy is an events platform, integrating Unlock Protocol, Eventbrite, Polygon, and
 
 Evy uses Unlock Protocol and WorldID's human verification technology, as well as Eventbrite's developer API for its rich event information. By calling the Eventbrite OAuth login authorization, it retrieves a list of events that you created, and customizes a set of Unlock Protocol smart contracts that can be uploaded to the Polygon blockchain within two minutes based on the description of your event. A crypto payment link is generated and returned to be updated in your event information.
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtu.be/G8ObM-Rq9NA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/G8ObM-Rq9NA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 ## Other fun stuff
 
