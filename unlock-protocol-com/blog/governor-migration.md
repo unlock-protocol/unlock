@@ -5,7 +5,6 @@ authorName: Clément Renaud
 image: /images/blog/ballot-box-image.png
 ---
 
-# **Proposed Upgrade of the Unlock DAO Governor Contract to the Most Recent Version**
 
 The Unlock DAO deployed its governance contracts in 2021 using the then-current [version](https://blog.openzeppelin.com/governor-smart-contract) of the Open Zeppelin Governor contracts. The Unlock DAO was part of the first batch of Open Zeppelin adopters with [its DAO voting system](https://unlock-protocol.com/blog/unlock-dao).
 
