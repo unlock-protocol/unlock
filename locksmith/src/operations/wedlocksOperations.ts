@@ -89,7 +89,7 @@ export const sendEmail = async ({
     logger.info('Email sending disabled for', {
       lockAddress: params.lockAddress,
     })
-    return
+    return `Email sending disabled for ${params.lockAddress}`
   }
 
   const payload = {
@@ -111,11 +111,13 @@ export const sendEmail = async ({
       body: JSON.stringify(payload),
     })
     if (response.status !== 204) {
+      const reason = await response.text()
       logger.info(
         'Wedlocks returned unexpected status code',
         response.status,
-        await response.text()
+        reason
       )
+      return reason
     }
     return true
   } catch (error: any) {
@@ -371,7 +373,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
 
   if (!recipient) {
     logger.info('No recipient found for', { lockAddress, ownerAddress })
-    return false
+    return `No recipient found for owner ${ownerAddress} on lock ${lockAddress}`
   }
 
   const airdroppedRecipient = keyManager.createTransferAddress({
