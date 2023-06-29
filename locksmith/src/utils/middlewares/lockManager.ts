@@ -8,7 +8,7 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
   try {
     const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
     const network = Number(req.params.network)
-    const lockManager = '0x81Dd955D02D337DB81BA6c9C5F6213E647672052' // Normalizer.ethereumAddress(req.user!.walletAddress!)
+    const lockManager = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
     if (!lockAddress) {
       return res.status(404).send({
