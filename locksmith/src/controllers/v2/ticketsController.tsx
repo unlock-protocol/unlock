@@ -127,7 +127,7 @@ export class TicketsController {
         })
       }
 
-      const x = await notifyNewKeyToWedlocks(
+      const sent = await notifyNewKeyToWedlocks(
         {
           tokenId: keyId,
           lock: {
@@ -139,9 +139,8 @@ export class TicketsController {
         },
         network
       )
-      console.log(x)
       return response.status(200).send({
-        sent: true,
+        sent,
       })
     } catch (err) {
       logger.error(err.message)
