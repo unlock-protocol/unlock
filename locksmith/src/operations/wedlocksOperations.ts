@@ -122,6 +122,7 @@ export const sendEmail = async ({
     return true
   } catch (error: any) {
     logger.error(`Sending email to ${config.services.wedlocks} failed`, error)
+    return `Sending email to ${config.services.wedlocks} failed`
   }
 }
 
