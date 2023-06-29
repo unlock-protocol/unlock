@@ -125,11 +125,11 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
 }
 
 export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
-  if (!req.user?.walletAddress) {
-    return res.status(401).send({
-      message: 'You are not authenticated.',
-    })
-  }
+  // if (!req.user?.walletAddress) {
+  //   return res.status(401).send({
+  //     message: 'You are not authenticated.',
+  //   })
+  // }
   return next()
 }
 

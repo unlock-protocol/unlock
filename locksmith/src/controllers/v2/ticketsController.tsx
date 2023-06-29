@@ -127,7 +127,7 @@ export class TicketsController {
         })
       }
 
-      await notifyNewKeyToWedlocks(
+      const x = await notifyNewKeyToWedlocks(
         {
           tokenId: keyId,
           lock: {
@@ -139,6 +139,7 @@ export class TicketsController {
         },
         network
       )
+      console.log(x)
       return response.status(200).send({
         sent: true,
       })

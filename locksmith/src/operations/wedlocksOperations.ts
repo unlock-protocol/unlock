@@ -366,6 +366,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   })
 
   if (!recipient) {
+    logger.info('No recipient found for', { lockAddress, ownerAddress })
     return
   }
 
