@@ -14729,7 +14729,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:./packages/types"
     eslint: 8.36.0
     graphql: 16.6.0
-    graphql-request: 5.1.0
+    graphql-request: 6.1.0
     hardhat: 2.13.0
     prettier: 2.8.8
     react-to-print: 2.14.12
@@ -26972,6 +26972,18 @@ __metadata:
   peerDependencies:
     graphql: 14 - 16
   checksum: 8b65d5c1b0cad8996a843b52305b2712ffbf842c700487d4cee1ed719f22baacaacfddafb65572bcddd67d57fd1d2d389dee2430ffba4b34c3ab542d079446c7
+  languageName: node
+  linkType: hard
+
+"graphql-request@npm:6.1.0":
+  version: 6.1.0
+  resolution: "graphql-request@npm:6.1.0"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.2.0
+    cross-fetch: ^3.1.5
+  peerDependencies:
+    graphql: 14 - 16
+  checksum: 6d62630a0169574442320651c1f7626c0c602025c3c46b19e09417c9579bb209306ee63de9793a03be2e1701bb7f13971f8545d99bc6573e340f823af0ad35b2
   languageName: node
   linkType: hard
 
