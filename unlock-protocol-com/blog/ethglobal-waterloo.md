@@ -62,7 +62,7 @@ Will3 is an innovative solution to a very real problem — how to distribute ass
 
 The ETHGlobal Waterloo hacker team of Melissa, Yicheng, Haoyu, Yvonne, & Maisha created an administration solution integrating Unlock Protocol smart contracts, XMTP notifications, and other components.
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtu.be/5QKDIwo0JSo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/5QKDIwo0JSo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 
 ### Evy — Winner of $500 third prize from Unlock Protocol
