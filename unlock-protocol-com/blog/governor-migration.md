@@ -2,6 +2,8 @@
 title: Proposed Upgrade of the Unlock DAO Governor Contract to the Most Recent Version
 publishDate: June 28, 2023
 authorName: Clément Renaud
+subTitle: The Unlock DAO deployed its governance contracts in 2021 using the then-current version of the Open Zeppelin Governor contracts. To take advantage of recent evolutions in the state-of-the-art, we believe now is the time for the Unlock DAO to redeploy a new version of the Open Zeppelin governor contracts and benefit from recent improvements.
+description: The Unlock DAO deployed its governance contracts in 2021 using the then-current version of the Open Zeppelin Governor contracts. To take advantage of recent evolutions in the state-of-the-art, we believe now is the time for the Unlock DAO to redeploy a new version of the Open Zeppelin governor contracts and benefit from recent improvements.
 image: /images/blog/ballot-box-image.png
 ---
 
