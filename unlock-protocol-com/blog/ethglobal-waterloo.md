@@ -7,7 +7,7 @@ description: ETHGlobal Waterloo had everything — building, learning, advice fr
 image: /images/blog/ethglobalwaterloo23/
 ---
 
-![ethglobal-waterloo-big-photo-min.jpeg](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/ethglobal-waterloo-big-photo-min.jpeg)
+![ethglobal-waterloo-big-photo-min.jpeg](/images/blog/ethglobalwaterloo23/ethglobal-waterloo-big-photo-min.jpeg)
 
 [ETHGlobal Waterloo 2023](https://ethglobal.com/events/waterloo2023) was a three-day event that took place from June 23-25 in the heart of Ethereum innovation — Waterloo, Ontario, Canada. ETHGlobal hackathon events are always unique for bringing together seasoned Ethereum developers as well as those new to the space to immerse themselves in hands-on learning, and this weekend was no exception. 
 
@@ -15,7 +15,7 @@ There were over 650 participants in the hackathon, and attendees had access to o
 
 Vitalik Buterin kicked off the event as the keynote speaker, and set the tone for an exciting few days of innovation and collaboration.
 
-![vitalik-3.jpeg](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/vitalik-3.jpeg)
+![vitalik-3.jpeg](/images/blog/ethglobalwaterloo23/vitalik-3.jpeg)
 
 In his talk, Vitalik discussed the current and future state of Ethereum, as well as challenges and opportunities that he perceives for people getting into the space. The topics included:
 
@@ -28,7 +28,8 @@ In his talk, Vitalik discussed the current and future state of Ethereum, as well
 
 You can check out Vitalik’s whole talk here:
 
-[https://www.youtube.com/live/yH0zlGTD-sY?feature=share&t=2892](https://www.youtube.com/live/yH0zlGTD-sY?feature=share&t=2892)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/live/yH0zlGTD-sY?feature=share&t=2892" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
 
 ## The ETHGlobal Waterloo Hackathon
 
@@ -40,13 +41,14 @@ ETHGlobal does hackathons right. Their process is buttoned down, things run on t
 
 [https://ethglobal.com/showcase/dutch-pm2xo](https://ethglobal.com/showcase/dutch-pm2xo) 
 
-![dutch.png](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/dutch.png)
+![dutch.png](/images/blog/ethglobalwaterloo23/dutch.png)
 
 Dutch is a group expense management dApp and the way to effortlessly settle shared costs after a trip. After everyone has uploaded their post-trip expenses, Dutch optimally computes simplified debts using the fewest transactions between individuals, saving time & gas fees. The Dutch team hacked using Unlock Protocol, Filecoin, Graph Protocol, and more.
 
 Here’s the Dutch team talking about their experience at the hackathon.
 
-[https://youtu.be/4h_RnllFrz0](https://youtu.be/4h_RnllFrz0)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtu.be/4h_RnllFrz0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
 
 ### Will3 — Winner of $1500 second prize from Unlock Protocol
 
@@ -54,13 +56,14 @@ Here’s the Dutch team talking about their experience at the hackathon.
 
 [https://ethglobal.com/showcase/will3-0r705](https://ethglobal.com/showcase/will3-0r705)
 
-![will3.jpeg](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/will3.jpeg)
+![will3.jpeg](/images/blog/ethglobalwaterloo23/will3.jpeg)
 
 Will3 is an innovative solution to a very real problem — how to distribute assets (especially digital assets) to designated beneficiaries according to someone's will and wishes, especially in the case where a digital wallet can no longer be accessed.
 
 The ETHGlobal Waterloo hacker team of Melissa, Yicheng, Haoyu, Yvonne, & Maisha created an administration solution integrating Unlock Protocol smart contracts, XMTP notifications, and other components.
 
-[https://youtu.be/5QKDIwo0JSo](https://youtu.be/5QKDIwo0JSo)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtu.be/5QKDIwo0JSo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
 
 ### Evy — Winner of $500 third prize from Unlock Protocol
 
@@ -68,13 +71,13 @@ The ETHGlobal Waterloo hacker team of Melissa, Yicheng, Haoyu, Yvonne, & Maisha 
 
 [https://ethglobal.com/showcase/evy-y06iw](https://ethglobal.com/showcase/evy-y06iw)
 
-![evy.png](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/evy.png)
+![evy.png](/images/blog/ethglobalwaterloo23/evy.png)
 
 Evy is an events platform, integrating Unlock Protocol, Eventbrite, Polygon, and Worldcoin. It is a view toward how web3 can build better community and connection with fans across events.
 
 Evy uses Unlock Protocol and WorldID's human verification technology, as well as Eventbrite's developer API for its rich event information. By calling the Eventbrite OAuth login authorization, it retrieves a list of events that you created, and customizes a set of Unlock Protocol smart contracts that can be uploaded to the Polygon blockchain within two minutes based on the description of your event. A crypto payment link is generated and returned to be updated in your event information.
 
-[https://youtu.be/G8ObM-Rq9NA](https://youtu.be/G8ObM-Rq9NA)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtu.be/G8ObM-Rq9NA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 ## Other fun stuff
 
@@ -82,14 +85,15 @@ In addition to having the practical logistics of the hackathon buttoned down, th
 
 ### Exhibit A:
 
-![midnight-poutine.jpeg](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/midnight-poutine.jpeg)
+![midnight-poutine.jpeg](/images/blog/ethglobalwaterloo23/midnight-poutine.jpeg)
 
 ### Exhibit B:
 
 The ETHGlobal Waterloo hackathon was visited by some animal frens! Meet Gladys the tortoise. She was awesome. (And really likes grapes.)
 
-[https://youtube.com/shorts/gypdOT2pqRc?feature=share](https://youtube.com/shorts/gypdOT2pqRc?feature=share)
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://youtube.com/shorts/gypdOT2pqRc?feature=share" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
 
 The Unlock team had an amazing time meeting talking with all the hackers. See you at the next one!
 
-![unlock-team-waterloo.jpeg](ETHGlobal%20Waterloo%202023%20and%20Unlock%20Protocol%20a0ad35b2173f418aa785df128f5f7081/unlock-team-waterloo.jpeg)
+![unlock-team-waterloo.jpeg](/images/blog/ethglobalwaterloo23/unlock-team-waterloo.jpeg)
