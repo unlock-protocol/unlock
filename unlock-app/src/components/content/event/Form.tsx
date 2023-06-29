@@ -1,7 +1,6 @@
 import { config } from '~/config/app'
 import { useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
-import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
 import { FormProvider, useForm, Controller, useWatch } from 'react-hook-form'
 import {
@@ -25,8 +24,6 @@ import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { storage } from '~/config/storage'
 import dayjs from 'dayjs'
-import { useRouter } from 'next/router'
-
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
   network: number
@@ -153,23 +150,9 @@ export const Form = ({ onSubmit }: FormProps) => {
   const minEndDate = ticket?.event_start_date
     ? dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
     : today
-  const router = useRouter()
 
   return (
     <FormProvider {...methods}>
-      <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
-        <Button variant="borderless" aria-label="arrow back">
-          <ArrowBackIcon
-            size={20}
-            className="cursor-pointer"
-            onClick={() => router.back()}
-          />
-        </Button>
-        <h1 className="text-xl font-bold text-center text-brand-dark">
-          Creating your Event
-        </h1>
-      </div>
-
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
           <Disclosure label="Basic Information" defaultOpen>

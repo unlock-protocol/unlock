@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
-import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import {
   Button,
@@ -23,9 +22,10 @@ import { BalanceWarning } from '~/components/interface/locks/Create/elements/Bal
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
+import { FaArrowLeft as ArrowLeftIcon } from 'react-icons/fa'
+import Link from 'next/link'
 import { SLUG_REGEXP } from '~/constants'
 import { storage } from '~/config/storage'
-import { useRouter } from 'next/router'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -49,7 +49,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const [forever, setForever] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
-  const router = useRouter()
 
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
@@ -136,13 +135,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
-        <Button variant="borderless" aria-label="arrow back">
-          <ArrowBackIcon
-            size={20}
-            className="cursor-pointer"
-            onClick={() => router.back()}
-          />
-        </Button>
+        <Link href="/certification">
+          <Icon icon={ArrowLeftIcon} />
+        </Link>
         <h1 className="text-xl font-bold text-center text-brand-dark">
           Creating Certification
         </h1>

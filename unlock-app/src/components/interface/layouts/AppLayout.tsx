@@ -150,11 +150,14 @@ export const AppLayout = ({
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
   const { openConnectModal } = useConnectModal()
+  if (termsLoading) {
+    return <Loading />
+  }
 
   const showLogin = authRequired && !account
 
   const logoSrc = logoImageUrl || '/images/svg/unlock-logo.svg'
-  const logoRedirectUri = logoRedirectUrl || '/'
+  const logoRedirectUri = logoRedirectUrl || '/locks'
 
   const MENU = {
     extraClass: {
@@ -180,12 +183,10 @@ export const AppLayout = ({
       : [],
   }
 
-  const showTermsModal = !termsLoading && !termsAccepted
-
   return (
     <div className="bg-ui-secondary-200">
       <Modal
-        isOpen={showTermsModal}
+        isOpen={!termsAccepted}
         setIsOpen={() => {
           saveTermsAccepted()
         }}
