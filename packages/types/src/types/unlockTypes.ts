@@ -121,6 +121,7 @@ export interface NetworkConfig {
   bridge?: {
     domainId: number
     connext: string
+    connextZodiacGnosisAddress?: string
   }
   isTestNetwork?: boolean
   erc20?: {
