@@ -46,13 +46,22 @@ export function CheckoutPage() {
     paywallConfig.referrer = referrerAddress
   }
 
-  const injectedProvider =
-    communication.providerAdapter || selectProvider(config)
-
   // Autoconnect, provider might change (we could receive the provider from the parent with a delay!)
   useEffect(() => {
-    authenticateWithProvider('DELEGATED_PROVIDER', injectedProvider)
-  }, [authenticateWithProvider, injectedProvider])
+    const autoconnect = async () => {
+      if (communication.providerAdapter) {
+        await authenticateWithProvider(
+          'DELEGATED_PROVIDER',
+          communication.providerAdapter
+        )
+      }
+    }
+    autoconnect()
+  }, [authenticateWithProvider, communication.providerAdapter])
+
+  // TODO: do we need to pass it down?
+  const injectedProvider =
+    communication.providerAdapter || selectProvider(config)
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
