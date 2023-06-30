@@ -143,6 +143,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   event UnlockTemplateAdded(address indexed impl, uint16 indexed version);
 
+  event SwapBurnerChanged(
+    address indexed newAddress,
+    address indexed oldAddress
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(address _unlockOwner) public initializer {
     // We must manually initialize Ownable
@@ -507,6 +512,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    */
   function setProtocolFee(uint _protocolFee) external onlyOwner {
     protocolFee = _protocolFee;
+  }
+
+  /**
+   * Set the UDT Swap and Burn contract address
+   * @param _swapBurnerAddress the address of the SwapBurner contract instance
+   */
+  function setSwapBurner(address _swapBurnerAddress) external onlyOwner {
+    address prevSwapBurnerAddress = _swapBurnerAddress;
+    swapBurnerAddress = _swapBurnerAddress;
+    emit SwapBurnerChanged(prevSwapBurnerAddress, swapBurnerAddress);
   }
 
   /**
