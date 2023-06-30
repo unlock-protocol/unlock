@@ -144,8 +144,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event UnlockTemplateAdded(address indexed impl, uint16 indexed version);
 
   event SwapBurnerChanged(
-    address indexed newAddress,
-    address indexed oldAddress
+    address indexed oldAddress,
+    address indexed newAddress
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
@@ -519,7 +519,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @param _swapBurnerAddress the address of the SwapBurner contract instance
    */
   function setSwapBurner(address _swapBurnerAddress) external onlyOwner {
-    address prevSwapBurnerAddress = _swapBurnerAddress;
+    address prevSwapBurnerAddress = swapBurnerAddress;
     swapBurnerAddress = _swapBurnerAddress;
     emit SwapBurnerChanged(prevSwapBurnerAddress, swapBurnerAddress);
   }
@@ -682,7 +682,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @param token the address of the tokem (zero address for native)
    * @param amount the amount of tokens to send (use zero to send entire balance)
    */
-  function sendToBurner(address token, uint256 amount) public {
+  function sendToSwapBurner(address token, uint256 amount) public {
     if (amount == 0) {
       amount = token == address(0)
         ? address(this).balance
