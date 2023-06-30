@@ -58,7 +58,10 @@ const abiIConnext = [
   },
 ]
 
-module.exports = async ([destChainId = 137, destMultisigAddress] = []) => {
+module.exports = async ([
+  destChainId = 137,
+  destConnextZodiacMultisigAddress,
+] = []) => {
   // parse call data for function call
   const { interface: unlockInterface } = await ethers.getContractAt(
     'Unlock',
@@ -78,11 +81,11 @@ module.exports = async ([destChainId = 137, destMultisigAddress] = []) => {
   } = networks[chainId]
 
   // dest info
-  const { multisig, bridge, unlockAddress } = networks[destChainId]
-  const { domainId: destDomainId } = bridge
+  const { bridge, unlockAddress } = networks[destChainId]
+  const { domainId: destDomainId, connextZodiacGnosisAddress } = bridge
 
-  if (!destMultisigAddress) {
-    destMultisigAddress = multisig
+  if (!destConnextZodiacMultisigAddress) {
+    destConnextZodiacMultisigAddress = connextZodiacGnosisAddress
   }
 
   // encode data to be passed to Gnosis Zodiac module
@@ -93,7 +96,7 @@ module.exports = async ([destChainId = 137, destMultisigAddress] = []) => {
       unlockAddress, // to
       0, // value
       calldata, // data
-      0, // operation
+      1, // operation: 0 for CALL, 1 for DELEGATECALL
     ]
   )
 
@@ -107,7 +110,7 @@ module.exports = async ([destChainId = 137, destMultisigAddress] = []) => {
       functionName: 'xcall',
       functionArgs: [
         destDomainId,
-        destMultisigAddress,
+        destConnextZodiacMultisigAddress,
         ADDRESS_ZERO, // asset
         ADDRESS_ZERO, // delegate
         0, // amount
