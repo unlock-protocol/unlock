@@ -60,7 +60,8 @@ const abiIConnext = [
 
 module.exports = async ([
   destChainId = 137,
-  destConnextZodiacMultisigAddress,
+  destMultisigAddress,
+  destAddress,
 ] = []) => {
   // parse call data for function call
   const { interface: unlockInterface } = await ethers.getContractAt(
@@ -82,10 +83,13 @@ module.exports = async ([
 
   // dest info
   const { bridge, unlockAddress } = networks[destChainId]
+  if (!destAddress) {
+    destAddress = unlockAddress
+  }
   const { domainId: destDomainId, connextZodiacGnosisAddress } = bridge
 
-  if (!destConnextZodiacMultisigAddress) {
-    destConnextZodiacMultisigAddress = connextZodiacGnosisAddress
+  if (!destMultisigAddress) {
+    destMultisigAddress = connextZodiacGnosisAddress
   }
 
   // encode data to be passed to Gnosis Zodiac module
@@ -93,10 +97,10 @@ module.exports = async ([
   const moduleData = await ethers.utils.defaultAbiCoder.encode(
     ['address', 'uint256', 'bytes', 'bool'],
     [
-      unlockAddress, // to
+      destAddress, // to
       0, // value
       calldata, // data
-      1, // operation: 0 for CALL, 1 for DELEGATECALL
+      0, // operation: 0 for CALL, 1 for DELEGATECALL
     ]
   )
 
@@ -110,7 +114,7 @@ module.exports = async ([
       functionName: 'xcall',
       functionArgs: [
         destDomainId,
-        destConnextZodiacMultisigAddress,
+        destMultisigAddress, // destMultisigAddress,
         ADDRESS_ZERO, // asset
         ADDRESS_ZERO, // delegate
         0, // amount
@@ -124,7 +128,7 @@ module.exports = async ([
 
   // send to multisig / DAO
   return {
-    proposalName: 'Bridge Proposal Test',
+    proposalName: `Bridge Proposal Test: ${destAddress}`,
     calls,
   }
 }
