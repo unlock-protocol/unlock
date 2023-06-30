@@ -314,4 +314,25 @@ interface IUnlock {
    * @param lock address of the lock to remove
    */
   function removeLock(address lock) external;
+
+  /**
+   * Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the
+   * contract can later be swapped for UDT and will remain in the burner contract in order to
+   * decrease UDT suplt in circulation.
+   * @notice This function can be called by anyone (not only the contract owner)
+   * @param token the address of the tokem (zero address for native)
+   * @param amount the amount of tokens to send (use zero to send entire balance)
+   */
+  function sendToSwapBurner(address token, uint256 amount) external;
+
+  /**
+   * Set the UDT Swap and Burn contract address
+   * @param _swapBurnerAddress the address of the SwapBurner contract instance
+   */
+  function setSwapBurner(address _swapBurnerAddress) external;
+
+  /**
+   * The address of the UDT Swap and Burn contract
+   */
+  function swapBurnerAddress() external view returns (address);
 }
