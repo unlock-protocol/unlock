@@ -102,6 +102,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // protocol fee
   uint public protocolFee;
 
+  // UDT SwapBurner contract address
+  address public swapBurnerAddress;
+
   // errors
   error Unlock__MANAGER_ONLY();
   error Unlock__VERSION_TOO_HIGH();
@@ -630,6 +633,17 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
+   * Internal helper to transfer token held by this contract
+   */
+  function _transfer(address token, address to, uint256 amount) internal {
+    if (token != address(0)) {
+      IMintableERC20(token).transfer(to, amount);
+    } else {
+      payable(to).transfer(amount);
+    }
+  }
+
+  /**
    * Functions which transfers tokens held by the contract
    * It handles both ERC20 and the base currency.
    * @dev This function is onlyOwner
@@ -642,11 +656,23 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address to,
     uint256 amount
   ) public onlyOwner {
-    if (token != address(0)) {
-      IMintableERC20(token).transfer(to, amount);
-    } else {
-      payable(to).transfer(amount);
+    _transfer(token, to, amount);
+  }
+
+  /**
+   * Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the
+   * contract can later be swapped for UDT and will remain in the burner contract in order to
+   * decrease UDT suplt in circulation.
+   * @param token the address of the tokem (zero address for native)
+   * @param amount the amount of tokens to send (use zero to send entire balance)
+   */
+  function sendToBurner(address token, uint256 amount) public {
+    if (amount == 0) {
+      amount = token == address(0)
+        ? address(this).balance
+        : IMintableERC20(token).balanceOf(address(this));
     }
+    _transfer(token, swapBurnerAddress, amount);
   }
 
   /**
