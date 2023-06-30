@@ -112,7 +112,7 @@ describe('Wedlocks operations', () => {
 
       const transactionReceiptUrl = `${config.unlockApp}/receipts?address=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&network=${network}&hash=0x`
 
-      expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
+      expect(fetch).toHaveBeenCalledWith(config.services.wedlocks, {
         body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keyId":"","network":"Mumbai (Polygon)","keychainUrl":"${keychainUrl}","transactionReceiptUrl":"${transactionReceiptUrl}","transferUrl":"${transferUrl}"},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
@@ -192,7 +192,7 @@ describe('Wedlocks operations', () => {
         attachments: [],
       })
 
-      expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
+      expect(fetch).toHaveBeenCalledWith(config.services.wedlocks, {
         body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world","keyId":"1","keychainUrl":"test","lockName":"lockName","network":"Test","lockAddress":"0x8D33b257bce083eE0c7504C7635D1840b3858AFD"},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
