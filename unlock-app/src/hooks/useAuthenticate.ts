@@ -47,6 +47,7 @@ interface AuthenticateProps {
 
 export enum WALLET_PROVIDER {
   METAMASK,
+  DELEGATED_PROVIDER,
   WALLET_CONNECT,
   COINBASE,
   UNLOCK,
@@ -68,6 +69,13 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   }, [authenticate, injectedOrDefaultProvider])
 
   const handleUnlockProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
+
+  const handleDelegatedProvider = useCallback(
     async (provider: any) => {
       return authenticate(provider)
     },
@@ -111,6 +119,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const walletHandlers: {
     [key in WalletProvider]: (provider?: any) => Promise<any | void>
   } = {
+    DELEGATED_PROVIDER: handleDelegatedProvider,
     METAMASK: handleInjectProvider,
     WALLET_CONNECT: handleWalletConnectProvider,
     COINBASE: handleCoinbaseWalletProvider,

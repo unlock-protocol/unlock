@@ -64,7 +64,12 @@ export function SignedIn({
 
 interface SignedOutProps {
   authenticateWithProvider(
-    provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
+    provider:
+      | 'METAMASK'
+      | 'UNLOCK'
+      | 'WALLET_CONNECT'
+      | 'COINBASE'
+      | 'DELEGATED_PROVIDER'
   ): Promise<void>
   onUnlockAccount(): void
   injectedProvider: any
@@ -201,13 +206,6 @@ export function Connected({
     }
     autoSignIn()
   }, [connected, autoconnect, isUnlockAccount, signIn, signing, isSignedIn])
-
-  // Autoconnect
-  useEffect(() => {
-    if (autoconnect) {
-      authenticateWithProvider('METAMASK')
-    }
-  }, [autoconnect, authenticateWithProvider])
 
   useEffect(() => {
     if (!account) {

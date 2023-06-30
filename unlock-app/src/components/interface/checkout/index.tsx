@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { selectProvider } from '~/hooks/useAuthenticate'
+import { selectProvider, useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
@@ -18,6 +18,8 @@ import { ethers } from 'ethers'
 export function CheckoutPage() {
   const { query } = useRouter()
   const config = useConfig()
+  const { authenticateWithProvider } = useAuthenticate({})
+
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isInitialLoading, data: checkout } = useCheckoutConfig({
@@ -46,6 +48,11 @@ export function CheckoutPage() {
 
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
+
+  // Autoconnect, provider might change (we could receive the provider from the parent with a delay!)
+  useEffect(() => {
+    authenticateWithProvider('DELEGATED_PROVIDER', injectedProvider)
+  }, [authenticateWithProvider, injectedProvider])
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||

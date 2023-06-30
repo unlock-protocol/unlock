@@ -126,10 +126,7 @@ export class Paywall {
     } else {
       await this.shakeHands(unlockUrl || unlockAppUrl)
     }
-    this.sendOrBuffer(
-      'setConfig',
-      injectProviderInfo(config || this.paywallConfig, this.provider)
-    )
+    this.setPaywallConfig(config || this.paywallConfig)
   }
 
   setPaywallConfig = (config: PaywallConfig) => {
