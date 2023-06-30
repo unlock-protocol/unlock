@@ -70,8 +70,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     currencyContractAddress: lock.currencyContractAddress,
   })
 
-  console.log(state)
-
   const { data: purchaseData, isLoading: isPurchaseDataLoading } =
     usePurchaseData({
       lockAddress: lock.address,
