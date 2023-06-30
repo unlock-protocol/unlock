@@ -21,7 +21,6 @@ export default ({ publicLockVersion }) => {
           lockAddress,
           owners: keyOwner,
         })
-
         // expire key
         await walletService.expireAndRefundFor({
           lockAddress,
@@ -44,7 +43,14 @@ export default ({ publicLockVersion }) => {
             transactionHash = hash
           }
         )
-
+        const tokenIds = await web3Service.getTokenIdsFromTx({
+          params: {
+            network: chainId,
+            lockAddress,
+            hash: transactionHash,
+          },
+        })
+        tokenId = tokenIds.pop()
         key = await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
       })
 
