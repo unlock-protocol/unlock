@@ -86,7 +86,10 @@ export const sendEmail = async ({
   } = await getLockSettings(params.lockAddress, network)
 
   if (!canSendEmail) {
-    return
+    logger.info('Email sending disabled for', {
+      lockAddress: params.lockAddress,
+    })
+    return `Email sending disabled for ${params.lockAddress}`
   }
 
   const payload = {
@@ -107,15 +110,19 @@ export const sendEmail = async ({
       },
       body: JSON.stringify(payload),
     })
-    if (response.status === 200) {
+    if (response.status !== 204) {
+      const reason = await response.text()
       logger.info(
         'Wedlocks returned unexpected status code',
         response.status,
-        await response.text()
+        reason
       )
+      return reason
     }
+    return true
   } catch (error: any) {
-    logger.error(error)
+    logger.error(`Sending email to ${config.services.wedlocks} failed`, error)
+    return `Sending email to ${config.services.wedlocks} failed`
   }
 }
 
@@ -366,7 +373,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   })
 
   if (!recipient) {
-    return
+    logger.info('No recipient found for', { lockAddress, ownerAddress })
+    return `No recipient found for owner ${ownerAddress} on lock ${lockAddress}`
   }
 
   const airdroppedRecipient = keyManager.createTransferAddress({
@@ -464,7 +472,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const keychainUrl = `${config.unlockApp}/keychain`
   const transactionReceiptUrl = getTransactionHashUrl(key, network)
 
-  await sendEmail({
+  return sendEmail({
     network: network!,
     template: templates[0],
     failoverTemplate: templates[1],

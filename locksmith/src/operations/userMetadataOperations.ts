@@ -38,18 +38,18 @@ export async function getMetadata(
   userAddress: string,
   includeProtected = false
 ) {
-  const data = await UserTokenMetadata.findOne({
+  const result = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(tokenAddress),
       userAddress: Normalizer.ethereumAddress(userAddress),
     },
   })
 
-  if (data && !includeProtected) {
-    delete data.data.userMetadata.protected
+  if (result && !includeProtected) {
+    delete result.data.userMetadata.protected
   }
 
-  return data ? data.data : data
+  return result ? result.data : result
 }
 
 export async function getUserEmailRecipient({
