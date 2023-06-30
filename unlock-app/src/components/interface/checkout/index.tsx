@@ -48,15 +48,12 @@ export function CheckoutPage() {
 
   // Autoconnect, provider might change (we could receive the provider from the parent with a delay!)
   useEffect(() => {
-    const autoconnect = async () => {
-      if (communication.providerAdapter) {
-        await authenticateWithProvider(
-          'DELEGATED_PROVIDER',
-          communication.providerAdapter
-        )
-      }
+    if (communication.providerAdapter) {
+      authenticateWithProvider(
+        'DELEGATED_PROVIDER',
+        communication.providerAdapter
+      )
     }
-    autoconnect()
   }, [authenticateWithProvider, communication.providerAdapter])
 
   // TODO: do we need to pass it down?
