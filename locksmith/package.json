@@ -80,7 +80,7 @@
     "request-promise-native": "1.0.9",
     "satori": "0.9.1",
     "sequelize": "6.32.0",
-    "sequelize-cli": "6.6.0",
+    "sequelize-cli": "6.6.1",
     "siwe": "2.1.4",
     "stripe": "12.8.0",
     "unified": "10.1.2",
