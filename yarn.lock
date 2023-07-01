@@ -14732,7 +14732,7 @@ __metadata:
     graphql-request: 6.1.0
     hardhat: 2.13.0
     prettier: 2.8.8
-    react-to-print: 2.14.12
+    react-to-print: 2.14.13
     siwe: 2.1.4
     tsup: 6.7.0
     typescript: 5.0.4
@@ -37920,15 +37920,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-to-print@npm:2.14.12":
-  version: 2.14.12
-  resolution: "react-to-print@npm:2.14.12"
-  dependencies:
-    prop-types: ^15.8.1
+"react-to-print@npm:2.14.13":
+  version: 2.14.13
+  resolution: "react-to-print@npm:2.14.13"
   peerDependencies:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: d88e93121fc95ae95ca3ad9a8b2bc1b305d6270d1330f0222d4843527a7925182d6f1e96b7a1df0403d2d6820d116c85f4a7c122956fe2dbc81dbbb09970efe2
+  checksum: b233eda519f34ee030529e41c1421bdfb40c454562439f5c3af8a8052cb4a285c30066aebf0cb34b9733be7d7afc250927fa27cb7c52e2fc5ff9f2eddee47e88
   languageName: node
   linkType: hard
 
