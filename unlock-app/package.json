@@ -25,7 +25,7 @@
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@walletconnect/client": "1.8.0",
-    "@walletconnect/ethereum-provider": "2.8.1",
+    "@walletconnect/ethereum-provider": "2.8.6",
     "@walletconnect/modal": "2.4.7",
     "@xstate/react": "3.2.2",
     "axios": "1.4.0",
