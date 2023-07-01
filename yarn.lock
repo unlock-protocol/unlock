@@ -14578,8 +14578,8 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-dropzone: 14.2.3
-    react-hook-form: 7.44.3
-    react-icons: 4.9.0
+    react-hook-form: 7.45.1
+    react-icons: 4.10.1
     react-use-clipboard: 1.0.9
     storybook: 7.0.18
     tailwind-merge: 1.13.0
@@ -14589,7 +14589,7 @@ __metadata:
     typescript: 5.1.3
     url-loader: 4.1.1
     vite: 4.3.9
-    vite-plugin-node-polyfills: 0.8.2
+    vite-plugin-node-polyfills: 0.9.0
     vite-plugin-svgr: 3.2.0
     vite-tsconfig-paths: 4.2.0
   peerDependencies:
@@ -37750,6 +37750,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:7.45.1":
+  version: 7.45.1
+  resolution: "react-hook-form@npm:7.45.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 3abe1dcf449a3d438b4e5403d93d1502f6dab05afd5c5215f0fc88a32f3d06e7f4b77bee75479359c22a418af6ea0f52711478c73773cb5fd0f43da50669aa17
+  languageName: node
+  linkType: hard
+
 "react-hot-toast@npm:2.4.1":
   version: 2.4.1
   resolution: "react-hot-toast@npm:2.4.1"
@@ -37759,6 +37768,15 @@ __metadata:
     react: ">=16"
     react-dom: ">=16"
   checksum: 3e337816db574782454bf09c63a8aca546bf9c5be3f83d0494d24bdcfd97ca2db64d4c151c4ab0184d2342d7a7226403e6812e70caf03c8b55a07787bb4ad0f2
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:4.10.1":
+  version: 4.10.1
+  resolution: "react-icons@npm:4.10.1"
+  peerDependencies:
+    react: "*"
+  checksum: b6c8d4fe482b112e1041515d93ef7670a0af128855c926052a076b64d0b991cdd4391394b26467100f8da3859db1ebd8f9c6b7614fa5969fde83de45c71031a3
   languageName: node
   linkType: hard
 
