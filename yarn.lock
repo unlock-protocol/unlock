@@ -14504,7 +14504,7 @@ __metadata:
     connect-timeout: 1.9.0
     cookie-parser: 1.4.6
     cors: 2.8.5
-    dayjs: 1.11.7
+    dayjs: 1.11.9
     dotenv: 16.1.3
     eslint: 8.41.0
     eslint-config-standard: 17.1.0
@@ -14796,7 +14796,7 @@ __metadata:
     blockies-react-svg: 0.0.13
     calendar-link: 2.4.0
     csv: 6.3.1
-    dayjs: 1.11.7
+    dayjs: 1.11.9
     deep-object-diff: 1.1.9
     dotenv: 16.1.3
     eslint: 8.41.0
@@ -14915,7 +14915,7 @@ __metadata:
     babel-loader: 9.1.2
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
-    dayjs: 1.11.7
+    dayjs: 1.11.9
     dotenv: 16.1.3
     embla-carousel-autoplay: 7.1.0
     embla-carousel-react: 7.1.0
@@ -21431,7 +21431,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.11.7, dayjs@npm:^1.9.3":
+"dayjs@npm:1.11.9":
+  version: 1.11.9
+  resolution: "dayjs@npm:1.11.9"
+  checksum: a4844d83dc87f921348bb9b1b93af851c51e6f71fa259604809cfe1b49d1230e6b0212dab44d1cb01994c096ad3a77ea1cf18fa55154da6efcc9d3610526ac38
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.9.3":
   version: 1.11.7
   resolution: "dayjs@npm:1.11.7"
   checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
