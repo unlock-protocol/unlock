@@ -14734,7 +14734,7 @@ __metadata:
     react-icons: 4.10.1
     react-use-clipboard: 1.0.9
     storybook: 7.0.18
-    tailwind-merge: 1.13.0
+    tailwind-merge: 1.13.2
     tailwindcss: 3.3.2
     tsup: 6.7.0
     tsx: 3.12.7
@@ -14832,7 +14832,7 @@ __metadata:
     react-use: 17.4.0
     react-use-clipboard: 1.0.9
     siwe: 2.1.4
-    tailwind-merge: 1.13.0
+    tailwind-merge: 1.13.2
     tailwindcss: 3.3.2
     typescript: 5.1.3
     validator: 13.9.0
@@ -14945,7 +14945,7 @@ __metadata:
     remark-html: 15.0.2
     rss: 1.2.2
     showdown-highlight: 3.1.0
-    tailwind-merge: 1.13.0
+    tailwind-merge: 1.13.2
     tailwindcss: 3.3.2
     typescript: 5.1.3
     use-local-storage: 3.0.0
@@ -42020,10 +42020,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:1.13.0":
-  version: 1.13.0
-  resolution: "tailwind-merge@npm:1.13.0"
-  checksum: 03452dbcf389051bd4d60645e9f27699a0214e5dc910c7570068baf25adfe384e415f246276cde6bbdd0f414df3053dbf009b033d586a19de45db6b48f4fe954
+"tailwind-merge@npm:1.13.2":
+  version: 1.13.2
+  resolution: "tailwind-merge@npm:1.13.2"
+  checksum: 8f9de3bd1e6271f5980f863ab85e0103f062bf84d814d3188bf6870af7eb43725ea40493ef0693dedd652b668cbdfcd6544235b16b70d438ed20bca6118a9066
   languageName: node
   linkType: hard
 
