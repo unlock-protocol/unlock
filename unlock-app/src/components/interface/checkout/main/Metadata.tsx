@@ -209,13 +209,21 @@ export const MetadataInputs = ({
           )
         })
         .map((metadataInputItem) => {
-          const { name, defaultValue, placeholder, type, required, value } =
-            metadataInputItem ?? {}
+          const {
+            name,
+            label,
+            defaultValue,
+            placeholder,
+            type,
+            required,
+            value,
+          } = metadataInputItem ?? {}
+          const inputLabel = label || name
           return (
             <Input
               key={name}
-              label={name}
-              autoComplete={name}
+              label={inputLabel}
+              autoComplete={inputLabel}
               defaultValue={defaultValue}
               size="small"
               disabled={disabled}
@@ -223,7 +231,7 @@ export const MetadataInputs = ({
               type={type}
               error={errors?.metadata?.[id]?.[name]?.message}
               {...register(`metadata.${id}.${name}`, {
-                required: required && `${name} is required`,
+                required: required && `${inputLabel} is required`,
                 value,
               })}
             />
