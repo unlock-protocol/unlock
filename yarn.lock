@@ -14855,7 +14855,7 @@ __metadata:
     tsup: 6.7.0
     typescript: 5.1.3
     vite: 4.3.9
-    vite-plugin-css-injected-by-js: 3.1.1
+    vite-plugin-css-injected-by-js: 3.1.2
     vite-plugin-node-polyfills: 0.9.0
     vitest: 0.32.2
     vitest-fetch-mock: 0.2.2
@@ -44885,24 +44885,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-css-injected-by-js@npm:3.1.1":
-  version: 3.1.1
-  resolution: "vite-plugin-css-injected-by-js@npm:3.1.1"
+"vite-plugin-css-injected-by-js@npm:3.1.2":
+  version: 3.1.2
+  resolution: "vite-plugin-css-injected-by-js@npm:3.1.2"
   peerDependencies:
     vite: ">2.0.0-0"
-  checksum: 3f05747631805c3ca7646067d9f6eda5d89decc5a5cc939abf3c115c2d5a226429ca2e96711299524394623131688b11f1f6a90ad7e3f37692dcb5ecbcf82e10
-  languageName: node
-  linkType: hard
-
-"vite-plugin-node-polyfills@npm:0.8.2":
-  version: 0.8.2
-  resolution: "vite-plugin-node-polyfills@npm:0.8.2"
-  dependencies:
-    "@rollup/plugin-inject": ^5.0.3
-    node-stdlib-browser: ^1.2.0
-  peerDependencies:
-    vite: ^2.0.0 || ^3.0.0 || ^4.0.0
-  checksum: d4fa195a17ae080fd65b1aa90ce484360aa080f1574c9dafc5e136e6b3830bf92ce064824e6bd6e056f2a2cf70138841851425e28d664614bd1788d435a05dc8
+  checksum: 9a3abf9fae34b54850e1a4eb0280652532b12e3dd3ddf7c451116da60814ca535726a662685ef4533e250d7a8b4e957593060efe81690f4585e2e0c2ec7ec15f
   languageName: node
   linkType: hard
 
