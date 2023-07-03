@@ -9388,9 +9388,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.27.0, @openzeppelin/upgrades-core@npm:^1.27.0":
-  version: 1.27.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.27.0"
+"@openzeppelin/upgrades-core@npm:1.27.1":
+  version: 1.27.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.27.1"
   dependencies:
     cbor: ^8.0.0
     chalk: ^4.1.0
@@ -9402,7 +9402,7 @@ __metadata:
     solidity-ast: ^0.4.15
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: f69a10285bf7300110bb9a78b200d3c2135c8d42da8c080d2b85638ad59daa1af46a84d0ea8447d916a525ef9ed5b06ce7427d90875881dab3a61aea30323f45
+  checksum: 144d871410e981af106b9f75cf4ff9ab45083b72084c312fcea4acfdd25f06a5ba5ab4709702cad00aa2008f6b1b00533726197c402f067819b8d81d81bb0e8e
   languageName: node
   linkType: hard
 
@@ -9418,6 +9418,24 @@ __metadata:
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
   checksum: 773ff8dd94f4683c5756dff9bb1965b16657c5330c8016fb118f066a21d4b778ba652cead05d07a5447b8f2d0833422cae812c3c79974fedc3ee67dc0ac7eb50
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.27.0":
+  version: 1.27.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.27.0"
+  dependencies:
+    cbor: ^8.0.0
+    chalk: ^4.1.0
+    compare-versions: ^5.0.0
+    debug: ^4.1.1
+    ethereumjs-util: ^7.0.3
+    minimist: ^1.2.7
+    proper-lockfile: ^4.1.1
+    solidity-ast: ^0.4.15
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: f69a10285bf7300110bb9a78b200d3c2135c8d42da8c080d2b85638ad59daa1af46a84d0ea8447d916a525ef9ed5b06ce7427d90875881dab3a61aea30323f45
   languageName: node
   linkType: hard
 
@@ -14885,7 +14903,7 @@ __metadata:
     "@openzeppelin/contracts-upgradeable": 4.9.2
     "@openzeppelin/hardhat-upgrades": 1.28.0
     "@openzeppelin/test-helpers": 0.5.16
-    "@openzeppelin/upgrades-core": 1.27.0
+    "@openzeppelin/upgrades-core": 1.27.1
     "@safe-global/safe-core-sdk": 3.3.3
     "@safe-global/safe-ethers-lib": 1.9.3
     "@safe-global/safe-service-client": 2.0.1
