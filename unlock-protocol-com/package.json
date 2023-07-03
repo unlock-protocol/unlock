@@ -14,7 +14,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "@zeit/next-source-maps": "0.0.3",
-    "apexcharts": "3.40.0",
+    "apexcharts": "3.41.0",
     "babel-loader": "9.1.2",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
