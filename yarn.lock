@@ -15191,7 +15191,7 @@ __metadata:
     feed: 4.2.2
     gray-matter: 4.0.3
     next: 13.4.7
-    next-seo: 6.0.0
+    next-seo: 6.1.0
     next-transpile-modules: 10.0.0
     numeral: 2.0.6
     path-match: 1.2.4
@@ -34736,6 +34736,17 @@ __metadata:
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   checksum: aa986b3731386bc91408df6bca09a9edc0cdd8a7730bcdc331f283ab50803a6d60047b685eeec4b11bde1660dbb792e3737e81ef05a65682323d0d07fa9edd85
+  languageName: node
+  linkType: hard
+
+"next-seo@npm:6.1.0":
+  version: 6.1.0
+  resolution: "next-seo@npm:6.1.0"
+  peerDependencies:
+    next: ^8.1.1-canary.54 || >=9.0.0
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: 5909d34d12dd8ac641d7fa96b6fe562470e1539f582c0a3f2b5e35f16b9b0e402d9f909a84393f80989bd96c034118712a5aecb520e5a45662e02fa23db7b656
   languageName: node
   linkType: hard
 
