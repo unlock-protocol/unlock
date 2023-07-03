@@ -25,7 +25,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.51.0",
+    "@graphprotocol/graph-cli": "0.51.2",
     "@graphprotocol/graph-ts": "0.31.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
