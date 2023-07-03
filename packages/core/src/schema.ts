@@ -8,6 +8,11 @@ export const MetadataInput = z.object({
   name: z.string({
     description: 'Name of the attribute to collect.',
   }),
+  label: z
+    .string({
+      description: 'Label displayed to users. Defaults to the name field.',
+    })
+    .optional(),
   required: z
     .boolean({
       description:

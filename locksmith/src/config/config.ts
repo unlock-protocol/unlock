@@ -2,7 +2,11 @@ import '../utils/envLoader'
 import { Options } from 'sequelize'
 
 export const isProduction = ['prod'].includes(
-  process.env.NODE_ENV?.toLowerCase().trim() ?? ''
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
+)
+
+export const isStaging = ['staging'].includes(
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
 )
 
 const stagingConfig = {
@@ -44,7 +48,7 @@ const config = {
   unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
-    wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || defaultConfig.services.wedlocks,
     locksmith: defaultConfig.services.locksmith,
   },
   storage: {
@@ -85,14 +89,6 @@ if (process.env.DATABASE_URL) {
   config.database.password = process.env.DB_PASSWORD
   config.database.database = process.env.DB_NAME
   config.database.host = process.env.DB_HOSTNAME
-}
-
-if (isProduction) {
-  config.services.wedlocks =
-    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
-} else if (process.env.UNLOCK_ENV === 'staging') {
-  config.services.wedlocks =
-    'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler'
 }
 
 export default config

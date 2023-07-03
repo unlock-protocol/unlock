@@ -27,6 +27,14 @@ export interface SIWEContextType {
   isSignedIn: boolean
 }
 
+const signOutToken = async () => {
+  const session = getAccessToken()
+  if (session) {
+    removeAccessToken()
+    return storage.revoke().catch(console.error)
+  }
+}
+
 const SIWEContext = createContext<SIWEContextType>({
   siweSign: (_nonce: string, _statement: string) => {
     throw new Error('No SIWE provider found')
@@ -34,9 +42,7 @@ const SIWEContext = createContext<SIWEContextType>({
   signIn: () => {
     throw new Error('No SIWE provider found')
   },
-  signOut: () => {
-    throw new Error('No SIWE provider found')
-  },
+  signOut: signOutToken,
   session: undefined,
   isSignedIn: false,
 })
@@ -68,11 +74,7 @@ export const SIWEProvider = ({ children }: Props) => {
   const signOut = async () => {
     try {
       setStatus('loading')
-      const session = getAccessToken()
-      if (session) {
-        await storage.revoke().catch(console.error)
-        removeAccessToken()
-      }
+      await signOutToken()
       await Promise.all([queryClient.invalidateQueries(), refetchSession()])
       setStatus('idle')
     } catch (error) {

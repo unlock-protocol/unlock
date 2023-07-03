@@ -18,7 +18,7 @@
     "@openzeppelin/contracts-upgradeable": "4.9.2",
     "@openzeppelin/hardhat-upgrades": "1.28.0",
     "@openzeppelin/test-helpers": "0.5.16",
-    "@openzeppelin/upgrades-core": "1.27.0",
+    "@openzeppelin/upgrades-core": "1.27.1",
     "@safe-global/safe-core-sdk": "3.3.3",
     "@safe-global/safe-ethers-lib": "1.9.3",
     "@safe-global/safe-service-client": "2.0.1",

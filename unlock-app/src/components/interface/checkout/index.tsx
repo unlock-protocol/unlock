@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { selectProvider } from '~/hooks/useAuthenticate'
+import { selectProvider, useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
@@ -18,6 +18,8 @@ import { ethers } from 'ethers'
 export function CheckoutPage() {
   const { query } = useRouter()
   const config = useConfig()
+  const { authenticateWithProvider } = useAuthenticate({})
+
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
   const { isInitialLoading, data: checkout } = useCheckoutConfig({
@@ -44,6 +46,17 @@ export function CheckoutPage() {
     paywallConfig.referrer = referrerAddress
   }
 
+  // Autoconnect, provider might change (we could receive the provider from the parent with a delay!)
+  useEffect(() => {
+    if (communication.providerAdapter) {
+      authenticateWithProvider(
+        'DELEGATED_PROVIDER',
+        communication.providerAdapter
+      )
+    }
+  }, [authenticateWithProvider, communication.providerAdapter])
+
+  // TODO: do we need to pass it down?
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
 
