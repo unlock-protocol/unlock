@@ -55,7 +55,7 @@
     "react-device-detect": "2.2.3",
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
-    "react-google-recaptcha": "2.1.0",
+    "react-google-recaptcha": "3.1.0",
     "react-gtm-module": "2.0.11",
     "react-hook-form": "7.44.3",
     "react-hot-toast": "2.4.1",
