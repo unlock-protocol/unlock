@@ -1,6 +1,5 @@
 import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
-import Loading from '../Loading'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'

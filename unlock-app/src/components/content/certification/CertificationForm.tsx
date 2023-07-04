@@ -11,7 +11,6 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
-  Icon,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'

@@ -1,13 +1,10 @@
 import React from 'react'
 import type { NextPage } from 'next'
-import BrowserOnly from '~/components/helpers/BrowserOnly'
 import LocksListPage from '~/components/interface/locks/List'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { Button } from '@unlock-protocol/ui'
-import Link from 'next/link'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Launcher } from '~/components/interface/Launcher'
-import { HomeContent } from '~/components/content/HomeContent'
 
 const Locks: NextPage = () => {
   const { account } = useAuth()

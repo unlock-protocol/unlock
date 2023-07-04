@@ -8,8 +8,10 @@ import { useRouter } from 'next/router'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import Loading from '../interface/Loading'
 import { Launcher } from '../interface/Launcher'
+import { useSession } from '~/hooks/useSession'
 
 export const HomeContent = () => {
+  const { isInitialLoading } = useSession()
   const router = useRouter()
   const { account } = useAuth()
 
@@ -27,7 +29,7 @@ export const HomeContent = () => {
         <OpenGraphTags />
       </Head>
       {account && <Loading />}
-      {!account && <Launcher />}
+      {!account && !isInitialLoading && <Launcher />}
     </AppLayout>
   )
 }
