@@ -1,5 +1,9 @@
 # Changes
 
+# 0.39.0
+
+- Add support for setGasRefundValue to walletService and getGasRefundValue to web3Service
+
 # 0.38.2
 
 - Add `getTokenIdFromTx` method to retrieve the tokenId from a transaction hash

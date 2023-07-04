@@ -5,7 +5,7 @@ import setMaxNumberOfKeys from './setMaxNumberOfKeys'
 import setExpirationDuration from './setExpirationDuration'
 import setEventHooks from './setEventHooks'
 import transferFrom from './transferFrom'
-
+import setGasRefundValue from './setGasRefundValue'
 import v8 from '../v8'
 
 const {
@@ -73,4 +73,5 @@ export default {
   updateTransferFee,
   setKeyManagerOf,
   transferFrom,
+  setGasRefundValue,
 }
