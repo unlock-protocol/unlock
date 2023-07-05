@@ -126,3 +126,43 @@ export const TabComponentDefaultTab: StoryFn<typeof meta> = () => {
     </QueryClientProvider>
   )
 }
+
+export const TabComponentHideButton: StoryFn<typeof meta> = () => {
+  const queryCache = new QueryCache()
+  const queryClient = new QueryClient({
+    queryCache,
+  })
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Tabs
+        defaultTab={2}
+        tabs={[
+          {
+            title: 'Choose a configuration',
+            description:
+              'Create a new configuration or continue enhance the existing one for your checkout modal',
+            children: <span>step 1 content</span>,
+            showButton: false,
+          },
+          {
+            title: 'Configure the basics',
+            description:
+              'Customize the checkout modal interaction & additional behavior',
+            children: <span>step 2 content</span>,
+            showButton: false,
+          },
+          {
+            title: 'Configured locks',
+            description:
+              'Select the locks that you would like to featured in this configured checkout modal',
+            children: <span>step 3 content</span>,
+            onNext: () => void 0,
+            onNextLabel: 'Save',
+            showButton: false,
+          },
+        ]}
+      />
+    </QueryClientProvider>
+  )
+}
