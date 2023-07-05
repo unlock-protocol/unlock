@@ -1,6 +1,6 @@
 import { RadioGroup } from '@headlessui/react'
 import { classed } from '@tw-classed/react'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useRef, useState } from 'react'
 import { Button } from '../Button/Button'
 import { QueryClientProvider, useMutation } from '@tanstack/react-query'
 import { DEFAULT_QUERY_CLIENT_OPTIONS } from '../constants'
@@ -12,6 +12,7 @@ interface TabProps {
   disabled?: boolean
   onNext?: () => Promise<any> | void
   onNextLabel?: string
+  showButton?: boolean
 }
 
 interface TabsProps {
@@ -23,7 +24,9 @@ type TabHeaderProps = Pick<TabProps, 'title' | 'description'> & {
   open: boolean
   tabNumber: number
 }
-const TabContainer = classed.div('flex items-start gap-4 w-full')
+const TabContainer = classed.div(
+  'grid grid-cols-[48px_1fr] items-start gap-4 w-full'
+)
 const TabTitle = classed.span('text-xl font-bold')
 const TabDescription = classed.span('text-base font-normal text-gray-700')
 const TabNumber = classed.div(
@@ -61,6 +64,7 @@ const Tab = ({
   children,
   onNext,
   onNextLabel = 'Next',
+  showButton = true,
   isLast = false,
   setTab,
 }: TabProps & {
@@ -69,6 +73,18 @@ const Tab = ({
   setTab?: any
 }) => {
   const tabNumber = tabIndex + 1 // incrementing number of the tab
+  const tabRef = useRef<HTMLElement | null>(null)
+
+  const scrollIntoView = () => {
+    // force scroll start of tab
+    setTimeout(() => {
+      tabRef?.current?.scrollIntoView({
+        inline: 'start',
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 0)
+  }
 
   const handleNext = async () => {
     if (typeof onNext === 'function') {
@@ -79,6 +95,8 @@ const Tab = ({
     if (!isLast) {
       setTab(tabNumber + 1)
     }
+
+    scrollIntoView()
   }
 
   const handleNextMutation = useMutation(handleNext)
@@ -88,6 +106,9 @@ const Tab = ({
       className={`${disabled ? 'opacity-50' : ''}`}
       disabled={disabled}
       value={tabNumber}
+      data-tab-index={tabNumber}
+      ref={tabRef}
+      onClick={scrollIntoView}
     >
       {({ checked }) => (
         <>
@@ -104,15 +125,17 @@ const Tab = ({
               </div>
               <div className="flex flex-col w-full gap-10 mt-10">
                 {children}
-                <Button
-                  loading={handleNextMutation.isLoading}
-                  className="w-full"
-                  onClick={() => {
-                    handleNextMutation.mutateAsync()
-                  }}
-                >
-                  {onNextLabel}
-                </Button>
+                {showButton && (
+                  <Button
+                    loading={handleNextMutation.isLoading}
+                    className="w-full"
+                    onClick={() => {
+                      handleNextMutation.mutateAsync()
+                    }}
+                  >
+                    {onNextLabel}
+                  </Button>
+                )}
               </div>
             </div>
           )}
