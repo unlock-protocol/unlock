@@ -17,7 +17,8 @@ import {
   minifyAddress,
 } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
+import { FiTrash as DeleteIcon, FiPlus as PlusIcon } from 'react-icons/fi'
+import { BiCog as CogICon } from 'react-icons/bi'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
@@ -54,7 +55,7 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
   const lockImage = `${config.services.storage.host}/lock/${lockAddress}/icon`
 
   return (
-    <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
+    <div className="flex items-center justify-center w-8 h-8 p-[1px] overflow-hidden bg-gray-200 rounded">
       <img
         src={lockImage}
         alt={lockAddress}
@@ -216,21 +217,34 @@ export const LocksForm = ({
 
   const LockList = () => {
     return (
-      <div className="flex flex-col gap-4">
-        {Object.entries(locks ?? {})?.map(
-          ([address, values]: [string, z.infer<typeof PaywallLockConfig>]) => {
-            return (
-              <LockListItem
-                key={address}
-                name={values.name}
-                address={address}
-                network={values!.network!}
-                onRemove={() => onRemoveFromList(address)}
-                onEdit={() => onEditLock(address)}
-              />
-            )
-          }
-        )}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
+          <span className="text-lg font-bold text-brand-ui-primary">
+            Featured in this modal
+          </span>
+          <span className="text-sm font-normal text-gray-800">
+            Adjust each lock & behavior by click on the gear icon
+          </span>
+        </div>
+        <div className="flex flex-col gap-4">
+          {Object.entries(locks ?? {})?.map(
+            ([address, values]: [
+              string,
+              z.infer<typeof PaywallLockConfig>
+            ]) => {
+              return (
+                <LockListItem
+                  key={address}
+                  name={values.name}
+                  address={address}
+                  network={values!.network!}
+                  onRemove={() => onRemoveFromList(address)}
+                  onEdit={() => onEditLock(address)}
+                />
+              )
+            }
+          )}
+        </div>
       </div>
     )
   }
@@ -380,27 +394,28 @@ export const LocksForm = ({
   }, [lockAddress, locks])
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
+      {Object.keys(locks ?? {}).length > 0 && <LockList />}
       {addLockMutation?.isLoading && (
-        <Placeholder.Root>
-          <Placeholder.Line className="p-2" />
+        <Placeholder.Root className="mt-4">
+          <Placeholder.Line size="xl" className="py-8" />
         </Placeholder.Root>
       )}
-      {Object.keys(locks ?? {}).length > 0 && <LockList />}
-      <div className="flex gap-2">
+      <div>
         {!addLock && !lockAddress && (
-          <Button
-            className="w-full"
-            size="small"
-            variant="outlined-primary"
+          <button
+            className="flex justify-between w-full mt-12 font-bold border-0"
             onClick={() => setAddLock(true)}
           >
-            Add a lock
-          </Button>
+            <span className="text-lg font-bold text-brand-ui-primary">
+              Add a lock
+            </span>
+            <PlusIcon className="text-brand-ui-primary" size={25} />
+          </button>
         )}
       </div>
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 mt-12">
         {addLock && (
           <div>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
@@ -433,14 +448,15 @@ export const LocksForm = ({
           </div>
         )}
         {lockAddress && network && (
-          <>
-            <div className="flex flex-col">
+          <div className="bg-white">
+            <div className="flex flex-col p-4">
+              <div className="px-4 py-2 mb-2 text-base text-gray-800 bg-gray-100 rounded-lg whitespace-nowrap">
+                Lock Address: <br />
+                {lockAddress}
+              </div>
               <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
                 Settings
               </h2>
-              <div className="flex mb-5 text-sm whitespace-nowrap">
-                Address: <pre className="ml-3">{lockAddress}</pre>
-              </div>
               <div className="flex flex-col gap-1">
                 <div className="flex flex-col gap-1">
                   <span className="flex items-center justify-between">
@@ -508,12 +524,23 @@ export const LocksForm = ({
               </div>
             </div>
             {hasMinValue && (
-              <>
+              <div className="flex flex-col gap-4 p-6 bg-gray-100">
                 <div className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <h2 className="text-lg font-bold text-brand-ui-primary">
-                      Metadata
-                    </h2>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <h2 className="text-lg font-bold text-brand-ui-primary">
+                        Metadata
+                      </h2>
+                      {!addMetadata && (
+                        <Button
+                          variant="outlined-primary"
+                          size="small"
+                          onClick={() => setAddMetadata(true)}
+                        >
+                          Add
+                        </Button>
+                      )}
+                    </div>
                     <span className="text-xs text-gray-600">
                       (Optional) Collect additional information from your
                       members during the checkout process.
@@ -523,20 +550,11 @@ export const LocksForm = ({
                       to enter email address again here.
                     </span>
                   </div>
-                  {!addMetadata && (
-                    <Button
-                      variant="outlined-primary"
-                      size="small"
-                      onClick={() => setAddMetadata(true)}
-                    >
-                      Add
-                    </Button>
-                  )}
                 </div>
                 {!addMetadata ? (
                   <MetadataList />
                 ) : (
-                  <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
+                  <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
                     <DynamicForm
                       name={'metadata'}
                       schema={MetadataInput.omit({
@@ -550,9 +568,9 @@ export const LocksForm = ({
                   </div>
                 )}
                 <Button onClick={() => reset()}>Done</Button>
-              </>
+              </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
@@ -566,28 +584,30 @@ const LockListItem = ({
   onEdit,
 }: LockListItemProps) => {
   return (
-    <div className="flex items-center justify-between w-full gap-2 px-2 py-1 text-sm bg-white rounded-lg shadow">
+    <div className="flex items-center justify-between w-full h-16 gap-2 p-4 py-1 text-sm bg-white">
       <div className="flex items-center w-full">
         <div className="flex items-center gap-2">
+          <Tooltip label="Edit" tip="Edit" side="bottom">
+            <button
+              className="text-gray-500 "
+              type="button"
+              onClick={void 0}
+              aria-label="Edit lock"
+            >
+              <CogICon onClick={onEdit} size={25} />
+            </button>
+          </Tooltip>
           <LockImage lockAddress={address} />
-          <span className="text-base font-semibold">{name || 'Default'}</span>
+          <span className="text-base font-bold">{name || 'Default'}</span>
         </div>
-        <span className="ml-auto">{minifyAddress(address)}</span>
+        <span className="ml-auto text-base font-normal">
+          {minifyAddress(address)}
+        </span>
       </div>
       <div className="flex gap-2 item-center">
-        <Tooltip label="Edit" tip="Edit" side="bottom">
-          <button
-            className="text-gray-500 "
-            type="button"
-            onClick={void 0}
-            aria-label="Edit lock"
-          >
-            <EditIcon onClick={onEdit} size={18} />
-          </button>
-        </Tooltip>
         <Tooltip label="Delete" tip="Delete" side="bottom">
           <button
-            className="text-gray-500 "
+            className="text-gray-500 hover:text-brand-ui-primary"
             type="button"
             onClick={onRemove}
             aria-label="Remove lock"
