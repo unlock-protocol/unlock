@@ -23,6 +23,7 @@ interface TabsProps {
 type TabHeaderProps = Pick<TabProps, 'title' | 'description'> & {
   open: boolean
   tabNumber: number
+  scrollIntoView: () => void
 }
 const TabContainer = classed.div(
   'grid grid-cols-[48px_1fr] items-start gap-4 w-full'
@@ -44,9 +45,15 @@ const TabNumber = classed.div(
   }
 )
 
-const TabHeader = ({ title, description, open, tabNumber }: TabHeaderProps) => {
+const TabHeader = ({
+  title,
+  description,
+  open,
+  tabNumber,
+  scrollIntoView,
+}: TabHeaderProps) => {
   return (
-    <TabContainer className="cursor-pointer">
+    <TabContainer className="cursor-pointer" onClick={scrollIntoView}>
       <TabNumber active={open}>{tabNumber}</TabNumber>
       <div className="flex flex-col gap-2 text-left">
         <TabTitle>{title}</TabTitle>
@@ -108,7 +115,6 @@ const Tab = ({
       value={tabNumber}
       data-tab-index={tabNumber}
       ref={tabRef}
-      onClick={scrollIntoView}
     >
       {({ checked }) => (
         <>
@@ -117,6 +123,7 @@ const Tab = ({
             title={title}
             description={description}
             open={checked}
+            scrollIntoView={scrollIntoView}
           />
           {checked && (
             <div className="grid grid-cols-[48px_1fr] gap-4">
