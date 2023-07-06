@@ -10,6 +10,7 @@ import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
 import {
   Button,
+  Card,
   Input,
   Placeholder,
   ToggleSwitch,
@@ -19,6 +20,7 @@ import {
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { FiTrash as DeleteIcon, FiPlus as PlusIcon } from 'react-icons/fi'
 import { BiCog as CogICon } from 'react-icons/bi'
+import { RiArrowGoBackLine as GoBackLineIcon } from 'react-icons/ri'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
@@ -33,6 +35,8 @@ interface LockListItemProps {
   name?: string
   onRemove?: () => void
   onEdit?: () => void
+  onReset?: () => void
+  hasEdit?: boolean
 }
 
 type LocksProps = Record<string, PaywallLockConfigType>
@@ -215,40 +219,6 @@ export const LocksForm = ({
     )
   }
 
-  const LockList = () => {
-    return (
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col gap-1">
-          <span className="text-lg font-bold text-brand-ui-primary">
-            Featured in this modal
-          </span>
-          <span className="text-sm font-normal text-gray-800">
-            Adjust each lock & behavior by click on the gear icon
-          </span>
-        </div>
-        <div className="flex flex-col gap-4">
-          {Object.entries(locks ?? {})?.map(
-            ([address, values]: [
-              string,
-              z.infer<typeof PaywallLockConfig>
-            ]) => {
-              return (
-                <LockListItem
-                  key={address}
-                  name={values.name}
-                  address={address}
-                  network={values!.network!}
-                  onRemove={() => onRemoveFromList(address)}
-                  onEdit={() => onEditLock(address)}
-                />
-              )
-            }
-          )}
-        </div>
-      </div>
-    )
-  }
-
   const onAddLock = async ({
     lockAddress,
     network,
@@ -395,7 +365,168 @@ export const LocksForm = ({
 
   return (
     <div className="flex flex-col">
-      {Object.keys(locks ?? {}).length > 0 && <LockList />}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
+          <Card.Title>Featured in this modal</Card.Title>
+          <Card.Description>
+            Adjust each lock & behavior by click on the gear icon
+          </Card.Description>
+        </div>
+        <div className="flex flex-col gap-4">
+          {Object.entries(locks ?? {})?.map(
+            ([address, values]: [
+              string,
+              z.infer<typeof PaywallLockConfig>
+            ]) => {
+              const hasEdit =
+                lockAddress?.toLowerCase() === address?.toLowerCase()
+
+              return (
+                <div key={address}>
+                  <LockListItem
+                    name={values.name}
+                    address={address}
+                    network={values!.network!}
+                    onRemove={() => onRemoveFromList(address)}
+                    onEdit={() => onEditLock(address)}
+                    onReset={reset}
+                    hasEdit={hasEdit}
+                  />
+                  {hasEdit && (
+                    <div className="bg-white ">
+                      <div className="flex flex-col p-4">
+                        <div className="px-4 py-2 mb-2 text-base text-gray-800 bg-gray-100 rounded-lg whitespace-nowrap">
+                          Lock Address: <br />
+                          {lockAddress}
+                        </div>
+                        <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+                          Settings
+                        </h2>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex flex-col gap-1">
+                            <span className="flex items-center justify-between">
+                              <span className="px-1 text-sm">
+                                Number of renewals
+                              </span>
+                              <ToggleSwitch
+                                title="Unlimited"
+                                enabled={recurringUnlimited}
+                                setEnabled={(enabled: boolean) => {
+                                  setRecurringUnlimited(enabled)
+                                  const recurringPayments = enabled
+                                    ? 'forever'
+                                    : ''
+                                  setRecurring(recurringPayments)
+                                  onRecurringChange({
+                                    recurringPayments,
+                                  })
+                                }}
+                              />
+                            </span>
+                            <Input
+                              size="small"
+                              onChange={(e) => {
+                                setRecurring(e?.target.value)
+                                onRecurringChange({
+                                  recurringPayments: e?.target?.value ?? '',
+                                })
+                              }}
+                              value={recurring}
+                              disabled={recurringUnlimited}
+                            />
+                            <span className="mb-4 text-xs text-gray-600">
+                              This only applies to locks which have been enable
+                              for recurring payments. For native currency locks,
+                              this will only allow renewals for credit card
+                              based memberships if set.
+                              <a
+                                className="underline"
+                                target="_blank"
+                                href="https://unlock-protocol.com/guides/recurring-memberships/"
+                                rel="noreferrer noopener"
+                              >
+                                Learn more
+                              </a>
+                              .
+                            </span>
+                          </div>
+                          <DynamicForm
+                            name={'locks'}
+                            defaultValues={defaultValue}
+                            schema={LockSchema.omit({
+                              metadataInputs: true,
+                              minRecipients: true, // This option is confusing. Let's not add it by default.
+                              default: true,
+                              recurringPayments: true, // Managed separately to get Unlimited recurring
+                              // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
+                              password: true,
+                              captcha: true,
+                            })}
+                            onChange={(fields: any) =>
+                              onAddLock({
+                                lockAddress,
+                                network,
+                                fields,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                      {hasMinValue && (
+                        <div className="flex flex-col gap-4 p-6 bg-gray-100">
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-start justify-between">
+                                <h2 className="text-lg font-bold text-brand-ui-primary">
+                                  Metadata
+                                </h2>
+                                {!addMetadata && (
+                                  <Button
+                                    variant="outlined-primary"
+                                    size="small"
+                                    onClick={() => setAddMetadata(true)}
+                                  >
+                                    Add
+                                  </Button>
+                                )}
+                              </div>
+                              <span className="text-xs text-gray-600">
+                                (Optional) Collect additional information from
+                                your members during the checkout process.
+                                <br />
+                                Note: if you have checked{' '}
+                                <code>Collect email address</code> above, there
+                                is no need to enter email address again here.
+                              </span>
+                            </div>
+                          </div>
+                          {!addMetadata ? (
+                            <MetadataList />
+                          ) : (
+                            <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
+                              <DynamicForm
+                                name={'metadata'}
+                                schema={MetadataInput.omit({
+                                  defaultValue: true, // default value is not needed
+                                })}
+                                onChange={() => void 0}
+                                onSubmit={onAddMetadata}
+                                submitLabel={'Add'}
+                                showSubmit={true}
+                              />
+                            </div>
+                          )}
+                          <Button onClick={() => reset()}>Done</Button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            }
+          )}
+        </div>
+      </div>
       {addLockMutation?.isLoading && (
         <Placeholder.Root className="mt-4">
           <Placeholder.Line size="xl" className="py-8" />
@@ -415,9 +546,9 @@ export const LocksForm = ({
         )}
       </div>
 
-      <div className="flex flex-col gap-8 mt-12">
+      <div className="flex flex-col gap-8">
         {addLock && (
-          <div>
+          <div className="mt-12">
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
               Select a lock
             </h2>
@@ -447,131 +578,6 @@ export const LocksForm = ({
             </div>
           </div>
         )}
-        {lockAddress && network && (
-          <div className="bg-white">
-            <div className="flex flex-col p-4">
-              <div className="px-4 py-2 mb-2 text-base text-gray-800 bg-gray-100 rounded-lg whitespace-nowrap">
-                Lock Address: <br />
-                {lockAddress}
-              </div>
-              <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-                Settings
-              </h2>
-              <div className="flex flex-col gap-1">
-                <div className="flex flex-col gap-1">
-                  <span className="flex items-center justify-between">
-                    <span className="px-1 text-sm">Number of renewals</span>
-                    <ToggleSwitch
-                      title="Unlimited"
-                      enabled={recurringUnlimited}
-                      setEnabled={(enabled: boolean) => {
-                        setRecurringUnlimited(enabled)
-                        const recurringPayments = enabled ? 'forever' : ''
-                        setRecurring(recurringPayments)
-                        onRecurringChange({
-                          recurringPayments,
-                        })
-                      }}
-                    />
-                  </span>
-                  <Input
-                    size="small"
-                    onChange={(e) => {
-                      setRecurring(e?.target.value)
-                      onRecurringChange({
-                        recurringPayments: e?.target?.value ?? '',
-                      })
-                    }}
-                    value={recurring}
-                    disabled={recurringUnlimited}
-                  />
-                  <span className="mb-4 text-xs text-gray-600">
-                    This only applies to locks which have been enable for
-                    recurring payments. For native currency locks, this will
-                    only allow renewals for credit card based memberships if
-                    set.
-                    <a
-                      className="underline"
-                      target="_blank"
-                      href="https://unlock-protocol.com/guides/recurring-memberships/"
-                      rel="noreferrer noopener"
-                    >
-                      Learn more
-                    </a>
-                    .
-                  </span>
-                </div>
-                <DynamicForm
-                  name={'locks'}
-                  defaultValues={defaultValue}
-                  schema={LockSchema.omit({
-                    metadataInputs: true,
-                    minRecipients: true, // This option is confusing. Let's not add it by default.
-                    default: true,
-                    recurringPayments: true, // Managed separately to get Unlimited recurring
-                    // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
-                    password: true,
-                    captcha: true,
-                  })}
-                  onChange={(fields: any) =>
-                    onAddLock({
-                      lockAddress,
-                      network,
-                      fields,
-                    })
-                  }
-                />
-              </div>
-            </div>
-            {hasMinValue && (
-              <div className="flex flex-col gap-4 p-6 bg-gray-100">
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-start justify-between">
-                      <h2 className="text-lg font-bold text-brand-ui-primary">
-                        Metadata
-                      </h2>
-                      {!addMetadata && (
-                        <Button
-                          variant="outlined-primary"
-                          size="small"
-                          onClick={() => setAddMetadata(true)}
-                        >
-                          Add
-                        </Button>
-                      )}
-                    </div>
-                    <span className="text-xs text-gray-600">
-                      (Optional) Collect additional information from your
-                      members during the checkout process.
-                      <br />
-                      Note: if you have checked{' '}
-                      <code>Collect email address</code> above, there is no need
-                      to enter email address again here.
-                    </span>
-                  </div>
-                </div>
-                {!addMetadata ? (
-                  <MetadataList />
-                ) : (
-                  <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
-                    <DynamicForm
-                      name={'metadata'}
-                      schema={MetadataInput.omit({
-                        defaultValue: true, // default value is not needed
-                      })}
-                      onChange={() => void 0}
-                      onSubmit={onAddMetadata}
-                      submitLabel={'Add'}
-                      showSubmit={true}
-                    />
-                  </div>
-                )}
-                <Button onClick={() => reset()}>Done</Button>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   )
@@ -582,19 +588,34 @@ const LockListItem = ({
   name,
   onRemove,
   onEdit,
+  onReset,
+  hasEdit = false,
 }: LockListItemProps) => {
+  const tooltip = hasEdit ? 'Back' : 'Edit'
   return (
     <div className="flex items-center justify-between w-full h-16 gap-2 p-4 py-1 text-sm bg-white">
       <div className="flex items-center w-full">
         <div className="flex items-center gap-2">
-          <Tooltip label="Edit" tip="Edit" side="bottom">
+          <Tooltip label={tooltip} tip={tooltip} side="bottom">
             <button
               className="text-gray-500 "
               type="button"
               onClick={void 0}
               aria-label="Edit lock"
             >
-              <CogICon onClick={onEdit} size={25} />
+              {hasEdit ? (
+                <GoBackLineIcon
+                  className="hover:text-brand-ui-primary"
+                  onClick={onReset}
+                  size={22}
+                />
+              ) : (
+                <CogICon
+                  className="hover:text-brand-ui-primary"
+                  onClick={onEdit}
+                  size={25}
+                />
+              )}
             </button>
           </Tooltip>
           <LockImage lockAddress={address} />
