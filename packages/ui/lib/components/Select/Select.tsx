@@ -197,9 +197,11 @@ export const Select = <T extends unknown>({
           {label?.length > 0 && (
             <label className="block px-1 mb-1 text-base" htmlFor="">
               {tooltip && (
-                <span>
-                  {label} <QuestionMark className="inline" />
-                </span>
+                <Tooltip delay={0} tip={tooltip} side="top" theme="dark">
+                  <span>
+                    {label} <QuestionMark className="inline" />
+                  </span>
+                </Tooltip>
               )}
               {!tooltip && <span>{label}</span>}
             </label>
