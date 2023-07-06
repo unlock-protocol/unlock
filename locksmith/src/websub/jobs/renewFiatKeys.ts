@@ -37,7 +37,7 @@ export async function renewFiatKeys(network: number, within?: number) {
       keys.map(async ({ tokenId, lock, owner }) => {
         try {
           const renewal = await renewFiatKey({
-            keyId: Number(tokenId),
+            keyId: tokenId,
             lockAddress: Normalizer.ethereumAddress(lock.address),
             network,
             userAddress: Normalizer.ethereumAddress(owner),
