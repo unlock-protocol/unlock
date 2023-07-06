@@ -137,6 +137,9 @@ export function ConfirmSwapAndPurchase({
   }
 
   const onConfirmCrypto = async () => {
+    if (!pricingData) {
+      return
+    }
     try {
       setIsConfirming(true)
       const keyPrices: string[] =

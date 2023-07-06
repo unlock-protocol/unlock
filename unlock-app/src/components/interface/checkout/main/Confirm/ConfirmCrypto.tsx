@@ -138,6 +138,7 @@ export function ConfirmCrypto({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
+      // @ts-expect-error Type error: 'pricingData' is possibly 'undefined'. (not really because this hook is only enabled if isPricingDataAvailable)
       const totalAmount = pricingData.total
 
       const isTokenPayable = totalAmount <= Number(balance)
