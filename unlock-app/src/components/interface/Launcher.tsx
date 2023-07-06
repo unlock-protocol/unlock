@@ -27,7 +27,7 @@ const options = [
 
 export const Launcher = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center text-center">
       <h1 className="text-3xl font-bold mb-2">
         What do you want to achieve today?
       </h1>
@@ -36,7 +36,7 @@ export const Launcher = () => {
         <br />
         manageable steps for you to follow! 😊
       </h2>
-      <ul className="flex gap-4 mt-8 mb-12">
+      <ul className="flex gap-4 mt-8 mb-12 flex-col md:flex-row">
         {options.map(({ cta, image, href }) => (
           <li
             key={image.alt}
@@ -60,7 +60,7 @@ export const Launcher = () => {
           </li>
         ))}
       </ul>
-      <p>
+      <p className="mb-12">
         I am not sure yet,{' '}
         <Link
           className="underline font-semibold text-brand-ui-primary"
