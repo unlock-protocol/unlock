@@ -139,6 +139,7 @@ export const Select = <T extends unknown>({
 
   const inputClass = twMerge(
     'box-border flex-1 block w-full text-base text-left transition-all bg-white border border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none',
+    fieldDisabled ? 'opacity-50' : '',
     inputSizeStyle
   )
 
@@ -187,16 +188,18 @@ export const Select = <T extends unknown>({
         )
       }
     >
-      <Listbox value={selected?.value || ''} onChange={onChangeOption}>
+      <Listbox
+        disabled={fieldDisabled}
+        value={selected?.value || ''}
+        onChange={onChangeOption}
+      >
         <div className="relative">
           {label?.length > 0 && (
             <label className="block px-1 mb-1 text-base" htmlFor="">
               {tooltip && (
-                <Tooltip delay={0} tip={tooltip} side="top" theme="dark">
-                  <span>
-                    {label} <QuestionMark className="inline" />
-                  </span>
-                </Tooltip>
+                <span>
+                  {label} <QuestionMark className="inline" />
+                </span>
               )}
               {!tooltip && <span>{label}</span>}
             </label>
