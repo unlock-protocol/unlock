@@ -6,6 +6,7 @@ const Payload = z.object({
   keyId: z.coerce.string(),
   lockAddress: z.coerce.string(),
   network: z.number(),
+  userAddress: z.coerce.string(),
 })
 
 export const cryptoRenewalJob: Task = async (payload) => {

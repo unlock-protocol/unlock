@@ -1,26 +1,46 @@
 import { run } from 'graphile-worker'
 import config from '../config/config'
-import { addRenewalJobs } from './tasks/renewal/addRenewalJobs'
+import {
+  addRenewalJobs,
+  addRenewalJobsWeekly,
+} from './tasks/renewal/addRenewalJobs'
 import { cryptoRenewalJob } from './tasks/renewal/cryptoRenewalJob'
 import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
 import { addKeyJobs } from './tasks/addKeyJobs'
-const connectionString = `postgresql://${config.database.username}:${config.database.password}@${config.database.host}/${config.database.database}`
+import { addHookJobs } from './tasks/hooks/addHookJobs'
+import { sendHook } from './tasks/hooks/sendHook'
+import { sendEmail } from './tasks/sendEmail'
 
-const crontab = `
+const crontabProduction = `
 */5 * * * * addRenewalJobs
+0 0 * * 0 addRenewalJobsWeekly
 */5 * * * * addKeyJobs
+*/5 * * * * addHookJobs
 `
+
+const cronTabTesting = `
+*/1 * * * * addRenewalJobs
+0 0 * * * addRenewalJobsWeekly
+*/1 * * * * addKeyJobs
+*/1 * * * * addHookJobs
+`
+
+const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
 async function main() {
   const runner = await run({
-    connectionString,
+    connectionString: config.databaseUrl,
     crontab,
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
       addRenewalJobs,
+      addRenewalJobsWeekly,
       addKeyJobs,
+      addHookJobs,
+      sendHook,
+      sendEmail,
       fiatRenewalJob,
       cryptoRenewalJob,
     },
