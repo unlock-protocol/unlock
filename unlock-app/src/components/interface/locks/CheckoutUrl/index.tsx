@@ -10,7 +10,6 @@ import {
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import ConfigComboBox, { CheckoutConfig } from './ComboBox'
 import {
   useCheckoutConfigRemove,
   useCheckoutConfigUpdate,
@@ -22,6 +21,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
+import { ChooseConfiguration, CheckoutConfig } from './ChooseConfiguration'
 
 const Header = () => {
   return (
@@ -258,61 +258,6 @@ export const CheckoutUrlPage = () => {
     )
   }
 
-  const SelectConfiguration = () => {
-    return (
-      <div className="flex items-center w-full gap-4 p-2">
-        <div className="w-full">
-          <ConfigComboBox
-            disabled={isConfigUpdating}
-            items={
-              (checkoutConfigList as unknown as CheckoutConfig[]) ||
-              ([] as CheckoutConfig[])
-            }
-            onChange={async ({ config, ...rest }) => {
-              const option = {
-                ...rest,
-                config: config || DEFAULT_CONFIG,
-              }
-              setCheckoutConfig(option)
-              if (!option.id) {
-                const response = await updateConfig(option)
-                setCheckoutConfig({
-                  id: response.id,
-                  config: response.config as PaywallConfig,
-                  name: response.name,
-                })
-                await refetchConfigList()
-              }
-            }}
-            value={checkoutConfig}
-          />
-        </div>
-        <Button
-          loading={isConfigUpdating}
-          disabled={hasRecurringPlaceholder}
-          iconLeft={<SaveIcon />}
-          onClick={onConfigSave}
-          size="small"
-        >
-          Save
-        </Button>
-        <Button
-          disabled={!checkoutConfig.id}
-          iconLeft={<TrashIcon />}
-          onClick={(event) => {
-            event.preventDefault()
-            setDeleteConfirmation(true)
-          }}
-          size="small"
-        >
-          Delete
-        </Button>
-      </div>
-    )
-  }
-  const hasRecurringPlaceholder =
-    !!lockAddress && !!network && isRecurringSettingPlaceholder
-
   return (
     <>
       <Modal isOpen={isDeleteConfirmation} setIsOpen={setDeleteConfirmation}>
@@ -350,7 +295,36 @@ export const CheckoutUrlPage = () => {
                 title: 'Choose a configuration',
                 description:
                   'Create a new configuration or continue enhance the existing one for your checkout modal',
-                children: <SelectConfiguration />,
+                children: (
+                  <div className="flex items-center w-full gap-4 p-2">
+                    <div className="w-full">
+                      <ChooseConfiguration
+                        disabled={isConfigUpdating}
+                        items={
+                          (checkoutConfigList as unknown as CheckoutConfig[]) ||
+                          ([] as CheckoutConfig[])
+                        }
+                        onChange={async ({ config, ...rest }) => {
+                          const option = {
+                            ...rest,
+                            config: config || DEFAULT_CONFIG,
+                          }
+                          setCheckoutConfig(option)
+                          if (!option.id) {
+                            const response = await updateConfig(option)
+                            setCheckoutConfig({
+                              id: response.id,
+                              config: response.config as PaywallConfig,
+                              name: response.name,
+                            })
+                            //await refetchConfigList()
+                          }
+                        }}
+                        value={checkoutConfig}
+                      />
+                    </div>
+                  </div>
+                ),
               },
               {
                 title: 'Configure the basics',
