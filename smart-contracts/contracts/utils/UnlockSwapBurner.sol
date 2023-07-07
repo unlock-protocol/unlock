@@ -33,8 +33,11 @@ contract UnlockSwapBurner {
   address public constant burnAddress =
     0x000000000000000000000000000000000000dEaD;
 
+  address public constant UNI_V2_UDT =
+    0x9cA8AEf2372c705d6848fddA3C1267a7F51267C1;
+  //
   // set the default pool fee to 0.3%.
-  uint24 public constant poolFee = 3000;
+  // uint24 public constant poolFee = 3000;
 
   // events
   event SwapBurn(address tokenAddress, uint amountSpent, uint amountBurnt);
@@ -78,6 +81,18 @@ contract UnlockSwapBurner {
         : IMintableERC20(token).balanceOf(address(this));
   }
 
+  // NB: unused for now
+  function _encodeSwapPath(
+    address[] memory _path,
+    uint24[] memory _fees
+  ) internal pure returns (bytes memory path) {
+    path = abi.encodePacked(_path[0]);
+    for (uint i = 0; i < _fees.length; i++) {
+      path = abi.encodePacked(path, _fees[i], _path[i + 1]);
+    }
+    path = abi.encodePacked(path, UNI_V2_UDT);
+  }
+
   /**
    * Swap tokens to UDT and burn the tokens
    */
@@ -85,7 +100,7 @@ contract UnlockSwapBurner {
     address tokenAddress,
     address swapRouter,
     uint amount,
-    bytes memory swapCalldata
+    bytes memory path
   ) public payable returns (bytes memory) {
     // make sure given uniswapRouter is whitelisted
     if (uniswapRouters[swapRouter] != true) {
@@ -113,24 +128,32 @@ contract UnlockSwapBurner {
     );
 
     // executes the swap
-    (bool success, ) = swapRouter.call{
-      value: tokenAddress == address(0) ? msg.value : 0
-    }(swapCalldata);
+    // bytes memory path = _encodeSwapPath(_path, _fees);
 
-    // catch Uniswap revert
-    if (success == false) {
-      revert UDTSwapFailed(swapRouter, tokenAddress, amount, swapCalldata);
-    }
+    ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
+      path: path,
+      recipient: address(this),
+      deadline: block.timestamp,
+      amountIn: amount,
+      amountOutMinimum: 0
+    });
+
+    // Executes the swap.
+    uint amountOut = ISwapRouter(swapRouter).exactInput(params);
+
+    // if (success == false) {
+    //   revert UDTSwapFailed(swapRouter, tokenAddress, amount, swapCalldata);
+    // }
 
     // TODO: check that Unlock did not spend more than it received
     uint balanceUdtAfter = getBalance(udtAddress);
-    // if (
-    //   getBalance(tokenAddress) - balanceTokenBefore < 0 ||
-    //   balanceUdtAfter - balanceUdtBefore < 0
-    // ) {
-    //   // balance too low
-    //   revert UnauthorizedBalanceChange();
-    // }
+    if (
+      getBalance(tokenAddress) - balanceTokenBefore < 0 ||
+      balanceUdtAfter - balanceUdtBefore < 0
+    ) {
+      // balance too low
+      revert UnauthorizedBalanceChange();
+    }
   }
 
   // required to withdraw WETH

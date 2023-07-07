@@ -9,7 +9,7 @@ const {
   addSomeETH,
   addERC20,
   impersonate,
-  getUDTSwapRoute,
+  getUDTSwapPath,
   getUniswapTokens,
   getUniswapRouters,
   ADDRESS_ZERO,
@@ -59,13 +59,13 @@ describe(`swapAndBurn`, function () {
       let amount
       before(async () => {
         amount = ethers.utils.parseUnits('50', token.decimals)
-        tokenAddress = tokenAddress || ADDRESS_ZERO
+        tokenAddress = token.address || ADDRESS_ZERO
 
         // Unlock has some token
-        if (!token.isNative) {
-          await addERC20(tokenAddress, unlockAddress, amount)
-        } else {
+        if (token.isNative) {
           await addSomeETH(unlockAddress, amount)
+        } else {
+          await addERC20(tokenAddress, unlockAddress, amount)
         }
         const balance = await getBalance(unlockAddress, tokenAddress)
         expect(balance.toString()).to.equal(amount.toString())
@@ -95,7 +95,7 @@ describe(`swapAndBurn`, function () {
       })
 
       it('burns token entire balance', async () => {
-        const { swapCalldata, value, swapRouter } = await getUDTSwapRoute({
+        const { path, value, swapRouter } = await getUDTSwapPath({
           amountIn: amount,
           tokenIn: token,
           recipient: swapBurner.address,
@@ -106,13 +106,9 @@ describe(`swapAndBurn`, function () {
         )
         const udtBalanceBurnerBefore = await getBalance(swapBurner.address, UDT)
 
-        await swapBurner.swapAndBurn(
-          tokenAddress,
-          swapRouter,
-          amount,
-          swapCalldata,
-          { value }
-        )
+        await swapBurner.swapAndBurn(tokenAddress, swapRouter, amount, path, {
+          value,
+        })
         const balanceBurner = await getBalance(swapBurner.address, tokenAddress)
         expect(balanceBurnerBefore.minus(balanceBurner).toString()).to.equal(
           '0'
