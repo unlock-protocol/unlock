@@ -68,10 +68,17 @@ module.exports = async ([
     'Unlock',
     ADDRESS_ZERO
   )
-  const protocolFee = ethers.utils.parseEther('0.000001')
+  const randInt = (min, max) =>
+    Math.floor(Math.random() * (max - min + 1)) + min
+
+  const protocolFee = ethers.utils
+    .parseEther(`0.000001`)
+    .add(`${randInt(1, 999)}`)
   const calldata = unlockInterface.encodeFunctionData('setProtocolFee', [
     protocolFee,
   ])
+
+  console.log(`setProtocolFee(${protocolFee})`)
 
   // src info
   const { chainId } = await ethers.provider.getNetwork()
@@ -101,6 +108,7 @@ module.exports = async ([
       0, // value
       calldata, // data
       0, // operation: 0 for CALL, 1 for DELEGATECALL
+      // 0,
     ]
   )
 
