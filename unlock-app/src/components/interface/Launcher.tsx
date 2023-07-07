@@ -40,7 +40,7 @@ export const Launcher = () => {
         {options.map(({ cta, image, href }) => (
           <li
             key={image.alt}
-            className="relative h-96 overflow-hidden bg-[#FFF7E8] w-96 rounded-lg drop-shadow-2xl"
+            className="relative h-96 overflow-hidden bg-[#FFF7E8] w-96 rounded-lg duration-200 hover:drop-shadow-2xl"
           >
             <Link href={href}>
               <div className="flex flex-col items-center">
