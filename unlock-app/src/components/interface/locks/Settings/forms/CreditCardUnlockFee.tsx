@@ -1,5 +1,5 @@
 import { ToggleSwitch } from '@unlock-protocol/ui'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
@@ -19,6 +19,7 @@ export default function CreditCardUnlockFee({
   network,
   disabled,
 }: CreditCardUnlockFeeProps) {
+  const firstRender = useRef(false)
   const [unlockFeePaidByLockManager, setUnlockFeePaidByLockManager] =
     useState(false)
   const { handleSubmit } = useForm<CreditCardUnlockFeeFormProps>({
@@ -60,7 +61,11 @@ export default function CreditCardUnlockFee({
             enabled={unlockFeePaidByLockManager}
             setEnabled={setUnlockFeePaidByLockManager}
             onChange={() => {
-              onSubmit()
+              if (!firstRender.current) {
+                firstRender.current = true
+              } else {
+                onSubmit()
+              }
             }}
           />
         </div>
