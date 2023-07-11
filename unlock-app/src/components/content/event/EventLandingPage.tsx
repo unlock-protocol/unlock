@@ -116,7 +116,9 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
       coverImage="/images/illustrations/events/party.svg"
       subtitle="Create event tickets and landing pages for your conference, event, or meetup in under
        five minutes with Unlock Protocol."
-      description="Create events in the easiest possible way. Set up your event landing page, sell or airdrop tickets as NFTs and via email, and perform check-in with a dedicated QR code. Easy."
+      description="Create events in the easiest possible way. Set up
+       your event landing page, sell or airdrop tickets as NFTs and via email,
+        and perform check-in with a dedicated QR code. Easy."
       customers={customers}
       faqs={faqs}
       features={features}
