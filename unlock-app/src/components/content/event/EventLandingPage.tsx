@@ -93,15 +93,15 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
           }}
           className="text-6xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
         >
-          Web3 is
+          Easy-peasy
           <br />
-          better in <br />
-          real life.
+          event tickets<br />
+          and registration
         </h1>
       }
       actions={
         <Button onClick={handleCreateEvent} className="my-8">
-          Create your event now
+          Get started for free
         </Button>
       }
       illustration={
@@ -114,10 +114,8 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
         />
       }
       coverImage="/images/illustrations/events/party.svg"
-      subtitle="Create event tickets and landing pages for your IRL events in minutes with Unlock."
-      description="Unlock Protocol empowers everyone to create events the true web3
-        way. Deploy a contract, sell tickets as NFTs, and perform check-in
-        with a dedicated QR code. We got it covered."
+      subtitle="Create event tickets and landing pages for your conference, event, or meetup in under five minutes with Unlock Protocol."
+      description="Create events in the easiest possible way. Set up your event landing page, sell or airdrop tickets as NFTs and via email, and perform check-in with a dedicated QR code. Easy."
       customers={customers}
       faqs={faqs}
       features={features}
