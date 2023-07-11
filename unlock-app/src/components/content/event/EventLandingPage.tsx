@@ -95,7 +95,8 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
         >
           Easy-peasy
           <br />
-          event tickets<br />
+          event tickets
+          <br />
           and registration
         </h1>
       }
