@@ -1,12 +1,8 @@
-import { ToggleSwitch } from '@unlock-protocol/ui'
+import { useQuery } from '@tanstack/react-query'
+import { Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
-
-interface CreditCardUnlockFeeFormProps {
-  unlockFeePaidByLockManager: boolean
-}
 
 interface CreditCardUnlockFeeProps {
   lockAddress: string
@@ -21,35 +17,44 @@ export default function CreditCardUnlockFee({
 }: CreditCardUnlockFeeProps) {
   const [unlockFeePaidByLockManager, setUnlockFeePaidByLockManager] =
     useState(false)
-  const { handleSubmit } = useForm<CreditCardUnlockFeeFormProps>({
-    defaultValues: async () => await getDefaultValues(),
-  })
 
-  const getDefaultValues = async (): Promise<CreditCardUnlockFeeFormProps> => {
-    const { unlockFeeChargedToUser = true } = (
-      await storage.getLockSettings(network, lockAddress)
-    ).data
-
-    const unlockPaidByLockManager = !unlockFeeChargedToUser
-
-    setUnlockFeePaidByLockManager(unlockPaidByLockManager)
-    return {
-      unlockFeePaidByLockManager,
+  const { isLoading } = useQuery(
+    ['getLockSettings', lockAddress, network],
+    async () => {
+      const { unlockFeeChargedToUser } = (
+        await storage.getLockSettings(network, lockAddress)
+      ).data
+      const unlockPaidByLockManager = !unlockFeeChargedToUser
+      return unlockPaidByLockManager
+    },
+    {
+      onSuccess: (unlockPaidByLockManager: boolean) => {
+        setUnlockFeePaidByLockManager(unlockPaidByLockManager)
+      },
     }
-  }
+  )
 
   const saveSettingMutation = useSaveLockSettings()
 
-  const onSubmit = async () => {
+  const onSubmit = async (feePaidByLockManager: boolean) => {
     await saveSettingMutation.mutateAsync({
       lockAddress,
       network,
-      unlockFeeChargedToUser: !unlockFeePaidByLockManager,
+      unlockFeeChargedToUser: !feePaidByLockManager,
     })
   }
 
+  if (isLoading) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line />
+        <Placeholder.Line />
+      </Placeholder.Root>
+    )
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid items-center gap-2">
+    <form className="grid items-center gap-2">
       <div className="flex flex-col gap-0.5">
         <div className="flex items-center gap-2">
           <span className="text-base font-bold text-gray-700">
@@ -59,8 +64,8 @@ export default function CreditCardUnlockFee({
             disabled={disabled || saveSettingMutation.isLoading}
             enabled={unlockFeePaidByLockManager}
             setEnabled={setUnlockFeePaidByLockManager}
-            onChange={() => {
-              onSubmit()
+            onChange={(feePaidByLockManager: boolean) => {
+              onSubmit(feePaidByLockManager)
             }}
           />
         </div>
