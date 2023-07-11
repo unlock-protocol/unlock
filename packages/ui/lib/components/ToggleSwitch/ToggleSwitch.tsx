@@ -32,9 +32,7 @@ export const ToggleSwitch = ({
           disabled={disabled}
           onChange={(isActive: boolean) => {
             setEnabled(isActive)
-            if (typeof onChange === 'function') {
-              onChange(isActive)
-            }
+            onChange?.(isActive)
           }}
           value={enabled}
           size={size as Extract<Size, 'small' | 'medium'>}
