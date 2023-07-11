@@ -1099,4 +1099,26 @@ export default class Web3Service extends UnlockService {
     }
     return null
   }
+
+  async getGasRefundValue({
+    network,
+    lockAddress,
+  }: {
+    network: number
+    lockAddress: string
+  }) {
+    const provider = this.providerForNetwork(network)
+    const lockContract = await this.getLockContract(lockAddress, provider)
+    if (!lockContract.gasRefundValue) {
+      return '0'
+    }
+    const gasRefund = await lockContract.gasRefundValue()
+    let decimals = this.networks[network].nativeCurrency.decimals
+    const erc20Address = await lockContract.tokenAddress()
+
+    if (erc20Address !== ethers.constants.AddressZero) {
+      decimals = await getErc20Decimals(erc20Address, this.provider)
+    }
+    return ethers.utils.formatUnits(gasRefund, decimals)
+  }
 }

@@ -3,24 +3,24 @@ import Head from 'next/head'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
-import Loading from '../interface/Loading'
 import { AppLayout } from '../interface/layouts/AppLayout'
-import { config } from '~/config/app'
 import { useRouter } from 'next/router'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import Loading from '../interface/Loading'
+import { Launcher } from '../interface/Launcher'
+import { useSession } from '~/hooks/useSession'
 
 export const HomeContent = () => {
+  const { isInitialLoading } = useSession()
   const router = useRouter()
+  const { account } = useAuth()
+
   useEffect(() => {
-    // In dev, redirect to dashboard, otherwise to static site!
-    if (
-      ['localhost', '127.0.0.1', '0.0,0,0'].indexOf(window.location.hostname) >
-      -1
-    ) {
+    if (account) {
       router.push('/locks')
-    } else {
-      router.push(config.unlockStaticUrl)
     }
   })
+
   return (
     <AppLayout authRequired={false} showLinks={false}>
       <Head>
@@ -28,7 +28,8 @@ export const HomeContent = () => {
         <TwitterTags />
         <OpenGraphTags />
       </Head>
-      <Loading />
+      {account && <Loading />}
+      {!account && !isInitialLoading && <Launcher />}
     </AppLayout>
   )
 }

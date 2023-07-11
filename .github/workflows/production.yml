@@ -7,10 +7,7 @@ on:
 
 jobs:
   run-all-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo hello world
-        run: echo "hello world"
+    uses: ./.github/workflows/_tests.yml
 
   deploy-all-subgraphs:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
