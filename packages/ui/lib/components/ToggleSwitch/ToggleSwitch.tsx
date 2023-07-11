@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Size } from '~/types'
 import { FieldLayout } from '../Form'
 import { Toggle } from '../Toggle/Toggle'
@@ -22,12 +22,6 @@ export const ToggleSwitch = ({
   disabled = false,
   size = 'medium',
 }: ToggleSwitchProps) => {
-  useEffect(() => {
-    if (typeof onChange === 'function') {
-      onChange(enabled)
-    }
-  }, [enabled])
-
   return (
     <FieldLayout description={description} size={size}>
       <div className="flex items-center gap-4">
@@ -36,7 +30,12 @@ export const ToggleSwitch = ({
         )}
         <Toggle
           disabled={disabled}
-          onChange={setEnabled}
+          onChange={(isActive: boolean) => {
+            setEnabled(isActive)
+            if (typeof onChange === 'function') {
+              onChange(isActive)
+            }
+          }}
           value={enabled}
           size={size as Extract<Size, 'small' | 'medium'>}
         />
