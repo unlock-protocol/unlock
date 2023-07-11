@@ -73,6 +73,15 @@ const TabHeader = ({
   )
 }
 
+const TabContent = classed.div('grid grid-cols-[48px_1fr] gap-4', {
+  variants: {
+    open: {
+      false: 'hidden',
+      true: 'visible',
+    },
+  },
+})
+
 const Tab = ({
   title,
   description,
@@ -147,28 +156,26 @@ const Tab = ({
             handleChange(tabNumber)
           }}
         />
-        {isOpen && (
-          <div className="grid grid-cols-[48px_1fr] gap-4">
-            <div className="relative flex justify-center w-12 h-full">
-              <div className="w-[2px] bg-gray-300 h-full"></div>
-            </div>
-            <div className="flex flex-col w-full gap-10 mt-10">
-              {children}
-              {showButton && (
-                <Button
-                  loading={handleNextMutation.isLoading}
-                  className="w-full"
-                  onClick={() => {
-                    handleNextMutation.mutateAsync()
-                  }}
-                  disabled={disabled}
-                >
-                  {onNextLabel}
-                </Button>
-              )}
-            </div>
+        <TabContent open={isOpen}>
+          <div className="relative flex justify-center w-12 h-full">
+            <div className="w-[2px] bg-gray-300 h-full"></div>
           </div>
-        )}
+          <div className="flex flex-col w-full gap-10 mt-10">
+            {children}
+            {showButton && (
+              <Button
+                loading={handleNextMutation.isLoading}
+                className="w-full"
+                onClick={() => {
+                  handleNextMutation.mutateAsync()
+                }}
+                disabled={disabled}
+              >
+                {onNextLabel}
+              </Button>
+            )}
+          </div>
+        </TabContent>
       </>
     </div>
   )
