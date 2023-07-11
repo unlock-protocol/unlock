@@ -2,6 +2,9 @@ import { Button } from '@unlock-protocol/ui'
 import Image from 'next/image'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useConnectModal } from '~/hooks/useConnectModal'
+import { PastEventsByManager } from './PastEventsByManager'
 
 const customers = [
   {
@@ -78,11 +81,37 @@ const faqs = [
   },
 ]
 
-interface LandingPage {
+interface EventLandingPageCallToActionProps {
   handleCreateEvent: () => void
 }
 
-export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
+export const EventLandingPageCallToAction = ({
+  handleCreateEvent,
+}: EventLandingPageCallToActionProps) => {
+  const { account } = useAuth()
+  const { openConnectModal } = useConnectModal()
+
+  if (!account) {
+    return (
+      <Button onClick={() => openConnectModal()} className="my-8">
+        Connect your wallet
+      </Button>
+    )
+  }
+  return (
+    <>
+      <PastEventsByManager manager={account}></PastEventsByManager>
+      <Button onClick={handleCreateEvent} className="my-8">
+        Create a new event
+      </Button>
+    </>
+  )
+}
+
+interface LandingPageProps {
+  handleCreateEvent: () => void
+}
+export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
   return (
     <LockTypeLandingPage
       title={
@@ -100,9 +129,7 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
         </h1>
       }
       actions={
-        <Button onClick={handleCreateEvent} className="my-8">
-          Create your event now
-        </Button>
+        <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
       }
       illustration={
         <Image
