@@ -19,7 +19,7 @@ export default function CreditCardUnlockFee({
     useState(false)
 
   const { isLoading } = useQuery(
-    [lockAddress, network],
+    ['getLockSettings', lockAddress, network],
     async () => {
       const { unlockFeeChargedToUser } = (
         await storage.getLockSettings(network, lockAddress)
