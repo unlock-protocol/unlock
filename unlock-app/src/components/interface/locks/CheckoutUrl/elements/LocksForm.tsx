@@ -25,6 +25,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
 import { useLockSettings } from '~/hooks/useLockSettings'
+import { getLocksByNetwork } from '~/hooks/useLocksByManager'
 const LockSchema = PaywallLockConfig.omit({
   network: true, // network will managed with a custom input with the lock address
 })
@@ -136,26 +137,18 @@ export const LocksForm = ({
     setAddLock(false)
   }
 
-  const getLocksByNetwork = async () => {
-    if (!network) return null
-
-    const service = new SubgraphService()
-    return (
-      (await service.locks(
-        {
-          first: 1000,
-          where: {
-            lockManagers_contains: [account!],
-          },
-        },
-        {
-          networks: [`${network!}`],
-        }
-      )) ?? []
-    )
-  }
   const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
-    useQuery([network, account], async () => getLocksByNetwork())
+    useQuery(
+      [network, account],
+      async () =>
+        getLocksByNetwork({
+          account,
+          network,
+        }),
+      {
+        enabled: !!(account && network),
+      }
+    )
 
   const onRemoveFromList = (lockAddress: string) => {
     if (!lockAddress) {
