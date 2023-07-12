@@ -138,7 +138,8 @@ export function ConfirmCrypto({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const totalAmount = pricingData!.total
+      // @ts-expect-error Type error: 'pricingData' is possibly 'undefined'. (not really because this hook is only enabled if isPricingDataAvailable)
+      const totalAmount = pricingData.total
 
       const isTokenPayable = totalAmount <= Number(balance)
       const isGasPayable = Number(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
@@ -283,35 +284,34 @@ export function ConfirmCrypto({
             />
           )}
         </div>
-        {!isPricingDataAvailable && (
-          <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                {recipients.map((user) => (
-                  <div
-                    key={user}
-                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <Pricing
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
-                isCardEnabled={!!creditCardEnabled}
+
+        {isLoading && (
+          <div className="flex flex-col items-center gap-2">
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
               />
-            )}
+            ))}
           </div>
+        )}
+
+        {pricingData && (
+          <Pricing
+            keyPrice={
+              pricingData.total <= 0
+                ? 'FREE'
+                : `${formatNumber(
+                    pricingData.total
+                  ).toLocaleString()} ${symbol}`
+            }
+            usdPrice={
+              totalPricing?.total
+                ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
+                : ''
+            }
+            isCardEnabled={!!creditCardEnabled}
+          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

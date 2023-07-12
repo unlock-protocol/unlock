@@ -1,7 +1,8 @@
 import { RequestHandler } from 'express'
 import { OutgoingHttpHeaders } from 'http'
 import { MemoryCache } from 'memory-cache-node'
-// import { isProduction } from '../../config/config'
+import { isProduction, isStaging } from '../../config/config'
+import logger from '../../logger'
 
 export interface Options {
   ttl: number
@@ -23,9 +24,9 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
     }
   >(checkInterval, maxItems)
   const handler: RequestHandler = (req, res, next) => {
-    // Only cache in production
-    const isProduction = false
-    if (!isProduction) {
+    // Only cache in production or staging
+    if (!isProduction && !isStaging) {
+      logger.debug('Skip caching in development')
       return next()
     }
 
@@ -41,17 +42,18 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
 
     const key = (req.originalUrl || req.url).trim().toLowerCase()
     const cached = cache.retrieveItemValue(key)
-    res.sendResponse = res.send
     if (cached) {
       return res
         .header({
           ...cached.headers,
           'locksmith-cache': 'HIT',
         })
-        .sendResponse(cached.body)
+        .send(cached.body)
     }
 
-    res.send = (body) => {
+    const sendResponse = res.send.bind(res)
+
+    res.send = function send(body: string | Buffer) {
       // Only cache 200 responses
       if ([200].includes(res.statusCode)) {
         cache.storeExpiringItem(
@@ -63,8 +65,9 @@ export const createCacheMiddleware = (option: Partial<Options> = {}) => {
           ttl
         )
       }
-      return res.sendResponse(body)
-    }
+      res.setHeader('locksmith-cache', 'MISS')
+      return sendResponse(body)
+    }.bind(res)
     return next()
   }
   return handler

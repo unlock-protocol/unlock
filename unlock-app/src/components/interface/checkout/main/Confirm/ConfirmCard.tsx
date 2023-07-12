@@ -288,6 +288,8 @@ export function ConfirmCard({
 
   const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
 
+  const isError = isPricingDataError
+
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
@@ -296,7 +298,8 @@ export function ConfirmCard({
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
             <ViewContract lockAddress={lock!.address} network={lockNetwork} />
           </div>
-          {isPricingDataError && (
+
+          {isError && (
             // TODO: use actual error from simulation
             <div>
               <p className="text-sm font-bold">
@@ -305,6 +308,8 @@ export function ConfirmCard({
               </p>
             </div>
           )}
+
+          {/* Breakdown of each keys */}
           {!isLoading && isPricingDataAvailable && (
             <PricingData
               network={lockNetwork}
@@ -314,45 +319,48 @@ export function ConfirmCard({
             />
           )}
         </div>
-        {!isPricingDataAvailable && (
-          <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                {recipients.map((user) => (
-                  <div
-                    key={user}
-                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <Pricing
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
-                isCardEnabled={!!creditCardEnabled}
+
+        {/* Totals */}
+        {isLoading && (
+          <div className="flex flex-col items-center gap-2">
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
               />
-            )}
+            ))}
           </div>
         )}
-        <CreditCardPricingBreakdown
-          loading={isTotalPricingDataLoading || !isTotalPricingDataFetched}
-          total={totalPricing?.total ?? 0}
-          creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
-          unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-          gasCosts={gasCosts}
-          symbol={creditCardCurrencySymbol}
-          unlockFeeChargedToUser={unlockFeeChargedToUser}
-        />
+
+        {pricingData && !isError && (
+          <Pricing
+            keyPrice={
+              pricingData.total <= 0
+                ? 'FREE'
+                : `${formatNumber(
+                    pricingData.total
+                  ).toLocaleString()} ${symbol}`
+            }
+            usdPrice={
+              totalPricing?.total
+                ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
+                : ''
+            }
+            isCardEnabled={!!creditCardEnabled}
+          />
+        )}
+
+        {!isError && pricingData && (
+          <CreditCardPricingBreakdown
+            loading={isTotalPricingDataLoading || !isTotalPricingDataFetched}
+            total={totalPricing?.total ?? 0}
+            creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
+            unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+            gasCosts={gasCosts}
+            symbol={creditCardCurrencySymbol}
+            unlockFeeChargedToUser={unlockFeeChargedToUser}
+          />
+        )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
@@ -362,7 +370,7 @@ export function ConfirmCard({
           <div className="grid">
             <Button
               loading={isConfirming}
-              disabled={isConfirming || isLoading}
+              disabled={isConfirming || isLoading || isError}
               onClick={async (event) => {
                 event.preventDefault()
                 if (metadata) {

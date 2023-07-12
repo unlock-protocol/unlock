@@ -137,6 +137,9 @@ export function ConfirmSwapAndPurchase({
   }
 
   const onConfirmCrypto = async () => {
+    if (!pricingData) {
+      return
+    }
     try {
       setIsConfirming(true)
       const keyPrices: string[] =
@@ -168,7 +171,7 @@ export function ConfirmSwapAndPurchase({
         amountInMax: ethers.utils
           .parseUnits(
             route
-              .convertToQuoteToken(pricingData!.total.toString())
+              .convertToQuoteToken(pricingData.total.toString())
               .toFixed(route.trade.inputAmount.currency.decimals), // Total Amount
             route.trade.inputAmount.currency.decimals
           )
@@ -251,35 +254,34 @@ export function ConfirmSwapAndPurchase({
             />
           )}
         </div>
-        {!isPricingDataAvailable && (
-          <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                {recipients.map((user) => (
-                  <div
-                    key={user}
-                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <Pricing
-                isCardEnabled={false}
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
+
+        {isLoading && (
+          <div className="flex flex-col items-center gap-2">
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
               />
-            )}
+            ))}
           </div>
+        )}
+
+        {pricingData && (
+          <Pricing
+            isCardEnabled={false}
+            keyPrice={
+              pricingData.total <= 0
+                ? 'FREE'
+                : `${formatNumber(
+                    pricingData.total
+                  ).toLocaleString()} ${symbol}`
+            }
+            usdPrice={
+              totalPricing?.total
+                ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
+                : ''
+            }
+          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
