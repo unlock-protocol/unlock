@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.38.2",
+  "version": "0.39.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -36,10 +36,10 @@
     "@babel/cli": "7.21.5",
     "@babel/core": "7.21.5",
     "@babel/preset-env": "7.20.2",
-    "@graphql-codegen/cli": "2.16.5",
-    "@graphql-codegen/typescript": "2.8.8",
-    "@graphql-codegen/typescript-graphql-request": "4.5.9",
-    "@graphql-codegen/typescript-operations": "2.5.13",
+    "@graphql-codegen/cli": "4.0.1",
+    "@graphql-codegen/typescript": "4.0.1",
+    "@graphql-codegen/typescript-graphql-request": "5.0.0",
+    "@graphql-codegen/typescript-operations": "4.0.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
@@ -57,8 +57,8 @@
     "@uniswap/sdk-core": "3.2.3",
     "@uniswap/smart-order-router": "3.10.1",
     "graphql": "16.6.0",
-    "graphql-request": "5.1.0",
-    "react-to-print": "2.14.12",
+    "graphql-request": "6.1.0",
+    "react-to-print": "2.14.13",
     "siwe": "2.1.4"
   }
 }
