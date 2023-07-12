@@ -61,6 +61,7 @@ export const usePricing = ({
       return item
     },
     {
+      retry: false,
       refetchInterval: 1000 * 60 * 5,
       enabled,
     }
