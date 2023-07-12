@@ -19,7 +19,12 @@ export function useLockSettings() {
     const lock = await web3Service.getLock(lockAddress, network)
 
     // TODO: Add gas refund
-    const gasRefund = 0.1
+    const gasRefund = Number(
+      await web3Service.getGasRefundValue({
+        lockAddress,
+        network,
+      })
+    )
 
     const isERC20 =
       lock?.currencyContractAddress &&
@@ -27,7 +32,10 @@ export function useLockSettings() {
 
     // TODO: Add gas refund
     const isRecurringPossible =
-      lock?.expirationDuration != -1 && lock?.publicLockVersion >= 10 && isERC20
+      lock?.expirationDuration != -1 &&
+      lock?.publicLockVersion >= 10 &&
+      isERC20 &&
+      gasRefund > 0
 
     // 1 year of recurring payments
     const oneYearRecurring = Math.floor(
